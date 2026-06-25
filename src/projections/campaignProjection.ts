@@ -1,0 +1,369 @@
+import type { StoredEvent } from "../domain/shared/events.js";
+
+export interface CampaignProjection {
+  campaign: any | null;
+  players: Map<string, any>;
+  entities: Map<string, any>;
+  relations: Map<string, any>;
+  facts: Map<string, any>;
+  sessions: Map<string, any>;
+  sessionEvents: Map<string, any>;
+  tags: Map<string, any>;
+  attachments: Map<string, any>;
+  lastSequence: number;
+}
+
+export function createEmptyCampaignProjection(): CampaignProjection {
+  return {
+    campaign: null,
+    players: new Map(),
+    entities: new Map(),
+    relations: new Map(),
+    facts: new Map(),
+    sessions: new Map(),
+    sessionEvents: new Map(),
+    tags: new Map(),
+    attachments: new Map(),
+    lastSequence: 0,
+  };
+}
+
+export function applyEvent(
+  projection: CampaignProjection,
+  event: StoredEvent
+): CampaignProjection {
+  const next = {
+    ...projection,
+    players: new Map(projection.players),
+    entities: new Map(projection.entities),
+    relations: new Map(projection.relations),
+    facts: new Map(projection.facts),
+    sessions: new Map(projection.sessions),
+    sessionEvents: new Map(projection.sessionEvents),
+    tags: new Map(projection.tags),
+    attachments: new Map(projection.attachments),
+    lastSequence: event.sequence,
+  };
+
+  const { type, occurredAt } = event;
+  const payload = { ...event.payload };
+
+  // Normalize Entity fields
+  if (type === "EntityCreated" || type === "EntityUpdated" || type === "EntityArchived") {
+    payload.entityId = payload.entityId || payload.id;
+    payload.id = payload.entityId;
+    payload.entityType = payload.entityType || payload.type;
+    payload.type = payload.entityType;
+  }
+
+  // Normalize Relation fields
+  if (type === "RelationCreated" || type === "RelationUpdated" || type === "RelationArchived") {
+    payload.relationId = payload.relationId || payload.id;
+    payload.id = payload.relationId;
+  }
+
+  // Normalize Fact fields
+  if (type === "FactCreated" || type === "FactUpdated" || type === "FactArchived") {
+    payload.factId = payload.factId || payload.id;
+    payload.id = payload.factId;
+  }
+
+  // Normalize Session fields
+  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionClosed") {
+    payload.sessionId = payload.sessionId || payload.id;
+    payload.id = payload.sessionId;
+  }
+
+  // Normalize visibility — canonical field is `kind`; drop legacy `mode`
+  if (payload.visibility) {
+    const canonicalKind = payload.visibility.kind || payload.visibility.mode || "dm_only";
+    const { mode: _mode, ...rest } = payload.visibility;
+    payload.visibility = { ...rest, kind: canonicalKind };
+  }
+
+  switch (type) {
+    case "CampaignCreated": {
+      payload.campaignId = payload.campaignId || payload.id;
+      payload.id = payload.campaignId;
+      next.campaign = { ...payload };
+      break;
+    }
+    case "CampaignUpdated": {
+      if (next.campaign) {
+        next.campaign = {
+          ...next.campaign,
+          ...payload,
+          updatedAt: occurredAt,
+        };
+      }
+      break;
+    }
+    case "PlayerProfileCreated": {
+      const id = payload.id || payload.playerId;
+      next.players.set(id, { ...payload });
+      break;
+    }
+    case "PlayerProfileUpdated": {
+      const id = payload.id || payload.playerId;
+      const existing = next.players.get(id);
+      if (existing) {
+        next.players.set(id, {
+          ...existing,
+          ...payload,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "PlayerProfileArchived": {
+      const id = payload.id || payload.playerId;
+      const existing = next.players.get(id);
+      if (existing) {
+        next.players.set(id, {
+          ...existing,
+          archived: true,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "EntityCreated": {
+      const id = payload.entityId;
+      next.entities.set(id, { ...payload });
+      break;
+    }
+    case "EntityUpdated": {
+      const id = payload.entityId;
+      const existing = next.entities.get(id);
+      if (existing) {
+        next.entities.set(id, {
+          ...existing,
+          ...payload,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "EntityArchived": {
+      const id = payload.entityId || payload.id;
+      const existing = next.entities.get(id);
+      if (existing) {
+        next.entities.set(id, {
+          ...existing,
+          archived: true,
+          status: "archived",
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "RelationCreated": {
+      const id = payload.relationId;
+      next.relations.set(id, { ...payload });
+      break;
+    }
+    case "RelationUpdated": {
+      const id = payload.relationId;
+      const existing = next.relations.get(id);
+      if (existing) {
+        next.relations.set(id, {
+          ...existing,
+          ...payload,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "RelationArchived": {
+      const id = payload.relationId || payload.id;
+      const existing = next.relations.get(id);
+      if (existing) {
+        next.relations.set(id, {
+          ...existing,
+          archived: true,
+          status: "retconned",
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "FactCreated": {
+      const id = payload.factId;
+      next.facts.set(id, { ...payload });
+      break;
+    }
+    case "FactUpdated": {
+      const id = payload.factId;
+      const existing = next.facts.get(id);
+      if (existing) {
+        next.facts.set(id, {
+          ...existing,
+          ...payload,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "FactArchived": {
+      const id = payload.factId || payload.id;
+      const existing = next.facts.get(id);
+      if (existing) {
+        next.facts.set(id, {
+          ...existing,
+          archived: true,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "VisibilityChanged": {
+      const { targetId, targetType, visibility } = payload;
+      if (targetType === "entity") {
+        const existing = next.entities.get(targetId);
+        if (existing) {
+          next.entities.set(targetId, {
+            ...existing,
+            visibility: {
+              ...visibility,
+              kind: visibility.kind || visibility.mode || "dm_only",
+            },
+            updatedAt: occurredAt,
+          });
+        }
+      } else if (targetType === "relation") {
+        const existing = next.relations.get(targetId);
+        if (existing) {
+          next.relations.set(targetId, {
+            ...existing,
+            visibility: {
+              ...visibility,
+              kind: visibility.kind || visibility.mode || "dm_only",
+            },
+            updatedAt: occurredAt,
+          });
+        }
+      } else if (targetType === "fact") {
+        const existing = next.facts.get(targetId);
+        if (existing) {
+          next.facts.set(targetId, {
+            ...existing,
+            visibility: {
+              ...visibility,
+              kind: visibility.kind || visibility.mode || "dm_only",
+            },
+            updatedAt: occurredAt,
+          });
+        }
+      }
+      break;
+    }
+    case "SessionCreated": {
+      const id = payload.sessionId;
+      next.sessions.set(id, { ...payload, status: payload.status || "active" });
+      break;
+    }
+    case "SessionStarted": {
+      const id = payload.sessionId || payload.id;
+      const existing = next.sessions.get(id);
+      if (existing) {
+        next.sessions.set(id, {
+          ...existing,
+          status: "active",
+          startedAt: payload.startedAt,
+          updatedAt: occurredAt,
+        });
+      } else {
+        next.sessions.set(id, {
+          sessionId: id,
+          id,
+          status: "active",
+          startedAt: payload.startedAt,
+          title: payload.title || "Session",
+          archived: false,
+          createdAt: occurredAt,
+          updatedAt: occurredAt,
+        });
+      }
+      if (next.campaign) {
+        next.campaign = {
+          ...next.campaign,
+          currentSessionId: id,
+          updatedAt: occurredAt,
+        };
+      }
+      break;
+    }
+    case "SessionClosed": {
+      const id = payload.sessionId || payload.id;
+      const existing = next.sessions.get(id);
+      if (existing) {
+        next.sessions.set(id, {
+          ...existing,
+          status: "closed",
+          summary: payload.summary,
+          playerSummary: payload.playerSummary,
+          endedAt: payload.endedAt,
+          updatedAt: occurredAt,
+        });
+      }
+      if (next.campaign && next.campaign.currentSessionId === id) {
+        next.campaign = {
+          ...next.campaign,
+          currentSessionId: undefined,
+          updatedAt: occurredAt,
+        };
+      }
+      break;
+    }
+    case "SessionEventRecorded": {
+      next.sessionEvents.set(payload.id, { ...payload });
+      break;
+    }
+    case "AttachmentAdded": {
+      next.attachments.set(payload.id, { ...payload });
+      break;
+    }
+    case "AttachmentRemoved": {
+      next.attachments.delete(payload.id);
+      break;
+    }
+    case "TagCreated": {
+      next.tags.set(payload.id, { ...payload });
+      break;
+    }
+    case "TagUpdated": {
+      const id = payload.id;
+      const existing = next.tags.get(id);
+      if (existing) {
+        next.tags.set(id, {
+          ...existing,
+          ...payload,
+        });
+      }
+      break;
+    }
+    case "SettingsUpdated": {
+      if (next.campaign) {
+        next.campaign = {
+          ...next.campaign,
+          settings: {
+            ...next.campaign.settings,
+            ...payload,
+          },
+          updatedAt: occurredAt,
+        };
+      }
+      break;
+    }
+  }
+
+  return next;
+}
+
+export function rebuildCampaignProjection(events: StoredEvent[]): CampaignProjection {
+  let projection = createEmptyCampaignProjection();
+  for (const event of events) {
+    projection = applyEvent(projection, event);
+  }
+  return projection;
+}
