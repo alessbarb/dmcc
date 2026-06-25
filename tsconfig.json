@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node", "vitest/globals"]
+  },
+  "include": [
+    "src/main",
+    "src/server",
+    "src/domain",
+    "src/application",
+    "src/persistence",
+    "src/projections",
+    "src/shared"
+  ],
+  "exclude": [
+    "src/app"
+  ]
+}
+
