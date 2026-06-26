@@ -596,19 +596,173 @@ async function seedSecrets() {
 }
 
 async function seedSessions() {
-  console.log("TODO: seedSessions");
+  const SESSIONS = [
+    { sessionId: "sess_0", title: "Sesión 0: Orígenes", summary: "Presentación de personajes. Cómo se conocieron. La profecía que los trae a Valdris." },
+    { sessionId: "sess_1", title: "Sesión 1: Llegada a Valdris", summary: "Llegada a la ciudad. Primera impresión. Petición al Oráculo y primera desconfianza." },
+    { sessionId: "sess_2", title: "Sesión 2: El Templo y sus Sombras", summary: "Investigación del templo del Oráculo. Primer contacto con Sera Moonwhisper. Torben revela el incendio del archivo." },
+    { sessionId: "sess_3", title: "Sesión 3: El Archivo Ardiente", summary: "Visita al Archivo con Mira. Registros del incendio. Aparece la pista del pago anónimo al culto." },
+    { sessionId: "sess_4", title: "Sesión 4: Sangre en el Puerto", summary: "Cuerpos en el puerto. Encuentro con Cira del Gremio. Lyra comparte sus notas. Complicación con Consejero Brann." },
+    { sessionId: "sess_5", title: "Sesión 5: La Profecía Falsa", summary: "Silas graba la voz del Oráculo. Análisis arcano confirma la ilusión. El grupo sabe, pero necesita pruebas para el Consejo." },
+    { sessionId: "sess_6", title: "Sesión 6: La Bóveda Subterránea", summary: "Infiltración en las ruinas. Senra vacila. Primera confrontación con el inner circle. Acceso a la bóveda." },
+    { sessionId: "sess_7", title: "Sesión 7: El Peso de la Decisión", summary: "El grupo lleva las pruebas al Consejo. Decisión sobre Vantis. Consecuencias de la elección de método." },
+    { sessionId: "sess_8", title: "Sesión 8: La Sala del Oráculo", summary: "Confrontación final con Veradis. El cristal de ilusión. El escape o la captura. Resolución del arco principal." },
+    { sessionId: "sess_9", title: "Sesión 9 (Opcional): Epílogo", summary: "Las consecuencias de la caída del Oráculo. Qué ocurre con Valdris. Los hilos sueltos." },
+  ];
+
+  for (const s of SESSIONS) {
+    // Create and immediately start+close each past session
+    const createRes = await api("POST", `/api/campaigns/${CMP}/sessions`, {
+      sessionId: s.sessionId, title: s.title, actorId: "usr_dm",
+    });
+    if (createRes.status !== 201) continue;
+
+    if (s.sessionId !== "sess_8" && s.sessionId !== "sess_9") {
+      // Close past sessions
+      await api("POST", `/api/campaigns/${CMP}/sessions/${s.sessionId}/close`, {
+        summary: s.summary, actorId: "usr_dm",
+      });
+    }
+  }
+  console.log(`✓ ${SESSIONS.length} sessions created (sessions 0-7 closed, 8 active, 9 pending)`);
 }
 
 async function seedRelations() {
-  console.log("TODO: seedRelations");
+  const RELATIONS = [
+    // NPC ↔ Faction
+    { sourceEntityId: "ent_npc_veradis",    targetEntityId: "ent_fac_culto",       relationType: "controls",    description: "Veradis lidera el culto que lleva su nombre." },
+    { sourceEntityId: "ent_npc_vantis",     targetEntityId: "ent_fac_culto",       relationType: "employs",     description: "Financia al culto a cambio de profecías favorables." },
+    { sourceEntityId: "ent_npc_senra",      targetEntityId: "ent_fac_culto",       relationType: "member_of",   description: "Técnica de la ilusión. Atrapada, no por lealtad.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_npc_guardian_jefe", targetEntityId: "ent_fac_culto",    relationType: "member_of",   description: "Jefe de seguridad del culto." },
+    { sourceEntityId: "ent_npc_aldric",     targetEntityId: "ent_fac_consejo",     relationType: "controls",    description: "Magister y líder del Consejo." },
+    { sourceEntityId: "ent_npc_consejera_lena", targetEntityId: "ent_fac_consejo", relationType: "member_of",   description: "Facción reformista." },
+    { sourceEntityId: "ent_npc_consejero_brann", targetEntityId: "ent_fac_consejo", relationType: "member_of",  description: "Facción conservadora." },
+    { sourceEntityId: "ent_npc_dorian",     targetEntityId: "ent_fac_consorcio",   relationType: "member_of",   description: "Espía del Consorcio en el Consejo.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_npc_kael",       targetEntityId: "ent_fac_gremio",      relationType: "controls",    description: "Líder del Gremio de Ladrones.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_npc_torben",     targetEntityId: "ent_fac_gremio",      relationType: "member_of",   description: "Informador de bajo perfil del Gremio." },
+    { sourceEntityId: "ent_npc_sera",       targetEntityId: "ent_fac_templo_verdad", relationType: "member_of", description: "Sacerdotisa del Templo de la Verdad." },
+    { sourceEntityId: "ent_npc_lyra",       targetEntityId: "ent_fac_consejo",     relationType: "employs",     description: "Capitana de la guardia, dependiente del Consejo." },
+    // NPC ↔ NPC
+    { sourceEntityId: "ent_npc_veradis",    targetEntityId: "ent_npc_aldric",      relationType: "controls",    description: "El Oráculo influye en las decisiones del Magister mediante profecías." },
+    { sourceEntityId: "ent_npc_lyra",       targetEntityId: "ent_npc_veradis",     relationType: "fears",       description: "Lyra desconfía de Veradis pero teme actuar sin pruebas.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_npc_kael",       targetEntityId: "ent_npc_vantis",      relationType: "threatens",   description: "Los libros del Gremio mantienen a Kael seguro de Vantis.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_npc_veradis",    targetEntityId: "ent_npc_senra",       relationType: "employs",     description: "Senra mantiene la ilusión del Oráculo por orden de Veradis.", visibility: { kind: "dm_only" as const } },
+    // Clue → Quest
+    { sourceEntityId: "ent_clue_prophecy_text",     targetEntityId: "ent_q_profecia_rota", relationType: "points_to",   description: "Primera inconsistencia que lleva a la quest principal." },
+    { sourceEntityId: "ent_clue_arcane_component",  targetEntityId: "ent_q_profecia_rota", relationType: "unlocks",     description: "Prueba física de la ilusión arcana.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_clue_vault_records",     targetEntityId: "ent_q_profecia_rota", relationType: "confirms",    description: "Evidencia definitiva del fraude.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_clue_guild_ledger",      targetEntityId: "ent_q_profecia_rota", relationType: "confirms",    description: "Vincula a Vantis con el culto financieramente.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_clue_port_bodies",       targetEntityId: "ent_q_sangre_puerto", relationType: "points_to",   description: "Marca del inner circle en las víctimas del puerto." },
+    { sourceEntityId: "ent_clue_archive_records",   targetEntityId: "ent_q_archivista",    relationType: "unlocks",     description: "Los registros del incendio son la clave de esta quest." },
+    // Secret → NPC (quién guarda el secreto)
+    { sourceEntityId: "ent_sec_oracle_fraud",       targetEntityId: "ent_npc_veradis",     relationType: "hides",       description: "Veradis oculta activamente su naturaleza.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_sec_kael_has_evidence",  targetEntityId: "ent_npc_kael",        relationType: "owns",        description: "Kael posee los libros de cuentas.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_sec_vault_location",     targetEntityId: "ent_loc_boveda",      relationType: "points_to",   description: "La ubicación de la bóveda es el secreto.", visibility: { kind: "dm_only" as const } },
+    // Decision → Consequence (sample chains)
+    { sourceEntityId: "ent_q_traidor_interior",     targetEntityId: "ent_npc_dorian",      relationType: "points_to",   description: "La quest del traidor lleva a Dorian Vex.", visibility: { kind: "dm_only" as const } },
+    // Faction ↔ Faction
+    { sourceEntityId: "ent_fac_culto",      targetEntityId: "ent_fac_consejo",      relationType: "controls",    description: "El Oráculo tiene influencia sobre el Consejo mediante profecías.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_fac_gremio",     targetEntityId: "ent_fac_culto",        relationType: "opposes",     description: "El Gremio ve al culto como competencia en la economía del secreto.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_fac_templo_verdad", targetEntityId: "ent_fac_culto",     relationType: "contradicts", description: "El Templo predica contra la falsedad del Oráculo." },
+    { sourceEntityId: "ent_fac_consorcio",  targetEntityId: "ent_fac_consejo",      relationType: "controls",    description: "El Consorcio financia candidatos al Consejo para proteger sus intereses." },
+    // NPC ↔ Location
+    { sourceEntityId: "ent_npc_veradis",    targetEntityId: "ent_loc_sala_oraculo", relationType: "located_in",  description: "Sala del Oráculo es el dominio de Veradis." },
+    { sourceEntityId: "ent_npc_mira",       targetEntityId: "ent_loc_archivo",      relationType: "located_in",  description: "Mira vive en el archivo." },
+    { sourceEntityId: "ent_npc_kael",       targetEntityId: "ent_loc_campamento_gremio", relationType: "located_in", description: "Kael opera desde el campamento oculto.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_sec_divine_voice_illusion", targetEntityId: "ent_loc_sala_oraculo", relationType: "hides", description: "Los componentes de la ilusión están ocultos en la sala.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: "ent_clue_vault_entrance", targetEntityId: "ent_loc_boveda", relationType: "unlocks",     description: "Esta pista revela cómo acceder a la bóveda.", visibility: { kind: "dm_only" as const } },
+  ];
+
+  for (const r of RELATIONS) {
+    const res = await api("POST", `/api/campaigns/${CMP}/relations`, {
+      ...r, campaignId: CMP, actorId: "usr_dm",
+    });
+    if (res.status >= 400 && res.status !== 409) {
+      console.warn(`  ⚠ Relation skipped: ${r.sourceEntityId} → ${r.targetEntityId}: ${JSON.stringify(res.json)}`);
+    }
+  }
+  console.log(`✓ ${RELATIONS.length} relations created`);
 }
 
 async function seedFacts() {
-  console.log("TODO: seedFacts");
+  const dmOnly = { kind: "dm_only" as const };
+  const party = { kind: "party" as const };
+  const manualSource = { kind: "manual" as const };
+
+  const FACTS = [
+    // Rumores plantados por el Oráculo (falsos — "lie" kind)
+    { statement: "El Oráculo predijo la caída del reino del este con 5 años de antelación. Sus poderes son incuestionables.", kind: "lie" as const, confidence: "confirmed" as const, visibility: party, relatedEntityIds: ["ent_npc_veradis"], source: manualSource },
+    { statement: "Quien va contra el Oráculo atrae la desgracia sobre su familia. Tres familias lo aprendieron a su coste.", kind: "rumor" as const, confidence: "suspected" as const, visibility: party, relatedEntityIds: ["ent_npc_veradis", "ent_fac_culto"], source: manualSource },
+    { statement: "El Templo de la Verdad es una secta peligrosa que adora a un dios falso. Hay que mantenerse alejado.", kind: "lie" as const, confidence: "suspected" as const, visibility: party, relatedEntityIds: ["ent_fac_templo_verdad", "ent_npc_sera"], source: manualSource },
+    { statement: "El Gremio de Ladrones corrompe a los comerciantes del puerto para controlar el comercio. Son la fuente de todos los robos.", kind: "rumor" as const, confidence: "suspected" as const, visibility: party, relatedEntityIds: ["ent_fac_gremio", "ent_npc_kael"], source: manualSource },
+    { statement: "Los guardias que investigan al Oráculo acaban destituidos o peor.", kind: "rumor" as const, confidence: "suspected" as const, visibility: party, relatedEntityIds: ["ent_npc_lyra", "ent_fac_culto"], source: manualSource },
+    // Canon — verdades que el grupo puede conocer
+    { statement: "Veradis el Oráculo recibe peticionarios cada martes y jueves. El acceso cuesta 10 monedas de oro.", kind: "canon" as const, confidence: "confirmed" as const, visibility: party, relatedEntityIds: ["ent_npc_veradis", "ent_loc_sala_oraculo"], source: manualSource },
+    { statement: "El archivo de la ciudad fue destruido parcialmente en un incendio hace exactamente 20 años.", kind: "canon" as const, confidence: "confirmed" as const, visibility: party, relatedEntityIds: ["ent_loc_archivo", "ent_npc_mira"], source: manualSource },
+    { statement: "Lord Vantis es el noble más rico de Valdris desde hace aproximadamente 7 años.", kind: "canon" as const, confidence: "confirmed" as const, visibility: party, relatedEntityIds: ["ent_npc_vantis"], source: manualSource },
+    { statement: "Lyra Stonehaven lleva 3 meses investigando desapariciones sin resultado oficial.", kind: "canon" as const, confidence: "likely" as const, visibility: party, relatedEntityIds: ["ent_npc_lyra"], source: manualSource },
+    { statement: "La Taberna del Cuervo de Torben es conocida como lugar discreto donde se puede hablar libremente.", kind: "canon" as const, confidence: "confirmed" as const, visibility: party, relatedEntityIds: ["ent_npc_torben", "ent_loc_taberna_cuervo"], source: manualSource },
+    // DM secrets — verdades solo para el DM
+    { statement: "Veradis es un ilusionista de nivel equivalente a mago nivel 9 (SRD). Sus 'profecías' son fabricaciones arcanas.", kind: "dm_secret" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_veradis", "ent_sec_oracle_fraud"], source: manualSource },
+    { statement: "Lord Vantis ha pagado más de 50.000 monedas de oro al culto en 7 años.", kind: "dm_secret" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_vantis", "ent_sec_vantis_funding"], source: manualSource },
+    { statement: "La Maga Senra puede terminar con la ilusión en 30 segundos si destruye o sella el cristal de control.", kind: "dm_secret" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_senra", "ent_clue_prophecy_forgery_tool"], source: manualSource },
+    { statement: "Dorian Vex vendió información al culto sobre las investigaciones de Lyra hace 6 semanas.", kind: "dm_secret" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_dorian", "ent_npc_lyra", "ent_fac_culto"], source: manualSource },
+    { statement: "El Consejero Brann conoce parte de la corrupción de Vantis y ha decidido no actuar.", kind: "dm_secret" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_consejero_brann", "ent_npc_vantis"], source: manualSource },
+    // Teorías de jugadores (espacio para anotaciones)
+    { statement: "[Teoría del jugador]: El Oráculo podría ser un demonio disfrazado que se alimenta de la fe.", kind: "player_theory" as const, confidence: "unconfirmed" as const, visibility: party, relatedEntityIds: ["ent_npc_veradis"], source: manualSource },
+    { statement: "[Teoría del jugador]: Lyra sabe más de lo que dice. Quizás está protegiendo a alguien.", kind: "player_theory" as const, confidence: "unconfirmed" as const, visibility: party, relatedEntityIds: ["ent_npc_lyra"], source: manualSource },
+    // Unknown — hechos sin confirmar
+    { statement: "Alguien en el grupo de confianza de los aventureros está filtrando información.", kind: "unknown" as const, confidence: "suspected" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_dorian"], source: manualSource },
+    { statement: "El número exacto de víctimas del fraude del Oráculo podría superar las 800 personas.", kind: "unknown" as const, confidence: "suspected" as const, visibility: dmOnly, relatedEntityIds: ["ent_sec_prophecy_count"], source: manualSource },
+    // Mistake / retcon
+    { statement: "Initial rumor told to players: Veradis predicted the eastern plague. RETCON: That was a lie planted by the cult.", kind: "retcon" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_veradis"], source: manualSource },
+    // Consequences documented as facts
+    { statement: "La Widow Asha empastó sus últimas monedas en una profecía falsa sobre su hijo.", kind: "canon" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_peticionario", "ent_npc_veradis", "ent_sec_widow_son"], source: manualSource },
+    { statement: "Cuatro comerciantes del puerto que hablaron de anomalías han desaparecido en el último mes.", kind: "canon" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_fac_culto", "ent_loc_puerto", "ent_q_sangre_puerto"], source: manualSource },
+    { statement: "El incendio del archivo destruyó los registros de los 20 videntes reconocidos, limpiando el rastro del impostor.", kind: "dm_secret" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_loc_archivo", "ent_npc_mira", "ent_sec_archive_fire_cult"], source: manualSource },
+    { statement: "La Consejera Lena Marsh está buscando aliados para iniciar una investigación formal del Oráculo.", kind: "canon" as const, confidence: "likely" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_consejera_lena"], source: manualSource },
+    { statement: "El texto de las Crónicas del Verdadero Vidente en posesión de Sera Moonwhisper es auténtico y tiene 300 años.", kind: "dm_secret" as const, confidence: "confirmed" as const, visibility: dmOnly, relatedEntityIds: ["ent_npc_sera", "ent_clue_sera_texts"], source: manualSource },
+  ];
+
+  for (const f of FACTS) {
+    await api("POST", `/api/campaigns/${CMP}/facts`, { ...f, actorId: "usr_dm" });
+  }
+  console.log(`✓ ${FACTS.length} facts created`);
 }
 
 async function rebuildAndVerify() {
-  console.log("TODO: rebuildAndVerify");
+  // Rebuild snapshot
+  const rebuildRes = await api("POST", `/api/campaigns/${CMP}/rebuild`);
+  if (rebuildRes.status !== 200) {
+    console.warn("⚠ Rebuild returned", rebuildRes.status);
+  }
+
+  // Check dashboard
+  const dashRes = await api("GET", `/api/campaigns/${CMP}/dashboard`);
+  if (dashRes.status !== 200) throw new Error(`Dashboard failed: ${dashRes.status}`);
+  const dash = dashRes.json as any;
+  console.log(`✓ Dashboard OK: ${dash.activeQuests?.length ?? 0} active quests, ${dash.hiddenCriticalSecrets?.length ?? dash.criticalHiddenClues?.length ?? 0} critical hidden items`);
+
+  // Check graph
+  const graphRes = await api("GET", `/api/campaigns/${CMP}/graph`);
+  if (graphRes.status !== 200) throw new Error(`Graph failed: ${graphRes.status}`);
+  const graph = graphRes.json as any;
+  console.log(`✓ Graph OK: ${graph.nodes?.length ?? 0} nodes, ${graph.edges?.length ?? 0} edges`);
+
+  // Check search
+  const searchRes = await api("GET", `/api/campaigns/${CMP}/search?q=Veradis`);
+  if (searchRes.status !== 200) throw new Error(`Search failed: ${searchRes.status}`);
+  const search = searchRes.json as any;
+  console.log(`✓ Search OK: ${search.results?.length ?? 0} results for 'Veradis'`);
+
+  // Basic entity count
+  const stateRes = await api("GET", `/api/campaigns/${CMP}`);
+  if (stateRes.status !== 200) throw new Error(`State failed: ${stateRes.status}`);
+  const state = stateRes.json as any;
+  const entities = Object.values(state.entities ?? {});
+  const sessions = Object.values(state.sessions ?? {});
+  const facts = Object.values(state.facts ?? {});
+  const relations = Object.values(state.relations ?? {});
+  console.log(`✓ State: ${entities.length} entities, ${sessions.length} sessions, ${facts.length} facts, ${relations.length} relations`);
 }
 
 // ---------------------------------------------------------------------------
