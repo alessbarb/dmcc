@@ -10,7 +10,8 @@ import {
   getValidatedVaultId,
   getValidatedCampaignId,
 } from "../auth.js";
-import { slugifyTitle, assertWithinDir } from "../helpers.js";
+import { assertWithinDir } from "../helpers.js";
+import { writeMarkdownCampaignExport } from "../export/markdownCampaignExport.js";
 
 export async function registerExportRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -414,54 +415,68 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
       try {
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId as any);
+        const events = await (repo as any)["eventStore"].loadEvents(campaignId as any);
 
         const exportsDir = join(getCampaignDir(campaignId, vaultId), "exports");
-        const exportMdDir = join(exportsDir, `export_md_${createId("exp")}`);
-        await fs.mkdir(exportMdDir, { recursive: true });
+        await fs.mkdir(exportsDir, { recursive: true });
+        const exportId = `export_md_${createId("exp")}`;
+        const exportMdDir = join(exportsDir, basename(exportId));
+        assertWithinDir(exportMdDir, exportsDir);
 
-        await fs.writeFile(join(exportMdDir, "README.md"), `# ${state.campaign?.title || "Campaign"}\n`, "utf8");
-
-        const activeQuests = Array.from(state.entities.values()).filter(
-          (e: any) => e.entityType === "quest" && e.status === "active"
-        );
-        await fs.writeFile(
-          join(exportMdDir, "Dashboard.md"),
-          `## Active Quests\n\n${activeQuests.map((q: any) => `- ${q.title}`).join("\n")}\n`,
-          "utf8"
-        );
-
-        const npcsDir = join(exportMdDir, "NPCs");
-        await fs.mkdir(npcsDir, { recursive: true });
-        for (const npc of Array.from(state.entities.values()).filter((e: any) => e.entityType === "npc")) {
-          const file = join(npcsDir, `${slugifyTitle((npc as any).title)}.md`);
-          assertWithinDir(file, npcsDir);
-          await fs.writeFile(file, `# ${(npc as any).title}\n\n${(npc as any).summary || ""}\n`, "utf8");
-        }
-
-        await fs.writeFile(
-          join(exportMdDir, "Graph.json"),
-          JSON.stringify({
-            nodes: Array.from(state.entities.values()).map((e: any) => ({ id: e.entityId })),
-            edges: Array.from(state.relations.values()).map((r: any) => ({
-              id: r.relationId, source: r.sourceEntityId, target: r.targetEntityId,
-            })),
-          }, null, 2),
-          "utf8"
-        );
+        const result = await writeMarkdownCampaignExport({
+          state,
+          events,
+          exportDir: exportMdDir,
+          campaignId,
+          exportId,
+        });
 
         await repo.executeCommand(campaignId as any, {
           type: "RecordExport",
           campaignId: campaignId as any,
           actorId: "usr_dm",
-          exportId: createId("exp"),
+          exportId,
           format: "markdown",
         });
 
         reply.code(201);
-        return { campaignId, format: "markdown", path: exportMdDir };
+        return result;
       } catch {
         reply.code(404);
         return { error: "Campaign not found" };
+      }
+    }
+  );
+
+  server.get<{ Params: { campaignId: string; exportId: string } }>(
+    "/api/campaigns/:campaignId/exports/:exportId/download",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const exportId = request.params.exportId;
+
+      if (!exportId || basename(exportId) !== exportId || exportId.includes("..")) {
+        reply.code(400);
+        return { error: "Invalid exportId" };
+      }
+
+      const exportsDir = join(getCampaignDir(campaignId, vaultId), "exports");
+      const exportDir = join(exportsDir, basename(exportId));
+      const primaryFile = "Campaña completa.md";
+      const primaryPath = join(exportDir, primaryFile);
+      assertWithinDir(exportDir, exportsDir);
+      assertWithinDir(primaryPath, exportDir);
+
+      try {
+        const markdown = await fs.readFile(primaryPath, "utf8");
+        reply
+          .header("content-type", "text/markdown; charset=utf-8")
+          .header("content-disposition", `attachment; filename*=UTF-8''${encodeURIComponent(primaryFile)}`);
+        return markdown;
+      } catch {
+        reply.code(404);
+        return { error: "Export not found" };
       }
     }
   );

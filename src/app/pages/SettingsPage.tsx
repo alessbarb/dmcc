@@ -28,8 +28,11 @@ export function SettingsPage(props: SettingsPageProps = {}) {
   const lanStatus = props.lanStatus !== undefined ? props.lanStatus : store.lanStatus;
   const toggleLanMode = props.toggleLanMode ?? store.toggleLanMode;
   const addToast = props.addToast ?? toastAdd;
+  const activeVaultId = props.activeVaultId ?? store.activeVaultId;
   const [copiedCode, setCopiedCode] = React.useState(false);
   const [copiedLink, setCopiedLink] = React.useState(false);
+  const [copiedExportPath, setCopiedExportPath] = React.useState(false);
+  const [lastMarkdownExport, setLastMarkdownExport] = React.useState<any | null>(null);
 
 
   const handleCopyCode = (code: string) => {
@@ -46,6 +49,13 @@ export function SettingsPage(props: SettingsPageProps = {}) {
     setTimeout(() => setCopiedLink(false), 2000);
   };
 
+  const handleCopyExportPath = (path: string) => {
+    navigator.clipboard.writeText(path);
+    setCopiedExportPath(true);
+    addToast("Ruta de exportación copiada al portapapeles.", "success");
+    setTimeout(() => setCopiedExportPath(false), 2000);
+  };
+
   const handleToggleLan = async () => {
     const isEnabling = !lanStatus?.lanModeEnabled;
     try {
@@ -58,6 +68,29 @@ export function SettingsPage(props: SettingsPageProps = {}) {
       );
     } catch {
       addToast("Error al cambiar el estado de red LAN.", "error");
+    }
+  };
+
+  const handleDownloadMarkdown = async () => {
+    if (!lastMarkdownExport?.downloadUrl) return;
+    try {
+      const headers = new Headers();
+      headers.set("x-vault-id", activeVaultId || "default");
+      const dmToken = sessionStorage.getItem("dmcc_dmSessionToken");
+      if (dmToken) headers.set("x-dm-token", dmToken);
+      const res = await fetch(lastMarkdownExport.downloadUrl, { headers });
+      if (!res.ok) throw new Error("download failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = lastMarkdownExport.primaryFile || "Campaña completa.md";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      addToast("Error al descargar el Markdown principal.", "error");
     }
   };
 
@@ -109,14 +142,38 @@ export function SettingsPage(props: SettingsPageProps = {}) {
 
             <button className="btn btn-secondary" onClick={async () => {
               try {
-                await exportMarkdown();
-                addToast("Exportación Markdown creada.", "success");
+                const result = await exportMarkdown();
+                setLastMarkdownExport(result);
+                addToast(`Exportación Markdown completa creada (${result.fileCount ?? "?"} archivos).`, "success");
               } catch {
                 addToast("Error al exportar Markdown.", "error");
               }
             }}>
-              <Upload size={16} /> Exportar campaña a Bóveda Markdown
+              <Upload size={16} /> Exportar campaña completa a Markdown
             </button>
+
+            {lastMarkdownExport && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px", padding: "12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", background: "#06070e" }}>
+                <span style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-muted)" }}>Última exportación Markdown</span>
+                <input
+                  type="text"
+                  readOnly
+                  value={lastMarkdownExport.path}
+                  style={{ padding: "8px 12px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)", backgroundColor: "var(--bg-input)", color: "var(--text-main)", fontSize: "0.8rem", fontFamily: "monospace" }}
+                />
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  <button className="btn btn-secondary btn-sm" onClick={() => handleCopyExportPath(lastMarkdownExport.path)}>
+                    {copiedExportPath ? <Check size={14} style={{ color: "var(--primary)" }} /> : <Copy size={14} />}
+                    Copiar ruta local
+                  </button>
+                  {lastMarkdownExport.downloadUrl && (
+                    <button className="btn btn-primary btn-sm" onClick={handleDownloadMarkdown}>
+                      <Download size={14} /> Descargar {lastMarkdownExport.primaryFile}
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </div>
