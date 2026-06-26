@@ -1,4 +1,5 @@
 import { entitySchema } from "./types.js";
+import { validatePlayerCharacterMetadata } from "./metadata.js";
 export * from "./types.js";
 
 export function createEntity(props: {
@@ -17,6 +18,7 @@ export function createEntity(props: {
   archived?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  campaignSystem?: string;
 }): any {
   if (!props.title || props.title.trim() === "") {
     throw new Error("Entity title is required");
@@ -29,9 +31,12 @@ export function createEntity(props: {
   if (props.entityType === "secret" && (!metadata.truth || metadata.truth.trim() === "")) {
     throw new Error("Secret entity requires metadata.truth");
   }
-  if (props.entityType === "player_character" && !metadata.playerId) {
-    throw new Error("Player Character entity requires metadata.playerId");
+
+  if (props.entityType === "player_character") {
+    validatePlayerCharacterMetadata(metadata, props.campaignSystem);
   }
+
+
   if (props.entityType === "decision") {
     if (metadata.decisionText === undefined) {
       metadata.decisionText = props.content || props.summary || props.title || "";

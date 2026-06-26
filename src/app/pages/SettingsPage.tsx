@@ -1,25 +1,36 @@
 import React from "react";
 import { RotateCcw, Download, Upload, Wifi, WifiOff, Copy, Check } from "lucide-react";
 import type { ToastKind } from "../hooks/useToast.js";
+import { useCampaignStore } from "../stores/campaignStore.js";
+import { useToast } from "../hooks/useToast.js";
 
 export interface SettingsPageProps {
-  campaigns: any[];
-  activeCampaignId: string | null;
-  campaignState: any;
-  vaults: any[];
-  activeVaultId: string | null;
-  createBackup: () => Promise<any>;
-  exportJson: () => Promise<any>;
-  exportMarkdown: () => Promise<any>;
-  addToast: (msg: string, kind?: ToastKind) => void;
-  lanStatus: { lanModeEnabled: boolean; accessCode: string | null; localIp: string; port: number; joinUrl: string } | null;
-  toggleLanMode: (enabled: boolean) => Promise<any>;
+  campaigns?: any[];
+  activeCampaignId?: string | null;
+  campaignState?: any;
+  vaults?: any[];
+  activeVaultId?: string | null;
+  createBackup?: () => Promise<any>;
+  exportJson?: () => Promise<any>;
+  exportMarkdown?: () => Promise<any>;
+  onCampaignDeleted?: () => void | Promise<void>;
+  addToast?: (msg: string, kind?: ToastKind) => void;
+  lanStatus?: { lanModeEnabled: boolean; accessCode: string | null; localIp: string; port: number; joinUrl: string } | null;
+  toggleLanMode?: (enabled: boolean) => Promise<any>;
 }
 
-export function SettingsPage(props: SettingsPageProps) {
-  const { createBackup, exportJson, exportMarkdown, addToast, lanStatus, toggleLanMode } = props;
+export function SettingsPage(props: SettingsPageProps = {}) {
+  const store = useCampaignStore();
+  const { addToast: toastAdd } = useToast();
+  const createBackup = props.createBackup ?? store.createBackup;
+  const exportJson = props.exportJson ?? store.exportJson;
+  const exportMarkdown = props.exportMarkdown ?? store.exportMarkdown;
+  const lanStatus = props.lanStatus !== undefined ? props.lanStatus : store.lanStatus;
+  const toggleLanMode = props.toggleLanMode ?? store.toggleLanMode;
+  const addToast = props.addToast ?? toastAdd;
   const [copiedCode, setCopiedCode] = React.useState(false);
   const [copiedLink, setCopiedLink] = React.useState(false);
+
 
   const handleCopyCode = (code: string) => {
     navigator.clipboard.writeText(code);
@@ -61,20 +72,20 @@ export function SettingsPage(props: SettingsPageProps) {
 
       <div className="grid grid-cols-2">
         <section className="card">
-          <h3 style={{ fontWeight: "700", marginBottom: "20px" }}>Campaign Backups</h3>
+          <h3 style={{ fontWeight: "700", marginBottom: "20px" }}>Copias de seguridad de la campaña</h3>
           <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "16px" }}>
-            Save local JSON snapshots. Snapshot backups contain event history logs and rehydrating metadata.
+            Guarda capturas JSON locales. Estas copias contienen los registros históricos de eventos y metadatos de restauración.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <button className="btn btn-primary" onClick={async () => {
               try {
                 await createBackup();
-                addToast("Backup creado correctamente.", "success");
+                addToast("Copia de seguridad creada correctamente.", "success");
               } catch {
-                addToast("Error al crear el backup.", "error");
+                addToast("Error al crear la copia de seguridad.", "error");
               }
             }}>
-              <RotateCcw size={16} /> Create Fresh Snapshot Backup
+              <RotateCcw size={16} /> Crear copia de seguridad
             </button>
           </div>
         </section>
@@ -82,7 +93,7 @@ export function SettingsPage(props: SettingsPageProps) {
         <section className="card">
           <h3 style={{ fontWeight: "700", marginBottom: "20px" }}>Exportaciones</h3>
           <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "16px" }}>
-            Export campaign logs to structured files on your local filesystem.
+            Exporta los registros de la campaña a archivos estructurados en tu sistema de archivos local.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <button className="btn btn-secondary" onClick={async () => {
@@ -93,7 +104,7 @@ export function SettingsPage(props: SettingsPageProps) {
                 addToast("Error al exportar JSON.", "error");
               }
             }}>
-              <Download size={16} /> Export Campaign to JSON
+              <Download size={16} /> Exportar campaña a JSON
             </button>
 
             <button className="btn btn-secondary" onClick={async () => {
@@ -104,7 +115,7 @@ export function SettingsPage(props: SettingsPageProps) {
                 addToast("Error al exportar Markdown.", "error");
               }
             }}>
-              <Upload size={16} /> Export Campaign to Markdown Vault
+              <Upload size={16} /> Exportar campaña a Bóveda Markdown
             </button>
           </div>
         </section>

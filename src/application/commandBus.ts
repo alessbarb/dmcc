@@ -3,6 +3,7 @@ import type { EntityId, FactId, RelationId, SessionId } from "../shared/ids.js";
 import { createCampaign } from "../domain/campaign/campaign.js";
 import { createEntity } from "../domain/entity/entity.js";
 import type { Entity } from "../domain/entity/entity.js";
+import { validatePlayerCharacterMetadata } from "../domain/entity/metadata.js";
 import { createFact } from "../domain/fact/fact.js";
 import type { Fact } from "../domain/fact/fact.js";
 import { createRelation } from "../domain/relation/relation.js";
@@ -42,6 +43,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         importance: command.importance,
         visibility: command.visibility,
         metadata: command.metadata,
+        campaignSystem: state.campaign?.system,
       });
       const entities = new Map(state.entities);
       entities.set(entity.entityId, entity);
@@ -130,6 +132,9 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...(command.metadata !== undefined && { metadata: command.metadata }),
       };
       if (updated.title.trim().length === 0) throw new Error("Entity title is required");
+      if (updated.entityType === "player_character") {
+        validatePlayerCharacterMetadata(updated.metadata, state.campaign?.system);
+      }
       const entities = new Map(state.entities);
       entities.set(updated.entityId, updated);
       return { state: { ...state, entities }, event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated) };
@@ -364,6 +369,50 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       return {
         state: { ...state, sessionEvents },
         event: makeEvent(command.actorId, command.campaignId, "SessionEventRecorded", eventRecord),
+      };
+    }
+    case "RestoreBackup": {
+      // Restore is handled at the persistence layer (file copy).
+      // This command records the restore event in the event log AFTER
+      // the persistence layer has already swapped the files.
+      return {
+        state,
+        event: makeEvent(command.actorId, command.campaignId, "SettingsUpdated", {
+          restoredFromBackup: command.backupId,
+          restoredAt: new Date().toISOString(),
+        }),
+      };
+    }
+    case "CreateTag": {
+      const tagId = command.tagId ?? createId("tag");
+      const tag = { id: tagId, name: command.name, color: command.color ?? "#6366f1" };
+      const tags = new Map(state.tags ?? []);
+      tags.set(tagId, tag);
+      return {
+        state: { ...state, tags },
+        event: makeEvent(command.actorId, command.campaignId, "TagCreated", tag),
+      };
+    }
+    case "AddTagToEntity": {
+      const entity = requireEntity(state, command.entityId);
+      const tagIds = [...new Set([...(entity.tagIds ?? []), command.tagId])];
+      const updated = { ...entity, tagIds };
+      const entities = new Map(state.entities);
+      entities.set(updated.entityId, updated);
+      return {
+        state: { ...state, entities },
+        event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated),
+      };
+    }
+    case "RemoveTagFromEntity": {
+      const entity = requireEntity(state, command.entityId);
+      const tagIds = (entity.tagIds ?? []).filter((t: string) => t !== command.tagId);
+      const updated = { ...entity, tagIds };
+      const entities = new Map(state.entities);
+      entities.set(updated.entityId, updated);
+      return {
+        state: { ...state, entities },
+        event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated),
       };
     }
   }

@@ -3,104 +3,112 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
-  Outlet
+  Outlet,
 } from "@tanstack/react-router";
 import { App } from "./App.js";
+import { CampaignShell } from "./CampaignShell.js";
+import { DashboardPage } from "./pages/DashboardPage.js";
+import { WhatNowPage } from "./pages/WhatNowPage.js";
+import { SessionPage } from "./pages/SessionPage.js";
+import { EntitiesPage } from "./pages/EntitiesPage.js";
+import { GraphPage } from "./pages/GraphPage.js";
+import { TimelinePage } from "./pages/TimelinePage.js";
+import { BoardsPage } from "./pages/BoardsPage.js";
+import { PlayersPage } from "./pages/PlayersPage.js";
+import { SearchPage } from "./pages/SearchPage.js";
+import { SettingsPage } from "./pages/SettingsPage.js";
 
 // Root route simply renders an Outlet
 const rootRoute = createRootRoute({
-  component: () => <Outlet />
+  component: () => <Outlet />,
 });
 
 // Index route (Landing Page / Campaign selector)
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: () => <App />
+  component: () => <App />,
 });
 
-// Campaign layout & sub-pages
+// Join route
+const joinRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/join/$campaignId",
+  component: () => <App />,
+});
+
+// Campaign shell — parent layout with sidebar
 const campaignRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/campaigns/$campaignId"
+  path: "/campaigns/$campaignId",
+  component: CampaignShell,
 });
 
+// Sub-routes — each renders its own page component
 const dashboardRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/dashboard",
-  component: () => <App />
+  component: DashboardPage,
 });
 
 const whatNowRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/what-now",
-  component: () => <App />
+  component: WhatNowPage,
 });
 
 const sessionRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/session",
-  component: () => <App />
+  component: SessionPage,
 });
 
 const entitiesRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/entities",
-  component: () => <App />
+  component: EntitiesPage,
 });
 
 const graphRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/graph",
-  component: () => <App />
+  component: GraphPage,
 });
 
 const timelineRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/timeline",
-  component: () => <App />
-});
-
-const searchRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/search",
-  component: () => <App />
-});
-
-const playersRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/players",
-  component: () => <App />
+  component: TimelinePage,
 });
 
 const boardsRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/boards",
-  component: () => <App />
+  component: BoardsPage,
+});
+
+const playersRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/players",
+  component: PlayersPage,
+});
+
+const searchRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/search",
+  component: SearchPage,
 });
 
 const settingsRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/settings",
-  component: () => <App />
-});
-
-const playerPortalRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/player-portal",
-  component: () => <App />
-});
-
-// Join route (redirects or opens player-portal join)
-const joinRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/join/$campaignId",
-  component: () => <App />
+  component: SettingsPage,
 });
 
 // Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
+  joinRoute,
   campaignRoute.addChildren([
     dashboardRoute,
     whatNowRoute,
@@ -108,13 +116,11 @@ const routeTree = rootRoute.addChildren([
     entitiesRoute,
     graphRoute,
     timelineRoute,
-    searchRoute,
-    playersRoute,
     boardsRoute,
+    playersRoute,
+    searchRoute,
     settingsRoute,
-    playerPortalRoute
   ]),
-  joinRoute
 ]);
 
 export const router = createRouter({ routeTree });

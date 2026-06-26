@@ -1,56 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 import { Plus, X, User, Pencil, Archive, Eye, EyeOff } from "lucide-react";
 import type { Entity, PlayerProfile } from "../stores/campaignStore.js";
 import type { ToastKind } from "../hooks/useToast.js";
+import { useCampaignStore } from "../stores/campaignStore.js";
+import { useToast } from "../hooks/useToast.js";
+import { EntityDetailModal } from "../components/EntityDetailModal.js";
 
 export interface PlayersPageProps {
-  campaignState: any;
-  campaigns: any[];
-  activeCampaignId: string | null;
-  visibility: any;
-  createPlayer: (name: string, displayName: string, email?: string, imageUrl?: string) => Promise<any>;
-  updatePlayer: (playerId: string, data: any) => Promise<any>;
-  archivePlayer: (playerId: string) => Promise<any>;
-  isPlayerModalOpen: boolean;
-  setIsPlayerModalOpen: (open: boolean) => void;
-  editingPlayerId: string | null;
-  setEditingPlayerId: (id: string | null) => void;
-  playerForm: { name: string; displayName: string; email: string; imageUrl: string };
-  setPlayerForm: (form: { name: string; displayName: string; email: string; imageUrl: string }) => void;
-  setSelectedEntity: (entity: any) => void;
-  addToast: (msg: string, kind?: ToastKind) => void;
+  campaignState?: any;
+  campaigns?: any[];
+  activeCampaignId?: string | null;
+  visibility?: any;
+  createPlayer?: (name: string, displayName: string, email?: string, imageUrl?: string) => Promise<any>;
+  updatePlayer?: (playerId: string, data: any) => Promise<any>;
+  archivePlayer?: (playerId: string) => Promise<any>;
+  isPlayerModalOpen?: boolean;
+  setIsPlayerModalOpen?: (open: boolean) => void;
+  editingPlayerId?: string | null;
+  setEditingPlayerId?: (id: string | null) => void;
+  playerForm?: { name: string; displayName: string; email: string; imageUrl: string };
+  setPlayerForm?: (form: { name: string; displayName: string; email: string; imageUrl: string }) => void;
+  setSelectedEntity?: (entity: any) => void;
+  addToast?: (msg: string, kind?: ToastKind) => void;
 }
 
-export function PlayersPage(props: PlayersPageProps) {
-  const {
-    campaignState,
-    visibility,
-    createPlayer,
-    updatePlayer,
-    archivePlayer,
-    isPlayerModalOpen,
-    setIsPlayerModalOpen,
-    editingPlayerId,
-    setEditingPlayerId,
-    playerForm,
-    setPlayerForm,
-    setSelectedEntity,
-    addToast,
-  } = props;
+export function PlayersPage(props: PlayersPageProps = {}) {
+  const store = useCampaignStore();
+  const { addToast: toastAdd } = useToast();
+  const [isPlayerModalOpenLocal, setIsPlayerModalOpenLocal] = useState(false);
+  const [editingPlayerIdLocal, setEditingPlayerIdLocal] = useState<string | null>(null);
+  const [playerFormLocal, setPlayerFormLocal] = useState({ name: "", displayName: "", email: "", imageUrl: "" });
+  const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
 
-  return (
+  const campaignState = props.campaignState ?? store.campaignState;
+  const visibility = props.visibility ?? store.visibility;
+  const createPlayer = props.createPlayer ?? store.createPlayer;
+  const updatePlayer = props.updatePlayer ?? store.updatePlayer;
+  const archivePlayer = props.archivePlayer ?? store.archivePlayer;
+  const { updateEntity, archiveEntity } = store;
+  const isPlayerModalOpen = props.isPlayerModalOpen ?? isPlayerModalOpenLocal;
+  const setIsPlayerModalOpen = props.setIsPlayerModalOpen ?? setIsPlayerModalOpenLocal;
+  const editingPlayerId = props.editingPlayerId ?? editingPlayerIdLocal;
+  const setEditingPlayerId = props.setEditingPlayerId ?? setEditingPlayerIdLocal;
+  const playerForm = props.playerForm ?? playerFormLocal;
+  const setPlayerForm = props.setPlayerForm ?? setPlayerFormLocal;
+  const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
+  const addToast = props.addToast ?? toastAdd;
+
+  return (<>
     <div>
+      <h2 style={{ fontWeight: "700", marginBottom: "16px" }}>Jugadores y personajes</h2>
       <div className="top-bar" style={{ marginBottom: "24px" }}>
-        <h2 style={{ fontWeight: "700", fontSize: "1.4rem" }}>Jugadores y personajes</h2>
         <button className="btn btn-primary btn-sm" onClick={() => setIsPlayerModalOpen(true)}>
-          <Plus size={14} /> Add Player
+          <Plus size={14} /> Añadir jugador
         </button>
       </div>
 
       {(campaignState?.players ?? []).length === 0 ? (
         <div className="card" style={{ textAlign: "center", padding: "40px", color: "var(--text-muted)" }}>
           <User size={48} style={{ opacity: 0.3, marginBottom: "16px" }} />
-          <p>No players yet. Add players to track who is at the table and link their characters.</p>
+          <p>No hay jugadores registrados. Añade jugadores para llevar el control de quién está en la mesa y vincular sus personajes.</p>
         </div>
       ) : (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "16px" }}>
@@ -63,11 +72,27 @@ export function PlayersPage(props: PlayersPageProps) {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px" }}>
                   <div style={{ display: "flex", gap: "12px", alignItems: "center", minWidth: 0, flex: 1 }}>
                     {player.imageUrl ? (
-                      <div style={{ width: "46px", height: "46px", borderRadius: "50%", overflow: "hidden", border: "2px solid var(--border-color)", flexShrink: 0 }}>
+                      <div style={{
+                        width: "46px",
+                        height: "46px",
+                        borderRadius: "8px",
+                        overflow: "hidden",
+                        border: "2px double hsl(38, 60%, 55%)",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.4)",
+                        flexShrink: 0
+                      }}>
                         <img src={player.imageUrl} alt={player.displayName ?? player.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </div>
                     ) : (
-                      <div style={{ width: "46px", height: "46px", borderRadius: "50%", overflow: "hidden", border: "2px solid var(--border-color)", flexShrink: 0 }}>
+                      <div style={{
+                        width: "46px",
+                        height: "46px",
+                        borderRadius: "8px",
+                        overflow: "hidden",
+                        border: "2px double hsl(38, 60%, 55%)",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.4)",
+                        flexShrink: 0
+                      }}>
                         <img src="/assets/default_player.png" alt={player.displayName ?? player.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </div>
                     )}
@@ -112,9 +137,9 @@ export function PlayersPage(props: PlayersPageProps) {
                 </div>
 
                 <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px" }}>
-                  <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "8px", fontWeight: "600" }}>Characters</p>
+                  <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "8px", fontWeight: "600" }}>Personajes</p>
                   {characters.length === 0 ? (
-                    <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic" }}>No characters. Create a player_character entity to link one.</p>
+                    <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic" }}>Sin personajes vinculados. Crea una entidad de personaje jugador para asociar uno.</p>
                   ) : (
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                       {characters.map((c: Entity) => (
@@ -174,23 +199,30 @@ export function PlayersPage(props: PlayersPageProps) {
             }}>
               <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">Name (real name) *</label>
-                  <input className="form-input" value={playerForm.name} onChange={e => setPlayerForm({ ...playerForm, name: e.target.value })} placeholder="e.g. Alice" required />
+                  <label className="form-label">Nombre (nombre real) *</label>
+                  <input className="form-input" value={playerForm.name} onChange={e => setPlayerForm({ ...playerForm, name: e.target.value })} placeholder="Ej. Alicia" required />
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">Display Name</label>
+                  <label className="form-label">Nombre para mostrar (apodo)</label>
                   <input className="form-input" value={playerForm.displayName} onChange={e => setPlayerForm({ ...playerForm, displayName: e.target.value })} placeholder="Apodo o alias mostrado en la app" />
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">Email (optional)</label>
-                  <input className="form-input" type="email" value={playerForm.email} onChange={e => setPlayerForm({ ...playerForm, email: e.target.value })} placeholder="alice@example.com" />
+                  <label className="form-label">Correo electrónico (opcional)</label>
+                  <input className="form-input" type="email" value={playerForm.email} onChange={e => setPlayerForm({ ...playerForm, email: e.target.value })} placeholder="alicia@example.com" />
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label className="form-label">URL de la Imagen (Foto / Avatar)</label>
                   <input className="form-input" value={playerForm.imageUrl} onChange={e => setPlayerForm({ ...playerForm, imageUrl: e.target.value })} placeholder="https://example.com/avatar.png" />
                   {playerForm.imageUrl && (
                     <div style={{ marginTop: "10px", display: "flex", justifyContent: "center" }}>
-                      <div style={{ width: "80px", height: "80px", borderRadius: "50%", overflow: "hidden", border: "2px solid var(--border-color)" }}>
+                      <div style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "20px",
+                        overflow: "hidden",
+                        border: "2px double hsl(38, 60%, 55%)",
+                        boxShadow: "0 3px 6px rgba(0,0,0,0.4)"
+                      }}>
                         <img src={playerForm.imageUrl} alt="Vista previa del avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </div>
                     </div>
@@ -210,15 +242,15 @@ export function PlayersPage(props: PlayersPageProps) {
       {visibility && (
         <div style={{ marginTop: "32px" }}>
           <h3 style={{ fontWeight: "700", fontSize: "1.1rem", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
-            <Eye size={18} style={{ color: "var(--primary)" }} /> Party Knowledge
+            <Eye size={18} style={{ color: "var(--primary)" }} /> Conocimiento del grupo
             <span style={{ fontSize: "0.8rem", fontWeight: "400", color: "var(--text-muted)" }}>
-              — {visibility.summary?.partyKnowsCount ?? 0} of {visibility.summary?.total ?? 0} entities revealed to party
+              — {visibility.summary?.partyKnowsCount ?? 0} de {visibility.summary?.total ?? 0} entidades reveladas al grupo
             </span>
           </h3>
           {(visibility.partyKnows ?? []).length === 0 ? (
             <div className="card" style={{ padding: "20px", color: "var(--text-muted)", textAlign: "center" }}>
               <EyeOff size={32} style={{ opacity: 0.3, marginBottom: "12px" }} />
-              <p>Nada revelado al grupo todavía. Usa "Revelar al grupo" en los detalles de la entidad or clue reveal in sessions.</p>
+              <p>Nada revelado al grupo todavía. Usa "Revelar al grupo" en los detalles de una entidad o revela pistas durante las sesiones.</p>
             </div>
           ) : (
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
@@ -250,5 +282,25 @@ export function PlayersPage(props: PlayersPageProps) {
         </div>
       )}
     </div>
-  );
+    {selectedEntityLocal && campaignState && (
+      <EntityDetailModal
+        selectedEntity={selectedEntityLocal}
+        campaignState={campaignState}
+        onClose={() => setSelectedEntityLocal(null)}
+        onEdit={async (entityId, updates) => {
+          await updateEntity(entityId, updates);
+          setSelectedEntityLocal({ ...selectedEntityLocal, ...updates });
+        }}
+        onArchive={async (entityId) => {
+          await archiveEntity(entityId);
+          setSelectedEntityLocal(null);
+        }}
+        onVisibilityChange={async (entityId, visibility) => {
+          await updateEntity(entityId, { visibility });
+          setSelectedEntityLocal({ ...selectedEntityLocal, visibility });
+        }}
+        addToast={addToast}
+      />
+    )}
+  </>);
 }

@@ -4,6 +4,10 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { createServer } from "../../src/server/createServer.js";
 
+function getDmToken(server: any): string {
+  return (server as any).dmSessionToken;
+}
+
 async function withTempDataDir<T>(fn: (dataDir: string) => Promise<T>): Promise<T> {
   const dataDir = await mkdtemp(join(tmpdir(), "dmcc-api-"));
   try {
@@ -39,10 +43,34 @@ describe("createServer", () => {
         method: "POST",
         url: "/api/campaigns",
         payload: { campaignId: "cmp_api", actorId: "usr_dm", title: "API Campaign" },
+        headers: { "x-dm-token": getDmToken(server) },
       });
 
       expect(response.statusCode).toBe(201);
       expect(response.json()).toMatchObject({ campaignId: "cmp_api", title: "API Campaign" });
+    });
+  });
+
+  it("lists persisted campaigns from snapshots", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      await server.inject({
+        method: "POST",
+        url: "/api/campaigns",
+        payload: { campaignId: "cmp_list", actorId: "usr_dm", title: "Listed Campaign" },
+        headers: { "x-dm-token": getDmToken(server) },
+      });
+
+      const response = await server.inject({
+        method: "GET",
+        url: "/api/campaigns",
+        headers: { "x-dm-token": getDmToken(server) },
+      });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.json()).toEqual([
+        expect.objectContaining({ campaignId: "cmp_list", title: "Listed Campaign", archived: false }),
+      ]);
     });
   });
 
@@ -53,12 +81,14 @@ describe("createServer", () => {
         method: "POST",
         url: "/api/campaigns",
         payload: { campaignId: "cmp_api", actorId: "usr_dm", title: "API Campaign" },
+        headers: { "x-dm-token": getDmToken(server) },
       });
 
       const response = await server.inject({
         method: "POST",
         url: "/api/campaigns/cmp_api/entities",
         payload: { actorId: "usr_dm", entityId: "ent_api", entityType: "npc", title: "Mira" },
+        headers: { "x-dm-token": getDmToken(server) },
       });
 
       expect(response.statusCode).toBe(201);
@@ -71,8 +101,8 @@ describe("persistent campaign API", () => {
   it("flushes campaign and entity commands to the campaign event log before success", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_disk", actorId: "usr_dm", title: "Disk Campaign" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_disk/entities", payload: { actorId: "usr_dm", entityId: "ent_disk", entityType: "npc", title: "Mira" } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_disk", actorId: "usr_dm", title: "Disk Campaign" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_disk/entities", payload: { actorId: "usr_dm", entityId: "ent_disk", entityType: "npc", title: "Mira" }, headers: { "x-dm-token": getDmToken(server) } });
 
       const events = await readCampaignEvents(dataDir, "cmp_disk");
 
@@ -84,15 +114,15 @@ describe("persistent campaign API", () => {
   it("creates relation, fact, session, close-session, and reveal-clue events through API routes", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_api2", actorId: "usr_dm", title: "API Campaign" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/entities", payload: { actorId: "usr_dm", entityId: "ent_a", entityType: "npc", title: "A" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/entities", payload: { actorId: "usr_dm", entityId: "ent_clue", entityType: "clue", title: "Sigil", metadata: { content: "Sigil content" } } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_api2", actorId: "usr_dm", title: "API Campaign" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/entities", payload: { actorId: "usr_dm", entityId: "ent_a", entityType: "npc", title: "A" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/entities", payload: { actorId: "usr_dm", entityId: "ent_clue", entityType: "clue", title: "Sigil", metadata: { content: "Sigil content" } }, headers: { "x-dm-token": getDmToken(server) } });
 
-      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/relations", payload: { actorId: "usr_dm", relationId: "rel_one", sourceEntityId: "ent_a", targetEntityId: "ent_clue", relationType: "points_to" } })).statusCode).toBe(201);
-      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/facts", payload: { actorId: "usr_dm", factId: "fact_one", statement: "The sigil is old.", kind: "canon", confidence: "confirmed", relatedEntityIds: ["ent_clue"], source: { kind: "manual" } } })).statusCode).toBe(201);
-      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/sessions", payload: { actorId: "usr_dm", sessionId: "sess_one", title: "Session 1" } })).statusCode).toBe(201);
-      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/sessions/sess_one/reveal-clue", payload: { actorId: "usr_dm", clueEntityId: "ent_clue", audience: { kind: "party" }, note: "Found in cellar" } })).statusCode).toBe(200);
-      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/sessions/sess_one/close", payload: { actorId: "usr_dm", summary: "Session closed." } })).statusCode).toBe(200);
+      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/relations", payload: { actorId: "usr_dm", relationId: "rel_one", sourceEntityId: "ent_a", targetEntityId: "ent_clue", relationType: "points_to" }, headers: { "x-dm-token": getDmToken(server) } })).statusCode).toBe(201);
+      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/facts", payload: { actorId: "usr_dm", factId: "fact_one", statement: "The sigil is old.", kind: "canon", confidence: "confirmed", relatedEntityIds: ["ent_clue"], source: { kind: "manual" } }, headers: { "x-dm-token": getDmToken(server) } })).statusCode).toBe(201);
+      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/sessions", payload: { actorId: "usr_dm", sessionId: "sess_one", title: "Session 1" }, headers: { "x-dm-token": getDmToken(server) } })).statusCode).toBe(201);
+      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/sessions/sess_one/reveal-clue", payload: { actorId: "usr_dm", clueEntityId: "ent_clue", audience: { kind: "party" }, note: "Found in cellar" }, headers: { "x-dm-token": getDmToken(server) } })).statusCode).toBe(200);
+      expect((await server.inject({ method: "POST", url: "/api/campaigns/cmp_api2/sessions/sess_one/close", payload: { actorId: "usr_dm", summary: "Session closed." }, headers: { "x-dm-token": getDmToken(server) } })).statusCode).toBe(200);
 
       const events = await readCampaignEvents(dataDir, "cmp_api2");
       expect(events.map((event) => event.type)).toEqual([
@@ -108,12 +138,45 @@ describe("persistent campaign API", () => {
     });
   });
 
+  it("deletes campaigns only after exact title confirmation", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_delete", actorId: "usr_dm", title: "Delete Me" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_delete/entities", payload: { actorId: "usr_dm", entityId: "ent_delete", entityType: "npc", title: "Mira" }, headers: { "x-dm-token": getDmToken(server) } });
+
+      const campaignDir = join(dataDir, "vaults", "default", "campaigns", "cmp_delete");
+      expect((await stat(campaignDir)).isDirectory()).toBe(true);
+
+      const rejected = await server.inject({
+        method: "DELETE",
+        url: "/api/campaigns/cmp_delete",
+        payload: { confirmTitle: "Wrong title" },
+        headers: { "x-dm-token": getDmToken(server) },
+      });
+      expect(rejected.statusCode).toBe(400);
+      expect((await stat(campaignDir)).isDirectory()).toBe(true);
+
+      const removed = await server.inject({
+        method: "DELETE",
+        url: "/api/campaigns/cmp_delete",
+        payload: { confirmTitle: "Delete Me" },
+        headers: { "x-dm-token": getDmToken(server) },
+      });
+      expect(removed.statusCode).toBe(200);
+      expect(removed.json()).toMatchObject({ ok: true, campaignId: "cmp_delete" });
+      await expect(stat(campaignDir)).rejects.toMatchObject({ code: "ENOENT" });
+
+      const list = await server.inject({ method: "GET", url: "/api/campaigns", headers: { "x-dm-token": getDmToken(server) } });
+      expect(list.json().map((campaign: { campaignId: string }) => campaign.campaignId)).not.toContain("cmp_delete");
+    });
+  });
+
 
   it("updates snapshot.json from persisted API command events", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_snapshot_api", actorId: "usr_dm", title: "Snapshot Campaign" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_snapshot_api/entities", payload: { actorId: "usr_dm", entityId: "ent_snapshot_api", entityType: "npc", title: "Mira Snapshot" } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_snapshot_api", actorId: "usr_dm", title: "Snapshot Campaign" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_snapshot_api/entities", payload: { actorId: "usr_dm", entityId: "ent_snapshot_api", entityType: "npc", title: "Mira Snapshot" }, headers: { "x-dm-token": getDmToken(server) } });
 
       const snapshot = await readCampaignSnapshot(dataDir, "cmp_snapshot_api");
 
@@ -129,14 +192,15 @@ describe("persistent campaign API", () => {
   it("persists commands against a campaign reopened from disk", async () => {
     await withTempDataDir(async (dataDir) => {
       const firstServer = createServer({ dataDir });
-      await firstServer.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_reopen_write", actorId: "usr_dm", title: "Reopen Write" } });
+      await firstServer.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_reopen_write", actorId: "usr_dm", title: "Reopen Write" }, headers: { "x-dm-token": getDmToken(firstServer) } });
 
       const secondServer = createServer({ dataDir });
-      await secondServer.inject({ method: "GET", url: "/api/campaigns/cmp_reopen_write" });
+      await secondServer.inject({ method: "GET", url: "/api/campaigns/cmp_reopen_write", headers: { "x-dm-token": getDmToken(secondServer) } });
       const response = await secondServer.inject({
         method: "POST",
         url: "/api/campaigns/cmp_reopen_write/entities",
         payload: { actorId: "usr_dm", entityId: "ent_after_reopen", entityType: "npc", title: "After Reopen" },
+        headers: { "x-dm-token": getDmToken(secondServer) },
       });
 
       const snapshot = await readCampaignSnapshot(dataDir, "cmp_reopen_write");
@@ -149,11 +213,11 @@ describe("persistent campaign API", () => {
   it("reopens campaign state from persisted events in a fresh server", async () => {
     await withTempDataDir(async (dataDir) => {
       const firstServer = createServer({ dataDir });
-      await firstServer.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_reload", actorId: "usr_dm", title: "Reloadable" } });
-      await firstServer.inject({ method: "POST", url: "/api/campaigns/cmp_reload/entities", payload: { actorId: "usr_dm", entityId: "ent_reload", entityType: "npc", title: "Persisted NPC" } });
+      await firstServer.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_reload", actorId: "usr_dm", title: "Reloadable" }, headers: { "x-dm-token": getDmToken(firstServer) } });
+      await firstServer.inject({ method: "POST", url: "/api/campaigns/cmp_reload/entities", payload: { actorId: "usr_dm", entityId: "ent_reload", entityType: "npc", title: "Persisted NPC" }, headers: { "x-dm-token": getDmToken(firstServer) } });
 
       const secondServer = createServer({ dataDir });
-      const response = await secondServer.inject({ method: "GET", url: "/api/campaigns/cmp_reload" });
+      const response = await secondServer.inject({ method: "GET", url: "/api/campaigns/cmp_reload", headers: { "x-dm-token": getDmToken(secondServer) } });
 
       expect(response.statusCode).toBe(200);
       expect(response.json()).toMatchObject({ campaign: { title: "Reloadable" }, entities: [{ entityId: "ent_reload", title: "Persisted NPC" }] });
@@ -165,11 +229,11 @@ describe("persistent campaign API", () => {
   it("writes complete JSON exports and local backup artifacts", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_export", actorId: "usr_dm", title: "Export Campaign" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_export/entities", payload: { actorId: "usr_dm", entityId: "ent_export", entityType: "npc", title: "Exported NPC" } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_export", actorId: "usr_dm", title: "Export Campaign" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_export/entities", payload: { actorId: "usr_dm", entityId: "ent_export", entityType: "npc", title: "Exported NPC" }, headers: { "x-dm-token": getDmToken(server) } });
 
-      const exportResponse = await server.inject({ method: "POST", url: "/api/campaigns/cmp_export/export/json" });
-      const backupResponse = await server.inject({ method: "POST", url: "/api/campaigns/cmp_export/backups" });
+      const exportResponse = await server.inject({ method: "POST", url: "/api/campaigns/cmp_export/export/json", headers: { "x-dm-token": getDmToken(server) } });
+      const backupResponse = await server.inject({ method: "POST", url: "/api/campaigns/cmp_export/backups", headers: { "x-dm-token": getDmToken(server) } });
 
       expect(exportResponse.statusCode).toBe(201);
       expect(exportResponse.json()).toMatchObject({ campaignId: "cmp_export", format: "json" });
@@ -196,11 +260,11 @@ describe("persistent campaign API", () => {
   it("writes navigable Markdown export artifacts", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_markdown", actorId: "usr_dm", title: "Markdown Campaign" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_markdown/entities", payload: { actorId: "usr_dm", entityId: "ent_markdown_npc", entityType: "npc", title: "Mira Markdown", summary: "A careful ally." } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_markdown/entities", payload: { actorId: "usr_dm", entityId: "ent_markdown_quest", entityType: "quest", title: "Find the Gate", status: "active" } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_markdown", actorId: "usr_dm", title: "Markdown Campaign" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_markdown/entities", payload: { actorId: "usr_dm", entityId: "ent_markdown_npc", entityType: "npc", title: "Mira Markdown", summary: "A careful ally." }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_markdown/entities", payload: { actorId: "usr_dm", entityId: "ent_markdown_quest", entityType: "quest", title: "Find the Gate", status: "active" }, headers: { "x-dm-token": getDmToken(server) } });
 
-      const response = await server.inject({ method: "POST", url: "/api/campaigns/cmp_markdown/export/markdown" });
+      const response = await server.inject({ method: "POST", url: "/api/campaigns/cmp_markdown/export/markdown", headers: { "x-dm-token": getDmToken(server) } });
 
       expect(response.statusCode).toBe(201);
       expect(response.json()).toMatchObject({ campaignId: "cmp_markdown", format: "markdown" });
@@ -217,20 +281,20 @@ describe("persistent campaign API", () => {
   it("restores campaign state from a local backup artifact", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_restore", actorId: "usr_dm", title: "Restore Campaign" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_restore/entities", payload: { actorId: "usr_dm", entityId: "ent_before_backup", entityType: "npc", title: "Before Backup" } });
-      const backupId = (await server.inject({ method: "POST", url: "/api/campaigns/cmp_restore/backups" })).json().backupId;
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_restore/entities", payload: { actorId: "usr_dm", entityId: "ent_after_backup", entityType: "npc", title: "After Backup" } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_restore", actorId: "usr_dm", title: "Restore Campaign" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_restore/entities", payload: { actorId: "usr_dm", entityId: "ent_before_backup", entityType: "npc", title: "Before Backup" }, headers: { "x-dm-token": getDmToken(server) } });
+      const backupId = (await server.inject({ method: "POST", url: "/api/campaigns/cmp_restore/backups", headers: { "x-dm-token": getDmToken(server) } })).json().backupId;
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_restore/entities", payload: { actorId: "usr_dm", entityId: "ent_after_backup", entityType: "npc", title: "After Backup" }, headers: { "x-dm-token": getDmToken(server) } });
 
-      const restoreResponse = await server.inject({ method: "POST", url: "/api/campaigns/cmp_restore/restore", payload: { backupId } });
-      const campaign = await server.inject({ method: "GET", url: "/api/campaigns/cmp_restore" });
+      const restoreResponse = await server.inject({ method: "POST", url: "/api/campaigns/cmp_restore/restore", payload: { backupId }, headers: { "x-dm-token": getDmToken(server) } });
+      const campaign = await server.inject({ method: "GET", url: "/api/campaigns/cmp_restore", headers: { "x-dm-token": getDmToken(server) } });
       const events = await readCampaignEvents(dataDir, "cmp_restore");
       const snapshot = await readCampaignSnapshot(dataDir, "cmp_restore");
 
       expect(restoreResponse.statusCode).toBe(200);
       expect(campaign.json().entities).toMatchObject([{ entityId: "ent_before_backup", title: "Before Backup" }]);
       expect(campaign.json().entities.map((entity: { entityId: string }) => entity.entityId)).not.toContain("ent_after_backup");
-      expect(events.map((event) => event.type)).toEqual(["CampaignCreated", "EntityCreated"]);
+      expect(events.map((event) => event.type)).toEqual(["CampaignCreated", "EntityCreated", "SettingsUpdated"]);
       expect(snapshot.entities).toMatchObject([{ entityId: "ent_before_backup", title: "Before Backup" }]);
     });
   });
@@ -238,15 +302,15 @@ describe("persistent campaign API", () => {
   it("serves dashboard and what-now projections from deterministic campaign state", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_orientation", actorId: "usr_dm", title: "Orientation Campaign" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_quest", entityType: "quest", title: "Find the Well", status: "active", importance: "high" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_clue", entityType: "clue", title: "Old Sigil", status: "pending", importance: "critical", metadata: { content: "Old Sigil content" } } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_secret", entityType: "secret", title: "Mira is cursed", status: "hidden", importance: "critical", metadata: { truth: "Mira is cursed truth" } } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_consequence", entityType: "consequence", title: "Mayor retaliates", status: "pending", importance: "high" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_next", entityType: "scene", title: "Return to the cellar", status: "next", importance: "normal" } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_orientation", actorId: "usr_dm", title: "Orientation Campaign" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_quest", entityType: "quest", title: "Find the Well", status: "active", importance: "high" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_clue", entityType: "clue", title: "Old Sigil", status: "pending", importance: "critical", metadata: { content: "Old Sigil content" } }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_secret", entityType: "secret", title: "Mira is cursed", status: "hidden", importance: "critical", metadata: { truth: "Mira is cursed truth" } }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_consequence", entityType: "consequence", title: "Mayor retaliates", status: "pending", importance: "high" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_orientation/entities", payload: { actorId: "usr_dm", entityId: "ent_next", entityType: "scene", title: "Return to the cellar", status: "next", importance: "normal" }, headers: { "x-dm-token": getDmToken(server) } });
 
-      const dashboard = await server.inject({ method: "GET", url: "/api/campaigns/cmp_orientation/dashboard" });
-      const whatNow = await server.inject({ method: "GET", url: "/api/campaigns/cmp_orientation/what-now" });
+      const dashboard = await server.inject({ method: "GET", url: "/api/campaigns/cmp_orientation/dashboard", headers: { "x-dm-token": getDmToken(server) } });
+      const whatNow = await server.inject({ method: "GET", url: "/api/campaigns/cmp_orientation/what-now", headers: { "x-dm-token": getDmToken(server) } });
 
       expect(dashboard.statusCode).toBe(200);
       expect(dashboard.json()).toMatchObject({
@@ -269,15 +333,15 @@ describe("persistent campaign API", () => {
   it("serves graph, timeline, visibility, and search projections from campaign state", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_proj", actorId: "usr_dm", title: "Projection Campaign" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_proj/entities", payload: { actorId: "usr_dm", entityId: "ent_npc", entityType: "npc", title: "Mira" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_proj/entities", payload: { actorId: "usr_dm", entityId: "ent_clue", entityType: "clue", title: "Sigil", metadata: { content: "Sigil content" } } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_proj/relations", payload: { actorId: "usr_dm", relationId: "rel_proj", sourceEntityId: "ent_npc", targetEntityId: "ent_clue", relationType: "points_to" } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_proj", actorId: "usr_dm", title: "Projection Campaign" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_proj/entities", payload: { actorId: "usr_dm", entityId: "ent_npc", entityType: "npc", title: "Mira" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_proj/entities", payload: { actorId: "usr_dm", entityId: "ent_clue", entityType: "clue", title: "Sigil", metadata: { content: "Sigil content" } }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_proj/relations", payload: { actorId: "usr_dm", relationId: "rel_proj", sourceEntityId: "ent_npc", targetEntityId: "ent_clue", relationType: "points_to" }, headers: { "x-dm-token": getDmToken(server) } });
 
-      const graph = await server.inject({ method: "GET", url: "/api/campaigns/cmp_proj/graph" });
-      const timeline = await server.inject({ method: "GET", url: "/api/campaigns/cmp_proj/timeline" });
-      const visibility = await server.inject({ method: "GET", url: "/api/campaigns/cmp_proj/visibility" });
-      const search = await server.inject({ method: "GET", url: "/api/campaigns/cmp_proj/search?q=sigil" });
+      const graph = await server.inject({ method: "GET", url: "/api/campaigns/cmp_proj/graph", headers: { "x-dm-token": getDmToken(server) } });
+      const timeline = await server.inject({ method: "GET", url: "/api/campaigns/cmp_proj/timeline", headers: { "x-dm-token": getDmToken(server) } });
+      const visibility = await server.inject({ method: "GET", url: "/api/campaigns/cmp_proj/visibility", headers: { "x-dm-token": getDmToken(server) } });
+      const search = await server.inject({ method: "GET", url: "/api/campaigns/cmp_proj/search?q=sigil", headers: { "x-dm-token": getDmToken(server) } });
 
       expect(graph.json()).toMatchObject({ nodes: [{ id: "ent_npc" }, { id: "ent_clue" }], edges: [{ id: "rel_proj", source: "ent_npc", target: "ent_clue" }] });
       expect(timeline.json().events.map((event: { type: string }) => event.type)).toContain("RelationCreated");
@@ -290,18 +354,18 @@ describe("persistent campaign API", () => {
   it("rejects duplicate relations with 409 and allows bypass with ?force=true", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_dup", actorId: "usr_dm", title: "Dup Test" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/entities", payload: { actorId: "usr_dm", entityId: "ent_a", entityType: "npc", title: "A" } });
-      await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/entities", payload: { actorId: "usr_dm", entityId: "ent_b", entityType: "npc", title: "B" } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_dup", actorId: "usr_dm", title: "Dup Test" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/entities", payload: { actorId: "usr_dm", entityId: "ent_a", entityType: "npc", title: "A" }, headers: { "x-dm-token": getDmToken(server) } });
+      await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/entities", payload: { actorId: "usr_dm", entityId: "ent_b", entityType: "npc", title: "B" }, headers: { "x-dm-token": getDmToken(server) } });
       // First relation succeeds
-      const first = await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/relations", payload: { actorId: "usr_dm", relationId: "rel_1", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "ally_of" } });
+      const first = await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/relations", payload: { actorId: "usr_dm", relationId: "rel_1", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "ally_of" }, headers: { "x-dm-token": getDmToken(server) } });
       expect(first.statusCode).toBe(201);
       // Second identical relation → 409
-      const dup = await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/relations", payload: { actorId: "usr_dm", relationId: "rel_2", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "ally_of" } });
+      const dup = await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/relations", payload: { actorId: "usr_dm", relationId: "rel_2", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "ally_of" }, headers: { "x-dm-token": getDmToken(server) } });
       expect(dup.statusCode).toBe(409);
       expect(dup.json().duplicate).toBe(true);
       // With ?force=true → 201
-      const forced = await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/relations?force=true", payload: { actorId: "usr_dm", relationId: "rel_3", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "ally_of" } });
+      const forced = await server.inject({ method: "POST", url: "/api/campaigns/cmp_dup/relations?force=true", payload: { actorId: "usr_dm", relationId: "rel_3", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "ally_of" }, headers: { "x-dm-token": getDmToken(server) } });
       expect(forced.statusCode).toBe(201);
     });
   });
@@ -309,22 +373,22 @@ describe("persistent campaign API", () => {
   it("creates, updates, and archives player profiles", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_ply", actorId: "usr_dm", title: "Player Test" } });
+      await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_ply", actorId: "usr_dm", title: "Player Test" }, headers: { "x-dm-token": getDmToken(server) } });
 
-      const create = await server.inject({ method: "POST", url: "/api/campaigns/cmp_ply/players", payload: { actorId: "usr_dm", playerId: "ply_1", name: "Alice", displayName: "Alice the Bold", email: null } });
+      const create = await server.inject({ method: "POST", url: "/api/campaigns/cmp_ply/players", payload: { actorId: "usr_dm", playerId: "ply_1", name: "Alice", displayName: "Alice the Bold", email: null }, headers: { "x-dm-token": getDmToken(server) } });
       expect(create.statusCode).toBe(201);
 
-      const list = await server.inject({ method: "GET", url: "/api/campaigns/cmp_ply/players" });
+      const list = await server.inject({ method: "GET", url: "/api/campaigns/cmp_ply/players", headers: { "x-dm-token": getDmToken(server) } });
       expect(list.json()).toHaveLength(1);
       expect(list.json()[0].displayName).toBe("Alice the Bold");
 
-      const update = await server.inject({ method: "PATCH", url: "/api/campaigns/cmp_ply/players/ply_1", payload: { actorId: "usr_dm", displayName: "Alice the Brave" } });
+      const update = await server.inject({ method: "PATCH", url: "/api/campaigns/cmp_ply/players/ply_1", payload: { actorId: "usr_dm", displayName: "Alice the Brave" }, headers: { "x-dm-token": getDmToken(server) } });
       expect(update.statusCode).toBe(200);
 
-      const archive = await server.inject({ method: "DELETE", url: "/api/campaigns/cmp_ply/players/ply_1", payload: { actorId: "usr_dm" } });
+      const archive = await server.inject({ method: "DELETE", url: "/api/campaigns/cmp_ply/players/ply_1", payload: { actorId: "usr_dm" }, headers: { "x-dm-token": getDmToken(server) } });
       expect(archive.statusCode).toBe(200);
 
-      const afterArchive = await server.inject({ method: "GET", url: "/api/campaigns/cmp_ply/players" });
+      const afterArchive = await server.inject({ method: "GET", url: "/api/campaigns/cmp_ply/players", headers: { "x-dm-token": getDmToken(server) } });
       expect(afterArchive.json()).toHaveLength(0);
     });
   });
@@ -333,7 +397,7 @@ describe("persistent campaign API", () => {
     it("rejects player access to DM-only endpoints", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_sec", actorId: "usr_dm", title: "Security Test" } });
+        await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_sec", actorId: "usr_dm", title: "Security Test" }, headers: { "x-dm-token": getDmToken(server) } });
 
         // Player tries to access dashboard
         const dashboard = await server.inject({
@@ -359,7 +423,8 @@ describe("persistent campaign API", () => {
         await server.inject({
           method: "POST",
           url: "/api/campaigns",
-          payload: { campaignId: "cmp_lan", actorId: "usr_dm", title: "LAN Test" }
+          payload: { campaignId: "cmp_lan", actorId: "usr_dm", title: "LAN Test" },
+          headers: { "x-dm-token": getDmToken(server) },
         });
 
         // Query status as player
@@ -374,7 +439,7 @@ describe("persistent campaign API", () => {
         const toggle = await server.inject({
           method: "POST",
           url: "/api/campaigns/cmp_lan/lan/toggle",
-          headers: { "x-role": "dm" },
+          headers: { "x-dm-token": getDmToken(server) },
           payload: { enabled: true },
         });
         expect(toggle.statusCode).toBe(200);
@@ -393,7 +458,7 @@ describe("persistent campaign API", () => {
         const resDM = await server.inject({
           method: "GET",
           url: "/api/campaigns/cmp_lan/lan-status",
-          headers: { "x-role": "dm" } // defaults to dm in test env
+          headers: { "x-dm-token": getDmToken(server) },
         });
         expect(resDM.statusCode).toBe(200);
         expect(resDM.json().accessCode).toBe(generatedCode);
@@ -407,13 +472,14 @@ describe("persistent campaign API", () => {
         const badVault = await server.inject({
           method: "GET",
           url: "/api/campaigns",
-          headers: { "x-vault-id": "../bad_vault" }
+          headers: { "x-vault-id": "../bad_vault", "x-dm-token": getDmToken(server) }
         });
         expect(badVault.statusCode).toBe(400);
 
         const badCmp = await server.inject({
           method: "GET",
-          url: "/api/campaigns/cmp_bad$/dashboard"
+          url: "/api/campaigns/cmp_bad$/dashboard",
+          headers: { "x-dm-token": getDmToken(server) },
         });
         expect(badCmp.statusCode).toBe(400);
       });
@@ -423,11 +489,11 @@ describe("persistent campaign API", () => {
       await withTempDataDir(async (dataDir) => {
         const { copyFile, mkdir } = await import("node:fs/promises");
         const server = createServer({ dataDir });
-        await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_a", actorId: "usr_dm", title: "Campaign A" } });
-        await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_b", actorId: "usr_dm", title: "Campaign B" } });
+        await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_a", actorId: "usr_dm", title: "Campaign A" }, headers: { "x-dm-token": getDmToken(server) } });
+        await server.inject({ method: "POST", url: "/api/campaigns", payload: { campaignId: "cmp_b", actorId: "usr_dm", title: "Campaign B" }, headers: { "x-dm-token": getDmToken(server) } });
 
         // Create backup of A
-        const backupRes = await server.inject({ method: "POST", url: "/api/campaigns/cmp_a/backups" });
+        const backupRes = await server.inject({ method: "POST", url: "/api/campaigns/cmp_a/backups", headers: { "x-dm-token": getDmToken(server) } });
         expect(backupRes.statusCode).toBe(201);
         const backupId = backupRes.json().backupId;
 
@@ -442,7 +508,8 @@ describe("persistent campaign API", () => {
         const restoreBad = await server.inject({
           method: "POST",
           url: "/api/campaigns/cmp_b/restore",
-          payload: { backupId }
+          payload: { backupId },
+          headers: { "x-dm-token": getDmToken(server) },
         });
         expect(restoreBad.statusCode).toBe(400);
         expect(restoreBad.json().error).toContain("Backup does not belong to this campaign");
@@ -451,12 +518,13 @@ describe("persistent campaign API", () => {
         const restoreOk = await server.inject({
           method: "POST",
           url: "/api/campaigns/cmp_a/restore",
-          payload: { backupId }
+          payload: { backupId },
+          headers: { "x-dm-token": getDmToken(server) },
         });
         expect(restoreOk.statusCode).toBe(200);
 
         // Check if a pre-restore backup was generated
-        const backupsList = await server.inject({ method: "GET", url: "/api/campaigns/cmp_a/backups" });
+        const backupsList = await server.inject({ method: "GET", url: "/api/campaigns/cmp_a/backups", headers: { "x-dm-token": getDmToken(server) } });
         expect(backupsList.json().some((b: any) => b.backupId.startsWith("backup_pre_restore_"))).toBe(true);
       });
     });

@@ -1,0 +1,105 @@
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { createServer } from "../../src/server/createServer.js";
+
+async function withTempDataDir<T>(fn: (dataDir: string) => Promise<T>): Promise<T> {
+  const dir = await mkdtemp(join(tmpdir(), "dmcc-tags-"));
+  try { return await fn(dir); } finally { await rm(dir, { recursive: true, force: true }); }
+}
+
+describe("Tags", () => {
+  it("adds and removes a tag from an entity via HTTP routes", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      const token = (server as any).dmSessionToken;
+
+      await server.inject({
+        method: "POST", url: "/api/campaigns",
+        payload: { campaignId: "cmp_tagent1", title: "Tag Entity Test", actorId: "usr_dm" },
+        headers: { "x-dm-token": token },
+      });
+
+      // Create a tag
+      const tagRes = await server.inject({
+        method: "POST", url: "/api/campaigns/cmp_tagent1/tags",
+        payload: { name: "important", color: "#ff0000" },
+        headers: { "x-dm-token": token },
+      });
+      expect(tagRes.statusCode).toBe(201);
+      const { tagId } = tagRes.json();
+
+      // Create an entity
+      const entRes = await server.inject({
+        method: "POST", url: "/api/campaigns/cmp_tagent1/entities",
+        payload: { entityId: "ent_hero1", title: "Aria", entityType: "npc", actorId: "usr_dm" },
+        headers: { "x-dm-token": token },
+      });
+      expect(entRes.statusCode).toBe(201);
+
+      // Add tag to entity
+      const addRes = await server.inject({
+        method: "POST", url: `/api/campaigns/cmp_tagent1/entities/ent_hero1/tags`,
+        payload: { tagId },
+        headers: { "x-dm-token": token },
+      });
+      expect(addRes.statusCode).toBe(201);
+
+      // Verify entity has the tag
+      const getRes = await server.inject({
+        method: "GET", url: "/api/campaigns/cmp_tagent1",
+        headers: { "x-dm-token": token },
+      });
+      expect(getRes.statusCode).toBe(200);
+      const entity = getRes.json().entities.find((e: any) => e.entityId === "ent_hero1");
+      expect(entity?.tagIds).toContain(tagId);
+
+      // Remove tag from entity
+      const removeRes = await server.inject({
+        method: "DELETE", url: `/api/campaigns/cmp_tagent1/entities/ent_hero1/tags/${tagId}`,
+        headers: { "x-dm-token": token },
+      });
+      expect(removeRes.statusCode).toBe(200);
+
+      // Verify tag is gone
+      const getRes2 = await server.inject({
+        method: "GET", url: "/api/campaigns/cmp_tagent1",
+        headers: { "x-dm-token": token },
+      });
+      expect(getRes2.statusCode).toBe(200);
+      const entity2 = getRes2.json().entities.find((e: any) => e.entityId === "ent_hero1");
+      expect(entity2?.tagIds ?? []).not.toContain(tagId);
+    });
+  });
+
+  it("creates a tag and lists it back", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      const token = (server as any).dmSessionToken;
+
+      await server.inject({
+        method: "POST", url: "/api/campaigns",
+        payload: { campaignId: "cmp_tag1", title: "Tag Test", actorId: "usr_dm" },
+        headers: { "x-dm-token": token },
+      });
+
+      const createRes = await server.inject({
+        method: "POST", url: "/api/campaigns/cmp_tag1/tags",
+        payload: { name: "protagonistas", color: "#6366f1" },
+        headers: { "x-dm-token": token },
+      });
+      expect(createRes.statusCode).toBe(201);
+      expect(createRes.json().tagId).toMatch(/^tag_/);
+
+      const listRes = await server.inject({
+        method: "GET", url: "/api/campaigns/cmp_tag1/tags",
+        headers: { "x-dm-token": token },
+      });
+      expect(listRes.statusCode).toBe(200);
+      const tags = listRes.json().tags;
+      expect(tags.length).toBe(1);
+      expect(tags[0].name).toBe("protagonistas");
+    });
+  });
+});

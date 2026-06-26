@@ -16,6 +16,8 @@ import { registerFactRoutes } from "./routes/factRoutes.js";
 import { registerSessionRoutes } from "./routes/sessionRoutes.js";
 import { registerExportRoutes } from "./routes/exportRoutes.js";
 import { registerProjectionRoutes } from "./routes/projectionRoutes.js";
+import { registerTagRoutes } from "./routes/tagRoutes.js";
+import { registerRuleRoutes } from "./routes/ruleRoutes.js";
 
 export interface ServerConfig {
   dataDir?: string;
@@ -30,6 +32,9 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   // In-memory active access codes mapping campaignId -> plaintext code
   server.decorate("activeAccessCodes", new Map<string, string>());
+
+  // In-memory player session tokens: token → { campaignId, playerId }
+  server.decorate("playerTokens", new Map<string, { campaignId: string; playerId: string }>());
 
 
   server.register(cors, {
@@ -78,6 +83,8 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerSessionRoutes, opts);
   server.register(registerExportRoutes, opts);
   server.register(registerProjectionRoutes, opts);
+  server.register(registerTagRoutes, opts);
+  server.register(registerRuleRoutes, opts);
 
   return server;
 }
