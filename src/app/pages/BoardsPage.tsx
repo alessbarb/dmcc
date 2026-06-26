@@ -29,11 +29,6 @@ import { useNavigate, useParams } from "@tanstack/react-router";
 import { EntityDetailModal } from "../components/EntityDetailModal.js";
 import { useToast } from "../hooks/useToast.js";
 
-export interface BoardsPageProps {
-  campaignState?: any;
-  setSelectedEntity?: (e: Entity | null) => void;
-  setCurrentPage?: (page: string) => void;
-}
 
 type BoardType = "misiones" | "pistas" | "consecuencias" | "pnjs" | "secretos";
 
@@ -185,18 +180,16 @@ function KanbanColumn({ label, color, stateKey, entities, onSelect }: {
   );
 }
 
-export function BoardsPage(props: BoardsPageProps = {}) {
+export function BoardsPage() {
   const { campaignId } = useParams({ strict: false }) as any;
   const navigate = useNavigate();
-  const store = useCampaignStore();
-  const campaignState = props.campaignState ?? store.campaignState;
-  const { updateEntity, archiveEntity } = store;
+  const { campaignState, updateEntity, archiveEntity } = useCampaignStore();
   const { addToast } = useToast();
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<Entity | null>(null);
-  const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
-  const setCurrentPage = props.setCurrentPage ?? ((page: string) => {
+  const setSelectedEntity = setSelectedEntityLocal;
+  const setCurrentPage = (page: string) => {
     if (campaignId) navigate({ to: `/campaigns/${campaignId}/${page}` });
-  });
+  };
   const [activeBoard, setActiveBoard] = useState<BoardType>("misiones");
 
   const board = BOARDS.find((b) => b.id === activeBoard)!;
