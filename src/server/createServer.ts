@@ -18,6 +18,7 @@ import { registerExportRoutes } from "./routes/exportRoutes.js";
 import { registerProjectionRoutes } from "./routes/projectionRoutes.js";
 import { registerTagRoutes } from "./routes/tagRoutes.js";
 import { registerRuleRoutes } from "./routes/ruleRoutes.js";
+import { registerCanvasRoutes } from "./routes/canvasRoutes.js";
 
 export interface ServerConfig {
   dataDir?: string;
@@ -85,6 +86,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerProjectionRoutes, opts);
   server.register(registerTagRoutes, opts);
   server.register(registerRuleRoutes, opts);
+  server.register(registerCanvasRoutes, opts);
 
   return server;
 }

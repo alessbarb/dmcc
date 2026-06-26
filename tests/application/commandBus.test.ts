@@ -62,6 +62,38 @@ describe("command bus extended campaign commands", () => {
     ).toThrow("Duplicate relation requires confirmation");
   });
 
+  it("allows relating one source entity to multiple target entities", () => {
+    let state = createCampaignState("cmp_one");
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_source", entityType: "faction", title: "Faction A" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_target1", entityType: "npc", title: "NPC 1" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_target2", entityType: "npc", title: "NPC 2" }).state;
+
+    // Relate to target 1
+    state = handleCommand(state, {
+      type: "CreateRelation",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      relationId: "rel_one",
+      sourceEntityId: "ent_source",
+      targetEntityId: "ent_target1",
+      relationType: "relacionado_con",
+    }).state;
+
+    // Relate to target 2
+    state = handleCommand(state, {
+      type: "CreateRelation",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      relationId: "rel_two",
+      sourceEntityId: "ent_source",
+      targetEntityId: "ent_target2",
+      relationType: "relacionado_con",
+    }).state;
+
+    expect(state.relations.get("rel_one")?.targetEntityId).toBe("ent_target1");
+    expect(state.relations.get("rel_two")?.targetEntityId).toBe("ent_target2");
+  });
+
   it("records classified facts", () => {
     const state = createCampaignState("cmp_one");
     const result = handleCommand(state, {

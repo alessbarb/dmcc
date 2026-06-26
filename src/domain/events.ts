@@ -28,7 +28,18 @@ export type DomainEventType =
   | "ImportCompleted"
   | "ExportCompleted"
   | "SnapshotCreated"
-  | "SettingsUpdated";
+  | "SettingsUpdated"
+  | "CanvasCreated"
+  | "CanvasUpdated"
+  | "CanvasArchived"
+  | "CanvasNodePlaced"
+  | "CanvasNodeUpdated"
+  | "CanvasNodesLayoutUpdated"
+  | "CanvasNodeRemoved"
+  | "CanvasEdgeAdded"
+  | "CanvasEdgeUpdated"
+  | "CanvasEdgeRemoved"
+  | "CanvasNoteConvertedToEntity";
 
 export interface StoredEvent<TPayload = unknown> {
   sequence: number;

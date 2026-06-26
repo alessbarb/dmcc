@@ -10,6 +10,7 @@ export interface CampaignProjection {
   sessionEvents: Map<string, any>;
   tags: Map<string, any>;
   attachments: Map<string, any>;
+  canvases: Map<string, any>;
   lastSequence: number;
 }
 
@@ -24,6 +25,7 @@ export function createEmptyCampaignProjection(): CampaignProjection {
     sessionEvents: new Map(),
     tags: new Map(),
     attachments: new Map(),
+    canvases: new Map(),
     lastSequence: 0,
   };
 }
@@ -42,6 +44,7 @@ export function applyEvent(
     sessionEvents: new Map(projection.sessionEvents),
     tags: new Map(projection.tags),
     attachments: new Map(projection.attachments),
+    canvases: new Map(projection.canvases),
     lastSequence: event.sequence,
   };
 
@@ -352,6 +355,172 @@ export function applyEvent(
           },
           updatedAt: occurredAt,
         };
+      }
+      break;
+    }
+    case "CanvasCreated": {
+      const { id } = payload;
+      next.canvases.set(id, { ...payload, nodes: [], edges: [] });
+      break;
+    }
+    case "CanvasUpdated": {
+      const { canvasId, title, viewport, description } = payload;
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        next.canvases.set(canvasId, {
+          ...existing,
+          ...(title !== undefined && { title }),
+          ...(viewport !== undefined && { viewport }),
+          ...(description !== undefined && { description }),
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "CanvasArchived": {
+      const { canvasId } = payload;
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        next.canvases.set(canvasId, {
+          ...existing,
+          archived: true,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "CanvasNodePlaced": {
+      const { canvasId, node } = payload;
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        next.canvases.set(canvasId, {
+          ...existing,
+          nodes: [...existing.nodes, node],
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "CanvasNodeUpdated": {
+      const { canvasId, nodeId, updates } = payload;
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        const nodes = existing.nodes.map((n: any) =>
+          n.id === nodeId ? { ...n, ...updates, updatedAt: occurredAt } : n
+        );
+        next.canvases.set(canvasId, {
+          ...existing,
+          nodes,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "CanvasNodesLayoutUpdated": {
+      const { canvasId, nodeUpdates } = payload;
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        const nodes = existing.nodes.map((n: any) => {
+          const update = nodeUpdates.find((up: any) => up.nodeId === n.id);
+          if (update) {
+            return {
+              ...n,
+              x: update.x,
+              y: update.y,
+              ...(update.width !== undefined && { width: update.width }),
+              ...(update.height !== undefined && { height: update.height }),
+              updatedAt: occurredAt,
+            };
+          }
+          return n;
+        });
+        next.canvases.set(canvasId, {
+          ...existing,
+          nodes,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "CanvasNodeRemoved": {
+      const { canvasId, nodeId } = payload;
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        const nodes = existing.nodes.filter((n: any) => n.id !== nodeId);
+        const edges = existing.edges.filter(
+          (e: any) => e.sourceNodeId !== nodeId && e.targetNodeId !== nodeId
+        );
+        next.canvases.set(canvasId, {
+          ...existing,
+          nodes,
+          edges,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "CanvasEdgeAdded": {
+      const { canvasId, edge } = payload;
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        next.canvases.set(canvasId, {
+          ...existing,
+          edges: [...existing.edges, edge],
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "CanvasEdgeUpdated": {
+      const { canvasId, edgeId, updates } = payload;
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        const edges = existing.edges.map((e: any) =>
+          e.id === edgeId ? { ...e, ...updates, updatedAt: occurredAt } : e
+        );
+        next.canvases.set(canvasId, {
+          ...existing,
+          edges,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "CanvasEdgeRemoved": {
+      const { canvasId, edgeId } = payload;
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        const edges = existing.edges.filter((e: any) => e.id !== edgeId);
+        next.canvases.set(canvasId, {
+          ...existing,
+          edges,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "CanvasNoteConvertedToEntity": {
+      const { canvasId, nodeId, entity } = payload;
+      next.entities.set(entity.entityId, entity);
+      const existing = next.canvases.get(canvasId);
+      if (existing) {
+        const nodes = existing.nodes.map((n: any) =>
+          n.id === nodeId
+            ? {
+                ...n,
+                kind: "entity",
+                entityId: entity.entityId,
+                text: undefined,
+                title: undefined,
+                updatedAt: occurredAt,
+              }
+            : n
+        );
+        next.canvases.set(canvasId, {
+          ...existing,
+          nodes,
+          updatedAt: occurredAt,
+        });
       }
       break;
     }

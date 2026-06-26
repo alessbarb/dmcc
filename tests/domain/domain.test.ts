@@ -296,6 +296,22 @@ describe("Domain Aggregates", () => {
 
       expect(relationSchema.safeParse(rel).success).toBe(false);
     });
+
+    it("validates generic 'relacionado_con' relation type", () => {
+      const rel = {
+        relationId: generateRelationId(),
+        campaignId,
+        sourceEntityId: generateEntityId(),
+        targetEntityId: generateEntityId(),
+        type: "relacionado_con",
+        status: "active",
+        visibility: { kind: "party" },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      expect(relationSchema.safeParse(rel).success).toBe(true);
+    });
   });
 
   describe("Fact", () => {
