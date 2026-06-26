@@ -9,10 +9,11 @@ export function getRequestRole(request: any, dmSessionToken: string): "dm" | "pl
   const dmTokenHeader = request.headers["x-dm-token"];
 
   if (process.env.NODE_ENV === "test") {
+    if (dmTokenHeader && dmTokenHeader === dmSessionToken) return "dm";
     if (roleHeader === "player") return "player";
     if (roleHeader === "observer") return "observer";
-    if (roleHeader === "unauthenticated") return "unauthenticated";
-    return "dm";
+    if (roleHeader === "dm") return "dm";
+    return "unauthenticated";
   }
 
   if (dmTokenHeader === dmSessionToken) {
