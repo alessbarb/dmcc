@@ -313,7 +313,179 @@ async function seedFactions() {
 }
 
 async function seedNpcs() {
-  console.log("TODO: seedNpcs");
+  const NPCS = [
+    // === ANTAGONISTAS ===
+    {
+      entityId: "ent_npc_veradis", entityType: "npc",
+      title: "Veradis el Oráculo", summary: "El Oráculo de Valdris. Lleva 20 años falsificando profecías con ilusión arcana.",
+      status: "active", importance: "critical",
+      visibility: { kind: "dm_only" as const },
+      metadata: { role: "Antagonista principal", attitudeToParty: "deceptive", goal: "Mantener su poder y riqueza acumulados durante 20 años.", fear: "Ser expuesto. Tiene un plan de huida preparado.", secret: "No tiene poderes proféticos reales. Es un ilusionista de nivel 9 (SRD: equivalente a Mago).", factionId: "ent_fac_culto", currentLocationId: "ent_loc_sala_oraculo", voice: "Grave, deliberado, nunca improvisa. Cada palabra calculada." },
+    },
+    {
+      entityId: "ent_npc_vantis", entityType: "npc",
+      title: "Lord Vantis", summary: "Noble financiador del culto. A cambio recibe profecías favorables que enriquecen sus negocios.",
+      status: "active", importance: "high",
+      visibility: { kind: "dm_only" as const },
+      metadata: { role: "Cómplice del antagonista", attitudeToParty: "hostile", goal: "Proteger su inversión en el Oráculo y su posición social.", fear: "Que los libros de cuentas del Gremio lleguen a manos del Consejo.", factionId: "ent_fac_culto", currentLocationId: "ent_loc_mansion_vantis" },
+    },
+    {
+      entityId: "ent_npc_guardian_jefe", entityType: "npc",
+      title: "Inquisidor Mors", summary: "Jefe de los Guardianes del Culto. Fanático leal a Veradis.",
+      status: "active", importance: "normal",
+      visibility: { kind: "dm_only" as const },
+      metadata: { role: "Antagonista secundario", attitudeToParty: "hostile", goal: "Proteger al Oráculo con su vida.", factionId: "ent_fac_culto" },
+    },
+    // === CONSEJO ===
+    {
+      entityId: "ent_npc_aldric", entityType: "npc",
+      title: "Magister Aldric", summary: "Líder del Consejo de Valdris. Usa el Oráculo como legitimador político pero no sabe que es un fraude.",
+      status: "active", importance: "high",
+      metadata: { role: "Autoridad neutral", attitudeToParty: "neutral", goal: "Gobernar Valdris con orden. Necesita al Oráculo para mantener la fe pública.", fear: "El caos social si el Oráculo cae.", factionId: "ent_fac_consejo", currentLocationId: "ent_loc_sala_consejo" },
+    },
+    {
+      entityId: "ent_npc_consejera_lena", entityType: "npc",
+      title: "Consejera Lena Marsh", summary: "Reformista en el Consejo. Sospecha del Oráculo pero necesita pruebas.",
+      status: "active", importance: "normal",
+      metadata: { role: "Aliada potencial en el Consejo", attitudeToParty: "friendly", goal: "Reformar el gobierno de Valdris. Exponer la corrupción.", factionId: "ent_fac_consejo" },
+    },
+    {
+      entityId: "ent_npc_consejero_brann", entityType: "npc",
+      title: "Consejero Brann", summary: "Conservador. Conoce parte de la verdad y mira hacia otro lado a cambio de estabilidad.",
+      status: "active", importance: "normal",
+      visibility: { kind: "dm_only" as const },
+      metadata: { role: "Obstáculo político", attitudeToParty: "suspicious", goal: "Mantener el statu quo.", secret: "Ha visto a Vantis reunirse con representantes del culto. Lo ignora.", factionId: "ent_fac_consejo" },
+    },
+    // === GUARDIA ===
+    {
+      entityId: "ent_npc_lyra", entityType: "npc",
+      title: "Lyra Stonehaven", summary: "Capitana de la Guardia de Valdris. Leal, metódica, investiga anomalías en silencio.",
+      status: "active", importance: "high",
+      metadata: { role: "Aliada potencial o complicación", attitudeToParty: "neutral", goal: "Proteger a los ciudadanos de Valdris y mantener el orden.", fear: "Iniciar una crisis institucional sin pruebas suficientes.", currentLocationId: "ent_loc_cuartel_guardia" },
+    },
+    {
+      entityId: "ent_npc_guardia_riku", entityType: "npc",
+      title: "Riku", summary: "Guardia de rango bajo. Honesto, nervioso. Tiene información que no sabe cómo usar.",
+      status: "active", importance: "low",
+      metadata: { role: "Informante involuntario", attitudeToParty: "friendly" },
+    },
+    // === TABERNA / CONTACTOS ===
+    {
+      entityId: "ent_npc_torben", entityType: "npc",
+      title: "Torben el Tabernero", summary: "Dueño de la Taberna del Cuervo. Informador discreto del Gremio. Protege a los aventureros.",
+      status: "active", importance: "normal",
+      metadata: { role: "Aliado logístico", attitudeToParty: "friendly", goal: "Mantener su negocio y sus contactos.", factionId: "ent_fac_gremio", currentLocationId: "ent_loc_taberna_cuervo" },
+    },
+    // === GREMIO ===
+    {
+      entityId: "ent_npc_kael", entityType: "npc",
+      title: "Kael Nightblade", summary: "Jefe del Gremio de Ladrones. Pragmático, leal a nadie. Tiene pruebas del fraude del Oráculo.",
+      status: "active", importance: "high",
+      visibility: { kind: "dm_only" as const },
+      metadata: { role: "Aliado ambiguo / factor inesperado", attitudeToParty: "suspicious", goal: "Usar las pruebas como moneda de cambio, no como acto de justicia.", secret: "Tiene los libros de cuentas que vinculan a Vantis con el culto.", factionId: "ent_fac_gremio", currentLocationId: "ent_loc_campamento_gremio" },
+    },
+    {
+      entityId: "ent_npc_cira", entityType: "npc",
+      title: "Cira la Sombra", summary: "Operativa del Gremio. Contacto inicial de los aventureros con la organización.",
+      status: "active", importance: "normal",
+      metadata: { role: "Contacto del Gremio", attitudeToParty: "neutral", factionId: "ent_fac_gremio" },
+    },
+    // === TEMPLO DE LA VERDAD ===
+    {
+      entityId: "ent_npc_sera", entityType: "npc",
+      title: "Sera Moonwhisper", summary: "Sacerdotisa del Templo de la Verdad en Valdris. Sabe que el Oráculo es un fraude; tiene los textos que lo prueban.",
+      status: "active", importance: "high",
+      metadata: { role: "Aliada clave", attitudeToParty: "friendly", goal: "Exponer al Oráculo. Restaurar la verdadera fe.", fear: "El peligro físico. No es guerrera.", secret: "Posee 'Las Crónicas del Verdadero Vidente', texto que describe la ilusión arcana usada por el Oráculo.", factionId: "ent_fac_templo_verdad", currentLocationId: "ent_loc_templo_verdad_ciudad" },
+    },
+    {
+      entityId: "ent_npc_abad_santuario", entityType: "npc",
+      title: "Abad Fenwick", summary: "Líder del Santuario del Bosque. Anciano. Tiene piezas de la verdad histórica.",
+      status: "active", importance: "normal",
+      metadata: { role: "Fuente de lore histórico", attitudeToParty: "friendly", factionId: "ent_fac_templo_verdad", currentLocationId: "ent_loc_santuario_bosque" },
+    },
+    // === CONSORCIO ===
+    {
+      entityId: "ent_npc_dorian", entityType: "npc",
+      title: "Dorian Vex", summary: "Espía del Consorcio de Mercaderes en el Consejo. Vende información al mejor postor.",
+      status: "active", importance: "normal",
+      visibility: { kind: "dm_only" as const },
+      metadata: { role: "Comodín / posible complicación", attitudeToParty: "deceptive", goal: "Información valiosa = riqueza. Venderá lo que sepa al que más pague.", factionId: "ent_fac_consorcio" },
+    },
+    {
+      entityId: "ent_npc_mercader_jefe", entityType: "npc",
+      title: "Maestra Ola Brightstone", summary: "Líder del Consorcio de Mercaderes de Valdris.",
+      status: "active", importance: "normal",
+      metadata: { role: "Figura de poder económico", attitudeToParty: "neutral", goal: "Proteger las rutas comerciales sin importar quién gobierne.", factionId: "ent_fac_consorcio" },
+    },
+    // === ARCHIVO ===
+    {
+      entityId: "ent_npc_mira", entityType: "npc",
+      title: "Mira la Archivista", summary: "Archivista anciana. Lleva 40 años en el archivo. Sabe más de lo que dice.",
+      status: "active", importance: "high",
+      metadata: { role: "Fuente de información crítica", attitudeToParty: "neutral", goal: "Proteger los registros históricos. Tiene miedo.", fear: "Que alguien queme el archivo (ya ocurrió una vez, hace 20 años).", currentLocationId: "ent_loc_archivo" },
+    },
+    // === NPCs SECUNDARIOS ===
+    {
+      entityId: "ent_npc_iniciado_culto", entityType: "npc",
+      title: "Iniciado del Culto (genérico)", summary: "Creyentes de rango bajo. Genuinamente convencidos.",
+      status: "active", importance: "low",
+      metadata: { role: "Obstáculo menor", attitudeToParty: "hostile", factionId: "ent_fac_culto" },
+    },
+    {
+      entityId: "ent_npc_heraldo", entityType: "npc",
+      title: "Heraldo Vorn", summary: "Vocero público del Oráculo. Gestiona las colas de peticionarios.",
+      status: "active", importance: "low",
+      metadata: { role: "Portero del Oráculo", attitudeToParty: "suspicious", factionId: "ent_fac_culto", currentLocationId: "ent_loc_sala_oraculo" },
+    },
+    {
+      entityId: "ent_npc_peticionario", entityType: "npc",
+      title: "Widow Asha", summary: "Peticionaria desesperada. Su hijo está en el ejército. Busca una profecía.",
+      status: "active", importance: "low",
+      metadata: { role: "Ancla emocional / testigo del impacto", attitudeToParty: "friendly" },
+    },
+    {
+      entityId: "ent_npc_capitan_barco", entityType: "npc",
+      title: "Capitán Drez", summary: "Capitán mercante. Contrabandea para el Gremio. Puede sacar al grupo de la ciudad.",
+      status: "active", importance: "low",
+      metadata: { role: "Recurso de escape / transporte", attitudeToParty: "neutral", factionId: "ent_fac_gremio", currentLocationId: "ent_loc_puerto" },
+    },
+    {
+      entityId: "ent_npc_escriba_consejo", entityType: "npc",
+      title: "Escriba Pell", summary: "Escriba del Consejo. Ordenado, servicial. Acceso a muchos documentos.",
+      status: "active", importance: "low",
+      metadata: { role: "Fuente administrativa", attitudeToParty: "friendly" },
+    },
+    {
+      entityId: "ent_npc_curandero", entityType: "npc",
+      title: "Maestra Ilva", summary: "Curandera del barrio portuario. Discreta. Ha tratado heridas sospechosas.",
+      status: "active", importance: "low",
+      metadata: { role: "Aliada de soporte", attitudeToParty: "friendly" },
+    },
+    {
+      entityId: "ent_npc_rumorista", entityType: "npc",
+      title: "Pica", summary: "Vendedora de información en el mercado. Vende rumores, algunos reales.",
+      status: "active", importance: "low",
+      metadata: { role: "Fuente de rumores (algunos plantados por el Oráculo)", attitudeToParty: "neutral" },
+    },
+    {
+      entityId: "ent_npc_veterano_guardia", entityType: "npc",
+      title: "Sargento Bren", summary: "Veterano de la guardia. Cínico pero honesto. Amigo de Lyra.",
+      status: "active", importance: "low",
+      metadata: { role: "Apoyo de información de la guardia", attitudeToParty: "neutral" },
+    },
+    {
+      entityId: "ent_npc_lider_inner_circle", entityType: "npc",
+      title: "Maga Senra", summary: "Ilusionista del inner circle del culto. Construye y mantiene la proyección del Oráculo.",
+      status: "active", importance: "high",
+      visibility: { kind: "dm_only" as const },
+      metadata: { role: "Antagonista secundario técnico", attitudeToParty: "hostile", secret: "Sin ella, la ilusión se derrumba. Puede ser convencida de defeccionar si se le garantiza clemencia.", factionId: "ent_fac_culto" },
+    },
+  ];
+
+  for (const npc of NPCS) {
+    await api("POST", `/api/campaigns/${CMP}/entities`, { ...npc, actorId: "usr_dm" });
+  }
+  console.log(`✓ ${NPCS.length} NPCs created`);
 }
 
 async function seedQuests() {
