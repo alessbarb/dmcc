@@ -263,8 +263,15 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
         const body = request.body as any;
+
+        const playerNotes = portal.notesByPlayerId.get(playerId) ?? [];
+        const ownsNote = playerNotes.some((n) => n.noteId === request.params.noteId);
+        if (!ownsNote) {
+          reply.code(404);
+          return { error: "Note not found" };
+        }
 
         if (body.visibility !== undefined && body.visibility !== "private" && body.visibility !== "dm_visible") {
           reply.code(400);
@@ -356,8 +363,15 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
         const body = request.body as any;
+
+        const playerObjectives = portal.objectivesByPlayerId.get(playerId) ?? [];
+        const ownsObjective = playerObjectives.some((o) => o.objectiveId === request.params.objectiveId);
+        if (!ownsObjective) {
+          reply.code(404);
+          return { error: "Objective not found" };
+        }
 
         if (body.visibility !== undefined && body.visibility !== "private" && body.visibility !== "dm_visible") {
           reply.code(400);
