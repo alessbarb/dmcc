@@ -244,7 +244,7 @@ test.describe("Minimum flow", () => {
 
     await clickNav(page, "Tableros");
 
-    await expect(page.getByRole("heading", { name: "Tableros" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Tableros", level: 1 })).toBeVisible();
     await expect(page.getByRole("button", { name: "Misiones" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Pistas" })).toBeVisible();
     await expect(page.getByRole("button", { name: "PNJs" })).toBeVisible();

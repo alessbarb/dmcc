@@ -30,6 +30,7 @@ import {
   seedQuests,
   seedRelations,
   seedSecrets,
+  seedCanvas,
 } from "./oracle-seed/content.ts";
 
 async function main() {
@@ -48,7 +49,9 @@ async function main() {
   // Sessions intentionally omitted: the DM opens/closes sessions in the app.
   await seedRelations();
   await seedFacts();
+  await seedCanvas();
   await rebuildAndVerify();
+
   console.log(`\n✅ Campaign seed complete: ${CMP}`);
   console.log("   Open the DMCC app and select 'La Sombra del Oráculo'");
 }
