@@ -73,6 +73,8 @@ describe("Canvas integration and domain flow", () => {
         kind: "location",
         description: "Dungeon floor 1",
       });
+      expect(singleCanvasRes.json().nodes.some((node: any) => node.metadata?.role === "instructions")).toBe(true);
+      expect(singleCanvasRes.json().nodes.some((node: any) => node.kind === "group" && node.title === "Zonas")).toBe(true);
 
       // 3. Security check: player cannot create canvas
       const playerHeaders = { "x-role": "player" };

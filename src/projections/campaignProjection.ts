@@ -360,7 +360,7 @@ export function applyEvent(
     }
     case "CanvasCreated": {
       const { id } = payload;
-      next.canvases.set(id, { ...payload, nodes: [], edges: [] });
+      next.canvases.set(id, { ...payload, nodes: payload.nodes || [], edges: payload.edges || [] });
       break;
     }
     case "CanvasUpdated": {

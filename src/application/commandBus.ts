@@ -421,13 +421,14 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
     }
     case "CreateCanvas": {
       const canvasId = command.canvasId ?? createId("cvs");
+      const templateNodes = command.template ? createCanvasTemplateNodes(command.campaignId, canvasId, command.kind) : [];
       const canvas = {
         id: canvasId,
         campaignId: command.campaignId,
         title: command.title,
         kind: command.kind,
         description: command.description,
-        nodes: [],
+        nodes: templateNodes,
         edges: [],
         viewport: { x: 0, y: 0, zoom: 1 },
         archived: false,
@@ -584,6 +585,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
             y: update.y,
             ...(update.width !== undefined && { width: update.width }),
             ...(update.height !== undefined && { height: update.height }),
+            ...(update.parentId !== undefined && { parentId: update.parentId ?? undefined }),
             updatedAt: new Date().toISOString(),
           };
         }
@@ -801,6 +803,79 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       };
     }
   }
+}
+
+function createCanvasTemplateNodes(campaignId: string, canvasId: string, kind: string) {
+  if (kind === "custom") return [];
+  const now = new Date().toISOString();
+  const labels: Record<string, { title: string; note: string; groups: string[] }> = {
+    world: {
+      title: "Cómo usar este tablero de mundo",
+      note: "Coloca aquí regiones, facciones, amenazas, misiones y secretos. Empieza añadiendo entidades existentes o crea una entidad rápida.",
+      groups: ["Lugares", "Facciones", "Amenazas", "Misiones"],
+    },
+    characters: {
+      title: "Cómo usar este tablero de personajes",
+      note: "Organiza PNJs, personajes, familias y facciones. Conecta dos entidades para crear una relación real de campaña.",
+      groups: ["Aliados", "Rivales", "Facciones", "Secretos"],
+    },
+    mystery: {
+      title: "Cómo usar este tablero de misterio",
+      note: "Agrupa sospechosos, pistas, secretos y revelaciones. Usa líneas visuales para hipótesis y relaciones reales para canon confirmado.",
+      groups: ["Sospechosos", "Pistas", "Secretos", "Revelaciones"],
+    },
+    location: {
+      title: "Cómo usar este tablero de localización",
+      note: "Divide la localización en zonas, encuentros, pistas y complicaciones. No se genera lore automático: añade solo lo que necesites.",
+      groups: ["Zonas", "Encuentros", "Pistas", "Complicaciones"],
+    },
+    session: {
+      title: "Cómo usar este tablero de sesión",
+      note: "Prepara escenas, PNJs, pistas, decisiones y consecuencias para la próxima sesión.",
+      groups: ["Escenas", "PNJs", "Pistas", "Consecuencias"],
+    },
+  };
+  const template = labels[kind] || labels.world;
+  const note = {
+    id: createId("cvn"),
+    campaignId,
+    canvasId,
+    kind: "note",
+    title: template.title,
+    text: template.note,
+    color: "yellow",
+    x: -360,
+    y: -260,
+    width: 300,
+    height: 160,
+    collapsed: false,
+    zIndex: 2,
+    status: "draft",
+    visibility: "dm",
+    metadata: { template: true, role: "instructions" },
+    createdAt: now,
+    updatedAt: now,
+  };
+  const groups = template.groups.map((title, index) => ({
+    id: createId("cvn"),
+    campaignId,
+    canvasId,
+    kind: "group",
+    title,
+    color: (["blue", "green", "purple", "pink"] as const)[index % 4],
+    x: -360 + (index % 2) * 380,
+    y: -40 + Math.floor(index / 2) * 260,
+    width: 320,
+    height: 200,
+    collapsed: false,
+    zIndex: 1,
+    status: "draft",
+    visibility: "dm",
+    metadata: { template: true, role: "suggested-space" },
+    createdAt: now,
+    updatedAt: now,
+  }));
+  return [note, ...groups];
 }
 
 function requireEntity(state: CampaignState, entityId: EntityId): Entity {

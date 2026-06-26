@@ -65,7 +65,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, (server as any).dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, canvasId, title, kind, description } = request.body as any;
+      const { actorId, canvasId, title, kind, description, template } = request.body as any;
 
       if (!title || title.trim() === "") {
         reply.code(400);
@@ -86,6 +86,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           title,
           kind,
           description,
+          template: template ?? true,
         });
         reply.code(201);
         return { campaignId, title, kind };
