@@ -222,9 +222,9 @@ export function CampaignShell() {
         <div className="content-body">
           <Outlet />
         </div>
-
-        <AppFooter />
       </main>
+
+      <AppFooter />
 
       {/* Modals */}
       <EntityCreateModal isOpen={isEntityModalOpen} onClose={() => setIsEntityModalOpen(false)} />
