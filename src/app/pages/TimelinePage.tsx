@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { Activity, BookOpen, Plus, Info, Calendar, HelpCircle, Eye, EyeOff } from "lucide-react";
+import { Activity, BookOpen, Plus, Info, Calendar, HelpCircle, Eye, EyeOff, SlidersHorizontal } from "lucide-react";
 import { getEventVisualConfig, renderEventDescription } from "../utils/eventVisuals.js";
 import { useCampaignStore } from "../stores/campaignStore.js";
+
+const NARRATIVE_EVENT_TYPES = new Set([
+  "SessionStarted", "SessionClosed", "FactCreated", "VisibilityChanged",
+  "PlayerProfileCreated", "EntityArchived",
+]);
 
 export interface TimelinePageProps {
   timeline?: any;
@@ -16,8 +21,9 @@ export function TimelinePage(props: TimelinePageProps = {}) {
   const store = useCampaignStore();
   const timeline = props.timeline ?? store.timeline;
   const campaignState = props.campaignState ?? store.campaignState;
-  const [timelineFilterLocal, setTimelineFilterLocal] = useState("all");
+  const [timelineFilterLocal, setTimelineFilterLocal] = useState("narrative");
   const [expandedEventsLocal, setExpandedEventsLocal] = useState<Record<string, boolean>>({});
+  const [showTechnical, setShowTechnical] = useState(false);
   const timelineFilter = props.timelineFilter ?? timelineFilterLocal;
   const setTimelineFilter = props.setTimelineFilter ?? setTimelineFilterLocal;
   const expandedEvents = props.expandedEvents ?? expandedEventsLocal;
@@ -27,26 +33,31 @@ export function TimelinePage(props: TimelinePageProps = {}) {
 
   if (!timeline) return <div style={{ padding: "40px", color: "var(--text-muted)" }}>Cargando línea temporal…</div>;
 
+  const narrativeEvents = timeline.events.filter((e: any) => NARRATIVE_EVENT_TYPES.has(e.type));
+  const visibleEvents = showTechnical ? timeline.events : narrativeEvents;
+
   const stats = {
-    total: timeline.events.length,
-    entities: timeline.events.filter((e: any) => e.type === "EntityCreated").length,
-    sessions: timeline.events.filter((e: any) => e.type === "SessionCreated").length,
+    total: narrativeEvents.length,
+    sessions: timeline.events.filter((e: any) => e.type === "SessionClosed").length,
     facts: timeline.events.filter((e: any) => e.type === "FactCreated").length,
+    revelaciones: timeline.events.filter((e: any) => e.type === "VisibilityChanged").length,
   };
 
   const filterOptions = [
-    { key: "all", label: "Todos", count: timeline.events.length },
-    { key: "campaigns", label: "Campañas", count: timeline.events.filter((e: any) => getEventVisualConfig(e.type).category === "campaigns").length },
-    { key: "entities", label: "Entidades", count: timeline.events.filter((e: any) => getEventVisualConfig(e.type).category === "entities").length },
-    { key: "relations", label: "Relaciones", count: timeline.events.filter((e: any) => getEventVisualConfig(e.type).category === "relations").length },
-    { key: "facts", label: "Hechos", count: timeline.events.filter((e: any) => getEventVisualConfig(e.type).category === "facts").length },
-    { key: "sessions", label: "Sesiones", count: timeline.events.filter((e: any) => getEventVisualConfig(e.type).category === "sessions").length },
-    { key: "players", label: "Jugadores", count: timeline.events.filter((e: any) => getEventVisualConfig(e.type).category === "players").length },
-    { key: "other", label: "Sistema", count: timeline.events.filter((e: any) => getEventVisualConfig(e.type).category === "other").length }
+    { key: "narrative", label: "Narrativa", count: narrativeEvents.length },
+    { key: "sessions", label: "Sesiones", count: visibleEvents.filter((e: any) => getEventVisualConfig(e.type).category === "sessions").length },
+    { key: "facts", label: "Hechos", count: visibleEvents.filter((e: any) => getEventVisualConfig(e.type).category === "facts").length },
+    { key: "players", label: "Jugadores", count: visibleEvents.filter((e: any) => getEventVisualConfig(e.type).category === "players").length },
+    ...(showTechnical ? [
+      { key: "entities", label: "Entidades", count: visibleEvents.filter((e: any) => getEventVisualConfig(e.type).category === "entities").length },
+      { key: "relations", label: "Relaciones", count: visibleEvents.filter((e: any) => getEventVisualConfig(e.type).category === "relations").length },
+      { key: "campaigns", label: "Campañas", count: visibleEvents.filter((e: any) => getEventVisualConfig(e.type).category === "campaigns").length },
+      { key: "other", label: "Sistema", count: visibleEvents.filter((e: any) => getEventVisualConfig(e.type).category === "other").length },
+    ] : []),
   ];
 
-  const filteredEvents = timeline.events.slice().reverse().filter((evt: any) => {
-    if (timelineFilter === "all") return true;
+  const filteredEvents = visibleEvents.slice().reverse().filter((evt: any) => {
+    if (timelineFilter === "narrative") return NARRATIVE_EVENT_TYPES.has(evt.type);
     return getEventVisualConfig(evt.type).category === timelineFilter;
   });
 
@@ -84,27 +95,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
           </div>
           <div className="timeline-stat-info">
             <span className="timeline-stat-value">{stats.total}</span>
-            <span className="timeline-stat-label">Eventos Totales</span>
-          </div>
-        </div>
-
-        <div className="timeline-stat-card">
-          <div className="timeline-stat-icon-wrapper" style={{ backgroundColor: "hsla(175, 85%, 45%, 0.15)", color: "hsl(175, 85%, 45%)" }}>
-            <Plus size={20} />
-          </div>
-          <div className="timeline-stat-info">
-            <span className="timeline-stat-value">{stats.entities}</span>
-            <span className="timeline-stat-label">Entidades Creadas</span>
-          </div>
-        </div>
-
-        <div className="timeline-stat-card">
-          <div className="timeline-stat-icon-wrapper" style={{ backgroundColor: "hsla(38, 95%, 55%, 0.15)", color: "hsl(38, 95%, 55%)" }}>
-            <Info size={20} />
-          </div>
-          <div className="timeline-stat-info">
-            <span className="timeline-stat-value">{stats.facts}</span>
-            <span className="timeline-stat-label">Hechos Guardados</span>
+            <span className="timeline-stat-label">Eventos Narrativos</span>
           </div>
         </div>
 
@@ -114,14 +105,47 @@ export function TimelinePage(props: TimelinePageProps = {}) {
           </div>
           <div className="timeline-stat-info">
             <span className="timeline-stat-value">{stats.sessions}</span>
-            <span className="timeline-stat-label">Sesiones Creadas</span>
+            <span className="timeline-stat-label">Sesiones Cerradas</span>
+          </div>
+        </div>
+
+        <div className="timeline-stat-card">
+          <div className="timeline-stat-icon-wrapper" style={{ backgroundColor: "hsla(38, 95%, 55%, 0.15)", color: "hsl(38, 95%, 55%)" }}>
+            <Info size={20} />
+          </div>
+          <div className="timeline-stat-info">
+            <span className="timeline-stat-value">{stats.facts}</span>
+            <span className="timeline-stat-label">Hechos Registrados</span>
+          </div>
+        </div>
+
+        <div className="timeline-stat-card">
+          <div className="timeline-stat-icon-wrapper" style={{ backgroundColor: "hsla(195, 95%, 50%, 0.15)", color: "hsl(195, 95%, 50%)" }}>
+            <Eye size={20} />
+          </div>
+          <div className="timeline-stat-info">
+            <span className="timeline-stat-value">{stats.revelaciones}</span>
+            <span className="timeline-stat-label">Revelaciones</span>
           </div>
         </div>
       </div>
 
       {/* Filter pill-bar */}
       <div style={{ marginTop: "8px" }}>
-        <p style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--text-main)", marginBottom: "8px" }}>Filtrar por categoría:</p>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+          <p style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--text-main)", margin: 0 }}>Filtrar por categoría:</p>
+          <button
+            className={`btn btn-sm ${showTechnical ? "btn-primary" : "btn-secondary"}`}
+            style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem" }}
+            onClick={() => {
+              setShowTechnical(v => !v);
+              setTimelineFilter("narrative");
+            }}
+          >
+            <SlidersHorizontal size={13} />
+            {showTechnical ? "Ocultar registro técnico" : "Ver registro técnico"}
+          </button>
+        </div>
         <div className="timeline-filters">
           {filterOptions.map((opt) => (
             <button
