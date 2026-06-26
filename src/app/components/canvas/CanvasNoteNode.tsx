@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Handle, Position } from "reactflow";
 import { useCampaignStore } from "../../stores/campaignStore.js";
 import { Wand2, Trash2 } from "lucide-react";
@@ -26,11 +26,24 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
   const { updateCanvasNode, removeNodeFromCanvas } = useCampaignStore();
   const [localText, setLocalText] = useState(data.text || "");
   const [isConvertOpen, setIsConvertOpen] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const autoResize = useCallback(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, []);
 
   // Sync state if changed externally
   useEffect(() => {
     setLocalText(data.text || "");
   }, [data.text]);
+
+  // Resize whenever text changes
+  useEffect(() => {
+    autoResize();
+  }, [localText, autoResize]);
 
   const handleBlur = async () => {
     if (localText !== data.text) {
@@ -83,6 +96,7 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
 
       <div className="note-content-area nodrag">
         <textarea
+          ref={textareaRef}
           value={localText}
           onChange={(e) => setLocalText(e.target.value)}
           onBlur={handleBlur}
