@@ -37,6 +37,8 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         campaignId: command.campaignId,
         entityType: command.entityType,
         title: command.title,
+        subtitle: command.subtitle,
+        tagIds: command.tagIds,
         summary: command.summary,
         content: command.content,
         status: command.status,
@@ -124,6 +126,8 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const updated: Entity = {
         ...entity,
         ...(command.title !== undefined && { title: command.title }),
+        ...(command.subtitle !== undefined && { subtitle: command.subtitle }),
+        ...(command.tagIds !== undefined && { tagIds: command.tagIds }),
         ...(command.summary !== undefined && { summary: command.summary }),
         ...(command.content !== undefined && { content: command.content }),
         ...(command.status !== undefined && { status: command.status }),

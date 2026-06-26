@@ -21,6 +21,9 @@ export type Command =
       entityId?: EntityId;
       entityType: EntityType;
       title: string;
+      subtitle?: string;
+      tagIds?: string[];
+      createdInSessionId?: string;
       summary?: string;
       content?: string;
       status?: string;
@@ -75,6 +78,8 @@ export type Command =
       actorId: string;
       entityId: EntityId;
       title?: string;
+      subtitle?: string;
+      tagIds?: string[];
       summary?: string;
       content?: string;
       status?: string;

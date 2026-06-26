@@ -82,7 +82,10 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
           visibility: role === "player"
             ? { kind: "players" as const, playerIds: [playerId] }
             : (visibility || { kind: "dm_only" as const }),
-          metadata: { ...metadata, subtitle, tagIds: tagIds || [], createdInSessionId },
+          subtitle,
+          tagIds: tagIds || [],
+          createdInSessionId,
+          metadata,
         });
         const created = Array.from(projection.entities.values()).find(
           (e: any) => e.title === title && !e.archived
@@ -143,6 +146,8 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
         actorId: role === "player" ? playerId : "usr_dm",
         entityId: entityId as any,
         ...(allowedUpdates.title !== undefined && { title: allowedUpdates.title }),
+        ...(allowedUpdates.subtitle !== undefined && { subtitle: allowedUpdates.subtitle }),
+        ...(allowedUpdates.tagIds !== undefined && { tagIds: allowedUpdates.tagIds }),
         ...(allowedUpdates.summary !== undefined && { summary: allowedUpdates.summary }),
         ...(allowedUpdates.content !== undefined && { content: allowedUpdates.content }),
         ...(allowedUpdates.status !== undefined && { status: allowedUpdates.status }),
