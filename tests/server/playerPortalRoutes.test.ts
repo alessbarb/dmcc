@@ -26,6 +26,16 @@ async function seedPlayer(server: any, campaignId = "cmp_portal") {
   return token;
 }
 
+async function issueToken(server: any, dmToken: string) {
+  const res = await server.inject({
+    method: "POST",
+    url: "/api/campaigns/cmp_portal/players/ply_1/token",
+    payload: { label: "phone" },
+    headers: { "x-dm-token": dmToken },
+  });
+  return res.json().token as string;
+}
+
 describe("player portal tokens", () => {
   it("issues a raw token once and does not expose it in dm summary", async () => {
     await withTempDataDir(async (dataDir) => {
@@ -44,5 +54,62 @@ describe("player portal tokens", () => {
       expect(res.json().token).toMatch(/^[A-Z0-9]{8}$/);
       expect(res.json().tokenHash).toBeUndefined();
     });
+  });
+});
+
+it("lets a token-authenticated player update their own live status", async () => {
+  await withTempDataDir(async (dataDir) => {
+    const server = createServer({ dataDir });
+    const dmToken = await seedPlayer(server);
+    const playerToken = await issueToken(server, dmToken);
+
+    const update = await server.inject({
+      method: "PUT",
+      url: "/api/campaigns/cmp_portal/player-portal/status",
+      payload: { characterEntityId: "ent_pc_1", hitPointsCurrent: 7, hitPointsMax: 12, armorClass: 14, inspiration: true, conditions: ["poisoned"] },
+      headers: { "x-player-token": playerToken },
+    });
+
+    expect(update.statusCode).toBe(200);
+
+    const state = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal/player-portal/state",
+      headers: { "x-player-token": playerToken },
+    });
+
+    expect(state.statusCode).toBe(200);
+    expect(state.json().sheet.status.hitPointsCurrent).toBe(7);
+    expect(state.json().sheet.status.conditions).toEqual(["poisoned"]);
+  });
+});
+
+it("does not return private notes in dm summary", async () => {
+  await withTempDataDir(async (dataDir) => {
+    const server = createServer({ dataDir });
+    const dmToken = await seedPlayer(server);
+    const playerToken = await issueToken(server, dmToken);
+
+    await server.inject({
+      method: "POST",
+      url: "/api/campaigns/cmp_portal/player-portal/notes",
+      payload: { title: "Private note", content: "secret", visibility: "private", linkedEntityIds: [] },
+      headers: { "x-player-token": playerToken },
+    });
+    await server.inject({
+      method: "POST",
+      url: "/api/campaigns/cmp_portal/player-portal/notes",
+      payload: { title: "DM note", content: "visible", visibility: "dm_visible", linkedEntityIds: [] },
+      headers: { "x-player-token": playerToken },
+    });
+
+    const summary = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal/player-portal/dm-summary",
+      headers: { "x-dm-token": dmToken },
+    });
+
+    expect(summary.statusCode).toBe(200);
+    expect(summary.json().players[0].notes.map((note: any) => note.title)).toEqual(["DM note"]);
   });
 });

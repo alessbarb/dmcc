@@ -405,6 +405,114 @@ export type Command =
       revokedAt: string;
     }
   | {
+      type: "UpdatePlayerLiveStatus";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      characterEntityId: string;
+      status: {
+        hitPointsCurrent?: number;
+        hitPointsMax?: number;
+        armorClass?: number;
+        inspiration?: boolean;
+        conditions?: string[];
+      };
+      updatedBy: "player" | "dm";
+      updatedAt: string;
+    }
+  | {
+      type: "UpsertPlayerResource";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      characterEntityId: string;
+      resource: {
+        resourceId: string;
+        label: string;
+        current: number;
+        max: number;
+        recovery?: "short_rest" | "long_rest" | "manual";
+      };
+      updatedAt: string;
+    }
+  | {
+      type: "RemovePlayerResource";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      characterEntityId: string;
+      resourceId: string;
+      removedAt: string;
+    }
+  | {
+      type: "CreatePlayerPortalNote";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      noteId: string;
+      title: string;
+      content: string;
+      visibility: "private" | "dm_visible";
+      linkedEntityIds: string[];
+      createdAt: string;
+    }
+  | {
+      type: "UpdatePlayerPortalNote";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      noteId: string;
+      title?: string;
+      content?: string;
+      visibility?: "private" | "dm_visible";
+      linkedEntityIds?: string[];
+      updatedAt: string;
+    }
+  | {
+      type: "ArchivePlayerPortalNote";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      noteId: string;
+      archivedAt: string;
+    }
+  | {
+      type: "CreatePlayerPortalObjective";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      objectiveId: string;
+      title: string;
+      description?: string;
+      kind: "personal" | "session" | "question_for_dm";
+      status: "open" | "done" | "archived";
+      visibility: "private" | "dm_visible";
+      linkedEntityIds: string[];
+      createdAt: string;
+    }
+  | {
+      type: "UpdatePlayerPortalObjective";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      objectiveId: string;
+      title?: string;
+      description?: string;
+      kind?: "personal" | "session" | "question_for_dm";
+      status?: "open" | "done" | "archived";
+      visibility?: "private" | "dm_visible";
+      linkedEntityIds?: string[];
+      updatedAt: string;
+    }
+  | {
+      type: "ArchivePlayerPortalObjective";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      objectiveId: string;
+      archivedAt: string;
+    }
+  | {
       type: "ConvertCanvasNoteToEntity";
       campaignId: CampaignId;
       actorId: string;

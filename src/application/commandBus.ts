@@ -702,6 +702,109 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         revokedAt: command.revokedAt,
       }));
     }
+    case "UpdatePlayerLiveStatus": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerCharacterLiveStateUpdated", {
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        characterEntityId: command.characterEntityId,
+        status: command.status,
+        updatedBy: command.updatedBy,
+        updatedAt: command.updatedAt,
+      }));
+    }
+    case "UpsertPlayerResource": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerResourceUpserted", {
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        characterEntityId: command.characterEntityId,
+        resource: command.resource,
+        updatedAt: command.updatedAt,
+      }));
+    }
+    case "RemovePlayerResource": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerResourceRemoved", {
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        characterEntityId: command.characterEntityId,
+        resourceId: command.resourceId,
+        removedAt: command.removedAt,
+      }));
+    }
+    case "CreatePlayerPortalNote": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerPortalNoteCreated", {
+        noteId: command.noteId,
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        title: command.title,
+        content: command.content,
+        visibility: command.visibility,
+        linkedEntityIds: command.linkedEntityIds,
+        createdAt: command.createdAt,
+        updatedAt: command.createdAt,
+      }));
+    }
+    case "UpdatePlayerPortalNote": {
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerPortalNoteUpdated", {
+        noteId: command.noteId,
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        ...(command.title !== undefined && { title: command.title }),
+        ...(command.content !== undefined && { content: command.content }),
+        ...(command.visibility !== undefined && { visibility: command.visibility }),
+        ...(command.linkedEntityIds !== undefined && { linkedEntityIds: command.linkedEntityIds }),
+        updatedAt: command.updatedAt,
+      }));
+    }
+    case "ArchivePlayerPortalNote": {
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerPortalNoteArchived", {
+        noteId: command.noteId,
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        archivedAt: command.archivedAt,
+      }));
+    }
+    case "CreatePlayerPortalObjective": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerPortalObjectiveCreated", {
+        objectiveId: command.objectiveId,
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        title: command.title,
+        description: command.description,
+        kind: command.kind,
+        status: command.status,
+        visibility: command.visibility,
+        linkedEntityIds: command.linkedEntityIds,
+        createdAt: command.createdAt,
+        updatedAt: command.createdAt,
+      }));
+    }
+    case "UpdatePlayerPortalObjective": {
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerPortalObjectiveUpdated", {
+        objectiveId: command.objectiveId,
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        ...(command.title !== undefined && { title: command.title }),
+        ...(command.description !== undefined && { description: command.description }),
+        ...(command.kind !== undefined && { kind: command.kind }),
+        ...(command.status !== undefined && { status: command.status }),
+        ...(command.visibility !== undefined && { visibility: command.visibility }),
+        ...(command.linkedEntityIds !== undefined && { linkedEntityIds: command.linkedEntityIds }),
+        updatedAt: command.updatedAt,
+      }));
+    }
+    case "ArchivePlayerPortalObjective": {
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerPortalObjectiveArchived", {
+        objectiveId: command.objectiveId,
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        archivedAt: command.archivedAt,
+      }));
+    }
     case "ConvertCanvasNoteToEntity": {
       const canvases = new Map(state.canvases || new Map());
       const canvas = canvases.get(command.canvasId);

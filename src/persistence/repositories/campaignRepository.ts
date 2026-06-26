@@ -7,7 +7,7 @@ import {
   applyEvent,
 } from "../../projections/campaignProjection.js";
 import type { CampaignId } from "../../shared/ids.js";
-import type { DomainEventType } from "../../domain/shared/events.js";
+import type { DomainEventType, StoredEvent } from "../../domain/shared/events.js";
 import { InvariantViolationError } from "../../shared/errors.js";
 import type { Command } from "../../application/commands.js";
 import { handleCommand } from "../../application/commandBus.js";
@@ -45,6 +45,13 @@ export class CampaignRepository {
     }
 
     return projection;
+  }
+
+  /**
+   * Loads all raw events for a campaign (used by portal projection).
+   */
+  public async loadEvents(campaignId: CampaignId): Promise<StoredEvent[]> {
+    return this.eventStore.loadEvents(campaignId);
   }
 
   /**
