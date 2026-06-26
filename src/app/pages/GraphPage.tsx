@@ -1,11 +1,16 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import ForceGraph3D from "react-force-graph-3d";
 import * as THREE from "three";
 import SpriteText from "three-spritetext";
-import { Plus, Eye, EyeOff, AlertTriangle, X, Maximize } from "lucide-react";
+import { Plus, Eye, EyeOff, AlertTriangle, X, Maximize, ExternalLink, Lock } from "lucide-react";
 import type { Entity } from "../stores/campaignStore.js";
 import { useCampaignStore } from "../stores/campaignStore.js";
 import { findNarrativeAnchor, findUndirectedShortestPath } from "../features/graph/findNarrativePath.js";
+import { GraphNodeSearch } from "../components/GraphNodeSearch.js";
+import type { GraphSearchItem } from "../components/GraphNodeSearch.js";
+import { EntityDetailModal } from "../components/EntityDetailModal.js";
+import { getEntityDefaultImage } from "../utils/entityVisuals.js";
+import { useToast } from "../hooks/useToast.js";
 
 export interface GraphPageProps {
   graph?: any;
@@ -19,24 +24,24 @@ export interface GraphPageProps {
 
 const ENTITY_TYPE_COLORS: Record<string, string> = {
   player_character: "#6366f1",
-  npc:             "#3b82f6",
-  location:        "#10b981",
-  faction:         "#f59e0b",
-  quest:           "#f97316",
-  clue:            "#eab308",
-  secret:          "#ef4444",
-  item:            "#8b5cf6",
-  creature:        "#dc2626",
-  encounter:       "#0891b2",
-  scene:           "#64748b",
-  front:           "#7c3aed",
-  clock:           "#0ea5e9",
-  decision:        "#d97706",
-  consequence:     "#b45309",
-  rumor:           "#6b7280",
-  rule_reference:  "#374151",
-  handout:         "#1d4ed8",
-  note:            "#475569",
+  npc: "#3b82f6",
+  location: "#10b981",
+  faction: "#f59e0b",
+  quest: "#f97316",
+  clue: "#eab308",
+  secret: "#ef4444",
+  item: "#8b5cf6",
+  creature: "#dc2626",
+  encounter: "#0891b2",
+  scene: "#64748b",
+  front: "#7c3aed",
+  clock: "#0ea5e9",
+  decision: "#d97706",
+  consequence: "#b45309",
+  rumor: "#6b7280",
+  rule_reference: "#374151",
+  handout: "#1d4ed8",
+  note: "#475569",
 };
 
 const TYPE_LABEL_ES: Record<string, string> = {
@@ -103,20 +108,25 @@ function getNodeRadius(importance?: string): number {
 export function GraphPage(props: GraphPageProps = {}) {
   const store = useCampaignStore();
   const campaignState = props.campaignState ?? store.campaignState;
+  const graph = props.graph ?? store.graph ?? { nodes: [], links: [] };
   const setIsRelationModalOpen = props.setIsRelationModalOpen ?? store.setIsRelationModalOpen;
-  const setSelectedEntity = props.setSelectedEntity ?? ((_e: any) => {});
+  const setSelectedEntity = props.setSelectedEntity ?? ((_e: any) => { });
 
+  const { addToast } = useToast();
   const [preset, setPreset] = useState<FilterPreset>("todos");
   const [viewMode, setViewMode] = useState<ViewMode>("all");
   const [labelsMode, setLabelsMode] = useState<"Auto" | "Todas" | "Mínimas">("Auto");
-  const [panelEntity, setPanelEntity] = useState<any>(null);
-  const selectedEntity = props.selectedEntity ?? panelEntity;
+  const [localPanelEntity, setPanelEntity] = useState<any>(null);
+  const [detailEntityOpen, setDetailEntityOpen] = useState(false);
+  const selectedEntity = props.selectedEntity ?? localPanelEntity;
+  const panelEntity = localPanelEntity ?? props.selectedEntity ?? null;
   const [containerSize, setContainerSize] = useState({ w: 900, h: 600 });
   const containerRef = useRef<HTMLDivElement>(null);
   const fgRef = useRef<any>(null);
   const hoveredNodeRef = useRef<any>(null);
   const panelEntityRef = useRef<any>(null);
   const [hasZoomed, setHasZoomed] = useState(false);
+  const [pendingFocusNodeId, setPendingFocusNodeId] = useState<string | null>(null);
 
   useEffect(() => { panelEntityRef.current = panelEntity; }, [panelEntity]);
 
@@ -159,6 +169,31 @@ export function GraphPage(props: GraphPageProps = {}) {
       ? campaignState.relations.values()
       : Object.values(campaignState?.relations ?? {})) as Iterable<any>
   );
+
+  const graphSearchItems = useMemo<GraphSearchItem[]>(() => {
+    const nodes = Array.isArray(graph?.nodes) ? graph.nodes : [];
+
+    return nodes.map((node: any) => {
+      const nodeId = String(node.id ?? "");
+      const entity = entitiesArr.find((e) => e.entityId === nodeId);
+      const rawType = entity?.entityType ?? node.type ?? "unknown";
+
+      return {
+        nodeId,
+        title: entity?.title ?? node.name ?? nodeId,
+        type: TYPE_LABEL_ES[rawType] ?? rawType,
+        summary: entity?.summary ?? "",
+        content: entity?.content ?? "",
+        status: entity?.status ?? "",
+        importance: entity?.importance ?? "",
+        metadataText: entity?.metadata
+          ? Object.values(entity.metadata)
+            .filter((value) => typeof value === "string" || typeof value === "number")
+            .join(" ")
+          : "",
+      };
+    });
+  }, [entitiesArr, graph]);
 
   // Next session entity calculation helper
   const getNextSessionEntityIds = useCallback(() => {
@@ -230,16 +265,68 @@ export function GraphPage(props: GraphPageProps = {}) {
       })),
   };
 
+  const selectGraphEntity = useCallback((entity: Entity | null) => {
+    setPanelEntity(entity);
+    setSelectedEntity(entity);
+  }, [setSelectedEntity]);
+
+  const focusVisibleNode = useCallback((nodeId: string) => {
+    const visibleNode = graphData.nodes.find((node: any) => node.id === nodeId) as any | undefined;
+    const entity = entitiesArr.find((e) => e.entityId === nodeId);
+
+    if (!visibleNode || !entity) {
+      return false;
+    }
+
+    selectGraphEntity(entity);
+
+    window.setTimeout(() => {
+      const d = 90;
+      const x = visibleNode.x ?? 0;
+      const y = visibleNode.y ?? 0;
+      const z = visibleNode.z ?? 0;
+      fgRef.current?.cameraPosition({ x: x + d, y: y + d * 0.35, z: z + d }, { x, y, z }, 900);
+    }, 80);
+
+    return true;
+  }, [entitiesArr, graphData.nodes, selectGraphEntity]);
+
+  const focusGraphNode = useCallback((nodeId: string) => {
+    const isVisible = graphData.nodes.some((node: any) => node.id === nodeId);
+
+    if (!isVisible) {
+      setPreset("todos");
+      setViewMode("all");
+      setPendingFocusNodeId(nodeId);
+      return;
+    }
+
+    focusVisibleNode(nodeId);
+  }, [focusVisibleNode, graphData.nodes]);
+
+  useEffect(() => {
+    if (!pendingFocusNodeId) return;
+
+    const isNowVisible = graphData.nodes.some((node: any) => node.id === pendingFocusNodeId);
+    if (!isNowVisible) return;
+
+    const nodeId = pendingFocusNodeId;
+    setPendingFocusNodeId(null);
+    window.setTimeout(() => {
+      focusVisibleNode(nodeId);
+    }, 120);
+  }, [focusVisibleNode, graphData.nodes, pendingFocusNodeId]);
+
   const panelRelations = panelEntity
     ? relationsArr.filter((r: any) =>
-        !r.archived && (r.sourceEntityId === panelEntity.entityId || r.targetEntityId === panelEntity.entityId)
-      )
+      !r.archived && (r.sourceEntityId === panelEntity.entityId || r.targetEntityId === panelEntity.entityId)
+    )
     : [];
 
   const relatedFacts = panelEntity
     ? (campaignState?.facts ?? []).filter((f: any) =>
-        !f.archived && f.relatedEntityIds?.includes(panelEntity.entityId)
-      )
+      !f.archived && f.relatedEntityIds?.includes(panelEntity.entityId)
+    )
     : [];
 
   // Shortest path BFS logic to the anchor
@@ -302,7 +389,7 @@ export function GraphPage(props: GraphPageProps = {}) {
 
     let glowColorInt = colorInt;
     let glowOpacity = 0.15;
-    
+
     if (isDmOnly) {
       glowColorInt = hexToInt("#a855f7"); // violet
       glowOpacity = 0.35;
@@ -392,7 +479,7 @@ export function GraphPage(props: GraphPageProps = {}) {
 
   const applyHighlight = useCallback((node: any, active: boolean) => {
     if (!node) return;
-    
+
     const isPlayerChar = node.entityType === "player_character";
     const isSelected = selectedEntity && selectedEntity.entityId === node.id;
     const isOnPath = narrativePath && narrativePath.includes(node.id);
@@ -445,15 +532,8 @@ export function GraphPage(props: GraphPageProps = {}) {
   }, [applyHighlight]);
 
   const handleNodeClick = useCallback((node: any) => {
-    const entity = node.entityData;
-    setPanelEntity(entity);
-    setSelectedEntity(entity);
-    if (fgRef.current) {
-      const d = 80;
-      const { x = 0, y = 0, z = 0 } = node;
-      fgRef.current.cameraPosition({ x: x + d, y: y + d * 0.4, z: z + d }, { x, y, z }, 800);
-    }
-  }, [setSelectedEntity]);
+    focusVisibleNode(node.id);
+  }, [focusVisibleNode]);
 
   const handleZoomToFit = useCallback(() => {
     if (fgRef.current) {
@@ -480,7 +560,10 @@ export function GraphPage(props: GraphPageProps = {}) {
     const updatedMeta = { ...currentMeta, nextSession: nextVal, pinned: nextVal };
 
     await store.updateEntity(panelEntity.entityId, { metadata: updatedMeta });
-    setPanelEntity((prev: any) => prev ? { ...prev, metadata: updatedMeta } : null);
+
+    const updatedEntity = { ...panelEntity, metadata: updatedMeta };
+    setPanelEntity(updatedEntity);
+    setSelectedEntity(updatedEntity);
   };
 
   const handleToggleVisibility = async () => {
@@ -496,7 +579,10 @@ export function GraphPage(props: GraphPageProps = {}) {
     const updatedVisibility = { ...panelEntity.visibility, kind: nextKind };
 
     await store.updateEntity(panelEntity.entityId, { visibility: updatedVisibility });
-    setPanelEntity((prev: any) => prev ? { ...prev, visibility: updatedVisibility } : null);
+
+    const updatedEntity = { ...panelEntity, visibility: updatedVisibility };
+    setPanelEntity(updatedEntity);
+    setSelectedEntity(updatedEntity);
   };
 
   const isEntityPinned = panelEntity?.metadata?.nextSession === true || panelEntity?.metadata?.pinned === true;
@@ -518,6 +604,12 @@ export function GraphPage(props: GraphPageProps = {}) {
           <Plus size={16} /> Nueva relación
         </button>
       </div>
+
+      {/* Node search */}
+      <GraphNodeSearch
+        items={graphSearchItems}
+        onSelectNode={focusGraphNode}
+      />
 
       {/* Filters */}
       <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "center" }}>
@@ -542,10 +634,19 @@ export function GraphPage(props: GraphPageProps = {}) {
       </div>
 
       {/* Graph + panel */}
-      <div style={{ display: "flex", gap: "0", borderRadius: "var(--radius-md)", overflow: "hidden", border: "1px solid var(--border-color)", height: "calc(100vh - 260px)", minHeight: "500px" }}>
+      <div style={{ display: "flex", gap: "0", width: "100%", borderRadius: "var(--radius-md)", overflow: "hidden", border: "1px solid var(--border-color)", height: "calc(100vh - 260px)", minHeight: "500px" }}>
 
         {/* 3D canvas */}
-        <div ref={containerRef} style={{ position: "relative", flex: 1, background: "#000008" }}>
+        <div
+          ref={containerRef}
+          style={{
+            position: "relative",
+            flex: "1 1 auto",
+            minWidth: 0,
+            overflow: "hidden",
+            background: "#000008",
+          }}
+        >
           {visibleEntities.length === 0 ? (
             <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: "12px", color: "var(--text-muted)" }}>
               <AlertTriangle size={32} />
@@ -572,7 +673,7 @@ export function GraphPage(props: GraphPageProps = {}) {
                 // Interaction
                 onNodeClick={handleNodeClick}
                 onNodeHover={handleNodeHover}
-                onBackgroundClick={() => { setPanelEntity(null); setSelectedEntity(null); }}
+                onBackgroundClick={() => selectGraphEntity(null)}
                 // Physics
                 cooldownTicks={150}
                 d3AlphaDecay={0.025}
@@ -641,10 +742,51 @@ export function GraphPage(props: GraphPageProps = {}) {
         {/* Side panel */}
         {panelEntity && (
           <div style={{
-            width: "290px", flexShrink: 0,
+            position: "relative",
+            zIndex: 2,
+            width: "290px",
+            flex: "0 0 290px",
             background: "rgba(2,2,18,0.97)", borderLeft: "1px solid rgba(255,255,255,0.07)",
             display: "flex", flexDirection: "column", overflowY: "auto",
           }}>
+            {/* Entity image */}
+            {(() => {
+              const imgUrl = panelEntity.metadata?.imageUrl || getEntityDefaultImage(panelEntity.entityType);
+              const isDmOnly = panelEntity.visibility?.kind === "dm_only" || panelEntity.entityType === "secret";
+              return (
+                <div style={{ position: "relative", width: "100%", height: "160px", overflow: "hidden", flexShrink: 0 }}>
+                  <img
+                    src={imgUrl}
+                    alt={isDmOnly ? "" : panelEntity.title}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      filter: isDmOnly ? "grayscale(70%) brightness(30%)" : "none",
+                      opacity: panelEntity.metadata?.imageUrl ? 1 : 0.5,
+                      display: "block",
+                    }}
+                  />
+                  {isDmOnly && (
+                    <div style={{
+                      position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                      backgroundColor: "rgba(6,7,14,0.45)",
+                      color: "#ef4444", fontSize: "0.75rem", fontWeight: 700,
+                      textTransform: "uppercase", letterSpacing: "0.05em",
+                    }}>
+                      <Lock size={14} /> Solo DM
+                    </div>
+                  )}
+                  {/* gradient fade at the bottom */}
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0, height: "60px",
+                    background: "linear-gradient(to top, rgba(2,2,18,0.97), transparent)",
+                  }} />
+                </div>
+              );
+            })()}
+
             {/* Header */}
             <div style={{ padding: "16px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
@@ -663,7 +805,7 @@ export function GraphPage(props: GraphPageProps = {}) {
                     </span>
                   )}
                 </div>
-                <button onClick={() => { setPanelEntity(null); setSelectedEntity(null); }} style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(148,163,184,0.5)", padding: 0 }}>
+                <button onClick={() => selectGraphEntity(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(148,163,184,0.5)", padding: 0 }}>
                   <X size={13} />
                 </button>
               </div>
@@ -675,6 +817,25 @@ export function GraphPage(props: GraphPageProps = {}) {
                   {isEntityPinned && <span style={{ marginLeft: "4px", color: "#fbbf24" }}>⭐ Fijado</span>}
                 </div>
               )}
+              {/* Ver detalle button */}
+              <div style={{ display: "flex", gap: "6px", marginTop: "10px" }}>
+                <button
+                  onClick={() => setDetailEntityOpen(true)}
+                  style={{
+                    flex: 1,
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: "5px",
+                    fontSize: "0.72rem", fontWeight: 700,
+                    padding: "6px 10px", borderRadius: "5px", cursor: "pointer",
+                    border: "1px solid rgba(99,102,241,0.4)",
+                    background: "rgba(99,102,241,0.12)", color: "#a5b4fc",
+                    transition: "all 0.15s",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(99,102,241,0.22)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(99,102,241,0.12)"; }}
+                >
+                  <ExternalLink size={11} /> Ver detalle
+                </button>
+              </div>
             </div>
 
             {panelEntity.summary && (
@@ -764,10 +925,10 @@ export function GraphPage(props: GraphPageProps = {}) {
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Actitud hacia el grupo</span>
                     <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>
                       {panelEntity.metadata.attitudeToParty === "friendly" ? "🟢 Amistoso" :
-                       panelEntity.metadata.attitudeToParty === "hostile" ? "🔴 Hostil" :
-                       panelEntity.metadata.attitudeToParty === "deceptive" ? "🟡 Engañoso" :
-                       panelEntity.metadata.attitudeToParty === "neutral" ? "⚪ Neutral" :
-                       panelEntity.metadata.attitudeToParty}
+                        panelEntity.metadata.attitudeToParty === "hostile" ? "🔴 Hostil" :
+                          panelEntity.metadata.attitudeToParty === "deceptive" ? "🟡 Engañoso" :
+                            panelEntity.metadata.attitudeToParty === "neutral" ? "⚪ Neutral" :
+                              panelEntity.metadata.attitudeToParty}
                     </p>
                   </div>
                 )}
@@ -828,9 +989,9 @@ export function GraphPage(props: GraphPageProps = {}) {
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Tipo de pista</span>
                     <span style={{ fontSize: "0.65rem", padding: "1px 6px", borderRadius: "4px", background: "rgba(255,255,255,0.08)", color: "#e2e8f0", display: "inline-block", marginTop: "3px", width: "fit-content" }}>
                       {panelEntity.metadata.clueType === "document" ? "📄 Documento" :
-                       panelEntity.metadata.clueType === "verbal" ? "🗣️ Verbal" :
-                       panelEntity.metadata.clueType === "physical" ? "🏺 Físico" :
-                       panelEntity.metadata.clueType}
+                        panelEntity.metadata.clueType === "verbal" ? "🗣️ Verbal" :
+                          panelEntity.metadata.clueType === "physical" ? "🏺 Físico" :
+                            panelEntity.metadata.clueType}
                     </span>
                   </div>
                 )}
@@ -937,7 +1098,7 @@ export function GraphPage(props: GraphPageProps = {}) {
                     <div
                       key={r.relationId}
                       style={{ fontSize: "0.73rem", padding: "6px 8px", background: "rgba(255,255,255,0.03)", borderRadius: "5px", cursor: "pointer", border: "1px solid rgba(255,255,255,0.04)" }}
-                      onClick={() => { const e = entitiesArr.find((en: Entity) => en.entityId === otherId); if (e) { setPanelEntity(e); setSelectedEntity(e); } }}
+                      onClick={() => focusGraphNode(otherId)}
                       onMouseEnter={(ev) => (ev.currentTarget.style.background = "rgba(255,255,255,0.07)")}
                       onMouseLeave={(ev) => (ev.currentTarget.style.background = "rgba(255,255,255,0.03)")}
                     >
@@ -964,6 +1125,27 @@ export function GraphPage(props: GraphPageProps = {}) {
           </div>
         )}
       </div>
+
+      {/* Entity detail modal */}
+      {detailEntityOpen && panelEntity && (
+        <EntityDetailModal
+          selectedEntity={panelEntity}
+          campaignState={campaignState}
+          onClose={() => setDetailEntityOpen(false)}
+          onEdit={async (entityId, updates) => {
+            await store.updateEntity(entityId, updates);
+          }}
+          onArchive={async (entityId) => {
+            await store.archiveEntity(entityId);
+            setDetailEntityOpen(false);
+            selectGraphEntity(null);
+          }}
+          onVisibilityChange={async (entityId, visibility) => {
+            await store.updateEntity(entityId, { visibility });
+          }}
+          addToast={addToast}
+        />
+      )}
     </div>
   );
 }
