@@ -45,7 +45,7 @@ export function JoinPage() {
 
       await useCampaignStore.getState().selectCampaign(campaignId);
 
-      navigate({ to: `/campaigns/${campaignId}/dashboard` });
+      navigate({ to: `/campaigns/${campaignId}/player-portal` });
     } catch (err: any) {
       setError(err.message || "Error de conexión");
       setLoading(false);
