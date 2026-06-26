@@ -37,6 +37,7 @@ import { SessionPage } from "./pages/SessionPage.js";
 import { EntitiesPage } from "./pages/EntitiesPage.js";
 import { GraphPage } from "./pages/GraphPage.js";
 import { EntityDetailModal } from "./components/EntityDetailModal.js";
+import { AppFooter } from "./components/AppFooter.js";
 import { TypeMetadataForm } from "./components/TypeMetadataForm.js";
 
 export function App() {
@@ -545,6 +546,8 @@ export function App() {
             </section>
           </div>
         </div>
+
+        <AppFooter variant="landing" />
       </div>
     );
   }
