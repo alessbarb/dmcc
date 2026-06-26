@@ -184,7 +184,8 @@ const fetchWithVault = (url: string, init?: RequestInit) => {
   const playerId = sessionStorage.getItem("dmcc_playerId");
   const accessCode = sessionStorage.getItem("dmcc_accessCode");
   const dmToken = sessionStorage.getItem("dmcc_dmSessionToken");
-  
+  const playerToken = sessionStorage.getItem("dmcc_playerToken");
+
   if (playerRole) {
     headers.set("x-role", playerRole);
   }
@@ -196,6 +197,9 @@ const fetchWithVault = (url: string, init?: RequestInit) => {
   }
   if (dmToken) {
     headers.set("x-dm-token", dmToken);
+  }
+  if (playerToken) {
+    headers.set("x-player-token", playerToken);
   }
 
   return fetch(url, {

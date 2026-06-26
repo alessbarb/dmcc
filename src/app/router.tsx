@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 import { App } from "./App.js";
 import { CampaignShell } from "./CampaignShell.js";
+import { JoinPage } from "./pages/JoinPage.js";
 import { DashboardPage } from "./pages/DashboardPage.js";
 import { WhatNowPage } from "./pages/WhatNowPage.js";
 import { SessionPage } from "./pages/SessionPage.js";
@@ -34,7 +35,7 @@ const indexRoute = createRoute({
 const joinRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/join/$campaignId",
-  component: () => <App />,
+  component: JoinPage,
 });
 
 // Campaign shell — parent layout with sidebar
