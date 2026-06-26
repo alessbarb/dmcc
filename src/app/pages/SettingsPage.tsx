@@ -1,24 +1,38 @@
 import React from "react";
 import { RotateCcw, Download, Upload, Wifi, WifiOff, Copy, Check } from "lucide-react";
 import type { ToastKind } from "../hooks/useToast.js";
+import { useCampaignStore } from "../stores/campaignStore.js";
+import { useToast } from "../hooks/useToast.js";
+import { useNavigate } from "@tanstack/react-router";
 
 export interface SettingsPageProps {
-  campaigns: any[];
-  activeCampaignId: string | null;
-  campaignState: any;
-  vaults: any[];
-  activeVaultId: string | null;
-  createBackup: () => Promise<any>;
-  exportJson: () => Promise<any>;
-  exportMarkdown: () => Promise<any>;
-  onCampaignDeleted: () => void | Promise<void>;
-  addToast: (msg: string, kind?: ToastKind) => void;
-  lanStatus: { lanModeEnabled: boolean; accessCode: string | null; localIp: string; port: number; joinUrl: string } | null;
-  toggleLanMode: (enabled: boolean) => Promise<any>;
+  campaigns?: any[];
+  activeCampaignId?: string | null;
+  campaignState?: any;
+  vaults?: any[];
+  activeVaultId?: string | null;
+  createBackup?: () => Promise<any>;
+  exportJson?: () => Promise<any>;
+  exportMarkdown?: () => Promise<any>;
+  onCampaignDeleted?: () => void | Promise<void>;
+  addToast?: (msg: string, kind?: ToastKind) => void;
+  lanStatus?: { lanModeEnabled: boolean; accessCode: string | null; localIp: string; port: number; joinUrl: string } | null;
+  toggleLanMode?: (enabled: boolean) => Promise<any>;
 }
 
-export function SettingsPage(props: SettingsPageProps) {
-  const { activeCampaignId, campaignState, createBackup, exportJson, exportMarkdown, onCampaignDeleted, addToast, lanStatus, toggleLanMode } = props;
+export function SettingsPage(props: SettingsPageProps = {}) {
+  const navigate = useNavigate();
+  const store = useCampaignStore();
+  const { addToast: toastAdd } = useToast();
+  const activeCampaignId = props.activeCampaignId ?? store.activeCampaignId;
+  const campaignState = props.campaignState ?? store.campaignState;
+  const createBackup = props.createBackup ?? store.createBackup;
+  const exportJson = props.exportJson ?? store.exportJson;
+  const exportMarkdown = props.exportMarkdown ?? store.exportMarkdown;
+  const lanStatus = props.lanStatus !== undefined ? props.lanStatus : store.lanStatus;
+  const toggleLanMode = props.toggleLanMode ?? store.toggleLanMode;
+  const addToast = props.addToast ?? toastAdd;
+  const onCampaignDeleted = props.onCampaignDeleted ?? (async () => { await navigate({ to: "/" }); });
   const [copiedCode, setCopiedCode] = React.useState(false);
   const [copiedLink, setCopiedLink] = React.useState(false);
 
