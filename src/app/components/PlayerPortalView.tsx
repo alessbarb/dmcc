@@ -47,7 +47,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const visibleSessions = campaignState.sessions?.filter(s => s.status === "closed" || s.status === "active");
   const myNotes = campaignState.entities?.filter(e => e.entityType === "note" && !e.archived && e.visibility?.playerIds?.includes(playerId));
 
-  const handleCreateNoteSubmit = async (e: React.FormEvent) => {
+  const handleCreateNoteSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!newNoteTitle.trim()) return;
     await createEntity({
@@ -62,7 +62,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     setIsCreatingNote(false);
   };
 
-  const handleEditCharSubmit = async (e: React.FormEvent) => {
+  const handleEditCharSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!myCharacter) return;
     await updateEntity(myCharacter.entityId, {
