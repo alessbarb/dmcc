@@ -4,6 +4,7 @@ import { playerIdSchema, entityIdSchema } from "../../shared/schemas.js";
 
 export const genericPlayerCharacterMetadataSchema = z.object({
   playerId: playerIdSchema.optional(),
+  isPremade: z.boolean().optional(),
   className: z.string().optional(),
   subclass: z.string().optional(),
   level: z.number().int().min(1).optional(),
@@ -36,6 +37,14 @@ export const genericPlayerCharacterMetadataSchema = z.object({
   importantItems: z.array(entityIdSchema).optional(),
   personalGoals: z.array(z.string()).optional(),
   note: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (!data.isPremade && !data.playerId) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["playerId"],
+      message: "playerId is required unless isPremade is true",
+    });
+  }
 });
 
 export const genericRules: RuleSystem = {

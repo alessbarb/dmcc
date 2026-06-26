@@ -109,10 +109,24 @@ describe("Domain Aggregates", () => {
         campaignId,
         entityType: "player_character",
         title: "Hero",
-        metadata: {},
+        metadata: {
+          isPremade: true
+        },
         campaignSystem: "generic_fantasy_d20"
       };
       expect(() => createEntity(pcProps)).not.toThrow();
+    });
+
+    it("rejects Player Character without metadata.playerId for generic system if not isPremade", () => {
+      const pcProps = {
+        entityId: generateEntityId(),
+        campaignId,
+        entityType: "player_character",
+        title: "Hero",
+        metadata: {},
+        campaignSystem: "generic_fantasy_d20"
+      };
+      expect(() => createEntity(pcProps)).toThrow(/playerId/i);
     });
 
     it("rejects Player Character for dnd_srd_5_2_1 campaign when missing required fields like strength or className", () => {
@@ -122,6 +136,7 @@ describe("Domain Aggregates", () => {
         entityType: "player_character",
         title: "D&D Hero",
         metadata: {
+          playerId: "ply_player_1",
           level: 1,
           species: "Elfo",
           background: "Acólito"
@@ -139,6 +154,40 @@ describe("Domain Aggregates", () => {
         entityType: "player_character",
         title: "D&D Hero Valid",
         metadata: {
+          playerId: "ply_player_1",
+          className: "Pícaro",
+          level: 1,
+          species: "Elfo",
+          background: "Forajida",
+          armorClass: 14,
+          hitPointsCurrent: 8,
+          hitPointsMax: 8,
+          hitDice: "1d8",
+          speed: 30,
+          initiative: 3,
+          passivePerception: 14,
+          passiveInsight: 12,
+          passiveInvestigation: 13,
+          strength: 8,
+          dexterity: 17,
+          constitution: 12,
+          intelligence: 13,
+          wisdom: 14,
+          charisma: 10
+        },
+        campaignSystem: "dnd_srd_5_2_1"
+      };
+      expect(() => createEntity(pcProps)).not.toThrow();
+    });
+
+    it("allows Player Character without playerId (pre-made template) for dnd_srd_5_2_1 campaign when all other required fields are provided", () => {
+      const pcProps = {
+        entityId: generateEntityId(),
+        campaignId,
+        entityType: "player_character",
+        title: "D&D Hero Premade Valid",
+        metadata: {
+          isPremade: true,
           className: "Pícaro",
           level: 1,
           species: "Elfo",
@@ -171,6 +220,7 @@ describe("Domain Aggregates", () => {
         entityType: "player_character",
         title: "D&D Level 3 Hero",
         metadata: {
+          playerId: "ply_player_1",
           className: "Pícaro",
           level: 3,
           species: "Elfo",
