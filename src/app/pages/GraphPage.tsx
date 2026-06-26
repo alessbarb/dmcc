@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import ForceGraph3D from "react-force-graph-3d";
 import * as THREE from "three";
 import SpriteText from "three-spritetext";
-import { Plus, Eye, EyeOff, AlertTriangle, X, Maximize, Sparkles } from "lucide-react";
+import { Plus, Eye, EyeOff, AlertTriangle, X, Maximize } from "lucide-react";
 import type { Entity } from "../stores/campaignStore.js";
 import { useCampaignStore } from "../stores/campaignStore.js";
 import { findNarrativeAnchor, findUndirectedShortestPath } from "../features/graph/findNarrativePath.js";
@@ -103,8 +103,7 @@ function getNodeRadius(importance?: string): number {
 export function GraphPage(props: GraphPageProps = {}) {
   const store = useCampaignStore();
   const campaignState = props.campaignState ?? store.campaignState;
-  const [, setIsRelationModalOpenLocal] = useState(false);
-  const setIsRelationModalOpen = props.setIsRelationModalOpen ?? setIsRelationModalOpenLocal;
+  const setIsRelationModalOpen = props.setIsRelationModalOpen ?? store.setIsRelationModalOpen;
   const setSelectedEntity = props.setSelectedEntity ?? ((_e: any) => {});
 
   const [preset, setPreset] = useState<FilterPreset>("todos");
@@ -369,8 +368,8 @@ export function GraphPage(props: GraphPageProps = {}) {
       const isDmOnly = node.entityData?.visibility?.kind === "dm_only";
       const isPending = node.entityData?.status === "pending" || node.entityData?.status === "suspected";
       const isResolved = node.entityData?.status === "resolved" || node.entityData?.status === "revealed";
+      const baseCoreOpacity = isResolved ? 0.4 : 0.9;
 
-      let baseCoreOpacity = isResolved ? 0.4 : 0.9;
       let baseGlowOpacity = isResolved ? 0.05 : 0.15;
       if (isDmOnly) baseGlowOpacity = 0.35;
       else if (isPending) baseGlowOpacity = 0.3;

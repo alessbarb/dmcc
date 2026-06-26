@@ -37,6 +37,7 @@ import { SessionPage } from "./pages/SessionPage.js";
 import { EntitiesPage } from "./pages/EntitiesPage.js";
 import { GraphPage } from "./pages/GraphPage.js";
 import { EntityDetailModal } from "./components/EntityDetailModal.js";
+import { TypeMetadataForm } from "./components/TypeMetadataForm.js";
 
 export function App() {
   const {
@@ -1007,7 +1008,7 @@ export function App() {
                     />
                   </div>
                 )}
-                 {entityForm.entityType === "player_character" && (
+                {entityForm.entityType === "player_character" && (
                   campaignState?.campaign?.system === "dnd_srd_5_2_1" ? (
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                       <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
@@ -1262,6 +1263,24 @@ export function App() {
                   </div>
                 )}
               </div>
+              {["clue", "secret"].includes(entityForm.entityType) && (
+                <TypeMetadataForm
+                  entityType={entityForm.entityType}
+                  metadata={entityForm.metadata}
+                  players={campaignState?.players ?? []}
+                  entities={campaignState?.entities ?? []}
+                  campaignSystem={campaignState?.campaign?.system}
+                  onChange={(field, value) =>
+                    setEntityForm({
+                      ...entityForm,
+                      metadata: {
+                        ...entityForm.metadata,
+                        [field]: value,
+                      },
+                    })
+                  }
+                />
+              )}
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={() => setIsEntityModalOpen(false)}>
                   Cancelar

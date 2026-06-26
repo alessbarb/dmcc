@@ -48,12 +48,11 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
   const [entitySearchQueryLocal, setEntitySearchQueryLocal] = useState("");
   const [entityTypeFilterLocal, setEntityTypeFilterLocal] = useState("all");
-  const [, setIsEntityModalOpenLocal] = useState(false);
   const entitySearchQuery = props.entitySearchQuery ?? entitySearchQueryLocal;
   const setEntitySearchQuery = props.setEntitySearchQuery ?? setEntitySearchQueryLocal;
   const entityTypeFilter = props.entityTypeFilter ?? entityTypeFilterLocal;
   const setEntityTypeFilter = props.setEntityTypeFilter ?? setEntityTypeFilterLocal;
-  const setIsEntityModalOpen = props.setIsEntityModalOpen ?? setIsEntityModalOpenLocal;
+  const setIsEntityModalOpen = props.setIsEntityModalOpen ?? store.setIsEntityModalOpen;
 
   return (<>
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>

@@ -6,6 +6,8 @@
   "scripts": {
     "archive": "mkdir -p dist && git ls-files -z --cached --others --exclude-standard | tar --null -czf dist/dmcc.tar.gz --files-from=-",
     "build": "vite build && tsc -p tsconfig.json",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typecheck:app": "tsc -p tsconfig.app.json",
     "typecheck:all": "npm run typecheck && npm run typecheck:app",
@@ -22,8 +24,6 @@
     "quality": "npm run quality:lint && npm run quality:typecheck && npm run quality:test && npm run quality:build",
     "quality:all": "npm run quality && npm run quality:e2e",
     "quality:e2e": "npm run test:e2e",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "quality:lint": "npm run lint"
   },
   "dependencies": {
