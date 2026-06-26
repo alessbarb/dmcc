@@ -366,6 +366,18 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         event: makeEvent(command.actorId, command.campaignId, "SessionEventRecorded", eventRecord),
       };
     }
+    case "RestoreBackup": {
+      // Restore is handled at the persistence layer (file copy).
+      // This command records the restore event in the event log AFTER
+      // the persistence layer has already swapped the files.
+      return {
+        state,
+        event: makeEvent(command.actorId, command.campaignId, "SettingsUpdated", {
+          restoredFromBackup: command.backupId,
+          restoredAt: new Date().toISOString(),
+        }),
+      };
+    }
   }
 }
 
