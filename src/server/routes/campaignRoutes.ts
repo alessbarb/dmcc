@@ -101,7 +101,8 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       const { actorId, title, system } = request.body;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        const repo = getRepository(vaultId);
+        await repo.executeCommand(campaignId as any, {
           type: "CreateCampaign",
           campaignId: campaignId as any,
           actorId: actorId || "usr_dm",
@@ -109,6 +110,18 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           system: system || "generic_fantasy_d20",
           settings: { backupOnClose: true, lanModeEnabled: false, activeQuestsLimit: 5 },
         });
+
+        // Automatically create default world canvas
+        const canvasId = createId("cvs");
+        await repo.executeCommand(campaignId as any, {
+          type: "CreateCanvas",
+          campaignId: campaignId as any,
+          actorId: actorId || "usr_dm",
+          canvasId,
+          title: "Campaña",
+          kind: "world",
+        });
+
         reply.code(201);
         return { campaignId, title };
       } catch (err: any) {
@@ -175,7 +188,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId as any);
 
-        const role = getRequestRoleWithTokens(
+        let role = getRequestRoleWithTokens(
           request,
           (server as any).dmSessionToken,
           (server as any).playerTokens,
@@ -194,7 +207,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
         if (role === "unauthenticated") {
           // Fall back to old access-code-based check for non-token requests
-          assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
+          role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken) as any;
         } else if (role !== "dm") {
           // Player authenticated via token — verify LAN mode is still enabled
           if (!state?.campaign?.settings?.lanModeEnabled) {
@@ -220,6 +233,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           players: role === "dm"
             ? Array.from(state.players?.values() || [])
             : Array.from(state.players?.values() || []).filter((p: any) => p.playerId === playerId),
+          canvases: role === "dm"
+            ? Array.from(state.canvases?.values() || []).filter((c: any) => !c.archived)
+            : [],
         };
       } catch (err: any) {
         if (err.statusCode === 401 || err.statusCode === 403) {
