@@ -6,6 +6,7 @@ import { getEntityDefaultImage } from "../utils/entityVisuals.js";
 import { useCampaignStore } from "../stores/campaignStore.js";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { EntityDetailModal } from "../components/EntityDetailModal.js";
+import { useToast } from "../hooks/useToast.js";
 
 export interface SearchPageProps {
   campaignState?: any;
@@ -36,6 +37,7 @@ export function SearchPage(props: SearchPageProps = {}) {
   const navigate = useNavigate();
   const store = useCampaignStore();
   const { updateEntity, archiveEntity } = store;
+  const { addToast } = useToast();
   const campaignState = props.campaignState ?? store.campaignState;
   const [searchQueryLocal, setSearchQueryLocal] = useState("");
   const [searchTypeFilterLocal, setSearchTypeFilterLocal] = useState("all");
@@ -227,7 +229,7 @@ export function SearchPage(props: SearchPageProps = {}) {
           await updateEntity(entityId, { visibility });
           setSelectedEntityLocal(prev => prev ? { ...prev, visibility } : null);
         }}
-        addToast={() => {}}
+        addToast={addToast}
       />
     )}
   </>);

@@ -217,7 +217,12 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
 
       try {
         const state = await getRepository(vaultId).getCampaignState(campaignId as any);
-        const nets = networkInterfaces();
+        let nets: ReturnType<typeof networkInterfaces> = {};
+        try {
+          nets = networkInterfaces();
+        } catch {
+          nets = {};
+        }
         let localIp = "127.0.0.1";
         for (const name of Object.keys(nets)) {
           for (const net of nets[name] || []) {

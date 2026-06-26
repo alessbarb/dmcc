@@ -27,6 +27,7 @@ import {
 import { useCampaignStore } from "../stores/campaignStore.js";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { EntityDetailModal } from "../components/EntityDetailModal.js";
+import { useToast } from "../hooks/useToast.js";
 
 export interface BoardsPageProps {
   campaignState?: any;
@@ -190,6 +191,7 @@ export function BoardsPage(props: BoardsPageProps = {}) {
   const store = useCampaignStore();
   const campaignState = props.campaignState ?? store.campaignState;
   const { updateEntity, archiveEntity } = store;
+  const { addToast } = useToast();
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<Entity | null>(null);
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
   const setCurrentPage = props.setCurrentPage ?? ((page: string) => {
@@ -332,7 +334,7 @@ export function BoardsPage(props: BoardsPageProps = {}) {
           await updateEntity(entityId, { visibility });
           setSelectedEntityLocal({ ...selectedEntityLocal, visibility } as Entity);
         }}
-        addToast={() => {}}
+        addToast={addToast}
       />
     )}
   </>);

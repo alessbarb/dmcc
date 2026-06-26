@@ -20,6 +20,7 @@ import {
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useCampaignStore } from "../stores/campaignStore.js";
 import { EntityDetailModal } from "../components/EntityDetailModal.js";
+import { useToast } from "../hooks/useToast.js";
 
 export interface DashboardPageProps {
   dashboard?: any;
@@ -134,6 +135,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
   const dashboard = _props.dashboard ?? storeData.dashboard;
   const campaignState = _props.campaignState ?? storeData.campaignState;
   const { updateEntity, archiveEntity } = storeData;
+  const { addToast } = useToast();
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
   const selectedEntity = selectedEntityLocal;
   const setSelectedEntity = _props.setSelectedEntity ?? setSelectedEntityLocal;
@@ -1067,7 +1069,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           await updateEntity(entityId, { visibility });
           setSelectedEntityLocal({ ...selectedEntity, visibility });
         }}
-        addToast={() => {}}
+        addToast={addToast}
       />
     )}
   </>);

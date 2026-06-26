@@ -116,13 +116,9 @@ export class EventStore {
    */
   public async loadEvents(campaignId: CampaignId): Promise<StoredEvent[]> {
     const filePath = this.getEventsFilePath(campaignId);
-    try {
-      await fs.mkdir(path.dirname(filePath), { recursive: true });
-    } catch {
-      // Ignore if directory already exists
-    }
 
     let fileContent = "";
+
     try {
       fileContent = await fs.readFile(filePath, "utf-8");
     } catch (error: any) {

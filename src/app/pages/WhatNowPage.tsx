@@ -3,6 +3,7 @@ import { MapPin, Shield, Calendar, Info, CheckSquare, AlertTriangle, Eye, Flame,
 import { useCampaignStore } from "../stores/campaignStore.js";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { EntityDetailModal } from "../components/EntityDetailModal.js";
+import { useToast } from "../hooks/useToast.js";
 
 export interface WhatNowPageProps {
   whatNow?: any;
@@ -18,6 +19,7 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
   const whatNow = props.whatNow ?? store.whatNow;
   const campaignState = props.campaignState ?? store.campaignState;
   const { updateCampaignSettings, updateEntity, archiveEntity } = store;
+  const { addToast } = useToast();
   const [selectedEntity, setSelectedEntityLocal] = useState<any>(null);
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
   const setCurrentPage = props.setCurrentPage ?? ((page: string) => {
@@ -264,7 +266,7 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
           await updateEntity(entityId, { visibility });
           setSelectedEntityLocal({ ...selectedEntity, visibility });
         }}
-        addToast={() => {}}
+        addToast={addToast}
       />
     )}
   </>);
