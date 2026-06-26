@@ -3,6 +3,7 @@ import { Search, Plus, Eye, EyeOff } from "lucide-react";
 import { getEntityDefaultImage } from "../utils/entityVisuals.js";
 import { useCampaignStore } from "../stores/campaignStore.js";
 import { EntityDetailModal } from "../components/EntityDetailModal.js";
+import { useToast } from "../hooks/useToast.js";
 
 export interface EntitiesPageProps {
   campaignState?: any;
@@ -42,6 +43,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
   const store = useCampaignStore();
   const campaignState = props.campaignState ?? store.campaignState;
   const { updateEntity, archiveEntity } = store;
+  const { addToast } = useToast();
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
   const [entitySearchQueryLocal, setEntitySearchQueryLocal] = useState("");
@@ -228,7 +230,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
           await updateEntity(entityId, { visibility });
           setSelectedEntityLocal({ ...selectedEntityLocal, visibility });
         }}
-        addToast={() => {}}
+        addToast={addToast}
       />
     )}
   </>);

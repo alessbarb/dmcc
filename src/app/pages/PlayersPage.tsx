@@ -49,6 +49,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
 
   return (<>
     <div>
+      <h2 style={{ fontWeight: "700", marginBottom: "16px" }}>Jugadores y personajes</h2>
       <div className="top-bar" style={{ marginBottom: "24px" }}>
         <button className="btn btn-primary btn-sm" onClick={() => setIsPlayerModalOpen(true)}>
           <Plus size={14} /> Añadir jugador
@@ -298,7 +299,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
           await updateEntity(entityId, { visibility });
           setSelectedEntityLocal({ ...selectedEntityLocal, visibility });
         }}
-        addToast={() => {}}
+        addToast={addToast}
       />
     )}
   </>);
