@@ -15,7 +15,6 @@ import {
   hashAccessCode,
 } from "../auth.js";
 import {
-  getStoredAccessCode,
   getCharacterEntityIdForPlayer,
   getVisibleEntities,
   getVisibleRelations,

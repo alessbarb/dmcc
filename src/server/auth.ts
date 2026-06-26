@@ -96,7 +96,7 @@ export function getRequestRoleWithTokens(
   dmSessionToken: string,
   playerTokens: Map<string, { campaignId: string; playerId: string }>,
   campaignId: string
-): "dm" | "player" | "unauthenticated" {
+): "dm" | "player" | "observer" | "unauthenticated" {
   const base = getRequestRole(request, dmSessionToken);
   if (base !== "unauthenticated") return base;
 
