@@ -32,6 +32,9 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   // In-memory active access codes mapping campaignId -> plaintext code
   server.decorate("activeAccessCodes", new Map<string, string>());
 
+  // In-memory player session tokens: token → { campaignId, playerId }
+  server.decorate("playerTokens", new Map<string, { campaignId: string; playerId: string }>());
+
 
   server.register(cors, {
     origin: [

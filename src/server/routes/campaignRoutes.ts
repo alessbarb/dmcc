@@ -37,7 +37,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.get("/api/health", async () => ({ ok: true, app: "dm-campaign-companion" }));
 
   // List Campaigns
-  server.get("/api/campaigns", async (request, _reply) => {
+  server.get("/api/campaigns", async (request, reply) => {
     assertDM(request, (server as any).dmSessionToken);
     const vaultId = getValidatedVaultId(request);
     const campaignsDir = join(dataDir, "vaults", vaultId, "campaigns");
@@ -47,10 +47,36 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       const campaigns = [];
       for (const dirName of dirs) {
         if (!dirName.startsWith("cmp_")) continue;
+        
+        const dirPath = join(campaignsDir, dirName);
+        let hasEvents = false;
+        let hasSnapshot = false;
+        try {
+          const sEvents = await fs.stat(join(dirPath, "events.ndjson"));
+          hasEvents = sEvents.isFile();
+        } catch {}
+        try {
+          const sSnapshot = await fs.stat(join(dirPath, "snapshot.json"));
+          hasSnapshot = sSnapshot.isFile();
+        } catch {}
+
+        if (!hasEvents && !hasSnapshot) {
+          try {
+            await fs.rm(dirPath, { recursive: true, force: true });
+          } catch {}
+          continue;
+        }
+
         try {
           const snap = JSON.parse(await fs.readFile(join(campaignsDir, dirName, "snapshot.json"), "utf8"));
-          if (snap?.projection?.campaign) {
-            campaigns.push(snap.projection.campaign);
+          const campaign = snap?.projection?.campaign ?? snap?.campaign;
+          if (campaign) {
+            campaigns.push({
+              ...campaign,
+              campaignId: campaign.campaignId ?? dirName,
+              title: campaign.title ?? dirName,
+              archived: campaign.archived ?? false,
+            });
           } else {
             campaigns.push({ campaignId: dirName, title: dirName, archived: false });
           }
@@ -59,8 +85,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         }
       }
       return campaigns;
-    } catch {
-      return [];
+    } catch (err: any) {
+      reply.code(500);
+      return { error: `Failed to list campaigns: ${err?.message ?? "unknown error"}` };
     }
   });
 
@@ -91,6 +118,51 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     }
   );
 
+  // Delete Campaign
+  server.delete<{ Params: { campaignId: string }; Body: { confirmTitle?: string } }>(
+    "/api/campaigns/:campaignId",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const confirmation = request.body?.confirmTitle?.trim();
+
+      try {
+        const campaignDir = getCampaignDir(campaignId, vaultId);
+        let exists = false;
+        try {
+          const stats = await fs.stat(campaignDir);
+          exists = stats.isDirectory();
+        } catch {}
+
+        if (!exists) {
+          reply.code(404);
+          return { error: "Campaign not found" };
+        }
+
+        const state = await getRepository(vaultId).getCampaignState(campaignId as any);
+        const title = state.campaign?.title || campaignId;
+
+        if (confirmation !== title) {
+          reply.code(400);
+          return { error: "Campaign title confirmation does not match" };
+        }
+
+        await fs.rm(campaignDir, { recursive: true, force: true });
+        (server as any).activeAccessCodes.delete(campaignId);
+
+        return { ok: true, campaignId };
+      } catch (err: any) {
+        if (err.statusCode === 401 || err.statusCode === 403) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
+        reply.code(500);
+        return { error: `Failed to delete campaign: ${err.message}` };
+      }
+    }
+  );
+
   // Get Campaign Details
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId",
@@ -102,7 +174,6 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       try {
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId as any);
-
         const role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
 
         const rawEntities = Array.from(state.entities.values());
@@ -220,6 +291,58 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       } catch (err: any) {
         reply.code(500);
         return { error: `Failed to update settings: ${err.message}` };
+      }
+    }
+  );
+
+  // LAN Join — exchange access code for player token
+  server.post<{ Params: { campaignId: string }; Body: { accessCode: string; playerId?: string } }>(
+    "/api/join/:campaignId",
+    async (request, reply) => {
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { accessCode, playerId } = request.body;
+      const vaultId = getValidatedVaultId(request);
+
+      if (!accessCode) {
+        reply.code(400);
+        return { error: "accessCode is required" };
+      }
+
+      try {
+        const state = await getRepository(vaultId).getCampaignState(campaignId as any);
+
+        if (!state.campaign?.settings?.lanModeEnabled) {
+          reply.code(403);
+          return { error: "LAN mode is not enabled for this campaign" };
+        }
+
+        const hash = state.campaign.settings?.localAccessCodeHash;
+        const legacyCode = state.campaign.settings?.localAccessCode;
+
+        const isValid =
+          (hash && hashAccessCode(accessCode) === hash) ||
+          (legacyCode && accessCode === legacyCode);
+
+        if (!isValid) {
+          reply.code(401);
+          return { error: "Invalid access code" };
+        }
+
+        // Issue player token
+        const { randomBytes } = await import("crypto");
+        const playerToken = randomBytes(24).toString("hex");
+        const pid = playerId ?? `ply_${randomBytes(8).toString("hex")}`;
+        (server as any).playerTokens.set(playerToken, { campaignId, playerId: pid });
+
+        return {
+          playerToken,
+          playerId: pid,
+          campaignTitle: state.campaign.title,
+        };
+      } catch (err: any) {
+        if (err.statusCode) { reply.code(err.statusCode); return { error: err.message }; }
+        reply.code(404);
+        return { error: "Campaign not found" };
       }
     }
   );
