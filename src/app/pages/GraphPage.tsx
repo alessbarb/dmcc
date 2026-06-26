@@ -605,36 +605,38 @@ export function GraphPage(props: GraphPageProps = {}) {
         </button>
       </div>
 
-      {/* Node search */}
-      <GraphNodeSearch
-        items={graphSearchItems}
-        onSelectNode={focusGraphNode}
-      />
+      {/* Search and Filters Row */}
+      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
+        <GraphNodeSearch
+          items={graphSearchItems}
+          onSelectNode={focusGraphNode}
+        />
 
-      {/* Filters */}
-      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "center" }}>
-        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginRight: "4px" }}>Filtro:</span>
-        {(Object.keys(PRESET_LABELS) as FilterPreset[]).map((p) => (
-          <button key={p} className={`btn btn-sm ${preset === p ? "btn-primary" : "btn-secondary"}`} onClick={() => setPreset(p)}>
-            {PRESET_LABELS[p]}
-          </button>
-        ))}
-        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "12px", marginRight: "4px" }}>Vista:</span>
-        {(["all", "dm_only", "players"] as ViewMode[]).map((m) => (
-          <button key={m} className={`btn btn-sm ${viewMode === m ? "btn-primary" : "btn-secondary"}`} onClick={() => setViewMode(m)}>
-            {m === "all" ? "Todo" : m === "dm_only" ? "Solo DM" : "Solo jugadores"}
-          </button>
-        ))}
-        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "12px", marginRight: "4px" }}>Etiquetas:</span>
-        {(["Auto", "Todas", "Mínimas"] as const).map((mode) => (
-          <button key={mode} className={`btn btn-sm ${labelsMode === mode ? "btn-primary" : "btn-secondary"}`} onClick={() => setLabelsMode(mode)}>
-            {mode}
-          </button>
-        ))}
+        {/* Filters */}
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "center" }}>
+          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginRight: "4px" }}>Filtro:</span>
+          {(Object.keys(PRESET_LABELS) as FilterPreset[]).map((p) => (
+            <button key={p} className={`btn btn-sm ${preset === p ? "btn-primary" : "btn-secondary"}`} onClick={() => setPreset(p)}>
+              {PRESET_LABELS[p]}
+            </button>
+          ))}
+          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "12px", marginRight: "4px" }}>Vista:</span>
+          {(["all", "dm_only", "players"] as ViewMode[]).map((m) => (
+            <button key={m} className={`btn btn-sm ${viewMode === m ? "btn-primary" : "btn-secondary"}`} onClick={() => setViewMode(m)}>
+              {m === "all" ? "Todo" : m === "dm_only" ? "Solo DM" : "Solo jugadores"}
+            </button>
+          ))}
+          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "12px", marginRight: "4px" }}>Etiquetas:</span>
+          {(["Auto", "Todas", "Mínimas"] as const).map((mode) => (
+            <button key={mode} className={`btn btn-sm ${labelsMode === mode ? "btn-primary" : "btn-secondary"}`} onClick={() => setLabelsMode(mode)}>
+              {mode}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Graph + panel */}
-      <div style={{ display: "flex", gap: "0", width: "100%", borderRadius: "var(--radius-md)", overflow: "hidden", border: "1px solid var(--border-color)", height: "calc(100vh - 260px)", minHeight: "500px" }}>
+      <div style={{ display: "flex", gap: "0", width: "100%", borderRadius: "var(--radius-md)", overflow: "hidden", border: "1px solid var(--border-color)", height: "calc(100vh - 210px)", minHeight: "500px" }}>
 
         {/* 3D canvas */}
         <div
