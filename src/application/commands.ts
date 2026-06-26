@@ -3,6 +3,7 @@ import type { EntityImportance, EntityType } from "../domain/entity/entity.js";
 import type { FactConfidence, FactKind, FactSource } from "../domain/fact/fact.js";
 import type { RelationType } from "../domain/relation/relation.js";
 import type { VisibilityRule } from "../domain/visibility/visibility.js";
+import type { PlayerCharacterProposal } from "../domain/playerPortal/types.js";
 
 export type Command =
   | {
@@ -527,4 +528,42 @@ export type Command =
       importance?: EntityImportance;
       visibility?: VisibilityRule;
       metadata?: Record<string, unknown>;
+    }
+  | {
+      type: "LinkPlayerCharacter";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      characterEntityId: EntityId;
+      ownership: "campaign_premade" | "player_owned";
+      syncMode: "live_player_editable" | "dm_review_required";
+      createdAt: string;
+    }
+  | {
+      type: "UnlinkPlayerCharacter";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      removedAt: string;
+    }
+  | {
+      type: "CreatePlayerCharacterProposal";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      proposalId: string;
+      targetCharacterEntityId?: EntityId;
+      kind: "create_character" | "update_character_core";
+      proposedChanges: Record<string, unknown>;
+      createdAt: string;
+    }
+  | {
+      type: "ResolvePlayerCharacterProposal";
+      campaignId: CampaignId;
+      actorId: string;
+      proposal: PlayerCharacterProposal;
+      status: "approved" | "rejected";
+      dmResolutionNote?: string;
+      resolvedAt: string;
+      entityUpdate?: { entityId: EntityId; updates: Record<string, unknown> };
     };
