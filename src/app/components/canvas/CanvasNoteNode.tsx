@@ -28,6 +28,13 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
   const [isConvertOpen, setIsConvertOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Autofocus when note is newly created (empty text)
+  useEffect(() => {
+    if (textareaRef.current && (data.text === undefined || data.text === "")) {
+      textareaRef.current.focus();
+    }
+  }, []);
+
   const autoResize = useCallback(() => {
     const el = textareaRef.current;
     if (!el) return;
@@ -104,6 +111,18 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
           placeholder="Escribe una idea rápida..."
         />
       </div>
+
+      {selected && (
+        <div className="note-convert-footer nodrag">
+          <button
+            type="button"
+            className="note-convert-btn"
+            onClick={() => setIsConvertOpen(true)}
+          >
+            ✨ Convertir a entidad
+          </button>
+        </div>
+      )}
 
       {isConvertOpen && (
         <ConvertNoteToEntityDialog
