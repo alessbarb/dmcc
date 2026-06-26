@@ -94,6 +94,7 @@ export const ENT_CLUE_VANTIS_CONFESSION   = uid("ent");
 export const ENT_CLUE_CULTO_DISBANDS      = uid("ent");
 export const ENT_CLUE_ELDERTOME           = uid("ent");
 export const ENT_CLUE_FINAL_TRUTH         = uid("ent");
+export const ENT_CLUE_EASTERN_FRONT_LETTER= uid("ent");
 export const ENT_CLUE_FORGERY_TOOL        = uid("ent");
 
 // Secrets

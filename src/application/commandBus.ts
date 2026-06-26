@@ -500,15 +500,25 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         }
       }
 
+      if (node.kind === "fact") {
+        if (!node.factId) throw new Error("Fact node must specify factId");
+        const fact = state.facts.get(node.factId);
+        if (!fact || fact.archived) {
+          throw new Error(`Fact not found or archived: ${node.factId}`);
+        }
+      }
+
       const canvasNode = {
         id: nodeId,
         campaignId: command.campaignId,
         canvasId: command.canvasId,
         kind: node.kind,
         entityId: node.entityId,
+        factId: node.factId,
         text: node.text,
         title: node.title,
         color: node.color,
+        groupId: node.groupId,
         x: node.x,
         y: node.y,
         width: node.width,
@@ -586,6 +596,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
             ...(update.width !== undefined && { width: update.width }),
             ...(update.height !== undefined && { height: update.height }),
             ...(update.parentId !== undefined && { parentId: update.parentId ?? undefined }),
+            ...(update.groupId !== undefined && { groupId: update.groupId ?? undefined }),
             updatedAt: new Date().toISOString(),
           };
         }

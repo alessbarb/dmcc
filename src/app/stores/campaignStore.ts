@@ -150,8 +150,15 @@ export interface CampaignStateStore {
     confidence: string;
     relatedEntityIds: string[];
     source: any;
+  }) => Promise<string | undefined>;
+
+  updateFact: (factId: string, updates: {
+    statement?: string;
+    kind?: string;
+    confidence?: string;
+    visibility?: any;
   }) => Promise<void>;
-  
+
   updateEntity: (entityId: string, updates: Partial<Entity>) => Promise<void>;
   archiveEntity: (entityId: string) => Promise<void>;
   archiveRelation: (relationId: string) => Promise<void>;
@@ -194,7 +201,7 @@ export interface CampaignStateStore {
   setActiveCanvasId: (canvasId: string | null) => void;
   placeNodeOnCanvas: (canvasId: string, node: any) => Promise<void>;
   updateCanvasNode: (canvasId: string, nodeId: string, updates: any) => Promise<void>;
-  updateCanvasNodesLayout: (canvasId: string, nodeUpdates: Array<{ nodeId: string; x: number; y: number; width?: number; height?: number; parentId?: string | null }>) => Promise<void>;
+  updateCanvasNodesLayout: (canvasId: string, nodeUpdates: Array<{ nodeId: string; x: number; y: number; width?: number; height?: number; parentId?: string | null; groupId?: string | null }>) => Promise<void>;
   removeNodeFromCanvas: (canvasId: string, nodeId: string) => Promise<void>;
   addEdgeToCanvas: (canvasId: string, edge: any) => Promise<void>;
   updateCanvasEdge: (canvasId: string, edgeId: string, updates: any) => Promise<void>;
@@ -508,7 +515,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       if (!res.ok) throw new Error("Failed to create entity");
       const data = await res.json();
       await get().selectCampaign(activeCampaignId);
-      return data;
+      return { ...data, entityId };
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -549,8 +556,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const { activeCampaignId } = get();
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
+    const factId = `fact_${createId("fact").split("_")[1]}`;
     try {
-      const factId = `fact_${createId("fact").split("_")[1]}`;
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/facts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -562,8 +569,27 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       });
       if (!res.ok) throw new Error("Failed to record fact");
       await get().selectCampaign(activeCampaignId);
+      return factId;
     } catch (err: any) {
       set({ error: err.message, loading: false });
+    }
+  },
+
+  updateFact: async (factId, updates) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/facts/${factId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      if (!res.ok) throw new Error("Failed to update fact");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      throw err;
     }
   },
 
@@ -910,9 +936,11 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       canvasId,
       kind: node.kind,
       entityId: node.entityId,
+      factId: node.factId,
       text: node.text,
       title: node.title,
       color: node.color,
+      groupId: node.groupId,
       x: node.x,
       y: node.y,
       width: node.width,
@@ -1000,6 +1028,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
             ...(update.width !== undefined && { width: update.width }),
             ...(update.height !== undefined && { height: update.height }),
             ...(update.parentId !== undefined && { parentId: update.parentId ?? undefined }),
+            ...(update.groupId !== undefined && { groupId: update.groupId ?? undefined }),
           };
         }
         return n;
