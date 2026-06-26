@@ -4,6 +4,7 @@ import { playerIdSchema, entityIdSchema } from "../../shared/schemas.js";
 
 export const dnd521PlayerCharacterMetadataSchema = z.object({
   playerId: playerIdSchema.optional(),
+  isPremade: z.boolean().optional(),
   className: z.string().min(1, "Clase es obligatoria"),
   subclass: z.string().optional(),
   level: z.number().int().min(1, "Nivel debe ser al menos 1"),
@@ -36,18 +37,22 @@ export const dnd521PlayerCharacterMetadataSchema = z.object({
   importantItems: z.array(entityIdSchema).optional().default([]),
   personalGoals: z.array(z.string()).optional().default([]),
   note: z.string().optional(),
-}).refine(
-  (data) => {
-    if (data.level >= 3) {
-      return !!data.subclass && data.subclass.trim() !== "";
-    }
-    return true;
-  },
-  {
-    message: "La subclase es obligatoria para personajes de nivel 3 o superior",
-    path: ["subclass"],
+}).superRefine((data, ctx) => {
+  if (!data.isPremade && !data.playerId) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["playerId"],
+      message: "playerId is required unless isPremade is true",
+    });
   }
-);
+  if (data.level >= 3 && (!data.subclass || data.subclass.trim() === "")) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["subclass"],
+      message: "La subclase es obligatoria para personajes de nivel 3 o superior",
+    });
+  }
+});
 
 export const dnd521Rules: RuleSystem = {
   systemCode: "dnd_srd_5_2_1",

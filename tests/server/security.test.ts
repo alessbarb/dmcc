@@ -193,6 +193,9 @@ describe("Security", () => {
           payload: {
             entityType: "player_character",
             title: "Pre-made Character (no player assigned)",
+            metadata: {
+              isPremade: true,
+            },
           },
           headers: { "x-dm-token": getDmToken(server) },
         });
