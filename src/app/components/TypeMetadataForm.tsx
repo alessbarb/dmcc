@@ -6,9 +6,10 @@ interface Props {
   onChange: (field: string, value: any) => void;
   players?: any[];
   entities?: any[];
+  campaignSystem?: string;
 }
 
-export function TypeMetadataForm({ entityType, metadata, onChange, players = [], entities = [] }: Props) {
+export function TypeMetadataForm({ entityType, metadata, onChange, players = [], entities = [], campaignSystem }: Props) {
   switch (entityType) {
     case "npc":
       return (
@@ -216,7 +217,174 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
         </div>
       );
     case "player_character":
-      return (
+      return campaignSystem === "dnd_srd_5_2_1" ? (
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
+          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Ficha de personaje (D&D 5.2.1)</h4>
+          
+          <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Datos Básicos</h5>
+            <div className="grid grid-cols-2">
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Perfil del jugador *</label>
+                <select className="form-select" required value={metadata.playerId || ""} onChange={e => onChange("playerId", e.target.value)}>
+                  <option value="">-- Seleccionar jugador --</option>
+                  {players.map(p => (
+                    <option key={p.playerId} value={p.playerId}>{p.displayName || p.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Clase *</label>
+                <input type="text" className="form-input" required value={metadata.className || ""} onChange={e => onChange("className", e.target.value)} placeholder="Ej. Pícaro, Mago" />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Subclase {metadata.level >= 3 ? "*" : "(Nivel 3+)"}</label>
+                <input type="text" className="form-input" required={metadata.level >= 3} value={metadata.subclass || ""} onChange={e => onChange("subclass", e.target.value)} placeholder="Ej. Asesino, Ilusionista" />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Nivel *</label>
+                <input type="number" className="form-input" min={1} required value={metadata.level || 1} onChange={e => onChange("level", parseInt(e.target.value) || 1)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Especie / Raza *</label>
+                <input type="text" className="form-input" required value={metadata.species || ""} onChange={e => onChange("species", e.target.value)} placeholder="Ej. Elfo, Enano" />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Trasfondo *</label>
+                <input type="text" className="form-input" required value={metadata.background || ""} onChange={e => onChange("background", e.target.value)} placeholder="Ej. Huérfano, Soldado" />
+              </div>
+            </div>
+          </div>
+
+          <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Atributos Principales (1-30)</h5>
+            <div className="grid grid-cols-3">
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Fuerza (STR) *</label>
+                <input type="number" className="form-input" min={1} max={30} required value={metadata.strength || 10} onChange={e => onChange("strength", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Destreza (DEX) *</label>
+                <input type="number" className="form-input" min={1} max={30} required value={metadata.dexterity || 10} onChange={e => onChange("dexterity", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Constitución (CON) *</label>
+                <input type="number" className="form-input" min={1} max={30} required value={metadata.constitution || 10} onChange={e => onChange("constitution", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Inteligencia (INT) *</label>
+                <input type="number" className="form-input" min={1} max={30} required value={metadata.intelligence || 10} onChange={e => onChange("intelligence", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Sabiduría (WIS) *</label>
+                <input type="number" className="form-input" min={1} max={30} required value={metadata.wisdom || 10} onChange={e => onChange("wisdom", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Carisma (CHA) *</label>
+                <input type="number" className="form-input" min={1} max={30} required value={metadata.charisma || 10} onChange={e => onChange("charisma", parseInt(e.target.value) || 10)} />
+              </div>
+            </div>
+          </div>
+
+          <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Estadísticas de Combate y Progreso</h5>
+            <div className="grid grid-cols-3">
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">CA *</label>
+                <input type="number" className="form-input" min={0} required value={metadata.armorClass || 10} onChange={e => onChange("armorClass", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Iniciativa *</label>
+                <input type="number" className="form-input" required value={metadata.initiative || 0} onChange={e => onChange("initiative", parseInt(e.target.value) || 0)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Velocidad *</label>
+                <input type="number" className="form-input" min={0} required value={metadata.speed || 30} onChange={e => onChange("speed", parseInt(e.target.value) || 30)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">PG actuales *</label>
+                <input type="number" className="form-input" min={0} required value={metadata.hitPointsCurrent || 10} onChange={e => onChange("hitPointsCurrent", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">PG máximos *</label>
+                <input type="number" className="form-input" min={1} required value={metadata.hitPointsMax || 10} onChange={e => onChange("hitPointsMax", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">PG Temporales</label>
+                <input type="number" className="form-input" min={0} value={metadata.hitPointsTemp || 0} onChange={e => onChange("hitPointsTemp", parseInt(e.target.value) || 0)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Dados de Golpe *</label>
+                <input type="text" className="form-input" required value={metadata.hitDice || "1d8"} onChange={e => onChange("hitDice", e.target.value)} placeholder="Ej. 1d8, 3d10" />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Experiencia (XP)</label>
+                <input type="number" className="form-input" min={0} value={metadata.xp || 0} onChange={e => onChange("xp", parseInt(e.target.value) || 0)} />
+              </div>
+            </div>
+          </div>
+
+          <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Atributos Pasivos</h5>
+            <div className="grid grid-cols-3">
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Percepción Pasiva *</label>
+                <input type="number" className="form-input" required value={metadata.passivePerception || 10} onChange={e => onChange("passivePerception", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Perspicacia Pasiva *</label>
+                <input type="number" className="form-input" required value={metadata.passiveInsight || 10} onChange={e => onChange("passiveInsight", parseInt(e.target.value) || 10)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Investigación Pasiva *</label>
+                <input type="number" className="form-input" required value={metadata.passiveInvestigation || 10} onChange={e => onChange("passiveInvestigation", parseInt(e.target.value) || 10)} />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Competencias, Dotes e Idiomas</h5>
+            <div className="form-group">
+              <label className="form-label">Salvaciones Competentes (ej. dex, con)</label>
+              <input type="text" className="form-input" placeholder="Separadas por comas"
+                value={Array.isArray(metadata.savingThrows) ? metadata.savingThrows.join(", ") : ""}
+                onChange={e => onChange("savingThrows", e.target.value.split(",").map((s: string) => s.trim().toLowerCase()).filter(Boolean))} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Habilidades Competentes (ej. perception, stealth)</label>
+              <input type="text" className="form-input" placeholder="Separadas por comas"
+                value={Array.isArray(metadata.skills) ? metadata.skills.join(", ") : ""}
+                onChange={e => onChange("skills", e.target.value.split(",").map((s: string) => s.trim().toLowerCase()).filter(Boolean))} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Idiomas conocidos (ej. Común, Élfico)</label>
+              <input type="text" className="form-input" placeholder="Separados por comas"
+                value={Array.isArray(metadata.languages) ? metadata.languages.join(", ") : ""}
+                onChange={e => onChange("languages", e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean))} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Dotes (ej. Alerta, Duro)</label>
+              <input type="text" className="form-input" placeholder="Separados por comas"
+                value={Array.isArray(metadata.feats) ? metadata.feats.join(", ") : ""}
+                onChange={e => onChange("feats", e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean))} />
+            </div>
+            <div className="grid grid-cols-2">
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">CD Salvación Conjuros</label>
+                <input type="number" className="form-input" placeholder="Ej. 13" value={metadata.spellSaveDC || ""} onChange={e => onChange("spellSaveDC", parseInt(e.target.value) || undefined)} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Bonif. Ataque Conjuros</label>
+                <input type="number" className="form-input" placeholder="Ej. 5" value={metadata.spellAttackBonus || ""} onChange={e => onChange("spellAttackBonus", parseInt(e.target.value) || undefined)} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Notas del personaje</label>
+              <textarea className="form-textarea" rows={3} placeholder="Notas o detalles adicionales..." value={metadata.note || ""} onChange={e => onChange("note", e.target.value)} />
+            </div>
+          </div>
+        </div>
+      ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
           <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Metadatos del personaje jugador</h4>
           <div className="grid grid-cols-2">
