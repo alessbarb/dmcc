@@ -263,6 +263,7 @@ export type Command =
       title: string;
       kind: "world" | "session" | "mystery" | "location" | "characters" | "custom";
       description?: string;
+      template?: boolean;
     }
   | {
       type: "UpdateCanvas";
@@ -334,6 +335,7 @@ export type Command =
         y: number;
         width?: number;
         height?: number;
+        parentId?: string | null;
       }>;
     }
   | {
