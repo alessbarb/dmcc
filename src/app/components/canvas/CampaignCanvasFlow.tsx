@@ -5,28 +5,30 @@ import ReactFlow, {
   MiniMap,
   Background,
   MarkerType,
+  SelectionMode,
 } from "reactflow";
 import type {
   ReactFlowInstance,
   Edge,
   Node,
   Connection,
-  XYPosition,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { useCampaignStore } from "../../stores/campaignStore.js";
 import { CanvasEntityNode } from "./CanvasEntityNode.js";
 import { CanvasNoteNode } from "./CanvasNoteNode.js";
-import { CanvasGroupNode } from "./CanvasGroupNode.js";
+import { CanvasFactNode } from "./CanvasFactNode.js";
+import { CanvasGroupHulls } from "./CanvasGroupHulls.js";
+import type { Viewport } from "./CanvasGroupHulls.js";
 import { RelationshipTypePopover } from "./RelationshipTypePopover.js";
 import { CanvasToolbar } from "./CanvasToolbar.js";
 import type { InteractionMode } from "./CanvasToolbar.js";
 
-// Register custom node types
+// Register custom node types — group nodes are no longer rendered as boxes
 const nodeTypes = {
   entity: CanvasEntityNode,
   note: CanvasNoteNode,
-  group: CanvasGroupNode,
+  fact: CanvasFactNode,
 };
 
 export interface CampaignCanvasFlowProps {
@@ -43,6 +45,14 @@ export interface CampaignCanvasFlowProps {
   onModeChange: (mode: InteractionMode) => void;
   onLockChange: (locked: boolean) => void;
   onMinimapToggle: () => void;
+  typeFilter?: string;
+  publicOnly?: boolean;
+  onSelectionChange?: (selectedNodes: any[], selectedEdges: any[]) => void;
+  isDirectionMode?: boolean;
+  isPlayerView?: boolean;
+  mysteryFlowMode?: boolean;
+  density?: "compact" | "normal" | "detailed";
+  relationsFilter?: "all" | "public" | "secret" | "selection";
 }
 
 export function CampaignCanvasFlow({
@@ -59,6 +69,14 @@ export function CampaignCanvasFlow({
   onModeChange,
   onLockChange,
   onMinimapToggle,
+  typeFilter = "all",
+  publicOnly = false,
+  onSelectionChange,
+  isDirectionMode = false,
+  isPlayerView = false,
+  mysteryFlowMode = false,
+  density = "normal",
+  relationsFilter = "all",
 }: CampaignCanvasFlowProps) {
   const {
     campaignState,
@@ -66,12 +84,19 @@ export function CampaignCanvasFlow({
     addEdgeToCanvas,
     placeNodeOnCanvas,
     createEntity,
+    createFact,
     saveViewport
   } = useCampaignStore();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
+  const [viewport, setViewport] = useState<Viewport>({ x: 0, y: 0, zoom: 1 });
+
+  // Sync viewport for the group hull overlay
+  const onMove = useCallback((_: any, vp: Viewport) => {
+    setViewport(vp);
+  }, []);
   
   // Connect Popover state
   const [connectPopover, setConnectPopover] = useState<{
@@ -81,178 +106,389 @@ export function CampaignCanvasFlow({
     targetEntity?: any;
   } | null>(null);
 
+  // Highlighted path in Mystery Flow Mode
+  const highlightedNodeIds = useMemo(() => {
+    if (!mysteryFlowMode || !selectedNodeId) return null;
+    const startNode = canvas.nodes?.find((n: any) => n.id === selectedNodeId);
+    if (!startNode) return null;
+    
+    // Only traverse if starting from a mystery type entity
+    const entity = startNode.entityId ? campaignState?.entities?.find((e: any) => e.entityId === startNode.entityId) : null;
+    if (entity) {
+      const mysteryTypes = ["clue", "secret", "quest", "decision"];
+      if (!mysteryTypes.includes(entity.entityType)) return null;
+    } else {
+      return null;
+    }
+
+    const visited = new Set<string>();
+    const queue = [selectedNodeId];
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      if (visited.has(current)) continue;
+      visited.add(current);
+      for (const edge of canvas.edges || []) {
+        if (edge.sourceNodeId === current) {
+          const rel = edge.relationshipId ? campaignState?.relations?.find((r: any) => r.relationId === edge.relationshipId) : null;
+          const relType = rel?.relationType || "";
+          const logicalTypes = ["points_to", "reveals", "unlocks", "causes", "contradicts", "confirms"];
+          const labelLower = edge.label?.toLowerCase() || "";
+          const isLogical = logicalTypes.some(t => relType.includes(t)) ||
+                            logicalTypes.some(t => labelLower.includes(t)) ||
+                            labelLower.includes("apunta a") ||
+                            labelLower.includes("revela") ||
+                            labelLower.includes("desbloquea") ||
+                            labelLower.includes("causa") ||
+                            labelLower.includes("contradice") ||
+                            labelLower.includes("confirma");
+          if (isLogical) {
+            queue.push(edge.targetNodeId);
+          }
+        }
+      }
+    }
+    return visited;
+  }, [mysteryFlowMode, selectedNodeId, canvas.nodes, canvas.edges, campaignState?.entities, campaignState?.relations]);
+
   // Map canvas nodes to React Flow nodes format
   const flowNodes = useMemo(() => {
-    return (canvas.nodes || []).map((node: any) => {
-      // Find entity data if it's an entity node to pass titles etc. down
-      const entity = node.entityId ? campaignState?.entities?.find((e: any) => e.entityId === node.entityId) : null;
-      
-      return {
-        id: node.id,
-        type: node.kind, // 'entity', 'note', 'group'
-        position: { x: node.x, y: node.y },
-        width: node.width,
-        height: node.height,
-        parentNode: node.parentId, // support nesting in groups
-        data: {
-          canvasId,
-          entityId: node.entityId,
-          text: node.text,
-          title: node.title,
-          color: node.color,
-          status: node.status,
-          visibility: node.visibility,
-          // pass label for built-in text styling
-          label: node.kind === "note" ? node.text : (entity ? entity.title : node.title),
-        },
-        style: node.kind === "group" ? { width: node.width || 300, height: node.height || 200 } : undefined,
-      };
+    const rawNodes: any[] = canvas.nodes || [];
+
+    // Build group position lookup for relative→absolute conversion (old data with parentId)
+    const groupAbsPos: Record<string, { x: number; y: number }> = {};
+    rawNodes.forEach((n: any) => {
+      if (n.kind === "group") groupAbsPos[n.id] = { x: n.x ?? 0, y: n.y ?? 0 };
     });
-  }, [canvas.nodes, campaignState?.entities, canvasId]);
+
+    return rawNodes
+      .filter((node: any) => {
+        // Groups are rendered as hull overlays — not as RF nodes
+        if (node.kind === "group") return false;
+
+        const entity = node.entityId ? campaignState?.entities?.find((e: any) => e.entityId === node.entityId) : null;
+
+        if (publicOnly && entity) {
+          const isDmOnly = !entity.visibility || entity.visibility.kind === "dm_only" || entity.visibility.kind === "dm";
+          if (isDmOnly) return false;
+        }
+
+        if (mysteryFlowMode) {
+          if (node.kind === "entity" && entity) {
+            const mysteryTypes = ["clue", "secret", "quest", "decision"];
+            if (!mysteryTypes.includes(entity.entityType)) return false;
+          } else {
+            return false;
+          }
+        }
+
+        if (typeFilter !== "all" && node.kind === "entity" && entity) {
+          if (typeFilter === "other") {
+            const knownTypes = ["npc", "location", "clue", "secret", "quest"];
+            if (knownTypes.includes(entity.entityType)) return false;
+          } else if (entity.entityType !== typeFilter) {
+            return false;
+          }
+        }
+
+        return true;
+      })
+      .map((node: any) => {
+        const entity = node.entityId ? campaignState?.entities?.find((e: any) => e.entityId === node.entityId) : null;
+
+        // Resolve fact data
+        const facts = campaignState?.facts;
+        const fact = node.factId && facts
+          ? (facts instanceof Map
+              ? facts.get(node.factId)
+              : Array.isArray(facts)
+                ? (facts as any[]).find((f: any) => f.factId === node.factId)
+                : undefined)
+          : undefined;
+
+        const isHighlighted = highlightedNodeIds ? highlightedNodeIds.has(node.id) : true;
+        const isAttenuated = highlightedNodeIds ? !isHighlighted : false;
+
+        // Convert relative → absolute for nodes still using old parentId-based positioning
+        let absX = node.x ?? 0, absY = node.y ?? 0;
+        if (node.parentId && !node.groupId && groupAbsPos[node.parentId]) {
+          absX = absX + groupAbsPos[node.parentId].x;
+          absY = absY + groupAbsPos[node.parentId].y;
+        }
+
+        const nodeStyle: any = isAttenuated ? { opacity: 0.25, pointerEvents: "none" } : undefined;
+
+        return {
+          id: node.id,
+          type: node.kind, // 'entity', 'note', 'fact'
+          position: { x: absX, y: absY },
+          // No parentNode — groups are visual overlays, not RF parent-child
+          data: {
+            canvasId,
+            entityId: node.entityId,
+            factId: node.factId,
+            statement: fact?.statement,
+            kind: fact?.kind,
+            confidence: fact?.confidence,
+            relatedEntityCount: fact?.relatedEntityIds?.length ?? 0,
+            text: node.text,
+            title: node.title,
+            color: node.color,
+            status: node.status,
+            visibility: node.visibility,
+            label: node.kind === "note" ? node.text : (entity ? entity.title : node.title),
+            isDirectionMode,
+            isPlayerView,
+            isAttenuated,
+            density,
+            collapsed: node.collapsed,
+          },
+          style: nodeStyle,
+        };
+      });
+  }, [canvas.nodes, campaignState?.entities, campaignState?.facts, canvasId, typeFilter, publicOnly, mysteryFlowMode, highlightedNodeIds, isDirectionMode, isPlayerView, density]);
 
   // Map canvas edges to React Flow edges format
   const flowEdges = useMemo(() => {
-    return (canvas.edges || []).map((edge: any) => {
-      const isSecret = edge.style === "secret";
-      const isDashed = edge.style === "dashed";
-      const isStrong = edge.style === "strong";
-      const isWeak   = edge.style === "weak";
-
-      let strokeColor = "hsl(220, 20%, 40%)";
-      let strokeWidth = 1.5;
-      let strokeDasharray: string | undefined;
-      let filter: string | undefined;
-
-      if (isSecret) {
-        strokeColor = "#ef4444";
-        strokeWidth = 1.5;
-        strokeDasharray = "4 3";
-        filter = "drop-shadow(0 0 3px rgba(239,68,68,0.5))";
-      } else if (isDashed) {
-        strokeColor = "hsl(220, 20%, 50%)";
-        strokeDasharray = "6 4";
-      } else if (isStrong) {
-        strokeWidth = 3;
-        strokeColor = "hsl(220, 30%, 65%)";
-        filter = "drop-shadow(0 0 4px rgba(148,163,184,0.35))";
-      } else if (isWeak) {
-        strokeWidth = 1;
-        strokeColor = "hsl(220, 15%, 30%)";
-      }
-
-      const isSelected = selectedEdgeId === edge.id;
-      if (isSelected) {
-        strokeColor = "hsl(255, 85%, 72%)";
-        filter = "drop-shadow(0 0 5px hsla(255, 85%, 65%, 0.6))";
-        strokeWidth = Math.max(strokeWidth, 2);
-      }
-
-      return {
-        id: edge.id,
-        source: edge.sourceNodeId,
-        target: edge.targetNodeId,
-        label: edge.label,
-        type: "smoothstep",
-        selected: isSelected,
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          width: isStrong ? 18 : 14,
-          height: isStrong ? 18 : 14,
-          color: strokeColor,
-        },
-        style: {
-          stroke: strokeColor,
-          strokeWidth,
-          strokeDasharray,
-          filter,
-        },
-        labelStyle: {
-          fill: isSecret ? "#f87171" : isSelected ? "hsl(255, 85%, 80%)" : "hsl(220, 20%, 75%)",
-          fontWeight: 600,
-          fontSize: "10px",
-          letterSpacing: "0.02em",
-        },
-        labelBgStyle: {
-          fill: "hsl(230, 28%, 10%)",
-          fillOpacity: 0.9,
-          rx: 4,
-        },
-        data: {
-          relationshipId: edge.relationshipId,
-          status: edge.status,
-          style: edge.style,
-          visibility: edge.visibility,
+    const visibleNodeIds = new Set(flowNodes.map((n: any) => n.id));
+    const defaultEdges = (canvas.edges || [])
+      .filter((edge: any) => visibleNodeIds.has(edge.sourceNodeId) && visibleNodeIds.has(edge.targetNodeId))
+      .filter((edge: any) => {
+        if (publicOnly || relationsFilter === "public") {
+          const isSecret = edge.style === "secret" || edge.visibility === "dm" || edge.visibility === "dm_only";
+          if (isSecret) return false;
         }
-      };
-    });
-  }, [canvas.edges, selectedEdgeId]);
+
+        if (relationsFilter === "secret") {
+          const isSecret = edge.style === "secret" || edge.visibility === "dm" || edge.visibility === "dm_only";
+          if (!isSecret) return false;
+        }
+
+        if (relationsFilter === "selection" && selectedNodeId) {
+          if (edge.sourceNodeId !== selectedNodeId && edge.targetNodeId !== selectedNodeId) {
+            return false;
+          }
+        }
+
+        if (mysteryFlowMode) {
+          const rel = edge.relationshipId ? campaignState?.relations?.find((r: any) => r.relationId === edge.relationshipId) : null;
+          const relType = rel?.relationType || "";
+          const logicalTypes = ["points_to", "reveals", "unlocks", "causes", "contradicts", "confirms"];
+          const labelLower = edge.label?.toLowerCase() || "";
+          const isLogical = logicalTypes.some(t => relType.includes(t)) ||
+                            logicalTypes.some(t => labelLower.includes(t)) ||
+                            labelLower.includes("apunta a") ||
+                            labelLower.includes("revela") ||
+                            labelLower.includes("desbloquea") ||
+                            labelLower.includes("causa") ||
+                            labelLower.includes("contradice") ||
+                            labelLower.includes("confirma");
+          if (!isLogical) return false;
+        }
+        return true;
+      })
+      .map((edge: any) => {
+        const isSecret = edge.style === "secret";
+        const isDashed = edge.style === "dashed";
+        const isStrong = edge.style === "strong";
+        const isWeak   = edge.style === "weak";
+
+        const isHighlighted = highlightedNodeIds ? (highlightedNodeIds.has(edge.sourceNodeId) && highlightedNodeIds.has(edge.targetNodeId)) : true;
+        
+        // Highlight selection connections: attenuate others if there's a selection
+        const hasSelection = !!selectedNodeId;
+        const connectsToSelection = edge.sourceNodeId === selectedNodeId || edge.targetNodeId === selectedNodeId;
+        const isAttenuatedBySelection = hasSelection && !connectsToSelection;
+
+        const isAttenuated = (highlightedNodeIds ? !isHighlighted : false) || isAttenuatedBySelection;
+
+        let strokeColor = "hsl(220, 20%, 40%)";
+        let strokeWidth = 1.5;
+        let strokeDasharray: string | undefined;
+        let filter: string | undefined;
+        let opacity = 1;
+
+        if (isSecret) {
+          strokeColor = "#ef4444";
+          strokeWidth = 1.5;
+          strokeDasharray = "4 3";
+          filter = "drop-shadow(0 0 3px rgba(239,68,68,0.5))";
+        } else if (isDashed) {
+          strokeColor = "hsl(220, 20%, 50%)";
+          strokeDasharray = "6 4";
+        } else if (isStrong) {
+          strokeWidth = 3;
+          strokeColor = "hsl(220, 30%, 65%)";
+          filter = "drop-shadow(0 0 4px rgba(148,163,184,0.35))";
+        } else if (isWeak) {
+          strokeWidth = 1;
+          strokeColor = "hsl(220, 15%, 30%)";
+        }
+
+        const isSelected = selectedEdgeId === edge.id;
+        if (isSelected) {
+          strokeColor = "hsl(255, 85%, 72%)";
+          filter = "drop-shadow(0 0 5px hsla(255, 85%, 65%, 0.6))";
+          strokeWidth = Math.max(strokeWidth, 2);
+        }
+
+        if (isAttenuated) {
+          opacity = 0.15;
+          filter = undefined;
+        }
+
+        return {
+          id: edge.id,
+          source: edge.sourceNodeId,
+          target: edge.targetNodeId,
+          label: edge.label,
+          type: "smoothstep",
+          selected: isSelected,
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            width: isStrong ? 18 : 14,
+            height: isStrong ? 18 : 14,
+            color: strokeColor,
+          },
+          style: {
+            stroke: strokeColor,
+            strokeWidth,
+            strokeDasharray,
+            filter,
+            opacity,
+          },
+          labelStyle: {
+            fill: isSecret ? "#f87171" : isSelected ? "hsl(255, 85%, 80%)" : "hsl(220, 20%, 75%)",
+            fontWeight: 600,
+            fontSize: "10px",
+            letterSpacing: "0.02em",
+            opacity,
+          },
+          labelBgStyle: {
+            fill: "hsl(230, 28%, 10%)",
+            fillOpacity: 0.9,
+            rx: 4,
+            opacity,
+          },
+          data: {
+            relationshipId: edge.relationshipId,
+            status: edge.status,
+            style: edge.style,
+            visibility: edge.visibility,
+          }
+        };
+      });
+
+    // Add virtual anchor lines for DM
+    const anchorEdges: any[] = [];
+    if (!publicOnly && !mysteryFlowMode && campaignState?.entities) {
+      const secretNodes = canvas.nodes?.filter((n: any) => {
+        const ent = n.entityId ? campaignState.entities.find((e: any) => e.entityId === n.entityId) : null;
+        return ent?.entityType === "secret" && !ent.archived;
+      }) || [];
+
+      for (const secretNode of secretNodes) {
+        const secretEntity = campaignState.entities.find((e: any) => e.entityId === secretNode.entityId);
+        const anchors = secretEntity?.metadata?.revelationAnchors || [];
+        for (const anchorId of anchors) {
+          const anchorNode = canvas.nodes?.find((n: any) => n.entityId === anchorId);
+          if (anchorNode && visibleNodeIds.has(anchorNode.id)) {
+            // Apply relations filter checks for virtual anchor edges as well
+            if (relationsFilter === "selection" && selectedNodeId) {
+              if (anchorNode.id !== selectedNodeId && secretNode.id !== selectedNodeId) {
+                continue;
+              }
+            }
+            if (relationsFilter === "secret") {
+              // Virtual anchors are not technically core database secrets, but we can treat them as secrets or all
+              continue;
+            }
+
+            // Attenuation checks for anchors
+            const hasSelection = !!selectedNodeId;
+            const connectsToSelection = anchorNode.id === selectedNodeId || secretNode.id === selectedNodeId;
+            const isAttenuatedBySelection = hasSelection && !connectsToSelection;
+            const opacityVal = isAttenuatedBySelection ? 0.15 : 1;
+
+            anchorEdges.push({
+              id: `virtual-anchor-${anchorNode.id}-${secretNode.id}`,
+              source: anchorNode.id,
+              target: secretNode.id,
+              type: "smoothstep",
+              style: {
+                stroke: "rgba(167, 139, 250, 0.45)",
+                strokeWidth: 1.2,
+                strokeDasharray: "3 3",
+                opacity: opacityVal,
+              },
+              label: "ancla",
+              labelStyle: {
+                fill: "rgba(167, 139, 250, 0.6)",
+                fontSize: "8px",
+                fontWeight: 500,
+                opacity: opacityVal,
+              },
+              labelBgStyle: {
+                fill: "hsl(230, 28%, 10%)",
+                fillOpacity: 0.8,
+                rx: 3,
+                opacity: opacityVal,
+              },
+            });
+          }
+        }
+      }
+    }
+
+    return [...defaultEdges, ...anchorEdges];
+  }, [canvas.nodes, canvas.edges, selectedEdgeId, flowNodes, publicOnly, mysteryFlowMode, campaignState?.entities, campaignState?.relations, highlightedNodeIds, relationsFilter, selectedNodeId]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(flowNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(flowEdges);
 
   // Keep local nodes state in sync when canvas updates externally.
-  // Preserve React Flow selection state (needed for NodeResizer visibility).
+  // Preserve RF selection (needed for NodeResizer visibility on groups).
+  // Do NOT include selectedNodeId here — RF already marks nodes selected via onNodeClick.
+  // Adding selectedNodeId causes multi-selection bugs (race with onNodesChange).
   useEffect(() => {
     setNodes(prev => {
       const rfSelectedIds = new Set(prev.filter(n => n.selected).map(n => n.id));
-      return flowNodes.map(n => ({
+      return flowNodes.map((n: any) => ({
         ...n,
-        selected: rfSelectedIds.has(n.id) || n.id === selectedNodeId,
+        selected: rfSelectedIds.has(n.id),
       }));
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [flowNodes, selectedNodeId]);
+  }, [flowNodes]);
 
   useEffect(() => {
     setEdges(flowEdges);
   }, [flowEdges, setEdges]);
 
-  // --- Group-snap helper ---
-  const CARD_W = 162;
-  const CARD_H = 190;
-
-  /** Returns group whose bounds contain the center of the dropped card, or null. */
-  const findContainingGroup = useCallback((absPos: XYPosition, allNodes: Node[]): Node | null => {
-    for (const g of allNodes) {
-      if (g.type !== "group") continue;
-      const gx = g.position.x;
-      const gy = g.position.y;
-      const gw = (g.style?.width as number | undefined) ?? g.width ?? 300;
-      const gh = (g.style?.height as number | undefined) ?? g.height ?? 200;
-      const cx = absPos.x + CARD_W / 2;
-      const cy = absPos.y + CARD_H / 2;
-      if (cx > gx && cx < gx + gw && cy > gy && cy < gy + gh) return g;
+  const lastCanvasIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (rfInstance && canvasId && lastCanvasIdRef.current !== canvasId) {
+      lastCanvasIdRef.current = canvasId;
+      setTimeout(() => {
+        rfInstance.fitView({ padding: 0.25, duration: 800 });
+      }, 100);
     }
-    return null;
-  }, []);
+  }, [rfInstance, canvasId]);
 
-  // Handle node drag stop: commit positions and detect group membership
+  // Handle node drag stop: commit absolute positions.
+  // Migrates old parentId-based relative positioning to groupId on first drag.
   const onNodeDragStop = useCallback((_event: React.MouseEvent, _node: Node, draggedNodes: Node[]) => {
+    const storeNodes: any[] = useCampaignStore.getState().canvasesById[canvasId]?.nodes ?? [];
     const updates = draggedNodes.map((n) => {
-      if (n.type !== "entity") {
-        return { nodeId: n.id, x: Math.round(n.position.x), y: Math.round(n.position.y) };
+      const sn = storeNodes.find((s: any) => s.id === n.id);
+      const update: any = { nodeId: n.id, x: Math.round(n.position.x), y: Math.round(n.position.y) };
+      // On first drag after old-style group parenting: migrate parentId → groupId
+      if (sn?.parentId && !sn?.groupId) {
+        update.groupId = sn.parentId;
+        update.parentId = null;
       }
-
-      const absPos: XYPosition = {
-        x: n.positionAbsolute?.x ?? n.position.x,
-        y: n.positionAbsolute?.y ?? n.position.y,
-      };
-
-      const group = findContainingGroup(absPos, nodes);
-
-      if (group) {
-        return {
-          nodeId: n.id,
-          x: Math.round(absPos.x - group.position.x),
-          y: Math.round(absPos.y - group.position.y),
-          parentId: group.id,
-        };
-      }
-      return { nodeId: n.id, x: Math.round(absPos.x), y: Math.round(absPos.y), parentId: null };
+      return update;
     });
-
     updateCanvasNodesLayout(canvasId, updates);
-  }, [canvasId, nodes, updateCanvasNodesLayout, findContainingGroup]);
+  }, [canvasId, updateCanvasNodesLayout]);
 
   const onSelectionDragStop = useCallback((_event: React.MouseEvent, draggedNodes: Node[]) => {
     const updates = draggedNodes.map((n) => ({
@@ -275,9 +511,11 @@ export function CampaignCanvasFlow({
     }
   }, [canvasId, rfInstance, saveViewport]);
 
-  // Initial viewport restore from canvas model
+  // Initial viewport restore from canvas model + seed hull overlay state
   useEffect(() => {
     if (rfInstance && canvas.viewport) {
+      const vp = { x: canvas.viewport.x, y: canvas.viewport.y, zoom: canvas.viewport.zoom };
+      setViewport(vp);
       rfInstance.setViewport({
         x: canvas.viewport.x,
         y: canvas.viewport.y,
@@ -362,7 +600,7 @@ export function CampaignCanvasFlow({
 
   const onDragLeave = useCallback((e: React.DragEvent) => {
     // Only clear if leaving the whole wrapper (not just child elements)
-    if (!wrapperRef.current?.contains(e.relatedTarget as Node)) {
+    if (!wrapperRef.current?.contains(e.relatedTarget as any)) {
       setIsDragOver(false);
     }
   }, []);
@@ -378,8 +616,8 @@ export function CampaignCanvasFlow({
 
     const bounds = wrapperRef.current!.getBoundingClientRect();
     const pos = rfInstance.project({ x: e.clientX - bounds.left, y: e.clientY - bounds.top });
-    const x = Math.round(pos.x - CARD_W / 2);
-    const y = Math.round(pos.y - CARD_H / 2);
+    const x = Math.round(pos.x - 81);  // center node on cursor (card ~162px wide)
+    const y = Math.round(pos.y - 95);  // center node on cursor (card ~190px tall)
 
     if (kind === "note") {
       await placeNodeOnCanvas(canvasId, { kind: "note", text: "", color: "yellow", x, y });
@@ -389,29 +627,51 @@ export function CampaignCanvasFlow({
       const campaignId = campaignState?.campaign?.campaignId;
       if (!campaignId) return;
       try {
-        await createEntity({ entityType, title: `Nuevo ${label}`, status: "ready", importance: "normal", visibility: { kind: "dm_only" } });
-        const created = useCampaignStore.getState().campaignState?.entities?.slice(-1)[0];
-        if (created) {
+        const created = await createEntity({ entityType, title: `Nuevo ${label}`, status: "ready", importance: "normal", visibility: { kind: "dm_only" } });
+        if (created?.entityId) {
           await placeNodeOnCanvas(canvasId, { kind: "entity", entityId: created.entityId, x, y });
         }
       } catch (err) {
         console.error("Drop create entity failed", err);
       }
+    } else if (kind === "fact") {
+      const factId = e.dataTransfer.getData("palette/factId");
+      if (factId) {
+        await placeNodeOnCanvas(canvasId, { kind: "fact", factId, x, y });
+      }
+    } else if (kind === "fact-create") {
+      const factKind = e.dataTransfer.getData("palette/factKind") || "rumor";
+      const statement = window.prompt(`Nuevo hecho (${factKind}):\n\nEscribe la declaración:`);
+      if (!statement?.trim()) return;
+      try {
+        const newFactId = await createFact({ statement: statement.trim(), kind: factKind, confidence: "suspected", relatedEntityIds: [], source: { type: "manual" } });
+        if (newFactId) {
+          await placeNodeOnCanvas(canvasId, { kind: "fact", factId: newFactId, x, y });
+        }
+      } catch (err) {
+        console.error("Drop create fact failed", err);
+      }
     }
-  }, [rfInstance, canvasId, campaignState, placeNodeOnCanvas, createEntity]);
+  }, [rfInstance, canvasId, campaignState, placeNodeOnCanvas, createEntity, createFact]);
 
   const isPanMode = interactionMode === "pan";
+  const isMarqueeMode = interactionMode === "multiselect";
+
+  const canvasNodes = useCampaignStore(s => s.canvasesById[canvasId]?.nodes);
 
   return (
     <div
       ref={wrapperRef}
-      style={{ width: "100%", height: "100%", cursor: isPanMode ? "grab" : "default" }}
+      style={{ width: "100%", height: "100%", cursor: isPanMode ? "grab" : "default", position: "relative" }}
       className={isDragOver ? "canvas-drop-zone--active" : undefined}
       onDoubleClick={onPaneDoubleClick}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
+      {/* Group hull overlay — behind RF nodes, synced with viewport */}
+      <CanvasGroupHulls canvasId={canvasId} viewport={viewport} canvasNodes={canvasNodes} rfNodes={nodes} />
+
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -423,7 +683,9 @@ export function CampaignCanvasFlow({
         onEdgeClick={onEdgeClick}
         onPaneClick={onPaneClick}
         onConnect={onConnect}
+        onMove={onMove}
         onMoveEnd={onMoveEnd}
+        onSelectionChange={onSelectionChange ? ({ nodes, edges }) => onSelectionChange(nodes, edges) : undefined}
         nodeTypes={nodeTypes}
         onInit={setRfInstance}
         deleteKeyCode={null}
@@ -431,7 +693,9 @@ export function CampaignCanvasFlow({
         fitViewOptions={{ padding: 0.2 }}
         className="campaign-react-flow"
         panOnDrag={isPanMode}
-        nodesDraggable={!isLocked && !isPanMode}
+        selectionOnDrag={isMarqueeMode}
+        selectionMode={isMarqueeMode ? SelectionMode.Partial : SelectionMode.Full}
+        nodesDraggable={!isLocked && !isPanMode && !isMarqueeMode}
         elementsSelectable={!isPanMode}
         panOnScroll={false}
         zoomOnDoubleClick={false}
