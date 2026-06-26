@@ -16,25 +16,61 @@ export interface GraphPageProps {
   setIsRelationModalOpen?: (open: boolean) => void;
 }
 
-const TYPE_COLORS: Record<string, string> = {
-  npc: "#7c3aed",
-  location: "#0891b2",
-  quest: "#d97706",
-  clue: "#059669",
-  secret: "#dc2626",
-  faction: "#9333ea",
-  consequence: "#b45309",
-  player_character: "#2563eb",
-  item: "#c026d3",
-  creature: "#ef4444",
-  encounter: "#f97316",
-  scene: "#60a5fa",
-  front: "#818cf8",
-  decision: "#34d399",
-  rumor: "#94a3b8",
-  handout: "#e2e8f0",
-  note: "#64748b",
-  clock: "#fb923c",
+const ENTITY_TYPE_COLORS: Record<string, string> = {
+  player_character: "#6366f1",
+  npc:             "#3b82f6",
+  location:        "#10b981",
+  faction:         "#f59e0b",
+  quest:           "#f97316",
+  clue:            "#eab308",
+  secret:          "#ef4444",
+  item:            "#8b5cf6",
+  creature:        "#dc2626",
+  encounter:       "#0891b2",
+  scene:           "#64748b",
+  front:           "#7c3aed",
+  clock:           "#0ea5e9",
+  decision:        "#d97706",
+  consequence:     "#b45309",
+  rumor:           "#6b7280",
+  rule_reference:  "#374151",
+  handout:         "#1d4ed8",
+  note:            "#475569",
+};
+
+// Keep TYPE_COLORS as alias for backward-compat (MiniMap, side panel badge)
+const TYPE_COLORS = ENTITY_TYPE_COLORS;
+
+const RELATION_LABELS_ES: Record<string, string> = {
+  hides:          "oculta",
+  unlocks:        "desbloquea",
+  points_to:      "apunta a",
+  causes:         "causa",
+  contradicts:    "contradice",
+  confirms:       "confirma",
+  belongs_to:     "pertenece a",
+  leads_to:       "lleva a",
+  opposes:        "se opone a",
+  allies_with:    "aliado de",
+  knows:          "conoce",
+  fears:          "teme",
+  employs:        "emplea",
+  seeks:          "busca",
+  guards:         "custodia",
+  located_in:     "ubicado en",
+  member_of:      "miembro de",
+  owns:           "posee",
+  controls:       "controla",
+  threatens:      "amenaza",
+  trusts:         "confía en",
+  hates:          "odia",
+  loves:          "ama",
+  allied_with:    "aliado de",
+  reveals:        "revela",
+  blocks:         "bloquea",
+  parent_of:      "progenitor de",
+  child_of:       "descendiente de",
+  custom:         "relación personalizada",
 };
 
 type FilterPreset = "todos" | "misiones" | "personajes" | "secretos" | "lugares" | "facciones" | "consecuencias";
@@ -119,10 +155,10 @@ export function GraphPage(props: GraphPageProps = {}) {
         ),
       },
       style: {
-        background: "#0f1120",
+        background: ENTITY_TYPE_COLORS[e.entityType] ?? "#6b7280",
         border: `2px solid ${border}`,
         borderRadius: "8px",
-        color: "#e2e8f0",
+        color: "#fff",
         boxShadow: `0 0 8px ${border}40`,
         minWidth: "120px",
       },
@@ -135,10 +171,10 @@ export function GraphPage(props: GraphPageProps = {}) {
       id: edge.id ?? `${edge.source}-${edge.target}`,
       source: edge.source,
       target: edge.target,
-      label: edge.label || edge.relationType || edge.type || "",
-      style: { stroke: "#6366f1", strokeWidth: 1.5 },
+      label: RELATION_LABELS_ES[edge.relationType] ?? edge.relationType ?? edge.label ?? edge.type ?? "",
+      style: { stroke: "#64748b", strokeWidth: 1.5 },
       labelStyle: { fill: "#94a3b8", fontSize: 10 },
-      labelBgStyle: { fill: "#0b0d19" },
+      labelBgStyle: { fill: "#1e293b", fillOpacity: 0.8 },
       animated: false,
     }));
 
@@ -241,28 +277,35 @@ export function GraphPage(props: GraphPageProps = {}) {
                   Leyenda del Grafo
                 </h4>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px" }}>
-                  {Object.entries(TYPE_COLORS)
-                    .filter(([type]) => ["player_character", "npc", "location", "quest", "clue", "secret", "faction", "consequence", "clock", "item"].includes(type))
-                    .map(([type, color]) => {
-                      const labelMap: Record<string, string> = {
-                        player_character: "Personaje Jugador",
-                        npc: "PNJ",
-                        location: "Ubicación",
-                        quest: "Misión",
-                        clue: "Pista",
-                        secret: "Secreto",
-                        faction: "Facción",
-                        consequence: "Consecuencia",
-                        clock: "Reloj",
-                        item: "Objeto"
-                      };
-                      return (
-                        <div key={type} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.72rem" }}>
-                          <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: color, flexShrink: 0 }} />
-                          <span style={{ color: "var(--text-main)", fontWeight: "500" }}>{labelMap[type] || type}</span>
-                        </div>
-                      );
-                    })}
+                  {Object.entries(ENTITY_TYPE_COLORS).map(([type, color]) => {
+                    const labelMap: Record<string, string> = {
+                      player_character: "PJ",
+                      npc: "PNJ",
+                      location: "Ubicación",
+                      quest: "Misión",
+                      clue: "Pista",
+                      secret: "Secreto",
+                      faction: "Facción",
+                      consequence: "Consecuencia",
+                      clock: "Reloj",
+                      item: "Objeto",
+                      creature: "Criatura",
+                      encounter: "Encuentro",
+                      scene: "Escena",
+                      front: "Frente",
+                      decision: "Decisión",
+                      rumor: "Rumor",
+                      rule_reference: "Regla",
+                      handout: "Documento",
+                      note: "Nota",
+                    };
+                    return (
+                      <div key={type} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.72rem" }}>
+                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: color, flexShrink: 0 }} />
+                        <span style={{ color: "var(--text-main)", fontWeight: "500" }}>{labelMap[type] || type}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
