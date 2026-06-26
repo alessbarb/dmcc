@@ -2,9 +2,10 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import ForceGraph3D from "react-force-graph-3d";
 import * as THREE from "three";
 import SpriteText from "three-spritetext";
-import { Plus, Eye, EyeOff, AlertTriangle, X } from "lucide-react";
+import { Plus, Eye, EyeOff, AlertTriangle, X, Maximize, Sparkles } from "lucide-react";
 import type { Entity } from "../stores/campaignStore.js";
 import { useCampaignStore } from "../stores/campaignStore.js";
+import { findNarrativeAnchor, findUndirectedShortestPath } from "../features/graph/findNarrativePath.js";
 
 export interface GraphPageProps {
   graph?: any;
@@ -59,10 +60,10 @@ const RELATION_LABELS_ES: Record<string, string> = {
   works_for: "trabaja para", owes_debt_to: "le debe a", transforms_into: "se transforma en",
 };
 
-type FilterPreset = "todos" | "misiones" | "personajes" | "secretos" | "lugares" | "facciones" | "consecuencias";
+type FilterPreset = "todos" | "nextSession" | "criticalClues" | "unrevealedSecrets" | "misiones" | "personajes" | "secretos" | "lugares" | "facciones" | "consecuencias";
 type ViewMode = "all" | "dm_only" | "players";
 
-const PRESET_TYPES: Record<FilterPreset, string[] | null> = {
+const PRESET_TYPES: Record<string, string[] | null> = {
   todos: null,
   misiones: ["quest", "clue", "consequence"],
   personajes: ["npc", "player_character"],
@@ -73,8 +74,15 @@ const PRESET_TYPES: Record<FilterPreset, string[] | null> = {
 };
 
 const PRESET_LABELS: Record<FilterPreset, string> = {
-  todos: "Todos", misiones: "Misiones", personajes: "Personajes",
-  secretos: "Secretos", lugares: "Lugares", facciones: "Facciones",
+  todos: "Todos",
+  nextSession: "Próxima Sesión ⭐",
+  criticalClues: "Pistas Críticas 🔍",
+  unrevealedSecrets: "Secretos sin Revelar 🔑",
+  misiones: "Misiones",
+  personajes: "Personajes",
+  secretos: "Secretos",
+  lugares: "Lugares",
+  facciones: "Facciones",
   consecuencias: "Consecuencias",
 };
 
@@ -82,8 +90,14 @@ function hexToInt(hex: string): number {
   return parseInt(hex.replace("#", ""), 16);
 }
 
-function nodeRadius(val: number): number {
-  return val === 3 ? 6 : val === 2 ? 4.5 : 3;
+function getNodeRadius(importance?: string): number {
+  switch (importance) {
+    case "critical": return 7.5;
+    case "high": return 5.5;
+    case "low": return 2.2;
+    case "normal":
+    default: return 3.5;
+  }
 }
 
 export function GraphPage(props: GraphPageProps = {}) {
@@ -95,15 +109,20 @@ export function GraphPage(props: GraphPageProps = {}) {
 
   const [preset, setPreset] = useState<FilterPreset>("todos");
   const [viewMode, setViewMode] = useState<ViewMode>("all");
+  const [labelsMode, setLabelsMode] = useState<"Auto" | "Todas" | "Mínimas">("Auto");
   const [panelEntity, setPanelEntity] = useState<any>(null);
   const [containerSize, setContainerSize] = useState({ w: 900, h: 600 });
   const containerRef = useRef<HTMLDivElement>(null);
   const fgRef = useRef<any>(null);
-  // Refs for direct THREE mutation (avoids re-render on hover)
   const hoveredNodeRef = useRef<any>(null);
   const panelEntityRef = useRef<any>(null);
+  const [hasZoomed, setHasZoomed] = useState(false);
 
   useEffect(() => { panelEntityRef.current = panelEntity; }, [panelEntity]);
+
+  useEffect(() => {
+    setHasZoomed(false);
+  }, [campaignState?.campaign?.campaignId]);
 
   // Measure container
   useEffect(() => {
@@ -124,12 +143,10 @@ export function GraphPage(props: GraphPageProps = {}) {
     const fg = fgRef.current;
     if (!fg) return;
     const charge = fg.d3Force("charge");
-    if (charge) charge.strength(-60);
+    if (charge) charge.strength(-70);
     const link = fg.d3Force("link");
-    if (link) link.distance(40);
+    if (link) link.distance(45);
   });
-
-  const allowedTypes = PRESET_TYPES[preset];
 
   const entitiesArr: Entity[] = Array.from(
     (campaignState?.entities instanceof Map
@@ -137,21 +154,62 @@ export function GraphPage(props: GraphPageProps = {}) {
       : Object.values(campaignState?.entities ?? {})) as Iterable<Entity>
   );
 
-  const visibleEntities = entitiesArr.filter((e: Entity) => {
-    if ((e as any).archived) return false;
-    if (allowedTypes && !allowedTypes.includes(e.entityType)) return false;
-    if (viewMode === "dm_only" && (e as any).visibility?.kind !== "dm_only") return false;
-    if (viewMode === "players" && (e as any).visibility?.kind === "dm_only") return false;
-    return true;
-  });
-
-  const visibleIds = new Set(visibleEntities.map((e: Entity) => e.entityId));
-
   const relationsArr: any[] = Array.from(
     (campaignState?.relations instanceof Map
       ? campaignState.relations.values()
       : Object.values(campaignState?.relations ?? {})) as Iterable<any>
   );
+
+  // Next session entity calculation helper
+  const getNextSessionEntityIds = useCallback(() => {
+    const direct = new Set<string>();
+    entitiesArr.forEach((e) => {
+      const isPinned = e.metadata?.pinned === true || e.metadata?.nextSession === true;
+      const isMainActiveQuest = e.entityType === "quest" && e.status === "active" && (e.importance === "critical" || e.importance === "high");
+      if (isPinned || isMainActiveQuest) {
+        direct.add(e.entityId);
+      }
+    });
+
+    const finalIds = new Set(direct);
+    relationsArr.forEach((r) => {
+      if (r.archived) return;
+      const sourceDirect = direct.has(r.sourceEntityId);
+      const targetDirect = direct.has(r.targetEntityId);
+      if (sourceDirect || targetDirect) {
+        const otherId = sourceDirect ? r.targetEntityId : r.sourceEntityId;
+        const other = entitiesArr.find((e) => e.entityId === otherId);
+        if (other) {
+          const isClueOrConsequence = other.entityType === "clue" || other.entityType === "consequence";
+          const isCriticalOrHigh = other.importance === "critical" || other.importance === "high";
+          if (isClueOrConsequence && isCriticalOrHigh) {
+            finalIds.add(otherId);
+          }
+        }
+      }
+    });
+
+    return finalIds;
+  }, [entitiesArr, relationsArr]);
+
+  const nextSessionIds = preset === "nextSession" ? getNextSessionEntityIds() : new Set<string>();
+
+  const visibleEntities = entitiesArr.filter((e: Entity) => {
+    if ((e as any).archived) return false;
+    if (viewMode === "dm_only" && (e as any).visibility?.kind !== "dm_only") return false;
+    if (viewMode === "players" && (e as any).visibility?.kind === "dm_only") return false;
+
+    if (preset === "todos") return true;
+    if (preset === "nextSession") return nextSessionIds.has(e.entityId);
+    if (preset === "criticalClues") return e.entityType === "clue" && (e.importance === "critical" || e.importance === "high");
+    if (preset === "unrevealedSecrets") return e.entityType === "secret" && e.status !== "revealed" && e.status !== "resolved" && e.visibility?.kind === "dm_only";
+
+    const allowedTypes = PRESET_TYPES[preset];
+    if (allowedTypes && !allowedTypes.includes(e.entityType)) return false;
+    return true;
+  });
+
+  const visibleIds = new Set(visibleEntities.map((e: Entity) => e.entityId));
 
   const graphData = {
     nodes: visibleEntities.map((e: Entity) => ({
@@ -159,7 +217,8 @@ export function GraphPage(props: GraphPageProps = {}) {
       title: e.title,
       entityType: e.entityType,
       entityData: e,
-      val: e.entityType === "faction" ? 3 : e.entityType === "location" ? 2 : 1,
+      importance: e.importance,
+      val: getNodeRadius(e.importance),
     })),
     links: relationsArr
       .filter((r: any) => !r.archived && visibleIds.has(r.sourceEntityId) && visibleIds.has(r.targetEntityId))
@@ -177,53 +236,211 @@ export function GraphPage(props: GraphPageProps = {}) {
       )
     : [];
 
-  // STABLE nodeThreeObject — no React state deps, mutates objects directly on hover
+  const relatedFacts = panelEntity
+    ? (campaignState?.facts ?? []).filter((f: any) =>
+        !f.archived && f.relatedEntityIds?.includes(panelEntity.entityId)
+      )
+    : [];
+
+  // Shortest path BFS logic to the anchor
+  const narrativeAnchorId = findNarrativeAnchor(graphData.nodes);
+  const narrativePath = (selectedEntity && narrativeAnchorId && selectedEntity.entityId !== narrativeAnchorId)
+    ? findUndirectedShortestPath(graphData.nodes, graphData.links, selectedEntity.entityId, narrativeAnchorId)
+    : null;
+
+  const getLinkId = (nodeVal: any): string => {
+    if (typeof nodeVal === "object" && nodeVal !== null) {
+      return nodeVal.id ?? "";
+    }
+    return String(nodeVal);
+  };
+
+  const isLinkOnPath = useCallback((link: any): boolean => {
+    if (!narrativePath) return false;
+    const u = getLinkId(link.source);
+    const v = getLinkId(link.target);
+    const uIdx = narrativePath.indexOf(u);
+    const vIdx = narrativePath.indexOf(v);
+    return uIdx !== -1 && vIdx !== -1 && Math.abs(uIdx - vIdx) === 1;
+  }, [narrativePath]);
+
+  const getLinkColor = useCallback((link: any) => {
+    if (narrativePath) {
+      return isLinkOnPath(link) ? "#10b981" : "rgba(148,163,184,0.15)";
+    }
+    return "rgba(148,163,184,0.55)";
+  }, [narrativePath, isLinkOnPath]);
+
+  const getLinkWidth = useCallback((link: any) => {
+    if (narrativePath) {
+      return isLinkOnPath(link) ? 3.5 : 1.0;
+    }
+    return 1.5;
+  }, [narrativePath, isLinkOnPath]);
+
+  const getLinkDirectionalArrowColor = useCallback((link: any) => {
+    if (narrativePath) {
+      return isLinkOnPath(link) ? "#10b981" : "rgba(148,163,184,0.15)";
+    }
+    return "rgba(148,163,184,0.7)";
+  }, [narrativePath, isLinkOnPath]);
+
+  // STABLE nodeThreeObject
   const nodeThreeObject = useCallback((node: any) => {
+    const isDmOnly = node.entityData?.visibility?.kind === "dm_only";
+    const isPending = node.entityData?.status === "pending" || node.entityData?.status === "suspected";
+    const isResolved = node.entityData?.status === "resolved" || node.entityData?.status === "revealed";
+
     const color = ENTITY_TYPE_COLORS[node.entityType] ?? "#6366f1";
     const colorInt = hexToInt(color);
-    const r = nodeRadius(node.val ?? 1);
+    const r = node.val ?? 3.5;
     const group = new THREE.Group();
 
-    const coreMat = new THREE.MeshLambertMaterial({ color: colorInt, transparent: true, opacity: 0.9 });
+    const coreMat = new THREE.MeshLambertMaterial({ color: colorInt, transparent: true, opacity: isResolved ? 0.4 : 0.9 });
     const core = new THREE.Mesh(new THREE.SphereGeometry(r, 14, 14), coreMat);
     group.add(core);
 
-    const glowMat = new THREE.MeshLambertMaterial({ color: colorInt, transparent: true, opacity: 0.1, side: THREE.BackSide });
+    let glowColorInt = colorInt;
+    let glowOpacity = 0.15;
+    
+    if (isDmOnly) {
+      glowColorInt = hexToInt("#a855f7"); // violet
+      glowOpacity = 0.35;
+    } else if (isPending) {
+      glowColorInt = hexToInt("#f97316"); // orange
+      glowOpacity = 0.3;
+    }
+
+    if (isResolved) {
+      glowOpacity = 0.05;
+    }
+
+    const glowMat = new THREE.MeshLambertMaterial({ color: glowColorInt, transparent: true, opacity: glowOpacity, side: THREE.BackSide });
     const glow = new THREE.Mesh(new THREE.SphereGeometry(r * 1.9, 10, 10), glowMat);
     group.add(glow);
 
     const sprite = new SpriteText(node.title) as SpriteText & { position: { y: number } };
     sprite.color = "rgba(203,213,225,0.75)";
-    sprite.textHeight = 2.8;
+    sprite.textHeight = Math.max(2.5, r * 0.6);
     sprite.fontWeight = "600";
     sprite.backgroundColor = "transparent";
     sprite.padding = 0;
     sprite.position.y = r + 5;
     group.add(sprite);
 
-    // Store THREE refs on the node for direct mutation on hover
     node._coreMat = coreMat;
     node._glowMat = glowMat;
     node._sprite = sprite;
 
     return group;
-  }, []); // STABLE — no deps
+  }, []);
+
+  // Highlighting and visibility sync effect
+  useEffect(() => {
+    graphData.nodes.forEach((node: any) => {
+      if (!node._sprite || !node._coreMat) return;
+
+      const isPlayerChar = node.entityType === "player_character";
+      const isSelected = selectedEntity && selectedEntity.entityId === node.id;
+      const isHovered = hoveredNodeRef.current && hoveredNodeRef.current.id === node.id;
+      const isOnPath = narrativePath && narrativePath.includes(node.id);
+
+      // Label visibility
+      let isLabelVisible = false;
+      if (labelsMode === "Todas") {
+        isLabelVisible = true;
+      } else if (labelsMode === "Mínimas") {
+        isLabelVisible = isSelected || isPlayerChar || isOnPath;
+      } else {
+        // Auto
+        const importance = node.entityData?.importance;
+        const isImportant = importance === "critical" || importance === "high";
+        isLabelVisible = isImportant || isPlayerChar || isSelected || isHovered || isOnPath;
+      }
+      node._sprite.visible = isLabelVisible;
+
+      // Text highlighting style
+      const isHighlighted = isSelected || isHovered;
+      node._sprite.color = isHighlighted ? "#ffffff" : "rgba(203,213,225,0.75)";
+      node._sprite.textHeight = isHighlighted ? Math.max(3.5, (node.val ?? 3.5) * 0.8) : Math.max(2.5, (node.val ?? 3.5) * 0.6);
+
+      // Narrative path fading
+      const isDmOnly = node.entityData?.visibility?.kind === "dm_only";
+      const isPending = node.entityData?.status === "pending" || node.entityData?.status === "suspected";
+      const isResolved = node.entityData?.status === "resolved" || node.entityData?.status === "revealed";
+
+      let baseCoreOpacity = isResolved ? 0.4 : 0.9;
+      let baseGlowOpacity = isResolved ? 0.05 : 0.15;
+      if (isDmOnly) baseGlowOpacity = 0.35;
+      else if (isPending) baseGlowOpacity = 0.3;
+
+      let fadeFactor = 1.0;
+      if (narrativePath) {
+        const isNodeOnPath = narrativePath.includes(node.id);
+        if (!isNodeOnPath) {
+          fadeFactor = 0.20;
+        }
+      }
+
+      node._coreMat.opacity = baseCoreOpacity * fadeFactor;
+      if (node._glowMat) {
+        node._glowMat.opacity = baseGlowOpacity * fadeFactor;
+      }
+      node._sprite.material.opacity = fadeFactor;
+    });
+  }, [labelsMode, selectedEntity, narrativePath, graphData.nodes]);
 
   const applyHighlight = useCallback((node: any, active: boolean) => {
     if (!node) return;
-    if (node._coreMat) node._coreMat.opacity = active ? 1 : 0.9;
-    if (node._glowMat) node._glowMat.opacity = active ? 0.35 : 0.1;
-    if (node._sprite) {
-      node._sprite.color = active ? "#ffffff" : "rgba(203,213,225,0.75)";
-      node._sprite.textHeight = active ? 3.8 : 2.8;
+    
+    const isPlayerChar = node.entityType === "player_character";
+    const isSelected = selectedEntity && selectedEntity.entityId === node.id;
+    const isOnPath = narrativePath && narrativePath.includes(node.id);
+
+    let isLabelVisible = false;
+    if (labelsMode === "Todas") {
+      isLabelVisible = true;
+    } else if (labelsMode === "Mínimas") {
+      isLabelVisible = isSelected || isPlayerChar || isOnPath;
+    } else {
+      const importance = node.entityData?.importance;
+      const isImportant = importance === "critical" || importance === "high";
+      isLabelVisible = isImportant || isPlayerChar || isSelected || active || isOnPath;
     }
-  }, []);
+
+    if (node._sprite) {
+      node._sprite.visible = isLabelVisible;
+      const isHighlighted = isSelected || active;
+      node._sprite.color = isHighlighted ? "#ffffff" : "rgba(203,213,225,0.75)";
+      node._sprite.textHeight = isHighlighted ? Math.max(3.5, (node.val ?? 3.5) * 0.8) : Math.max(2.5, (node.val ?? 3.5) * 0.6);
+    }
+
+    if (node._glowMat) {
+      const isDmOnly = node.entityData?.visibility?.kind === "dm_only";
+      const isPending = node.entityData?.status === "pending" || node.entityData?.status === "suspected";
+      const isResolved = node.entityData?.status === "resolved" || node.entityData?.status === "revealed";
+
+      let baseGlowOpacity = isResolved ? 0.05 : 0.15;
+      if (isDmOnly) baseGlowOpacity = 0.35;
+      else if (isPending) baseGlowOpacity = 0.3;
+
+      let fadeFactor = 1.0;
+      if (narrativePath) {
+        const isNodeOnPath = narrativePath.includes(node.id);
+        if (!isNodeOnPath) {
+          fadeFactor = 0.20;
+        }
+      }
+
+      node._glowMat.opacity = active ? (baseGlowOpacity * 2.5 * fadeFactor) : (baseGlowOpacity * fadeFactor);
+    }
+  }, [labelsMode, selectedEntity, narrativePath]);
 
   const handleNodeHover = useCallback((node: any) => {
+    if (hoveredNodeRef.current === node) return;
     applyHighlight(hoveredNodeRef.current, false);
     hoveredNodeRef.current = node;
     applyHighlight(node, true);
-    // restore cursor
     document.body.style.cursor = node ? "pointer" : "default";
   }, [applyHighlight]);
 
@@ -237,6 +454,52 @@ export function GraphPage(props: GraphPageProps = {}) {
       fgRef.current.cameraPosition({ x: x + d, y: y + d * 0.4, z: z + d }, { x, y, z }, 800);
     }
   }, [setSelectedEntity]);
+
+  const handleZoomToFit = useCallback(() => {
+    if (fgRef.current) {
+      fgRef.current.zoomToFit(800, 40);
+    }
+  }, []);
+
+  // Initial fit zoom on campaign load
+  useEffect(() => {
+    if (fgRef.current && graphData.nodes.length > 0 && !hasZoomed) {
+      const timer = setTimeout(() => {
+        fgRef.current.zoomToFit(1000, 50);
+        setHasZoomed(true);
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [graphData.nodes.length, hasZoomed]);
+
+  const handleToggleNextSession = async () => {
+    if (!panelEntity) return;
+    const isPinned = panelEntity.metadata?.nextSession === true || panelEntity.metadata?.pinned === true;
+    const currentMeta = panelEntity.metadata ?? {};
+    const nextVal = !isPinned;
+    const updatedMeta = { ...currentMeta, nextSession: nextVal, pinned: nextVal };
+
+    await store.updateEntity(panelEntity.entityId, { metadata: updatedMeta });
+    setPanelEntity((prev: any) => prev ? { ...prev, metadata: updatedMeta } : null);
+  };
+
+  const handleToggleVisibility = async () => {
+    if (!panelEntity) return;
+    const isDmOnly = panelEntity.visibility?.kind === "dm_only";
+
+    if (isDmOnly && panelEntity.entityType === "secret") {
+      const confirmed = window.confirm("⚠️ ADVERTENCIA: Estás a punto de revelar un Secreto a los jugadores. ¿Estás seguro de que deseas continuar?");
+      if (!confirmed) return;
+    }
+
+    const nextKind = isDmOnly ? "party" : "dm_only";
+    const updatedVisibility = { ...panelEntity.visibility, kind: nextKind };
+
+    await store.updateEntity(panelEntity.entityId, { visibility: updatedVisibility });
+    setPanelEntity((prev: any) => prev ? { ...prev, visibility: updatedVisibility } : null);
+  };
+
+  const isEntityPinned = panelEntity?.metadata?.nextSession === true || panelEntity?.metadata?.pinned === true;
 
   const graphWidth = containerSize.w;
   const graphHeight = containerSize.h;
@@ -259,7 +522,7 @@ export function GraphPage(props: GraphPageProps = {}) {
       {/* Filters */}
       <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "center" }}>
         <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginRight: "4px" }}>Filtro:</span>
-        {(Object.keys(PRESET_TYPES) as FilterPreset[]).map((p) => (
+        {(Object.keys(PRESET_LABELS) as FilterPreset[]).map((p) => (
           <button key={p} className={`btn btn-sm ${preset === p ? "btn-primary" : "btn-secondary"}`} onClick={() => setPreset(p)}>
             {PRESET_LABELS[p]}
           </button>
@@ -268,6 +531,12 @@ export function GraphPage(props: GraphPageProps = {}) {
         {(["all", "dm_only", "players"] as ViewMode[]).map((m) => (
           <button key={m} className={`btn btn-sm ${viewMode === m ? "btn-primary" : "btn-secondary"}`} onClick={() => setViewMode(m)}>
             {m === "all" ? "Todo" : m === "dm_only" ? "Solo DM" : "Solo jugadores"}
+          </button>
+        ))}
+        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "12px", marginRight: "4px" }}>Etiquetas:</span>
+        {(["Auto", "Todas", "Mínimas"] as const).map((mode) => (
+          <button key={mode} className={`btn btn-sm ${labelsMode === mode ? "btn-primary" : "btn-secondary"}`} onClick={() => setLabelsMode(mode)}>
+            {mode}
           </button>
         ))}
       </div>
@@ -283,32 +552,61 @@ export function GraphPage(props: GraphPageProps = {}) {
               <p>Sin entidades para este filtro</p>
             </div>
           ) : (
-            <ForceGraph3D
-              ref={fgRef}
-              graphData={graphData}
-              width={graphWidth}
-              height={graphHeight}
-              backgroundColor="#000008"
-              nodeThreeObject={nodeThreeObject}
-              nodeThreeObjectExtend={false}
-              // Links visible
-              linkColor={() => "rgba(148,163,184,0.55)"}
-              linkWidth={1.5}
-              linkOpacity={1}
-              linkDirectionalArrowLength={5}
-              linkDirectionalArrowRelPos={1}
-              linkDirectionalArrowColor={() => "rgba(148,163,184,0.7)"}
-              linkCurvature={0.1}
-              // Interaction — no state changes in hover, only ref mutation
-              onNodeClick={handleNodeClick}
-              onNodeHover={handleNodeHover}
-              onBackgroundClick={() => setPanelEntity(null)}
-              // Physics
-              cooldownTicks={150}
-              d3AlphaDecay={0.025}
-              d3VelocityDecay={0.4}
-              showNavInfo={false}
-            />
+            <>
+              <ForceGraph3D
+                ref={fgRef}
+                graphData={graphData}
+                width={graphWidth}
+                height={graphHeight}
+                backgroundColor="#000008"
+                nodeThreeObject={nodeThreeObject}
+                nodeThreeObjectExtend={false}
+                // Links visible
+                linkColor={getLinkColor}
+                linkWidth={getLinkWidth}
+                linkOpacity={1}
+                linkDirectionalArrowLength={(link: any) => isLinkOnPath(link) ? 7 : 5}
+                linkDirectionalArrowRelPos={1}
+                linkDirectionalArrowColor={getLinkDirectionalArrowColor}
+                linkCurvature={0.1}
+                // Interaction
+                onNodeClick={handleNodeClick}
+                onNodeHover={handleNodeHover}
+                onBackgroundClick={() => { setPanelEntity(null); setSelectedEntity(null); }}
+                // Physics
+                cooldownTicks={150}
+                d3AlphaDecay={0.025}
+                d3VelocityDecay={0.4}
+                showNavInfo={false}
+              />
+              <button
+                onClick={handleZoomToFit}
+                style={{
+                  position: "absolute",
+                  top: "16px",
+                  right: "16px",
+                  background: "rgba(15,23,42,0.85)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  color: "#f8fafc",
+                  padding: "6px 12px",
+                  borderRadius: "6px",
+                  fontSize: "0.75rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  zIndex: 10,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)",
+                  backdropFilter: "blur(4px)",
+                  transition: "all 0.2s",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(30,41,59,0.9)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(15,23,42,0.85)"; }}
+              >
+                <Maximize size={13} /> Ajustar a pantalla
+              </button>
+            </>
           )}
 
           {/* Legend */}
@@ -343,17 +641,29 @@ export function GraphPage(props: GraphPageProps = {}) {
         {/* Side panel */}
         {panelEntity && (
           <div style={{
-            width: "270px", flexShrink: 0,
+            width: "290px", flexShrink: 0,
             background: "rgba(2,2,18,0.97)", borderLeft: "1px solid rgba(255,255,255,0.07)",
             display: "flex", flexDirection: "column", overflowY: "auto",
           }}>
             {/* Header */}
             <div style={{ padding: "16px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                <span style={{ fontSize: "0.63rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: ENTITY_TYPE_COLORS[panelEntity.entityType] ?? "#6366f1" }}>
-                  {TYPE_LABEL_ES[panelEntity.entityType] ?? panelEntity.entityType}
-                </span>
-                <button onClick={() => setPanelEntity(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(148,163,184,0.5)", padding: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span style={{ fontSize: "0.63rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: ENTITY_TYPE_COLORS[panelEntity.entityType] ?? "#6366f1" }}>
+                    {TYPE_LABEL_ES[panelEntity.entityType] ?? panelEntity.entityType}
+                  </span>
+                  {panelEntity.importance === "critical" && (
+                    <span style={{ fontSize: "0.58rem", fontWeight: 700, padding: "1px 5px", borderRadius: "3px", background: "rgba(239,68,68,0.15)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.3)" }}>
+                      CRITICAL
+                    </span>
+                  )}
+                  {panelEntity.importance === "high" && (
+                    <span style={{ fontSize: "0.58rem", fontWeight: 700, padding: "1px 5px", borderRadius: "3px", background: "rgba(249,115,22,0.15)", color: "#f97316", border: "1px solid rgba(249,115,22,0.3)" }}>
+                      ALTO
+                    </span>
+                  )}
+                </div>
+                <button onClick={() => { setPanelEntity(null); setSelectedEntity(null); }} style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(148,163,184,0.5)", padding: 0 }}>
                   <X size={13} />
                 </button>
               </div>
@@ -361,7 +671,8 @@ export function GraphPage(props: GraphPageProps = {}) {
               {panelEntity.visibility && (
                 <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.68rem", color: "rgba(100,116,139,0.55)", marginTop: "5px" }}>
                   {panelEntity.visibility.kind === "dm_only" ? <EyeOff size={10} /> : <Eye size={10} />}
-                  {panelEntity.visibility.kind === "dm_only" ? "Solo DM" : "Visible"}
+                  {panelEntity.visibility.kind === "dm_only" ? "Solo DM" : "Visible para Jugadores"}
+                  {isEntityPinned && <span style={{ marginLeft: "4px", color: "#fbbf24" }}>⭐ Fijado</span>}
                 </div>
               )}
             </div>
@@ -375,8 +686,238 @@ export function GraphPage(props: GraphPageProps = {}) {
             {panelEntity.status && (
               <div style={{ padding: "8px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
                 <span style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", padding: "2px 7px", borderRadius: "4px", background: "rgba(255,255,255,0.05)", color: "rgba(203,213,225,0.6)" }}>
-                  {panelEntity.status}
+                  Estado: {panelEntity.status}
                 </span>
+              </div>
+            )}
+
+            {/* Quick Actions (DM) */}
+            {viewMode !== "players" && (
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                <p style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(100,116,139,0.5)", margin: "0 0 4px 0" }}>
+                  Acciones rápidas (DM)
+                </p>
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <button
+                    onClick={handleToggleNextSession}
+                    style={{
+                      flex: 1,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "5px",
+                      fontSize: "0.72rem",
+                      padding: "6px 8px",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      background: isEntityPinned ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.04)",
+                      color: isEntityPinned ? "#fbbf24" : "rgba(255,255,255,0.8)",
+                      fontWeight: 600,
+                      transition: "all 0.15s"
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = isEntityPinned ? "rgba(245,158,11,0.22)" : "rgba(255,255,255,0.08)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = isEntityPinned ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.04)"; }}
+                  >
+                    <span>⭐</span> {isEntityPinned ? "Quitar Sesión" : "Próxima Sesión"}
+                  </button>
+
+                  <button
+                    onClick={handleToggleVisibility}
+                    style={{
+                      flex: 1,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "5px",
+                      fontSize: "0.72rem",
+                      padding: "6px 8px",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      background: panelEntity.visibility?.kind === "dm_only" ? "rgba(255,255,255,0.04)" : "rgba(16,185,129,0.12)",
+                      color: panelEntity.visibility?.kind === "dm_only" ? "rgba(255,255,255,0.8)" : "#34d399",
+                      fontWeight: 600,
+                      transition: "all 0.15s"
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = panelEntity.visibility?.kind === "dm_only" ? "rgba(255,255,255,0.08)" : "rgba(16,185,129,0.2)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = panelEntity.visibility?.kind === "dm_only" ? "rgba(255,255,255,0.04)" : "rgba(16,185,129,0.12)"; }}
+                  >
+                    {panelEntity.visibility?.kind === "dm_only" ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {panelEntity.visibility?.kind === "dm_only" ? "Revelar" : "Ocultar"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Entity-specific Narrative Details */}
+            {panelEntity.entityType === "npc" && (
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {panelEntity.metadata?.role && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Rol</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.role}</p>
+                  </div>
+                )}
+                {panelEntity.metadata?.attitudeToParty && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Actitud hacia el grupo</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>
+                      {panelEntity.metadata.attitudeToParty === "friendly" ? "🟢 Amistoso" :
+                       panelEntity.metadata.attitudeToParty === "hostile" ? "🔴 Hostil" :
+                       panelEntity.metadata.attitudeToParty === "deceptive" ? "🟡 Engañoso" :
+                       panelEntity.metadata.attitudeToParty === "neutral" ? "⚪ Neutral" :
+                       panelEntity.metadata.attitudeToParty}
+                    </p>
+                  </div>
+                )}
+                {panelEntity.metadata?.goal && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Objetivo</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.goal}</p>
+                  </div>
+                )}
+                {viewMode !== "players" && panelEntity.metadata?.fear && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#a855f7" }}>Temor (DM)</span>
+                    <p style={{ fontSize: "0.74rem", color: "#e9d5ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.fear}</p>
+                  </div>
+                )}
+                {viewMode !== "players" && panelEntity.metadata?.secret && (
+                  <div style={{ background: "rgba(168,85,247,0.06)", border: "1px dashed rgba(168,85,247,0.3)", borderRadius: "6px", padding: "8px" }}>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#c084fc" }}>Secreto Oculto (DM)</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.secret}</p>
+                  </div>
+                )}
+                {panelEntity.metadata?.voice && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Pauta de voz/interpretación</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4, fontStyle: "italic" }}>"{panelEntity.metadata.voice}"</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {panelEntity.entityType === "secret" && (
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {viewMode !== "players" && panelEntity.metadata?.truth && (
+                  <div style={{ background: "rgba(168,85,247,0.06)", border: "1px dashed rgba(168,85,247,0.3)", borderRadius: "6px", padding: "8px" }}>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#c084fc" }}>La Verdad (DM)</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.truth}</p>
+                  </div>
+                )}
+                {panelEntity.metadata?.impact && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Impacto narrativo</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.impact}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {panelEntity.entityType === "clue" && (
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {panelEntity.metadata?.content && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Contenido/Revelación</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.content}</p>
+                  </div>
+                )}
+                {panelEntity.metadata?.clueType && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Tipo de pista</span>
+                    <span style={{ fontSize: "0.65rem", padding: "1px 6px", borderRadius: "4px", background: "rgba(255,255,255,0.08)", color: "#e2e8f0", display: "inline-block", marginTop: "3px", width: "fit-content" }}>
+                      {panelEntity.metadata.clueType === "document" ? "📄 Documento" :
+                       panelEntity.metadata.clueType === "verbal" ? "🗣️ Verbal" :
+                       panelEntity.metadata.clueType === "physical" ? "🏺 Físico" :
+                       panelEntity.metadata.clueType}
+                    </span>
+                  </div>
+                )}
+                {panelEntity.metadata?.atmosphere && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Atmósfera</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4, fontStyle: "italic" }}>{panelEntity.metadata.atmosphere}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {panelEntity.entityType === "location" && (
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {panelEntity.metadata?.publicDescription && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Descripción Pública</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.publicDescription}</p>
+                  </div>
+                )}
+                {viewMode !== "players" && panelEntity.metadata?.privateDescription && (
+                  <div style={{ background: "rgba(168,85,247,0.06)", border: "1px dashed rgba(168,85,247,0.3)", borderRadius: "6px", padding: "8px" }}>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#c084fc" }}>Descripción Privada (DM)</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.privateDescription}</p>
+                  </div>
+                )}
+                {panelEntity.metadata?.atmosphere && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Atmósfera</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4, fontStyle: "italic" }}>{panelEntity.metadata.atmosphere}</p>
+                  </div>
+                )}
+                {panelEntity.metadata?.dangers && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#ef4444" }}>Peligros</span>
+                    {Array.isArray(panelEntity.metadata.dangers) ? (
+                      <ul style={{ margin: "3px 0 0 0", paddingLeft: "14px", fontSize: "0.74rem", color: "#fecaca", lineHeight: 1.4 }}>
+                        {panelEntity.metadata.dangers.map((d: string, idx: number) => <li key={idx}>{d}</li>)}
+                      </ul>
+                    ) : (
+                      <p style={{ fontSize: "0.74rem", color: "#fecaca", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.dangers}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {panelEntity.entityType === "quest" && (
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {panelEntity.metadata?.publicObjective && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Objetivo público</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.publicObjective}</p>
+                  </div>
+                )}
+                {viewMode !== "players" && panelEntity.metadata?.hiddenObjective && (
+                  <div style={{ background: "rgba(168,85,247,0.06)", border: "1px dashed rgba(168,85,247,0.3)", borderRadius: "6px", padding: "8px" }}>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#c084fc" }}>Objetivo Oculto (DM)</span>
+                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.hiddenObjective}</p>
+                  </div>
+                )}
+                {panelEntity.metadata?.failureConsequence && (
+                  <div>
+                    <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#ef4444" }}>Consecuencia del Fracaso</span>
+                    <p style={{ fontSize: "0.74rem", color: "#fecaca", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.failureConsequence}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Related Facts (Traceability) */}
+            {relatedFacts.length > 0 && (
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                <p style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(100,116,139,0.5)", marginBottom: "8px" }}>
+                  Hechos Relacionados ({relatedFacts.length})
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  {relatedFacts.map((fact: any) => (
+                    <div key={fact.factId} style={{ fontSize: "0.72rem", padding: "6px 8px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: "5px", color: "rgba(203,213,225,0.8)", lineHeight: 1.4 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.58rem", color: "rgba(148,163,184,0.4)", marginBottom: "3px" }}>
+                        <span>{fact.kind?.toUpperCase()}</span>
+                        <span>{fact.confidence?.toUpperCase()}</span>
+                      </div>
+                      {fact.statement}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
