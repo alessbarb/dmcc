@@ -102,8 +102,11 @@ export class CampaignRepository {
     const projection = await this.getCampaignState(campaignId);
     const state = projectionToCampaignState(campaignId, projection);
     const result = handleCommand(state, command);
-    const event = result.event;
-    return this.appendEvent(campaignId, event.type as DomainEventType, event.actorId, event.payload);
+    let currentProjection = projection;
+    for (const event of result.events) {
+      currentProjection = await this.appendEvent(campaignId, event.type as DomainEventType, event.actorId, event.payload);
+    }
+    return currentProjection;
   }
 
   /**
