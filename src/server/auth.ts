@@ -91,6 +91,25 @@ export function assertCampaignAccess(request: any, state: any, campaignId: strin
   throw err;
 }
 
+export function getRequestRoleWithTokens(
+  request: any,
+  dmSessionToken: string,
+  playerTokens: Map<string, { campaignId: string; playerId: string }>,
+  campaignId: string
+): "dm" | "player" | "unauthenticated" {
+  const base = getRequestRole(request, dmSessionToken);
+  if (base !== "unauthenticated") return base;
+
+  const playerTokenHeader = request.headers["x-player-token"] as string | undefined;
+  if (playerTokenHeader) {
+    const session = playerTokens.get(playerTokenHeader);
+    if (session && session.campaignId === campaignId) {
+      return "player";
+    }
+  }
+  return "unauthenticated";
+}
+
 export function getValidatedVaultId(request: any): string {
   const vaultId = (request.headers["x-vault-id"] as string) || "default";
   if (!/^[a-zA-Z0-9_-]+$/.test(vaultId)) {
