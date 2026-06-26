@@ -387,6 +387,24 @@ export type Command =
       edgeId: string;
     }
   | {
+      type: "IssuePlayerToken";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      tokenId: string;
+      tokenHash: string;
+      label?: string;
+      createdAt: string;
+    }
+  | {
+      type: "RevokePlayerToken";
+      campaignId: CampaignId;
+      actorId: string;
+      playerId: string;
+      tokenId: string;
+      revokedAt: string;
+    }
+  | {
       type: "ConvertCanvasNoteToEntity";
       campaignId: CampaignId;
       actorId: string;

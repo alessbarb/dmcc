@@ -683,6 +683,25 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
           edgeId: command.edgeId,
         }));
     }
+    case "IssuePlayerToken": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerTokenIssued", {
+        tokenId: command.tokenId,
+        tokenHash: command.tokenHash,
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        label: command.label,
+        createdAt: command.createdAt,
+      }));
+    }
+    case "RevokePlayerToken": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerTokenRevoked", {
+        tokenId: command.tokenId,
+        campaignId: command.campaignId,
+        revokedAt: command.revokedAt,
+      }));
+    }
     case "ConvertCanvasNoteToEntity": {
       const canvases = new Map(state.canvases || new Map());
       const canvas = canvases.get(command.canvasId);
