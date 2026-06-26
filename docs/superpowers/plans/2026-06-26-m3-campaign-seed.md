@@ -1,19 +1,20 @@
 # M3: Campaign Seed — "La Sombra del Oráculo"
 
-> **Status (2026-06-26):** NOT STARTED. All 5 tasks pending. Prerequisite: M2 Tasks 4–5 complete.
-> - Task 1: Campaign skeleton + players — NOT STARTED ❌
-> - Task 2: Locations and factions — NOT STARTED ❌
-> - Task 3: NPCs (25) — NOT STARTED ❌
-> - Task 4: Quests, clues, and secrets — NOT STARTED ❌
-> - Task 5: Sessions, relations, and facts — NOT STARTED ❌
-
+> **Status (2026-06-26):** DONE. Seed implementation, modular refactor, no-session guard, and regression tests are aligned.
+>
+> - Task 1: Campaign skeleton + pre-made characters — DONE ✅
+> - Task 2: Locations and factions — DONE ✅
+> - Task 3: NPCs — DONE ✅
+> - Task 4: Quests, clues, and secrets — DONE ✅
+> - Task 5: Relations, facts, and readback verification — DONE ✅; sessions intentionally omitted
+>
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Create a complete D&D 5.2.1 SRD-compatible campaign ("La Sombra del Oráculo", levels 1–6, 9 sessions) as a seed script that produces a valid `events.ndjson` file playable through the full DMCC stack.
+**Goal:** Create a complete D&D 5.2.1 SRD-compatible campaign ("La Sombra del Oráculo", levels 1–6, with planned narrative beats) as a modular seed script that produces a valid event log through the live DMCC API. Sessions are not seeded; the DM opens and closes them in the application.
 
-**Architecture:** All content is SRD-5.2.1 compatible (CC-BY-4.0). The seed script (`scratch/seed-oracle-campaign.ts`) calls the live DMCC API (not direct DB writes) to generate the event log, then verifies the projection is correct by reading back state. This means the platform must be running when the seed runs.
+**Architecture:** All content is SRD-5.2.1 compatible (CC-BY-4.0). The seed entrypoint (`scratch/seed-oracle-campaign.ts`) delegates to focused modules under `scratch/oracle-seed/`, with campaign content split by editable typology (`characters`, `locations`, `factions`, `npcs`, `quests`, `clues`, `secrets`, `relations`, `facts`, and `verify`). The seed calls the live DMCC API (not direct DB writes) to generate the event log, then verifies the projection is correct by reading back state. This means the platform must be running when the seed runs.
 
-**Tech Stack:** TypeScript, ts-node, fetch API against `http://localhost:4877`
+**Tech Stack:** TypeScript, `tsx`, fetch API against `http://localhost:4877`
 
 ## Global Constraints
 
@@ -21,23 +22,41 @@
 - Humanoid stat blocks use SRD generic templates (Commoner, Spy, Guard, etc.)
 - Spanish labels and names; code identifiers in English
 - Seed runs against live server (`npm run dev` must be running)
-- All IDs prefixed correctly: `cmp_`, `ent_`, `rel_`, `fact_`, `sess_`, `ply_`
+- All seeded IDs prefixed correctly: `cmp_`, `ent_`, `rel_`, `fact_`; no `ply_` or `sess_` IDs are created by the Oracle seed
 - Default visibility `dm_only` for secrets, clues; explicit `party` for revealed content
 
 ---
 
-### Task 1: Campaign skeleton and players
+> **Current implementation note:** Earlier inline snippets in this plan were implementation scaffolding. The source of truth is now the modular implementation in `scratch/oracle-seed/` plus `scratch/seed-oracle-campaign.ts`. `content.ts` is only a barrel; the editable seed payload is split by typology across the sibling modules. Regression coverage lives in `tests/scratch/seedOracleCampaign.test.ts`.
+
+### Task 1: Campaign skeleton and pre-made characters
 
 **Files:**
 
-- Create: `scratch/seed-oracle-campaign.ts`
+- Create: `scratch/seed-oracle-campaign.ts` — small executable entrypoint
+- Create: `scratch/oracle-seed/config.ts` — environment, mode, and target campaign constants
+- Create: `scratch/oracle-seed/client.ts` — auth, API wrapper, and destructive replace preflight
+- Create: `scratch/oracle-seed/ids.ts` — stable seed IDs
+- Create: `scratch/oracle-seed/content.ts` — barrel exporting the seed content modules
+- Create: `scratch/oracle-seed/campaign.ts` — campaign creation payload
+- Create: `scratch/oracle-seed/characters.ts` — pre-made player-character entities
+- Create: `scratch/oracle-seed/locations.ts` — location entities
+- Create: `scratch/oracle-seed/factions.ts` — faction entities
+- Create: `scratch/oracle-seed/npcs.ts` — NPC entities
+- Create: `scratch/oracle-seed/quests.ts` — quest entities
+- Create: `scratch/oracle-seed/clues.ts` — clue entities
+- Create: `scratch/oracle-seed/secrets.ts` — secret entities
+- Create: `scratch/oracle-seed/relations.ts` — graph relations
+- Create: `scratch/oracle-seed/facts.ts` — campaign fact stream
+- Create: `scratch/oracle-seed/verify.ts` — rebuild/readback verification
 
 **Interfaces:**
 
-- Produces: campaign `cmp_oracle` with 4 player profiles and 4 player_character entities
-- Produces: helper functions `api(method, path, body)` and `assertOk(res, label)`
+- Produces: campaign `cmp_seed_oracle_shadow` by default, overridable with `DMCC_CAMPAIGN_ID`
+- Produces: 4 pre-made `player_character` entities; no player profiles and no sessions are created
+- Produces: helper modules for config, API/preflight, stable IDs, typology-specific content, relations, facts, and readback verification
 
-- [ ] **Step 1: Create seed script skeleton**
+- [x] **Step 1: Create seed script skeleton**
 
 Create `scratch/seed-oracle-campaign.ts`:
 
@@ -74,30 +93,31 @@ async function api(method: string, path: string, body?: unknown) {
 async function main() {
   await init();
   await seedCampaign();
-  await seedPlayers();
+  await seedPreMadeCharacters();
   await seedLocations();
   await seedFactions();
   await seedNpcs();
   await seedQuests();
   await seedClues();
   await seedSecrets();
-  await seedSessions();
+  // Sessions intentionally omitted: the DM opens/closes sessions in the app.
   await seedRelations();
   await seedFacts();
   await rebuildAndVerify();
-  console.log("\n✅ Campaign seed complete: cmp_oracle");
+  console.log(`\n✅ Campaign seed complete: ${CMP}`);
   console.log("   Open http://localhost:4877 and select 'La Sombra del Oráculo'");
 }
 
 main().catch((e) => { console.error("❌ Seed failed:", e.message); process.exit(1); });
 ```
 
-- [ ] **Step 2: Implement seedCampaign**
+- [x] **Step 2: Implement seedCampaign**
 
 Add to `scratch/seed-oracle-campaign.ts`:
 
 ```ts
-const CMP = "cmp_oracle";
+const DEFAULT_CAMPAIGN_ID = "cmp_seed_oracle_shadow";
+const CMP = process.env.DMCC_CAMPAIGN_ID?.trim() || DEFAULT_CAMPAIGN_ID;
 
 async function seedCampaign() {
   // Idempotent: skip if already exists
@@ -111,66 +131,27 @@ async function seedCampaign() {
     campaignId: CMP,
     actorId: "usr_dm",
     title: "La Sombra del Oráculo",
-    summary: "Una conspiración oracular sacude la ciudad de Valdris. Las profecías están rotas. La verdad, enterrada. Niveles 1-6, 9 sesiones.",
+    summary: "Una conspiración oracular sacude la ciudad de Valdris. Las profecías están rotas. La verdad, enterrada. Niveles 1-6. Sin sesiones precreadas: el DM las abre en la aplicación.",
     system: "D&D 5.2.1 SRD (CC-BY-4.0)",
   });
-  console.log("✓ Campaign created: cmp_oracle");
+  console.log(`✓ Campaign created: ${CMP}`);
 }
 ```
 
-- [ ] **Step 3: Implement seedPlayers**
+- [x] **Step 3: Implement seedPreMadeCharacters**
 
 ```ts
-const PLAYERS = [
-  { playerId: "ply_elowyn",  displayName: "Alejandro", color: "#6366f1" },
-  { playerId: "ply_camus",   displayName: "María",     color: "#10b981" },
-  { playerId: "ply_ragna",   displayName: "Carlos",    color: "#f59e0b" },
-  { playerId: "ply_silas",   displayName: "Laura",     color: "#ef4444" },
-];
-
-async function seedPlayers() {
-  for (const p of PLAYERS) {
-    await api("POST", `/api/campaigns/${CMP}/players`, {
-      ...p, actorId: "usr_dm",
-    });
-  }
-  console.log("✓ 4 player profiles created");
-
-  const PCS = [
-    {
-      entityId: "ent_pc_elowyn", entityType: "player_character",
-      title: "Elowyn Darkwater", summary: "Elfa pícara, maestra del engaño y la sombra.",
-      status: "active", importance: "critical",
-      metadata: { playerId: "ply_elowyn", className: "Pícaro", level: 3, species: "Elfo", background: "Forajida", armorClass: 14, hitPointsCurrent: 22, hitPointsMax: 22 },
-    },
-    {
-      entityId: "ent_pc_camus", entityType: "player_character",
-      title: "Hermano Camus", summary: "Clérigo humano del Templo de la Verdad, en busca de redención.",
-      status: "active", importance: "critical",
-      metadata: { playerId: "ply_camus", className: "Clérigo", level: 3, species: "Humano", background: "Acólito", armorClass: 16, hitPointsCurrent: 27, hitPointsMax: 27 },
-    },
-    {
-      entityId: "ent_pc_ragna", entityType: "player_character",
-      title: "Ragna Ironsong", summary: "Guerrera enana, veterana de la guardia de Valdris.",
-      status: "active", importance: "critical",
-      metadata: { playerId: "ply_ragna", className: "Guerrero", level: 3, species: "Enano", background: "Soldado", armorClass: 18, hitPointsCurrent: 34, hitPointsMax: 34 },
-    },
-    {
-      entityId: "ent_pc_silas", entityType: "player_character",
-      title: "Silas el Errante", summary: "Bardo mediano, informante y coleccionista de secretos.",
-      status: "active", importance: "critical",
-      metadata: { playerId: "ply_silas", className: "Bardo", level: 3, species: "Mediano", background: "Embaucador", armorClass: 13, hitPointsCurrent: 21, hitPointsMax: 21 },
-    },
-  ];
-
+// Player profiles are intentionally not seeded.
+// The seed creates pre-made player_character entities that the DM can assign/use in play.
+async function seedPreMadeCharacters() {
   for (const pc of PCS) {
     await api("POST", `/api/campaigns/${CMP}/entities`, { ...pc, actorId: "usr_dm" });
   }
-  console.log("✓ 4 player characters created");
+  console.log("✓ 4 pre-made player characters created");
 }
 ```
 
-- [ ] **Step 4: Run step and verify**
+- [x] **Step 4: Run step and verify**
 
 ```bash
 cd /home/alessbarb/workspace/repos/incubating/dmcc
@@ -182,7 +163,7 @@ Expected output ends with `✓ 4 player characters created`. If 404 on `/api/cam
 - [ ] **Step 5: Commit**
 
 ```bash
-git add scratch/seed-oracle-campaign.ts
+git add scratch/seed-oracle-campaign.ts scratch/oracle-seed tests/scratch/seedOracleCampaign.test.ts docs/superpowers/plans/2026-06-26-m3-campaign-seed.md
 git commit -m "feat(seed): campaign skeleton + players for La Sombra del Oráculo"
 ```
 
@@ -353,7 +334,7 @@ Expected: `✓ 15 locations created`, `✓ 5 factions created`.
 - [ ] **Step 4: Commit**
 
 ```bash
-git add scratch/seed-oracle-campaign.ts
+git add scratch/seed-oracle-campaign.ts scratch/oracle-seed tests/scratch/seedOracleCampaign.test.ts docs/superpowers/plans/2026-06-26-m3-campaign-seed.md
 git commit -m "feat(seed): add locations and factions"
 ```
 
@@ -556,7 +537,7 @@ Expected: `✓ 25 NPCs created`.
 - [ ] **Step 3: Commit**
 
 ```bash
-git add scratch/seed-oracle-campaign.ts
+git add scratch/seed-oracle-campaign.ts scratch/oracle-seed tests/scratch/seedOracleCampaign.test.ts docs/superpowers/plans/2026-06-26-m3-campaign-seed.md
 git commit -m "feat(seed): add 25 NPCs"
 ```
 
@@ -624,25 +605,25 @@ async function seedQuests() {
 ```ts
 async function seedClues() {
   const CLUES = [
-    // Sesiones 1-2
+    // Fases narrativas 1-2
     { entityId: "ent_clue_prophecy_text", entityType: "clue", title: "Texto de la profecía original", summary: "El texto escrito de la profecía que trajo al grupo tiene inconsistencias gramaticales con otras profecías del Oráculo.", status: "hidden", importance: "high", metadata: { content: "El texto usa una conjugación arcaica que no corresponde al estilo del Oráculo actual. Inconsistencia de 3 años.", clueType: "document" } },
     { entityId: "ent_clue_petitioner_fear", entityType: "clue", title: "Miedo de los peticionarios", summary: "Varios peticionarios mencionan que quienes recibieron profecías 'negativas' desaparecen o callan.", status: "hidden", importance: "normal", metadata: { content: "Al menos 4 personas en los últimos 2 meses han recibido profecías devastadoras y luego dejaron de frecuentar el templo. Sus vecinos no saben dónde están.", clueType: "verbal" } },
     { entityId: "ent_clue_merchant_payment", entityType: "clue", title: "Pago anónimo al culto", summary: "Registro de pagos anónimos al culto desde hace 3 años, cifra creciente.", status: "hidden", importance: "high", metadata: { content: "Una serie de pagos en moneda de alta denominación, sin nombre de donante. El patrón coincide con el calendario de negocios de Lord Vantis.", clueType: "document" } },
     { entityId: "ent_clue_arcane_component", entityType: "clue", title: "Componentes arcanos en el templo", summary: "En la sala de preparación del templo, hay componentes mágicos para ilusiones de gran alcance.", status: "hidden", importance: "critical", metadata: { content: "Polvo de esmeralda, espejos convexos, y cristales de resonancia. Todos componentes para sostener una ilusión auditiva de 200 pies de radio durante semanas.", clueType: "physical" } },
     { entityId: "ent_clue_torben_tip", entityType: "clue", title: "Información de Torben", summary: "Torben menciona que hace 20 años 'algo ocurrió' en el antiguo templo. El incendio 'no fue accidental'.", status: "hidden", importance: "normal", metadata: { content: "Torben era joven cuando el archivo ardió. Vio sombras con capuchas en el callejón trasero esa noche.", clueType: "verbal" } },
-    // Sesiones 3-4
+    // Fases narrativas 3-4
     { entityId: "ent_clue_archive_records", entityType: "clue", title: "Registros del archivo: el incendio", summary: "Los registros supervivientes del archivo documentan que el incendio eliminó exactamente los archivos de los '20 verdaderos videntes'.", status: "hidden", importance: "critical", metadata: { content: "Mira encontró una lista parcial que sobrevivió en un armario de metal. Los 20 videntes reconocidos desaparecieron en el mismo período que Veradis 'emergió' con sus poderes.", clueType: "document" } },
     { entityId: "ent_clue_guild_ledger", entityType: "clue", title: "Extracto del libro del Gremio", summary: "Cira del Gremio, si se la gana, puede mostrar un extracto que vincula pagos de Lord Vantis con el culto.", status: "hidden", importance: "critical", visibility: { kind: "dm_only" as const }, metadata: { content: "Cinco años de pagos mensuales a 'V.O.' — iniciales de Veradis el Oráculo — desde la cuenta de Lord Vantis.", clueType: "document" } },
     { entityId: "ent_clue_port_bodies", entityType: "clue", title: "Marcas en los cuerpos del puerto", summary: "Las víctimas del puerto tienen una marca quemada en la palma: el símbolo del inner circle del culto.", status: "hidden", importance: "high", metadata: { content: "No es el símbolo público del culto. Es un símbolo privado que solo usa el inner circle para marcar 'assets' a eliminar.", clueType: "physical" } },
     { entityId: "ent_clue_sera_texts", entityType: "clue", title: "Las Crónicas del Verdadero Vidente", summary: "Sera Moonwhisper posee un texto que describe exactamente cómo funciona una ilusión vocal de largo alcance.", status: "hidden", importance: "critical", metadata: { content: "Texto en idioma antiguo, 200 páginas. El capítulo 7 describe la 'Proyección del Falso Profeta', un ritual de ilusión auditiva que puede mantenerse indefinidamente con los componentes correctos.", clueType: "document" } },
     { entityId: "ent_clue_lyra_investigation", entityType: "clue", title: "Notas de investigación de Lyra", summary: "Lyra comparte sus notas si el grupo gana su confianza. Tres meses de anomalías documentadas.", status: "hidden", importance: "high", metadata: { content: "7 desapariciones. 4 negocios quemados sin explicación. Todos tenían en común: peticiones al Oráculo rechazadas la semana anterior.", clueType: "document" } },
     { entityId: "ent_clue_inner_circle_meeting", entityType: "clue", title: "Reunión en la mansión Vantis", summary: "Elowyn puede interceptar información de una reunión secreta en la mansión Vantis.", status: "hidden", importance: "high", visibility: { kind: "dm_only" as const }, metadata: { content: "El inner circle del culto se reúne los martes en el sótano de la mansión. Se habla de 'reforzar la proyección' y 'eliminar el problema del archivo'.", clueType: "verbal" } },
-    // Sesiones 5-6
+    // Fases narrativas 5-6
     { entityId: "ent_clue_false_prophecy_audio", entityType: "clue", title: "Grabación de la voz del Oráculo", summary: "Silas el Bardo consigue grabar (con magia barda) la 'voz divina'. Bajo análisis, tiene ecos de ilusión.", status: "hidden", importance: "critical", visibility: { kind: "dm_only" as const }, metadata: { content: "La grabación tiene el inconfundible 'fantasma de resonancia' que dejan los cristales de resonancia ilusoria. No es sobrenatural. Es arcana.", clueType: "magical" } },
     { entityId: "ent_clue_senra_doubts", entityType: "clue", title: "Dudas de la Maga Senra", summary: "La Maga Senra, técnica de la ilusión, tiene dudas morales. Si se la presiona con cuidado, puede defeccionar.", status: "hidden", importance: "high", visibility: { kind: "dm_only" as const }, metadata: { content: "Senra lleva 5 años manteniendo la ilusión. Empezó como experimento académico. Ahora es cómplice de desapariciones. Está atrapada por miedo.", clueType: "behavioral" } },
     { entityId: "ent_clue_vault_entrance", entityType: "clue", title: "Entrada a la bóveda", summary: "Un mapa parcial de las ruinas muestra una sala subterránea que no aparece en los planos oficiales.", status: "hidden", importance: "critical", metadata: { content: "Bajo la sala de oración de las ruinas, hay una trampilla disimulada. Requiere una contraseña arcana (que Senra conoce).", clueType: "physical" } },
     { entityId: "ent_clue_vault_records", entityType: "clue", title: "Registros en la bóveda", summary: "La bóveda contiene 20 años de profecías falsificadas, con anotaciones de a quién beneficiaban y cuánto pagaron.", status: "hidden", importance: "critical", metadata: { content: "Cajas de registros meticulosos. Cada profecía tiene: fecha, peticionario, profecía entregada, profecía 'real', y beneficiario financiero. 847 profecías falsificadas.", clueType: "document" } },
-    // Sesiones 7-8
+    // Fases narrativas 7-8
     { entityId: "ent_clue_veradis_escape_plan", entityType: "clue", title: "Plan de huida de Veradis", summary: "En la sala del Oráculo, hay pistas de un barco preparado en el puerto norte.", status: "hidden", importance: "high", visibility: { kind: "dm_only" as const }, metadata: { content: "Una nota cifrada en el escritorio de Veradis, debajo de documentos oficiales. El barco 'Viento Oscuro' en el muelle 7N. Zarpa el viernes si hay señal de alarma.", clueType: "document" } },
     { entityId: "ent_clue_vantis_confession", entityType: "clue", title: "Confesión de Vantis", summary: "Bajo presión suficiente, Vantis puede revelar cuánto lleva pagando y a cambio de qué profecías específicas.", status: "hidden", importance: "high", metadata: { content: "Confirmación directa del acuerdo. Lleva 7 años pagando. Ha recibido profecías que lo avisaron de 3 quiebras y una guerra comercial. Ganó una fortuna.", clueType: "verbal" } },
     { entityId: "ent_clue_culto_disbands", entityType: "clue", title: "Miembros del culto que pueden testificar", summary: "Tras la caída del inner circle, varios iniciados están dispuestos a testificar a cambio de clemencia.", status: "hidden", importance: "normal", metadata: { content: "Al menos 12 iniciados tenían dudas. Sin el liderazgo del culto, están dispuestos a hablar.", clueType: "verbal" } },
@@ -698,54 +679,29 @@ Expected: `✓ 6 quests created`, `✓ 20 clues created`, `✓ 15 secrets create
 - [ ] **Step 5: Commit**
 
 ```bash
-git add scratch/seed-oracle-campaign.ts
+git add scratch/seed-oracle-campaign.ts scratch/oracle-seed tests/scratch/seedOracleCampaign.test.ts docs/superpowers/plans/2026-06-26-m3-campaign-seed.md
 git commit -m "feat(seed): add quests, 20 clues, 15 secrets"
 ```
 
 ---
 
-### Task 5: Sessions, relations, and facts
+### Task 5: Relations, facts, and readback verification
 
 **Files:**
 
 - Modify: `scratch/seed-oracle-campaign.ts`
 
-- [ ] **Step 1: Implement seedSessions**
+- [x] **Step 1: Do not seed sessions**
 
 ```ts
-async function seedSessions() {
-  const SESSIONS = [
-    { sessionId: "sess_0", title: "Sesión 0: Orígenes", summary: "Presentación de personajes. Cómo se conocieron. La profecía que los trae a Valdris." },
-    { sessionId: "sess_1", title: "Sesión 1: Llegada a Valdris", summary: "Llegada a la ciudad. Primera impresión. Petición al Oráculo y primera desconfianza." },
-    { sessionId: "sess_2", title: "Sesión 2: El Templo y sus Sombras", summary: "Investigación del templo del Oráculo. Primer contacto con Sera Moonwhisper. Torben revela el incendio del archivo." },
-    { sessionId: "sess_3", title: "Sesión 3: El Archivo Ardiente", summary: "Visita al Archivo con Mira. Registros del incendio. Aparece la pista del pago anónimo al culto." },
-    { sessionId: "sess_4", title: "Sesión 4: Sangre en el Puerto", summary: "Cuerpos en el puerto. Encuentro con Cira del Gremio. Lyra comparte sus notas. Complicación con Consejero Brann." },
-    { sessionId: "sess_5", title: "Sesión 5: La Profecía Falsa", summary: "Silas graba la voz del Oráculo. Análisis arcano confirma la ilusión. El grupo sabe, pero necesita pruebas para el Consejo." },
-    { sessionId: "sess_6", title: "Sesión 6: La Bóveda Subterránea", summary: "Infiltración en las ruinas. Senra vacila. Primera confrontación con el inner circle. Acceso a la bóveda." },
-    { sessionId: "sess_7", title: "Sesión 7: El Peso de la Decisión", summary: "El grupo lleva las pruebas al Consejo. Decisión sobre Vantis. Consecuencias de la elección de método." },
-    { sessionId: "sess_8", title: "Sesión 8: La Sala del Oráculo", summary: "Confrontación final con Veradis. El cristal de ilusión. El escape o la captura. Resolución del arco principal." },
-    { sessionId: "sess_9", title: "Sesión 9 (Opcional): Epílogo", summary: "Las consecuencias de la caída del Oráculo. Qué ocurre con Valdris. Los hilos sueltos." },
-  ];
-
-  for (const s of SESSIONS) {
-    // Create and immediately start+close each past session
-    const createRes = await api("POST", `/api/campaigns/${CMP}/sessions`, {
-      sessionId: s.sessionId, title: s.title, actorId: "usr_dm",
-    });
-    if (createRes.status !== 201) continue;
-
-    if (s.sessionId !== "sess_8" && s.sessionId !== "sess_9") {
-      // Close past sessions
-      await api("POST", `/api/campaigns/${CMP}/sessions/${s.sessionId}/close`, {
-        summary: s.summary, actorId: "usr_dm",
-      });
-    }
-  }
-  console.log(`✓ ${SESSIONS.length} sessions created (sessions 0-7 closed, 8 active, 9 pending)`);
-}
+// Sessions are intentionally omitted from the seed.
+// The seed may describe planned narrative beats in clues/secrets/quests,
+// but concrete session records are created and closed by the DM in the app.
+// Verification asserts campaign.sessions.length === 0 after seeding.
 ```
 
-- [ ] **Step 2: Implement seedRelations**
+
+- [x] **Step 2: Implement seedRelations**
 
 ```ts
 async function seedRelations() {
@@ -806,7 +762,7 @@ async function seedRelations() {
 }
 ```
 
-- [ ] **Step 3: Implement seedFacts**
+- [x] **Step 3: Implement seedFacts**
 
 ```ts
 async function seedFacts() {
@@ -856,7 +812,7 @@ async function seedFacts() {
 }
 ```
 
-- [ ] **Step 4: Implement rebuildAndVerify**
+- [x] **Step 4: Implement rebuildAndVerify**
 
 ```ts
 async function rebuildAndVerify() {
@@ -908,8 +864,8 @@ Expected output:
 
 ```
 ✓ Auth token obtained
-✓ Campaign created: cmp_oracle
-✓ 4 player profiles created
+✓ Campaign created: cmp_seed_oracle_shadow
+✓ 4 pre-made player characters created
 ✓ 4 player characters created
 ✓ 15 locations created
 ✓ 5 factions created
@@ -917,15 +873,14 @@ Expected output:
 ✓ 6 quests created
 ✓ 20 clues created
 ✓ 15 secrets created
-✓ 10 sessions created
 ✓ 35 relations created
 ✓ 25 facts created
 ✓ Dashboard OK: X active quests, Y critical hidden items
 ✓ Graph OK: 90+ nodes, 35+ edges
 ✓ Search OK: 3+ results for 'Veradis'
-✓ State: 90+ entities, 10 sessions, 25 facts, 35 relations
+✓ State: 90+ entities, 0 sessions, 25 facts, 35 relations
 
-✅ Campaign seed complete: cmp_oracle
+✅ Campaign seed complete: cmp_seed_oracle_shadow
    Open http://localhost:4877 and select 'La Sombra del Oráculo'
 ```
 
@@ -934,7 +889,7 @@ Expected output:
 Open `http://localhost:4877`, select "La Sombra del Oráculo" and verify:
 
 1. **Dashboard**: Active quests visible (La Profecía Rota, etc.), critical secrets/clues shown
-2. **¿Qué toca ahora?**: Session 8 context, recent session summary visible
+2. **¿Qué toca ahora?**: Campaign context visible without pre-created sessions
 3. **Grafo**: 90+ colored nodes (NPCs blue, locations green, quests orange), edges labeled in Spanish
 4. **Tableros**: Quest board shows 5 quests in columns; Clues board shows 20 clues by status
 5. **Entidades**: Search "Veradis" returns NPC + related clues/secrets
@@ -943,8 +898,8 @@ Open `http://localhost:4877`, select "La Sombra del Oráculo" and verify:
 - [ ] **Step 7: Commit**
 
 ```bash
-git add scratch/seed-oracle-campaign.ts
-git commit -m "feat(seed): complete La Sombra del Oráculo campaign — sessions, relations, facts, verify"
+git add scratch/seed-oracle-campaign.ts scratch/oracle-seed tests/scratch/seedOracleCampaign.test.ts docs/superpowers/plans/2026-06-26-m3-campaign-seed.md
+git commit -m "feat(seed): complete La Sombra del Oráculo campaign seed"
 ```
 
 ---
@@ -957,14 +912,14 @@ npm run dev &
 sleep 3
 npx tsx scratch/seed-oracle-campaign.ts
 
-# Expected: ✅ Campaign seed complete: cmp_oracle
+# Expected: ✅ Campaign seed complete: cmp_seed_oracle_shadow
 ```
 
 Manual screen checklist after seed:
 
 - [ ] Dashboard shows active quests and critical hidden clues
 - [ ] Graph renders 90+ nodes with colors, 35+ labeled edges
-- [ ] ¿Qué toca ahora? shows session 8 context
+- [ ] ¿Qué toca ahora? shows campaign context without pre-created sessions
 - [ ] Boards: quests in kanban, clues by reveal status
 - [ ] Search returns results for "Veradis", "Oráculo", "Vantis"
 - [ ] Player portal (via LAN join) shows only `party` visibility items
