@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MapPin,
   ScrollText,
@@ -17,12 +17,15 @@ import {
   Flame,
   BookOpen,
 } from "lucide-react";
+import { useNavigate, useParams } from "@tanstack/react-router";
+import { useCampaignStore } from "../stores/campaignStore.js";
+import { EntityDetailModal } from "../components/EntityDetailModal.js";
 
 export interface DashboardPageProps {
-  dashboard: any;
-  campaignState: any;
-  setCurrentPage: (page: string) => void;
-  setSelectedEntity: (entity: any) => void;
+  dashboard?: any;
+  campaignState?: any;
+  setCurrentPage?: (page: string) => void;
+  setSelectedEntity?: (entity: any) => void;
 }
 
 // ─── tiny helpers ────────────────────────────────────────────────────────────
@@ -124,8 +127,20 @@ function EntityRow({
 
 // ─── main component ───────────────────────────────────────────────────────────
 
-export function DashboardPage(props: DashboardPageProps) {
-  const { dashboard, campaignState, setCurrentPage, setSelectedEntity } = props;
+export function DashboardPage(_props: DashboardPageProps = {}) {
+  const { campaignId } = useParams({ strict: false }) as any;
+  const navigate = useNavigate();
+  const storeData = useCampaignStore();
+  const dashboard = _props.dashboard ?? storeData.dashboard;
+  const campaignState = _props.campaignState ?? storeData.campaignState;
+  const { updateEntity, archiveEntity } = storeData;
+  const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
+  const selectedEntity = selectedEntityLocal;
+  const setSelectedEntity = _props.setSelectedEntity ?? setSelectedEntityLocal;
+
+  const setCurrentPage = _props.setCurrentPage ?? ((page: string) => {
+    if (campaignId) navigate({ to: `/campaigns/${campaignId}/${page}` });
+  });
 
   // ── derived values ──────────────────────────────────────────────────────────
   const campaign = campaignState?.campaign ?? null;
@@ -173,7 +188,7 @@ export function DashboardPage(props: DashboardPageProps) {
   };
 
   // ── layout ──────────────────────────────────────────────────────────────────
-  return (
+  return (<>
     <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
 
       {/* ═══════════════════════════════════════════════════════════════════════
@@ -1035,5 +1050,25 @@ export function DashboardPage(props: DashboardPageProps) {
         </div>
       </section>
     </div>
-  );
+    {selectedEntity && campaignState && (
+      <EntityDetailModal
+        selectedEntity={selectedEntity}
+        campaignState={campaignState}
+        onClose={() => setSelectedEntityLocal(null)}
+        onEdit={async (entityId, updates) => {
+          await updateEntity(entityId, updates);
+          setSelectedEntityLocal({ ...selectedEntity, ...updates });
+        }}
+        onArchive={async (entityId) => {
+          await archiveEntity(entityId);
+          setSelectedEntityLocal(null);
+        }}
+        onVisibilityChange={async (entityId, visibility) => {
+          await updateEntity(entityId, { visibility });
+          setSelectedEntityLocal({ ...selectedEntity, visibility });
+        }}
+        addToast={() => {}}
+      />
+    )}
+  </>);
 }

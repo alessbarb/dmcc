@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { MapPin, Shield, Calendar, Info, CheckSquare, AlertTriangle, Eye, Flame, Play } from "lucide-react";
 import { useCampaignStore } from "../stores/campaignStore.js";
+import { useNavigate, useParams } from "@tanstack/react-router";
+import { EntityDetailModal } from "../components/EntityDetailModal.js";
 
 export interface WhatNowPageProps {
-  whatNow: any;
-  campaignState: any;
-  setSelectedEntity: (entity: any) => void;
+  whatNow?: any;
+  campaignState?: any;
+  setSelectedEntity?: (entity: any) => void;
   setCurrentPage?: (page: string) => void;
 }
 
-export function WhatNowPage(props: WhatNowPageProps) {
-  const { whatNow, setSelectedEntity, setCurrentPage } = props;
-  const { updateCampaignSettings } = useCampaignStore();
+export function WhatNowPage(props: WhatNowPageProps = {}) {
+  const { campaignId } = useParams({ strict: false }) as any;
+  const navigate = useNavigate();
+  const store = useCampaignStore();
+  const whatNow = props.whatNow ?? store.whatNow;
+  const campaignState = props.campaignState ?? store.campaignState;
+  const { updateCampaignSettings, updateEntity, archiveEntity } = store;
+  const [selectedEntity, setSelectedEntityLocal] = useState<any>(null);
+  const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
+  const setCurrentPage = props.setCurrentPage ?? ((page: string) => {
+    if (campaignId) navigate({ to: `/campaigns/${campaignId}/${page}` });
+  });
 
-  const completedTasks = props.campaignState?.campaign?.settings?.completedChecklistTasks || [];
+  const completedTasks = campaignState?.campaign?.settings?.completedChecklistTasks || [];
 
   const handleToggleTask = async (taskText: string) => {
     let nextTasks: string[];
@@ -31,7 +42,7 @@ export function WhatNowPage(props: WhatNowPageProps) {
     }
   };
 
-  return (
+  return (<>
     <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
       {/* 1. Ahora mismo & Última sesión */}
       <div>
@@ -141,7 +152,7 @@ export function WhatNowPage(props: WhatNowPageProps) {
                 />
                 <span style={{ fontSize: "0.88rem", flex: 1, color: "var(--text-main)" }}>{c.task}</span>
                 <span className={`badge ${c.priority === "high" ? "badge-critical" : "badge-default"}`} style={{ fontSize: "0.7rem" }}>
-                  {c.priority}
+                  {c.priority === "high" ? "alta" : c.priority === "normal" ? "normal" : c.priority === "low" ? "baja" : c.priority}
                 </span>
               </label>
             ))}
@@ -236,5 +247,25 @@ export function WhatNowPage(props: WhatNowPageProps) {
         </section>
       )}
     </div>
-  );
+    {selectedEntity && campaignState && (
+      <EntityDetailModal
+        selectedEntity={selectedEntity}
+        campaignState={campaignState}
+        onClose={() => setSelectedEntityLocal(null)}
+        onEdit={async (entityId, updates) => {
+          await updateEntity(entityId, updates);
+          setSelectedEntityLocal({ ...selectedEntity, ...updates });
+        }}
+        onArchive={async (entityId) => {
+          await archiveEntity(entityId);
+          setSelectedEntityLocal(null);
+        }}
+        onVisibilityChange={async (entityId, visibility) => {
+          await updateEntity(entityId, { visibility });
+          setSelectedEntityLocal({ ...selectedEntity, visibility });
+        }}
+        addToast={() => {}}
+      />
+    )}
+  </>);
 }
