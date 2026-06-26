@@ -111,6 +111,7 @@ export function GraphPage(props: GraphPageProps = {}) {
   const [viewMode, setViewMode] = useState<ViewMode>("all");
   const [labelsMode, setLabelsMode] = useState<"Auto" | "Todas" | "Mínimas">("Auto");
   const [panelEntity, setPanelEntity] = useState<any>(null);
+  const selectedEntity = props.selectedEntity ?? panelEntity;
   const [containerSize, setContainerSize] = useState({ w: 900, h: 600 });
   const containerRef = useRef<HTMLDivElement>(null);
   const fgRef = useRef<any>(null);
