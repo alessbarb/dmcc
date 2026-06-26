@@ -378,6 +378,38 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         }),
       };
     }
+    case "CreateTag": {
+      const tagId = command.tagId ?? createId("tag");
+      const tag = { id: tagId, name: command.name, color: command.color ?? "#6366f1" };
+      const tags = new Map(state.tags ?? []);
+      tags.set(tagId, tag);
+      return {
+        state: { ...state, tags },
+        event: makeEvent(command.actorId, command.campaignId, "TagCreated", tag),
+      };
+    }
+    case "AddTagToEntity": {
+      const entity = requireEntity(state, command.entityId);
+      const tagIds = [...new Set([...(entity.tagIds ?? []), command.tagId])];
+      const updated = { ...entity, tagIds };
+      const entities = new Map(state.entities);
+      entities.set(updated.entityId, updated);
+      return {
+        state: { ...state, entities },
+        event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated),
+      };
+    }
+    case "RemoveTagFromEntity": {
+      const entity = requireEntity(state, command.entityId);
+      const tagIds = (entity.tagIds ?? []).filter((t: string) => t !== command.tagId);
+      const updated = { ...entity, tagIds };
+      const entities = new Map(state.entities);
+      entities.set(updated.entityId, updated);
+      return {
+        state: { ...state, entities },
+        event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated),
+      };
+    }
   }
 }
 

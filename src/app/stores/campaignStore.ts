@@ -108,6 +108,7 @@ export interface CampaignStateStore {
   fetchCampaigns: () => Promise<void>;
   selectCampaign: (campaignId: string) => Promise<void>;
   createCampaign: (title: string, system: string) => Promise<void>;
+  deleteCampaign: (campaignId: string, confirmTitle: string) => Promise<void>;
   
   createEntity: (payload: {
     entityType: string;
@@ -165,6 +166,8 @@ export interface CampaignStateStore {
   exportMarkdown: () => Promise<{ path: string }>;
   createBackup: () => Promise<{ path: string }>;
   restoreBackup: (backupId: string) => Promise<void>;
+
+  createTag: (name: string, color?: string) => Promise<{ tagId: string; name: string; color?: string }>;
 }
 
 const fetchWithVault = (url: string, init?: RequestInit) => {
@@ -251,7 +254,11 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const res = await fetchWithVault("/api/campaigns");
-      if (!res.ok) throw new Error("Failed to fetch campaigns");
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        const message = body?.error ?? `Failed to fetch campaigns (${res.status})`;
+        throw new Error(message);
+      }
       const campaigns = await res.json();
       set({ campaigns, loading: false });
     } catch (err: any) {
@@ -339,6 +346,36 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await get().selectCampaign(campaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
+    }
+  },
+
+  deleteCampaign: async (campaignId: string, confirmTitle: string) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${campaignId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirmTitle })
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to delete campaign");
+      }
+      await get().fetchCampaigns();
+      set({
+        activeCampaignId: null,
+        campaignState: null,
+        dashboard: null,
+        whatNow: null,
+        graph: null,
+        timeline: null,
+        visibility: null,
+        lanStatus: null,
+        loading: false,
+      });
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      throw err;
     }
   },
 
@@ -692,5 +729,17 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
-  }
+  },
+
+  createTag: async (name: string, color?: string) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) throw new Error("No active campaign");
+    const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/tags`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, color }),
+    });
+    if (!res.ok) throw new Error("Failed to create tag");
+    return res.json();
+  },
 }));

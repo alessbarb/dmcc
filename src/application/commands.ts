@@ -227,4 +227,26 @@ export type Command =
       campaignId: CampaignId;
       actorId: string;
       backupId: string;
+    }
+  | {
+      type: "CreateTag";
+      campaignId: CampaignId;
+      actorId: string;
+      tagId?: string;
+      name: string;
+      color?: string;
+    }
+  | {
+      type: "AddTagToEntity";
+      campaignId: CampaignId;
+      actorId: string;
+      entityId: EntityId;
+      tagId: string;
+    }
+  | {
+      type: "RemoveTagFromEntity";
+      campaignId: CampaignId;
+      actorId: string;
+      entityId: EntityId;
+      tagId: string;
     };
