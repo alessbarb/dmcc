@@ -272,6 +272,170 @@ describe("Security", () => {
     });
   });
 
+  describe("player authentication via x-role header (CVE: role header bypass)", () => {
+    it("LAN enabled + x-role: player alone (no token, no access code) → 401", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        await seedCampaign(server, "cmp_auth1");
+
+        // Enable LAN mode
+        await server.inject({
+          method: "POST",
+          url: "/api/campaigns/cmp_auth1/lan/toggle",
+          payload: { enabled: true },
+          headers: { "x-dm-token": getDmToken(server) },
+        });
+
+        // x-role: player alone must NOT grant access — it's not a credential
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_auth1",
+          headers: { "x-role": "player" },
+        });
+        expect(res.statusCode).toBe(401);
+      });
+    });
+
+    it("LAN enabled + x-role: player + invalid player token → 401", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        await seedCampaign(server, "cmp_auth2");
+
+        await server.inject({
+          method: "POST",
+          url: "/api/campaigns/cmp_auth2/lan/toggle",
+          payload: { enabled: true },
+          headers: { "x-dm-token": getDmToken(server) },
+        });
+
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_auth2",
+          headers: { "x-role": "player", "x-player-token": "invalid-token-that-does-not-exist" },
+        });
+        expect(res.statusCode).toBe(401);
+      });
+    });
+
+    it("LAN enabled + valid player token for WRONG campaign → 401", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        const dmToken = getDmToken(server);
+
+        // Create two campaigns
+        await server.inject({
+          method: "POST",
+          url: "/api/campaigns",
+          payload: { campaignId: "cmp_auth3a", title: "Campaign A", actorId: "usr_dm" },
+          headers: { "x-dm-token": dmToken },
+        });
+        await server.inject({
+          method: "POST",
+          url: "/api/campaigns",
+          payload: { campaignId: "cmp_auth3b", title: "Campaign B", actorId: "usr_dm" },
+          headers: { "x-dm-token": dmToken },
+        });
+
+        // Enable LAN on both
+        const toggleA = await server.inject({
+          method: "POST",
+          url: "/api/campaigns/cmp_auth3a/lan/toggle",
+          payload: { enabled: true },
+          headers: { "x-dm-token": dmToken },
+        });
+        const { accessCode: codeA } = toggleA.json();
+
+        await server.inject({
+          method: "POST",
+          url: "/api/campaigns/cmp_auth3b/lan/toggle",
+          payload: { enabled: true },
+          headers: { "x-dm-token": dmToken },
+        });
+
+        // Join campaign A to get a token scoped to A
+        const joinA = await server.inject({
+          method: "POST",
+          url: "/api/join/cmp_auth3a",
+          payload: { accessCode: codeA },
+        });
+        expect(joinA.statusCode).toBe(200);
+        const { playerToken } = joinA.json();
+
+        // Use campaign A's token to try to access campaign B — must be rejected
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_auth3b",
+          headers: { "x-player-token": playerToken },
+        });
+        expect(res.statusCode).toBe(401);
+      });
+    });
+
+    it("LAN disabled + valid player token → 403", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        const dmToken = getDmToken(server);
+        await seedCampaign(server, "cmp_auth4");
+
+        // Enable LAN, join to get token, then disable LAN
+        const toggleOn = await server.inject({
+          method: "POST",
+          url: "/api/campaigns/cmp_auth4/lan/toggle",
+          payload: { enabled: true },
+          headers: { "x-dm-token": dmToken },
+        });
+        const { accessCode } = toggleOn.json();
+
+        const join = await server.inject({
+          method: "POST",
+          url: "/api/join/cmp_auth4",
+          payload: { accessCode },
+        });
+        expect(join.statusCode).toBe(200);
+        const { playerToken } = join.json();
+
+        // Disable LAN
+        await server.inject({
+          method: "POST",
+          url: "/api/campaigns/cmp_auth4/lan/toggle",
+          payload: { enabled: false },
+          headers: { "x-dm-token": dmToken },
+        });
+
+        // Token is still in memory but LAN is off — must be 403
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_auth4",
+          headers: { "x-player-token": playerToken },
+        });
+        expect(res.statusCode).toBe(403);
+      });
+    });
+
+    it("x-player-id header alone (spoofed) → 401", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        await seedCampaign(server, "cmp_auth5");
+
+        // Enable LAN
+        await server.inject({
+          method: "POST",
+          url: "/api/campaigns/cmp_auth5/lan/toggle",
+          payload: { enabled: true },
+          headers: { "x-dm-token": getDmToken(server) },
+        });
+
+        // Spoofed x-player-id without a valid player token must not grant access
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_auth5",
+          headers: { "x-player-id": "ply_spoofed" },
+        });
+        expect(res.statusCode).toBe(401);
+      });
+    });
+  });
+
   describe("RevealClue projection consistency", () => {
     it("RevealClue updates entity visibility after rebuild from events", async () => {
       await withTempDataDir(async (dataDir) => {

@@ -97,9 +97,19 @@ export function getRequestRoleWithTokens(
   playerTokens: Map<string, { campaignId: string; playerId: string }>,
   campaignId: string
 ): "dm" | "player" | "observer" | "unauthenticated" {
-  const base = getRequestRole(request, dmSessionToken);
-  if (base !== "unauthenticated") return base;
+  // DM token is checked first
+  const dmTokenHeader = request.headers["x-dm-token"];
+  if (dmTokenHeader && dmTokenHeader === dmSessionToken) {
+    return "dm";
+  }
 
+  // Test mode bypass for DM role only
+  if (process.env.NODE_ENV === "test") {
+    const roleHeader = request.headers["x-role"];
+    if (roleHeader === "dm") return "dm";
+  }
+
+  // Player must present a valid player token — x-role header is not a credential
   const playerTokenHeader = request.headers["x-player-token"] as string | undefined;
   if (playerTokenHeader) {
     const session = playerTokens.get(playerTokenHeader);
