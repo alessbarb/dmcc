@@ -39,7 +39,9 @@ export type DomainEventType =
   | "CanvasEdgeAdded"
   | "CanvasEdgeUpdated"
   | "CanvasEdgeRemoved"
-  | "CanvasNoteConvertedToEntity";
+  | "CanvasNoteConvertedToEntity"
+  | "PlayerTokenIssued"
+  | "PlayerTokenRevoked";
 
 export interface StoredEvent<TPayload = unknown> {
   sequence: number;
