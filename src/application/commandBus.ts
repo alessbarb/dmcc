@@ -3,6 +3,7 @@ import type { EntityId, FactId, RelationId, SessionId } from "../shared/ids.js";
 import { createCampaign } from "../domain/campaign/campaign.js";
 import { createEntity } from "../domain/entity/entity.js";
 import type { Entity } from "../domain/entity/entity.js";
+import { validatePlayerCharacterMetadata } from "../domain/entity/metadata.js";
 import { createFact } from "../domain/fact/fact.js";
 import type { Fact } from "../domain/fact/fact.js";
 import { createRelation } from "../domain/relation/relation.js";
@@ -42,6 +43,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         importance: command.importance,
         visibility: command.visibility,
         metadata: command.metadata,
+        campaignSystem: state.campaign?.system,
       });
       const entities = new Map(state.entities);
       entities.set(entity.entityId, entity);
@@ -130,6 +132,9 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...(command.metadata !== undefined && { metadata: command.metadata }),
       };
       if (updated.title.trim().length === 0) throw new Error("Entity title is required");
+      if (updated.entityType === "player_character") {
+        validatePlayerCharacterMetadata(updated.metadata, state.campaign?.system);
+      }
       const entities = new Map(state.entities);
       entities.set(updated.entityId, updated);
       return { state: { ...state, entities }, event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated) };

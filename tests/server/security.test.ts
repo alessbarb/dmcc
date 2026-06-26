@@ -17,8 +17,7 @@ function getDmToken(server: any): string {
   return (server as any).dmSessionToken;
 }
 
-async function seedCampaign(server: any, dataDir: string, campaignId = "cmp_sec") {
-  dataDir; // used by caller via withTempDataDir
+async function seedCampaign(server: any, campaignId = "cmp_sec") {
   const res = await server.inject({
     method: "POST",
     url: "/api/campaigns",
@@ -34,7 +33,7 @@ describe("Security", () => {
     it("rejects vaultId with path traversal characters", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_sec");
+        await seedCampaign(server, "cmp_sec");
         const response = await server.inject({
           method: "GET",
           url: "/api/campaigns/cmp_sec",
@@ -47,7 +46,7 @@ describe("Security", () => {
     it("rejects vaultId with slash", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_sec");
+        await seedCampaign(server, "cmp_sec");
         const response = await server.inject({
           method: "GET",
           url: "/api/campaigns/cmp_sec",
@@ -60,7 +59,7 @@ describe("Security", () => {
     it("accepts valid vaultId", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_sec");
+        await seedCampaign(server, "cmp_sec");
         const response = await server.inject({
           method: "GET",
           url: "/api/campaigns/cmp_sec",
@@ -100,7 +99,7 @@ describe("Security", () => {
     it("hides accessCode from unauthenticated requests", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_lan");
+        await seedCampaign(server, "cmp_lan");
 
         const response = await server.inject({
           method: "GET",
@@ -118,8 +117,8 @@ describe("Security", () => {
     it("rejects backup that belongs to a different campaign", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_a");
-        await seedCampaign(server, dataDir, "cmp_b");
+        await seedCampaign(server, "cmp_a");
+        await seedCampaign(server, "cmp_b");
 
         // Backup campaign A
         const backupRes = await server.inject({
@@ -147,7 +146,7 @@ describe("Security", () => {
     it("rejects clue entity without metadata.content", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_meta");
+        await seedCampaign(server, "cmp_meta");
 
         const response = await server.inject({
           method: "POST",
@@ -167,7 +166,7 @@ describe("Security", () => {
     it("rejects secret entity without metadata.truth", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_meta2");
+        await seedCampaign(server, "cmp_meta2");
 
         const response = await server.inject({
           method: "POST",
@@ -183,22 +182,21 @@ describe("Security", () => {
       });
     });
 
-    it("rejects player_character entity without metadata.playerId", async () => {
+    it("allows player_character entity without metadata.playerId (pre-made template)", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_meta3");
+        await seedCampaign(server, "cmp_meta3");
 
         const response = await server.inject({
           method: "POST",
           url: "/api/campaigns/cmp_meta3/entities",
           payload: {
             entityType: "player_character",
-            title: "Missing Player Character",
+            title: "Pre-made Character (no player assigned)",
           },
           headers: { "x-dm-token": getDmToken(server) },
         });
-        expect(response.statusCode).toBe(500);
-        expect(response.json().error).toMatch(/playerId/i);
+        expect(response.statusCode).toBe(201);
       });
     });
   });
@@ -207,7 +205,7 @@ describe("Security", () => {
     it("dashboard returns 401/403 for unauthenticated", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_dm1");
+        await seedCampaign(server, "cmp_dm1");
 
         const res = await server.inject({
           method: "GET",
@@ -221,7 +219,7 @@ describe("Security", () => {
     it("what-now returns 401/403 for unauthenticated", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_dm2");
+        await seedCampaign(server, "cmp_dm2");
 
         const res = await server.inject({
           method: "GET",
@@ -234,7 +232,7 @@ describe("Security", () => {
     it("entity list returns 401/403 for unauthenticated (LAN disabled)", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_dm3");
+        await seedCampaign(server, "cmp_dm3");
 
         const res = await server.inject({
           method: "GET",
@@ -247,7 +245,7 @@ describe("Security", () => {
     it("export returns 401/403 for unauthenticated", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_dm4");
+        await seedCampaign(server, "cmp_dm4");
 
         const res = await server.inject({
           method: "GET",
@@ -260,7 +258,7 @@ describe("Security", () => {
     it("timeline returns 401/403 for unauthenticated", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_dm5");
+        await seedCampaign(server, "cmp_dm5");
 
         const res = await server.inject({
           method: "GET",
@@ -275,7 +273,7 @@ describe("Security", () => {
     it("RevealClue updates entity visibility after rebuild from events", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
-        await seedCampaign(server, dataDir, "cmp_rc");
+        await seedCampaign(server, "cmp_rc");
 
         // Create a clue
         const clueRes = await server.inject({

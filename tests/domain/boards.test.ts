@@ -197,8 +197,6 @@ describe("Boards: entity type filtering via GET /api/campaigns/:id", () => {
       const entities: Array<{ entityId: string; archived: boolean }> = state.entities;
 
       const liveEntities = entities.filter((e) => !e.archived);
-      const archivedEntities = entities.filter((e) => e.archived);
-
       expect(liveEntities.map((e) => e.entityId)).toContain("ent_live");
       // Archived entity should still be in state but flagged — the board page filters it client-side
       const archivedEntity = entities.find((e) => e.entityId === "ent_archived");

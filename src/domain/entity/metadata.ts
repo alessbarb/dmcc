@@ -154,19 +154,13 @@ export const clockMetadataSchema = z.object({
 });
 export type ClockMetadata = z.infer<typeof clockMetadataSchema>;
 
-// Player Character Metadata
-export const playerCharacterMetadataSchema = z.object({
-  playerId: playerIdSchema,
-  className: z.string().optional(),
-  level: z.number().int().min(1).optional(),
-  species: z.string().optional(),
-  background: z.string().optional(),
-  armorClass: z.number().int().optional(),
-  hitPointsCurrent: z.number().int().optional(),
-  hitPointsMax: z.number().int().optional(),
-  passivePerception: z.number().int().optional(),
-  keyTraits: z.array(z.string()).optional(),
-  importantItems: z.array(entityIdSchema).optional(),
-  personalGoals: z.array(z.string()).optional(),
-});
+import { getRuleSystem } from "../rules/index.js";
+import { genericPlayerCharacterMetadataSchema } from "../rules/generic.js";
+
+export const playerCharacterMetadataSchema = genericPlayerCharacterMetadataSchema;
 export type PlayerCharacterMetadata = z.infer<typeof playerCharacterMetadataSchema>;
+
+export function validatePlayerCharacterMetadata(metadata: any, system?: string): void {
+  const rules = getRuleSystem(system);
+  rules.characterMetadataSchema.parse(metadata);
+}
