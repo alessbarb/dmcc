@@ -8,4 +8,5 @@ export { seedClues } from "./clues.ts";
 export { seedSecrets } from "./secrets.ts";
 export { seedRelations } from "./relations.ts";
 export { seedFacts } from "./facts.ts";
+export { seedCanvas } from "./canvas.ts";
 export { rebuildAndVerify } from "./verify.ts";
