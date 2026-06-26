@@ -805,6 +805,74 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         archivedAt: command.archivedAt,
       }));
     }
+    case "LinkPlayerCharacter": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      requireEntity(state, command.characterEntityId);
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerCharacterLinked", {
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        characterEntityId: command.characterEntityId,
+        ownership: command.ownership,
+        syncMode: command.syncMode,
+        createdAt: command.createdAt,
+        updatedAt: command.createdAt,
+      }));
+    }
+    case "UnlinkPlayerCharacter": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerCharacterUnlinked", {
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        removedAt: command.removedAt,
+      }));
+    }
+    case "CreatePlayerCharacterProposal": {
+      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerCharacterProposalCreated", {
+        proposalId: command.proposalId,
+        campaignId: command.campaignId,
+        playerId: command.playerId,
+        targetCharacterEntityId: command.targetCharacterEntityId,
+        kind: command.kind,
+        proposedChanges: command.proposedChanges,
+        status: "pending" as const,
+        createdAt: command.createdAt,
+      }));
+    }
+    case "ResolvePlayerCharacterProposal": {
+      const resolvedEvent = makeEvent(command.actorId, command.campaignId, "PlayerCharacterProposalResolved", {
+        proposalId: command.proposal.proposalId,
+        campaignId: command.campaignId,
+        playerId: command.proposal.playerId,
+        status: command.status,
+        dmResolutionNote: command.dmResolutionNote,
+        resolvedAt: command.resolvedAt,
+      });
+
+      if (command.status === "rejected" || !command.entityUpdate) {
+        return { state, events: [resolvedEvent] };
+      }
+
+      const entity = requireEntity(state, command.entityUpdate.entityId);
+      const entityUpdate = command.entityUpdate.updates as any;
+      const updatedEntity = {
+        ...entity,
+        ...entityUpdate,
+        metadata: {
+          ...entity.metadata,
+          ...(entityUpdate.metadata ?? {}),
+        },
+        updatedAt: command.resolvedAt,
+      };
+
+      return {
+        state: { ...state, entities: new Map(state.entities).set(updatedEntity.entityId, updatedEntity) },
+        events: [
+          resolvedEvent,
+          makeEvent(command.actorId, command.campaignId, "EntityUpdated", updatedEntity),
+        ],
+      };
+    }
     case "ConvertCanvasNoteToEntity": {
       const canvases = new Map(state.canvases || new Map());
       const canvas = canvases.get(command.canvasId);

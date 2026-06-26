@@ -23,6 +23,17 @@ async function seedPlayer(server: any, campaignId = "cmp_portal") {
     payload: { playerId: "ply_1", name: "Player One", displayName: "Player One" },
     headers: { "x-dm-token": token },
   });
+  await server.inject({
+    method: "POST",
+    url: `/api/campaigns/${campaignId}/entities`,
+    payload: {
+      entityId: "ent_pc_1",
+      entityType: "player_character",
+      title: "Player One's Character",
+      metadata: { playerId: "ply_1", level: 1, className: "Wizard" },
+    },
+    headers: { "x-dm-token": token },
+  });
   return token;
 }
 
@@ -111,5 +122,110 @@ it("does not return private notes in dm summary", async () => {
 
     expect(summary.statusCode).toBe(200);
     expect(summary.json().players[0].notes.map((note: any) => note.title)).toEqual(["DM note"]);
+  });
+});
+
+it("allows DM to approve a structural proposal and updates the character entity", async () => {
+  await withTempDataDir(async (dataDir) => {
+    const server = createServer({ dataDir });
+    const dmToken = await seedPlayer(server);
+    const playerToken = await issueToken(server, dmToken);
+
+    await server.inject({
+      method: "POST",
+      url: "/api/campaigns/cmp_portal/player-portal/proposals",
+      payload: {
+        kind: "update_character_core",
+        targetCharacterEntityId: "ent_pc_1",
+        proposedChanges: { metadata: { level: 2, className: "Fighter" } },
+      },
+      headers: { "x-player-token": playerToken },
+    });
+
+    const summary = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal/player-portal/dm-summary",
+      headers: { "x-dm-token": dmToken },
+    });
+    const proposalId = summary.json().players[0].proposals[0].proposalId;
+
+    const approve = await server.inject({
+      method: "PUT",
+      url: `/api/campaigns/cmp_portal/player-portal/proposals/${proposalId}/resolve`,
+      payload: { status: "approved", dmResolutionNote: "Approved" },
+      headers: { "x-dm-token": dmToken },
+    });
+
+    expect(approve.statusCode).toBe(200);
+
+    const campaign = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal",
+      headers: { "x-dm-token": dmToken },
+    });
+    const character = campaign.json().entities.find((entity: any) => entity.entityId === "ent_pc_1");
+    expect(character.metadata.level).toBe(2);
+  });
+});
+
+it("writes two events to the event store on proposal approval (multi-event result)", async () => {
+  await withTempDataDir(async (dataDir) => {
+    const server = createServer({ dataDir });
+    const dmToken = await seedPlayer(server);
+    const playerToken = await issueToken(server, dmToken);
+
+    // Count events before proposal
+    const beforeEvents = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal/events",
+      headers: { "x-dm-token": dmToken },
+    });
+    const eventsBefore = beforeEvents.statusCode === 200 ? beforeEvents.json().length : undefined;
+
+    await server.inject({
+      method: "POST",
+      url: "/api/campaigns/cmp_portal/player-portal/proposals",
+      payload: {
+        kind: "update_character_core",
+        targetCharacterEntityId: "ent_pc_1",
+        proposedChanges: { metadata: { level: 3, className: "Rogue" } },
+      },
+      headers: { "x-player-token": playerToken },
+    });
+
+    const summary = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal/player-portal/dm-summary",
+      headers: { "x-dm-token": dmToken },
+    });
+    const proposalId = summary.json().players[0].proposals[0].proposalId;
+
+    await server.inject({
+      method: "PUT",
+      url: `/api/campaigns/cmp_portal/player-portal/proposals/${proposalId}/resolve`,
+      payload: { status: "approved" },
+      headers: { "x-dm-token": dmToken },
+    });
+
+    // Verify entity was updated (two events written: ProposalResolved + EntityUpdated)
+    const campaign = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal",
+      headers: { "x-dm-token": dmToken },
+    });
+    const character = campaign.json().entities.find((entity: any) => entity.entityId === "ent_pc_1");
+    expect(character.metadata.level).toBe(3);
+    expect(character.metadata.className).toBe("Rogue");
+
+    // Verify proposal is now marked approved
+    const summaryAfter = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal/player-portal/dm-summary",
+      headers: { "x-dm-token": dmToken },
+    });
+    const resolvedProposal = summaryAfter.json().players[0].proposals.find(
+      (p: any) => p.proposalId === proposalId
+    );
+    expect(resolvedProposal.status).toBe("approved");
   });
 });

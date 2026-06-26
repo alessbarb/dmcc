@@ -405,6 +405,156 @@ export async function registerPlayerPortalRoutes(
     }
   );
 
+  // POST /api/campaigns/:campaignId/player-portal/links (DM auth)
+  server.post<{ Params: { campaignId: string }; Body: any }>(
+    "/api/campaigns/:campaignId/player-portal/links",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const body = request.body as any;
+
+      try {
+        const repo = getRepository(vaultId);
+        const now = new Date().toISOString();
+
+        await repo.executeCommand(campaignId as any, {
+          type: "LinkPlayerCharacter",
+          campaignId: campaignId as any,
+          actorId: "dm",
+          playerId: body.playerId,
+          characterEntityId: body.characterEntityId,
+          ownership: body.ownership ?? "campaign_premade",
+          syncMode: body.syncMode ?? "live_player_editable",
+          createdAt: now,
+        });
+
+        reply.code(201);
+        return { ok: true };
+      } catch (err: any) {
+        if (err.statusCode) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  // POST /api/campaigns/:campaignId/player-portal/proposals (player token)
+  server.post<{ Params: { campaignId: string }; Body: any }>(
+    "/api/campaigns/:campaignId/player-portal/proposals",
+    async (request, reply) => {
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const rawToken = request.headers["x-player-token"] as string | undefined;
+
+      try {
+        const repo = getRepository(vaultId);
+        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const body = request.body as any;
+
+        const proposalId = `pprop_${randomBytes(8).toString("hex")}`;
+        const now = new Date().toISOString();
+
+        await repo.executeCommand(campaignId as any, {
+          type: "CreatePlayerCharacterProposal",
+          campaignId: campaignId as any,
+          actorId: playerId,
+          playerId,
+          proposalId,
+          targetCharacterEntityId: body.targetCharacterEntityId,
+          kind: body.kind ?? "update_character_core",
+          proposedChanges: body.proposedChanges ?? {},
+          createdAt: now,
+        });
+
+        reply.code(201);
+        return { ok: true, proposalId };
+      } catch (err: any) {
+        if (err.statusCode) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  // PUT /api/campaigns/:campaignId/player-portal/proposals/:proposalId/resolve (DM auth)
+  server.put<{ Params: { campaignId: string; proposalId: string }; Body: any }>(
+    "/api/campaigns/:campaignId/player-portal/proposals/:proposalId/resolve",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { proposalId } = request.params;
+      const body = request.body as any;
+
+      try {
+        const repo = getRepository(vaultId);
+        const state = await repo.getCampaignState(campaignId as any);
+        const events = await repo.loadEvents(campaignId as any);
+        const portal = buildPlayerPortalProjection(state, events as any);
+
+        // Find proposal across all players
+        let foundProposal: any = undefined;
+        for (const proposals of portal.proposalsByPlayerId.values()) {
+          for (const p of proposals) {
+            if (p.proposalId === proposalId) {
+              foundProposal = p;
+              break;
+            }
+          }
+          if (foundProposal) break;
+        }
+
+        if (!foundProposal) {
+          reply.code(404);
+          return { error: "Proposal not found" };
+        }
+
+        if (foundProposal.status !== "pending") {
+          reply.code(400);
+          return { error: "Proposal already resolved" };
+        }
+
+        const status: "approved" | "rejected" = body.status === "approved" ? "approved" : "rejected";
+        const now = new Date().toISOString();
+
+        let entityUpdate: { entityId: string; updates: Record<string, unknown> } | undefined;
+        if (status === "approved" && foundProposal.targetCharacterEntityId) {
+          entityUpdate = {
+            entityId: foundProposal.targetCharacterEntityId,
+            updates: foundProposal.proposedChanges,
+          };
+        }
+
+        await repo.executeCommand(campaignId as any, {
+          type: "ResolvePlayerCharacterProposal",
+          campaignId: campaignId as any,
+          actorId: "dm",
+          proposal: foundProposal,
+          status,
+          dmResolutionNote: body.dmResolutionNote,
+          resolvedAt: now,
+          entityUpdate,
+        });
+
+        return { ok: true };
+      } catch (err: any) {
+        if (err.statusCode) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
   // GET /api/campaigns/:campaignId/player-portal/dm-summary (DM only)
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/player-portal/dm-summary",
