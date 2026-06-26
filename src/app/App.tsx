@@ -266,18 +266,7 @@ export function App() {
       const campaignId = await createCampaign(newCampaignTitle.trim(), newCampaignSystem);
       setNewCampaignTitle("");
       if (campaignId) {
-        navigate({ to: `/campaigns/${campaignId}/dashboard` });
-        
-        // Open Canvas in a popup window
-        const width = Math.min(1600, window.screen.availWidth * 0.95);
-        const height = Math.min(1000, window.screen.availHeight * 0.95);
-        const left = (window.screen.availWidth - width) / 2;
-        const top = (window.screen.availHeight - height) / 2;
-        const features = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
-        const popup = window.open(`/campaigns/${campaignId}/canvas`, `canvas_${campaignId}`, features);
-        if (popup) {
-          popup.focus();
-        }
+        navigate({ to: `/campaigns/${campaignId}/canvas` });
       }
     } catch (err) {
       console.error(err);
@@ -472,18 +461,7 @@ export function App() {
                     className="campaign-list-item"
                     onClick={() => {
                       selectCampaign(c.campaignId);
-                      navigate({ to: `/campaigns/${c.campaignId}/dashboard` });
-                      
-                      // Open Canvas in a popup window
-                      const width = Math.min(1600, window.screen.availWidth * 0.95);
-                      const height = Math.min(1000, window.screen.availHeight * 0.95);
-                      const left = (window.screen.availWidth - width) / 2;
-                      const top = (window.screen.availHeight - height) / 2;
-                      const features = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
-                      const popup = window.open(`/campaigns/${c.campaignId}/canvas`, `canvas_${c.campaignId}`, features);
-                      if (popup) {
-                        popup.focus();
-                      }
+                      navigate({ to: `/campaigns/${c.campaignId}/canvas` });
                     }}
                   >
                     <div className="campaign-list-item__body">

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useParams, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useCampaignStore } from "./stores/campaignStore.js";
 import { ToastContainer } from "./components/ToastContainer.js";
@@ -22,6 +22,8 @@ import {
   MapPin,
   Flag,
   LayoutGrid,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 type PageMeta = {
@@ -135,6 +137,17 @@ export function CampaignShell() {
     { path: "settings", label: "Ajustes", Icon: Settings },
   ];
 
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(
+    () => localStorage.getItem("dmcc-sidebar-collapsed") === "1"
+  );
+  const toggleSidebar = () => {
+    setSidebarCollapsed(v => {
+      const next = !v;
+      localStorage.setItem("dmcc-sidebar-collapsed", next ? "1" : "0");
+      return next;
+    });
+  };
+
   const activeSession = campaignState?.sessions?.find(s => s.status === "active");
 
   const pageMeta = PAGE_META[currentSegment] ?? {
@@ -152,110 +165,144 @@ export function CampaignShell() {
     : null;
 
   const handleNavClick = (path: string) => {
-    if (path === "canvas") {
-      const width = Math.min(1600, window.screen.availWidth * 0.95);
-      const height = Math.min(1000, window.screen.availHeight * 0.95);
-      const left = (window.screen.availWidth - width) / 2;
-      const top = (window.screen.availHeight - height) / 2;
-      const features = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
-      const popup = window.open(`/campaigns/${campaignId}/canvas`, `canvas_${campaignId}`, features);
-      if (popup) {
-        popup.focus();
-      }
-    } else {
-      navigate({ to: `/campaigns/${campaignId}/${path}` });
-    }
+    navigate({ to: `/campaigns/${campaignId}/${path}` });
   };
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${currentSegment === "canvas" ? "app-container--canvas" : ""}`}>
       {/* Sidebar Navigation */}
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          <div className="sidebar-logo">{campaignState?.campaign?.title ?? "Campaña"}</div>
-          <div className="sidebar-logo-subtitle">{campaignState?.campaign?.system ?? ""}</div>
+      <aside
+        className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}
+        style={{ width: sidebarCollapsed ? "52px" : "260px", transition: "width 0.2s ease" }}
+      >
+        <div className="sidebar-header" style={{ padding: sidebarCollapsed ? "16px 8px" : undefined, overflow: "hidden" }}>
+          {!sidebarCollapsed && (
+            <>
+              <div className="sidebar-logo">{campaignState?.campaign?.title ?? "Campaña"}</div>
+              <div className="sidebar-logo-subtitle">{campaignState?.campaign?.system ?? ""}</div>
+            </>
+          )}
+          <button
+            onClick={toggleSidebar}
+            title={sidebarCollapsed ? "Expandir menú" : "Colapsar menú"}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "var(--text-muted)",
+              padding: "4px",
+              borderRadius: "4px",
+              display: "flex",
+              alignItems: "center",
+              marginTop: sidebarCollapsed ? 0 : "10px",
+              width: "100%",
+              justifyContent: sidebarCollapsed ? "center" : "flex-end",
+            }}
+          >
+            {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+          </button>
         </div>
 
-        <nav className="sidebar-nav">
+        <nav className="sidebar-nav" style={{ padding: sidebarCollapsed ? "12px 6px" : undefined }}>
           {NAV.map(({ path, label, Icon }) => (
             <div
               key={path}
               className={`nav-item ${currentSegment === path ? "active" : ""}`}
               onClick={() => handleNavClick(path)}
+              title={sidebarCollapsed ? label : undefined}
+              style={sidebarCollapsed ? { padding: "10px", justifyContent: "center", gap: 0 } : undefined}
             >
-              <Icon size={16} /> {label}
+              <Icon size={16} />
+              {!sidebarCollapsed && <span>{label}</span>}
             </div>
           ))}
         </nav>
 
-        <div className="sidebar-footer">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span>Campaña activa</span>
+        <div className="sidebar-footer" style={{ padding: sidebarCollapsed ? "12px 8px" : undefined }}>
+          {sidebarCollapsed ? (
             <button
               className="btn btn-secondary btn-sm"
               onClick={() => navigate({ to: "/" })}
+              title="Salir"
+              style={{ width: "100%", padding: "6px", justifyContent: "center" }}
             >
-              <ArrowLeft size={14} /> Salir
+              <ArrowLeft size={14} />
             </button>
-          </div>
+          ) : (
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span>Campaña activa</span>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={() => navigate({ to: "/" })}
+              >
+                <ArrowLeft size={14} /> Salir
+              </button>
+            </div>
+          )}
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <main className="main-content">
-        <header className="content-header">
-          <div className="page-heading">
-            <span className="page-eyebrow">{pageMeta.eyebrow}</span>
-            <div className="page-title-row">
-              <h1 className="page-title">{pageMeta.title}</h1>
-              {campaignState?.campaign?.system && (
-                <span className="page-system-pill">{campaignState.campaign.system}</span>
-              )}
-            </div>
-            <p className="page-description">{pageMeta.description}</p>
-
-            {(currentLocation || currentQuest) && (
-              <div className="page-context" aria-label="Contexto actual de campaña">
-                {currentLocation && (
-                  <span className="context-chip">
-                    <MapPin size={14} /> Ubicación: {currentLocation.title}
-                  </span>
-                )}
-                {currentQuest && (
-                  <span className="context-chip context-chip--primary">
-                    <Flag size={14} /> Misión: {currentQuest.title}
-                  </span>
+      <main className={`main-content ${currentSegment === "canvas" ? "main-content--canvas" : ""}`}>
+        {currentSegment !== "canvas" && (
+          <header className="content-header">
+            <div className="page-heading">
+              <span className="page-eyebrow">{pageMeta.eyebrow}</span>
+              <div className="page-title-row">
+                <h1 className="page-title">{pageMeta.title}</h1>
+                {campaignState?.campaign?.system && (
+                  <span className="page-system-pill">{campaignState.campaign.system}</span>
                 )}
               </div>
-            )}
-          </div>
+              <p className="page-description">{pageMeta.description}</p>
 
-          <div className="top-bar-actions header-actions">
-            {activeSession ? (
-              <span className="badge badge-success" style={{ padding: "8px 12px" }}>
-                Sesión #{activeSession.number || 1} activa: “{activeSession.title}”
-              </span>
-            ) : (
-              <button
-                className="btn btn-primary btn-sm"
-                onClick={() => startSession(`Sesión ${(campaignState?.sessions ?? []).length + 1}`)}
-              >
-                <Play size={14} /> Iniciar nueva sesión
+              {(currentLocation || currentQuest) && (
+                <div className="page-context" aria-label="Contexto actual de campaña">
+                  {currentLocation && (
+                    <span className="context-chip">
+                      <MapPin size={14} /> Ubicación: {currentLocation.title}
+                    </span>
+                  )}
+                  {currentQuest && (
+                    <span className="context-chip context-chip--primary">
+                      <Flag size={14} /> Misión: {currentQuest.title}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="top-bar-actions header-actions">
+              {activeSession ? (
+                <span className="badge badge-success" style={{ padding: "8px 12px" }}>
+                  Sesión #{activeSession.number || 1} activa: “{activeSession.title}”
+                </span>
+              ) : (
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => startSession(`Sesión ${(campaignState?.sessions ?? []).length + 1}`)}
+                >
+                  <Play size={14} /> Iniciar nueva sesión
+                </button>
+              )}
+
+              <button className="btn btn-secondary btn-sm" onClick={() => setIsEntityModalOpen(true)}>
+                <Plus size={14} /> Nueva entidad
               </button>
-            )}
+            </div>
+          </header>
+        )}
 
-            <button className="btn btn-secondary btn-sm" onClick={() => setIsEntityModalOpen(true)}>
-              <Plus size={14} /> Nueva entidad
-            </button>
-          </div>
-        </header>
-
-        <div className="content-body">
+        {currentSegment === "canvas" ? (
           <Outlet />
-        </div>
+        ) : (
+          <div className="content-body">
+            <Outlet />
+          </div>
+        )}
       </main>
 
-      <AppFooter />
+      {currentSegment !== "canvas" && <AppFooter />}
 
       {/* Modals */}
       <EntityCreateModal isOpen={isEntityModalOpen} onClose={() => setIsEntityModalOpen(false)} />

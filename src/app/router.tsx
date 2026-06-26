@@ -116,8 +116,8 @@ const settingsRoute = createRoute({
 });
 
 const canvasRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/campaigns/$campaignId/canvas",
+  getParentRoute: () => campaignRoute,
+  path: "/canvas",
   component: CanvasPage,
 });
 
@@ -126,8 +126,8 @@ const routeTree = rootRoute.addChildren([
   indexRoute,
   joinRoute,
   playerPortalRoute,
-  canvasRoute,
   campaignRoute.addChildren([
+    canvasRoute,
     dashboardRoute,
     whatNowRoute,
     sessionRoute,
