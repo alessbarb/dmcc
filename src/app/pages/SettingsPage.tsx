@@ -3,7 +3,6 @@ import { RotateCcw, Download, Upload, Wifi, WifiOff, Copy, Check } from "lucide-
 import type { ToastKind } from "../hooks/useToast.js";
 import { useCampaignStore } from "../stores/campaignStore.js";
 import { useToast } from "../hooks/useToast.js";
-import { useNavigate } from "@tanstack/react-router";
 
 export interface SettingsPageProps {
   campaigns?: any[];
@@ -21,22 +20,17 @@ export interface SettingsPageProps {
 }
 
 export function SettingsPage(props: SettingsPageProps = {}) {
-  const navigate = useNavigate();
   const store = useCampaignStore();
   const { addToast: toastAdd } = useToast();
-  const activeCampaignId = props.activeCampaignId ?? store.activeCampaignId;
-  const campaignState = props.campaignState ?? store.campaignState;
   const createBackup = props.createBackup ?? store.createBackup;
   const exportJson = props.exportJson ?? store.exportJson;
   const exportMarkdown = props.exportMarkdown ?? store.exportMarkdown;
   const lanStatus = props.lanStatus !== undefined ? props.lanStatus : store.lanStatus;
   const toggleLanMode = props.toggleLanMode ?? store.toggleLanMode;
   const addToast = props.addToast ?? toastAdd;
-  const onCampaignDeleted = props.onCampaignDeleted ?? (async () => { await navigate({ to: "/" }); });
   const [copiedCode, setCopiedCode] = React.useState(false);
   const [copiedLink, setCopiedLink] = React.useState(false);
 
-  const campaignTitle = campaignState?.campaign?.title ?? "";
 
   const handleCopyCode = (code: string) => {
     navigator.clipboard.writeText(code);

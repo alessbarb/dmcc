@@ -11,7 +11,6 @@ import {
   Settings,
   Play,
   Search,
-  MapPin,
   User,
   Layers,
   BookOpen,
@@ -83,7 +82,9 @@ export function CampaignShell() {
 
       {/* Main Content Area */}
       <main className="main-content">
-        <Outlet />
+        <div style={{ padding: "24px" }}>
+          <Outlet />
+        </div>
       </main>
 
       <ToastContainer toasts={toasts} onRemove={removeToast} />

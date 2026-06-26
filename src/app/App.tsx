@@ -22,11 +22,13 @@ import {
   Layers,
 } from "lucide-react";
 import { getCampaignExitDecision } from "./utils/campaignExit.js";
+import { getRuleSystem } from "../domain/rules/index.js";
 import { useToast } from "./hooks/useToast.js";
 import { ToastContainer } from "./components/ToastContainer.js";
 import { TimelinePage } from "./pages/TimelinePage.js";
 import { SearchPage } from "./pages/SearchPage.js";
 import { BoardsPage } from "./pages/BoardsPage.js";
+import { RulesPage } from "./pages/RulesPage.js";
 import { SettingsPage } from "./pages/SettingsPage.js";
 import { DashboardPage } from "./pages/DashboardPage.js";
 import { WhatNowPage } from "./pages/WhatNowPage.js";
@@ -214,7 +216,7 @@ export function App() {
       defaultMetadata = { impact: "", triggerCondition: "" };
     } else if (type === "player_character") {
       defaultStatus = "active";
-      defaultMetadata = { playerId: "", species: "", className: "", level: 1 };
+      defaultMetadata = getRuleSystem(campaignState?.campaign?.system).getInitialCharacterMetadata();
     } else if (type === "faction") {
       defaultStatus = "active";
       defaultMetadata = { goal: "", attitudeToParty: "neutral", influence: "minor" };
@@ -599,6 +601,14 @@ export function App() {
           >
             <Search /> Búsqueda
           </div>
+          {campaignState?.campaign?.system === "dnd_srd_5_2_1" && (
+            <div
+              className={`nav-item ${currentPage === "rules" ? "active" : ""}`}
+              onClick={() => setCurrentPage("rules")}
+            >
+              <BookOpen /> Manual de Reglas
+            </div>
+          )}
           <div
             className={`nav-item ${currentPage === "players" ? "active" : ""}`}
             onClick={() => setCurrentPage("players")}
@@ -765,6 +775,11 @@ export function App() {
             />
           )}
 
+          {/* Rules Reference Page */}
+          {currentPage === "rules" && (
+            <RulesPage />
+          )}
+
           {/* 9. Players & Characters Page */}
           {currentPage === "players" && (
             <PlayersPage
@@ -787,13 +802,7 @@ export function App() {
           )}
 
           {/* 9. Boards Page */}
-          {currentPage === "boards" && (
-            <BoardsPage
-              campaignState={campaignState}
-              setSelectedEntity={setSelectedEntity}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
+          {currentPage === "boards" && <BoardsPage />}
 
           {/* 10. Settings & Export Page */}
           {currentPage === "settings" && (
@@ -998,34 +1007,227 @@ export function App() {
                     />
                   </div>
                 )}
-                {entityForm.entityType === "player_character" && (
-                  <div className="grid grid-cols-2" style={{ gap: "12px" }}>
-                    <div className="form-group">
-                      <label className="form-label">Player Profile</label>
-                      <select className="form-select" value={entityForm.metadata.playerId || ""}
-                        onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, playerId: e.target.value } })}>
-                        <option value="">-- Select Player --</option>
-                        {(campaignState?.players || []).map((p: any) => (
-                          <option key={p.playerId} value={p.playerId}>{p.displayName}</option>
-                        ))}
-                      </select>
+                 {entityForm.entityType === "player_character" && (
+                  campaignState?.campaign?.system === "dnd_srd_5_2_1" ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                      <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
+                        <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Información Básica</h4>
+                        <div className="grid grid-cols-2" style={{ gap: "12px" }}>
+                          <div className="form-group">
+                            <label className="form-label">Perfil del jugador</label>
+                            <select className="form-select" value={entityForm.metadata.playerId || ""}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, playerId: e.target.value } })}>
+                              <option value="">-- Seleccionar jugador --</option>
+                              {(campaignState?.players || []).map((p: any) => (
+                                <option key={p.playerId} value={p.playerId}>{p.displayName || p.name}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Clase *</label>
+                            <input type="text" className="form-input" placeholder="Ej. Pícaro, Mago" required value={entityForm.metadata.className || ""}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, className: e.target.value } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Subclase {entityForm.metadata.level >= 3 ? "*" : "(Nivel 3+)"}</label>
+                            <input type="text" className="form-input" placeholder="Ej. Asesino, Ilusionista" required={entityForm.metadata.level >= 3} value={entityForm.metadata.subclass || ""}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, subclass: e.target.value } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Nivel *</label>
+                            <input type="number" className="form-input" min={1} max={20} required value={entityForm.metadata.level || 1}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, level: parseInt(e.target.value) || 1 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Especie / Raza *</label>
+                            <input type="text" className="form-input" placeholder="Ej. Elfo, Enano" required value={entityForm.metadata.species || ""}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, species: e.target.value } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Trasfondo *</label>
+                            <input type="text" className="form-input" placeholder="Ej. Huérfano, Soldado" required value={entityForm.metadata.background || ""}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, background: e.target.value } })} />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
+                        <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Atributos Principales (1-30)</h4>
+                        <div className="grid grid-cols-3" style={{ gap: "12px" }}>
+                          <div className="form-group">
+                            <label className="form-label">Fuerza (STR) *</label>
+                            <input type="number" className="form-input" min={1} max={30} required value={entityForm.metadata.strength || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, strength: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Destreza (DEX) *</label>
+                            <input type="number" className="form-input" min={1} max={30} required value={entityForm.metadata.dexterity || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, dexterity: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Constitución (CON) *</label>
+                            <input type="number" className="form-input" min={1} max={30} required value={entityForm.metadata.constitution || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, constitution: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Inteligencia (INT) *</label>
+                            <input type="number" className="form-input" min={1} max={30} required value={entityForm.metadata.intelligence || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, intelligence: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Sabiduría (WIS) *</label>
+                            <input type="number" className="form-input" min={1} max={30} required value={entityForm.metadata.wisdom || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, wisdom: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Carisma (CHA) *</label>
+                            <input type="number" className="form-input" min={1} max={30} required value={entityForm.metadata.charisma || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, charisma: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
+                        <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Estadísticas de Combate y Progreso</h4>
+                        <div className="grid grid-cols-3" style={{ gap: "12px" }}>
+                          <div className="form-group">
+                            <label className="form-label">CA *</label>
+                            <input type="number" className="form-input" min={0} required value={entityForm.metadata.armorClass || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, armorClass: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Iniciativa *</label>
+                            <input type="number" className="form-input" required value={entityForm.metadata.initiative || 0}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, initiative: parseInt(e.target.value) || 0 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Velocidad *</label>
+                            <input type="number" className="form-input" min={0} required value={entityForm.metadata.speed || 30}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, speed: parseInt(e.target.value) || 30 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">PG Actuales *</label>
+                            <input type="number" className="form-input" min={0} required value={entityForm.metadata.hitPointsCurrent || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, hitPointsCurrent: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">PG Máximos *</label>
+                            <input type="number" className="form-input" min={1} required value={entityForm.metadata.hitPointsMax || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, hitPointsMax: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">PG Temp</label>
+                            <input type="number" className="form-input" min={0} value={entityForm.metadata.hitPointsTemp || 0}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, hitPointsTemp: parseInt(e.target.value) || 0 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Dados de Golpe *</label>
+                            <input type="text" className="form-input" placeholder="Ej. 1d8, 3d10" required value={entityForm.metadata.hitDice || "1d8"}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, hitDice: e.target.value } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Experiencia (XP)</label>
+                            <input type="number" className="form-input" min={0} value={entityForm.metadata.xp || 0}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, xp: parseInt(e.target.value) || 0 } })} />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
+                        <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Habilidades Pasivas</h4>
+                        <div className="grid grid-cols-3" style={{ gap: "12px" }}>
+                          <div className="form-group">
+                            <label className="form-label">Percepción Pasiva *</label>
+                            <input type="number" className="form-input" required value={entityForm.metadata.passivePerception || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, passivePerception: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Perspicacia Pasiva *</label>
+                            <input type="number" className="form-input" required value={entityForm.metadata.passiveInsight || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, passiveInsight: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Investigación Pasiva *</label>
+                            <input type="number" className="form-input" required value={entityForm.metadata.passiveInvestigation || 10}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, passiveInvestigation: parseInt(e.target.value) || 10 } })} />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Competencias, Dotes e Idiomas</h4>
+                        <div className="form-group">
+                          <label className="form-label">Salvaciones Competentes (ej. dex, con)</label>
+                          <input type="text" className="form-input" placeholder="Separadas por comas"
+                            value={Array.isArray(entityForm.metadata.savingThrows) ? entityForm.metadata.savingThrows.join(", ") : ""}
+                            onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, savingThrows: e.target.value.split(",").map(s => s.trim().toLowerCase()).filter(Boolean) } })} />
+                        </div>
+                        <div className="form-group">
+                          <label className="form-label">Habilidades Competentes (ej. perception, stealth)</label>
+                          <input type="text" className="form-input" placeholder="Separadas por comas"
+                            value={Array.isArray(entityForm.metadata.skills) ? entityForm.metadata.skills.join(", ") : ""}
+                            onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, skills: e.target.value.split(",").map(s => s.trim().toLowerCase()).filter(Boolean) } })} />
+                        </div>
+                        <div className="form-group">
+                          <label className="form-label">Idiomas conocidos (ej. Común, Élfico)</label>
+                          <input type="text" className="form-input" placeholder="Separados por comas"
+                            value={Array.isArray(entityForm.metadata.languages) ? entityForm.metadata.languages.join(", ") : ""}
+                            onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, languages: e.target.value.split(",").map(s => s.trim()).filter(Boolean) } })} />
+                        </div>
+                        <div className="form-group">
+                          <label className="form-label">Dotes (ej. Alerta, Iniciación Mágica)</label>
+                          <input type="text" className="form-input" placeholder="Separados por comas"
+                            value={Array.isArray(entityForm.metadata.feats) ? entityForm.metadata.feats.join(", ") : ""}
+                            onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, feats: e.target.value.split(",").map(s => s.trim()).filter(Boolean) } })} />
+                        </div>
+                        <div className="grid grid-cols-2" style={{ gap: "12px" }}>
+                          <div className="form-group">
+                            <label className="form-label">CD Salvación Conjuros</label>
+                            <input type="number" className="form-input" placeholder="Ej. 13" value={entityForm.metadata.spellSaveDC || ""}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, spellSaveDC: parseInt(e.target.value) || undefined } })} />
+                          </div>
+                          <div className="form-group">
+                            <label className="form-label">Bonif. Ataque Conjuros</label>
+                            <input type="number" className="form-input" placeholder="Ej. +5" value={entityForm.metadata.spellAttackBonus || ""}
+                              onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, spellAttackBonus: parseInt(e.target.value) || undefined } })} />
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <label className="form-label">Notas del personaje</label>
+                          <textarea className="form-textarea" rows={3} placeholder="Detalles o anotaciones adicionales..." value={entityForm.metadata.note || ""}
+                            onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, note: e.target.value } })} />
+                        </div>
+                      </div>
                     </div>
-                    <div className="form-group">
-                      <label className="form-label">Class</label>
-                      <input type="text" className="form-input" placeholder="Rogue, Paladin..." value={entityForm.metadata.className || ""}
-                        onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, className: e.target.value } })} />
+                  ) : (
+                    <div className="grid grid-cols-2" style={{ gap: "12px" }}>
+                      <div className="form-group">
+                        <label className="form-label">Player Profile</label>
+                        <select className="form-select" value={entityForm.metadata.playerId || ""}
+                          onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, playerId: e.target.value } })}>
+                          <option value="">-- Select Player --</option>
+                          {(campaignState?.players || []).map((p: any) => (
+                            <option key={p.playerId} value={p.playerId}>{p.displayName || p.name}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Class</label>
+                        <input type="text" className="form-input" placeholder="Rogue, Paladin..." value={entityForm.metadata.className || ""}
+                          onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, className: e.target.value } })} />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Species</label>
+                        <input type="text" className="form-input" placeholder="Human, Elf..." value={entityForm.metadata.species || ""}
+                          onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, species: e.target.value } })} />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label">Level</label>
+                        <input type="number" className="form-input" min={1} max={20} value={entityForm.metadata.level || 1}
+                          onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, level: parseInt(e.target.value) || 1 } })} />
+                      </div>
                     </div>
-                    <div className="form-group">
-                      <label className="form-label">Species</label>
-                      <input type="text" className="form-input" placeholder="Human, Elf..." value={entityForm.metadata.species || ""}
-                        onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, species: e.target.value } })} />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Level</label>
-                      <input type="number" className="form-input" min={1} max={20} value={entityForm.metadata.level || 1}
-                        onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, level: parseInt(e.target.value) } })} />
-                    </div>
-                  </div>
+                  )
                 )}
                 {entityForm.entityType === "clock" && (
                   <div className="grid grid-cols-2">

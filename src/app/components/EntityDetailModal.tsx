@@ -285,21 +285,177 @@ function ResumenTab({
                 }}
               >
                 {(t === "npc" || t === "player_character" || t === "creature") && (
-                  <>
-                    <Field label="Rol" value={m.role} />
-                    <Field label="Facción" value={m.factionId} />
-                    <Field label="Motivación" value={m.motivation} />
-                    <Field label="Objetivo" value={m.goal} />
-                    <Field label="Actitud" value={m.attitude} />
-                    {t === "player_character" && (
-                      <>
-                        <Field label="Jugador" value={m.playerId} />
+                  t === "player_character" && campaignState?.campaign?.system === "dnd_srd_5_2_1" ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)" }}>
                         <Field label="Clase" value={m.className} />
-                        <Field label="Especie" value={m.species} />
+                        <Field label="Subclase" value={m.subclass} />
                         <Field label="Nivel" value={m.level} />
-                      </>
-                    )}
-                  </>
+                        <Field label="Experiencia (XP)" value={m.xp != null ? `${m.xp} XP` : null} />
+                        <Field label="Especie / Raza" value={m.species} />
+                        <Field label="Trasfondo" value={m.background} />
+                        <Field label="Jugador" value={(() => {
+                          if (!m.playerId) return null;
+                          const p = campaignState?.players?.find((pl: any) => pl.playerId === m.playerId);
+                          return p ? (p.displayName || p.name) : m.playerId;
+                        })()} />
+                      </div>
+
+                      <div>
+                        <h5 style={{ fontSize: "0.75rem", fontWeight: "700", color: "var(--text-muted)", marginBottom: "8px", textTransform: "uppercase" }}>Atributos Principales</h5>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
+                          {[
+                            { label: "FUERZA", key: "strength", short: "STR" },
+                            { label: "DESTREZA", key: "dexterity", short: "DEX" },
+                            { label: "CONSTITUCION", key: "constitution", short: "CON" },
+                            { label: "INTELIGENCIA", key: "intelligence", short: "INT" },
+                            { label: "SABIDURIA", key: "wisdom", short: "WIS" },
+                            { label: "CARISMA", key: "charisma", short: "CHA" }
+                          ].map(attr => {
+                            const val = m[attr.key];
+                            const numVal = parseInt(val);
+                            const mod = !isNaN(numVal) ? Math.floor((numVal - 10) / 2) : null;
+                            const modStr = mod !== null ? (mod >= 0 ? `+${mod}` : `${mod}`) : "--";
+                            return (
+                              <div key={attr.key} style={{ backgroundColor: "#06070e", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "6px 4px", textAlign: "center" }}>
+                                <div style={{ fontSize: "0.6rem", fontWeight: "700", color: "var(--text-muted)" }}>{attr.short}</div>
+                                <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--secondary)", margin: "2px 0" }}>{modStr}</div>
+                                <div style={{ fontSize: "0.7rem", color: "var(--text-main)" }}>{val ?? "--"}</div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)" }}>
+                        <div style={{ textAlign: "center" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>CLASE ARMADURA</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>🛡️ {m.armorClass ?? 10}</div>
+                        </div>
+                        <div style={{ textAlign: "center" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>INICIATIVA</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>⚡ {m.initiative >= 0 ? `+${m.initiative}` : m.initiative ?? 0}</div>
+                        </div>
+                        <div style={{ textAlign: "center" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>VELOCIDAD</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>🏃‍♂️ {m.speed ?? 30} ft</div>
+                        </div>
+                        <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--border-color)", paddingTop: "8px", marginTop: "4px" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>PUNTOS DE GOLPE (HP)</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--color-critical)", marginTop: "4px" }}>
+                            ❤️ {m.hitPointsCurrent ?? 10} / {m.hitPointsMax ?? 10}
+                            {m.hitPointsTemp > 0 && <span style={{ color: "var(--color-warning)", fontSize: "0.85rem", marginLeft: "6px" }}>+{m.hitPointsTemp} Temp</span>}
+                          </div>
+                        </div>
+                        <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--border-color)", paddingTop: "8px" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>DADOS DE GOLPE</div>
+                          <div style={{ fontSize: "0.95rem", fontWeight: "700", color: "var(--text-main)", marginTop: "4px" }}>🎲 {m.hitDice ?? "--"}</div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px", backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--radius-md)", textAlign: "center" }}>
+                        <div>
+                          <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontWeight: "600" }}>PERCEPCION PASIVA</div>
+                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>👁️ {m.passivePerception ?? 10}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontWeight: "600" }}>PERSPIACACIA PASIVA</div>
+                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🧠 {m.passiveInsight ?? 10}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontWeight: "600" }}>INVESTIGACION PASIVA</div>
+                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🔍 {m.passiveInvestigation ?? 10}</div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" }}>
+                        <div style={{ backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--radius-md)" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Salvaciones</div>
+                          {Array.isArray(m.savingThrows) && m.savingThrows.length > 0 ? (
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                              {m.savingThrows.map((s: string) => {
+                                const trans: Record<string, string> = { str: "FUER", dex: "DEST", con: "CONS", int: "INTE", wis: "SABI", cha: "CARI" };
+                                return (
+                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--primary-light)", border: "1px solid hsla(255, 85%, 65%, 0.3)", borderRadius: "4px", color: "var(--text-main)", textTransform: "uppercase" }}>
+                                    {trans[s] || s}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          ) : <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontStyle: "italic" }}>Ninguna</span>}
+                        </div>
+
+                        <div style={{ backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--radius-md)" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Habilidades</div>
+                          {Array.isArray(m.skills) && m.skills.length > 0 ? (
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                              {m.skills.map((s: string) => {
+                                const trans: Record<string, string> = {
+                                  acrobatics: "Acrobacias", athletics: "Atletismo", stealth: "Sigilo", sleight_of_hand: "Juego de Manos",
+                                  arcana: "Arcana", history: "Historia", investigation: "Investigación", insight: "Perspicacia",
+                                  medicine: "Medicina", nature: "Naturaleza", perception: "Percepción", performance: "Interpretación",
+                                  persuasion: "Persuasión", religion: "Religión", animal_handling: "Trato Animal", intimidation: "Intimidación",
+                                  survival: "Supervivencia"
+                                };
+                                return (
+                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--primary-light)", border: "1px solid hsla(255, 85%, 65%, 0.3)", borderRadius: "4px", color: "var(--text-main)" }}>
+                                    {trans[s] || s}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          ) : <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontStyle: "italic" }}>Ninguna</span>}
+                        </div>
+                      </div>
+
+                      <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                        <Field label="Dotes" value={Array.isArray(m.feats) ? m.feats.join(", ") : m.feats} />
+                        <Field label="Idiomas" value={Array.isArray(m.languages) ? m.languages.join(", ") : m.languages} />
+                      </div>
+
+                      {(m.spellSaveDC != null || m.spellAttackBonus != null) && (
+                        <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "8px", border: "1px dashed var(--secondary)" }}>
+                          <div style={{ fontSize: "0.7rem", color: "var(--secondary)", fontWeight: "700", textTransform: "uppercase" }}>✨ Magia y Conjuros</div>
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                            <Field label="CD de Salvación" value={m.spellSaveDC} />
+                            <Field label="Bono de Ataque" value={m.spellAttackBonus != null ? `+${m.spellAttackBonus}` : null} />
+                          </div>
+                        </div>
+                      )}
+
+                      {m.note && (
+                        <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "6px" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "700", textTransform: "uppercase" }}>Notas adicionales</div>
+                          <div style={{ fontSize: "0.75rem", color: "var(--text-main)", whiteSpace: "pre-line" }}>{m.note}</div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <>
+                      <Field label="Rol" value={m.role} />
+                      <Field label="Facción" value={m.factionId} />
+                      <Field label="Motivación" value={m.motivation} />
+                      <Field label="Objetivo" value={m.goal} />
+                      <Field label="Actitud" value={m.attitude} />
+                      {t === "player_character" && (
+                        <>
+                          <Field label="Jugador" value={(() => {
+                            if (!m.playerId) return null;
+                            const p = campaignState?.players?.find((pl: any) => pl.playerId === m.playerId);
+                            return p ? (p.displayName || p.name) : m.playerId;
+                          })()} />
+                          <Field label="Clase" value={m.className} />
+                          <Field label="Especie" value={m.species} />
+                          <Field label="Nivel" value={m.level} />
+                          <Field label="Trasfondo" value={m.background} />
+                          <Field label="Clase de Armadura (CA)" value={m.armorClass} />
+                          <Field label="PG actuales" value={m.hitPointsCurrent} />
+                          <Field label="PG máximos" value={m.hitPointsMax} />
+                          <Field label="Percepción pasiva" value={m.passivePerception} />
+                        </>
+                      )}
+                    </>
+                  )
                 )}
                 {t === "location" && (
                   <>
@@ -504,6 +660,7 @@ function ResumenTab({
             }
             players={campaignState?.players ?? []}
             entities={campaignState?.entities ?? []}
+            campaignSystem={campaignState?.campaign?.system}
           />
         </div>
       )}
