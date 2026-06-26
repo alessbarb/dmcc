@@ -17,6 +17,7 @@ export async function seedPreMadeCharacters() {
       status: "active",
       importance: "normal",
       metadata: {
+        isPremade: true,
         className: "Pícaro",
         level: 1,
         species: "Elfo",
@@ -53,6 +54,7 @@ export async function seedPreMadeCharacters() {
       status: "active",
       importance: "normal",
       metadata: {
+        isPremade: true,
         className: "Clérigo",
         level: 1,
         species: "Humano",
@@ -89,6 +91,7 @@ export async function seedPreMadeCharacters() {
       status: "active",
       importance: "normal",
       metadata: {
+        isPremade: true,
         className: "Guerrero",
         level: 1,
         species: "Enano",
@@ -125,6 +128,7 @@ export async function seedPreMadeCharacters() {
       status: "active",
       importance: "normal",
       metadata: {
+        isPremade: true,
         className: "Bardo",
         level: 1,
         species: "Mediano",

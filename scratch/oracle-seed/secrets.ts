@@ -18,6 +18,7 @@ export async function seedSecrets() {
       importance: "critical", 
       visibility: { kind: "dm_only" as const }, 
       metadata: { 
+        graphAnchor: "main_secret",
         truth: "El Oráculo no posee poderes sobrenaturales ni don de profecía. Es Jack Corvo, un astuto ilusionista exiliado de la capital que simula los milagros mediante un cristal arcano.", 
         impact: "Toda la legitimidad política del Consejo y del Magister Aldric depende del Oráculo. Su caída provocará una crisis de fe y la posible destitución del gobierno local." 
       } 
