@@ -204,5 +204,6 @@ function projectionToCampaignState(campaignId: CampaignId, projection: CampaignP
     sessionEvents: projection.sessionEvents,
     tags: projection.tags,
     attachments: projection.attachments,
+    canvases: projection.canvases,
   };
 }

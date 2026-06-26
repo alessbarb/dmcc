@@ -254,4 +254,146 @@ export type Command =
       actorId: string;
       entityId: EntityId;
       tagId: string;
+    }
+  | {
+      type: "CreateCanvas";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId?: string;
+      title: string;
+      kind: "world" | "session" | "mystery" | "location" | "characters" | "custom";
+      description?: string;
+    }
+  | {
+      type: "UpdateCanvas";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+      title?: string;
+      viewport?: { x: number; y: number; zoom: number };
+      description?: string;
+    }
+  | {
+      type: "ArchiveCanvas";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+    }
+  | {
+      type: "PlaceNodeOnCanvas";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+      node: {
+        id?: string;
+        kind: "entity" | "note" | "group" | "image";
+        entityId?: string;
+        text?: string;
+        title?: string;
+        color?: "yellow" | "blue" | "green" | "pink" | "purple";
+        x: number;
+        y: number;
+        width?: number;
+        height?: number;
+        collapsed?: boolean;
+        zIndex?: number;
+        status?: "draft" | "ready" | "revealed" | "resolved";
+        visibility?: "dm" | "public";
+        metadata?: Record<string, unknown>;
+      };
+    }
+  | {
+      type: "UpdateCanvasNode";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+      nodeId: string;
+      updates: {
+        text?: string;
+        title?: string;
+        color?: "yellow" | "blue" | "green" | "pink" | "purple";
+        x?: number;
+        y?: number;
+        width?: number;
+        height?: number;
+        collapsed?: boolean;
+        zIndex?: number;
+        status?: "draft" | "ready" | "revealed" | "resolved";
+        visibility?: "dm" | "public";
+        metadata?: Record<string, unknown>;
+      };
+    }
+  | {
+      type: "UpdateCanvasNodesLayout";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+      nodeUpdates: Array<{
+        nodeId: string;
+        x: number;
+        y: number;
+        width?: number;
+        height?: number;
+      }>;
+    }
+  | {
+      type: "RemoveNodeFromCanvas";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+      nodeId: string;
+    }
+  | {
+      type: "AddEdgeToCanvas";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+      edge: {
+        id?: string;
+        sourceNodeId: string;
+        targetNodeId: string;
+        relationshipId?: string;
+        label?: string;
+        status: "draft" | "domain";
+        visibility?: "dm" | "public";
+        style?: "solid" | "dashed" | "secret" | "weak" | "strong";
+        metadata?: Record<string, unknown>;
+      };
+    }
+  | {
+      type: "UpdateCanvasEdge";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+      edgeId: string;
+      updates: {
+        label?: string;
+        status?: "draft" | "domain";
+        visibility?: "dm" | "public";
+        style?: "solid" | "dashed" | "secret" | "weak" | "strong";
+        metadata?: Record<string, unknown>;
+      };
+    }
+  | {
+      type: "RemoveEdgeFromCanvas";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+      edgeId: string;
+    }
+  | {
+      type: "ConvertCanvasNoteToEntity";
+      campaignId: CampaignId;
+      actorId: string;
+      canvasId: string;
+      nodeId: string;
+      entityType: EntityType;
+      title: string;
+      subtitle?: string;
+      summary?: string;
+      content?: string;
+      status?: string;
+      importance?: EntityImportance;
+      visibility?: VisibilityRule;
+      metadata?: Record<string, unknown>;
     };

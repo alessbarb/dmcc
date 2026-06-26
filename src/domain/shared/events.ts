@@ -8,6 +8,64 @@ import { factSchema } from "../fact/types.js";
 import { sessionSchema, sessionEventSchema, sessionStatusSchema } from "../session/types.js";
 import { visibilityRuleSchema } from "../../shared/schemas.js";
 
+export const canvasViewportSchema = z.object({
+  x: z.number(),
+  y: z.number(),
+  zoom: z.number(),
+});
+
+export const canvasNodeSchema = z.object({
+  id: z.string(),
+  campaignId: z.string(),
+  canvasId: z.string(),
+  kind: z.enum(["entity", "note", "group", "image"]),
+  entityId: z.string().optional(),
+  text: z.string().optional(),
+  title: z.string().optional(),
+  color: z.enum(["yellow", "blue", "green", "pink", "purple"]).optional(),
+  x: z.number(),
+  y: z.number(),
+  width: z.number().optional(),
+  height: z.number().optional(),
+  collapsed: z.boolean().optional(),
+  zIndex: z.number().optional(),
+  status: z.enum(["draft", "ready", "revealed", "resolved"]).optional(),
+  visibility: z.enum(["dm", "public"]).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
+export const canvasEdgeSchema = z.object({
+  id: z.string(),
+  campaignId: z.string(),
+  canvasId: z.string(),
+  sourceNodeId: z.string(),
+  targetNodeId: z.string(),
+  relationshipId: z.string().optional(),
+  label: z.string().optional(),
+  status: z.enum(["draft", "domain"]),
+  visibility: z.enum(["dm", "public"]).optional(),
+  style: z.enum(["solid", "dashed", "secret", "weak", "strong"]).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
+export const canvasSchema = z.object({
+  id: z.string(),
+  campaignId: z.string(),
+  title: z.string(),
+  kind: z.enum(["world", "session", "mystery", "location", "characters", "custom"]),
+  description: z.string().optional(),
+  nodes: z.array(canvasNodeSchema),
+  edges: z.array(canvasEdgeSchema),
+  viewport: canvasViewportSchema,
+  archived: z.boolean(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
 export const domainEventTypeSchema = z.enum([
   "VaultCreated",
   "CampaignCreated",
@@ -37,6 +95,17 @@ export const domainEventTypeSchema = z.enum([
   "ExportCompleted",
   "SnapshotCreated",
   "SettingsUpdated",
+  "CanvasCreated",
+  "CanvasUpdated",
+  "CanvasArchived",
+  "CanvasNodePlaced",
+  "CanvasNodeUpdated",
+  "CanvasNodesLayoutUpdated",
+  "CanvasNodeRemoved",
+  "CanvasEdgeAdded",
+  "CanvasEdgeUpdated",
+  "CanvasEdgeRemoved",
+  "CanvasNoteConvertedToEntity",
 ]);
 
 export type DomainEventType = z.infer<typeof domainEventTypeSchema>;
@@ -115,6 +184,57 @@ export const eventPayloadSchemas = {
   ExportCompleted: z.object({ exportId: z.string(), format: z.string() }),
   SnapshotCreated: z.object({ sequence: z.number().int() }),
   SettingsUpdated: campaignSettingsSchema,
+  CanvasCreated: canvasSchema,
+  CanvasUpdated: z.object({
+    canvasId: z.string(),
+    title: z.string().optional(),
+    viewport: canvasViewportSchema.optional(),
+    description: z.string().optional(),
+  }),
+  CanvasArchived: z.object({
+    canvasId: z.string(),
+  }),
+  CanvasNodePlaced: z.object({
+    canvasId: z.string(),
+    node: canvasNodeSchema,
+  }),
+  CanvasNodeUpdated: z.object({
+    canvasId: z.string(),
+    nodeId: z.string(),
+    updates: z.any(),
+  }),
+  CanvasNodesLayoutUpdated: z.object({
+    canvasId: z.string(),
+    nodeUpdates: z.array(z.object({
+      nodeId: z.string(),
+      x: z.number(),
+      y: z.number(),
+      width: z.number().optional(),
+      height: z.number().optional(),
+    })),
+  }),
+  CanvasNodeRemoved: z.object({
+    canvasId: z.string(),
+    nodeId: z.string(),
+  }),
+  CanvasEdgeAdded: z.object({
+    canvasId: z.string(),
+    edge: canvasEdgeSchema,
+  }),
+  CanvasEdgeUpdated: z.object({
+    canvasId: z.string(),
+    edgeId: z.string(),
+    updates: z.any(),
+  }),
+  CanvasEdgeRemoved: z.object({
+    canvasId: z.string(),
+    edgeId: z.string(),
+  }),
+  CanvasNoteConvertedToEntity: z.object({
+    canvasId: z.string(),
+    nodeId: z.string(),
+    entity: entitySchema,
+  }),
 };
 export type EventPayloads = {
   [K in keyof typeof eventPayloadSchemas]: z.infer<(typeof eventPayloadSchemas)[K]>;

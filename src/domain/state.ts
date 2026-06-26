@@ -15,6 +15,7 @@ export interface CampaignState {
   sessionEvents: Map<string, any>;
   tags: Map<string, any>;
   attachments: Map<string, any>;
+  canvases: Map<string, any>;
 }
 
 export function createCampaignState(campaignId: string): CampaignState {
@@ -29,5 +30,6 @@ export function createCampaignState(campaignId: string): CampaignState {
     sessionEvents: new Map(),
     tags: new Map(),
     attachments: new Map(),
+    canvases: new Map(),
   };
 }

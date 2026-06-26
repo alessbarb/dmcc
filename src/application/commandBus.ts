@@ -419,6 +419,387 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated),
       };
     }
+    case "CreateCanvas": {
+      const canvasId = command.canvasId ?? createId("cvs");
+      const canvas = {
+        id: canvasId,
+        campaignId: command.campaignId,
+        title: command.title,
+        kind: command.kind,
+        description: command.description,
+        nodes: [],
+        edges: [],
+        viewport: { x: 0, y: 0, zoom: 1 },
+        archived: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      const canvases = new Map(state.canvases || new Map());
+      canvases.set(canvasId, canvas);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasCreated", canvas),
+      };
+    }
+    case "UpdateCanvas": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Cannot update archived canvas");
+      const updated = {
+        ...canvas,
+        ...(command.title !== undefined && { title: command.title }),
+        ...(command.description !== undefined && { description: command.description }),
+        ...(command.viewport !== undefined && { viewport: command.viewport }),
+        updatedAt: new Date().toISOString(),
+      };
+      canvases.set(command.canvasId, updated);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasUpdated", {
+          canvasId: command.canvasId,
+          title: command.title,
+          viewport: command.viewport,
+          description: command.description,
+        }),
+      };
+    }
+    case "ArchiveCanvas": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Canvas is already archived");
+      const updated = {
+        ...canvas,
+        archived: true,
+        updatedAt: new Date().toISOString(),
+      };
+      canvases.set(command.canvasId, updated);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasArchived", {
+          canvasId: command.canvasId,
+        }),
+      };
+    }
+    case "PlaceNodeOnCanvas": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Cannot place node on archived canvas");
+      
+      const node = command.node;
+      const nodeId = node.id ?? createId("cvn");
+      
+      if (node.kind === "entity") {
+        if (!node.entityId) throw new Error("Entity node must specify entityId");
+        const entity = state.entities.get(node.entityId);
+        if (!entity || entity.archived) {
+          throw new Error(`Entity not found or archived: ${node.entityId}`);
+        }
+      }
+
+      const canvasNode = {
+        id: nodeId,
+        campaignId: command.campaignId,
+        canvasId: command.canvasId,
+        kind: node.kind,
+        entityId: node.entityId,
+        text: node.text,
+        title: node.title,
+        color: node.color,
+        x: node.x,
+        y: node.y,
+        width: node.width,
+        height: node.height,
+        collapsed: node.collapsed ?? false,
+        zIndex: node.zIndex ?? 1,
+        status: node.status ?? "draft",
+        visibility: node.visibility ?? "dm",
+        metadata: node.metadata,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const updated = {
+        ...canvas,
+        nodes: [...canvas.nodes, canvasNode],
+        updatedAt: new Date().toISOString(),
+      };
+      canvases.set(command.canvasId, updated);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasNodePlaced", {
+          canvasId: command.canvasId,
+          node: canvasNode,
+        }),
+      };
+    }
+    case "UpdateCanvasNode": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Cannot update node on archived canvas");
+
+      const nodeIndex = canvas.nodes.findIndex((n: any) => n.id === command.nodeId);
+      if (nodeIndex === -1) throw new Error(`Node not found: ${command.nodeId}`);
+
+      const existingNode = canvas.nodes[nodeIndex];
+      const updatedNode = {
+        ...existingNode,
+        ...command.updates,
+        updatedAt: new Date().toISOString(),
+      };
+
+      const nodes = [...canvas.nodes];
+      nodes[nodeIndex] = updatedNode;
+
+      const updatedCanvas = {
+        ...canvas,
+        nodes,
+        updatedAt: new Date().toISOString(),
+      };
+      canvases.set(command.canvasId, updatedCanvas);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasNodeUpdated", {
+          canvasId: command.canvasId,
+          nodeId: command.nodeId,
+          updates: command.updates,
+        }),
+      };
+    }
+    case "UpdateCanvasNodesLayout": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Cannot update layout on archived canvas");
+
+      const nodes = canvas.nodes.map((n: any) => {
+        const update = command.nodeUpdates.find((up) => up.nodeId === n.id);
+        if (update) {
+          return {
+            ...n,
+            x: update.x,
+            y: update.y,
+            ...(update.width !== undefined && { width: update.width }),
+            ...(update.height !== undefined && { height: update.height }),
+            updatedAt: new Date().toISOString(),
+          };
+        }
+        return n;
+      });
+
+      const updatedCanvas = {
+        ...canvas,
+        nodes,
+        updatedAt: new Date().toISOString(),
+      };
+      canvases.set(command.canvasId, updatedCanvas);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasNodesLayoutUpdated", {
+          canvasId: command.canvasId,
+          nodeUpdates: command.nodeUpdates,
+        }),
+      };
+    }
+    case "RemoveNodeFromCanvas": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Cannot remove node from archived canvas");
+
+      const nodeExists = canvas.nodes.some((n: any) => n.id === command.nodeId);
+      if (!nodeExists) throw new Error(`Node not found: ${command.nodeId}`);
+
+      const nodes = canvas.nodes.filter((n: any) => n.id !== command.nodeId);
+      const edges = canvas.edges.filter((e: any) => e.sourceNodeId !== command.nodeId && e.targetNodeId !== command.nodeId);
+
+      const updatedCanvas = {
+        ...canvas,
+        nodes,
+        edges,
+        updatedAt: new Date().toISOString(),
+      };
+      canvases.set(command.canvasId, updatedCanvas);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasNodeRemoved", {
+          canvasId: command.canvasId,
+          nodeId: command.nodeId,
+        }),
+      };
+    }
+    case "AddEdgeToCanvas": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Cannot add edge to archived canvas");
+
+      const { edge } = command;
+      const edgeId = edge.id ?? createId("cve");
+
+      const sourceExists = canvas.nodes.some((n: any) => n.id === edge.sourceNodeId);
+      const targetExists = canvas.nodes.some((n: any) => n.id === edge.targetNodeId);
+      if (!sourceExists || !targetExists) {
+        throw new Error("Edge source or target node not found on canvas");
+      }
+
+      if (edge.status === "domain") {
+        if (!edge.relationshipId) throw new Error("Domain edge must specify relationshipId");
+        const rel = state.relations.get(edge.relationshipId);
+        if (!rel || rel.archived) throw new Error(`Relation not found or archived: ${edge.relationshipId}`);
+      }
+
+      const canvasEdge = {
+        id: edgeId,
+        campaignId: command.campaignId,
+        canvasId: command.canvasId,
+        sourceNodeId: edge.sourceNodeId,
+        targetNodeId: edge.targetNodeId,
+        relationshipId: edge.relationshipId,
+        label: edge.label,
+        status: edge.status,
+        visibility: edge.visibility ?? "dm",
+        style: edge.style ?? "solid",
+        metadata: edge.metadata,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const updatedCanvas = {
+        ...canvas,
+        edges: [...canvas.edges, canvasEdge],
+        updatedAt: new Date().toISOString(),
+      };
+      canvases.set(command.canvasId, updatedCanvas);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasEdgeAdded", {
+          canvasId: command.canvasId,
+          edge: canvasEdge,
+        }),
+      };
+    }
+    case "UpdateCanvasEdge": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Cannot update edge on archived canvas");
+
+      const edgeIndex = canvas.edges.findIndex((e: any) => e.id === command.edgeId);
+      if (edgeIndex === -1) throw new Error(`Edge not found: ${command.edgeId}`);
+
+      const existingEdge = canvas.edges[edgeIndex];
+      const updatedEdge = {
+        ...existingEdge,
+        ...command.updates,
+        updatedAt: new Date().toISOString(),
+      };
+
+      const edges = [...canvas.edges];
+      edges[edgeIndex] = updatedEdge;
+
+      const updatedCanvas = {
+        ...canvas,
+        edges,
+        updatedAt: new Date().toISOString(),
+      };
+      canvases.set(command.canvasId, updatedCanvas);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasEdgeUpdated", {
+          canvasId: command.canvasId,
+          edgeId: command.edgeId,
+          updates: command.updates,
+        }),
+      };
+    }
+    case "RemoveEdgeFromCanvas": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Cannot remove edge from archived canvas");
+
+      const edgeExists = canvas.edges.some((e: any) => e.id === command.edgeId);
+      if (!edgeExists) throw new Error(`Edge not found: ${command.edgeId}`);
+
+      const edges = canvas.edges.filter((e: any) => e.id !== command.edgeId);
+
+      const updatedCanvas = {
+        ...canvas,
+        edges,
+        updatedAt: new Date().toISOString(),
+      };
+      canvases.set(command.canvasId, updatedCanvas);
+      return {
+        state: { ...state, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasEdgeRemoved", {
+          canvasId: command.canvasId,
+          edgeId: command.edgeId,
+        }),
+      };
+    }
+    case "ConvertCanvasNoteToEntity": {
+      const canvases = new Map(state.canvases || new Map());
+      const canvas = canvases.get(command.canvasId);
+      if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+      if (canvas.archived) throw new Error("Cannot convert note on archived canvas");
+
+      const nodeIndex = canvas.nodes.findIndex((n: any) => n.id === command.nodeId);
+      if (nodeIndex === -1) throw new Error(`Node not found: ${command.nodeId}`);
+      const node = canvas.nodes[nodeIndex];
+      if (node.kind !== "note") throw new Error("Canvas node is not a note");
+
+      const entityId = createId("ent");
+      const entity = createEntity({
+        entityId,
+        campaignId: command.campaignId,
+        entityType: command.entityType,
+        title: command.title,
+        subtitle: command.subtitle,
+        summary: command.summary,
+        content: command.content,
+        status: command.status ?? "ready",
+        importance: command.importance ?? "normal",
+        visibility: command.visibility ?? { kind: "dm_only" },
+        metadata: command.metadata,
+        campaignSystem: state.campaign?.system,
+      });
+
+      const updatedNode = {
+        ...node,
+        kind: "entity" as const,
+        entityId,
+        text: undefined,
+        title: undefined,
+        updatedAt: new Date().toISOString(),
+      };
+
+      const nodes = [...canvas.nodes];
+      nodes[nodeIndex] = updatedNode;
+
+      const updatedCanvas = {
+        ...canvas,
+        nodes,
+        updatedAt: new Date().toISOString(),
+      };
+
+      const entities = new Map(state.entities);
+      entities.set(entityId, entity);
+      
+      canvases.set(command.canvasId, updatedCanvas);
+
+      return {
+        state: { ...state, entities, canvases },
+        event: makeEvent(command.actorId, command.campaignId, "CanvasNoteConvertedToEntity", {
+          canvasId: command.canvasId,
+          nodeId: command.nodeId,
+          entity,
+        }),
+      };
+    }
   }
 }
 

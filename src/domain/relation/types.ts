@@ -43,6 +43,7 @@ export const builtInRelationTypeSchema = z.enum([
   "transforms_into",
   "affected_by",
   "created_by",
+  "relacionado_con",
 ]);
 
 export type BuiltInRelationType = z.infer<typeof builtInRelationTypeSchema>;

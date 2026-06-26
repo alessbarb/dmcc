@@ -70,6 +70,7 @@ export class SnapshotStore {
       sessionEvents: toPlain(projection.sessionEvents),
       tags: toPlain(projection.tags),
       attachments: toPlain(projection.attachments),
+      canvases: toPlain(projection.canvases),
       lastSequence: projection.lastSequence,
     };
 
@@ -95,6 +96,7 @@ export class SnapshotStore {
       facts: getValues(projection.facts),
       sessions: getValues(projection.sessions),
       players: getValues(projection.players),
+      canvases: getValues(projection.canvases),
       projection: serializedProjection,
     };
 
@@ -130,6 +132,7 @@ export class SnapshotStore {
           sessionEvents: new Map(Object.entries(p.sessionEvents || {})),
           tags: new Map(Object.entries(p.tags || {})),
           attachments: new Map(Object.entries(p.attachments || {})),
+          canvases: new Map(Object.entries(p.canvases || {})),
           lastSequence: p.lastSequence || 0,
         };
       } else {
@@ -153,6 +156,7 @@ export class SnapshotStore {
           sessionEvents: new Map(),
           tags: new Map(),
           attachments: new Map(),
+          canvases: toMap(parsed.canvases, "id"),
           lastSequence: parsed.lastSequence || parsed.sequence || 0,
         };
       }

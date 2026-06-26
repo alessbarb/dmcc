@@ -106,8 +106,8 @@ describe("persistent campaign API", () => {
 
       const events = await readCampaignEvents(dataDir, "cmp_disk");
 
-      expect(events.map((event) => event.sequence)).toEqual([1, 2]);
-      expect(events.map((event) => event.type)).toEqual(["CampaignCreated", "EntityCreated"]);
+      expect(events.map((event) => event.sequence)).toEqual([1, 2, 3]);
+      expect(events.map((event) => event.type)).toEqual(["CampaignCreated", "CanvasCreated", "EntityCreated"]);
     });
   });
 
@@ -127,6 +127,7 @@ describe("persistent campaign API", () => {
       const events = await readCampaignEvents(dataDir, "cmp_api2");
       expect(events.map((event) => event.type)).toEqual([
         "CampaignCreated",
+        "CanvasCreated",
         "EntityCreated",
         "EntityCreated",
         "RelationCreated",
@@ -182,7 +183,7 @@ describe("persistent campaign API", () => {
 
       expect(snapshot).toMatchObject({
         schemaVersion: 1,
-        lastSequence: 2,
+        lastSequence: 3,
         campaign: { campaignId: "cmp_snapshot_api", title: "Snapshot Campaign" },
         entities: [{ entityId: "ent_snapshot_api", title: "Mira Snapshot" }],
       });
@@ -205,7 +206,7 @@ describe("persistent campaign API", () => {
 
       const snapshot = await readCampaignSnapshot(dataDir, "cmp_reopen_write");
       expect(response.statusCode).toBe(201);
-      expect(snapshot.lastSequence).toBe(2);
+      expect(snapshot.lastSequence).toBe(3);
       expect(snapshot.entities).toMatchObject([{ entityId: "ent_after_reopen", title: "After Reopen" }]);
     });
   });
@@ -244,7 +245,7 @@ describe("persistent campaign API", () => {
         campaign: { campaignId: "cmp_export", title: "Export Campaign" },
         entities: [{ entityId: "ent_export", title: "Exported NPC" }],
       });
-      expect(exported.events.map((event: { type: string }) => event.type)).toEqual(["CampaignCreated", "EntityCreated"]);
+      expect(exported.events.map((event: { type: string }) => event.type)).toEqual(["CampaignCreated", "CanvasCreated", "EntityCreated"]);
 
       expect(backupResponse.statusCode).toBe(201);
       expect(backupResponse.json()).toMatchObject({ campaignId: "cmp_export" });
@@ -252,7 +253,7 @@ describe("persistent campaign API", () => {
       expect((await stat(backupResponse.json().path)).isFile()).toBe(true);
       const backup = JSON.parse(await readFile(backupResponse.json().path, "utf8"));
       expect(backup).toMatchObject({ schemaVersion: 1, manifest: { campaignId: "cmp_export", backupFormat: "json" } });
-      expect(backup.events.map((event: { type: string }) => event.type)).toEqual(["CampaignCreated", "EntityCreated", "ExportCompleted"]);
+      expect(backup.events.map((event: { type: string }) => event.type)).toEqual(["CampaignCreated", "CanvasCreated", "EntityCreated", "ExportCompleted"]);
     });
   });
 
@@ -294,7 +295,7 @@ describe("persistent campaign API", () => {
       expect(restoreResponse.statusCode).toBe(200);
       expect(campaign.json().entities).toMatchObject([{ entityId: "ent_before_backup", title: "Before Backup" }]);
       expect(campaign.json().entities.map((entity: { entityId: string }) => entity.entityId)).not.toContain("ent_after_backup");
-      expect(events.map((event) => event.type)).toEqual(["CampaignCreated", "EntityCreated", "SettingsUpdated"]);
+      expect(events.map((event) => event.type)).toEqual(["CampaignCreated", "CanvasCreated", "EntityCreated", "SettingsUpdated"]);
       expect(snapshot.entities).toMatchObject([{ entityId: "ent_before_backup", title: "Before Backup" }]);
     });
   });
