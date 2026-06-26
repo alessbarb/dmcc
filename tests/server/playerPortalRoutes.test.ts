@@ -174,14 +174,6 @@ it("writes two events to the event store on proposal approval (multi-event resul
     const dmToken = await seedPlayer(server);
     const playerToken = await issueToken(server, dmToken);
 
-    // Count events before proposal
-    const beforeEvents = await server.inject({
-      method: "GET",
-      url: "/api/campaigns/cmp_portal/events",
-      headers: { "x-dm-token": dmToken },
-    });
-    const eventsBefore = beforeEvents.statusCode === 200 ? beforeEvents.json().length : undefined;
-
     await server.inject({
       method: "POST",
       url: "/api/campaigns/cmp_portal/player-portal/proposals",
@@ -207,7 +199,9 @@ it("writes two events to the event store on proposal approval (multi-event resul
       headers: { "x-dm-token": dmToken },
     });
 
-    // Verify entity was updated (two events written: ProposalResolved + EntityUpdated)
+    // Two events are produced by proposal approval:
+    // 1. ProposalResolved: verified by the proposal status being "approved" below
+    // 2. EntityUpdated: verified by character metadata changes being persisted
     const campaign = await server.inject({
       method: "GET",
       url: "/api/campaigns/cmp_portal",
