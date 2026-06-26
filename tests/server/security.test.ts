@@ -203,6 +203,74 @@ describe("Security", () => {
     });
   });
 
+  describe("DM-only route protection", () => {
+    it("dashboard returns 401/403 for unauthenticated", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        await seedCampaign(server, dataDir, "cmp_dm1");
+
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_dm1/dashboard",
+          // No token — unauthenticated
+        });
+        expect([401, 403]).toContain(res.statusCode);
+      });
+    });
+
+    it("what-now returns 401/403 for unauthenticated", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        await seedCampaign(server, dataDir, "cmp_dm2");
+
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_dm2/what-now",
+        });
+        expect([401, 403]).toContain(res.statusCode);
+      });
+    });
+
+    it("entity list returns 401/403 for unauthenticated (LAN disabled)", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        await seedCampaign(server, dataDir, "cmp_dm3");
+
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_dm3",
+        });
+        expect([401, 403]).toContain(res.statusCode);
+      });
+    });
+
+    it("export returns 401/403 for unauthenticated", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        await seedCampaign(server, dataDir, "cmp_dm4");
+
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_dm4/export/json",
+        });
+        expect([401, 403, 404]).toContain(res.statusCode);
+      });
+    });
+
+    it("timeline returns 401/403 for unauthenticated", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        await seedCampaign(server, dataDir, "cmp_dm5");
+
+        const res = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_dm5/timeline",
+        });
+        expect([401, 403]).toContain(res.statusCode);
+      });
+    });
+  });
+
   describe("RevealClue projection consistency", () => {
     it("RevealClue updates entity visibility after rebuild from events", async () => {
       await withTempDataDir(async (dataDir) => {
