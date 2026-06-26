@@ -60,10 +60,13 @@ export function RelationshipTypePopover({
 
     if (srcType === "npc" && tgtType === "npc") {
       return [
+        { value: "custom:controls", label: "la controla" },
+        { value: "custom:blackmails", label: "la chantajea" },
+        { value: "works_for", label: "trabaja para él/ella" },
+        { value: "custom:hides_something", label: "oculta algo sobre él/ella" },
         { value: "ally_of", label: "aliado de" },
         { value: "enemy_of", label: "enemigo de" },
         { value: "member_of", label: "familia de" },
-        { value: "works_for", label: "sirve a" },
         { value: "suspects", label: "sospecha de" },
         { value: "hates", label: "odia a" },
       ];
