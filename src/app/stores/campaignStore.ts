@@ -100,7 +100,12 @@ export interface CampaignStateStore {
   
   loading: boolean;
   error: string | null;
-  
+
+  isEntityModalOpen: boolean;
+  setIsEntityModalOpen: (open: boolean) => void;
+  isRelationModalOpen: boolean;
+  setIsRelationModalOpen: (open: boolean) => void;
+
   fetchVaults: () => Promise<void>;
   createVault: (name: string) => Promise<void>;
   setActiveVaultId: (vaultId: string) => void;
@@ -213,6 +218,11 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   lanStatus: null,
   loading: false,
   error: null,
+
+  isEntityModalOpen: false,
+  setIsEntityModalOpen: (open) => set({ isEntityModalOpen: open }),
+  isRelationModalOpen: false,
+  setIsRelationModalOpen: (open) => set({ isRelationModalOpen: open }),
 
   fetchVaults: async () => {
     try {

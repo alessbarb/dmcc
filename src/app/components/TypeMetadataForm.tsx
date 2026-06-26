@@ -170,7 +170,15 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Contenido de la pista *</label>
-            <textarea className="form-textarea" rows={3} required value={metadata.content || ""} onChange={e => onChange("content", e.target.value)} placeholder="El texto exacto o descripción de la pista..." />
+            <textarea
+              data-testid="clue-content-input"
+              className="form-textarea"
+              rows={3}
+              required
+              value={metadata.content || ""}
+              onChange={e => onChange("content", e.target.value)}
+              placeholder="El texto exacto o descripción de la pista..."
+            />
           </div>
         </div>
       );
@@ -180,7 +188,15 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
           <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Datos del secreto</h4>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">La verdad *</label>
-            <textarea className="form-textarea" rows={3} required value={metadata.truth || ""} onChange={e => onChange("truth", e.target.value)} placeholder="La verdad real detrás de este secreto..." />
+            <textarea
+              data-testid="secret-truth-input"
+              className="form-textarea"
+              rows={3}
+              required
+              value={metadata.truth || ""}
+              onChange={e => onChange("truth", e.target.value)}
+              placeholder="La verdad real detrás de este secreto..."
+            />
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Versión pública (coartada)</label>
@@ -220,7 +236,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
       return campaignSystem === "dnd_srd_5_2_1" ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
           <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Ficha de personaje (D&D 5.2.1)</h4>
-          
+
           <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
             <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Datos Básicos</h5>
             <div className="grid grid-cols-2">

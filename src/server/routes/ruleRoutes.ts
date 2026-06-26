@@ -13,7 +13,7 @@ interface RuleEntry {
   content: string;
 }
 
-export async function registerRuleRoutes(server: FastifyInstance, opts: { dataDir: string }) {
+export async function registerRuleRoutes(server: FastifyInstance, _opts: { dataDir: string }) {
   // Resolve rules path dynamically for both dev (src/) and prod (dist/) runs
   let rulesPath = path.resolve(__dirname, "../../domain/rules/data/srd_rules.json");
   if (!fs.existsSync(rulesPath)) {
@@ -41,7 +41,7 @@ export async function registerRuleRoutes(server: FastifyInstance, opts: { dataDi
   // GET /api/rules/search?q=...&category=...
   server.get<{ Querystring: { q?: string; category?: string } }>(
     "/api/rules/search",
-    async (request, reply) => {
+    async (request, _reply) => {
       const { q, category } = request.query;
       let filtered = srdRules;
 
