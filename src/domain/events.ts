@@ -41,7 +41,20 @@ export type DomainEventType =
   | "CanvasEdgeRemoved"
   | "CanvasNoteConvertedToEntity"
   | "PlayerTokenIssued"
-  | "PlayerTokenRevoked";
+  | "PlayerTokenRevoked"
+  | "PlayerCharacterLinked"
+  | "PlayerCharacterUnlinked"
+  | "PlayerCharacterLiveStateUpdated"
+  | "PlayerResourceUpserted"
+  | "PlayerResourceRemoved"
+  | "PlayerPortalNoteCreated"
+  | "PlayerPortalNoteUpdated"
+  | "PlayerPortalNoteArchived"
+  | "PlayerPortalObjectiveCreated"
+  | "PlayerPortalObjectiveUpdated"
+  | "PlayerPortalObjectiveArchived"
+  | "PlayerCharacterProposalCreated"
+  | "PlayerCharacterProposalResolved";
 
 export interface StoredEvent<TPayload = unknown> {
   sequence: number;
