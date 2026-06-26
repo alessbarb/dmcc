@@ -41,6 +41,45 @@ describe("LAN join", () => {
     });
   });
 
+  it("player token grants access to GET /api/campaigns/:campaignId", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      const token = (server as any).dmSessionToken;
+
+      // Create campaign
+      await server.inject({
+        method: "POST", url: "/api/campaigns",
+        payload: { campaignId: "cmp_lan_tok", title: "LAN Token Test", actorId: "usr_dm" },
+        headers: { "x-dm-token": token },
+      });
+
+      // Enable LAN mode
+      const toggleRes = await server.inject({
+        method: "POST", url: "/api/campaigns/cmp_lan_tok/lan/toggle",
+        payload: { enabled: true },
+        headers: { "x-dm-token": token },
+      });
+      expect(toggleRes.statusCode).toBe(200);
+      const { accessCode } = toggleRes.json();
+
+      // Join with access code to get player token
+      const joinRes = await server.inject({
+        method: "POST", url: "/api/join/cmp_lan_tok",
+        payload: { accessCode },
+      });
+      expect(joinRes.statusCode).toBe(200);
+      const { playerToken } = joinRes.json();
+      expect(playerToken).toBeTruthy();
+
+      // Use player token to access campaign
+      const campaignRes = await server.inject({
+        method: "GET", url: "/api/campaigns/cmp_lan_tok",
+        headers: { "x-player-token": playerToken },
+      });
+      expect(campaignRes.statusCode).toBe(200);
+    });
+  });
+
   it("rejects invalid access code", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
