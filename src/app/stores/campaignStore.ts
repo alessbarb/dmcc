@@ -108,8 +108,7 @@ export interface CampaignStateStore {
   fetchCampaigns: () => Promise<void>;
   selectCampaign: (campaignId: string) => Promise<void>;
   createCampaign: (title: string, system: string) => Promise<void>;
-  deleteCampaign: (campaignId: string, confirmTitle: string) => Promise<void>;
-  
+
   createEntity: (payload: {
     entityType: string;
     title: string;
@@ -346,36 +345,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await get().selectCampaign(campaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
-    }
-  },
-
-  deleteCampaign: async (campaignId: string, confirmTitle: string) => {
-    set({ loading: true, error: null });
-    try {
-      const res = await fetchWithVault(`/api/campaigns/${campaignId}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ confirmTitle })
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Failed to delete campaign");
-      }
-      await get().fetchCampaigns();
-      set({
-        activeCampaignId: null,
-        campaignState: null,
-        dashboard: null,
-        whatNow: null,
-        graph: null,
-        timeline: null,
-        visibility: null,
-        lanStatus: null,
-        loading: false,
-      });
-    } catch (err: any) {
-      set({ error: err.message, loading: false });
-      throw err;
     }
   },
 
