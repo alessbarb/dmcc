@@ -18,6 +18,8 @@ import { BoardsPage } from "./pages/BoardsPage.js";
 import { PlayersPage } from "./pages/PlayersPage.js";
 import { SearchPage } from "./pages/SearchPage.js";
 import { SettingsPage } from "./pages/SettingsPage.js";
+import { PlayerPortalPage } from "./pages/PlayerPortalPage.js";
+import { CanvasPage } from "./pages/CanvasPage.js";
 
 // Root route simply renders an Outlet
 const rootRoute = createRootRoute({
@@ -36,6 +38,13 @@ const joinRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/join/$campaignId",
   component: JoinPage,
+});
+
+// Player portal route — direct child of rootRoute, bypasses CampaignShell
+const playerPortalRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/campaigns/$campaignId/player-portal",
+  component: PlayerPortalPage,
 });
 
 // Campaign shell — parent layout with sidebar
@@ -106,10 +115,18 @@ const settingsRoute = createRoute({
   component: SettingsPage,
 });
 
+const canvasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/campaigns/$campaignId/canvas",
+  component: CanvasPage,
+});
+
 // Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   joinRoute,
+  playerPortalRoute,
+  canvasRoute,
   campaignRoute.addChildren([
     dashboardRoute,
     whatNowRoute,

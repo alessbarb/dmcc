@@ -86,7 +86,11 @@ export interface CampaignStateStore {
     facts: Fact[];
     sessions: Session[];
     players: PlayerProfile[];
+    canvases: any[];
   } | null;
+  
+  canvasesById: Record<string, any>;
+  activeCanvasId: string | null;
   
   vaults: any[];
   activeVaultId: string;
@@ -112,7 +116,8 @@ export interface CampaignStateStore {
   
   fetchCampaigns: () => Promise<void>;
   selectCampaign: (campaignId: string) => Promise<void>;
-  createCampaign: (title: string, system: string) => Promise<void>;
+  reloadCampaign: () => Promise<void>;
+  createCampaign: (title: string, system: string) => Promise<string | undefined>;
 
   createEntity: (payload: {
     entityType: string;
@@ -127,14 +132,17 @@ export interface CampaignStateStore {
     tagIds?: string[];
     createdInSessionId?: string;
     entityId?: string;
-  }) => Promise<void>;
+  }) => Promise<Entity | any>;
   
   createRelation: (payload: {
+    relationId?: string;
     sourceEntityId: string;
     targetEntityId: string;
     relationType: string;
+    description?: string;
+    visibility?: any;
     force?: boolean;
-  }) => Promise<void>;
+  }) => Promise<string | undefined>;
   
   createFact: (payload: {
     statement: string;
@@ -147,6 +155,7 @@ export interface CampaignStateStore {
   updateEntity: (entityId: string, updates: Partial<Entity>) => Promise<void>;
   archiveEntity: (entityId: string) => Promise<void>;
   archiveRelation: (relationId: string) => Promise<void>;
+  updateRelation: (relationId: string, updates: { description?: string; visibility?: any }) => Promise<void>;
 
   createPlayer: (name: string, displayName?: string, email?: string, imageUrl?: string) => Promise<void>;
   updatePlayer: (playerId: string, updates: Partial<PlayerProfile>) => Promise<void>;
@@ -167,11 +176,31 @@ export interface CampaignStateStore {
   toggleLanMode: (enabled: boolean) => Promise<any>;
 
   exportJson: () => Promise<{ path: string }>;
-  exportMarkdown: () => Promise<{ path: string }>;
+  exportMarkdown: () => Promise<{
+    campaignId: string;
+    format: "markdown";
+    exportId: string;
+    path: string;
+    primaryFile: string;
+    downloadUrl: string;
+    fileCount: number;
+  }>;
   createBackup: () => Promise<{ path: string }>;
   restoreBackup: (backupId: string) => Promise<void>;
 
   createTag: (name: string, color?: string) => Promise<{ tagId: string; name: string; color?: string }>;
+
+  createCanvas: (title: string, kind: string, description?: string) => Promise<void>;
+  setActiveCanvasId: (canvasId: string | null) => void;
+  placeNodeOnCanvas: (canvasId: string, node: any) => Promise<void>;
+  updateCanvasNode: (canvasId: string, nodeId: string, updates: any) => Promise<void>;
+  updateCanvasNodesLayout: (canvasId: string, nodeUpdates: Array<{ nodeId: string; x: number; y: number; width?: number; height?: number }>) => Promise<void>;
+  removeNodeFromCanvas: (canvasId: string, nodeId: string) => Promise<void>;
+  addEdgeToCanvas: (canvasId: string, edge: any) => Promise<void>;
+  updateCanvasEdge: (canvasId: string, edgeId: string, updates: any) => Promise<void>;
+  removeEdgeFromCanvas: (canvasId: string, edgeId: string) => Promise<void>;
+  convertNoteToEntity: (canvasId: string, nodeId: string, payload: any) => Promise<void>;
+  saveViewport: (canvasId: string, viewport: { x: number; y: number; zoom: number }) => Promise<void>;
 }
 
 const fetchWithVault = (url: string, init?: RequestInit) => {
@@ -208,10 +237,20 @@ const fetchWithVault = (url: string, init?: RequestInit) => {
   });
 };
 
+const syncChannel = typeof window !== "undefined" ? new BroadcastChannel("dmcc_campaign_sync") : null;
+
+const broadcastMutation = (campaignId: string) => {
+  if (syncChannel) {
+    syncChannel.postMessage({ type: "MUTATION", campaignId });
+  }
+};
+
 export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   campaigns: [],
   activeCampaignId: null,
   campaignState: null,
+  canvasesById: {},
+  activeCanvasId: null,
   vaults: [],
   activeVaultId: "default",
   dashboard: null,
@@ -330,8 +369,19 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         }
       }
 
+      const canvasesById: Record<string, any> = {};
+      let firstCanvasId: string | null = null;
+      if (campaignState && campaignState.canvases) {
+        campaignState.canvases.forEach((c: any) => {
+          canvasesById[c.id] = c;
+          if (!firstCanvasId) firstCanvasId = c.id;
+        });
+      }
+
       set({
         campaignState,
+        canvasesById,
+        activeCanvasId: get().activeCanvasId || firstCanvasId,
         dashboard,
         whatNow,
         graph,
@@ -340,8 +390,82 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         lanStatus,
         loading: false
       });
+      broadcastMutation(campaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
+    }
+  },
+
+  reloadCampaign: async () => {
+    const campaignId = get().activeCampaignId;
+    if (!campaignId) return;
+    try {
+      const resDetails = await fetchWithVault(`/api/campaigns/${campaignId}`);
+      if (!resDetails.ok) throw new Error("Failed to load campaign state");
+      const campaignState = await resDetails.json();
+      
+      const role = sessionStorage.getItem("dmcc_role") || "dm";
+      
+      let dashboard = null;
+      let whatNow = null;
+      let graph = null;
+      let timeline = null;
+      let visibility = null;
+      let lanStatus = null;
+
+      if (role === "dm") {
+        const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility, resLanStatus] = await Promise.all([
+          fetchWithVault(`/api/campaigns/${campaignId}/dashboard`),
+          fetchWithVault(`/api/campaigns/${campaignId}/what-now`),
+          fetchWithVault(`/api/campaigns/${campaignId}/graph`),
+          fetchWithVault(`/api/campaigns/${campaignId}/timeline`),
+          fetchWithVault(`/api/campaigns/${campaignId}/visibility`),
+          fetchWithVault(`/api/campaigns/${campaignId}/lan-status`),
+        ]);
+
+        dashboard = resDashboard.ok ? await resDashboard.json() : null;
+        whatNow = resWhatNow.ok ? await resWhatNow.json() : null;
+        graph = resGraph.ok ? await resGraph.json() : null;
+        timeline = resTimeline.ok ? await resTimeline.json() : null;
+        visibility = resVisibility.ok ? await resVisibility.json() : null;
+        lanStatus = resLanStatus.ok ? await resLanStatus.json() : null;
+      } else {
+        const resGraph = await fetchWithVault(`/api/campaigns/${campaignId}/graph`);
+        graph = resGraph.ok ? await resGraph.json() : null;
+      }
+      
+      if (campaignState && !campaignState.players) {
+        campaignState.players = [];
+      }
+      if (role === "dm") {
+        const resPlayers = await fetchWithVault(`/api/campaigns/${campaignId}/players`);
+        if (resPlayers.ok) {
+          campaignState.players = await resPlayers.json();
+        }
+      }
+
+      const canvasesById: Record<string, any> = {};
+      let firstCanvasId: string | null = null;
+      if (campaignState && campaignState.canvases) {
+        campaignState.canvases.forEach((c: any) => {
+          canvasesById[c.id] = c;
+          if (!firstCanvasId) firstCanvasId = c.id;
+        });
+      }
+
+      set({
+        campaignState,
+        canvasesById,
+        activeCanvasId: get().activeCanvasId || firstCanvasId,
+        dashboard,
+        whatNow,
+        graph,
+        timeline,
+        visibility,
+        lanStatus
+      });
+    } catch (err: any) {
+      console.error("Silent reload failed", err);
     }
   },
 
@@ -357,8 +481,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       if (!res.ok) throw new Error("Failed to create campaign");
       await get().fetchCampaigns();
       await get().selectCampaign(campaignId);
+      return campaignId;
     } catch (err: any) {
       set({ error: err.message, loading: false });
+      throw err;
     }
   },
 
@@ -394,7 +520,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const relationId = `rel_${createId("rel").split("_")[1]}`;
+      const relationId = payload.relationId || `rel_${createId("rel").split("_")[1]}`;
       const { force, ...rest } = payload;
       const url = `/api/campaigns/${activeCampaignId}/relations${force ? "?force=true" : ""}`;
       const res = await fetchWithVault(url, {
@@ -408,6 +534,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       }
       if (!res.ok) throw new Error("Failed to create relation");
       await get().selectCampaign(activeCampaignId);
+      return relationId;
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -482,6 +609,23 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm" }),
       });
       if (!res.ok) throw new Error("Failed to archive relation");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+    }
+  },
+
+  updateRelation: async (relationId, updates) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/relations/${relationId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      if (!res.ok) throw new Error("Failed to update relation");
       await get().selectCampaign(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
@@ -725,4 +869,348 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!res.ok) throw new Error("Failed to create tag");
     return res.json();
   },
+
+  createCanvas: async (title, kind, description) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const canvasId = createId("cvs");
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm", canvasId, title, kind, description }),
+      });
+      if (!res.ok) throw new Error("Failed to create canvas");
+      set({ activeCanvasId: canvasId });
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+    }
+  },
+
+  setActiveCanvasId: (canvasId) => {
+    set({ activeCanvasId: canvasId });
+  },
+
+  placeNodeOnCanvas: async (canvasId, node) => {
+    const { activeCampaignId, canvasesById } = get();
+    if (!activeCampaignId) return;
+    set({ error: null });
+
+    const nodeId = node.id || createId("cvn");
+    const nodeObj = {
+      id: nodeId,
+      campaignId: activeCampaignId,
+      canvasId,
+      kind: node.kind,
+      entityId: node.entityId,
+      text: node.text,
+      title: node.title,
+      color: node.color,
+      x: node.x,
+      y: node.y,
+      width: node.width,
+      height: node.height,
+      collapsed: false,
+      zIndex: node.zIndex || 1,
+      status: "draft",
+      visibility: "dm",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const canvas = canvasesById[canvasId];
+    if (canvas) {
+      set({
+        canvasesById: {
+          ...canvasesById,
+          [canvasId]: {
+            ...canvas,
+            nodes: [...canvas.nodes, nodeObj],
+          },
+        },
+      });
+    }
+
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm", node: nodeObj }),
+      });
+      if (!res.ok) throw new Error("Failed to place node");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+      await get().selectCampaign(activeCampaignId);
+    }
+  },
+
+  updateCanvasNode: async (canvasId, nodeId, updates) => {
+    const { activeCampaignId, canvasesById } = get();
+    if (!activeCampaignId) return;
+    set({ error: null });
+
+    const canvas = canvasesById[canvasId];
+    if (canvas) {
+      const nodes = canvas.nodes.map((n: any) =>
+        n.id === nodeId ? { ...n, ...updates } : n
+      );
+      set({
+        canvasesById: {
+          ...canvasesById,
+          [canvasId]: { ...canvas, nodes },
+        },
+      });
+    }
+
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm", updates }),
+      });
+      if (!res.ok) throw new Error("Failed to update node");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+      await get().selectCampaign(activeCampaignId);
+    }
+  },
+
+  updateCanvasNodesLayout: async (canvasId, nodeUpdates) => {
+    const { activeCampaignId, canvasesById } = get();
+    if (!activeCampaignId) return;
+
+    const canvas = canvasesById[canvasId];
+    if (canvas) {
+      const nodes = canvas.nodes.map((n: any) => {
+        const update = nodeUpdates.find((up) => up.nodeId === n.id);
+        if (update) {
+          return {
+            ...n,
+            x: update.x,
+            y: update.y,
+            ...(update.width !== undefined && { width: update.width }),
+            ...(update.height !== undefined && { height: update.height }),
+          };
+        }
+        return n;
+      });
+      set({
+        canvasesById: {
+          ...canvasesById,
+          [canvasId]: { ...canvas, nodes },
+        },
+      });
+    }
+
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/layout`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm", nodeUpdates }),
+      });
+      if (!res.ok) throw new Error("Failed to update layout");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+      await get().selectCampaign(activeCampaignId);
+    }
+  },
+
+  removeNodeFromCanvas: async (canvasId, nodeId) => {
+    const { activeCampaignId, canvasesById } = get();
+    if (!activeCampaignId) return;
+    set({ error: null });
+
+    const canvas = canvasesById[canvasId];
+    if (canvas) {
+      const nodes = canvas.nodes.filter((n: any) => n.id !== nodeId);
+      const edges = canvas.edges.filter((e: any) => e.sourceNodeId !== nodeId && e.targetNodeId !== nodeId);
+      set({
+        canvasesById: {
+          ...canvasesById,
+          [canvasId]: { ...canvas, nodes, edges },
+        },
+      });
+    }
+
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm" }),
+      });
+      if (!res.ok) throw new Error("Failed to remove node");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+      await get().selectCampaign(activeCampaignId);
+    }
+  },
+
+  addEdgeToCanvas: async (canvasId, edge) => {
+    const { activeCampaignId, canvasesById } = get();
+    if (!activeCampaignId) return;
+    set({ error: null });
+
+    const edgeId = edge.id || createId("cve");
+    const edgeObj = {
+      id: edgeId,
+      campaignId: activeCampaignId,
+      canvasId,
+      sourceNodeId: edge.sourceNodeId,
+      targetNodeId: edge.targetNodeId,
+      relationshipId: edge.relationshipId,
+      label: edge.label,
+      status: edge.status,
+      visibility: edge.visibility || "dm",
+      style: edge.style || "solid",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const canvas = canvasesById[canvasId];
+    if (canvas) {
+      set({
+        canvasesById: {
+          ...canvasesById,
+          [canvasId]: {
+            ...canvas,
+            edges: [...canvas.edges, edgeObj],
+          },
+        },
+      });
+    }
+
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm", edge: edgeObj }),
+      });
+      if (!res.ok) throw new Error("Failed to add edge");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+      await get().selectCampaign(activeCampaignId);
+    }
+  },
+
+  updateCanvasEdge: async (canvasId, edgeId, updates) => {
+    const { activeCampaignId, canvasesById } = get();
+    if (!activeCampaignId) return;
+    set({ error: null });
+
+    const canvas = canvasesById[canvasId];
+    if (canvas) {
+      const edges = canvas.edges.map((e: any) =>
+        e.id === edgeId ? { ...e, ...updates } : e
+      );
+      set({
+        canvasesById: {
+          ...canvasesById,
+          [canvasId]: { ...canvas, edges },
+        },
+      });
+    }
+
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges/${edgeId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm", updates }),
+      });
+      if (!res.ok) throw new Error("Failed to update edge");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+      await get().selectCampaign(activeCampaignId);
+    }
+  },
+
+  removeEdgeFromCanvas: async (canvasId, edgeId) => {
+    const { activeCampaignId, canvasesById } = get();
+    if (!activeCampaignId) return;
+    set({ error: null });
+
+    const canvas = canvasesById[canvasId];
+    if (canvas) {
+      const edges = canvas.edges.filter((e: any) => e.id !== edgeId);
+      set({
+        canvasesById: {
+          ...canvasesById,
+          [canvasId]: { ...canvas, edges },
+        },
+      });
+    }
+
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges/${edgeId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm" }),
+      });
+      if (!res.ok) throw new Error("Failed to remove edge");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+      await get().selectCampaign(activeCampaignId);
+    }
+  },
+
+  convertNoteToEntity: async (canvasId, nodeId, payload) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}/convert`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm", ...payload }),
+      });
+      if (!res.ok) throw new Error("Failed to convert note to entity");
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+    }
+  },
+
+  saveViewport: async (canvasId, viewport) => {
+    const { activeCampaignId, canvasesById } = get();
+    if (!activeCampaignId) return;
+
+    const canvas = canvasesById[canvasId];
+    if (canvas) {
+      set({
+        canvasesById: {
+          ...canvasesById,
+          [canvasId]: { ...canvas, viewport },
+        },
+      });
+    }
+
+    try {
+      await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm", viewport }),
+      });
+    } catch (err: any) {
+      console.error("Failed to save viewport", err);
+    }
+  },
 }));
+
+if (typeof window !== "undefined" && syncChannel) {
+  syncChannel.onmessage = (event) => {
+    if (event.data && event.data.type === "MUTATION") {
+      const activeId = useCampaignStore.getState().activeCampaignId;
+      if (event.data.campaignId === activeId) {
+        useCampaignStore.getState().reloadCampaign();
+      }
+    }
+  };
+}

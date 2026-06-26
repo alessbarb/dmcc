@@ -21,6 +21,7 @@ import {
   Plus,
   MapPin,
   Flag,
+  LayoutGrid,
 } from "lucide-react";
 
 type PageMeta = {
@@ -30,6 +31,11 @@ type PageMeta = {
 };
 
 const PAGE_META: Record<string, PageMeta> = {
+  canvas: {
+    title: "Campaign Canvas",
+    eyebrow: "Mesa visual de trabajo",
+    description: "Dibuja tu aventura: coloca NPCs, lugares y pistas, y arrastra conexiones para tejer la trama.",
+  },
   dashboard: {
     title: "Panel del DM",
     eyebrow: "Centro de mando",
@@ -99,6 +105,14 @@ export function CampaignShell() {
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
 
+  const role = sessionStorage.getItem("dmcc_role");
+
+  useEffect(() => {
+    if (role === "player") {
+      navigate({ to: `/campaigns/${campaignId}/player-portal` });
+    }
+  }, [campaignId, role]);
+
   useEffect(() => {
     if (campaignId && campaignId !== activeCampaignId) {
       selectCampaign(campaignId as any);
@@ -108,6 +122,7 @@ export function CampaignShell() {
   const currentSegment = pathname.split("/")[3] ?? "";
 
   const NAV = [
+    { path: "canvas", label: "Canvas", Icon: LayoutGrid },
     { path: "dashboard", label: "Panel del DM", Icon: Shield },
     { path: "what-now", label: "¿Qué toca?", Icon: BookOpen },
     { path: "session", label: "Sesión", Icon: Play },
@@ -136,6 +151,22 @@ export function CampaignShell() {
     ? campaignState.entities.find(e => e.entityId === campaignState.campaign?.currentQuestId)
     : null;
 
+  const handleNavClick = (path: string) => {
+    if (path === "canvas") {
+      const width = Math.min(1600, window.screen.availWidth * 0.95);
+      const height = Math.min(1000, window.screen.availHeight * 0.95);
+      const left = (window.screen.availWidth - width) / 2;
+      const top = (window.screen.availHeight - height) / 2;
+      const features = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
+      const popup = window.open(`/campaigns/${campaignId}/canvas`, `canvas_${campaignId}`, features);
+      if (popup) {
+        popup.focus();
+      }
+    } else {
+      navigate({ to: `/campaigns/${campaignId}/${path}` });
+    }
+  };
+
   return (
     <div className="app-container">
       {/* Sidebar Navigation */}
@@ -150,7 +181,7 @@ export function CampaignShell() {
             <div
               key={path}
               className={`nav-item ${currentSegment === path ? "active" : ""}`}
-              onClick={() => navigate({ to: `/campaigns/${campaignId}/${path}` })}
+              onClick={() => handleNavClick(path)}
             >
               <Icon size={16} /> {label}
             </div>
