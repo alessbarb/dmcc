@@ -86,7 +86,7 @@ function PanelNotaRapida({
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
     setBusy(true);
@@ -179,7 +179,7 @@ function PanelRevelarPista({
     (e: any) => e.entityType === "player_character" && !e.archived
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!selectedClue) return;
     setBusy(true);
@@ -338,7 +338,7 @@ function PanelDecision({
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!decision.trim()) return;
     setBusy(true);
@@ -554,7 +554,7 @@ function PanelConsecuencia({
     (e: any) => e.entityType === "quest" && !e.archived
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
     setBusy(true);
@@ -674,7 +674,7 @@ function PanelPNJRapido({
   const [description, setDescription] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
     setBusy(true);
@@ -779,7 +779,7 @@ function PanelCerrarSesion({
 }) {
   const [busy, setBusy] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!sessionSummary.trim()) return;
     setBusy(true);
@@ -880,7 +880,7 @@ export function SessionPage(props: SessionPageProps = {}) {
 
     const nextNumber = (campaignState?.sessions?.length ?? 0) + 1;
 
-    const handleStart = async (e: React.FormEvent) => {
+    const handleStart = async (e: React.SubmitEvent) => {
       e.preventDefault();
       const title = newTitle.trim() || `Sesión ${nextNumber}`;
       await startSession(title);
