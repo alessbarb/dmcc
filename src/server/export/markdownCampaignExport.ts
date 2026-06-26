@@ -995,6 +995,116 @@ function appendixEntityIndex(state: any): string {
   ].join("\n");
 }
 
+function canvasOrderedBookletSection(state: any): string {
+  const canvases = values(state.canvases).filter((c: any) => !c.archived);
+  if (canvases.length === 0) return "";
+
+  const sections: string[] = ["## 3. Estructura Narrativa (según Canvas)", ""];
+
+  const GROUP_TYPE_LABELS: Record<string, string> = {
+    location: "📍 Ubicación",
+    faction: "🛡️ Facción",
+    arc: "🎭 Arco Narrativo",
+    session: "🚀 Sesión",
+    mystery: "🔍 Conspiración / Misterio",
+    custom: "📁 Grupo",
+  };
+
+  for (const canvas of canvases) {
+    sections.push(`### Tablero: ${canvas.title}`);
+    sections.push("");
+    if (canvas.description) {
+      sections.push(`> ${canvas.description}`);
+      sections.push("");
+    }
+
+    const nodes = canvas.nodes || [];
+    const groups = nodes.filter((n: any) => n.kind === "group").sort((a: any, b: any) => (a.y - b.y) || (a.x - b.x));
+    const nonGroupNodes = nodes.filter((n: any) => n.kind !== "group");
+    const rootNodes = nonGroupNodes.filter((n: any) => !n.parentId).sort((a: any, b: any) => (a.y - b.y) || (a.x - b.x));
+    const orderedItems = [...rootNodes, ...groups].sort((a: any, b: any) => (a.y - b.y) || (a.x - b.x));
+
+    if (orderedItems.length === 0) {
+      sections.push("_Este tablero no tiene elementos._");
+      sections.push("");
+      continue;
+    }
+
+    let itemIndex = 1;
+    for (const item of orderedItems) {
+      if (item.kind === "group") {
+        const groupLabel = GROUP_TYPE_LABELS[item.groupType || "custom"] || "📁 Grupo";
+        sections.push(`#### ${groupLabel}: ${item.title || "Sin título"}`);
+        sections.push("");
+        const children = nonGroupNodes.filter((n: any) => n.parentId === item.id).sort((a: any, b: any) => (a.y - b.y) || (a.x - b.x));
+        if (children.length === 0) {
+          sections.push("_Grupo vacío._");
+          sections.push("");
+        } else {
+          for (const child of children) {
+            const entity = child.entityId ? state.entities.get(child.entityId) : null;
+            if (entity) {
+              const label = ENTITY_TYPE_LABELS[entity.entityType] || entity.entityType;
+              sections.push(`${itemIndex}. **${entity.title}** (${label})`);
+              
+              if (entity.entityType === "scene") {
+                const dramaticObjective = entity.metadata?.dramaticObjective || "";
+                const complications = entity.metadata?.complications || "";
+                const consequences = entity.metadata?.consequences || "";
+                
+                let sceneDetails = "";
+                if (dramaticObjective) sceneDetails += `\n   - **Objetivo Dramático:** ${dramaticObjective}`;
+                if (complications) sceneDetails += `\n   - **Complicaciones:** ${complications}`;
+                if (consequences) sceneDetails += `\n   - **Consecuencias:** ${consequences}`;
+                
+                sections.push(`   ${entity.summary || entity.content || "_Sin descripción de escena._"}${sceneDetails}`);
+              } else {
+                sections.push(`   ${entity.summary || entity.content || "_Sin descripción._"}`);
+              }
+              sections.push("");
+              itemIndex++;
+            } else if (child.kind === "note" && child.text) {
+              sections.push(`${itemIndex}. *Nota:* ${child.text}`);
+              sections.push("");
+              itemIndex++;
+            }
+          }
+        }
+      } else {
+        const entity = item.entityId ? state.entities.get(item.entityId) : null;
+        if (entity) {
+          const label = ENTITY_TYPE_LABELS[entity.entityType] || entity.entityType;
+          sections.push(`${itemIndex}. **${entity.title}** (${label})`);
+          
+          if (entity.entityType === "scene") {
+            const dramaticObjective = entity.metadata?.dramaticObjective || "";
+            const complications = entity.metadata?.complications || "";
+            const consequences = entity.metadata?.consequences || "";
+            
+            let sceneDetails = "";
+            if (dramaticObjective) sceneDetails += `\n   - **Objetivo Dramático:** ${dramaticObjective}`;
+            if (complications) sceneDetails += `\n   - **Complicaciones:** ${complications}`;
+            if (consequences) sceneDetails += `\n   - **Consecuencias:** ${consequences}`;
+            
+            sections.push(`   ${entity.summary || entity.content || "_Sin descripción de escena._"}${sceneDetails}`);
+          } else {
+            sections.push(`   ${entity.summary || entity.content || "_Sin descripción._"}`);
+          }
+          sections.push("");
+          itemIndex++;
+        } else if (item.kind === "note" && item.text) {
+          sections.push(`${itemIndex}. *Nota:* ${item.text}`);
+          sections.push("");
+          itemIndex++;
+        }
+      }
+    }
+    sections.push("");
+  }
+
+  return sections.join("\n");
+}
+
 function bookletMarkdown(state: any): string {
   const campaignTitle = state.campaign?.title || "Campaña";
   const mainQuests = entitiesOfType(state, "quest");
@@ -1018,6 +1128,9 @@ function bookletMarkdown(state: any): string {
     "",
     playerKnowledgeMarkdown(state),
     dmTruthMarkdown(state),
+    "",
+    canvasOrderedBookletSection(state),
+    "",
     "## 4. La situación inicial",
     "",
     mainQuests[0]

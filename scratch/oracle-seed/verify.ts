@@ -1,6 +1,7 @@
 // Generated seed content module. Edit directly; kept split by campaign data typology.
 import { api } from "./client.ts";
 import { CMP } from "./config.ts";
+import * as ids from "./ids.ts";
 
 // ---------------------------------------------------------------------------
 // Rebuild & verify
@@ -53,5 +54,35 @@ export async function rebuildAndVerify() {
   if (sessions.length !== 0) {
     throw new Error(`Seed must not create sessions, but state contains ${sessions.length}`);
   }
+
+  const secretIds = new Set([
+    ids.ENT_SEC_ORACLE_FRAUD,
+    ids.ENT_SEC_VANTIS_FUNDING,
+    ids.ENT_SEC_DIVINE_VOICE,
+    ids.ENT_SEC_LYRA_SUSPECTS,
+    ids.ENT_SEC_KAEL_EVIDENCE,
+    ids.ENT_SEC_ARCHIVE_FIRE,
+    ids.ENT_SEC_SENRA_DEFECT,
+    ids.ENT_SEC_DORIAN_SPY,
+    ids.ENT_SEC_ORIGINAL_ORACLE,
+    ids.ENT_SEC_VAULT_LOCATION,
+    ids.ENT_SEC_PROPHECY_COUNT,
+    ids.ENT_SEC_CONSEJO_CORRUPTION,
+    ids.ENT_SEC_CAPTAIN_ESCAPE,
+    ids.ENT_SEC_SENRA_EXIT_CODE,
+    ids.ENT_SEC_WIDOW_SON,
+  ]);
+  const anchorRelationTypes = new Set(["points_to", "unlocks", "confirms"]);
+  const anchoredSecrets = new Set(
+    relations
+      .filter((r: any) => secretIds.has(r?.targetEntityId) && anchorRelationTypes.has(r?.relationType))
+      .map((r: any) => r.targetEntityId),
+  );
+  const missingAnchors = [...secretIds].filter((secretId) => !anchoredSecrets.has(secretId));
+  if (missingAnchors.length > 0) {
+    throw new Error(`Seed has secrets without clue anchors: ${missingAnchors.join(", ")}`);
+  }
+
   console.log(`✓ State: ${entities.length} entities, ${sessions.length} sessions, ${facts.length} facts, ${relations.length} relations`);
+  console.log(`✓ Revelation anchors OK: ${anchoredSecrets.size}/${secretIds.size} secrets have direct clue anchors`);
 }

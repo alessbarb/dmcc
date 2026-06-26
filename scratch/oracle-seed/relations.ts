@@ -146,7 +146,75 @@ export async function seedRelations() {
     // NPC ↔ Clue
     { sourceEntityId: ids.ENT_NPC_SERA,             targetEntityId: ids.ENT_CLUE_SERA_TEXTS,    relationType: "custom:guards", description: "Sera oculta y protege activamente las Crónicas del Verdadero Vidente." },
     { sourceEntityId: ids.ENT_NPC_SENRA,            targetEntityId: ids.ENT_CLUE_FORGERY_TOOL,  relationType: "custom:owns",   description: "Senra es la operaria principal del cristal de resonancia arcana.", visibility: { kind: "dm_only" as const } },
-    { sourceEntityId: ids.ENT_NPC_CURANDERO,        targetEntityId: ids.ENT_Q_SANGRE_PUERTO,    relationType: "points_to",    description: "Ilva ha tratado heridas de víctimas que sobrevivieron a ataques del culto.", visibility: { kind: "dm_only" as const } }
+    { sourceEntityId: ids.ENT_NPC_CURANDERO,        targetEntityId: ids.ENT_Q_SANGRE_PUERTO,    relationType: "points_to",    description: "Ilva ha tratado heridas de víctimas que sobrevivieron a ataques del culto.", visibility: { kind: "dm_only" as const } },
+
+    // Revelation anchors: Clue → Secret
+    // These relations make Lore Lint and Mystery Flow understand how every DM secret can be discovered.
+    { sourceEntityId: ids.ENT_CLUE_PROPHECY_TEXT,        targetEntityId: ids.ENT_SEC_ORACLE_FRAUD,       relationType: "points_to", description: "La profecía rota es la primera grieta verificable del fraude del Oráculo.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_FALSE_PROPHECY_AUDIO, targetEntityId: ids.ENT_SEC_ORACLE_FRAUD,       relationType: "confirms",  description: "La resonancia mágica demuestra que la voz profética fue fabricada.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_VAULT_RECORDS,        targetEntityId: ids.ENT_SEC_ORACLE_FRAUD,       relationType: "confirms",  description: "Los registros de la bóveda documentan el fraude completo.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_FINAL_TRUTH,          targetEntityId: ids.ENT_SEC_ORACLE_FRAUD,       relationType: "confirms",  description: "La identidad del verdadero Veradis prueba la usurpación del impostor.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_MERCHANT_PAYMENT,     targetEntityId: ids.ENT_SEC_VANTIS_FUNDING,     relationType: "points_to", description: "Las donaciones anónimas apuntan a la Mansión Vantis.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_GUILD_LEDGER,         targetEntityId: ids.ENT_SEC_VANTIS_FUNDING,     relationType: "confirms",  description: "El libro del Gremio confirma los pagos de Lord Vantis al culto.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_VAULT_RECORDS,        targetEntityId: ids.ENT_SEC_VANTIS_FUNDING,     relationType: "confirms",  description: "La bóveda conserva el registro maestro de pagos y beneficiarios.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_VANTIS_CONFESSION,    targetEntityId: ids.ENT_SEC_VANTIS_FUNDING,     relationType: "confirms",  description: "La confesión de Vantis cierra la línea financiera de la conspiración.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_ARCANE_COMPONENT,     targetEntityId: ids.ENT_SEC_DIVINE_VOICE,       relationType: "unlocks",   description: "Los componentes del altar permiten deducir cómo se fabrica la voz divina.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_FALSE_PROPHECY_AUDIO, targetEntityId: ids.ENT_SEC_DIVINE_VOICE,       relationType: "confirms",  description: "La resonancia mágica es incompatible con una voz natural.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_FORGERY_TOOL,         targetEntityId: ids.ENT_SEC_DIVINE_VOICE,       relationType: "confirms",  description: "El cristal de resonancia confirma el mecanismo de la ilusión.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_SERA_TEXTS,           targetEntityId: ids.ENT_SEC_DIVINE_VOICE,       relationType: "points_to", description: "Las Crónicas describen técnicas similares de falso profeta.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_LYRA_INVESTIGATION,   targetEntityId: ids.ENT_SEC_LYRA_SUSPECTS,      relationType: "confirms",  description: "El diario de Lyra revela sus sospechas y el miedo a actuar sin pruebas.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_PORT_BODIES,          targetEntityId: ids.ENT_SEC_LYRA_SUSPECTS,      relationType: "points_to", description: "Las marcas de los cuerpos justifican la investigación secreta de Lyra.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_INNER_CIRCLE_MTG,     targetEntityId: ids.ENT_SEC_LYRA_SUSPECTS,      relationType: "points_to", description: "Las minutas prueban que Mors vigila y sabotea a la capitana.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_GUILD_LEDGER,         targetEntityId: ids.ENT_SEC_KAEL_EVIDENCE,      relationType: "confirms",  description: "El libro contable es la prueba que Kael conserva como seguro de vida.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_TORBEN_TIP,           targetEntityId: ids.ENT_SEC_KAEL_EVIDENCE,      relationType: "points_to", description: "Torben puede orientar al grupo hacia los archivos ocultos del Gremio.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_MERCHANT_PAYMENT,     targetEntityId: ids.ENT_SEC_KAEL_EVIDENCE,      relationType: "points_to", description: "El patrón financiero hace evidente el valor del libro del Gremio.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_ARCHIVE_RECORDS,      targetEntityId: ids.ENT_SEC_ARCHIVE_FIRE,       relationType: "confirms",  description: "Los registros chamuscados documentan desapariciones coordinadas durante el incendio.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_TORBEN_TIP,           targetEntityId: ids.ENT_SEC_ARCHIVE_FIRE,       relationType: "points_to", description: "La confidencia de Torben contradice la versión oficial del accidente.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_SERA_TEXTS,           targetEntityId: ids.ENT_SEC_ARCHIVE_FIRE,       relationType: "points_to", description: "Las Crónicas preservan la historia que el incendio intentó borrar.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_SENRA_DOUBTS,         targetEntityId: ids.ENT_SEC_SENRA_DEFECT,       relationType: "confirms",  description: "La carta de Senra revela que puede desertar si recibe protección.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_FORGERY_TOOL,         targetEntityId: ids.ENT_SEC_SENRA_DEFECT,       relationType: "points_to", description: "El cristal prueba que Senra es una operaria clave del fraude.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_INNER_CIRCLE_MTG,     targetEntityId: ids.ENT_SEC_SENRA_DEFECT,       relationType: "points_to", description: "Las minutas muestran que el círculo interno la presiona y vigila.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_INNER_CIRCLE_MTG,     targetEntityId: ids.ENT_SEC_DORIAN_SPY,         relationType: "confirms",  description: "Las minutas sitúan a Dorian en comunicaciones que no debería conocer.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_LYRA_INVESTIGATION,   targetEntityId: ids.ENT_SEC_DORIAN_SPY,         relationType: "points_to", description: "El diario de Lyra revela filtraciones procedentes del entorno del Consejo.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_GUILD_LEDGER,         targetEntityId: ids.ENT_SEC_DORIAN_SPY,         relationType: "points_to", description: "El libro del Gremio muestra pagos cruzados a intermediarios del Consorcio.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_FINAL_TRUTH,          targetEntityId: ids.ENT_SEC_ORIGINAL_ORACLE,    relationType: "confirms",  description: "La lápida y las notas de la bóveda confirman que existió un Veradis real.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_SERA_TEXTS,           targetEntityId: ids.ENT_SEC_ORIGINAL_ORACLE,    relationType: "points_to", description: "Las Crónicas conservan una versión anterior del vidente auténtico.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_ELDERTOME,            targetEntityId: ids.ENT_SEC_ORIGINAL_ORACLE,    relationType: "confirms",  description: "El Tomo de la Antigua Fe recoge la genealogía de los videntes reales.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_ARCHIVE_RECORDS,      targetEntityId: ids.ENT_SEC_ORIGINAL_ORACLE,    relationType: "points_to", description: "Los registros quemados muestran desapariciones alrededor de la ascensión del impostor.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_VAULT_ENTRANCE,       targetEntityId: ids.ENT_SEC_VAULT_LOCATION,     relationType: "confirms",  description: "El mapa de las ruinas marca la entrada sellada de la bóveda.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_ARCHIVE_RECORDS,      targetEntityId: ids.ENT_SEC_VAULT_LOCATION,     relationType: "points_to", description: "Los registros supervivientes mencionan dependencias subterráneas bajo el templo.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_ELDERTOME,            targetEntityId: ids.ENT_SEC_VAULT_LOCATION,     relationType: "points_to", description: "El tomo antiguo nombra la cripta sellada de los videntes.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_VAULT_RECORDS,        targetEntityId: ids.ENT_SEC_PROPHECY_COUNT,     relationType: "confirms",  description: "La bóveda contiene el recuento exacto de las 847 profecías falsas.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_PROPHECY_TEXT,        targetEntityId: ids.ENT_SEC_PROPHECY_COUNT,     relationType: "points_to", description: "La profecía rota permite reconocer un patrón de falsificaciones.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_PETITIONER_FEAR,      targetEntityId: ids.ENT_SEC_PROPHECY_COUNT,     relationType: "points_to", description: "El miedo de los fieles muestra que las víctimas no son casos aislados.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_CULTO_DISBANDS,       targetEntityId: ids.ENT_SEC_PROPHECY_COUNT,     relationType: "points_to", description: "Los iniciados confirman que hubo muchas audiencias manipuladas.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_INNER_CIRCLE_MTG,     targetEntityId: ids.ENT_SEC_CONSEJO_CORRUPTION, relationType: "points_to", description: "Las minutas conectan al Consejo conservador con reuniones del círculo interno.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_GUILD_LEDGER,         targetEntityId: ids.ENT_SEC_CONSEJO_CORRUPTION, relationType: "points_to", description: "El libro registra dividendos desviados a intermediarios del Consejo.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_LYRA_INVESTIGATION,   targetEntityId: ids.ENT_SEC_CONSEJO_CORRUPTION, relationType: "points_to", description: "El diario de Lyra apunta a presiones de la facción conservadora.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_VANTIS_CONFESSION,    targetEntityId: ids.ENT_SEC_CONSEJO_CORRUPTION, relationType: "confirms",  description: "Vantis puede delatar a Brann para reducir su propia condena.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_VERADIS_ESCAPE,       targetEntityId: ids.ENT_SEC_CAPTAIN_ESCAPE,     relationType: "confirms",  description: "La misiva cifrada describe la ruta y el barco preparado para Veradis.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_PORT_BODIES,          targetEntityId: ids.ENT_SEC_CAPTAIN_ESCAPE,     relationType: "points_to", description: "La actividad de los inquisidores en el puerto conduce hacia el Capitán Drez.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_VANTIS_CONFESSION,    targetEntityId: ids.ENT_SEC_CAPTAIN_ESCAPE,     relationType: "points_to", description: "Vantis conoce el plan de huida y puede usarlo como moneda de cambio.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_SENRA_DOUBTS,         targetEntityId: ids.ENT_SEC_SENRA_EXIT_CODE,    relationType: "confirms",  description: "La carta de Senra permite obtener la palabra arcana de la bóveda.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_VAULT_ENTRANCE,       targetEntityId: ids.ENT_SEC_SENRA_EXIT_CODE,    relationType: "points_to", description: "El acceso oculto indica que se requiere una palabra clave.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_ELDERTOME,            targetEntityId: ids.ENT_SEC_SENRA_EXIT_CODE,    relationType: "points_to", description: "El Tomo de la Antigua Fe conserva la frase litúrgica original.", visibility: { kind: "dm_only" as const } },
+
+    { sourceEntityId: ids.ENT_CLUE_EASTERN_FRONT_LETTER, targetEntityId: ids.ENT_SEC_WIDOW_SON,          relationType: "confirms",  description: "La carta militar confirma que el hijo de Asha murió antes de la audiencia.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_PETITIONER_FEAR,      targetEntityId: ids.ENT_SEC_WIDOW_SON,          relationType: "points_to", description: "El temor de los fieles permite presentar a Asha como víctima del patrón de extorsión.", visibility: { kind: "dm_only" as const } },
+    { sourceEntityId: ids.ENT_CLUE_CULTO_DISBANDS,       targetEntityId: ids.ENT_SEC_WIDOW_SON,          relationType: "points_to", description: "Los iniciados pueden reconocer que se preparó una profecía falsa para Asha.", visibility: { kind: "dm_only" as const } },
   ];
 
   for (const r of RELATIONS) {

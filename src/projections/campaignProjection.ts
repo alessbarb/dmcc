@@ -429,6 +429,8 @@ export function applyEvent(
               y: update.y,
               ...(update.width !== undefined && { width: update.width }),
               ...(update.height !== undefined && { height: update.height }),
+              ...(update.parentId !== undefined && { parentId: update.parentId ?? undefined }),
+              ...(update.groupId !== undefined && { groupId: update.groupId ?? undefined }),
               updatedAt: occurredAt,
             };
           }

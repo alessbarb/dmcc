@@ -260,6 +260,18 @@ export async function seedClues() {
       } 
     },
     { 
+      entityId: ids.ENT_CLUE_EASTERN_FRONT_LETTER, 
+      entityType: "clue", 
+      title: "Carta militar sellada del frente oriental", 
+      summary: "Una comunicación oficial, aún lacrada, que confirma la muerte del hijo de Asha semanas antes de su audiencia con el Oráculo.", 
+      status: "hidden", 
+      importance: "normal", 
+      metadata: { 
+        content: "La carta está firmada por un capitán de campaña y menciona que el joven Tomar, hijo de Asha, murió protegiendo una retirada en la frontera oriental. El sello militar demuestra que el templo pudo conocer la verdad antes de venderle una profecía falsa.", 
+        clueType: "document" 
+      } 
+    },
+    { 
       entityId: ids.ENT_CLUE_FORGERY_TOOL, 
       entityType: "clue", 
       title: "El Cristal de Resonancia Arcana", 

@@ -287,11 +287,13 @@ export type Command =
       canvasId: string;
       node: {
         id?: string;
-        kind: "entity" | "note" | "group" | "image";
+        kind: "entity" | "note" | "group" | "image" | "fact";
         entityId?: string;
+        factId?: string;
         text?: string;
         title?: string;
-        color?: "yellow" | "blue" | "green" | "pink" | "purple";
+        color?: "yellow" | "blue" | "green" | "pink" | "purple" | string;
+        groupId?: string;
         x: number;
         y: number;
         width?: number;
@@ -336,6 +338,7 @@ export type Command =
         width?: number;
         height?: number;
         parentId?: string | null;
+        groupId?: string | null;
       }>;
     }
   | {
