@@ -221,4 +221,10 @@ export type Command =
       relatedRelationIds?: string[];
       visibility?: VisibilityRule;
       metadata?: Record<string, unknown>;
+    }
+  | {
+      type: "RestoreBackup";
+      campaignId: CampaignId;
+      actorId: string;
+      backupId: string;
     };

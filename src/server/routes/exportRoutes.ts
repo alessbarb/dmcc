@@ -384,7 +384,17 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         await fs.writeFile(eventsFile, ndjson, "utf8");
 
         // 3. Rebuild snapshot
-        await getRepository(vaultId).rebuildSnapshot(campaignId as any);
+        const repo = getRepository(vaultId);
+        await repo.rebuildSnapshot(campaignId as any);
+
+        // 4. Record the restore as a domain event
+        await repo.executeCommand(campaignId as any, {
+          type: "RestoreBackup",
+          campaignId: campaignId as any,
+          actorId: "dm",
+          backupId,
+        });
+
         return { ok: true };
       } catch (err: any) {
         reply.code(500);

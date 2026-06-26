@@ -294,7 +294,7 @@ describe("persistent campaign API", () => {
       expect(restoreResponse.statusCode).toBe(200);
       expect(campaign.json().entities).toMatchObject([{ entityId: "ent_before_backup", title: "Before Backup" }]);
       expect(campaign.json().entities.map((entity: { entityId: string }) => entity.entityId)).not.toContain("ent_after_backup");
-      expect(events.map((event) => event.type)).toEqual(["CampaignCreated", "EntityCreated"]);
+      expect(events.map((event) => event.type)).toEqual(["CampaignCreated", "EntityCreated", "SettingsUpdated"]);
       expect(snapshot.entities).toMatchObject([{ entityId: "ent_before_backup", title: "Before Backup" }]);
     });
   });
