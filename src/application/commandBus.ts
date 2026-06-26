@@ -15,7 +15,11 @@ import type { Command } from "./commands.js";
 
 export interface CommandResult {
   state: CampaignState;
-  event: StoredEvent;
+  events: StoredEvent[];
+}
+
+function singleEvent(state: CampaignState, event: StoredEvent): CommandResult {
+  return { state, events: [event] };
 }
 
 export function handleCommand(state: CampaignState, command: Command): CommandResult {
@@ -29,7 +33,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         settings: command.settings,
       });
       const nextState = { ...state, campaign };
-      return { state: nextState, event: makeEvent(command.actorId, command.campaignId, "CampaignCreated", campaign) };
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "CampaignCreated", campaign));
     }
     case "CreateEntity": {
       const entity = createEntity({
@@ -50,7 +54,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const entities = new Map(state.entities);
       entities.set(entity.entityId, entity);
       const nextState = { ...state, entities };
-      return { state: nextState, event: makeEvent(command.actorId, command.campaignId, "EntityCreated", entity) };
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "EntityCreated", entity));
     }
     case "CreateRelation": {
       const source = requireEntity(state, command.sourceEntityId);
@@ -79,7 +83,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const relations = new Map(state.relations);
       relations.set(relation.relationId, relation);
       const nextState = { ...state, relations };
-      return { state: nextState, event: makeEvent(command.actorId, command.campaignId, "RelationCreated", relation) };
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "RelationCreated", relation));
     }
     case "RecordFact": {
       const fact = createFact({
@@ -96,7 +100,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const facts = new Map(state.facts);
       facts.set(fact.factId, fact);
       const nextState = { ...state, facts };
-      return { state: nextState, event: makeEvent(command.actorId, command.campaignId, "FactCreated", fact) };
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "FactCreated", fact));
     }
     case "StartSession": {
       const session = createSession({
@@ -109,7 +113,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const sessions = new Map(state.sessions);
       sessions.set(session.sessionId, session);
       const nextState = { ...state, sessions };
-      return { state: nextState, event: makeEvent(command.actorId, command.campaignId, "SessionStarted", session) };
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "SessionStarted", session));
     }
     case "CloseSession": {
       const session = requireSession(state, command.sessionId);
@@ -118,7 +122,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const sessions = new Map(state.sessions);
       sessions.set(closed.sessionId, closed);
       const nextState = { ...state, sessions };
-      return { state: nextState, event: makeEvent(command.actorId, command.campaignId, "SessionClosed", closed) };
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "SessionClosed", closed));
     }
     case "UpdateEntity": {
       const entity = requireEntity(state, command.entityId);
@@ -141,7 +145,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }
       const entities = new Map(state.entities);
       entities.set(updated.entityId, updated);
-      return { state: { ...state, entities }, event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated) };
+      return singleEvent({ ...state, entities }, makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated));
     }
     case "ArchiveEntity": {
       const entity = requireEntity(state, command.entityId);
@@ -149,7 +153,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const archived: Entity = { ...entity, archived: true };
       const entities = new Map(state.entities);
       entities.set(archived.entityId, archived);
-      return { state: { ...state, entities }, event: makeEvent(command.actorId, command.campaignId, "EntityArchived", { entityId: command.entityId }) };
+      return singleEvent({ ...state, entities }, makeEvent(command.actorId, command.campaignId, "EntityArchived", { entityId: command.entityId }));
     }
     case "UpdateRelation": {
       const relation = requireRelation(state, command.relationId);
@@ -161,7 +165,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       };
       const relations = new Map(state.relations);
       relations.set(updated.relationId, updated);
-      return { state: { ...state, relations }, event: makeEvent(command.actorId, command.campaignId, "RelationUpdated", updated) };
+      return singleEvent({ ...state, relations }, makeEvent(command.actorId, command.campaignId, "RelationUpdated", updated));
     }
     case "ArchiveRelation": {
       const relation = requireRelation(state, command.relationId);
@@ -169,7 +173,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const archived = { ...relation, archived: true, status: "archived" as const };
       const relations = new Map(state.relations);
       relations.set(archived.relationId, archived);
-      return { state: { ...state, relations }, event: makeEvent(command.actorId, command.campaignId, "RelationArchived", { relationId: command.relationId }) };
+      return singleEvent({ ...state, relations }, makeEvent(command.actorId, command.campaignId, "RelationArchived", { relationId: command.relationId }));
     }
     case "UpdateFact": {
       const fact = requireFact(state, command.factId);
@@ -184,7 +188,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       if (updated.statement.trim().length === 0) throw new Error("Fact statement is required");
       const facts = new Map(state.facts);
       facts.set(updated.factId, updated);
-      return { state: { ...state, facts }, event: makeEvent(command.actorId, command.campaignId, "FactUpdated", updated) };
+      return singleEvent({ ...state, facts }, makeEvent(command.actorId, command.campaignId, "FactUpdated", updated));
     }
     case "ArchiveFact": {
       const fact = requireFact(state, command.factId);
@@ -192,7 +196,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const archived = { ...fact, archived: true };
       const facts = new Map(state.facts);
       facts.set(archived.factId, archived);
-      return { state: { ...state, facts }, event: makeEvent(command.actorId, command.campaignId, "FactArchived", { factId: command.factId }) };
+      return singleEvent({ ...state, facts }, makeEvent(command.actorId, command.campaignId, "FactArchived", { factId: command.factId }));
     }
     case "RevealClue": {
       const clue = requireEntity(state, command.clueEntityId);
@@ -204,16 +208,13 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const entities = new Map(state.entities);
       entities.set(updated.entityId, updated);
       const nextState = { ...state, entities };
-      return {
-        state: nextState,
-        event: makeEvent(command.actorId, command.campaignId, "VisibilityChanged", {
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "VisibilityChanged", {
           targetId: command.clueEntityId,
           targetType: "entity" as const,
           visibility: command.audience,
           sessionId: command.sessionId,
           note: command.note,
-        }),
-      };
+        }));
     }
     case "UpdateCampaignSettings": {
       if (!state.campaign) throw new Error("Campaign not found");
@@ -224,10 +225,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
           ...command.settings,
         } as any,
       };
-      return {
-        state: { ...state, campaign: nextCampaign },
-        event: makeEvent(command.actorId, command.campaignId, "SettingsUpdated", command.settings),
-      };
+      return singleEvent({ ...state, campaign: nextCampaign }, makeEvent(command.actorId, command.campaignId, "SettingsUpdated", command.settings));
     }
     case "CreatePlayerProfile": {
       const player = {
@@ -245,10 +243,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       };
       const players = new Map(state.players);
       players.set(player.playerId, player);
-      return {
-        state: { ...state, players },
-        event: makeEvent(command.actorId, command.campaignId, "PlayerProfileCreated", player),
-      };
+      return singleEvent({ ...state, players }, makeEvent(command.actorId, command.campaignId, "PlayerProfileCreated", player));
     }
     case "UpdatePlayerProfile": {
       const existing = state.players.get(command.playerId);
@@ -265,10 +260,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       };
       const players = new Map(state.players);
       players.set(updated.playerId, updated);
-      return {
-        state: { ...state, players },
-        event: makeEvent(command.actorId, command.campaignId, "PlayerProfileUpdated", updated),
-      };
+      return singleEvent({ ...state, players }, makeEvent(command.actorId, command.campaignId, "PlayerProfileUpdated", updated));
     }
     case "ArchivePlayerProfile": {
       const existing = state.players.get(command.playerId);
@@ -280,10 +272,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       };
       const players = new Map(state.players);
       players.set(updated.playerId, updated);
-      return {
-        state: { ...state, players },
-        event: makeEvent(command.actorId, command.campaignId, "PlayerProfileArchived", { playerId: command.playerId }),
-      };
+      return singleEvent({ ...state, players }, makeEvent(command.actorId, command.campaignId, "PlayerProfileArchived", { playerId: command.playerId }));
     }
     case "AddAttachment": {
       const attachment = {
@@ -292,35 +281,23 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         mimeType: command.mimeType,
         sizeBytes: command.sizeBytes,
       };
-      return {
-        state,
-        event: makeEvent(command.actorId, command.campaignId, "AttachmentAdded", attachment),
-      };
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "AttachmentAdded", attachment));
     }
     case "RemoveAttachment": {
-      return {
-        state,
-        event: makeEvent(command.actorId, command.campaignId, "AttachmentRemoved", { id: command.attachmentId }),
-      };
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "AttachmentRemoved", { id: command.attachmentId }));
     }
     case "RecordImport": {
-      return {
-        state,
-        event: makeEvent(command.actorId, command.campaignId, "ImportCompleted", {
-          importId: command.importId,
-          format: command.format,
-          count: command.count,
-        }),
-      };
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "ImportCompleted", {
+        importId: command.importId,
+        format: command.format,
+        count: command.count,
+      }));
     }
     case "RecordExport": {
-      return {
-        state,
-        event: makeEvent(command.actorId, command.campaignId, "ExportCompleted", {
-          exportId: command.exportId,
-          format: command.format,
-        }),
-      };
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "ExportCompleted", {
+        exportId: command.exportId,
+        format: command.format,
+      }));
     }
     case "ChangeVisibility": {
       const nextState = { ...state };
@@ -340,14 +317,11 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         nextState.facts = new Map(state.facts);
         nextState.facts.set(updated.factId, updated);
       }
-      return {
-        state: nextState,
-        event: makeEvent(command.actorId, command.campaignId, "VisibilityChanged", {
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "VisibilityChanged", {
           targetId: command.targetId,
           targetType: command.targetType,
           visibility: command.visibility,
-        }),
-      };
+        }));
     }
     case "RecordSessionEvent": {
       requireSession(state, command.sessionId);
@@ -370,32 +344,23 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       };
       const sessionEvents = new Map(state.sessionEvents || []);
       sessionEvents.set(id, eventRecord);
-      return {
-        state: { ...state, sessionEvents },
-        event: makeEvent(command.actorId, command.campaignId, "SessionEventRecorded", eventRecord),
-      };
+      return singleEvent({ ...state, sessionEvents }, makeEvent(command.actorId, command.campaignId, "SessionEventRecorded", eventRecord));
     }
     case "RestoreBackup": {
       // Restore is handled at the persistence layer (file copy).
       // This command records the restore event in the event log AFTER
       // the persistence layer has already swapped the files.
-      return {
-        state,
-        event: makeEvent(command.actorId, command.campaignId, "SettingsUpdated", {
-          restoredFromBackup: command.backupId,
-          restoredAt: new Date().toISOString(),
-        }),
-      };
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "SettingsUpdated", {
+        restoredFromBackup: command.backupId,
+        restoredAt: new Date().toISOString(),
+      }));
     }
     case "CreateTag": {
       const tagId = command.tagId ?? createId("tag");
       const tag = { id: tagId, name: command.name, color: command.color ?? "#6366f1" };
       const tags = new Map(state.tags ?? []);
       tags.set(tagId, tag);
-      return {
-        state: { ...state, tags },
-        event: makeEvent(command.actorId, command.campaignId, "TagCreated", tag),
-      };
+      return singleEvent({ ...state, tags }, makeEvent(command.actorId, command.campaignId, "TagCreated", tag));
     }
     case "AddTagToEntity": {
       const entity = requireEntity(state, command.entityId);
@@ -403,10 +368,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const updated = { ...entity, tagIds };
       const entities = new Map(state.entities);
       entities.set(updated.entityId, updated);
-      return {
-        state: { ...state, entities },
-        event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated),
-      };
+      return singleEvent({ ...state, entities }, makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated));
     }
     case "RemoveTagFromEntity": {
       const entity = requireEntity(state, command.entityId);
@@ -414,10 +376,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const updated = { ...entity, tagIds };
       const entities = new Map(state.entities);
       entities.set(updated.entityId, updated);
-      return {
-        state: { ...state, entities },
-        event: makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated),
-      };
+      return singleEvent({ ...state, entities }, makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated));
     }
     case "CreateCanvas": {
       const canvasId = command.canvasId ?? createId("cvs");
@@ -437,10 +396,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       };
       const canvases = new Map(state.canvases || new Map());
       canvases.set(canvasId, canvas);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasCreated", canvas),
-      };
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasCreated", canvas));
     }
     case "UpdateCanvas": {
       const canvases = new Map(state.canvases || new Map());
@@ -455,15 +411,12 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         updatedAt: new Date().toISOString(),
       };
       canvases.set(command.canvasId, updated);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasUpdated", {
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasUpdated", {
           canvasId: command.canvasId,
           title: command.title,
           viewport: command.viewport,
           description: command.description,
-        }),
-      };
+        }));
     }
     case "ArchiveCanvas": {
       const canvases = new Map(state.canvases || new Map());
@@ -476,12 +429,9 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         updatedAt: new Date().toISOString(),
       };
       canvases.set(command.canvasId, updated);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasArchived", {
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasArchived", {
           canvasId: command.canvasId,
-        }),
-      };
+        }));
     }
     case "PlaceNodeOnCanvas": {
       const canvases = new Map(state.canvases || new Map());
@@ -538,13 +488,10 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         updatedAt: new Date().toISOString(),
       };
       canvases.set(command.canvasId, updated);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasNodePlaced", {
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasNodePlaced", {
           canvasId: command.canvasId,
           node: canvasNode,
-        }),
-      };
+        }));
     }
     case "UpdateCanvasNode": {
       const canvases = new Map(state.canvases || new Map());
@@ -571,14 +518,11 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         updatedAt: new Date().toISOString(),
       };
       canvases.set(command.canvasId, updatedCanvas);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasNodeUpdated", {
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasNodeUpdated", {
           canvasId: command.canvasId,
           nodeId: command.nodeId,
           updates: command.updates,
-        }),
-      };
+        }));
     }
     case "UpdateCanvasNodesLayout": {
       const canvases = new Map(state.canvases || new Map());
@@ -609,13 +553,10 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         updatedAt: new Date().toISOString(),
       };
       canvases.set(command.canvasId, updatedCanvas);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasNodesLayoutUpdated", {
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasNodesLayoutUpdated", {
           canvasId: command.canvasId,
           nodeUpdates: command.nodeUpdates,
-        }),
-      };
+        }));
     }
     case "RemoveNodeFromCanvas": {
       const canvases = new Map(state.canvases || new Map());
@@ -636,13 +577,10 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         updatedAt: new Date().toISOString(),
       };
       canvases.set(command.canvasId, updatedCanvas);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasNodeRemoved", {
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasNodeRemoved", {
           canvasId: command.canvasId,
           nodeId: command.nodeId,
-        }),
-      };
+        }));
     }
     case "AddEdgeToCanvas": {
       const canvases = new Map(state.canvases || new Map());
@@ -687,13 +625,10 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         updatedAt: new Date().toISOString(),
       };
       canvases.set(command.canvasId, updatedCanvas);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasEdgeAdded", {
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasEdgeAdded", {
           canvasId: command.canvasId,
           edge: canvasEdge,
-        }),
-      };
+        }));
     }
     case "UpdateCanvasEdge": {
       const canvases = new Map(state.canvases || new Map());
@@ -720,14 +655,11 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         updatedAt: new Date().toISOString(),
       };
       canvases.set(command.canvasId, updatedCanvas);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasEdgeUpdated", {
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasEdgeUpdated", {
           canvasId: command.canvasId,
           edgeId: command.edgeId,
           updates: command.updates,
-        }),
-      };
+        }));
     }
     case "RemoveEdgeFromCanvas": {
       const canvases = new Map(state.canvases || new Map());
@@ -746,13 +678,10 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         updatedAt: new Date().toISOString(),
       };
       canvases.set(command.canvasId, updatedCanvas);
-      return {
-        state: { ...state, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasEdgeRemoved", {
+      return singleEvent({ ...state, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasEdgeRemoved", {
           canvasId: command.canvasId,
           edgeId: command.edgeId,
-        }),
-      };
+        }));
     }
     case "ConvertCanvasNoteToEntity": {
       const canvases = new Map(state.canvases || new Map());
@@ -804,14 +733,11 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       
       canvases.set(command.canvasId, updatedCanvas);
 
-      return {
-        state: { ...state, entities, canvases },
-        event: makeEvent(command.actorId, command.campaignId, "CanvasNoteConvertedToEntity", {
+      return singleEvent({ ...state, entities, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasNoteConvertedToEntity", {
           canvasId: command.canvasId,
           nodeId: command.nodeId,
           entity,
-        }),
-      };
+        }));
     }
   }
 }

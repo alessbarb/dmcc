@@ -12,7 +12,7 @@ describe("command bus", () => {
       title: "Valleverde",
     });
 
-    expect(result.event.type).toBe("CampaignCreated");
+    expect(result.events[0].type).toBe("CampaignCreated");
     expect(result.state.campaign?.title).toBe("Valleverde");
   });
 
@@ -26,7 +26,7 @@ describe("command bus", () => {
       title: "Mira",
     });
 
-    expect(result.event.type).toBe("EntityCreated");
+    expect(result.events[0].type).toBe("EntityCreated");
     expect([...result.state.entities.values()][0]?.visibility.kind).toBe("dm_only");
   });
 });
@@ -47,7 +47,7 @@ describe("command bus extended campaign commands", () => {
       relationType: "knows",
     });
 
-    expect(result.event.type).toBe("RelationCreated");
+    expect(result.events[0].type).toBe("RelationCreated");
     expect(result.state.relations.get("rel_one")?.relationType).toBe("knows");
   });
 
@@ -108,7 +108,7 @@ describe("command bus extended campaign commands", () => {
       source: { kind: "manual" },
     });
 
-    expect(result.event.type).toBe("FactCreated");
+    expect(result.events[0].type).toBe("FactCreated");
     expect(result.state.facts.get("fact_one")?.kind).toBe("canon");
   });
 
@@ -122,7 +122,7 @@ describe("command bus extended campaign commands", () => {
       title: "Session 1",
     });
 
-    expect(started.event.type).toBe("SessionStarted");
+    expect(started.events[0].type).toBe("SessionStarted");
     state = started.state;
 
     const closed = handleCommand(state, {
@@ -133,7 +133,7 @@ describe("command bus extended campaign commands", () => {
       summary: "The party reached Valleverde.",
     });
 
-    expect(closed.event.type).toBe("SessionClosed");
+    expect(closed.events[0].type).toBe("SessionClosed");
     expect(closed.state.sessions.get("sess_one")?.status).toBe("closed");
   });
 
@@ -152,8 +152,8 @@ describe("command bus extended campaign commands", () => {
       note: "Found in the cellar.",
     });
 
-    expect(result.event.type).toBe("VisibilityChanged");
+    expect(result.events[0].type).toBe("VisibilityChanged");
     expect(result.state.entities.get("ent_clue")?.visibility.kind).toBe("party");
-    expect(result.event.payload).toMatchObject({ targetId: "ent_clue", targetType: "entity", sessionId: "sess_one" });
+    expect(result.events[0].payload).toMatchObject({ targetId: "ent_clue", targetType: "entity", sessionId: "sess_one" });
   });
 });
