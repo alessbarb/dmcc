@@ -67,6 +67,15 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     title: "",
     description: "",
     kind: "personal" as "personal" | "session" | "question_for_dm",
+    status: "open" as "open" | "done" | "archived",
+    visibility: "private" as "private" | "dm_visible",
+  });
+
+  // Diary inline edit state
+  const [noteEditId, setNoteEditId] = useState<string | null>(null);
+  const [noteEditForm, setNoteEditForm] = useState({
+    title: "",
+    content: "",
     visibility: "private" as "private" | "dm_visible",
   });
 
@@ -111,6 +120,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   // ── Submit: Character/State ──────────────────────────────────────────────
   const handleCharSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!myCharacter) return;
     await updatePlayerPortalStatus({
       characterEntityId: myCharacter?.entityId,
       hitPointsCurrent: parseInt(charForm.hitPointsCurrent) || 0,
@@ -174,6 +184,17 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     await updatePlayerPortalNote(noteId, { archived: true });
   };
 
+  // ── Submit: Note edit inline ────────────────────────────────────────────
+  const handleNoteEditSubmit = async (e: React.FormEvent, noteId: string) => {
+    e.preventDefault();
+    await updatePlayerPortalNote(noteId, {
+      title: noteEditForm.title,
+      content: noteEditForm.content,
+      visibility: noteEditForm.visibility,
+    });
+    setNoteEditId(null);
+  };
+
   // ── Submit: Objective create ────────────────────────────────────────────
   const handleObjectiveCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -182,10 +203,10 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
       title: objectiveForm.title.trim(),
       description: objectiveForm.description.trim() || undefined,
       kind: objectiveForm.kind,
-      status: "open",
+      status: objectiveForm.status,
       visibility: objectiveForm.visibility,
     });
-    setObjectiveForm({ title: "", description: "", kind: "personal", visibility: "private" });
+    setObjectiveForm({ title: "", description: "", kind: "personal", status: "open", visibility: "private" });
     setShowObjectiveForm(false);
   };
 
@@ -458,7 +479,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                   </div>
 
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <button type="submit" className="btn btn-primary btn-sm">
+                    <button type="submit" className="btn btn-primary btn-sm" disabled={!myCharacter}>
                       Guardar Estado
                     </button>
                   </div>
@@ -604,30 +625,69 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
 
               {notes
                 .filter((n: any) => !n.archived)
-                .map((n: any) => (
-                  <div key={n.noteId ?? n.title} className="card" style={{ padding: "16px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <h4 style={{ fontWeight: "700" }}>{n.title}</h4>
-                      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                        {n.visibility === "dm_visible" && (
-                          <span className="badge badge-default" style={{ fontSize: "0.7rem" }}>Visible DM</span>
-                        )}
-                        <button
-                          className="btn btn-danger btn-icon btn-sm"
-                          style={{ padding: "4px" }}
-                          onClick={() => void handleNoteArchive(n.noteId)}
-                        >
-                          <Trash2 size={12} />
-                        </button>
+                .map((n: any) => {
+                  const nid = n.noteId ?? n.title;
+                  const isEditing = noteEditId === nid;
+                  return (
+                    <div key={nid} className="card" style={{ padding: "16px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <h4 style={{ fontWeight: "700" }}>{n.title}</h4>
+                        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                          {n.visibility === "dm_visible" && (
+                            <span className="badge badge-default" style={{ fontSize: "0.7rem" }}>Visible DM</span>
+                          )}
+                          <button
+                            className="btn btn-secondary btn-sm"
+                            style={{ padding: "4px 8px", fontSize: "0.75rem" }}
+                            onClick={() => {
+                              setNoteEditId(isEditing ? null : nid);
+                              if (!isEditing) {
+                                setNoteEditForm({ title: n.title, content: n.content ?? "", visibility: n.visibility ?? "private" });
+                              }
+                            }}
+                          >
+                            {isEditing ? "Cancelar" : "Editar"}
+                          </button>
+                          <button
+                            className="btn btn-danger btn-icon btn-sm"
+                            style={{ padding: "4px" }}
+                            onClick={() => void handleNoteArchive(n.noteId)}
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
                       </div>
+                      {isEditing ? (
+                        <form onSubmit={(e) => void handleNoteEditSubmit(e, nid)} style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "12px" }}>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label">Título</label>
+                            <input type="text" className="form-input" value={noteEditForm.title} onChange={(e) => setNoteEditForm({ ...noteEditForm, title: e.target.value })} required />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label">Contenido</label>
+                            <textarea className="form-textarea" rows={3} value={noteEditForm.content} onChange={(e) => setNoteEditForm({ ...noteEditForm, content: e.target.value })} />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label">Visibilidad</label>
+                            <select className="form-input" value={noteEditForm.visibility} onChange={(e) => setNoteEditForm({ ...noteEditForm, visibility: e.target.value as "private" | "dm_visible" })}>
+                              <option value="private">Solo yo</option>
+                              <option value="dm_visible">Visible para el DM</option>
+                            </select>
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                            <button type="submit" className="btn btn-primary btn-sm">Guardar Cambios</button>
+                          </div>
+                        </form>
+                      ) : (
+                        n.content && (
+                          <p style={{ fontSize: "0.9rem", marginTop: "8px", whiteSpace: "pre-line", color: "var(--text-main)" }}>
+                            {n.content}
+                          </p>
+                        )
+                      )}
                     </div>
-                    {n.content && (
-                      <p style={{ fontSize: "0.9rem", marginTop: "8px", whiteSpace: "pre-line", color: "var(--text-main)" }}>
-                        {n.content}
-                      </p>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           )}
 
@@ -664,6 +724,18 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                           <option value="personal">Personal</option>
                           <option value="session">Sesión</option>
                           <option value="question_for_dm">Pregunta al DM</option>
+                        </select>
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 0, flex: "1 1 140px" }}>
+                        <label className="form-label">Estado</label>
+                        <select
+                          className="form-input"
+                          value={objectiveForm.status}
+                          onChange={(e) => setObjectiveForm({ ...objectiveForm, status: e.target.value as "open" | "done" | "archived" })}
+                        >
+                          <option value="open">Abierto</option>
+                          <option value="done">Completado</option>
+                          <option value="archived">Archivado</option>
                         </select>
                       </div>
                       <div className="form-group" style={{ marginBottom: 0, flex: "1 1 140px" }}>
