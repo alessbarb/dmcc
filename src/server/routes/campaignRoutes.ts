@@ -1,7 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { join } from "path";
 import * as fs from "fs/promises";
-import { randomInt } from "crypto";
+import { randomInt, randomBytes } from "crypto";
 import { createId } from "../../shared/ids.js";
 import { EventStore } from "../../persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "../../persistence/snapshotStore/snapshotStore.js";
@@ -9,6 +9,7 @@ import { CampaignRepository } from "../../persistence/repositories/campaignRepos
 import {
   assertDM,
   assertCampaignAccess,
+  getRequestRoleWithTokens,
   getValidatedVaultId,
   getValidatedCampaignId,
   hashAccessCode,
@@ -174,7 +175,25 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       try {
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId as any);
-        const role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
+
+        const role = getRequestRoleWithTokens(
+          request,
+          (server as any).dmSessionToken,
+          (server as any).playerTokens,
+          campaignId
+        );
+
+        if (role === "unauthenticated") {
+          // Fall back to old access-code-based check for non-token requests
+          assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
+        } else if (role !== "dm") {
+          // Player authenticated via token — verify LAN mode is still enabled
+          if (!state?.campaign?.settings?.lanModeEnabled) {
+            const err = new Error("Forbidden: LAN Mode is disabled for this campaign");
+            (err as any).statusCode = 403;
+            throw err;
+          }
+        }
 
         const rawEntities = Array.from(state.entities.values());
         const characterEntityId = playerId ? getCharacterEntityIdForPlayer(rawEntities, playerId) : undefined;
@@ -329,7 +348,6 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         }
 
         // Issue player token
-        const { randomBytes } = await import("crypto");
         const playerToken = randomBytes(24).toString("hex");
         const pid = playerId ?? `ply_${randomBytes(8).toString("hex")}`;
         (server as any).playerTokens.set(playerToken, { campaignId, playerId: pid });
