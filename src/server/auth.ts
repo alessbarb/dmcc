@@ -9,10 +9,11 @@ export function getRequestRole(request: any, dmSessionToken: string): "dm" | "pl
   const dmTokenHeader = request.headers["x-dm-token"];
 
   if (process.env.NODE_ENV === "test") {
+    if (dmTokenHeader && dmTokenHeader === dmSessionToken) return "dm";
     if (roleHeader === "player") return "player";
     if (roleHeader === "observer") return "observer";
-    if (roleHeader === "unauthenticated") return "unauthenticated";
-    return "dm";
+    if (roleHeader === "dm") return "dm";
+    return "unauthenticated";
   }
 
   if (dmTokenHeader === dmSessionToken) {
@@ -88,6 +89,25 @@ export function assertCampaignAccess(request: any, state: any, campaignId: strin
   const err = new Error("Unauthorized: Invalid campaign access code");
   (err as any).statusCode = 401;
   throw err;
+}
+
+export function getRequestRoleWithTokens(
+  request: any,
+  dmSessionToken: string,
+  playerTokens: Map<string, { campaignId: string; playerId: string }>,
+  campaignId: string
+): "dm" | "player" | "observer" | "unauthenticated" {
+  const base = getRequestRole(request, dmSessionToken);
+  if (base !== "unauthenticated") return base;
+
+  const playerTokenHeader = request.headers["x-player-token"] as string | undefined;
+  if (playerTokenHeader) {
+    const session = playerTokens.get(playerTokenHeader);
+    if (session && session.campaignId === campaignId) {
+      return "player";
+    }
+  }
+  return "unauthenticated";
 }
 
 export function getValidatedVaultId(request: any): string {

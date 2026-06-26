@@ -13,27 +13,30 @@ import {
 } from "lucide-react";
 import type { ToastKind } from "../hooks/useToast.js";
 import { createId } from "../../shared/ids.js";
+import { useCampaignStore } from "../stores/campaignStore.js";
+import { useToast } from "../hooks/useToast.js";
+import { useNavigate, useParams } from "@tanstack/react-router";
 
 export interface SessionPageProps {
-  campaignState: any;
-  activeSession: any;
-  quickCaptureType: string;
-  setQuickCaptureType: (t: string) => void;
-  quickCaptureText: string;
-  setQuickCaptureText: (t: string) => void;
-  sessionSummary: string;
-  setSessionSummary: (s: string) => void;
-  handleQuickCaptureSubmit: (e: React.SyntheticEvent) => Promise<void>;
-  startSession: (title: string) => Promise<any>;
-  closeSession: (sessionId: string, summary: string) => Promise<any>;
-  createEntity: (...args: any[]) => Promise<any>;
-  createRelation: (...args: any[]) => Promise<any>;
-  revealClue: (...args: any[]) => Promise<any>;
-  recordSessionEvent: (...args: any[]) => Promise<any>;
-  addToast: (msg: string, kind?: ToastKind) => void;
-  setCurrentPage: (page: string) => void;
-  setIsEntityModalOpen: (open: boolean) => void;
-  setIsRelationModalOpen: (open: boolean) => void;
+  campaignState?: any;
+  activeSession?: any;
+  quickCaptureType?: string;
+  setQuickCaptureType?: (t: string) => void;
+  quickCaptureText?: string;
+  setQuickCaptureText?: (t: string) => void;
+  sessionSummary?: string;
+  setSessionSummary?: (s: string) => void;
+  handleQuickCaptureSubmit?: (e: React.SyntheticEvent) => Promise<void>;
+  startSession?: (title: string) => Promise<any>;
+  closeSession?: (sessionId: string, summary: string) => Promise<any>;
+  createEntity?: (...args: any[]) => Promise<any>;
+  createRelation?: (...args: any[]) => Promise<any>;
+  revealClue?: (...args: any[]) => Promise<any>;
+  recordSessionEvent?: (...args: any[]) => Promise<any>;
+  addToast?: (msg: string, kind?: ToastKind) => void;
+  setCurrentPage?: (page: string) => void;
+  setIsEntityModalOpen?: (open: boolean) => void;
+  setIsRelationModalOpen?: (open: boolean) => void;
 }
 
 // ── types ────────────────────────────────────────────────────────────────────
@@ -838,21 +841,27 @@ function PanelCerrarSesion({
 
 // ── main component ───────────────────────────────────────────────────────────
 
-export function SessionPage(props: SessionPageProps) {
-  const {
-    campaignState,
-    activeSession,
-    sessionSummary,
-    setSessionSummary,
-    startSession,
-    closeSession,
-    createEntity,
-    createRelation,
-    revealClue,
-    recordSessionEvent,
-    addToast,
-    setCurrentPage,
-  } = props;
+export function SessionPage(props: SessionPageProps = {}) {
+  const { campaignId } = useParams({ strict: false }) as any;
+  const navigate = useNavigate();
+  const store = useCampaignStore();
+  const { addToast: toastAdd } = useToast();
+  const [sessionSummaryLocal, setSessionSummaryLocal] = useState("");
+
+  const campaignState = props.campaignState ?? store.campaignState;
+  const activeSession = props.activeSession ?? (campaignState?.sessions ?? []).find((s: any) => s.status === "active");
+  const sessionSummary = props.sessionSummary ?? sessionSummaryLocal;
+  const setSessionSummary = props.setSessionSummary ?? setSessionSummaryLocal;
+  const startSession = props.startSession ?? store.startSession;
+  const closeSession = props.closeSession ?? store.closeSession;
+  const createEntity = props.createEntity ?? store.createEntity;
+  const createRelation = props.createRelation ?? store.createRelation;
+  const revealClue = props.revealClue ?? store.revealClue;
+  const recordSessionEvent = props.recordSessionEvent ?? store.recordSessionEvent;
+  const addToast = props.addToast ?? toastAdd;
+  const setCurrentPage = props.setCurrentPage ?? ((page: string) => {
+    if (campaignId) navigate({ to: `/campaigns/${campaignId}/${page}` });
+  });
 
   const [newTitle, setNewTitle] = useState("");
   const [activeAction, setActiveAction] = useState<ActionId | null>(null);

@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { Activity, BookOpen, Plus, Info, Calendar, HelpCircle, Eye, EyeOff } from "lucide-react";
 import { getEventVisualConfig, renderEventDescription } from "../utils/eventVisuals.js";
+import { useCampaignStore } from "../stores/campaignStore.js";
 
 export interface TimelinePageProps {
-  timeline: any;
-  campaignState: any;
-  timelineFilter: string;
-  setTimelineFilter: (f: string) => void;
-  expandedEvents: Record<string, boolean>;
-  toggleEventJson: (id: string) => void;
+  timeline?: any;
+  campaignState?: any;
+  timelineFilter?: string;
+  setTimelineFilter?: (f: string) => void;
+  expandedEvents?: Record<string, boolean>;
+  toggleEventJson?: (id: string) => void;
 }
 
-export function TimelinePage(props: TimelinePageProps) {
-  const { timeline, campaignState, timelineFilter, setTimelineFilter, expandedEvents, toggleEventJson } = props;
+export function TimelinePage(props: TimelinePageProps = {}) {
+  const store = useCampaignStore();
+  const timeline = props.timeline ?? store.timeline;
+  const campaignState = props.campaignState ?? store.campaignState;
+  const [timelineFilterLocal, setTimelineFilterLocal] = useState("all");
+  const [expandedEventsLocal, setExpandedEventsLocal] = useState<Record<string, boolean>>({});
+  const timelineFilter = props.timelineFilter ?? timelineFilterLocal;
+  const setTimelineFilter = props.setTimelineFilter ?? setTimelineFilterLocal;
+  const expandedEvents = props.expandedEvents ?? expandedEventsLocal;
+  const toggleEventJson = props.toggleEventJson ?? ((id: string) => {
+    setExpandedEventsLocal(prev => ({ ...prev, [id]: !prev[id] }));
+  });
+
+  if (!timeline) return <div style={{ padding: "40px", color: "var(--text-muted)" }}>Cargando línea temporal…</div>;
 
   const stats = {
     total: timeline.events.length,

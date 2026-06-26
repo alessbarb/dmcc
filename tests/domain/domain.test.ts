@@ -3,7 +3,6 @@ import { entitySchema } from "../../src/domain/entity/types.js";
 import { relationSchema } from "../../src/domain/relation/types.js";
 import { factSchema } from "../../src/domain/fact/types.js";
 import { createEntity } from "../../src/domain/entity/entity.js";
-import { createFact } from "../../src/domain/fact/fact.js";
 import {
   generateCampaignId,
   generateEntityId,
@@ -104,15 +103,98 @@ describe("Domain Aggregates", () => {
       expect(() => createEntity(secretProps)).toThrow("Secret entity requires metadata.truth");
     });
 
-    it("rejects Player Character without metadata.playerId", () => {
+    it("allows Player Character without metadata.playerId (pre-made template) for generic system", () => {
       const pcProps = {
         entityId: generateEntityId(),
         campaignId,
         entityType: "player_character",
         title: "Hero",
-        metadata: {}
+        metadata: {},
+        campaignSystem: "generic_fantasy_d20"
       };
-      expect(() => createEntity(pcProps)).toThrow("Player Character entity requires metadata.playerId");
+      expect(() => createEntity(pcProps)).not.toThrow();
+    });
+
+    it("rejects Player Character for dnd_srd_5_2_1 campaign when missing required fields like strength or className", () => {
+      const pcProps = {
+        entityId: generateEntityId(),
+        campaignId,
+        entityType: "player_character",
+        title: "D&D Hero",
+        metadata: {
+          level: 1,
+          species: "Elfo",
+          background: "Acólito"
+          // Missing strength, dexterity, constitution, intelligence, wisdom, charisma, speed, initiative, passivePerception, passiveInsight, passiveInvestigation, hitDice, etc.
+        },
+        campaignSystem: "dnd_srd_5_2_1"
+      };
+      expect(() => createEntity(pcProps)).toThrow();
+    });
+
+    it("allows Player Character for dnd_srd_5_2_1 campaign when all required fields are provided", () => {
+      const pcProps = {
+        entityId: generateEntityId(),
+        campaignId,
+        entityType: "player_character",
+        title: "D&D Hero Valid",
+        metadata: {
+          className: "Pícaro",
+          level: 1,
+          species: "Elfo",
+          background: "Forajida",
+          armorClass: 14,
+          hitPointsCurrent: 8,
+          hitPointsMax: 8,
+          hitDice: "1d8",
+          speed: 30,
+          initiative: 3,
+          passivePerception: 14,
+          passiveInsight: 12,
+          passiveInvestigation: 13,
+          strength: 8,
+          dexterity: 17,
+          constitution: 12,
+          intelligence: 13,
+          wisdom: 14,
+          charisma: 10
+        },
+        campaignSystem: "dnd_srd_5_2_1"
+      };
+      expect(() => createEntity(pcProps)).not.toThrow();
+    });
+
+    it("rejects Player Character for dnd_srd_5_2_1 campaign at level 3 if subclass is missing", () => {
+      const pcProps = {
+        entityId: generateEntityId(),
+        campaignId,
+        entityType: "player_character",
+        title: "D&D Level 3 Hero",
+        metadata: {
+          className: "Pícaro",
+          level: 3,
+          species: "Elfo",
+          background: "Forajida",
+          armorClass: 14,
+          hitPointsCurrent: 20,
+          hitPointsMax: 20,
+          hitDice: "3d8",
+          speed: 30,
+          initiative: 3,
+          passivePerception: 14,
+          passiveInsight: 12,
+          passiveInvestigation: 13,
+          strength: 8,
+          dexterity: 17,
+          constitution: 12,
+          intelligence: 13,
+          wisdom: 14,
+          charisma: 10
+          // Missing subclass for level 3
+        },
+        campaignSystem: "dnd_srd_5_2_1"
+      };
+      expect(() => createEntity(pcProps)).toThrow(/subclass/i);
     });
   });
 
