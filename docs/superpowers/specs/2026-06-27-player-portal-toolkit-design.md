@@ -170,7 +170,10 @@ Use the existing event-sourced architecture. Avoid opaque parallel files and avo
 
 Candidate events:
 
+- `PlayerTokenIssued`
+- `PlayerTokenRevoked`
 - `PlayerCharacterLinked`
+- `PlayerCharacterUnlinked`
 - `PlayerCharacterLiveStateUpdated`
 - `PlayerResourceUpserted`
 - `PlayerResourceRemoved`
@@ -188,6 +191,35 @@ The projection should derive a player portal state from these events and from vi
 ## API design
 
 All player endpoints require a valid `x-player-token`. The server derives `playerId` from the token and ignores any client-supplied player identity for authorization. DM endpoints require the DM token.
+
+### Token issuance
+
+Tokens are per-player opaque codes issued by the DM, extending the existing LAN campaign access code mechanism. The DM generates a token for each player via `POST /api/campaigns/:campaignId/players/:playerId/token`.
+
+**Tokens are never stored in clear text.** The server derives a `tokenId` (UUID) and a `tokenHash` (bcrypt or SHA-256 of the raw token). Only `tokenId` and `tokenHash` are persisted in the `PlayerTokenIssued` event payload — never the raw token. The raw token is returned to the DM once in the HTTP response and never again. The projection indexes `tokenHash → playerId` for O(1) lookup.
+
+On player login/join, the server receives the raw token, computes its hash, and looks it up in the projection. This prevents exported event files or backups from leaking active access credentials.
+
+`PlayerTokenIssued` and `PlayerTokenRevoked` are **authentication-layer events**, not portal-only events. They authenticate persistent LAN access per player and are consumed by the portal, but belong conceptually to the server auth/player-session layer. Tokens are campaign-scoped: a player in two campaigns holds two tokens.
+
+```ts
+// PlayerTokenIssued payload (what goes into events.ndjson)
+{
+  tokenId: string;       // UUID, identifies the token record
+  tokenHash: string;     // hash of the raw token
+  campaignId: string;
+  playerId: string;
+  label?: string;        // e.g. "Alejandro's phone"
+  createdAt: string;
+}
+
+// PlayerTokenRevoked payload
+{
+  tokenId: string;
+  campaignId: string;
+  revokedAt: string;
+}
+```
 
 Player-safe endpoints:
 
@@ -219,7 +251,7 @@ PUT  /api/campaigns/:campaignId/player-portal/proposals/:proposalId/resolve
 - A player cannot edit another player's character state.
 - The DM can view all player portal summaries for the active campaign.
 - The DM can link premade characters, approve proposals, reject proposals, and adjust state when needed.
-- Notes and objectives are private unless marked `dm_visible`.
+- Notes and objectives are private unless marked `dm_visible`. Private notes and objectives are excluded entirely from `GET /dm-summary` server-side — they are never returned in any DM endpoint response, not even as hidden placeholders.
 
 ## Player UI
 
@@ -275,18 +307,19 @@ Personal checklist with:
 
 ### History
 
-Integrates the later narrative clarity work:
+Phase 2 renders a stub tab only. Full data ships in Phase 4.
 
-- known missions;
-- revealed clues;
-- confirmed facts;
-- sessions;
-- visible relations;
-- grouping around what the player knows, what is unresolved, and what is connected.
+Acceptance criteria for the stub (intentional technical debt, not a bug):
+
+- Tab exists in nav from Phase 2 onward.
+- Renders an explicit empty state message (e.g. "Your adventure history will appear here as the campaign unfolds").
+- Shows no partial or misleading data.
+- Makes no API calls to history or narrative endpoints — zero network requests on mount.
+- Message does not imply a user action is needed; this is a system limitation, not a missing player step.
 
 ## DM UI
 
-Add or extend a campaign area for player portal management, likely under `PlayersPage` or a dedicated player portal subsection.
+DM proposal review lives inside `PlayersPage` as a new subsection, not a dedicated route. A separate `PlayerPortalAdminPage` is unnecessary overhead before the permission model is proven.
 
 The DM should see:
 
@@ -320,11 +353,11 @@ The data model should allow future manual configuration without requiring a rewr
 
 - Add events and projection for player-character links, live state, resources, notes, objectives, and proposals.
 - Add player-safe and DM-safe API endpoints.
-- Treat existing `metadata.playerId` links as initial links.
+- Treat existing `metadata.playerId` as a legacy pointer: the portal projection synthesizes a soft link at read time without emitting `PlayerCharacterLinked`. When the DM explicitly links a character via the API, a real event is emitted and supersedes the legacy pointer.
 
 ### Phase 2: functional player portal
 
-- Replace the current portal layout with Summary, Character/State, Resources, Diary, Objectives, and History sections.
+- Replace the current portal layout with Summary, Character/State, Resources, Diary, Objectives, and History sections. History is a stub tab only (empty state, no data).
 - Implement live edits for allowed fields.
 - Implement note/objective CRUD.
 - Implement proposal creation for structural character changes.
@@ -386,10 +419,40 @@ E2E target:
 - Risk: UI polish consumes time before the permission model is safe.
   - Mitigation: implement data/API and basic UI first, then polish.
 
-## Open implementation choices
+## Resolved implementation decisions
 
-These should be resolved during implementation planning, not by changing the product direction:
+### Portal projection is separate from entity metadata
 
-- Whether live state is projected into `player_character.metadata` for display compatibility or read through a separate portal projection.
-- Whether DM proposal review lives inside `PlayersPage` or a dedicated `PlayerPortalAdminPage`.
-- Whether initial notes/objectives reuse entity events or use dedicated player portal events. Dedicated events are preferred unless implementation proves the duplication cost is too high.
+Live state is read through a dedicated `PlayerPortalProjection`, not injected into `player_character.metadata`. Merging portal state into entity metadata would couple the event-sourced entity model to mutable player state and violate the invariant that entities are campaign-canonical. The projection holds its own derived state.
+
+### Active character link is the most recent `PlayerCharacterLinked` for that player
+
+A player has at most one active link per campaign. The projection always resolves to the most recent `PlayerCharacterLinked` event for a given `playerId`. Relinking emits a new event; there is no `isActive` flag. The previous link becomes superseded. Unlinking emits `PlayerCharacterUnlinked`.
+
+### Proposal approval emits a canonical `EntityUpdated` — requires multi-event CommandBus
+
+When the DM approves a proposal, two events must be persisted atomically: `PlayerCharacterProposalResolved` (status=approved) and `EntityUpdated` (the approved structural changes applied to the entity). This keeps `events.ndjson` as the single source of truth. The portal projection does not hold approved structural changes independently.
+
+**Blocker: the current `CommandBus` returns a single event.** `handleCommand()` returns one `StoredEvent` and `CampaignRepository.executeCommand()` persists only that one. Proposal approval cannot be implemented correctly until this is resolved.
+
+**Decision: extend CommandBus to support multi-event commands (Option A).** Change `CommandResult` from `{ event: StoredEvent }` to `{ events: StoredEvent[] }`. All existing handlers return a single-element array; no behavior changes for them. The persistence layer appends all events in a single write. This is the minimal change that avoids split-brain (Option B: two sequential commands) and avoids polluting canonical event semantics (Option C: compound event). This change must land before Phase 3 (proposal approval implementation).
+
+### Live state conflict: last write wins, `updatedBy` is surfaced
+
+No special conflict rule. Given the local-first single-DM model, last write wins for all live fields. The `updatedBy` field (`"player"` or `"dm"`) is surfaced in the UI so each party can see who last touched a value. The DM always retains the ability to overwrite any live field.
+
+### `syncMode` on `PlayerCharacterLink` is a link-level default; structural fields always require DM review
+
+`syncMode: "live_player_editable"` means live fields (HP, AC, inspiration, conditions, resources) are player-editable by default. `syncMode: "dm_review_required"` locks even live fields — all changes create proposals. Structural fields (class, level, attributes, etc.) always require DM review regardless of `syncMode`. The rules preset defines what is structural.
+
+### Preset resource IDs are predefined strings, not UUIDs
+
+D&D/SRD preset resources use predefined string IDs (`spell_slots_1`, `ki_points`, `bardic_inspiration`, etc.) defined in a `rulesPreset` module in code. Player-generated resources use UUID `resourceId`. This lets presets evolve without data migrations.
+
+### Notes and objectives use dedicated player portal events
+
+`PlayerPortalNoteCreated/Updated/Archived` and the objective equivalents are their own event types. They do not reuse entity events. The separation preserves the clarity that portal notes are player-scoped ephemera, not campaign-canonical facts.
+
+### DM proposal review lives inside `PlayersPage`
+
+No dedicated `PlayerPortalAdminPage` route. The DM review UI is a subsection of `PlayersPage`. A new route adds nav complexity before the permission model is proven.
