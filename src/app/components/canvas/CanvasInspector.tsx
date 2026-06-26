@@ -29,7 +29,10 @@ export function CanvasInspector({
     updateCanvasEdge,
     removeEdgeFromCanvas,
     updateRelation,
-    archiveRelation
+    archiveRelation,
+    recordSessionEvent,
+    updateCanvasNodesLayout,
+    updateFact,
   } = useCampaignStore();
 
   const canvas = canvasesById[canvasId];
@@ -37,6 +40,13 @@ export function CanvasInspector({
   // Selected Node data
   const selectedNode = selectedNodeId ? canvas?.nodes?.find((n: any) => n.id === selectedNodeId) : null;
   const entity = selectedNode?.entityId ? campaignState?.entities?.find((e: any) => e.entityId === selectedNode.entityId) : null;
+  const fact = selectedNode?.factId
+    ? (campaignState?.facts instanceof Map
+        ? campaignState.facts.get(selectedNode.factId)
+        : Array.isArray(campaignState?.facts)
+          ? (campaignState!.facts as any[]).find((f: any) => f.factId === selectedNode.factId)
+          : undefined)
+    : undefined;
 
   // Selected Edge data
   const selectedEdge = selectedEdgeId ? canvas?.edges?.find((e: any) => e.id === selectedEdgeId) : null;
@@ -49,6 +59,14 @@ export function CanvasInspector({
   const [content, setContent] = useState("");
   const [noteText, setNoteText] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [dramaticObjective, setDramaticObjective] = useState("");
+  const [complications, setComplications] = useState("");
+  const [consequences, setConsequences] = useState("");
+
+  // Local form state for Fact node
+  const [factStatement, setFactStatement] = useState("");
+  const [factKind, setFactKind] = useState("canon");
+  const [factConfidence, setFactConfidence] = useState("suspected");
 
   // Local form state for selected Edge
   const [edgeLabel, setEdgeLabel] = useState("");
@@ -63,14 +81,21 @@ export function CanvasInspector({
         setSummary(entity.summary || "");
         setContent(entity.content || "");
         setImageUrl((entity.metadata?.imageUrl as string) || "");
+        setDramaticObjective((entity.metadata?.dramaticObjective as string) || "");
+        setComplications((entity.metadata?.complications as string) || "");
+        setConsequences((entity.metadata?.consequences as string) || "");
       } else if (selectedNode.kind === "note") {
         setNoteText(selectedNode.text || "");
         setTitle(selectedNode.title || "");
       } else if (selectedNode.kind === "group") {
         setTitle(selectedNode.title || "");
+      } else if (selectedNode.kind === "fact" && fact) {
+        setFactStatement(fact.statement || "");
+        setFactKind(fact.kind || "canon");
+        setFactConfidence(fact.confidence || "suspected");
       }
     }
-  }, [selectedNodeId, selectedNode, entity]);
+  }, [selectedNodeId, selectedNode, entity, fact]);
 
   // Sync edge data
   useEffect(() => {
@@ -121,6 +146,30 @@ export function CanvasInspector({
     }
   };
 
+  const handleDramaticObjectiveBlur = async () => {
+    if (selectedNode?.kind === "entity" && entity && dramaticObjective !== (entity.metadata?.dramaticObjective || "")) {
+      await updateEntity(entity.entityId, {
+        metadata: { ...entity.metadata, dramaticObjective }
+      });
+    }
+  };
+
+  const handleComplicationsBlur = async () => {
+    if (selectedNode?.kind === "entity" && entity && complications !== (entity.metadata?.complications || "")) {
+      await updateEntity(entity.entityId, {
+        metadata: { ...entity.metadata, complications }
+      });
+    }
+  };
+
+  const handleConsequencesBlur = async () => {
+    if (selectedNode?.kind === "entity" && entity && consequences !== (entity.metadata?.consequences || "")) {
+      await updateEntity(entity.entityId, {
+        metadata: { ...entity.metadata, consequences }
+      });
+    }
+  };
+
   const handleNoteTextBlur = async () => {
     if (selectedNode?.kind === "note" && noteText !== selectedNode.text) {
       await updateCanvasNode(canvasId, selectedNode.id, { text: noteText });
@@ -131,10 +180,44 @@ export function CanvasInspector({
     if (selectedNode?.kind === "entity" && entity) {
       if (field === "visibility") {
         await updateEntity(entity.entityId, { visibility: { kind: value } });
+      } else if (field === "visibility_full") {
+        await updateEntity(entity.entityId, { visibility: value });
       } else if (field === "importance") {
         await updateEntity(entity.entityId, { importance: value });
       } else if (field === "status") {
         await updateEntity(entity.entityId, { status: value });
+
+        // --- Revelation Anchors Trigger Check ---
+        const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+        if (activeSession && campaignState) {
+          const isTriggerStatus = value === "found" || value === "visited" || value === "dead" || value === "completed";
+          if (isTriggerStatus) {
+            const secrets = campaignState.entities.filter(
+              (e: any) =>
+                e.entityType === "secret" &&
+                !e.archived &&
+                (e.visibility?.kind === "dm_only" || e.visibility?.kind === "dm") &&
+                e.metadata?.revelationAnchors?.includes(entity.entityId)
+            );
+            for (const secret of secrets) {
+              const confirmReveal = window.confirm(
+                `¡El elemento "${entity.title}" descubierto/completado sirve de ancla para el secreto: "${secret.title}"!\n¿Deseas revelar este secreto ahora a los jugadores?`
+              );
+              if (confirmReveal) {
+                await updateEntity(secret.entityId, { visibility: { kind: "public" } });
+                await recordSessionEvent(activeSession.sessionId, {
+                  type: "reveal",
+                  title: `Revelado: ${secret.title}`,
+                  description: `Secreto "${secret.title}" revelado automáticamente al activarse su ancla "${entity.title}".`,
+                  relatedEntityIds: [secret.entityId],
+                });
+                if (addToast) {
+                  addToast(`Secreto "${secret.title}" revelado.`, "success");
+                }
+              }
+            }
+          }
+        }
       }
     } else if (selectedNode?.kind === "note" || selectedNode?.kind === "group") {
       if (field === "color") {
@@ -332,6 +415,22 @@ export function CanvasInspector({
                 </div>
 
                 <div className="form-group">
+                  <label>Tipo de Grupo Inteligente</label>
+                  <select
+                    value={selectedNode.groupType || "custom"}
+                    onChange={(e) => updateCanvasNode(canvasId, selectedNode.id, { groupType: e.target.value })}
+                    className="form-select"
+                  >
+                    <option value="custom">Personalizado (Sólo visual)</option>
+                    <option value="location">📍 Ubicación (Zona, Región, Ciudad)</option>
+                    <option value="faction">🛡️ Facción / Organización</option>
+                    <option value="arc">🎭 Arco Narrativo / Acto</option>
+                    <option value="session">🚀 Sesión de Juego</option>
+                    <option value="mystery">🔍 Conspiración / Misterio</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
                   <label>Color del marco</label>
                   <select
                     value={selectedNode.color || "purple"}
@@ -352,6 +451,81 @@ export function CanvasInspector({
                     className="btn btn-secondary btn-sm text-critical btn-block"
                   >
                     <Trash2 size={14} /> Eliminar grupo
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* Fact Node Info */}
+            {selectedNode.kind === "fact" && (
+              <>
+                <div className="inspector-badge-row">
+                  <span className="badge badge-secondary">Hecho narrativo</span>
+                  {!fact && <span className="badge badge-warning">Sin resolver</span>}
+                </div>
+
+                <div className="form-group">
+                  <label>Declaración</label>
+                  <textarea
+                    value={factStatement}
+                    onChange={(e) => setFactStatement(e.target.value)}
+                    onBlur={async () => {
+                      if (fact && factStatement !== fact.statement) {
+                        await updateFact(fact.factId, { statement: factStatement });
+                        if (addToast) addToast("Hecho actualizado.", "success");
+                      }
+                    }}
+                    rows={4}
+                    className="form-textarea"
+                    placeholder="Escribe la declaración del hecho..."
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Tipo epistémico</label>
+                  <select
+                    value={factKind}
+                    onChange={async (e) => {
+                      setFactKind(e.target.value);
+                      if (fact) await updateFact(fact.factId, { kind: e.target.value });
+                    }}
+                    className="form-select"
+                  >
+                    <option value="canon">Canon</option>
+                    <option value="dm_secret">Secreto DM</option>
+                    <option value="rumor">Rumor</option>
+                    <option value="lie">Mentira</option>
+                    <option value="player_theory">Teoría de jugador</option>
+                    <option value="mistake">Error</option>
+                    <option value="retcon">Retcon</option>
+                    <option value="unknown">Desconocido</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Confianza</label>
+                  <select
+                    value={factConfidence}
+                    onChange={async (e) => {
+                      setFactConfidence(e.target.value);
+                      if (fact) await updateFact(fact.factId, { confidence: e.target.value });
+                    }}
+                    className="form-select"
+                  >
+                    <option value="unconfirmed">Sin confirmar</option>
+                    <option value="suspected">Sospechado</option>
+                    <option value="likely">Probable</option>
+                    <option value="confirmed">Confirmado</option>
+                    <option value="false">Falso</option>
+                  </select>
+                </div>
+
+                <div className="inspector-actions">
+                  <button
+                    onClick={() => removeNodeFromCanvas(canvasId, selectedNodeId!).then(onClose)}
+                    className="btn btn-secondary btn-sm text-critical btn-block"
+                  >
+                    <Trash2 size={14} /> Quitar del canvas
                   </button>
                 </div>
               </>
@@ -436,11 +610,21 @@ export function CanvasInspector({
                     <label>Visibilidad</label>
                     <select
                       value={entity.visibility?.kind || "dm_only"}
-                      onChange={(e) => handleNodeSelectChange("visibility", e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === "players") {
+                          const firstPlayerId = campaignState?.players?.[0]?.playerId;
+                          const playerIds = firstPlayerId ? [firstPlayerId] : [];
+                          handleNodeSelectChange("visibility_full", { kind: "players", playerIds });
+                        } else {
+                          handleNodeSelectChange("visibility_full", { kind: val });
+                        }
+                      }}
                       className="form-select"
                     >
-                      <option value="dm_only">Solo DM (Oculto)</option>
-                      <option value="public">Público (Revelado)</option>
+                      <option value="dm_only">🔒 Solo DM (Secreto)</option>
+                      <option value="public">👁 Público (Revelado)</option>
+                      <option value="players">🕯 Parcial (Jugadores)</option>
                     </select>
                   </div>
                   <div className="form-group col">
@@ -458,6 +642,42 @@ export function CanvasInspector({
                   </div>
                 </div>
 
+                {entity.visibility?.kind === "players" && campaignState?.players && (
+                  <div className="form-group inspector-players-visibility" style={{ marginTop: "0px", marginBottom: "16px", padding: "10px", backgroundColor: "var(--bg-input)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
+                    <label style={{ fontSize: "11px", fontWeight: "700", color: "var(--text-muted)", marginBottom: "8px", display: "block", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                      Revelado a los jugadores:
+                    </label>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "140px", overflowY: "auto" }}>
+                      {campaignState.players.map((p: any) => {
+                        const currentIds = (entity.visibility as any).playerIds || [];
+                        const isChecked = currentIds.includes(p.playerId);
+                        return (
+                          <label key={p.playerId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--text-main)" }}>
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={async (e) => {
+                                let newIds = [...currentIds];
+                                if (e.target.checked) {
+                                  if (!newIds.includes(p.playerId)) {
+                                    newIds.push(p.playerId);
+                                  }
+                                } else {
+                                  newIds = newIds.filter((id: string) => id !== p.playerId);
+                                }
+                                await updateEntity(entity.entityId, {
+                                  visibility: { kind: "players", playerIds: newIds }
+                                });
+                              }}
+                            />
+                            {p.displayName || p.name}
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 <div className="form-group">
                   <label>Estado Narrativo</label>
                   <select
@@ -465,12 +685,165 @@ export function CanvasInspector({
                     onChange={(e) => handleNodeSelectChange("status", e.target.value)}
                     className="form-select"
                   >
-                    <option value="ready">Disponible / Activo</option>
-                    <option value="blocked">Bloqueado / Pendiente</option>
-                    <option value="resolved">Resuelto / Completado</option>
-                    <option value="archived">Archivado / Muerto</option>
+                    {entity.entityType === "npc" && (
+                      <>
+                        <option value="alive">👤 Vivo</option>
+                        <option value="dead">💀 Muerto</option>
+                        <option value="missing">❓ Desaparecido</option>
+                      </>
+                    )}
+                    {entity.entityType === "location" && (
+                      <>
+                        <option value="unvisited">🗺️ No Visitado</option>
+                        <option value="visited">👁️ Visitado</option>
+                        <option value="destroyed">💥 Destruido</option>
+                      </>
+                    )}
+                    {entity.entityType === "clue" && (
+                      <>
+                        <option value="unfound">🔍 No Encontrada</option>
+                        <option value="found">🕯️ Encontrada</option>
+                        <option value="interpreted">🧠 Interpretada</option>
+                      </>
+                    )}
+                    {entity.entityType === "quest" && (
+                      <>
+                        <option value="active">⚔️ Activa</option>
+                        <option value="completed">🏆 Completada</option>
+                        <option value="failed">❌ Fallida</option>
+                      </>
+                    )}
+                    {entity.entityType === "secret" && (
+                      <>
+                        <option value="hidden">🔒 Oculto</option>
+                        <option value="hinted">💡 Insinuado</option>
+                        <option value="revealed">👁️ Revelado</option>
+                      </>
+                    )}
+                    {!["npc", "location", "clue", "quest", "secret"].includes(entity.entityType) && (
+                      <>
+                        <option value="ready">Disponible / Activo</option>
+                        <option value="blocked">Bloqueado / Pendiente</option>
+                        <option value="resolved">Resuelto / Completado</option>
+                      </>
+                    )}
                   </select>
                 </div>
+
+                {entity.entityType === "scene" && (
+                  <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px", marginTop: "12px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                    <h3 style={{ fontSize: "11px", fontWeight: "700", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0" }}>
+                      Preparación de Escena:
+                    </h3>
+                    <div className="form-group">
+                      <label>Objetivo Dramático</label>
+                      <input
+                        type="text"
+                        value={dramaticObjective}
+                        onChange={(e) => setDramaticObjective(e.target.value)}
+                        onBlur={handleDramaticObjectiveBlur}
+                        className="form-input"
+                        placeholder="Ej. Descubrir la entrada secreta..."
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Complicaciones</label>
+                      <textarea
+                        value={complications}
+                        onChange={(e) => setComplications(e.target.value)}
+                        onBlur={handleComplicationsBlur}
+                        rows={2}
+                        className="form-textarea"
+                        placeholder="Ej. El nivel del agua sube, los guardias patrullan..."
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Consecuencias</label>
+                      <textarea
+                        value={consequences}
+                        onChange={(e) => setConsequences(e.target.value)}
+                        onBlur={handleConsequencesBlur}
+                        rows={2}
+                        className="form-textarea"
+                        placeholder="Ej. Alerta general, pérdida de reputación..."
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {entity.entityType === "secret" && campaignState?.entities && (
+                  <div className="form-group" style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px", marginTop: "12px" }}>
+                    <label style={{ fontSize: "11px", fontWeight: "700", color: "var(--text-muted)", marginBottom: "8px", display: "block", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                      Anclas de Revelación:
+                    </label>
+                    <div className="text-muted" style={{ fontSize: "11px", marginBottom: "8px" }}>
+                      Elige qué elementos de la campaña disparan la revelación de este secreto.
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "150px", overflowY: "auto", padding: "8px", backgroundColor: "var(--bg-input)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
+                      {campaignState.entities
+                        .filter((e: any) => !e.archived && e.entityId !== entity.entityId && ["clue", "location", "npc"].includes(e.entityType))
+                        .map((e: any) => {
+                          const currentAnchors = entity.metadata?.revelationAnchors || [];
+                          const isChecked = currentAnchors.includes(e.entityId);
+                          return (
+                            <label key={e.entityId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--text-main)" }}>
+                              <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={async (event) => {
+                                  let newAnchors = [...currentAnchors];
+                                  if (event.target.checked) {
+                                    if (!newAnchors.includes(e.entityId)) {
+                                      newAnchors.push(e.entityId);
+                                    }
+                                  } else {
+                                    newAnchors = newAnchors.filter((id: string) => id !== e.entityId);
+                                  }
+                                  const metadata = { ...entity.metadata, revelationAnchors: newAnchors };
+                                  await updateEntity(entity.entityId, { metadata });
+                                }}
+                              />
+                              <span style={{ opacity: 0.65, fontSize: "10px" }}>
+                                {e.entityType === "npc" ? "👤" : e.entityType === "location" ? "🗺️" : "🔎"}
+                              </span>
+                              {e.title}
+                            </label>
+                          );
+                        })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Group assignment */}
+                {(() => {
+                  const groups = canvas?.nodes?.filter((n: any) => n.kind === "group") ?? [];
+                  if (groups.length === 0) return null;
+                  const currentGroupId = selectedNode?.groupId ?? selectedNode?.parentId ?? "";
+                  return (
+                    <div className="form-group" style={{ marginTop: "12px" }}>
+                      <label>Grupo</label>
+                      <select
+                        className="form-select"
+                        value={currentGroupId}
+                        onChange={async (e) => {
+                          const newGroupId = e.target.value || null;
+                          await updateCanvasNodesLayout(canvasId, [{
+                            nodeId: selectedNode!.id,
+                            x: selectedNode!.x ?? 0,
+                            y: selectedNode!.y ?? 0,
+                            groupId: newGroupId,
+                            parentId: null,
+                          }]);
+                        }}
+                      >
+                        <option value="">Sin grupo</option>
+                        {groups.map((g: any) => (
+                          <option key={g.id} value={g.id}>{g.title || "Grupo"}</option>
+                        ))}
+                      </select>
+                    </div>
+                  );
+                })()}
 
                 <div className="inspector-actions">
                   {onOpenDetail && (
