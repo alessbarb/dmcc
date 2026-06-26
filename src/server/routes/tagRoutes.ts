@@ -62,4 +62,59 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
       }
     }
   );
+
+  server.post<{ Params: { campaignId: string; entityId: string }; Body: { tagId: string } }>(
+    "/api/campaigns/:campaignId/entities/:entityId/tags",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { entityId } = request.params;
+      const { tagId } = request.body;
+
+      if (!tagId || tagId.trim() === "") {
+        reply.code(400);
+        return { error: "tagId is required" };
+      }
+
+      try {
+        await getRepository(vaultId).executeCommand(campaignId as any, {
+          type: "AddTagToEntity",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          entityId: entityId as any,
+          tagId,
+        });
+        reply.code(201);
+        return { ok: true, entityId, tagId };
+      } catch (err: any) {
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  server.delete<{ Params: { campaignId: string; entityId: string; tagId: string } }>(
+    "/api/campaigns/:campaignId/entities/:entityId/tags/:tagId",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { entityId, tagId } = request.params;
+
+      try {
+        await getRepository(vaultId).executeCommand(campaignId as any, {
+          type: "RemoveTagFromEntity",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          entityId: entityId as any,
+          tagId,
+        });
+        return { ok: true, entityId, tagId };
+      } catch (err: any) {
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
 }

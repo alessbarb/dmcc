@@ -170,7 +170,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const playerId = request.headers["x-player-id"] as string;
+      let playerId = request.headers["x-player-id"] as string | undefined;
 
       try {
         const repo = getRepository(vaultId);
@@ -182,6 +182,16 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           (server as any).playerTokens,
           campaignId
         );
+
+        // If authenticated via player token, derive playerId from token session
+        // to prevent a player from spoofing another player's x-player-id header
+        if (role === "player") {
+          const playerToken = request.headers["x-player-token"] as string;
+          const tokenSession = (server as any).playerTokens?.get(playerToken);
+          if (tokenSession?.playerId) {
+            playerId = tokenSession.playerId;
+          }
+        }
 
         if (role === "unauthenticated") {
           // Fall back to old access-code-based check for non-token requests
