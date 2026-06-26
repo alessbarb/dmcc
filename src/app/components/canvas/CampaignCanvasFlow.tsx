@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
-  Controls,
+  MiniMap,
   Background,
   MarkerType,
 } from "reactflow";
@@ -10,7 +10,8 @@ import type {
   ReactFlowInstance,
   Edge,
   Node,
-  Connection
+  Connection,
+  XYPosition,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { useCampaignStore } from "../../stores/campaignStore.js";
@@ -18,6 +19,8 @@ import { CanvasEntityNode } from "./CanvasEntityNode.js";
 import { CanvasNoteNode } from "./CanvasNoteNode.js";
 import { CanvasGroupNode } from "./CanvasGroupNode.js";
 import { RelationshipTypePopover } from "./RelationshipTypePopover.js";
+import { CanvasToolbar } from "./CanvasToolbar.js";
+import type { InteractionMode } from "./CanvasToolbar.js";
 
 // Register custom node types
 const nodeTypes = {
@@ -34,24 +37,39 @@ export interface CampaignCanvasFlowProps {
   onSelectNode: (nodeId: string) => void;
   onSelectEdge: (edgeId: string) => void;
   onClearSelection: () => void;
+  interactionMode: InteractionMode;
+  isLocked: boolean;
+  showMinimap: boolean;
+  onModeChange: (mode: InteractionMode) => void;
+  onLockChange: (locked: boolean) => void;
+  onMinimapToggle: () => void;
 }
 
 export function CampaignCanvasFlow({
   canvasId,
   canvas,
-  selectedNodeId: _selectedNodeId,
+  selectedNodeId,
   selectedEdgeId,
   onSelectNode,
   onSelectEdge,
-  onClearSelection
+  onClearSelection,
+  interactionMode,
+  isLocked,
+  showMinimap,
+  onModeChange,
+  onLockChange,
+  onMinimapToggle,
 }: CampaignCanvasFlowProps) {
   const {
     campaignState,
     updateCanvasNodesLayout,
     addEdgeToCanvas,
     placeNodeOnCanvas,
+    createEntity,
     saveViewport
   } = useCampaignStore();
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   
@@ -97,22 +115,36 @@ export function CampaignCanvasFlow({
     return (canvas.edges || []).map((edge: any) => {
       const isSecret = edge.style === "secret";
       const isDashed = edge.style === "dashed";
-      
-      // Determine stroke styles
-      let strokeColor = "#94a3b8"; // Slate color
+      const isStrong = edge.style === "strong";
+      const isWeak   = edge.style === "weak";
+
+      let strokeColor = "hsl(220, 20%, 40%)";
       let strokeWidth = 1.5;
-      let strokeDasharray = undefined;
+      let strokeDasharray: string | undefined;
+      let filter: string | undefined;
 
       if (isSecret) {
-        strokeColor = "#ef4444"; // Red secret connection
-        strokeDasharray = "3,3";
+        strokeColor = "#ef4444";
+        strokeWidth = 1.5;
+        strokeDasharray = "4 3";
+        filter = "drop-shadow(0 0 3px rgba(239,68,68,0.5))";
       } else if (isDashed) {
-        strokeDasharray = "5,5";
-      } else if (edge.style === "strong") {
+        strokeColor = "hsl(220, 20%, 50%)";
+        strokeDasharray = "6 4";
+      } else if (isStrong) {
         strokeWidth = 3;
-      } else if (edge.style === "weak") {
+        strokeColor = "hsl(220, 30%, 65%)";
+        filter = "drop-shadow(0 0 4px rgba(148,163,184,0.35))";
+      } else if (isWeak) {
         strokeWidth = 1;
-        strokeColor = "#cbd5e1";
+        strokeColor = "hsl(220, 15%, 30%)";
+      }
+
+      const isSelected = selectedEdgeId === edge.id;
+      if (isSelected) {
+        strokeColor = "hsl(255, 85%, 72%)";
+        filter = "drop-shadow(0 0 5px hsla(255, 85%, 65%, 0.6))";
+        strokeWidth = Math.max(strokeWidth, 2);
       }
 
       return {
@@ -121,26 +153,28 @@ export function CampaignCanvasFlow({
         target: edge.targetNodeId,
         label: edge.label,
         type: "smoothstep",
-        selected: selectedEdgeId === edge.id,
+        selected: isSelected,
         markerEnd: {
           type: MarkerType.ArrowClosed,
-          width: 15,
-          height: 15,
+          width: isStrong ? 18 : 14,
+          height: isStrong ? 18 : 14,
           color: strokeColor,
         },
         style: {
           stroke: strokeColor,
           strokeWidth,
           strokeDasharray,
+          filter,
         },
         labelStyle: {
-          fill: isSecret ? "#ef4444" : "#f1f5f9",
-          fontWeight: 500,
-          fontSize: "11px",
+          fill: isSecret ? "#f87171" : isSelected ? "hsl(255, 85%, 80%)" : "hsl(220, 20%, 75%)",
+          fontWeight: 600,
+          fontSize: "10px",
+          letterSpacing: "0.02em",
         },
         labelBgStyle: {
-          fill: "hsl(230, 25%, 11%)",
-          fillOpacity: 0.85,
+          fill: "hsl(230, 28%, 10%)",
+          fillOpacity: 0.9,
           rx: 4,
         },
         data: {
@@ -156,27 +190,72 @@ export function CampaignCanvasFlow({
   const [nodes, setNodes, onNodesChange] = useNodesState(flowNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(flowEdges);
 
-  // Keep local nodes state in sync when canvas updates externally (e.g. from reload)
+  // Keep local nodes state in sync when canvas updates externally.
+  // Preserve React Flow selection state (needed for NodeResizer visibility).
   useEffect(() => {
-    setNodes(flowNodes);
-  }, [flowNodes, setNodes]);
+    setNodes(prev => {
+      const rfSelectedIds = new Set(prev.filter(n => n.selected).map(n => n.id));
+      return flowNodes.map(n => ({
+        ...n,
+        selected: rfSelectedIds.has(n.id) || n.id === selectedNodeId,
+      }));
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flowNodes, selectedNodeId]);
 
   useEffect(() => {
     setEdges(flowEdges);
   }, [flowEdges, setEdges]);
 
-  // Handle node drag stop: commit positions in bulk to backend
-  const onNodeDragStop = useCallback((event: React.MouseEvent, node: Node, draggedNodes: Node[]) => {
-    const updates = draggedNodes.map((n) => ({
-      nodeId: n.id,
-      x: Math.round(n.position.x),
-      y: Math.round(n.position.y),
-    }));
-    updateCanvasNodesLayout(canvasId, updates);
-  }, [canvasId, updateCanvasNodesLayout]);
+  // --- Group-snap helper ---
+  const CARD_W = 162;
+  const CARD_H = 190;
 
-  const onSelectionDragStop = useCallback((event: React.MouseEvent, nodes: Node[]) => {
-    const updates = nodes.map((n) => ({
+  /** Returns group whose bounds contain the center of the dropped card, or null. */
+  const findContainingGroup = useCallback((absPos: XYPosition, allNodes: Node[]): Node | null => {
+    for (const g of allNodes) {
+      if (g.type !== "group") continue;
+      const gx = g.position.x;
+      const gy = g.position.y;
+      const gw = (g.style?.width as number | undefined) ?? g.width ?? 300;
+      const gh = (g.style?.height as number | undefined) ?? g.height ?? 200;
+      const cx = absPos.x + CARD_W / 2;
+      const cy = absPos.y + CARD_H / 2;
+      if (cx > gx && cx < gx + gw && cy > gy && cy < gy + gh) return g;
+    }
+    return null;
+  }, []);
+
+  // Handle node drag stop: commit positions and detect group membership
+  const onNodeDragStop = useCallback((_event: React.MouseEvent, _node: Node, draggedNodes: Node[]) => {
+    const updates = draggedNodes.map((n) => {
+      if (n.type !== "entity") {
+        return { nodeId: n.id, x: Math.round(n.position.x), y: Math.round(n.position.y) };
+      }
+
+      const absPos: XYPosition = {
+        x: n.positionAbsolute?.x ?? n.position.x,
+        y: n.positionAbsolute?.y ?? n.position.y,
+      };
+
+      const group = findContainingGroup(absPos, nodes);
+
+      if (group) {
+        return {
+          nodeId: n.id,
+          x: Math.round(absPos.x - group.position.x),
+          y: Math.round(absPos.y - group.position.y),
+          parentId: group.id,
+        };
+      }
+      return { nodeId: n.id, x: Math.round(absPos.x), y: Math.round(absPos.y), parentId: null };
+    });
+
+    updateCanvasNodesLayout(canvasId, updates);
+  }, [canvasId, nodes, updateCanvasNodesLayout, findContainingGroup]);
+
+  const onSelectionDragStop = useCallback((_event: React.MouseEvent, draggedNodes: Node[]) => {
+    const updates = draggedNodes.map((n) => ({
       nodeId: n.id,
       x: Math.round(n.position.x),
       y: Math.round(n.position.y),
@@ -270,15 +349,76 @@ export function CampaignCanvasFlow({
     }
   }, [rfInstance, canvasId, placeNodeOnCanvas]);
 
+  // --- Palette drag & drop ---
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const onDragOver = useCallback((e: React.DragEvent) => {
+    if (e.dataTransfer.types.includes("palette/kind")) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "copy";
+      setIsDragOver(true);
+    }
+  }, []);
+
+  const onDragLeave = useCallback((e: React.DragEvent) => {
+    // Only clear if leaving the whole wrapper (not just child elements)
+    if (!wrapperRef.current?.contains(e.relatedTarget as Node)) {
+      setIsDragOver(false);
+    }
+  }, []);
+
+  const onDrop = useCallback(async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+
+    const kind = e.dataTransfer.getData("palette/kind");
+    const entityType = e.dataTransfer.getData("palette/entityType");
+    const label = e.dataTransfer.getData("palette/label");
+    if (!kind || !rfInstance) return;
+
+    const bounds = wrapperRef.current!.getBoundingClientRect();
+    const pos = rfInstance.project({ x: e.clientX - bounds.left, y: e.clientY - bounds.top });
+    const x = Math.round(pos.x - CARD_W / 2);
+    const y = Math.round(pos.y - CARD_H / 2);
+
+    if (kind === "note") {
+      await placeNodeOnCanvas(canvasId, { kind: "note", text: "", color: "yellow", x, y });
+    } else if (kind === "group") {
+      await placeNodeOnCanvas(canvasId, { kind: "group", title: "Nuevo Grupo", color: "purple", x, y, width: 340, height: 220 });
+    } else if (kind === "entity" && entityType) {
+      const campaignId = campaignState?.campaign?.campaignId;
+      if (!campaignId) return;
+      try {
+        await createEntity({ entityType, title: `Nuevo ${label}`, status: "ready", importance: "normal", visibility: { kind: "dm_only" } });
+        const created = useCampaignStore.getState().campaignState?.entities?.slice(-1)[0];
+        if (created) {
+          await placeNodeOnCanvas(canvasId, { kind: "entity", entityId: created.entityId, x, y });
+        }
+      } catch (err) {
+        console.error("Drop create entity failed", err);
+      }
+    }
+  }, [rfInstance, canvasId, campaignState, placeNodeOnCanvas, createEntity]);
+
+  const isPanMode = interactionMode === "pan";
+
   return (
-    <div style={{ width: "100%", height: "100%" }} onDoubleClick={onPaneDoubleClick}>
+    <div
+      ref={wrapperRef}
+      style={{ width: "100%", height: "100%", cursor: isPanMode ? "grab" : "default" }}
+      className={isDragOver ? "canvas-drop-zone--active" : undefined}
+      onDoubleClick={onPaneDoubleClick}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onNodeDragStop={onNodeDragStop}
-        onSelectionDragStop={onSelectionDragStop} // for multiselection drags
+        onSelectionDragStop={onSelectionDragStop}
         onNodeClick={onNodeClick}
         onEdgeClick={onEdgeClick}
         onPaneClick={onPaneClick}
@@ -286,13 +426,39 @@ export function CampaignCanvasFlow({
         onMoveEnd={onMoveEnd}
         nodeTypes={nodeTypes}
         onInit={setRfInstance}
-        deleteKeyCode={["Backspace", "Delete"]}
+        deleteKeyCode={null}
         multiSelectionKeyCode="Shift"
         fitViewOptions={{ padding: 0.2 }}
         className="campaign-react-flow"
+        panOnDrag={isPanMode}
+        nodesDraggable={!isLocked && !isPanMode}
+        elementsSelectable={!isPanMode}
+        panOnScroll={false}
+        zoomOnDoubleClick={false}
       >
-        <Background color="#2a3342" gap={24} size={1} />
-        <Controls />
+        <Background color="hsl(230, 25%, 18%)" gap={28} size={0.8} />
+
+        <CanvasToolbar
+          canvasId={canvasId}
+          interactionMode={interactionMode}
+          isLocked={isLocked}
+          showMinimap={showMinimap}
+          onModeChange={onModeChange}
+          onLockChange={onLockChange}
+          onMinimapToggle={onMinimapToggle}
+        />
+
+        {showMinimap && (
+          <MiniMap
+            nodeColor={(n) => {
+              if (n.type === "note") return "#fef08a";
+              if (n.type === "group") return "rgba(124,58,237,0.3)";
+              return "hsl(230, 25%, 22%)";
+            }}
+            maskColor="rgba(10,12,20,0.75)"
+            style={{ background: "hsl(230, 28%, 10%)", border: "1px solid hsl(230,20%,20%)" }}
+          />
+        )}
       </ReactFlow>
 
       {/* Relationship Type Selection Dialog */}

@@ -8,6 +8,7 @@ export interface CanvasInspectorProps {
   selectedEdgeId: string | null;
   onClose: () => void;
   onOpenDetail?: (entityId: string) => void;
+  addToast?: (message: string, kind: "success" | "error" | "info" | "warning") => void;
 }
 
 export function CanvasInspector({
@@ -15,7 +16,8 @@ export function CanvasInspector({
   selectedNodeId,
   selectedEdgeId,
   onClose,
-  onOpenDetail
+  onOpenDetail,
+  addToast,
 }: CanvasInspectorProps) {
   const {
     campaignState,
@@ -46,6 +48,7 @@ export function CanvasInspector({
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [noteText, setNoteText] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   // Local form state for selected Edge
   const [edgeLabel, setEdgeLabel] = useState("");
@@ -59,6 +62,7 @@ export function CanvasInspector({
         setSubtitle(entity.subtitle || "");
         setSummary(entity.summary || "");
         setContent(entity.content || "");
+        setImageUrl((entity.metadata?.imageUrl as string) || "");
       } else if (selectedNode.kind === "note") {
         setNoteText(selectedNode.text || "");
         setTitle(selectedNode.title || "");
@@ -102,6 +106,18 @@ export function CanvasInspector({
   const handleNodeContentBlur = async () => {
     if (selectedNode?.kind === "entity" && entity && content !== entity.content) {
       await updateEntity(entity.entityId, { content });
+    }
+  };
+
+  const handleImageUrlBlur = async () => {
+    if (selectedNode?.kind === "entity" && entity) {
+      const trimmed = imageUrl.trim();
+      const current = (entity.metadata?.imageUrl as string) || "";
+      if (trimmed !== current) {
+        await updateEntity(entity.entityId, {
+          metadata: { ...entity.metadata, imageUrl: trimmed || undefined },
+        });
+      }
     }
   };
 
@@ -165,17 +181,52 @@ export function CanvasInspector({
   };
 
   const handleRemoveNode = async () => {
-    if (window.confirm("¿Quitar esta tarjeta del canvas? (La entidad seguirá existiendo en el archivo de campaña)")) {
+    if (window.confirm("¿Quitar esta tarjeta del canvas? (La entidad seguirá existiendo en el lore de la campaña)")) {
+      const entityId = entity?.entityId;
+      const entityTitle = entity?.title;
       await removeNodeFromCanvas(canvasId, selectedNodeId!);
       onClose();
+
+      if (entityId && addToast) {
+        const { canvasesById: updatedCanvases } = useCampaignStore.getState();
+        const isOnAnyCanvas = Object.values(updatedCanvases).some(
+          (c: any) => !c.archived && c.nodes?.some((n: any) => n.entityId === entityId)
+        );
+        if (!isOnAnyCanvas) {
+          addToast(
+            `"${entityTitle}" existe en el lore pero no está en ningún tablero visual.`,
+            "warning"
+          );
+        }
+      }
     }
   };
 
   const handleRemoveEdge = async () => {
-    if (window.confirm("¿Eliminar esta conexión?")) {
-      if (selectedEdge?.relationshipId) {
-        await archiveRelation(selectedEdge.relationshipId);
+    if (window.confirm("¿Quitar esta conexión del canvas? (La relación seguirá existiendo en el lore de la campaña)")) {
+      const relationshipId = selectedEdge?.relationshipId;
+      const edgeLabel = selectedEdge?.label;
+      await removeEdgeFromCanvas(canvasId, selectedEdgeId!);
+      onClose();
+
+      if (relationshipId && addToast) {
+        const { canvasesById: updatedCanvases } = useCampaignStore.getState();
+        const isInAnyCanvas = Object.values(updatedCanvases).some(
+          (c: any) => !c.archived && c.edges?.some((e: any) => e.relationshipId === relationshipId)
+        );
+        if (!isInAnyCanvas) {
+          addToast(
+            `La relación "${edgeLabel}" existe en el lore pero no está en ningún tablero visual.`,
+            "warning"
+          );
+        }
       }
+    }
+  };
+
+  const handleArchiveRelation = async () => {
+    if (selectedEdge?.relationshipId && window.confirm("¿Archivar esta relación del lore de la campaña permanentemente?")) {
+      await archiveRelation(selectedEdge.relationshipId);
       await removeEdgeFromCanvas(canvasId, selectedEdgeId!);
       onClose();
     }
@@ -252,7 +303,7 @@ export function CanvasInspector({
 
                 <div className="inspector-actions">
                   <button
-                    onClick={() => removeNodeFromCanvas(canvasId, selectedNodeId!)}
+                    onClick={handleRemoveNode}
                     className="btn btn-secondary btn-sm text-critical btn-block"
                   >
                     <Trash2 size={14} /> Eliminar nota
@@ -297,7 +348,7 @@ export function CanvasInspector({
 
                 <div className="inspector-actions">
                   <button
-                    onClick={() => removeNodeFromCanvas(canvasId, selectedNodeId!)}
+                    onClick={handleRemoveNode}
                     className="btn btn-secondary btn-sm text-critical btn-block"
                   >
                     <Trash2 size={14} /> Eliminar grupo
@@ -337,6 +388,23 @@ export function CanvasInspector({
                     className="form-input"
                     placeholder="Ej. Líder tribal, Cueva inundada..."
                   />
+                </div>
+
+                <div className="form-group">
+                  <label>Imagen / Retrato (URL)</label>
+                  <input
+                    type="url"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    onBlur={handleImageUrlBlur}
+                    className="form-input"
+                    placeholder="https://… o ruta local /assets/…"
+                  />
+                  {imageUrl && (
+                    <div className="inspector-image-preview">
+                      <img src={imageUrl} alt="preview" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -505,10 +573,19 @@ export function CanvasInspector({
             <div className="inspector-actions">
               <button
                 onClick={handleRemoveEdge}
-                className="btn btn-secondary btn-sm text-critical btn-block"
+                className="btn btn-secondary btn-sm text-warning btn-block"
               >
-                <Trash2 size={14} /> Eliminar conexión
+                <Trash2 size={14} /> Quitar del canvas
               </button>
+              {selectedEdge?.relationshipId && (
+                <button
+                  onClick={handleArchiveRelation}
+                  className="btn btn-secondary btn-sm text-critical btn-block"
+                  title="Elimina esta relación del lore de la campaña permanentemente"
+                >
+                  <Trash2 size={14} /> Archivar relación del lore
+                </button>
+              )}
             </div>
           </div>
         )}

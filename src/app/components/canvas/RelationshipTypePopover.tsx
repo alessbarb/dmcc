@@ -107,25 +107,19 @@ export function RelationshipTypePopover({
 
     let relationshipId: string | undefined;
 
-    // If making a real domain relationship
     if (status === "domain" && sourceEntity && targetEntity) {
       try {
         const relTypeVal = relationType === "custom" ? `custom:${customType}` : relationType;
-        const relId = `rel_${Math.random().toString(36).substr(2, 9)}`; // pre-generate
-        
-        // Execute createRelation command
-        await createRelation({
-          relationId: relId,
+        relationshipId = await createRelation({
           sourceEntityId: sourceEntity.entityId,
           targetEntityId: targetEntity.entityId,
           relationType: relTypeVal,
           description: description || undefined,
           visibility: { kind: visibilityKind }
         } as any);
-        
-        relationshipId = relId;
       } catch (err) {
         console.error("Failed to create domain relation", err);
+        return;
       }
     }
 

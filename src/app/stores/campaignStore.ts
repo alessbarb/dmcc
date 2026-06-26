@@ -194,7 +194,7 @@ export interface CampaignStateStore {
   setActiveCanvasId: (canvasId: string | null) => void;
   placeNodeOnCanvas: (canvasId: string, node: any) => Promise<void>;
   updateCanvasNode: (canvasId: string, nodeId: string, updates: any) => Promise<void>;
-  updateCanvasNodesLayout: (canvasId: string, nodeUpdates: Array<{ nodeId: string; x: number; y: number; width?: number; height?: number }>) => Promise<void>;
+  updateCanvasNodesLayout: (canvasId: string, nodeUpdates: Array<{ nodeId: string; x: number; y: number; width?: number; height?: number; parentId?: string | null }>) => Promise<void>;
   removeNodeFromCanvas: (canvasId: string, nodeId: string) => Promise<void>;
   addEdgeToCanvas: (canvasId: string, edge: any) => Promise<void>;
   updateCanvasEdge: (canvasId: string, edgeId: string, updates: any) => Promise<void>;
@@ -529,14 +529,19 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", relationId, ...rest })
       });
       if (res.status === 409) {
-        set({ error: `Duplicate relation: this exact connection already exists.`, loading: false });
-        return;
+        const message = "Duplicate relation: this exact connection already exists.";
+        set({ error: message, loading: false });
+        throw new Error(message);
       }
-      if (!res.ok) throw new Error("Failed to create relation");
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error || "Failed to create relation");
+      }
       await get().selectCampaign(activeCampaignId);
       return relationId;
     } catch (err: any) {
       set({ error: err.message, loading: false });
+      throw err;
     }
   },
 
@@ -994,6 +999,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
             y: update.y,
             ...(update.width !== undefined && { width: update.width }),
             ...(update.height !== undefined && { height: update.height }),
+            ...(update.parentId !== undefined && { parentId: update.parentId ?? undefined }),
           };
         }
         return n;

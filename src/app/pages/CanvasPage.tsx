@@ -5,6 +5,7 @@ import { CampaignCanvasFlow } from "../components/canvas/CampaignCanvasFlow.js";
 import { CanvasPalette } from "../components/canvas/CanvasPalette.js";
 import { CanvasInspector } from "../components/canvas/CanvasInspector.js";
 import { Plus, Layout, Folder } from "lucide-react";
+import type { InteractionMode } from "../components/canvas/CanvasToolbar.js";
 import { EntityDetailModal } from "../components/EntityDetailModal.js";
 import { useToast } from "../hooks/useToast.js";
 import { useParams } from "@tanstack/react-router";
@@ -59,6 +60,10 @@ export function CanvasPage() {
   
   const [detailEntityId, setDetailEntityId] = useState<string | null>(null);
 
+  const [interactionMode, setInteractionMode] = useState<InteractionMode>("select");
+  const [isLocked, setIsLocked] = useState(false);
+  const [showMinimap, setShowMinimap] = useState(false);
+
 
   const selectedEntityLocal = detailEntityId && campaignState ? campaignState.entities.find((e: any) => e.entityId === detailEntityId) : null;
 
@@ -71,6 +76,35 @@ export function CanvasPage() {
       setActiveCanvasId(canvases[0].id);
     }
   }, [canvases, activeCanvasId]);
+
+  // Warn about domain entities/relations not represented in any canvas
+  useEffect(() => {
+    if (!campaignState || canvases.length === 0) return;
+
+    const allNodes = canvases.flatMap((c: any) => c.nodes || []);
+    const allEdges = canvases.flatMap((c: any) => c.edges || []);
+
+    const orphanEntities = campaignState.entities.filter(
+      (e: any) => !e.archived && !allNodes.some((n: any) => n.entityId === e.entityId)
+    );
+    const orphanRelations = campaignState.relations.filter(
+      (r: any) => !r.archived && !allEdges.some((e: any) => e.relationshipId === r.relationId)
+    );
+
+    if (orphanEntities.length === 0 && orphanRelations.length === 0) return;
+
+    const parts: string[] = [];
+    if (orphanEntities.length > 0)
+      parts.push(`${orphanEntities.length} entidad${orphanEntities.length > 1 ? "es" : ""}`);
+    if (orphanRelations.length > 0)
+      parts.push(`${orphanRelations.length} relación${orphanRelations.length > 1 ? "es" : ""}`);
+
+    addToast(
+      `${parts.join(" y ")} del lore no están en ningún tablero visual.`,
+      "warning"
+    );
+  // Only run once when campaign data first fully loads, not on every re-render
+  }, [activeCampaignId]);
 
   const handleCreateBoard = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -202,6 +236,12 @@ export function CanvasPage() {
                   setSelectedNodeId(null);
                   setSelectedEdgeId(null);
                 }}
+                interactionMode={interactionMode}
+                isLocked={isLocked}
+                showMinimap={showMinimap}
+                onModeChange={setInteractionMode}
+                onLockChange={setIsLocked}
+                onMinimapToggle={() => setShowMinimap(v => !v)}
               />
             </ReactFlowProvider>
           </div>
@@ -218,6 +258,7 @@ export function CanvasPage() {
               onOpenDetail={(entityId) => {
                 setDetailEntityId(entityId);
               }}
+              addToast={addToast}
             />
           )}
         </div>
