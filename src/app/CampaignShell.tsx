@@ -5,6 +5,7 @@ import { ToastContainer } from "./components/ToastContainer.js";
 import { useToast } from "./hooks/useToast.js";
 import { EntityCreateModal } from "./components/EntityCreateModal.js";
 import { RelationCreateModal } from "./components/RelationCreateModal.js";
+import { AppFooter } from "./components/AppFooter.js";
 import {
   Shield,
   Activity,
@@ -18,7 +19,68 @@ import {
   BookOpen,
   ArrowLeft,
   Plus,
+  MapPin,
+  Flag,
 } from "lucide-react";
+
+type PageMeta = {
+  title: string;
+  eyebrow: string;
+  description: string;
+};
+
+const PAGE_META: Record<string, PageMeta> = {
+  dashboard: {
+    title: "Panel del DM",
+    eyebrow: "Centro de mando",
+    description: "Resumen operativo de la campaña, alertas y preparación de la próxima sesión.",
+  },
+  "what-now": {
+    title: "¿Qué toca?",
+    eyebrow: "Siguiente mejor acción",
+    description: "Prioriza escenas, pistas, consecuencias y decisiones que necesitan atención.",
+  },
+  session: {
+    title: "Sesión",
+    eyebrow: "Mesa en curso",
+    description: "Inicia, registra, revela pistas y cierra la sesión con trazabilidad.",
+  },
+  entities: {
+    title: "Entidades narrativas",
+    eyebrow: "Archivo vivo",
+    description: "Personajes, lugares, pistas, secretos, misiones y piezas de campaña.",
+  },
+  graph: {
+    title: "Grafo narrativo",
+    eyebrow: "Relaciones y secretos",
+    description: "Explora conexiones, visibilidad y cadenas narrativas entre nodos clave.",
+  },
+  timeline: {
+    title: "Línea temporal",
+    eyebrow: "Historial de campaña",
+    description: "Audita eventos, sesiones, cambios y revelaciones en orden cronológico.",
+  },
+  boards: {
+    title: "Tableros",
+    eyebrow: "Seguimiento visual",
+    description: "Organiza misiones, pistas, PNJs y frentes por estado narrativo.",
+  },
+  players: {
+    title: "Jugadores y personajes",
+    eyebrow: "Mesa y reparto",
+    description: "Gestiona jugadores, personajes y acceso visible para la mesa.",
+  },
+  search: {
+    title: "Búsqueda",
+    eyebrow: "Consulta rápida",
+    description: "Encuentra entidades, hechos y notas de campaña sin romper el ritmo.",
+  },
+  settings: {
+    title: "Ajustes y exportación",
+    eyebrow: "Administración",
+    description: "Configura campaña, exportaciones, copias y opciones de acceso local.",
+  },
+};
 
 export function CampaignShell() {
   const { campaignId } = useParams({ from: "/campaigns/$campaignId" });
@@ -60,21 +122,19 @@ export function CampaignShell() {
 
   const activeSession = campaignState?.sessions?.find(s => s.status === "active");
 
-  const getPageTitle = (segment: string) => {
-    switch (segment) {
-      case "dashboard": return "Panel del DM";
-      case "what-now": return "¿Qué toca?";
-      case "session": return "Sesión activa";
-      case "entities": return "Entidades narrativas";
-      case "graph": return "Grafo de relaciones";
-      case "timeline": return "Línea temporal";
-      case "boards": return "Tableros";
-      case "players": return "Jugadores y personajes";
-      case "search": return "Búsqueda";
-      case "settings": return "Ajustes y exportación";
-      default: return segment;
-    }
+  const pageMeta = PAGE_META[currentSegment] ?? {
+    title: currentSegment || "Campaña",
+    eyebrow: "Archivo de campaña",
+    description: "Gestiona la memoria narrativa y el estado actual de la campaña.",
   };
+
+  const currentLocation = campaignState?.campaign?.currentLocationId
+    ? campaignState.entities.find(e => e.entityId === campaignState.campaign?.currentLocationId)
+    : null;
+
+  const currentQuest = campaignState?.campaign?.currentQuestId
+    ? campaignState.entities.find(e => e.entityId === campaignState.campaign?.currentQuestId)
+    : null;
 
   return (
     <div className="app-container">
@@ -112,18 +172,43 @@ export function CampaignShell() {
 
       {/* Main Content Area */}
       <main className="main-content">
-        <div className="content-header">
-          <div className="current-page-title" style={{ textTransform: "capitalize" }}>
-            {getPageTitle(currentSegment)}
+        <header className="content-header">
+          <div className="page-heading">
+            <span className="page-eyebrow">{pageMeta.eyebrow}</span>
+            <div className="page-title-row">
+              <h1 className="page-title">{pageMeta.title}</h1>
+              {campaignState?.campaign?.system && (
+                <span className="page-system-pill">{campaignState.campaign.system}</span>
+              )}
+            </div>
+            <p className="page-description">{pageMeta.description}</p>
+
+            {(currentLocation || currentQuest) && (
+              <div className="page-context" aria-label="Contexto actual de campaña">
+                {currentLocation && (
+                  <span className="context-chip">
+                    <MapPin size={14} /> Ubicación: {currentLocation.title}
+                  </span>
+                )}
+                {currentQuest && (
+                  <span className="context-chip context-chip--primary">
+                    <Flag size={14} /> Misión: {currentQuest.title}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
-          <div className="top-bar-actions">
+          <div className="top-bar-actions header-actions">
             {activeSession ? (
               <span className="badge badge-success" style={{ padding: "8px 12px" }}>
-                Session #{activeSession.number || 1} Active: "{activeSession.title}"
+                Sesión #{activeSession.number || 1} activa: “{activeSession.title}”
               </span>
             ) : (
-              <button className="btn btn-primary btn-sm" onClick={() => startSession(`Session ${(campaignState?.sessions ?? []).length + 1}`)}>
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => startSession(`Sesión ${(campaignState?.sessions ?? []).length + 1}`)}
+              >
                 <Play size={14} /> Iniciar nueva sesión
               </button>
             )}
@@ -132,11 +217,13 @@ export function CampaignShell() {
               <Plus size={14} /> Nueva entidad
             </button>
           </div>
-        </div>
+        </header>
 
-        <div className="content-body" style={{ padding: "24px" }}>
+        <div className="content-body">
           <Outlet />
         </div>
+
+        <AppFooter />
       </main>
 
       {/* Modals */}
