@@ -3,7 +3,7 @@ export type PlayerCharacterSyncMode = "live_player_editable" | "dm_review_requir
 export type PlayerPortalVisibility = "private" | "dm_visible";
 export type PlayerPortalObjectiveKind = "personal" | "session" | "question_for_dm";
 export type PlayerPortalObjectiveStatus = "open" | "done" | "archived";
-export type PlayerCharacterProposalKind = "create_character" | "update_character_core";
+export type PlayerCharacterProposalKind = "create_character" | "update_character_core" | "link_request";
 export type PlayerCharacterProposalStatus = "pending" | "approved" | "rejected";
 export type PlayerPortalUpdatedBy = "player" | "dm";
 
