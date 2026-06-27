@@ -473,8 +473,26 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { state, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
         const body = request.body as any;
+
+        // Validate link_request target is a visible player_character
+        if (body.kind === "link_request") {
+          if (!body.targetCharacterEntityId) {
+            reply.code(400);
+            return { error: "link_request requires targetCharacterEntityId" };
+          }
+          const targetEntity = state.entities.get(body.targetCharacterEntityId);
+          if (
+            !targetEntity ||
+            (targetEntity as any).entityType !== "player_character" ||
+            (targetEntity as any).archived ||
+            !["party", "public"].includes((targetEntity as any).visibility?.kind)
+          ) {
+            reply.code(400);
+            return { error: "Target entity is not a visible player_character" };
+          }
+        }
 
         const proposalId = `pprop_${randomBytes(8).toString("hex")}`;
         const now = new Date().toISOString();
