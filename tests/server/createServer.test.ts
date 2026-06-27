@@ -1292,6 +1292,32 @@ describe("persistent campaign API", () => {
         });
         expect(resDM.statusCode).toBe(200);
         expect(resDM.json().accessCode).toBe(generatedCode);
+
+        const resDevOrigin = await server.inject({
+          method: "GET",
+          url: "/api/campaigns/cmp_lan/lan-status",
+          headers: {
+            "x-dm-token": getDmToken(server),
+            origin: "http://localhost:5173",
+          },
+        });
+        expect(resDevOrigin.statusCode).toBe(200);
+        expect(resDevOrigin.json().joinUrl).toContain(":5173/join/cmp_lan");
+      });
+    });
+
+    it("redirects dev LAN join requests from backend port to Vite UI port when the built SPA is absent", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+
+        const res = await server.inject({
+          method: "GET",
+          url: "/join/cmp_lan_dev",
+          headers: { host: "192.168.0.33:4877" },
+        });
+
+        expect(res.statusCode).toBe(302);
+        expect(res.headers.location).toBe("http://192.168.0.33:5173/join/cmp_lan_dev");
       });
     });
 
