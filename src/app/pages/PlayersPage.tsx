@@ -266,7 +266,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                       <p style={{ fontWeight: "700", fontSize: "1rem", color: "var(--text-main)" }}>{portalPlayer.displayName}</p>
                       <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
                         {portalPlayer.link?.characterEntityId
-                          ? `Personaje vinculado: ${portalPlayer.link.characterEntityId}`
+                          ? `Personaje vinculado: ${portalPlayer.linkedCharacter?.title ?? portalPlayer.link.characterEntityId}`
                           : "Sin personaje vinculado"}
                       </p>
                     </div>
@@ -348,7 +348,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                     </p>
                     {portalPlayer.link?.characterEntityId ? (
                       <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic" }}>
-                        Vinculado: {portalPlayer.link.characterEntityId}
+                        Vinculado: {portalPlayer.linkedCharacter?.title ?? portalPlayer.link.characterEntityId}
                       </p>
                     ) : (
                       <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>

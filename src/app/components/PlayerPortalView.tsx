@@ -161,12 +161,13 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   // ── Submit: Character/State ──────────────────────────────────────────────
   const handleCharSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!myCharacter) return;
+    const characterEntityId = myCharacter?.entityId ?? playerPortalState?.link?.characterEntityId;
+    if (!characterEntityId) return;
     await updatePlayerPortalStatus({
-      characterEntityId: myCharacter?.entityId,
-      hitPointsCurrent: parseInt(charForm.hitPointsCurrent) || 0,
-      hitPointsMax: parseInt(charForm.hitPointsMax) || 0,
-      armorClass: parseInt(charForm.armorClass) || 10,
+      characterEntityId,
+      hitPointsCurrent: parseInt(charForm.hitPointsCurrent, 10) || 0,
+      hitPointsMax: parseInt(charForm.hitPointsMax, 10) || 0,
+      armorClass: parseInt(charForm.armorClass, 10) || 10,
       inspiration: charForm.inspiration,
       conditions: charForm.conditions
         .split(",")
@@ -619,11 +620,11 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
           {/* ── TAB: Character / State ─────────────────────────────────────── */}
           {activeTab === "character" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-              {myCharacter && (
+              {(myCharacter || playerPortalState?.link) && (
                 <div className="card" style={{ padding: "20px" }}>
-                  <h3 style={{ fontWeight: "800", marginBottom: "4px" }}>{myCharacter.title}</h3>
+                  <h3 style={{ fontWeight: "800", marginBottom: "4px" }}>{myCharacter?.title ?? playerPortalState?.linkedCharacter?.title}</h3>
                   <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                    Nivel {myCharacter.metadata?.level ?? 1} {myCharacter.metadata?.species ?? ""} {myCharacter.metadata?.className ?? ""}
+                    Nivel {myCharacter?.metadata?.level ?? 1} {myCharacter?.metadata?.species ?? ""} {myCharacter?.metadata?.className ?? ""}
                   </p>
                 </div>
               )}
@@ -688,7 +689,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                   </div>
 
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <button type="submit" className="btn btn-primary btn-sm" disabled={!myCharacter}>
+                    <button type="submit" className="btn btn-primary btn-sm" disabled={!myCharacter && !playerPortalState?.link}>
                       Guardar Estado
                     </button>
                   </div>
