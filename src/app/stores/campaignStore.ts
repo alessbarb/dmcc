@@ -1064,7 +1064,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Failed to resolve player character proposal");
-      await get().loadDmPlayerPortalSummary();
+      await Promise.all([get().loadDmPlayerPortalSummary(), get().selectCampaign(activeCampaignId)]);
     } catch (err: any) {
       set({ error: err.message });
     }

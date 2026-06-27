@@ -825,7 +825,8 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerCharacterUnlinked", {
         campaignId: command.campaignId,
         playerId: command.playerId,
-        removedAt: command.removedAt,
+        characterEntityId: command.characterEntityId,
+        unlinkedAt: command.removedAt,
       }));
     }
     case "CreatePlayerCharacterProposal": {
