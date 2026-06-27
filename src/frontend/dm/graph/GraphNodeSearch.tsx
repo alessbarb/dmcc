@@ -1,6 +1,7 @@
 import Fuse from "fuse.js";
 import { memo, useEffect, useMemo, useRef, useState, useDeferredValue } from "react";
 import { Search, X } from "lucide-react";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 export type GraphSearchItem = {
   nodeId: string;
@@ -23,6 +24,7 @@ export const GraphNodeSearch = memo(function GraphNodeSearch({
   onSelectNode,
 }: GraphNodeSearchProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const { t } = useTranslation();
 
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -94,7 +96,7 @@ export const GraphNodeSearch = memo(function GraphNodeSearch({
         ref={inputRef}
         className="form-input graph-search__input"
         type="search"
-        placeholder="Buscar nodo por nombre, tipo, secreto, pista..."
+        placeholder={t("graph.searchPlaceholder")}
         value={query}
         onFocus={() => setIsOpen(true)}
         onChange={(event) => {
@@ -134,7 +136,7 @@ export const GraphNodeSearch = memo(function GraphNodeSearch({
         <button
           type="button"
           className="graph-search__clear"
-          aria-label="Limpiar búsqueda"
+          aria-label={t("graph.clearSearch")}
           onClick={() => {
             setQuery("");
             setIsOpen(false);

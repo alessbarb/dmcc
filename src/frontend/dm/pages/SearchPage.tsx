@@ -7,6 +7,8 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { formatEntityType } from "@shared/i18n/index.js";
 
 export interface SearchPageProps {
   campaignState?: any;
@@ -18,26 +20,13 @@ export interface SearchPageProps {
   setCurrentPage?: (page: string) => void;
 }
 
-const getEntityTypeLabel = (type: string) => {
-  const map: Record<string, string> = {
-    npc: "PNJ",
-    location: "Ubicación",
-    quest: "Misión",
-    clue: "Pista",
-    secret: "Secreto",
-    clock: "Reloj",
-    consequence: "Consecuencia",
-    player_character: "Personaje"
-  };
-  return map[type] || type;
-};
-
 export function SearchPage(props: SearchPageProps = {}) {
   const { campaignId } = useParams({ strict: false }) as any;
   const navigate = useNavigate();
   const store = useCampaignStore();
   const { updateEntity, archiveEntity } = store;
   const { addToast } = useToast();
+  const { locale, t } = useTranslation();
   const campaignState = props.campaignState ?? store.campaignState;
   const [searchQueryLocal, setSearchQueryLocal] = useState("");
   const [searchTypeFilterLocal, setSearchTypeFilterLocal] = useState("all");
@@ -114,14 +103,14 @@ export function SearchPage(props: SearchPageProps = {}) {
   return (<>
     <div>
       <div style={{ marginBottom: "24px" }}>
-        <h2 style={{ fontWeight: "700", fontSize: "1.4rem", marginBottom: "16px" }}>Búsqueda</h2>
+        <h2 style={{ fontWeight: "700", fontSize: "1.4rem", marginBottom: "16px" }}>{t("searchPage.title")}</h2>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
           <div style={{ position: "relative", flex: 1 }}>
             <Search size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)", pointerEvents: "none" }} />
             <input
               className="form-input"
               style={{ paddingLeft: "36px" }}
-              placeholder="Buscar en entidades y hechos..."
+              placeholder={t("searchPage.placeholder")}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               autoFocus
@@ -133,26 +122,28 @@ export function SearchPage(props: SearchPageProps = {}) {
             value={searchTypeFilter}
             onChange={e => setSearchTypeFilter(e.target.value)}
           >
-            <option value="all">Todos los tipos</option>
-            <option value="entity">Entidades</option>
-            <option value="fact">Hechos</option>
-            <option value="npc">PNJs</option>
-            <option value="location">Ubicaciones</option>
-            <option value="quest">Misiones</option>
-            <option value="clue">Pistas</option>
-            <option value="secret">Secretos</option>
-            <option value="player_character">Personajes</option>
+            <option value="all">{t("searchPage.allTypes")}</option>
+            <option value="entity">{t("searchPage.entities")}</option>
+            <option value="fact">{t("searchPage.facts")}</option>
+            <option value="npc">{formatEntityType("npc", locale)}</option>
+            <option value="location">{formatEntityType("location", locale)}</option>
+            <option value="quest">{formatEntityType("quest", locale)}</option>
+            <option value="clue">{formatEntityType("clue", locale)}</option>
+            <option value="secret">{formatEntityType("secret", locale)}</option>
+            <option value="player_character">{formatEntityType("player_character", locale)}</option>
           </select>
         </div>
         <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginTop: "8px" }}>
-          {results.length} resultado{results.length !== 1 ? "s" : ""}{searchQuery ? ` para "${searchQuery}"` : " (mostrando los primeros 50)"}
+          {searchQuery
+            ? t("searchPage.resultsFor", { count: results.length, query: searchQuery })
+            : t("searchPage.resultsFirst", { count: results.length })}
         </p>
       </div>
 
       {results.length === 0 ? (
         <div className="card" style={{ textAlign: "center", padding: "40px", color: "var(--text-muted)" }}>
           <Search size={48} style={{ opacity: 0.3, marginBottom: "16px" }} />
-          <p>Sin resultados. Intenta con un término diferente o elimina filtros.</p>
+          <p>{t("searchPage.noResults")}</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -183,7 +174,7 @@ export function SearchPage(props: SearchPageProps = {}) {
                   whiteSpace: "nowrap",
                   flexShrink: 0
                 }}>
-                  {item.kind === "fact" ? "hecho" : getEntityTypeLabel(item.entityType)}
+                  {item.kind === "fact" ? t("searchPage.factBadge") : formatEntityType(item.entityType, locale)}
                 </span>
 
                 {imgUrl && (

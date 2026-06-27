@@ -1,283 +1,250 @@
-import type { Locator, Page } from "@playwright/test";
-import { test, expect } from "@playwright/test";
-import { randomUUID } from "crypto";
+import { expect, test, type APIRequestContext, type APIResponse } from "@playwright/test";
+import { randomUUID } from "node:crypto";
 
-// title set in beforeAll so it's available across all tests in the same worker
-let CAMPAIGN_TITLE = "";
+type JsonObject = Record<string, any>;
 
-async function goHome(page: Page) {
-  await page.goto("/");
-  await expect(page.getByRole("heading", { name: "DM Campaign Companion" })).toBeVisible({
-    timeout: 10000,
-  });
-}
+const CAMPAIGN_ID = `cmp_e2e_${randomUUID().replace(/-/g, "").slice(0, 12)}`;
+const CAMPAIGN_TITLE = `E2E Release ${randomUUID().slice(0, 8)}`;
+const ACTOR_ID = "usr_dm";
+const NPC_ID = "ent_e2e_npc";
+const CLUE_ID = "ent_e2e_clue";
+const SECRET_ID = "ent_e2e_secret";
+const RELATION_ID = "rel_e2e_reveals";
+const SESSION_ID = "ses_e2e_01";
 
-async function openCampaign(page: Page, title: string) {
-  await page.getByRole("heading", { name: title, level: 3 }).click();
-  await expect(page.locator(".sidebar-logo")).toContainText(title, { timeout: 10000 });
-}
-
-async function clickNav(page: Page, text: string) {
-  await page.getByRole("navigation").getByText(text).click();
-}
-
-async function fillClueMetadata(modal: Locator) {
-  await modal.getByTestId("clue-content-input").fill(
-    "El mapa está manchado de sangre y revela una ruta oculta hacia las ruinas sumergidas.",
-  );
-}
-
-async function fillSecretMetadata(modal: Locator) {
-  await modal.getByTestId("secret-truth-input").fill(
-    "Lord Malvus no es un noble legítimo: es una identidad falsa usada por el líder del culto.",
-  );
-}
-
-async function createEntity(
-  page: Page,
-  entityType: string,
-  title: string,
-  fillSpecificFields?: (modal: Locator) => Promise<void>,
-) {
-  await page.getByRole("button", { name: "Nueva entidad" }).click();
-
-  const modal = page.locator(".modal-content");
-  await expect(modal).toBeVisible({ timeout: 5000 });
-
-  await modal.locator(".form-select").first().selectOption(entityType);
-  await modal.locator("input.form-input").first().fill(title);
-
-  if (fillSpecificFields) {
-    await fillSpecificFields(modal);
+async function readJson(response: APIResponse): Promise<JsonObject> {
+  try {
+    return await response.json();
+  } catch {
+    return { text: await response.text() };
   }
-
-  await modal.getByRole("button", { name: "Registrar" }).click();
-  await expect(modal).not.toBeVisible({ timeout: 10000 });
 }
 
-test.describe("Minimum flow", () => {
-  test.describe.configure({ mode: "serial" });
-
-  test.beforeAll(async ({ browser }) => {
-    CAMPAIGN_TITLE = `E2E Campaign ${randomUUID().slice(0, 8)}`;
-
-    const ctx = await browser.newContext();
-    const p = await ctx.newPage();
-
-    const res = await p.request.get("http://127.0.0.1:4877/api/health");
-    expect(res.ok()).toBeTruthy();
-
-    await ctx.close();
-  });
-
-  test("1. Create campaign", async ({ page }) => {
-    await goHome(page);
-
-    await page.getByPlaceholder("Ej: Las Sombras sobre Phandalin").fill(CAMPAIGN_TITLE);
-    await page.getByRole("button", { name: "Iniciar archivo de campaña" }).click();
-
-    await expect(page.locator(".sidebar-logo")).toContainText(CAMPAIGN_TITLE, {
-      timeout: 10000,
-    });
-  });
-
-  test("2. Add player", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Jugadores");
-
-    await page.getByRole("button", { name: "Añadir jugador" }).click();
-    await page.getByPlaceholder("Ej. Alicia").fill("Alice");
-    await page.getByPlaceholder("Apodo o alias mostrado en la app").fill("Alice the Brave");
-    await page.locator("form").getByRole("button", { name: "Añadir jugador" }).click();
-
-    await expect(page.getByText("Alice the Brave")).toBeVisible({ timeout: 5000 });
-  });
-
-  test("3. Create NPC (character entity)", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Entidades");
-    await createEntity(page, "npc", "Lord Malvus");
-    await expect(page.getByText("Lord Malvus")).toBeVisible({ timeout: 5000 });
-  });
-
-  test("4. Create clue", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Entidades");
-    await createEntity(page, "clue", "Bloodstained Map", fillClueMetadata);
-    await expect(page.getByText("Bloodstained Map")).toBeVisible({ timeout: 5000 });
-  });
-
-  test("5. Create secret", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Entidades");
-    await createEntity(page, "secret", "True Identity of Malvus", fillSecretMetadata);
-    await expect(page.getByText("True Identity of Malvus")).toBeVisible({ timeout: 5000 });
-  });
-
-  test("6. Create relation", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Grafo");
-
-    await page.getByRole("button", { name: "Nueva relación" }).click();
-
-    const modal = page.locator(".modal-content");
-    await expect(modal).toBeVisible({ timeout: 5000 });
-
-    const selects = modal.locator("select");
-
-    await selects.nth(0).selectOption({ label: "[npc] Lord Malvus" });
-    await selects.nth(2).selectOption({ label: "[clue] Bloodstained Map" });
-
-    await modal.getByRole("button", { name: /Registrar/i }).click();
-    await expect(modal).not.toBeVisible({ timeout: 8000 });
-  });
-
-  test("7. Start session", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Sesión");
-
-    await page.getByRole("button", { name: /Iniciar sesión/i }).click();
-    await expect(page.locator(".badge-success")).toBeVisible({ timeout: 5000 });
-  });
-
-  test("8. Reveal clue during session", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Sesión");
-
-    await page
-      .locator("[aria-label='Acciones de sesión']")
-      .getByRole("button", { name: "Revelar pista" })
-      .click();
-
-    await page.locator("#pista-select").selectOption({ label: "Bloodstained Map" });
-
-    const revealForm = page.locator("form").filter({ has: page.locator("#pista-select") });
-    await revealForm.getByRole("button", { name: "Revelar pista" }).click();
-
-    await expect(page.locator(".sidebar-logo")).toContainText(CAMPAIGN_TITLE);
-  });
-
-  test("9. Quick capture consequence", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Sesión");
-
-    await page
-      .locator("[aria-label='Acciones de sesión']")
-      .getByRole("button", { name: "Crear consecuencia" })
-      .click();
-
-    await page.locator("#cons-title").fill("Party chose to spare Lord Malvus");
-
-    const consequenceForm = page.locator("form").filter({ has: page.locator("#cons-title") });
-    await consequenceForm.getByRole("button", { name: "Crear consecuencia" }).click();
-
-    await expect(page.locator(".sidebar-logo")).toContainText(CAMPAIGN_TITLE);
-  });
-
-  test("10. Close session with summary", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Sesión");
-
-    await page
-      .locator("[aria-label='Acciones de sesión']")
-      .getByRole("button", { name: "Cerrar sesión" })
-      .click();
-
-    await page
-      .locator("#close-summary")
-      .fill("Party explored the sunken ruins and encountered Lord Malvus.");
-
-    const closeForm = page.locator("form").filter({ has: page.locator("#close-summary") });
-    await closeForm.getByRole("button", { name: "Cerrar sesión y guardar" }).click();
-
-    await expect(page.locator(".badge-success")).not.toBeVisible({ timeout: 8000 });
-    await expect(page.getByRole("button", { name: /Iniciar nueva sesión/i })).toBeVisible({
-      timeout: 5000,
-    });
-  });
-
-  test("11. Open Qué toca ahora", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "¿Qué toca?");
-
-    await expect(page.getByRole("heading", { name: /Ubicación actual/i })).toBeVisible({
-      timeout: 5000,
-    });
-  });
-
-  test("12. Search entities with Fuse.js", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Búsqueda");
-
-    await page.getByPlaceholder("Buscar en entidades y hechos...").fill("Malvus");
-    await expect(page.locator("text=Lord Malvus").first()).toBeVisible({ timeout: 5000 });
-  });
-
-  test("13. View boards", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Tableros");
-
-    await expect(page.getByRole("heading", { name: "Tableros", level: 1 })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Misiones" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Pistas" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "PNJs" })).toBeVisible();
-  });
-
-  test("14. Export Markdown", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Ajustes");
-
-    page.once("dialog", async (dialog) => {
-      await dialog.accept();
-    });
-
-    await page.getByRole("button", { name: /Exportar campaña completa a Markdown/i }).click();
-
-    await expect(page.locator(".sidebar-logo")).toContainText(CAMPAIGN_TITLE, {
-      timeout: 8000,
-    });
-  });
-
-  test("15. Create backup", async ({ page }) => {
-    await goHome(page);
-    await openCampaign(page, CAMPAIGN_TITLE);
-
-    await clickNav(page, "Ajustes");
-
-    page.once("dialog", async (dialog) => {
-      await dialog.accept();
-    });
-
-    await page.getByRole("button", { name: /Crear copia de seguridad/i }).click();
-
-    await expect(page.locator(".sidebar-logo")).toContainText(CAMPAIGN_TITLE, {
-      timeout: 5000,
-    });
+async function expectStatus(response: APIResponse, expected: number | number[]): Promise<JsonObject> {
+  const expectedStatuses = Array.isArray(expected) ? expected : [expected];
+  const body = await readJson(response);
+  expect(expectedStatuses, JSON.stringify(body, null, 2)).toContain(response.status());
+  return body;
+}
+
+async function dmHeaders(request: APIRequestContext): Promise<Record<string, string>> {
+  const response = await request.get("/api/auth/local-token");
+  const body = await expectStatus(response, 200);
+  expect(body.token).toEqual(expect.any(String));
+  return { "x-dm-token": body.token };
+}
+
+test.describe("Minimum release API flow", () => {
+  test("covers campaign, graph, canvas, player portal, rules, export and backup", async ({ request }) => {
+    const headers = await dmHeaders(request);
+
+    await expectStatus(await request.get("/api/health"), 200);
+
+    await expectStatus(
+      await request.post("/api/campaigns", {
+        headers,
+        data: {
+          campaignId: CAMPAIGN_ID,
+          actorId: ACTOR_ID,
+          title: CAMPAIGN_TITLE,
+          system: "generic_fantasy_d20",
+        },
+      }),
+      201,
+    );
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/entities`, {
+        headers,
+        data: {
+          actorId: ACTOR_ID,
+          entityId: NPC_ID,
+          entityType: "npc",
+          title: "Lord Malvus",
+          summary: "Cult leader hiding behind a noble identity.",
+          visibility: { kind: "dm_only" },
+        },
+      }),
+      201,
+    );
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/entities`, {
+        headers,
+        data: {
+          actorId: ACTOR_ID,
+          entityId: CLUE_ID,
+          entityType: "clue",
+          title: "Bloodstained Map",
+          summary: "A map that reveals the path to the sunken ruins.",
+          visibility: { kind: "party" },
+          metadata: { content: "The route is marked with a coded sigil." },
+        },
+      }),
+      201,
+    );
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/entities`, {
+        headers,
+        data: {
+          actorId: ACTOR_ID,
+          entityId: SECRET_ID,
+          entityType: "secret",
+          title: "True Identity of Malvus",
+          summary: "Malvus is an alias used by the cult leader.",
+          visibility: { kind: "dm_only" },
+          metadata: { truth: "His noble lineage is forged." },
+        },
+      }),
+      201,
+    );
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/relations`, {
+        headers,
+        data: {
+          actorId: ACTOR_ID,
+          relationId: RELATION_ID,
+          sourceEntityId: CLUE_ID,
+          targetEntityId: SECRET_ID,
+          relationType: "reveals",
+          description: "The clue points to the hidden truth.",
+          visibility: { kind: "dm_only" },
+        },
+      }),
+      201,
+    );
+
+    const graph = await expectStatus(
+      await request.get(`/api/campaigns/${CAMPAIGN_ID}/graph`, { headers }),
+      200,
+    );
+    expect(graph.nodes.map((node: JsonObject) => node.id)).toEqual(expect.arrayContaining([NPC_ID, CLUE_ID, SECRET_ID]));
+    expect(graph.edges.map((edge: JsonObject) => edge.id)).toContain(RELATION_ID);
+
+    const canvases = await expectStatus(
+      await request.get(`/api/campaigns/${CAMPAIGN_ID}/canvases`, { headers }),
+      200,
+    );
+    expect(canvases.length).toBeGreaterThan(0);
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/sessions`, {
+        headers,
+        data: {
+          actorId: ACTOR_ID,
+          sessionId: SESSION_ID,
+          title: "Session 1",
+        },
+      }),
+      201,
+    );
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/sessions/${SESSION_ID}/reveal-clue`, {
+        headers,
+        data: {
+          actorId: ACTOR_ID,
+          clueEntityId: CLUE_ID,
+          audience: { kind: "party" },
+          note: "The party reads the sigil and follows the map.",
+        },
+      }),
+      200,
+    );
+
+    const rulesCategories = await expectStatus(await request.get("/api/rules/categories"), 200);
+    expect(rulesCategories.categories.length).toBeGreaterThan(0);
+
+    const lan = await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/lan/toggle`, {
+        headers,
+        data: { enabled: true },
+      }),
+      200,
+    );
+    expect(lan.accessCode).toMatch(/^\d{6}$/);
+
+    const join = await expectStatus(
+      await request.post(`/api/join/${CAMPAIGN_ID}`, {
+        data: {
+          accessCode: lan.accessCode,
+          displayName: "E2E Player",
+        },
+      }),
+      200,
+    );
+    expect(join.playerToken).toEqual(expect.any(String));
+    expect(join.playerId).toEqual(expect.any(String));
+
+    const playerHeaders = { "x-player-token": join.playerToken as string };
+    const portalState = await expectStatus(
+      await request.get(`/api/campaigns/${CAMPAIGN_ID}/player-portal/state`, { headers: playerHeaders }),
+      200,
+    );
+    expect(portalState.playerId).toBe(join.playerId);
+
+    const playerCampaign = await expectStatus(
+      await request.get(`/api/campaigns/${CAMPAIGN_ID}`, { headers: playerHeaders }),
+      200,
+    );
+    expect(playerCampaign.players).toHaveLength(1);
+    expect(playerCampaign.players[0].playerId).toBe(join.playerId);
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/player-portal/resources`, {
+        headers: playerHeaders,
+        data: {
+          characterEntityId: NPC_ID,
+          label: "Inspiration",
+          current: 1,
+          max: 1,
+          recovery: "manual",
+        },
+      }),
+      201,
+    );
+
+    const jsonExport = await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/export/json`, { headers }),
+      201,
+    );
+    expect(jsonExport.path).toEqual(expect.stringContaining("exports"));
+
+    const markdownExport = await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/export/markdown`, { headers }),
+      201,
+    );
+    expect(markdownExport.downloadUrl).toEqual(expect.stringContaining(`/api/campaigns/${CAMPAIGN_ID}/exports/`));
+
+    const backup = await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/backups`, { headers }),
+      201,
+    );
+    expect(backup.backupId).toEqual(expect.stringMatching(/^backup_.*\.json$/));
+
+    const backups = await expectStatus(
+      await request.get(`/api/campaigns/${CAMPAIGN_ID}/backups`, { headers }),
+      200,
+    );
+    expect(backups.map((item: JsonObject) => item.backupId)).toContain(backup.backupId);
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/restore`, {
+        headers,
+        data: { backupId: backup.backupId },
+      }),
+      200,
+    );
+
+    const restoredCampaign = await expectStatus(
+      await request.get(`/api/campaigns/${CAMPAIGN_ID}`, { headers }),
+      200,
+    );
+    expect(restoredCampaign.campaign.title).toBe(CAMPAIGN_TITLE);
+    expect(restoredCampaign.entities.map((entity: JsonObject) => entity.entityId)).toEqual(
+      expect.arrayContaining([NPC_ID, CLUE_ID, SECRET_ID]),
+    );
   });
 });

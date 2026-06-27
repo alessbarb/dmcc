@@ -1,6 +1,7 @@
 import React from "react";
 import { Panel, useReactFlow } from "reactflow";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
+import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import {
   MousePointer2, Hand, BoxSelect, StickyNote, Frame, Maximize2,
   ZoomIn, ZoomOut, Map, Lock, Unlock, Target
@@ -29,6 +30,7 @@ export function CanvasToolbar({
 }: CanvasToolbarProps) {
   const { fitView, zoomIn, zoomOut, getNodes } = useReactFlow();
   const { placeNodeOnCanvas } = useCampaignStore();
+  const { t } = useTranslation();
 
   const handleAddNote = async () => {
     await placeNodeOnCanvas(canvasId, {
@@ -43,7 +45,7 @@ export function CanvasToolbar({
   const handleAddGroup = async () => {
     await placeNodeOnCanvas(canvasId, {
       kind: "group",
-      title: "Nuevo grupo",
+      title: t("canvas.toolbar.newGroup"),
       color: "purple",
       x: 200,
       y: 200,
@@ -60,21 +62,21 @@ export function CanvasToolbar({
           <button
             className={`canvas-toolbar__btn ${interactionMode === "select" ? "canvas-toolbar__btn--active" : ""}`}
             onClick={() => onModeChange("select")}
-            title="Seleccionar / Mover nodos (V)"
+            title={t("canvas.toolbar.selectMode")}
           >
             <MousePointer2 size={15} />
           </button>
           <button
             className={`canvas-toolbar__btn ${interactionMode === "pan" ? "canvas-toolbar__btn--active" : ""}`}
             onClick={() => onModeChange("pan")}
-            title="Mover cámara (H)"
+            title={t("canvas.toolbar.panMode")}
           >
             <Hand size={15} />
           </button>
           <button
             className={`canvas-toolbar__btn ${interactionMode === "multiselect" ? "canvas-toolbar__btn--active" : ""}`}
             onClick={() => onModeChange("multiselect")}
-            title="Selección múltiple — arrastra para seleccionar varios nodos (M)"
+            title={t("canvas.toolbar.multiSelectMode")}
           >
             <BoxSelect size={15} />
           </button>
@@ -87,14 +89,14 @@ export function CanvasToolbar({
           <button
             className="canvas-toolbar__btn"
             onClick={handleAddNote}
-            title="Añadir nota rápida (N)"
+            title={t("canvas.toolbar.quickNote")}
           >
             <StickyNote size={15} />
           </button>
           <button
             className="canvas-toolbar__btn"
             onClick={handleAddGroup}
-            title="Añadir grupo visual (G)"
+            title={t("canvas.toolbar.visualGroup")}
           >
             <Frame size={15} />
           </button>
@@ -107,7 +109,7 @@ export function CanvasToolbar({
           <button
             className="canvas-toolbar__btn"
             onClick={() => fitView({ padding: 0.25, duration: 400 })}
-            title="Ajustar vista / Ver todo (F)"
+            title={t("canvas.toolbar.fitView")}
           >
             <Maximize2 size={15} />
           </button>
@@ -121,28 +123,28 @@ export function CanvasToolbar({
                 fitView({ padding: 0.25, duration: 400 });
               }
             }}
-            title="Centrar selección (C)"
+            title={t("canvas.toolbar.focusSelection")}
           >
             <Target size={15} />
           </button>
           <button
             className="canvas-toolbar__btn"
             onClick={() => zoomIn({ duration: 200 })}
-            title="Acercar (+)"
+            title={t("canvas.toolbar.zoomIn")}
           >
             <ZoomIn size={15} />
           </button>
           <button
             className="canvas-toolbar__btn"
             onClick={() => zoomOut({ duration: 200 })}
-            title="Alejar (-)"
+            title={t("canvas.toolbar.zoomOut")}
           >
             <ZoomOut size={15} />
           </button>
           <button
             className={`canvas-toolbar__btn ${showMinimap ? "canvas-toolbar__btn--active" : ""}`}
             onClick={onMinimapToggle}
-            title="Minimapa"
+            title={t("canvas.toolbar.minimap")}
           >
             <Map size={15} />
           </button>
@@ -175,12 +177,12 @@ export function CanvasToolbar({
                     maxWidth: "90px",
                     outline: "none"
                   }}
-                  title="Enfocar grupo visual"
+                  title={t("canvas.toolbar.focusGroup")}
                 >
-                  <option value="" style={{ background: "var(--bg-card)", color: "var(--text-muted)" }}>📍 Enfocar...</option>
+                  <option value="" style={{ background: "var(--bg-card)", color: "var(--text-muted)" }}>{t("canvas.toolbar.focusPlaceholder")}</option>
                   {groups.map(g => (
                     <option key={g.id} value={g.id} style={{ background: "var(--bg-card)", color: "var(--text-main)" }}>
-                      {g.data?.title || "Grupo"}
+                      {g.data?.title || t("canvas.toolbar.groupFallback")}
                     </option>
                   ))}
                 </select>
@@ -196,7 +198,7 @@ export function CanvasToolbar({
           <button
             className={`canvas-toolbar__btn ${isLocked ? "canvas-toolbar__btn--active canvas-toolbar__btn--warning" : ""}`}
             onClick={() => onLockChange(!isLocked)}
-            title={isLocked ? "Desbloquear posiciones de nodos" : "Bloquear posiciones (modo presentación)"}
+            title={isLocked ? t("canvas.toolbar.unlockPositions") : t("canvas.toolbar.lockPositions")}
           >
             {isLocked ? <Lock size={15} /> : <Unlock size={15} />}
           </button>

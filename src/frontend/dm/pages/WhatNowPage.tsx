@@ -4,6 +4,7 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 export interface WhatNowPageProps {
   whatNow?: any;
@@ -20,6 +21,7 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
   const campaignState = props.campaignState ?? store.campaignState;
   const { updateCampaignSettings, updateEntity, archiveEntity } = store;
   const { addToast } = useToast();
+  const { t } = useTranslation();
   const [selectedEntity, setSelectedEntityLocal] = useState<any>(null);
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
   const setCurrentPage = props.setCurrentPage ?? ((page: string) => {
@@ -46,11 +48,10 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
 
   return (<>
     <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-      {/* 1. Ahora mismo & Última sesión */}
       <div>
-        <h2 style={{ fontWeight: "700" }}>¿Qué toca ahora?</h2>
+        <h2 style={{ fontWeight: "700" }}>{t("whatNowPage.title")}</h2>
         <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "2px" }}>
-          Resumen rápido y preparación mínima recomendada para tu partida de hoy.
+          {t("whatNowPage.subtitle")}
         </p>
       </div>
 
@@ -58,7 +59,7 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
         <section className="card" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           <div>
             <h3 style={{ fontWeight: "700", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontSize: "1rem" }}>
-              <MapPin size={18} style={{ color: "var(--secondary)" }} /> Ubicación actual
+              <MapPin size={18} style={{ color: "var(--secondary)" }} /> {t("whatNowPage.currentLocation")}
             </h3>
             {whatNow.currentLocation ? (
               <div>
@@ -66,12 +67,12 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
                   {whatNow.currentLocation.title}
                 </h4>
                 <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
-                  {whatNow.currentLocation.summary || "Sin resumen disponible."}
+                  {whatNow.currentLocation.summary || t("whatNowPage.noSummary")}
                 </p>
               </div>
             ) : (
               <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                No hay ninguna ubicación activa seleccionada en los ajustes.
+                {t("whatNowPage.noActiveLocation")}
               </p>
             )}
           </div>
@@ -80,7 +81,7 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
         <section className="card" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           <div>
             <h3 style={{ fontWeight: "700", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontSize: "1rem" }}>
-              <Shield size={18} style={{ color: "var(--primary)" }} /> Misión activa principal
+              <Shield size={18} style={{ color: "var(--primary)" }} /> {t("whatNowPage.currentQuest")}
             </h3>
             {whatNow.currentQuest ? (
               <div>
@@ -88,12 +89,12 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
                   {whatNow.currentQuest.title}
                 </h4>
                 <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
-                  {whatNow.currentQuest.summary || "Sin descripción de misión."}
+                  {whatNow.currentQuest.summary || t("whatNowPage.noQuestDescription")}
                 </p>
               </div>
             ) : (
               <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                No hay misión principal activa seleccionada en los ajustes.
+                {t("whatNowPage.noActiveQuest")}
               </p>
             )}
           </div>
@@ -102,20 +103,20 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
         <section className="card" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           <div>
             <h3 style={{ fontWeight: "700", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px", fontSize: "1rem" }}>
-              <Calendar size={18} style={{ color: "var(--color-info)" }} /> Última sesión
+              <Calendar size={18} style={{ color: "var(--color-info)" }} /> {t("whatNowPage.lastSession")}
             </h3>
             {whatNow.lastSession ? (
               <div>
                 <h4 style={{ fontWeight: "700", fontSize: "0.95rem", color: "var(--text-main)" }}>
-                  Sesión #{whatNow.lastSession.number}: {whatNow.lastSession.title}
+                  {t("whatNowPage.sessionTitle", { number: whatNow.lastSession.number, title: whatNow.lastSession.title })}
                 </h4>
                 <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
-                  {whatNow.lastSession.summary || "Sin resumen registrado."}
+                  {whatNow.lastSession.summary || t("whatNowPage.noSessionSummary")}
                 </p>
               </div>
             ) : (
               <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                No se han encontrado sesiones cerradas anteriormente.
+                {t("whatNowPage.noClosedSessions")}
               </p>
             )}
           </div>
@@ -123,10 +124,9 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
       </div>
 
       <div className="grid grid-cols-2" style={{ gap: "20px" }}>
-        {/* Preparación mínima checklist */}
         <section className="card">
           <h3 style={{ fontWeight: "700", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontSize: "1.05rem" }}>
-            <CheckSquare size={18} style={{ color: "var(--primary)" }} /> Preparación mínima (Lista de tareas)
+            <CheckSquare size={18} style={{ color: "var(--primary)" }} /> {t("whatNowPage.prepTitle")}
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {whatNow.preparationChecklist.map((c: any, i: number) => (
@@ -154,22 +154,21 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
                 />
                 <span style={{ fontSize: "0.88rem", flex: 1, color: "var(--text-main)" }}>{c.task}</span>
                 <span className={`badge ${c.priority === "high" ? "badge-critical" : "badge-default"}`} style={{ fontSize: "0.7rem" }}>
-                  {c.priority === "high" ? "alta" : c.priority === "normal" ? "normal" : c.priority === "low" ? "baja" : c.priority}
+                  {c.priority === "high" ? t("whatNowPage.priorityHigh") : c.priority === "normal" ? t("whatNowPage.priorityNormal") : c.priority === "low" ? t("whatNowPage.priorityLow") : c.priority}
                 </span>
               </label>
             ))}
           </div>
         </section>
 
-        {/* Riesgos de confusión / Auditoría */}
         <section className="card">
           <h3 style={{ fontWeight: "700", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontSize: "1.05rem" }}>
-            <AlertTriangle size={18} style={{ color: "var(--warning)" }} /> Riesgos de confusión (Alertas)
+            <AlertTriangle size={18} style={{ color: "var(--warning)" }} /> {t("whatNowPage.confusionRisks")}
           </h3>
           {whatNow.partialKnowledgeAlerts.length === 0 ? (
             <div style={{ padding: "16px", backgroundColor: "#06070e", borderRadius: "var(--radius-md)", border: "1px dashed var(--border-color)", textAlign: "center" }}>
               <p style={{ color: "var(--text-muted)", fontSize: "0.88rem" }}>
-                ¡Excelente! Toda la información revelada es de conocimiento común para el grupo.
+                {t("whatNowPage.noConfusionRisks")}
               </p>
             </div>
           ) : (
@@ -177,7 +176,7 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
               {whatNow.partialKnowledgeAlerts.map((ka: any, i: number) => (
                 <div key={i} style={{ padding: "12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", backgroundColor: "#1c1212" }}>
                   <span style={{ fontWeight: "700", display: "flex", alignItems: "center", gap: "6px", fontSize: "0.88rem", color: "var(--color-critical)" }}>
-                    <Info size={16} /> Conocimiento parcial
+                    <Info size={16} /> {t("whatNowPage.partialKnowledge")}
                   </span>
                   <p style={{ fontSize: "0.82rem", marginTop: "4px", color: "var(--text-main)" }}>{ka.message}</p>
                 </div>
@@ -188,38 +187,36 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
       </div>
 
       <div className="grid grid-cols-2" style={{ gap: "20px" }}>
-        {/* Pistas críticas & Secretos */}
         <section className="card">
           <h3 style={{ fontWeight: "700", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontSize: "1.05rem" }}>
-            <Eye size={18} style={{ color: "var(--secondary)" }} /> Pistas críticas y secretos ocultos
+            <Eye size={18} style={{ color: "var(--secondary)" }} /> {t("whatNowPage.criticalClues")}
           </h3>
           {whatNow.hiddenCriticalSecrets.length === 0 && whatNow.pendingClues.length === 0 ? (
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>No hay secretos críticos ni pistas pendientes.</p>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>{t("whatNowPage.noCriticalClues")}</p>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {whatNow.hiddenCriticalSecrets.map((s: any) => (
                 <div key={s.entityId} style={{ padding: "10px", backgroundColor: "var(--bg-input)", borderRadius: "var(--radius-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontWeight: "600", cursor: "pointer", fontSize: "0.88rem" }} onClick={() => setSelectedEntity(s)}>{s.title}</span>
-                  <span className="badge badge-critical" style={{ fontSize: "0.65rem" }}>Secreto Crítico</span>
+                  <span className="badge badge-critical" style={{ fontSize: "0.65rem" }}>{t("whatNowPage.criticalSecret")}</span>
                 </div>
               ))}
               {whatNow.pendingClues.map((c: any) => (
                 <div key={c.entityId} style={{ padding: "10px", backgroundColor: "var(--bg-input)", borderRadius: "var(--radius-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontWeight: "600", cursor: "pointer", fontSize: "0.88rem" }} onClick={() => setSelectedEntity(c)}>{c.title}</span>
-                  <span className="badge badge-warning" style={{ fontSize: "0.65rem" }}>Pista Preparada</span>
+                  <span className="badge badge-warning" style={{ fontSize: "0.65rem" }}>{t("whatNowPage.preparedClue")}</span>
                 </div>
               ))}
             </div>
           )}
         </section>
 
-        {/* Consecuencias listas */}
         <section className="card">
           <h3 style={{ fontWeight: "700", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontSize: "1.05rem" }}>
-            <Flame size={18} style={{ color: "var(--color-critical)" }} /> Consecuencias listas para detonar
+            <Flame size={18} style={{ color: "var(--color-critical)" }} /> {t("whatNowPage.readyConsequences")}
           </h3>
           {whatNow.unresolvedConsequences.length === 0 ? (
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>No hay consecuencias pendientes de ocurrir.</p>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>{t("whatNowPage.noPendingConsequences")}</p>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {whatNow.unresolvedConsequences.map((con: any) => (
@@ -228,7 +225,7 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
                     {con.title}
                   </h4>
                   <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "2px" }}>
-                    {con.summary || "Consecuencia narrativa pendiente de detonar."}
+                    {con.summary || t("whatNowPage.pendingConsequence")}
                   </p>
                 </div>
               ))}
@@ -237,13 +234,12 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
         </section>
       </div>
 
-      {/* Acciones rápidas de sesión */}
       {setCurrentPage && (
         <section className="card" style={{ border: "1px dashed var(--border-color)" }}>
-          <h3 style={{ fontWeight: "700", marginBottom: "12px", fontSize: "1rem" }}>Acciones rápidas</h3>
+          <h3 style={{ fontWeight: "700", marginBottom: "12px", fontSize: "1rem" }}>{t("whatNowPage.quickActions")}</h3>
           <div style={{ display: "flex", gap: "12px" }}>
             <button className="btn btn-primary" onClick={() => setCurrentPage("session")} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <Play size={16} /> Abrir Control de Sesión
+              <Play size={16} /> {t("whatNowPage.openSessionControl")}
             </button>
           </div>
         </section>

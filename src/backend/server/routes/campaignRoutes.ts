@@ -6,6 +6,7 @@ import { createId } from "@shared/ids.js";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
+import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
 import {
   assertDM,
   assertCampaignAccess,
@@ -13,6 +14,7 @@ import {
   getValidatedVaultId,
   getValidatedCampaignId,
   hashAccessCode,
+  hashPlayerToken,
 } from "../auth.js";
 import {
   getCharacterEntityIdForPlayer,
@@ -31,6 +33,20 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
   function getRepository(vaultId = "default") {
     return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
+  }
+
+  async function getPersistentTokenSession(
+    repo: CampaignRepository,
+    state: any,
+    campaignId: string,
+    rawToken: string | undefined
+  ): Promise<{ campaignId: string; playerId: string } | null> {
+    if (!rawToken) return null;
+    const events = await repo.loadEvents(campaignId as any);
+    const portal = buildPlayerPortalProjection(state, events as any);
+    const token = portal.tokensByHash.get(hashPlayerToken(rawToken));
+    if (!token || token.revokedAt || token.campaignId !== campaignId) return null;
+    return { campaignId, playerId: token.playerId };
   }
 
   // Health
@@ -209,17 +225,29 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         );
 
         // If authenticated via player token, derive playerId from token session
-        // to prevent a player from spoofing another player's x-player-id header
-        if (role === "player") {
-          const playerToken = request.headers["x-player-token"] as string;
-          const tokenSession = (server as any).playerTokens?.get(playerToken);
-          if (tokenSession?.playerId) {
-            playerId = tokenSession.playerId;
+        // to prevent a player from spoofing another player's x-player-id header.
+        // First use active in-memory LAN sessions, then fall back to persisted portal tokens.
+        const playerToken = request.headers["x-player-token"] as string | undefined;
+        let tokenSession = playerToken ? (server as any).playerTokens?.get(playerToken) : null;
+        if (!tokenSession && playerToken) {
+          tokenSession = await getPersistentTokenSession(repo, state, campaignId, playerToken);
+          if (tokenSession) {
+            (server as any).playerTokens?.set(playerToken, tokenSession);
+            role = "player";
           }
+        }
+        if (role === "player" && tokenSession?.playerId) {
+          playerId = tokenSession.playerId;
         }
 
         if (role === "unauthenticated") {
-          // Fall back to old access-code-based check for non-token requests
+          // Fall back to old access-code-based check for non-token requests.
+          // A presented but invalid player token must fail closed instead of falling back.
+          if (playerToken) {
+            const err = new Error("Unauthorized: Invalid player token");
+            (err as any).statusCode = 401;
+            throw err;
+          }
           role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken) as any;
         } else if (role !== "dm") {
           // Player authenticated via token — verify LAN mode is still enabled
@@ -353,11 +381,11 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   );
 
   // LAN Join — exchange access code for player token
-  server.post<{ Params: { campaignId: string }; Body: { accessCode: string; playerId?: string } }>(
+  server.post<{ Params: { campaignId: string }; Body: { accessCode: string; playerId?: string; displayName?: string } }>(
     "/api/join/:campaignId",
     async (request, reply) => {
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { accessCode, playerId } = request.body;
+      const { accessCode, playerId, displayName } = request.body;
       const vaultId = getValidatedVaultId(request);
 
       if (!accessCode) {
@@ -366,7 +394,8 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       }
 
       try {
-        const state = await getRepository(vaultId).getCampaignState(campaignId as any);
+        const repo = getRepository(vaultId);
+        let state = await repo.getCampaignState(campaignId as any);
 
         if (!state.campaign?.settings?.lanModeEnabled) {
           reply.code(403);
@@ -385,18 +414,47 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           return { error: "Invalid access code" };
         }
 
-        // Issue player token
-        const playerToken = randomBytes(24).toString("hex");
         const pid = playerId ?? `ply_${randomBytes(8).toString("hex")}`;
+        if (!state.players.has(pid as any)) {
+          await repo.executeCommand(campaignId as any, {
+            type: "CreatePlayerProfile",
+            campaignId: campaignId as any,
+            actorId: "usr_dm",
+            playerId: pid,
+            displayName: displayName?.trim() || "Player",
+            role: "player",
+            color: "#3b82f6",
+            imageUrl: "",
+          });
+          state = await repo.getCampaignState(campaignId as any);
+        }
+
+        const playerToken = randomBytes(24).toString("hex");
+        const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
+        await repo.executeCommand(campaignId as any, {
+          type: "IssuePlayerToken",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          playerId: pid,
+          tokenId,
+          tokenHash: hashPlayerToken(playerToken),
+          label: "LAN join",
+          createdAt: new Date().toISOString(),
+        });
+
         (server as any).playerTokens.set(playerToken, { campaignId, playerId: pid });
 
         return {
           playerToken,
           playerId: pid,
+          tokenId,
           campaignTitle: state.campaign.title,
         };
       } catch (err: any) {
-        if (err.statusCode) { reply.code(err.statusCode); return { error: err.message }; }
+        if (err.statusCode) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
         reply.code(404);
         return { error: "Campaign not found" };
       }

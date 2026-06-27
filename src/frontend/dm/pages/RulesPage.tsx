@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Search, Book, Sparkles, Shield, Swords, Wand, HelpCircle, Package, Footprints, Info } from "lucide-react";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { RULE_CATEGORY_IDS } from "@shared/rules/categories.js";
 
 interface RuleEntry {
   id: string;
@@ -10,24 +12,25 @@ interface RuleEntry {
 }
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
-  "Reglas de Juego": <Footprints size={16} />,
-  "Creación de Personajes": <Book size={16} />,
-  "Clases": <Shield size={16} />,
-  "Orígenes de Personajes": <Sparkles size={16} />,
-  "Dotes": <Sparkles size={16} />,
-  "Equipo": <Package size={16} />,
-  "Casteo de Conjuros": <Wand size={16} />,
-  "Conjuros": <Wand size={16} />,
-  "Glosario de Reglas": <HelpCircle size={16} />,
-  "Caja de Herramientas de Juego": <Package size={16} />,
-  "Objetos Mágicos": <Sparkles size={16} />,
-  "Monstruos": <Swords size={16} />,
-  "Animales y Bestias": <Swords size={16} />,
+  [RULE_CATEGORY_IDS.gameplay]: <Footprints size={16} />,
+  [RULE_CATEGORY_IDS.characterCreation]: <Book size={16} />,
+  [RULE_CATEGORY_IDS.classes]: <Shield size={16} />,
+  [RULE_CATEGORY_IDS.origins]: <Sparkles size={16} />,
+  [RULE_CATEGORY_IDS.feats]: <Sparkles size={16} />,
+  [RULE_CATEGORY_IDS.equipment]: <Package size={16} />,
+  [RULE_CATEGORY_IDS.spellcasting]: <Wand size={16} />,
+  [RULE_CATEGORY_IDS.spells]: <Wand size={16} />,
+  [RULE_CATEGORY_IDS.glossary]: <HelpCircle size={16} />,
+  [RULE_CATEGORY_IDS.toolbox]: <Package size={16} />,
+  [RULE_CATEGORY_IDS.magicItems]: <Sparkles size={16} />,
+  [RULE_CATEGORY_IDS.monsters]: <Swords size={16} />,
+  [RULE_CATEGORY_IDS.animalsAndBeasts]: <Swords size={16} />,
 };
 
 export function RulesPage() {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("Glosario de Reglas");
+  const [selectedCategory, setSelectedCategory] = useState<string>(RULE_CATEGORY_IDS.glossary);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [rules, setRules] = useState<RuleEntry[]>([]);
   const [selectedRule, setSelectedRule] = useState<RuleEntry | null>(null);
@@ -41,9 +44,8 @@ export function RulesPage() {
       .then(data => {
         if (data.categories) {
           setCategories(data.categories);
-          // Set initial category to rules glossary if present, else first category
-          if (data.categories.includes("Glosario de Reglas")) {
-            setSelectedCategory("Glosario de Reglas");
+          if (data.categories.includes(RULE_CATEGORY_IDS.glossary)) {
+            setSelectedCategory(RULE_CATEGORY_IDS.glossary);
           } else if (data.categories.length > 0) {
             setSelectedCategory(data.categories[0]);
           }
@@ -103,7 +105,7 @@ export function RulesPage() {
             type="text"
             className="form-input"
             style={{ paddingLeft: "32px", fontSize: "0.85rem", width: "100%" }}
-            placeholder="Buscar en el reglamento..."
+            placeholder={t("rules.searchInRules")}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
           />
@@ -111,7 +113,7 @@ export function RulesPage() {
 
         {/* Category Selector */}
         <div>
-          <label className="form-label" style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>CATEGORÍA</label>
+          <label className="form-label" style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>{t("rules.category")}</label>
           <select
             className="form-select"
             style={{ fontSize: "0.85rem", width: "100%" }}
@@ -129,9 +131,9 @@ export function RulesPage() {
         {/* Rules list */}
         <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", marginTop: "8px" }}>
           {loading ? (
-            <div style={{ textAlign: "center", padding: "20px", color: "var(--text-muted)" }}>Cargando reglas...</div>
+            <div style={{ textAlign: "center", padding: "20px", color: "var(--text-muted)" }}>{t("rules.loadingRules")}</div>
           ) : rules.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "20px", color: "var(--text-muted)" }}>No se encontraron coincidencias.</div>
+            <div style={{ textAlign: "center", padding: "20px", color: "var(--text-muted)" }}>{t("rules.noMatches")}</div>
           ) : (
             rules.map(rule => (
               <div
@@ -160,7 +162,7 @@ export function RulesPage() {
           )}
         </div>
         <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textAlign: "right" }}>
-          {totalCount} entradas en esta categoría
+          {t("rules.entriesInCategory", { count: totalCount })}
         </div>
       </div>
 
@@ -227,7 +229,7 @@ export function RulesPage() {
             gap: "10px"
           }}>
             <Info size={48} style={{ opacity: 0.3 }} />
-            <div>Selecciona una regla en el panel izquierdo para ver sus detalles</div>
+            <div>{t("rules.selectRule")}</div>
           </div>
         )}
       </div>

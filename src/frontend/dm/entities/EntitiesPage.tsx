@@ -4,6 +4,8 @@ import { getEntityDefaultImage } from "./entityVisuals.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { EntityDetailModal } from "./EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { formatEntityType, formatVisibility } from "@shared/i18n/index.js";
 
 export interface EntitiesPageProps {
   campaignState?: any;
@@ -16,27 +18,17 @@ export interface EntitiesPageProps {
   setIsEntityModalOpen?: (open: boolean) => void;
 }
 
-const getImportanceLabel = (imp: string) => {
-  const map: Record<string, string> = {
-    critical: "crítica",
-    high: "alta",
-    normal: "normal",
-    low: "baja"
-  };
-  return map[String(imp).toLowerCase()] || imp;
-};
+const ENTITY_TYPE_FILTERS = ["npc", "location", "quest", "clue", "secret", "clock", "consequence"] as const;
 
-const getEntityTypeLabel = (type: string) => {
+const getImportanceKey = (imp: string) => {
   const map: Record<string, string> = {
-    npc: "PNJ",
-    location: "Ubicación",
-    quest: "Misión",
-    clue: "Pista",
-    secret: "Secreto",
-    clock: "Reloj",
-    consequence: "Consecuencia"
+    critical: "dashboard.importanceCritical",
+    high: "dashboard.importanceHigh",
+    normal: "dashboard.importanceNormal",
+    medium: "dashboard.importanceMedium",
+    low: "dashboard.importanceLow",
   };
-  return map[type] || type;
+  return map[String(imp).toLowerCase()];
 };
 
 export function EntitiesPage(props: EntitiesPageProps = {}) {
@@ -44,6 +36,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
   const campaignState = props.campaignState ?? store.campaignState;
   const { updateEntity, archiveEntity } = store;
   const { addToast } = useToast();
+  const { locale, t } = useTranslation();
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
   const [entitySearchQueryLocal, setEntitySearchQueryLocal] = useState("");
@@ -63,7 +56,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
           <input
             type="text"
             className="form-input"
-            placeholder="Buscar entidades por título o resumen..."
+            placeholder={t("entitiesPage.searchPlaceholder")}
             style={{ paddingLeft: "38px" }}
             value={entitySearchQuery}
             onChange={(e) => setEntitySearchQuery(e.target.value)}
@@ -72,18 +65,14 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
 
         {/* Filters */}
         <select className="form-select" style={{ width: "180px" }} value={entityTypeFilter} onChange={(e) => setEntityTypeFilter(e.target.value)}>
-          <option value="all">Todos los tipos</option>
-          <option value="npc">PNJs</option>
-          <option value="location">Ubicaciones</option>
-          <option value="quest">Misiones</option>
-          <option value="clue">Pistas</option>
-          <option value="secret">Secretos</option>
-          <option value="clock">Relojes</option>
-          <option value="consequence">Consecuencias</option>
+          <option value="all">{t("entitiesPage.allTypes")}</option>
+          {ENTITY_TYPE_FILTERS.map((type) => (
+            <option key={type} value={type}>{formatEntityType(type, locale)}</option>
+          ))}
         </select>
 
         <button className="btn btn-primary" onClick={() => setIsEntityModalOpen(true)}>
-          <Plus size={16} /> Crear entidad
+          <Plus size={16} /> {t("entitiesPage.createEntity")}
         </button>
       </div>
 
@@ -179,7 +168,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
                             letterSpacing: "0.05em"
                           }}>
                             <EyeOff size={11} />
-                            <span>Solo DM</span>
+                            <span>{formatVisibility("dm_only", locale)}</span>
                           </div>
                         </>
                       )}
@@ -189,20 +178,20 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
                 <div style={{ padding: "20px", display: "flex", flexDirection: "column", flex: 1 }}>
                   <div className="card-header" style={{ marginBottom: "12px" }}>
                     <span className={`badge ${e.entityType === "secret" ? "badge-critical" : e.entityType === "clue" ? "badge-warning" : "badge-primary"}`}>
-                      {getEntityTypeLabel(e.entityType)}
+                      {formatEntityType(e.entityType, locale)}
                     </span>
                     <span className="badge badge-default">{e.status}</span>
                   </div>
                   <h3 className="card-title" style={{ fontSize: "1.05rem" }}>{e.title}</h3>
                   {e.subtitle && <h4 className="card-subtitle">{e.subtitle}</h4>}
                   <p className="card-body" style={{ marginTop: "8px", lineClamp: 2, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", flex: 1 }}>
-                    {e.summary || "Sin resumen."}
+                    {e.summary || t("entitiesPage.noSummary")}
                   </p>
                   <div className="card-footer" style={{ marginTop: "16px", paddingTop: "12px", borderTop: "1px solid var(--border-color)" }}>
-                    <span>Importancia: {getImportanceLabel(e.importance)}</span>
+                    <span>{t("entitiesPage.importance", { value: getImportanceKey(e.importance) ? t(getImportanceKey(e.importance)) : e.importance })}</span>
                     {e.visibility?.kind && (
                       <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                        <Eye size={12} /> {e.visibility.kind === "group" ? "Grupo" : e.visibility.kind === "dm_only" ? "Solo DM" : e.visibility.kind}
+                        <Eye size={12} /> {formatVisibility(e.visibility.kind, locale)}
                       </span>
                     )}
                   </div>

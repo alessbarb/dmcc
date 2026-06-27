@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "archive": "mkdir -p dist && git ls-files -z --cached --others --exclude-standard | tar --null -czf dist/dmcc.tar.gz --files-from=-",
-    "build": "vite build && tsc -p tsconfig.json",
+    "build": "vite build && tsc -p tsconfig.json && node scripts/fix-dist-imports.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -16,7 +16,7 @@
     "dev:server": "tsx watch src/backend/entry/index.ts",
     "dev:ui": "vite",
     "dev": "tsx watch src/backend/entry/index.ts & vite",
-    "start": "node dist/backend/entry/index.js",
+    "start": "node dist/src/backend/entry/index.js",
     "test:e2e": "playwright test",
     "quality:typecheck": "npm run typecheck:all",
     "quality:test": "npm test",
