@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { GitCommit, X } from "lucide-react";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 export interface RelationshipTypePopoverProps {
   canvasId: string;
@@ -28,6 +30,7 @@ export function RelationshipTypePopover({
   onSubmit,
   onCancel
 }: RelationshipTypePopoverProps) {
+  const { t } = useTranslation();
   const { createRelation } = useCampaignStore();
   const [relationType, setRelationType] = useState("");
   const [customType, setCustomType] = useState("");
@@ -62,8 +65,8 @@ export function RelationshipTypePopover({
       return [
         { value: "custom:controls", label: "la controla" },
         { value: "custom:blackmails", label: "la chantajea" },
-        { value: "works_for", label: "trabaja para él/ella" },
-        { value: "custom:hides_something", label: "oculta algo sobre él/ella" },
+        { value: "works_for", label: t("canvas.relationPopover.worksFor") },
+        { value: "custom:hides_something", label: t("canvas.relationPopover.hidesAbout") },
         { value: "ally_of", label: "aliado de" },
         { value: "enemy_of", label: "enemigo de" },
         { value: "member_of", label: "familia de" },
@@ -76,7 +79,7 @@ export function RelationshipTypePopover({
       return [
         { value: "points_to", label: "apunta a" },
         { value: "located_in", label: "se encuentra en" },
-        { value: "reveals", label: "revela información de" },
+        { value: "reveals", label: t("canvas.relationPopover.revealsInfo") },
       ];
     }
 
@@ -88,7 +91,7 @@ export function RelationshipTypePopover({
       { value: "causes", label: "causa" },
       { value: "contradicts", label: "contradice" },
       { value: "confirms", label: "confirma" },
-      { value: "located_in", label: "miembro de / está en" },
+      { value: "located_in", label: t("canvas.relationPopover.memberOf") },
       { value: "knows", label: "conoce" },
     ];
   };
@@ -240,7 +243,7 @@ export function RelationshipTypePopover({
                   <label>Descripción de la relación (opcional)</label>
                   <input
                     type="text"
-                    placeholder="Detalles sobre esta relación..."
+                    placeholder={t("canvas.relationPopover.detailsPlaceholder")}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     className="form-input"
