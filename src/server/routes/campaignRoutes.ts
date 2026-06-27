@@ -70,15 +70,28 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         try {
           const snap = JSON.parse(await fs.readFile(join(campaignsDir, dirName, "snapshot.json"), "utf8"));
           const campaign = snap?.projection?.campaign ?? snap?.campaign;
+          const entities = snap?.entities ?? snap?.projection?.entities ?? [];
+          const sessions = snap?.sessions ?? snap?.projection?.sessions ?? [];
+
+          const stats = {
+            npcsCount: entities.filter((e: any) => !e.archived && e.entityType === "npc").length,
+            locationsCount: entities.filter((e: any) => !e.archived && e.entityType === "location").length,
+            questsCount: entities.filter((e: any) => !e.archived && e.entityType === "quest").length,
+            secretsCount: entities.filter((e: any) => !e.archived && (e.entityType === "secret" || e.entityType === "clue")).length,
+            activeSession: sessions.find((s: any) => s.status === "active")?.title || null,
+            sessionsCount: sessions.length
+          };
+
           if (campaign) {
             campaigns.push({
               ...campaign,
               campaignId: campaign.campaignId ?? dirName,
               title: campaign.title ?? dirName,
               archived: campaign.archived ?? false,
+              stats,
             });
           } else {
-            campaigns.push({ campaignId: dirName, title: dirName, archived: false });
+            campaigns.push({ campaignId: dirName, title: dirName, archived: false, stats });
           }
         } catch {
           campaigns.push({ campaignId: dirName, title: dirName, archived: false });

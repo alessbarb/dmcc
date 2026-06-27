@@ -109,6 +109,16 @@ export function CampaignShell() {
 
   const role = sessionStorage.getItem("dmcc_role");
 
+  const [showExitTransition, setShowExitTransition] = useState(true);
+
+  useEffect(() => {
+    setShowExitTransition(true);
+    const timer = setTimeout(() => {
+      setShowExitTransition(false);
+    }, 850);
+    return () => clearTimeout(timer);
+  }, [campaignId]);
+
   useEffect(() => {
     if (role === "player") {
       navigate({ to: `/campaigns/${campaignId}/player-portal` });
@@ -309,6 +319,12 @@ export function CampaignShell() {
       <RelationCreateModal isOpen={isRelationModalOpen} onClose={() => setIsRelationModalOpen(false)} />
 
       <ToastContainer toasts={toasts} onRemove={removeToast} />
+
+      {showExitTransition && (
+        <div className="mystical-portal-overlay mystical-portal-overlay--out" aria-hidden="true">
+          <div className="mystical-portal-glow"></div>
+        </div>
+      )}
     </div>
   );
 }
