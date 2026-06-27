@@ -3,7 +3,7 @@ import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import {
   Search, User, MapPin, Film, HelpCircle, Key, Award, Skull, Box, Shield,
   StickyNote, BoxSelect, Eye, CheckCircle2, RefreshCcw, Trash2,
-  Lock, MessageSquare, XCircle, Lightbulb, AlertTriangle, RefreshCw, Plus,
+  Lock, MessageSquare, XCircle, Lightbulb, AlertTriangle, RefreshCw,
   ChevronLeft, ChevronRight
 } from "lucide-react";
 

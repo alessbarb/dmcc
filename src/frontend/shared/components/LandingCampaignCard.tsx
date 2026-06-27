@@ -1,5 +1,5 @@
 import React from "react";
-import { Shield, MapPin, Key, Play, ArrowRight, Users, BookOpen } from "lucide-react";
+import { Shield, MapPin, Key, ArrowRight, Users } from "lucide-react";
 
 interface CampaignStats {
   npcsCount: number;
