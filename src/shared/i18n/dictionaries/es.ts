@@ -1,4 +1,6 @@
-export const es = {
+import type { TranslationDictionary } from "../types.js";
+
+export const es: TranslationDictionary = {
   common: {
     save: "Guardar",
     cancel: "Cancelar",
@@ -763,4 +765,4 @@ export const es = {
     confirmDeleteTitle: "¿Estás seguro?",
     confirmDeleteDescription: "Esta acción no se puede deshacer.",
   },
-} as const;
+};
