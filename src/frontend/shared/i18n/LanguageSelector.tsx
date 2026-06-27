@@ -1,4 +1,5 @@
 import React from "react";
+import { SUPPORTED_LOCALES } from "@shared/i18n/index.js";
 import { useTranslation } from "./useTranslation.js";
 import { Languages } from "lucide-react";
 
@@ -15,20 +16,18 @@ export function LanguageSelector() {
         <span className="lang-selector__subtitle">{t("settings.languageSectionSubtitle")}</span>
       </div>
       <div className="lang-selector__toggle">
-        <button
-          type="button"
-          onClick={() => setLocale("en")}
-          className={`lang-selector__btn${locale === "en" ? " lang-selector__btn--active" : ""}`}
-        >
-          EN
-        </button>
-        <button
-          type="button"
-          onClick={() => setLocale("es")}
-          className={`lang-selector__btn${locale === "es" ? " lang-selector__btn--active" : ""}`}
-        >
-          ES
-        </button>
+        {SUPPORTED_LOCALES.map((item) => (
+          <button
+            key={item.code}
+            type="button"
+            onClick={() => setLocale(item.code)}
+            className={`lang-selector__btn${locale === item.code ? " lang-selector__btn--active" : ""}`}
+            aria-pressed={locale === item.code}
+            title={item.nativeLabel}
+          >
+            {item.code.toUpperCase()}
+          </button>
+        ))}
       </div>
     </div>
   );
@@ -39,20 +38,18 @@ export function LanguagePill() {
 
   return (
     <div className="lang-pill">
-      <button
-        type="button"
-        onClick={() => setLocale("en")}
-        className={`lang-pill__btn${locale === "en" ? " lang-pill__btn--active" : ""}`}
-      >
-        EN
-      </button>
-      <button
-        type="button"
-        onClick={() => setLocale("es")}
-        className={`lang-pill__btn${locale === "es" ? " lang-pill__btn--active" : ""}`}
-      >
-        ES
-      </button>
+      {SUPPORTED_LOCALES.map((item) => (
+        <button
+          key={item.code}
+          type="button"
+          onClick={() => setLocale(item.code)}
+          className={`lang-pill__btn${locale === item.code ? " lang-pill__btn--active" : ""}`}
+          aria-pressed={locale === item.code}
+          title={item.nativeLabel}
+        >
+          {item.code.toUpperCase()}
+        </button>
+      ))}
     </div>
   );
 }
