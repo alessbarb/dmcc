@@ -9,20 +9,22 @@ import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useParams } from "@tanstack/react-router";
+import { useTranslation } from "../../../shared/i18n/useTranslation.js";
+
 
 // Seeding logic for board templates
-const seedCanvasTemplate = async (canvasId: string, template: string, _campaignId: string) => {
+const seedCanvasTemplate = async (canvasId: string, template: string, _campaignId: string, t: (key: string, params?: Record<string, string | number>) => string) => {
   const store = useCampaignStore.getState();
   const { createEntity, placeNodeOnCanvas, addEdgeToCanvas, updateCanvasNode } = store;
   
   if (template === "mystery") {
     const entitiesToCreate = [
-      { entityType: "clue", title: "Incidente Inicial", summary: "El detonante de la investigación. ¿Qué ocurrió?" },
+      { entityType: "clue", title: "Incidente Inicial", summary: t("canvas.seedData.investigationTrigger") },
       { entityType: "npc", title: "Sospechoso Principal", subtitle: "Tiene una coartada dudosa", summary: "Un personaje clave en el misterio." },
       { entityType: "clue", title: "Pista Real", summary: "Una prueba irrefutable que apunta al sospechoso." },
-      { entityType: "rumor", title: "Pista Falsa", summary: "Un rumor que intenta desviar la atención." },
-      { entityType: "secret", title: "Secreto Central", summary: "El secreto que el sospechoso intenta ocultar a toda costa.", visibility: { kind: "dm_only" } },
-      { entityType: "quest", title: "Revelación Final", summary: "La escena donde se confronta al culpable." },
+      { entityType: "rumor", title: "Pista Falsa", summary: t("canvas.seedData.redHerring") },
+      { entityType: "secret", title: t("canvas.seedData.centralSecret"), summary: "El secreto que el sospechoso intenta ocultar a toda costa.", visibility: { kind: "dm_only" } },
+      { entityType: "quest", title: t("canvas.seedData.finalRevelation"), summary: "La escena donde se confronta al culpable." },
       { entityType: "consequence", title: "Consecuencia Mayor", summary: "El impacto de resolver o fallar el misterio." }
     ];
 
@@ -82,12 +84,12 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
     }
   } else if (template === "faction") {
     const entities = [
-      { entityType: "npc", title: "Líder de Facción", subtitle: "Dirige con mano de hierro" },
+      { entityType: "npc", title: t("canvas.seedData.factionLeader"), subtitle: "Dirige con mano de hierro" },
       { entityType: "npc", title: "Mano Derecha", subtitle: "Ejecuta los planes" },
       { entityType: "item", title: "Recurso Clave", summary: "Un artefacto o tesoro que les da poder." },
       { entityType: "secret", title: "Plan Oculto", summary: "Su objetivo secreto.", visibility: { kind: "dm_only" } },
-      { entityType: "faction", title: "Facción Enemiga", subtitle: "Su gran rival" },
-      { entityType: "quest", title: "Objetivo Principal", summary: "La misión para detenerlos o apoyarlos." }
+      { entityType: "faction", title: t("canvas.seedData.enemyFaction"), subtitle: "Su gran rival" },
+      { entityType: "quest", title: "Objetivo Principal", summary: t("canvas.seedData.missionToStop") }
     ];
 
     const createdIds: string[] = [];
@@ -157,9 +159,9 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
     }
   } else if (template === "city") {
     const entities = [
-      { entityType: "location", title: "Plaza Mayor", subtitle: "Punto de encuentro público" },
+      { entityType: "location", title: "Plaza Mayor", subtitle: t("canvas.seedData.publicMeetingPoint") },
       { entityType: "location", title: "Taberna Local", subtitle: "Rumores y contactos" },
-      { entityType: "location", title: "Callejón Oscuro", subtitle: "Actividad criminal", visibility: { kind: "dm_only" } },
+      { entityType: "location", title: t("canvas.seedData.darkAlley"), subtitle: "Actividad criminal", visibility: { kind: "dm_only" } },
       { entityType: "npc", title: "Tabernero", subtitle: "Sabe todos los chismes" },
       { entityType: "faction", title: "Guardia de la Ciudad", subtitle: "Mantiene el orden" },
       { entityType: "rumor", title: "Rumor Callejero", summary: "Una pista sobre un robo inminente." }
@@ -230,11 +232,11 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
     }
   } else if (template === "session") {
     const entities = [
-      { entityType: "scene", title: "Escena 1: Introducción", summary: "Los jugadores se reúnen y reciben el encargo." },
-      { entityType: "scene", title: "Escena 2: Exploración", summary: "Investigan el lugar del incidente." },
+      { entityType: "scene", title: t("canvas.seedData.scene1"), summary: t("canvas.seedData.scene1Desc") },
+      { entityType: "scene", title: t("canvas.seedData.scene2"), summary: "Investigan el lugar del incidente." },
       { entityType: "scene", title: "Escena 3: Combate", summary: "Encuentro con las criaturas." },
-      { entityType: "scene", title: "Escena 4: Cierre", summary: "Resolución de la sesión." },
-      { entityType: "consequence", title: "Consecuencia Inmediata", summary: "Qué cambia para la siguiente sesión." }
+      { entityType: "scene", title: "Escena 4: Cierre", summary: t("canvas.seedData.sessionResolution") },
+      { entityType: "consequence", title: "Consecuencia Inmediata", summary: t("canvas.seedData.nextSessionChanges") }
     ];
 
     const createdIds: string[] = [];
@@ -284,8 +286,8 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
       { entityType: "encounter", title: "Sala de Trampa", summary: "Trampa de flechas oculta." },
       { entityType: "creature", title: "Guardias Orco", summary: "Dos orcos montando guardia." },
       { entityType: "item", title: "Cofre del Tesoro", summary: "Contiene oro y una gema brillante." },
-      { entityType: "secret", title: "Pasadizo Secreto", summary: "Detrás del tapiz.", visibility: { kind: "dm_only" } },
-      { entityType: "creature", title: "Jefe de la Mazmorra", subtitle: "El orco chamán" }
+      { entityType: "secret", title: t("canvas.seedData.secretPassage"), summary: t("canvas.seedData.behindTapestry"), visibility: { kind: "dm_only" } },
+      { entityType: "creature", title: "Jefe de la Mazmorra", subtitle: t("canvas.seedData.orcShaman") }
     ];
 
     const createdIds: string[] = [];
@@ -513,7 +515,7 @@ const parseAndImportText = async (text: string, canvasId: string, _campaignId: s
 };
 
 // Narrative consistency check (Lint) auditor logic
-const runNarrativeLint = (campaignState: any, activeCanvas: any) => {
+const runNarrativeLint = (campaignState: any, activeCanvas: any, t: (key: string, params?: Record<string, string | number>) => string) => {
   const issues: { id: string; type: "error" | "warning" | "info"; message: string; entityId?: string }[] = [];
   if (!campaignState || !activeCanvas) return issues;
 
@@ -552,7 +554,7 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any) => {
       issues.push({
         id: `clue-orphan-${clue.entityId}`,
         type: "warning",
-        message: `La pista 🔎 "${clue.title}" está huérfana: no conduce a ningún secreto, misión o personaje.`,
+        message: t("canvas.flow.warningOrphanClue", { title: clue.title }),
         entityId: clue.entityId
       });
     }
@@ -586,7 +588,7 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any) => {
       issues.push({
         id: `quest-no-end-${quest.entityId}`,
         type: "warning",
-        message: `La misión ⚔️ "${quest.title}" no tiene conexiones de escena o consecuencias que la resuelvan.`,
+        message: t("canvas.flow.warningStuckQuest", { title: quest.title }),
         entityId: quest.entityId
       });
     }
@@ -604,7 +606,7 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any) => {
       issues.push({
         id: `location-empty-${locEntity.entityId}`,
         type: "info",
-        message: `El lugar 🗺️ "${locEntity.title}" está vacío: no contiene personajes ni pistas en el canvas.`,
+        message: t("canvas.flow.warningEmptyLocation", { title: locEntity.title }),
         entityId: locEntity.entityId
       });
     }
@@ -622,7 +624,7 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any) => {
         issues.push({
           id: `relation-leak-${rel.relationId}`,
           type: "info",
-          message: `La relación secreta entre "${source.title}" y "${target.title}" une dos entidades públicas.`,
+          message: t("canvas.flow.warningSecretRelation", { source: source.title, target: target.title }),
         });
       }
     }
@@ -632,6 +634,7 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any) => {
 };
 
 export function CanvasPage() {
+  const { t } = useTranslation();
   const { campaignId } = useParams({ from: "/campaigns/$campaignId/canvas" });
   const {
     campaignState,
@@ -715,9 +718,9 @@ export function CanvasPage() {
       if (pendingTemplate && pendingTemplate !== "custom" && pendingTemplate !== "empty") {
         sessionStorage.removeItem("dmcc_pending_seed_template");
         setTimeout(async () => {
-          addToast(`Inicializando plantilla de campaña: ${pendingTemplate}...`, "info");
-          await seedCanvasTemplate(activeCanvasId, pendingTemplate, campaignId);
-          addToast(`Campaña inicializada con plantilla de ${pendingTemplate === "mystery" ? "Misterio" : "Facciones"}`, "success");
+          addToast(t("canvas.page.initializingTemplate", { name: pendingTemplate }), "info");
+          await seedCanvasTemplate(activeCanvasId, pendingTemplate, campaignId, t);
+          addToast(t("canvas.page.templateInitialized", { name: pendingTemplate === "mystery" ? "Misterio" : "Facciones" }), "success");
         }, 300);
       }
     }
@@ -756,10 +759,10 @@ export function CanvasPage() {
     if (orphanEntities.length > 0)
       parts.push(`${orphanEntities.length} entidad${orphanEntities.length > 1 ? "es" : ""}`);
     if (orphanRelations.length > 0)
-      parts.push(`${orphanRelations.length} relación${orphanRelations.length > 1 ? "es" : ""}`);
+      parts.push(t("canvas.page.relationCount", { count: orphanRelations.length, suffix: orphanRelations.length > 1 ? "es" : "" }));
 
     addToast(
-      `${parts.join(" y ")} del lore no están en ningún tablero visual.`,
+      t("canvas.page.notOnBoard", { count: parts.join(" y ") }),
       "warning"
     );
   }, [activeCampaignId]);
@@ -775,8 +778,8 @@ export function CanvasPage() {
     
     if (createdCanvasId && campaignId && newBoardTemplate !== "custom") {
       addToast(`Inicializando plantilla: ${newBoardTemplate}...`, "info");
-      await seedCanvasTemplate(createdCanvasId, newBoardTemplate, campaignId);
-      addToast(`Tablero inicializado con plantilla "${newBoardTemplate}"`, "success");
+      await seedCanvasTemplate(createdCanvasId, newBoardTemplate, campaignId, t);
+      addToast(t("canvas.page.boardInitialized", { name: newBoardTemplate }), "success");
     }
 
     setNewBoardTitle("");
@@ -892,7 +895,7 @@ export function CanvasPage() {
           >
             {canvases.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.title} ({c.kind === "world" ? "Mundo" : c.kind === "session" ? "Sesión" : c.kind === "mystery" ? "Conspiración" : c.kind === "location" ? "Ubicaciones" : c.kind === "characters" ? "Relaciones" : "Personalizado"})
+                {c.title} ({c.kind === "world" ? "Mundo" : c.kind === "session" ? t("canvas.node.typeSession") : c.kind === "mystery" ? t("canvas.page.templateConspiration") : c.kind === "location" ? "Ubicaciones" : c.kind === "characters" ? t("canvas.page.templateRelations") : "Personalizado"})
               </option>
             ))}
           </select>
@@ -901,7 +904,7 @@ export function CanvasPage() {
             <button
               onClick={() => setIsCreateBoardOpen(true)}
               className="btn btn-secondary btn-sm btn-icon"
-              title="Crear nuevo tablero"
+              title={t("canvas.page.createNewBoard")}
             >
               <Plus size={14} /> Nuevo tablero
             </button>
@@ -920,7 +923,7 @@ export function CanvasPage() {
                 onClick={() => {
                   setIsDirectionMode(v => !v);
                 }}
-                title={isDirectionMode ? "Desactivar modo dirección en vivo" : "Activar modo dirección en vivo para controlar la sesión"}
+                title={isDirectionMode ? t("canvas.toolbar.deactivateDirection") : t("canvas.toolbar.activateDirection")}
                 style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
               >
                 <Zap size={12} />
@@ -952,7 +955,7 @@ export function CanvasPage() {
                   setSelectedEdges([]);
                 }
               }}
-              title={isFullscreenPresentation ? "Salir de presentación" : "Presentar en pantalla completa (Vista Jugador segura)"}
+              title={isFullscreenPresentation ? t("canvas.toolbar.exitPresentation") : "Presentar en pantalla completa (Vista Jugador segura)"}
               style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
             >
               <Play size={12} />
@@ -980,11 +983,11 @@ export function CanvasPage() {
                     setSelectedEdges([]);
                   }
                 }}
-                title={isPlayerView ? "Volver a vista de DM" : "Activar vista de jugadores (Modo presentación)"}
+                title={isPlayerView ? "Volver a vista de DM" : t("canvas.toolbar.activatePlayerView")}
                 style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
               >
                 {isPlayerView ? <Eye size={12} /> : <EyeOff size={12} />}
-                <span>{isPlayerView ? "👁 Vista Jugadores" : "👁 Vista DM"}</span>
+                <span>{isPlayerView ? t("canvas.toolbar.playerViewLabel") : "👁 Vista DM"}</span>
               </button>
             )}
 
@@ -994,11 +997,11 @@ export function CanvasPage() {
                 type="button"
                 className={`btn btn-sm btn-icon ${publicOnly ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setPublicOnly(v => !v)}
-                title={publicOnly ? "Mostrando solo información pública" : "Mostrando todo (público y secretos)"}
+                title={publicOnly ? t("canvas.toolbar.showingPublicOnly") : t("canvas.toolbar.showingAll")}
                 style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
               >
                 {publicOnly ? <Eye size={12} /> : <EyeOff size={12} />}
-                <span>{publicOnly ? "Solo público" : "Mostrar secretos"}</span>
+                <span>{publicOnly ? t("canvas.toolbar.publicOnly") : "Mostrar secretos"}</span>
               </button>
             )}
 
@@ -1008,7 +1011,7 @@ export function CanvasPage() {
                 type="button"
                 className={`btn btn-sm btn-icon ${mysteryFlowMode ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setMysteryFlowMode(v => !v)}
-                title={mysteryFlowMode ? "Desactivar Mystery Flow" : "Activar Mystery Flow para ver conexiones de investigación"}
+                title={mysteryFlowMode ? "Desactivar Mystery Flow" : t("canvas.toolbar.activateMysteryFlow")}
                 style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
               >
                 <span>{mysteryFlowMode ? "🔍 Mystery Flow" : "Ver Misterio"}</span>
@@ -1039,7 +1042,7 @@ export function CanvasPage() {
                 onChange={(e) => setRelationsFilter(e.target.value as any)}
                 className="canvas-select"
                 style={{ fontSize: "11px", padding: "2px 6px", height: "26px", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)" }}
-                title="Filtrar las líneas de conexión"
+                title={t("canvas.toolbar.filterConnections")}
               >
                 <option value="all">🔗 Relaciones: Todas</option>
                 <option value="public">🌐 Relaciones: Públicas</option>
@@ -1130,7 +1133,7 @@ export function CanvasPage() {
                     type="text"
                     value={newBoardTitle}
                     onChange={(e) => setNewBoardTitle(e.target.value)}
-                    placeholder="Ej. Bosque Sombrío, Conspiración del Culto..."
+                    placeholder={t("canvas.page.importExamplePlaceholder")}
                     className="form-input"
                     required
                     autoFocus
@@ -1197,7 +1200,7 @@ export function CanvasPage() {
               <textarea
                 value={importText}
                 onChange={(e) => setImportText(e.target.value)}
-                placeholder={`# Conspiración del Culto\n[NPC] Veradis el Inquisidor\n[Lugar] Sala del Oráculo\n[Pista] Profecía Rota\n[Secreto] El Oráculo es un Fraude\n\nVeradis el Inquisidor -> controla -> Sala del Oráculo\nProfecía Rota -> revela -> El Oráculo es un Fraude`}
+                placeholder={t("canvas.page.importExampleContent")}
                 rows={10}
                 className="form-textarea"
                 style={{ fontFamily: "monospace", fontSize: "0.82rem", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)", padding: "10px" }}
@@ -1218,7 +1221,7 @@ export function CanvasPage() {
                   addToast("Importando elementos y relaciones...", "info");
                   try {
                     await parseAndImportText(importText, activeCanvas.id, activeCampaignId!);
-                    addToast("Importación completada con éxito.", "success");
+                    addToast(t("canvas.page.importSuccess"), "success");
                     setIsImportOpen(false);
                     setImportText("");
                   } catch (err: any) {
@@ -1384,7 +1387,7 @@ export function CanvasPage() {
               </div>
               <div className="inspector-content">
                 {(() => {
-                  const issues = runNarrativeLint(campaignState, activeCanvas);
+                  const issues = runNarrativeLint(campaignState, activeCanvas, t);
                   if (issues.length === 0) {
                     return (
                       <div style={{ textAlign: "center", padding: "20px", color: "var(--text-muted)" }}>
@@ -1413,7 +1416,7 @@ export function CanvasPage() {
                             }}
                           >
                             <div style={{ fontWeight: "600", marginBottom: "4px", color: iss.type === "error" ? "var(--color-critical)" : iss.type === "warning" ? "var(--color-warning)" : "var(--text-main)" }}>
-                              {iss.type === "error" ? "🚨 Crítico" : iss.type === "warning" ? "⚠️ Advertencia" : "💡 Sugerencia"}
+                              {iss.type === "error" ? t("canvas.node.statusCritical") : iss.type === "warning" ? "⚠️ Advertencia" : "💡 Sugerencia"}
                             </div>
                             <div>{iss.message}</div>
                             {iss.entityId && (
@@ -1480,7 +1483,7 @@ export function CanvasPage() {
                 <button
                   onClick={() => setIsSessionPrepOpen(true)}
                   className="btn btn-primary btn-sm"
-                  title="Preparar sesión con los elementos seleccionados"
+                  title={t("canvas.toolbar.prepareSession")}
                 >
                   🚀 Preparar Sesión
                 </button>
@@ -1488,7 +1491,7 @@ export function CanvasPage() {
                   onClick={async () => {
                     const entities = selectedNodes.filter(n => n.type === 'entity');
                     if (entities.length === 0) return;
-                    if (window.confirm(`¿Revelar a los jugadores las ${entities.length} entidades seleccionadas?`)) {
+                    if (window.confirm(t("canvas.toolbar.revealSelectedConfirm", { count: entities.length }))) {
                       for (const node of entities) {
                         if (node.data.entityId) {
                           await updateEntity(node.data.entityId, { visibility: { kind: 'public' } });
@@ -1506,7 +1509,7 @@ export function CanvasPage() {
                   onClick={async () => {
                     const entities = selectedNodes.filter(n => n.type === 'entity');
                     if (entities.length === 0) return;
-                    if (window.confirm(`¿Hacer secretas (solo DM) las ${entities.length} entidades seleccionadas?`)) {
+                    if (window.confirm(t("canvas.toolbar.hideSelectedConfirm", { count: entities.length }))) {
                       for (const node of entities) {
                         if (node.data.entityId) {
                           await updateEntity(node.data.entityId, { visibility: { kind: 'dm_only' } });
@@ -1522,7 +1525,7 @@ export function CanvasPage() {
                 </button>
                 <button
                   onClick={async () => {
-                    if (window.confirm(`¿Quitar los ${selectedNodes.length} nodos seleccionados de este canvas? (Las entidades seguirán existiendo)`)) {
+                    if (window.confirm(t("canvas.toolbar.removeSelectedConfirm", { count: selectedNodes.length }))) {
                       for (const node of selectedNodes) {
                         await removeNodeFromCanvas(activeCanvas.id, node.id);
                       }
@@ -1577,11 +1580,11 @@ export function CanvasPage() {
                       if (newSession) {
                         await recordSessionEvent(newSession.sessionId, {
                           type: "scene_started",
-                          title: `Preparación de Sesión`,
+                          title: t("canvas.toolbar.sessionPrepTitle"),
                           description: `Elementos preparados desde el Canvas: ${entNames.join(", ")}`,
                           relatedEntityIds: entIds,
                         });
-                        addToast(`Sesión "${sessionTitle}" iniciada con la preparación del canvas.`, "success");
+                        addToast(t("toasts.sessionStartedWithPrep", { title: sessionTitle }), "success");
                       }
                     } else if (activeSession) {
                       await recordSessionEvent(activeSession.sessionId, {
@@ -1590,7 +1593,7 @@ export function CanvasPage() {
                         description: `Elementos incorporados a la partida: ${entNames.join(", ")}`,
                         relatedEntityIds: entIds,
                       });
-                      addToast("Elementos agregados a la sesión activa.", "success");
+                      addToast(t("toasts.elementsAddedToSession"), "success");
                     }
                     setIsSessionPrepOpen(false);
                     setSelectedNodes([]);
@@ -1642,7 +1645,8 @@ function SessionPrepForm({
   onSubmit: (title: string, mode: "new" | "active") => Promise<void>;
   onCancel: () => void;
 }) {
-  const [sessionTitle, setSessionTitle] = useState(`Sesión`);
+  const { t } = useTranslation();
+  const [sessionTitle, setSessionTitle] = useState(() => t("canvas.node.typeSession"));
   const [targetMode, setTargetMode] = useState<"new" | "active">(activeSession ? "active" : "new");
   const [busy, setBusy] = useState(false);
 
@@ -1711,7 +1715,7 @@ function SessionPrepForm({
               onChange={(e) => setSessionTitle(e.target.value)}
               className="form-input"
               required
-              placeholder="Ej. Sesión 4: El reencuentro"
+              placeholder={t("canvas.page.sessionNamePlaceholder")}
             />
           </div>
         )}
@@ -1722,7 +1726,7 @@ function SessionPrepForm({
           Cancelar
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Procesando..." : targetMode === "new" ? "Iniciar y Preparar" : "Cargar en Sesión"}
+          {busy ? "Procesando..." : targetMode === "new" ? "Iniciar y Preparar" : t("canvas.page.loadIntoSession")}
         </button>
       </div>
     </form>
