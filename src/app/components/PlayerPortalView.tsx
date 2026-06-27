@@ -10,7 +10,8 @@ import {
   FileText,
   Target,
   Clock,
-  CheckSquare
+  CheckSquare,
+  RefreshCw,
 } from "lucide-react";
 
 type PortalTab = "summary" | "character" | "resources" | "diary" | "objectives" | "history";
@@ -28,6 +29,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     updatePlayerPortalNote,
     createPlayerPortalObjective,
     updatePlayerPortalObjective,
+    createPlayerCharacterProposal,
   } = useCampaignStore();
 
   const [activeTab, setActiveTab] = useState<PortalTab>("summary");
@@ -71,6 +73,16 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     visibility: "private" as "private" | "dm_visible",
   });
 
+  // Character creation / selection form
+  const [showCreateCharForm, setShowCreateCharForm] = useState(false);
+  const [createCharForm, setCreateCharForm] = useState({
+    name: "",
+    className: "",
+    level: "1",
+    description: "",
+  });
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
   // Diary inline edit state
   const [noteEditId, setNoteEditId] = useState<string | null>(null);
   const [noteEditForm, setNoteEditForm] = useState({
@@ -109,6 +121,29 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const player = campaignState?.players?.find((p) => p.playerId === playerId);
   const myCharacter = campaignState?.entities?.find(
     (e) => e.entityType === "player_character" && e.metadata?.playerId === playerId
+  );
+
+  // Poll every 10s when no character is linked yet
+  useEffect(() => {
+    const noLink = !playerPortalState?.link && !myCharacter;
+    if (!noLink) return;
+    const interval = setInterval(() => {
+      void loadPlayerPortalState(campaignId);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [playerPortalState?.link, myCharacter, campaignId, loadPlayerPortalState]);
+
+  // Derived linked character info
+  const linkedCharacter: { entityId: string; title: string } | null =
+    playerPortalState?.linkedCharacter ?? null;
+  const availableCharacters: { entityId: string; title: string }[] =
+    playerPortalState?.availableCharacters ?? [];
+  const proposals: any[] = playerPortalState?.proposals ?? [];
+  const pendingLinkRequests = proposals.filter(
+    (p) => p.kind === "link_request" && p.status === "pending"
+  );
+  const pendingCreateRequests = proposals.filter(
+    (p) => p.kind === "create_character" && p.status === "pending"
   );
 
   const handleExit = () => {
@@ -215,6 +250,38 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     await updatePlayerPortalObjective(objectiveId, { status: "done" });
   };
 
+  // ── Submit: link_request proposal (player requests existing character) ──
+  const handleLinkRequest = async (characterEntityId: string) => {
+    await createPlayerCharacterProposal({
+      kind: "link_request",
+      targetCharacterEntityId: characterEntityId,
+      proposedChanges: {},
+    });
+  };
+
+  // ── Submit: create_character proposal (player submits own character) ────
+  const handleCreateChar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!createCharForm.name.trim()) return;
+    await createPlayerCharacterProposal({
+      kind: "create_character",
+      proposedChanges: {
+        title: createCharForm.name.trim(),
+        className: createCharForm.className.trim(),
+        level: parseInt(createCharForm.level) || 1,
+        description: createCharForm.description.trim(),
+      },
+    });
+    setCreateCharForm({ name: "", className: "", level: "1", description: "" });
+    setShowCreateCharForm(false);
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await loadPlayerPortalState(campaignId);
+    setIsRefreshing(false);
+  };
+
   if (!campaignState) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", color: "var(--text-muted)" }}>
@@ -302,19 +369,152 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
           {activeTab === "summary" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
               {/* Character header */}
-              {myCharacter ? (
+              {(myCharacter || linkedCharacter) ? (
                 <div className="card" style={{ display: "flex", gap: "20px", padding: "24px", background: "linear-gradient(135deg, hsla(255, 85%, 65%, 0.1), transparent)" }}>
                   <div style={{ flexGrow: 1 }}>
-                    <h2 style={{ fontSize: "1.4rem", fontWeight: "800" }}>{myCharacter.title}</h2>
+                    <h2 style={{ fontSize: "1.4rem", fontWeight: "800" }}>
+                      {myCharacter?.title ?? linkedCharacter?.title}
+                    </h2>
                     <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginTop: "4px" }}>
-                      Nivel {myCharacter.metadata?.level ?? 1} {myCharacter.metadata?.species ?? ""} {myCharacter.metadata?.className ?? ""}
+                      Nivel {myCharacter?.metadata?.level ?? 1} {myCharacter?.metadata?.species ?? ""} {myCharacter?.metadata?.className ?? ""}
                     </p>
                   </div>
                 </div>
               ) : (
-                <div className="card" style={{ padding: "20px", color: "var(--text-muted)", textAlign: "center" }}>
-                  <User size={32} style={{ opacity: 0.3, marginBottom: "8px" }} />
-                  <p>Sin personaje vinculado</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                  {/* No character yet — selection/request UI */}
+                  <div className="card" style={{ padding: "20px" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+                      <h3 style={{ fontWeight: "700" }}>Sin personaje vinculado</h3>
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => void handleRefresh()}
+                        disabled={isRefreshing}
+                        style={{ display: "flex", alignItems: "center", gap: "4px" }}
+                      >
+                        <RefreshCw size={12} />
+                        Actualizar
+                      </button>
+                    </div>
+                    <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: "12px" }}>
+                      Elige un personaje de la campaña o propone el tuyo propio.
+                    </p>
+
+                    {/* Available campaign characters */}
+                    {availableCharacters.length > 0 && (
+                      <div style={{ marginBottom: "16px" }}>
+                        <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "8px" }}>
+                          Personajes disponibles
+                        </p>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                          {availableCharacters.map((pc) => {
+                            const alreadyRequested = pendingLinkRequests.some(
+                              (p) => p.targetCharacterEntityId === pc.entityId
+                            );
+                            return (
+                              <div
+                                key={pc.entityId}
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  padding: "8px 12px",
+                                  backgroundColor: "var(--surface-2)",
+                                  borderRadius: "var(--radius-sm)",
+                                  border: "1px solid var(--border-color)",
+                                }}
+                              >
+                                <span style={{ fontSize: "0.9rem" }}>{pc.title}</span>
+                                {alreadyRequested ? (
+                                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontStyle: "italic" }}>
+                                    Solicitud enviada
+                                  </span>
+                                ) : (
+                                  <button
+                                    className="btn btn-primary btn-sm"
+                                    onClick={() => void handleLinkRequest(pc.entityId)}
+                                  >
+                                    Solicitar
+                                  </button>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Create own character */}
+                    {pendingCreateRequests.length > 0 ? (
+                      <div style={{ padding: "10px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
+                        <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                          Propuesta de personaje propio enviada — en espera de aprobación del DM.
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        {!showCreateCharForm ? (
+                          <button
+                            className="btn btn-secondary btn-sm"
+                            onClick={() => setShowCreateCharForm(true)}
+                          >
+                            <Plus size={12} style={{ marginRight: "4px" }} />
+                            Crear personaje propio
+                          </button>
+                        ) : (
+                          <form onSubmit={(e) => void handleCreateChar(e)} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                            <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)" }}>
+                              Nueva propuesta de personaje
+                            </p>
+                            <input
+                              className="input"
+                              type="text"
+                              placeholder="Nombre del personaje *"
+                              value={createCharForm.name}
+                              onChange={(e) => setCreateCharForm((f) => ({ ...f, name: e.target.value }))}
+                              required
+                            />
+                            <input
+                              className="input"
+                              type="text"
+                              placeholder="Clase (ej. Wizard, Fighter)"
+                              value={createCharForm.className}
+                              onChange={(e) => setCreateCharForm((f) => ({ ...f, className: e.target.value }))}
+                            />
+                            <input
+                              className="input"
+                              type="number"
+                              placeholder="Nivel"
+                              min="1"
+                              max="20"
+                              value={createCharForm.level}
+                              onChange={(e) => setCreateCharForm((f) => ({ ...f, level: e.target.value }))}
+                            />
+                            <textarea
+                              className="input"
+                              placeholder="Descripción o notas para el DM"
+                              rows={3}
+                              value={createCharForm.description}
+                              onChange={(e) => setCreateCharForm((f) => ({ ...f, description: e.target.value }))}
+                              style={{ resize: "vertical" }}
+                            />
+                            <div style={{ display: "flex", gap: "8px" }}>
+                              <button type="submit" className="btn btn-primary btn-sm">
+                                Enviar propuesta
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => { setShowCreateCharForm(false); setCreateCharForm({ name: "", className: "", level: "1", description: "" }); }}
+                              >
+                                Cancelar
+                              </button>
+                            </div>
+                          </form>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               )}
 
