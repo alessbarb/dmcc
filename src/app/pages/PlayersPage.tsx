@@ -277,19 +277,19 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                       <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "8px" }}>Estado en vivo</p>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                         <span style={{ fontSize: "0.8rem", padding: "2px 8px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
-                          HP: {portalPlayer.sheet.hpCurrent ?? "?"} / {portalPlayer.sheet.hpMax ?? "?"}
+                          HP: {portalPlayer.sheet.status?.hitPointsCurrent ?? "?"} / {portalPlayer.sheet.status?.hitPointsMax ?? "?"}
                         </span>
-                        {portalPlayer.sheet.ac !== undefined && (
+                        {portalPlayer.sheet.status?.armorClass !== undefined && (
                           <span style={{ fontSize: "0.8rem", padding: "2px 8px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
-                            CA: {portalPlayer.sheet.ac}
+                            CA: {portalPlayer.sheet.status?.armorClass}
                           </span>
                         )}
-                        {portalPlayer.sheet.inspiration && (
+                        {portalPlayer.sheet.status?.inspiration && (
                           <span style={{ fontSize: "0.8rem", padding: "2px 8px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)", color: "var(--primary)" }}>
                             Inspiración
                           </span>
                         )}
-                        {(portalPlayer.sheet.conditions ?? []).length > 0 && (portalPlayer.sheet.conditions as string[]).map((cond: string) => (
+                        {(portalPlayer.sheet.status?.conditions ?? []).length > 0 && (portalPlayer.sheet.status?.conditions as string[]).map((cond: string) => (
                           <span key={cond} style={{ fontSize: "0.8rem", padding: "2px 8px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)", color: "var(--danger, #e05252)" }}>
                             {cond}
                           </span>
@@ -326,7 +326,9 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                         {pendingProposals.map((proposal: any) => (
                           <div key={proposal.proposalId} style={{ padding: "10px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
-                            <p style={{ fontSize: "0.8rem", color: "var(--text-main)", marginBottom: "8px" }}>{proposal.proposalType ?? "Propuesta"}</p>
+                            <p style={{ fontSize: "0.8rem", color: "var(--text-main)", marginBottom: "8px" }}>
+                              {proposal.kind === "link_request" ? "Solicitud de personaje" : proposal.kind === "create_character" ? "Nuevo personaje" : proposal.kind === "update_character_core" ? "Cambio de personaje" : "Propuesta"}
+                            </p>
                             <div style={{ display: "flex", gap: "6px" }}>
                               <button className="btn btn-primary btn-sm" onClick={() => resolvePlayerCharacterProposal(proposal.proposalId, { status: "approved", dmResolutionNote: "Aprobado" })}>
                                 Aprobar

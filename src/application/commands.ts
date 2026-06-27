@@ -546,6 +546,7 @@ export type Command =
       campaignId: CampaignId;
       actorId: string;
       playerId: string;
+      characterEntityId: EntityId;
       removedAt: string;
     }
   | {
