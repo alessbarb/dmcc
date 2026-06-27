@@ -21,6 +21,7 @@ import { registerTagRoutes } from "./routes/tagRoutes.js";
 import { registerRuleRoutes } from "./routes/ruleRoutes.js";
 import { registerCanvasRoutes } from "./routes/canvasRoutes.js";
 import { registerPlayerPortalRoutes } from "./routes/playerPortalRoutes.js";
+import { registerHardeningRoutes } from "./routes/hardeningRoutes.js";
 
 export interface ServerConfig {
   dataDir?: string;
@@ -118,6 +119,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerRuleRoutes, opts);
   server.register(registerCanvasRoutes, opts);
   server.register(registerPlayerPortalRoutes, opts);
+  server.register(registerHardeningRoutes, opts);
 
   return server;
 }
