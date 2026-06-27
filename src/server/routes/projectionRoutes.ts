@@ -28,6 +28,19 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
     return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
   }
 
+  function getAdvertisedPort(request: any): number {
+    const backendPort = Number(process.env.DMCC_PORT ?? "4877");
+    const origin = request.headers.origin as string | undefined;
+    if (!origin) return backendPort;
+
+    try {
+      const url = new URL(origin);
+      return Number(url.port || (url.protocol === "https:" ? "443" : "80"));
+    } catch {
+      return backendPort;
+    }
+  }
+
   // Dashboard
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/dashboard",
@@ -232,7 +245,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
             }
           }
         }
-        const port = Number(process.env.DMCC_PORT ?? "4877");
+        const port = getAdvertisedPort(request);
         const role = getRequestRole(request, (server as any).dmSessionToken);
         const activeAccessCode = (server as any).activeAccessCodes?.get(campaignId);
         const storedAccessCodeValue = state.campaign?.settings?.localAccessCode;

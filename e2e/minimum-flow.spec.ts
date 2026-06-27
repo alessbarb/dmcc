@@ -64,7 +64,7 @@ test.describe("Minimum flow", () => {
     const ctx = await browser.newContext();
     const p = await ctx.newPage();
 
-    const res = await p.request.get("http://localhost:4877/api/health");
+    const res = await p.request.get("http://127.0.0.1:4877/api/health");
     expect(res.ok()).toBeTruthy();
 
     await ctx.close();
@@ -99,9 +99,8 @@ test.describe("Minimum flow", () => {
     await goHome(page);
     await openCampaign(page, CAMPAIGN_TITLE);
 
-    await createEntity(page, "npc", "Lord Malvus");
-
     await clickNav(page, "Entidades");
+    await createEntity(page, "npc", "Lord Malvus");
     await expect(page.getByText("Lord Malvus")).toBeVisible({ timeout: 5000 });
   });
 
@@ -109,9 +108,8 @@ test.describe("Minimum flow", () => {
     await goHome(page);
     await openCampaign(page, CAMPAIGN_TITLE);
 
-    await createEntity(page, "clue", "Bloodstained Map", fillClueMetadata);
-
     await clickNav(page, "Entidades");
+    await createEntity(page, "clue", "Bloodstained Map", fillClueMetadata);
     await expect(page.getByText("Bloodstained Map")).toBeVisible({ timeout: 5000 });
   });
 
@@ -119,9 +117,8 @@ test.describe("Minimum flow", () => {
     await goHome(page);
     await openCampaign(page, CAMPAIGN_TITLE);
 
-    await createEntity(page, "secret", "True Identity of Malvus", fillSecretMetadata);
-
     await clickNav(page, "Entidades");
+    await createEntity(page, "secret", "True Identity of Malvus", fillSecretMetadata);
     await expect(page.getByText("True Identity of Malvus")).toBeVisible({ timeout: 5000 });
   });
 
@@ -260,7 +257,7 @@ test.describe("Minimum flow", () => {
       await dialog.accept();
     });
 
-    await page.getByRole("button", { name: /Exportar campaña a Bóveda Markdown/i }).click();
+    await page.getByRole("button", { name: /Exportar campaña completa a Markdown/i }).click();
 
     await expect(page.locator(".sidebar-logo")).toContainText(CAMPAIGN_TITLE, {
       timeout: 8000,

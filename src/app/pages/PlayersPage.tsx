@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Plus, X, User, Pencil, Archive, Eye, EyeOff } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Plus, X, User, Pencil, Archive, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import type { Entity, PlayerProfile } from "../stores/campaignStore.js";
 import type { ToastKind } from "../hooks/useToast.js";
 import { useCampaignStore } from "../stores/campaignStore.js";
@@ -31,6 +31,12 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const [editingPlayerIdLocal, setEditingPlayerIdLocal] = useState<string | null>(null);
   const [playerFormLocal, setPlayerFormLocal] = useState({ name: "", displayName: "", email: "", imageUrl: "" });
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
+
+  const { dmPlayerPortalSummary, loadDmPlayerPortalSummary, resolvePlayerCharacterProposal } = store;
+
+  useEffect(() => {
+    void loadDmPlayerPortalSummary();
+  }, [loadDmPlayerPortalSummary]);
 
   const campaignState = props.campaignState ?? store.campaignState;
   const visibility = props.visibility ?? store.visibility;
@@ -234,6 +240,104 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                 <button type="submit" className="btn btn-primary">{editingPlayerId ? "Guardar cambios" : "Añadir jugador"}</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* DM Player Portal Summary */}
+      {(dmPlayerPortalSummary?.players ?? []).length > 0 && (
+        <div style={{ marginTop: "32px" }}>
+          <h3 style={{ fontWeight: "700", fontSize: "1.1rem", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+            <ShieldCheck size={18} style={{ color: "var(--primary)" }} /> Portal de jugadores (vista del DM)
+          </h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
+            {(dmPlayerPortalSummary.players as any[]).map((portalPlayer: any) => {
+              const pendingProposals = (portalPlayer.proposals ?? []).filter((p: any) => p.status === "pending");
+              return (
+                <div key={portalPlayer.playerId ?? portalPlayer.displayName} className="card" style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "14px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <User size={20} style={{ color: "var(--primary)", flexShrink: 0 }} />
+                    <div>
+                      <p style={{ fontWeight: "700", fontSize: "1rem", color: "var(--text-main)" }}>{portalPlayer.displayName}</p>
+                      <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                        {portalPlayer.link?.characterEntityId
+                          ? `Personaje vinculado: ${portalPlayer.link.characterEntityId}`
+                          : "Sin personaje vinculado"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {portalPlayer.sheet && (
+                    <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px" }}>
+                      <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "8px" }}>Estado en vivo</p>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                        <span style={{ fontSize: "0.8rem", padding: "2px 8px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
+                          HP: {portalPlayer.sheet.hpCurrent ?? "?"} / {portalPlayer.sheet.hpMax ?? "?"}
+                        </span>
+                        {portalPlayer.sheet.ac !== undefined && (
+                          <span style={{ fontSize: "0.8rem", padding: "2px 8px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
+                            CA: {portalPlayer.sheet.ac}
+                          </span>
+                        )}
+                        {portalPlayer.sheet.inspiration && (
+                          <span style={{ fontSize: "0.8rem", padding: "2px 8px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)", color: "var(--primary)" }}>
+                            Inspiración
+                          </span>
+                        )}
+                        {(portalPlayer.sheet.conditions ?? []).length > 0 && (portalPlayer.sheet.conditions as string[]).map((cond: string) => (
+                          <span key={cond} style={{ fontSize: "0.8rem", padding: "2px 8px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)", color: "var(--danger, #e05252)" }}>
+                            {cond}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {(portalPlayer.notes ?? []).length > 0 && (
+                    <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px" }}>
+                      <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "6px" }}>Notas visibles (DM)</p>
+                      <ul style={{ margin: 0, paddingLeft: "16px" }}>
+                        {(portalPlayer.notes as any[]).map((note: any) => (
+                          <li key={note.noteId} style={{ fontSize: "0.8rem", color: "var(--text-main)" }}>{note.title}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {(portalPlayer.objectives ?? []).length > 0 && (
+                    <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px" }}>
+                      <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "6px" }}>Objetivos visibles (DM)</p>
+                      <ul style={{ margin: 0, paddingLeft: "16px" }}>
+                        {(portalPlayer.objectives as any[]).map((obj: any) => (
+                          <li key={obj.objectiveId} style={{ fontSize: "0.8rem", color: "var(--text-main)" }}>{obj.title}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {pendingProposals.length > 0 && (
+                    <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px" }}>
+                      <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "8px" }}>Propuestas pendientes</p>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                        {pendingProposals.map((proposal: any) => (
+                          <div key={proposal.proposalId} style={{ padding: "10px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
+                            <p style={{ fontSize: "0.8rem", color: "var(--text-main)", marginBottom: "8px" }}>{proposal.proposalType ?? "Propuesta"}</p>
+                            <div style={{ display: "flex", gap: "6px" }}>
+                              <button className="btn btn-primary btn-sm" onClick={() => resolvePlayerCharacterProposal(proposal.proposalId, { status: "approved", dmResolutionNote: "Aprobado" })}>
+                                Aprobar
+                              </button>
+                              <button className="btn btn-secondary btn-sm" onClick={() => resolvePlayerCharacterProposal(proposal.proposalId, { status: "rejected", dmResolutionNote: "Rechazado por el DM" })}>
+                                Rechazar
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

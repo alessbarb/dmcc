@@ -101,7 +101,10 @@ export interface CampaignStateStore {
   timeline: { events: any[] } | null;
   visibility: any | null;
   lanStatus: { lanModeEnabled: boolean; accessCode: string | null; localIp: string; port: number; joinUrl: string } | null;
-  
+
+  playerPortalState: any | null;
+  dmPlayerPortalSummary: any | null;
+
   loading: boolean;
   error: string | null;
 
@@ -197,6 +200,17 @@ export interface CampaignStateStore {
 
   createTag: (name: string, color?: string) => Promise<{ tagId: string; name: string; color?: string }>;
 
+  loadPlayerPortalState: (campaignIdOverride?: string) => Promise<void>;
+  updatePlayerPortalStatus: (payload: any) => Promise<void>;
+  upsertPlayerPortalResource: (payload: any) => Promise<void>;
+  createPlayerPortalNote: (payload: any) => Promise<void>;
+  updatePlayerPortalNote: (noteId: string, payload: any) => Promise<void>;
+  createPlayerPortalObjective: (payload: any) => Promise<void>;
+  updatePlayerPortalObjective: (objectiveId: string, payload: any) => Promise<void>;
+  createPlayerCharacterProposal: (payload: any) => Promise<void>;
+  loadDmPlayerPortalSummary: () => Promise<void>;
+  resolvePlayerCharacterProposal: (proposalId: string, payload: any) => Promise<void>;
+
   createCanvas: (title: string, kind: string, description?: string) => Promise<void>;
   setActiveCanvasId: (canvasId: string | null) => void;
   placeNodeOnCanvas: (canvasId: string, node: any) => Promise<void>;
@@ -266,6 +280,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   timeline: null,
   visibility: null,
   lanStatus: null,
+  playerPortalState: null,
+  dmPlayerPortalSummary: null,
   loading: false,
   error: null,
 
@@ -899,6 +915,158 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     });
     if (!res.ok) throw new Error("Failed to create tag");
     return res.json();
+  },
+
+  loadPlayerPortalState: async (campaignIdOverride) => {
+    const campaignId = campaignIdOverride ?? get().activeCampaignId;
+    if (!campaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${campaignId}/player-portal/state`);
+      if (!res.ok) throw new Error("Failed to load player portal state");
+      set({ playerPortalState: await res.json() });
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  updatePlayerPortalStatus: async (payload) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to update player portal status");
+      await get().loadPlayerPortalState(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  upsertPlayerPortalResource: async (payload) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/resources`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to upsert player portal resource");
+      await get().loadPlayerPortalState(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  createPlayerPortalNote: async (payload) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/notes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to create player portal note");
+      await get().loadPlayerPortalState(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  updatePlayerPortalNote: async (noteId, payload) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/notes/${noteId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to update player portal note");
+      await get().loadPlayerPortalState(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  createPlayerPortalObjective: async (payload) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/objectives`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to create player portal objective");
+      await get().loadPlayerPortalState(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  updatePlayerPortalObjective: async (objectiveId, payload) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/objectives/${objectiveId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to update player portal objective");
+      await get().loadPlayerPortalState(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  createPlayerCharacterProposal: async (payload) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/proposals`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to create player character proposal");
+      await get().loadPlayerPortalState(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  loadDmPlayerPortalSummary: async () => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/dm-summary`);
+      if (!res.ok) throw new Error("Failed to load DM player portal summary");
+      set({ dmPlayerPortalSummary: await res.json() });
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  resolvePlayerCharacterProposal: async (proposalId, payload) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/proposals/${proposalId}/resolve`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to resolve player character proposal");
+      await get().loadDmPlayerPortalSummary();
+    } catch (err: any) {
+      set({ error: err.message });
+    }
   },
 
   createCanvas: async (title, kind, description) => {
