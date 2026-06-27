@@ -20,6 +20,7 @@ import {
   ArrowRight,
   BookOpen,
   Layers,
+  Sparkles,
 } from "lucide-react";
 import { getCampaignExitDecision } from "./utils/campaignExit.js";
 import { getRuleSystem } from "../domain/rules/index.js";
@@ -39,6 +40,8 @@ import { GraphPage } from "./pages/GraphPage.js";
 import { EntityDetailModal } from "./components/EntityDetailModal.js";
 import { AppFooter } from "./components/AppFooter.js";
 import { TypeMetadataForm } from "./components/TypeMetadataForm.js";
+import { RpgPortalBackground } from "./components/RpgPortalBackground.js";
+import { LandingCampaignCard } from "./components/LandingCampaignCard.js";
 
 export function App() {
   const {
@@ -104,7 +107,24 @@ export function App() {
   // Forms & Modals state
   const [newCampaignTitle, setNewCampaignTitle] = useState("");
   const [newCampaignSystem, setNewCampaignSystem] = useState("generic_fantasy_d20");
+  const [newCampaignTemplate, setNewCampaignTemplate] = useState("empty");
+  const [landingSearchQuery, setLandingSearchQuery] = useState("");
   const [backupRestorePath, setBackupRestorePath] = useState("");
+
+  const [mysticalTransitionId, setMysticalTransitionId] = useState<string | null>(null);
+
+  const triggerMysticalTransition = (campaignId: string) => {
+    setMysticalTransitionId(campaignId);
+    setTimeout(async () => {
+      try {
+        await selectCampaign(campaignId);
+        navigate({ to: `/campaigns/${campaignId}/canvas` });
+      } catch (e) {
+        console.error(e);
+        setMysticalTransitionId(null);
+      }
+    }, 850);
+  };
 
   const [isEntityModalOpen, setIsEntityModalOpen] = useState(false);
   const [entityForm, setEntityForm] = useState({
@@ -263,10 +283,14 @@ export function App() {
     e.preventDefault();
     if (!newCampaignTitle.trim()) return;
     try {
+      if (newCampaignTemplate && newCampaignTemplate !== "empty") {
+        sessionStorage.setItem("dmcc_pending_seed_template", newCampaignTemplate);
+      }
       const campaignId = await createCampaign(newCampaignTitle.trim(), newCampaignSystem);
       setNewCampaignTitle("");
+      setNewCampaignTemplate("empty");
       if (campaignId) {
-        navigate({ to: `/campaigns/${campaignId}/canvas` });
+        triggerMysticalTransition(campaignId);
       }
     } catch (err) {
       console.error(err);
@@ -395,48 +419,104 @@ export function App() {
 
   // Render Landing Page
   if (!activeCampaignId || !campaignState) {
+    const filteredCampaigns = campaigns.filter(
+      (c) =>
+        c.title.toLowerCase().includes(landingSearchQuery.toLowerCase()) ||
+        c.campaignId.toLowerCase().includes(landingSearchQuery.toLowerCase())
+    );
+
     return (
       <div className="landing-shell">
+        {/* Animated Hero Header */}
         <header className="landing-hero">
-          <img
-            className="landing-hero__image"
-            src="/assets/background.png"
-            alt=""
-            aria-hidden="true"
-          />
+          <RpgPortalBackground />
 
           <div className="landing-hero__content">
+            
+            <span className="landing-badge">
+              <Sparkles size={12} style={{ marginRight: "4px" }} />
+              Portal del DM
+            </span>
             <h1 className="landing-hero__title">
               DM Campaign <span>Companion</span>
             </h1>
             <p className="landing-hero__subtitle">
-              Memoria narrativa y archivo arcano
+              Motor de memoria cognitiva y tableros visuales para directores de juego
             </p>
           </div>
         </header>
 
+        {/* Feature Highlights Tour */}
+        <section className="landing-features-grid">
+          <div className="feature-item-card">
+            <div className="feature-icon-wrapper">
+              <Layers size={20} />
+            </div>
+            <h4>Canvas Creativo</h4>
+            <p>Estructura tramas, conecta PNJs y diseña flujos de misterio mediante grafos de nodos visuales.</p>
+          </div>
+
+          <div className="feature-item-card">
+            <div className="feature-icon-wrapper">
+              <Play size={20} />
+            </div>
+            <h4>Modo LAN & Portal</h4>
+            <p>Bindea tu servidor local de forma segura y comparte con tus jugadores solo la información visible.</p>
+          </div>
+
+          <div className="feature-item-card">
+            <div className="feature-icon-wrapper">
+              <Activity size={20} />
+            </div>
+            <h4>Memoria Inmutable</h4>
+            <p>Tus datos son tuyos. Registros NDJSON locales robustos, inalterables y exportables a Markdown.</p>
+          </div>
+        </section>
+
+        {/* Main Grid: Campaigns & Creator */}
         <div className="landing-grid">
-          <section className="card landing-card">
-            <div className="landing-section-header">
-              <h2>
+          <section className="card landing-card campaigns-archive-section">
+            <div className="campaigns-archive-header">
+              <div className="archive-title-group">
                 <FolderOpen size={18} />
-                Campañas
-              </h2>
+                <h2>Archivo de Campañas</h2>
+              </div>
+
+              {/* Instant Search Bar */}
+              <div className="archive-search-wrapper">
+                <Search size={14} className="search-icon" />
+                <input
+                  type="text"
+                  className="archive-search-input"
+                  placeholder="Buscar por título o ID..."
+                  value={landingSearchQuery}
+                  onChange={(e) => setLandingSearchQuery(e.target.value)}
+                />
+                {landingSearchQuery && (
+                  <button
+                    type="button"
+                    className="search-clear-btn"
+                    onClick={() => setLandingSearchQuery("")}
+                    aria-label="Limpiar búsqueda"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
             </div>
 
             {loading ? (
-              <p className="landing-muted">Cargando campañas...</p>
+              <p className="landing-muted">Cargando campañas del archivo...</p>
             ) : error ? (
-              <div className="landing-empty" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", padding: "24px 12px", textAlign: "center" }}>
-                <p style={{ fontWeight: "700", color: "var(--color-critical)", fontSize: "1rem" }}>No se pudieron cargar las campañas</p>
-                <span style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", maxWidth: "360px" }}>
-                  {error}
-                </span>
+              <div className="landing-empty landing-error-container">
+                <AlertTriangle size={24} className="icon-critical" />
+                <p>Error al cargar el archivo arcanum</p>
+                <span>{error}</span>
                 <button className="btn btn-secondary" type="button" onClick={() => fetchCampaigns()}>
-                  Reintentar
+                  Reintentar lectura
                 </button>
               </div>
-            ) : campaigns.length === 0 ? (
+            ) : filteredCampaigns.length === 0 ? (
               <div className="landing-empty landing-empty--campaigns">
                 <img
                   src="/assets/empty_campaigns_list.png"
@@ -444,52 +524,48 @@ export function App() {
                   aria-hidden="true"
                   className="landing-empty__emblem"
                 />
-
                 <div className="landing-empty__copy">
-                  <p>Tu archivo de campañas está vacío</p>
-                  <span>
-                    Crea una nueva campaña para abrir tu primer tomo narrativo.
-                  </span>
+                  {landingSearchQuery ? (
+                    <>
+                      <p>No se encontraron campañas</p>
+                      <span>No hay tomos que coincidan con la búsqueda "{landingSearchQuery}".</span>
+                    </>
+                  ) : (
+                    <>
+                      <p>Tu tomo de campañas está en blanco</p>
+                      <span>Crea una nueva campaña en el panel lateral para iniciar tu registro narrativo.</span>
+                    </>
+                  )}
                 </div>
               </div>
             ) : (
-              <div className="campaign-list">
-                {campaigns.map((c) => (
-                  <button
+              <div className="campaign-grid-list">
+                {filteredCampaigns.map((c) => (
+                  <LandingCampaignCard
                     key={c.campaignId}
-                    type="button"
-                    className="campaign-list-item"
-                    onClick={() => {
-                      selectCampaign(c.campaignId);
-                      navigate({ to: `/campaigns/${c.campaignId}/canvas` });
+                    campaign={c}
+                    onSelect={(campaignId) => {
+                      triggerMysticalTransition(campaignId);
                     }}
-                  >
-                    <div className="campaign-list-item__body">
-                      <h3>{c.title}</h3>
-                      <p>
-                        <span>{c.system || "Sistema personalizado"}</span>
-                        <span className="campaign-list-item__id">{c.campaignId}</span>
-                      </p>
-                    </div>
-                    <ArrowRight size={18} />
-                  </button>
+                  />
                 ))}
               </div>
             )}
           </section>
 
           <div className="landing-side-stack">
+            {/* New Campaign Creator Card */}
             <section className="card landing-card landing-create-card">
               <div className="landing-section-header">
                 <h2>
                   <Plus size={18} />
-                  Crear nueva campaña
+                  Nueva Campaña
                 </h2>
               </div>
 
-              <form onSubmit={handleCreateCampaignSubmit}>
+              <form onSubmit={handleCreateCampaignSubmit} className="landing-creator-form">
                 <div className="form-group">
-                  <label className="form-label">Título de campaña</label>
+                  <label className="form-label">Título de la Campaña</label>
                   <input
                     type="text"
                     className="form-input"
@@ -501,16 +577,59 @@ export function App() {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Sistema de juego</label>
+                  <label className="form-label">Sistema de Reglas</label>
                   <select
                     className="form-select"
                     value={newCampaignSystem}
                     onChange={(e) => setNewCampaignSystem(e.target.value)}
                   >
-                    <option value="generic_fantasy_d20">Fantasía d20 genérica</option>
+                    <option value="generic_fantasy_d20">Fantasía d20 Genérica</option>
                     <option value="dnd_srd_5_2_1">Dungeons & Dragons SRD 5.2.1</option>
-                    <option value="custom">Sistema personalizado</option>
+                    <option value="custom">Sistema Personalizado</option>
                   </select>
+                </div>
+
+                {/* Stepped Template Selection */}
+                <div className="form-group">
+                  <label className="form-label">Plantilla Inicial de Canvas</label>
+                  <div className="template-options-grid">
+                    <label className={`template-option ${newCampaignTemplate === "empty" ? "selected" : ""}`}>
+                      <input
+                        type="radio"
+                        name="campaignTemplate"
+                        value="empty"
+                        checked={newCampaignTemplate === "empty"}
+                        onChange={(e) => setNewCampaignTemplate(e.target.value)}
+                        className="hidden-radio"
+                      />
+                      <span className="template-label">Lienzo vacío</span>
+                      <span className="template-desc">Inicio limpio sin nodos</span>
+                    </label>
+                    <label className={`template-option ${newCampaignTemplate === "mystery" ? "selected" : ""}`}>
+                      <input
+                        type="radio"
+                        name="campaignTemplate"
+                        value="mystery"
+                        checked={newCampaignTemplate === "mystery"}
+                        onChange={(e) => setNewCampaignTemplate(e.target.value)}
+                        className="hidden-radio"
+                      />
+                      <span className="template-label">Misterio</span>
+                      <span className="template-desc">Estructura para investigaciones</span>
+                    </label>
+                    <label className={`template-option ${newCampaignTemplate === "faction" ? "selected" : ""}`}>
+                      <input
+                        type="radio"
+                        name="campaignTemplate"
+                        value="faction"
+                        checked={newCampaignTemplate === "faction"}
+                        onChange={(e) => setNewCampaignTemplate(e.target.value)}
+                        className="hidden-radio"
+                      />
+                      <span className="template-label">Facciones</span>
+                      <span className="template-desc">Lucha de influencias y poder</span>
+                    </label>
+                  </div>
                 </div>
 
                 <button type="submit" className="btn btn-primary landing-primary-action">
@@ -519,6 +638,7 @@ export function App() {
               </form>
             </section>
 
+            {/* Backup Restore Card */}
             <section className="card landing-card landing-restore-card">
               <details>
                 <summary>
@@ -540,13 +660,12 @@ export function App() {
                       required
                     />
                     <small className="form-help">
-                      Introduce solo el nombre del archivo. Las copias se buscan en la carpeta
-                      de backups de la campaña.
+                      Introduce el nombre del archivo JSON guardado en la carpeta de backups.
                     </small>
                   </div>
 
                   <button type="submit" className="btn btn-secondary landing-secondary-action">
-                    Restaurar estado de campaña
+                    Restaurar Estado
                   </button>
                 </form>
               </details>
@@ -555,6 +674,13 @@ export function App() {
         </div>
 
         <AppFooter variant="landing" />
+
+        {mysticalTransitionId && (
+          <div className="mystical-portal-overlay mystical-portal-overlay--in" aria-live="assertive">
+            <div className="mystical-portal-glow"></div>
+            <div className="mystical-portal-text">Entrando en la campaña...</div>
+          </div>
+        )}
       </div>
     );
   }
