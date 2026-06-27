@@ -1,37 +1,7 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "strict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "outDir": "dist",
-    "rootDir": ".",
-    "jsx": "react-jsx",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["node", "vitest/globals"],
-    "ignoreDeprecations": "6.0",
-    "baseUrl": ".",
-    "paths": {
-      "@frontend/*": ["src/frontend/*"],
-      "@backend/*": ["src/backend/*"],
-      "@core/*": ["src/core/*"],
-      "@shared/*": ["src/shared/*"]
-    }
-  },
-  "include": [
-    "src/backend",
-    "src/core",
-    "src/shared",
-    "seeds",
-    "scripts",
-    "scratch",
-    "e2e",
-    "tests"
-  ],
-  "exclude": [
-    "src/frontend"
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.app.json" }
   ]
 }
