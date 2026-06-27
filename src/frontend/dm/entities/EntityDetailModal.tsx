@@ -13,6 +13,9 @@ import {
 import { getEntityDefaultImage } from "./entityVisuals.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
 import type { Entity, Relation, Fact, Session } from "../../shared/stores/campaignStore.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { formatRelationType } from "@shared/i18n/index.js";
+
 
 interface EntityDetailModalProps {
   selectedEntity: any;
@@ -26,11 +29,11 @@ interface EntityDetailModalProps {
 
 type TabId = "resumen" | "relaciones" | "hechos" | "trazabilidad";
 
-const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
-  { id: "resumen", label: "Resumen", icon: <AlignLeft size={13} /> },
-  { id: "relaciones", label: "Relaciones", icon: <GitBranch size={13} /> },
-  { id: "hechos", label: "Hechos", icon: <FileText size={13} /> },
-  { id: "trazabilidad", label: "Trazabilidad", icon: <Clock size={13} /> },
+const TABS: { id: TabId; labelKey: string; icon: React.ReactNode }[] = [
+  { id: "resumen", labelKey: "entityDetail.tabsSummary", icon: <AlignLeft size={13} /> },
+  { id: "relaciones", labelKey: "entityDetail.tabsRelations", icon: <GitBranch size={13} /> },
+  { id: "hechos", labelKey: "entityDetail.tabsFacts", icon: <FileText size={13} /> },
+  { id: "trazabilidad", labelKey: "entityDetail.tabsTrace", icon: <Clock size={13} /> },
 ];
 
 // Safely get values from Maps or plain objects/arrays
@@ -86,7 +89,9 @@ function buildTrazabilidad(
   entity: any,
   relations: Relation[],
   facts: Fact[],
-  sessions: Session[]
+  sessions: Session[],
+  t: (key: string, values?: Record<string, string | number>) => string,
+  locale: "es" | "en"
 ): TraceEntry[] {
   const entries: TraceEntry[] = [];
 
@@ -98,9 +103,9 @@ function buildTrazabilidad(
   entries.push({
     at: entity.createdAt ?? new Date(0).toISOString(),
     kind: "creacion",
-    label: "Entidad creada",
+    label: t("entityDetail.entityCreated"),
     detail: createdSession
-      ? `Sesión #${createdSession.number ?? "?"} — ${createdSession.title || createdSession.sessionId}`
+      ? t("entityDetail.sessionTrace", { number: createdSession.number ?? "?", title: createdSession.title || createdSession.sessionId })
       : undefined,
   });
 
@@ -122,8 +127,8 @@ function buildTrazabilidad(
       at: (r as any).createdAt ?? entity.createdAt ?? new Date(0).toISOString(),
       kind: "relacion",
       label: isSource
-        ? `Relación saliente: ${r.relationType} → ${otherId}`
-        : `Relación entrante: ${otherId} → ${r.relationType}`,
+        ? t("entityDetail.outgoingRelation", { type: formatRelationType(r.relationType, locale), target: otherId })
+        : t("entityDetail.incomingRelation", { source: otherId, type: formatRelationType(r.relationType, locale) }),
       detail: r.description,
     });
   }
@@ -168,6 +173,7 @@ function ResumenTab({
   setEditEntityForm: (v: Partial<Entity>) => void;
   onVisibilityChange: (entityId: string, visibility: any) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       {/* Visibility badge + editor */}
@@ -263,7 +269,7 @@ function ResumenTab({
           </h4>
           {(() => {
             const m = entity.metadata;
-            const t = entity.entityType;
+            const entityType = entity.entityType;
             const Field = ({ label, value }: { label: string; value: any }) =>
               value != null && String(value).trim() !== "" ? (
                 <div style={{ fontSize: "0.85rem", display: "flex", gap: "8px" }}>
@@ -284,8 +290,8 @@ function ResumenTab({
                   borderRadius: "var(--radius-md)",
                 }}
               >
-                {(t === "npc" || t === "player_character" || t === "creature") && (
-                  t === "player_character" && campaignState?.campaign?.system === "dnd_srd_5_2_1" ? (
+                {(entityType === "npc" || entityType === "player_character" || entityType === "creature") && (
+                  entityType === "player_character" && campaignState?.campaign?.system === "dnd_srd_5_2_1" ? (
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)" }}>
                         <Field label="Clase" value={m.className} />
@@ -392,9 +398,9 @@ function ResumenTab({
                               {m.skills.map((s: string) => {
                                 const trans: Record<string, string> = {
                                   acrobatics: "Acrobacias", athletics: "Atletismo", stealth: "Sigilo", sleight_of_hand: "Juego de Manos",
-                                  arcana: "Arcana", history: "Historia", investigation: "Investigación", insight: "Perspicacia",
-                                  medicine: "Medicina", nature: "Naturaleza", perception: "Percepción", performance: "Interpretación",
-                                  persuasion: "Persuasión", religion: "Religión", animal_handling: "Trato Animal", intimidation: "Intimidación",
+                                  arcana: "Arcana", history: "Historia", investigation: t("entityDetail.skillInvestigation"), insight: "Perspicacia",
+                                  medicine: "Medicina", nature: "Naturaleza", perception: t("entityDetail.skillPerception"), performance: t("entityDetail.skillPerformance"),
+                                  persuasion: t("entityDetail.skillPersuasion"), religion: t("entityDetail.skillReligion"), animal_handling: "Trato Animal", intimidation: t("entityDetail.skillIntimidation"),
                                   survival: "Supervivencia"
                                 };
                                 return (
@@ -417,7 +423,7 @@ function ResumenTab({
                         <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "8px", border: "1px dashed var(--secondary)" }}>
                           <div style={{ fontSize: "0.7rem", color: "var(--secondary)", fontWeight: "700", textTransform: "uppercase" }}>✨ Magia y Conjuros</div>
                           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                            <Field label="CD de Salvación" value={m.spellSaveDC} />
+                            <Field label={t("entityDetail.spellSaveDc")} value={m.spellSaveDC} />
                             <Field label="Bono de Ataque" value={m.spellAttackBonus != null ? `+${m.spellAttackBonus}` : null} />
                           </div>
                         </div>
@@ -433,11 +439,11 @@ function ResumenTab({
                   ) : (
                     <>
                       <Field label="Rol" value={m.role} />
-                      <Field label="Facción" value={m.factionId} />
-                      <Field label="Motivación" value={m.motivation} />
+                      <Field label={t("entityDetail.faction")} value={m.factionId} />
+                      <Field label={t("entityDetail.motivation")} value={m.motivation} />
                       <Field label="Objetivo" value={m.goal} />
                       <Field label="Actitud" value={m.attitude} />
-                      {t === "player_character" && (
+                      {entityType === "player_character" && (
                         <>
                           <Field label="Jugador" value={(() => {
                             if (!m.playerId) return null;
@@ -450,53 +456,53 @@ function ResumenTab({
                           <Field label="Trasfondo" value={m.background} />
                           <Field label="Clase de Armadura (CA)" value={m.armorClass} />
                           <Field label="PG actuales" value={m.hitPointsCurrent} />
-                          <Field label="PG máximos" value={m.hitPointsMax} />
-                          <Field label="Percepción pasiva" value={m.passivePerception} />
+                          <Field label={t("entityDetail.hitPointsMax")} value={m.hitPointsMax} />
+                          <Field label={t("entityDetail.passivePerception")} value={m.passivePerception} />
                         </>
                       )}
                     </>
                   )
                 )}
-                {t === "location" && (
+                {entityType === "location" && (
                   <>
-                    <Field label="Región" value={m.region} />
+                    <Field label={t("entityModal.regionLabel")} value={m.region} />
                     <Field label="Terreno" value={m.terrainType} />
                     <Field
                       label="Conocido por el grupo"
                       value={
-                        m.isKnownToParty != null ? (m.isKnownToParty ? "Sí" : "No") : null
+                        m.isKnownToParty != null ? (m.isKnownToParty ? t("common.yes") : "No") : null
                       }
                     />
                   </>
                 )}
-                {t === "quest" && (
+                {entityType === "quest" && (
                   <>
-                    <Field label="Ubicación" value={m.locationId} />
+                    <Field label={t("canvas.node.typeLocation")} value={m.locationId} />
                     <Field label="Recompensa" value={m.reward} />
                   </>
                 )}
-                {t === "clue" && (
+                {entityType === "clue" && (
                   <>
                     <Field
                       label="Encontrado"
-                      value={m.found != null ? (m.found ? "Sí" : "No") : null}
+                      value={m.found != null ? (m.found ? t("common.yes") : "No") : null}
                     />
                     <Field label="Significado" value={m.significance} />
                   </>
                 )}
-                {t === "secret" && (
+                {entityType === "secret" && (
                   <Field
                     label="Revelado a"
                     value={Array.isArray(m.revealedTo) ? m.revealedTo.join(", ") : m.revealedTo}
                   />
                 )}
-                {t === "faction" && (
+                {entityType === "faction" && (
                   <>
                     <Field label="Alineamiento" value={m.alignment} />
                     <Field label="Base" value={m.baseOfOperations} />
                   </>
                 )}
-                {t === "clock" && (
+                {entityType === "clock" && (
                   <>
                     <Field label="Tipo" value={m.clockType} />
                     <Field
@@ -509,16 +515,16 @@ function ResumenTab({
                     />
                   </>
                 )}
-                {t === "item" && (
+                {entityType === "item" && (
                   <>
                     <Field label="Propietario" value={m.ownerId} />
                     <Field label="Rareza" value={m.rarity} />
                   </>
                 )}
-                {t === "encounter" && (
+                {entityType === "encounter" && (
                   <>
                     <Field label="Dificultad" value={m.difficulty} />
-                    <Field label="Ubicación" value={m.locationId} />
+                    <Field label={t("canvas.node.typeLocation")} value={m.locationId} />
                   </>
                 )}
                 {![
@@ -533,7 +539,7 @@ function ResumenTab({
                   "clock",
                   "item",
                   "encounter",
-                ].includes(t) &&
+                ].includes(entityType) &&
                   Object.entries(m).map(([key, val]: any) => (
                     <Field key={key} label={key} value={val} />
                   ))}
@@ -850,15 +856,16 @@ function TrazabilidadTab({
   const facts = getFactsArray(campaignState?.facts);
   const sessions = getSessionsArray(campaignState?.sessions);
 
-  const entries = buildTrazabilidad(entity, relations, facts, sessions);
+  const { locale, t } = useTranslation();
+  const entries = buildTrazabilidad(entity, relations, facts, sessions, t, locale);
 
   const kindStyles: Record<
     TraceEntry["kind"],
     { accentColor: string; label: string }
   > = {
-    creacion: { accentColor: "var(--color-primary, hsl(210, 80%, 55%))", label: "Creación" },
-    visibilidad: { accentColor: "hsl(40, 80%, 55%)", label: "Visibilidad" },
-    relacion: { accentColor: "hsl(210, 60%, 50%)", label: "Relación" },
+    creacion: { accentColor: "var(--color-primary, hsl(210, 80%, 55%))", label: t("entityModal.tabCreation") },
+    visibilidad: { accentColor: "hsl(40, 80%, 55%)", label: t("entityModal.tabVisibility") },
+    relacion: { accentColor: "hsl(210, 60%, 50%)", label: t("entityModal.tabRelation") },
     hecho: { accentColor: "hsl(280, 60%, 60%)", label: "Hecho" },
   };
 
@@ -985,6 +992,7 @@ export function EntityDetailModal({
   onVisibilityChange,
   addToast,
 }: EntityDetailModalProps) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabId>("resumen");
   const [isEditingEntity, setIsEditingEntity] = useState(false);
   const [editEntityForm, setEditEntityForm] = useState<Partial<Entity>>({});
@@ -1006,7 +1014,7 @@ export function EntityDetailModal({
 
   const handleArchive = async () => {
     await onArchive(selectedEntity.entityId);
-    addToast(`"${selectedEntity.title}" archivada.`, "info");
+    addToast(t("entityDetail.archivedToast", { title: selectedEntity.title }), "info");
     onClose();
     setIsEditingEntity(false);
     setEditEntityForm({});
@@ -1159,7 +1167,7 @@ export function EntityDetailModal({
                 }}
               >
                 {tab.icon}
-                {tab.label}
+                {t(tab.labelKey)}
               </button>
             );
           })}
@@ -1208,7 +1216,7 @@ export function EntityDetailModal({
                 onClick={handleToggleEdit}
               >
                 <Pencil size={13} />{" "}
-                {isEditingEntity ? "Cancelar edición" : "Editar"}
+                {isEditingEntity ? t("entityModal.cancelEdit") : t("common.edit")}
               </button>
             )}
             {isEditingEntity && (
