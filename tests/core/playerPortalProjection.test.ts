@@ -13,7 +13,7 @@ function event(type: string, payload: any, sequence = 1): StoredEvent {
     payload,
     timestamp: `2026-06-27T00:00:${String(sequence).padStart(2, "0")}.000Z`,
     hash: `hash_${sequence}`,
-  } as StoredEvent;
+  } as unknown as StoredEvent;
 }
 
 function campaignProjection(): CampaignProjection {
@@ -38,7 +38,7 @@ function campaignProjection(): CampaignProjection {
     canvases: [],
     settings: {},
     lastSequence: 0,
-  } as CampaignProjection;
+  } as unknown as CampaignProjection;
 }
 
 describe("PlayerPortalProjection", () => {

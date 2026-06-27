@@ -38,7 +38,7 @@ const CONFIDENCE_DOTS: Record<string, { dots: number; label: string }> = {
   false:       { dots: 0, label: "Falso" },
 };
 
-export function CanvasFactNode({ id, data, selected }: CanvasFactNodeProps) {
+export function CanvasFactNode({ id: _id, data, selected }: CanvasFactNodeProps) {
   const campaignState = useCampaignStore(s => s.campaignState);
 
   // Resolve from store if not pre-passed

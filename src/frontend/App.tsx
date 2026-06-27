@@ -17,7 +17,6 @@ import {
   User,
   AlertTriangle,
   FolderOpen,
-  ArrowRight,
   BookOpen,
   Layers,
   Sparkles,
