@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.node.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+    "types": ["node"]
+  },
+  "include": [
+    "./src/backend",
+    "./src/core",
+    "./src/shared"
+  ],
+  "exclude": [
+    "./src/frontend",
+    "./tests",
+    "./e2e",
+    "./scratch",
+    "./seeds",
+    "./dist",
+    "./node_modules"
+  ]
+}
