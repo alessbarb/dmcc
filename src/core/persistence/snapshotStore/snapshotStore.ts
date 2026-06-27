@@ -3,6 +3,7 @@ import * as path from "path";
 import { homedir } from "os";
 import type { CampaignId } from "@shared/ids.js";
 import type { CampaignProjection } from "../../projections/campaignProjection.js";
+import { SNAPSHOT_SCHEMA_VERSION, PROJECTION_SCHEMA_VERSION } from "@shared/appVersion.js";
 
 import { assertWithinDir } from "@backend/server/helpers.js";
 
@@ -86,7 +87,8 @@ export class SnapshotStore {
     };
 
     const snapshot = {
-      schemaVersion: 1,
+      schemaVersion: SNAPSHOT_SCHEMA_VERSION,
+      projectionVersion: PROJECTION_SCHEMA_VERSION,
       lastSequence: sequence,
       sequence,
       campaignId,

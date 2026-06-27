@@ -8,6 +8,7 @@ import type { CampaignId } from "@shared/ids.js";
 import { generateEventId } from "@shared/ids.js";
 import { EventStoreError } from "@shared/errors.js";
 import { nowIso } from "@shared/dateTime.js";
+import { EVENT_SCHEMA_VERSION } from "@shared/appVersion.js";
 import { assertWithinDir } from "@backend/server/helpers.js";
 
 export function computeEventHash(eventWithoutHash: Omit<StoredEvent, "hash">): string {
@@ -217,7 +218,7 @@ export class EventStore {
       actorId,
       payload: normalized,
       previousHash,
-      schemaVersion: 1,
+      schemaVersion: EVENT_SCHEMA_VERSION,
     };
 
     const hash = computeEventHash(eventWithoutHash);
