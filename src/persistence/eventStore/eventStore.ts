@@ -75,7 +75,8 @@ export function normalizePayload(type: string, payload: any): any {
   }
 
   // Normalize visibility — canonical field is `kind`; drop legacy `mode`
-  if (newPayload.visibility) {
+  // Only applies when visibility is an object (domain VisibilityRule), not a portal string enum.
+  if (newPayload.visibility && typeof newPayload.visibility === "object") {
     const canonicalKind = newPayload.visibility.kind || newPayload.visibility.mode || "dm_only";
     const { mode: _mode, ...rest } = newPayload.visibility;
     newPayload.visibility = { ...rest, kind: canonicalKind };

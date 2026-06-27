@@ -1,4 +1,5 @@
 import type { FastifyInstance } from "fastify";
+import { randomBytes } from "crypto";
 import { createId } from "../../shared/ids.js";
 import { EventStore } from "../../persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "../../persistence/snapshotStore/snapshotStore.js";
@@ -8,6 +9,8 @@ import {
   assertCampaignAccess,
   getValidatedVaultId,
   getValidatedCampaignId,
+  generatePlayerToken,
+  hashPlayerToken,
 } from "../auth.js";
 
 export async function registerPlayerRoutes(server: FastifyInstance, opts: { dataDir: string }) {
@@ -194,6 +197,74 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
           campaignId: campaignId as any,
           actorId: "usr_dm",
           playerId,
+        });
+
+        return { ok: true };
+      } catch (err: any) {
+        if (err.statusCode) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  server.post<{ Params: { campaignId: string; playerId: string }; Body: any }>(
+    "/api/campaigns/:campaignId/players/:playerId/token",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { playerId } = request.params;
+
+      try {
+        const repo = getRepository(vaultId);
+        const rawToken = generatePlayerToken();
+        const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
+
+        await repo.executeCommand(campaignId as any, {
+          type: "IssuePlayerToken",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          playerId,
+          tokenId,
+          tokenHash: hashPlayerToken(rawToken),
+          label: (request.body as any)?.label,
+          createdAt: new Date().toISOString(),
+        });
+
+        return { tokenId, token: rawToken };
+      } catch (err: any) {
+        if (err.statusCode) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  server.delete<{ Params: { campaignId: string; playerId: string; tokenId: string } }>(
+    "/api/campaigns/:campaignId/players/:playerId/token/:tokenId",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { playerId, tokenId } = request.params;
+
+      try {
+        const repo = getRepository(vaultId);
+
+        await repo.executeCommand(campaignId as any, {
+          type: "RevokePlayerToken",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          playerId,
+          tokenId,
+          revokedAt: new Date().toISOString(),
         });
 
         return { ok: true };

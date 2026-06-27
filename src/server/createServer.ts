@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import fastifyStatic from "@fastify/static";
+import { existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { homedir } from "os";
@@ -19,6 +20,7 @@ import { registerProjectionRoutes } from "./routes/projectionRoutes.js";
 import { registerTagRoutes } from "./routes/tagRoutes.js";
 import { registerRuleRoutes } from "./routes/ruleRoutes.js";
 import { registerCanvasRoutes } from "./routes/canvasRoutes.js";
+import { registerPlayerPortalRoutes } from "./routes/playerPortalRoutes.js";
 
 export interface ServerConfig {
   dataDir?: string;
@@ -50,6 +52,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
   const publicPath = join(__dirname, "..", "public");
+  const hasBuiltSpa = existsSync(join(publicPath, "index.html"));
 
   server.register(fastifyStatic, { root: publicPath, prefix: "/", wildcard: false });
 
@@ -57,6 +60,17 @@ export function createServer(config?: ServerConfig): FastifyInstance {
     if (request.raw.url?.startsWith("/api")) {
       reply.code(404);
       return { error: "API route not found" };
+    }
+    if (!hasBuiltSpa && request.raw.url?.startsWith("/join/")) {
+      const hostHeader = request.headers.host ?? "127.0.0.1:4877";
+      let hostname = "127.0.0.1";
+      try {
+        hostname = new URL(`http://${hostHeader}`).hostname;
+      } catch {
+        hostname = "127.0.0.1";
+      }
+      const devUiPort = Number(process.env.DMCC_DEV_UI_PORT ?? "5173");
+      return reply.redirect(`http://${hostname}:${devUiPort}${request.raw.url}`);
     }
     try {
       return reply.sendFile("index.html");
@@ -87,6 +101,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerTagRoutes, opts);
   server.register(registerRuleRoutes, opts);
   server.register(registerCanvasRoutes, opts);
+  server.register(registerPlayerPortalRoutes, opts);
 
   return server;
 }

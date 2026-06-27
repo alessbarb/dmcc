@@ -708,6 +708,21 @@ export function CanvasPage() {
     }
   }, [canvases, activeCanvasId]);
 
+  // Seed pending template if campaign was newly created from landing page
+  useEffect(() => {
+    if (activeCanvasId && campaignId) {
+      const pendingTemplate = sessionStorage.getItem("dmcc_pending_seed_template");
+      if (pendingTemplate && pendingTemplate !== "custom" && pendingTemplate !== "empty") {
+        sessionStorage.removeItem("dmcc_pending_seed_template");
+        setTimeout(async () => {
+          addToast(`Inicializando plantilla de campaña: ${pendingTemplate}...`, "info");
+          await seedCanvasTemplate(activeCanvasId, pendingTemplate, campaignId);
+          addToast(`Campaña inicializada con plantilla de ${pendingTemplate === "mystery" ? "Misterio" : "Facciones"}`, "success");
+        }, 300);
+      }
+    }
+  }, [activeCanvasId, campaignId, addToast]);
+
   // Fullscreen escape monitor
   useEffect(() => {
     const handleFullscreenChange = () => {

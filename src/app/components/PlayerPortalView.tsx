@@ -7,29 +7,213 @@ import {
   BookOpen,
   Plus,
   Trash2,
-  GitFork,
-  FileText
+  FileText,
+  Target,
+  Clock,
+  CheckSquare
 } from "lucide-react";
+
+type PortalTab = "summary" | "character" | "resources" | "diary" | "objectives" | "history";
 
 export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const navigate = useNavigate();
-  const { campaignState, selectCampaign, createEntity, updateEntity, archiveEntity } = useCampaignStore();
-  const [activeTab, setActiveTab] = useState<"character" | "story" | "clues" | "notes" | "relations">("character");
-  
-  // Note creation form
-  const [isCreatingNote, setIsCreatingNote] = useState(false);
-  const [newNoteTitle, setNewNoteTitle] = useState("");
-  const [newNoteContent, setNewNoteContent] = useState("");
+  const {
+    campaignState,
+    selectCampaign,
+    playerPortalState,
+    loadPlayerPortalState,
+    updatePlayerPortalStatus,
+    upsertPlayerPortalResource,
+    createPlayerPortalNote,
+    updatePlayerPortalNote,
+    createPlayerPortalObjective,
+    updatePlayerPortalObjective,
+  } = useCampaignStore();
 
-  // Edit character sheet
-  const [isEditingChar, setIsEditingChar] = useState(false);
-  const [charForm, setCharForm] = useState<any>({});
+  const [activeTab, setActiveTab] = useState<PortalTab>("summary");
+
+  // Character/State form
+  const [charForm, setCharForm] = useState({
+    hitPointsCurrent: "",
+    hitPointsMax: "",
+    armorClass: "",
+    inspiration: false,
+    conditions: "",
+  });
+
+  // Resource create form
+  const [showResourceForm, setShowResourceForm] = useState(false);
+  const [resourceForm, setResourceForm] = useState({
+    label: "",
+    current: "",
+    max: "",
+    recovery: "",
+  });
+
+  // Resource inline edits: resourceId -> { current, max }
+  const [resourceEdits, setResourceEdits] = useState<Record<string, { current: string; max: string }>>({});
+
+  // Diary create form
+  const [showNoteForm, setShowNoteForm] = useState(false);
+  const [noteForm, setNoteForm] = useState({
+    title: "",
+    content: "",
+    visibility: "private" as "private" | "dm_visible",
+  });
+
+  // Objectives create form
+  const [showObjectiveForm, setShowObjectiveForm] = useState(false);
+  const [objectiveForm, setObjectiveForm] = useState({
+    title: "",
+    description: "",
+    kind: "personal" as "personal" | "session" | "question_for_dm",
+    status: "open" as "open" | "done" | "archived",
+    visibility: "private" as "private" | "dm_visible",
+  });
+
+  // Diary inline edit state
+  const [noteEditId, setNoteEditId] = useState<string | null>(null);
+  const [noteEditForm, setNoteEditForm] = useState({
+    title: "",
+    content: "",
+    visibility: "private" as "private" | "dm_visible",
+  });
 
   const playerId = sessionStorage.getItem("dmcc_playerId");
-  
+
   useEffect(() => {
-    selectCampaign(campaignId);
-  }, [campaignId]);
+    void selectCampaign(campaignId);
+    void loadPlayerPortalState(campaignId);
+  }, [campaignId, selectCampaign, loadPlayerPortalState]);
+
+  // Derive portal data with safe defaults
+  const sheet = playerPortalState?.sheet;
+  const status = sheet?.status ?? { conditions: [] };
+  const resources: any[] = sheet?.resources ?? [];
+  const notes: any[] = playerPortalState?.notes ?? [];
+  const objectives: any[] = playerPortalState?.objectives ?? [];
+
+  // Sync char form when portal state loads
+  useEffect(() => {
+    if (sheet) {
+      setCharForm({
+        hitPointsCurrent: String(status?.hitPointsCurrent ?? ""),
+        hitPointsMax: String(status?.hitPointsMax ?? ""),
+        armorClass: String(status?.armorClass ?? ""),
+        inspiration: status?.inspiration ?? false,
+        conditions: (status?.conditions ?? []).join(", "),
+      });
+    }
+  }, [playerPortalState]);
+
+  const player = campaignState?.players?.find((p) => p.playerId === playerId);
+  const myCharacter = campaignState?.entities?.find(
+    (e) => e.entityType === "player_character" && e.metadata?.playerId === playerId
+  );
+
+  const handleExit = () => {
+    sessionStorage.clear();
+    useCampaignStore.setState({ activeCampaignId: null, campaignState: null, playerPortalState: null });
+    navigate({ to: "/" });
+  };
+
+  // ── Submit: Character/State ──────────────────────────────────────────────
+  const handleCharSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!myCharacter) return;
+    await updatePlayerPortalStatus({
+      characterEntityId: myCharacter?.entityId,
+      hitPointsCurrent: parseInt(charForm.hitPointsCurrent) || 0,
+      hitPointsMax: parseInt(charForm.hitPointsMax) || 0,
+      armorClass: parseInt(charForm.armorClass) || 10,
+      inspiration: charForm.inspiration,
+      conditions: charForm.conditions
+        .split(",")
+        .map((c) => c.trim())
+        .filter(Boolean),
+    });
+  };
+
+  // ── Submit: Resource save inline ────────────────────────────────────────
+  const handleResourceSave = async (resourceId: string) => {
+    const edit = resourceEdits[resourceId];
+    if (!edit) return;
+    await upsertPlayerPortalResource({
+      resourceId,
+      current: parseInt(edit.current) || 0,
+      max: parseInt(edit.max) || 0,
+    });
+    setResourceEdits((prev) => {
+      const next = { ...prev };
+      delete next[resourceId];
+      return next;
+    });
+  };
+
+  // ── Submit: Resource create ─────────────────────────────────────────────
+  const handleResourceCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resourceForm.label.trim()) return;
+    await upsertPlayerPortalResource({
+      label: resourceForm.label.trim(),
+      current: parseInt(resourceForm.current) || 0,
+      max: parseInt(resourceForm.max) || 0,
+      recovery: resourceForm.recovery.trim() || undefined,
+    });
+    setResourceForm({ label: "", current: "", max: "", recovery: "" });
+    setShowResourceForm(false);
+  };
+
+  // ── Submit: Note create ─────────────────────────────────────────────────
+  const handleNoteCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!noteForm.title.trim()) return;
+    await createPlayerPortalNote({
+      title: noteForm.title.trim(),
+      content: noteForm.content.trim(),
+      visibility: noteForm.visibility,
+      linkedEntityIds: [],
+    });
+    setNoteForm({ title: "", content: "", visibility: "private" });
+    setShowNoteForm(false);
+  };
+
+  // ── Submit: Archive note ────────────────────────────────────────────────
+  const handleNoteArchive = async (noteId: string) => {
+    if (!confirm("¿Archivar esta nota?")) return;
+    await updatePlayerPortalNote(noteId, { archived: true });
+  };
+
+  // ── Submit: Note edit inline ────────────────────────────────────────────
+  const handleNoteEditSubmit = async (e: React.FormEvent, noteId: string) => {
+    e.preventDefault();
+    await updatePlayerPortalNote(noteId, {
+      title: noteEditForm.title,
+      content: noteEditForm.content,
+      visibility: noteEditForm.visibility,
+    });
+    setNoteEditId(null);
+  };
+
+  // ── Submit: Objective create ────────────────────────────────────────────
+  const handleObjectiveCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!objectiveForm.title.trim()) return;
+    await createPlayerPortalObjective({
+      title: objectiveForm.title.trim(),
+      description: objectiveForm.description.trim() || undefined,
+      kind: objectiveForm.kind,
+      status: objectiveForm.status,
+      visibility: objectiveForm.visibility,
+    });
+    setObjectiveForm({ title: "", description: "", kind: "personal", status: "open", visibility: "private" });
+    setShowObjectiveForm(false);
+  };
+
+  // ── Submit: Objective complete ──────────────────────────────────────────
+  const handleObjectiveComplete = async (objectiveId: string) => {
+    await updatePlayerPortalObjective(objectiveId, { status: "done" });
+  };
 
   if (!campaignState) {
     return (
@@ -39,47 +223,22 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     );
   }
 
-  const player = campaignState.players?.find(p => p.playerId === playerId);
-  const myCharacter = campaignState.entities?.find(e => e.entityType === "player_character" && e.metadata?.playerId === playerId);
-  const visibleQuests = campaignState.entities?.filter(e => e.entityType === "quest" && !e.archived);
-  const visibleClues = campaignState.entities?.filter(e => e.entityType === "clue" && !e.archived);
-  const visibleFacts = campaignState.facts?.filter(f => !f.archived);
-  const visibleSessions = campaignState.sessions?.filter(s => s.status === "closed" || s.status === "active");
-  const myNotes = campaignState.entities?.filter(e => e.entityType === "note" && !e.archived && e.visibility?.playerIds?.includes(playerId));
+  const TABS: { id: PortalTab; label: string; icon: React.ReactNode }[] = [
+    { id: "summary", label: "Resumen", icon: <Shield size={16} /> },
+    { id: "character", label: "Personaje", icon: <User size={16} /> },
+    { id: "resources", label: "Recursos", icon: <Clock size={16} /> },
+    { id: "diary", label: "Diario", icon: <FileText size={16} /> },
+    { id: "objectives", label: "Objetivos", icon: <Target size={16} /> },
+    { id: "history", label: "Historia", icon: <BookOpen size={16} /> },
+  ];
 
-  const handleCreateNoteSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault();
-    if (!newNoteTitle.trim()) return;
-    await createEntity({
-      entityType: "note",
-      title: newNoteTitle.trim(),
-      content: newNoteContent.trim(),
-      visibility: { kind: "players", playerIds: [playerId!] },
-      status: "active"
-    });
-    setNewNoteTitle("");
-    setNewNoteContent("");
-    setIsCreatingNote(false);
-  };
-
-  const handleEditCharSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault();
-    if (!myCharacter) return;
-    await updateEntity(myCharacter.entityId, {
-      metadata: {
-        ...myCharacter.metadata,
-        hitPointsCurrent: parseInt(charForm.hitPointsCurrent) || 10,
-        hitPointsMax: parseInt(charForm.hitPointsMax) || 10,
-        armorClass: parseInt(charForm.armorClass) || 10
-      }
-    });
-    setIsEditingChar(false);
-  };
-
-  const handleExit = () => {
-    sessionStorage.clear();
-    useCampaignStore.setState({ activeCampaignId: null, campaignState: null });
-    navigate({ to: "/" });
+  const tabLabel: Record<PortalTab, string> = {
+    summary: "Resumen del Jugador",
+    character: "Estado del Personaje",
+    resources: "Recursos & Habilidades",
+    diary: "Diario Personal",
+    objectives: "Objetivos",
+    history: "Historia de la Aventura",
   };
 
   return (
@@ -92,31 +251,27 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
         </div>
 
         <div style={{ padding: "12px 16px", borderBottom: "1px solid var(--border-color)", display: "flex", gap: "10px", alignItems: "center" }}>
-          <div style={{ width: "36px", height: "36px", borderRadius: "50%", backgroundColor: "var(--primary)", color: "var(--text-main)", display: "flex", alignItems: "center", justifyItems: "center", justifyContent: "center", fontWeight: "700" }}>
-            {player?.displayName?.slice(0, 2).toUpperCase() || "PL"}
+          <div style={{ width: "36px", height: "36px", borderRadius: "50%", backgroundColor: "var(--primary)", color: "var(--text-main)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700" }}>
+            {player?.displayName?.slice(0, 2).toUpperCase() ?? "PL"}
           </div>
           <div>
-            <div style={{ fontSize: "0.85rem", fontWeight: "700", color: "var(--text-main)" }}>{player?.displayName}</div>
-            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Jugador</div>
+            <div style={{ fontSize: "0.85rem", fontWeight: "700", color: "var(--text-main)" }}>{player?.displayName ?? "Jugador"}</div>
+            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+              {myCharacter ? myCharacter.title : "Sin personaje"}
+            </div>
           </div>
         </div>
 
         <nav className="sidebar-nav" style={{ flexGrow: 1, padding: "16px 0" }}>
-          <div className={`nav-item ${activeTab === "character" ? "active" : ""}`} onClick={() => setActiveTab("character")}>
-            <User size={16} /> Mi Personaje
-          </div>
-          <div className={`nav-item ${activeTab === "story" ? "active" : ""}`} onClick={() => setActiveTab("story")}>
-            <Shield size={16} /> Misiones & Sesiones
-          </div>
-          <div className={`nav-item ${activeTab === "clues" ? "active" : ""}`} onClick={() => setActiveTab("clues")}>
-            <BookOpen size={16} /> Pistas & Hechos
-          </div>
-          <div className={`nav-item ${activeTab === "notes" ? "active" : ""}`} onClick={() => setActiveTab("notes")}>
-            <FileText size={16} /> Mis Notas
-          </div>
-          <div className={`nav-item ${activeTab === "relations" ? "active" : ""}`} onClick={() => setActiveTab("relations")}>
-            <GitFork size={16} /> Relaciones
-          </div>
+          {TABS.map((tab) => (
+            <div
+              key={tab.id}
+              className={`nav-item ${activeTab === tab.id ? "active" : ""}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.icon} {tab.label}
+            </div>
+          ))}
         </nav>
 
         <div className="sidebar-footer">
@@ -130,307 +285,535 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
       <main className="main-content" style={{ flexGrow: 1, display: "flex", flexDirection: "column", overflowY: "auto" }}>
         <div className="top-bar">
           <div className="top-bar-title" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <span style={{ fontSize: "1.1rem", fontWeight: "800" }}>
-              {activeTab === "character" && "Mi Personaje"}
-              {activeTab === "story" && "Misiones y Bitácora de Sesiones"}
-              {activeTab === "clues" && "Pistas y Hechos Revelados"}
-              {activeTab === "notes" && "Diario Personal del Jugador"}
-              {activeTab === "relations" && "Relaciones Narrativas"}
-            </span>
+            <span style={{ fontSize: "1.1rem", fontWeight: "800" }}>{tabLabel[activeTab]}</span>
           </div>
           <div className="top-bar-actions">
             {myCharacter && (
               <span className="badge badge-success">
-                Vínculo: {myCharacter.title} ({myCharacter.metadata?.className || "Sin clase"})
+                {myCharacter.title}
               </span>
             )}
           </div>
         </div>
 
         <div className="content-body" style={{ padding: "32px", maxWidth: "900px", width: "100%", margin: "0 auto" }}>
-          
-          {/* TAB 1: Character Sheet */}
-          {activeTab === "character" && (
-            <div>
-              {!myCharacter ? (
-                <div className="card" style={{ padding: "32px", textAlign: "center", color: "var(--text-muted)" }}>
-                  <User size={48} style={{ opacity: 0.2, marginBottom: "16px" }} />
-                  <h3>Sin personaje vinculado</h3>
-                  <p style={{ marginTop: "6px" }}>
-                    No tienes ningún personaje vinculado a tu perfil. Pídele al DM que asigne tu ficha de personaje a tu perfil "{player?.displayName}".
-                  </p>
+
+          {/* ── TAB: Summary ──────────────────────────────────────────────── */}
+          {activeTab === "summary" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              {/* Character header */}
+              {myCharacter ? (
+                <div className="card" style={{ display: "flex", gap: "20px", padding: "24px", background: "linear-gradient(135deg, hsla(255, 85%, 65%, 0.1), transparent)" }}>
+                  <div style={{ flexGrow: 1 }}>
+                    <h2 style={{ fontSize: "1.4rem", fontWeight: "800" }}>{myCharacter.title}</h2>
+                    <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginTop: "4px" }}>
+                      Nivel {myCharacter.metadata?.level ?? 1} {myCharacter.metadata?.species ?? ""} {myCharacter.metadata?.className ?? ""}
+                    </p>
+                  </div>
                 </div>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                  <div className="card" style={{ display: "flex", gap: "24px", padding: "24px", background: "linear-gradient(135deg, hsla(255, 85%, 65%, 0.1), transparent)" }}>
-                    <div style={{ width: "80px", height: "80px", borderRadius: "var(--radius-sm)", backgroundColor: "var(--surface-2)", border: "1px solid var(--border-color)", overflow: "hidden", flexShrink: 0 }}>
-                      <img src={myCharacter.metadata?.imageUrl || "/assets/default_npc.png"} alt="Avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <div className="card" style={{ padding: "20px", color: "var(--text-muted)", textAlign: "center" }}>
+                  <User size={32} style={{ opacity: 0.3, marginBottom: "8px" }} />
+                  <p>Sin personaje vinculado</p>
+                </div>
+              )}
+
+              {/* Live status */}
+              <div className="grid grid-cols-3" style={{ gap: "16px" }}>
+                <div className="card" style={{ padding: "16px", textAlign: "center" }}>
+                  <span style={{ fontSize: "0.7rem", textTransform: "uppercase", color: "var(--text-muted)", fontWeight: "700" }}>HP</span>
+                  <h3 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "4px" }}>
+                    {status.hitPointsCurrent ?? "—"} / {status.hitPointsMax ?? "—"}
+                  </h3>
+                </div>
+                <div className="card" style={{ padding: "16px", textAlign: "center" }}>
+                  <span style={{ fontSize: "0.7rem", textTransform: "uppercase", color: "var(--text-muted)", fontWeight: "700" }}>AC</span>
+                  <h3 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "4px" }}>
+                    {status.armorClass ?? "—"}
+                  </h3>
+                </div>
+                <div className="card" style={{ padding: "16px", textAlign: "center" }}>
+                  <span style={{ fontSize: "0.7rem", textTransform: "uppercase", color: "var(--text-muted)", fontWeight: "700" }}>Inspiración</span>
+                  <h3 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "4px" }}>
+                    {status.inspiration ? "✓" : "—"}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Conditions */}
+              {(status.conditions ?? []).length > 0 && (
+                <div className="card" style={{ padding: "16px" }}>
+                  <h4 style={{ fontWeight: "700", marginBottom: "10px" }}>Condiciones Activas</h4>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                    {(status.conditions ?? []).map((c: string, i: number) => (
+                      <span key={i} className="badge" style={{ backgroundColor: "hsla(0,80%,50%,0.15)", color: "hsl(0,80%,60%)", border: "1px solid hsl(0,80%,50%)" }}>
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Resources summary */}
+              {resources.length > 0 && (
+                <div className="card" style={{ padding: "16px" }}>
+                  <h4 style={{ fontWeight: "700", marginBottom: "10px" }}>Recursos</h4>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                    {resources.map((r: any) => (
+                      <span key={r.resourceId ?? r.label} className="badge badge-default">
+                        {r.label}: {r.current}/{r.max}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Upcoming objectives */}
+              {objectives.filter((o: any) => o.status === "open").length > 0 && (
+                <div className="card" style={{ padding: "16px" }}>
+                  <h4 style={{ fontWeight: "700", marginBottom: "10px" }}>Objetivos Pendientes</h4>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    {objectives
+                      .filter((o: any) => o.status === "open")
+                      .slice(0, 5)
+                      .map((o: any) => (
+                        <div key={o.objectiveId ?? o.title} style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                          <CheckSquare size={14} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
+                          <span style={{ fontSize: "0.9rem" }}>{o.title}</span>
+                          {o.kind === "question_for_dm" && (
+                            <span className="badge" style={{ fontSize: "0.65rem", backgroundColor: "hsla(255,80%,60%,0.15)", color: "hsl(255,80%,70%)" }}>Para el DM</span>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Quick actions */}
+              <div className="card" style={{ padding: "16px" }}>
+                <h4 style={{ fontWeight: "700", marginBottom: "12px" }}>Acciones Rápidas</h4>
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  <button className="btn btn-secondary btn-sm" onClick={() => setActiveTab("character")}>
+                    Actualizar HP / AC
+                  </button>
+                  <button className="btn btn-secondary btn-sm" onClick={() => { setActiveTab("diary"); setShowNoteForm(true); }}>
+                    Nueva Nota
+                  </button>
+                  <button className="btn btn-secondary btn-sm" onClick={() => { setActiveTab("objectives"); setObjectiveForm(f => ({ ...f, kind: "question_for_dm" })); setShowObjectiveForm(true); }}>
+                    Pregunta al DM
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── TAB: Character / State ─────────────────────────────────────── */}
+          {activeTab === "character" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              {myCharacter && (
+                <div className="card" style={{ padding: "20px" }}>
+                  <h3 style={{ fontWeight: "800", marginBottom: "4px" }}>{myCharacter.title}</h3>
+                  <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                    Nivel {myCharacter.metadata?.level ?? 1} {myCharacter.metadata?.species ?? ""} {myCharacter.metadata?.className ?? ""}
+                  </p>
+                </div>
+              )}
+
+              <div className="card" style={{ padding: "24px" }}>
+                <h3 style={{ fontWeight: "700", marginBottom: "20px" }}>Estado del Personaje</h3>
+                <form onSubmit={handleCharSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                  <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+                    <div className="form-group" style={{ marginBottom: 0, flex: "1 1 100px" }}>
+                      <label className="form-label">HP Actual</label>
+                      <input
+                        type="number"
+                        className="form-input"
+                        value={charForm.hitPointsCurrent}
+                        onChange={(e) => setCharForm({ ...charForm, hitPointsCurrent: e.target.value })}
+                        placeholder="10"
+                      />
                     </div>
-                    <div style={{ flexGrow: 1 }}>
-                      <h2 style={{ fontSize: "1.6rem", fontWeight: "800" }}>{myCharacter.title}</h2>
-                      <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginTop: "4px" }}>
-                        Nivel {myCharacter.metadata?.level || 1} {myCharacter.metadata?.species || "Raza desconocida"} {myCharacter.metadata?.className || "Sin clase"}
-                      </p>
-                      {myCharacter.metadata?.background && (
-                        <p style={{ fontSize: "0.85rem", fontStyle: "italic", marginTop: "8px", color: "var(--text-main)" }}>
-                          Traspasado: {myCharacter.metadata.background}
-                        </p>
+                    <div className="form-group" style={{ marginBottom: 0, flex: "1 1 100px" }}>
+                      <label className="form-label">HP Máximo</label>
+                      <input
+                        type="number"
+                        className="form-input"
+                        value={charForm.hitPointsMax}
+                        onChange={(e) => setCharForm({ ...charForm, hitPointsMax: e.target.value })}
+                        placeholder="10"
+                      />
+                    </div>
+                    <div className="form-group" style={{ marginBottom: 0, flex: "1 1 100px" }}>
+                      <label className="form-label">Armadura (AC)</label>
+                      <input
+                        type="number"
+                        className="form-input"
+                        value={charForm.armorClass}
+                        onChange={(e) => setCharForm({ ...charForm, armorClass: e.target.value })}
+                        placeholder="10"
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <input
+                      type="checkbox"
+                      id="inspiration"
+                      checked={charForm.inspiration}
+                      onChange={(e) => setCharForm({ ...charForm, inspiration: e.target.checked })}
+                    />
+                    <label htmlFor="inspiration" className="form-label" style={{ margin: 0, cursor: "pointer" }}>
+                      Inspiración
+                    </label>
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label className="form-label">Condiciones (separadas por coma)</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      value={charForm.conditions}
+                      onChange={(e) => setCharForm({ ...charForm, conditions: e.target.value })}
+                      placeholder="envenenado, asustado"
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <button type="submit" className="btn btn-primary btn-sm" disabled={!myCharacter}>
+                      Guardar Estado
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* ── TAB: Resources ────────────────────────────────────────────── */}
+          {activeTab === "resources" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h3 style={{ fontWeight: "800", margin: 0 }}>Recursos</h3>
+                <button className="btn btn-primary btn-sm" onClick={() => setShowResourceForm(true)}>
+                  <Plus size={14} /> Nuevo Recurso
+                </button>
+              </div>
+
+              {resources.length === 0 && !showResourceForm && (
+                <p style={{ color: "var(--text-muted)", fontStyle: "italic" }}>No hay recursos registrados.</p>
+              )}
+
+              {resources.map((r: any) => {
+                const rid = r.resourceId ?? r.label;
+                const edit = resourceEdits[rid];
+                return (
+                  <div key={rid} className="card" style={{ padding: "16px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                      <h4 style={{ fontWeight: "700" }}>{r.label}</h4>
+                      {r.recovery && (
+                        <span className="badge badge-default" style={{ fontSize: "0.7rem" }}>
+                          Recuperación: {r.recovery}
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ display: "flex", gap: "12px", alignItems: "flex-end" }}>
+                      <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label className="form-label">Actual</label>
+                        <input
+                          type="number"
+                          className="form-input"
+                          style={{ width: "80px" }}
+                          value={edit?.current ?? String(r.current ?? "")}
+                          onChange={(e) => setResourceEdits({ ...resourceEdits, [rid]: { current: e.target.value, max: edit?.max ?? String(r.max ?? "") } })}
+                        />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label className="form-label">Máximo</label>
+                        <input
+                          type="number"
+                          className="form-input"
+                          style={{ width: "80px" }}
+                          value={edit?.max ?? String(r.max ?? "")}
+                          onChange={(e) => setResourceEdits({ ...resourceEdits, [rid]: { current: edit?.current ?? String(r.current ?? ""), max: e.target.value } })}
+                        />
+                      </div>
+                      {edit && (
+                        <button className="btn btn-primary btn-sm" onClick={() => void handleResourceSave(rid)}>
+                          Guardar
+                        </button>
                       )}
                     </div>
                   </div>
+                );
+              })}
 
-                  <div className="grid grid-cols-3" style={{ gap: "16px" }}>
-                    <div className="card" style={{ padding: "16px", textAlign: "center" }}>
-                      <span style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-muted)", fontWeight: "700" }}>Puntos de Vida (HP)</span>
-                      <h3 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "6px" }}>
-                        {myCharacter.metadata?.hitPointsCurrent ?? 10} / {myCharacter.metadata?.hitPointsMax ?? 10}
-                      </h3>
+              {showResourceForm && (
+                <div className="card" style={{ padding: "20px", border: "1px solid var(--primary)" }}>
+                  <h4 style={{ fontWeight: "700", marginBottom: "14px" }}>Nuevo Recurso</h4>
+                  <form onSubmit={handleResourceCreate} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">Nombre</label>
+                      <input type="text" className="form-input" placeholder="Espacio de conjuro 1er nivel" value={resourceForm.label} onChange={(e) => setResourceForm({ ...resourceForm, label: e.target.value })} required />
                     </div>
-                    <div className="card" style={{ padding: "16px", textAlign: "center" }}>
-                      <span style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-muted)", fontWeight: "700" }}>Clase de Armadura (AC)</span>
-                      <h3 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "6px" }}>
-                        {myCharacter.metadata?.armorClass ?? 10}
-                      </h3>
+                    <div style={{ display: "flex", gap: "12px" }}>
+                      <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label className="form-label">Actual</label>
+                        <input type="number" className="form-input" style={{ width: "80px" }} value={resourceForm.current} onChange={(e) => setResourceForm({ ...resourceForm, current: e.target.value })} />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label className="form-label">Máximo</label>
+                        <input type="number" className="form-input" style={{ width: "80px" }} value={resourceForm.max} onChange={(e) => setResourceForm({ ...resourceForm, max: e.target.value })} />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 0, flexGrow: 1 }}>
+                        <label className="form-label">Recuperación</label>
+                        <input type="text" className="form-input" placeholder="descanso largo" value={resourceForm.recovery} onChange={(e) => setResourceForm({ ...resourceForm, recovery: e.target.value })} />
+                      </div>
                     </div>
-                    <div className="card" style={{ padding: "16px", textAlign: "center" }}>
-                      <span style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-muted)", fontWeight: "700" }}>Percepción Pasiva</span>
-                      <h3 style={{ fontSize: "1.8rem", fontWeight: "800", marginTop: "6px" }}>
-                        {myCharacter.metadata?.passivePerception ?? 10}
-                      </h3>
+                    <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={() => setShowResourceForm(false)}>Cancelar</button>
+                      <button type="submit" className="btn btn-primary btn-sm">Guardar Recurso</button>
                     </div>
-                  </div>
-
-                  <div className="card">
-                    <h3 style={{ fontWeight: "700", marginBottom: "12px" }}>Notas de Personaje</h3>
-                    <p style={{ whiteSpace: "pre-line", fontSize: "0.95rem" }}>
-                      {myCharacter.content || "Sin notas biográficas añadidas por el DM."}
-                    </p>
-                  </div>
-
-                  {/* Quick HP update card */}
-                  <div className="card">
-                    <h3 style={{ fontWeight: "700", marginBottom: "16px" }}>Actualización Rápida</h3>
-                    {isEditingChar ? (
-                      <form onSubmit={handleEditCharSubmit} style={{ display: "flex", gap: "12px", alignItems: "flex-end" }}>
-                        <div className="form-group" style={{ marginBottom: 0 }}>
-                          <label className="form-label">HP Actual</label>
-                          <input type="number" className="form-input" style={{ width: "80px" }} value={charForm.hitPointsCurrent} onChange={e => setCharForm({ ...charForm, hitPointsCurrent: e.target.value })} />
-                        </div>
-                        <div className="form-group" style={{ marginBottom: 0 }}>
-                          <label className="form-label">HP Máx</label>
-                          <input type="number" className="form-input" style={{ width: "80px" }} value={charForm.hitPointsMax} onChange={e => setCharForm({ ...charForm, hitPointsMax: e.target.value })} />
-                        </div>
-                        <div className="form-group" style={{ marginBottom: 0 }}>
-                          <label className="form-label">Armadura (AC)</label>
-                          <input type="number" className="form-input" style={{ width: "80px" }} value={charForm.armorClass} onChange={e => setCharForm({ ...charForm, armorClass: e.target.value })} />
-                        </div>
-                        <button type="submit" className="btn btn-primary btn-sm">Guardar</button>
-                        <button type="button" className="btn btn-secondary btn-sm" onClick={() => setIsEditingChar(false)}>Cancelar</button>
-                      </form>
-                    ) : (
-                      <button className="btn btn-secondary btn-sm" onClick={() => {
-                        setCharForm({
-                          hitPointsCurrent: String(myCharacter.metadata?.hitPointsCurrent ?? 10),
-                          hitPointsMax: String(myCharacter.metadata?.hitPointsMax ?? 10),
-                          armorClass: String(myCharacter.metadata?.armorClass ?? 10)
-                        });
-                        setIsEditingChar(true);
-                      }}>
-                        Modificar HP / AC
-                      </button>
-                    )}
-                  </div>
+                  </form>
                 </div>
               )}
             </div>
           )}
 
-          {/* TAB 2: Quests & Sessions */}
-          {activeTab === "story" && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-              <section>
-                <h3 style={{ fontWeight: "800", marginBottom: "16px", color: "var(--primary)" }}>Misiones Activas</h3>
-                {visibleQuests?.length === 0 ? (
-                  <p style={{ color: "var(--text-muted)" }}>No hay misiones conocidas actualmente.</p>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    {visibleQuests?.map(q => (
-                      <div key={q.entityId} className="card" style={{ padding: "16px" }}>
-                        <h4 style={{ fontWeight: "700" }}>{q.title}</h4>
-                        {q.subtitle && <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "2px" }}>{q.subtitle}</p>}
-                        <p style={{ fontSize: "0.9rem", marginTop: "8px" }}>{q.summary || q.content}</p>
-                        {q.metadata?.publicObjective && (
-                          <div style={{ marginTop: "10px", fontSize: "0.85rem", padding: "6px 10px", backgroundColor: "var(--surface-2)", borderRadius: "4px" }}>
-                            <strong>Objetivo:</strong> {q.metadata.publicObjective}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-
-              <section>
-                <h3 style={{ fontWeight: "800", marginBottom: "16px", color: "var(--secondary)" }}>Bitácora de Sesiones</h3>
-                {visibleSessions?.length === 0 ? (
-                  <p style={{ color: "var(--text-muted)" }}>No hay registros de sesiones cerradas.</p>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    {visibleSessions?.slice().reverse().map(s => (
-                      <div key={s.sessionId} className="card" style={{ padding: "16px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <h4 style={{ fontWeight: "700" }}>{s.title}</h4>
-                          <span className={`badge ${s.status === "active" ? "badge-success" : "badge-default"}`}>
-                            {s.status === "active" ? "En curso" : "Finalizada"}
-                          </span>
-                        </div>
-                        {s.summary && (
-                          <p style={{ fontSize: "0.9rem", marginTop: "10px", whiteSpace: "pre-line", color: "var(--text-main)" }}>
-                            {s.summary}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-            </div>
-          )}
-
-          {/* TAB 3: Clues & Facts */}
-          {activeTab === "clues" && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-              <section>
-                <h3 style={{ fontWeight: "800", marginBottom: "16px", color: "var(--primary)" }}>Pistas Reveladas</h3>
-                {visibleClues?.length === 0 ? (
-                  <p style={{ color: "var(--text-muted)" }}>No se han descubierto pistas aún en el diario del grupo.</p>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    {visibleClues?.map(c => (
-                      <div key={c.entityId} className="card" style={{ padding: "16px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <h4 style={{ fontWeight: "700" }}>{c.title}</h4>
-                          <span className="badge" style={{ backgroundColor: "hsla(38, 95%, 55%, 0.15)", color: "hsl(38, 95%, 55%)", border: "1px solid hsl(38, 95%, 55%)", fontSize: "0.7rem" }}>
-                            {c.metadata?.clueType || "Pista"}
-                          </span>
-                        </div>
-                        <p style={{ fontSize: "0.9rem", marginTop: "10px", fontStyle: "italic", borderLeft: "2px solid var(--border-color)", paddingLeft: "10px" }}>
-                          "{c.metadata?.content || c.content || c.summary}"
-                        </p>
-                        {c.metadata?.interpretation && (
-                          <p style={{ fontSize: "0.85rem", marginTop: "10px", color: "var(--text-muted)" }}>
-                            <strong>Interpretación:</strong> {c.metadata.interpretation}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-
-              <section>
-                <h3 style={{ fontWeight: "800", marginBottom: "16px", color: "var(--secondary)" }}>Hechos Confirmados</h3>
-                {visibleFacts?.length === 0 ? (
-                  <p style={{ color: "var(--text-muted)" }}>No hay hechos revelados aún.</p>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                    {visibleFacts?.map(f => (
-                      <div key={f.factId} className="card" style={{ padding: "12px 16px", borderLeft: "4px solid hsl(120, 60%, 45%)" }}>
-                        <p style={{ fontSize: "0.9rem", margin: 0 }}>{f.statement}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-            </div>
-          )}
-
-          {/* TAB 4: Player Notes */}
-          {activeTab === "notes" && (
+          {/* ── TAB: Diary ────────────────────────────────────────────────── */}
+          {activeTab === "diary" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3 style={{ fontWeight: "800", margin: 0 }}>Mis Notas Personales</h3>
-                <button className="btn btn-primary btn-sm" onClick={() => setIsCreatingNote(true)}>
+                <h3 style={{ fontWeight: "800", margin: 0 }}>Mis Notas</h3>
+                <button className="btn btn-primary btn-sm" onClick={() => setShowNoteForm(true)}>
                   <Plus size={14} /> Nueva Nota
                 </button>
               </div>
 
-              {isCreatingNote && (
+              {showNoteForm && (
                 <div className="card" style={{ padding: "20px", border: "1px solid var(--secondary)" }}>
-                  <h4 style={{ fontWeight: "700", marginBottom: "12px" }}>Escribir Nota</h4>
-                  <form onSubmit={handleCreateNoteSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <h4 style={{ fontWeight: "700", marginBottom: "14px" }}>Escribir Nota</h4>
+                  <form onSubmit={handleNoteCreate} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Título</label>
-                      <input type="text" className="form-input" placeholder="e.g. Sospechas sobre Lord Malvus" value={newNoteTitle} onChange={e => setNewNoteTitle(e.target.value)} required />
+                      <input type="text" className="form-input" placeholder="Sospechas sobre el villano..." value={noteForm.title} onChange={(e) => setNoteForm({ ...noteForm, title: e.target.value })} required />
                     </div>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Contenido</label>
-                      <textarea className="form-textarea" rows={4} placeholder="Escribe tus observaciones aquí..." value={newNoteContent} onChange={e => setNewNoteContent(e.target.value)} />
+                      <textarea className="form-textarea" rows={4} placeholder="Escribe tus observaciones aquí..." value={noteForm.content} onChange={(e) => setNoteForm({ ...noteForm, content: e.target.value })} />
+                    </div>
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">Visibilidad</label>
+                      <select
+                        className="form-input"
+                        value={noteForm.visibility}
+                        onChange={(e) => setNoteForm({ ...noteForm, visibility: e.target.value as "private" | "dm_visible" })}
+                      >
+                        <option value="private">Solo yo</option>
+                        <option value="dm_visible">Visible para el DM</option>
+                      </select>
                     </div>
                     <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
-                      <button type="button" className="btn btn-secondary btn-sm" onClick={() => setIsCreatingNote(false)}>Cancelar</button>
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={() => setShowNoteForm(false)}>Cancelar</button>
                       <button type="submit" className="btn btn-primary btn-sm">Guardar Nota</button>
                     </div>
                   </form>
                 </div>
               )}
 
-              {myNotes?.length === 0 ? (
-                <p style={{ color: "var(--text-muted)", fontStyle: "italic" }}>No has escrito ninguna nota privada aún.</p>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {myNotes?.map(n => (
-                    <div key={n.entityId} className="card" style={{ padding: "16px" }}>
+              {notes.filter((n: any) => !n.archived).length === 0 && (
+                <p style={{ color: "var(--text-muted)", fontStyle: "italic" }}>No has escrito ninguna nota aún.</p>
+              )}
+
+              {notes
+                .filter((n: any) => !n.archived)
+                .map((n: any) => {
+                  const nid = n.noteId ?? n.title;
+                  const isEditing = noteEditId === nid;
+                  return (
+                    <div key={nid} className="card" style={{ padding: "16px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <h4 style={{ fontWeight: "700" }}>{n.title}</h4>
-                        <button
-                          className="btn btn-danger btn-icon btn-sm"
-                          style={{ padding: "4px" }}
-                          onClick={async () => {
-                            if (confirm("¿Seguro que deseas eliminar esta nota?")) {
-                              await archiveEntity(n.entityId);
-                            }
-                          }}
-                        >
-                          <Trash2 size={12} />
-                        </button>
+                        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                          {n.visibility === "dm_visible" && (
+                            <span className="badge badge-default" style={{ fontSize: "0.7rem" }}>Visible DM</span>
+                          )}
+                          <button
+                            className="btn btn-secondary btn-sm"
+                            style={{ padding: "4px 8px", fontSize: "0.75rem" }}
+                            onClick={() => {
+                              setNoteEditId(isEditing ? null : nid);
+                              if (!isEditing) {
+                                setNoteEditForm({ title: n.title, content: n.content ?? "", visibility: n.visibility ?? "private" });
+                              }
+                            }}
+                          >
+                            {isEditing ? "Cancelar" : "Editar"}
+                          </button>
+                          <button
+                            className="btn btn-danger btn-icon btn-sm"
+                            style={{ padding: "4px" }}
+                            onClick={() => void handleNoteArchive(n.noteId)}
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
                       </div>
-                      {n.content && (
-                        <p style={{ fontSize: "0.9rem", marginTop: "8px", whiteSpace: "pre-line", color: "var(--text-main)" }}>
-                          {n.content}
-                        </p>
+                      {isEditing ? (
+                        <form onSubmit={(e) => void handleNoteEditSubmit(e, nid)} style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "12px" }}>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label">Título</label>
+                            <input type="text" className="form-input" value={noteEditForm.title} onChange={(e) => setNoteEditForm({ ...noteEditForm, title: e.target.value })} required />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label">Contenido</label>
+                            <textarea className="form-textarea" rows={3} value={noteEditForm.content} onChange={(e) => setNoteEditForm({ ...noteEditForm, content: e.target.value })} />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label">Visibilidad</label>
+                            <select className="form-input" value={noteEditForm.visibility} onChange={(e) => setNoteEditForm({ ...noteEditForm, visibility: e.target.value as "private" | "dm_visible" })}>
+                              <option value="private">Solo yo</option>
+                              <option value="dm_visible">Visible para el DM</option>
+                            </select>
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                            <button type="submit" className="btn btn-primary btn-sm">Guardar Cambios</button>
+                          </div>
+                        </form>
+                      ) : (
+                        n.content && (
+                          <p style={{ fontSize: "0.9rem", marginTop: "8px", whiteSpace: "pre-line", color: "var(--text-main)" }}>
+                            {n.content}
+                          </p>
+                        )
                       )}
                     </div>
-                  ))}
+                  );
+                })}
+            </div>
+          )}
+
+          {/* ── TAB: Objectives ───────────────────────────────────────────── */}
+          {activeTab === "objectives" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h3 style={{ fontWeight: "800", margin: 0 }}>Objetivos</h3>
+                <button className="btn btn-primary btn-sm" onClick={() => setShowObjectiveForm(true)}>
+                  <Plus size={14} /> Nuevo Objetivo
+                </button>
+              </div>
+
+              {showObjectiveForm && (
+                <div className="card" style={{ padding: "20px", border: "1px solid var(--primary)" }}>
+                  <h4 style={{ fontWeight: "700", marginBottom: "14px" }}>Nuevo Objetivo</h4>
+                  <form onSubmit={handleObjectiveCreate} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">Título</label>
+                      <input type="text" className="form-input" placeholder="Encontrar al oráculo..." value={objectiveForm.title} onChange={(e) => setObjectiveForm({ ...objectiveForm, title: e.target.value })} required />
+                    </div>
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">Descripción (opcional)</label>
+                      <textarea className="form-textarea" rows={2} value={objectiveForm.description} onChange={(e) => setObjectiveForm({ ...objectiveForm, description: e.target.value })} />
+                    </div>
+                    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                      <div className="form-group" style={{ marginBottom: 0, flex: "1 1 140px" }}>
+                        <label className="form-label">Tipo</label>
+                        <select
+                          className="form-input"
+                          value={objectiveForm.kind}
+                          onChange={(e) => setObjectiveForm({ ...objectiveForm, kind: e.target.value as "personal" | "session" | "question_for_dm" })}
+                        >
+                          <option value="personal">Personal</option>
+                          <option value="session">Sesión</option>
+                          <option value="question_for_dm">Pregunta al DM</option>
+                        </select>
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 0, flex: "1 1 140px" }}>
+                        <label className="form-label">Estado</label>
+                        <select
+                          className="form-input"
+                          value={objectiveForm.status}
+                          onChange={(e) => setObjectiveForm({ ...objectiveForm, status: e.target.value as "open" | "done" | "archived" })}
+                        >
+                          <option value="open">Abierto</option>
+                          <option value="done">Completado</option>
+                          <option value="archived">Archivado</option>
+                        </select>
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 0, flex: "1 1 140px" }}>
+                        <label className="form-label">Visibilidad</label>
+                        <select
+                          className="form-input"
+                          value={objectiveForm.visibility}
+                          onChange={(e) => setObjectiveForm({ ...objectiveForm, visibility: e.target.value as "private" | "dm_visible" })}
+                        >
+                          <option value="private">Solo yo</option>
+                          <option value="dm_visible">Visible para el DM</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+                      <button type="button" className="btn btn-secondary btn-sm" onClick={() => setShowObjectiveForm(false)}>Cancelar</button>
+                      <button type="submit" className="btn btn-primary btn-sm">Guardar Objetivo</button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {objectives.filter((o: any) => o.status === "open").length === 0 && (
+                <p style={{ color: "var(--text-muted)", fontStyle: "italic" }}>No hay objetivos abiertos.</p>
+              )}
+
+              {objectives
+                .filter((o: any) => o.status === "open")
+                .map((o: any) => (
+                  <div key={o.objectiveId ?? o.title} className="card" style={{ padding: "16px", display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                    <button
+                      className="btn btn-secondary btn-icon btn-sm"
+                      style={{ padding: "4px", marginTop: "2px", flexShrink: 0 }}
+                      title="Marcar como completado"
+                      onClick={() => void handleObjectiveComplete(o.objectiveId)}
+                    >
+                      <CheckSquare size={14} />
+                    </button>
+                    <div style={{ flexGrow: 1 }}>
+                      <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+                        <h4 style={{ fontWeight: "700", margin: 0 }}>{o.title}</h4>
+                        <span className="badge badge-default" style={{ fontSize: "0.7rem" }}>
+                          {o.kind === "personal" ? "Personal" : o.kind === "session" ? "Sesión" : "Pregunta al DM"}
+                        </span>
+                        {o.visibility === "dm_visible" && (
+                          <span className="badge badge-default" style={{ fontSize: "0.7rem" }}>Visible DM</span>
+                        )}
+                      </div>
+                      {o.description && (
+                        <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "4px" }}>{o.description}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+              {/* Completed objectives */}
+              {objectives.filter((o: any) => o.status === "done").length > 0 && (
+                <div>
+                  <h4 style={{ fontWeight: "700", color: "var(--text-muted)", marginBottom: "10px", fontSize: "0.85rem", textTransform: "uppercase" }}>Completados</h4>
+                  {objectives
+                    .filter((o: any) => o.status === "done")
+                    .map((o: any) => (
+                      <div key={o.objectiveId ?? o.title} className="card" style={{ padding: "12px 16px", opacity: 0.5, marginBottom: "8px" }}>
+                        <span style={{ textDecoration: "line-through", fontSize: "0.9rem" }}>{o.title}</span>
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
           )}
 
-          {/* TAB 5: Relations */}
-          {activeTab === "relations" && (
-            <div>
-              <h3 style={{ fontWeight: "800", marginBottom: "16px" }}>Relaciones Descubiertas</h3>
-              {(!campaignState.relations || campaignState.relations.length === 0) ? (
-                <p style={{ color: "var(--text-muted)" }}>No hay conexiones conocidas registradas.</p>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  {campaignState.relations.filter((r: any) => !r.archived).map((r: any) => {
-                    const src = campaignState.entities.find(e => e.entityId === r.sourceEntityId);
-                    const tgt = campaignState.entities.find(e => e.entityId === r.targetEntityId);
-                    if (!src || !tgt) return null;
-                    return (
-                      <div key={r.relationId} className="card" style={{ padding: "12px 16px", display: "flex", gap: "10px", alignItems: "center" }}>
-                        <span style={{ fontWeight: "600", color: "var(--primary)" }}>{src.title}</span>
-                        <span className="badge" style={{ backgroundColor: "var(--surface-2)", color: "var(--text-muted)" }}>
-                          {r.relationType.replace(/_/g, " ")}
-                        </span>
-                        <span style={{ fontWeight: "600", color: "var(--secondary)" }}>{tgt.title}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+          {/* ── TAB: History (stub) ───────────────────────────────────────── */}
+          {activeTab === "history" && (
+            <div className="card" style={{ padding: "24px", textAlign: "center" }}>
+              <h3>Historia de la aventura</h3>
+              <p style={{ color: "var(--text-muted)", marginTop: "8px" }}>
+                Tu historial de aventura aparecerá aquí a medida que la campaña avance.
+              </p>
             </div>
           )}
 
