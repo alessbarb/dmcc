@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { findNarrativeAnchor, findUndirectedShortestPath } from "../../src/app/features/graph/findNarrativePath.js";
+import { findNarrativeAnchor, findUndirectedShortestPath } from "../../src/frontend/dm/graph/findNarrativePath.js";
 
 describe("findNarrativePath BFS utility", () => {
   it("finds narrative anchor based on graphAnchor", () => {
