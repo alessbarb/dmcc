@@ -16,6 +16,8 @@ import { createId } from "@shared/ids.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useNavigate, useParams } from "@tanstack/react-router";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 export interface SessionPageProps {
   campaignState?: any;
@@ -83,6 +85,7 @@ function PanelNotaRapida({
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -142,7 +145,7 @@ function PanelNotaRapida({
           Cancelar
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Guardando…" : "Guardar nota"}
+          {busy ? "Guardando…" : t("players.saveNote")}
         </button>
       </div>
     </form>
@@ -321,6 +324,7 @@ function PanelDecision({
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const [decision, setDecision] = useState("");
   const [affectedIds, setAffectedIds] = useState<string[]>([]);
   const [immediateConsequence, setImmediateConsequence] = useState("");
@@ -367,7 +371,7 @@ function PanelDecision({
       // 2. Record Session Event for the decision
       await recordSessionEvent(sessionId, {
         type: "decision_made",
-        title: `Decisión tomada: ${decision.substring(0, 40)}${decision.length > 40 ? "…" : ""}`,
+        title: t("session.decisionMade", { decision: decision.substring(0, 40), suffix: decision.length > 40 ? "…" : "" }),
         description: decision,
         relatedEntityIds: [decisionEntityId, ...affectedIds],
       });
@@ -379,7 +383,7 @@ function PanelDecision({
           entityId: consequenceEntityId,
           entityType: "consequence",
           title: pendingTitle.trim(),
-          summary: `Consecuencia de la decisión`,
+          summary: t("session.decisionConsequence"),
           status: "pending",
           createdInSessionId: sessionId,
           metadata: {
@@ -393,7 +397,7 @@ function PanelDecision({
           targetEntityId: consequenceEntityId,
           relationType: "causes",
           status: "active",
-          description: "La decisión causa esta consecuencia",
+          description: t("session.decisionCausesConsequence"),
           visibility: { kind: "dm_only" },
         });
 
@@ -401,14 +405,14 @@ function PanelDecision({
         await recordSessionEvent(sessionId, {
           type: "consequence_created",
           title: `Consecuencia creada: ${pendingTitle.trim()}`,
-          description: `Consecuencia pendiente originada por la decisión: ${decision.substring(0, 40)}`,
+          description: t("session.pendingConsequence", { decision: decision.substring(0, 40) }),
           relatedEntityIds: [consequenceEntityId, decisionEntityId],
         });
       }
 
-      addToast("Decisión registrada.", "success");
+      addToast(t("toasts.decisionRecorded"), "success");
     } catch (err: any) {
-      addToast(`Error al guardar decisión: ${err.message}`, "error");
+      addToast(t("toasts.decisionError", { error: err.message }), "error");
     } finally {
       setBusy(false);
       onClose();
@@ -509,7 +513,7 @@ function PanelDecision({
             id="pending-title"
             type="text"
             className="form-input"
-            placeholder="Los bandidos reclamarán un favor más adelante…"
+            placeholder={t("session.exampleConsequence")}
             value={pendingTitle}
             onChange={(e) => setPendingTitle(e.target.value)}
             required={createPending}
@@ -523,7 +527,7 @@ function PanelDecision({
           Cancelar
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Guardando…" : "Registrar decisión"}
+          {busy ? "Guardando…" : t("session.recordDecision")}
         </button>
       </div>
     </form>
@@ -545,6 +549,7 @@ function PanelConsecuencia({
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState("");
   const [questId, setQuestId] = useState("");
   const [severity, setSeverity] = useState<"high" | "medium" | "low">("medium");
@@ -601,7 +606,7 @@ function PanelConsecuencia({
           id="cons-title"
           type="text"
           className="form-input"
-          placeholder="El rey convoca al grupo en 3 días…"
+          placeholder={t("session.exampleNote")}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
@@ -651,7 +656,7 @@ function PanelConsecuencia({
           Cancelar
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Guardando…" : "Crear consecuencia"}
+          {busy ? "Guardando…" : t("session.createConsequence")}
         </button>
       </div>
     </form>
@@ -669,6 +674,7 @@ function PanelPNJRapido({
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [description, setDescription] = useState("");
@@ -753,7 +759,7 @@ function PanelPNJRapido({
           Cancelar
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Guardando…" : "Crear PNJ"}
+          {busy ? "Guardando…" : t("session.createNpc")}
         </button>
       </div>
     </form>
@@ -777,6 +783,7 @@ function PanelCerrarSesion({
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const [busy, setBusy] = useState(false);
 
   const handleSubmit = async (e: React.SubmitEvent) => {
@@ -784,7 +791,7 @@ function PanelCerrarSesion({
     if (!sessionSummary.trim()) return;
     setBusy(true);
     await closeSession(activeSession.sessionId, sessionSummary.trim());
-    addToast("Sesión cerrada y guardada.", "success");
+    addToast(t("toasts.sessionClosed"), "success");
     setSessionSummary("");
     setBusy(false);
     setCurrentPage("dashboard");
@@ -818,7 +825,7 @@ function PanelCerrarSesion({
         <textarea
           id="close-summary"
           className="form-textarea"
-          placeholder="El grupo exploró las ruinas, encontró a Elara prisionera y decidió negociar con el jefe de la guardia…"
+          placeholder={t("session.exampleSummary")}
           value={sessionSummary}
           onChange={(e) => setSessionSummary(e.target.value)}
           required
@@ -832,7 +839,7 @@ function PanelCerrarSesion({
           Cancelar
         </button>
         <button type="submit" className="btn btn-danger" disabled={busy || !sessionSummary.trim()}>
-          {busy ? "Cerrando…" : "Cerrar sesión y guardar"}
+          {busy ? "Cerrando…" : t("session.closeAndSave")}
         </button>
       </div>
     </form>
@@ -842,6 +849,7 @@ function PanelCerrarSesion({
 // ── main component ───────────────────────────────────────────────────────────
 
 export function SessionPage(props: SessionPageProps = {}) {
+  const { t } = useTranslation();
   const { campaignId } = useParams({ strict: false }) as any;
   const navigate = useNavigate();
   const store = useCampaignStore();
@@ -882,7 +890,7 @@ export function SessionPage(props: SessionPageProps = {}) {
 
     const handleStart = async (e: React.SubmitEvent) => {
       e.preventDefault();
-      const title = newTitle.trim() || `Sesión ${nextNumber}`;
+      const title = newTitle.trim() || t("session.sessionNumber", { number: nextNumber });
       await startSession(title);
       setNewTitle("");
     };
@@ -943,7 +951,7 @@ export function SessionPage(props: SessionPageProps = {}) {
                 id="session-title-input"
                 type="text"
                 className="form-input"
-                placeholder={`Sesión ${nextNumber}`}
+                placeholder={t("session.sessionNumber", { number: nextNumber })}
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
                 style={{ fontSize: "1rem" }}
@@ -1045,7 +1053,7 @@ export function SessionPage(props: SessionPageProps = {}) {
   const actions: ActionDef[] = [
     {
       id: "nota",
-      label: "Nota rápida",
+      label: t("session.quickNote"),
       icon: <StickyNote size={22} />,
       accentVar: "var(--color-info)",
     },
@@ -1057,25 +1065,25 @@ export function SessionPage(props: SessionPageProps = {}) {
     },
     {
       id: "decision",
-      label: "Registrar decisión",
+      label: t("session.recordDecision"),
       icon: <GitMerge size={22} />,
       accentVar: "var(--primary)",
     },
     {
       id: "consecuencia",
-      label: "Crear consecuencia",
+      label: t("session.createConsequence"),
       icon: <Zap size={22} />,
       accentVar: "var(--color-warning)",
     },
     {
       id: "pnj",
-      label: "Crear PNJ rápido",
+      label: t("session.createQuickNpc"),
       icon: <UserPlus size={22} />,
       accentVar: "var(--color-success)",
     },
     {
       id: "cerrar",
-      label: "Cerrar sesión",
+      label: t("session.closeSession"),
       icon: <X size={22} />,
       accentVar: "var(--color-critical)",
     },
@@ -1170,7 +1178,7 @@ export function SessionPage(props: SessionPageProps = {}) {
           gap: "12px",
         }}
         role="group"
-        aria-label="Acciones de sesión"
+        aria-label={t("session.actions")}
       >
         {actions.map((action) => {
           const isActive = activeAction === action.id;

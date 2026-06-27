@@ -13,10 +13,13 @@ import {
   CheckSquare,
   RefreshCw,
 } from "lucide-react";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 type PortalTab = "summary" | "character" | "resources" | "diary" | "objectives" | "history";
 
 export function PlayerPortalView({ campaignId }: { campaignId: string }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const {
     campaignState,
@@ -222,7 +225,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
 
   // ── Submit: Archive note ────────────────────────────────────────────────
   const handleNoteArchive = async (noteId: string) => {
-    if (!confirm("¿Archivar esta nota?")) return;
+    if (!confirm(t("session.archiveNoteConfirm"))) return;
     await updatePlayerPortalNote(noteId, { archived: true });
   };
 
@@ -301,20 +304,20 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   }
 
   const TABS: { id: PortalTab; label: string; icon: React.ReactNode }[] = [
-    { id: "summary", label: "Resumen", icon: <Shield size={16} /> },
+    { id: "summary", label: t("session.summary"), icon: <Shield size={16} /> },
     { id: "character", label: "Personaje", icon: <User size={16} /> },
     { id: "resources", label: "Recursos", icon: <Clock size={16} /> },
     { id: "diary", label: "Diario", icon: <FileText size={16} /> },
-    { id: "objectives", label: "Objetivos", icon: <Target size={16} /> },
+    { id: "objectives", label: t("playerPortal.objectives"), icon: <Target size={16} /> },
     { id: "history", label: "Historia", icon: <BookOpen size={16} /> },
   ];
 
   const tabLabel: Record<PortalTab, string> = {
-    summary: "Resumen del Jugador",
-    character: "Estado del Personaje",
+    summary: t("players.playerSummary"),
+    character: t("players.characterStatus"),
     resources: "Recursos & Habilidades",
     diary: "Diario Personal",
-    objectives: "Objetivos",
+    objectives: t("playerPortal.objectives"),
     history: "Historia de la Aventura",
   };
 
@@ -502,7 +505,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                             />
                             <textarea
                               className="input"
-                              placeholder="Descripción o notas para el DM"
+                              placeholder={t("players.dmNotes")}
                               rows={3}
                               value={createCharForm.description}
                               onChange={(e) => setCreateCharForm((f) => ({ ...f, description: e.target.value }))}
@@ -808,7 +811,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                     </div>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Contenido</label>
-                      <textarea className="form-textarea" rows={4} placeholder="Escribe tus observaciones aquí..." value={noteForm.content} onChange={(e) => setNoteForm({ ...noteForm, content: e.target.value })} />
+                      <textarea className="form-textarea" rows={4} placeholder={t("players.observationsPlaceholder")} value={noteForm.content} onChange={(e) => setNoteForm({ ...noteForm, content: e.target.value })} />
                     </div>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Visibilidad</label>
@@ -856,7 +859,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                               }
                             }}
                           >
-                            {isEditing ? "Cancelar" : "Editar"}
+                            {isEditing ? t("common.cancel") : t("common.edit")}
                           </button>
                           <button
                             className="btn btn-danger btn-icon btn-sm"
@@ -917,7 +920,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                   <form onSubmit={handleObjectiveCreate} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Título</label>
-                      <input type="text" className="form-input" placeholder="Encontrar al oráculo..." value={objectiveForm.title} onChange={(e) => setObjectiveForm({ ...objectiveForm, title: e.target.value })} required />
+                      <input type="text" className="form-input" placeholder={t("players.characterGoalPlaceholder")} value={objectiveForm.title} onChange={(e) => setObjectiveForm({ ...objectiveForm, title: e.target.value })} required />
                     </div>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Descripción (opcional)</label>
@@ -988,7 +991,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                       <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
                         <h4 style={{ fontWeight: "700", margin: 0 }}>{o.title}</h4>
                         <span className="badge badge-default" style={{ fontSize: "0.7rem" }}>
-                          {o.kind === "personal" ? "Personal" : o.kind === "session" ? "Sesión" : "Pregunta al DM"}
+                          {o.kind === "personal" ? "Personal" : o.kind === "session" ? t("timeline.labels.session") : "Pregunta al DM"}
                         </span>
                         {o.visibility === "dm_visible" && (
                           <span className="badge badge-default" style={{ fontSize: "0.7rem" }}>Visible DM</span>
