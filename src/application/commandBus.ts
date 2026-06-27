@@ -720,6 +720,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         playerId: command.playerId,
         characterEntityId: command.characterEntityId,
         resource: command.resource,
+        updatedBy: command.updatedBy,
         updatedAt: command.updatedAt,
       }));
     }
@@ -756,6 +757,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...(command.content !== undefined && { content: command.content }),
         ...(command.visibility !== undefined && { visibility: command.visibility }),
         ...(command.linkedEntityIds !== undefined && { linkedEntityIds: command.linkedEntityIds }),
+        ...(command.archived !== undefined && { archived: command.archived }),
         updatedAt: command.updatedAt,
       }));
     }

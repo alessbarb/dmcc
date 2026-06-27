@@ -434,6 +434,7 @@ export type Command =
         max: number;
         recovery?: "short_rest" | "long_rest" | "manual";
       };
+      updatedBy: "player" | "dm";
       updatedAt: string;
     }
   | {
@@ -467,6 +468,7 @@ export type Command =
       content?: string;
       visibility?: "private" | "dm_visible";
       linkedEntityIds?: string[];
+      archived?: boolean;
       updatedAt: string;
     }
   | {

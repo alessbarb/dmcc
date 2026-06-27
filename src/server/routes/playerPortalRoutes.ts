@@ -147,6 +147,7 @@ export async function registerPlayerPortalRoutes(
             max: body.max,
             recovery: body.recovery,
           },
+          updatedBy: "player",
           updatedAt: new Date().toISOString(),
         });
 
@@ -190,6 +191,7 @@ export async function registerPlayerPortalRoutes(
             max: body.max,
             recovery: body.recovery,
           },
+          updatedBy: "player",
           updatedAt: new Date().toISOString(),
         });
 
@@ -288,6 +290,7 @@ export async function registerPlayerPortalRoutes(
           ...(body.content !== undefined && { content: body.content }),
           ...(body.visibility !== undefined && { visibility: body.visibility }),
           ...(body.linkedEntityIds !== undefined && { linkedEntityIds: body.linkedEntityIds }),
+          ...(body.archived !== undefined && { archived: body.archived }),
           updatedAt: new Date().toISOString(),
         });
 
@@ -421,7 +424,7 @@ export async function registerPlayerPortalRoutes(
         await repo.executeCommand(campaignId as any, {
           type: "LinkPlayerCharacter",
           campaignId: campaignId as any,
-          actorId: "dm",
+          actorId: "usr_dm",
           playerId: body.playerId,
           characterEntityId: body.characterEntityId,
           ownership: body.ownership ?? "campaign_premade",
@@ -535,7 +538,7 @@ export async function registerPlayerPortalRoutes(
         await repo.executeCommand(campaignId as any, {
           type: "ResolvePlayerCharacterProposal",
           campaignId: campaignId as any,
-          actorId: "dm",
+          actorId: "usr_dm",
           proposal: foundProposal,
           status,
           dmResolutionNote: body.dmResolutionNote,
