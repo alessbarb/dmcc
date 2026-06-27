@@ -1,7 +1,7 @@
 // Generated seed content module. Edit directly; kept split by campaign data typology.
-import { api } from "./client.ts";
-import { CMP } from "./config.ts";
-import * as ids from "./ids.ts";
+import { api } from "./client.js";
+import { CMP } from "./config.js";
+import * as ids from "./ids.js";
 
 // ---------------------------------------------------------------------------
 // Facts

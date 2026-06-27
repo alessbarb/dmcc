@@ -1,6 +1,6 @@
-import { EventStore } from "../src/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "../src/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "../src/persistence/repositories/campaignRepository.js";
+import { EventStore } from "../../../src/core/persistence/eventStore/eventStore.js";
+import { SnapshotStore } from "../../../src/core/persistence/snapshotStore/snapshotStore.js";
+import { CampaignRepository } from "../../../src/core/persistence/repositories/campaignRepository.js";
 import * as fs from "fs/promises";
 import { join } from "path";
 
