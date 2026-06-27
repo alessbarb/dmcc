@@ -7,8 +7,9 @@
  * Prerequisites: server running on DMCC_BASE_URL, default http://localhost:4877
  *
  * Usage:
- *   npx tsx scratch/seed-oracle-campaign.ts
- *   DMCC_SEED_MODE=replace DMCC_SEED_CONFIRM="La Sombra del Oráculo" npx tsx scratch/seed-oracle-campaign.ts
+ *   npm run seed:oracle
+ *   npm run seed:oracle:dry
+ *   npm run seed:oracle:replace
  *
  * Modes:
  *   create  - default; fail if the target campaign already exists
@@ -16,8 +17,8 @@
  *   dry-run - authenticate/preflight only; performs no writes
  */
 
-import { init, preflight } from "./oracle-seed/client.ts";
-import { CMP } from "./oracle-seed/config.ts";
+import { init, preflight } from "./client.js";
+import { CMP } from "./config.js";
 import {
   rebuildAndVerify,
   seedCampaign,
@@ -31,7 +32,7 @@ import {
   seedRelations,
   seedSecrets,
   seedCanvas,
-} from "./oracle-seed/content.ts";
+} from "./content.js";
 
 async function main() {
   await init();
@@ -52,11 +53,10 @@ async function main() {
   await seedCanvas();
   await rebuildAndVerify();
 
-  console.log(`\n✅ Campaign seed complete: ${CMP}`);
-  console.log("   Open the DMCC app and select 'La Sombra del Oráculo'");
+  console.log(`✓ Campaign successfully seeded: ${CMP}`);
 }
 
-main().catch((e) => {
-  console.error("❌ Seed failed:", e instanceof Error ? e.message : e);
+main().catch((err) => {
+  console.error("❌ Seed failed:", err);
   process.exit(1);
 });

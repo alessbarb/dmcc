@@ -16,33 +16,33 @@ const contentModules = [
 ];
 
 const seedFiles = [
-  "scratch/seed-oracle-campaign.ts",
-  "scratch/oracle-seed/config.ts",
-  "scratch/oracle-seed/client.ts",
-  "scratch/oracle-seed/ids.ts",
-  "scratch/oracle-seed/content.ts",
-  ...contentModules.map((name) => `scratch/oracle-seed/${name}.ts`),
+  "seeds/campaigns/oracle/seed.ts",
+  "seeds/campaigns/oracle/config.ts",
+  "seeds/campaigns/oracle/client.ts",
+  "seeds/campaigns/oracle/ids.ts",
+  "seeds/campaigns/oracle/content.ts",
+  "seeds/shared/seedClient.ts",
+  ...contentModules.map((name) => `seeds/campaigns/oracle/${name}.ts`),
 ];
 
 const readRepoFile = (path: string) => readFileSync(new URL(`../../${path}`, import.meta.url), "utf8");
 
-const entrySource = readRepoFile("scratch/seed-oracle-campaign.ts");
+const entrySource = readRepoFile("seeds/campaigns/oracle/seed.ts");
 const seedSource = seedFiles.map(readRepoFile).join("\n");
 
 describe("oracle campaign seed", () => {
   it("is split into a small entrypoint and focused modules", () => {
     expect(entrySource.split(/\r?\n/).length).toBeLessThan(80);
-    expect(entrySource).toContain("./oracle-seed/client.ts");
-    expect(entrySource).toContain("./oracle-seed/content.ts");
+    expect(entrySource).toContain("./client.js");
+    expect(entrySource).toContain("./content.js");
   });
 
-
   it("keeps seed content split by editable typology", () => {
-    const barrelSource = readRepoFile("scratch/oracle-seed/content.ts");
+    const barrelSource = readRepoFile("seeds/campaigns/oracle/content.ts");
     expect(barrelSource.split(/\r?\n/).length).toBeLessThan(30);
     for (const moduleName of contentModules) {
-      expect(barrelSource).toContain(`./${moduleName}.ts`);
-      expect(readRepoFile(`scratch/oracle-seed/${moduleName}.ts`)).toContain("Generated seed content module");
+      expect(barrelSource).toContain(`./${moduleName}.js`);
+      expect(readRepoFile(`seeds/campaigns/oracle/${moduleName}.ts`)).toContain("Generated seed content module");
     }
   });
 

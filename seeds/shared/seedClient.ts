@@ -1,10 +1,19 @@
-import { BASE, CAMPAIGN_TITLE, CMP, CONFIRMATION, MODE } from "./config.ts";
+export type SeedMode = "create" | "replace" | "dry-run";
+
+export interface SeedConfig {
+  baseUrl: string;
+  campaignTitle: string;
+  campaignId: string;
+  mode: SeedMode;
+  confirmation?: string;
+}
 
 type ApiOptions = {
   okStatuses?: number[];
   auth?: boolean;
 };
 
+let activeConfig: SeedConfig | null = null;
 let DM_TOKEN = "";
 
 async function parseJson(res: Response): Promise<unknown> {
@@ -17,17 +26,19 @@ async function parseJson(res: Response): Promise<unknown> {
   }
 }
 
-export async function init() {
-  const res = await fetch(`${BASE}/api/auth/local-token`);
+export async function initSeedClient(config: SeedConfig) {
+  activeConfig = config;
+  const res = await fetch(`${config.baseUrl}/api/auth/local-token`);
   const json = (await parseJson(res)) as { token?: string };
   if (!res.ok) throw new Error(`GET /api/auth/local-token → ${res.status}: ${JSON.stringify(json)}`);
   DM_TOKEN = json.token ?? "";
   if (!DM_TOKEN) throw new Error("Could not get DM token — is the server running?");
-  console.log(`✓ Auth token obtained from ${BASE}`);
+  console.log(`✓ Auth token obtained from ${config.baseUrl}`);
 }
 
 export async function api(method: string, path: string, body?: unknown, options: ApiOptions = {}) {
-  if (MODE === "dry-run" && method !== "GET") {
+  if (!activeConfig) throw new Error("Seed client not initialized. Call initSeedClient first.");
+  if (activeConfig.mode === "dry-run" && method !== "GET") {
     console.log(`DRY RUN ${method} ${path}`);
     return { status: 200, json: { dryRun: true } as unknown };
   }
@@ -35,7 +46,7 @@ export async function api(method: string, path: string, body?: unknown, options:
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (options.auth !== false) headers["x-dm-token"] = DM_TOKEN;
 
-  const res = await fetch(`${BASE}${path}`, {
+  const res = await fetch(`${activeConfig.baseUrl}${path}`, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
@@ -48,9 +59,12 @@ export async function api(method: string, path: string, body?: unknown, options:
   return { status: res.status, json };
 }
 
-export async function preflight() {
+export async function preflightSeedClient() {
+  if (!activeConfig) throw new Error("Seed client not initialized.");
+  const { mode: MODE, campaignId: CMP, campaignTitle: CAMPAIGN_TITLE, confirmation: CONFIRMATION } = activeConfig;
+
   const campaignsRes = await api("GET", "/api/campaigns");
-  const campaigns = Array.isArray(campaignsRes.json) ? campaignsRes.json as any[] : [];
+  const campaigns = Array.isArray(campaignsRes.json) ? (campaignsRes.json as any[]) : [];
   const existing = campaigns.find((c) => c?.campaignId === CMP);
   console.log(`✓ Preflight OK: ${campaigns.length} campaign(s) visible; mode=${MODE}; target=${CMP}`);
 

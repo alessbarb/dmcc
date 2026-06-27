@@ -24,7 +24,11 @@
     "quality": "npm run quality:lint && npm run quality:typecheck && npm run quality:test && npm run quality:build",
     "quality:all": "npm run quality && npm run quality:e2e",
     "quality:e2e": "npm run test:e2e",
-    "quality:lint": "npm run lint"
+    "quality:lint": "npm run lint",
+    "seed:oracle": "tsx seeds/campaigns/oracle/seed.ts",
+    "seed:oracle:dry": "DMCC_SEED_MODE=dry-run tsx seeds/campaigns/oracle/seed.ts",
+    "seed:oracle:replace": "DMCC_SEED_MODE=replace tsx seeds/campaigns/oracle/seed.ts",
+    "seed:phandalin": "tsx seeds/campaigns/phandalin/seed.ts"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",

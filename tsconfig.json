@@ -8,7 +8,7 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
     "jsx": "react-jsx",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["node", "vitest/globals"],
@@ -24,7 +24,10 @@
   "include": [
     "src/backend",
     "src/core",
-    "src/shared"
+    "src/shared",
+    "seeds",
+    "scripts",
+    "tests"
   ],
   "exclude": [
     "src/frontend"

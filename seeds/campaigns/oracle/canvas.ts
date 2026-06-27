@@ -1,6 +1,6 @@
-import { api } from "./client.ts";
-import { CMP } from "./config.ts";
-import * as ids from "./ids.ts";
+import { api } from "./client.js";
+import { CMP } from "./config.js";
+import * as ids from "./ids.js";
 
 type NodeKind = "entity" | "note" | "group";
 type EdgeStyle = "solid" | "dashed" | "secret" | "weak" | "strong";
