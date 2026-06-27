@@ -24,7 +24,16 @@ export interface Translator {
   t(key: TranslationKey | string, params?: InterpolationParams): string;
 }
 
-export function createTranslator(locale: SupportedLocale = "es"): Translator {
+export function resolveLocale(input?: unknown): SupportedLocale {
+  if (typeof input !== "string" || !input) return "es";
+  const normalized = input.trim().toLowerCase();
+  if (normalized.startsWith("en")) return "en";
+  if (normalized.startsWith("es")) return "es";
+  return "es";
+}
+
+export function createTranslator(inputLocale?: unknown): Translator {
+  const locale = resolveLocale(inputLocale);
   return {
     locale,
     t(key: TranslationKey | string, params?: InterpolationParams): string {

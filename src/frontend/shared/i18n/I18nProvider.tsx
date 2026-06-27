@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import type { SupportedLocale, TranslationKey } from "@shared/i18n/index.js";
-import { createTranslator } from "@shared/i18n/index.js";
+import { createTranslator, resolveLocale } from "@shared/i18n/index.js";
 
 export interface I18nContextType {
   locale: SupportedLocale;
@@ -16,9 +16,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<SupportedLocale>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === "es" || saved === "en") return saved;
-      const navLang = navigator.language.toLowerCase();
-      if (navLang.startsWith("en")) return "en";
+      if (saved) return resolveLocale(saved);
+      return resolveLocale(navigator.language);
     } catch {}
     return "es";
   });
