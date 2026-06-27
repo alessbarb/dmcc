@@ -32,8 +32,8 @@ src/shared/i18n/
 ├── domainLabels.ts             — formatEntityType(), formatVisibility(), formatRelationType()
 ├── index.ts                    — barrel export
 └── dictionaries/
-    ├── es.ts                   — Spanish (source of truth)
-    └── en.ts                   — English (must maintain 1:1 key parity with es.ts)
+    ├── es.ts                   — Spanish (matches EN structure, enforced at runtime)
+    └── en.ts                   — English (primary: source of truth for types and default locale))
 
 src/frontend/shared/i18n/
 ├── I18nProvider.tsx            — React context, localStorage persistence
@@ -102,7 +102,7 @@ import { createTranslator } from "@shared/i18n/translate.js";
 import type { SupportedLocale } from "@shared/i18n/types.js";
 
 // Add locale param with default
-export function formatSessionStatus(status: string, locale: SupportedLocale = "es"): string {
+export function formatSessionStatus(status: string, locale: SupportedLocale = "en"): string {
   const { t } = createTranslator(locale);
   return t("session.status.active");
 }
@@ -127,6 +127,7 @@ Audit all 33 pending files, extract every hardcoded string, assign keys under th
 ### Phase 2 — Pure utilities (1 commit)
 
 Migrate `sessionUtils.ts` and `eventVisuals.tsx`:
+
 - Add `locale: SupportedLocale = "es"` parameter to all exported label functions
 - Use `createTranslator(locale).t(key)`
 - Update all call sites in components to pass `locale` from `useTranslation()`
@@ -153,6 +154,6 @@ Migrate `sessionUtils.ts` and `eventVisuals.tsx`:
 - `es.ts` and `en.ts` must always have identical key sets (enforced by test).
 - No key may have an empty string value (enforced by test).
 - Interpolation placeholders (`{name}`) must match between ES and EN for the same key (enforced by test).
-- Default locale for non-React utilities is `"es"` (matches app default).
+- Default locale for all utilities and React context is `"en"` (EN is primary).
 - `useTranslation()` must be called at component top level (React hook rules).
 - No translation key fallback to the raw key string in production paths — all keys added to dict before components are migrated.

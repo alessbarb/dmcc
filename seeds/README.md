@@ -30,6 +30,7 @@ npm run seed:phandalin
 ## Guía de Contribución para Nuevas Campañas
 
 Al añadir una nueva campaña demo:
+
 1. Crea un directorio bajo `seeds/campaigns/<nombre_campana>/`.
 2. Incluye un `seed.ts` como punto de entrada principal.
 3. Añade un `README.md` documentando la campaña.
