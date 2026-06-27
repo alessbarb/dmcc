@@ -9,11 +9,19 @@
     "skipLibCheck": true,
     "jsx": "react-jsx",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "noEmit": true
+    "noEmit": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@frontend/*": ["src/frontend/*"],
+      "@backend/*": ["src/backend/*"],
+      "@core/*": ["src/core/*"],
+      "@shared/*": ["src/shared/*"]
+    }
   },
   "include": [
-    "src/app",
-    "src/domain",
+    "src/frontend",
+    "src/core/domain",
     "src/shared"
   ],
   "references": []
