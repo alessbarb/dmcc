@@ -33,12 +33,17 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
 
   const { dmPlayerPortalSummary, loadDmPlayerPortalSummary, resolvePlayerCharacterProposal } = store;
+  const { linkPlayerCharacter } = store;
+  const [assignSelections, setAssignSelections] = useState<Record<string, string>>({});
 
   useEffect(() => {
     void loadDmPlayerPortalSummary();
   }, [loadDmPlayerPortalSummary]);
 
   const campaignState = props.campaignState ?? store.campaignState;
+  const playerCharacters: Entity[] = (campaignState?.entities ?? []).filter(
+    (e: any) => e.entityType === "player_character" && !e.archived
+  );
   const visibility = props.visibility ?? store.visibility;
   const createPlayer = props.createPlayer ?? store.createPlayer;
   const updatePlayer = props.updatePlayer ?? store.updatePlayer;
@@ -261,7 +266,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                       <p style={{ fontWeight: "700", fontSize: "1rem", color: "var(--text-main)" }}>{portalPlayer.displayName}</p>
                       <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
                         {portalPlayer.link?.characterEntityId
-                          ? `Personaje vinculado: ${portalPlayer.link.characterEntityId}`
+                          ? `Personaje vinculado: ${portalPlayer.linkedCharacter?.title ?? portalPlayer.link.characterEntityId}`
                           : "Sin personaje vinculado"}
                       </p>
                     </div>
@@ -335,6 +340,62 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                       </div>
                     </div>
                   )}
+
+                  {/* Character Assignment */}
+                  <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px" }}>
+                    <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "8px" }}>
+                      Asignar personaje
+                    </p>
+                    {portalPlayer.link?.characterEntityId ? (
+                      <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic" }}>
+                        Vinculado: {portalPlayer.linkedCharacter?.title ?? portalPlayer.link.characterEntityId}
+                      </p>
+                    ) : (
+                      <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                        <select
+                          style={{
+                            flex: 1,
+                            fontSize: "0.8rem",
+                            padding: "4px 8px",
+                            borderRadius: "var(--radius-sm)",
+                            border: "1px solid var(--border-color)",
+                            backgroundColor: "var(--surface-2)",
+                            color: "var(--text-main)",
+                          }}
+                          value={assignSelections[portalPlayer.playerId] ?? ""}
+                          onChange={(e) =>
+                            setAssignSelections((prev) => ({
+                              ...prev,
+                              [portalPlayer.playerId]: e.target.value,
+                            }))
+                          }
+                        >
+                          <option value="">-- Seleccionar personaje --</option>
+                          {playerCharacters.map((pc) => (
+                            <option key={pc.entityId} value={pc.entityId}>
+                              {pc.title}
+                            </option>
+                          ))}
+                        </select>
+                        <button
+                          className="btn btn-primary btn-sm"
+                          disabled={!assignSelections[portalPlayer.playerId]}
+                          onClick={async () => {
+                            const characterEntityId = assignSelections[portalPlayer.playerId];
+                            if (!characterEntityId) return;
+                            await linkPlayerCharacter(portalPlayer.playerId, characterEntityId);
+                            setAssignSelections((prev) => {
+                              const next = { ...prev };
+                              delete next[portalPlayer.playerId];
+                              return next;
+                            });
+                          }}
+                        >
+                          Asignar
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}

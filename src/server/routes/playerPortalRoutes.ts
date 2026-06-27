@@ -56,11 +56,29 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+
+        const link = portal.linksByPlayerId.get(playerId) ?? null;
+        const linkedCharacter = link
+          ? (() => {
+              const e = state.entities.get(link.characterEntityId);
+              return e ? { entityId: e.entityId, title: e.title } : null;
+            })()
+          : null;
+        const availableCharacters = Array.from(state.entities.values())
+          .filter(
+            (e: any) =>
+              e.entityType === "player_character" &&
+              !e.archived &&
+              (e.visibility?.kind === "party" || e.visibility?.kind === "public")
+          )
+          .map((e: any) => ({ entityId: e.entityId, title: e.title }));
 
         return {
           playerId,
-          link: portal.linksByPlayerId.get(playerId) ?? null,
+          link,
+          linkedCharacter,
+          availableCharacters,
           sheet: portal.sheetsByPlayerId.get(playerId) ?? null,
           notes: portal.notesByPlayerId.get(playerId) ?? [],
           objectives: portal.objectivesByPlayerId.get(playerId) ?? [],
@@ -455,8 +473,26 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { state, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
         const body = request.body as any;
+
+        // Validate link_request target is a visible player_character
+        if (body.kind === "link_request") {
+          if (!body.targetCharacterEntityId) {
+            reply.code(400);
+            return { error: "link_request requires targetCharacterEntityId" };
+          }
+          const targetEntity = state.entities.get(body.targetCharacterEntityId);
+          if (
+            !targetEntity ||
+            (targetEntity as any).entityType !== "player_character" ||
+            (targetEntity as any).archived ||
+            !["party", "public"].includes((targetEntity as any).visibility?.kind)
+          ) {
+            reply.code(400);
+            return { error: "Target entity is not a visible player_character" };
+          }
+        }
 
         const proposalId = `pprop_${randomBytes(8).toString("hex")}`;
         const now = new Date().toISOString();
@@ -528,11 +564,31 @@ export async function registerPlayerPortalRoutes(
         const now = new Date().toISOString();
 
         let entityUpdate: { entityId: string; updates: Record<string, unknown> } | undefined;
+        let linkUpdate:
+          | {
+              playerId: string;
+              characterEntityId: string;
+              ownership: "campaign_premade" | "player_owned";
+              syncMode: "live_player_editable" | "dm_review_required";
+              linkedAt: string;
+            }
+          | undefined;
+
         if (status === "approved" && foundProposal.targetCharacterEntityId) {
-          entityUpdate = {
-            entityId: foundProposal.targetCharacterEntityId,
-            updates: foundProposal.proposedChanges,
-          };
+          if (foundProposal.kind === "link_request") {
+            linkUpdate = {
+              playerId: foundProposal.playerId,
+              characterEntityId: foundProposal.targetCharacterEntityId,
+              ownership: "campaign_premade",
+              syncMode: "live_player_editable",
+              linkedAt: now,
+            };
+          } else {
+            entityUpdate = {
+              entityId: foundProposal.targetCharacterEntityId,
+              updates: foundProposal.proposedChanges,
+            };
+          }
         }
 
         await repo.executeCommand(campaignId as any, {
@@ -544,6 +600,7 @@ export async function registerPlayerPortalRoutes(
           dmResolutionNote: body.dmResolutionNote,
           resolvedAt: now,
           entityUpdate,
+          linkUpdate,
         });
 
         return { ok: true };
