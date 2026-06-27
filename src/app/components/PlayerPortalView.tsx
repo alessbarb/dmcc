@@ -138,7 +138,13 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     playerPortalState?.linkedCharacter ?? null;
   const availableCharacters: { entityId: string; title: string }[] =
     playerPortalState?.availableCharacters ?? [];
-  const proposals: any[] = playerPortalState?.proposals ?? [];
+  interface PortalProposal {
+    proposalId: string;
+    kind: "link_request" | "create_character" | "update_character_core";
+    status: "pending" | "approved" | "rejected";
+    targetCharacterEntityId?: string;
+  }
+  const proposals: PortalProposal[] = (playerPortalState?.proposals ?? []) as PortalProposal[];
   const pendingLinkRequests = proposals.filter(
     (p) => p.kind === "link_request" && p.status === "pending"
   );
@@ -268,7 +274,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
       proposedChanges: {
         title: createCharForm.name.trim(),
         className: createCharForm.className.trim(),
-        level: parseInt(createCharForm.level) || 1,
+        level: parseInt(createCharForm.level, 10) || 1,
         description: createCharForm.description.trim(),
       },
     });
@@ -278,8 +284,11 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await loadPlayerPortalState(campaignId);
-    setIsRefreshing(false);
+    try {
+      await loadPlayerPortalState(campaignId);
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   if (!campaignState) {
