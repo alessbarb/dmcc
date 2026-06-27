@@ -3,6 +3,7 @@ import { RotateCcw, Download, Upload, Wifi, WifiOff, Copy, Check } from "lucide-
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
+import { LanguageSelector } from "../../shared/i18n/LanguageSelector.js";
 
 export interface SettingsPageProps {
   campaigns?: any[];
@@ -102,6 +103,8 @@ export function SettingsPage(props: SettingsPageProps = {}) {
           Administra las copias de seguridad de la campaña, exporta tus datos narrativos y configura la conexión de red local.
         </p>
       </div>
+
+      <LanguageSelector />
 
       <div className="grid grid-cols-2">
         <section className="card">
