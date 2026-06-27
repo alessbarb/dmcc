@@ -1,10 +1,8 @@
-import { es } from "./dictionaries/es.js";
-import { en } from "./dictionaries/en.js";
-import type { SupportedLocale, TranslationKey, TranslationDictionary } from "./types.js";
+import type { TranslationKey } from "./types.js";
+import type { SupportedLocale } from "./locales.js";
+import { FALLBACK_LOCALE, dictionaries, isSupportedLocale } from "./locales.js";
 import type { InterpolationParams } from "./interpolation.js";
 import { interpolate } from "./interpolation.js";
-
-const dictionaries: Record<SupportedLocale, TranslationDictionary> = { en, es };
 
 function getRawString(dict: any, path: string): string | undefined {
   const parts = path.split(".");
@@ -25,11 +23,15 @@ export interface Translator {
 }
 
 export function resolveLocale(input?: unknown): SupportedLocale {
-  if (typeof input !== "string" || !input) return "en";
-  const normalized = input.trim().toLowerCase();
-  if (normalized.startsWith("en")) return "en";
-  if (normalized.startsWith("es")) return "es";
-  return "en";
+  if (typeof input !== "string" || !input) return FALLBACK_LOCALE;
+
+  const normalized = input.trim().toLowerCase().replace(/_/g, "-");
+  if (isSupportedLocale(normalized)) return normalized;
+
+  const [language] = normalized.split("-");
+  if (isSupportedLocale(language)) return language;
+
+  return FALLBACK_LOCALE;
 }
 
 export function createTranslator(inputLocale?: unknown): Translator {
@@ -37,10 +39,10 @@ export function createTranslator(inputLocale?: unknown): Translator {
   return {
     locale,
     t(key: TranslationKey | string, params?: InterpolationParams): string {
-      const targetDict = dictionaries[locale] ?? dictionaries.en;
+      const targetDict = dictionaries[locale] ?? dictionaries[FALLBACK_LOCALE];
       let raw = getRawString(targetDict, key);
-      if (raw === undefined && locale !== "en") {
-        raw = getRawString(dictionaries.en, key);
+      if (raw === undefined && locale !== FALLBACK_LOCALE) {
+        raw = getRawString(dictionaries[FALLBACK_LOCALE], key);
       }
       if (raw === undefined) {
         return key;
@@ -50,6 +52,10 @@ export function createTranslator(inputLocale?: unknown): Translator {
   };
 }
 
-export function t(key: TranslationKey | string, params?: InterpolationParams, locale: SupportedLocale = "en"): string {
+export function t(
+  key: TranslationKey | string,
+  params?: InterpolationParams,
+  locale: SupportedLocale = FALLBACK_LOCALE,
+): string {
   return createTranslator(locale).t(key, params);
 }
