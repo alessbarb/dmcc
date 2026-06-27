@@ -1,0 +1,70 @@
+import type { CampaignId, EventId } from "@shared/ids.js";
+
+export type DomainEventType =
+  | "VaultCreated"
+  | "CampaignCreated"
+  | "CampaignUpdated"
+  | "PlayerProfileCreated"
+  | "PlayerProfileUpdated"
+  | "PlayerProfileArchived"
+  | "EntityCreated"
+  | "EntityUpdated"
+  | "EntityArchived"
+  | "RelationCreated"
+  | "RelationUpdated"
+  | "RelationArchived"
+  | "FactCreated"
+  | "FactUpdated"
+  | "FactArchived"
+  | "VisibilityChanged"
+  | "SessionCreated"
+  | "SessionStarted"
+  | "SessionClosed"
+  | "SessionEventRecorded"
+  | "AttachmentAdded"
+  | "AttachmentRemoved"
+  | "TagCreated"
+  | "TagUpdated"
+  | "ImportCompleted"
+  | "ExportCompleted"
+  | "SnapshotCreated"
+  | "SettingsUpdated"
+  | "CanvasCreated"
+  | "CanvasUpdated"
+  | "CanvasArchived"
+  | "CanvasNodePlaced"
+  | "CanvasNodeUpdated"
+  | "CanvasNodesLayoutUpdated"
+  | "CanvasNodeRemoved"
+  | "CanvasEdgeAdded"
+  | "CanvasEdgeUpdated"
+  | "CanvasEdgeRemoved"
+  | "CanvasNoteConvertedToEntity"
+  | "PlayerTokenIssued"
+  | "PlayerTokenRevoked"
+  | "PlayerCharacterLinked"
+  | "PlayerCharacterUnlinked"
+  | "PlayerCharacterLiveStateUpdated"
+  | "PlayerResourceUpserted"
+  | "PlayerResourceRemoved"
+  | "PlayerPortalNoteCreated"
+  | "PlayerPortalNoteUpdated"
+  | "PlayerPortalNoteArchived"
+  | "PlayerPortalObjectiveCreated"
+  | "PlayerPortalObjectiveUpdated"
+  | "PlayerPortalObjectiveArchived"
+  | "PlayerCharacterProposalCreated"
+  | "PlayerCharacterProposalResolved";
+
+export interface StoredEvent<TPayload = unknown> {
+  sequence: number;
+  eventId: EventId;
+  campaignId?: CampaignId;
+  type: DomainEventType;
+  occurredAt: string;
+  actorId: string;
+  payload: TPayload;
+  previousHash?: string;
+  hash?: string;
+  schemaVersion: number;
+}

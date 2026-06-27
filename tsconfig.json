@@ -11,19 +11,22 @@
     "rootDir": "src",
     "jsx": "react-jsx",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["node", "vitest/globals"]
+    "types": ["node", "vitest/globals"],
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@frontend/*": ["src/frontend/*"],
+      "@backend/*": ["src/backend/*"],
+      "@core/*": ["src/core/*"],
+      "@shared/*": ["src/shared/*"]
+    }
   },
   "include": [
-    "src/main",
-    "src/server",
-    "src/domain",
-    "src/application",
-    "src/persistence",
-    "src/projections",
+    "src/backend",
+    "src/core",
     "src/shared"
   ],
   "exclude": [
-    "src/app"
+    "src/frontend"
   ]
 }
-
