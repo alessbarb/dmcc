@@ -15,6 +15,7 @@ import { TypeMetadataForm } from "./TypeMetadataForm.js";
 import type { Entity, Relation, Fact, Session } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatRelationType } from "@shared/i18n/index.js";
+import type { SupportedLocale } from "@shared/i18n/types.js";
 
 
 interface EntityDetailModalProps {
@@ -91,7 +92,7 @@ function buildTrazabilidad(
   facts: Fact[],
   sessions: Session[],
   t: (key: string, values?: Record<string, string | number>) => string,
-  locale: "es" | "en"
+  locale: SupportedLocale
 ): TraceEntry[] {
   const entries: TraceEntry[] = [];
 
