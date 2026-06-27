@@ -2,9 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import ts from "typescript";
-import { es } from "../../src/shared/i18n/dictionaries/es.js";
-import { en } from "../../src/shared/i18n/dictionaries/en.js";
-import { createTranslator, resolveLocale, formatEntityType, formatVisibility } from "../../src/shared/i18n/index.js";
+import { createTranslator, resolveLocale, formatEntityType, formatVisibility, dictionaries, SUPPORTED_LOCALES } from "../../src/shared/i18n/index.js";
 import { extractPlaceholders } from "../../src/shared/i18n/interpolation.js";
 
 function getAllKeysAndValues(obj: Record<string, any>, prefix = ""): Array<{ key: string; val: string }> {
@@ -34,7 +32,6 @@ function getFilesRecursively(dir: string): string[] {
   }
   return results;
 }
-
 
 const FRONTEND_SPANISH_LITERAL_ALLOWLIST = [
   "src/frontend/shared/i18n/",
@@ -69,36 +66,42 @@ function extractStringLiterals(content: string, fileName = "source.tsx"): string
   return literals;
 }
 
-
 describe("i18n system & dictionary parity", () => {
-  const esEntries = getAllKeysAndValues(es);
-  const enEntries = getAllKeysAndValues(en);
-  const esKeys = esEntries.map((e) => e.key).sort();
+  const enEntries = getAllKeysAndValues(dictionaries.en);
   const enKeys = enEntries.map((e) => e.key).sort();
+  const dictionaryEntries = SUPPORTED_LOCALES.map((locale) => ({
+    locale: locale.code,
+    entries: getAllKeysAndValues(dictionaries[locale.code]),
+  }));
 
-  it("has exact 1:1 key parity between Spanish and English dictionaries", () => {
-    expect(enKeys).toEqual(esKeys);
+  it("has exact 1:1 key parity across all registered dictionaries", () => {
+    for (const { locale, entries } of dictionaryEntries) {
+      const keys = entries.map((e) => e.key).sort();
+      expect(keys, `Key parity mismatch for locale '${locale}'`).toEqual(enKeys);
+    }
   });
 
   it("contains no empty translation strings", () => {
-    for (const entry of esEntries) {
-      expect(entry.val.trim().length, `Empty value for ES key '${entry.key}'`).toBeGreaterThan(0);
-    }
-    for (const entry of enEntries) {
-      expect(entry.val.trim().length, `Empty value for EN key '${entry.key}'`).toBeGreaterThan(0);
+    for (const { locale, entries } of dictionaryEntries) {
+      for (const entry of entries) {
+        expect(entry.val.trim().length, `Empty value for ${locale.toUpperCase()} key '${entry.key}'`).toBeGreaterThan(0);
+      }
     }
   });
 
   it("matches exact interpolation placeholders between languages", () => {
-    const esMap = new Map(esEntries.map((e) => [e.key, e.val]));
     const enMap = new Map(enEntries.map((e) => [e.key, e.val]));
 
-    for (const key of esKeys) {
-      const esVal = esMap.get(key)!;
-      const enVal = enMap.get(key)!;
-      const esPlaceholders = extractPlaceholders(esVal);
-      const enPlaceholders = extractPlaceholders(enVal);
-      expect(enPlaceholders, `Placeholder mismatch for key '${key}'`).toEqual(esPlaceholders);
+    for (const { locale, entries } of dictionaryEntries) {
+      const localeMap = new Map(entries.map((e) => [e.key, e.val]));
+
+      for (const key of enKeys) {
+        const enVal = enMap.get(key)!;
+        const localeVal = localeMap.get(key)!;
+        const enPlaceholders = extractPlaceholders(enVal);
+        const localePlaceholders = extractPlaceholders(localeVal);
+        expect(localePlaceholders, `Placeholder mismatch for locale '${locale}', key '${key}'`).toEqual(enPlaceholders);
+      }
     }
   });
 
@@ -106,25 +109,32 @@ describe("i18n system & dictionary parity", () => {
     expect(resolveLocale("en-US")).toBe("en");
     expect(resolveLocale("EN")).toBe("en");
     expect(resolveLocale("es-ES")).toBe("es");
-    expect(resolveLocale("fr-FR")).toBe("en");
+    expect(resolveLocale("fr-FR")).toBe("fr");
+    expect(resolveLocale("de_DE")).toBe("de");
+    expect(resolveLocale("it-IT")).toBe("it");
     expect(resolveLocale(undefined)).toBe("en");
   });
 
   it("resolves translations accurately with createTranslator", () => {
-    const trEs = createTranslator("es-ES");
     const trEn = createTranslator("en-US");
+    const trEs = createTranslator("es-ES");
+    const trFr = createTranslator("fr-FR");
+    const trDe = createTranslator("de-DE");
+    const trIt = createTranslator("it-IT");
 
-    expect(trEs.t("common.save")).toBe("Guardar");
     expect(trEn.t("common.save")).toBe("Save");
+    expect(trEs.t("common.save")).toBe("Guardar");
+    expect(trFr.t("common.save")).toBe("Enregistrer");
+    expect(trDe.t("common.save")).toBe("Speichern");
+    expect(trIt.t("common.save")).toBe("Salva");
   });
 
   it("formats domain entity types and visibility appropriately", () => {
-    expect(formatEntityType("npc", "es")).toBe("Personaje No Jugador (PNJ)");
     expect(formatEntityType("npc", "en")).toBe("Non-Player Character (NPC)");
-    expect(formatVisibility("dm_only", "es")).toBe("Solo DM");
+    expect(formatEntityType("npc", "es")).toBe("Personaje No Jugador (PNJ)");
     expect(formatVisibility("dm_only", "en")).toBe("DM Only");
+    expect(formatVisibility("dm_only", "es")).toBe("Solo DM");
   });
-
 
   it("does not leave hardcoded Spanish UI string literals in migrated frontend files", () => {
     const frontendFiles = getFilesRecursively(new URL("../../src/frontend", import.meta.url).pathname)
