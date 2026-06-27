@@ -1,6 +1,11 @@
 export * from "./types.js";
+export * from "./locales.js";
 export * from "./translate.js";
 export * from "./interpolation.js";
 export * from "./domainLabels.js";
-export { es } from "./dictionaries/es.js";
+export { de } from "./dictionaries/de.js";
 export { en } from "./dictionaries/en.js";
+export { es } from "./dictionaries/es.js";
+export { fr } from "./dictionaries/fr.js";
+export { it } from "./dictionaries/it.js";
+export { pt } from "./dictionaries/pt.js";
