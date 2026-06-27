@@ -1,4 +1,4 @@
-import { createServer } from "../src/server/createServer.js";
+import { createServer } from "../src/backend/server/createServer.js";
 
 const server = createServer();
 const res = await server.inject({
