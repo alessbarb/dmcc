@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
+import { useTranslation } from "../../../shared/i18n/useTranslation.js";
+import { formatEntityType } from "@shared/i18n/index.js";
 import {
   Search, User, MapPin, Film, HelpCircle, Key, Award, Skull, Box, Shield,
   StickyNote, BoxSelect, Eye, CheckCircle2, RefreshCcw, Trash2,
@@ -29,6 +31,7 @@ function makeDragGhost(label: string, color: string): HTMLElement {
 }
 
 export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: CanvasPaletteProps) {
+  const { locale, t } = useTranslation();
   const {
     campaignState,
     placeNodeOnCanvas,
@@ -310,15 +313,15 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
   }
 
   const PALETTE_ITEMS = [
-    { label: "NPC / PNJ",  type: "npc",      Icon: User,        color: "#3b82f6" },
-    { label: "Lugar",      type: "location",  Icon: MapPin,      color: "#10b981" },
-    { label: "Escena",     type: "scene",     Icon: Film,        color: "#64748b" },
-    { label: "Pista",      type: "clue",      Icon: HelpCircle,  color: "#eab308" },
-    { label: "Secreto",    type: "secret",    Icon: Key,         color: "#ef4444" },
-    { label: "Misión",     type: "quest",     Icon: Award,       color: "#f97316" },
-    { label: "Criatura",   type: "creature",  Icon: Skull,       color: "#dc2626" },
-    { label: "Objeto",     type: "item",      Icon: Box,         color: "#8b5cf6" },
-    { label: "Facción",    type: "faction",   Icon: Shield,      color: "#f59e0b" },
+    { label: formatEntityType("npc", locale),       type: "npc",      Icon: User,        color: "#3b82f6" },
+    { label: formatEntityType("location", locale),  type: "location", Icon: MapPin,      color: "#10b981" },
+    { label: formatEntityType("scene", locale),     type: "scene",    Icon: Film,        color: "#64748b" },
+    { label: formatEntityType("clue", locale),      type: "clue",     Icon: HelpCircle,  color: "#eab308" },
+    { label: formatEntityType("secret", locale),    type: "secret",   Icon: Key,         color: "#ef4444" },
+    { label: formatEntityType("quest", locale),     type: "quest",    Icon: Award,       color: "#f97316" },
+    { label: formatEntityType("creature", locale),  type: "creature", Icon: Skull,       color: "#dc2626" },
+    { label: formatEntityType("item", locale),      type: "item",     Icon: Box,         color: "#8b5cf6" },
+    { label: formatEntityType("faction", locale),   type: "faction",  Icon: Shield,      color: "#f59e0b" },
   ];
 
   if (collapsed) {

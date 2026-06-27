@@ -24,6 +24,7 @@ import {
 import { getCampaignExitDecision } from "./shared/utils/campaignExit.js";
 import { getRuleSystem } from "@core/domain/rules/index.js";
 import { useToast } from "./shared/hooks/useToast.js";
+import { useTranslation } from "./shared/i18n/useTranslation.js";
 import { ToastContainer } from "./shared/components/ToastContainer.js";
 import { TimelinePage } from "./dm/sessions/TimelinePage.js";
 import { SearchPage } from "./dm/pages/SearchPage.js";
@@ -43,6 +44,7 @@ import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js"
 import { LandingCampaignCard } from "./shared/components/LandingCampaignCard.js";
 
 export function App() {
+  const { t } = useTranslation();
   const {
     campaigns,
     activeCampaignId,
@@ -699,80 +701,80 @@ export function App() {
             className={`nav-item ${currentPage === "dashboard" ? "active" : ""}`}
             onClick={() => setCurrentPage("dashboard")}
           >
-            <Activity /> Panel del DM
+            <Activity /> {t("nav.dashboard")}
           </div>
           <div
             className={`nav-item ${currentPage === "what-now" ? "active" : ""}`}
             onClick={() => setCurrentPage("what-now")}
           >
-            <BookOpen /> Qué toca ahora
+            <BookOpen /> {t("nav.whatNow")}
           </div>
           <div
             className={`nav-item ${currentPage === "session" ? "active" : ""}`}
             onClick={() => setCurrentPage("session")}
           >
-            <Play /> Sesión activa {activeSession && <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--color-success)", display: "inline-block", marginLeft: "auto" }}></span>}
+            <Play /> {t("nav.activeSession")} {activeSession && <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--color-success)", display: "inline-block", marginLeft: "auto" }}></span>}
           </div>
           <div
             className={`nav-item ${currentPage === "entities" ? "active" : ""}`}
             onClick={() => setCurrentPage("entities")}
           >
-            <Layers /> Entidades narrativas
+            <Layers /> {t("nav.entities")}
           </div>
           <div
             className={`nav-item ${currentPage === "graph" ? "active" : ""}`}
             onClick={() => setCurrentPage("graph")}
           >
-            <GitFork /> Grafo de relaciones
+            <GitFork /> {t("nav.graph")}
           </div>
           <div
             className={`nav-item ${currentPage === "timeline" ? "active" : ""}`}
             onClick={() => setCurrentPage("timeline")}
           >
-            <List /> Línea de tiempo
+            <List /> {t("nav.timeline")}
           </div>
           <div
             className={`nav-item ${currentPage === "search" ? "active" : ""}`}
             onClick={() => setCurrentPage("search")}
           >
-            <Search /> Búsqueda
+            <Search /> {t("nav.search")}
           </div>
           {campaignState?.campaign?.system === "dnd_srd_5_2_1" && (
             <div
               className={`nav-item ${currentPage === "rules" ? "active" : ""}`}
               onClick={() => setCurrentPage("rules")}
             >
-              <BookOpen /> Manual de Reglas
+              <BookOpen /> {t("nav.rules")}
             </div>
           )}
           <div
             className={`nav-item ${currentPage === "players" ? "active" : ""}`}
             onClick={() => setCurrentPage("players")}
           >
-            <User /> Jugadores y personajes
+            <User /> {t("nav.players")}
           </div>
           <div
             className={`nav-item ${currentPage === "boards" ? "active" : ""}`}
             onClick={() => setCurrentPage("boards")}
           >
-            <Layers style={{ transform: "rotate(90deg)" }} /> Tableros
+            <Layers style={{ transform: "rotate(90deg)" }} /> {t("nav.boards")}
           </div>
           <div
             className={`nav-item ${currentPage === "settings" ? "active" : ""}`}
             onClick={() => setCurrentPage("settings")}
           >
-            <Settings /> Ajustes y exportación
+            <Settings /> {t("nav.settings")}
           </div>
         </nav>
 
         <div className="sidebar-footer">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span>Campaña activa</span>
+            <span>{t("nav.activeCampaign")}</span>
             <button
               className="btn btn-secondary btn-sm"
               onClick={handleExitCampaign}
             >
-              Salir
+              {t("nav.exit")}
             </button>
           </div>
         </div>
