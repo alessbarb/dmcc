@@ -306,6 +306,7 @@ export const eventPayloadSchemas = {
       max: z.number().int(),
       recovery: z.enum(["short_rest", "long_rest", "manual"]).optional(),
     }),
+    updatedBy: z.enum(["player", "dm"]).optional(),
     updatedAt: z.string().min(1),
   }),
   PlayerResourceRemoved: z.object({
@@ -334,6 +335,7 @@ export const eventPayloadSchemas = {
     content: z.string().optional(),
     visibility: z.enum(["private", "dm_visible"]).optional(),
     linkedEntityIds: z.array(z.string()).optional(),
+    archived: z.boolean().optional(),
     updatedAt: z.string().min(1),
   }),
   PlayerPortalNoteArchived: z.object({
