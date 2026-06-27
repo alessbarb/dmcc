@@ -259,6 +259,101 @@ it("rejects a revoked player token", async () => {
   });
 });
 
+describe("character assignment", () => {
+  it("returns availableCharacters in GET /state when party-visible player_character entities exist", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      const dmToken = await seedPlayer(server);
+      const playerToken = await issueToken(server, dmToken);
+
+      // Create a second player_character entity with party visibility (not linked to player)
+      await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_portal/entities",
+        payload: {
+          entityId: "ent_pc_premade",
+          entityType: "player_character",
+          title: "Premade Hero",
+          visibility: { kind: "party" },
+          metadata: { level: 1, className: "Fighter" },
+        },
+        headers: { "x-dm-token": dmToken },
+      });
+
+      const res = await server.inject({
+        method: "GET",
+        url: "/api/campaigns/cmp_portal/player-portal/state",
+        headers: { "x-player-token": playerToken },
+      });
+
+      expect(res.statusCode).toBe(200);
+      const body = res.json();
+      expect(body.availableCharacters).toBeDefined();
+      expect(body.availableCharacters.length).toBe(1);
+      expect(body.availableCharacters[0].entityId).toBe("ent_pc_premade");
+      expect(body.availableCharacters[0].title).toBe("Premade Hero");
+    });
+  });
+
+  it("link_request proposal approved by DM results in linked character in GET /state", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      const dmToken = await seedPlayer(server);
+      const playerToken = await issueToken(server, dmToken);
+
+      // Create a party-visible character for the player to request
+      await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_portal/entities",
+        payload: {
+          entityId: "ent_pc_pick",
+          entityType: "player_character",
+          title: "Pickable Character",
+          visibility: { kind: "party" },
+          metadata: { level: 3, className: "Rogue" },
+        },
+        headers: { "x-dm-token": dmToken },
+      });
+
+      // Player submits link_request proposal
+      const propRes = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_portal/player-portal/proposals",
+        payload: {
+          kind: "link_request",
+          targetCharacterEntityId: "ent_pc_pick",
+          proposedChanges: {},
+        },
+        headers: { "x-player-token": playerToken },
+      });
+      expect(propRes.statusCode).toBe(201);
+      const { proposalId } = propRes.json();
+
+      // DM approves the proposal
+      const resolveRes = await server.inject({
+        method: "PUT",
+        url: `/api/campaigns/cmp_portal/player-portal/proposals/${proposalId}/resolve`,
+        payload: { status: "approved", dmResolutionNote: "Welcome!" },
+        headers: { "x-dm-token": dmToken },
+      });
+      expect(resolveRes.statusCode).toBe(200);
+
+      // Player portal state now shows the link
+      const stateRes = await server.inject({
+        method: "GET",
+        url: "/api/campaigns/cmp_portal/player-portal/state",
+        headers: { "x-player-token": playerToken },
+      });
+      expect(stateRes.statusCode).toBe(200);
+      const state = stateRes.json();
+      expect(state.link).not.toBeNull();
+      expect(state.link.characterEntityId).toBe("ent_pc_pick");
+      expect(state.linkedCharacter).not.toBeNull();
+      expect(state.linkedCharacter.title).toBe("Pickable Character");
+    });
+  });
+});
+
 it("player cannot update another player note", async () => {
   await withTempDataDir(async (dataDir) => {
     const server = createServer({ dataDir });

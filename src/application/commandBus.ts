@@ -851,12 +851,30 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         resolvedAt: command.resolvedAt,
       });
 
-      if (command.status === "rejected" || !command.entityUpdate) {
+      if (command.status === "rejected" || (!command.entityUpdate && !command.linkUpdate)) {
         return { state, events: [resolvedEvent] };
       }
 
-      const entity = requireEntity(state, command.entityUpdate.entityId);
-      const entityUpdate = command.entityUpdate.updates as any;
+      if (command.linkUpdate) {
+        return {
+          state,
+          events: [
+            resolvedEvent,
+            makeEvent(command.actorId, command.campaignId, "PlayerCharacterLinked", {
+              campaignId: command.campaignId,
+              playerId: command.linkUpdate.playerId,
+              characterEntityId: command.linkUpdate.characterEntityId,
+              ownership: command.linkUpdate.ownership,
+              syncMode: command.linkUpdate.syncMode,
+              createdAt: command.linkUpdate.linkedAt,
+              updatedAt: command.linkUpdate.linkedAt,
+            }),
+          ],
+        };
+      }
+
+      const entity = requireEntity(state, command.entityUpdate!.entityId);
+      const entityUpdate = command.entityUpdate!.updates as any;
       const updatedEntity = {
         ...entity,
         ...entityUpdate,

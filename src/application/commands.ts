@@ -555,7 +555,7 @@ export type Command =
       playerId: string;
       proposalId: string;
       targetCharacterEntityId?: EntityId;
-      kind: "create_character" | "update_character_core";
+      kind: "create_character" | "update_character_core" | "link_request";
       proposedChanges: Record<string, unknown>;
       createdAt: string;
     }
@@ -568,4 +568,11 @@ export type Command =
       dmResolutionNote?: string;
       resolvedAt: string;
       entityUpdate?: { entityId: EntityId; updates: Record<string, unknown> };
+      linkUpdate?: {
+        playerId: string;
+        characterEntityId: string;
+        ownership: "campaign_premade" | "player_owned";
+        syncMode: "live_player_editable" | "dm_review_required";
+        linkedAt: string;
+      };
     };

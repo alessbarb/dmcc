@@ -380,7 +380,7 @@ export const eventPayloadSchemas = {
     campaignId: z.string().min(1),
     playerId: z.string().min(1),
     targetCharacterEntityId: z.string().optional(),
-    kind: z.enum(["create_character", "update_character_core"]),
+    kind: z.enum(["create_character", "update_character_core", "link_request"]),
     status: z.enum(["pending", "approved", "rejected"]),
     proposedChanges: z.record(z.string(), z.unknown()),
     createdAt: z.string().min(1),
