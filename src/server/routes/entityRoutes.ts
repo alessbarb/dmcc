@@ -68,6 +68,13 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
       }
 
       try {
+        // For DM-created player_character entities without a playerId, mark as premade
+        // so they can serve as pre-built characters available for player selection.
+        let resolvedMetadata = metadata;
+        if (role !== "player" && entityType === "player_character" && !metadata?.playerId) {
+          resolvedMetadata = { ...metadata, isPremade: true };
+        }
+
         const projection = await repo.executeCommand(campaignId as any, {
           type: "CreateEntity",
           campaignId: campaignId as any,
@@ -85,7 +92,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
           subtitle,
           tagIds: tagIds || [],
           createdInSessionId,
-          metadata,
+          metadata: resolvedMetadata,
         });
         const created = Array.from(projection.entities.values()).find(
           (e: any) => e.title === title && !e.archived

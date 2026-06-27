@@ -210,6 +210,7 @@ export interface CampaignStateStore {
   createPlayerCharacterProposal: (payload: any) => Promise<void>;
   loadDmPlayerPortalSummary: () => Promise<void>;
   resolvePlayerCharacterProposal: (proposalId: string, payload: any) => Promise<void>;
+  linkPlayerCharacter: (playerId: string, characterEntityId: string, ownership?: string, syncMode?: string) => Promise<void>;
 
   createCanvas: (title: string, kind: string, description?: string) => Promise<void>;
   setActiveCanvasId: (canvasId: string | null) => void;
@@ -1063,6 +1064,25 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Failed to resolve player character proposal");
+      await get().loadDmPlayerPortalSummary();
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  linkPlayerCharacter: async (playerId, characterEntityId, ownership = "campaign_premade", syncMode = "live_player_editable") => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(
+        `/api/campaigns/${activeCampaignId}/player-portal/links`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ playerId, characterEntityId, ownership, syncMode }),
+        }
+      );
+      if (!res.ok) throw new Error("Failed to link character");
       await get().loadDmPlayerPortalSummary();
     } catch (err: any) {
       set({ error: err.message });
