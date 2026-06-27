@@ -28,6 +28,7 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 
 type BoardType = "misiones" | "pistas" | "consecuencias" | "pnjs" | "secretos";
@@ -125,6 +126,7 @@ function KanbanColumn({ label, color, stateKey, entities, onSelect }: {
   onSelect: (e: Entity) => void;
 }) {
   const IconComponent = STATE_ICONS[stateKey] || HelpCircle;
+  const { t } = useTranslation();
 
   return (
     <div style={{ minWidth: "200px", flex: "0 0 200px" }}>
@@ -137,7 +139,7 @@ function KanbanColumn({ label, color, stateKey, entities, onSelect }: {
       <div style={{ display: "flex", flexDirection: "column", gap: "8px", minHeight: "60px" }}>
         {entities.length === 0 ? (
           <div style={{ padding: "12px 10px", border: "1px dashed var(--border-color)", borderRadius: "var(--radius-sm)", fontSize: "0.75rem", color: "var(--text-muted)", textAlign: "center" }}>
-            Vacío
+            {t("boards.empty")}
           </div>
         ) : entities.map((e) => {
           let cardClass = "kanban-card";
@@ -169,7 +171,7 @@ function KanbanColumn({ label, color, stateKey, entities, onSelect }: {
               )}
               {(e as any).importance && (e as any).importance !== "normal" && (
                 <span className="kanban-card__badge" style={{ backgroundColor: (e as any).importance === "critical" ? "#dc262633" : "#d9770633", color: (e as any).importance === "critical" ? "#fca5a5" : "#fcd34d" }}>
-                  {(e as any).importance === "critical" ? "Crítico" : (e as any).importance === "high" ? "Alta" : (e as any).importance === "low" ? "Baja" : (e as any).importance}
+                  {(e as any).importance === "critical" ? t("boards.importanceCritical") : (e as any).importance === "high" ? t("boards.importanceHigh") : (e as any).importance === "low" ? t("boards.importanceLow") : (e as any).importance}
                 </span>
               )}
             </div>

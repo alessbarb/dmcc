@@ -6,6 +6,7 @@ import { useToast } from "../../shared/hooks/useToast.js";
 import { EntityCreateModal } from "../entities/EntityCreateModal.js";
 import { RelationCreateModal } from "../entities/RelationCreateModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import {
   Shield,
   Activity,
@@ -27,66 +28,66 @@ import {
 } from "lucide-react";
 
 type PageMeta = {
-  title: string;
-  eyebrow: string;
-  description: string;
+  titleKey: string;
+  eyebrowKey: string;
+  descriptionKey: string;
 };
 
 const PAGE_META: Record<string, PageMeta> = {
   canvas: {
-    title: "Campaign Canvas",
-    eyebrow: "Mesa visual de trabajo",
-    description: "Dibuja tu aventura: coloca NPCs, lugares y pistas, y arrastra conexiones para tejer la trama.",
+    titleKey: "campaignShell.meta.canvasTitle",
+    eyebrowKey: "campaignShell.meta.canvasEyebrow",
+    descriptionKey: "campaignShell.meta.canvasDescription",
   },
   dashboard: {
-    title: "Panel del DM",
-    eyebrow: "Centro de mando",
-    description: "Resumen operativo de la campaña, alertas y preparación de la próxima sesión.",
+    titleKey: "campaignShell.meta.dashboardTitle",
+    eyebrowKey: "campaignShell.meta.dashboardEyebrow",
+    descriptionKey: "campaignShell.meta.dashboardDescription",
   },
   "what-now": {
-    title: "¿Qué toca?",
-    eyebrow: "Siguiente mejor acción",
-    description: "Prioriza escenas, pistas, consecuencias y decisiones que necesitan atención.",
+    titleKey: "campaignShell.meta.whatNowTitle",
+    eyebrowKey: "campaignShell.meta.whatNowEyebrow",
+    descriptionKey: "campaignShell.meta.whatNowDescription",
   },
   session: {
-    title: "Sesión",
-    eyebrow: "Mesa en curso",
-    description: "Inicia, registra, revela pistas y cierra la sesión con trazabilidad.",
+    titleKey: "campaignShell.meta.sessionTitle",
+    eyebrowKey: "campaignShell.meta.sessionEyebrow",
+    descriptionKey: "campaignShell.meta.sessionDescription",
   },
   entities: {
-    title: "Entidades narrativas",
-    eyebrow: "Archivo vivo",
-    description: "Personajes, lugares, pistas, secretos, misiones y piezas de campaña.",
+    titleKey: "campaignShell.meta.entitiesTitle",
+    eyebrowKey: "campaignShell.meta.entitiesEyebrow",
+    descriptionKey: "campaignShell.meta.entitiesDescription",
   },
   graph: {
-    title: "Grafo narrativo",
-    eyebrow: "Relaciones y secretos",
-    description: "Explora conexiones, visibilidad y cadenas narrativas entre nodos clave.",
+    titleKey: "campaignShell.meta.graphTitle",
+    eyebrowKey: "campaignShell.meta.graphEyebrow",
+    descriptionKey: "campaignShell.meta.graphDescription",
   },
   timeline: {
-    title: "Línea temporal",
-    eyebrow: "Historial de campaña",
-    description: "Audita eventos, sesiones, cambios y revelaciones en orden cronológico.",
+    titleKey: "campaignShell.meta.timelineTitle",
+    eyebrowKey: "campaignShell.meta.timelineEyebrow",
+    descriptionKey: "campaignShell.meta.timelineDescription",
   },
   boards: {
-    title: "Tableros",
-    eyebrow: "Seguimiento visual",
-    description: "Organiza misiones, pistas, PNJs y frentes por estado narrativo.",
+    titleKey: "campaignShell.meta.boardsTitle",
+    eyebrowKey: "campaignShell.meta.boardsEyebrow",
+    descriptionKey: "campaignShell.meta.boardsDescription",
   },
   players: {
-    title: "Jugadores y personajes",
-    eyebrow: "Mesa y reparto",
-    description: "Gestiona jugadores, personajes y acceso visible para la mesa.",
+    titleKey: "campaignShell.meta.playersTitle",
+    eyebrowKey: "campaignShell.meta.playersEyebrow",
+    descriptionKey: "campaignShell.meta.playersDescription",
   },
   search: {
-    title: "Búsqueda",
-    eyebrow: "Consulta rápida",
-    description: "Encuentra entidades, hechos y notas de campaña sin romper el ritmo.",
+    titleKey: "campaignShell.meta.searchTitle",
+    eyebrowKey: "campaignShell.meta.searchEyebrow",
+    descriptionKey: "campaignShell.meta.searchDescription",
   },
   settings: {
-    title: "Ajustes y exportación",
-    eyebrow: "Administración",
-    description: "Configura campaña, exportaciones, copias y opciones de acceso local.",
+    titleKey: "campaignShell.meta.settingsTitle",
+    eyebrowKey: "campaignShell.meta.settingsEyebrow",
+    descriptionKey: "campaignShell.meta.settingsDescription",
   },
 };
 
@@ -104,6 +105,7 @@ export function CampaignShell() {
   } = useCampaignStore();
   const navigate = useNavigate();
   const { toasts, removeToast } = useToast();
+  const { t } = useTranslation();
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
 
@@ -134,17 +136,17 @@ export function CampaignShell() {
   const currentSegment = pathname.split("/")[3] ?? "";
 
   const NAV = [
-    { path: "canvas", label: "Canvas", Icon: LayoutGrid },
-    { path: "dashboard", label: "Panel del DM", Icon: Shield },
-    { path: "what-now", label: "¿Qué toca?", Icon: BookOpen },
-    { path: "session", label: "Sesión", Icon: Play },
-    { path: "entities", label: "Entidades", Icon: Layers },
-    { path: "graph", label: "Grafo", Icon: GitFork },
-    { path: "timeline", label: "Línea temporal", Icon: List },
-    { path: "boards", label: "Tableros", Icon: Activity },
-    { path: "players", label: "Jugadores", Icon: User },
-    { path: "search", label: "Búsqueda", Icon: Search },
-    { path: "settings", label: "Ajustes", Icon: Settings },
+    { path: "canvas", label: t("campaignShell.nav.canvas"), Icon: LayoutGrid },
+    { path: "dashboard", label: t("campaignShell.nav.dashboard"), Icon: Shield },
+    { path: "what-now", label: t("campaignShell.nav.whatNow"), Icon: BookOpen },
+    { path: "session", label: t("campaignShell.nav.session"), Icon: Play },
+    { path: "entities", label: t("campaignShell.nav.entities"), Icon: Layers },
+    { path: "graph", label: t("campaignShell.nav.graph"), Icon: GitFork },
+    { path: "timeline", label: t("campaignShell.nav.timeline"), Icon: List },
+    { path: "boards", label: t("campaignShell.nav.boards"), Icon: Activity },
+    { path: "players", label: t("campaignShell.nav.players"), Icon: User },
+    { path: "search", label: t("campaignShell.nav.search"), Icon: Search },
+    { path: "settings", label: t("campaignShell.nav.settings"), Icon: Settings },
   ];
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
@@ -161,9 +163,9 @@ export function CampaignShell() {
   const activeSession = campaignState?.sessions?.find(s => s.status === "active");
 
   const pageMeta = PAGE_META[currentSegment] ?? {
-    title: currentSegment || "Campaña",
-    eyebrow: "Archivo de campaña",
-    description: "Gestiona la memoria narrativa y el estado actual de la campaña.",
+    titleKey: currentSegment ? "" : "campaignShell.defaultTitle",
+    eyebrowKey: "campaignShell.defaultEyebrow",
+    descriptionKey: "campaignShell.defaultDescription",
   };
 
   const currentLocation = campaignState?.campaign?.currentLocationId
@@ -188,13 +190,13 @@ export function CampaignShell() {
         <div className="sidebar-header" style={{ padding: sidebarCollapsed ? "16px 8px" : undefined, overflow: "hidden" }}>
           {!sidebarCollapsed && (
             <>
-              <div className="sidebar-logo">{campaignState?.campaign?.title ?? "Campaña"}</div>
+              <div className="sidebar-logo">{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</div>
               <div className="sidebar-logo-subtitle">{campaignState?.campaign?.system ?? ""}</div>
             </>
           )}
           <button
             onClick={toggleSidebar}
-            title={sidebarCollapsed ? "Expandir menú" : "Colapsar menú"}
+            title={sidebarCollapsed ? t("campaignShell.expandMenu") : t("campaignShell.collapseMenu")}
             style={{
               background: "none",
               border: "none",
@@ -233,19 +235,19 @@ export function CampaignShell() {
             <button
               className="btn btn-secondary btn-sm"
               onClick={() => navigate({ to: "/" })}
-              title="Salir"
+              title={t("nav.exit")}
               style={{ width: "100%", padding: "6px", justifyContent: "center" }}
             >
               <ArrowLeft size={14} />
             </button>
           ) : (
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span>Campaña activa</span>
+              <span>{t("nav.activeCampaign")}</span>
               <button
                 className="btn btn-secondary btn-sm"
                 onClick={() => navigate({ to: "/" })}
               >
-                <ArrowLeft size={14} /> Salir
+                <ArrowLeft size={14} /> {t("nav.exit")}
               </button>
             </div>
           )}
@@ -257,25 +259,25 @@ export function CampaignShell() {
         {currentSegment !== "canvas" && (
           <header className="content-header">
             <div className="page-heading">
-              <span className="page-eyebrow">{pageMeta.eyebrow}</span>
+              <span className="page-eyebrow">{pageMeta.eyebrowKey ? t(pageMeta.eyebrowKey) : t("campaignShell.defaultEyebrow")}</span>
               <div className="page-title-row">
-                <h1 className="page-title">{pageMeta.title}</h1>
+                <h1 className="page-title">{pageMeta.titleKey ? t(pageMeta.titleKey) : currentSegment}</h1>
                 {campaignState?.campaign?.system && (
                   <span className="page-system-pill">{campaignState.campaign.system}</span>
                 )}
               </div>
-              <p className="page-description">{pageMeta.description}</p>
+              <p className="page-description">{pageMeta.descriptionKey ? t(pageMeta.descriptionKey) : t("campaignShell.defaultDescription")}</p>
 
               {(currentLocation || currentQuest) && (
-                <div className="page-context" aria-label="Contexto actual de campaña">
+                <div className="page-context" aria-label={t("campaignShell.currentContext")}>
                   {currentLocation && (
                     <span className="context-chip">
-                      <MapPin size={14} /> Ubicación: {currentLocation.title}
+                      <MapPin size={14} /> {t("campaignShell.currentLocation", { title: currentLocation.title })}
                     </span>
                   )}
                   {currentQuest && (
                     <span className="context-chip context-chip--primary">
-                      <Flag size={14} /> Misión: {currentQuest.title}
+                      <Flag size={14} /> {t("campaignShell.currentQuest", { title: currentQuest.title })}
                     </span>
                   )}
                 </div>
@@ -285,19 +287,19 @@ export function CampaignShell() {
             <div className="top-bar-actions header-actions">
               {activeSession ? (
                 <span className="badge badge-success" style={{ padding: "8px 12px" }}>
-                  Sesión #{activeSession.number || 1} activa: “{activeSession.title}”
+                  {t("campaignShell.activeSession", { number: activeSession.number || 1, title: activeSession.title })}
                 </span>
               ) : (
                 <button
                   className="btn btn-primary btn-sm"
-                  onClick={() => startSession(`Sesión ${(campaignState?.sessions ?? []).length + 1}`)}
+                  onClick={() => startSession(t("campaignShell.newSessionTitle", { number: (campaignState?.sessions ?? []).length + 1 }))}
                 >
-                  <Play size={14} /> Iniciar nueva sesión
+                  <Play size={14} /> {t("campaignShell.startNewSession")}
                 </button>
               )}
 
               <button className="btn btn-secondary btn-sm" onClick={() => setIsEntityModalOpen(true)}>
-                <Plus size={14} /> Nueva entidad
+                <Plus size={14} /> {t("campaignShell.newEntity")}
               </button>
             </div>
           </header>

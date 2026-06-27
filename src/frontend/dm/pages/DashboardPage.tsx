@@ -21,6 +21,7 @@ import { useNavigate, useParams } from "@tanstack/react-router";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 export interface DashboardPageProps {
   dashboard?: any;
@@ -77,11 +78,13 @@ function EntityRow({
   badge,
   badgeClass,
   onClick,
+  titleFallback,
 }: {
   entity: any;
   badge?: string;
   badgeClass?: string;
   onClick?: () => void;
+  titleFallback: string;
 }) {
   return (
     <div
@@ -117,7 +120,7 @@ function EntityRow({
           whiteSpace: "nowrap",
         }}
       >
-        {entity.title ?? entity.name ?? "Sin título"}
+        {entity.title ?? entity.name ?? titleFallback}
       </span>
       {badge && (
         <span className={`badge ${badgeClass ?? "badge-default"}`}>{badge}</span>
@@ -136,6 +139,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
   const campaignState = _props.campaignState ?? storeData.campaignState;
   const { updateEntity, archiveEntity } = storeData;
   const { addToast } = useToast();
+  const { t } = useTranslation();
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
   const selectedEntity = selectedEntityLocal;
   const setSelectedEntity = _props.setSelectedEntity ?? setSelectedEntityLocal;
@@ -179,12 +183,12 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
     pendingConsequences.length > 0;
 
   const importanceBadge = (importance: string | undefined) => {
-    if (!importance) return { label: "normal", cls: "badge-default" };
+    if (!importance) return { label: t("dashboard.importanceNormal"), cls: "badge-default" };
     const map: Record<string, { label: string; cls: string }> = {
-      critical: { label: "crítica", cls: "badge-critical" },
-      high: { label: "alta", cls: "badge-warning" },
-      medium: { label: "media", cls: "badge-primary" },
-      low: { label: "baja", cls: "badge-default" },
+      critical: { label: t("dashboard.importanceCritical"), cls: "badge-critical" },
+      high: { label: t("dashboard.importanceHigh"), cls: "badge-warning" },
+      medium: { label: t("dashboard.importanceMedium"), cls: "badge-primary" },
+      low: { label: t("dashboard.importanceLow"), cls: "badge-default" },
     };
     return map[importance.toLowerCase()] ?? { label: importance, cls: "badge-default" };
   };
@@ -197,7 +201,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           SECTION 1 — ESTADO ACTUAL
       ═══════════════════════════════════════════════════════════════════════ */}
       <section>
-        <SectionLabel>Estado actual de la campaña</SectionLabel>
+        <SectionLabel>{t("dashboard.currentState")}</SectionLabel>
 
         {/* Campaign header strip */}
         <div
@@ -238,7 +242,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                     color: "var(--text-main)",
                   }}
                 >
-                  {campaign?.name ?? "Sin campaña activa"}
+                  {campaign?.name ?? t("dashboard.noActiveCampaign")}
                 </h1>
                 {campaign?.system && (
                   <span className="badge badge-primary">{campaign.system}</span>
@@ -286,7 +290,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                     color: "var(--color-success)",
                   }}
                 >
-                  Sesión activa
+                  {t("dashboard.activeSession")}
                 </span>
               </div>
             ) : null}
@@ -321,7 +325,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                   color: "var(--text-muted)",
                 }}
               >
-                Ubicación actual
+                {t("dashboard.currentLocation")}
               </span>
             </div>
             {currentLocationEntity ? (
@@ -342,7 +346,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 {currentLocationEntity.title ?? currentLocationEntity.name}
               </button>
             ) : (
-              <EmptySlot label="No establecida" />
+              <EmptySlot label={t("dashboard.notSet")} />
             )}
           </div>
 
@@ -369,7 +373,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                   color: "var(--text-muted)",
                 }}
               >
-                Misión principal
+                {t("dashboard.mainQuest")}
               </span>
             </div>
             {firstActiveQuest ? (
@@ -397,7 +401,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 </span>
               </div>
             ) : (
-              <EmptySlot label="Sin misión activa" />
+              <EmptySlot label={t("dashboard.noActiveQuest")} />
             )}
           </div>
 
@@ -424,13 +428,13 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                   color: "var(--text-muted)",
                 }}
               >
-                Última sesión
+                {t("dashboard.lastSession")}
               </span>
             </div>
             {lastSession ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                 <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>
-                  {lastSession.title ?? `Sesión ${lastSession.number ?? ""}`}
+                  {lastSession.title ?? t("dashboard.sessionNumber", { number: lastSession.number ?? "" })}
                 </span>
                 {lastSession.date && (
                   <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
@@ -454,7 +458,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 )}
               </div>
             ) : (
-              <EmptySlot label="Sin sesiones anteriores" />
+              <EmptySlot label={t("dashboard.noPreviousSessions")} />
             )}
           </div>
         </div>
@@ -464,7 +468,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           SECTION 2 — QUÉ REQUIERE ATENCIÓN
       ═══════════════════════════════════════════════════════════════════════ */}
       <section>
-        <SectionLabel>Qué requiere atención</SectionLabel>
+        <SectionLabel>{t("dashboard.needsAttention")}</SectionLabel>
 
         {!hasWarnings ? (
           <div
@@ -480,7 +484,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           >
             <CheckCircle2 size={20} style={{ color: "var(--color-success)", flexShrink: 0 }} />
             <span style={{ fontWeight: 700, color: "var(--color-success)" }}>
-              Todo en orden — no hay alertas activas
+              {t("dashboard.allClear")}
             </span>
           </div>
         ) : (
@@ -527,7 +531,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                         : "var(--text-muted)",
                   }}
                 >
-                  PNJs olvidados
+                  {t("dashboard.forgottenNpcs")}
                 </span>
                 {npcWarnings.length > 0 && (
                   <span className="badge badge-warning" style={{ marginLeft: "auto" }}>
@@ -536,7 +540,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 )}
               </div>
               {npcWarnings.length === 0 ? (
-                <EmptySlot label="Ninguno" />
+                <EmptySlot label={t("dashboard.noneMasculine")} />
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {npcWarnings.slice(0, 4).map((w: any, i: number) => (
@@ -546,11 +550,12 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                       badge={w.importance}
                       badgeClass={importanceBadge(w.importance).cls}
                       onClick={w.entityId ? () => setSelectedEntity(w) : undefined}
+                      titleFallback={t("dashboard.untitled")}
                     />
                   ))}
                   {npcWarnings.length > 4 && (
                     <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", paddingLeft: "4px" }}>
-                      +{npcWarnings.length - 4} más
+                      {t("dashboard.moreCount", { count: npcWarnings.length - 4 })}
                     </span>
                   )}
                 </div>
@@ -599,7 +604,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                         : "var(--text-muted)",
                   }}
                 >
-                  Misiones bloqueadas
+                  {t("dashboard.blockedQuests")}
                 </span>
                 {blockedQuests.length > 0 && (
                   <span className="badge badge-critical" style={{ marginLeft: "auto" }}>
@@ -608,21 +613,22 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 )}
               </div>
               {blockedQuests.length === 0 ? (
-                <EmptySlot label="Ninguna" />
+                <EmptySlot label={t("dashboard.noneFeminine")} />
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {blockedQuests.slice(0, 4).map((q: any, i: number) => (
                     <EntityRow
                       key={q.entityId ?? i}
                       entity={q}
-                      badge="bloqueada"
+                      badge={t("dashboard.blocked")}
                       badgeClass="badge-critical"
                       onClick={q.entityId ? () => setSelectedEntity(q) : undefined}
+                      titleFallback={t("dashboard.untitled")}
                     />
                   ))}
                   {blockedQuests.length > 4 && (
                     <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", paddingLeft: "4px" }}>
-                      +{blockedQuests.length - 4} más
+                      {t("dashboard.moreCount", { count: blockedQuests.length - 4 })}
                     </span>
                   )}
                 </div>
@@ -671,7 +677,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                         : "var(--text-muted)",
                   }}
                 >
-                  Pistas críticas sin revelar
+                  {t("dashboard.unrevealedCriticalClues")}
                 </span>
                 {criticalHiddenClues.length > 0 && (
                   <span className="badge badge-critical" style={{ marginLeft: "auto" }}>
@@ -680,21 +686,22 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 )}
               </div>
               {criticalHiddenClues.length === 0 ? (
-                <EmptySlot label="Ninguna" />
+                <EmptySlot label={t("dashboard.noneFeminine")} />
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {criticalHiddenClues.slice(0, 4).map((c: any, i: number) => (
                     <EntityRow
                       key={c.entityId ?? i}
                       entity={c}
-                      badge="oculta"
+                      badge={t("dashboard.hidden")}
                       badgeClass="badge-critical"
                       onClick={c.entityId ? () => setSelectedEntity(c) : undefined}
+                      titleFallback={t("dashboard.untitled")}
                     />
                   ))}
                   {criticalHiddenClues.length > 4 && (
                     <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", paddingLeft: "4px" }}>
-                      +{criticalHiddenClues.length - 4} más
+                      {t("dashboard.moreCount", { count: criticalHiddenClues.length - 4 })}
                     </span>
                   )}
                 </div>
@@ -743,7 +750,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                         : "var(--text-muted)",
                   }}
                 >
-                  Consecuencias pendientes
+                  {t("dashboard.pendingConsequences")}
                 </span>
                 {pendingConsequences.length > 0 && (
                   <span className="badge badge-warning" style={{ marginLeft: "auto" }}>
@@ -752,21 +759,22 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 )}
               </div>
               {pendingConsequences.length === 0 ? (
-                <EmptySlot label="Ninguna" />
+                <EmptySlot label={t("dashboard.noneFeminine")} />
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {pendingConsequences.slice(0, 4).map((c: any, i: number) => (
                     <EntityRow
                       key={c.entityId ?? i}
                       entity={c}
-                      badge={c.ready ? "lista" : "pendiente"}
+                      badge={c.ready ? t("dashboard.ready") : t("dashboard.pending")}
                       badgeClass={c.ready ? "badge-success" : "badge-warning"}
                       onClick={c.entityId ? () => setSelectedEntity(c) : undefined}
+                      titleFallback={t("dashboard.untitled")}
                     />
                   ))}
                   {pendingConsequences.length > 4 && (
                     <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", paddingLeft: "4px" }}>
-                      +{pendingConsequences.length - 4} más
+                      {t("dashboard.moreCount", { count: pendingConsequences.length - 4 })}
                     </span>
                   )}
                 </div>
@@ -780,7 +788,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           SECTION 3 — PREPARACIÓN
       ═══════════════════════════════════════════════════════════════════════ */}
       <section>
-        <SectionLabel>Preparación para próxima sesión</SectionLabel>
+        <SectionLabel>{t("dashboard.nextSessionPrep")}</SectionLabel>
 
         <div className="grid grid-cols-3">
           {/* Pistas listas para revelar */}
@@ -801,7 +809,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                   color: "var(--text-main)",
                 }}
               >
-                Pistas listas para revelar
+                {t("dashboard.cluesReady")}
               </span>
               {preparedClues.length > 0 && (
                 <span className="badge badge-success" style={{ marginLeft: "auto" }}>
@@ -810,7 +818,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
               )}
             </div>
             {preparedClues.length === 0 ? (
-              <EmptySlot label="Sin pistas preparadas" />
+              <EmptySlot label={t("dashboard.noPreparedClues")} />
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 {preparedClues.slice(0, 5).map((c: any, i: number) => (
@@ -818,11 +826,12 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                     key={c.entityId ?? i}
                     entity={c}
                     onClick={c.entityId ? () => setSelectedEntity(c) : undefined}
+                    titleFallback={t("dashboard.untitled")}
                   />
                 ))}
                 {preparedClues.length > 5 && (
                   <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", paddingLeft: "4px" }}>
-                    +{preparedClues.length - 5} más
+                    {t("dashboard.moreCount", { count: preparedClues.length - 5 })}
                   </span>
                 )}
               </div>
@@ -847,7 +856,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                   color: "var(--text-main)",
                 }}
               >
-                Consecuencias listas
+                {t("dashboard.readyConsequences")}
               </span>
               {readyConsequences.length > 0 && (
                 <span className="badge badge-warning" style={{ marginLeft: "auto" }}>
@@ -856,16 +865,17 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
               )}
             </div>
             {readyConsequences.length === 0 ? (
-              <EmptySlot label="Ninguna lista aún" />
+              <EmptySlot label={t("dashboard.noneReadyYet")} />
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 {readyConsequences.slice(0, 5).map((c: any, i: number) => (
                   <EntityRow
                     key={c.entityId ?? i}
                     entity={c}
-                    badge="lista"
+                    badge={t("dashboard.ready")}
                     badgeClass="badge-success"
                     onClick={c.entityId ? () => setSelectedEntity(c) : undefined}
+                    titleFallback={t("dashboard.untitled")}
                   />
                 ))}
               </div>
@@ -890,11 +900,11 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                   color: "var(--text-main)",
                 }}
               >
-                Actualizado recientemente
+                {t("dashboard.recentlyUpdated")}
               </span>
             </div>
             {recentEntities.length === 0 ? (
-              <EmptySlot label="Sin cambios recientes" />
+              <EmptySlot label={t("dashboard.noRecentChanges")} />
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 {recentEntities.slice(0, 5).map((e: any, i: number) => (
@@ -945,7 +955,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 ))}
                 {recentEntities.length > 5 && (
                   <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", paddingLeft: "4px" }}>
-                    +{recentEntities.length - 5} más
+                    {t("dashboard.moreCount", { count: recentEntities.length - 5 })}
                   </span>
                 )}
               </div>
@@ -958,7 +968,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           SECTION 4 — ACCIONES RÁPIDAS
       ═══════════════════════════════════════════════════════════════════════ */}
       <section>
-        <SectionLabel>Acciones rápidas</SectionLabel>
+        <SectionLabel>{t("dashboard.quickActions")}</SectionLabel>
 
         <div
           style={{
@@ -985,7 +995,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
             onClick={() => setCurrentPage("session")}
           >
             <Play size={20} />
-            Iniciar sesión
+            {t("dashboard.startSession")}
           </button>
 
           {/* Nueva pista */}
@@ -1005,7 +1015,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
             onClick={() => setCurrentPage("entities")}
           >
             <Plus size={20} style={{ color: "var(--secondary)" }} />
-            <span>Nueva pista</span>
+            <span>{t("dashboard.newClue")}</span>
           </button>
 
           {/* Nuevo PNJ */}
@@ -1024,7 +1034,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
             onClick={() => setCurrentPage("entities")}
           >
             <Users size={20} style={{ color: "var(--text-muted)" }} />
-            <span>Nuevo PNJ</span>
+            <span>{t("dashboard.newNpc")}</span>
           </button>
 
           {/* Ver grafo */}
@@ -1043,7 +1053,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
             onClick={() => setCurrentPage("graph")}
           >
             <Network size={20} style={{ color: "var(--text-muted)" }} />
-            <span>Ver grafo</span>
+            <span>{t("dashboard.viewGraph")}</span>
             <ChevronRight
               size={14}
               style={{ color: "var(--text-muted)", position: "absolute", right: "14px", top: "50%", transform: "translateY(-50%)" }}

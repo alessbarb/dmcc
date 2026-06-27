@@ -3,7 +3,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import fastifyStatic from "@fastify/static";
 import { existsSync } from "fs";
-import { join, dirname } from "path";
+import { join, dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import { homedir } from "os";
 import { randomBytes } from "crypto";
@@ -51,10 +51,22 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
-  const publicPath = join(__dirname, "..", "public");
-  const hasBuiltSpa = existsSync(join(publicPath, "index.html"));
+  const explicitPublicPath = process.env.DMCC_PUBLIC_DIR;
+  const publicPathCandidates = [
+    explicitPublicPath ? resolve(explicitPublicPath) : null,
+    resolve(process.cwd(), "dist/public"),
+    resolve(__dirname, "../../../public"),
+    resolve(__dirname, "../../public"),
+    resolve(__dirname, "../public"),
+  ].filter((candidate): candidate is string => Boolean(candidate));
+  const publicPath = process.env.NODE_ENV === "test" && !explicitPublicPath
+    ? undefined
+    : publicPathCandidates.find((candidate) => existsSync(join(candidate, "index.html")));
+  const hasBuiltSpa = Boolean(publicPath);
 
-  server.register(fastifyStatic, { root: publicPath, prefix: "/", wildcard: false });
+  if (publicPath) {
+    server.register(fastifyStatic, { root: publicPath, prefix: "/", wildcard: false });
+  }
 
   server.setNotFoundHandler(async (request, reply) => {
     if (request.raw.url?.startsWith("/api")) {
@@ -72,12 +84,16 @@ export function createServer(config?: ServerConfig): FastifyInstance {
       const devUiPort = Number(process.env.DMCC_DEV_UI_PORT ?? "5173");
       return reply.redirect(`http://${hostname}:${devUiPort}${request.raw.url}`);
     }
-    try {
-      return reply.sendFile("index.html");
-    } catch {
-      reply.code(404);
-      return { error: "Not found" };
+    if (hasBuiltSpa) {
+      try {
+        return reply.sendFile("index.html");
+      } catch {
+        reply.code(404);
+        return { error: "Not found" };
+      }
     }
+    reply.code(404);
+    return { error: "Not found" };
   });
 
   server.get("/api/auth/local-token", async (request, reply) => {

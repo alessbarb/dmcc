@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { Wand2, X } from "lucide-react";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 export interface ConvertNoteToEntityDialogProps {
   canvasId: string;
@@ -17,6 +19,7 @@ export function ConvertNoteToEntityDialog({
   initialSummary,
   onClose
 }: ConvertNoteToEntityDialogProps) {
+  const { t } = useTranslation();
   const { convertNoteToEntity } = useCampaignStore();
   const [entityType, setEntityType] = useState("npc");
   const [title, setTitle] = useState(initialTitle);
@@ -41,18 +44,18 @@ export function ConvertNoteToEntityDialog({
 
   const ENTITY_OPTIONS = [
     { value: "npc", label: "Personaje No Jugador (PNJ)" },
-    { value: "location", label: "Lugar / Localización" },
-    { value: "quest", label: "Misión / Hilo Narrativo" },
+    { value: "location", label: t("canvas.palette.typeLabelLocation") },
+    { value: "quest", label: t("canvas.palette.typeLabelQuest") },
     { value: "clue", label: "Pista" },
-    { value: "secret", label: "Secreto de DM" },
+    { value: "secret", label: t("canvas.palette.typeLabelSecret") },
     { value: "item", label: "Objeto" },
     { value: "creature", label: "Criatura / Monstruo" },
-    { value: "faction", label: "Facción / Organización" },
-    { value: "scene", label: "Escena de Sesión" },
+    { value: "faction", label: t("canvas.palette.typeLabelFaction") },
+    { value: "scene", label: t("canvas.palette.typeLabelScene") },
     { value: "encounter", label: "Encuentro o Combate" },
     { value: "consequence", label: "Consecuencia o Efecto" },
     { value: "rumor", label: "Rumor" },
-    { value: "handout", label: "Documento / Pista para Jugadores" },
+    { value: "handout", label: t("canvas.palette.typeLabelHandout") },
   ];
 
   return (
@@ -91,7 +94,7 @@ export function ConvertNoteToEntityDialog({
                 onChange={(e) => setTitle(e.target.value)}
                 className="form-input"
                 required
-                placeholder="Ej. Mara, Taberna El Jabalí Rojo, Rumor de las luces..."
+                placeholder={t("canvas.palette.searchEntityExampleHint")}
               />
             </div>
 
@@ -113,7 +116,7 @@ export function ConvertNoteToEntityDialog({
                 onChange={(e) => setSummary(e.target.value)}
                 className="form-textarea"
                 rows={4}
-                placeholder="Notas generales que describen la entidad..."
+                placeholder={t("canvas.node.generalNotesPlaceholder")}
               />
             </div>
 

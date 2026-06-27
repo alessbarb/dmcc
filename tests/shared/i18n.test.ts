@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+import ts from "typescript";
 import { es } from "../../src/shared/i18n/dictionaries/es.js";
 import { en } from "../../src/shared/i18n/dictionaries/en.js";
 import { createTranslator, resolveLocale, formatEntityType, formatVisibility } from "../../src/shared/i18n/index.js";
@@ -33,6 +34,41 @@ function getFilesRecursively(dir: string): string[] {
   }
   return results;
 }
+
+
+const FRONTEND_SPANISH_LITERAL_ALLOWLIST = [
+  "src/frontend/shared/i18n/",
+  "src/frontend/App.tsx", // Migrated but still contains Spanish seed/demo content and route constants.
+  "src/frontend/shared/components/RpgPortalBackground.tsx", // Brand/style component without user-facing copy.
+];
+
+const SPANISH_UI_PATTERN = /[ÁÉÍÓÚÜÑáéíóúüñ¿¡]|\b(Guardar|Cancelar|Crear|Editar|Eliminar|Buscar|Cargando|Jugadores|Personajes|Entidades|Sesión|Campaña|Relación|Relaciones|Notas|Objetivos|Estado|Visibilidad|Secreto|Público|Privado|Tablero|Portal|Ajustes|Reglas|Exportar|Importar|Actualizar|Rechazar|Aprobar|Asignar|Vinculado|Disponible|Resumen|Descripción|Título)\b/;
+
+function stripComments(content: string): string {
+  return content.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+}
+
+function extractStringLiterals(content: string, fileName = "source.tsx"): string[] {
+  const literals: string[] = [];
+  const sourceFile = ts.createSourceFile(fileName, stripComments(content), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+
+  function visit(node: ts.Node): void {
+    if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
+      literals.push(node.text);
+    } else if (ts.isTemplateExpression(node)) {
+      let templateText = node.head.text;
+      for (const span of node.templateSpans) {
+        templateText += span.literal.text;
+      }
+      literals.push(templateText);
+    }
+    ts.forEachChild(node, visit);
+  }
+
+  visit(sourceFile);
+  return literals;
+}
+
 
 describe("i18n system & dictionary parity", () => {
   const esEntries = getAllKeysAndValues(es);
@@ -87,6 +123,24 @@ describe("i18n system & dictionary parity", () => {
     expect(formatEntityType("npc", "en")).toBe("Non-Player Character (NPC)");
     expect(formatVisibility("dm_only", "es")).toBe("Solo DM");
     expect(formatVisibility("dm_only", "en")).toBe("DM Only");
+  });
+
+
+  it("does not leave hardcoded Spanish UI string literals in migrated frontend files", () => {
+    const frontendFiles = getFilesRecursively(new URL("../../src/frontend", import.meta.url).pathname)
+      .filter((file) => !FRONTEND_SPANISH_LITERAL_ALLOWLIST.some((allowed) => file.includes(allowed)));
+    const offenders: string[] = [];
+
+    for (const file of frontendFiles) {
+      const relativeFile = file.replace(process.cwd() + "/", "");
+      const literals = extractStringLiterals(readFileSync(file, "utf8"), relativeFile);
+      const matches = literals.filter((literal) => SPANISH_UI_PATTERN.test(literal));
+      if (matches.length > 0) {
+        offenders.push(`${relativeFile}: ${matches.slice(0, 8).join(" | ")}`);
+      }
+    }
+
+    expect(offenders, `Hardcoded Spanish UI strings remain:\n${offenders.join("\n")}`).toEqual([]);
   });
 
   it("enforces architectural cleanliness: src/shared and src/core never import React", () => {

@@ -1,4 +1,4 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./e2e",
@@ -7,29 +7,14 @@ export default defineConfig({
   workers: 1,
   reporter: "list",
   use: {
-    baseURL: "http://localhost:5173",
+    baseURL: "http://127.0.0.1:4877",
     trace: "on-first-retry",
     video: "off",
-    headless: true,
   },
-  projects: [
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-    },
-  ],
-  webServer: [
-    {
-      command: "npx tsx src/main/index.ts",
-      port: 4877,
-      reuseExistingServer: true,
-      timeout: 15000,
-    },
-    {
-      command: "npx vite --port 5173",
-      port: 5173,
-      reuseExistingServer: true,
-      timeout: 30000,
-    },
-  ],
+  webServer: {
+    command: "rm -rf .tmp/e2e-data && DMCC_DATA_DIR=.tmp/e2e-data DMCC_PORT=4877 npx tsx src/backend/entry/index.ts",
+    port: 4877,
+    reuseExistingServer: false,
+    timeout: 30000,
+  },
 });

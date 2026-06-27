@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 interface Props {
   entityType: string;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function TypeMetadataForm({ entityType, metadata, onChange, players = [], entities = [], campaignSystem }: Props) {
+  const { t } = useTranslation();
   switch (entityType) {
     case "npc":
       return (
@@ -36,15 +38,15 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Objetivo / Motivación</label>
-            <input type="text" className="form-input" value={metadata.goal || ""} onChange={e => onChange("goal", e.target.value)} placeholder="¿Qué es lo que quiere?" />
+            <input type="text" className="form-input" value={metadata.goal || ""} onChange={e => onChange("goal", e.target.value)} placeholder={t("typeMetadataForm.goalPlaceholder")} />
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Miedo</label>
-            <input type="text" className="form-input" value={metadata.fear || ""} onChange={e => onChange("fear", e.target.value)} placeholder="¿A qué le teme?" />
+            <input type="text" className="form-input" value={metadata.fear || ""} onChange={e => onChange("fear", e.target.value)} placeholder={t("typeMetadataForm.fearPlaceholder")} />
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Secreto privado</label>
-            <input type="text" className="form-input" value={metadata.secret || ""} onChange={e => onChange("secret", e.target.value)} placeholder="Secreto profundo y oculto..." />
+            <input type="text" className="form-input" value={metadata.secret || ""} onChange={e => onChange("secret", e.target.value)} placeholder={t("typeMetadataForm.privateSecretPlaceholder")} />
           </div>
           <div className="grid grid-cols-2">
             <div className="form-group" style={{ marginBottom: 0 }}>
@@ -138,7 +140,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Consecuencia de fallo</label>
-            <input type="text" className="form-input" value={metadata.failureConsequence || ""} onChange={e => onChange("failureConsequence", e.target.value)} placeholder="¿Qué pasa si fallan?" />
+            <input type="text" className="form-input" value={metadata.failureConsequence || ""} onChange={e => onChange("failureConsequence", e.target.value)} placeholder={t("typeMetadataForm.failurePlaceholder")} />
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Consecuencia de éxito</label>
@@ -177,7 +179,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
               required
               value={metadata.content || ""}
               onChange={e => onChange("content", e.target.value)}
-              placeholder="El texto exacto o descripción de la pista..."
+              placeholder={t("typeMetadataForm.clueContentPlaceholder")}
             />
           </div>
         </div>
@@ -195,7 +197,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
               required
               value={metadata.truth || ""}
               onChange={e => onChange("truth", e.target.value)}
-              placeholder="La verdad real detrás de este secreto..."
+              placeholder={t("typeMetadataForm.truthPlaceholder")}
             />
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
@@ -204,7 +206,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Impacto</label>
-            <input type="text" className="form-input" value={metadata.impact || ""} onChange={e => onChange("impact", e.target.value)} placeholder="¿Qué cambia cuando se revela?" />
+            <input type="text" className="form-input" value={metadata.impact || ""} onChange={e => onChange("impact", e.target.value)} placeholder={t("typeMetadataForm.impactPlaceholder")} />
           </div>
         </div>
       );
@@ -224,11 +226,11 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Significado / Descripción *</label>
-            <input type="text" className="form-input" required value={metadata.meaning || ""} onChange={e => onChange("meaning", e.target.value)} placeholder="¿Qué representa este reloj?" />
+            <input type="text" className="form-input" required value={metadata.meaning || ""} onChange={e => onChange("meaning", e.target.value)} placeholder={t("typeMetadataForm.clockMeaningPlaceholder")} />
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Efecto al completarse</label>
-            <input type="text" className="form-input" value={metadata.onComplete || ""} onChange={e => onChange("onComplete", e.target.value)} placeholder="¿Qué ocurre cuando se llena el reloj?" />
+            <input type="text" className="form-input" value={metadata.onComplete || ""} onChange={e => onChange("onComplete", e.target.value)} placeholder={t("typeMetadataForm.clockCompletePlaceholder")} />
           </div>
         </div>
       );
@@ -251,7 +253,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
               </div>
               <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="form-label">Clase *</label>
-                <input type="text" className="form-input" required value={metadata.className || ""} onChange={e => onChange("className", e.target.value)} placeholder="Ej. Pícaro, Mago" />
+                <input type="text" className="form-input" required value={metadata.className || ""} onChange={e => onChange("className", e.target.value)} placeholder={t("typeMetadataForm.classPlaceholder")} />
               </div>
               <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="form-label">Subclase {metadata.level >= 3 ? "*" : "(Nivel 3+)"}</label>
@@ -267,7 +269,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
               </div>
               <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="form-label">Trasfondo *</label>
-                <input type="text" className="form-input" required value={metadata.background || ""} onChange={e => onChange("background", e.target.value)} placeholder="Ej. Huérfano, Soldado" />
+                <input type="text" className="form-input" required value={metadata.background || ""} onChange={e => onChange("background", e.target.value)} placeholder={t("typeMetadataForm.backgroundPlaceholder")} />
               </div>
             </div>
           </div>
@@ -396,7 +398,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
             </div>
             <div className="form-group">
               <label className="form-label">Notas del personaje</label>
-              <textarea className="form-textarea" rows={3} placeholder="Notas o detalles adicionales..." value={metadata.note || ""} onChange={e => onChange("note", e.target.value)} />
+              <textarea className="form-textarea" rows={3} placeholder={t("typeMetadataForm.notesPlaceholder")} value={metadata.note || ""} onChange={e => onChange("note", e.target.value)} />
             </div>
           </div>
         </div>
@@ -415,7 +417,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
             </div>
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Clase</label>
-              <input type="text" className="form-input" value={metadata.className || ""} onChange={e => onChange("className", e.target.value)} placeholder="Ej. Pícaro, Mago" />
+              <input type="text" className="form-input" value={metadata.className || ""} onChange={e => onChange("className", e.target.value)} placeholder={t("typeMetadataForm.classPlaceholder")} />
             </div>
           </div>
           <div className="grid grid-cols-3">

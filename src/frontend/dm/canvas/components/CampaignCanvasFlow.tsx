@@ -15,6 +15,7 @@ import type {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
+import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { CanvasEntityNode } from "./CanvasEntityNode.js";
 import { CanvasNoteNode } from "./CanvasNoteNode.js";
 import { CanvasFactNode } from "./CanvasFactNode.js";
@@ -23,6 +24,7 @@ import type { Viewport } from "./CanvasGroupHulls.js";
 import { RelationshipTypePopover } from "./RelationshipTypePopover.js";
 import { CanvasToolbar } from "./CanvasToolbar.js";
 import type { InteractionMode } from "./CanvasToolbar.js";
+
 
 // Register custom node types — group nodes are no longer rendered as boxes
 const nodeTypes = {
@@ -78,6 +80,7 @@ export function CampaignCanvasFlow({
   density = "normal",
   relationsFilter = "all",
 }: CampaignCanvasFlowProps) {
+  const { t } = useTranslation();
   const {
     campaignState,
     updateCanvasNodesLayout,
@@ -641,7 +644,7 @@ export function CampaignCanvasFlow({
       }
     } else if (kind === "fact-create") {
       const factKind = e.dataTransfer.getData("palette/factKind") || "rumor";
-      const statement = window.prompt(`Nuevo hecho (${factKind}):\n\nEscribe la declaración:`);
+      const statement = window.prompt(t("canvas.factNode.newFactPrompt", { kind: factKind }));
       if (!statement?.trim()) return;
       try {
         const newFactId = await createFact({ statement: statement.trim(), kind: factKind, confidence: "suspected", relatedEntityIds: [], source: { type: "manual" } });

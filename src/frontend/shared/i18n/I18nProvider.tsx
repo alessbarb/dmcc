@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState } from "react";
 import type { SupportedLocale, TranslationKey } from "@shared/i18n/index.js";
 import { createTranslator, resolveLocale } from "@shared/i18n/index.js";
 

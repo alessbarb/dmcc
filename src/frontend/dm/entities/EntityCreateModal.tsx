@@ -3,6 +3,8 @@ import { X } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { getRuleSystem } from "@core/domain/rules/index.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 interface EntityCreateModalProps {
   isOpen: boolean;
@@ -10,6 +12,7 @@ interface EntityCreateModalProps {
 }
 
 export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
+  const { t } = useTranslation();
   const { campaignState, createEntity } = useCampaignStore();
 
   const [entityForm, setEntityForm] = useState({
@@ -131,7 +134,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                 value={entityForm.entityType}
                 onChange={(e) => handleEntityTypeChange(e.target.value)}
               >
-                <optgroup label="Personajes">
+                <optgroup label={t("entityModal.playerCharacters")}>
                   <option value="npc">PNJ (Personaje No Jugador)</option>
                   <option value="player_character">Personaje jugador</option>
                   <option value="creature">Criatura / Monstruo</option>
@@ -193,7 +196,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                 className="form-input"
                 value={entityForm.summary}
                 onChange={(e) => setEntityForm({ ...entityForm, summary: e.target.value })}
-                placeholder="Descripción breve..."
+                placeholder={t("entityModal.descriptionPlaceholder")}
               />
             </div>
 
@@ -289,7 +292,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                 <input
                   type="text"
                   className="form-input"
-                  placeholder="¿Qué quiere este personaje?"
+                  placeholder={t("entityModal.motivationPlaceholder")}
                   value={entityForm.metadata.goal || ""}
                   onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, goal: e.target.value } })}
                 />
@@ -313,7 +316,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                       </div>
                       <div className="form-group">
                         <label className="form-label">Clase *</label>
-                        <input type="text" className="form-input" placeholder="Ej. Pícaro, Mago" required value={entityForm.metadata.className || ""}
+                        <input type="text" className="form-input" placeholder={t("typeMetadataForm.classPlaceholder")} required value={entityForm.metadata.className || ""}
                           onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, className: e.target.value } })} />
                       </div>
                       <div className="form-group">
@@ -333,7 +336,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                       </div>
                       <div className="form-group">
                         <label className="form-label">Trasfondo *</label>
-                        <input type="text" className="form-input" placeholder="Ej. Huérfano, Soldado" required value={entityForm.metadata.background || ""}
+                        <input type="text" className="form-input" placeholder={t("typeMetadataForm.backgroundPlaceholder")} required value={entityForm.metadata.background || ""}
                           onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, background: e.target.value } })} />
                       </div>
                     </div>

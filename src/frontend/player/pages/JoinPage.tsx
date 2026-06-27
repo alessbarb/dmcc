@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "@tanstack/react-router";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { Shield, Key, Sparkles, ArrowLeft } from "lucide-react";
 
 export function JoinPage() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [accessCode, setAccessCode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,7 +44,7 @@ export function JoinPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Error al unirse a la campaña");
+        setError(data.error || t("playerPortal.join.fallbackJoinError"));
         setLoading(false);
         return;
       }
@@ -58,7 +60,7 @@ export function JoinPage() {
 
       navigate({ to: `/campaigns/${campaignId}/player-portal` });
     } catch (err: any) {
-      setError(err.message || "Error de conexión");
+      setError(err.message || t("playerPortal.join.connectionError"));
       setLoading(false);
     }
   };
@@ -80,20 +82,20 @@ export function JoinPage() {
           </div>
           <span className="join-portal-badge">
             <Sparkles size={12} style={{ marginRight: "4px" }} />
-            Portal del Jugador
+            {t("playerPortal.title")}
           </span>
           <h1 className="join-portal-title">
             DM Campaign <span>Companion</span>
           </h1>
           <p className="join-portal-subtitle">
-            Campaña: <span className="campaign-name">{formatCampaignId(campaignId)}</span>
+            {t("playerPortal.join.campaignLabel", { name: formatCampaignId(campaignId) })}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="join-portal-form">
           <div className="form-group">
             <label className="form-label" htmlFor="accessCode">
-              Código de acceso
+              {t("playerPortal.join.accessCode")}
             </label>
             <div className="access-code-input-wrapper">
               <Key size={16} className="input-icon" />
@@ -101,7 +103,7 @@ export function JoinPage() {
                 id="accessCode"
                 type="text"
                 className="form-input join-portal-input"
-                placeholder="Introduce el código que te dio tu DM"
+                placeholder={t("playerPortal.join.accessCodePlaceholder")}
                 value={accessCode}
                 onChange={(e) => setAccessCode(e.target.value)}
                 required
@@ -122,7 +124,7 @@ export function JoinPage() {
             className="btn btn-primary join-portal-btn"
             disabled={loading || !accessCode.trim()}
           >
-            {loading ? "Abriendo portal..." : "Unirse a la campaña"}
+            {loading ? t("playerPortal.join.openingPortal") : t("playerPortal.join.submit")}
           </button>
         </form>
 
@@ -132,7 +134,7 @@ export function JoinPage() {
           className="join-portal-back-btn"
         >
           <ArrowLeft size={14} style={{ marginRight: "6px" }} />
-          Volver al inicio
+          {t("playerPortal.join.backHome")}
         </button>
       </div>
     </div>

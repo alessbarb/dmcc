@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { NodeResizer, useReactFlow } from "reactflow";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { MapPin, Shield, BookOpen, Play, HelpCircle, Plus, Minus } from "lucide-react";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 export interface CanvasGroupNodeProps {
   id: string;
@@ -23,6 +25,7 @@ const GROUP_PAD = 20;
 const GROUP_HEADER_H = 32;
 
 export function CanvasGroupNode({ id, data, selected }: CanvasGroupNodeProps) {
+  const { t } = useTranslation();
   const { updateCanvasNode, updateCanvasNodesLayout } = useCampaignStore();
   const { getNodes } = useReactFlow();
   const [localTitle, setLocalTitle] = useState(data.title || "Grupo");
@@ -100,10 +103,10 @@ export function CanvasGroupNode({ id, data, selected }: CanvasGroupNodeProps) {
   };
 
   const GROUP_TYPE_CONFIGS: Record<string, { label: string; icon: any; color: string }> = {
-    location: { label: "Ubicación", icon: MapPin,     color: "#10b981" },
-    faction:  { label: "Facción",   icon: Shield,     color: "#f59e0b" },
-    arc:      { label: "Arco",      icon: BookOpen,   color: "#7c3aed" },
-    session:  { label: "Sesión",    icon: Play,       color: "#6366f1" },
+    location: { label: t("canvas.node.typeLocation"),       icon: MapPin,     color: "#10b981" },
+    faction:  { label: t("domain.entityTypes.faction"),     icon: Shield,     color: "#f59e0b" },
+    arc:      { label: "Arco",                              icon: BookOpen,   color: "#7c3aed" },
+    session:  { label: t("canvas.node.typeSession"),        icon: Play,       color: "#6366f1" },
     mystery:  { label: "Misterio",  icon: HelpCircle, color: "#ef4444" },
   };
 

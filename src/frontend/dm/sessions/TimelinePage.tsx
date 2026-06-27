@@ -14,6 +14,7 @@ import {
   renderEventDescription,
 } from "../entities/eventVisuals.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 const NARRATIVE_EVENT_TYPES = new Set([
   "SessionStarted",
@@ -35,6 +36,7 @@ export interface TimelinePageProps {
 
 export function TimelinePage(props: TimelinePageProps = {}) {
   const store = useCampaignStore();
+  const { locale, t } = useTranslation();
   const timeline = props.timeline ?? store.timeline;
   const campaignState = props.campaignState ?? store.campaignState;
   const [timelineFilterLocal, setTimelineFilterLocal] = useState("narrative");
@@ -54,7 +56,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
   if (!timeline)
     return (
       <div style={{ padding: "40px", color: "var(--text-muted)" }}>
-        Cargando línea temporal…
+        {t("timeline.loading")}
       </div>
     );
 
@@ -74,56 +76,56 @@ export function TimelinePage(props: TimelinePageProps = {}) {
   };
 
   const filterOptions = [
-    { key: "narrative", label: "Narrativa", count: narrativeEvents.length },
+    { key: "narrative", label: t("timeline.labels.narrative"), count: narrativeEvents.length },
     {
       key: "sessions",
-      label: "Sesiones",
+      label: t("timeline.labels.sessions"),
       count: visibleEvents.filter(
-        (e: any) => getEventVisualConfig(e.type).category === "sessions",
+        (e: any) => getEventVisualConfig(e.type, locale).category === "sessions",
       ).length,
     },
     {
       key: "facts",
-      label: "Hechos",
+      label: t("timeline.labels.facts"),
       count: visibleEvents.filter(
-        (e: any) => getEventVisualConfig(e.type).category === "facts",
+        (e: any) => getEventVisualConfig(e.type, locale).category === "facts",
       ).length,
     },
     {
       key: "players",
-      label: "Jugadores",
+      label: t("timeline.labels.players"),
       count: visibleEvents.filter(
-        (e: any) => getEventVisualConfig(e.type).category === "players",
+        (e: any) => getEventVisualConfig(e.type, locale).category === "players",
       ).length,
     },
     ...(showTechnical
       ? [
           {
             key: "entities",
-            label: "Entidades",
+            label: t("timeline.labels.entities"),
             count: visibleEvents.filter(
-              (e: any) => getEventVisualConfig(e.type).category === "entities",
+              (e: any) => getEventVisualConfig(e.type, locale).category === "entities",
             ).length,
           },
           {
             key: "relations",
-            label: "Relaciones",
+            label: t("timeline.labels.relations"),
             count: visibleEvents.filter(
-              (e: any) => getEventVisualConfig(e.type).category === "relations",
+              (e: any) => getEventVisualConfig(e.type, locale).category === "relations",
             ).length,
           },
           {
             key: "campaigns",
-            label: "Campañas",
+            label: t("timeline.labels.campaigns"),
             count: visibleEvents.filter(
-              (e: any) => getEventVisualConfig(e.type).category === "campaigns",
+              (e: any) => getEventVisualConfig(e.type, locale).category === "campaigns",
             ).length,
           },
           {
             key: "other",
-            label: "Sistema",
+            label: t("timeline.labels.system"),
             count: visibleEvents.filter(
-              (e: any) => getEventVisualConfig(e.type).category === "other",
+              (e: any) => getEventVisualConfig(e.type, locale).category === "other",
             ).length,
           },
         ]
@@ -177,7 +179,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
           }}
         >
           <Activity size={24} style={{ color: "var(--primary)" }} />
-          Registro de eventos
+          {t("timeline.heroTitle")}
         </h2>
         <p
           style={{
@@ -187,9 +189,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
             margin: 0,
           }}
         >
-          Registro cronológico e inmutable de los cambios de estado en tu
-          campaña de rol. Cada acción del director y los jugadores se almacena
-          con hashes criptográficos garantizando la integridad narrativa.
+          {t("timeline.heroSubtitle")}
         </p>
       </div>
 
@@ -207,7 +207,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
           </div>
           <div className="timeline-stat-info">
             <span className="timeline-stat-value">{stats.total}</span>
-            <span className="timeline-stat-label">Eventos Narrativos</span>
+            <span className="timeline-stat-label">{t("timeline.statsNarrative")}</span>
           </div>
         </div>
 
@@ -223,7 +223,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
           </div>
           <div className="timeline-stat-info">
             <span className="timeline-stat-value">{stats.sessions}</span>
-            <span className="timeline-stat-label">Sesiones Cerradas</span>
+            <span className="timeline-stat-label">{t("timeline.statsSessions")}</span>
           </div>
         </div>
 
@@ -239,7 +239,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
           </div>
           <div className="timeline-stat-info">
             <span className="timeline-stat-value">{stats.facts}</span>
-            <span className="timeline-stat-label">Hechos Registrados</span>
+            <span className="timeline-stat-label">{t("timeline.statsFacts")}</span>
           </div>
         </div>
 
@@ -255,7 +255,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
           </div>
           <div className="timeline-stat-info">
             <span className="timeline-stat-value">{stats.revelaciones}</span>
-            <span className="timeline-stat-label">Revelaciones</span>
+            <span className="timeline-stat-label">{t("timeline.statsReveals")}</span>
           </div>
         </div>
       </div>
@@ -278,7 +278,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
               margin: 0,
             }}
           >
-            Filtrar por categoría:
+            {t("timeline.filterByCategory")}
           </p>
           <button
             className={`btn btn-sm ${showTechnical ? "btn-primary" : "btn-secondary"}`}
@@ -295,8 +295,8 @@ export function TimelinePage(props: TimelinePageProps = {}) {
           >
             <SlidersHorizontal size={13} />
             {showTechnical
-              ? "Ocultar registro técnico"
-              : "Ver registro técnico"}
+              ? t("timeline.hideTechnical")
+              : t("timeline.showTechnical")}
           </button>
         </div>
         <div className="timeline-filters">
@@ -364,7 +364,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
           </div>
           <div>
             <h3 style={{ fontWeight: "600", fontSize: "1.1rem" }}>
-              No se encontraron eventos
+              {t("timeline.noEventsTitle")}
             </h3>
             <p
               style={{
@@ -373,20 +373,20 @@ export function TimelinePage(props: TimelinePageProps = {}) {
                 marginTop: "4px",
               }}
             >
-              No hay registros en la categoría seleccionada para esta campaña.
+              {t("timeline.noEventsDescription")}
             </p>
           </div>
           <button
             className="btn btn-secondary btn-sm"
             onClick={() => setTimelineFilter("all")}
           >
-            Mostrar todos los eventos
+            {t("timeline.showAllEvents")}
           </button>
         </div>
       ) : (
         <div className="timeline-list" style={{ marginTop: "8px" }}>
           {filteredEvents.map((evt: any) => {
-            const visual = getEventVisualConfig(evt.type);
+            const visual = getEventVisualConfig(evt.type, locale);
             const IconComp = visual.IconComponent;
 
             return (
@@ -445,6 +445,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
                       evt.type,
                       evt.payload,
                       campaignState,
+                      locale,
                     )}
                   </div>
 
@@ -465,7 +466,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
                         margin: 0,
                       }}
                     >
-                      <strong>Actor:</strong>{" "}
+                      <strong>{t("timeline.actor")}</strong>{" "}
                       <code
                         style={{
                           backgroundColor: "#1e2230",
@@ -475,7 +476,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
                       >
                         {evt.actorId}
                       </code>{" "}
-                      | <strong>Secuencia:</strong> #{evt.sequence}
+                      | <strong>{t("timeline.sequence")}</strong> #{evt.sequence}
                     </p>
                     <button
                       className="btn btn-secondary btn-sm"
@@ -494,8 +495,8 @@ export function TimelinePage(props: TimelinePageProps = {}) {
                         <Eye size={12} />
                       )}
                       {expandedEvents[evt.eventId]
-                        ? "Ocultar JSON"
-                        : "Ver JSON"}
+                        ? t("timeline.hideJson")
+                        : t("timeline.showJson")}
                     </button>
                   </div>
 

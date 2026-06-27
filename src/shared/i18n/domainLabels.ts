@@ -21,5 +21,9 @@ export function formatRelationType(relationType: string, _locale: SupportedLocal
   if (relationType.startsWith("custom:")) {
     return relationType.slice(7).replace(/_/g, " ");
   }
+  const tr = createTranslator(_locale);
+  const key = `domain.relationTypes.${relationType}`;
+  const label = tr.t(key);
+  if (label !== key) return label;
   return relationType.replace(/_/g, " ");
 }

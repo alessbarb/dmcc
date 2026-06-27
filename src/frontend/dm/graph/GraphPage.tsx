@@ -11,6 +11,8 @@ import type { GraphSearchItem } from "./GraphNodeSearch.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { getEntityDefaultImage } from "../entities/entityVisuals.js";
 import { useToast } from "../../shared/hooks/useToast.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { formatEntityType, formatRelationType } from "@shared/i18n/index.js";
 
 export interface GraphPageProps {
   graph?: any;
@@ -44,29 +46,9 @@ const ENTITY_TYPE_COLORS: Record<string, string> = {
   note: "#475569",
 };
 
-const TYPE_LABEL_ES: Record<string, string> = {
-  player_character: "PJ", npc: "PNJ", location: "Ubicación", quest: "Misión",
-  clue: "Pista", secret: "Secreto", faction: "Facción", consequence: "Consecuencia",
-  clock: "Reloj", item: "Objeto", creature: "Criatura", encounter: "Encuentro",
-  scene: "Escena", front: "Frente", decision: "Decisión", rumor: "Rumor",
-  rule_reference: "Regla", handout: "Documento", note: "Nota",
-};
-
-const RELATION_LABELS_ES: Record<string, string> = {
-  hides: "oculta", unlocks: "desbloquea", points_to: "apunta a", causes: "causa",
-  contradicts: "contradice", confirms: "confirma", knows: "conoce", fears: "teme",
-  located_in: "ubicado en", member_of: "miembro de", leader_of: "lidera",
-  threatens: "amenaza", trusts: "confía en", hates: "odia", loves: "ama",
-  ally_of: "aliado de", enemy_of: "enemigo de", reveals: "revela", blocks: "bloquea",
-  foreshadows: "presagia", depends_on: "depende de", affected_by: "afectado por",
-  created_by: "creado por", protects: "protege", suspects: "sospecha de",
-  knows_partially: "conoce parcialmente", lies_about: "miente sobre",
-  appears_in: "aparece en", contains: "contiene", lives_in: "vive en",
-  works_for: "trabaja para", owes_debt_to: "le debe a", transforms_into: "se transforma en",
-};
-
 type FilterPreset = "todos" | "nextSession" | "criticalClues" | "unrevealedSecrets" | "misiones" | "personajes" | "secretos" | "lugares" | "facciones" | "consecuencias";
 type ViewMode = "all" | "dm_only" | "players";
+type LabelsMode = "auto" | "all" | "minimal";
 
 const PRESET_TYPES: Record<string, string[] | null> = {
   todos: null,
@@ -78,18 +60,18 @@ const PRESET_TYPES: Record<string, string[] | null> = {
   consecuencias: ["consequence", "front", "clock"],
 };
 
-const PRESET_LABELS: Record<FilterPreset, string> = {
-  todos: "Todos",
-  nextSession: "Próxima Sesión ⭐",
-  criticalClues: "Pistas Críticas 🔍",
-  unrevealedSecrets: "Secretos sin Revelar 🔑",
-  misiones: "Misiones",
-  personajes: "Personajes",
-  secretos: "Secretos",
-  lugares: "Lugares",
-  facciones: "Facciones",
-  consecuencias: "Consecuencias",
-};
+const FILTER_PRESETS: FilterPreset[] = [
+  "todos",
+  "nextSession",
+  "criticalClues",
+  "unrevealedSecrets",
+  "misiones",
+  "personajes",
+  "secretos",
+  "lugares",
+  "facciones",
+  "consecuencias",
+];
 
 function hexToInt(hex: string): number {
   return parseInt(hex.replace("#", ""), 16);
@@ -113,9 +95,10 @@ export function GraphPage(props: GraphPageProps = {}) {
   const setSelectedEntity = props.setSelectedEntity ?? ((_e: any) => { });
 
   const { addToast } = useToast();
+  const { locale, t } = useTranslation();
   const [preset, setPreset] = useState<FilterPreset>("todos");
   const [viewMode, setViewMode] = useState<ViewMode>("all");
-  const [labelsMode, setLabelsMode] = useState<"Auto" | "Todas" | "Mínimas">("Auto");
+  const [labelsMode, setLabelsMode] = useState<LabelsMode>("auto");
   const [localPanelEntity, setPanelEntity] = useState<any>(null);
   const [detailEntityOpen, setDetailEntityOpen] = useState(false);
   const selectedEntity = props.selectedEntity ?? localPanelEntity;
@@ -181,7 +164,7 @@ export function GraphPage(props: GraphPageProps = {}) {
       return {
         nodeId,
         title: entity?.title ?? node.name ?? nodeId,
-        type: TYPE_LABEL_ES[rawType] ?? rawType,
+        type: formatEntityType(rawType, locale),
         summary: entity?.summary ?? "",
         content: entity?.content ?? "",
         status: entity?.status ?? "",
@@ -193,7 +176,7 @@ export function GraphPage(props: GraphPageProps = {}) {
           : "",
       };
     });
-  }, [entitiesArr, graph]);
+  }, [entitiesArr, graph, locale]);
 
   // Next session entity calculation helper
   const getNextSessionEntityIds = useCallback(() => {
@@ -261,7 +244,7 @@ export function GraphPage(props: GraphPageProps = {}) {
         source: r.sourceEntityId,
         target: r.targetEntityId,
         relationType: r.relationType,
-        label: RELATION_LABELS_ES[r.relationType] ?? (r.relationType?.replace("custom:", "") ?? ""),
+        label: formatRelationType(r.relationType ?? "", locale),
       })),
   };
 
@@ -434,9 +417,9 @@ export function GraphPage(props: GraphPageProps = {}) {
 
       // Label visibility
       let isLabelVisible = false;
-      if (labelsMode === "Todas") {
+      if (labelsMode === "all") {
         isLabelVisible = true;
-      } else if (labelsMode === "Mínimas") {
+      } else if (labelsMode === "minimal") {
         isLabelVisible = isSelected || isPlayerChar || isOnPath;
       } else {
         // Auto
@@ -485,9 +468,9 @@ export function GraphPage(props: GraphPageProps = {}) {
     const isOnPath = narrativePath && narrativePath.includes(node.id);
 
     let isLabelVisible = false;
-    if (labelsMode === "Todas") {
+    if (labelsMode === "all") {
       isLabelVisible = true;
-    } else if (labelsMode === "Mínimas") {
+    } else if (labelsMode === "minimal") {
       isLabelVisible = isSelected || isPlayerChar || isOnPath;
     } else {
       const importance = node.entityData?.importance;
@@ -571,7 +554,7 @@ export function GraphPage(props: GraphPageProps = {}) {
     const isDmOnly = panelEntity.visibility?.kind === "dm_only";
 
     if (isDmOnly && panelEntity.entityType === "secret") {
-      const confirmed = window.confirm("⚠️ ADVERTENCIA: Estás a punto de revelar un Secreto a los jugadores. ¿Estás seguro de que deseas continuar?");
+      const confirmed = window.confirm(t("graph.revealSecretWarning"));
       if (!confirmed) return;
     }
 
@@ -615,9 +598,9 @@ export function GraphPage(props: GraphPageProps = {}) {
         {/* Filters */}
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "center" }}>
           <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginRight: "4px" }}>Filtro:</span>
-          {(Object.keys(PRESET_LABELS) as FilterPreset[]).map((p) => (
+          {FILTER_PRESETS.map((p) => (
             <button key={p} className={`btn btn-sm ${preset === p ? "btn-primary" : "btn-secondary"}`} onClick={() => setPreset(p)}>
-              {PRESET_LABELS[p]}
+              {t(`graph.presets.${p}`)}
             </button>
           ))}
           <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "12px", marginRight: "4px" }}>Vista:</span>
@@ -627,9 +610,9 @@ export function GraphPage(props: GraphPageProps = {}) {
             </button>
           ))}
           <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginLeft: "12px", marginRight: "4px" }}>Etiquetas:</span>
-          {(["Auto", "Todas", "Mínimas"] as const).map((mode) => (
+          {(["auto", "all", "minimal"] as LabelsMode[]).map((mode) => (
             <button key={mode} className={`btn btn-sm ${labelsMode === mode ? "btn-primary" : "btn-secondary"}`} onClick={() => setLabelsMode(mode)}>
-              {mode}
+              {t(`graph.labels.${mode}`)}
             </button>
           ))}
         </div>
@@ -726,7 +709,7 @@ export function GraphPage(props: GraphPageProps = {}) {
               {Object.entries(ENTITY_TYPE_COLORS).map(([type, color]) => (
                 <div key={type} style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.67rem" }}>
                   <span style={{ width: "7px", height: "7px", borderRadius: "50%", backgroundColor: color, boxShadow: `0 0 5px ${color}`, flexShrink: 0 }} />
-                  <span style={{ color: "rgba(203,213,225,0.75)" }}>{TYPE_LABEL_ES[type] ?? type}</span>
+                  <span style={{ color: "rgba(203,213,225,0.75)" }}>{formatEntityType(type, locale)}</span>
                 </div>
               ))}
             </div>
@@ -794,7 +777,7 @@ export function GraphPage(props: GraphPageProps = {}) {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                   <span style={{ fontSize: "0.63rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: ENTITY_TYPE_COLORS[panelEntity.entityType] ?? "#6366f1" }}>
-                    {TYPE_LABEL_ES[panelEntity.entityType] ?? panelEntity.entityType}
+                    {formatEntityType(panelEntity.entityType, locale)}
                   </span>
                   {panelEntity.importance === "critical" && (
                     <span style={{ fontSize: "0.58rem", fontWeight: 700, padding: "1px 5px", borderRadius: "3px", background: "rgba(239,68,68,0.15)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.3)" }}>
@@ -815,8 +798,8 @@ export function GraphPage(props: GraphPageProps = {}) {
               {panelEntity.visibility && (
                 <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.68rem", color: "rgba(100,116,139,0.55)", marginTop: "5px" }}>
                   {panelEntity.visibility.kind === "dm_only" ? <EyeOff size={10} /> : <Eye size={10} />}
-                  {panelEntity.visibility.kind === "dm_only" ? "Solo DM" : "Visible para Jugadores"}
-                  {isEntityPinned && <span style={{ marginLeft: "4px", color: "#fbbf24" }}>⭐ Fijado</span>}
+                  {panelEntity.visibility.kind === "dm_only" ? t("domain.visibility.dm_only") : t("graph.visiblePlayers")}
+                  {isEntityPinned && <span style={{ marginLeft: "4px", color: "#fbbf24" }}>⭐ {t("graph.pinned")}</span>}
                 </div>
               )}
               {/* Ver detalle button */}
@@ -882,7 +865,7 @@ export function GraphPage(props: GraphPageProps = {}) {
                     onMouseEnter={(e) => { e.currentTarget.style.background = isEntityPinned ? "rgba(245,158,11,0.22)" : "rgba(255,255,255,0.08)"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.background = isEntityPinned ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.04)"; }}
                   >
-                    <span>⭐</span> {isEntityPinned ? "Quitar Sesión" : "Próxima Sesión"}
+                    <span>⭐</span> {isEntityPinned ? t("graph.removeSessionPin") : t("graph.nextSession")}
                   </button>
 
                   <button
@@ -926,10 +909,10 @@ export function GraphPage(props: GraphPageProps = {}) {
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Actitud hacia el grupo</span>
                     <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>
-                      {panelEntity.metadata.attitudeToParty === "friendly" ? "🟢 Amistoso" :
-                        panelEntity.metadata.attitudeToParty === "hostile" ? "🔴 Hostil" :
-                          panelEntity.metadata.attitudeToParty === "deceptive" ? "🟡 Engañoso" :
-                            panelEntity.metadata.attitudeToParty === "neutral" ? "⚪ Neutral" :
+                      {panelEntity.metadata.attitudeToParty === "friendly" ? t("graph.attitudes.friendly") :
+                        panelEntity.metadata.attitudeToParty === "hostile" ? t("graph.attitudes.hostile") :
+                          panelEntity.metadata.attitudeToParty === "deceptive" ? t("graph.attitudes.deceptive") :
+                            panelEntity.metadata.attitudeToParty === "neutral" ? t("graph.attitudes.neutral") :
                               panelEntity.metadata.attitudeToParty}
                     </p>
                   </div>
@@ -990,9 +973,9 @@ export function GraphPage(props: GraphPageProps = {}) {
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Tipo de pista</span>
                     <span style={{ fontSize: "0.65rem", padding: "1px 6px", borderRadius: "4px", background: "rgba(255,255,255,0.08)", color: "#e2e8f0", display: "inline-block", marginTop: "3px", width: "fit-content" }}>
-                      {panelEntity.metadata.clueType === "document" ? "📄 Documento" :
-                        panelEntity.metadata.clueType === "verbal" ? "🗣️ Verbal" :
-                          panelEntity.metadata.clueType === "physical" ? "🏺 Físico" :
+                      {panelEntity.metadata.clueType === "document" ? t("graph.clueTypes.document") :
+                        panelEntity.metadata.clueType === "verbal" ? t("graph.clueTypes.verbal") :
+                          panelEntity.metadata.clueType === "physical" ? t("graph.clueTypes.physical") :
                             panelEntity.metadata.clueType}
                     </span>
                   </div>
@@ -1095,7 +1078,7 @@ export function GraphPage(props: GraphPageProps = {}) {
                   const otherId = isSource ? r.targetEntityId : r.sourceEntityId;
                   const other = entitiesArr.find((e: Entity) => e.entityId === otherId);
                   const otherColor = other ? (ENTITY_TYPE_COLORS[other.entityType] ?? "#6366f1") : "#6366f1";
-                  const label = RELATION_LABELS_ES[r.relationType] ?? r.relationType?.replace("custom:", "") ?? r.relationType;
+                  const label = formatRelationType(r.relationType ?? "", locale);
                   return (
                     <div
                       key={r.relationId}

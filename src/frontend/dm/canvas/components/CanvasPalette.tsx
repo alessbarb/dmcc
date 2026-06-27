@@ -9,6 +9,7 @@ import {
   ChevronLeft, ChevronRight
 } from "lucide-react";
 
+
 export interface CanvasPaletteProps {
   canvasId: string;
   isDirectionMode?: boolean;
@@ -81,7 +82,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
     const y = 150 + Math.random() * 80;
 
     if (kind === "note") {
-      await placeNodeOnCanvas(canvasId, { kind: "note", text: "Nota rápida. Escribe tu idea aquí...", color: "yellow", x, y });
+      await placeNodeOnCanvas(canvasId, { kind: "note", text: t("canvas.noteNode.contentPlaceholderLong"), color: "yellow", x, y });
     } else if (kind === "group") {
       await placeNodeOnCanvas(canvasId, { kind: "group", title: "Nuevo Grupo", color: "purple", x, y, width: 300, height: 200 });
     } else if (kind === "entity" && entityType) {
@@ -110,18 +111,18 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
   };
 
   const handleQuickSessionNote = async () => {
-    const text = window.prompt("Añadir nota de sesión rápida:");
+    const text = window.prompt(t("canvas.noteNode.addQuickSessionNote"));
     if (text && text.trim()) {
       const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
       if (activeSession) {
         await recordSessionEvent(activeSession.sessionId, {
           type: "note_recorded",
-          title: "Nota de sesión rápida",
+          title: t("canvas.noteNode.quickSessionNote"),
           description: text.trim(),
           relatedEntityIds: [],
         });
       } else {
-        alert("No hay ninguna sesión activa en curso.");
+        alert(t("canvas.noteNode.noActiveSession"));
       }
     }
   };
@@ -134,7 +135,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
       await recordSessionEvent(activeSession.sessionId, {
         type: "reveal",
         title: `Revelado: ${selectedEntity.title}`,
-        description: `El DM reveló la entidad "${selectedEntity.title}" desde el panel de dirección.`,
+        description: t("toasts.entityRevealedInspector", { title: selectedEntity.title }),
         relatedEntityIds: [selectedEntity.entityId],
       });
     }
@@ -155,8 +156,8 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
     if (activeSession) {
       await recordSessionEvent(activeSession.sessionId, {
         type: "status_changed",
-        title: `Estado de ${selectedEntity.title}: ${newStatus}`,
-        description: `Se actualizó el estado de "${selectedEntity.title}" a "${newStatus}" desde el panel de dirección.`,
+        title: t("canvas.node.statusPrompt", { title: selectedEntity.title, status: newStatus }),
+        description: t("toasts.statusUpdatedInspector", { title: selectedEntity.title, status: newStatus }),
         relatedEntityIds: [selectedEntity.entityId],
       });
     }
@@ -164,7 +165,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
 
   const handleAddConsequenceSelected = async () => {
     if (!selectedEntity) return;
-    const title = window.prompt(`Título de la consecuencia para: ${selectedEntity.title}`);
+    const title = window.prompt(t("canvas.node.consequenceTitlePrompt", { title: selectedEntity.title }));
     if (title && title.trim()) {
       const campaignId = campaignState?.campaign?.campaignId;
       if (!campaignId) return;
@@ -257,7 +258,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
                   {selectedNode.kind === "entity" ? (selectedEntity?.entityType || "Entidad") : selectedNode.kind}
                 </div>
                 <div style={{ fontSize: "12px", fontWeight: "bold", color: "var(--text-main)", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {selectedEntity?.title || selectedNode.title || selectedNode.text || "Elemento sin título"}
+                  {selectedEntity?.title || selectedNode.title || selectedNode.text || t("canvas.node.untitledElement")}
                 </div>
               </div>
 
@@ -393,7 +394,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
             }}
             onClick={() => handleCreateNewNode("note")}
             className="palette-btn palette-btn--note"
-            title="Arrastra o haz clic para añadir nota"
+            title={t("canvas.palette.addNoteDragHint")}
           >
             <StickyNote size={16} />
             <span>Nota adhesiva</span>
@@ -409,7 +410,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
             }}
             onClick={() => handleCreateNewNode("group")}
             className="palette-btn palette-btn--group"
-            title="Arrastra o haz clic para añadir grupo"
+            title={t("canvas.palette.addGroupDragHint")}
           >
             <BoxSelect size={16} />
             <span>Marco / Grupo</span>
@@ -461,7 +462,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
             <Search size={14} className="palette-search-icon" />
             <input
               type="text"
-              placeholder="Buscar entidad..."
+              placeholder={t("canvas.palette.searchEntityPlaceholder")}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -506,19 +507,23 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
   );
 }
 
-const FACT_KIND_CONFIG: Record<string, { label: string; color: string; Icon: React.ElementType }> = {
-  canon:         { label: "Canon",      color: "#10b981", Icon: CheckCircle2 },
-  dm_secret:     { label: "Secreto DM", color: "#dc2626", Icon: Lock },
-  rumor:         { label: "Rumor",      color: "#d97706", Icon: MessageSquare },
-  lie:           { label: "Mentira",    color: "#ea580c", Icon: XCircle },
-  player_theory: { label: "Teoría",     color: "#6366f1", Icon: Lightbulb },
-  mistake:       { label: "Error",      color: "#64748b", Icon: AlertTriangle },
-  retcon:        { label: "Retcon",     color: "#8b5cf6", Icon: RefreshCw },
-};
+type FactKindConfig = Record<string, { label: string; color: string; Icon: React.ElementType }>;
 
-function makeFactDragGhost(kind: string, color: string): HTMLElement {
+function getFactKindConfig(t: (key: string) => string): FactKindConfig {
+  return {
+    canon:         { label: "Canon",      color: "#10b981", Icon: CheckCircle2 },
+    dm_secret:     { label: t("canvas.factNode.kindDmSecretShort"), color: "#dc2626", Icon: Lock },
+    rumor:         { label: "Rumor",      color: "#d97706", Icon: MessageSquare },
+    lie:           { label: "Mentira",    color: "#ea580c", Icon: XCircle },
+    player_theory: { label: t("canvas.factNode.kindTheoryShort"), color: "#6366f1", Icon: Lightbulb },
+    mistake:       { label: "Error",      color: "#64748b", Icon: AlertTriangle },
+    retcon:        { label: "Retcon",     color: "#8b5cf6", Icon: RefreshCw },
+  };
+}
+
+function makeFactDragGhost(kind: string, color: string, factKindConfig: FactKindConfig): HTMLElement {
   const el = document.createElement("div");
-  const cfg = FACT_KIND_CONFIG[kind];
+  const cfg = factKindConfig[kind];
   el.textContent = cfg ? cfg.label.toUpperCase() : "HECHO";
   el.style.cssText = `
     position: fixed; top: -9999px; left: -9999px;
@@ -538,6 +543,8 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
   placeNodeOnCanvas: any;
   campaignState: any;
 }) {
+  const { t } = useTranslation();
+  const FACT_KIND_CONFIG = getFactKindConfig(t);
   const [factSearch, setFactSearch] = useState("");
   const [showFactSearch, setShowFactSearch] = useState(false);
 
@@ -565,7 +572,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
   };
 
   const handleCreateNewFact = async (kind: string) => {
-    const statement = window.prompt(`Nuevo hecho (${FACT_KIND_CONFIG[kind]?.label ?? kind}):\n\nEscribe la declaración:`);
+    const statement = window.prompt(t("canvas.factNode.newFactPrompt", { kind: FACT_KIND_CONFIG[kind]?.label ?? kind }));
     if (!statement?.trim()) return;
     try {
       const newFactId = await createFact({
@@ -599,7 +606,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
               e.dataTransfer.setData("palette/kind", "fact-create");
               e.dataTransfer.setData("palette/factKind", kind);
               e.dataTransfer.effectAllowed = "copy";
-              const ghost = makeFactDragGhost(kind, color);
+              const ghost = makeFactDragGhost(kind, color, FACT_KIND_CONFIG);
               e.dataTransfer.setDragImage(ghost, 50, 14);
               requestAnimationFrame(() => document.body.removeChild(ghost));
             }}
@@ -630,7 +637,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
         <div style={{ marginTop: "6px" }}>
           <input
             type="text"
-            placeholder="Buscar hecho..."
+            placeholder={t("canvas.palette.searchFactPlaceholder")}
             value={factSearch}
             onChange={e => setFactSearch(e.target.value)}
             className="palette-search-input"
@@ -639,7 +646,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
           <div style={{ maxHeight: "140px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "2px" }}>
             {availableFacts.length === 0 ? (
               <div style={{ fontSize: "10px", color: "var(--text-muted)", padding: "8px 0", textAlign: "center" }}>
-                {allFacts.length === 0 ? "No hay hechos creados" : "Todos los hechos ya están en el canvas"}
+                {allFacts.length === 0 ? "No hay hechos creados" : t("canvas.palette.allFactsOnCanvas")}
               </div>
             ) : (
               availableFacts.slice(0, 12).map((f: any) => {
@@ -652,7 +659,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
                       e.dataTransfer.setData("palette/kind", "fact");
                       e.dataTransfer.setData("palette/factId", f.factId);
                       e.dataTransfer.effectAllowed = "copy";
-                      const ghost = makeFactDragGhost(f.kind, cfg.color);
+                      const ghost = makeFactDragGhost(f.kind, cfg.color, FACT_KIND_CONFIG);
                       e.dataTransfer.setDragImage(ghost, 50, 14);
                       requestAnimationFrame(() => document.body.removeChild(ghost));
                     }}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { X, Trash2, ArrowUpRight } from "lucide-react";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 export interface CanvasInspectorProps {
   canvasId: string;
@@ -19,6 +21,7 @@ export function CanvasInspector({
   onOpenDetail,
   addToast,
 }: CanvasInspectorProps) {
+  const { t } = useTranslation();
   const {
     campaignState,
     canvasesById,
@@ -201,18 +204,18 @@ export function CanvasInspector({
             );
             for (const secret of secrets) {
               const confirmReveal = window.confirm(
-                `¡El elemento "${entity.title}" descubierto/completado sirve de ancla para el secreto: "${secret.title}"!\n¿Deseas revelar este secreto ahora a los jugadores?`
+                t("canvas.node.secretAnchorRevealPrompt", { anchor: entity.title, secret: secret.title })
               );
               if (confirmReveal) {
                 await updateEntity(secret.entityId, { visibility: { kind: "public" } });
                 await recordSessionEvent(activeSession.sessionId, {
                   type: "reveal",
                   title: `Revelado: ${secret.title}`,
-                  description: `Secreto "${secret.title}" revelado automáticamente al activarse su ancla "${entity.title}".`,
+                  description: t("toasts.secretAutoRevealed", { secret: secret.title, anchor: entity.title }),
                   relatedEntityIds: [secret.entityId],
                 });
                 if (addToast) {
-                  addToast(`Secreto "${secret.title}" revelado.`, "success");
+                  addToast(t("toasts.secretRevealed", { title: secret.title }), "success");
                 }
               }
             }
@@ -254,7 +257,7 @@ export function CanvasInspector({
   };
 
   const handleArchiveEntity = async () => {
-    if (entity && window.confirm(`¿Estás seguro de que quieres archivar la entidad "${entity.title}" de toda la campaña?`)) {
+    if (entity && window.confirm(t("canvas.node.archiveEntityConfirm", { title: entity.title }))) {
       // 1. Remove from canvas first
       await removeNodeFromCanvas(canvasId, selectedNodeId!);
       // 2. Archive campaign entity
@@ -264,7 +267,7 @@ export function CanvasInspector({
   };
 
   const handleRemoveNode = async () => {
-    if (window.confirm("¿Quitar esta tarjeta del canvas? (La entidad seguirá existiendo en el lore de la campaña)")) {
+    if (window.confirm(t("canvas.node.removeFromCanvasConfirm"))) {
       const entityId = entity?.entityId;
       const entityTitle = entity?.title;
       await removeNodeFromCanvas(canvasId, selectedNodeId!);
@@ -277,7 +280,7 @@ export function CanvasInspector({
         );
         if (!isOnAnyCanvas) {
           addToast(
-            `"${entityTitle}" existe en el lore pero no está en ningún tablero visual.`,
+            t("canvas.node.entityNotOnBoard", { title: entityTitle ?? "" }),
             "warning"
           );
         }
@@ -286,7 +289,7 @@ export function CanvasInspector({
   };
 
   const handleRemoveEdge = async () => {
-    if (window.confirm("¿Quitar esta conexión del canvas? (La relación seguirá existiendo en el lore de la campaña)")) {
+    if (window.confirm(t("canvas.node.removeRelationFromCanvasConfirm"))) {
       const relationshipId = selectedEdge?.relationshipId;
       const edgeLabel = selectedEdge?.label;
       await removeEdgeFromCanvas(canvasId, selectedEdgeId!);
@@ -299,7 +302,7 @@ export function CanvasInspector({
         );
         if (!isInAnyCanvas) {
           addToast(
-            `La relación "${edgeLabel}" existe en el lore pero no está en ningún tablero visual.`,
+            t("canvas.node.relationNotOnBoard", { title: edgeLabel ?? "" }),
             "warning"
           );
         }
@@ -308,7 +311,7 @@ export function CanvasInspector({
   };
 
   const handleArchiveRelation = async () => {
-    if (selectedEdge?.relationshipId && window.confirm("¿Archivar esta relación del lore de la campaña permanentemente?")) {
+    if (selectedEdge?.relationshipId && window.confirm(t("canvas.node.archiveRelationConfirm"))) {
       await archiveRelation(selectedEdge.relationshipId);
       await removeEdgeFromCanvas(canvasId, selectedEdgeId!);
       onClose();
@@ -352,7 +355,7 @@ export function CanvasInspector({
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     onBlur={handleNodeTitleBlur}
-                    placeholder="Título rápido..."
+                    placeholder={t("canvas.node.quickTitlePlaceholder")}
                     className="form-input"
                   />
                 </div>
@@ -409,7 +412,7 @@ export function CanvasInspector({
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     onBlur={handleNodeTitleBlur}
-                    placeholder="Título del grupo..."
+                    placeholder={t("canvas.groupNode.titlePlaceholder")}
                     className="form-input"
                   />
                 </div>
@@ -477,7 +480,7 @@ export function CanvasInspector({
                     }}
                     rows={4}
                     className="form-textarea"
-                    placeholder="Escribe la declaración del hecho..."
+                    placeholder={t("canvas.factNode.statementPlaceholder")}
                   />
                 </div>
 
@@ -560,7 +563,7 @@ export function CanvasInspector({
                     onChange={(e) => setSubtitle(e.target.value)}
                     onBlur={handleNodeSubtitleBlur}
                     className="form-input"
-                    placeholder="Ej. Líder tribal, Cueva inundada..."
+                    placeholder={t("canvas.node.rolePlaceholder")}
                   />
                 </div>
 
@@ -601,7 +604,7 @@ export function CanvasInspector({
                     onBlur={handleNodeContentBlur}
                     rows={6}
                     className="form-textarea inspector-dm-notes"
-                    placeholder="Añade secretos, mecánicas de combate, recompensas..."
+                    placeholder={t("canvas.node.notesPlaceholder")}
                   />
                 </div>
 
@@ -765,7 +768,7 @@ export function CanvasInspector({
                         onBlur={handleConsequencesBlur}
                         rows={2}
                         className="form-textarea"
-                        placeholder="Ej. Alerta general, pérdida de reputación..."
+                        placeholder={t("canvas.node.consequencePlaceholder")}
                       />
                     </div>
                   </div>
@@ -861,7 +864,7 @@ export function CanvasInspector({
                       onClick={handleRemoveNode}
                       className="btn btn-secondary btn-sm text-warning"
                       style={{ flex: 1 }}
-                      title="Quita la tarjeta del canvas sin borrar la entidad de la campaña"
+                      title={t("canvas.node.removeFromCanvasTooltip")}
                     >
                       Quitar del canvas
                     </button>
@@ -869,7 +872,7 @@ export function CanvasInspector({
                       onClick={handleArchiveEntity}
                       className="btn btn-secondary btn-sm text-critical"
                       style={{ flex: 1 }}
-                      title="Archiva la entidad de forma permanente en la campaña"
+                      title={t("canvas.node.archiveEntityTooltip")}
                     >
                       Archivar
                     </button>
@@ -884,7 +887,7 @@ export function CanvasInspector({
           <div className="inspector-edge-details">
             <div className="inspector-badge-row">
               <span className="badge badge-secondary">
-                {selectedEdge.status === "domain" ? "Relación Lore" : "Conexión Visual"}
+                {selectedEdge.status === "domain" ? t("canvas.node.relationLore") : t("canvas.node.connectionVisual")}
               </span>
             </div>
 
@@ -925,7 +928,7 @@ export function CanvasInspector({
                     onChange={(e) => setEdgeDesc(e.target.value)}
                     onBlur={handleEdgeDescBlur}
                     className="form-input"
-                    placeholder="Detalles sobre esta relación social o lógica..."
+                    placeholder={t("canvas.node.relationDetailPlaceholder")}
                   />
                 </div>
 
@@ -954,7 +957,7 @@ export function CanvasInspector({
                 <button
                   onClick={handleArchiveRelation}
                   className="btn btn-secondary btn-sm text-critical btn-block"
-                  title="Elimina esta relación del lore de la campaña permanentemente"
+                  title={t("canvas.node.archiveRelationTooltip")}
                 >
                   <Trash2 size={14} /> Archivar relación del lore
                 </button>

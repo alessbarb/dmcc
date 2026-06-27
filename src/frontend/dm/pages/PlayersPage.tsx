@@ -5,6 +5,8 @@ import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 export interface PlayersPageProps {
   campaignState?: any;
@@ -25,6 +27,7 @@ export interface PlayersPageProps {
 }
 
 export function PlayersPage(props: PlayersPageProps = {}) {
+  const { t } = useTranslation();
   const store = useCampaignStore();
   const { addToast: toastAdd } = useToast();
   const [isPlayerModalOpenLocal, setIsPlayerModalOpenLocal] = useState(false);
@@ -179,7 +182,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
         <div className="modal-overlay" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "" }); }}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "500px" }}>
             <div className="modal-header">
-              <h3 style={{ fontWeight: "700" }}>{editingPlayerId ? "Editar perfil de jugador" : "Añadir jugador"}</h3>
+              <h3 style={{ fontWeight: "700" }}>{editingPlayerId ? t("players.editProfile") : t("players.addPlayer")}</h3>
               <button className="btn btn-icon btn-secondary" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "" }); }}><X size={16} /></button>
             </div>
             <form onSubmit={async (e) => {
@@ -242,7 +245,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "" }); }}>Cancelar</button>
-                <button type="submit" className="btn btn-primary">{editingPlayerId ? "Guardar cambios" : "Añadir jugador"}</button>
+                <button type="submit" className="btn btn-primary">{editingPlayerId ? t("common.saveChanges") : t("players.addPlayer")}</button>
               </div>
             </form>
           </div>
