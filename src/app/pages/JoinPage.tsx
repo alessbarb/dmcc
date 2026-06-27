@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "@tanstack/react-router";
 import { useCampaignStore } from "../stores/campaignStore.js";
+import { RpgPortalBackground } from "../components/RpgPortalBackground.js";
+import { Shield, Key, Sparkles, ArrowLeft } from "lucide-react";
 
 export function JoinPage() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
@@ -10,7 +12,16 @@ export function JoinPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const formatCampaignId = (id: string) => {
+    if (!id) return "";
+    const withoutPrefix = id.startsWith("cmp_") ? id.slice(4) : id;
+    return withoutPrefix
+      .split(/[_-]/)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!accessCode.trim()) return;
 
@@ -53,37 +64,43 @@ export function JoinPage() {
   };
 
   return (
-    <div className="landing-shell">
-      <header className="landing-hero">
-        <img
-          className="landing-hero__image"
-          src="/assets/background.png"
-          alt=""
-          aria-hidden="true"
-        />
-        <div className="landing-hero__content">
-          <h1 className="landing-hero__title">
+    <div className="join-portal-container">
+      {/* Background Interactive canvas preview */}
+      <div className="join-portal-background">
+        <RpgPortalBackground />
+        <div className="join-portal-radial-glow" />
+      </div>
+
+      {/* Glassmorphic Portal Card */}
+      <div className="join-portal-card">
+        <div className="join-portal-header">
+          <div className="join-portal-icon-wrapper">
+            <Shield className="join-portal-icon" size={32} />
+            <div className="join-portal-icon-glow" />
+          </div>
+          <span className="join-portal-badge">
+            <Sparkles size={12} style={{ marginRight: "4px" }} />
+            Portal del Jugador
+          </span>
+          <h1 className="join-portal-title">
             DM Campaign <span>Companion</span>
           </h1>
-          <p className="landing-hero__subtitle">Portal del jugador</p>
+          <p className="join-portal-subtitle">
+            Campaña: <span className="campaign-name">{formatCampaignId(campaignId)}</span>
+          </p>
         </div>
-      </header>
 
-      <div className="landing-grid" style={{ maxWidth: "480px", margin: "0 auto" }}>
-        <section className="card landing-card">
-          <div className="landing-section-header">
-            <h2>Unirse a la campaña</h2>
-          </div>
-
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="accessCode">
-                Código de acceso
-              </label>
+        <form onSubmit={handleSubmit} className="join-portal-form">
+          <div className="form-group">
+            <label className="form-label" htmlFor="accessCode">
+              Código de acceso
+            </label>
+            <div className="access-code-input-wrapper">
+              <Key size={16} className="input-icon" />
               <input
                 id="accessCode"
                 type="text"
-                className="form-input"
+                className="form-input join-portal-input"
                 placeholder="Introduce el código que te dio tu DM"
                 value={accessCode}
                 onChange={(e) => setAccessCode(e.target.value)}
@@ -92,22 +109,31 @@ export function JoinPage() {
                 autoComplete="off"
               />
             </div>
+          </div>
 
-            {error && (
-              <p style={{ color: "var(--color-critical)", fontSize: "0.875rem", marginBottom: "12px" }}>
-                {error}
-              </p>
-            )}
+          {error && (
+            <div className="join-portal-error">
+              <p>{error}</p>
+            </div>
+          )}
 
-            <button
-              type="submit"
-              className="btn btn-primary landing-primary-action"
-              disabled={loading || !accessCode.trim()}
-            >
-              {loading ? "Conectando..." : "Unirse"}
-            </button>
-          </form>
-        </section>
+          <button
+            type="submit"
+            className="btn btn-primary join-portal-btn"
+            disabled={loading || !accessCode.trim()}
+          >
+            {loading ? "Abriendo portal..." : "Unirse a la campaña"}
+          </button>
+        </form>
+
+        <button
+          type="button"
+          onClick={() => navigate({ to: "/" })}
+          className="join-portal-back-btn"
+        >
+          <ArrowLeft size={14} style={{ marginRight: "6px" }} />
+          Volver al inicio
+        </button>
       </div>
     </div>
   );
