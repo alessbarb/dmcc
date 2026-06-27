@@ -1,75 +1,348 @@
-# DM Campaign Companion (DMCC)
+# DM Campaign Companion
 
-> Motor de Memoria Narrativa y Estado para Campañas de Rol
+**DM Campaign Companion** — **DMCC** — is a campaign workspace for tabletop RPG Dungeon Masters.
 
-DMCC no es solo un bloc de notas para el Dungeon Master; es un motor de memoria cognitiva estructurado bajo los principios de **Event Sourcing** y **Soberanía de Datos**. Diseñado para gestionar escenarios de *world-building* densos (como intrigas palaciegas, la influencia gravitatoria de una *Triple Eclipse* o las complejas relaciones de un *Panteón de los Hábitos*), el sistema garantiza que la historia de tu mesa sea inmutable, auditable y, lo más importante, completamente tuya.
+It helps you prepare sessions, track what happened at the table, connect clues and secrets, manage NPCs and locations, and keep long-running campaigns coherent as they grow.
 
-## 🌌 Filosofía del Proyecto
+DMCC is built for DMs who enjoy living worlds: recurring characters, hidden information, unresolved consequences, faction drama, player decisions, mystery threads and storylines that evolve over time.
 
-1. **Soberanía de la Información:** El DM es el dueño absoluto de los datos. Sin dependencias de la nube ni servidores externos. Los datos se almacenan localmente con soporte para *Snapshots* y exportación total a Markdown.
-2. **Arquitectura Orientada a Eventos:** Cada acción en la campaña (revelar una pista, conocer a un PNJ, generar una consecuencia) es un evento inmutable. El estado actual es una proyección matemática de la historia narrativa.
-3. **Documentation-First:** El diseño de la campaña prioriza la estructura semántica de los datos, preparando el terreno para futuras integraciones con agentes o formatos de alta densidad (SDIF).
+It is not a virtual tabletop.
 
-## ✨ Características Principales
+It is the memory layer around your campaign.
 
-- **Gestor de Entidades Narrativas:** Crea y cataloga PNJs, Pistas, Secretos, Misiones y Consecuencias. Búsqueda instantánea en toda la base de conocimientos gracias a `Fuse.js`.
-- **Grafo de Relaciones:** Visualización interactiva y mapeo de conexiones entre entidades (impulsado por `ReactFlow`). Descubre cómo un secreto conecta a un PNJ con una pista.
-- **Ciclo de Vida de Sesión:**
-  - **Sesión Activa:** Captura rápida de consecuencias y revelación de pistas en tiempo real sin perder el ritmo de la partida.
-  - **Cierre y Resumen:** Generación del estado "Qué toca ahora", proyectando las bases narrativas para la próxima sesión.
-- **Tableros (Boards):** Organización visual de misiones, pistas y actitudes de los PNJs.
-- **Exportación Universal:** Generación de volcados completos de la campaña a Markdown para lectura offline o portabilidad.
+## Why DMCC exists
 
-## 🛠️ Stack Tecnológico
+Campaign notes usually start simple. A few NPCs, a couple of places, one main quest.
 
-La arquitectura está separada rigurosamente en Dominio, Aplicación y Persistencia (DDD/CQRS):
+Then the players spare the wrong villain, adopt a suspicious goblin, ignore the obvious clue, invent a theory that is better than your plan, and accidentally start a political crisis.
 
-- **Frontend:** React 19, Zustand (gestión de estado), TanStack Router.
-- **Backend / Persistencia Local:** Fastify, Zod (validación de esquemas).
-- **Visualización y Búsqueda:** ReactFlow, Fuse.js, Lucide React.
-- **Testing:** Playwright (E2E) y Vitest (Unitario/Integración).
+A few sessions later, the hard part is no longer imagination. The hard part is continuity.
 
-## 🚀 Inicio Rápido (Local-First)
+DMCC helps you keep track of:
 
-### Prerrequisitos
+- what exists in the world,
+- what the players know,
+- what is still hidden,
+- what changed because of their choices,
+- what threads are still open,
+- and what deserves attention next session.
 
-- Node.js (v20 o superior)
+The goal is simple: **spend less time searching through notes and more time running the game**.
 
-### Instalación
+## Main features
+
+### Campaign dashboard
+
+Start from a high-level view of the current campaign state.
+
+The dashboard highlights active quests, important NPCs, pending consequences, recent changes, current locations and issues that may need the DM's attention.
+
+It is designed as a quick briefing before you start preparing or running a session.
+
+### Visual campaign canvas
+
+The canvas is the main visual workspace for planning and understanding your campaign.
+
+You can place entities, facts, quick notes and visual groups on a board, then connect them with meaningful relationships. Use it for mysteries, factions, cities, dungeons, session plans or any custom structure that helps you think.
+
+The canvas supports:
+
+- entity cards,
+- fact cards,
+- quick notes,
+- visual groups,
+- connected consequences,
+- public vs DM-only visibility,
+- presentation mode,
+- player-facing view,
+- quick session notes,
+- quick text import,
+- and conversion of rough notes into structured campaign entities.
+
+For a DM, this makes the campaign easier to see, not just easier to store.
+
+### Narrative entities
+
+DMCC lets you create and manage the important building blocks of a campaign:
+
+- player characters,
+- NPCs,
+- locations,
+- factions,
+- quests,
+- clues,
+- secrets,
+- items,
+- creatures,
+- encounters,
+- scenes,
+- fronts,
+- clocks,
+- decisions,
+- consequences,
+- rumors,
+- rule references,
+- handouts,
+- and notes.
+
+Entities can include descriptions, summaries, status, importance, visibility, tags, images and type-specific details.
+
+This allows DMCC to treat a clue differently from an NPC, a secret differently from a location, and a consequence differently from a simple note.
+
+### Relationship graph
+
+Campaigns are made of connections.
+
+DMCC includes a graph view to explore how entities relate to each other: who knows what, which clue points to which secret, what quest depends on which location, or how one consequence affects another part of the world.
+
+The graph includes search and filtering tools so you can quickly focus on the part of the campaign that matters right now.
+
+### Active session tools
+
+DMCC is designed around the real rhythm of play.
+
+During a session, you can record what happens without stopping the game:
+
+- scenes started or closed,
+- notes recorded,
+- facts established,
+- clues revealed,
+- secrets hinted,
+- quests updated,
+- player decisions,
+- consequences created or triggered,
+- NPCs met,
+- locations visited,
+- items obtained,
+- combat events,
+- relationship changes,
+- and custom events.
+
+At the end of the session, you can close it with a summary and carry its consequences forward.
+
+### Timeline
+
+The timeline gives you a chronological view of the campaign.
+
+It helps answer questions like:
+
+- When did the party meet this NPC?
+- When was this clue revealed?
+- What happened last session?
+- Which events created this consequence?
+
+This is especially useful when there are weeks between sessions and everyone remembers the story slightly differently.
+
+### What's Next
+
+The **What's Next** view helps prepare the next session from the current campaign state.
+
+It surfaces open threads, relevant quests, unresolved consequences and preparation tasks so the next session starts from what actually happened, not from what you vaguely remember planning three weeks ago.
+
+### Boards
+
+Boards provide focused views of campaign material.
+
+Use them to review active quests, prepared clues, secrets, consequences, important NPCs or anything else that needs a more practical working view than the full graph.
+
+### Search
+
+DMCC includes fast search across campaign entities and facts.
+
+Search by title, summary, content or type, then jump straight to the relevant entity. This is useful both while preparing and during the session, when speed matters.
+
+### Player management and player portal
+
+DMCC can track players and their characters.
+
+The player portal allows players to connect from their own devices on the same local network when LAN mode is enabled. From there, they can access player-facing campaign information, character material, notes and objectives depending on what the DM has made visible.
+
+This keeps a clear separation between DM knowledge and player knowledge.
+
+### Rules handbook
+
+DMCC includes a searchable rules handbook for supported rules content.
+
+The current app includes a D&D SRD 5.2.1 rules dataset with categories such as gameplay, character creation, classes, origins, feats, equipment, spellcasting, spells, monsters and glossary entries.
+
+### Backups and exports
+
+Campaign data can be backed up and exported.
+
+DMCC currently supports:
+
+- manual campaign backups,
+- JSON export,
+- Markdown export,
+- and restore from backup.
+
+Markdown export is especially useful for offline reading, long-term storage or reviewing the campaign outside the app.
+
+### Multiple languages
+
+The interface supports multiple languages:
+
+- English,
+- Spanish,
+- French,
+- German,
+- Italian,
+- Portuguese.
+
+## Current product focus
+
+DMCC is currently focused on:
+
+- campaign memory,
+- session continuity,
+- narrative structure,
+- relationship mapping,
+- player-facing visibility,
+- and local campaign ownership.
+
+The app currently runs locally and stores campaign data on your machine by default. That is the right model for this stage of the project, but it is not meant to limit the future of the product. Future versions may support other deployment or sharing models while keeping the campaign portable and under the DM's control.
+
+## Who DMCC is for
+
+DMCC works best for campaigns with continuity and moving parts:
+
+- mystery campaigns,
+- political intrigue,
+- sandbox adventures,
+- faction-heavy stories,
+- long-running homebrew worlds,
+- campaigns with many NPCs,
+- player-driven narratives,
+- and DMs who improvise but still want the world to remember.
+
+It is less about replacing your creativity and more about making sure your campaign can grow without collapsing under its own notes.
+
+## Getting started
+
+### Requirements
+
+- Node.js 20 or higher
+- npm
+
+### Install
 
 ```bash
-# 1. Clonar el repositorio
 git clone https://github.com/alessbarb/dmcc.git
 cd dmcc
-
-# 2. Instalar dependencias
 npm install
+```
 
-# 3. Iniciar el entorno de desarrollo
+### Run in development
+
+```bash
 npm run dev
 ```
 
-La aplicación estará disponible de forma local (usualmente en `http://localhost:5173`).
+The development app usually runs at:
 
-### Testing
-
-El proyecto mantiene un alto rigor de pruebas, asegurando que el flujo de eventos y las proyecciones sean precisos.
-
-```bash
-# Ejecutar pruebas unitarias (Vitest)
-npm run test
-
-# Ejecutar pruebas E2E (Playwright)
-npx playwright test
+```txt
+http://localhost:5173
 ```
 
-## 🏗️ Estructura del Dominio
+The local API server runs on port `4877` by default.
 
-- `src/domain/`: Contiene la lógica pura de la campaña, entidades (NPCs, pistas, secretos), reglas de validación (Zod) y la definición estricta de eventos narrativos.
-- `src/application/`: Contiene el `commandBus` y los casos de uso.
-- `src/persistence/`: Gestiona el `eventStore` y los `snapshotStore` (archivos locales JSON).
-- `src/projections/`: Construye las vistas de lectura a partir de los eventos (ej. `whatNowProjection.ts`, `dashboardProjection.ts`).
+### Build
 
-## 🛡️ Licencia
+```bash
+npm run build
+```
 
-El código fuente y la arquitectura de DMCC son de uso privado/personal. Eres libre de modificar el motor para adaptar las reglas y proyecciones a tu propio sistema de juego o universo narrativo.
+### Start the built app
+
+```bash
+npm start
+```
+
+The built app is served by the local backend, usually at:
+
+```txt
+http://127.0.0.1:4877
+```
+
+## Useful scripts
+
+```bash
+npm run dev              # Start backend and frontend in development mode
+npm run build            # Build the frontend and backend
+npm start                # Start the built application
+npm run test             # Run unit and integration tests
+npm run test:e2e         # Run Playwright end-to-end tests
+npm run typecheck:all    # Run TypeScript checks
+npm run lint             # Run ESLint
+npm run quality          # Run lint, typecheck, tests and build
+```
+
+## Demo campaigns
+
+The project includes seed scripts for demo campaign data:
+
+```bash
+npm run seed:oracle          # Seed La Sombra del Oráculo
+npm run seed:oracle:dry      # Dry run for La Sombra del Oráculo
+npm run seed:oracle:replace  # Replace the existing Oracle demo campaign
+npm run seed:phandalin       # Seed the Phandalin demo campaign
+```
+
+These are useful for testing the product with richer data than an empty campaign.
+
+## Project structure
+
+```txt
+src/
+  backend/       Local server, API routes, exports, backups and persistence
+  frontend/      React application and campaign UI
+  core/          Campaign domain, commands, events and projections
+  shared/        Shared schemas, IDs, rules, i18n and utilities
+
+public/          Static assets
+tests/           Unit and integration tests
+e2e/             End-to-end tests
+seeds/           Demo campaign seed data
+scripts/         Build and maintenance scripts
+```
+
+## Technical overview
+
+DMCC is built as a TypeScript web application with a local backend.
+
+### Frontend
+
+- React
+- TanStack Router
+- Zustand
+- React Flow
+- React Force Graph 3D
+- Fuse.js
+- Lucide React
+
+### Backend
+
+- Node.js
+- Fastify
+- Zod
+- Local file-based persistence
+- Event-based campaign state with projections
+
+### Quality
+
+- TypeScript
+- Vitest
+- Playwright
+- ESLint
+
+## Status
+
+DMCC is in active development.
+
+The current version is suitable for local experimentation, campaign modelling, feature testing and product iteration. Some workflows may still change as the application evolves.
+
+## License
+
+Private/personal project.
+
+You may adapt it to your own table, ruleset, campaign world or way of running games.
