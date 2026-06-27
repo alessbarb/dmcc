@@ -22,7 +22,9 @@ import {
   getVisibleRelations,
   getVisibleFacts,
   getVisibleSessions,
+  assertWithinDir,
 } from "../helpers.js";
+import { createCampaignBackup } from "../hardening/backups.js";
 
 export async function registerCampaignRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -190,10 +192,25 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           return { error: "Campaign title confirmation does not match" };
         }
 
-        await fs.rm(campaignDir, { recursive: true, force: true });
+        const autoBackup = await createCampaignBackup({
+          dataDir,
+          vaultId,
+          campaignId,
+          reason: "auto-before-delete",
+          description: `Auto-backup before deleting campaign ${title}`,
+        });
+
+        const deletedDir = join(dataDir, "vaults", vaultId, "deleted-campaigns");
+        await fs.mkdir(deletedDir, { recursive: true });
+        const deletedPath = join(
+          deletedDir,
+          `${new Date().toISOString().replace(/[:.]/g, "-")}_${campaignId}`,
+        );
+        assertWithinDir(deletedPath, deletedDir);
+        await fs.rename(campaignDir, deletedPath);
         (server as any).activeAccessCodes.delete(campaignId);
 
-        return { ok: true, campaignId };
+        return { ok: true, campaignId, deletedPath, autoBackup };
       } catch (err: any) {
         if (err.statusCode === 401 || err.statusCode === 403) {
           reply.code(err.statusCode);

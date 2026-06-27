@@ -12,6 +12,13 @@ import {
 } from "../auth.js";
 import { assertWithinDir } from "../helpers.js";
 import { writeMarkdownCampaignExport } from "../export/markdownCampaignExport.js";
+import {
+  createCampaignBackup,
+  listCampaignBackups,
+  readBackupForCampaign,
+  writeEventsFromBackup,
+} from "../hardening/backups.js";
+import { VERSION_INFO } from "@shared/appVersion.js";
 
 export async function registerExportRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -97,6 +104,13 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
 
       try {
         const repo = getRepository(vaultId);
+        await createCampaignBackup({
+          dataDir,
+          vaultId,
+          campaignId,
+          reason: "auto-before-import",
+          description: "Auto-backup before markdown import",
+        });
         await repo.executeCommand(campaignId as any, {
           type: "CreateEntity",
           campaignId: campaignId as any,
@@ -152,6 +166,13 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
 
       try {
         const repo = getRepository(vaultId);
+        await createCampaignBackup({
+          dataDir,
+          vaultId,
+          campaignId,
+          reason: "auto-before-import",
+          description: "Auto-backup before JSON import",
+        });
         let count = 0;
         if (Array.isArray(data.entities)) {
           for (const e of data.entities) {
@@ -237,8 +258,15 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         const events = await (repo as any)["eventStore"].loadEvents(campaignId as any);
 
         const exportData = {
-          schemaVersion: 1,
-          manifest: { campaignId, exportFormat: "json" },
+          schemaVersion: VERSION_INFO.backupSchemaVersion,
+          manifest: {
+            app: "dmcc",
+            ...VERSION_INFO,
+            campaignId,
+            vaultId,
+            exportFormat: "json",
+            createdAt: new Date().toISOString(),
+          },
           campaign: state.campaign,
           entities: Array.from(state.entities.values()),
           relations: Array.from(state.relations.values()),
@@ -278,22 +306,18 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
-        const repo = getRepository(vaultId);
-        const events = await (repo as any)["eventStore"].loadEvents(campaignId as any);
-
-        const backupData = { schemaVersion: 1, manifest: { campaignId, backupFormat: "json" }, events };
-        const backupsDir = join(getCampaignDir(campaignId, vaultId), "backups");
-        await fs.mkdir(backupsDir, { recursive: true });
-        const backupFilename = `backup_${createId("bak")}.json`;
-        const backupPath = join(backupsDir, backupFilename);
-        assertWithinDir(backupPath, backupsDir);
-        await fs.writeFile(backupPath, JSON.stringify(backupData, null, 2), "utf8");
-
+        const backup = await createCampaignBackup({
+          dataDir,
+          vaultId,
+          campaignId,
+          reason: "manual",
+          description: "Manual campaign backup",
+        });
         reply.code(201);
-        return { campaignId, backupId: backupFilename, path: backupPath };
-      } catch {
+        return { campaignId, ...backup };
+      } catch (err: any) {
         reply.code(404);
-        return { error: "Campaign not found" };
+        return { error: `Campaign not found or backup failed: ${err.message}` };
       }
     }
   );
@@ -305,15 +329,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
       assertDM(request, (server as any).dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const backupsDir = join(getCampaignDir(campaignId, vaultId), "backups");
-      try {
-        const files = await fs.readdir(backupsDir);
-        return files
-          .filter((f) => f.endsWith(".json") && f.startsWith("backup_"))
-          .map((f) => ({ backupId: f }));
-      } catch {
-        return [];
-      }
+      return listCampaignBackups({ dataDir, vaultId, campaignId });
     }
   );
 
@@ -336,59 +352,34 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
       assertWithinDir(backupPath, backupsDir);
 
       try {
-        let backupContent: string;
+        let backup;
         try {
-          backupContent = await fs.readFile(backupPath, "utf8");
+          backup = await readBackupForCampaign({ dataDir, vaultId, campaignId, backupId });
         } catch (readErr: any) {
-          reply.code(404);
-          return { error: `Backup not found: ${readErr.message}` };
-        }
-        const backup = JSON.parse(backupContent);
-
-        // Validate campaign ownership
-        const manifestCampaignId = backup.manifest?.campaignId;
-        if (manifestCampaignId && manifestCampaignId !== campaignId) {
-          reply.code(400);
-          return { error: "Backup does not belong to this campaign" };
-        }
-        if (Array.isArray(backup.events) && backup.events.some((e: any) => e.campaignId !== campaignId)) {
-          reply.code(400);
-          return { error: "Backup events belong to a different campaign" };
+          const message = String(readErr.message ?? "");
+          const isValidationError =
+            message === "Invalid backupId" ||
+            message.includes("does not belong") ||
+            message.includes("different campaign") ||
+            message.includes("does not contain") ||
+            message.includes("Invalid event");
+          reply.code(isValidationError ? 400 : 404);
+          return { error: message };
         }
 
-        const campaignDir = getCampaignDir(campaignId, vaultId);
-        const eventsFile = join(campaignDir, "events.ndjson");
+        const autoBackup = await createCampaignBackup({
+          dataDir,
+          vaultId,
+          campaignId,
+          reason: "auto-before-restore",
+          description: `Auto-backup before restoring ${backupId}`,
+        });
 
-        // 1. Create a backup of the current campaign prior to restore
-        let currentEvents: any[] = [];
-        try {
-          const content = await fs.readFile(eventsFile, "utf8");
-          currentEvents = content.split("\n").filter(Boolean).map(line => JSON.parse(line));
-        } catch {
-          // Ignored if no events exist yet
-        }
+        await writeEventsFromBackup({ dataDir, vaultId, campaignId, backup });
 
-        if (currentEvents.length > 0) {
-          const autoBackupData = {
-            schemaVersion: 1,
-            manifest: { campaignId, backupFormat: "json", description: "Auto-backup before restore" },
-            events: currentEvents
-          };
-          const autoBackupFilename = `backup_pre_restore_${createId("bak")}.json`;
-          const autoBackupPath = join(backupsDir, autoBackupFilename);
-          assertWithinDir(autoBackupPath, backupsDir);
-          await fs.writeFile(autoBackupPath, JSON.stringify(autoBackupData, null, 2), "utf8");
-        }
-
-        // 2. Write the new events
-        const ndjson = backup.events.map((e: any) => JSON.stringify(e)).join("\n") + "\n";
-        await fs.writeFile(eventsFile, ndjson, "utf8");
-
-        // 3. Rebuild snapshot
         const repo = getRepository(vaultId);
         await repo.rebuildSnapshot(campaignId as any);
 
-        // 4. Record the restore as a domain event
         await repo.executeCommand(campaignId as any, {
           type: "RestoreBackup",
           campaignId: campaignId as any,
@@ -396,7 +387,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
           backupId,
         });
 
-        return { ok: true };
+        return { ok: true, campaignId, restoredFrom: backupId, autoBackup };
       } catch (err: any) {
         reply.code(500);
         return { error: `Failed to restore campaign: ${err.message}` };
