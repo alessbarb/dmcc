@@ -4,7 +4,7 @@ import type { SupportedLocale, TranslationKey, TranslationDictionary } from "./t
 import type { InterpolationParams } from "./interpolation.js";
 import { interpolate } from "./interpolation.js";
 
-const dictionaries: Record<SupportedLocale, TranslationDictionary> = { es, en };
+const dictionaries: Record<SupportedLocale, TranslationDictionary> = { en, es };
 
 function getRawString(dict: any, path: string): string | undefined {
   const parts = path.split(".");
@@ -25,11 +25,11 @@ export interface Translator {
 }
 
 export function resolveLocale(input?: unknown): SupportedLocale {
-  if (typeof input !== "string" || !input) return "es";
+  if (typeof input !== "string" || !input) return "en";
   const normalized = input.trim().toLowerCase();
   if (normalized.startsWith("en")) return "en";
   if (normalized.startsWith("es")) return "es";
-  return "es";
+  return "en";
 }
 
 export function createTranslator(inputLocale?: unknown): Translator {
@@ -37,10 +37,10 @@ export function createTranslator(inputLocale?: unknown): Translator {
   return {
     locale,
     t(key: TranslationKey | string, params?: InterpolationParams): string {
-      const targetDict = dictionaries[locale] ?? dictionaries.es;
+      const targetDict = dictionaries[locale] ?? dictionaries.en;
       let raw = getRawString(targetDict, key);
-      if (raw === undefined && locale !== "es") {
-        raw = getRawString(dictionaries.es, key);
+      if (raw === undefined && locale !== "en") {
+        raw = getRawString(dictionaries.en, key);
       }
       if (raw === undefined) {
         return key;
@@ -50,6 +50,6 @@ export function createTranslator(inputLocale?: unknown): Translator {
   };
 }
 
-export function t(key: TranslationKey | string, params?: InterpolationParams, locale: SupportedLocale = "es"): string {
+export function t(key: TranslationKey | string, params?: InterpolationParams, locale: SupportedLocale = "en"): string {
   return createTranslator(locale).t(key, params);
 }

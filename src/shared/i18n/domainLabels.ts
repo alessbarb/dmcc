@@ -1,7 +1,7 @@
 import type { SupportedLocale } from "./types.js";
 import { createTranslator } from "./translate.js";
 
-export function formatEntityType(entityType: string, locale: SupportedLocale = "es"): string {
+export function formatEntityType(entityType: string, locale: SupportedLocale = "en"): string {
   const tr = createTranslator(locale);
   const key = `domain.entityTypes.${entityType}`;
   const label = tr.t(key);
@@ -9,7 +9,7 @@ export function formatEntityType(entityType: string, locale: SupportedLocale = "
   return entityType;
 }
 
-export function formatVisibility(kind: string, locale: SupportedLocale = "es"): string {
+export function formatVisibility(kind: string, locale: SupportedLocale = "en"): string {
   const tr = createTranslator(locale);
   const key = `domain.visibility.${kind}`;
   const label = tr.t(key);
@@ -17,7 +17,7 @@ export function formatVisibility(kind: string, locale: SupportedLocale = "es"): 
   return kind;
 }
 
-export function formatRelationType(relationType: string, _locale: SupportedLocale = "es"): string {
+export function formatRelationType(relationType: string, _locale: SupportedLocale = "en"): string {
   if (relationType.startsWith("custom:")) {
     return relationType.slice(7).replace(/_/g, " ");
   }

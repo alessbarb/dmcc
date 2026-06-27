@@ -19,7 +19,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
       if (saved) return resolveLocale(saved);
       return resolveLocale(navigator.language);
     } catch {}
-    return "es";
+    return "en";
   });
 
   const setLocale = (newLocale: SupportedLocale) => {

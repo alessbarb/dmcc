@@ -106,8 +106,8 @@ describe("i18n system & dictionary parity", () => {
     expect(resolveLocale("en-US")).toBe("en");
     expect(resolveLocale("EN")).toBe("en");
     expect(resolveLocale("es-ES")).toBe("es");
-    expect(resolveLocale("fr-FR")).toBe("es");
-    expect(resolveLocale(undefined)).toBe("es");
+    expect(resolveLocale("fr-FR")).toBe("en");
+    expect(resolveLocale(undefined)).toBe("en");
   });
 
   it("resolves translations accurately with createTranslator", () => {
