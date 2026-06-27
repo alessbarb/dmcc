@@ -6,36 +6,53 @@ export function LanguageSelector() {
   const { locale, setLocale, t } = useTranslation();
 
   return (
-    <div className="flex items-center gap-3 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
-      <Languages className="w-5 h-5 text-indigo-400" />
-      <div className="flex-1">
-        <div className="text-sm font-medium text-slate-200">{t("settings.languageSectionTitle")}</div>
-        <div className="text-xs text-slate-400">{t("settings.languageSectionSubtitle")}</div>
+    <div className="lang-selector">
+      <div className="lang-selector__icon">
+        <Languages size={18} />
       </div>
-      <div className="flex bg-slate-900/80 p-1 rounded-lg border border-slate-700/60">
-        <button
-          type="button"
-          onClick={() => setLocale("es")}
-          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
-            locale === "es"
-              ? "bg-indigo-600 text-white shadow-sm"
-              : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
-          }`}
-        >
-          {t("settings.languageEs")}
-        </button>
+      <div className="lang-selector__label">
+        <span className="lang-selector__title">{t("settings.languageSectionTitle")}</span>
+        <span className="lang-selector__subtitle">{t("settings.languageSectionSubtitle")}</span>
+      </div>
+      <div className="lang-selector__toggle">
         <button
           type="button"
           onClick={() => setLocale("en")}
-          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
-            locale === "en"
-              ? "bg-indigo-600 text-white shadow-sm"
-              : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
-          }`}
+          className={`lang-selector__btn${locale === "en" ? " lang-selector__btn--active" : ""}`}
         >
-          {t("settings.languageEn")}
+          EN
+        </button>
+        <button
+          type="button"
+          onClick={() => setLocale("es")}
+          className={`lang-selector__btn${locale === "es" ? " lang-selector__btn--active" : ""}`}
+        >
+          ES
         </button>
       </div>
+    </div>
+  );
+}
+
+export function LanguagePill() {
+  const { locale, setLocale } = useTranslation();
+
+  return (
+    <div className="lang-pill">
+      <button
+        type="button"
+        onClick={() => setLocale("en")}
+        className={`lang-pill__btn${locale === "en" ? " lang-pill__btn--active" : ""}`}
+      >
+        EN
+      </button>
+      <button
+        type="button"
+        onClick={() => setLocale("es")}
+        className={`lang-pill__btn${locale === "es" ? " lang-pill__btn--active" : ""}`}
+      >
+        ES
+      </button>
     </div>
   );
 }

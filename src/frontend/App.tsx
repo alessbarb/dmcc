@@ -40,6 +40,7 @@ import { GraphPage } from "./dm/graph/GraphPage.js";
 import { EntityDetailModal } from "./dm/entities/EntityDetailModal.js";
 import { AppFooter } from "./shared/components/AppFooter.js";
 import { TypeMetadataForm } from "./dm/entities/TypeMetadataForm.js";
+import { LanguagePill } from "./shared/i18n/LanguageSelector.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { LandingCampaignCard } from "./shared/components/LandingCampaignCard.js";
 
@@ -433,16 +434,16 @@ export function App() {
           <RpgPortalBackground />
 
           <div className="landing-hero__content">
-            
+            <div style={{ position: "absolute", top: "16px", right: "16px" }}><LanguagePill /></div>
             <span className="landing-badge">
               <Sparkles size={12} style={{ marginRight: "4px" }} />
-              Portal del DM
+              {t("landing.badge")}
             </span>
             <h1 className="landing-hero__title">
               DM Campaign <span>Companion</span>
             </h1>
             <p className="landing-hero__subtitle">
-              Motor de memoria cognitiva y tableros visuales para directores de juego
+              {t("landing.heroSubtitle")}
             </p>
           </div>
         </header>
@@ -453,24 +454,24 @@ export function App() {
             <div className="feature-icon-wrapper">
               <Layers size={20} />
             </div>
-            <h4>Canvas Creativo</h4>
-            <p>Estructura tramas, conecta PNJs y diseña flujos de misterio mediante grafos de nodos visuales.</p>
+            <h4>{t("landing.featureCanvasTitle")}</h4>
+            <p>{t("landing.featureCanvasDesc")}</p>
           </div>
 
           <div className="feature-item-card">
             <div className="feature-icon-wrapper">
               <Play size={20} />
             </div>
-            <h4>Modo LAN & Portal</h4>
-            <p>Bindea tu servidor local de forma segura y comparte con tus jugadores solo la información visible.</p>
+            <h4>{t("landing.featureLanTitle")}</h4>
+            <p>{t("landing.featureLanDesc")}</p>
           </div>
 
           <div className="feature-item-card">
             <div className="feature-icon-wrapper">
               <Activity size={20} />
             </div>
-            <h4>Memoria Inmutable</h4>
-            <p>Tus datos son tuyos. Registros NDJSON locales robustos, inalterables y exportables a Markdown.</p>
+            <h4>{t("landing.featureMemoryTitle")}</h4>
+            <p>{t("landing.featureMemoryDesc")}</p>
           </div>
         </section>
 
@@ -480,7 +481,7 @@ export function App() {
             <div className="campaigns-archive-header">
               <div className="archive-title-group">
                 <FolderOpen size={18} />
-                <h2>Archivo de Campañas</h2>
+                <h2>{t("landing.archiveTitle")}</h2>
               </div>
 
               {/* Instant Search Bar */}
@@ -489,7 +490,7 @@ export function App() {
                 <input
                   type="text"
                   className="archive-search-input"
-                  placeholder="Buscar por título o ID..."
+                  {...{placeholder: t("landing.searchPlaceholder")}}
                   value={landingSearchQuery}
                   onChange={(e) => setLandingSearchQuery(e.target.value)}
                 />
@@ -498,7 +499,7 @@ export function App() {
                     type="button"
                     className="search-clear-btn"
                     onClick={() => setLandingSearchQuery("")}
-                    aria-label="Limpiar búsqueda"
+                    aria-label={t("landing.searchClearAriaLabel")}
                   >
                     <X size={12} />
                   </button>
@@ -507,14 +508,14 @@ export function App() {
             </div>
 
             {loading ? (
-              <p className="landing-muted">Cargando campañas del archivo...</p>
+              <p className="landing-muted">{t("landing.loadingCampaigns")}</p>
             ) : error ? (
               <div className="landing-empty landing-error-container">
                 <AlertTriangle size={24} className="icon-critical" />
-                <p>Error al cargar el archivo arcanum</p>
+                <p>{t("landing.errorTitle")}</p>
                 <span>{error}</span>
                 <button className="btn btn-secondary" type="button" onClick={() => fetchCampaigns()}>
-                  Reintentar lectura
+                  {t("landing.retryButton")}
                 </button>
               </div>
             ) : filteredCampaigns.length === 0 ? (
@@ -528,13 +529,13 @@ export function App() {
                 <div className="landing-empty__copy">
                   {landingSearchQuery ? (
                     <>
-                      <p>No se encontraron campañas</p>
-                      <span>No hay tomos que coincidan con la búsqueda "{landingSearchQuery}".</span>
+                      <p>{t("landing.searchEmptyTitle")}</p>
+                      <span>{t("landing.searchEmptyDesc", { query: landingSearchQuery })}</span>
                     </>
                   ) : (
                     <>
-                      <p>Tu tomo de campañas está en blanco</p>
-                      <span>Crea una nueva campaña en el panel lateral para iniciar tu registro narrativo.</span>
+                      <p>{t("landing.emptyTitle")}</p>
+                      <span>{t("landing.emptyDesc")}</span>
                     </>
                   )}
                 </div>
@@ -560,17 +561,17 @@ export function App() {
               <div className="landing-section-header">
                 <h2>
                   <Plus size={18} />
-                  Nueva Campaña
+                  {t("landing.createTitle")}
                 </h2>
               </div>
 
               <form onSubmit={handleCreateCampaignSubmit} className="landing-creator-form">
                 <div className="form-group">
-                  <label className="form-label">Título de la Campaña</label>
+                  <label className="form-label">{t("landing.campaignTitleLabel")}</label>
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="Ej: Las Sombras sobre Phandalin"
+                    {...{placeholder: t("landing.campaignTitlePlaceholder")}}
                     value={newCampaignTitle}
                     onChange={(e) => setNewCampaignTitle(e.target.value)}
                     required
@@ -578,21 +579,21 @@ export function App() {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Sistema de Reglas</label>
+                  <label className="form-label">{t("landing.systemLabel")}</label>
                   <select
                     className="form-select"
                     value={newCampaignSystem}
                     onChange={(e) => setNewCampaignSystem(e.target.value)}
                   >
-                    <option value="generic_fantasy_d20">Fantasía d20 Genérica</option>
-                    <option value="dnd_srd_5_2_1">Dungeons & Dragons SRD 5.2.1</option>
-                    <option value="custom">Sistema Personalizado</option>
+                    <option value="generic_fantasy_d20">{t("landing.systemFantasyD20Generic")}</option>
+                    <option value="dnd_srd_5_2_1">{t("landing.systemDnD")}</option>
+                    <option value="custom">{t("landing.systemCustom")}</option>
                   </select>
                 </div>
 
                 {/* Stepped Template Selection */}
                 <div className="form-group">
-                  <label className="form-label">Plantilla Inicial de Canvas</label>
+                  <label className="form-label">{t("landing.templateLabel")}</label>
                   <div className="template-options-grid">
                     <label className={`template-option ${newCampaignTemplate === "empty" ? "selected" : ""}`}>
                       <input
@@ -603,8 +604,8 @@ export function App() {
                         onChange={(e) => setNewCampaignTemplate(e.target.value)}
                         className="hidden-radio"
                       />
-                      <span className="template-label">Lienzo vacío</span>
-                      <span className="template-desc">Inicio limpio sin nodos</span>
+                      <span className="template-label">{t("landing.templateEmpty")}</span>
+                      <span className="template-desc">{t("landing.templateEmptyDesc")}</span>
                     </label>
                     <label className={`template-option ${newCampaignTemplate === "mystery" ? "selected" : ""}`}>
                       <input
@@ -615,8 +616,8 @@ export function App() {
                         onChange={(e) => setNewCampaignTemplate(e.target.value)}
                         className="hidden-radio"
                       />
-                      <span className="template-label">Misterio</span>
-                      <span className="template-desc">Estructura para investigaciones</span>
+                      <span className="template-label">{t("landing.templateMystery")}</span>
+                      <span className="template-desc">{t("landing.templateMysteryDesc")}</span>
                     </label>
                     <label className={`template-option ${newCampaignTemplate === "faction" ? "selected" : ""}`}>
                       <input
@@ -627,14 +628,14 @@ export function App() {
                         onChange={(e) => setNewCampaignTemplate(e.target.value)}
                         className="hidden-radio"
                       />
-                      <span className="template-label">Facciones</span>
-                      <span className="template-desc">Lucha de influencias y poder</span>
+                      <span className="template-label">{t("landing.templateFaction")}</span>
+                      <span className="template-desc">{t("landing.templateFactionDesc")}</span>
                     </label>
                   </div>
                 </div>
 
                 <button type="submit" className="btn btn-primary landing-primary-action">
-                  Iniciar archivo de campaña
+                  {t("landing.createButton")}
                 </button>
               </form>
             </section>
@@ -645,28 +646,28 @@ export function App() {
                 <summary>
                   <span>
                     <RotateCcw size={17} />
-                    Restaurar copia de seguridad
+                    {t("landing.restoreTitle")}
                   </span>
                 </summary>
 
                 <form onSubmit={handleRestoreBackupSubmit} className="landing-restore-form">
                   <div className="form-group">
-                    <label className="form-label">Nombre del backup</label>
+                    <label className="form-label">{t("landing.backupNameLabel")}</label>
                     <input
                       type="text"
                       className="form-input"
-                      placeholder="backup_xxx.json"
+                      {...{placeholder: t("landing.backupNamePlaceholder")}}
                       value={backupRestorePath}
                       onChange={(e) => setBackupRestorePath(e.target.value)}
                       required
                     />
                     <small className="form-help">
-                      Introduce el nombre del archivo JSON guardado en la carpeta de backups.
+                      {t("landing.backupHelp")}
                     </small>
                   </div>
 
                   <button type="submit" className="btn btn-secondary landing-secondary-action">
-                    Restaurar Estado
+                    {t("landing.restoreButton")}
                   </button>
                 </form>
               </details>
@@ -679,7 +680,7 @@ export function App() {
         {mysticalTransitionId && (
           <div className="mystical-portal-overlay mystical-portal-overlay--in" aria-live="assertive">
             <div className="mystical-portal-glow"></div>
-            <div className="mystical-portal-text">Entrando en la campaña...</div>
+            <div className="mystical-portal-text">{t("landing.enteringCampaign")}</div>
           </div>
         )}
       </div>
@@ -786,12 +787,12 @@ export function App() {
           <div className="top-bar-title">
             {campaignState.campaign?.currentLocationId && (
               <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.9rem", color: "var(--text-muted)" }}>
-                <MapPin size={16} /> {campaignState.entities.find(e => e.entityId === campaignState.campaign?.currentLocationId)?.title || "Unknown Location"}
+                <MapPin size={16} /> {campaignState.entities.find(e => e.entityId === campaignState.campaign?.currentLocationId)?.title || t("landing.topBarUnknownLocation")}
               </span>
             )}
             {campaignState.campaign?.currentQuestId && (
               <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.9rem", color: "var(--primary)", borderLeft: "1px solid var(--border-color)", paddingLeft: "12px", marginLeft: "12px" }}>
-                <Shield size={16} /> Active Quest: {campaignState.entities.find(e => e.entityId === campaignState.campaign?.currentQuestId)?.title || "Unknown Quest"}
+                <Shield size={16} /> {t("landing.topBarActiveQuest")} {campaignState.entities.find(e => e.entityId === campaignState.campaign?.currentQuestId)?.title || "Unknown Quest"}
               </span>
             )}
           </div>
@@ -803,12 +804,12 @@ export function App() {
               </span>
             ) : (
               <button className="btn btn-primary btn-sm" onClick={() => startSession(`Session ${campaignState.sessions.length + 1}`)}>
-                <Play size={14} /> Iniciar nueva sesión
+                <Play size={14} />{t("landing.topBarStartSession")}
               </button>
             )}
 
             <button className="btn btn-secondary btn-sm" onClick={() => setIsEntityModalOpen(true)}>
-              <Plus size={14} /> Nueva entidad
+              <Plus size={14} />{t("landing.topBarNewEntity")}
             </button>
           </div>
         </div>

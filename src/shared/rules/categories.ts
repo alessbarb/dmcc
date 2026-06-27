@@ -1,0 +1,15 @@
+export const RULE_CATEGORY_IDS = {
+  gameplay: "Reglas de Juego",
+  characterCreation: "Creación de Personajes",
+  classes: "Clases",
+  origins: "Orígenes de Personajes",
+  feats: "Dotes",
+  equipment: "Equipo",
+  spellcasting: "Casteo de Conjuros",
+  spells: "Conjuros",
+  glossary: "Glosario de Reglas",
+  toolbox: "Caja de Herramientas de Juego",
+  magicItems: "Objetos Mágicos",
+  monsters: "Monstruos",
+  animalsAndBeasts: "Animales y Bestias",
+} as const;
