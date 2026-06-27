@@ -4,6 +4,8 @@ import {
   Lightbulb, AlertTriangle, RefreshCw, HelpCircle,
 } from "lucide-react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 export interface CanvasFactNodeProps {
   id: string;
@@ -19,17 +21,6 @@ export interface CanvasFactNodeProps {
   selected?: boolean;
 }
 
-const KIND_CONFIG: Record<string, { label: string; color: string; Icon: React.ElementType }> = {
-  canon:         { label: "CANON",      color: "#10b981", Icon: CheckCircle2 },
-  dm_secret:     { label: "SECRETO DM", color: "#dc2626", Icon: Lock },
-  rumor:         { label: "RUMOR",      color: "#d97706", Icon: MessageSquare },
-  lie:           { label: "MENTIRA",    color: "#ea580c", Icon: XCircle },
-  player_theory: { label: "TEORÍA",     color: "#6366f1", Icon: Lightbulb },
-  mistake:       { label: "ERROR",      color: "#64748b", Icon: AlertTriangle },
-  retcon:        { label: "RETCON",     color: "#8b5cf6", Icon: RefreshCw },
-  unknown:       { label: "DESCONOCIDO", color: "#94a3b8", Icon: HelpCircle },
-};
-
 const CONFIDENCE_DOTS: Record<string, { dots: number; label: string }> = {
   unconfirmed: { dots: 1, label: "Sin confirmar" },
   suspected:   { dots: 2, label: "Sospechado" },
@@ -39,7 +30,19 @@ const CONFIDENCE_DOTS: Record<string, { dots: number; label: string }> = {
 };
 
 export function CanvasFactNode({ id: _id, data, selected }: CanvasFactNodeProps) {
+  const { t } = useTranslation();
   const campaignState = useCampaignStore(s => s.campaignState);
+
+  const KIND_CONFIG: Record<string, { label: string; color: string; Icon: React.ElementType }> = {
+    canon:         { label: "CANON",                         color: "#10b981", Icon: CheckCircle2 },
+    dm_secret:     { label: "SECRETO DM",                    color: "#dc2626", Icon: Lock },
+    rumor:         { label: "RUMOR",                         color: "#d97706", Icon: MessageSquare },
+    lie:           { label: "MENTIRA",                       color: "#ea580c", Icon: XCircle },
+    player_theory: { label: t("canvas.factNode.kindTheory"), color: "#6366f1", Icon: Lightbulb },
+    mistake:       { label: "ERROR",                         color: "#64748b", Icon: AlertTriangle },
+    retcon:        { label: "RETCON",                        color: "#8b5cf6", Icon: RefreshCw },
+    unknown:       { label: "DESCONOCIDO",                   color: "#94a3b8", Icon: HelpCircle },
+  };
 
   // Resolve from store if not pre-passed
   const fact = data.factId
@@ -50,7 +53,7 @@ export function CanvasFactNode({ id: _id, data, selected }: CanvasFactNodeProps)
           : undefined)
     : undefined;
 
-  const statement = data.statement ?? fact?.statement ?? "(sin declaración)";
+  const statement = data.statement ?? fact?.statement ?? t("canvas.factNode.noStatement");
   const kind = data.kind ?? fact?.kind ?? "unknown";
   const confidence = data.confidence ?? fact?.confidence ?? "medium";
   const relatedCount = data.relatedEntityCount

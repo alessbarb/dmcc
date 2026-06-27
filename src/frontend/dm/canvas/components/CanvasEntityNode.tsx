@@ -7,28 +7,8 @@ import {
   MessageSquare, BookOpen, FileText, StickyNote, Eye, Zap,
   CheckCircle2
 } from "lucide-react";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 
-const TYPE_CONFIGS: Record<string, { label: string; icon: any; color: string; heroStyle: "portrait" | "panorama" | "compact" }> = {
-  player_character: { label: "PJ",         icon: User,           color: "#6366f1", heroStyle: "portrait"  },
-  npc:              { label: "PNJ",         icon: UserCheck,      color: "#3b82f6", heroStyle: "portrait"  },
-  location:         { label: "Lugar",       icon: MapPin,         color: "#10b981", heroStyle: "panorama"  },
-  faction:          { label: "Facción",     icon: Shield,         color: "#f59e0b", heroStyle: "portrait"  },
-  quest:            { label: "Misión",      icon: Award,          color: "#f97316", heroStyle: "compact"   },
-  clue:             { label: "Pista",       icon: HelpCircle,     color: "#eab308", heroStyle: "compact"   },
-  secret:           { label: "Secreto",     icon: Key,            color: "#ef4444", heroStyle: "compact"   },
-  item:             { label: "Objeto",      icon: Box,            color: "#8b5cf6", heroStyle: "compact"   },
-  creature:         { label: "Criatura",    icon: Skull,          color: "#dc2626", heroStyle: "portrait"  },
-  encounter:        { label: "Encuentro",   icon: Activity,       color: "#0891b2", heroStyle: "compact"   },
-  scene:            { label: "Escena",      icon: Film,           color: "#64748b", heroStyle: "panorama"  },
-  front:            { label: "Frente",      icon: AlertTriangle,  color: "#7c3aed", heroStyle: "compact"   },
-  clock:            { label: "Reloj",       icon: Clock,          color: "#0ea5e9", heroStyle: "compact"   },
-  decision:         { label: "Decisión",    icon: GitPullRequest, color: "#d97706", heroStyle: "compact"   },
-  consequence:      { label: "Consecuencia",icon: RefreshCcw,     color: "#b45309", heroStyle: "compact"   },
-  rumor:            { label: "Rumor",       icon: MessageSquare,  color: "#6b7280", heroStyle: "compact"   },
-  rule_reference:   { label: "Regla",       icon: BookOpen,       color: "#374151", heroStyle: "compact"   },
-  handout:          { label: "Documento",   icon: FileText,       color: "#1d4ed8", heroStyle: "compact"   },
-  note:             { label: "Nota",        icon: StickyNote,     color: "#475569", heroStyle: "compact"   },
-};
 
 export interface CanvasEntityNodeProps {
   id: string;
@@ -43,6 +23,30 @@ export interface CanvasEntityNodeProps {
 }
 
 export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodeProps) {
+  const { t } = useTranslation();
+
+  const TYPE_CONFIGS: Record<string, { label: string; icon: any; color: string; heroStyle: "portrait" | "panorama" | "compact" }> = {
+    player_character: { label: "PJ",                             icon: User,           color: "#6366f1", heroStyle: "portrait"  },
+    npc:              { label: "PNJ",                            icon: UserCheck,      color: "#3b82f6", heroStyle: "portrait"  },
+    location:         { label: "Lugar",                          icon: MapPin,         color: "#10b981", heroStyle: "panorama"  },
+    faction:          { label: t("domain.entityTypes.faction"),  icon: Shield,         color: "#f59e0b", heroStyle: "portrait"  },
+    quest:            { label: t("domain.entityTypes.quest"),    icon: Award,          color: "#f97316", heroStyle: "compact"   },
+    clue:             { label: "Pista",                          icon: HelpCircle,     color: "#eab308", heroStyle: "compact"   },
+    secret:           { label: t("domain.entityTypes.secret"),   icon: Key,            color: "#ef4444", heroStyle: "compact"   },
+    item:             { label: "Objeto",                         icon: Box,            color: "#8b5cf6", heroStyle: "compact"   },
+    creature:         { label: "Criatura",                       icon: Skull,          color: "#dc2626", heroStyle: "portrait"  },
+    encounter:        { label: "Encuentro",                      icon: Activity,       color: "#0891b2", heroStyle: "compact"   },
+    scene:            { label: "Escena",                         icon: Film,           color: "#64748b", heroStyle: "panorama"  },
+    front:            { label: "Frente",                         icon: AlertTriangle,  color: "#7c3aed", heroStyle: "compact"   },
+    clock:            { label: "Reloj",                          icon: Clock,          color: "#0ea5e9", heroStyle: "compact"   },
+    decision:         { label: t("domain.entityTypes.decision"), icon: GitPullRequest, color: "#d97706", heroStyle: "compact"   },
+    consequence:      { label: "Consecuencia",                   icon: RefreshCcw,     color: "#b45309", heroStyle: "compact"   },
+    rumor:            { label: "Rumor",                          icon: MessageSquare,  color: "#6b7280", heroStyle: "compact"   },
+    rule_reference:   { label: "Regla",                          icon: BookOpen,       color: "#374151", heroStyle: "compact"   },
+    handout:          { label: "Documento",                      icon: FileText,       color: "#1d4ed8", heroStyle: "compact"   },
+    note:             { label: "Nota",                           icon: StickyNote,     color: "#475569", heroStyle: "compact"   },
+  };
+
   const {
     campaignState,
     updateEntity,
@@ -127,7 +131,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
           const kind = entity.visibility?.kind || "dm_only";
           if (kind === "dm_only" || kind === "dm") {
             return (
-              <div className="rg-card__dm-badge rg-card__dm-badge--secret" title="Secreto DM (Solo visible para el DM)">
+              <div className="rg-card__dm-badge rg-card__dm-badge--secret" title={t("canvas.node.visibilityDmOnly")}>
                 <span style={{ fontSize: "9px" }}>🔒 Secreto DM</span>
               </div>
             );
@@ -174,7 +178,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
                 await recordSessionEvent(activeSession.sessionId, {
                   type: "reveal",
                   title: `Revelado: ${entity.title}`,
-                  description: `El DM reveló la entidad "${entity.title}" desde el canvas de dirección.`,
+                  description: t("toasts.entityRevealedCanvas", { title: entity.title }),
                   relatedEntityIds: [entity.entityId],
                 });
               }
@@ -188,7 +192,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
           <button
             onClick={async (e) => {
               e.stopPropagation();
-              const text = window.prompt(`Añadir nota de sesión para: ${entity.title}`);
+              const text = window.prompt(t("canvas.node.addSessionNotePrompt", { title: entity.title }));
               if (text && text.trim()) {
                 const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
                 if (activeSession) {
@@ -199,11 +203,11 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
                     relatedEntityIds: [entity.entityId],
                   });
                 } else {
-                  alert("No hay ninguna sesión activa en curso para añadir notas.");
+                  alert(t("canvas.node.noActiveSessionNote"));
                 }
               }
             }}
-            title="Añadir Nota de Sesión"
+            title={t("canvas.node.addSessionNoteLabel")}
             className="node-direction-btn"
           >
             <StickyNote size={12} />
@@ -213,7 +217,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
               e.stopPropagation();
               const currentStatus = entity.status || "ready";
               let newStatus = "resolved";
-              
+
               if (entity.entityType === "npc") {
                 newStatus = currentStatus === "alive" ? "dead" : "alive";
               } else if (entity.entityType === "location") {
@@ -233,13 +237,13 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
               if (activeSession) {
                 await recordSessionEvent(activeSession.sessionId, {
                   type: "status_changed",
-                  title: `Estado de ${entity.title}: ${newStatus}`,
-                  description: `Se actualizó el estado de "${entity.title}" a "${newStatus}" desde el canvas.`,
+                  title: t("canvas.node.statusPrompt", { title: entity.title, status: newStatus }),
+                  description: t("toasts.statusUpdatedCanvas", { title: entity.title, status: newStatus }),
                   relatedEntityIds: [entity.entityId],
                 });
               }
             }}
-            title="Cambiar/Resolver Estado"
+            title={t("canvas.node.changeStatus")}
             className="node-direction-btn"
           >
             <CheckCircle2 size={12} />
@@ -247,7 +251,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
           <button
             onClick={async (e) => {
               e.stopPropagation();
-              const title = window.prompt(`Título de la consecuencia para: ${entity.title}`);
+              const title = window.prompt(t("canvas.node.consequenceTitlePrompt", { title: entity.title }));
               if (title && title.trim()) {
                 const campaignId = campaignState?.campaign?.campaignId;
                 if (!campaignId) return;
@@ -259,7 +263,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
                     importance: "normal",
                     visibility: { kind: "dm_only" }
                   });
-                  
+
                   const updatedStore = useCampaignStore.getState();
                   const created = updatedStore.campaignState?.entities?.slice(-1)[0];
                   if (created) {
@@ -267,13 +271,13 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
                     const currentNode = canvas?.nodes?.find((n: any) => n.entityId === entity.entityId);
                     const x = currentNode ? currentNode.x + 200 : 100;
                     const y = currentNode ? currentNode.y : 100;
-                    
+
                     await placeNodeOnCanvas(data.canvasId, { kind: "entity", entityId: created.entityId, x, y });
-                    
+
                     const finalStore = useCampaignStore.getState();
                     const finalCanvas = finalStore.canvasesById[data.canvasId];
                     const newNode = finalCanvas?.nodes?.find((n: any) => n.entityId === created.entityId);
-                    
+
                     if (currentNode && newNode) {
                       await addEdgeToCanvas(data.canvasId, {
                         sourceNodeId: currentNode.id,
@@ -290,7 +294,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
                 }
               }
             }}
-            title="Añadir Consecuencia Conectada"
+            title={t("canvas.node.addConsequence")}
             className="node-direction-btn"
           >
             <RefreshCcw size={12} />

@@ -3,6 +3,8 @@ import { Handle, Position } from "reactflow";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { Wand2, Trash2 } from "lucide-react";
 import { ConvertNoteToEntityDialog } from "./ConvertNoteToEntityDialog.js";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+
 
 export interface CanvasNoteNodeProps {
   id: string;
@@ -23,6 +25,7 @@ const COLOR_CLASSES = {
 };
 
 export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
+  const { t } = useTranslation();
   const { updateCanvasNode, removeNodeFromCanvas } = useCampaignStore();
   const [localText, setLocalText] = useState(data.text || "");
   const [isConvertOpen, setIsConvertOpen] = useState(false);
@@ -94,7 +97,7 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
           <button
             onClick={() => removeNodeFromCanvas(data.canvasId, id)}
             className="note-action-btn btn-delete text-critical"
-            title="Eliminar nota"
+            title={t("canvas.noteNode.deleteNote")}
           >
             <Trash2 size={12} />
           </button>
@@ -108,7 +111,7 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
           onChange={(e) => setLocalText(e.target.value)}
           onBlur={handleBlur}
           className="note-textarea"
-          placeholder="Escribe una idea rápida..."
+          placeholder={t("canvas.noteNode.contentPlaceholder")}
         />
       </div>
 
