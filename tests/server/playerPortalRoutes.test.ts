@@ -37,14 +37,25 @@ async function seedPlayer(server: any, campaignId = "cmp_portal") {
   return token;
 }
 
-async function issueToken(server: any, dmToken: string) {
+async function issueToken(server: any, dmToken: string, playerId = "ply_1") {
   const res = await server.inject({
     method: "POST",
-    url: "/api/campaigns/cmp_portal/players/ply_1/token",
+    url: `/api/campaigns/cmp_portal/players/${playerId}/token`,
     payload: { label: "phone" },
     headers: { "x-dm-token": dmToken },
   });
   return res.json().token as string;
+}
+
+async function issueTokenRaw(server: any, dmToken: string, playerId = "ply_1") {
+  const res = await server.inject({
+    method: "POST",
+    url: `/api/campaigns/cmp_portal/players/${playerId}/token`,
+    payload: { label: "phone" },
+    headers: { "x-dm-token": dmToken },
+  });
+  const json = res.json();
+  return { token: json.token as string, tokenId: json.tokenId as string };
 }
 
 describe("player portal tokens", () => {
@@ -221,5 +232,66 @@ it("writes two events to the event store on proposal approval (multi-event resul
       (p: any) => p.proposalId === proposalId
     );
     expect(resolvedProposal.status).toBe("approved");
+  });
+});
+
+it("rejects a revoked player token", async () => {
+  await withTempDataDir(async (dataDir) => {
+    const server = createServer({ dataDir });
+    const dmToken = await seedPlayer(server);
+    const { token, tokenId } = await issueTokenRaw(server, dmToken);
+
+    // revoke
+    const revoke = await server.inject({
+      method: "DELETE",
+      url: `/api/campaigns/cmp_portal/players/ply_1/token/${tokenId}`,
+      headers: { "x-dm-token": dmToken },
+    });
+    expect(revoke.statusCode).toBe(200);
+
+    // revoked token rejected
+    const state = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal/player-portal/state",
+      headers: { "x-player-token": token },
+    });
+    expect(state.statusCode).toBe(401);
+  });
+});
+
+it("player cannot update another player note", async () => {
+  await withTempDataDir(async (dataDir) => {
+    const server = createServer({ dataDir });
+    const dmToken = await seedPlayer(server);
+
+    // seed second player
+    await server.inject({
+      method: "POST",
+      url: "/api/campaigns/cmp_portal/players",
+      payload: { playerId: "ply_2", name: "Player Two", displayName: "Player Two" },
+      headers: { "x-dm-token": dmToken },
+    });
+
+    const token1 = await issueToken(server, dmToken, "ply_1");
+    const token2 = await issueToken(server, dmToken, "ply_2");
+
+    // ply_1 creates a note
+    const noteRes = await server.inject({
+      method: "POST",
+      url: "/api/campaigns/cmp_portal/player-portal/notes",
+      payload: { title: "P1 note", content: "secret", visibility: "private", linkedEntityIds: [] },
+      headers: { "x-player-token": token1 },
+    });
+    expect(noteRes.statusCode).toBe(201);
+    const noteId = noteRes.json().noteId;
+
+    // ply_2 tries to update ply_1's note
+    const attempt = await server.inject({
+      method: "PUT",
+      url: `/api/campaigns/cmp_portal/player-portal/notes/${noteId}`,
+      payload: { title: "Hacked", content: "owned", visibility: "private" },
+      headers: { "x-player-token": token2 },
+    });
+    expect(attempt.statusCode).toBe(404);
   });
 });
