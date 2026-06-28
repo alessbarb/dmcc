@@ -25,7 +25,16 @@ import {
   LayoutGrid,
   ChevronLeft,
   ChevronRight,
+  MoreHorizontal,
+  X,
 } from "lucide-react";
+
+type CampaignNavItem = {
+  path: string;
+  label: string;
+  Icon: React.ComponentType<{ size?: number }>;
+  mobilePrimary?: boolean;
+};
 
 type PageMeta = {
   titleKey: string;
@@ -100,8 +109,7 @@ export function CampaignShell() {
     isEntityModalOpen,
     setIsEntityModalOpen,
     isRelationModalOpen,
-    setIsRelationModalOpen,
-    startSession
+    setIsRelationModalOpen
   } = useCampaignStore();
   const navigate = useNavigate();
   const { toasts, removeToast } = useToast();
@@ -112,6 +120,7 @@ export function CampaignShell() {
   const role = sessionStorage.getItem("dmcc_role");
 
   const [showExitTransition, setShowExitTransition] = useState(true);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     setShowExitTransition(true);
@@ -135,19 +144,22 @@ export function CampaignShell() {
 
   const currentSegment = pathname.split("/")[3] ?? "";
 
-  const NAV = [
+  const NAV: CampaignNavItem[] = [
+    { path: "dashboard", label: t("campaignShell.nav.dashboard"), Icon: Shield, mobilePrimary: true },
+    { path: "what-now", label: t("campaignShell.nav.whatNow"), Icon: BookOpen, mobilePrimary: true },
+    { path: "session", label: t("campaignShell.nav.session"), Icon: Play, mobilePrimary: true },
+    { path: "entities", label: t("campaignShell.nav.entities"), Icon: Layers, mobilePrimary: true },
+    { path: "search", label: t("campaignShell.nav.search"), Icon: Search, mobilePrimary: true },
     { path: "canvas", label: t("campaignShell.nav.canvas"), Icon: LayoutGrid },
-    { path: "dashboard", label: t("campaignShell.nav.dashboard"), Icon: Shield },
-    { path: "what-now", label: t("campaignShell.nav.whatNow"), Icon: BookOpen },
-    { path: "session", label: t("campaignShell.nav.session"), Icon: Play },
-    { path: "entities", label: t("campaignShell.nav.entities"), Icon: Layers },
     { path: "graph", label: t("campaignShell.nav.graph"), Icon: GitFork },
     { path: "timeline", label: t("campaignShell.nav.timeline"), Icon: List },
     { path: "boards", label: t("campaignShell.nav.boards"), Icon: Activity },
     { path: "players", label: t("campaignShell.nav.players"), Icon: User },
-    { path: "search", label: t("campaignShell.nav.search"), Icon: Search },
     { path: "settings", label: t("campaignShell.nav.settings"), Icon: Settings },
   ];
+
+  const mobilePrimaryNav = NAV.filter((item) => item.mobilePrimary);
+  const mobileMoreNav = NAV.filter((item) => !item.mobilePrimary);
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     () => localStorage.getItem("dmcc-sidebar-collapsed") === "1"
@@ -177,11 +189,12 @@ export function CampaignShell() {
     : null;
 
   const handleNavClick = (path: string) => {
+    setMobileNavOpen(false);
     navigate({ to: `/campaigns/${campaignId}/${path}` });
   };
 
   return (
-    <div className={`app-container ${currentSegment === "canvas" ? "app-container--canvas" : ""}`}>
+    <div className={`app-container app-container--campaign-shell ${currentSegment === "canvas" ? "app-container--canvas" : ""}`}>
       {/* Sidebar Navigation */}
       <aside
         className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}
@@ -254,6 +267,99 @@ export function CampaignShell() {
         </div>
       </aside>
 
+      {/* Mobile top navigation */}
+      <header className="campaign-mobile-header">
+        <div className="campaign-mobile-header__title">
+          <strong>{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</strong>
+          <span>{campaignState?.campaign?.system ?? ""}</span>
+        </div>
+      </header>
+
+      {mobileNavOpen && (
+        <div
+          className="campaign-mobile-nav-overlay"
+          role="presentation"
+          onClick={() => setMobileNavOpen(false)}
+        >
+          <section
+            className="campaign-mobile-nav-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("campaignShell.campaignMenuLabel")}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="campaign-mobile-nav-sheet__header">
+              <div>
+                <strong>{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</strong>
+                <span>{campaignState?.campaign?.system ?? ""}</span>
+              </div>
+
+              <button
+                type="button"
+                className="campaign-mobile-icon-btn"
+                onClick={() => setMobileNavOpen(false)}
+                aria-label={t("campaignShell.closeCampaignMenuLabel")}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="campaign-mobile-nav-sheet__body">
+              <p className="campaign-mobile-nav-sheet__eyebrow">{t("campaignShell.mobileTools")}</p>
+
+              <div className="campaign-mobile-nav-sheet__grid">
+                {mobileMoreNav.map(({ path, label, Icon }) => (
+                  <button
+                    key={path}
+                    type="button"
+                    className={`campaign-mobile-nav-sheet__item ${currentSegment === path ? "active" : ""}`}
+                    onClick={() => handleNavClick(path)}
+                  >
+                    <Icon size={18} />
+                    <span>{label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="campaign-mobile-nav-sheet__footer">
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => navigate({ to: "/dm" })}
+              >
+                <ArrowLeft size={14} />
+                {t("nav.exit")}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {/* Mobile bottom navigation */}
+      <nav className="campaign-mobile-bottom-nav" aria-label={t("campaignShell.mainNavigationLabel")}>
+        {mobilePrimaryNav.map(({ path, label, Icon }) => (
+          <button
+            key={path}
+            type="button"
+            className={`campaign-mobile-bottom-nav__item ${currentSegment === path ? "active" : ""}`}
+            onClick={() => handleNavClick(path)}
+          >
+            <Icon size={19} />
+            <span>{label}</span>
+          </button>
+        ))}
+
+        <button
+          type="button"
+          className="campaign-mobile-bottom-nav__item"
+          onClick={() => setMobileNavOpen(true)}
+        >
+          <MoreHorizontal size={19} />
+          <span>Más</span>
+        </button>
+      </nav>
+
       {/* Main Content Area */}
       <main className={`main-content ${currentSegment === "canvas" ? "main-content--canvas" : ""}`}>
         {currentSegment !== "canvas" && (
@@ -292,9 +398,9 @@ export function CampaignShell() {
               ) : (
                 <button
                   className="btn btn-primary btn-sm"
-                  onClick={() => startSession(t("campaignShell.newSessionTitle", { number: (campaignState?.sessions ?? []).length + 1 }))}
+                  onClick={() => navigate({ to: `/campaigns/${campaignId}/session` })}
                 >
-                  <Play size={14} /> {t("campaignShell.startNewSession")}
+                  <Play size={14} /> {t("campaignShell.prepareOrStartSession")}
                 </button>
               )}
 

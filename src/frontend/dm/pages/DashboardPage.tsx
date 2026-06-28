@@ -193,6 +193,31 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
     return map[importance.toLowerCase()] ?? { label: importance, cls: "badge-default" };
   };
 
+  const quickActionsGridStyle: React.CSSProperties = {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(min(138px, 100%), 1fr))",
+    gap: "12px",
+  };
+
+  const quickActionButtonStyle: React.CSSProperties = {
+    minWidth: 0,
+    minHeight: "76px",
+    height: "auto",
+    display: "inline-flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "10px",
+    padding: "16px 10px",
+    fontSize: "0.82rem",
+    fontWeight: 700,
+    lineHeight: 1.15,
+    letterSpacing: "-0.01em",
+    borderRadius: "var(--radius-lg)",
+    textAlign: "center",
+    whiteSpace: "normal",
+  };
+
   // ── layout ──────────────────────────────────────────────────────────────────
   return (<>
     <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
@@ -970,46 +995,26 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
       <section>
         <SectionLabel>{t("dashboard.quickActions")}</SectionLabel>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "16px",
-          }}
-        >
+        <div style={quickActionsGridStyle}>
           {/* Iniciar sesión */}
           <button
             className="btn btn-primary"
             style={{
-              flexDirection: "column",
-              gap: "10px",
-              padding: "22px 16px",
-              height: "auto",
-              fontSize: "0.9rem",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              borderRadius: "var(--radius-lg)",
+              ...quickActionButtonStyle,
               boxShadow:
                 "var(--shadow-primary), inset 0 1px 0 hsla(255, 100%, 90%, 0.15)",
             }}
             onClick={() => setCurrentPage("session")}
           >
             <Play size={20} />
-            {t("dashboard.startSession")}
+            <span>{t("dashboard.startSession")}</span>
           </button>
 
           {/* Nueva pista */}
           <button
             className="btn btn-secondary"
             style={{
-              flexDirection: "column",
-              gap: "10px",
-              padding: "22px 16px",
-              height: "auto",
-              fontSize: "0.9rem",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              borderRadius: "var(--radius-lg)",
+              ...quickActionButtonStyle,
               borderColor: "hsla(175, 85%, 45%, 0.3)",
             }}
             onClick={() => setCurrentPage("entities")}
@@ -1021,16 +1026,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           {/* Nuevo PNJ */}
           <button
             className="btn btn-secondary"
-            style={{
-              flexDirection: "column",
-              gap: "10px",
-              padding: "22px 16px",
-              height: "auto",
-              fontSize: "0.9rem",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              borderRadius: "var(--radius-lg)",
-            }}
+            style={quickActionButtonStyle}
             onClick={() => setCurrentPage("entities")}
           >
             <Users size={20} style={{ color: "var(--text-muted)" }} />
@@ -1041,22 +1037,25 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           <button
             className="btn btn-secondary"
             style={{
-              flexDirection: "column",
-              gap: "10px",
-              padding: "22px 16px",
-              height: "auto",
-              fontSize: "0.9rem",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              borderRadius: "var(--radius-lg)",
+              ...quickActionButtonStyle,
+              position: "relative",
+              paddingRight: "26px",
             }}
             onClick={() => setCurrentPage("graph")}
           >
             <Network size={20} style={{ color: "var(--text-muted)" }} />
             <span>{t("dashboard.viewGraph")}</span>
+
             <ChevronRight
               size={14}
-              style={{ color: "var(--text-muted)", position: "absolute", right: "14px", top: "50%", transform: "translateY(-50%)" }}
+              aria-hidden="true"
+              style={{
+                color: "var(--text-muted)",
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
             />
           </button>
         </div>

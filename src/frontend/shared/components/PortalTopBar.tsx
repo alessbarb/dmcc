@@ -5,44 +5,25 @@ import { useTranslation } from "../i18n/useTranslation.js";
 
 export function PortalTopBar({ actions }: { actions?: React.ReactNode } = {}) {
   const { t } = useTranslation();
+
   return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 20,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "14px 28px",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        background:
-          "linear-gradient(180deg, hsla(230, 35%, 7%, 0.92) 0%, hsla(230, 35%, 7%, 0.72) 100%)",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "9px",
-          fontWeight: 800,
-          fontSize: "0.95rem",
-          letterSpacing: "-0.015em",
-          color: "var(--text-main)",
-        }}
-      >
-        <Shield
-          size={18}
-          style={{
-            color: "var(--accent, var(--primary))",
-            filter: "drop-shadow(0 0 6px hsla(255,85%,65%,0.55))",
-          }}
-        />
-        {t("landing.title1")} {t("landing.title2")}
+    <header className="portal-topbar">
+      <div className="portal-topbar__brand">
+        <Shield className="portal-topbar__brand-icon" size={18} />
+
+        <span className="portal-topbar__brand-full">
+          {t("landing.title1")} {t("landing.title2")}
+        </span>
+
+        <span
+          className="portal-topbar__brand-short"
+          aria-label={`${t("landing.title1")} ${t("landing.title2")}`}
+        >
+          DMCC
+        </span>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+
+      <div className="portal-topbar__actions">
         {actions}
         <LanguagePill />
       </div>

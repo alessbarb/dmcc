@@ -178,7 +178,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
             disabled={inviteLoading}
             style={{ marginBottom: "12px" }}
           >
-            <Plus size={14} /> {inviteLoading ? "Generando..." : "Generar enlace de invitación"}
+            <Plus size={14} /> {inviteLoading ? t("players.creatingInvitation") : t("players.createInvitationLink")}
           </button>
 
           {newInviteUrl && (
@@ -215,7 +215,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                   }}>
                     <Clock size={12} style={{ flexShrink: 0, opacity: 0.5 }} />
                     <span style={{ flex: 1, color: inv.status === "pending" ? "var(--text-main)" : "var(--text-muted)" }}>
-                      {inv.label || `Invitación ${inv.inviteId.slice(-6)}`}
+                      {inv.label || t("players.invitationFallback", { id: inv.inviteId.slice(-6) })}
                     </span>
                     <span style={{
                       padding: "2px 6px",
