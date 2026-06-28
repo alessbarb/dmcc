@@ -28,8 +28,10 @@
     "quality:lint": "npm run lint",
     "seed:oracle": "tsx seeds/campaigns/oracle/seed.ts",
     "seed:oracle:dry": "DMCC_SEED_MODE=dry-run tsx seeds/campaigns/oracle/seed.ts",
-    "seed:oracle:replace": "DMCC_SEED_MODE=replace tsx seeds/campaigns/oracle/seed.ts",
-    "seed:phandalin": "tsx seeds/campaigns/phandalin/seed.ts"
+    "seed:oracle:replace": "DMCC_SEED_MODE=replace DMCC_SEED_CONFIRM=\"La Sombra del Oráculo\" tsx seeds/campaigns/oracle/seed.ts",
+    "seed:phandalin": "tsx seeds/campaigns/phandalin/seed.ts",
+    "seed:phandalin:dry": "DMCC_SEED_MODE=dry-run tsx seeds/campaigns/phandalin/seed.ts",
+    "seed:phandalin:replace": "DMCC_SEED_MODE=replace DMCC_SEED_CONFIRM=\"Las Sombras sobre Phandalin\" tsx seeds/campaigns/phandalin/seed.ts"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
