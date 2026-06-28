@@ -158,7 +158,6 @@ export function SearchPage(props: SearchPageProps = {}) {
                 onClick={() => {
                   if (isEntity) {
                     setSelectedEntity(item._entity);
-                    setCurrentPage("entities");
                   }
                 }}
               >
