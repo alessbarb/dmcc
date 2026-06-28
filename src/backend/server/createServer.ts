@@ -22,6 +22,7 @@ import { registerRuleRoutes } from "./routes/ruleRoutes.js";
 import { registerCanvasRoutes } from "./routes/canvasRoutes.js";
 import { registerPlayerPortalRoutes } from "./routes/playerPortalRoutes.js";
 import { registerHardeningRoutes } from "./routes/hardeningRoutes.js";
+import { registerAuthRoutes } from "./routes/authRoutes.js";
 
 export interface ServerConfig {
   dataDir?: string;
@@ -33,6 +34,9 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   const dmSessionToken = randomBytes(32).toString("hex");
   server.decorate("dmSessionToken", dmSessionToken);
+
+  // Whether the server is exposed on LAN (0.0.0.0) — set by entry/serverConfig.ts
+  server.decorate("lanExposed", false);
 
   // In-memory active access codes mapping campaignId -> plaintext code
   server.decorate("activeAccessCodes", new Map<string, string>());
@@ -102,7 +106,9 @@ export function createServer(config?: ServerConfig): FastifyInstance {
       reply.code(403);
       return { error: "Forbidden: Local token is only available on loopback interface" };
     }
-    return { token: (server as any).dmSessionToken };
+    const token = (server as any).dmSessionToken as string;
+    // Return both keys: legacy `token` for compat + new `dmSessionToken`
+    return { token, dmSessionToken: token };
   });
 
   const opts = { dataDir };
@@ -120,6 +126,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerCanvasRoutes, opts);
   server.register(registerPlayerPortalRoutes, opts);
   server.register(registerHardeningRoutes, opts);
+  server.register(registerAuthRoutes, opts);
 
   return server;
 }

@@ -1,4 +1,23 @@
-import { createHash, randomInt } from "crypto";
+import { createHash, randomBytes, randomInt, scrypt, timingSafeEqual } from "crypto";
+import { promisify } from "util";
+
+const scryptAsync = promisify(scrypt);
+
+export async function hashPin(pin: string): Promise<{ hash: string; salt: string }> {
+  const salt = randomBytes(16).toString("hex");
+  const derived = (await scryptAsync(pin, salt, 64)) as Buffer;
+  return { hash: derived.toString("hex"), salt };
+}
+
+export async function verifyPin(pin: string, salt: string, expectedHash: string): Promise<boolean> {
+  try {
+    const derived = (await scryptAsync(pin, salt, 64)) as Buffer;
+    const expected = Buffer.from(expectedHash, "hex");
+    return timingSafeEqual(derived, expected);
+  } catch {
+    return false;
+  }
+}
 
 export function hashAccessCode(code: string): string {
   return createHash("sha256").update(code).digest("hex");

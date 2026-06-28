@@ -5,5 +5,9 @@ const host = resolveListenHost(process.env);
 const port = Number(process.env.DMCC_PORT ?? "4877");
 const server = createServer();
 
+if (host === "0.0.0.0") {
+  (server as any).lanExposed = true;
+}
+
 await server.listen({ host, port });
 console.log(`DM Campaign Companion listening at ${formatListenUrl(host, port)}`);

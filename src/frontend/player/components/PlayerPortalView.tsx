@@ -14,6 +14,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+import { logoutPlayer } from "@frontend/shared/auth/authClient.js";
 
 
 type PortalTab = "summary" | "character" | "resources" | "diary" | "objectives" | "history";
@@ -155,10 +156,10 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     (p) => p.kind === "create_character" && p.status === "pending"
   );
 
-  const handleExit = () => {
-    sessionStorage.clear();
+  const handleExit = async () => {
+    await logoutPlayer(campaignId);
     useCampaignStore.setState({ activeCampaignId: null, campaignState: null, playerPortalState: null });
-    navigate({ to: "/" });
+    navigate({ to: "/player/join" });
   };
 
   // ── Submit: Character/State ──────────────────────────────────────────────
@@ -355,8 +356,8 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
         </nav>
 
         <div className="sidebar-footer">
-          <button className="btn btn-secondary btn-sm" style={{ width: "100%" }} onClick={handleExit}>
-            Salir del Portal
+          <button className="btn btn-danger btn-sm" style={{ width: "100%" }} onClick={() => void handleExit()}>
+            {t("playerPortal.leavePortal")}
           </button>
         </div>
       </aside>

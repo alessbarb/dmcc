@@ -20,6 +20,7 @@ import {
   BookOpen,
   Layers,
   Sparkles,
+  Lock,
 } from "lucide-react";
 import { getCampaignExitDecision } from "./shared/utils/campaignExit.js";
 import { getRuleSystem } from "@core/domain/rules/index.js";
@@ -40,8 +41,9 @@ import { GraphPage } from "./dm/graph/GraphPage.js";
 import { EntityDetailModal } from "./dm/entities/EntityDetailModal.js";
 import { AppFooter } from "./shared/components/AppFooter.js";
 import { TypeMetadataForm } from "./dm/entities/TypeMetadataForm.js";
-import { LanguagePill } from "./shared/i18n/LanguageSelector.js";
+import { PortalTopBar } from "./shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
+import { lockDm } from "./shared/auth/authClient.js";
 import { LandingCampaignCard } from "./shared/components/LandingCampaignCard.js";
 
 export function App() {
@@ -77,8 +79,6 @@ export function App() {
     exportMarkdown,
     createBackup,
     restoreBackup,
-    lanStatus,
-    toggleLanMode
   } = useCampaignStore();
 
   const { toasts, addToast, removeToast } = useToast();
@@ -185,19 +185,26 @@ export function App() {
 
   useEffect(() => {
     const initAuth = async () => {
-      const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-      if (isLocalhost) {
-        try {
-          const resToken = await fetch("/api/auth/local-token");
-          if (resToken.ok) {
-            const { token } = await resToken.json();
-            sessionStorage.setItem("dmcc_dmSessionToken", token);
-          } else {
-            sessionStorage.removeItem("dmcc_dmSessionToken");
-          }
-        } catch (e) {
-          console.error("Failed to fetch local auth token", e);
-          sessionStorage.removeItem("dmcc_dmSessionToken");
+      try {
+        const { acquireLocalDmToken, fetchAuthStatus, getDmSessionToken } = await import("./shared/auth/authClient.js");
+        const status = await fetchAuthStatus();
+        // On /dm: ensure we have a DM session
+        if (!status.dmSessionValid && status.localRequest && !status.dmPinConfigured) {
+          await acquireLocalDmToken(); // also calls setDmLastUnlocked internally
+        } else if (!status.dmSessionValid && !getDmSessionToken()) {
+          // No valid session and not local/no PIN — SmartLanding will handle routing
+        }
+      } catch (e) {
+        // Non-fatal: server may not have new auth endpoints yet
+        const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+        if (isLocalhost) {
+          try {
+            const resToken = await fetch("/api/auth/local-token");
+            if (resToken.ok) {
+              const { token } = await resToken.json();
+              sessionStorage.setItem("dmcc_dmSessionToken", token);
+            }
+          } catch { /* ignore */ }
         }
       }
       fetchVaults();
@@ -383,6 +390,11 @@ export function App() {
 
   const activeSession = campaignState?.sessions.find(s => s.status === "active");
 
+  const handleLockDm = async () => {
+    await lockDm();
+    await navigate({ to: "/" });
+  };
+
   const exitCampaign = async () => {
     await navigate({ to: "/" });
     useCampaignStore.setState({
@@ -428,19 +440,31 @@ export function App() {
     );
 
     return (
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <PortalTopBar actions={
+          <button
+            type="button"
+            onClick={() => void handleLockDm()}
+            style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", padding: "5px 12px", color: "var(--text-muted)", fontSize: "0.8rem", cursor: "pointer", transition: "border-color 0.2s, color 0.2s" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.3)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
+          >
+            <Lock size={13} />
+            {t("nav.lockWorkspace")}
+          </button>
+        } />
       <div className="landing-shell">
         {/* Animated Hero Header */}
         <header className="landing-hero">
           <RpgPortalBackground />
 
           <div className="landing-hero__content">
-            <div style={{ position: "absolute", top: "16px", right: "16px" }}><LanguagePill /></div>
             <span className="landing-badge">
               <Sparkles size={12} style={{ marginRight: "4px" }} />
               {t("landing.badge")}
             </span>
             <h1 className="landing-hero__title">
-              DM Campaign <span>Companion</span>
+              {t("landing.title1")} <span>{t("landing.title2")}</span>
             </h1>
             <p className="landing-hero__subtitle">
               {t("landing.heroSubtitle")}
@@ -684,6 +708,7 @@ export function App() {
           </div>
         )}
       </div>
+    </div>
     );
   }
 
@@ -778,6 +803,15 @@ export function App() {
               {t("nav.exit")}
             </button>
           </div>
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            style={{ width: "100%", marginTop: "6px", display: "flex", alignItems: "center", gap: "6px", justifyContent: "center", opacity: 0.6, fontSize: "0.78rem" }}
+            onClick={() => void handleLockDm()}
+          >
+            <Lock size={12} />
+            {t("nav.lockWorkspace")}
+          </button>
         </div>
       </aside>
 
@@ -956,8 +990,6 @@ export function App() {
               exportMarkdown={exportMarkdown}
               onCampaignDeleted={exitCampaign}
               addToast={addToast}
-              lanStatus={lanStatus}
-              toggleLanMode={toggleLanMode}
             />
           )}
         </div>
