@@ -128,7 +128,7 @@ export function buildDashboardProjection(campaignState: CampaignProjection): Das
 
   // Prepared/Hidden secrets that have hint conditions
   const hiddenSecrets = entities.filter(
-    (e) => e.entityType === "secret" && e.status === "dm_only" && !e.archived
+    (e) => e.entityType === "secret" && (e.visibility?.kind ?? "dm_only") === "dm_only" && !e.archived
   );
   for (const sec of hiddenSecrets) {
     const meta = sec.metadata as any;

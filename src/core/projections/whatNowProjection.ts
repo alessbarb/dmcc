@@ -5,10 +5,12 @@ import type { Session } from "../domain/session/types.js";
 import { evaluateCampaignHealth } from "../domain/shared/alerts.js";
 
 export interface FocusItem {
-  type: "quest" | "consequence" | "clock" | "npc";
+  type: "quest" | "consequence" | "clock" | "npc" | "clue" | "secret" | "scene";
   title: string;
   description: string;
   urgency: "low" | "medium" | "high";
+  entityId?: string;
+  reason?: string;
 }
 
 export interface KnowledgeAlert {
@@ -29,7 +31,7 @@ export interface WhatNowProjection {
   currentLocation?: Entity;
   currentQuest?: Entity;
   lastSession?: Session;
-  recommendedFocus: any[];
+  recommendedFocus: FocusItem[];
   pendingClues: Entity[];
   hiddenCriticalSecrets: Entity[];
   blockedQuests: Entity[];
@@ -69,7 +71,7 @@ export function buildWhatNowProjection(campaignState: CampaignProjection): WhatN
 
   // Hidden Critical Secrets
   const hiddenCriticalSecrets = entities.filter(
-    (e) => e.entityType === "secret" && e.importance === "critical" && (e.status === "dm_only" || e.status === "hidden") && !e.archived
+    (e) => e.entityType === "secret" && e.importance === "critical" && (e.visibility?.kind ?? "dm_only") === "dm_only" && !e.archived
   );
 
   // Pending Clues
@@ -98,11 +100,71 @@ export function buildWhatNowProjection(campaignState: CampaignProjection): WhatN
     (e) => e.entityType === "consequence" && e.status === "pending" && !e.archived
   );
 
-  // Recommended Focus list
-  const statusOrder = ["ready", "active", "urgent", "next", "pending"];
-  const recommendedFocus = entities
-    .filter((e: any) => !e.archived && statusOrder.includes(e.status))
-    .sort((a: any, b: any) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status));
+  // Recommended Focus list — curated for DM preparation, not a generic active-entity dump.
+  const activeQuests = entities.filter(
+    (e) => e.entityType === "quest" && e.status === "active" && !e.archived
+  );
+  const nextScenes = entities.filter(
+    (e) => e.entityType === "scene" && ["next", "ready", "urgent"].includes(e.status) && !e.archived
+  );
+  const recommendedFocus: FocusItem[] = [
+    ...activeQuests.slice(0, 3).map((quest) => ({
+      type: "quest" as const,
+      entityId: quest.entityId,
+      title: quest.title,
+      description: quest.summary || "Active quest is likely to drive the next session.",
+      urgency: quest.importance === "critical" || quest.importance === "high" ? "high" as const : "medium" as const,
+      reason: "active_quest",
+    })),
+    ...nextScenes.slice(0, 3).map((scene) => ({
+      type: "scene" as const,
+      entityId: scene.entityId,
+      title: scene.title,
+      description: scene.summary || "Scene is marked as next or ready.",
+      urgency: scene.status === "urgent" ? "high" as const : "medium" as const,
+      reason: "next_scene",
+    })),
+    ...blockedQuests.slice(0, 3).map((quest) => ({
+      type: "quest" as const,
+      entityId: quest.entityId,
+      title: quest.title,
+      description: quest.summary || "Active quest needs a clearer player-facing lead.",
+      urgency: "high" as const,
+      reason: "blocked_quest",
+    })),
+    ...pendingClues.slice(0, 4).map((clue) => ({
+      type: "clue" as const,
+      entityId: clue.entityId,
+      title: clue.title,
+      description: clue.summary || "Prepared clue is ready to be placed in the next scene.",
+      urgency: clue.importance === "critical" ? "high" as const : "medium" as const,
+      reason: "prepared_clue",
+    })),
+    ...unresolvedConsequences.slice(0, 3).map((consequence) => ({
+      type: "consequence" as const,
+      entityId: consequence.entityId,
+      title: consequence.title,
+      description: consequence.summary || "A pending consequence needs a trigger or scene.",
+      urgency: consequence.importance === "critical" || consequence.importance === "high" ? "high" as const : "medium" as const,
+      reason: "pending_consequence",
+    })),
+    ...hiddenCriticalSecrets.slice(0, 3).map((secret) => ({
+      type: "secret" as const,
+      entityId: secret.entityId,
+      title: secret.title,
+      description: secret.summary || "Critical secret still has no player-facing reveal.",
+      urgency: "high" as const,
+      reason: "hidden_critical_secret",
+    })),
+    ...staleImportantNpcs.slice(0, 3).map((npc) => ({
+      type: "npc" as const,
+      entityId: npc.entityId,
+      title: npc.title,
+      description: npc.summary || "Important NPC has not appeared recently.",
+      urgency: "medium" as const,
+      reason: "stale_npc",
+    })),
+  ].slice(0, 10);
 
   // Partial Knowledge Alerts
   const partialKnowledgeAlerts: KnowledgeAlert[] = [];

@@ -957,14 +957,9 @@ describe("persistent campaign API", () => {
         ],
       });
       expect(whatNow.statusCode).toBe(200);
-      expect(whatNow.json()).toMatchObject({
+      const whatNowJson = whatNow.json();
+      expect(whatNowJson).toMatchObject({
         campaignId: "cmp_orientation",
-        recommendedFocus: [
-          { entityId: "ent_quest", title: "Find the Well" },
-          { entityId: "ent_next", title: "Return to the cellar" },
-          { entityId: "ent_clue", title: "Old Sigil" },
-          { entityId: "ent_consequence", title: "Mayor retaliates" },
-        ],
         pendingClues: [{ entityId: "ent_clue", title: "Old Sigil" }],
         hiddenCriticalSecrets: [
           { entityId: "ent_secret", title: "Mira is cursed" },
@@ -973,6 +968,17 @@ describe("persistent campaign API", () => {
           { entityId: "ent_consequence", title: "Mayor retaliates" },
         ],
       });
+      expect(whatNowJson.recommendedFocus.slice(0, 4)).toMatchObject([
+        { entityId: "ent_quest", title: "Find the Well" },
+        { entityId: "ent_next", title: "Return to the cellar" },
+        { entityId: "ent_clue", title: "Old Sigil" },
+        { entityId: "ent_consequence", title: "Mayor retaliates" },
+      ]);
+      expect(whatNowJson.recommendedFocus).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ entityId: "ent_secret", title: "Mira is cursed" }),
+        ]),
+      );
     });
   });
 
