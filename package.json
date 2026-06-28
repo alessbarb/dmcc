@@ -31,7 +31,8 @@
     "seed:oracle:replace": "DMCC_SEED_MODE=replace DMCC_SEED_CONFIRM=\"La Sombra del Oráculo\" tsx seeds/campaigns/oracle/seed.ts",
     "seed:phandalin": "tsx seeds/campaigns/phandalin/seed.ts",
     "seed:phandalin:dry": "DMCC_SEED_MODE=dry-run tsx seeds/campaigns/phandalin/seed.ts",
-    "seed:phandalin:replace": "DMCC_SEED_MODE=replace DMCC_SEED_CONFIRM=\"Las Sombras sobre Phandalin\" tsx seeds/campaigns/phandalin/seed.ts"
+    "seed:phandalin:replace": "DMCC_SEED_MODE=replace DMCC_SEED_CONFIRM=\"Las Sombras sobre Phandalin\" tsx seeds/campaigns/phandalin/seed.ts",
+    "gen:icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
@@ -62,6 +63,7 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.62.0",
     "vite": "^8.1.0",
+    "vite-plugin-pwa": "^1.3.0",
     "vitest": "^4.1.9"
   },
   "engines": {
