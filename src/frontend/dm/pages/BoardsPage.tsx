@@ -25,7 +25,6 @@ import {
   Meh
 } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
-import { useNavigate, useParams } from "@tanstack/react-router";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
@@ -183,15 +182,9 @@ function KanbanColumn({ label, color, stateKey, entities, onSelect }: {
 }
 
 export function BoardsPage() {
-  const { campaignId } = useParams({ strict: false }) as any;
-  const navigate = useNavigate();
   const { campaignState, updateEntity, archiveEntity } = useCampaignStore();
   const { addToast } = useToast();
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<Entity | null>(null);
-  const setSelectedEntity = setSelectedEntityLocal;
-  const setCurrentPage = (page: string) => {
-    if (campaignId) navigate({ to: `/campaigns/${campaignId}/${page}` });
-  };
   const [activeBoard, setActiveBoard] = useState<BoardType>("misiones");
 
   const board = BOARDS.find((b) => b.id === activeBoard)!;
@@ -235,8 +228,7 @@ export function BoardsPage() {
   const unknownCount = byStatus["_unknown"].length;
 
   const handleSelect = (e: Entity) => {
-    setSelectedEntity(e);
-    setCurrentPage("entities");
+    setSelectedEntityLocal(e);
   };
 
   return (<>
