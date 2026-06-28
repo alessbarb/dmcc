@@ -12,9 +12,9 @@ export default defineConfig({
     video: "off",
   },
   webServer: {
-    command: "rm -rf .tmp/e2e-data && DMCC_DATA_DIR=.tmp/e2e-data DMCC_PORT=4877 npx tsx src/backend/entry/index.ts",
+    command: "rm -rf .tmp/e2e-data && npm run build && DMCC_DATA_DIR=.tmp/e2e-data DMCC_PORT=4877 node dist/src/backend/entry/index.js",
     port: 4877,
     reuseExistingServer: false,
-    timeout: 30000,
+    timeout: 60000,
   },
 });

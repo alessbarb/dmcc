@@ -19,20 +19,9 @@ export default defineConfig({
     chunkSizeWarningLimit: 1600,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes("three") || id.includes("react-force-graph")) {
-            return "vendor-3d";
-          }
-          if (id.includes("@xyflow") || id.includes("reactflow")) {
-            return "vendor-canvas";
-          }
-          if (id.includes("node_modules/@tanstack")) {
-            return "vendor-tanstack";
-          }
-          if (id.includes("node_modules/react") || id.includes("node_modules/scheduler")) {
-            return "vendor-react";
-          }
-        },
+        entryFileNames: "assets/[hash].js",
+        chunkFileNames: "assets/[hash].js",
+        assetFileNames: "assets/[hash][extname]"
       },
     },
   },
