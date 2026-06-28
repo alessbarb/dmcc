@@ -1,9 +1,53 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { VitePWA } from "vite-plugin-pwa";
 import { resolve } from "path";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: "prompt",
+      injectRegister: null,
+      manifest: {
+        name: "DM Campaign Companion",
+        short_name: "DMCC",
+        description: "Motor de memoria narrativa para Dungeon Masters",
+        theme_color: "hsl(230, 35%, 7%)",
+        background_color: "hsl(230, 35%, 7%)",
+        display: "standalone",
+        orientation: "any",
+        start_url: "/",
+        scope: "/",
+        lang: "es",
+        icons: [
+          {
+            src: "/icons/icon-192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "/icons/icon-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any maskable",
+          },
+        ],
+      },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,svg,woff2}", "icons/*.png"],
+        runtimeCaching: [
+          {
+            urlPattern: /^\/api\//,
+            handler: "NetworkOnly",
+          },
+        ],
+      },
+      devOptions: {
+        enabled: false,
+      },
+    }),
+  ],
   root: ".",
   resolve: {
     alias: {
@@ -21,7 +65,7 @@ export default defineConfig({
       output: {
         entryFileNames: "assets/[hash].js",
         chunkFileNames: "assets/[hash].js",
-        assetFileNames: "assets/[hash][extname]"
+        assetFileNames: "assets/[hash][extname]",
       },
     },
   },
