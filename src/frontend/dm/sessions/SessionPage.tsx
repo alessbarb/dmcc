@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Play,
   StickyNote,
@@ -10,6 +10,9 @@ import {
   Clock,
   ChevronRight,
   AlertTriangle,
+  ChevronDown,
+  ChevronUp,
+  Terminal,
 } from "lucide-react";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { createId } from "@shared/ids.js";
@@ -108,15 +111,15 @@ function PanelNotaRapida({
 
       await recordSessionEvent(sessionId, {
         type: "note_recorded",
-        title: `Nota registrada`,
+        title: t("toasts.noteRecorded"),
         description: text.substring(0, 80) + (text.length > 80 ? "…" : ""),
         relatedEntityIds: [noteEntityId],
       });
 
-      addToast("Nota registrada.", "success");
+      addToast(t("toasts.noteRecorded"), "success");
       setText("");
     } catch (err: any) {
-      addToast(`Error al guardar nota: ${err.message}`, "error");
+      addToast(t("toasts.noteSaveError", { error: err.message }), "error");
     } finally {
       setBusy(false);
       onClose();
@@ -127,12 +130,12 @@ function PanelNotaRapida({
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label" htmlFor="nota-text">
-          Nota rápida
+          {t("sessionPage.noteLabel")}
         </label>
         <textarea
           id="nota-text"
           className="form-textarea"
-          placeholder="Escribe lo que ocurre en la mesa ahora mismo…"
+          placeholder={t("sessionPage.notePlaceholder")}
           value={text}
           onChange={(e) => setText(e.target.value)}
           required
@@ -142,10 +145,10 @@ function PanelNotaRapida({
       </div>
       <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
         <button type="button" className="btn btn-secondary" onClick={onClose}>
-          Cancelar
+          {t("common.cancel")}
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Guardando…" : t("players.saveNote")}
+          {busy ? t("common.saving") : t("players.saveNote")}
         </button>
       </div>
     </form>
@@ -165,6 +168,7 @@ function PanelRevelarPista({
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const clues = (campaignState?.entities ?? []).filter(
     (e: any) =>
       e.entityType === "clue" &&
@@ -191,7 +195,7 @@ function PanelRevelarPista({
         ? { kind: "characters" as const, characterEntityIds: [characterId] }
         : { kind: "party" as const };
     await revealClue(activeSession?.sessionId, selectedClue, audiencePayload, how);
-    addToast("Pista revelada.", "success");
+    addToast(t("toasts.clueRevealed"), "success");
     setBusy(false);
     onClose();
   };
@@ -209,9 +213,9 @@ function PanelRevelarPista({
         }}
       >
         <Eye size={32} style={{ opacity: 0.4 }} />
-        <p>No hay pistas preparadas sin revelar.</p>
+        <p>{t("sessionPage.noUnrevealedClues")}</p>
         <button type="button" className="btn btn-secondary" onClick={onClose}>
-          Cerrar
+          {t("common.close")}
         </button>
       </div>
     );
@@ -221,7 +225,7 @@ function PanelRevelarPista({
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label" htmlFor="pista-select">
-          Pista a revelar
+          {t("sessionPage.clueToReveal")}
         </label>
         <select
           id="pista-select"
@@ -230,7 +234,7 @@ function PanelRevelarPista({
           onChange={(e) => setSelectedClue(e.target.value)}
           required
         >
-          <option value="">— Selecciona pista —</option>
+          <option value="">{t("sessionPage.selectClue")}</option>
           {clues.map((c: any) => (
             <option key={c.entityId} value={c.entityId}>
               {c.title}
@@ -240,21 +244,21 @@ function PanelRevelarPista({
       </div>
 
       <div className="form-group">
-        <label className="form-label">Audiencia</label>
+        <label className="form-label">{t("sessionPage.audience")}</label>
         <div style={{ display: "flex", gap: "10px" }}>
           <button
             type="button"
             className={`btn btn-sm ${audience === "party" ? "btn-primary" : "btn-secondary"}`}
             onClick={() => setAudience("party")}
           >
-            Grupo completo
+            {t("sessionPage.wholeParty")}
           </button>
           <button
             type="button"
             className={`btn btn-sm ${audience === "character" ? "btn-primary" : "btn-secondary"}`}
             onClick={() => setAudience("character")}
           >
-            Personaje específico
+            {t("sessionPage.specificCharacter")}
           </button>
         </div>
       </div>
@@ -262,7 +266,7 @@ function PanelRevelarPista({
       {audience === "character" && (
         <div className="form-group">
           <label className="form-label" htmlFor="pista-character">
-            Personaje
+            {t("sessionPage.character")}
           </label>
           <select
             id="pista-character"
@@ -271,7 +275,7 @@ function PanelRevelarPista({
             onChange={(e) => setCharacterId(e.target.value)}
             required
           >
-            <option value="">— Selecciona personaje —</option>
+            <option value="">{t("sessionPage.selectCharacter")}</option>
             {characters.map((c: any) => (
               <option key={c.entityId} value={c.entityId}>
                 {c.title}
@@ -283,13 +287,13 @@ function PanelRevelarPista({
 
       <div className="form-group">
         <label className="form-label" htmlFor="pista-how">
-          ¿Cómo se reveló? (opcional)
+          {t("sessionPage.howRevealedOptional")}
         </label>
         <input
           id="pista-how"
           type="text"
           className="form-input"
-          placeholder="Encontraron una carta, interrogaron al tabernero…"
+          placeholder={t("sessionPage.howRevealedPlaceholder")}
           value={how}
           onChange={(e) => setHow(e.target.value)}
         />
@@ -297,10 +301,10 @@ function PanelRevelarPista({
 
       <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
         <button type="button" className="btn btn-secondary" onClick={onClose}>
-          Cancelar
+          {t("common.cancel")}
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy || !selectedClue}>
-          {busy ? "Revelando…" : "Revelar pista"}
+          {busy ? t("sessionPage.revealing") : t("sessionPage.revealClueButton")}
         </button>
       </div>
     </form>
@@ -423,12 +427,12 @@ function PanelDecision({
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label" htmlFor="decision-text">
-          ¿Qué decidieron?
+          {t("sessionPage.whatDidTheyDecide")}
         </label>
         <textarea
           id="decision-text"
           className="form-textarea"
-          placeholder="Los jugadores decidieron aliarse con los bandidos en lugar de combatirlos…"
+          placeholder={t("sessionPage.decidePlaceholder")}
           value={decision}
           onChange={(e) => setDecision(e.target.value)}
           required
@@ -439,13 +443,13 @@ function PanelDecision({
 
       <div className="form-group">
         <label className="form-label" htmlFor="decision-consequence">
-          Consecuencia inmediata (opcional)
+          {t("sessionPage.immediateConsequence")}
         </label>
         <input
           id="decision-consequence"
           type="text"
           className="form-input"
-          placeholder="El jefe de los bandidos les da un salvoconducto…"
+          placeholder={t("sessionPage.immConsequencePlaceholder")}
           value={immediateConsequence}
           onChange={(e) => setImmediateConsequence(e.target.value)}
         />
@@ -453,7 +457,7 @@ function PanelDecision({
 
       {entities.length > 0 && (
         <div className="form-group">
-          <label className="form-label">Entidades afectadas (opcional)</label>
+          <label className="form-label">{t("sessionPage.affectedEntities")}</label>
           <div
             style={{
               display: "flex",
@@ -500,14 +504,14 @@ function PanelDecision({
           className="form-label"
           style={{ marginBottom: 0, cursor: "pointer" }}
         >
-          Crear consecuencia pendiente
+          {t("sessionPage.createPendingConsequence")}
         </label>
       </div>
 
       {createPending && (
         <div className="form-group">
           <label className="form-label" htmlFor="pending-title">
-            Título de la consecuencia pendiente
+            {t("sessionPage.pendingConsequenceTitle")}
           </label>
           <input
             id="pending-title"
@@ -524,10 +528,10 @@ function PanelDecision({
 
       <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
         <button type="button" className="btn btn-secondary" onClick={onClose}>
-          Cancelar
+          {t("common.cancel")}
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Guardando…" : t("session.recordDecision")}
+          {busy ? t("common.saving") : t("session.recordDecision")}
         </button>
       </div>
     </form>
@@ -582,14 +586,14 @@ function PanelConsecuencia({
 
       await recordSessionEvent(sessionId, {
         type: "consequence_created",
-        title: `Consecuencia creada: ${title.trim()}`,
-        description: `Consecuencia con severidad ${severity}`,
+        title: t("toasts.consequenceCreated"),
+        description: `${t("sessionPage.severity")}: ${severity}`,
         relatedEntityIds: [consequenceEntityId, ...(questId ? [questId] : [])],
       });
 
-      addToast("Consecuencia creada.", "success");
+      addToast(t("toasts.consequenceCreated"), "success");
     } catch (err: any) {
-      addToast(`Error al crear consecuencia: ${err.message}`, "error");
+      addToast(t("toasts.captureError", { error: err.message }), "error");
     } finally {
       setBusy(false);
       onClose();
@@ -600,7 +604,7 @@ function PanelConsecuencia({
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="form-label" htmlFor="cons-title">
-          Título de la consecuencia
+          {t("sessionPage.pendingConsequenceTitle")}
         </label>
         <input
           id="cons-title"
@@ -615,7 +619,7 @@ function PanelConsecuencia({
       </div>
 
       <div className="form-group">
-        <label className="form-label">Severidad</label>
+        <label className="form-label">{t("sessionPage.severity")}</label>
         <div style={{ display: "flex", gap: "10px" }}>
           {(["low", "medium", "high"] as const).map((s) => (
             <button
@@ -624,7 +628,7 @@ function PanelConsecuencia({
               className={`btn btn-sm ${severity === s ? "btn-primary" : "btn-secondary"}`}
               onClick={() => setSeverity(s)}
             >
-              {s === "low" ? "Baja" : s === "medium" ? "Media" : "Alta"}
+              {s === "low" ? t("sessionPage.severityLow") : s === "medium" ? t("sessionPage.severityMedium") : t("sessionPage.severityHigh")}
             </button>
           ))}
         </div>
@@ -633,7 +637,7 @@ function PanelConsecuencia({
       {quests.length > 0 && (
         <div className="form-group">
           <label className="form-label" htmlFor="cons-quest">
-            Misión afectada (opcional)
+            {t("sessionPage.questAffected")}
           </label>
           <select
             id="cons-quest"
@@ -641,7 +645,7 @@ function PanelConsecuencia({
             value={questId}
             onChange={(e) => setQuestId(e.target.value)}
           >
-            <option value="">— Sin misión específica —</option>
+            <option value="">{t("sessionPage.noSpecificQuest")}</option>
             {quests.map((q: any) => (
               <option key={q.entityId} value={q.entityId}>
                 {q.title}
@@ -653,10 +657,10 @@ function PanelConsecuencia({
 
       <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
         <button type="button" className="btn btn-secondary" onClick={onClose}>
-          Cancelar
+          {t("common.cancel")}
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Guardando…" : t("session.createConsequence")}
+          {busy ? t("common.saving") : t("session.createConsequence")}
         </button>
       </div>
     </form>
@@ -696,7 +700,7 @@ function PanelPNJRapido({
         role: role.trim(),
       },
     });
-    addToast(`PNJ "${name.trim()}" creado.`, "success");
+    addToast(t("toasts.npcCreated", { name: name.trim() }), "success");
     setBusy(false);
     onClose();
   };
@@ -712,13 +716,13 @@ function PanelPNJRapido({
       >
         <div className="form-group">
           <label className="form-label" htmlFor="pnj-name">
-            Nombre
+            {t("sessionPage.npcNameLabel")}
           </label>
           <input
             id="pnj-name"
             type="text"
             className="form-input"
-            placeholder="Mira la Posaderera"
+            placeholder={t("sessionPage.npcNamePlaceholder")}
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -727,13 +731,13 @@ function PanelPNJRapido({
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor="pnj-role">
-            Rol
+            {t("sessionPage.npcRoleLabel")}
           </label>
           <input
             id="pnj-role"
             type="text"
             className="form-input"
-            placeholder="Informante, guardia…"
+            placeholder={t("sessionPage.npcRolePlaceholder")}
             value={role}
             onChange={(e) => setRole(e.target.value)}
           />
@@ -742,13 +746,13 @@ function PanelPNJRapido({
 
       <div className="form-group">
         <label className="form-label" htmlFor="pnj-desc">
-          Descripción breve
+          {t("sessionPage.briefDescription")}
         </label>
         <input
           id="pnj-desc"
           type="text"
           className="form-input"
-          placeholder="Mujer de mediana edad, nervioso, esconde algo…"
+          placeholder={t("sessionPage.npcDescPlaceholder")}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -756,10 +760,10 @@ function PanelPNJRapido({
 
       <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
         <button type="button" className="btn btn-secondary" onClick={onClose}>
-          Cancelar
+          {t("common.cancel")}
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Guardando…" : t("session.createNpc")}
+          {busy ? t("common.saving") : t("session.createNpc")}
         </button>
       </div>
     </form>
@@ -813,8 +817,7 @@ function PanelCerrarSesion({
       >
         <AlertTriangle size={16} style={{ color: "var(--color-warning)", flexShrink: 0 }} />
         <p style={{ fontSize: "0.87rem", color: "var(--color-warning)" }}>
-          Esta acción cierra la sesión activa. Asegúrate de haber registrado todo
-          lo importante.
+          {t("sessionPage.closingWarning")}
         </p>
       </div>
 
@@ -836,13 +839,416 @@ function PanelCerrarSesion({
 
       <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
         <button type="button" className="btn btn-secondary" onClick={onClose}>
-          Cancelar
+          {t("common.cancel")}
         </button>
         <button type="submit" className="btn btn-danger" disabled={busy || !sessionSummary.trim()}>
-          {busy ? "Cerrando…" : t("session.closeAndSave")}
+          {busy ? t("sessionPage.closingButton") : t("session.closeAndSave")}
         </button>
       </div>
     </form>
+  );
+}
+
+// ── quick capture bar ────────────────────────────────────────────────────────
+
+type ParsedCapture =
+  | { kind: "note"; text: string }
+  | { kind: "npc"; name: string; role: string }
+  | { kind: "decision"; text: string }
+  | { kind: "consequence"; text: string }
+  | { kind: "clue" }
+  | { kind: "unknown" };
+
+function parseCapture(raw: string): ParsedCapture {
+  const s = raw.trim();
+  const lower = s.toLowerCase();
+  if (lower.startsWith("+pnj ") || lower.startsWith("+npc ")) {
+    const body = s.slice(5).trim();
+    const [name, role = ""] = body.split("|").map((x) => x.trim());
+    return { kind: "npc", name, role };
+  }
+  if (lower.startsWith("+decision ") || lower.startsWith("+d ")) {
+    const text = s.slice(lower.startsWith("+d ") ? 3 : 10).trim();
+    return { kind: "decision", text };
+  }
+  if (lower.startsWith("+consecuencia ") || lower.startsWith("+consequence ") || lower.startsWith("+c ")) {
+    const offset = lower.startsWith("+c ") ? 3 : lower.startsWith("+consecuencia ") ? 14 : 13;
+    return { kind: "consequence", text: s.slice(offset).trim() };
+  }
+  if (lower === "+pista" || lower === "+clue" || lower === "+reveal") {
+    return { kind: "clue" };
+  }
+  if (lower.startsWith("+nota ") || lower.startsWith("+note ") || lower.startsWith("+n ") || lower.startsWith("+h ")) {
+    const offset = lower.startsWith("+n ") || lower.startsWith("+h ") ? 3 : lower.startsWith("+nota ") ? 6 : 6;
+    return { kind: "note", text: s.slice(offset).trim() };
+  }
+  if (!s.startsWith("+")) {
+    return { kind: "note", text: s };
+  }
+  return { kind: "unknown" };
+}
+
+function QuickCaptureBar({
+  campaignState,
+  activeSession,
+  createEntity,
+  createRelation,
+  recordSessionEvent,
+  revealClue,
+  addToast,
+  onOpenCluePanel,
+}: {
+  campaignState: any;
+  activeSession: any;
+  createEntity: (...args: any[]) => Promise<any>;
+  createRelation: (...args: any[]) => Promise<any>;
+  recordSessionEvent: (...args: any[]) => Promise<any>;
+  revealClue: (...args: any[]) => Promise<any>;
+  addToast: (msg: string, kind?: ToastKind) => void;
+  onOpenCluePanel: () => void;
+}) {
+  const { t } = useTranslation();
+  const [value, setValue] = useState("");
+  const [busy, setBusy] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!value.trim() || busy) return;
+    const parsed = parseCapture(value);
+    if (parsed.kind === "unknown") {
+      addToast(t("toasts.unknownCommand"), "error");
+      return;
+    }
+    if (parsed.kind === "clue") {
+      onOpenCluePanel();
+      setValue("");
+      return;
+    }
+    setBusy(true);
+    const sessionId = activeSession?.sessionId;
+    try {
+      if (parsed.kind === "note") {
+        const id = createId("ent");
+        await createEntity({
+          entityId: id,
+          entityType: "note",
+          title: parsed.text.substring(0, 40) + (parsed.text.length > 40 ? "…" : ""),
+          content: parsed.text,
+          status: "active",
+          createdInSessionId: sessionId,
+        });
+        await recordSessionEvent(sessionId, {
+          type: "note_recorded",
+          title: parsed.text.substring(0, 60) + (parsed.text.length > 60 ? "…" : ""),
+          relatedEntityIds: [id],
+        });
+        addToast(t("toasts.noteRecorded"), "success");
+      } else if (parsed.kind === "npc") {
+        if (!parsed.name) { addToast(t("toasts.npcNameRequired"), "error"); return; }
+        const id = createId("ent");
+        await createEntity({
+          entityId: id,
+          entityType: "npc",
+          title: parsed.name,
+          subtitle: parsed.role,
+          status: "known",
+          importance: "normal",
+          createdInSessionId: sessionId,
+          metadata: { role: parsed.role },
+        });
+        await recordSessionEvent(sessionId, {
+          type: "npc_introduced",
+          title: t("sessionPage.quickNPCIntroduced", { name: parsed.name }),
+          relatedEntityIds: [id],
+        });
+        addToast(t("toasts.npcCreated", { name: parsed.name }), "success");
+      } else if (parsed.kind === "decision") {
+        if (!parsed.text) { addToast(t("toasts.decisionTextRequired"), "error"); return; }
+        const id = createId("ent");
+        await createEntity({
+          entityId: id,
+          entityType: "decision",
+          title: parsed.text.substring(0, 50) + (parsed.text.length > 50 ? "…" : ""),
+          content: parsed.text,
+          status: "made",
+          createdInSessionId: sessionId,
+          metadata: { decisionText: parsed.text, sessionId: sessionId || "sess_unknown", madeByCharacterIds: [] },
+        });
+        await recordSessionEvent(sessionId, {
+          type: "decision_made",
+          title: t("sessionPage.decisionPrefix", { text: parsed.text.substring(0, 50) }),
+          relatedEntityIds: [id],
+        });
+        addToast(t("toasts.noteRecorded"), "success");
+      } else if (parsed.kind === "consequence") {
+        if (!parsed.text) { addToast(t("toasts.consequenceTextRequired"), "error"); return; }
+        const id = createId("ent");
+        await createEntity({
+          entityId: id,
+          entityType: "consequence",
+          title: parsed.text,
+          status: "pending",
+          importance: "normal",
+          createdInSessionId: sessionId,
+          metadata: {},
+        });
+        await recordSessionEvent(sessionId, {
+          type: "consequence_created",
+          title: t("sessionPage.consequencePrefix", { text: parsed.text }),
+          relatedEntityIds: [id],
+        });
+        addToast(t("toasts.consequenceCreated"), "success");
+      }
+      setValue("");
+      inputRef.current?.focus();
+    } catch (err: any) {
+      addToast(t("toasts.captureError", { error: err.message }), "error");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} aria-label={t("session.quickCaptureLabel")}>
+      <div
+        style={{
+          display: "flex",
+          gap: "8px",
+          alignItems: "center",
+          padding: "10px 14px",
+          backgroundColor: "var(--bg-input)",
+          border: "1px solid var(--border-color)",
+          borderRadius: "var(--radius-lg)",
+          transition: "border-color var(--transition-fast)",
+        }}
+        onFocus={(e) => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = "var(--primary)";
+        }}
+        onBlur={(e) => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border-color)";
+        }}
+      >
+        <Terminal size={16} style={{ color: "var(--text-muted)", flexShrink: 0 }} aria-hidden="true" />
+        <input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={t("session.quickCapturePlaceholder")}
+          disabled={busy}
+          autoComplete="off"
+          style={{
+            flex: 1,
+            background: "transparent",
+            border: "none",
+            outline: "none",
+            fontSize: "0.92rem",
+            color: "var(--text-main)",
+            fontFamily: "inherit",
+          }}
+        />
+        {value.trim() && (
+          <button
+            type="submit"
+            disabled={busy}
+            style={{
+              background: "var(--primary)",
+              border: "none",
+              borderRadius: "var(--radius-sm)",
+              color: "#fff",
+              fontSize: "0.78rem",
+              fontWeight: "700",
+              padding: "4px 10px",
+              cursor: busy ? "not-allowed" : "pointer",
+              opacity: busy ? 0.6 : 1,
+              flexShrink: 0,
+            }}
+          >
+            {busy ? "…" : "↵"}
+          </button>
+        )}
+      </div>
+      <p
+        style={{
+          fontSize: "0.73rem",
+          color: "var(--text-muted)",
+          marginTop: "5px",
+          paddingLeft: "4px",
+          opacity: 0.7,
+        }}
+      >
+        {"+nota · +pnj nombre | rol · +decision · +consecuencia · +pista"}
+      </p>
+    </form>
+  );
+}
+
+// ── session event feed ────────────────────────────────────────────────────────
+
+const EVENT_TYPE_ICONS: Record<string, React.ReactNode> = {
+  note_recorded: <StickyNote size={13} />,
+  npc_introduced: <UserPlus size={13} />,
+  clue_revealed: <Eye size={13} />,
+  decision_made: <GitMerge size={13} />,
+  consequence_created: <Zap size={13} />,
+  custom: <ChevronRight size={13} />,
+};
+
+const EVENT_TYPE_COLORS: Record<string, string> = {
+  note_recorded: "var(--color-info)",
+  npc_introduced: "var(--color-success)",
+  clue_revealed: "var(--secondary)",
+  decision_made: "var(--primary)",
+  consequence_created: "var(--color-warning)",
+  custom: "var(--text-muted)",
+};
+
+function formatRelative(isoDate: string): string {
+  const ms = Date.now() - new Date(isoDate).getTime();
+  const minutes = Math.floor(ms / 60_000);
+  if (minutes < 1) return "ahora";
+  if (minutes < 60) return `hace ${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  return `hace ${hours}h`;
+}
+
+function SessionEventFeed({
+  sessionEvents,
+  sessionId,
+}: {
+  sessionEvents: any[];
+  sessionId: string;
+}) {
+  const { t } = useTranslation();
+  const [collapsed, setCollapsed] = useState(false);
+
+  const events = sessionEvents
+    .filter((ev: any) => ev.sessionId === sessionId)
+    .sort((a: any, b: any) => new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime())
+    .slice(0, 20);
+
+  return (
+    <div
+      style={{
+        backgroundColor: "var(--bg-card)",
+        border: "1px solid var(--border-color)",
+        borderRadius: "var(--radius-lg)",
+        overflow: "hidden",
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => setCollapsed((c) => !c)}
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "10px 16px",
+          background: "transparent",
+          border: "none",
+          cursor: "pointer",
+          color: "var(--text-muted)",
+          fontSize: "0.8rem",
+          fontWeight: "700",
+          textTransform: "uppercase",
+          letterSpacing: "0.08em",
+        }}
+      >
+        <span style={{ display: "flex", alignItems: "center", gap: "7px" }}>
+          <Clock size={13} />
+          {t("session.eventFeedTitle")}
+          {events.length > 0 && (
+            <span
+              style={{
+                backgroundColor: "var(--primary-light)",
+                color: "var(--primary)",
+                borderRadius: "var(--radius-full)",
+                padding: "1px 7px",
+                fontSize: "0.72rem",
+                fontWeight: "800",
+              }}
+            >
+              {events.length}
+            </span>
+          )}
+        </span>
+        {collapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
+      </button>
+
+      {!collapsed && (
+        <div style={{ borderTop: "1px solid var(--border-color)" }}>
+          {events.length === 0 ? (
+            <p
+              style={{
+                padding: "20px 16px",
+                color: "var(--text-muted)",
+                fontSize: "0.85rem",
+                textAlign: "center",
+              }}
+            >
+              {t("session.noEventsYet")}
+            </p>
+          ) : (
+            <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+              {events.map((ev: any, i: number) => {
+                const color = EVENT_TYPE_COLORS[ev.type] ?? EVENT_TYPE_COLORS.custom;
+                const icon = EVENT_TYPE_ICONS[ev.type] ?? EVENT_TYPE_ICONS.custom;
+                return (
+                  <li
+                    key={ev.id ?? i}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "10px",
+                      padding: "9px 16px",
+                      borderBottom: i < events.length - 1 ? "1px solid var(--border-color)" : "none",
+                    }}
+                  >
+                    <span
+                      style={{
+                        color,
+                        flexShrink: 0,
+                        marginTop: "2px",
+                      }}
+                      aria-hidden="true"
+                    >
+                      {icon}
+                    </span>
+                    <span
+                      style={{
+                        flex: 1,
+                        fontSize: "0.85rem",
+                        color: "var(--text-main)",
+                        lineHeight: 1.35,
+                        minWidth: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                      title={ev.title}
+                    >
+                      {ev.title}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "0.73rem",
+                        color: "var(--text-muted)",
+                        flexShrink: 0,
+                        marginTop: "2px",
+                      }}
+                    >
+                      {ev.occurredAt ? formatRelative(ev.occurredAt) : ""}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -857,6 +1263,7 @@ export function SessionPage(props: SessionPageProps = {}) {
   const [sessionSummaryLocal, setSessionSummaryLocal] = useState("");
 
   const campaignState = props.campaignState ?? store.campaignState;
+  const sessionEvents: any[] = (campaignState as any)?.sessionEvents ?? [];
   const activeSession = props.activeSession ?? (campaignState?.sessions ?? []).find((s: any) => s.status === "active");
   const sessionSummary = props.sessionSummary ?? sessionSummaryLocal;
   const setSessionSummary = props.setSessionSummary ?? setSessionSummaryLocal;
@@ -1059,7 +1466,7 @@ export function SessionPage(props: SessionPageProps = {}) {
     },
     {
       id: "pista",
-      label: "Revelar pista",
+      label: t("sessionPage.revealClueButton"),
       icon: <Eye size={22} />,
       accentVar: "var(--secondary)",
     },
@@ -1169,6 +1576,24 @@ export function SessionPage(props: SessionPageProps = {}) {
           {elapsed}
         </div>
       </div>
+
+      {/* Quick capture bar */}
+      <QuickCaptureBar
+        campaignState={campaignState}
+        activeSession={activeSession}
+        createEntity={createEntity}
+        createRelation={createRelation}
+        recordSessionEvent={recordSessionEvent}
+        revealClue={revealClue}
+        addToast={addToast}
+        onOpenCluePanel={() => setActiveAction("pista")}
+      />
+
+      {/* Session event feed */}
+      <SessionEventFeed
+        sessionEvents={sessionEvents}
+        sessionId={activeSession.sessionId}
+      />
 
       {/* Action grid */}
       <div
@@ -1283,7 +1708,7 @@ export function SessionPage(props: SessionPageProps = {}) {
               type="button"
               className="btn btn-icon btn-secondary"
               onClick={() => setActiveAction(null)}
-              aria-label="Cerrar panel"
+              aria-label={t("common.close")}
               style={{ padding: "6px" }}
             >
               <X size={16} />

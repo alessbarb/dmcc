@@ -683,6 +683,34 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
           edgeId: command.edgeId,
         }));
     }
+    case "CreatePlayerInvitation": {
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerInvitationCreated", {
+        inviteId: command.inviteId,
+        inviteTokenHash: command.inviteTokenHash,
+        label: command.label,
+        createdAt: command.createdAt,
+        expiresAt: command.expiresAt,
+      }));
+    }
+    case "ConsumePlayerInvitation": {
+      const inv = state.invitations?.get(command.inviteId);
+      if (!inv) throw new Error("Invitation not found");
+      if (inv.status !== "pending") throw new Error(`Invitation already ${inv.status}`);
+      if (inv.expiresAt && new Date(inv.expiresAt) < new Date()) throw new Error("Invitation has expired");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerInvitationConsumed", {
+        inviteId: command.inviteId,
+        playerId: command.playerId,
+        emailHash: command.emailHash,
+        consumedAt: command.consumedAt,
+      }));
+    }
+    case "RevokePlayerInvitation": {
+      const inv = state.invitations?.get(command.inviteId);
+      if (!inv) throw new Error("Invitation not found");
+      return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerInvitationRevoked", {
+        inviteId: command.inviteId,
+      }));
+    }
     case "IssuePlayerToken": {
       if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerTokenIssued", {

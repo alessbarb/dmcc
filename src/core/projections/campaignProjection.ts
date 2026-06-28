@@ -3,6 +3,7 @@ import type { StoredEvent } from "../domain/shared/events.js";
 export interface CampaignProjection {
   campaign: any | null;
   players: Map<string, any>;
+  invitations: Map<string, any>;
   entities: Map<string, any>;
   relations: Map<string, any>;
   facts: Map<string, any>;
@@ -18,6 +19,7 @@ export function createEmptyCampaignProjection(): CampaignProjection {
   return {
     campaign: null,
     players: new Map(),
+    invitations: new Map(),
     entities: new Map(),
     relations: new Map(),
     facts: new Map(),
@@ -37,6 +39,7 @@ export function applyEvent(
   const next = {
     ...projection,
     players: new Map(projection.players),
+    invitations: new Map(projection.invitations ?? new Map()),
     entities: new Map(projection.entities),
     relations: new Map(projection.relations),
     facts: new Map(projection.facts),
@@ -126,6 +129,33 @@ export function applyEvent(
           ...existing,
           archived: true,
           updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "PlayerInvitationCreated": {
+      next.invitations.set(payload.inviteId, { ...payload, status: "pending" });
+      break;
+    }
+    case "PlayerInvitationConsumed": {
+      const inv = next.invitations.get(payload.inviteId);
+      if (inv) {
+        next.invitations.set(payload.inviteId, {
+          ...inv,
+          status: "consumed",
+          consumedByPlayerId: payload.playerId,
+          consumedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "PlayerInvitationRevoked": {
+      const inv = next.invitations.get(payload.inviteId);
+      if (inv) {
+        next.invitations.set(payload.inviteId, {
+          ...inv,
+          status: "revoked",
+          revokedAt: occurredAt,
         });
       }
       break;

@@ -64,6 +64,7 @@ export class SnapshotStore {
     const serializedProjection = {
       campaign: projection.campaign,
       players: toPlain(projection.players),
+      invitations: toPlain(projection.invitations ?? new Map()),
       entities: toPlain(projection.entities),
       relations: toPlain(projection.relations),
       facts: toPlain(projection.facts),
@@ -127,6 +128,7 @@ export class SnapshotStore {
         parsed.projection = {
           campaign: p.campaign,
           players: new Map(Object.entries(p.players || {})),
+          invitations: new Map(Object.entries(p.invitations || {})),
           entities: new Map(Object.entries(p.entities || {})),
           relations: new Map(Object.entries(p.relations || {})),
           facts: new Map(Object.entries(p.facts || {})),
@@ -151,6 +153,7 @@ export class SnapshotStore {
         parsed.projection = {
           campaign: parsed.campaign || null,
           players: toMap(parsed.players, "playerId"),
+          invitations: new Map(),
           entities: toMap(parsed.entities, "entityId"),
           relations: toMap(parsed.relations, "relationId"),
           facts: toMap(parsed.facts, "factId"),

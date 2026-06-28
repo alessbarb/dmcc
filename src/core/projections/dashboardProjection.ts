@@ -18,6 +18,14 @@ export interface PreparationItem {
   priority: "low" | "normal" | "high";
 }
 
+export interface LastSessionSummary {
+  sessionId: string;
+  title: string;
+  date: string;
+  summary?: string;
+  number?: number;
+}
+
 export interface DashboardProjection {
   campaignId: CampaignId;
   currentStatus: CampaignStatus;
@@ -25,9 +33,14 @@ export interface DashboardProjection {
   criticalSecrets: Entity[];
   pendingConsequences: Entity[];
   recentlyChangedEntities: Entity[];
+  recentlyUpdatedEntities: Entity[];
   importantNpcWarnings: CampaignHealthWarning[];
   openLoops: OpenLoop[];
   nextPreparationItems: PreparationItem[];
+  lastSession: LastSessionSummary | null;
+  blockedQuests: Entity[];
+  criticalHiddenClues: Entity[];
+  preparedClues: Entity[];
 }
 
 export function buildDashboardProjection(campaignState: CampaignProjection): DashboardProjection {
@@ -60,6 +73,7 @@ export function buildDashboardProjection(campaignState: CampaignProjection): Das
     .filter((e) => !e.archived)
     .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
     .slice(0, 5);
+  const recentlyUpdatedEntities = recentlyChangedEntities;
 
   // Health warnings
   const warnings = evaluateCampaignHealth(campaignState);
@@ -138,6 +152,47 @@ export function buildDashboardProjection(campaignState: CampaignProjection): Das
     }
   }
 
+  // Last closed session
+  const sessions = Array.from(campaignState.sessions.values());
+  const closedSessions = sessions
+    .filter((s: any) => s.status === "closed" || s.status === "archived")
+    .sort((a: any, b: any) => Date.parse(b.endedAt ?? b.updatedAt ?? 0) - Date.parse(a.endedAt ?? a.updatedAt ?? 0));
+  const lastClosedSession = closedSessions[0] as any | undefined;
+  const lastSession: LastSessionSummary | null = lastClosedSession
+    ? {
+        sessionId: lastClosedSession.sessionId,
+        title: lastClosedSession.title,
+        date: lastClosedSession.endedAt ?? lastClosedSession.updatedAt ?? "",
+        summary: lastClosedSession.summary,
+        number: lastClosedSession.number,
+      }
+    : null;
+
+  // Blocked quests — active quests with no revealed clues
+  const revealedClueIds = new Set(
+    entities
+      .filter((e) => e.entityType === "clue" && (e.status === "revealed" || e.status === "known") && !e.archived)
+      .map((e) => e.entityId)
+  );
+  const blockedQuests = activeQuests.filter((q) => {
+    const relations = Array.from(campaignState.relations.values()) as any[];
+    const relatedClueIds = relations
+      .filter((r) => (r.sourceEntityId === q.entityId || r.targetEntityId === q.entityId))
+      .map((r) => r.sourceEntityId === q.entityId ? r.targetEntityId : r.sourceEntityId);
+    const hasRevealedClue = relatedClueIds.some((id) => revealedClueIds.has(id));
+    return !hasRevealedClue && relatedClueIds.length > 0;
+  });
+
+  // Critical hidden clues — importance=critical and not revealed
+  const criticalHiddenClues = entities.filter(
+    (e) => e.entityType === "clue" && e.importance === "critical" && !revealedClueIds.has(e.entityId) && !e.archived
+  );
+
+  // Prepared clues — clues in prepared/hidden state (ready for DM to reveal)
+  const preparedClues = entities.filter(
+    (e) => e.entityType === "clue" && (e.status === "prepared" || e.status === "hidden") && !e.archived
+  );
+
   return {
     campaignId,
     currentStatus,
@@ -145,8 +200,13 @@ export function buildDashboardProjection(campaignState: CampaignProjection): Das
     criticalSecrets,
     pendingConsequences,
     recentlyChangedEntities,
+    recentlyUpdatedEntities,
     importantNpcWarnings,
     openLoops,
     nextPreparationItems,
+    lastSession,
+    blockedQuests,
+    criticalHiddenClues,
+    preparedClues,
   };
 }

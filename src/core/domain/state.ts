@@ -8,6 +8,7 @@ export interface CampaignState {
   campaignId: string;
   campaign: Campaign | null;
   players: Map<string, any>;
+  invitations: Map<string, any>;
   entities: Map<string, Entity>;
   relations: Map<string, Relation>;
   facts: Map<string, Fact>;
@@ -23,6 +24,7 @@ export function createCampaignState(campaignId: string): CampaignState {
     campaignId,
     campaign: null,
     players: new Map(),
+    invitations: new Map(),
     entities: new Map(),
     relations: new Map(),
     facts: new Map(),

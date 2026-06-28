@@ -207,6 +207,7 @@ function projectionToCampaignState(campaignId: CampaignId, projection: CampaignP
     campaignId,
     campaign: projection.campaign,
     players: projection.players,
+    invitations: projection.invitations ?? new Map(),
     entities: projection.entities,
     relations: projection.relations,
     facts: projection.facts,

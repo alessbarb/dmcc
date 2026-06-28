@@ -388,6 +388,31 @@ export type Command =
       edgeId: string;
     }
   | {
+      type: "CreatePlayerInvitation";
+      campaignId: CampaignId;
+      actorId: string;
+      inviteId: string;
+      inviteTokenHash: string;
+      label?: string;
+      createdAt: string;
+      expiresAt?: string;
+    }
+  | {
+      type: "ConsumePlayerInvitation";
+      campaignId: CampaignId;
+      actorId: string;
+      inviteId: string;
+      playerId: string;
+      emailHash: string;
+      consumedAt: string;
+    }
+  | {
+      type: "RevokePlayerInvitation";
+      campaignId: CampaignId;
+      actorId: string;
+      inviteId: string;
+    }
+  | {
       type: "IssuePlayerToken";
       campaignId: CampaignId;
       actorId: string;
