@@ -21,6 +21,7 @@ import {
   Layers,
   Sparkles,
   Lock,
+  MoreHorizontal,
 } from "lucide-react";
 import { getCampaignExitDecision } from "./shared/utils/campaignExit.js";
 import { getRuleSystem } from "@core/domain/rules/index.js";
@@ -155,6 +156,9 @@ export function App() {
   // Graph filter
   const [graphTypeFilter, setGraphTypeFilter] = useState<string[]>([]);
 
+  // Mobile navigation
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
   // Global search
   const [globalSearchQuery, setGlobalSearchQuery] = useState("");
   const [globalSearchTypeFilter, setGlobalSearchTypeFilter] = useState("all");
@@ -194,7 +198,7 @@ export function App() {
         } else if (!status.dmSessionValid && !getDmSessionToken()) {
           // No valid session and not local/no PIN — SmartLanding will handle routing
         }
-      } catch (e) {
+      } catch {
         // Non-fatal: server may not have new auth endpoints yet
         const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
         if (isLocalhost) {
@@ -712,101 +716,127 @@ export function App() {
     );
   }
 
+  const campaignNavItems = [
+    {
+      page: "dashboard",
+      label: t("nav.dashboard"),
+      Icon: Activity,
+      mobilePrimary: true,
+    },
+    {
+      page: "what-now",
+      label: t("nav.whatNow"),
+      Icon: BookOpen,
+      mobilePrimary: true,
+    },
+    {
+      page: "session",
+      label: t("nav.activeSession"),
+      Icon: Play,
+      mobilePrimary: true,
+      hasLiveIndicator: !!activeSession,
+    },
+    {
+      page: "entities",
+      label: t("nav.entities"),
+      Icon: Layers,
+      mobilePrimary: true,
+    },
+    {
+      page: "search",
+      label: t("nav.search"),
+      Icon: Search,
+      mobilePrimary: true,
+    },
+    {
+      page: "graph",
+      label: t("nav.graph"),
+      Icon: GitFork,
+      mobilePrimary: false,
+    },
+    {
+      page: "timeline",
+      label: t("nav.timeline"),
+      Icon: List,
+      mobilePrimary: false,
+    },
+    {
+      page: "boards",
+      label: t("nav.boards"),
+      Icon: Layers,
+      mobilePrimary: false,
+      iconStyle: { transform: "rotate(90deg)" },
+    },
+    {
+      page: "players",
+      label: t("nav.players"),
+      Icon: User,
+      mobilePrimary: false,
+    },
+    ...(campaignState?.campaign?.system === "dnd_srd_5_2_1"
+      ? [{
+          page: "rules",
+          label: t("nav.rules"),
+          Icon: BookOpen,
+          mobilePrimary: false,
+        }]
+      : []),
+    {
+      page: "settings",
+      label: t("nav.settings"),
+      Icon: Settings,
+      mobilePrimary: false,
+    },
+  ];
+
+  const mobilePrimaryNavItems = campaignNavItems.filter((item) => item.mobilePrimary);
+  const mobileSecondaryNavItems = campaignNavItems.filter((item) => !item.mobilePrimary);
+
+  const handleNavToPage = (pageName: string) => {
+    setCurrentPage(pageName);
+    setIsMobileNavOpen(false);
+  };
+
   // Campaña activa Layout
   return (
-    <div className="app-container">
-      {/* Sidebar Navigation */}
-      <aside className="sidebar">
+    <div className="app-container app-container--campaign">
+      {/* Desktop Sidebar Navigation */}
+      <aside className="sidebar app-sidebar app-sidebar--desktop">
         <div className="sidebar-header">
           <div className="sidebar-logo">{campaignState.campaign?.title}</div>
           <div className="sidebar-logo-subtitle">{campaignState.campaign?.system}</div>
         </div>
 
         <nav className="sidebar-nav">
-          <div
-            className={`nav-item ${currentPage === "dashboard" ? "active" : ""}`}
-            onClick={() => setCurrentPage("dashboard")}
-          >
-            <Activity /> {t("nav.dashboard")}
-          </div>
-          <div
-            className={`nav-item ${currentPage === "what-now" ? "active" : ""}`}
-            onClick={() => setCurrentPage("what-now")}
-          >
-            <BookOpen /> {t("nav.whatNow")}
-          </div>
-          <div
-            className={`nav-item ${currentPage === "session" ? "active" : ""}`}
-            onClick={() => setCurrentPage("session")}
-          >
-            <Play /> {t("nav.activeSession")} {activeSession && <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "var(--color-success)", display: "inline-block", marginLeft: "auto" }}></span>}
-          </div>
-          <div
-            className={`nav-item ${currentPage === "entities" ? "active" : ""}`}
-            onClick={() => setCurrentPage("entities")}
-          >
-            <Layers /> {t("nav.entities")}
-          </div>
-          <div
-            className={`nav-item ${currentPage === "graph" ? "active" : ""}`}
-            onClick={() => setCurrentPage("graph")}
-          >
-            <GitFork /> {t("nav.graph")}
-          </div>
-          <div
-            className={`nav-item ${currentPage === "timeline" ? "active" : ""}`}
-            onClick={() => setCurrentPage("timeline")}
-          >
-            <List /> {t("nav.timeline")}
-          </div>
-          <div
-            className={`nav-item ${currentPage === "search" ? "active" : ""}`}
-            onClick={() => setCurrentPage("search")}
-          >
-            <Search /> {t("nav.search")}
-          </div>
-          {campaignState?.campaign?.system === "dnd_srd_5_2_1" && (
-            <div
-              className={`nav-item ${currentPage === "rules" ? "active" : ""}`}
-              onClick={() => setCurrentPage("rules")}
+          {campaignNavItems.map(({ page, label, Icon, iconStyle, hasLiveIndicator }) => (
+            <button
+              key={page}
+              type="button"
+              className={`nav-item ${currentPage === page ? "active" : ""}`}
+              onClick={() => handleNavToPage(page)}
             >
-              <BookOpen /> {t("nav.rules")}
-            </div>
-          )}
-          <div
-            className={`nav-item ${currentPage === "players" ? "active" : ""}`}
-            onClick={() => setCurrentPage("players")}
-          >
-            <User /> {t("nav.players")}
-          </div>
-          <div
-            className={`nav-item ${currentPage === "boards" ? "active" : ""}`}
-            onClick={() => setCurrentPage("boards")}
-          >
-            <Layers style={{ transform: "rotate(90deg)" }} /> {t("nav.boards")}
-          </div>
-          <div
-            className={`nav-item ${currentPage === "settings" ? "active" : ""}`}
-            onClick={() => setCurrentPage("settings")}
-          >
-            <Settings /> {t("nav.settings")}
-          </div>
+              <Icon style={iconStyle} />
+              <span>{label}</span>
+              {hasLiveIndicator && <span className="nav-item__live-dot" />}
+            </button>
+          ))}
         </nav>
 
         <div className="sidebar-footer">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div className="sidebar-footer__campaign-row">
             <span>{t("nav.activeCampaign")}</span>
             <button
+              type="button"
               className="btn btn-secondary btn-sm"
               onClick={handleExitCampaign}
             >
               {t("nav.exit")}
             </button>
           </div>
+
           <button
             type="button"
-            className="btn btn-ghost btn-sm"
-            style={{ width: "100%", marginTop: "6px", display: "flex", alignItems: "center", gap: "6px", justifyContent: "center", opacity: 0.6, fontSize: "0.78rem" }}
+            className="btn btn-ghost btn-sm sidebar-footer__lock-btn"
             onClick={() => void handleLockDm()}
           >
             <Lock size={12} />
@@ -815,9 +845,130 @@ export function App() {
         </div>
       </aside>
 
+      {/* Mobile campaign bar */}
+      <header className="mobile-campaign-header">
+        <div className="mobile-campaign-header__title">
+          <span>{campaignState.campaign?.title}</span>
+          <small>{campaignState.campaign?.system}</small>
+        </div>
+
+        <div className="mobile-campaign-header__actions">
+          <button
+            type="button"
+            className="mobile-icon-button"
+            onClick={() => setIsMobileNavOpen(true)}
+            aria-label="Abrir navegación"
+          >
+            <MoreHorizontal size={20} />
+          </button>
+        </div>
+      </header>
+
+      {isMobileNavOpen && (
+        <div
+          className="mobile-nav-overlay"
+          role="presentation"
+          onClick={() => setIsMobileNavOpen(false)}
+        >
+          <div
+            className="mobile-nav-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navegación de campaña"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="mobile-nav-sheet__header">
+              <div>
+                <strong>{campaignState.campaign?.title}</strong>
+                <span>{campaignState.campaign?.system}</span>
+              </div>
+
+              <button
+                type="button"
+                className="mobile-icon-button"
+                onClick={() => setIsMobileNavOpen(false)}
+                aria-label="Cerrar navegación"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="mobile-nav-sheet__section">
+              <span className="mobile-nav-sheet__eyebrow">Herramientas</span>
+
+              <div className="mobile-nav-sheet__grid">
+                {mobileSecondaryNavItems.map(({ page, label, Icon, iconStyle }) => (
+                  <button
+                    key={page}
+                    type="button"
+                    className={`mobile-nav-sheet__item ${currentPage === page ? "active" : ""}`}
+                    onClick={() => handleNavToPage(page)}
+                  >
+                    <Icon size={18} style={iconStyle} />
+                    <span>{label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mobile-nav-sheet__section">
+              <span className="mobile-nav-sheet__eyebrow">Campaña</span>
+
+              <div className="mobile-nav-sheet__row">
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  onClick={handleExitCampaign}
+                >
+                  {t("nav.exit")}
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => void handleLockDm()}
+                >
+                  <Lock size={12} />
+                  {t("nav.lockWorkspace")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile bottom navigation */}
+      <nav className="mobile-bottom-nav" aria-label="Navegación principal">
+        {mobilePrimaryNavItems.map(({ page, label, Icon, hasLiveIndicator }) => (
+          <button
+            key={page}
+            type="button"
+            className={`mobile-bottom-nav__item ${currentPage === page ? "active" : ""}`}
+            onClick={() => handleNavToPage(page)}
+          >
+            <span className="mobile-bottom-nav__icon">
+              <Icon size={19} />
+              {hasLiveIndicator && <span className="mobile-bottom-nav__live-dot" />}
+            </span>
+            <span>{label}</span>
+          </button>
+        ))}
+
+        <button
+          type="button"
+          className="mobile-bottom-nav__item"
+          onClick={() => setIsMobileNavOpen(true)}
+        >
+          <span className="mobile-bottom-nav__icon">
+            <MoreHorizontal size={19} />
+          </span>
+          <span>Más</span>
+        </button>
+      </nav>
+
       {/* Main Content Area */}
       <main className="main-content">
-        <div className="top-bar">
+        <div className="top-bar app-top-bar">
           <div className="top-bar-title">
             {campaignState.campaign?.currentLocationId && (
               <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.9rem", color: "var(--text-muted)" }}>
@@ -831,14 +982,14 @@ export function App() {
             )}
           </div>
 
-          <div className="top-bar-actions">
+          <div className="top-bar-actions app-top-bar__actions">
             {activeSession ? (
               <span className="badge badge-success" style={{ padding: "8px 12px" }}>
-                Session #{activeSession.number || 1} Active: "{activeSession.title}"
+                {t("campaignShell.activeSession", { number: activeSession.number || 1, title: activeSession.title })}
               </span>
             ) : (
-              <button className="btn btn-primary btn-sm" onClick={() => startSession(`Session ${campaignState.sessions.length + 1}`)}>
-                <Play size={14} />{t("landing.topBarStartSession")}
+              <button className="btn btn-primary btn-sm" onClick={() => setCurrentPage("session")}>
+                <Play size={14} />{t("campaignShell.prepareOrStartSession")}
               </button>
             )}
 
@@ -932,6 +1083,12 @@ export function App() {
               setTimelineFilter={setTimelineFilter}
               expandedEvents={expandedEvents}
               toggleEventJson={toggleEventJson}
+              onEntityClick={(entityId) => {
+                const ent = campaignState?.entities?.find(
+                  (e: any) => e.entityId === entityId || e.id === entityId,
+                );
+                if (ent) setSelectedEntity(ent);
+              }}
             />
           )}
 
@@ -1453,7 +1610,7 @@ export function App() {
               )}
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={() => setIsEntityModalOpen(false)}>
-                  Cancelar
+                  {t("common.cancel")}
                 </button>
                 <button type="submit" className="btn btn-primary">
                   Registrar
@@ -1549,7 +1706,7 @@ export function App() {
                   useCampaignStore.setState({ error: null });
                   setIsRelationModalOpen(false);
                 }}>
-                  Cancelar
+                  {t("common.cancel")}
                 </button>
                 <button type="submit" className="btn btn-primary">
                   Registrar relación
@@ -1588,25 +1745,23 @@ export function App() {
         <div className="modal-overlay" onClick={() => setIsExitSessionModalOpen(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Cerrar sesión activa antes de salir</h2>
+              <h2>{t("sessionPage.exitCloseTitle")}</h2>
               <button type="button" className="icon-btn" onClick={() => setIsExitSessionModalOpen(false)}>
                 <X size={20} />
               </button>
             </div>
             <div className="modal-body">
               <p style={{ marginBottom: "16px", color: "var(--text-muted)" }}>
-                Hay una sesión activa: <strong>Session #{activeSession.number || 1}</strong>
-                {activeSession.title ? ` — "${activeSession.title}"` : ""}. Para salir de la campaña,
-                confirma el cierre de la sesión con un resumen.
+                {t("sessionPage.exitCloseDescription", { number: activeSession.number || 1, title: activeSession.title || "" })}
               </p>
               <div className="form-group">
-                <label className="form-label">Resumen de cierre</label>
+                <label className="form-label">{t("sessionPage.closingSummaryLabel")}</label>
                 <textarea
                   className="form-textarea"
                   rows={5}
                   value={exitSessionSummary}
                   onChange={e => setExitSessionSummary(e.target.value)}
-                  placeholder="Qué ocurrió en la sesión, decisiones importantes, próximos pasos..."
+                  placeholder={t("sessionPage.closingSummaryPlaceholder")}
                 />
               </div>
             </div>
@@ -1619,7 +1774,7 @@ export function App() {
                   setIsExitSessionModalOpen(false);
                 }}
               >
-                Cancelar
+                {t("common.cancel")}
               </button>
               <button
                 type="button"
@@ -1627,7 +1782,7 @@ export function App() {
                 disabled={!exitSessionSummary.trim()}
                 onClick={handleConfirmExitAndCloseSession}
               >
-                Cerrar sesión y salir
+                {t("sessionPage.closeAndExitButton")}
               </button>
             </div>
           </div>

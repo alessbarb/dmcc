@@ -32,6 +32,7 @@ export interface TimelinePageProps {
   setTimelineFilter?: (f: string) => void;
   expandedEvents?: Record<string, boolean>;
   toggleEventJson?: (id: string) => void;
+  onEntityClick?: (entityId: string) => void;
 }
 
 export function TimelinePage(props: TimelinePageProps = {}) {
@@ -39,6 +40,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
   const { locale, t } = useTranslation();
   const timeline = props.timeline ?? store.timeline;
   const campaignState = props.campaignState ?? store.campaignState;
+  const onEntityClick = props.onEntityClick;
   const [timelineFilterLocal, setTimelineFilterLocal] = useState("narrative");
   const [expandedEventsLocal, setExpandedEventsLocal] = useState<
     Record<string, boolean>
@@ -446,6 +448,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
                       evt.payload,
                       campaignState,
                       locale,
+                      onEntityClick,
                     )}
                   </div>
 

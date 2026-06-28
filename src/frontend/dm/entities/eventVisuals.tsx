@@ -70,7 +70,14 @@ export function getEventVisualConfig(type: string, locale: SupportedLocale = "es
   return { category, label, color, bgColor, IconComponent };
 }
 
-export function renderEventDescription(type: string, payload: any, campaignState: any, locale: SupportedLocale = "es") {
+export function renderEventDescription(
+  type: string,
+  payload: any,
+  campaignState: any,
+  locale: SupportedLocale = "es",
+  onEntityClick?: (entityId: string) => void,
+  allEvents?: any[],
+) {
   const { t } = createTranslator(locale);
   if (!payload) return <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>{t("timeline.descriptions.noAdditionalData")}</p>;
 
@@ -78,6 +85,28 @@ export function renderEventDescription(type: string, payload: any, campaignState
     if (!campaignState?.entities) return id;
     const ent = campaignState.entities.find((e: any) => e.entityId === id || e.id === id);
     return ent ? ent.title : id;
+  };
+
+  const EntityLink = ({ id }: { id: string }) => {
+    const title = getEntityTitle(id);
+    if (!onEntityClick) return <span style={{ fontWeight: "600" }}>{title}</span>;
+    return (
+      <button
+        onClick={() => onEntityClick(id)}
+        style={{
+          fontWeight: "600",
+          color: "var(--primary)",
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          padding: 0,
+          fontSize: "inherit",
+          textDecoration: "underline dotted",
+        }}
+      >
+        {title}
+      </button>
+    );
   };
 
   switch (type) {
@@ -113,21 +142,21 @@ export function renderEventDescription(type: string, payload: any, campaignState
     case "EntityUpdated":
       return (
         <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>
-          {t("timeline.descriptions.entityUpdated", { title: payload.title || getEntityTitle(payload.entityId) })}
+          {t("timeline.descriptions.entityUpdated", { title: "" })}<EntityLink id={payload.entityId || payload.id} />
         </p>
       );
     case "EntityArchived":
       return (
         <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>
-          {t("timeline.descriptions.entityArchived", { title: getEntityTitle(payload.entityId) })}
+          {t("timeline.descriptions.entityArchived", { title: "" })}<EntityLink id={payload.entityId || payload.id} />
         </p>
       );
     case "RelationCreated":
       return (
         <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>
-          <span style={{ fontWeight: "600" }}>{getEntityTitle(payload.sourceEntityId)}</span>{" "}
+          <EntityLink id={payload.sourceEntityId} />{" "}
           <span style={{ color: "var(--primary)", fontStyle: "italic" }}>{payload.relationType}</span>{" "}
-          <span style={{ fontWeight: "600" }}>{getEntityTitle(payload.targetEntityId)}</span>
+          <EntityLink id={payload.targetEntityId} />
         </p>
       );
     case "RelationArchived":
@@ -145,7 +174,7 @@ export function renderEventDescription(type: string, payload: any, campaignState
     case "VisibilityChanged":
       return (
         <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>
-          {t("timeline.descriptions.visibilityChanged", { title: getEntityTitle(payload.targetId) })}{" "}
+          {t("timeline.descriptions.visibilityChanged", { title: "" })}<EntityLink id={payload.targetId} />{" "}
           → <span className="badge badge-primary">{payload.visibility?.kind || "dm_only"}</span>
         </p>
       );
