@@ -15,6 +15,7 @@ import {
   getValidatedCampaignId,
   hashAccessCode,
   hashPlayerToken,
+  generatePlayerToken,
 } from "../auth.js";
 import {
   getCharacterEntityIdForPlayer,
@@ -266,13 +267,6 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
             throw err;
           }
           role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken) as any;
-        } else if (role !== "dm") {
-          // Player authenticated via token — verify LAN mode is still enabled
-          if (!state?.campaign?.settings?.lanModeEnabled) {
-            const err = new Error("Forbidden: LAN Mode is disabled for this campaign");
-            (err as any).statusCode = 403;
-            throw err;
-          }
         }
 
         const rawEntities = Array.from(state.entities.values());
@@ -288,6 +282,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           relations: getVisibleRelations(Array.from(state.relations.values()), visibleEntityIds, role),
           facts: getVisibleFacts(Array.from(state.facts.values()), role, playerId, characterEntityId),
           sessions: getVisibleSessions(Array.from(state.sessions.values()), role),
+          sessionEvents: role === "dm" ? Array.from(state.sessionEvents?.values() || []) : [],
           players: role === "dm"
             ? Array.from(state.players?.values() || [])
             : Array.from(state.players?.values() || []).filter((p: any) => p.playerId === playerId),
@@ -478,40 +473,359 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     }
   );
 
-  // LAN Toggle
-  server.post<{ Params: { campaignId: string }; Body: { enabled: boolean } }>(
-    "/api/campaigns/:campaignId/lan/toggle",
+  // List player invitations (DM only)
+  server.get<{ Params: { campaignId: string } }>(
+    "/api/campaigns/:campaignId/invitations",
     async (request, reply) => {
       assertDM(request, (server as any).dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { enabled } = request.body;
-
       try {
-        const accessCode = enabled ? randomInt(100000, 1000000).toString() : undefined;
-        const localAccessCodeHash = accessCode ? hashAccessCode(accessCode) : undefined;
-
-        if (enabled && accessCode) {
-          (server as any).activeAccessCodes.set(campaignId, accessCode);
-        } else {
-          (server as any).activeAccessCodes.delete(campaignId);
-        }
-
-        await getRepository(vaultId).executeCommand(campaignId as any, {
-          type: "UpdateCampaignSettings",
-          campaignId: campaignId as any,
-          actorId: "usr_dm",
-          settings: {
-            lanModeEnabled: enabled,
-            localAccessCodeHash,
-            localAccessCode: undefined, // Clear legacy cleartext setting
-          },
-        });
-        return { ok: true, accessCode };
+        const repo = getRepository(vaultId);
+        const state = await repo.getCampaignState(campaignId as any);
+        const invitations = Array.from(
+          (state.invitations instanceof Map ? state.invitations : new Map()).values()
+        ).map(({ inviteTokenHash: _hash, ...rest }) => rest); // strip token hash from response
+        return { invitations };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
       }
     }
   );
+
+  // Create player invitation (DM only)
+  server.post<{ Params: { campaignId: string }; Body: { label?: string; expiresInHours?: number } }>(
+    "/api/campaigns/:campaignId/invitations",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { label, expiresInHours } = request.body ?? {};
+
+      try {
+        const repo = getRepository(vaultId);
+        const state = await repo.getCampaignState(campaignId as any);
+
+        const inviteToken = randomBytes(18).toString("base64url"); // ~24 char URL-safe
+        const inviteId = `inv_${randomBytes(8).toString("hex")}`;
+        const inviteTokenHash = hashPlayerToken(inviteToken);
+        const now = new Date().toISOString();
+        const expiresAt = expiresInHours
+          ? new Date(Date.now() + expiresInHours * 3600_000).toISOString()
+          : undefined;
+
+        await repo.executeCommand(campaignId as any, {
+          type: "CreatePlayerInvitation",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          inviteId,
+          inviteTokenHash,
+          label: label?.trim() || undefined,
+          createdAt: now,
+          expiresAt,
+        });
+
+        const { networkInterfaces } = await import("os");
+        let localIp = "127.0.0.1";
+        try {
+          const nets = networkInterfaces();
+          for (const name of Object.keys(nets)) {
+            for (const net of (nets[name] || [])) {
+              if (net.family === "IPv4" && !net.internal) { localIp = net.address; break; }
+            }
+          }
+        } catch { /* ignore */ }
+
+        const port = (server as any).server?.address?.()?.port ?? 4877;
+        const registerUrl = `http://${localIp}:${port}/register/${campaignId}/${inviteToken}`;
+
+        return { ok: true, inviteId, inviteToken, registerUrl, expiresAt };
+      } catch (err: any) {
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  // Revoke player invitation (DM only)
+  server.delete<{ Params: { campaignId: string; inviteId: string } }>(
+    "/api/campaigns/:campaignId/invitations/:inviteId",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+
+      try {
+        const repo = getRepository(vaultId);
+        await repo.executeCommand(campaignId as any, {
+          type: "RevokePlayerInvitation",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          inviteId: request.params.inviteId,
+        });
+        return { ok: true };
+      } catch (err: any) {
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  // Player registration — consume invite token, create profile, issue session token
+  server.post<{
+    Params: { campaignId: string };
+    Body: {
+      inviteToken: string;
+      displayName: string;
+      email: string;
+      characterChoice: { kind: "premade"; entityId: string } | { kind: "new"; name: string; characterClass?: string; race?: string } | null;
+    };
+  }>(
+    "/api/campaigns/:campaignId/register",
+    async (request, reply) => {
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { inviteToken, displayName, email, characterChoice } = request.body;
+
+      if (!inviteToken || !displayName?.trim() || !email?.trim()) {
+        reply.code(400);
+        return { error: "inviteToken, displayName and email are required" };
+      }
+
+      const emailNormalized = email.trim().toLowerCase();
+      const emailHash = hashPlayerToken(emailNormalized);
+      const inviteTokenHash = hashPlayerToken(inviteToken);
+
+      try {
+        const repo = getRepository(vaultId);
+        const state = await repo.getCampaignState(campaignId as any);
+
+        // Find the matching pending invitation
+        const invitations: Map<string, any> = state.invitations instanceof Map
+          ? state.invitations
+          : new Map();
+
+        let matchedInvite: any = null;
+        for (const [, inv] of invitations) {
+          if (inv.inviteTokenHash === inviteTokenHash && inv.status === "pending") {
+            matchedInvite = inv;
+            break;
+          }
+        }
+
+        if (!matchedInvite) {
+          reply.code(404);
+          return { error: "Invalid or already-used invitation link" };
+        }
+
+        if (matchedInvite.expiresAt && new Date(matchedInvite.expiresAt) < new Date()) {
+          reply.code(410);
+          return { error: "Invitation has expired" };
+        }
+
+        // Check if this email already has a player profile in this campaign
+        let playerId: string | null = null;
+        const players: Map<string, any> = state.players instanceof Map ? state.players : new Map();
+        for (const [pid, player] of players) {
+          if (
+            (player.emailHash === emailHash ||
+              (player.email && player.email.toLowerCase() === emailNormalized)) &&
+            !player.archived
+          ) {
+            playerId = pid;
+            break;
+          }
+        }
+
+        const now = new Date().toISOString();
+
+        if (!playerId) {
+          playerId = `ply_${randomBytes(8).toString("hex")}`;
+          await repo.executeCommand(campaignId as any, {
+            type: "CreatePlayerProfile",
+            campaignId: campaignId as any,
+            actorId: playerId,
+            playerId,
+            displayName: displayName.trim(),
+            email: emailNormalized,
+            role: "player",
+            color: "#3b82f6",
+          });
+        }
+
+        // Mark invitation consumed
+        await repo.executeCommand(campaignId as any, {
+          type: "ConsumePlayerInvitation",
+          campaignId: campaignId as any,
+          actorId: playerId,
+          inviteId: matchedInvite.inviteId,
+          playerId,
+          emailHash,
+          consumedAt: now,
+        });
+
+        // Handle character choice
+        if (characterChoice?.kind === "new" && characterChoice.name?.trim()) {
+          const newEntityId = createId("ent");
+          await repo.executeCommand(campaignId as any, {
+            type: "CreateEntity",
+            campaignId: campaignId as any,
+            actorId: playerId,
+            entityId: newEntityId,
+            entityType: "player_character",
+            title: characterChoice.name.trim(),
+            status: "active",
+            importance: "high",
+            visibility: { kind: "party" },
+            metadata: {
+              playerId,
+              class: characterChoice.characterClass ?? "",
+              race: characterChoice.race ?? "",
+            },
+          });
+        } else if (characterChoice?.kind === "premade" && characterChoice.entityId) {
+          await repo.executeCommand(campaignId as any, {
+            type: "LinkPlayerCharacter",
+            campaignId: campaignId as any,
+            actorId: "usr_dm",
+            playerId,
+            characterEntityId: characterChoice.entityId,
+            ownership: "campaign_premade",
+            syncMode: "live_player_editable",
+            createdAt: now,
+          });
+        }
+
+        // Issue session token
+        const playerToken = generatePlayerToken() + randomBytes(8).toString("hex");
+        const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
+        await repo.executeCommand(campaignId as any, {
+          type: "IssuePlayerToken",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          playerId,
+          tokenId,
+          tokenHash: hashPlayerToken(playerToken),
+          label: "registration",
+          createdAt: now,
+        });
+
+        (server as any).playerTokens.set(playerToken, { campaignId, playerId });
+
+        return {
+          playerToken,
+          playerId,
+          tokenId,
+          campaignId,
+          campaignTitle: state.campaign?.title,
+        };
+      } catch (err: any) {
+        if (err.statusCode) { reply.code(err.statusCode); return { error: err.message }; }
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  // Rejoin by email + campaign access code (cross-device token re-issue)
+  server.post<{ Params: { campaignId: string }; Body: { email: string; accessCode: string } }>(
+    "/api/campaigns/:campaignId/rejoin",
+    async (request, reply) => {
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { email, accessCode } = request.body;
+
+      if (!email?.trim() || !accessCode?.trim()) {
+        reply.code(400);
+        return { error: "email and accessCode are required" };
+      }
+
+      try {
+        const repo = getRepository(vaultId);
+        const state = await repo.getCampaignState(campaignId as any);
+
+        if (!state.campaign?.settings?.lanModeEnabled) {
+          reply.code(403);
+          return { error: "LAN mode is not enabled" };
+        }
+
+        const codeHash = state.campaign.settings?.localAccessCodeHash;
+        const legacyCode = state.campaign.settings?.localAccessCode;
+        const isValidCode =
+          (codeHash && hashAccessCode(accessCode) === codeHash) ||
+          (legacyCode && accessCode === legacyCode);
+
+        if (!isValidCode) {
+          reply.code(401);
+          return { error: "Invalid campaign access code" };
+        }
+
+        const emailNormalized = email.trim().toLowerCase();
+        const emailHash = hashPlayerToken(emailNormalized);
+
+        // Find player by emailHash
+        let matchedPlayerId: string | null = null;
+        for (const [pid, player] of state.players) {
+          if (
+            (player.emailHash === emailHash ||
+              (player.email && player.email.toLowerCase() === emailNormalized)) &&
+            !player.archived
+          ) {
+            matchedPlayerId = pid;
+            break;
+          }
+        }
+
+        if (!matchedPlayerId) {
+          reply.code(404);
+          return { error: "No player found with this email in this campaign. Ask the DM to send you a new invitation." };
+        }
+
+        const playerToken = generatePlayerToken() + randomBytes(8).toString("hex");
+        const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
+        const now = new Date().toISOString();
+
+        await repo.executeCommand(campaignId as any, {
+          type: "IssuePlayerToken",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          playerId: matchedPlayerId,
+          tokenId,
+          tokenHash: hashPlayerToken(playerToken),
+          label: "rejoin",
+          createdAt: now,
+        });
+
+        (server as any).playerTokens.set(playerToken, { campaignId, playerId: matchedPlayerId });
+
+        return {
+          playerToken,
+          playerId: matchedPlayerId,
+          tokenId,
+          campaignTitle: state.campaign?.title,
+        };
+      } catch (err: any) {
+        if (err.statusCode) { reply.code(err.statusCode); return { error: err.message }; }
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  // GET /api/network-info — returns local network address (no auth required, info only)
+  server.get("/api/network-info", async () => {
+    const { networkInterfaces } = await import("os");
+    let localIp = "127.0.0.1";
+    try {
+      const nets = networkInterfaces();
+      for (const name of Object.keys(nets)) {
+        for (const net of (nets[name] || [])) {
+          if (net.family === "IPv4" && !net.internal) { localIp = net.address; break; }
+        }
+      }
+    } catch { /* ignore */ }
+    const port = (server as any).server?.address?.()?.port ?? 4877;
+    return { localIp, port, url: `http://${localIp}:${port}` };
+  });
 }

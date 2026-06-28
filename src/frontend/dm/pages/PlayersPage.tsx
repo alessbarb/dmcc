@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Plus, X, User, Pencil, Archive, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { Plus, X, User, Pencil, Archive, Eye, EyeOff, ShieldCheck, Link2, Copy, Trash2, Clock, Wifi } from "lucide-react";
 import type { Entity, PlayerProfile } from "../../shared/stores/campaignStore.js";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+import { getDmSessionToken } from "../../shared/auth/authClient.js";
 
 
 export interface PlayersPageProps {
@@ -39,6 +40,82 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const { linkPlayerCharacter } = store;
   const [assignSelections, setAssignSelections] = useState<Record<string, string>>({});
 
+  // Invitation state
+  const [invitations, setInvitations] = useState<any[]>([]);
+  const [inviteLoading, setInviteLoading] = useState(false);
+  const [showInvitePanel, setShowInvitePanel] = useState(false);
+  const [newInviteUrl, setNewInviteUrl] = useState<string | null>(null);
+  const [networkUrl, setNetworkUrl] = useState<string | null>(null);
+
+  const dmHeaders = useCallback((): Record<string, string> => {
+    const token = getDmSessionToken();
+    const h: Record<string, string> = { "x-vault-id": store.activeVaultId || "default" };
+    if (token) h["x-dm-token"] = token;
+    return h;
+  }, [store.activeVaultId]);
+
+  const fetchInvitations = useCallback(async () => {
+    const activeCampaignId = store.activeCampaignId;
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetch(`/api/campaigns/${activeCampaignId}/invitations`, {
+        headers: dmHeaders(),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setInvitations(data.invitations ?? []);
+      }
+    } catch { /* non-fatal */ }
+  }, [store.activeCampaignId, dmHeaders]);
+
+  useEffect(() => {
+    void fetchInvitations();
+  }, [fetchInvitations]);
+
+  useEffect(() => {
+    fetch("/api/network-info")
+      .then((r) => r.json())
+      .then((d: any) => { if (d?.url) setNetworkUrl(d.url); })
+      .catch(() => {});
+  }, []);
+
+  const handleCreateInvite = async () => {
+    const activeCampaignId = store.activeCampaignId;
+    if (!activeCampaignId) return;
+    setInviteLoading(true);
+    setNewInviteUrl(null);
+    try {
+      const res = await fetch(`/api/campaigns/${activeCampaignId}/invitations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...dmHeaders() },
+        body: JSON.stringify({ expiresInHours: 72 }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setNewInviteUrl(data.registerUrl);
+        await fetchInvitations();
+      } else {
+        addToast(data.error || "Error creating invitation", "error");
+      }
+    } catch (err: any) {
+      addToast(err.message || "Error", "error");
+    } finally {
+      setInviteLoading(false);
+    }
+  };
+
+  const handleRevokeInvite = async (inviteId: string) => {
+    const activeCampaignId = store.activeCampaignId;
+    if (!activeCampaignId) return;
+    try {
+      await fetch(`/api/campaigns/${activeCampaignId}/invitations/${inviteId}`, {
+        method: "DELETE",
+        headers: dmHeaders(),
+      });
+      await fetchInvitations();
+    } catch { /* non-fatal */ }
+  };
+
   useEffect(() => {
     void loadDmPlayerPortalSummary();
   }, [loadDmPlayerPortalSummary]);
@@ -64,11 +141,110 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   return (<>
     <div>
       <h2 style={{ fontWeight: "700", marginBottom: "16px" }}>Jugadores y personajes</h2>
-      <div className="top-bar" style={{ marginBottom: "24px" }}>
+      <div className="top-bar" style={{ marginBottom: "16px" }}>
         <button className="btn btn-primary btn-sm" onClick={() => setIsPlayerModalOpen(true)}>
           <Plus size={14} /> Añadir jugador
         </button>
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={() => { setShowInvitePanel((v) => !v); setNewInviteUrl(null); }}
+        >
+          <Link2 size={14} /> Invitar jugador
+        </button>
       </div>
+
+      {showInvitePanel && (
+        <div className="card" style={{ marginBottom: "20px", padding: "16px", border: "1px solid rgba(99,102,241,0.3)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+            <h3 style={{ fontWeight: "600", fontSize: "0.95rem", margin: 0 }}>
+              <Link2 size={14} style={{ marginRight: "6px", verticalAlign: "middle" }} />
+              Invitaciones de jugador
+            </h3>
+            <button className="btn btn-secondary btn-icon" style={{ padding: "4px" }} onClick={() => setShowInvitePanel(false)}>
+              <X size={12} />
+            </button>
+          </div>
+          {networkUrl && (
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "12px", padding: "6px 10px", borderRadius: "6px", background: "rgba(16,185,129,0.07)", border: "1px solid rgba(16,185,129,0.2)" }}>
+              <Wifi size={13} style={{ color: "#34d399", flexShrink: 0 }} />
+              <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>Red local activa: </span>
+              <code style={{ fontSize: "0.78rem", color: "#34d399" }}>{networkUrl}</code>
+            </div>
+          )}
+
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={handleCreateInvite}
+            disabled={inviteLoading}
+            style={{ marginBottom: "12px" }}
+          >
+            <Plus size={14} /> {inviteLoading ? "Generando..." : "Generar enlace de invitación"}
+          </button>
+
+          {newInviteUrl && (
+            <div style={{ background: "rgba(99,102,241,0.08)", borderRadius: "8px", padding: "10px 12px", marginBottom: "12px" }}>
+              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "6px" }}>
+                Comparte este enlace con el jugador (válido 72h):
+              </p>
+              <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                <code style={{ fontSize: "0.75rem", wordBreak: "break-all", flex: 1, color: "var(--accent)" }}>{newInviteUrl}</code>
+                <button
+                  className="btn btn-secondary btn-icon"
+                  style={{ padding: "4px", flexShrink: 0 }}
+                  onClick={() => { void navigator.clipboard.writeText(newInviteUrl); addToast("Enlace copiado", "success"); }}
+                >
+                  <Copy size={12} />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {invitations.length > 0 && (
+            <div>
+              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "6px" }}>Invitaciones activas:</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                {invitations.map((inv: any) => (
+                  <div key={inv.inviteId} style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "6px 8px",
+                    borderRadius: "6px",
+                    background: "rgba(255,255,255,0.03)",
+                    fontSize: "0.8rem",
+                  }}>
+                    <Clock size={12} style={{ flexShrink: 0, opacity: 0.5 }} />
+                    <span style={{ flex: 1, color: inv.status === "pending" ? "var(--text-main)" : "var(--text-muted)" }}>
+                      {inv.label || `Invitación ${inv.inviteId.slice(-6)}`}
+                    </span>
+                    <span style={{
+                      padding: "2px 6px",
+                      borderRadius: "4px",
+                      fontSize: "0.7rem",
+                      fontWeight: 600,
+                      background: inv.status === "pending" ? "rgba(99,102,241,0.15)" : inv.status === "consumed" ? "rgba(16,185,129,0.15)" : "rgba(239,68,68,0.15)",
+                      color: inv.status === "pending" ? "#818cf8" : inv.status === "consumed" ? "#34d399" : "#f87171",
+                    }}>
+                      {inv.status === "pending" ? "pendiente" : inv.status === "consumed" ? "usada" : "revocada"}
+                    </span>
+                    {inv.status === "pending" && (
+                      <button
+                        className="btn btn-danger btn-icon"
+                        style={{ padding: "3px" }}
+                        onClick={() => void handleRevokeInvite(inv.inviteId)}
+                      >
+                        <Trash2 size={10} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div style={{ marginBottom: "24px" }} />
 
       {(campaignState?.players ?? []).length === 0 ? (
         <div className="card" style={{ textAlign: "center", padding: "40px", color: "var(--text-muted)" }}>

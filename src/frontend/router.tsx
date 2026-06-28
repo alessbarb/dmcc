@@ -4,11 +4,16 @@ import {
   createRoute,
   createRouter,
   Outlet,
+  redirect,
 } from "@tanstack/react-router";
 
+const SmartLandingLazy = React.lazy(() => import("./SmartLanding.js").then((m) => ({ default: m.SmartLanding })));
 const AppPage = React.lazy(() => import("./App.js").then((m) => ({ default: m.App })));
 const CampaignShellPage = React.lazy(() => import("./dm/layouts/CampaignShell.js").then((m) => ({ default: m.CampaignShell })));
+const DmSetupPageLazy = React.lazy(() => import("./dm/pages/DmSetupPage.js").then((m) => ({ default: m.DmSetupPage })));
+const DmUnlockPageLazy = React.lazy(() => import("./dm/pages/DmUnlockPage.js").then((m) => ({ default: m.DmUnlockPage })));
 const JoinPageLazy = React.lazy(() => import("./player/pages/JoinPage.js").then((m) => ({ default: m.JoinPage })));
+const PlayerJoinPageLazy = React.lazy(() => import("./player/pages/PlayerJoinPage.js").then((m) => ({ default: m.PlayerJoinPage })));
 const DashboardPageLazy = React.lazy(() => import("./dm/pages/DashboardPage.js").then((m) => ({ default: m.DashboardPage })));
 const WhatNowPageLazy = React.lazy(() => import("./dm/pages/WhatNowPage.js").then((m) => ({ default: m.WhatNowPage })));
 const SessionPageLazy = React.lazy(() => import("./dm/sessions/SessionPage.js").then((m) => ({ default: m.SessionPage })));
@@ -20,6 +25,7 @@ const PlayersPageLazy = React.lazy(() => import("./dm/pages/PlayersPage.js").the
 const SearchPageLazy = React.lazy(() => import("./dm/pages/SearchPage.js").then((m) => ({ default: m.SearchPage })));
 const SettingsPageLazy = React.lazy(() => import("./dm/pages/SettingsPage.js").then((m) => ({ default: m.SettingsPage })));
 const PlayerPortalPageLazy = React.lazy(() => import("./player/pages/PlayerPortalPage.js").then((m) => ({ default: m.PlayerPortalPage })));
+const RegisterPageLazy = React.lazy(() => import("./player/pages/RegisterPage.js").then((m) => ({ default: m.RegisterPage })));
 const CanvasPageLazy = React.lazy(() => import("./dm/canvas/pages/CanvasPage.js").then((m) => ({ default: m.CanvasPage })));
 
 function withSuspense(Component: React.ComponentType) {
@@ -37,18 +43,57 @@ const rootRoute = createRootRoute({
   component: () => <Outlet />,
 });
 
-// Index route (Landing Page / Campaign selector)
+// SmartLanding — unified entry point
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
+  component: withSuspense(SmartLandingLazy),
+});
+
+// DM home (was App at /)
+const dmRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/dm",
   component: withSuspense(AppPage),
 });
 
-// Join route
+// DM setup PIN (first run)
+const dmSetupRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/dm/setup",
+  component: withSuspense(DmSetupPageLazy),
+});
+
+// DM unlock with PIN
+const dmUnlockRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/dm/unlock",
+  component: withSuspense(DmUnlockPageLazy),
+});
+
+// Player join page (code or link)
+const playerJoinRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/join",
+  component: withSuspense(PlayerJoinPageLazy),
+});
+
+// Legacy join route — redirect to /player/join with campaignId
 const joinRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/join/$campaignId",
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: "/player/join", search: { campaignId: params.campaignId } });
+  },
+  // Fallback component (should not render due to redirect)
   component: withSuspense(JoinPageLazy),
+});
+
+// Player registration route — consume invite token
+const registerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/register/$campaignId/$inviteToken",
+  component: withSuspense(RegisterPageLazy),
 });
 
 // Player portal route — direct child of rootRoute, bypasses CampaignShell
@@ -135,7 +180,12 @@ const canvasRoute = createRoute({
 // Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
+  dmRoute,
+  dmSetupRoute,
+  dmUnlockRoute,
+  playerJoinRoute,
   joinRoute,
+  registerRoute,
   playerPortalRoute,
   campaignRoute.addChildren([
     canvasRoute,
