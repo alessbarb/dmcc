@@ -14,7 +14,7 @@ import { getEntityDefaultImage } from "./entityVisuals.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
 import type { Entity, Relation, Fact, Session } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
-import { formatRelationType } from "@shared/i18n/index.js";
+import { formatRelationType, formatVisibility } from "@shared/i18n/index.js";
 import type { SupportedLocale } from "@shared/i18n/types.js";
 
 
@@ -97,8 +97,9 @@ function buildTrazabilidad(
   const entries: TraceEntry[] = [];
 
   // 1. Creación
-  const createdSession = entity.metadata?.createdInSessionId
-    ? sessions.find((s: Session) => s.sessionId === entity.metadata.createdInSessionId)
+  const createdInSessionId = entity.createdInSessionId ?? entity.metadata?.createdInSessionId;
+  const createdSession = createdInSessionId
+    ? sessions.find((s: Session) => s.sessionId === createdInSessionId)
     : null;
 
   entries.push({
@@ -174,7 +175,8 @@ function ResumenTab({
   setEditEntityForm: (v: Partial<Entity>) => void;
   onVisibilityChange: (entityId: string, visibility: any) => Promise<void>;
 }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
+  const visKind = entity.visibility?.kind ?? "dm_only";
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       {/* Visibility badge + editor */}
@@ -198,38 +200,34 @@ function ResumenTab({
             fontSize: "0.8rem",
             fontWeight: "700",
             backgroundColor:
-              entity.visibility?.kind === "dm_only"
+              visKind === "dm_only"
                 ? "hsl(0, 60%, 25%)"
-                : entity.visibility?.kind === "group"
-                ? "hsl(120, 60%, 20%)"
-                : "hsl(200, 60%, 25%)",
+                : "hsl(120, 60%, 20%)",
             color:
-              entity.visibility?.kind === "dm_only"
+              visKind === "dm_only"
                 ? "hsl(0, 80%, 65%)"
-                : entity.visibility?.kind === "group"
-                ? "hsl(120, 70%, 60%)"
-                : "hsl(200, 80%, 65%)",
+                : "hsl(120, 70%, 60%)",
           }}
         >
-          {entity.visibility?.kind ?? "dm_only"}
+          {formatVisibility(visKind, locale)}
         </span>
         <div style={{ marginLeft: "auto", display: "flex", gap: "6px" }}>
-          {entity.visibility?.kind === "dm_only" && (
+          {visKind === "dm_only" && (
             <button
               type="button"
               className="btn btn-secondary btn-sm"
-              onClick={() => onVisibilityChange(entity.entityId, { kind: "group" })}
+              onClick={() => onVisibilityChange(entity.entityId, { kind: "party" })}
             >
-              <Eye size={12} /> Revelar al grupo
+              <Eye size={12} /> {t("entityDetail.revealToGroup")}
             </button>
           )}
-          {entity.visibility?.kind !== "dm_only" && (
+          {visKind !== "dm_only" && (
             <button
               type="button"
               className="btn btn-secondary btn-sm"
               onClick={() => onVisibilityChange(entity.entityId, { kind: "dm_only" })}
             >
-              <EyeOff size={12} /> Solo DM
+              <EyeOff size={12} /> {t("entityDetail.dmOnly")}
             </button>
           )}
         </div>
