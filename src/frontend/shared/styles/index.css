@@ -5427,3 +5427,213 @@ body {
     background: var(--primary-light);
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Tablet form-factor (769px–1200px)
+   Touch-first: sidebar auto-collapsed, larger targets.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --touch-target-min: 44px;
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  /* Sidebar always collapsed on tablet */
+  .sidebar {
+    width: 52px !important;
+    min-width: 52px !important;
+  }
+
+  .sidebar-header {
+    padding: 16px 8px !important;
+    overflow: hidden !important;
+  }
+
+  .sidebar-logo,
+  .sidebar-logo-subtitle {
+    display: none !important;
+  }
+
+  .sidebar-nav {
+    padding: 12px 6px !important;
+  }
+
+  .nav-item {
+    padding: 10px !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    min-height: var(--touch-target-min) !important;
+  }
+
+  .nav-item span {
+    display: none !important;
+  }
+
+  .sidebar-footer {
+    padding: 12px 8px !important;
+  }
+
+  /* Content body: slightly more breathing room on medium screens */
+  .content-body {
+    padding: 20px 20px 72px !important;
+  }
+
+  /* Buttons: larger tap targets */
+  .btn {
+    min-height: var(--touch-target-min);
+    padding: 10px 16px;
+  }
+
+  /* Cards: no lift animation on touch (avoids stuck :hover states) */
+  .card:hover {
+    transform: none !important;
+  }
+}
+
+/* Touch devices at any width: enlarge interactive elements */
+@media (hover: none) and (pointer: coarse) {
+  .btn {
+    min-height: var(--touch-target-min);
+  }
+
+  .nav-item {
+    min-height: var(--touch-target-min);
+  }
+
+  /* Prevent double-tap zoom on buttons */
+  .btn,
+  .nav-item,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* Remove hover card lift on touch */
+  .card:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-md) !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Quick Capture FAB
+   ───────────────────────────────────────────────────────────── */
+
+.quick-capture-fab {
+  display: none; /* hidden on desktop */
+  position: fixed;
+  right: 16px;
+  bottom: calc(var(--campaign-mobile-bottom-nav-height, 74px) + 16px + env(safe-area-inset-bottom));
+  z-index: 200;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--text-main);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-primary), var(--shadow-lg);
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.quick-capture-fab:active {
+  transform: scale(0.93);
+}
+
+@media (max-width: 1200px), (hover: none) and (pointer: coarse) {
+  .quick-capture-fab {
+    display: flex;
+  }
+}
+
+.quick-capture-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.quick-capture-sheet {
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  animation: slideUp 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.quick-capture-sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.quick-capture-sheet__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.quick-capture-sheet__body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quick-capture-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.quick-capture-type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px;
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  min-height: var(--touch-target-min);
+  touch-action: manipulation;
+}
+
+.quick-capture-type-btn.active {
+  background: var(--primary-light);
+  border-color: hsla(255, 85%, 65%, 0.4);
+  color: var(--text-main);
+}
+
+.quick-capture-sheet__footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--border-color);
+}

@@ -7,6 +7,7 @@ import { EntityCreateModal } from "../entities/EntityCreateModal.js";
 import { RelationCreateModal } from "../entities/RelationCreateModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { QuickCaptureFAB } from "../capture/QuickCaptureFAB.js";
 import {
   Shield,
   Activity,
@@ -427,6 +428,8 @@ export function CampaignShell() {
       <RelationCreateModal isOpen={isRelationModalOpen} onClose={() => setIsRelationModalOpen(false)} />
 
       <ToastContainer toasts={toasts} onRemove={removeToast} />
+
+      {campaignId && <QuickCaptureFAB campaignId={campaignId} />}
 
       {showExitTransition && (
         <div className="mystical-portal-overlay mystical-portal-overlay--out" aria-hidden="true">
