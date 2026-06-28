@@ -1,4 +1,3 @@
-import React from "react";
 import { Handle, Position } from "reactflow";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import {
@@ -26,25 +25,25 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
   const { t } = useTranslation();
 
   const TYPE_CONFIGS: Record<string, { label: string; icon: any; color: string; heroStyle: "portrait" | "panorama" | "compact" }> = {
-    player_character: { label: "PJ",                             icon: User,           color: "#6366f1", heroStyle: "portrait"  },
-    npc:              { label: "PNJ",                            icon: UserCheck,      color: "#3b82f6", heroStyle: "portrait"  },
-    location:         { label: "Lugar",                          icon: MapPin,         color: "#10b981", heroStyle: "panorama"  },
-    faction:          { label: t("domain.entityTypes.faction"),  icon: Shield,         color: "#f59e0b", heroStyle: "portrait"  },
-    quest:            { label: t("domain.entityTypes.quest"),    icon: Award,          color: "#f97316", heroStyle: "compact"   },
-    clue:             { label: "Pista",                          icon: HelpCircle,     color: "#eab308", heroStyle: "compact"   },
-    secret:           { label: t("domain.entityTypes.secret"),   icon: Key,            color: "#ef4444", heroStyle: "compact"   },
-    item:             { label: "Objeto",                         icon: Box,            color: "#8b5cf6", heroStyle: "compact"   },
-    creature:         { label: "Criatura",                       icon: Skull,          color: "#dc2626", heroStyle: "portrait"  },
-    encounter:        { label: "Encuentro",                      icon: Activity,       color: "#0891b2", heroStyle: "compact"   },
-    scene:            { label: "Escena",                         icon: Film,           color: "#64748b", heroStyle: "panorama"  },
-    front:            { label: "Frente",                         icon: AlertTriangle,  color: "#7c3aed", heroStyle: "compact"   },
-    clock:            { label: "Reloj",                          icon: Clock,          color: "#0ea5e9", heroStyle: "compact"   },
-    decision:         { label: t("domain.entityTypes.decision"), icon: GitPullRequest, color: "#d97706", heroStyle: "compact"   },
-    consequence:      { label: "Consecuencia",                   icon: RefreshCcw,     color: "#b45309", heroStyle: "compact"   },
-    rumor:            { label: "Rumor",                          icon: MessageSquare,  color: "#6b7280", heroStyle: "compact"   },
-    rule_reference:   { label: "Regla",                          icon: BookOpen,       color: "#374151", heroStyle: "compact"   },
-    handout:          { label: "Documento",                      icon: FileText,       color: "#1d4ed8", heroStyle: "compact"   },
-    note:             { label: "Nota",                           icon: StickyNote,     color: "#475569", heroStyle: "compact"   },
+    player_character: { label: t("domain.entityTypes.player_character"), icon: User,           color: "#6366f1", heroStyle: "portrait"  },
+    npc:              { label: t("domain.entityTypes.npc"),              icon: UserCheck,      color: "#3b82f6", heroStyle: "portrait"  },
+    location:         { label: t("domain.entityTypes.location"),         icon: MapPin,         color: "#10b981", heroStyle: "panorama"  },
+    faction:          { label: t("domain.entityTypes.faction"),          icon: Shield,         color: "#f59e0b", heroStyle: "portrait"  },
+    quest:            { label: t("domain.entityTypes.quest"),            icon: Award,          color: "#f97316", heroStyle: "compact"   },
+    clue:             { label: t("domain.entityTypes.clue"),             icon: HelpCircle,     color: "#eab308", heroStyle: "compact"   },
+    secret:           { label: t("domain.entityTypes.secret"),           icon: Key,            color: "#ef4444", heroStyle: "compact"   },
+    item:             { label: t("domain.entityTypes.item"),             icon: Box,            color: "#8b5cf6", heroStyle: "compact"   },
+    creature:         { label: t("domain.entityTypes.creature"),         icon: Skull,          color: "#dc2626", heroStyle: "portrait"  },
+    encounter:        { label: t("domain.entityTypes.encounter"),        icon: Activity,       color: "#0891b2", heroStyle: "compact"   },
+    scene:            { label: t("domain.entityTypes.scene"),            icon: Film,           color: "#64748b", heroStyle: "panorama"  },
+    front:            { label: t("domain.entityTypes.front"),            icon: AlertTriangle,  color: "#7c3aed", heroStyle: "compact"   },
+    clock:            { label: t("domain.entityTypes.clock"),            icon: Clock,          color: "#0ea5e9", heroStyle: "compact"   },
+    decision:         { label: t("domain.entityTypes.decision"),         icon: GitPullRequest, color: "#d97706", heroStyle: "compact"   },
+    consequence:      { label: t("domain.entityTypes.consequence"),      icon: RefreshCcw,     color: "#b45309", heroStyle: "compact"   },
+    rumor:            { label: t("domain.entityTypes.rumor"),            icon: MessageSquare,  color: "#6b7280", heroStyle: "compact"   },
+    rule_reference:   { label: t("domain.entityTypes.rule_reference"),   icon: BookOpen,       color: "#374151", heroStyle: "compact"   },
+    handout:          { label: t("domain.entityTypes.handout"),          icon: FileText,       color: "#1d4ed8", heroStyle: "compact"   },
+    note:             { label: t("domain.entityTypes.note"),             icon: StickyNote,     color: "#475569", heroStyle: "compact"   },
   };
 
   const {

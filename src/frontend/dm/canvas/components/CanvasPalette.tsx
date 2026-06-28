@@ -84,7 +84,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
     if (kind === "note") {
       await placeNodeOnCanvas(canvasId, { kind: "note", text: t("canvas.noteNode.contentPlaceholderLong"), color: "yellow", x, y });
     } else if (kind === "group") {
-      await placeNodeOnCanvas(canvasId, { kind: "group", title: "Nuevo Grupo", color: "purple", x, y, width: 300, height: 200 });
+      await placeNodeOnCanvas(canvasId, { kind: "group", title: t("canvasPalette.groupDefaultName"), color: "purple", x, y, width: 300, height: 200 });
     } else if (kind === "entity" && entityType) {
       const title = `Nuevo ${label || "Elemento"}`;
       const campaignId = campaignState?.campaign?.campaignId;
@@ -107,7 +107,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
   const selectedEntity = selectedNode?.entityId ? campaignState?.entities?.find((e: any) => e.entityId === selectedNode.entityId) : null;
 
   const handleCreateQuickScene = async () => {
-    await handleCreateNewNode("entity", "scene", "Escena");
+    await handleCreateNewNode("entity", "scene", t("domain.entityTypes.scene"));
   };
 
   const handleQuickSessionNote = async () => {
@@ -215,7 +215,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
       <div className="canvas-palette canvas-palette--direction" style={{ backgroundColor: "rgba(15,18,30,0.92)", borderRight: "1px solid var(--border-color)", padding: "16px", display: "flex", flexDirection: "column", gap: "16px", zIndex: 10, position: "relative" }}>
         <button
           onClick={toggleCollapsed}
-          title="Colapsar paleta"
+          title={t("canvasPalette.collapsePalette")}
           style={{
             position: "absolute", top: "8px", right: "8px",
             background: "none", border: "none", cursor: "pointer",
@@ -226,7 +226,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
           <ChevronLeft size={13} />
         </button>
         <div className="palette-section">
-          <h3>⚡ Dirección en Vivo</h3>
+          <h3>⚡ {t("canvasPalette.liveDirection")}</h3>
           <div className="palette-list" style={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
             <button
               onClick={handleCreateQuickScene}
@@ -234,7 +234,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
               style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-input)", color: "var(--text-main)" } as any}
             >
               <Film size={14} style={{ color: "#64748b" }} />
-              <span>🎬 Crear Escena rápida</span>
+              <span>🎬 {t("canvasPalette.createQuickScene")}</span>
             </button>
             <button
               onClick={handleQuickSessionNote}
@@ -242,7 +242,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
               style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-input)", color: "var(--text-main)" } as any}
             >
               <StickyNote size={14} style={{ color: "#eab308" }} />
-              <span>📝 Nota de Sesión rápida</span>
+              <span>📝 {t("canvasPalette.quickSessionNote")}</span>
             </button>
           </div>
         </div>
@@ -250,7 +250,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
         <div className="palette-divider" style={{ height: "1px", backgroundColor: "var(--border-color)", opacity: 0.3 }} />
 
         <div className="palette-section" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-          <h3>🎯 Acción sobre Selección</h3>
+          <h3>🎯 {t("canvasPalette.actionOnSelection")}</h3>
           {selectedNode ? (
             <div style={{ marginTop: "12px", padding: "12px", borderRadius: "var(--radius-md)", backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid var(--border-color)", display: "flex", flexDirection: "column", gap: "10px" }}>
               <div>
@@ -271,7 +271,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
                     style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px" }}
                   >
                     <Eye size={12} />
-                    <span>{isSecret ? "👁 Revelar a jugadores" : "Revelado"}</span>
+                    <span>{isSecret ? `👁 ${t("canvasPalette.revealToPlayers")}` : t("canvasPalette.revealed")}</span>
                   </button>
 
                   <button
@@ -280,7 +280,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
                     style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px" }}
                   >
                     <CheckCircle2 size={12} />
-                    <span>✅ Resolver Estado</span>
+                    <span>✅ {t("canvasPalette.resolveStatus")}</span>
                   </button>
 
                   <button
@@ -289,7 +289,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
                     style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px" }}
                   >
                     <RefreshCcw size={12} />
-                    <span>💥 Consecuencia</span>
+                    <span>💥 {t("canvasPalette.quickConsequence")}</span>
                   </button>
                 </>
               )}
@@ -300,12 +300,12 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
                 style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px", borderColor: "rgba(239,68,68,0.2)" }}
               >
                 <Trash2 size={12} />
-                <span>Quitar del Canvas</span>
+                <span>{t("canvasPalette.removeFromCanvas")}</span>
               </button>
             </div>
           ) : (
             <div style={{ fontSize: "11px", color: "var(--text-muted)", textAlign: "center", padding: "16px 0", flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              Selecciona un nodo en el canvas para ver las acciones de partida.
+              {t("canvasPalette.selectNodeForActions")}
             </div>
           )}
         </div>
@@ -342,7 +342,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
       >
         <button
           onClick={toggleCollapsed}
-          title="Expandir paleta"
+          title={t("canvasPalette.expandPalette")}
           style={{
             background: "none",
             border: "none",
@@ -365,7 +365,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
       <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "-8px" }}>
         <button
           onClick={toggleCollapsed}
-          title="Colapsar paleta"
+          title={t("canvasPalette.collapsePalette")}
           style={{
             background: "none",
             border: "none",
@@ -381,7 +381,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
         </button>
       </div>
       <div className="palette-section">
-        <h3>Agregar ideas</h3>
+        <h3>{t("canvasPalette.addIdeas")}</h3>
         <div className="palette-buttons-grid">
           <button
             draggable
@@ -397,7 +397,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
             title={t("canvas.palette.addNoteDragHint")}
           >
             <StickyNote size={16} />
-            <span>Nota adhesiva</span>
+            <span>{t("canvasPalette.stickyNote")}</span>
           </button>
           <button
             draggable
@@ -413,7 +413,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
             title={t("canvas.palette.addGroupDragHint")}
           >
             <BoxSelect size={16} />
-            <span>Marco / Grupo</span>
+            <span>{t("canvasPalette.frameGroup")}</span>
           </button>
         </div>
       </div>
@@ -421,7 +421,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
       <div className="palette-divider" />
 
       <div className="palette-section">
-        <h3>Crear entidades <span className="palette-drag-hint">arrastra al canvas</span></h3>
+        <h3>{t("canvasPalette.createEntities")} <span className="palette-drag-hint">{t("canvasPalette.dragToCanvas")}</span></h3>
         <div className="palette-list">
           {PALETTE_ITEMS.map((item) => {
             const IconComponent = item.Icon;
@@ -456,7 +456,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
       <div className="palette-divider" />
 
       <div className="palette-section">
-        <h3>Añadir existente</h3>
+        <h3>{t("canvasPalette.addExisting")}</h3>
         <div className="palette-search-container">
           <div className="palette-search-input-wrapper">
             <Search size={14} className="palette-search-icon" />
@@ -476,11 +476,11 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
           {isDropdownOpen && searchQuery && (
             <div className="palette-search-results">
               <div className="palette-search-results-header">
-                <span>Resultados de campaña</span>
+                <span>{t("canvasPalette.campaignResults")}</span>
                 <button onClick={() => setIsDropdownOpen(false)} className="palette-results-close">&times;</button>
               </div>
               {filteredEntities.length === 0 ? (
-                <div className="palette-results-empty">No hay entidades disponibles</div>
+                <div className="palette-results-empty">{t("canvasPalette.noAvailableEntities")}</div>
               ) : (
                 <div className="palette-results-list">
                   {filteredEntities.map((entity: any) => (
@@ -511,13 +511,13 @@ type FactKindConfig = Record<string, { label: string; color: string; Icon: React
 
 function getFactKindConfig(t: (key: string) => string): FactKindConfig {
   return {
-    canon:         { label: "Canon",      color: "#10b981", Icon: CheckCircle2 },
+    canon:         { label: t("canvas.factNode.kindCanonShort"),     color: "#10b981", Icon: CheckCircle2 },
     dm_secret:     { label: t("canvas.factNode.kindDmSecretShort"), color: "#dc2626", Icon: Lock },
-    rumor:         { label: "Rumor",      color: "#d97706", Icon: MessageSquare },
-    lie:           { label: "Mentira",    color: "#ea580c", Icon: XCircle },
-    player_theory: { label: t("canvas.factNode.kindTheoryShort"), color: "#6366f1", Icon: Lightbulb },
-    mistake:       { label: "Error",      color: "#64748b", Icon: AlertTriangle },
-    retcon:        { label: "Retcon",     color: "#8b5cf6", Icon: RefreshCw },
+    rumor:         { label: t("canvas.factNode.kindRumorShort"),     color: "#d97706", Icon: MessageSquare },
+    lie:           { label: t("canvas.factNode.kindLieShort"),       color: "#ea580c", Icon: XCircle },
+    player_theory: { label: t("canvas.factNode.kindTheoryShort"),    color: "#6366f1", Icon: Lightbulb },
+    mistake:       { label: t("canvas.factNode.kindMistakeShort"),   color: "#64748b", Icon: AlertTriangle },
+    retcon:        { label: t("canvas.factNode.kindRetconShort"),    color: "#8b5cf6", Icon: RefreshCw },
   };
 }
 
@@ -594,7 +594,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
 
   return (
     <div className="palette-section">
-      <h3>Hechos narrativos <span className="palette-drag-hint">arrastra al canvas</span></h3>
+      <h3>{t("canvasPalette.narrativeFacts")} <span className="palette-drag-hint">{t("canvasPalette.dragToCanvas")}</span></h3>
 
       {/* Quick-create by kind */}
       <div className="palette-list" style={{ gap: "4px", marginBottom: "8px" }}>
@@ -629,7 +629,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
         className="palette-list-item-btn"
         style={{ justifyContent: "space-between", fontSize: "0.68rem", color: "var(--text-muted)", cursor: "pointer" }}
       >
-        <span>Colocar hecho existente</span>
+        <span>{t("canvasPalette.placeExistingFact")}</span>
         <Search size={11} />
       </button>
 
@@ -646,7 +646,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
           <div style={{ maxHeight: "140px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "2px" }}>
             {availableFacts.length === 0 ? (
               <div style={{ fontSize: "10px", color: "var(--text-muted)", padding: "8px 0", textAlign: "center" }}>
-                {allFacts.length === 0 ? "No hay hechos creados" : t("canvas.palette.allFactsOnCanvas")}
+                {allFacts.length === 0 ? t("canvasPalette.noFactsCreated") : t("canvas.palette.allFactsOnCanvas")}
               </div>
             ) : (
               availableFacts.slice(0, 12).map((f: any) => {
