@@ -254,12 +254,14 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
           ? (activeAccessCode || storedAccessCodeValue || getStoredAccessCode(state, campaignId))
           : null;
 
+        const lanModeEnabled = state.campaign?.settings?.lanModeEnabled || false;
+
         return {
-          lanModeEnabled: state.campaign?.settings?.lanModeEnabled || false,
+          lanModeEnabled,
           accessCode,
           localIp,
           port,
-          joinUrl: `http://${localIp}:${port}/join/${campaignId}`,
+          joinUrl: lanModeEnabled ? `http://${localIp}:${port}/join/${campaignId}` : null,
         };
       } catch {
         reply.code(404);

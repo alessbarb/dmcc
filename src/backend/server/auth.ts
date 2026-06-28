@@ -42,22 +42,12 @@ export function getRequestRole(request: any, dmSessionToken: string): "dm" | "pl
 
   if (process.env.NODE_ENV === "test") {
     if (dmTokenHeader && dmTokenHeader === dmSessionToken) return "dm";
-    if (roleHeader === "player") return "player";
-    if (roleHeader === "observer") return "observer";
     if (roleHeader === "dm") return "dm";
     return "unauthenticated";
   }
 
   if (dmTokenHeader === dmSessionToken) {
     return "dm";
-  }
-
-  if (roleHeader === "player") {
-    return "player";
-  }
-
-  if (roleHeader === "observer") {
-    return "observer";
   }
 
   return "unauthenticated";
@@ -83,30 +73,26 @@ export function assertCampaignAccess(request: any, state: any, campaignId: strin
     return "dm";
   }
 
-  if (role !== "player" && role !== "observer") {
-    const err = new Error("Unauthorized: Player or observer role is required");
-    (err as any).statusCode = 401;
-    throw err;
-  }
-
-  // LAN is always active — access code path retained as legacy fallback only.
-  // Player-token auth (x-player-token) bypasses this via getRequestRoleWithTokens.
+  // x-role is never a credential. Non-DM campaign access must present the
+  // campaign access code here, or a player token through getRequestRoleWithTokens.
   const accessCode = request.headers["x-access-code"] as string;
   if (!accessCode) {
-    return role;
+    const err = new Error("Unauthorized: Campaign access code is required");
+    (err as any).statusCode = 401;
+    throw err;
   }
 
   const hash = state?.campaign?.settings?.localAccessCodeHash;
   const legacyCode = state?.campaign?.settings?.localAccessCode;
 
   if (legacyCode && accessCode === legacyCode) {
-    return role;
+    return request.headers["x-role"] === "observer" ? "observer" : "player";
   }
 
   if (hash) {
     const calculatedHash = hashAccessCode(accessCode);
     if (calculatedHash === hash) {
-      return role;
+      return request.headers["x-role"] === "observer" ? "observer" : "player";
     }
   }
 

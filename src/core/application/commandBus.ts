@@ -8,7 +8,7 @@ import { createFact } from "../domain/fact/fact.js";
 import type { Fact } from "../domain/fact/fact.js";
 import { createRelation } from "../domain/relation/relation.js";
 import type { Relation } from "../domain/relation/relation.js";
-import { closeSession, createSession } from "../domain/session/session.js";
+import { closeSession, createSession, sessionEventTypeSchema, sessionPrepSchema } from "../domain/session/session.js";
 import type { StoredEvent } from "../domain/events.js";
 import type { CampaignState } from "../domain/state.js";
 import type { Command } from "./commands.js";
@@ -43,6 +43,9 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         title: command.title,
         subtitle: command.subtitle,
         tagIds: command.tagIds,
+        createdInSessionId: command.createdInSessionId,
+        firstSeenSessionId: command.createdInSessionId,
+        lastSeenSessionId: command.createdInSessionId,
         summary: command.summary,
         content: command.content,
         status: command.status,
@@ -102,6 +105,62 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const nextState = { ...state, facts };
       return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "FactCreated", fact));
     }
+    case "CreatePreparedSession": {
+      const session = createSession({
+        sessionId: command.sessionId ?? createId("sess"),
+        campaignId: command.campaignId,
+        title: command.title,
+        status: "planned",
+        scheduledAt: command.scheduledAt,
+        prep: command.prep ?? { state: "draft" },
+        existingSessions: [...state.sessions.values()],
+      });
+      const sessions = new Map(state.sessions);
+      sessions.set(session.sessionId, session);
+      const nextState = { ...state, sessions };
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "SessionCreated", session));
+    }
+    case "UpdateSessionPrep": {
+      const session = requireSession(state, command.sessionId);
+      if (session.status !== "planned") {
+        throw new Error("Only planned sessions can be prepared");
+      }
+      const currentPrep = session.prep ?? { state: "draft" };
+      const updatedPrep = sessionPrepSchema.parse({
+        ...currentPrep,
+        ...command.prep,
+        state: command.prep.state ?? currentPrep.state ?? "draft",
+      });
+      const updated = {
+        ...session,
+        ...(command.title !== undefined && { title: command.title }),
+        ...(command.scheduledAt !== undefined && { scheduledAt: command.scheduledAt }),
+        prep: updatedPrep,
+        updatedAt: new Date().toISOString(),
+      };
+      const sessions = new Map(state.sessions);
+      sessions.set(updated.sessionId, updated);
+      return singleEvent({ ...state, sessions }, makeEvent(command.actorId, command.campaignId, "SessionPrepUpdated", updated));
+    }
+    case "ActivatePreparedSession": {
+      const session = requireSession(state, command.sessionId);
+      if (session.status !== "planned") {
+        throw new Error("Only planned sessions can be activated");
+      }
+      const activeExists = [...state.sessions.values()].some((s) => s.status === "active" && s.sessionId !== command.sessionId);
+      if (activeExists) {
+        throw new Error("Only one active session per campaign is allowed");
+      }
+      const activated = {
+        ...session,
+        status: "active" as const,
+        startedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      const sessions = new Map(state.sessions);
+      sessions.set(activated.sessionId, activated);
+      return singleEvent({ ...state, sessions }, makeEvent(command.actorId, command.campaignId, "SessionStarted", activated));
+    }
     case "StartSession": {
       const session = createSession({
         sessionId: command.sessionId ?? createId("sess"),
@@ -123,6 +182,35 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       sessions.set(closed.sessionId, closed);
       const nextState = { ...state, sessions };
       return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "SessionClosed", closed));
+    }
+    case "CancelPreparedSession": {
+      const session = requireSession(state, command.sessionId);
+      if (session.status !== "planned") {
+        throw new Error("Only planned sessions can be cancelled");
+      }
+      const cancelled = {
+        ...session,
+        status: "cancelled" as const,
+        updatedAt: new Date().toISOString(),
+      };
+      const sessions = new Map(state.sessions);
+      sessions.set(cancelled.sessionId, cancelled);
+      return singleEvent({ ...state, sessions }, makeEvent(command.actorId, command.campaignId, "SessionCancelled", cancelled));
+    }
+    case "ArchiveSession": {
+      const session = requireSession(state, command.sessionId);
+      if (session.status === "active") {
+        throw new Error("Active sessions must be closed before archiving");
+      }
+      const archived = {
+        ...session,
+        status: "archived" as const,
+        archived: true,
+        updatedAt: new Date().toISOString(),
+      };
+      const sessions = new Map(state.sessions);
+      sessions.set(archived.sessionId, archived);
+      return singleEvent({ ...state, sessions }, makeEvent(command.actorId, command.campaignId, "SessionArchived", archived));
     }
     case "UpdateEntity": {
       const entity = requireEntity(state, command.entityId);
@@ -233,6 +321,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         playerId: command.playerId,
         campaignId: command.campaignId,
         displayName: command.displayName || command.name || "Player",
+        ...(command.emailHash && { emailHash: command.emailHash }),
         role: command.role || "player",
         color: command.color || "#3b82f6",
         imageUrl: command.imageUrl || "",
@@ -251,7 +340,8 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const updated = {
         ...existing,
         ...(command.displayName !== undefined && { displayName: command.displayName }),
-        ...(command.email !== undefined && { email: command.email }),
+        ...(command.emailHash !== undefined && { emailHash: command.emailHash }),
+        ...(command.email !== undefined && command.emailHash === undefined && { email: command.email }),
         ...(command.imageUrl !== undefined && { imageUrl: command.imageUrl }),
         ...(command.role !== undefined && { role: command.role }),
         ...(command.color !== undefined && { color: command.color }),
@@ -324,14 +414,18 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         }));
     }
     case "RecordSessionEvent": {
-      requireSession(state, command.sessionId);
+      const session = requireSession(state, command.sessionId);
+      if (session.status !== "active") {
+        throw new Error("Session events can only be recorded in an active session");
+      }
+      const parsedEventType = sessionEventTypeSchema.parse(command.eventType);
       const id = command.sessionEventId ?? createId("sevt");
       const eventRecord = {
         id,
         sessionEventId: id,
         sessionId: command.sessionId,
         campaignId: command.campaignId,
-        type: command.eventType as any,
+        type: parsedEventType,
         occurredAt: new Date().toISOString(),
         actorId: command.actorId as any,
         title: command.title,

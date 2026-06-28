@@ -35,6 +35,9 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
       }
 
       const playerId = body.id || body.playerId || `ply_${createId("ply").split("_")[1]}`;
+      const emailNormalized = typeof body.email === "string" && body.email.trim()
+        ? body.email.trim().toLowerCase()
+        : null;
 
       try {
         const repo = getRepository(vaultId);
@@ -49,6 +52,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
           playerId,
           name: displayName,
           displayName,
+          emailHash: emailNormalized ? hashPlayerToken(emailNormalized) : undefined,
           role: body.role || "player",
           color: body.color || "#3b82f6",
           imageUrl: body.imageUrl || "",

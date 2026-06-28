@@ -1,11 +1,12 @@
 import type { FastifyInstance } from "fastify";
-import { readFile, writeFile, mkdir } from "fs/promises";
+import { readFile, writeFile, mkdir, readdir } from "fs/promises";
 import { join } from "path";
 import { randomBytes } from "crypto";
 import { hashPin, verifyPin, isLoopbackRequest, hashAccessCode, hashPlayerToken, generatePlayerToken, getValidatedVaultId } from "../auth.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
+import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
 
 interface AuthConfig {
   dmPinEnabled: boolean;
@@ -82,7 +83,7 @@ export async function registerAuthRoutes(
 
   // GET /api/auth/status
   server.get("/api/auth/status", async (request) => {
-    const vaultId = (request.headers["x-vault-id"] as string) || "default";
+    const vaultId = getValidatedVaultId(request);
     const vaultDir = getVaultDir(vaultId);
     const authConfig = await readAuthConfig(vaultDir);
 
@@ -115,7 +116,7 @@ export async function registerAuthRoutes(
         return { error: "PIN must be 4–64 characters" };
       }
 
-      const vaultId = (request.headers["x-vault-id"] as string) || "default";
+      const vaultId = getValidatedVaultId(request);
       const vaultDir = getVaultDir(vaultId);
       const { hash, salt } = await hashPin(pin);
 
@@ -135,7 +136,7 @@ export async function registerAuthRoutes(
   server.post<{ Body: { pin: string } }>(
     "/api/auth/unlock",
     async (request, reply) => {
-      const vaultId = (request.headers["x-vault-id"] as string) || "default";
+      const vaultId = getValidatedVaultId(request);
       const vaultDir = getVaultDir(vaultId);
 
       const { blocked, retryAfterMs } = checkRateLimit(vaultId);
@@ -182,12 +183,41 @@ export async function registerAuthRoutes(
   server.post(
     "/api/auth/player-logout",
     async (request, reply) => {
+      const vaultId = getValidatedVaultId(request);
       const playerToken = request.headers["x-player-token"] as string | undefined;
       if (!playerToken) {
         reply.code(400);
         return { error: "Missing x-player-token header" };
       }
       (server as any).playerTokens.delete(playerToken);
+      const tokenHash = hashPlayerToken(playerToken);
+      const repo = new CampaignRepository(
+        new EventStore(dataDir, vaultId),
+        new SnapshotStore(dataDir, vaultId)
+      );
+      const campaignsDir = join(dataDir, "vaults", vaultId, "campaigns");
+      try {
+        const campaignIds = await readdir(campaignsDir);
+        for (const campaignId of campaignIds.filter((id) => id.startsWith("cmp_"))) {
+          const state = await repo.getCampaignState(campaignId as any);
+          const events = await repo.loadEvents(campaignId as any);
+          const portal = buildPlayerPortalProjection(state, events as any);
+          const token = portal.tokensByHash.get(tokenHash);
+          if (token && !token.revokedAt) {
+            await repo.executeCommand(campaignId as any, {
+              type: "RevokePlayerToken",
+              campaignId: campaignId as any,
+              actorId: token.playerId,
+              playerId: token.playerId,
+              tokenId: token.tokenId,
+              revokedAt: new Date().toISOString(),
+            });
+            break;
+          }
+        }
+      } catch {
+        // In-memory logout still succeeds when there is no persistent campaign yet.
+      }
       return { ok: true };
     }
   );
@@ -265,7 +295,7 @@ export async function registerAuthRoutes(
             actorId: "usr_dm",
             playerId,
             displayName: displayName?.trim() || "Player",
-            email: emailNormalized ?? undefined,
+            emailHash: emailHash ?? undefined,
             role: "player",
             color: "#3b82f6",
           });

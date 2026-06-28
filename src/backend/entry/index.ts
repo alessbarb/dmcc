@@ -3,7 +3,7 @@ import { formatListenUrl, resolveListenHost } from "./serverConfig.js";
 
 const host = resolveListenHost(process.env);
 const port = Number(process.env.DMCC_PORT ?? "4877");
-const server = createServer();
+const server = createServer({ dataDir: process.env.DMCC_DATA_DIR });
 
 if (host === "0.0.0.0") {
   (server as any).lanExposed = true;

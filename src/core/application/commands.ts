@@ -60,6 +60,64 @@ export type Command =
       source: FactSource;
     }
   | {
+      type: "CreatePreparedSession";
+      campaignId: CampaignId;
+      actorId: string;
+      sessionId?: SessionId;
+      title: string;
+      scheduledAt?: string;
+      prep?: {
+        state?: "draft" | "ready";
+        summary?: string;
+        openingPrompt?: string;
+        goals?: string[];
+        sceneIds?: EntityId[];
+        involvedEntityIds?: EntityId[];
+        availableClueIds?: EntityId[];
+        secretsAtRiskIds?: EntityId[];
+        expectedConsequenceIds?: EntityId[];
+        checklist?: Array<{
+          id: string;
+          label: string;
+          done?: boolean;
+          priority?: "low" | "medium" | "high";
+        }>;
+        notes?: string;
+      };
+    }
+  | {
+      type: "UpdateSessionPrep";
+      campaignId: CampaignId;
+      actorId: string;
+      sessionId: SessionId;
+      title?: string;
+      scheduledAt?: string;
+      prep: {
+        state?: "draft" | "ready";
+        summary?: string;
+        openingPrompt?: string;
+        goals?: string[];
+        sceneIds?: EntityId[];
+        involvedEntityIds?: EntityId[];
+        availableClueIds?: EntityId[];
+        secretsAtRiskIds?: EntityId[];
+        expectedConsequenceIds?: EntityId[];
+        checklist?: Array<{
+          id: string;
+          label: string;
+          done?: boolean;
+          priority?: "low" | "medium" | "high";
+        }>;
+        notes?: string;
+      };
+    }
+  | {
+      type: "ActivatePreparedSession";
+      campaignId: CampaignId;
+      actorId: string;
+      sessionId: SessionId;
+    }
+  | {
       type: "StartSession";
       campaignId: CampaignId;
       actorId: string;
@@ -72,6 +130,18 @@ export type Command =
       actorId: string;
       sessionId: SessionId;
       summary: string;
+    }
+  | {
+      type: "CancelPreparedSession";
+      campaignId: CampaignId;
+      actorId: string;
+      sessionId: SessionId;
+    }
+  | {
+      type: "ArchiveSession";
+      campaignId: CampaignId;
+      actorId: string;
+      sessionId: SessionId;
     }
   | {
       type: "UpdateEntity";
@@ -153,6 +223,7 @@ export type Command =
       name?: string;
       displayName?: string;
       email?: string | null;
+      emailHash?: string | null;
       imageUrl?: string;
       role?: string;
       color?: string;
@@ -164,6 +235,7 @@ export type Command =
       playerId: string;
       displayName?: string;
       email?: string | null;
+      emailHash?: string | null;
       imageUrl?: string;
       role?: string;
       color?: string;

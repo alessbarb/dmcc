@@ -52,6 +52,10 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     return { campaignId, playerId: token.playerId };
   }
 
+  function generateLanAccessCode(): string {
+    return String(randomInt(0, 1_000_000)).padStart(6, "0");
+  }
+
   // Health
   server.get("/api/health", async () => ({ ok: true, app: "dm-campaign-companion" }));
 
@@ -96,7 +100,8 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
             npcsCount: entities.filter((e: any) => !e.archived && e.entityType === "npc").length,
             locationsCount: entities.filter((e: any) => !e.archived && e.entityType === "location").length,
             questsCount: entities.filter((e: any) => !e.archived && e.entityType === "quest").length,
-            secretsCount: entities.filter((e: any) => !e.archived && (e.entityType === "secret" || e.entityType === "clue")).length,
+            secretsCount: entities.filter((e: any) => !e.archived && e.entityType === "secret").length,
+            cluesCount: entities.filter((e: any) => !e.archived && e.entityType === "clue").length,
             activeSession: sessions.find((s: any) => s.status === "active")?.title || null,
             sessionsCount: sessions.length
           };
@@ -269,6 +274,11 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken) as any;
         }
 
+        if (role === "player" && !state.campaign?.settings?.lanModeEnabled) {
+          reply.code(403);
+          return { error: "LAN mode is not enabled for this campaign" };
+        }
+
         const rawEntities = Array.from(state.entities.values());
         const characterEntityId = playerId ? getCharacterEntityIdForPlayer(rawEntities, playerId) : undefined;
         const visibleEntities = getVisibleEntities(rawEntities, role, playerId, characterEntityId);
@@ -392,6 +402,59 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     }
   );
 
+  // LAN toggle — explicit local-network sharing switch for player access.
+  server.post<{ Params: { campaignId: string }; Body: { enabled?: boolean } }>(
+    "/api/campaigns/:campaignId/lan/toggle",
+    async (request, reply) => {
+      assertDM(request, (server as any).dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const enabled = Boolean(request.body?.enabled);
+
+      try {
+        const repo = getRepository(vaultId);
+        await repo.getCampaignState(campaignId as any);
+
+        if (!enabled) {
+          (server as any).activeAccessCodes.delete(campaignId);
+          await repo.executeCommand(campaignId as any, {
+            type: "UpdateCampaignSettings",
+            campaignId: campaignId as any,
+            actorId: "usr_dm",
+            settings: {
+              lanModeEnabled: false,
+              localAccessCodeHash: undefined,
+              localAccessCode: undefined,
+            },
+          });
+          return { ok: true, lanModeEnabled: false, accessCode: null };
+        }
+
+        const accessCode = generateLanAccessCode();
+        (server as any).activeAccessCodes.set(campaignId, accessCode);
+        await repo.executeCommand(campaignId as any, {
+          type: "UpdateCampaignSettings",
+          campaignId: campaignId as any,
+          actorId: "usr_dm",
+          settings: {
+            lanModeEnabled: true,
+            localAccessCodeHash: hashAccessCode(accessCode),
+            localAccessCode: undefined,
+          },
+        });
+
+        return { ok: true, lanModeEnabled: true, accessCode };
+      } catch (err: any) {
+        if (err.statusCode) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
+        reply.code(404);
+        return { error: "Campaign not found" };
+      }
+    }
+  );
+
   // LAN Join — exchange access code for player token
   server.post<{ Params: { campaignId: string }; Body: { accessCode: string; playerId?: string; displayName?: string } }>(
     "/api/join/:campaignId",
@@ -505,7 +568,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        await repo.getCampaignState(campaignId as any);
 
         const inviteToken = randomBytes(18).toString("base64url"); // ~24 char URL-safe
         const inviteId = `inv_${randomBytes(8).toString("hex")}`;
@@ -648,7 +711,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
             actorId: playerId,
             playerId,
             displayName: displayName.trim(),
-            email: emailNormalized,
+            emailHash,
             role: "player",
             color: "#3b82f6",
           });
