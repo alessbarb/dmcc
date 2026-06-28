@@ -5,7 +5,7 @@ import { playerProfileSchema } from "../campaign/player.js";
 import { entitySchema, baseEntitySchema } from "../entity/types.js";
 import { relationSchema, baseRelationSchema } from "../relation/types.js";
 import { factSchema } from "../fact/types.js";
-import { sessionSchema, sessionEventSchema, sessionStatusSchema } from "../session/types.js";
+import { sessionSchema, sessionEventSchema, sessionStatusSchema, sessionPrepSchema } from "../session/types.js";
 import { visibilityRuleSchema } from "@shared/schemas.js";
 
 export const canvasViewportSchema = z.object({
@@ -91,7 +91,10 @@ export const domainEventTypeSchema = z.enum([
   "VisibilityChanged",
   "SessionCreated",
   "SessionStarted",
+  "SessionPrepUpdated",
   "SessionClosed",
+  "SessionCancelled",
+  "SessionArchived",
   "SessionEventRecorded",
   "AttachmentAdded",
   "AttachmentRemoved",
@@ -173,6 +176,7 @@ export const eventPayloadSchemas = {
     note: z.string().optional(),
   }),
   SessionCreated: sessionSchema,
+  SessionPrepUpdated: sessionSchema,
   SessionStarted: z.object({
     id: z.string(),
     startedAt: z.string(),
@@ -180,6 +184,7 @@ export const eventPayloadSchemas = {
     number: z.number().int().min(1).optional(),
     title: z.string().min(1).optional(),
     status: sessionStatusSchema.optional(),
+    prep: sessionPrepSchema.optional(),
   }),
   SessionClosed: z.object({
     id: z.string(),
@@ -190,7 +195,10 @@ export const eventPayloadSchemas = {
     number: z.number().int().min(1).optional(),
     title: z.string().min(1).optional(),
     status: sessionStatusSchema.optional(),
+    prep: sessionPrepSchema.optional(),
   }),
+  SessionCancelled: sessionSchema,
+  SessionArchived: sessionSchema,
   SessionEventRecorded: sessionEventSchema,
   AttachmentAdded: z.object({
     id: z.string(),

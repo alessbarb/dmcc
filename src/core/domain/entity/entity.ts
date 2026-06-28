@@ -15,6 +15,9 @@ export function createEntity(props: {
   visibility?: { kind: string } | { mode: string };
   metadata?: any;
   tagIds?: string[];
+  createdInSessionId?: string;
+  firstSeenSessionId?: string;
+  lastSeenSessionId?: string;
   archived?: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -68,6 +71,9 @@ export function createEntity(props: {
     visibility: props.visibility || { kind: "dm_only" },
     metadata: metadata,
     tagIds: props.tagIds || [],
+    ...(props.createdInSessionId && { createdInSessionId: props.createdInSessionId }),
+    ...(props.firstSeenSessionId && { firstSeenSessionId: props.firstSeenSessionId }),
+    ...(props.lastSeenSessionId && { lastSeenSessionId: props.lastSeenSessionId }),
     archived: props.archived || false,
     createdAt: props.createdAt || now,
     updatedAt: props.updatedAt || now,

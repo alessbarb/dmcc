@@ -649,7 +649,8 @@ export function CanvasPage() {
     loading,
     removeNodeFromCanvas,
     updateCanvasNodesLayout,
-    startSession,
+    createPreparedSession,
+    updateSessionPrep,
     recordSessionEvent,
   } = useCampaignStore();
 
@@ -703,6 +704,7 @@ export function CanvasPage() {
   const canvases = Object.values(canvasesById || {}).filter(c => !c.archived);
   const activeCanvas = activeCanvasId ? canvasesById[activeCanvasId] : null;
   const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+  const preparedSessions = (campaignState?.sessions ?? []).filter((session: any) => session.status === "planned");
 
   // Auto-select first canvas if none selected
   useEffect(() => {
@@ -1172,7 +1174,7 @@ export function CanvasPage() {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={() => setIsCreateBoardOpen(false)}>
-                  Cancelar
+                  {t("common.cancel")}
                 </button>
                 <button type="submit" className="btn btn-primary">
                   Crear tablero
@@ -1211,7 +1213,7 @@ export function CanvasPage() {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" onClick={() => setIsImportOpen(false)}>
-                Cancelar
+                {t("common.cancel")}
               </button>
               <button
                 type="button"
@@ -1485,7 +1487,7 @@ export function CanvasPage() {
                   className="btn btn-primary btn-sm"
                   title={t("canvas.toolbar.prepareSession")}
                 >
-                  🚀 Preparar Sesión
+                  {t("sessionPage.prepareSessionSelectionButton")}
                 </button>
                 <button
                   onClick={async () => {
@@ -1558,7 +1560,7 @@ export function CanvasPage() {
         <div className="modal-overlay" onClick={() => setIsSessionPrepOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "450px" }}>
             <div className="modal-header">
-              <h2>🚀 Preparar Sesión desde Selección</h2>
+              <h2>{t("sessionPage.prepareSessionFromSelectionTitle")}</h2>
               <button onClick={() => setIsSessionPrepOpen(false)} className="modal-close-btn"><X size={16} /></button>
             </div>
             {(() => {
@@ -1568,29 +1570,63 @@ export function CanvasPage() {
               return (
                 <SessionPrepForm
                   activeSession={activeSession}
+                  preparedSessions={preparedSessions}
                   selectedCount={selectedNodes.length}
                   elementNames={entNames}
-                  onSubmit={async (sessionTitle, targetMode) => {
+                  onSubmit={async (sessionTitle, targetMode, targetSessionId) => {
                     const entIds = selectedNodes.filter(n => n.type === "entity").map(n => n.data.entityId);
+                    const sceneIds = selectedNodes
+                      .filter((n) => n.type === "entity" && n.data.entityType === "scene")
+                      .map((n) => n.data.entityId);
+                    const clueIds = selectedNodes
+                      .filter((n) => n.type === "entity" && n.data.entityType === "clue")
+                      .map((n) => n.data.entityId);
+                    const secretIds = selectedNodes
+                      .filter((n) => n.type === "entity" && n.data.entityType === "secret")
+                      .map((n) => n.data.entityId);
+                    const consequenceIds = selectedNodes
+                      .filter((n) => n.type === "entity" && n.data.entityType === "consequence")
+                      .map((n) => n.data.entityId);
                     
                     if (targetMode === "new") {
-                      await startSession(sessionTitle);
-                      const updatedStore = useCampaignStore.getState();
-                      const newSession = updatedStore.campaignState?.sessions?.find((s: any) => s.status === "active");
-                      if (newSession) {
-                        await recordSessionEvent(newSession.sessionId, {
-                          type: "scene_started",
-                          title: t("canvas.toolbar.sessionPrepTitle"),
-                          description: `Elementos preparados desde el Canvas: ${entNames.join(", ")}`,
-                          relatedEntityIds: entIds,
-                        });
-                        addToast(t("toasts.sessionStartedWithPrep", { title: sessionTitle }), "success");
-                      }
+                      await createPreparedSession(sessionTitle, {
+                        state: "ready",
+                        summary: t("sessionPage.preparedFromCanvasSummary", { count: selectedNodes.length }),
+                        goals: [],
+                        sceneIds,
+                        involvedEntityIds: entIds,
+                        availableClueIds: clueIds,
+                        secretsAtRiskIds: secretIds,
+                        expectedConsequenceIds: consequenceIds,
+                        checklist: [],
+                        notes: t("sessionPage.preparedFromCanvasNotes", { names: entNames.join(", ") }),
+                      });
+                      addToast(t("toasts.sessionPrepared", { title: sessionTitle }), "success");
+                    } else if (targetMode === "prepared" && targetSessionId) {
+                      const targetSession = preparedSessions.find((session: any) => session.sessionId === targetSessionId);
+                      if (!targetSession) return;
+                      const currentPrep = targetSession.prep ?? { state: "draft" };
+                      const mergeIds = (...groups: string[][]) => Array.from(new Set(groups.flat().filter(Boolean)));
+                      await updateSessionPrep(targetSessionId, {
+                        title: targetSession.title,
+                        scheduledAt: targetSession.scheduledAt,
+                        prep: {
+                          ...currentPrep,
+                          state: currentPrep.state ?? "draft",
+                          sceneIds: mergeIds(currentPrep.sceneIds ?? [], sceneIds),
+                          involvedEntityIds: mergeIds(currentPrep.involvedEntityIds ?? [], entIds),
+                          availableClueIds: mergeIds(currentPrep.availableClueIds ?? [], clueIds),
+                          secretsAtRiskIds: mergeIds(currentPrep.secretsAtRiskIds ?? [], secretIds),
+                          expectedConsequenceIds: mergeIds(currentPrep.expectedConsequenceIds ?? [], consequenceIds),
+                          notes: [currentPrep.notes, t("sessionPage.preparedFromCanvasNotes", { names: entNames.join(", ") })].filter(Boolean).join("\n"),
+                        },
+                      });
+                      addToast(t("toasts.elementsAddedToPreparation", { title: targetSession.title }), "success");
                     } else if (activeSession) {
                       await recordSessionEvent(activeSession.sessionId, {
                         type: "scene_started",
-                        title: `Elementos cargados desde Canvas`,
-                        description: `Elementos incorporados a la partida: ${entNames.join(", ")}`,
+                        title: t("sessionPage.loadedFromCanvasTitle"),
+                        description: t("sessionPage.loadedFromCanvasDescription", { names: entNames.join(", ") }),
                         relatedEntityIds: entIds,
                       });
                       addToast(t("toasts.elementsAddedToSession"), "success");
@@ -1634,27 +1670,30 @@ export function CanvasPage() {
 
 function SessionPrepForm({
   activeSession,
+  preparedSessions,
   selectedCount,
   elementNames,
   onSubmit,
   onCancel
 }: {
   activeSession: any;
+  preparedSessions: any[];
   selectedCount: number;
   elementNames: string[];
-  onSubmit: (title: string, mode: "new" | "active") => Promise<void>;
+  onSubmit: (title: string, mode: "new" | "active" | "prepared", targetSessionId?: string) => Promise<void>;
   onCancel: () => void;
 }) {
   const { t } = useTranslation();
   const [sessionTitle, setSessionTitle] = useState(() => t("canvas.node.typeSession"));
-  const [targetMode, setTargetMode] = useState<"new" | "active">(activeSession ? "active" : "new");
+  const [targetMode, setTargetMode] = useState<"new" | "active" | "prepared">(activeSession ? "active" : preparedSessions.length > 0 ? "prepared" : "new");
+  const [targetSessionId, setTargetSessionId] = useState(() => preparedSessions[0]?.sessionId ?? "");
   const [busy, setBusy] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
     try {
-      await onSubmit(sessionTitle, targetMode);
+      await onSubmit(sessionTitle, targetMode, targetMode === "prepared" ? targetSessionId : undefined);
     } finally {
       setBusy(false);
     }
@@ -1664,7 +1703,7 @@ function SessionPrepForm({
     <form onSubmit={handleSubmit} className="dialog-form">
       <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <p style={{ fontSize: "0.93rem" }}>
-          Vas a preparar una sesión utilizando <strong>{selectedCount}</strong> elementos seleccionados:
+          {t("sessionPage.selectedElementsIntro", { count: selectedCount })}
         </p>
         <div style={{ maxHeight: "100px", overflowY: "auto", padding: "8px", backgroundColor: "var(--bg-input)", borderRadius: "var(--radius-sm)", fontSize: "0.85rem", color: "var(--text-muted)", border: "1px solid var(--border-color)" }}>
           {elementNames.join(", ")}
@@ -1681,10 +1720,37 @@ function SessionPrepForm({
                 style={{ marginTop: "3px" }}
               />
               <div>
-                <strong>Añadir a la sesión activa actual ({activeSession.title})</strong>
+                <strong>{t("sessionPage.addToActiveSessionLabel", { title: activeSession.title })}</strong>
                 <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
-                  Registra un evento de preparación en la sesión en curso vinculando estas entidades.
+                  {t("sessionPage.addToActiveSessionHelp")}
                 </div>
+              </div>
+            </label>
+          )}
+
+          {preparedSessions.length > 0 && (
+            <label style={{ display: "flex", alignItems: "start", gap: "8px", fontWeight: "normal", cursor: "pointer" }}>
+              <input
+                type="radio"
+                name="sessionPrepMode"
+                checked={targetMode === "prepared"}
+                onChange={() => setTargetMode("prepared")}
+                style={{ marginTop: "3px" }}
+              />
+              <div style={{ flex: 1 }}>
+                <strong>{t("sessionPage.addToPreparedSessionLabel")}</strong>
+                <div style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "8px" }}>
+                  {t("sessionPage.addToPreparedSessionHelp")}
+                </div>
+                {targetMode === "prepared" && (
+                  <select className="form-select" value={targetSessionId} onChange={(e) => setTargetSessionId(e.target.value)} required>
+                    {preparedSessions.map((session: any) => (
+                      <option key={session.sessionId} value={session.sessionId}>
+                        {session.number ? `#${session.number} ` : ""}{session.title}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
             </label>
           )}
@@ -1698,9 +1764,9 @@ function SessionPrepForm({
               style={{ marginTop: "3px" }}
             />
             <div>
-              <strong>Iniciar nueva sesión con estos elementos</strong>
+              <strong>{t("sessionPage.createPreparedSessionWithElements")}</strong>
               <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
-                Inicia una nueva sesión y registra un evento de inicio con estas entidades preparadas.
+                {t("sessionPage.createPreparedSessionHelp")}
               </div>
             </div>
           </label>
@@ -1708,7 +1774,7 @@ function SessionPrepForm({
 
         {targetMode === "new" && (
           <div className="form-group">
-            <label>Título de la nueva sesión</label>
+            <label>{t("sessionPage.preparedSessionTitleLabel")}</label>
             <input
               type="text"
               value={sessionTitle}
@@ -1723,10 +1789,10 @@ function SessionPrepForm({
 
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" onClick={onCancel} disabled={busy}>
-          Cancelar
+          {t("common.cancel")}
         </button>
         <button type="submit" className="btn btn-primary" disabled={busy}>
-          {busy ? "Procesando..." : targetMode === "new" ? "Iniciar y Preparar" : t("canvas.page.loadIntoSession")}
+          {busy ? t("sessionPage.savingPreparation") : targetMode === "new" ? t("sessionPage.createPreparation") : targetMode === "prepared" ? t("sessionPage.addToPreparationButton") : t("canvas.page.loadIntoSession")}
         </button>
       </div>
     </form>

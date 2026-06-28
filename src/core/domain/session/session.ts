@@ -1,3 +1,4 @@
+import { sessionPrepSchema, sessionSchema } from "./types.js";
 export * from "./types.js";
 
 export function createSession(props: {
@@ -5,6 +6,8 @@ export function createSession(props: {
   campaignId: string;
   title: string;
   status?: string;
+  scheduledAt?: string;
+  prep?: any;
   existingSessions?: any[];
   archived?: boolean;
 }): any {
@@ -16,20 +19,30 @@ export function createSession(props: {
     }
   }
   const now = new Date().toISOString();
-  return {
+  const session = {
     id: props.sessionId,
     sessionId: props.sessionId,
     campaignId: props.campaignId,
     number: (props.existingSessions?.length || 0) + 1,
     title: props.title,
     status,
+    ...(props.scheduledAt && { scheduledAt: props.scheduledAt }),
+    ...(props.prep && { prep: sessionPrepSchema.parse(props.prep) }),
     archived: props.archived || false,
+    presentPlayerIds: [],
+    presentCharacterIds: [],
     createdAt: now,
     updatedAt: now,
   };
+
+  sessionSchema.parse(session);
+  return session;
 }
 
 export function closeSession(session: any, summary: string): any {
+  if (session.status !== "active") {
+    throw new Error("Only active sessions can be closed");
+  }
   if (!summary || summary.trim() === "") {
     throw new Error("Session summary is required");
   }
@@ -37,5 +50,6 @@ export function closeSession(session: any, summary: string): any {
     ...session,
     status: "closed",
     summary,
+    updatedAt: new Date().toISOString(),
   };
 }

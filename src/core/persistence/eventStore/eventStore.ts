@@ -66,11 +66,11 @@ export function normalizePayload(type: string, payload: any): any {
   }
 
   // Normalize Session fields
-  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionClosed") {
+  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionPrepUpdated" || type === "SessionClosed") {
     newPayload.sessionId = newPayload.sessionId || newPayload.id;
     newPayload.id = newPayload.sessionId;
   }
-  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionClosed") {
+  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionPrepUpdated" || type === "SessionClosed") {
     newPayload.createdAt = newPayload.createdAt || now;
     newPayload.updatedAt = newPayload.updatedAt || now;
   }

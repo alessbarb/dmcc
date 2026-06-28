@@ -24,6 +24,9 @@ export interface Entity {
   importance: string;
   visibility: any;
   metadata: any;
+  createdInSessionId?: string;
+  firstSeenSessionId?: string;
+  lastSeenSessionId?: string;
   tagIds: string[];
   archived: boolean;
   createdAt: string;
@@ -61,8 +64,22 @@ export interface Session {
   status: string;
   number?: number;
   summary?: string;
+  scheduledAt?: string;
   startedAt?: string;
   endedAt?: string;
+  prep?: {
+    state?: "draft" | "ready";
+    summary?: string;
+    openingPrompt?: string;
+    goals?: string[];
+    sceneIds?: string[];
+    involvedEntityIds?: string[];
+    availableClueIds?: string[];
+    secretsAtRiskIds?: string[];
+    expectedConsequenceIds?: string[];
+    checklist?: Array<{ id: string; label: string; done?: boolean; priority?: "low" | "medium" | "high" }>;
+    notes?: string;
+  };
 }
 
 export interface PlayerProfile {
@@ -85,6 +102,7 @@ export interface CampaignStateStore {
     relations: Relation[];
     facts: Fact[];
     sessions: Session[];
+    sessionEvents?: any[];
     players: PlayerProfile[];
     canvases: any[];
   } | null;
@@ -171,6 +189,11 @@ export interface CampaignStateStore {
   updatePlayer: (playerId: string, updates: Partial<PlayerProfile>) => Promise<void>;
   archivePlayer: (playerId: string) => Promise<void>;
 
+  createPreparedSession: (title: string, prep?: Session["prep"], scheduledAt?: string) => Promise<string | undefined>;
+  updateSessionPrep: (sessionId: string, updates: { title?: string; scheduledAt?: string; prep: Session["prep"] }) => Promise<void>;
+  cancelSession: (sessionId: string) => Promise<void>;
+  archiveSession: (sessionId: string) => Promise<void>;
+  activateSession: (sessionId: string) => Promise<void>;
   startSession: (title: string) => Promise<void>;
   revealClue: (sessionId: string, clueEntityId: string, audience: any, note?: string) => Promise<void>;
   closeSession: (sessionId: string, summary: string) => Promise<void>;
@@ -258,6 +281,11 @@ const fetchWithVault = (url: string, init?: RequestInit) => {
     headers
   });
 };
+
+async function readApiError(res: Response, fallback: string): Promise<string> {
+  const body = await res.json().catch(() => null);
+  return body?.error || `${fallback} (${res.status})`;
+}
 
 const syncChannel = typeof window !== "undefined" ? new BroadcastChannel("dmcc_campaign_sync") : null;
 
@@ -743,6 +771,104 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
   },
 
+  createPreparedSession: async (title, prep, scheduledAt) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const sessionId = `sess_${createId("sess").split("_")[1]}`;
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/prepared`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          actorId: "usr_dm",
+          sessionId,
+          title,
+          scheduledAt,
+          prep: prep ?? { state: "draft" }
+        })
+      });
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to prepare session"));
+      await get().selectCampaign(activeCampaignId);
+      return sessionId;
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      throw err;
+    }
+  },
+
+  updateSessionPrep: async (sessionId, updates) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/prep`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm", ...updates })
+      });
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to update session preparation"));
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      throw err;
+    }
+  },
+
+  cancelSession: async (sessionId) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/cancel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm" })
+      });
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to cancel session"));
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      throw err;
+    }
+  },
+
+  archiveSession: async (sessionId) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/archive`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm" })
+      });
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to archive session"));
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      throw err;
+    }
+  },
+
+  activateSession: async (sessionId) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/activate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ actorId: "usr_dm" })
+      });
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to activate session"));
+      await get().selectCampaign(activeCampaignId);
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      throw err;
+    }
+  },
+
   startSession: async (title: string) => {
     const { activeCampaignId } = get();
     if (!activeCampaignId) return;
@@ -758,13 +884,11 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
           title
         })
       });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Failed to start session");
-      }
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to start session"));
       await get().selectCampaign(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
+      throw err;
     }
   },
 
@@ -783,10 +907,11 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
           note
         })
       });
-      if (!res.ok) throw new Error("Failed to reveal clue");
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to reveal clue"));
       await get().selectCampaign(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
+      throw err;
     }
   },
 
@@ -803,13 +928,11 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
           summary
         })
       });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Failed to close session");
-      }
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to close session"));
       await get().selectCampaign(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
+      throw err;
     }
   },
 
@@ -826,10 +949,11 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
           ...eventData
         })
       });
-      if (!res.ok) throw new Error("Failed to record session event");
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to record session event"));
       await get().selectCampaign(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
+      throw err;
     }
   },
 

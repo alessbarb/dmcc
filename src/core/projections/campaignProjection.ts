@@ -75,7 +75,7 @@ export function applyEvent(
   }
 
   // Normalize Session fields
-  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionClosed") {
+  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionPrepUpdated" || type === "SessionClosed" || type === "SessionCancelled" || type === "SessionArchived") {
     payload.sessionId = payload.sessionId || payload.id;
     payload.id = payload.sessionId;
   }
@@ -292,7 +292,20 @@ export function applyEvent(
     }
     case "SessionCreated": {
       const id = payload.sessionId;
-      next.sessions.set(id, { ...payload, status: payload.status || "active" });
+      next.sessions.set(id, { ...payload, status: payload.status || "planned" });
+      break;
+    }
+    case "SessionPrepUpdated": {
+      const id = payload.sessionId || payload.id;
+      const existing = next.sessions.get(id);
+      if (existing) {
+        next.sessions.set(id, {
+          ...existing,
+          ...payload,
+          status: payload.status || existing.status,
+          updatedAt: occurredAt,
+        });
+      }
       break;
     }
     case "SessionStarted": {
@@ -336,6 +349,26 @@ export function applyEvent(
           summary: payload.summary,
           playerSummary: payload.playerSummary,
           endedAt: payload.endedAt,
+          updatedAt: occurredAt,
+        });
+      }
+      if (next.campaign && next.campaign.currentSessionId === id) {
+        next.campaign = {
+          ...next.campaign,
+          currentSessionId: undefined,
+          updatedAt: occurredAt,
+        };
+      }
+      break;
+    }
+    case "SessionCancelled":
+    case "SessionArchived": {
+      const id = payload.sessionId || payload.id;
+      const existing = next.sessions.get(id);
+      if (existing) {
+        next.sessions.set(id, {
+          ...existing,
+          ...payload,
           updatedAt: occurredAt,
         });
       }

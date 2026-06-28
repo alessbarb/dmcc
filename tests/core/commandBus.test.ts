@@ -112,6 +112,117 @@ describe("command bus extended campaign commands", () => {
     expect(result.state.facts.get("fact_one")?.kind).toBe("canon");
   });
 
+  it("creates a prepared session without activating the table", () => {
+    const state = createCampaignState("cmp_one");
+    const result = handleCommand(state, {
+      type: "CreatePreparedSession",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      sessionId: "sess_prep",
+      title: "Session prep",
+      prep: {
+        state: "ready",
+        goals: ["Introduce the oracle"],
+        availableClueIds: ["ent_clue"],
+      },
+    });
+
+    expect(result.events[0].type).toBe("SessionCreated");
+    expect(result.state.sessions.get("sess_prep")?.status).toBe("planned");
+    expect(result.state.sessions.get("sess_prep")?.startedAt).toBeUndefined();
+    expect(result.state.sessions.get("sess_prep")?.prep?.state).toBe("ready");
+  });
+
+  it("updates and activates a prepared session", () => {
+    let state = createCampaignState("cmp_one");
+    state = handleCommand(state, {
+      type: "CreatePreparedSession",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      sessionId: "sess_prep",
+      title: "Session prep",
+      prep: { state: "draft" },
+    }).state;
+
+    const updated = handleCommand(state, {
+      type: "UpdateSessionPrep",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      sessionId: "sess_prep",
+      prep: {
+        state: "ready",
+        summary: "Ready to play.",
+        goals: ["Find the cult"],
+      },
+    });
+
+    expect(updated.events[0].type).toBe("SessionPrepUpdated");
+    expect(updated.state.sessions.get("sess_prep")?.prep?.summary).toBe("Ready to play.");
+
+    const activated = handleCommand(updated.state, {
+      type: "ActivatePreparedSession",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      sessionId: "sess_prep",
+    });
+
+    expect(activated.events[0].type).toBe("SessionStarted");
+    expect(activated.state.sessions.get("sess_prep")?.status).toBe("active");
+    expect(activated.state.sessions.get("sess_prep")?.prep?.state).toBe("ready");
+  });
+
+  it("does not close a prepared session before activation", () => {
+    const state = handleCommand(createCampaignState("cmp_one"), {
+      type: "CreatePreparedSession",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      sessionId: "sess_prep",
+      title: "Session prep",
+    }).state;
+
+    expect(() =>
+      handleCommand(state, {
+        type: "CloseSession",
+        campaignId: "cmp_one",
+        actorId: "usr_dm",
+        sessionId: "sess_prep",
+        summary: "Should not close.",
+      }),
+    ).toThrow("Only active sessions can be closed");
+  });
+
+
+  it("cancels and archives prepared sessions without activating them", () => {
+    let state = handleCommand(createCampaignState("cmp_one"), {
+      type: "CreatePreparedSession",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      sessionId: "sess_prep",
+      title: "Session prep",
+    }).state;
+
+    const cancelled = handleCommand(state, {
+      type: "CancelPreparedSession",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      sessionId: "sess_prep",
+    });
+
+    expect(cancelled.events[0].type).toBe("SessionCancelled");
+    expect(cancelled.state.sessions.get("sess_prep")?.status).toBe("cancelled");
+
+    state = cancelled.state;
+    const archived = handleCommand(state, {
+      type: "ArchiveSession",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      sessionId: "sess_prep",
+    });
+
+    expect(archived.events[0].type).toBe("SessionArchived");
+    expect(archived.state.sessions.get("sess_prep")?.status).toBe("archived");
+  });
+
   it("starts and closes a session with a required summary", () => {
     let state = createCampaignState("cmp_one");
     const started = handleCommand(state, {

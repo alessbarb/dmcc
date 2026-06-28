@@ -10,6 +10,8 @@ import {
   Clock,
   ChevronRight,
   AlertTriangle,
+  CheckSquare,
+  Archive,
   ChevronDown,
   ChevronUp,
   Terminal,
@@ -32,6 +34,11 @@ export interface SessionPageProps {
   sessionSummary?: string;
   setSessionSummary?: (s: string) => void;
   handleQuickCaptureSubmit?: (e: React.SyntheticEvent) => Promise<void>;
+  createPreparedSession?: (title: string, prep?: any, scheduledAt?: string) => Promise<any>;
+  updateSessionPrep?: (sessionId: string, updates: { title?: string; scheduledAt?: string; prep: any }) => Promise<void>;
+  cancelSession?: (sessionId: string) => Promise<void>;
+  archiveSession?: (sessionId: string) => Promise<void>;
+  activateSession?: (sessionId: string) => Promise<any>;
   startSession?: (title: string) => Promise<any>;
   closeSession?: (sessionId: string, summary: string) => Promise<any>;
   createEntity?: (...args: any[]) => Promise<any>;
@@ -889,12 +896,12 @@ function parseCapture(raw: string): ParsedCapture {
 }
 
 function QuickCaptureBar({
-  campaignState,
+  campaignState: _campaignState,
   activeSession,
   createEntity,
-  createRelation,
+  createRelation: _createRelation,
   recordSessionEvent,
-  revealClue,
+  revealClue: _revealClue,
   addToast,
   onOpenCluePanel,
 }: {
@@ -958,7 +965,7 @@ function QuickCaptureBar({
           metadata: { role: parsed.role },
         });
         await recordSessionEvent(sessionId, {
-          type: "npc_introduced",
+          type: "npc_met",
           title: t("sessionPage.quickNPCIntroduced", { name: parsed.name }),
           relatedEntityIds: [id],
         });
@@ -1088,7 +1095,7 @@ function QuickCaptureBar({
 
 const EVENT_TYPE_ICONS: Record<string, React.ReactNode> = {
   note_recorded: <StickyNote size={13} />,
-  npc_introduced: <UserPlus size={13} />,
+  npc_met: <UserPlus size={13} />,
   clue_revealed: <Eye size={13} />,
   decision_made: <GitMerge size={13} />,
   consequence_created: <Zap size={13} />,
@@ -1097,20 +1104,20 @@ const EVENT_TYPE_ICONS: Record<string, React.ReactNode> = {
 
 const EVENT_TYPE_COLORS: Record<string, string> = {
   note_recorded: "var(--color-info)",
-  npc_introduced: "var(--color-success)",
+  npc_met: "var(--color-success)",
   clue_revealed: "var(--secondary)",
   decision_made: "var(--primary)",
   consequence_created: "var(--color-warning)",
   custom: "var(--text-muted)",
 };
 
-function formatRelative(isoDate: string): string {
+function formatRelative(isoDate: string, t: (key: string, values?: Record<string, string | number>) => string): string {
   const ms = Date.now() - new Date(isoDate).getTime();
   const minutes = Math.floor(ms / 60_000);
-  if (minutes < 1) return "ahora";
-  if (minutes < 60) return `hace ${minutes}m`;
+  if (minutes < 1) return t("sessionPage.relativeNow");
+  if (minutes < 60) return t("sessionPage.relativeMinutes", { count: minutes });
   const hours = Math.floor(minutes / 60);
-  return `hace ${hours}h`;
+  return t("sessionPage.relativeHours", { count: hours });
 }
 
 function SessionEventFeed({
@@ -1239,7 +1246,7 @@ function SessionEventFeed({
                         marginTop: "2px",
                       }}
                     >
-                      {ev.occurredAt ? formatRelative(ev.occurredAt) : ""}
+                      {ev.occurredAt ? formatRelative(ev.occurredAt, t) : ""}
                     </span>
                   </li>
                 );
@@ -1252,10 +1259,328 @@ function SessionEventFeed({
   );
 }
 
+
+
+// ── session prep helpers ────────────────────────────────────────────────────
+
+function splitLines(value: string): string[] {
+  return value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function joinLines(value: any[] | undefined): string {
+  return Array.isArray(value) ? value.filter(Boolean).join("\n") : "";
+}
+
+function uniqueIds(ids: string[]): string[] {
+  return Array.from(new Set(ids.filter(Boolean)));
+}
+
+function findEntityTitle(campaignState: any, entityId: string): string {
+  return campaignState?.entities?.find((entity: any) => entity.entityId === entityId)?.title ?? entityId;
+}
+
+function mergeChecklist(existing: any[] | undefined, labels: string[]) {
+  return labels.map((label) => {
+    const current = existing?.find((item: any) => item.label === label);
+    return {
+      id: current?.id ?? createId("chk"),
+      label,
+      done: current?.done ?? false,
+      priority: current?.priority ?? "medium",
+    };
+  });
+}
+
+function EntityMultiPicker({
+  label,
+  help,
+  campaignState,
+  ids,
+  onChange,
+  typeFilter,
+}: {
+  label: string;
+  help?: string;
+  campaignState: any;
+  ids: string[];
+  onChange: (ids: string[]) => void;
+  typeFilter?: string | string[];
+}) {
+  const entities = (campaignState?.entities ?? []).filter((entity: any) => {
+    if (entity.archived) return false;
+    if (!typeFilter) return true;
+    const allowed = Array.isArray(typeFilter) ? typeFilter : [typeFilter];
+    return allowed.includes(entity.entityType);
+  });
+
+  const toggle = (entityId: string) => {
+    onChange(ids.includes(entityId) ? ids.filter((id) => id !== entityId) : uniqueIds([...ids, entityId]));
+  };
+
+  return (
+    <div className="form-group">
+      <label className="form-label">{label}</label>
+      {help && <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginBottom: "8px" }}>{help}</p>}
+      {entities.length === 0 ? (
+        <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", padding: "10px 0" }}>—</p>
+      ) : (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", maxHeight: "120px", overflowY: "auto", padding: "4px" }}>
+          {entities.map((entity: any) => (
+            <button
+              key={entity.entityId}
+              type="button"
+              className={`btn btn-sm ${ids.includes(entity.entityId) ? "btn-primary" : "btn-secondary"}`}
+              onClick={() => toggle(entity.entityId)}
+              style={{ fontSize: "0.76rem", padding: "4px 9px" }}
+            >
+              {entity.title}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SessionPrepEditor({
+  session,
+  campaignState,
+  onSave,
+  onCancel,
+}: {
+  session: any;
+  campaignState: any;
+  onSave: (title: string, prep: any, scheduledAt?: string) => Promise<void>;
+  onCancel: () => void;
+}) {
+  const { t } = useTranslation();
+  const prep = session.prep ?? { state: "draft" };
+  const [title, setTitle] = useState(session.title ?? "");
+  const [scheduledAt, setScheduledAt] = useState(session.scheduledAt ? String(session.scheduledAt).slice(0, 16) : "");
+  const [state, setState] = useState<"draft" | "ready">((prep.state ?? "draft") as "draft" | "ready");
+  const [summary, setSummary] = useState(prep.summary ?? "");
+  const [openingPrompt, setOpeningPrompt] = useState(prep.openingPrompt ?? "");
+  const [goalsText, setGoalsText] = useState(joinLines(prep.goals));
+  const [notes, setNotes] = useState(prep.notes ?? "");
+  const [checklistText, setChecklistText] = useState(joinLines((prep.checklist ?? []).map((item: any) => item.label)));
+  const [sceneIds, setSceneIds] = useState<string[]>(prep.sceneIds ?? []);
+  const [involvedEntityIds, setInvolvedEntityIds] = useState<string[]>(prep.involvedEntityIds ?? []);
+  const [availableClueIds, setAvailableClueIds] = useState<string[]>(prep.availableClueIds ?? []);
+  const [secretsAtRiskIds, setSecretsAtRiskIds] = useState<string[]>(prep.secretsAtRiskIds ?? []);
+  const [expectedConsequenceIds, setExpectedConsequenceIds] = useState<string[]>(prep.expectedConsequenceIds ?? []);
+  const [busy, setBusy] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!title.trim()) return;
+    setBusy(true);
+    try {
+      await onSave(title.trim(), {
+        state,
+        summary: summary.trim() || undefined,
+        openingPrompt: openingPrompt.trim() || undefined,
+        goals: splitLines(goalsText),
+        sceneIds: uniqueIds(sceneIds),
+        involvedEntityIds: uniqueIds(involvedEntityIds),
+        availableClueIds: uniqueIds(availableClueIds),
+        secretsAtRiskIds: uniqueIds(secretsAtRiskIds),
+        expectedConsequenceIds: uniqueIds(expectedConsequenceIds),
+        checklist: mergeChecklist(prep.checklist, splitLines(checklistText)),
+        notes: notes.trim() || undefined,
+      }, scheduledAt ? new Date(scheduledAt).toISOString() : undefined);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="card" style={{ marginTop: "10px", padding: "18px", borderLeft: "3px solid var(--primary)" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "12px" }}>
+        <div className="form-group">
+          <label className="form-label" htmlFor={`prep-title-${session.sessionId}`}>{t("sessionPage.sessionTitleLabel")}</label>
+          <input id={`prep-title-${session.sessionId}`} className="form-input" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor={`prep-date-${session.sessionId}`}>{t("sessionPage.scheduledAtLabel")}</label>
+          <input id={`prep-date-${session.sessionId}`} className="form-input" type="datetime-local" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor={`prep-state-${session.sessionId}`}>{t("sessionPage.prepStateLabel")}</label>
+          <select id={`prep-state-${session.sessionId}`} className="form-select" value={state} onChange={(e) => setState(e.target.value as "draft" | "ready")}>
+            <option value="draft">{t("sessionPage.prepDraft")}</option>
+            <option value="ready">{t("sessionPage.readyToPlay")}</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label className="form-label" htmlFor={`prep-summary-${session.sessionId}`}>{t("common.summary")}</label>
+        <textarea id={`prep-summary-${session.sessionId}`} className="form-textarea" value={summary} onChange={(e) => setSummary(e.target.value)} placeholder={t("sessionPage.prepSummaryPlaceholder")} style={{ minHeight: "70px" }} />
+      </div>
+
+      <div className="form-group">
+        <label className="form-label" htmlFor={`prep-opening-${session.sessionId}`}>{t("sessionPage.openingPromptLabel")}</label>
+        <textarea id={`prep-opening-${session.sessionId}`} className="form-textarea" value={openingPrompt} onChange={(e) => setOpeningPrompt(e.target.value)} placeholder={t("sessionPage.openingPromptPlaceholder")} style={{ minHeight: "80px" }} />
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+        <div className="form-group">
+          <label className="form-label" htmlFor={`prep-goals-${session.sessionId}`}>{t("sessionPage.goalsLabel")}</label>
+          <textarea id={`prep-goals-${session.sessionId}`} className="form-textarea" value={goalsText} onChange={(e) => setGoalsText(e.target.value)} placeholder={t("sessionPage.onePerLinePlaceholder")} style={{ minHeight: "110px" }} />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor={`prep-checklist-${session.sessionId}`}>{t("sessionPage.checklistLabel")}</label>
+          <textarea id={`prep-checklist-${session.sessionId}`} className="form-textarea" value={checklistText} onChange={(e) => setChecklistText(e.target.value)} placeholder={t("sessionPage.onePerLinePlaceholder")} style={{ minHeight: "110px" }} />
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+        <EntityMultiPicker label={t("sessionPage.prepScenesLabel")} campaignState={campaignState} ids={sceneIds} onChange={setSceneIds} typeFilter="scene" />
+        <EntityMultiPicker label={t("sessionPage.prepCluesLabel")} campaignState={campaignState} ids={availableClueIds} onChange={setAvailableClueIds} typeFilter="clue" />
+        <EntityMultiPicker label={t("sessionPage.prepSecretsLabel")} campaignState={campaignState} ids={secretsAtRiskIds} onChange={setSecretsAtRiskIds} typeFilter="secret" />
+        <EntityMultiPicker label={t("sessionPage.prepConsequencesLabel")} campaignState={campaignState} ids={expectedConsequenceIds} onChange={setExpectedConsequenceIds} typeFilter={["consequence", "front"]} />
+      </div>
+
+      <EntityMultiPicker label={t("sessionPage.prepInvolvedLabel")} help={t("sessionPage.prepInvolvedHelp")} campaignState={campaignState} ids={involvedEntityIds} onChange={setInvolvedEntityIds} />
+
+      <div className="form-group">
+        <label className="form-label" htmlFor={`prep-notes-${session.sessionId}`}>{t("sessionPage.privatePrepNotesLabel")}</label>
+        <textarea id={`prep-notes-${session.sessionId}`} className="form-textarea" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t("sessionPage.privatePrepNotesPlaceholder")} style={{ minHeight: "90px" }} />
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+        <button type="button" className="btn btn-secondary" onClick={onCancel} disabled={busy}>{t("common.cancel")}</button>
+        <button type="submit" className="btn btn-primary" disabled={busy || !title.trim()}>{busy ? t("common.saving") : t("common.saveChanges")}</button>
+      </div>
+    </form>
+  );
+}
+
+function PrepLinkedList({
+  title,
+  ids,
+  campaignState,
+}: {
+  title: string;
+  ids: string[] | undefined;
+  campaignState: any;
+}) {
+  const safeIds = ids ?? [];
+  if (safeIds.length === 0) return null;
+  return (
+    <div>
+      <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{title}</div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+        {safeIds.map((id) => (
+          <span key={id} className="badge" style={{ backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", color: "var(--text-main)" }}>
+            {findEntityTitle(campaignState, id)}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ActiveSessionPrepPanel({ session, campaignState }: { session: any; campaignState: any }) {
+  const { t } = useTranslation();
+  const [collapsed, setCollapsed] = useState(false);
+  const prep = session.prep;
+  if (!prep) return null;
+  const hasContent = Boolean(
+    prep.summary ||
+    prep.openingPrompt ||
+    prep.notes ||
+    (prep.goals?.length ?? 0) > 0 ||
+    (prep.checklist?.length ?? 0) > 0 ||
+    (prep.sceneIds?.length ?? 0) > 0 ||
+    (prep.involvedEntityIds?.length ?? 0) > 0 ||
+    (prep.availableClueIds?.length ?? 0) > 0 ||
+    (prep.secretsAtRiskIds?.length ?? 0) > 0 ||
+    (prep.expectedConsequenceIds?.length ?? 0) > 0
+  );
+  if (!hasContent) return null;
+
+  return (
+    <section className="card" style={{ padding: "0", overflow: "hidden", borderLeft: "3px solid var(--primary)" }}>
+      <button
+        type="button"
+        onClick={() => setCollapsed((value) => !value)}
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "12px",
+          background: "transparent",
+          border: "none",
+          color: "var(--text-main)",
+          padding: "14px 18px",
+          cursor: "pointer",
+        }}
+      >
+        <span style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 800 }}>
+          <CheckSquare size={16} style={{ color: "var(--primary)" }} />
+          {t("sessionPage.activePrepPanelTitle")}
+          <span className="badge" style={{ fontSize: "0.7rem" }}>{prep.state === "ready" ? t("sessionPage.readyToPlay") : t("sessionPage.prepDraft")}</span>
+        </span>
+        {collapsed ? <ChevronDown size={15} /> : <ChevronUp size={15} />}
+      </button>
+      {!collapsed && (
+        <div style={{ borderTop: "1px solid var(--border-color)", padding: "16px 18px", display: "flex", flexDirection: "column", gap: "16px" }}>
+          {prep.openingPrompt && (
+            <div style={{ padding: "12px", borderRadius: "var(--radius-md)", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)" }}>
+              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.openingPromptLabel")}</div>
+              <p style={{ whiteSpace: "pre-line", fontSize: "0.9rem", lineHeight: 1.45 }}>{prep.openingPrompt}</p>
+            </div>
+          )}
+          {prep.summary && <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.45 }}>{prep.summary}</p>}
+          {(prep.goals?.length ?? 0) > 0 && (
+            <div>
+              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.goalsLabel")}</div>
+              <ul style={{ margin: 0, paddingLeft: "20px", color: "var(--text-main)", fontSize: "0.9rem", lineHeight: 1.5 }}>
+                {prep.goals.map((goal: string, index: number) => <li key={`${goal}-${index}`}>{goal}</li>)}
+              </ul>
+            </div>
+          )}
+          {(prep.checklist?.length ?? 0) > 0 && (
+            <div>
+              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.checklistLabel")}</div>
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
+                {prep.checklist.map((item: any) => (
+                  <li key={item.id ?? item.label} style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "0.9rem" }}>
+                    <span aria-hidden="true">{item.done ? "☑" : "☐"}</span>
+                    <span>{item.label}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "14px" }}>
+            <PrepLinkedList title={t("sessionPage.prepScenesLabel")} ids={prep.sceneIds} campaignState={campaignState} />
+            <PrepLinkedList title={t("sessionPage.prepCluesLabel")} ids={prep.availableClueIds} campaignState={campaignState} />
+            <PrepLinkedList title={t("sessionPage.prepSecretsLabel")} ids={prep.secretsAtRiskIds} campaignState={campaignState} />
+            <PrepLinkedList title={t("sessionPage.prepConsequencesLabel")} ids={prep.expectedConsequenceIds} campaignState={campaignState} />
+            <PrepLinkedList title={t("sessionPage.prepInvolvedLabel")} ids={prep.involvedEntityIds} campaignState={campaignState} />
+          </div>
+          {prep.notes && (
+            <div style={{ paddingTop: "12px", borderTop: "1px solid var(--border-color)" }}>
+              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.privatePrepNotesLabel")}</div>
+              <p style={{ whiteSpace: "pre-line", fontSize: "0.86rem", color: "var(--text-muted)", lineHeight: 1.45 }}>{prep.notes}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
 // ── main component ───────────────────────────────────────────────────────────
 
 export function SessionPage(props: SessionPageProps = {}) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const { campaignId } = useParams({ strict: false }) as any;
   const navigate = useNavigate();
   const store = useCampaignStore();
@@ -1267,6 +1592,11 @@ export function SessionPage(props: SessionPageProps = {}) {
   const activeSession = props.activeSession ?? (campaignState?.sessions ?? []).find((s: any) => s.status === "active");
   const sessionSummary = props.sessionSummary ?? sessionSummaryLocal;
   const setSessionSummary = props.setSessionSummary ?? setSessionSummaryLocal;
+  const createPreparedSession = props.createPreparedSession ?? store.createPreparedSession;
+  const updateSessionPrep = props.updateSessionPrep ?? store.updateSessionPrep;
+  const cancelSession = props.cancelSession ?? store.cancelSession;
+  const archiveSession = props.archiveSession ?? store.archiveSession;
+  const activateSession = props.activateSession ?? store.activateSession;
   const startSession = props.startSession ?? store.startSession;
   const closeSession = props.closeSession ?? store.closeSession;
   const createEntity = props.createEntity ?? store.createEntity;
@@ -1280,11 +1610,20 @@ export function SessionPage(props: SessionPageProps = {}) {
 
   const [newTitle, setNewTitle] = useState("");
   const [activeAction, setActiveAction] = useState<ActionId | null>(null);
+  const [editingPrepSessionId, setEditingPrepSessionId] = useState<string | null>(null);
 
   // ── no active session ────────────────────────────────────────────────────
 
   if (!activeSession) {
-    const recentSessions = [...(campaignState?.sessions ?? [])]
+    const sessions = campaignState?.sessions ?? [];
+    const preparedSessions = [...sessions]
+      .filter((session: any) => session.status === "planned")
+      .sort(
+        (a: any, b: any) =>
+          new Date(a.scheduledAt ?? a.createdAt ?? 0).getTime() -
+          new Date(b.scheduledAt ?? b.createdAt ?? 0).getTime()
+      );
+    const recentSessions = [...sessions]
       .filter((s: any) => s.status === "closed" || s.status === "archived")
       .sort(
         (a: any, b: any) =>
@@ -1293,26 +1632,93 @@ export function SessionPage(props: SessionPageProps = {}) {
       )
       .slice(0, 5);
 
-    const nextNumber = (campaignState?.sessions?.length ?? 0) + 1;
+    const nextNumber = sessions.length + 1;
 
-    const handleStart = async (e: React.SubmitEvent) => {
+    const handlePrepare = async (e: React.SubmitEvent) => {
       e.preventDefault();
       const title = newTitle.trim() || t("session.sessionNumber", { number: nextNumber });
-      await startSession(title);
-      setNewTitle("");
+      try {
+        await createPreparedSession(title, {
+          state: "draft",
+          summary: "",
+          goals: [],
+          sceneIds: [],
+          involvedEntityIds: [],
+          availableClueIds: [],
+          secretsAtRiskIds: [],
+          expectedConsequenceIds: [],
+          checklist: [],
+          notes: "",
+        });
+        addToast(t("toasts.sessionPrepared", { title }), "success");
+        setNewTitle("");
+      } catch (err: any) {
+        addToast(t("toasts.sessionPrepareError", { error: err.message }), "error");
+      }
+    };
+
+    const handleStartAdHoc = async () => {
+      const title = newTitle.trim() || t("session.sessionNumber", { number: nextNumber });
+      try {
+        await startSession(title);
+        addToast(t("toasts.sessionStarted", { title }), "success");
+        setNewTitle("");
+      } catch (err: any) {
+        addToast(t("toasts.sessionStartError", { error: err.message }), "error");
+      }
+    };
+
+    const handleActivate = async (sessionId: string, title: string) => {
+      try {
+        await activateSession(sessionId);
+        addToast(t("toasts.sessionActivated", { title }), "success");
+      } catch (err: any) {
+        addToast(t("toasts.sessionActivateError", { error: err.message }), "error");
+      }
+    };
+
+    const handleSavePrep = async (sessionId: string, title: string, prep: any, scheduledAt?: string) => {
+      try {
+        await updateSessionPrep(sessionId, { title, scheduledAt, prep });
+        addToast(t("toasts.sessionPrepUpdated", { title }), "success");
+        setEditingPrepSessionId(null);
+      } catch (err: any) {
+        addToast(t("toasts.sessionPrepUpdateError", { error: err.message }), "error");
+      }
+    };
+
+    const handleCancelPrepared = async (sessionId: string, title: string) => {
+      if (!window.confirm(t("sessionPage.cancelPreparedConfirm", { title }))) return;
+      try {
+        await cancelSession(sessionId);
+        addToast(t("toasts.sessionCancelled", { title }), "info");
+        if (editingPrepSessionId === sessionId) setEditingPrepSessionId(null);
+      } catch (err: any) {
+        addToast(t("toasts.sessionCancelError", { error: err.message }), "error");
+      }
+    };
+
+    const handleArchivePrepared = async (sessionId: string, title: string) => {
+      if (!window.confirm(t("sessionPage.archivePreparedConfirm", { title }))) return;
+      try {
+        await archiveSession(sessionId);
+        addToast(t("toasts.sessionArchived", { title }), "info");
+        if (editingPrepSessionId === sessionId) setEditingPrepSessionId(null);
+      } catch (err: any) {
+        addToast(t("toasts.sessionArchiveError", { error: err.message }), "error");
+      }
     };
 
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-        {/* Start session card */}
         <section
           className="card"
           style={{
-            maxWidth: "520px",
+            maxWidth: "620px",
             margin: "0 auto",
             width: "100%",
             textAlign: "center",
-            padding: "48px 40px",
+            padding: "44px 40px",
           }}
         >
           <div
@@ -1328,7 +1734,7 @@ export function SessionPage(props: SessionPageProps = {}) {
               margin: "0 auto 20px",
             }}
           >
-            <Play size={28} style={{ color: "var(--primary)" }} />
+            <StickyNote size={28} style={{ color: "var(--primary)" }} />
           </div>
           <h2
             style={{
@@ -1338,7 +1744,7 @@ export function SessionPage(props: SessionPageProps = {}) {
               letterSpacing: "-0.02em",
             }}
           >
-            Iniciar nueva sesión
+            {t("sessionPage.prepareNextSessionTitle")}
           </h2>
           <p
             style={{
@@ -1347,12 +1753,12 @@ export function SessionPage(props: SessionPageProps = {}) {
               fontSize: "0.93rem",
             }}
           >
-            Sesión #{nextNumber} de la campaña
+            {t("sessionPage.prepareSessionDescription")}
           </p>
-          <form onSubmit={handleStart}>
+          <form onSubmit={handlePrepare}>
             <div className="form-group" style={{ textAlign: "left" }}>
               <label className="form-label" htmlFor="session-title-input">
-                Título de la sesión
+                {t("sessionPage.sessionTitleLabel")}
               </label>
               <input
                 id="session-title-input"
@@ -1364,19 +1770,28 @@ export function SessionPage(props: SessionPageProps = {}) {
                 style={{ fontSize: "1rem" }}
               />
             </div>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              style={{ width: "100%", padding: "14px", fontSize: "1rem" }}
-            >
-              <Play size={16} /> Iniciar sesión #{nextNumber}
-            </button>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                style={{ padding: "14px", fontSize: "1rem" }}
+              >
+                <StickyNote size={16} /> {t("sessionPage.prepareSessionButton", { number: nextNumber })}
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleStartAdHoc}
+                style={{ padding: "14px", fontSize: "1rem" }}
+              >
+                <Play size={16} /> {t("sessionPage.startAdHocButton")}
+              </button>
+            </div>
           </form>
         </section>
 
-        {/* Recent sessions */}
-        {recentSessions.length > 0 && (
-          <section style={{ maxWidth: "520px", margin: "0 auto", width: "100%" }}>
+        {preparedSessions.length > 0 && (
+          <section style={{ maxWidth: "720px", margin: "0 auto", width: "100%" }}>
             <h3
               style={{
                 fontWeight: "700",
@@ -1387,7 +1802,108 @@ export function SessionPage(props: SessionPageProps = {}) {
                 marginBottom: "14px",
               }}
             >
-              Sesiones anteriores
+              {t("sessionPage.preparedSessions")}
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {preparedSessions.map((session: any) => {
+                const prep = session.prep ?? {};
+                const linkedCount = new Set([
+                  ...(prep.sceneIds ?? []),
+                  ...(prep.involvedEntityIds ?? []),
+                  ...(prep.availableClueIds ?? []),
+                  ...(prep.secretsAtRiskIds ?? []),
+                  ...(prep.expectedConsequenceIds ?? []),
+                ]).size;
+                return (
+                  <React.Fragment key={session.sessionId}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "14px",
+                      padding: "16px 18px",
+                      backgroundColor: "var(--bg-card)",
+                      border: "1px solid var(--border-color)",
+                      borderRadius: "var(--radius-md)",
+                    }}
+                  >
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 800, fontSize: "0.98rem", color: "var(--text-main)", marginBottom: "4px" }}>
+                        {session.number ? `#${session.number} ` : ""}{session.title}
+                      </div>
+                      <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                        {prep.state === "ready" ? t("sessionPage.readyToPlay") : t("sessionPage.prepDraft")}
+                        {linkedCount > 0 ? ` · ${t("sessionPage.linkedElementsCount", { count: linkedCount })}` : ""}
+                        {(prep.goals?.length ?? 0) > 0 ? ` · ${t("sessionPage.goalsCount", { count: prep.goals.length })}` : ""}
+                      </div>
+                      {prep.summary && (
+                        <p style={{ marginTop: "6px", fontSize: "0.84rem", color: "var(--text-muted)", lineHeight: 1.35 }}>
+                          {prep.summary}
+                        </p>
+                      )}
+                    </div>
+                    <div style={{ display: "flex", gap: "8px", flexShrink: 0, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                      <button
+                        type="button"
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => setEditingPrepSessionId(editingPrepSessionId === session.sessionId ? null : session.sessionId)}
+                      >
+                        <StickyNote size={14} /> {t("sessionPage.editPreparationButton")}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        onClick={() => handleActivate(session.sessionId, session.title)}
+                      >
+                        <Play size={14} /> {t("sessionPage.activatePreparedSessionButton")}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => handleCancelPrepared(session.sessionId, session.title)}
+                        title={t("sessionPage.cancelPreparedSessionButton")}
+                      >
+                        <X size={14} />
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => handleArchivePrepared(session.sessionId, session.title)}
+                        title={t("sessionPage.archivePreparedSessionButton")}
+                      >
+                        <Archive size={14} />
+                      </button>
+                    </div>
+                  </div>
+                  {editingPrepSessionId === session.sessionId && (
+                    <SessionPrepEditor
+                      session={session}
+                      campaignState={campaignState}
+                      onSave={(title, prep, scheduledAt) => handleSavePrep(session.sessionId, title, prep, scheduledAt)}
+                      onCancel={() => setEditingPrepSessionId(null)}
+                    />
+                  )}
+                </React.Fragment>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {recentSessions.length > 0 && (
+          <section style={{ maxWidth: "720px", margin: "0 auto", width: "100%" }}>
+            <h3
+              style={{
+                fontWeight: "700",
+                fontSize: "0.85rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                color: "var(--text-muted)",
+                marginBottom: "14px",
+              }}
+            >
+              {t("sessionPage.previousSessions")}
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {recentSessions.map((s: any) => (
@@ -1405,14 +1921,7 @@ export function SessionPage(props: SessionPageProps = {}) {
                   }}
                 >
                   <div style={{ minWidth: 0 }}>
-                    <div
-                      style={{
-                        fontWeight: "700",
-                        fontSize: "0.93rem",
-                        marginBottom: "4px",
-                        color: "var(--text-main)",
-                      }}
-                    >
+                    <div style={{ fontWeight: "700", fontSize: "0.93rem", marginBottom: "4px", color: "var(--text-main)" }}>
                       {s.number ? `#${s.number} ` : ""}{s.title}
                     </div>
                     {s.summary && (
@@ -1430,20 +1939,9 @@ export function SessionPage(props: SessionPageProps = {}) {
                       </p>
                     )}
                   </div>
-                  <span
-                    style={{
-                      fontSize: "0.78rem",
-                      color: "var(--text-muted)",
-                      whiteSpace: "nowrap",
-                      flexShrink: 0,
-                    }}
-                  >
+                  <span style={{ fontSize: "0.78rem", color: "var(--text-muted)", whiteSpace: "nowrap", flexShrink: 0 }}>
                     {s.endedAt
-                      ? new Date(s.endedAt).toLocaleDateString("es", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })
+                      ? new Date(s.endedAt).toLocaleDateString(locale, { day: "2-digit", month: "short", year: "numeric" })
                       : "—"}
                   </span>
                 </div>
@@ -1546,14 +2044,15 @@ export function SessionPage(props: SessionPageProps = {}) {
                 marginTop: "2px",
               }}
             >
-              Sesión {activeSession.number ? `#${activeSession.number}` : ""}{" "}
-              · Iniciada a las{" "}
-              {activeSession.startedAt
-                ? new Date(activeSession.startedAt).toLocaleTimeString("es", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
-                : "—"}
+              {t("sessionPage.activeSessionLabel", { sessionNumber: activeSession.number ? `#${activeSession.number}` : "" })}{" "}
+              · {t("sessionPage.sessionActiveSince", {
+                time: activeSession.startedAt
+                  ? new Date(activeSession.startedAt).toLocaleTimeString(locale, {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : "—",
+              })}
             </div>
           </div>
         </div>
@@ -1576,6 +2075,8 @@ export function SessionPage(props: SessionPageProps = {}) {
           {elapsed}
         </div>
       </div>
+
+      <ActiveSessionPrepPanel session={activeSession} campaignState={campaignState} />
 
       {/* Quick capture bar */}
       <QuickCaptureBar

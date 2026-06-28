@@ -19,13 +19,41 @@ export const sessionStatusSchema = z.enum([
 ]);
 export type SessionStatus = z.infer<typeof sessionStatusSchema>;
 
+export const sessionPrepStateSchema = z.enum(["draft", "ready"]);
+export type SessionPrepState = z.infer<typeof sessionPrepStateSchema>;
+
+export const sessionPrepChecklistItemSchema = z.object({
+  id: z.string(),
+  label: z.string().min(1, "Checklist item label must not be empty"),
+  done: z.boolean().default(false),
+  priority: z.enum(["low", "medium", "high"]).default("medium"),
+});
+export type SessionPrepChecklistItem = z.infer<typeof sessionPrepChecklistItemSchema>;
+
+export const sessionPrepSchema = z.object({
+  state: sessionPrepStateSchema.default("draft"),
+  summary: z.string().optional(),
+  openingPrompt: z.string().optional(),
+  goals: z.array(z.string()).default([]),
+  sceneIds: z.array(entityIdSchema).default([]),
+  involvedEntityIds: z.array(entityIdSchema).default([]),
+  availableClueIds: z.array(entityIdSchema).default([]),
+  secretsAtRiskIds: z.array(entityIdSchema).default([]),
+  expectedConsequenceIds: z.array(entityIdSchema).default([]),
+  checklist: z.array(sessionPrepChecklistItemSchema).default([]),
+  notes: z.string().optional(),
+});
+export type SessionPrep = z.infer<typeof sessionPrepSchema>;
+
 export const sessionSchema = z.object({
   id: sessionIdSchema,
+  sessionId: sessionIdSchema,
   campaignId: campaignIdSchema,
   number: z.number().int().min(1),
   title: z.string().min(1, "Title must not be empty"),
   status: sessionStatusSchema,
   scheduledAt: z.string().optional(),
+  prep: sessionPrepSchema.optional(),
   startedAt: z.string().optional(),
   endedAt: z.string().optional(),
   presentPlayerIds: z.array(playerIdSchema).default([]),

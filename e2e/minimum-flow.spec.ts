@@ -10,7 +10,7 @@ const NPC_ID = "ent_e2e_npc";
 const CLUE_ID = "ent_e2e_clue";
 const SECRET_ID = "ent_e2e_secret";
 const RELATION_ID = "rel_e2e_reveals";
-const SESSION_ID = "ses_e2e_01";
+const SESSION_ID = "sess_e2e_01";
 
 async function readJson(response: APIResponse): Promise<JsonObject> {
   try {

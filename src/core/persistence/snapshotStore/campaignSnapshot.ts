@@ -83,8 +83,16 @@ export function rebuildCampaignSnapshot(events: any[]): CampaignSnapshot {
         break;
       }
       case "SessionCreated":
-        sessions.push({ ...payload });
+        sessions.push({ ...payload, status: payload.status || "planned" });
         break;
+      case "SessionPrepUpdated": {
+        const id = payload.id || payload.sessionId;
+        const index = sessions.findIndex((s) => s.sessionId === id);
+        if (index !== -1) {
+          sessions[index] = { ...sessions[index], ...payload };
+        }
+        break;
+      }
       case "SessionStarted": {
         const id = payload.id || payload.sessionId;
         const index = sessions.findIndex((s) => s.sessionId === id);

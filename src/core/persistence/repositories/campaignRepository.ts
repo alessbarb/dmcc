@@ -136,10 +136,34 @@ export class CampaignRepository {
             `Cannot start session: Session #${activeSession.number} ("${activeSession.title}") is already active.`
           );
         }
+        const existing = projection.sessions.get(id);
+        if (existing && existing.status !== "planned" && existing.status !== "active") {
+          throw new InvariantViolationError("Only planned sessions can be activated.");
+        }
+        break;
+      }
+
+      case "SessionPrepUpdated": {
+        const id = payload.id || payload.sessionId;
+        const existing = projection.sessions.get(id);
+        if (!existing) {
+          throw new InvariantViolationError("Cannot update preparation for a missing session.");
+        }
+        if (existing.status !== "planned") {
+          throw new InvariantViolationError("Only planned sessions can be prepared.");
+        }
         break;
       }
 
       case "SessionClosed": {
+        const id = payload.id || payload.sessionId;
+        const existing = projection.sessions.get(id);
+        if (!existing) {
+          throw new InvariantViolationError("Cannot close a missing session.");
+        }
+        if (existing.status !== "active") {
+          throw new InvariantViolationError("Only active sessions can be closed.");
+        }
         if (!payload.summary || payload.summary.trim() === "") {
           throw new InvariantViolationError("Closing a session requires a summary.");
         }
