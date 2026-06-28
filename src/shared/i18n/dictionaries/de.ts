@@ -414,6 +414,9 @@ export const de: TranslationDictionary = {
     createEntity: "Entität erstellen",
     noSummary: "Keine Zusammenfassung.",
     importance: "Wichtigkeit: {value}",
+    noEntities: "Noch keine Entitäten. Erstelle die erste.",
+    noResults: "Keine Entität stimmt mit der aktuellen Suche oder dem Filter überein.",
+    updateError: "Entität konnte nicht aktualisiert werden. Verbindung prüfen.",
   },
 
   appFooter: {

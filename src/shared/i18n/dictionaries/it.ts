@@ -414,6 +414,9 @@ export const it: TranslationDictionary = {
     createEntity: "Crea entità",
     noSummary: "Nessun riepilogo.",
     importance: "Importanza: {value}",
+    noEntities: "Nessuna entità ancora. Crea la prima.",
+    noResults: "Nessuna entità corrisponde alla ricerca o al filtro attuale.",
+    updateError: "Impossibile aggiornare l'entità. Controlla la connessione.",
   },
 
   appFooter: {

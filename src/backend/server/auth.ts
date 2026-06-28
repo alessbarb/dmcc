@@ -89,24 +89,16 @@ export function assertCampaignAccess(request: any, state: any, campaignId: strin
     throw err;
   }
 
-  const enabled = state?.campaign?.settings?.lanModeEnabled;
-  if (!enabled) {
-    const err = new Error("Forbidden: LAN Mode is disabled for this campaign");
-    (err as any).statusCode = 403;
-    throw err;
-  }
-
+  // LAN is always active — access code path retained as legacy fallback only.
+  // Player-token auth (x-player-token) bypasses this via getRequestRoleWithTokens.
   const accessCode = request.headers["x-access-code"] as string;
   if (!accessCode) {
-    const err = new Error("Unauthorized: Access code is required");
-    (err as any).statusCode = 401;
-    throw err;
+    return role;
   }
 
   const hash = state?.campaign?.settings?.localAccessCodeHash;
   const legacyCode = state?.campaign?.settings?.localAccessCode;
 
-  // Migration path for campaigns created before hashed access codes existed.
   if (legacyCode && accessCode === legacyCode) {
     return role;
   }

@@ -405,6 +405,9 @@ export const pt = {
     createEntity: "Criar entidade",
     noSummary: "Sem resumo.",
     importance: "Importância: {value}",
+    noEntities: "Nenhuma entidade ainda. Crie a primeira.",
+    noResults: "Nenhuma entidade corresponde à pesquisa ou filtro atual.",
+    updateError: "Falha ao atualizar a entidade. Verifique sua conexão.",
   },
   appFooter: {
     tagline: "Memória narrativa local para conduzir campanhas com continuidade.",

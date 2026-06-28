@@ -24,7 +24,7 @@ interface EntityDetailModalProps {
   onClose: () => void;
   onEdit: (entityId: string, updates: Partial<Entity>) => Promise<void>;
   onArchive: (entityId: string) => Promise<void>;
-  onVisibilityChange: (entityId: string, visibility: any) => void;
+  onVisibilityChange: (entityId: string, visibility: any) => Promise<void>;
   addToast: (msg: string, kind?: any) => void;
 }
 
@@ -172,7 +172,7 @@ function ResumenTab({
   isEditingEntity: boolean;
   editEntityForm: Partial<Entity>;
   setEditEntityForm: (v: Partial<Entity>) => void;
-  onVisibilityChange: (entityId: string, visibility: any) => void;
+  onVisibilityChange: (entityId: string, visibility: any) => Promise<void>;
 }) {
   const { t } = useTranslation();
   return (
@@ -1003,14 +1003,11 @@ export function EntityDetailModal({
     getEntityDefaultImage(selectedEntity.entityType);
 
   const isDmOnly =
-    selectedEntity.visibility?.kind === "dm_only" ||
-    selectedEntity.status === "hidden" ||
-    selectedEntity.entityType === "secret" ||
-    selectedEntity.status === "dm_only";
+    !selectedEntity.visibility?.kind ||
+    selectedEntity.visibility.kind === "dm_only";
 
   const handleVisibilityChange = async (entityId: string, visibility: any) => {
-    onVisibilityChange(entityId, visibility);
-    // optimistic local UI update handled via onVisibilityChange in parent
+    await onVisibilityChange(entityId, visibility);
   };
 
   const handleArchive = async () => {

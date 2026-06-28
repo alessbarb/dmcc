@@ -405,6 +405,9 @@ export const en = {
     createEntity: "Create entity",
     noSummary: "No summary.",
     importance: "Importance: {value}",
+    noEntities: "No entities yet. Create your first one.",
+    noResults: "No entities match the current search or filter.",
+    updateError: "Failed to update entity. Check your connection.",
   },
   appFooter: {
     tagline: "Local narrative memory for running campaigns with continuity.",

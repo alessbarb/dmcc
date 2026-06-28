@@ -407,6 +407,9 @@ export const es: TranslationDictionary = {
     createEntity: "Crear entidad",
     noSummary: "Sin resumen.",
     importance: "Importancia: {value}",
+    noEntities: "Aún no hay entidades. Crea la primera.",
+    noResults: "Ninguna entidad coincide con la búsqueda o el filtro actual.",
+    updateError: "Error al actualizar la entidad. Comprueba la conexión.",
   },
   appFooter: {
     tagline: "Memoria narrativa local para dirigir campañas con continuidad.",

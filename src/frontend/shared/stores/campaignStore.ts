@@ -622,10 +622,14 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ actorId, ...updates }),
       });
-      if (!res.ok) throw new Error("Failed to update entity");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as any).error || "Failed to update entity");
+      }
       await get().selectCampaign(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
+      throw err;
     }
   },
 

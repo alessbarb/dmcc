@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Search, Plus, Eye, EyeOff } from "lucide-react";
+import { Search, Plus, Eye, EyeOff, Filter } from "lucide-react";
 import { getEntityDefaultImage } from "./entityVisuals.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { EntityDetailModal } from "./EntityDetailModal.js";
@@ -77,17 +77,25 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
       </div>
 
       {/* Entities Grid */}
-      <div className="grid grid-cols-3">
-        {campaignState.entities
+      {(() => {
+        const filtered = (campaignState.entities ?? [])
           .filter((e: any) => !e.archived)
           .filter((e: any) => {
             if (entityTypeFilter !== "all" && e.entityType !== entityTypeFilter) return false;
             if (!entitySearchQuery.trim()) return true;
             const query = entitySearchQuery.toLowerCase();
             return e.title.toLowerCase().includes(query) || (e.summary && e.summary.toLowerCase().includes(query));
-          })
-          .map((e: any) => {
-            const isDmOnly = e.visibility?.kind === "dm_only" || e.status === "hidden" || e.entityType === "secret" || e.status === "dm_only";
+          });
+        if (filtered.length === 0) {
+          return (
+            <div className="card" style={{ textAlign: "center", padding: "40px", color: "var(--text-muted)" }}>
+              <Filter size={36} style={{ opacity: 0.3, marginBottom: "12px" }} />
+              <p>{entitySearchQuery || entityTypeFilter !== "all" ? t("entitiesPage.noResults") : t("entitiesPage.noEntities")}</p>
+            </div>
+          );
+        }
+        return <div className="grid grid-cols-3">{filtered.map((e: any) => {
+            const isDmOnly = !e.visibility?.kind || e.visibility.kind === "dm_only";
             return (
               <div
                 key={e.entityId}
@@ -180,7 +188,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
                     <span className={`badge ${e.entityType === "secret" ? "badge-critical" : e.entityType === "clue" ? "badge-warning" : "badge-primary"}`}>
                       {formatEntityType(e.entityType, locale)}
                     </span>
-                    <span className="badge badge-default">{e.status}</span>
+                    {e.status && <span className="badge badge-default">{e.status}</span>}
                   </div>
                   <h3 className="card-title" style={{ fontSize: "1.05rem" }}>{e.title}</h3>
                   {e.subtitle && <h4 className="card-subtitle">{e.subtitle}</h4>}
@@ -191,15 +199,16 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
                     <span>{t("entitiesPage.importance", { value: getImportanceKey(e.importance) ? t(getImportanceKey(e.importance)) : e.importance })}</span>
                     {e.visibility?.kind && (
                       <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                        <Eye size={12} /> {formatVisibility(e.visibility.kind, locale)}
+                        {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
+                        {formatVisibility(e.visibility.kind, locale)}
                       </span>
                     )}
                   </div>
                 </div>
               </div>
             );
-          })}
-      </div>
+          })}</div>;
+      })()}
     </div>
     {selectedEntityLocal && campaignState && (
       <EntityDetailModal
@@ -207,16 +216,24 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
         campaignState={campaignState}
         onClose={() => setSelectedEntityLocal(null)}
         onEdit={async (entityId, updates) => {
-          await updateEntity(entityId, updates);
-          setSelectedEntityLocal({ ...selectedEntityLocal, ...updates });
+          try {
+            await updateEntity(entityId, updates);
+            setSelectedEntityLocal((prev: any) => ({ ...prev, ...updates }));
+          } catch (err: any) {
+            addToast(err.message || t("entitiesPage.updateError"), "error");
+          }
         }}
         onArchive={async (entityId) => {
           await archiveEntity(entityId);
           setSelectedEntityLocal(null);
         }}
         onVisibilityChange={async (entityId, visibility) => {
-          await updateEntity(entityId, { visibility });
-          setSelectedEntityLocal({ ...selectedEntityLocal, visibility });
+          try {
+            await updateEntity(entityId, { visibility });
+            setSelectedEntityLocal((prev: any) => ({ ...prev, visibility }));
+          } catch (err: any) {
+            addToast(err.message || t("entitiesPage.updateError"), "error");
+          }
         }}
         addToast={addToast}
       />
