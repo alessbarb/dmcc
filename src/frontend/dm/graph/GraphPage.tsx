@@ -96,7 +96,7 @@ export function GraphPage(props: GraphPageProps = {}) {
 
   const { addToast } = useToast();
   const { locale, t } = useTranslation();
-  const [preset, setPreset] = useState<FilterPreset>("todos");
+  const [preset, setPreset] = useState<FilterPreset>("nextSession");
   const [viewMode, setViewMode] = useState<ViewMode>("all");
   const [labelsMode, setLabelsMode] = useState<LabelsMode>("auto");
   const [localPanelEntity, setPanelEntity] = useState<any>(null);

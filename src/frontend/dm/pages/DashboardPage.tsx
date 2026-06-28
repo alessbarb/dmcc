@@ -139,7 +139,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
   const campaignState = _props.campaignState ?? storeData.campaignState;
   const { updateEntity, archiveEntity } = storeData;
   const { addToast } = useToast();
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
   const selectedEntity = selectedEntityLocal;
   const setSelectedEntity = _props.setSelectedEntity ?? setSelectedEntityLocal;
@@ -242,7 +242,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                     color: "var(--text-main)",
                   }}
                 >
-                  {campaign?.name ?? t("dashboard.noActiveCampaign")}
+                  {campaign?.title ?? t("dashboard.noActiveCampaign")}
                 </h1>
                 {campaign?.system && (
                   <span className="badge badge-primary">{campaign.system}</span>
@@ -438,7 +438,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 </span>
                 {lastSession.date && (
                   <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                    {lastSession.date}
+                    {new Date(lastSession.date).toLocaleString(locale, { dateStyle: "medium", timeStyle: "short" })}
                   </span>
                 )}
                 {lastSession.summary && (

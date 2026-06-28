@@ -234,7 +234,7 @@ export function CampaignShell() {
           {sidebarCollapsed ? (
             <button
               className="btn btn-secondary btn-sm"
-              onClick={() => navigate({ to: "/" })}
+              onClick={() => navigate({ to: "/dm" })}
               title={t("nav.exit")}
               style={{ width: "100%", padding: "6px", justifyContent: "center" }}
             >
@@ -245,7 +245,7 @@ export function CampaignShell() {
               <span>{t("nav.activeCampaign")}</span>
               <button
                 className="btn btn-secondary btn-sm"
-                onClick={() => navigate({ to: "/" })}
+                onClick={() => navigate({ to: "/dm" })}
               >
                 <ArrowLeft size={14} /> {t("nav.exit")}
               </button>

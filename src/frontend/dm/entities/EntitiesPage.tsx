@@ -78,7 +78,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
 
       {/* Entities Grid */}
       {(() => {
-        const filtered = (campaignState.entities ?? [])
+        const filtered = (campaignState?.entities ?? [])
           .filter((e: any) => !e.archived)
           .filter((e: any) => {
             if (entityTypeFilter !== "all" && e.entityType !== entityTypeFilter) return false;
