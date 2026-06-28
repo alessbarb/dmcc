@@ -161,16 +161,30 @@ export function renderEventDescription(
       );
     case "RelationArchived":
       return <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>{t("timeline.descriptions.relationArchived")}</p>;
-    case "FactCreated":
+    case "FactCreated": {
+      const isRetconned = allEvents?.some(
+        (e: any) =>
+          e.type === "FactUpdated" &&
+          (e.payload?.factId === payload.factId || e.payload?.id === payload.factId) &&
+          e.payload?.kind === "retcon",
+      ) ?? false;
       return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-          <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>"{payload.statement}"</p>
-          <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-            <span className="badge badge-default">{payload.kind}</span>{" "}
-            <span className="badge badge-warning">{payload.confidence}</span>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px", opacity: isRetconned ? 0.55 : 1 }}>
+          <p style={{ fontSize: "0.9rem", color: "var(--text-main)", textDecoration: isRetconned ? "line-through" : "none" }}>
+            "{payload.statement}"
           </p>
+          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+            <span className="badge badge-default">{payload.kind}</span>
+            <span className="badge badge-warning">{payload.confidence}</span>
+            {isRetconned && (
+              <span className="badge" style={{ backgroundColor: "hsla(0,85%,60%,0.15)", color: "hsl(0,85%,60%)", border: "1px solid hsl(0,85%,60%)", fontSize: "0.65rem" }}>
+                {t("timeline.retconned")}
+              </span>
+            )}
+          </div>
         </div>
       );
+    }
     case "VisibilityChanged":
       return (
         <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>
