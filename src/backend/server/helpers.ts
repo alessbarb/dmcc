@@ -1,4 +1,6 @@
-import { resolve } from "path";
+import * as path from "node:path";
+
+type PathLike = Pick<typeof path, "isAbsolute" | "relative" | "resolve">;
 
 export function slugifyTitle(title: string): string {
   return title
@@ -10,10 +12,23 @@ export function slugifyTitle(title: string): string {
     .trim() || "entity";
 }
 
+export function isPathWithinDir(
+  filePath: string,
+  allowedDir: string,
+  pathApi: PathLike = path,
+): boolean {
+  const resolved = pathApi.resolve(filePath);
+  const allowedResolved = pathApi.resolve(allowedDir);
+  const relativePath = pathApi.relative(allowedResolved, resolved);
+
+  return (
+    relativePath === "" ||
+    (!relativePath.startsWith("..") && !pathApi.isAbsolute(relativePath))
+  );
+}
+
 export function assertWithinDir(filePath: string, allowedDir: string): void {
-  const resolved = resolve(filePath);
-  const allowedResolved = resolve(allowedDir);
-  if (!resolved.startsWith(allowedResolved + "/") && resolved !== allowedResolved) {
+  if (!isPathWithinDir(filePath, allowedDir)) {
     throw new Error("Path traversal detected");
   }
 }
