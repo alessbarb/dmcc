@@ -58,7 +58,7 @@ export function PlayerJoinPage() {
     const token = getPlayerToken(profile.campaignId);
     if (!token) {
       if (profile.email) setEmail(profile.email);
-      setError("Busca tu email para renovar el acceso a esta campaña.");
+      setError(t("playerJoin.errorEmailRequiredForRenewal"));
       return;
     }
 
@@ -71,7 +71,7 @@ export function PlayerJoinPage() {
       setEmail(profile.email);
       setError(null);
     } else {
-      setError("Este dispositivo recuerda la campaña, pero no el email. Escríbelo para renovar el acceso.");
+      setError(t("playerJoin.errorRememberedWithoutEmail"));
     }
   };
 
@@ -112,13 +112,13 @@ export function PlayerJoinPage() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data.error || "No se pudieron buscar campañas para este email.");
+        throw new Error(data.error || t("playerJoin.lookupError"));
       }
 
       setMatches(Array.isArray(data.matches) ? data.matches : []);
       setLookupDone(true);
     } catch (err: any) {
-      setError(err.message || "Error de conexión al buscar campañas.");
+      setError(err.message || t("playerJoin.lookupConnectionError"));
     } finally {
       setLoadingLookup(false);
     }
@@ -146,7 +146,7 @@ export function PlayerJoinPage() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data.error || "No se pudo entrar en la campaña.");
+        throw new Error(data.error || t("playerJoin.rejoinError"));
       }
 
       registerPlayerSession(data.campaignId, data.playerId, data.playerToken, {
@@ -160,7 +160,7 @@ export function PlayerJoinPage() {
 
       openPortal(data.campaignId);
     } catch (err: any) {
-      setError(err.message || "Error de conexión al entrar en la campaña.");
+      setError(err.message || t("playerJoin.rejoinConnectionError"));
     } finally {
       setJoiningKey(null);
     }
@@ -224,7 +224,7 @@ export function PlayerJoinPage() {
               </div>
               <button type="submit" className="btn btn-primary join-portal-btn" disabled={loadingLookup || !email.trim()}>
                 <Search size={15} style={{ marginRight: "6px" }} />
-                {loadingLookup ? "Buscando..." : "Buscar mis campañas"}
+                {loadingLookup ? t("playerJoin.searchingBtn") : t("playerJoin.searchCampaignsBtn")}
               </button>
             </form>
 

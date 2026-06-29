@@ -363,6 +363,7 @@ export const en = {
       openingPortal: "Opening portal...",
       submit: "Join campaign",
       backHome: "Back to home",
+      enterPortalBtn: "Enter Player Portal",
     },
   },
   entityDetail: {
@@ -757,6 +758,14 @@ export const en = {
     backHome: "Back to home",
     errorInvalidUrl: "That doesn't look like a valid URL",
     errorInvalidFormat: "Couldn't read the invite format",
+    errorEmailRequiredForRenewal: "Enter your email to renew access to this campaign.",
+    errorRememberedWithoutEmail: "This device remembers the campaign, but not the email. Enter it to renew access.",
+    lookupError: "Could not find campaigns for this email.",
+    lookupConnectionError: "Connection error while searching campaigns.",
+    rejoinError: "Could not enter the campaign.",
+    rejoinConnectionError: "Connection error while entering the campaign.",
+    searchingBtn: "Searching...",
+    searchCampaignsBtn: "Find my campaigns",
   },
   rules: {
     title: "Rules Compendium",
@@ -870,6 +879,7 @@ export const en = {
     eventFeedExpand: "Show log",
   },
   players: {
+    unlinkCharacterConfirm: "Unlink this character from the player?",
     editProfile: "Edit player profile",
     addPlayer: "Add player",
     saveNote: "Save note",

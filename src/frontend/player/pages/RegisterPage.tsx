@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "@tanstack/react-router";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { registerPlayerSession } from "../../shared/auth/authClient.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { Shield, User, Mail, ChevronRight, Sparkles } from "lucide-react";
 
 export function RegisterPage() {
@@ -11,6 +12,7 @@ export function RegisterPage() {
     inviteToken: string;
   };
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const vaultId = useCampaignStore.getState().activeVaultId || "default";
 
   const [displayName, setDisplayName] = useState("");
@@ -171,7 +173,7 @@ export function RegisterPage() {
             className="btn btn-primary join-portal-btn"
             disabled={loading || !displayName.trim() || !email.trim()}
           >
-            {loading ? "Joining..." : "Enter Player Portal"}
+            {loading ? t("playerJoin.joiningBtn") : t("playerPortal.join.enterPortalBtn")}
             {!loading && <ChevronRight size={16} style={{ marginLeft: "4px" }} />}
           </button>
         </form>

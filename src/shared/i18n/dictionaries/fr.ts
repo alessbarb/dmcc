@@ -369,6 +369,7 @@ export const fr: TranslationDictionary = {
       openingPortal: "Ouverture du portail...",
       submit: "Rejoindre la campagne",
       backHome: "Retour à l'accueil",
+      enterPortalBtn: "Entrer dans le portail joueur",
     },
   },
 
@@ -774,6 +775,14 @@ export const fr: TranslationDictionary = {
     backHome: "Retour à l'accueil",
     errorInvalidUrl: "Ça ne ressemble pas à une URL valide",
     errorInvalidFormat: "Impossible de lire le format d'invitation",
+    errorEmailRequiredForRenewal: "Saisissez votre e-mail pour renouveler l’accès à cette campagne.",
+    errorRememberedWithoutEmail: "Cet appareil se souvient de la campagne, mais pas de l’e-mail. Saisissez-le pour renouveler l’accès.",
+    lookupError: "Impossible de trouver des campagnes pour cet e-mail.",
+    lookupConnectionError: "Erreur de connexion lors de la recherche des campagnes.",
+    rejoinError: "Impossible d’entrer dans la campagne.",
+    rejoinConnectionError: "Erreur de connexion lors de l’entrée dans la campagne.",
+    searchingBtn: "Recherche...",
+    searchCampaignsBtn: "Trouver mes campagnes",
   },
 
   rules: {
@@ -891,6 +900,7 @@ export const fr: TranslationDictionary = {
   },
 
   players: {
+    unlinkCharacterConfirm: "Dissocier ce personnage du joueur ?",
     editProfile: "Modifier le profil du joueur",
     addPlayer: "Ajouter un joueur",
     saveNote: "Enregistrer la note",

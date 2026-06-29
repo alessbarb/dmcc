@@ -363,6 +363,7 @@ export const pt = {
       openingPortal: "Abrindo portal...",
       submit: "Entrar na campanha",
       backHome: "Voltar ao início",
+      enterPortalBtn: "Entrar no portal do jogador",
     },
   },
   entityDetail: {
@@ -757,6 +758,14 @@ export const pt = {
     backHome: "Voltar ao início",
     errorInvalidUrl: "Isso não parece uma URL válida",
     errorInvalidFormat: "Não foi possível ler o formato do convite",
+    errorEmailRequiredForRenewal: "Introduza o seu email para renovar o acesso a esta campanha.",
+    errorRememberedWithoutEmail: "Este dispositivo lembra-se da campanha, mas não do email. Introduza-o para renovar o acesso.",
+    lookupError: "Não foi possível encontrar campanhas para este email.",
+    lookupConnectionError: "Erro de ligação ao procurar campanhas.",
+    rejoinError: "Não foi possível entrar na campanha.",
+    rejoinConnectionError: "Erro de ligação ao entrar na campanha.",
+    searchingBtn: "A procurar...",
+    searchCampaignsBtn: "Encontrar as minhas campanhas",
   },
   rules: {
     title: "Compêndio de regras",
@@ -870,6 +879,7 @@ export const pt = {
     eventFeedExpand: "Mostrar registo",
   },
   players: {
+    unlinkCharacterConfirm: "Desassociar este personagem do jogador?",
     editProfile: "Editar perfil do jogador",
     addPlayer: "Adicionar jogador",
     saveNote: "Salvar nota",

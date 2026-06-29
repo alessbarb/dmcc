@@ -369,6 +369,7 @@ export const de: TranslationDictionary = {
       openingPortal: "Portal wird geöffnet...",
       submit: "Kampagne beitreten",
       backHome: "Zurück zur Startseite",
+      enterPortalBtn: "Spielerportal öffnen",
     },
   },
 
@@ -774,6 +775,14 @@ export const de: TranslationDictionary = {
     backHome: "Zurück zur Startseite",
     errorInvalidUrl: "Das sieht nicht wie eine gültige URL aus",
     errorInvalidFormat: "Das Einladungsformat konnte nicht gelesen werden",
+    errorEmailRequiredForRenewal: "Gib deine E-Mail ein, um den Zugriff auf diese Kampagne zu erneuern.",
+    errorRememberedWithoutEmail: "Dieses Gerät merkt sich die Kampagne, aber nicht die E-Mail. Gib sie ein, um den Zugriff zu erneuern.",
+    lookupError: "Für diese E-Mail konnten keine Kampagnen gefunden werden.",
+    lookupConnectionError: "Verbindungsfehler beim Suchen nach Kampagnen.",
+    rejoinError: "Die Kampagne konnte nicht geöffnet werden.",
+    rejoinConnectionError: "Verbindungsfehler beim Öffnen der Kampagne.",
+    searchingBtn: "Suche...",
+    searchCampaignsBtn: "Meine Kampagnen finden",
   },
 
   rules: {
@@ -891,6 +900,7 @@ export const de: TranslationDictionary = {
   },
 
   players: {
+    unlinkCharacterConfirm: "Diesen Charakter vom Spieler trennen?",
     editProfile: "Spielerprofil bearbeiten",
     addPlayer: "Spieler hinzufügen",
     saveNote: "Notiz speichern",

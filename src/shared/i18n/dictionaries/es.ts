@@ -365,6 +365,7 @@ export const es: TranslationDictionary = {
       openingPortal: "Abriendo portal...",
       submit: "Unirse a la campaña",
       backHome: "Volver al inicio",
+      enterPortalBtn: "Entrar en el portal del jugador",
     },
   },
   entityDetail: {
@@ -759,6 +760,14 @@ export const es: TranslationDictionary = {
     backHome: "Volver al inicio",
     errorInvalidUrl: "Eso no parece una URL válida",
     errorInvalidFormat: "No se ha podido leer el formato de invitación",
+    errorEmailRequiredForRenewal: "Busca tu email para renovar el acceso a esta campaña.",
+    errorRememberedWithoutEmail: "Este dispositivo recuerda la campaña, pero no el email. Escríbelo para renovar el acceso.",
+    lookupError: "No se pudieron buscar campañas para este email.",
+    lookupConnectionError: "Error de conexión al buscar campañas.",
+    rejoinError: "No se pudo entrar en la campaña.",
+    rejoinConnectionError: "Error de conexión al entrar en la campaña.",
+    searchingBtn: "Buscando...",
+    searchCampaignsBtn: "Buscar mis campañas",
   },
   rules: {
     title: "Compendio de Reglas",
@@ -872,6 +881,7 @@ export const es: TranslationDictionary = {
     eventFeedExpand: "Mostrar registro",
   },
   players: {
+    unlinkCharacterConfirm: "¿Desvincular este personaje del jugador?",
     editProfile: "Editar perfil de jugador",
     addPlayer: "Añadir jugador",
     saveNote: "Guardar nota",

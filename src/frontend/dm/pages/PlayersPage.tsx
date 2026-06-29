@@ -554,7 +554,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                         <button
                           className="btn btn-secondary btn-sm"
                           onClick={() => {
-                            if (confirm("¿Desvincular este personaje del jugador?")) {
+                            if (confirm(t("players.unlinkCharacterConfirm"))) {
                               void unlinkPlayerCharacter(portalPlayer.playerId);
                             }
                           }}

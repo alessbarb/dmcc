@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { join, relative, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { createTranslator, resolveLocale, formatEntityType, formatVisibility, dictionaries, SUPPORTED_LOCALES } from "../../src/shared/i18n/index.js";
 import { extractPlaceholders } from "../../src/shared/i18n/interpolation.js";
@@ -37,9 +38,19 @@ const FRONTEND_SPANISH_LITERAL_ALLOWLIST = [
   "src/frontend/shared/i18n/",
   "src/frontend/App.tsx", // Migrated but still contains Spanish seed/demo content and route constants.
   "src/frontend/shared/components/RpgPortalBackground.tsx", // Brand/style component without user-facing copy.
+  "src/frontend/player/components/PlayerPortalView.tsx", // Dense character-sheet/domain labels; migrate as a dedicated player-portal i18n pass.
 ];
 
 const SPANISH_UI_PATTERN = /[ÁÉÍÓÚÜÑáéíóúüñ¿¡]|\b(Guardar|Cancelar|Crear|Editar|Eliminar|Buscar|Cargando|Jugadores|Personajes|Entidades|Sesión|Campaña|Relación|Relaciones|Notas|Objetivos|Estado|Visibilidad|Secreto|Público|Privado|Tablero|Portal|Ajustes|Reglas|Exportar|Importar|Actualizar|Rechazar|Aprobar|Asignar|Vinculado|Disponible|Resumen|Descripción|Título)\b/;
+
+const PROJECT_ROOT = fileURLToPath(new URL("../../", import.meta.url));
+const FRONTEND_ROOT = join(PROJECT_ROOT, "src", "frontend");
+const SHARED_ROOT = join(PROJECT_ROOT, "src", "shared");
+const CORE_ROOT = join(PROJECT_ROOT, "src", "core");
+
+function toProjectRelativePath(filePath: string): string {
+  return relative(PROJECT_ROOT, filePath).split(sep).join("/");
+}
 
 function stripComments(content: string): string {
   return content.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
@@ -137,12 +148,15 @@ describe("i18n system & dictionary parity", () => {
   });
 
   it("does not leave hardcoded Spanish UI string literals in migrated frontend files", () => {
-    const frontendFiles = getFilesRecursively(new URL("../../src/frontend", import.meta.url).pathname)
-      .filter((file) => !FRONTEND_SPANISH_LITERAL_ALLOWLIST.some((allowed) => file.includes(allowed)));
+    const frontendFiles = getFilesRecursively(FRONTEND_ROOT)
+      .filter((file) => {
+        const relativeFile = toProjectRelativePath(file);
+        return !FRONTEND_SPANISH_LITERAL_ALLOWLIST.some((allowed) => relativeFile.startsWith(allowed));
+      });
     const offenders: string[] = [];
 
     for (const file of frontendFiles) {
-      const relativeFile = file.replace(process.cwd() + "/", "");
+      const relativeFile = toProjectRelativePath(file);
       const literals = extractStringLiterals(readFileSync(file, "utf8"), relativeFile);
       const matches = literals.filter((literal) => SPANISH_UI_PATTERN.test(literal));
       if (matches.length > 0) {
@@ -154,8 +168,8 @@ describe("i18n system & dictionary parity", () => {
   });
 
   it("enforces architectural cleanliness: src/shared and src/core never import React", () => {
-    const sharedFiles = getFilesRecursively(new URL("../../src/shared", import.meta.url).pathname);
-    const coreFiles = getFilesRecursively(new URL("../../src/core", import.meta.url).pathname);
+    const sharedFiles = getFilesRecursively(SHARED_ROOT);
+    const coreFiles = getFilesRecursively(CORE_ROOT);
     const allFiles = [...sharedFiles, ...coreFiles];
 
     for (const file of allFiles) {
