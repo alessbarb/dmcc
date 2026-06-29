@@ -536,6 +536,13 @@ export const fr: TranslationDictionary = {
     prepareOrStartSession: "Préparer / lancer",
     startNewSession: "Démarrer une nouvelle session",
     newEntity: "Nouvelle entité",
+    loading: {
+      loadingTitle: "Chargement de la campagne...",
+      errorTitle: "Campagne introuvable",
+      errorDesc: "Impossible de charger cette campagne. Elle a peut-être été supprimée ou l'ID est invalide.",
+      backToCampaigns: "Retour aux campagnes",
+      retry: "Réessayer",
+    },
     nav: {
       canvas: "Canevas",
       dashboard: "Tableau de bord MJ",

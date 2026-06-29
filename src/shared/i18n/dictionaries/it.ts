@@ -536,6 +536,13 @@ export const it: TranslationDictionary = {
     prepareOrStartSession: "Prepara / avvia",
     startNewSession: "Avvia nuova sessione",
     newEntity: "Nuova entità",
+    loading: {
+      loadingTitle: "Caricamento campagna...",
+      errorTitle: "Campagna non trovata",
+      errorDesc: "Impossibile caricare questa campagna. Potrebbe essere stata eliminata o l'ID non è valido.",
+      backToCampaigns: "Torna alle campagne",
+      retry: "Riprova",
+    },
     nav: {
       canvas: "Canvas",
       dashboard: "Dashboard DM",

@@ -114,6 +114,8 @@ export function CampaignShell() {
     selectCampaign,
     activeCampaignId,
     campaignState,
+    loading,
+    error,
     isEntityModalOpen,
     setIsEntityModalOpen,
     isRelationModalOpen,
@@ -215,6 +217,48 @@ export function CampaignShell() {
     setMobileNavOpen(false);
     navigate({ to: `/campaigns/${campaignId}/${path}` });
   };
+
+  const isFirstLoad = loading && !campaignState;
+  const isLoadError = error && !campaignState;
+
+  if (isFirstLoad) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg-main)" }}>
+        <div style={{ textAlign: "center", color: "var(--text-muted)" }}>
+          <div style={{ fontSize: "2rem", marginBottom: "12px", opacity: 0.4 }}>⏳</div>
+          <p style={{ margin: 0 }}>{t("campaignShell.loading.loadingTitle")}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoadError) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg-main)", padding: "24px" }}>
+        <div style={{ maxWidth: "400px", textAlign: "center" }}>
+          <div style={{ fontSize: "3rem", marginBottom: "16px", opacity: 0.3 }}>⚠️</div>
+          <h2 style={{ color: "var(--text-main)", marginBottom: "8px" }}>{t("campaignShell.loading.errorTitle")}</h2>
+          <p style={{ color: "var(--text-muted)", marginBottom: "24px", fontSize: "0.9rem" }}>{t("campaignShell.loading.errorDesc")}</p>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginBottom: "24px", fontFamily: "monospace", opacity: 0.6 }}>{error}</p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+            <button
+              onClick={() => selectCampaign(campaignId as any)}
+              style={{ padding: "8px 16px", background: "var(--accent)", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer" }}
+            >
+              {t("campaignShell.loading.retry")}
+            </button>
+            <button
+              onClick={() => navigate({ to: "/dm" })}
+              style={{ padding: "8px 16px", background: "transparent", color: "var(--text-main)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
+            >
+              <ArrowLeft size={14} />
+              {t("campaignShell.loading.backToCampaigns")}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`app-container app-container--campaign-shell ${currentSegment === "canvas" ? "app-container--canvas" : ""}`}>

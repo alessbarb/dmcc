@@ -522,6 +522,13 @@ export const en = {
     prepareOrStartSession: "Prep / start session",
     startNewSession: "Start new session",
     newEntity: "New entity",
+    loading: {
+      loadingTitle: "Loading campaign...",
+      errorTitle: "Campaign not found",
+      errorDesc: "Could not load this campaign. It may have been deleted or the ID is invalid.",
+      backToCampaigns: "Back to campaigns",
+      retry: "Retry",
+    },
     nav: {
       canvas: "Canvas",
       dashboard: "DM Dashboard",

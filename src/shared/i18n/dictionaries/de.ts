@@ -536,6 +536,13 @@ export const de: TranslationDictionary = {
     prepareOrStartSession: "Vorbereiten / starten",
     startNewSession: "Neue Sitzung starten",
     newEntity: "Neue Entität",
+    loading: {
+      loadingTitle: "Kampagne wird geladen...",
+      errorTitle: "Kampagne nicht gefunden",
+      errorDesc: "Diese Kampagne konnte nicht geladen werden. Sie wurde möglicherweise gelöscht oder die ID ist ungültig.",
+      backToCampaigns: "Zurück zu Kampagnen",
+      retry: "Erneut versuchen",
+    },
     nav: {
       canvas: "Canvas",
       dashboard: "SL-Dashboard",

@@ -522,6 +522,13 @@ export const pt = {
     prepareOrStartSession: "Preparar / iniciar",
     startNewSession: "Iniciar nova sessão",
     newEntity: "Nova entidade",
+    loading: {
+      loadingTitle: "A carregar campanha...",
+      errorTitle: "Campanha não encontrada",
+      errorDesc: "Não foi possível carregar esta campanha. Pode ter sido eliminada ou o ID é inválido.",
+      backToCampaigns: "Voltar às campanhas",
+      retry: "Tentar novamente",
+    },
     nav: {
       canvas: "Canvas",
       dashboard: "Painel do Mestre",
