@@ -1082,4 +1082,13 @@ export const it: TranslationDictionary = {
     expandGroup: "Espandi gruppo",
     noSelectedEntityActions: "Seleziona un nodo per vedere le azioni.",
   },
+  factSource: {
+    session: "Sessione {number}: {title}",
+    sessionUnknown: "Sessione sconosciuta",
+    preparation: "Preparazione",
+    manual: "Inserimento manuale",
+    manualWithNote: "Manuale: {note}",
+    player: "Portale giocatore",
+    import: "Importato",
+  },
 };

@@ -764,6 +764,29 @@ function RelacionesTab({
   );
 }
 
+function formatFactSource(
+  source: { kind: string; sessionId?: string; note?: string; playerId?: string; importId?: string } | null | undefined,
+  sessions: Array<{ sessionId: string; number?: number; title?: string }>,
+  t: (key: string, params?: Record<string, string | number>) => string
+): string {
+  if (!source) return "";
+  switch (source.kind) {
+    case "session": {
+      const s = sessions.find(sess => sess.sessionId === source.sessionId);
+      return s
+        ? t("factSource.session", { number: s.number ?? "?", title: s.title || "" })
+        : t("factSource.sessionUnknown");
+    }
+    case "preparation": return t("factSource.preparation");
+    case "manual": return source.note
+      ? t("factSource.manualWithNote", { note: source.note })
+      : t("factSource.manual");
+    case "player": return t("factSource.player");
+    case "import": return t("factSource.import");
+    default: return "";
+  }
+}
+
 function HechosTab({
   entity,
   campaignState,
@@ -771,6 +794,7 @@ function HechosTab({
   entity: any;
   campaignState: any;
 }) {
+  const { t } = useTranslation();
   const kindColors: Record<string, { bg: string; fg: string }> = {
     canon: { bg: "hsl(120, 50%, 18%)", fg: "hsl(120, 70%, 60%)" },
     dm_secret: { bg: "hsl(0, 50%, 20%)", fg: "hsl(0, 80%, 65%)" },
@@ -837,6 +861,12 @@ function HechosTab({
             <p style={{ margin: 0, fontSize: "0.88rem", lineHeight: "1.5" }}>
               {f.statement}
             </p>
+            {(f as any).source && formatFactSource((f as any).source, getSessionsArray(campaignState?.sessions), t) && (
+              <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "3px", display: "flex", alignItems: "center", gap: "4px" }}>
+                <span style={{ opacity: 0.5 }}>↳</span>
+                {formatFactSource((f as any).source, getSessionsArray(campaignState?.sessions), t)}
+              </div>
+            )}
           </div>
         );
       })}

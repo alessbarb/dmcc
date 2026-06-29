@@ -1059,4 +1059,13 @@ export const pt = {
     expandGroup: "Expandir grupo",
     noSelectedEntityActions: "Selecione um nó para ver as ações.",
   },
+  factSource: {
+    session: "Sessão {number}: {title}",
+    sessionUnknown: "Sessão desconhecida",
+    preparation: "Preparação",
+    manual: "Entrada manual",
+    manualWithNote: "Manual: {note}",
+    player: "Portal do jogador",
+    import: "Importado",
+  },
 } as const;
