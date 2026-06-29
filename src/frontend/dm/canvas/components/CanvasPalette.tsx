@@ -580,7 +580,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
         kind,
         confidence: "suspected",
         relatedEntityIds: [],
-        source: { type: "manual" },
+        source: { kind: "manual" },
       });
       if (newFactId) {
         const x = 150 + Math.random() * 100;

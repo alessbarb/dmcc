@@ -1,13 +1,8 @@
-import type { CampaignId, EntityId, FactId, PlayerId, RelationId, SessionId } from "@shared/ids.js";
+import type { CampaignId, EntityId, FactId, RelationId } from "@shared/ids.js";
 import { dmOnlyVisibility, type VisibilityRule } from "../visibility/visibility.js";
+import type { FactKind, FactConfidence, FactSource } from "./types.js";
 
-export type FactKind = "canon" | "dm_secret" | "rumor" | "lie" | "player_theory" | "mistake" | "retcon" | "unknown";
-export type FactConfidence = "unconfirmed" | "suspected" | "likely" | "confirmed" | "false";
-export type FactSource =
-  | { kind: "session"; sessionId: SessionId }
-  | { kind: "preparation" }
-  | { kind: "manual" }
-  | { kind: "player"; playerId: PlayerId };
+export type { FactKind, FactConfidence, FactSource };
 
 export interface Fact {
   id?: FactId;

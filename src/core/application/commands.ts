@@ -673,4 +673,11 @@ export type Command =
         syncMode: "live_player_editable" | "dm_review_required";
         linkedAt: string;
       };
+    }
+  | {
+      type: "DuplicateCampaign";
+      sourceCampaignId: CampaignId;
+      newCampaignId: CampaignId;
+      newTitle: string;
+      actorId: string;
     };

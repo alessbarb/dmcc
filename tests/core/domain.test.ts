@@ -324,7 +324,7 @@ describe("Domain Aggregates", () => {
         confidence: "suspected",
         visibility: { kind: "dm_only" },
         source: {
-          type: "manual",
+          kind: "manual",
           note: "Heard from Barthen",
         },
         relatedEntityIds: [],
@@ -345,7 +345,7 @@ describe("Domain Aggregates", () => {
         confidence: "certain", // invalid confidence!
         visibility: { kind: "dm_only" },
         source: {
-          type: "manual",
+          kind: "manual",
           note: "Heard from Barthen",
         },
         relatedEntityIds: [],
