@@ -2,11 +2,29 @@ import type { FastifyInstance } from "fastify";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
+import type { RelationType } from "@core/domain/relation/types.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
 } from "../auth.js";
+
+type CreateRelationBody = {
+  actorId?: string;
+  relationId?: string;
+  sourceEntityId: string;
+  targetEntityId: string;
+  relationType: RelationType;
+  description?: string;
+  visibility?: VisibilityRule;
+};
+
+type UpdateRelationBody = {
+  description?: string;
+  visibility?: VisibilityRule;
+  relationType?: RelationType;
+};
 
 export async function registerRelationRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -15,19 +33,18 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
     return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
   }
 
-  server.post<{ Params: { campaignId: string }; Body: any }>(
+  server.post<{ Params: { campaignId: string }; Body: CreateRelationBody; Querystring: { force?: string } }>(
     "/api/campaigns/:campaignId/relations",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const body = request.body as any;
-      const { actorId, relationId, sourceEntityId, targetEntityId, relationType, description, visibility } = body;
-      const isForced = (request.query as any)?.force === "true";
+      const { actorId, relationId, sourceEntityId, targetEntityId, relationType, description, visibility } = request.body;
+      const isForced = request.query.force === "true";
 
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
 
         const isDuplicate = Array.from(state.relations.values()).some(
           (r: any) => !r.archived && r.sourceEntityId === sourceEntityId
@@ -38,13 +55,13 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
           return { error: "Duplicate relation found", duplicate: true };
         }
 
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "CreateRelation",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
-          relationId: relationId as any,
-          sourceEntityId: sourceEntityId as any,
-          targetEntityId: targetEntityId as any,
+          relationId: relationId,
+          sourceEntityId: sourceEntityId,
+          targetEntityId: targetEntityId,
           relationType,
           description,
           visibility: visibility || { kind: "dm_only" as const },
@@ -59,22 +76,22 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
     }
   );
 
-  server.put<{ Params: { campaignId: string; relationId: string }; Body: any }>(
+  server.put<{ Params: { campaignId: string; relationId: string }; Body: UpdateRelationBody }>(
     "/api/campaigns/:campaignId/relations/:relationId",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const relationId = request.params.relationId;
-      const updates = request.body as any;
+      const updates = request.body;
 
       try {
         const repo = getRepository(vaultId);
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "UpdateRelation",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
-          relationId: relationId as any,
+          relationId: relationId,
           ...(updates.description !== undefined && { description: updates.description }),
           ...(updates.visibility !== undefined && { visibility: updates.visibility }),
         });
@@ -93,17 +110,17 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
   server.delete<{ Params: { campaignId: string; relationId: string } }>(
     "/api/campaigns/:campaignId/relations/:relationId",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const relationId = request.params.relationId;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "ArchiveRelation",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
-          relationId: relationId as any,
+          relationId: relationId,
         });
         return { ok: true };
       } catch (err: any) {

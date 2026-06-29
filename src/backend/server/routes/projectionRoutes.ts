@@ -45,12 +45,12 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/dashboard",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
-        const state = await getRepository(vaultId).getCampaignState(campaignId as any);
+        const state = await getRepository(vaultId).getCampaignState(campaignId);
         return buildDashboardProjection(state);
       } catch {
         reply.code(404);
@@ -63,12 +63,12 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/what-now",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
-        const state = await getRepository(vaultId).getCampaignState(campaignId as any);
+        const state = await getRepository(vaultId).getCampaignState(campaignId);
         return buildWhatNowProjection(state);
       } catch {
         reply.code(404);
@@ -87,9 +87,9 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
 
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
 
-        const role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
+        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
 
         const rawEntities = Array.from(state.entities.values());
         const characterEntityId = playerId ? getCharacterEntityIdForPlayer(rawEntities, playerId) : undefined;
@@ -134,13 +134,13 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/timeline",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
         const repo = getRepository(vaultId);
-        const events = await (repo as any)["eventStore"].loadEvents(campaignId as any);
+        const events = await repo.loadEvents(campaignId);
         return { events };
       } catch {
         reply.code(404);
@@ -153,12 +153,12 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/visibility",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
-        const state = await getRepository(vaultId).getCampaignState(campaignId as any);
+        const state = await getRepository(vaultId).getCampaignState(campaignId);
         const entities = Array.from(state.entities.values()).filter((e: any) => !e.archived);
         const dmOnlyEntityIds = entities
           .filter((e: any) => (e.visibility?.kind ?? "dm_only") === "dm_only")
@@ -190,9 +190,9 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
 
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
 
-        const role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
+        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
 
         const rawEntities = Array.from(state.entities.values());
         const characterEntityId = playerId ? getCharacterEntityIdForPlayer(rawEntities, playerId) : undefined;
@@ -229,7 +229,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
-        const state = await getRepository(vaultId).getCampaignState(campaignId as any);
+        const state = await getRepository(vaultId).getCampaignState(campaignId);
         let nets: ReturnType<typeof networkInterfaces> = {};
         try {
           nets = networkInterfaces();
@@ -246,8 +246,8 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
           }
         }
         const port = getAdvertisedPort(request);
-        const role = getRequestRole(request, (server as any).dmSessionToken);
-        const activeAccessCode = (server as any).activeAccessCodes?.get(campaignId);
+        const role = getRequestRole(request, server.dmSessionToken);
+        const activeAccessCode = server.activeAccessCodes?.get(campaignId);
         const storedAccessCodeValue = state.campaign?.settings?.localAccessCode;
 
         const accessCode = role === "dm"

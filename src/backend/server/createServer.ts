@@ -106,7 +106,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
       reply.code(403);
       return { error: "Forbidden: Local token is only available on loopback interface" };
     }
-    const token = (server as any).dmSessionToken as string;
+    const token = server.dmSessionToken;
     // Return both keys: legacy `token` for compat + new `dmSessionToken`
     return { token, dmSessionToken: token };
   });

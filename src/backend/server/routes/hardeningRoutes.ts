@@ -27,7 +27,7 @@ export async function registerHardeningRoutes(server: FastifyInstance, opts: { d
   }
 
   server.get("/api/diagnostics", async (request) => {
-    assertDM(request, (server as any).dmSessionToken);
+    assertDM(request, server.dmSessionToken);
     const vaultId = getValidatedVaultId(request);
     const dataDirExists = await fs.stat(dataDir).then((stat) => stat.isDirectory()).catch(() => false);
     return {
@@ -46,20 +46,20 @@ export async function registerHardeningRoutes(server: FastifyInstance, opts: { d
         campaignCount: await countCampaignDirs(vaultId),
       },
       server: {
-        lanCodesActive: (server as any).activeAccessCodes?.size ?? 0,
-        playerSessionsActive: (server as any).playerTokens?.size ?? 0,
+        lanCodesActive: server.activeAccessCodes?.size ?? 0,
+        playerSessionsActive: server.playerTokens?.size ?? 0,
       },
     };
   });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/integrity", async (request, reply) => {
-    assertDM(request, (server as any).dmSessionToken);
+    assertDM(request, server.dmSessionToken);
     const vaultId = getValidatedVaultId(request);
     const campaignId = getValidatedCampaignId(request.params.campaignId);
     try {
       const repo = getRepository(vaultId);
-      const state = await repo.getCampaignState(campaignId as any);
-      const events = await repo.loadEvents(campaignId as any);
+      const state = await repo.getCampaignState(campaignId);
+      const events = await repo.loadEvents(campaignId);
       const report = buildCampaignIntegrityReport({ state, events });
       const attachmentIssues = await findMissingAttachmentFiles({ dataDir, vaultId, campaignId, state });
       report.issues.push(...attachmentIssues);
@@ -81,7 +81,7 @@ export async function registerHardeningRoutes(server: FastifyInstance, opts: { d
   });
 
   server.post<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/integrity/rebuild-snapshot", async (request, reply) => {
-    assertDM(request, (server as any).dmSessionToken);
+    assertDM(request, server.dmSessionToken);
     const vaultId = getValidatedVaultId(request);
     const campaignId = getValidatedCampaignId(request.params.campaignId);
     try {
@@ -93,7 +93,7 @@ export async function registerHardeningRoutes(server: FastifyInstance, opts: { d
         description: "Auto-backup before rebuilding campaign projection snapshot",
       });
       const repo = getRepository(vaultId);
-      const projection = await repo.rebuildSnapshot(campaignId as any);
+      const projection = await repo.rebuildSnapshot(campaignId);
       return {
         ok: true,
         campaignId,
@@ -108,13 +108,13 @@ export async function registerHardeningRoutes(server: FastifyInstance, opts: { d
   });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/diagnostics", async (request, reply) => {
-    assertDM(request, (server as any).dmSessionToken);
+    assertDM(request, server.dmSessionToken);
     const vaultId = getValidatedVaultId(request);
     const campaignId = getValidatedCampaignId(request.params.campaignId);
     try {
       const repo = getRepository(vaultId);
-      const state = await repo.getCampaignState(campaignId as any);
-      const events = await repo.loadEvents(campaignId as any);
+      const state = await repo.getCampaignState(campaignId);
+      const events = await repo.loadEvents(campaignId);
       const backups = await listCampaignBackups({ dataDir, vaultId, campaignId });
       const integrity = buildCampaignIntegrityReport({ state, events });
       return {

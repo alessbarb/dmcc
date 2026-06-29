@@ -1,4 +1,5 @@
 import type { FastifyInstance } from "fastify";
+import type { AddressInfo } from "net";
 import { join } from "path";
 import * as fs from "fs/promises";
 import { randomInt, randomBytes } from "crypto";
@@ -45,8 +46,8 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     rawToken: string | undefined
   ): Promise<{ campaignId: string; playerId: string } | null> {
     if (!rawToken) return null;
-    const events = await repo.loadEvents(campaignId as any);
-    const portal = buildPlayerPortalProjection(state, events as any);
+    const events = await repo.loadEvents(campaignId);
+    const portal = buildPlayerPortalProjection(state, events);
     const token = portal.tokensByHash.get(hashPlayerToken(rawToken));
     if (!token || token.revokedAt || token.campaignId !== campaignId) return null;
     return { campaignId, playerId: token.playerId };
@@ -61,7 +62,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
   // List Campaigns
   server.get("/api/campaigns", async (request, reply) => {
-    assertDM(request, (server as any).dmSessionToken);
+    assertDM(request, server.dmSessionToken);
     const vaultId = getValidatedVaultId(request);
     const campaignsDir = join(dataDir, "vaults", vaultId, "campaigns");
     try {
@@ -132,16 +133,16 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.post<{ Body: { campaignId: string; actorId: string; title: string; system?: string } }>(
     "/api/campaigns",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.body.campaignId);
       const { actorId, title, system } = request.body;
 
       try {
         const repo = getRepository(vaultId);
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "CreateCampaign",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
           title,
           system: system || "generic_fantasy_d20",
@@ -150,9 +151,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
         // Automatically create default world canvas
         const canvasId = createId("cvs");
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "CreateCanvas",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
           canvasId,
           title: "Campaña",
@@ -172,7 +173,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.delete<{ Params: { campaignId: string }; Body: { confirmTitle?: string } }>(
     "/api/campaigns/:campaignId",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const confirmation = request.body?.confirmTitle?.trim();
@@ -190,7 +191,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           return { error: "Campaign not found" };
         }
 
-        const state = await getRepository(vaultId).getCampaignState(campaignId as any);
+        const state = await getRepository(vaultId).getCampaignState(campaignId);
         const title = state.campaign?.title || campaignId;
 
         if (confirmation !== title) {
@@ -214,7 +215,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         );
         assertWithinDir(deletedPath, deletedDir);
         await fs.rename(campaignDir, deletedPath);
-        (server as any).activeAccessCodes.delete(campaignId);
+        server.activeAccessCodes.delete(campaignId);
 
         return { ok: true, campaignId, deletedPath, autoBackup };
       } catch (err: any) {
@@ -238,12 +239,12 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
 
         let role = getRequestRoleWithTokens(
           request,
-          (server as any).dmSessionToken,
-          (server as any).playerTokens,
+          server.dmSessionToken,
+          server.playerTokens,
           campaignId
         );
 
@@ -251,11 +252,11 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         // to prevent a player from spoofing another player's x-player-id header.
         // First use active in-memory LAN sessions, then fall back to persisted portal tokens.
         const playerToken = request.headers["x-player-token"] as string | undefined;
-        let tokenSession = playerToken ? (server as any).playerTokens?.get(playerToken) : null;
+        let tokenSession = playerToken ? server.playerTokens?.get(playerToken) : null;
         if (!tokenSession && playerToken) {
           tokenSession = await getPersistentTokenSession(repo, state, campaignId, playerToken);
           if (tokenSession) {
-            (server as any).playerTokens?.set(playerToken, tokenSession);
+            server.playerTokens?.set(playerToken, tokenSession);
             role = "player";
           }
         }
@@ -267,11 +268,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           // Fall back to old access-code-based check for non-token requests.
           // A presented but invalid player token must fail closed instead of falling back.
           if (playerToken) {
-            const err = new Error("Unauthorized: Invalid player token");
-            (err as any).statusCode = 401;
-            throw err;
+            throw Object.assign(new Error("Unauthorized: Invalid player token"), { statusCode: 401 });
           }
-          role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken) as any;
+          role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken) as "dm" | "player" | "observer";
         }
 
         if (role === "player" && !state.campaign?.settings?.lanModeEnabled) {
@@ -315,7 +314,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.post<{ Params: { campaignId: string }; Body: { newTitle: string } }>(
     "/api/campaigns/:campaignId/duplicate",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { newTitle } = request.body;
@@ -348,10 +347,10 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
             payload.campaignId = newCampaignId;
             payload.title = newTitle;
           }
-          await newRepo.appendEvent(newCampaignId as any, ev.type, ev.actorId || "usr_dm", payload);
+          await newRepo.appendEvent(newCampaignId, ev.type, ev.actorId || "usr_dm", payload);
         }
 
-        await newRepo.rebuildSnapshot(newCampaignId as any);
+        await newRepo.rebuildSnapshot(newCampaignId);
         reply.code(201);
         return { campaignId: newCampaignId, title: newTitle };
       } catch (err: any) {
@@ -365,12 +364,12 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.post<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/rebuild",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
-        await getRepository(vaultId).rebuildSnapshot(campaignId as any);
+        await getRepository(vaultId).rebuildSnapshot(campaignId);
         return { ok: true };
       } catch (err: any) {
         reply.code(500);
@@ -380,19 +379,19 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   );
 
   // Settings
-  server.put<{ Params: { campaignId: string }; Body: any }>(
+  server.put<{ Params: { campaignId: string }; Body: Partial<{ backupOnClose: boolean; lanModeEnabled: boolean; activeQuestsLimit: number; localAccessCodeHash?: string; localAccessCode?: string }> }>(
     "/api/campaigns/:campaignId/settings",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "UpdateCampaignSettings",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
-          settings: request.body as any,
+          settings: request.body,
         });
         return { ok: true };
       } catch (err: any) {
@@ -406,20 +405,20 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.post<{ Params: { campaignId: string }; Body: { enabled?: boolean } }>(
     "/api/campaigns/:campaignId/lan/toggle",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const enabled = Boolean(request.body?.enabled);
 
       try {
         const repo = getRepository(vaultId);
-        await repo.getCampaignState(campaignId as any);
+        await repo.getCampaignState(campaignId);
 
         if (!enabled) {
-          (server as any).activeAccessCodes.delete(campaignId);
-          await repo.executeCommand(campaignId as any, {
+          server.activeAccessCodes.delete(campaignId);
+          await repo.executeCommand(campaignId, {
             type: "UpdateCampaignSettings",
-            campaignId: campaignId as any,
+            campaignId: campaignId,
             actorId: "usr_dm",
             settings: {
               lanModeEnabled: false,
@@ -431,10 +430,10 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         }
 
         const accessCode = generateLanAccessCode();
-        (server as any).activeAccessCodes.set(campaignId, accessCode);
-        await repo.executeCommand(campaignId as any, {
+        server.activeAccessCodes.set(campaignId, accessCode);
+        await repo.executeCommand(campaignId, {
           type: "UpdateCampaignSettings",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           settings: {
             lanModeEnabled: true,
@@ -470,7 +469,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
       try {
         const repo = getRepository(vaultId);
-        let state = await repo.getCampaignState(campaignId as any);
+        let state = await repo.getCampaignState(campaignId);
 
         if (!state.campaign?.settings?.lanModeEnabled) {
           reply.code(403);
@@ -490,10 +489,10 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         }
 
         const pid = playerId ?? `ply_${randomBytes(8).toString("hex")}`;
-        if (!state.players.has(pid as any)) {
-          await repo.executeCommand(campaignId as any, {
+        if (!state.players.has(pid)) {
+          await repo.executeCommand(campaignId, {
             type: "CreatePlayerProfile",
-            campaignId: campaignId as any,
+            campaignId: campaignId,
             actorId: "usr_dm",
             playerId: pid,
             displayName: displayName?.trim() || "Player",
@@ -501,14 +500,14 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
             color: "#3b82f6",
             imageUrl: "",
           });
-          state = await repo.getCampaignState(campaignId as any);
+          state = await repo.getCampaignState(campaignId);
         }
 
         const playerToken = randomBytes(24).toString("hex");
         const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "IssuePlayerToken",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           playerId: pid,
           tokenId,
@@ -517,7 +516,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           createdAt: new Date().toISOString(),
         });
 
-        (server as any).playerTokens.set(playerToken, { campaignId, playerId: pid });
+        server.playerTokens.set(playerToken, { campaignId, playerId: pid });
 
         return {
           playerToken,
@@ -540,12 +539,12 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/invitations",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
         const invitations = Array.from(
           (state.invitations instanceof Map ? state.invitations : new Map()).values()
         ).map(({ inviteTokenHash: _hash, ...rest }) => rest); // strip token hash from response
@@ -561,14 +560,14 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.post<{ Params: { campaignId: string }; Body: { label?: string; expiresInHours?: number } }>(
     "/api/campaigns/:campaignId/invitations",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { label, expiresInHours } = request.body ?? {};
 
       try {
         const repo = getRepository(vaultId);
-        await repo.getCampaignState(campaignId as any);
+        await repo.getCampaignState(campaignId);
 
         const inviteToken = randomBytes(18).toString("base64url"); // ~24 char URL-safe
         const inviteId = `inv_${randomBytes(8).toString("hex")}`;
@@ -578,9 +577,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           ? new Date(Date.now() + expiresInHours * 3600_000).toISOString()
           : undefined;
 
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "CreatePlayerInvitation",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           inviteId,
           inviteTokenHash,
@@ -600,7 +599,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           }
         } catch { /* ignore */ }
 
-        const port = (server as any).server?.address?.()?.port ?? 4877;
+        const port = (server.server.address() as AddressInfo | null)?.port ?? 4877;
         const registerUrl = `http://${localIp}:${port}/register/${campaignId}/${inviteToken}`;
 
         return { ok: true, inviteId, inviteToken, registerUrl, expiresAt };
@@ -615,15 +614,15 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.delete<{ Params: { campaignId: string; inviteId: string } }>(
     "/api/campaigns/:campaignId/invitations/:inviteId",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
         const repo = getRepository(vaultId);
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "RevokePlayerInvitation",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           inviteId: request.params.inviteId,
         });
@@ -662,7 +661,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
 
         // Find the matching pending invitation
         const invitations: Map<string, any> = state.invitations instanceof Map
@@ -705,9 +704,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
         if (!playerId) {
           playerId = `ply_${randomBytes(8).toString("hex")}`;
-          await repo.executeCommand(campaignId as any, {
+          await repo.executeCommand(campaignId, {
             type: "CreatePlayerProfile",
-            campaignId: campaignId as any,
+            campaignId: campaignId,
             actorId: playerId,
             playerId,
             displayName: displayName.trim(),
@@ -718,9 +717,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         }
 
         // Mark invitation consumed
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "ConsumePlayerInvitation",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: playerId,
           inviteId: matchedInvite.inviteId,
           playerId,
@@ -731,9 +730,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         // Handle character choice
         if (characterChoice?.kind === "new" && characterChoice.name?.trim()) {
           const newEntityId = createId("ent");
-          await repo.executeCommand(campaignId as any, {
+          await repo.executeCommand(campaignId, {
             type: "CreateEntity",
-            campaignId: campaignId as any,
+            campaignId: campaignId,
             actorId: playerId,
             entityId: newEntityId,
             entityType: "player_character",
@@ -748,9 +747,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
             },
           });
         } else if (characterChoice?.kind === "premade" && characterChoice.entityId) {
-          await repo.executeCommand(campaignId as any, {
+          await repo.executeCommand(campaignId, {
             type: "LinkPlayerCharacter",
-            campaignId: campaignId as any,
+            campaignId: campaignId,
             actorId: "usr_dm",
             playerId,
             characterEntityId: characterChoice.entityId,
@@ -763,9 +762,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         // Issue session token
         const playerToken = generatePlayerToken() + randomBytes(8).toString("hex");
         const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "IssuePlayerToken",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           playerId,
           tokenId,
@@ -774,7 +773,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           createdAt: now,
         });
 
-        (server as any).playerTokens.set(playerToken, { campaignId, playerId });
+        server.playerTokens.set(playerToken, { campaignId, playerId });
 
         return {
           playerToken,
@@ -806,7 +805,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
 
         if (!state.campaign?.settings?.lanModeEnabled) {
           reply.code(403);
@@ -849,9 +848,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
         const now = new Date().toISOString();
 
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "IssuePlayerToken",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           playerId: matchedPlayerId,
           tokenId,
@@ -860,7 +859,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           createdAt: now,
         });
 
-        (server as any).playerTokens.set(playerToken, { campaignId, playerId: matchedPlayerId });
+        server.playerTokens.set(playerToken, { campaignId, playerId: matchedPlayerId });
 
         return {
           playerToken,
@@ -888,7 +887,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         }
       }
     } catch { /* ignore */ }
-    const port = (server as any).server?.address?.()?.port ?? 4877;
+    const port = (server.server.address() as AddressInfo | null)?.port ?? 4877;
     return { localIp, port, url: `http://${localIp}:${port}` };
   });
 }

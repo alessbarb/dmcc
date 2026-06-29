@@ -15,7 +15,7 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
   server.post<{ Params: { campaignId: string }; Body: { name: string; color?: string; tagId?: string } }>(
     "/api/campaigns/:campaignId/tags",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { name, color, tagId: requestedTagId } = request.body;
@@ -28,9 +28,9 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
       const tagId = requestedTagId ?? createId("tag");
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "CreateTag",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           tagId,
           name: name.trim(),
@@ -48,12 +48,12 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/tags",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
-        const state = await getRepository(vaultId).getCampaignState(campaignId as any);
+        const state = await getRepository(vaultId).getCampaignState(campaignId);
         const tags = Array.from((state.tags ?? new Map()).values());
         return { tags };
       } catch {
@@ -66,7 +66,7 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
   server.post<{ Params: { campaignId: string; entityId: string }; Body: { tagId: string } }>(
     "/api/campaigns/:campaignId/entities/:entityId/tags",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { entityId } = request.params;
@@ -78,11 +78,11 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
       }
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "AddTagToEntity",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
-          entityId: entityId as any,
+          entityId: entityId,
           tagId,
         });
         reply.code(201);
@@ -97,17 +97,17 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
   server.delete<{ Params: { campaignId: string; entityId: string; tagId: string } }>(
     "/api/campaigns/:campaignId/entities/:entityId/tags/:tagId",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { entityId, tagId } = request.params;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "RemoveTagFromEntity",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
-          entityId: entityId as any,
+          entityId: entityId,
           tagId,
         });
         return { ok: true, entityId, tagId };
