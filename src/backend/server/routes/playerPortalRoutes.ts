@@ -190,6 +190,203 @@ export async function registerPlayerPortalRoutes(
     };
   }
 
+
+  function visibilityKind(item: any): string {
+    return item?.visibility?.kind ?? item?.visibility?.mode ?? "dm_only";
+  }
+
+  function canPlayerSee(item: any, playerId: string, characterEntityId?: string | null): boolean {
+    const visibility = item?.visibility ?? { kind: "dm_only" };
+    const kind = visibility.kind ?? visibility.mode ?? "dm_only";
+
+    if (kind === "public" || kind === "party") return true;
+    if (kind === "players") return Array.isArray(visibility.playerIds) && visibility.playerIds.includes(playerId);
+    if (kind === "characters") {
+      return Boolean(
+        characterEntityId &&
+          Array.isArray(visibility.characterEntityIds) &&
+          visibility.characterEntityIds.includes(characterEntityId)
+      );
+    }
+
+    return false;
+  }
+
+  function textExcerpt(value: unknown, max = 420): string | undefined {
+    if (typeof value !== "string") return undefined;
+    const normalized = value.replace(/\s+/g, " ").trim();
+    if (!normalized) return undefined;
+    return normalized.length > max ? `${normalized.slice(0, max - 1)}…` : normalized;
+  }
+
+  function memoryEntityTypeLabel(entityType: string): string {
+    const labels: Record<string, string> = {
+      npc: "PNJ",
+      location: "Lugar",
+      faction: "Facción",
+      quest: "Misión",
+      clue: "Pista",
+      rumor: "Rumor",
+      item: "Objeto",
+      creature: "Criatura",
+      scene: "Escena",
+      handout: "Documento",
+      note: "Nota",
+    };
+    return labels[entityType] ?? entityType.replace(/_/g, " ");
+  }
+
+  function relationLabel(relation: any): string {
+    return (relation.label || relation.relationType || relation.type || "relacionado con")
+      .replace(/^custom:/, "")
+      .replace(/_/g, " ");
+  }
+
+  function toMemoryEntity(entity: any) {
+    return {
+      entityId: entity.entityId,
+      entityType: entity.entityType,
+      typeLabel: memoryEntityTypeLabel(entity.entityType),
+      title: entity.title,
+      subtitle: entity.subtitle,
+      summary: textExcerpt(entity.summary ?? entity.content),
+      content: textExcerpt(entity.content, 720),
+      status: entity.status,
+      importance: entity.importance ?? "normal",
+      visibility: visibilityKind(entity),
+      firstSeenSessionId: entity.firstSeenSessionId,
+      lastSeenSessionId: entity.lastSeenSessionId,
+      updatedAt: entity.updatedAt ?? entity.createdAt,
+    };
+  }
+
+  function sortByImportanceAndTitle(a: any, b: any): number {
+    const rank: Record<string, number> = { critical: 0, high: 1, normal: 2, low: 3 };
+    const ar = rank[a.importance ?? "normal"] ?? 2;
+    const br = rank[b.importance ?? "normal"] ?? 2;
+    if (ar !== br) return ar - br;
+    return String(a.title ?? "").localeCompare(String(b.title ?? ""), "es");
+  }
+
+  function buildPlayerCampaignMemory(state: any, playerId: string, characterEntityId?: string | null) {
+    const visibleEntities = Array.from(state.entities.values())
+      .filter((entity: any) => !entity.archived && canPlayerSee(entity, playerId, characterEntityId))
+      .map(toMemoryEntity)
+      .sort(sortByImportanceAndTitle);
+
+    const visibleEntityIds = new Set(visibleEntities.map((entity: any) => entity.entityId));
+    const entitiesById = new Map(visibleEntities.map((entity: any) => [entity.entityId, entity]));
+    const byType = (types: string[]) => visibleEntities.filter((entity: any) => types.includes(entity.entityType));
+
+    const facts = Array.from(state.facts.values())
+      .filter((fact: any) => {
+        if (fact.archived || !canPlayerSee(fact, playerId, characterEntityId)) return false;
+        const relatedIds = Array.isArray(fact.relatedEntityIds) ? fact.relatedEntityIds : [];
+        return relatedIds.length === 0 || relatedIds.some((id: string) => visibleEntityIds.has(id));
+      })
+      .sort((a: any, b: any) => String(b.updatedAt ?? b.createdAt ?? "").localeCompare(String(a.updatedAt ?? a.createdAt ?? "")))
+      .slice(0, 30)
+      .map((fact: any) => ({
+        factId: fact.factId,
+        statement: fact.statement,
+        kind: fact.kind,
+        confidence: fact.confidence,
+        relatedEntities: (fact.relatedEntityIds ?? [])
+          .map((id: string) => entitiesById.get(id))
+          .filter(Boolean)
+          .map((entity: any) => ({ entityId: entity.entityId, title: entity.title, entityType: entity.entityType })),
+        updatedAt: fact.updatedAt ?? fact.createdAt,
+      }));
+
+    const relations = Array.from(state.relations.values())
+      .filter((relation: any) => {
+        if (relation.archived || !canPlayerSee(relation, playerId, characterEntityId)) return false;
+        return visibleEntityIds.has(relation.sourceEntityId) && visibleEntityIds.has(relation.targetEntityId);
+      })
+      .slice(0, 40)
+      .map((relation: any) => ({
+        relationId: relation.relationId,
+        label: relationLabel(relation),
+        description: textExcerpt(relation.description, 280),
+        status: relation.status,
+        source: entitiesById.get(relation.sourceEntityId),
+        target: entitiesById.get(relation.targetEntityId),
+        updatedAt: relation.updatedAt ?? relation.createdAt,
+      }))
+      .filter((relation: any) => relation.source && relation.target);
+
+    const visibleSessionEvents = Array.from(state.sessionEvents.values())
+      .filter((event: any) => !event.archived && canPlayerSee(event, playerId, characterEntityId))
+      .sort((a: any, b: any) => String(a.occurredAt ?? "").localeCompare(String(b.occurredAt ?? "")));
+
+    const sessionEventsBySessionId = new Map<string, any[]>();
+    for (const event of visibleSessionEvents as any[]) {
+      const list = sessionEventsBySessionId.get(event.sessionId) ?? [];
+      list.push({
+        eventId: event.id,
+        type: event.type,
+        title: event.title,
+        description: textExcerpt(event.description, 360),
+        occurredAt: event.occurredAt,
+        relatedEntities: (event.relatedEntityIds ?? [])
+          .map((id: string) => entitiesById.get(id))
+          .filter(Boolean)
+          .map((entity: any) => ({ entityId: entity.entityId, title: entity.title, entityType: entity.entityType })),
+      });
+      sessionEventsBySessionId.set(event.sessionId, list);
+    }
+
+    const history = Array.from(state.sessions.values())
+      .filter((session: any) => !session.archived)
+      .sort((a: any, b: any) => (Number(b.number ?? 0) - Number(a.number ?? 0)) || String(b.updatedAt ?? "").localeCompare(String(a.updatedAt ?? "")))
+      .map((session: any) => {
+        const events = sessionEventsBySessionId.get(session.sessionId ?? session.id) ?? [];
+        return {
+          sessionId: session.sessionId ?? session.id,
+          number: session.number,
+          title: session.title,
+          status: session.status,
+          scheduledAt: session.scheduledAt,
+          startedAt: session.startedAt,
+          endedAt: session.endedAt,
+          playerSummary: textExcerpt(session.playerSummary, 900),
+          events,
+        };
+      })
+      .filter((session: any) => session.playerSummary || session.events.length > 0 || session.status === "active")
+      .slice(0, 12);
+
+    const quests = byType(["quest"]).filter((entity: any) => entity.status !== "done" && entity.status !== "completed" && entity.status !== "archived");
+    const cluesAndRumors = byType(["clue", "rumor"]).slice(0, 12);
+
+    return {
+      entities: {
+        characters: byType(["player_character"]),
+        npcs: byType(["npc", "creature"]),
+        locations: byType(["location", "scene"]),
+        factions: byType(["faction"]),
+        quests,
+        clues: byType(["clue"]),
+        rumors: byType(["rumor"]),
+        items: byType(["item", "handout"]),
+        all: visibleEntities,
+      },
+      activeThreads: {
+        quests: quests.slice(0, 8),
+        cluesAndRumors,
+      },
+      facts,
+      relations,
+      history,
+      counts: {
+        visibleEntities: visibleEntities.length,
+        facts: facts.length,
+        relations: relations.length,
+        historyEntries: history.length,
+      },
+    };
+  }
+
   function buildCharacterEntityFromCreateProposal(options: {
     campaignId: string;
     playerId: string;
@@ -369,7 +566,7 @@ export async function registerPlayerPortalRoutes(
           notes: portal.notesByPlayerId.get(playerId) ?? [],
           objectives: portal.objectivesByPlayerId.get(playerId) ?? [],
           proposals: portal.proposalsByPlayerId.get(playerId) ?? [],
-          history: { status: "stub" },
+          memory: buildPlayerCampaignMemory(state, playerId, link?.characterEntityId ?? null),
         };
       } catch (err: any) {
         if (err.statusCode) {

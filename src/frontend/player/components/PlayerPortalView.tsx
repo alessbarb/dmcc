@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import {
@@ -12,12 +12,19 @@ import {
   Clock,
   CheckSquare,
   RefreshCw,
+  HeartPulse,
+  MapPinned,
+  MessageSquare,
+  Eye,
+  Compass,
+  Sparkles,
+  Users,
 } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { logoutPlayer } from "@frontend/shared/auth/authClient.js";
 
 
-type PortalTab = "summary" | "character" | "resources" | "diary" | "objectives" | "history";
+type PortalTab = "session" | "summary" | "character" | "knowledge" | "resources" | "diary" | "objectives" | "history";
 
 type CharacterMetadata = Record<string, any>;
 
@@ -28,6 +35,51 @@ type EffectiveStatus = {
   inspiration?: boolean;
   conditions: string[];
 };
+
+
+type PortalMemoryEntity = {
+  entityId: string;
+  entityType: string;
+  typeLabel?: string;
+  title: string;
+  subtitle?: string;
+  summary?: string;
+  content?: string;
+  status?: string;
+  importance?: string;
+};
+
+type PortalMemory = {
+  entities?: Record<string, PortalMemoryEntity[]>;
+  activeThreads?: { quests?: PortalMemoryEntity[]; cluesAndRumors?: PortalMemoryEntity[] };
+  facts?: Array<{ factId: string; statement: string; kind?: string; confidence?: string; relatedEntities?: PortalMemoryEntity[] }>;
+  relations?: Array<{ relationId: string; label: string; description?: string; status?: string; source?: PortalMemoryEntity; target?: PortalMemoryEntity }>;
+  history?: Array<{
+    sessionId: string;
+    number?: number;
+    title: string;
+    status?: string;
+    playerSummary?: string;
+    events?: Array<{ eventId: string; title: string; description?: string; type?: string; relatedEntities?: PortalMemoryEntity[] }>;
+  }>;
+  counts?: { visibleEntities?: number; facts?: number; relations?: number; historyEntries?: number };
+};
+
+const CONDITION_OPTIONS = [
+  "Cegado",
+  "Ensordecido",
+  "Asustado",
+  "Apresado",
+  "Incapacitado",
+  "Invisible",
+  "Paralizado",
+  "Petrificado",
+  "Envenenado",
+  "Derribado",
+  "Sujeto",
+  "Aturdido",
+  "Inconsciente",
+];
 
 const ABILITIES: Array<{ key: string; label: string; short: string }> = [
   { key: "strength", label: "Fuerza", short: "FUE" },
@@ -96,6 +148,50 @@ function asList(value: unknown): string[] {
   return [];
 }
 
+
+function normalizeListKey(value: string): string {
+  return value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function parseConditionText(value: string): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const item of asList(value)) {
+    const key = normalizeListKey(item);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    result.push(labelValue(item));
+  }
+  return result;
+}
+
+function clamp(value: number, min: number, max?: number): number {
+  const lower = Math.max(min, value);
+  return max === undefined ? lower : Math.min(lower, max);
+}
+
+function recoveryLabel(value: string | undefined): string {
+  if (value === "short_rest") return "Descanso corto";
+  if (value === "long_rest") return "Descanso largo";
+  return "Manual";
+}
+
+function statusLabel(value: string | undefined): string {
+  if (!value) return "Sin estado";
+  const labels: Record<string, string> = {
+    active: "Activo",
+    open: "Abierto",
+    done: "Completado",
+    completed: "Completado",
+    closed: "Cerrado",
+    planned: "Preparado",
+    suspected: "Sospecha",
+    confirmed: "Confirmado",
+    unconfirmed: "Sin confirmar",
+  };
+  return labels[value] ?? labelValue(value);
+}
+
 function labelValue(value: string): string {
   const key = value.trim().toLowerCase();
   return KNOWN_LABELS[key] ?? value.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
@@ -162,6 +258,62 @@ function CharacterInfoBlock({ title, children }: { title: string; children: Reac
   );
 }
 
+
+function EmptyPortalState({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="card" style={{ padding: "20px", borderStyle: "dashed", color: "var(--text-muted)" }}>
+      <h4 style={{ color: "var(--text-main)", fontWeight: 800, marginBottom: "6px" }}>{title}</h4>
+      <div style={{ fontSize: "0.9rem", lineHeight: 1.55 }}>{children}</div>
+    </div>
+  );
+}
+
+function PortalSection({ title, subtitle, action, children }: { title: string; subtitle?: string; action?: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <section className="card player-portal-section">
+      <div className="player-portal-section-header">
+        <div>
+          <h3>{title}</h3>
+          {subtitle && <p>{subtitle}</p>}
+        </div>
+        {action}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function MemoryEntityCard({ entity, compact = false }: { entity: PortalMemoryEntity; compact?: boolean }) {
+  return (
+    <div className="player-memory-card">
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "10px", alignItems: "flex-start" }}>
+        <div>
+          <div style={{ fontWeight: 800 }}>{entity.title}</div>
+          <div style={{ color: "var(--text-muted)", fontSize: "0.74rem", marginTop: "2px" }}>
+            {entity.typeLabel ?? labelValue(entity.entityType)}
+            {entity.subtitle ? ` · ${entity.subtitle}` : ""}
+          </div>
+        </div>
+        {entity.status && <span className="badge badge-default" style={{ fontSize: "0.66rem" }}>{statusLabel(entity.status)}</span>}
+      </div>
+      {!compact && (entity.summary || entity.content) && (
+        <p style={{ color: "var(--text-muted)", fontSize: "0.84rem", lineHeight: 1.55, marginTop: "10px" }}>
+          {entity.summary ?? entity.content}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function ResourceMeter({ current, max }: { current: number; max: number }) {
+  const percent = max > 0 ? clamp((current / max) * 100, 0, 100) : 0;
+  return (
+    <div className="player-resource-meter" aria-label={`${current} de ${max}`}>
+      <div style={{ width: `${percent}%` }} />
+    </div>
+  );
+}
+
 export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -179,7 +331,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     error,
   } = useCampaignStore();
 
-  const [activeTab, setActiveTab] = useState<PortalTab>("summary");
+  const [activeTab, setActiveTab] = useState<PortalTab>("session");
 
   // Character/State form
   const [charForm, setCharForm] = useState({
@@ -280,6 +432,27 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const keyTraits = asList(characterMetadata.keyTraits);
   const personalGoals = asList(characterMetadata.personalGoals);
   const importantItems = asList(characterMetadata.importantItems);
+  const characterEntityId = myCharacter?.entityId ?? playerPortalState?.link?.characterEntityId;
+  const memory: PortalMemory = (playerPortalState?.memory ?? {}) as PortalMemory;
+  const memoryEntities = memory.entities ?? {};
+  const historyEntries = memory.history ?? [];
+  const openObjectives = objectives.filter((o: any) => o.status === "open");
+  const dmQuestions = objectives.filter((o: any) => o.kind === "question_for_dm" && o.status === "open");
+  const recentFacts = memory.facts ?? [];
+  const knownNpcs = memoryEntities.npcs ?? [];
+  const knownLocations = memoryEntities.locations ?? [];
+  const knownQuests = memoryEntities.quests ?? [];
+  const knownClues = [...(memoryEntities.clues ?? []), ...(memoryEntities.rumors ?? [])];
+  const knownItems = memoryEntities.items ?? [];
+  const keyMemoryCards = useMemo(
+    () => [
+      ...(memory.activeThreads?.quests ?? []),
+      ...(memory.activeThreads?.cluesAndRumors ?? []),
+      ...knownNpcs.slice(0, 4),
+      ...knownLocations.slice(0, 4),
+    ].filter((entity, index, list) => list.findIndex((item) => item.entityId === entity.entityId) === index).slice(0, 8),
+    [memory.activeThreads, knownNpcs, knownLocations]
+  );
 
   // Sync char form when portal state loads
   useEffect(() => {
@@ -323,22 +496,49 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     navigate({ to: "/player/join" });
   };
 
+  function buildStatusPayload(overrides: Partial<EffectiveStatus> = {}) {
+    return {
+      characterEntityId,
+      hitPointsCurrent: overrides.hitPointsCurrent ?? asNumber(charForm.hitPointsCurrent) ?? status.hitPointsCurrent ?? 0,
+      hitPointsMax: overrides.hitPointsMax ?? asNumber(charForm.hitPointsMax) ?? status.hitPointsMax ?? 0,
+      armorClass: overrides.armorClass ?? asNumber(charForm.armorClass) ?? status.armorClass ?? 10,
+      inspiration: overrides.inspiration ?? charForm.inspiration,
+      conditions: overrides.conditions ?? parseConditionText(charForm.conditions),
+    };
+  }
+
+  async function persistStatus(overrides: Partial<EffectiveStatus> = {}) {
+    if (!characterEntityId) return;
+    await updatePlayerPortalStatus(buildStatusPayload(overrides));
+  }
+
   // ── Submit: Character/State ──────────────────────────────────────────────
   const handleCharSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const characterEntityId = myCharacter?.entityId ?? playerPortalState?.link?.characterEntityId;
-    if (!characterEntityId) return;
-    await updatePlayerPortalStatus({
-      characterEntityId,
-      hitPointsCurrent: parseInt(charForm.hitPointsCurrent, 10) || 0,
-      hitPointsMax: parseInt(charForm.hitPointsMax, 10) || 0,
-      armorClass: parseInt(charForm.armorClass, 10) || 10,
-      inspiration: charForm.inspiration,
-      conditions: charForm.conditions
-        .split(",")
-        .map((c) => c.trim())
-        .filter(Boolean),
-    });
+    await persistStatus();
+  };
+
+  const handleHitPointNudge = async (delta: number) => {
+    const current = asNumber(charForm.hitPointsCurrent) ?? status.hitPointsCurrent ?? 0;
+    const max = asNumber(charForm.hitPointsMax) ?? status.hitPointsMax;
+    const next = clamp(current + delta, 0, max);
+    setCharForm((form) => ({ ...form, hitPointsCurrent: String(next) }));
+    await persistStatus({ hitPointsCurrent: next });
+  };
+
+  const handleInspirationToggle = async () => {
+    const next = !charForm.inspiration;
+    setCharForm((form) => ({ ...form, inspiration: next }));
+    await persistStatus({ inspiration: next });
+  };
+
+  const handleConditionToggle = async (condition: string) => {
+    const current = parseConditionText(charForm.conditions);
+    const key = normalizeListKey(condition);
+    const exists = current.some((item) => normalizeListKey(item) === key);
+    const next = exists ? current.filter((item) => normalizeListKey(item) !== key) : [...current, condition];
+    setCharForm((form) => ({ ...form, conditions: next.join(", ") }));
+    await persistStatus({ conditions: next });
   };
 
   // ── Submit: Resource save inline ────────────────────────────────────────
@@ -354,6 +554,19 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
       const next = { ...prev };
       delete next[resourceId];
       return next;
+    });
+  };
+
+  const handleResourceNudge = async (resource: any, delta: number) => {
+    const max = asNumber(resource.max) ?? 0;
+    const current = asNumber(resource.current) ?? 0;
+    const next = clamp(current + delta, 0, max || undefined);
+    await upsertPlayerPortalResource({
+      resourceId: resource.resourceId,
+      label: resource.label,
+      current: next,
+      max,
+      recovery: resource.recovery,
     });
   };
 
@@ -471,8 +684,10 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   }
 
   const TABS: { id: PortalTab; label: string; icon: React.ReactNode }[] = [
+    { id: "session", label: "Mesa", icon: <HeartPulse size={16} /> },
     { id: "summary", label: t("session.summary"), icon: <Shield size={16} /> },
     { id: "character", label: "Personaje", icon: <User size={16} /> },
+    { id: "knowledge", label: "Memoria", icon: <MapPinned size={16} /> },
     { id: "resources", label: "Recursos", icon: <Clock size={16} /> },
     { id: "diary", label: "Diario", icon: <FileText size={16} /> },
     { id: "objectives", label: t("playerPortal.objectives"), icon: <Target size={16} /> },
@@ -480,8 +695,10 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   ];
 
   const tabLabel: Record<PortalTab, string> = {
+    session: "Modo mesa",
     summary: t("players.playerSummary"),
     character: t("players.characterStatus"),
+    knowledge: "Lo que sabe mi personaje",
     resources: "Recursos & Habilidades",
     diary: "Diario Personal",
     objectives: t("playerPortal.objectives"),
@@ -489,9 +706,9 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+    <div className="player-portal-shell" style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       {/* Sidebar */}
-      <aside className="sidebar" style={{ width: "260px", flexShrink: 0 }}>
+      <aside className="sidebar player-portal-sidebar" style={{ width: "260px", flexShrink: 0 }}>
         <div className="sidebar-header">
           <div className="sidebar-logo">{campaignState?.campaign?.title ?? playerPortalState.campaign?.title ?? campaignId}</div>
           <div className="sidebar-logo-subtitle">Portal del Jugador</div>
@@ -529,7 +746,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
       </aside>
 
       {/* Main content */}
-      <main className="main-content" style={{ flexGrow: 1, display: "flex", flexDirection: "column", overflowY: "auto" }}>
+      <main className="main-content player-portal-main" style={{ flexGrow: 1, display: "flex", flexDirection: "column", overflowY: "auto" }}>
         <div className="top-bar">
           <div className="top-bar-title" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <span style={{ fontSize: "1.1rem", fontWeight: "800" }}>{tabLabel[activeTab]}</span>
@@ -543,10 +760,208 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
           </div>
         </div>
 
-        <div className="content-body" style={{ padding: "32px", maxWidth: "900px", width: "100%", margin: "0 auto" }}>
+        <div className="content-body player-portal-content" style={{ padding: "32px", maxWidth: "980px", width: "100%", margin: "0 auto" }}>
           {error && (
             <div className="card" style={{ padding: "12px 14px", marginBottom: "16px", border: "1px solid rgba(239,68,68,0.45)", background: "rgba(239,68,68,0.08)", color: "#fca5a5", fontSize: "0.85rem" }}>
               {error}
+            </div>
+          )}
+
+          {/* ── TAB: Session / Table Mode ───────────────────────────────────── */}
+          {activeTab === "session" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              {!myCharacter && !linkedCharacter ? (
+                <EmptyPortalState title="Todavía no hay personaje vinculado">
+                  El portal ya está listo, pero necesitas que el DM apruebe tu personaje o tu solicitud. Puedes pedir uno de campaña o proponer el tuyo desde el resumen.
+                  <div style={{ marginTop: "14px" }}>
+                    <button className="btn btn-primary btn-sm" onClick={() => setActiveTab("summary")}>Elegir o proponer personaje</button>
+                  </div>
+                </EmptyPortalState>
+              ) : (
+                <>
+                  <div className="card player-session-hero">
+                    <div>
+                      <div className="player-session-kicker">Modo mesa</div>
+                      <h2>{myCharacter?.title ?? linkedCharacter?.title}</h2>
+                      <p>
+                        Nivel {characterMetadata.level ?? 1} {characterMetadata.species ?? ""} {characterMetadata.className ?? ""}
+                        {characterMetadata.background ? ` · ${characterMetadata.background}` : ""}
+                      </p>
+                    </div>
+                    <div className="player-session-stat-grid">
+                      <div className="player-session-stat">
+                        <span>PG</span>
+                        <strong>{status.hitPointsCurrent ?? "—"} / {status.hitPointsMax ?? "—"}</strong>
+                      </div>
+                      <div className="player-session-stat">
+                        <span>CA</span>
+                        <strong>{status.armorClass ?? "—"}</strong>
+                      </div>
+                      <div className="player-session-stat">
+                        <span>Inspiración</span>
+                        <strong>{status.inspiration ? "Sí" : "No"}</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="player-session-layout">
+                    <PortalSection title="Seguimiento cómodo" subtitle="Cambios manuales, rápidos y visibles en mesa.">
+                      <div className="player-hp-controls">
+                        <button className="btn btn-secondary btn-sm" onClick={() => void handleHitPointNudge(-5)} disabled={!characterEntityId}>-5</button>
+                        <button className="btn btn-secondary btn-sm" onClick={() => void handleHitPointNudge(-1)} disabled={!characterEntityId}>-1</button>
+                        <div className="player-hp-readout">
+                          <span>PG actuales</span>
+                          <strong>{charForm.hitPointsCurrent || status.hitPointsCurrent || 0}</strong>
+                        </div>
+                        <button className="btn btn-secondary btn-sm" onClick={() => void handleHitPointNudge(1)} disabled={!characterEntityId}>+1</button>
+                        <button className="btn btn-secondary btn-sm" onClick={() => void handleHitPointNudge(5)} disabled={!characterEntityId}>+5</button>
+                      </div>
+
+                      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "14px" }}>
+                        <button className="btn btn-secondary btn-sm" onClick={() => void handleInspirationToggle()} disabled={!characterEntityId}>
+                          {charForm.inspiration ? "Quitar inspiración" : "Marcar inspiración"}
+                        </button>
+                        <button className="btn btn-secondary btn-sm" onClick={() => setActiveTab("character")}>Editar ficha viva</button>
+                      </div>
+
+                      <div style={{ marginTop: "18px" }}>
+                        <div className="form-label">Condiciones</div>
+                        <div className="player-condition-grid">
+                          {CONDITION_OPTIONS.map((condition) => {
+                            const active = parseConditionText(charForm.conditions).some((item) => normalizeListKey(item) === normalizeListKey(condition));
+                            return (
+                              <button
+                                key={condition}
+                                type="button"
+                                className={`player-condition-chip ${active ? "active" : ""}`}
+                                onClick={() => void handleConditionToggle(condition)}
+                                disabled={!characterEntityId}
+                              >
+                                {condition}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </PortalSection>
+
+                    <PortalSection
+                      title="Objetivos abiertos"
+                      subtitle="Lo importante para no perder el hilo."
+                      action={<button className="btn btn-secondary btn-sm" onClick={() => { setActiveTab("objectives"); setShowObjectiveForm(true); }}>Añadir</button>}
+                    >
+                      {openObjectives.length === 0 ? (
+                        <p className="player-muted-line">No hay objetivos abiertos.</p>
+                      ) : (
+                        <div className="player-card-list">
+                          {openObjectives.slice(0, 5).map((objective: any) => (
+                            <div key={objective.objectiveId ?? objective.title} className="player-compact-row">
+                              <Target size={15} />
+                              <div>
+                                <strong>{objective.title}</strong>
+                                {objective.description && <p>{objective.description}</p>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </PortalSection>
+
+                    <PortalSection
+                      title="Preguntas para el DM"
+                      subtitle="Dudas ordenadas sin cortar la escena."
+                      action={<button className="btn btn-secondary btn-sm" onClick={() => { setActiveTab("objectives"); setObjectiveForm((form) => ({ ...form, kind: "question_for_dm", visibility: "dm_visible" })); setShowObjectiveForm(true); }}>Preguntar</button>}
+                    >
+                      {dmQuestions.length === 0 ? (
+                        <p className="player-muted-line">No tienes preguntas pendientes.</p>
+                      ) : (
+                        <div className="player-card-list">
+                          {dmQuestions.slice(0, 4).map((question: any) => (
+                            <div key={question.objectiveId ?? question.title} className="player-compact-row">
+                              <MessageSquare size={15} />
+                              <div>
+                                <strong>{question.title}</strong>
+                                {question.description && <p>{question.description}</p>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </PortalSection>
+                  </div>
+
+                  <PortalSection
+                    title="Memoria útil ahora"
+                    subtitle="Solo información visible para tu personaje o para el grupo."
+                    action={<button className="btn btn-secondary btn-sm" onClick={() => setActiveTab("knowledge")}>Ver memoria</button>}
+                  >
+                    {keyMemoryCards.length === 0 ? (
+                      <p className="player-muted-line">Aún no hay pistas, lugares o PNJ visibles para mostrar aquí.</p>
+                    ) : (
+                      <div className="player-memory-grid compact">
+                        {keyMemoryCards.map((entity) => <MemoryEntityCard key={entity.entityId} entity={entity} compact />)}
+                      </div>
+                    )}
+                  </PortalSection>
+
+                  <div className="player-session-layout">
+                    <PortalSection
+                      title="Recursos"
+                      subtitle="Marcadores manuales de mesa."
+                      action={<button className="btn btn-secondary btn-sm" onClick={() => setActiveTab("resources")}>Editar</button>}
+                    >
+                      {resources.length === 0 ? (
+                        <p className="player-muted-line">Sin recursos registrados.</p>
+                      ) : (
+                        <div className="player-card-list">
+                          {resources.slice(0, 5).map((resource: any) => {
+                            const current = asNumber(resource.current) ?? 0;
+                            const max = asNumber(resource.max) ?? 0;
+                            return (
+                              <div key={resource.resourceId ?? resource.label} className="player-resource-row">
+                                <div style={{ flex: 1 }}>
+                                  <div style={{ display: "flex", justifyContent: "space-between", gap: "10px" }}>
+                                    <strong>{resource.label}</strong>
+                                    <span>{current}/{max}</span>
+                                  </div>
+                                  <ResourceMeter current={current} max={max} />
+                                  <small>{recoveryLabel(resource.recovery)}</small>
+                                </div>
+                                <div style={{ display: "flex", gap: "6px" }}>
+                                  <button className="btn btn-secondary btn-sm" onClick={() => void handleResourceNudge(resource, -1)}>-1</button>
+                                  <button className="btn btn-secondary btn-sm" onClick={() => void handleResourceNudge(resource, 1)}>+1</button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </PortalSection>
+
+                    <PortalSection
+                      title="Notas recientes"
+                      subtitle="Tu libreta personal de campaña."
+                      action={<button className="btn btn-secondary btn-sm" onClick={() => { setActiveTab("diary"); setShowNoteForm(true); }}>Nueva nota</button>}
+                    >
+                      {notes.filter((note: any) => !note.archived).length === 0 ? (
+                        <p className="player-muted-line">Todavía no has escrito notas.</p>
+                      ) : (
+                        <div className="player-card-list">
+                          {notes.filter((note: any) => !note.archived).slice(0, 4).map((note: any) => (
+                            <div key={note.noteId ?? note.title} className="player-compact-row">
+                              <FileText size={15} />
+                              <div>
+                                <strong>{note.title}</strong>
+                                {note.content && <p>{note.content}</p>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </PortalSection>
+                  </div>
+                </>
+              )}
             </div>
           )}
 
@@ -1015,13 +1430,29 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                       </div>
 
                       <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label className="form-label">Condiciones (separadas por coma)</label>
+                        <label className="form-label">Condiciones</label>
+                        <div className="player-condition-grid" style={{ marginBottom: "10px" }}>
+                          {CONDITION_OPTIONS.map((condition) => {
+                            const active = parseConditionText(charForm.conditions).some((item) => normalizeListKey(item) === normalizeListKey(condition));
+                            return (
+                              <button
+                                key={condition}
+                                type="button"
+                                className={`player-condition-chip ${active ? "active" : ""}`}
+                                onClick={() => void handleConditionToggle(condition)}
+                                disabled={!characterEntityId}
+                              >
+                                {condition}
+                              </button>
+                            );
+                          })}
+                        </div>
                         <input
                           type="text"
                           className="form-input"
                           value={charForm.conditions}
                           onChange={(e) => setCharForm({ ...charForm, conditions: e.target.value })}
-                          placeholder="envenenado, asustado"
+                          placeholder="Otra condición o texto libre"
                         />
                       </div>
 
@@ -1374,17 +1805,183 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
             </div>
           )}
 
-          {/* ── TAB: History (stub) ───────────────────────────────────────── */}
+          {/* ── TAB: Knowledge / Character Memory ───────────────────────────── */}
+          {activeTab === "knowledge" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              <div className="card" style={{ padding: "22px", background: "linear-gradient(135deg, hsla(175, 85%, 45%, 0.12), transparent)" }}>
+                <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                  <Eye size={22} style={{ color: "var(--secondary)", flexShrink: 0, marginTop: "2px" }} />
+                  <div>
+                    <h3 style={{ fontWeight: 850, marginBottom: "6px" }}>Lo que sabe mi personaje</h3>
+                    <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+                      Esta vista solo reúne entidades, pistas, relaciones y hechos visibles para el grupo, para este jugador o para el personaje vinculado.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="player-knowledge-stats">
+                <CharacterFact label="Entradas visibles" value={memory.counts?.visibleEntities ?? 0} />
+                <CharacterFact label="Hechos conocidos" value={memory.counts?.facts ?? 0} />
+                <CharacterFact label="Relaciones visibles" value={memory.counts?.relations ?? 0} />
+              </div>
+
+              <PortalSection title="Frentes abiertos" subtitle="Misiones, pistas y rumores que conviene recordar.">
+                {[...knownQuests, ...knownClues].length === 0 ? (
+                  <p className="player-muted-line">No hay frentes visibles todavía.</p>
+                ) : (
+                  <div className="player-memory-grid">
+                    {[...knownQuests, ...knownClues].slice(0, 12).map((entity) => (
+                      <MemoryEntityCard key={entity.entityId} entity={entity} />
+                    ))}
+                  </div>
+                )}
+              </PortalSection>
+
+              <div className="player-session-layout">
+                <PortalSection title="PNJ y criaturas" subtitle="Caras conocidas de la campaña.">
+                  {knownNpcs.length === 0 ? (
+                    <p className="player-muted-line">Aún no hay PNJ visibles.</p>
+                  ) : (
+                    <div className="player-card-list">
+                      {knownNpcs.slice(0, 12).map((entity) => <MemoryEntityCard key={entity.entityId} entity={entity} compact />)}
+                    </div>
+                  )}
+                </PortalSection>
+
+                <PortalSection title="Lugares" subtitle="Sitios visitados, mencionados o revelados.">
+                  {knownLocations.length === 0 ? (
+                    <p className="player-muted-line">Aún no hay lugares visibles.</p>
+                  ) : (
+                    <div className="player-card-list">
+                      {knownLocations.slice(0, 12).map((entity) => <MemoryEntityCard key={entity.entityId} entity={entity} compact />)}
+                    </div>
+                  )}
+                </PortalSection>
+              </div>
+
+              {(knownItems.length > 0 || (memoryEntities.factions ?? []).length > 0) && (
+                <div className="player-session-layout">
+                  <PortalSection title="Objetos y documentos" subtitle="Cosas que importan en la aventura.">
+                    {knownItems.length === 0 ? (
+                      <p className="player-muted-line">Sin objetos visibles.</p>
+                    ) : (
+                      <div className="player-card-list">
+                        {knownItems.slice(0, 10).map((entity) => <MemoryEntityCard key={entity.entityId} entity={entity} compact />)}
+                      </div>
+                    )}
+                  </PortalSection>
+
+                  <PortalSection title="Facciones" subtitle="Grupos, bandos e intereses conocidos.">
+                    {(memoryEntities.factions ?? []).length === 0 ? (
+                      <p className="player-muted-line">Sin facciones visibles.</p>
+                    ) : (
+                      <div className="player-card-list">
+                        {(memoryEntities.factions ?? []).slice(0, 10).map((entity) => <MemoryEntityCard key={entity.entityId} entity={entity} compact />)}
+                      </div>
+                    )}
+                  </PortalSection>
+                </div>
+              )}
+
+              <PortalSection title="Hechos conocidos" subtitle="Canon, rumores o teorías que ya son visibles para jugadores.">
+                {recentFacts.length === 0 ? (
+                  <p className="player-muted-line">No hay hechos visibles todavía.</p>
+                ) : (
+                  <div className="player-card-list">
+                    {recentFacts.slice(0, 12).map((fact) => (
+                      <div key={fact.factId} className="player-fact-row">
+                        <Sparkles size={15} />
+                        <div>
+                          <strong>{fact.statement}</strong>
+                          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "6px" }}>
+                            {fact.kind && <span className="badge badge-default">{statusLabel(fact.kind)}</span>}
+                            {fact.confidence && <span className="badge badge-default">{statusLabel(fact.confidence)}</span>}
+                            {(fact.relatedEntities ?? []).map((entity) => <span key={entity.entityId} className="badge badge-default">{entity.title}</span>)}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </PortalSection>
+
+              <PortalSection title="Relaciones visibles" subtitle="Conexiones ya reveladas entre personas, lugares, objetos y pistas.">
+                {(memory.relations ?? []).length === 0 ? (
+                  <p className="player-muted-line">No hay relaciones visibles todavía.</p>
+                ) : (
+                  <div className="player-card-list">
+                    {(memory.relations ?? []).slice(0, 12).map((relation) => (
+                      <div key={relation.relationId} className="player-relation-row">
+                        <Users size={15} />
+                        <div>
+                          <strong>{relation.source?.title} → {relation.target?.title}</strong>
+                          <p>{relation.label}{relation.description ? ` · ${relation.description}` : ""}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </PortalSection>
+            </div>
+          )}
+
+          {/* ── TAB: History ───────────────────────────────────────────────── */}
           {activeTab === "history" && (
-            <div className="card" style={{ padding: "24px", textAlign: "center" }}>
-              <h3>Historia de la aventura</h3>
-              <p style={{ color: "var(--text-muted)", marginTop: "8px" }}>
-                Tu historial de aventura aparecerá aquí a medida que la campaña avance.
-              </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+              {historyEntries.length === 0 ? (
+                <EmptyPortalState title="Historia de la aventura">
+                  Aquí aparecerán los resúmenes para jugadores y eventos revelados cuando el DM los vaya compartiendo.
+                </EmptyPortalState>
+              ) : (
+                historyEntries.map((session) => (
+                  <div key={session.sessionId} className="card player-history-card">
+                    <div className="player-history-header">
+                      <div>
+                        <span>Sesión {session.number ?? "—"}</span>
+                        <h3>{session.title}</h3>
+                      </div>
+                      {session.status && <span className="badge badge-default">{statusLabel(session.status)}</span>}
+                    </div>
+                    {session.playerSummary && <p className="player-history-summary">{session.playerSummary}</p>}
+                    {(session.events ?? []).length > 0 && (
+                      <div className="player-history-events">
+                        {(session.events ?? []).map((event) => (
+                          <div key={event.eventId} className="player-history-event">
+                            <Compass size={14} />
+                            <div>
+                              <strong>{event.title}</strong>
+                              {event.description && <p>{event.description}</p>}
+                              {(event.relatedEntities ?? []).length > 0 && (
+                                <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "6px" }}>
+                                  {(event.relatedEntities ?? []).map((entity) => <span key={entity.entityId} className="badge badge-default">{entity.title}</span>)}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
             </div>
           )}
 
         </div>
+        <nav className="player-portal-bottom-nav" aria-label="Navegación del portal del jugador">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              className={activeTab === tab.id ? "active" : ""}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.icon}
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </nav>
       </main>
     </div>
   );
