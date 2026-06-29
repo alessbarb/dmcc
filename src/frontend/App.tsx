@@ -40,6 +40,7 @@ export function App() {
   const navigate = useNavigate();
 
   // Forms & Modals state
+  const [campaignsFetched, setCampaignsFetched] = useState(false);
   const [newCampaignTitle, setNewCampaignTitle] = useState("");
   const [newCampaignSystem, setNewCampaignSystem] = useState("generic_fantasy_d20");
   const [newCampaignTemplate, setNewCampaignTemplate] = useState("empty");
@@ -86,7 +87,8 @@ export function App() {
         }
       }
       fetchVaults();
-      fetchCampaigns();
+      await fetchCampaigns().catch(() => {});
+      setCampaignsFetched(true);
     };
     initAuth();
   }, []);

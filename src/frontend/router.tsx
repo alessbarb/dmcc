@@ -30,6 +30,9 @@ const CanvasPageLazy = React.lazy(() => import("./dm/canvas/pages/CanvasPage.js"
 const PlayerKnowledgePageLazy = React.lazy(() =>
   import("./dm/pages/PlayerKnowledgePage.js").then((m) => ({ default: m.PlayerKnowledgePage }))
 );
+const OnboardingPageLazy = React.lazy(() =>
+  import("./dm/pages/OnboardingPage.js").then((m) => ({ default: m.OnboardingPage }))
+);
 
 function withSuspense(Component: React.ComponentType) {
   return function SuspenseRoute() {
@@ -196,10 +199,17 @@ const knowledgeRoute = createRoute({
   component: withSuspense(PlayerKnowledgePageLazy),
 });
 
+const onboardingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/onboarding",
+  component: withSuspense(OnboardingPageLazy),
+});
+
 // Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   dmRoute,
+  onboardingRoute,
   dmSetupRoute,
   dmUnlockRoute,
   playerJoinRoute,
