@@ -548,6 +548,7 @@ export const fr: TranslationDictionary = {
       players: "Joueurs",
       search: "Recherche",
       settings: "Paramètres",
+      knowledge: "Connaissance",
     },
     meta: {
       canvasTitle: "Canevas de campagne",
@@ -583,6 +584,9 @@ export const fr: TranslationDictionary = {
       settingsTitle: "Paramètres et export",
       settingsEyebrow: "Administration",
       settingsDescription: "Configurez la campagne, les exports, les sauvegardes et les options d’accès local.",
+      knowledgeTitle: "Connaissance",
+      knowledgeEyebrow: "DM",
+      knowledgeDescription: "Visibilité par joueur",
     },
   },
 
@@ -1090,5 +1094,13 @@ export const fr: TranslationDictionary = {
     manualWithNote: "Manuel : {note}",
     player: "Portail joueur",
     import: "Importé",
+  },
+  playerKnowledge: {
+    title: "Connaissance des joueurs",
+    subtitle: "Ce que chaque PJ peut voir par rapport à ce que le MJ sait",
+    noPlayers: "Pas encore de joueurs dans cette campagne",
+    entityColumn: "Entité",
+    visible: "Visible",
+    hidden: "Masqué",
   },
 };

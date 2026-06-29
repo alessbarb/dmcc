@@ -534,6 +534,7 @@ export const pt = {
       players: "Jogadores",
       search: "Busca",
       settings: "Configurações",
+      knowledge: "Conhecimento",
     },
     meta: {
       canvasTitle: "Canvas da campanha",
@@ -569,6 +570,9 @@ export const pt = {
       settingsTitle: "Configurações e exportação",
       settingsEyebrow: "Administração",
       settingsDescription: "Configure campanha, exportações, backups e opções de acesso local.",
+      knowledgeTitle: "Conhecimento",
+      knowledgeEyebrow: "DM",
+      knowledgeDescription: "Visibilidade por jogador",
     },
   },
   searchPage: {
@@ -1067,5 +1071,13 @@ export const pt = {
     manualWithNote: "Manual: {note}",
     player: "Portal do jogador",
     import: "Importado",
+  },
+  playerKnowledge: {
+    title: "Conhecimento dos jogadores",
+    subtitle: "O que cada PJ pode ver comparado ao que o DM sabe",
+    noPlayers: "Ainda não há jogadores nesta campanha",
+    entityColumn: "Entidade",
+    visible: "Visível",
+    hidden: "Oculto",
   },
 } as const;

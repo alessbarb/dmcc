@@ -18,6 +18,7 @@ import {
   Play,
   Search,
   User,
+  Users,
   Layers,
   BookOpen,
   ArrowLeft,
@@ -100,6 +101,11 @@ const PAGE_META: Record<string, PageMeta> = {
     eyebrowKey: "campaignShell.meta.settingsEyebrow",
     descriptionKey: "campaignShell.meta.settingsDescription",
   },
+  knowledge: {
+    titleKey: "campaignShell.meta.knowledgeTitle",
+    eyebrowKey: "campaignShell.meta.knowledgeEyebrow",
+    descriptionKey: "campaignShell.meta.knowledgeDescription",
+  },
 };
 
 export function CampaignShell() {
@@ -171,6 +177,7 @@ export function CampaignShell() {
     { path: "timeline", label: t("campaignShell.nav.timeline"), Icon: List },
     { path: "boards", label: t("campaignShell.nav.boards"), Icon: Activity },
     { path: "players", label: t("campaignShell.nav.players"), Icon: User },
+    { path: "knowledge", label: t("campaignShell.nav.knowledge"), Icon: Users },
     { path: "settings", label: t("campaignShell.nav.settings"), Icon: Settings },
   ];
 

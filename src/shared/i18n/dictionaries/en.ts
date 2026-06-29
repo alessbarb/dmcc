@@ -534,6 +534,7 @@ export const en = {
       players: "Players",
       search: "Search",
       settings: "Settings",
+      knowledge: "Knowledge",
     },
     meta: {
       canvasTitle: "Campaign Canvas",
@@ -569,6 +570,9 @@ export const en = {
       settingsTitle: "Settings and export",
       settingsEyebrow: "Administration",
       settingsDescription: "Configure campaign, exports, backups, and local access options.",
+      knowledgeTitle: "Knowledge",
+      knowledgeEyebrow: "DM",
+      knowledgeDescription: "Per-player visibility",
     },
   },
   searchPage: {
@@ -1067,5 +1071,13 @@ export const en = {
     manualWithNote: "Manual: {note}",
     player: "Player portal",
     import: "Imported",
+  },
+  playerKnowledge: {
+    title: "Player knowledge",
+    subtitle: "What each PC can see compared to what the DM knows",
+    noPlayers: "No players in this campaign yet",
+    entityColumn: "Entity",
+    visible: "Visible",
+    hidden: "Hidden",
   },
 } as const;

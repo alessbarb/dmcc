@@ -548,6 +548,7 @@ export const it: TranslationDictionary = {
       players: "Giocatori",
       search: "Cerca",
       settings: "Impostazioni",
+      knowledge: "Conoscenza",
     },
     meta: {
       canvasTitle: "Canvas della campagna",
@@ -583,6 +584,9 @@ export const it: TranslationDictionary = {
       settingsTitle: "Impostazioni ed export",
       settingsEyebrow: "Amministrazione",
       settingsDescription: "Configura campagna, export, backup e opzioni di accesso locale.",
+      knowledgeTitle: "Conoscenza",
+      knowledgeEyebrow: "DM",
+      knowledgeDescription: "Visibilità per giocatore",
     },
   },
 
@@ -1090,5 +1094,13 @@ export const it: TranslationDictionary = {
     manualWithNote: "Manuale: {note}",
     player: "Portale giocatore",
     import: "Importato",
+  },
+  playerKnowledge: {
+    title: "Conoscenza dei giocatori",
+    subtitle: "Cosa può vedere ogni PG rispetto a ciò che il Master sa",
+    noPlayers: "Ancora nessun giocatore in questa campagna",
+    entityColumn: "Entità",
+    visible: "Visibile",
+    hidden: "Nascosto",
   },
 };

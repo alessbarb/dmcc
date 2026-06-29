@@ -548,6 +548,7 @@ export const de: TranslationDictionary = {
       players: "Spieler",
       search: "Suche",
       settings: "Einstellungen",
+      knowledge: "Wissen",
     },
     meta: {
       canvasTitle: "Kampagnen-Canvas",
@@ -583,6 +584,9 @@ export const de: TranslationDictionary = {
       settingsTitle: "Einstellungen und Export",
       settingsEyebrow: "Administration",
       settingsDescription: "Konfiguriere Kampagne, Exporte, Backups und lokale Zugriffsoptionen.",
+      knowledgeTitle: "Wissen",
+      knowledgeEyebrow: "DM",
+      knowledgeDescription: "Sichtbarkeit je Spieler",
     },
   },
 
@@ -1090,5 +1094,13 @@ export const de: TranslationDictionary = {
     manualWithNote: "Manuell: {note}",
     player: "Spielerportal",
     import: "Importiert",
+  },
+  playerKnowledge: {
+    title: "Spielerwissen",
+    subtitle: "Was jeder SC sehen kann im Vergleich zu dem, was der SL weiß",
+    noPlayers: "Noch keine Spieler in dieser Kampagne",
+    entityColumn: "Entität",
+    visible: "Sichtbar",
+    hidden: "Verborgen",
   },
 };
