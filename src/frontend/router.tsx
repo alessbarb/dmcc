@@ -110,6 +110,16 @@ const campaignRoute = createRoute({
   component: withSuspense(CampaignShellPage),
 });
 
+// Index redirect: /campaigns/:id → /campaigns/:id/dashboard
+const campaignIndexRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/",
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: "/campaigns/$campaignId/dashboard", params });
+  },
+  component: () => null,
+});
+
 // Sub-routes — each renders its own page component
 const dashboardRoute = createRoute({
   getParentRoute: () => campaignRoute,
@@ -188,6 +198,7 @@ const routeTree = rootRoute.addChildren([
   registerRoute,
   playerPortalRoute,
   campaignRoute.addChildren([
+    campaignIndexRoute,
     canvasRoute,
     dashboardRoute,
     whatNowRoute,
