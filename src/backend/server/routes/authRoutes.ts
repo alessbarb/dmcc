@@ -90,10 +90,10 @@ export async function registerAuthRoutes(
     const dmPinConfigured = authConfig?.dmPinEnabled ?? false;
 
     const dmToken = request.headers["x-dm-token"] as string | undefined;
-    const dmSessionValid = Boolean(dmToken && dmToken === (server as any).dmSessionToken);
+    const dmSessionValid = Boolean(dmToken && dmToken === server.dmSessionToken);
 
     const localRequest = isLoopbackRequest(request);
-    const lanExposed = (server as any).lanExposed ?? false;
+    const lanExposed = server.lanExposed ?? false;
 
     return { dmPinConfigured, dmSessionValid, localRequest, lanExposed };
   });
@@ -105,7 +105,7 @@ export async function registerAuthRoutes(
       const dmToken = request.headers["x-dm-token"] as string | undefined;
       const isLocal = isLoopbackRequest(request);
       // Must be either local request OR have a valid DM token to set up PIN
-      if (!isLocal && dmToken !== (server as any).dmSessionToken) {
+      if (!isLocal && dmToken !== server.dmSessionToken) {
         reply.code(403);
         return { error: "Forbidden" };
       }
@@ -160,7 +160,7 @@ export async function registerAuthRoutes(
       }
 
       clearAttempts(vaultId);
-      return { dmSessionToken: (server as any).dmSessionToken };
+      return { dmSessionToken: server.dmSessionToken };
     }
   );
 
@@ -169,12 +169,12 @@ export async function registerAuthRoutes(
     "/api/auth/lock",
     async (request, reply) => {
       const dmToken = request.headers["x-dm-token"] as string | undefined;
-      if (!dmToken || dmToken !== (server as any).dmSessionToken) {
+      if (!dmToken || dmToken !== server.dmSessionToken) {
         reply.code(403);
         return { error: "Forbidden" };
       }
       // Rotate the DM session token so existing sessions are invalidated
-      (server as any).dmSessionToken = randomBytes(32).toString("hex");
+      server.dmSessionToken = randomBytes(32).toString("hex");
       return { ok: true };
     }
   );
@@ -189,7 +189,7 @@ export async function registerAuthRoutes(
         reply.code(400);
         return { error: "Missing x-player-token header" };
       }
-      (server as any).playerTokens.delete(playerToken);
+      server.playerTokens.delete(playerToken);
       const tokenHash = hashPlayerToken(playerToken);
       const repo = new CampaignRepository(
         new EventStore(dataDir, vaultId),
@@ -199,14 +199,14 @@ export async function registerAuthRoutes(
       try {
         const campaignIds = await readdir(campaignsDir);
         for (const campaignId of campaignIds.filter((id) => id.startsWith("cmp_"))) {
-          const state = await repo.getCampaignState(campaignId as any);
-          const events = await repo.loadEvents(campaignId as any);
-          const portal = buildPlayerPortalProjection(state, events as any);
+          const state = await repo.getCampaignState(campaignId);
+          const events = await repo.loadEvents(campaignId);
+          const portal = buildPlayerPortalProjection(state, events);
           const token = portal.tokensByHash.get(tokenHash);
           if (token && !token.revokedAt) {
-            await repo.executeCommand(campaignId as any, {
+            await repo.executeCommand(campaignId, {
               type: "RevokePlayerToken",
-              campaignId: campaignId as any,
+              campaignId: campaignId,
               actorId: token.playerId,
               playerId: token.playerId,
               tokenId: token.tokenId,
@@ -250,7 +250,7 @@ export async function registerAuthRoutes(
           new SnapshotStore(dataDir, vaultId)
         );
 
-        let state = await repo.getCampaignState(campaignId as any);
+        let state = await repo.getCampaignState(campaignId);
 
         if (!state.campaign?.settings?.lanModeEnabled) {
           reply.code(403);
@@ -289,9 +289,9 @@ export async function registerAuthRoutes(
         const now = new Date().toISOString();
         if (!playerId) {
           playerId = `ply_${randomBytes(8).toString("hex")}`;
-          await repo.executeCommand(campaignId as any, {
+          await repo.executeCommand(campaignId, {
             type: "CreatePlayerProfile",
-            campaignId: campaignId as any,
+            campaignId: campaignId,
             actorId: "usr_dm",
             playerId,
             displayName: displayName?.trim() || "Player",
@@ -299,14 +299,14 @@ export async function registerAuthRoutes(
             role: "player",
             color: "#3b82f6",
           });
-          state = await repo.getCampaignState(campaignId as any);
+          state = await repo.getCampaignState(campaignId);
         }
 
         const playerToken = generatePlayerToken() + randomBytes(8).toString("hex");
         const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "IssuePlayerToken",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           playerId,
           tokenId,
@@ -315,7 +315,7 @@ export async function registerAuthRoutes(
           createdAt: now,
         });
 
-        (server as any).playerTokens.set(playerToken, { campaignId, playerId });
+        server.playerTokens.set(playerToken, { campaignId, playerId });
 
         return {
           playerToken,

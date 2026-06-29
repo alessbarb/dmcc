@@ -2,11 +2,31 @@ import type { FastifyInstance } from "fastify";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
 } from "../auth.js";
+
+type PrepBody = { actorId?: string; sessionId?: string; title: string; scheduledAt?: string; prep?: Record<string, unknown> };
+type UpdatePrepBody = { actorId?: string; title?: string; scheduledAt?: string; prep?: Record<string, unknown> };
+type ActorBody = { actorId?: string };
+type StartSessionBody = { actorId?: string; sessionId?: string; title?: string };
+type RevealClueBody = { actorId?: string; clueEntityId: string; audience?: VisibilityRule; note?: string };
+type CloseSessionBody = { actorId?: string; summary: string };
+type SessionEventBody = {
+  actorId?: string;
+  sessionEventId?: string;
+  type: string;
+  title: string;
+  description?: string;
+  relatedEntityIds?: string[];
+  relatedFactIds?: string[];
+  relatedRelationIds?: string[];
+  visibility?: VisibilityRule;
+  metadata?: Record<string, unknown>;
+};
 
 function statusForDomainError(err: any): number {
   const message = String(err?.message ?? "");
@@ -23,25 +43,24 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
     return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
   }
 
-  server.post<{ Params: { campaignId: string }; Body: any }>(
+  server.post<{ Params: { campaignId: string }; Body: PrepBody }>(
     "/api/campaigns/:campaignId/sessions/prepared",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const body = request.body as any;
-      const { actorId, sessionId, title, scheduledAt, prep } = body;
+      const { actorId, sessionId, title, scheduledAt, prep } = request.body;
 
       try {
         if (!title || !String(title).trim()) {
           reply.code(400);
           return { error: "Session title is required" };
         }
-        const projection = await getRepository(vaultId).executeCommand(campaignId as any, {
+        const projection = await getRepository(vaultId).executeCommand(campaignId, {
           type: "CreatePreparedSession",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
-          sessionId: sessionId as any,
+          sessionId: sessionId,
           title: String(title).trim(),
           scheduledAt,
           prep: prep ?? { state: "draft" },
@@ -50,7 +69,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
           ? projection.sessions.get(sessionId)
           : Array.from(projection.sessions.values()).find((s: any) => s.title === String(title).trim() && s.status === "planned");
         reply.code(201);
-        return { sessionId: (created as any)?.sessionId || sessionId };
+        return { sessionId: created?.sessionId || sessionId };
       } catch (err: any) {
         reply.code(statusForDomainError(err));
         return { error: err.message };
@@ -60,23 +79,22 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
 
   server.patch<{
     Params: { campaignId: string; sessionId: string };
-    Body: any;
+    Body: UpdatePrepBody;
   }>(
     "/api/campaigns/:campaignId/sessions/:sessionId/prep",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const body = request.body as any;
-      const { actorId, title, scheduledAt, prep } = body;
+      const { actorId, title, scheduledAt, prep } = request.body;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "UpdateSessionPrep",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
-          sessionId: sessionId as any,
+          sessionId: sessionId,
           title,
           scheduledAt,
           prep: prep ?? {},
@@ -91,22 +109,21 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
 
   server.post<{
     Params: { campaignId: string; sessionId: string };
-    Body: any;
+    Body: ActorBody;
   }>(
     "/api/campaigns/:campaignId/sessions/:sessionId/activate",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const body = request.body as any;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "ActivatePreparedSession",
-          campaignId: campaignId as any,
-          actorId: body?.actorId || "usr_dm",
-          sessionId: sessionId as any,
+          campaignId: campaignId,
+          actorId: request.body?.actorId || "usr_dm",
+          sessionId: sessionId,
         });
         return { ok: true, sessionId };
       } catch (err: any) {
@@ -118,22 +135,21 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
 
   server.post<{
     Params: { campaignId: string; sessionId: string };
-    Body: any;
+    Body: ActorBody;
   }>(
     "/api/campaigns/:campaignId/sessions/:sessionId/cancel",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const body = request.body as any;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "CancelPreparedSession",
-          campaignId: campaignId as any,
-          actorId: body?.actorId || "usr_dm",
-          sessionId: sessionId as any,
+          campaignId: campaignId,
+          actorId: request.body?.actorId || "usr_dm",
+          sessionId: sessionId,
         });
         return { ok: true, sessionId };
       } catch (err: any) {
@@ -145,22 +161,21 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
 
   server.post<{
     Params: { campaignId: string; sessionId: string };
-    Body: any;
+    Body: ActorBody;
   }>(
     "/api/campaigns/:campaignId/sessions/:sessionId/archive",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const body = request.body as any;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "ArchiveSession",
-          campaignId: campaignId as any,
-          actorId: body?.actorId || "usr_dm",
-          sessionId: sessionId as any,
+          campaignId: campaignId,
+          actorId: request.body?.actorId || "usr_dm",
+          sessionId: sessionId,
         });
         return { ok: true, sessionId };
       } catch (err: any) {
@@ -171,27 +186,26 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
   );
 
   // Legacy/ad-hoc endpoint: starts a live session immediately.
-  server.post<{ Params: { campaignId: string }; Body: any }>(
+  server.post<{ Params: { campaignId: string }; Body: StartSessionBody }>(
     "/api/campaigns/:campaignId/sessions",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const body = request.body as any;
-      const { actorId, sessionId, title } = body;
+      const { actorId, sessionId, title } = request.body;
 
       try {
-        const projection = await getRepository(vaultId).executeCommand(campaignId as any, {
+        const projection = await getRepository(vaultId).executeCommand(campaignId, {
           type: "StartSession",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
-          sessionId: sessionId as any,
+          sessionId: sessionId,
           title: title || `Sesión ${new Date().toLocaleDateString("es")}`,
         });
         const newSession = Array.from(projection.sessions.values())
           .find((s: any) => s.status === "active");
         reply.code(201);
-        return { sessionId: (newSession as any)?.sessionId || sessionId };
+        return { sessionId: newSession?.sessionId || sessionId };
       } catch (err: any) {
         reply.code(statusForDomainError(err));
         return { error: err.message };
@@ -201,25 +215,24 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
 
   server.post<{
     Params: { campaignId: string; sessionId: string };
-    Body: any;
+    Body: RevealClueBody;
   }>(
     "/api/campaigns/:campaignId/sessions/:sessionId/reveal-clue",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const body = request.body as any;
-      const { actorId, clueEntityId, audience, note } = body;
+      const { actorId, clueEntityId, audience, note } = request.body;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "RevealClue",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
-          clueEntityId: clueEntityId as any,
-          sessionId: sessionId as any,
-          audience: audience || { kind: "party" as const },
+          clueEntityId: clueEntityId,
+          sessionId: sessionId,
+          audience: (audience || { kind: "party" as const }) as VisibilityRule,
           note,
         });
         return { ok: true };
@@ -232,19 +245,19 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
 
   server.post<{
     Params: { campaignId: string };
-    Body: { targetId: string; targetType: "entity" | "relation" | "fact"; visibility: any };
+    Body: { targetId: string; targetType: "entity" | "relation" | "fact"; visibility: VisibilityRule };
   }>(
     "/api/campaigns/:campaignId/visibility/change",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { targetId, targetType, visibility } = request.body;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "ChangeVisibility",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           targetId,
           targetType,
@@ -260,23 +273,22 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
 
   server.post<{
     Params: { campaignId: string; sessionId: string };
-    Body: any;
+    Body: CloseSessionBody;
   }>(
     "/api/campaigns/:campaignId/sessions/:sessionId/close",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const body = request.body as any;
-      const { actorId, summary } = body;
+      const { actorId, summary } = request.body;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "CloseSession",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
-          sessionId: sessionId as any,
+          sessionId: sessionId,
           summary,
         });
         return { ok: true };
@@ -289,24 +301,23 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
 
   server.post<{
     Params: { campaignId: string; sessionId: string };
-    Body: any;
+    Body: SessionEventBody;
   }>(
     "/api/campaigns/:campaignId/sessions/:sessionId/events",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const body = request.body as any;
-      const { actorId, sessionEventId, type, title, description, relatedEntityIds, relatedFactIds, relatedRelationIds, visibility, metadata } = body;
+      const { actorId, sessionEventId, type, title, description, relatedEntityIds, relatedFactIds, relatedRelationIds, visibility, metadata } = request.body;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "RecordSessionEvent",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
           sessionEventId,
-          sessionId: sessionId as any,
+          sessionId: sessionId,
           eventType: type,
           title,
           description,

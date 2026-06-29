@@ -2,11 +2,33 @@ import type { FastifyInstance } from "fastify";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
+import type { FactKind, FactConfidence } from "@core/domain/fact/types.js";
+import type { FactSource } from "@core/domain/fact/fact.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
 } from "../auth.js";
+
+type CreateFactBody = {
+  actorId?: string;
+  factId?: string;
+  statement: string;
+  kind: FactKind;
+  confidence?: FactConfidence;
+  visibility?: VisibilityRule;
+  relatedEntityIds?: string[];
+  relatedRelationIds?: string[];
+  source?: FactSource;
+};
+
+type UpdateFactBody = {
+  statement?: string;
+  kind?: FactKind;
+  confidence?: FactConfidence;
+  visibility?: VisibilityRule;
+};
 
 export async function registerFactRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -15,28 +37,27 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
     return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
   }
 
-  server.post<{ Params: { campaignId: string }; Body: any }>(
+  server.post<{ Params: { campaignId: string }; Body: CreateFactBody }>(
     "/api/campaigns/:campaignId/facts",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const body = request.body as any;
-      const { actorId, factId, statement, kind, confidence, visibility, relatedEntityIds, relatedRelationIds, source } = body;
+      const { actorId, factId, statement, kind, confidence, visibility, relatedEntityIds, relatedRelationIds, source } = request.body;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "RecordFact",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: actorId || "usr_dm",
-          factId: factId as any,
+          factId: factId,
           statement,
           kind,
           confidence: confidence || "confirmed",
           visibility: visibility || { kind: "dm_only" as const },
           relatedEntityIds: relatedEntityIds || [],
           relatedRelationIds: relatedRelationIds || [],
-          source: source || { kind: "manual" },
+          source: (source ?? { kind: "manual" as const }),
         });
         reply.code(201);
         return { campaignId, statement, kind };
@@ -47,21 +68,21 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
     }
   );
 
-  server.put<{ Params: { campaignId: string; factId: string }; Body: any }>(
+  server.put<{ Params: { campaignId: string; factId: string }; Body: UpdateFactBody }>(
     "/api/campaigns/:campaignId/facts/:factId",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const factId = request.params.factId;
-      const updates = request.body as any;
+      const updates = request.body;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "UpdateFact",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
-          factId: factId as any,
+          factId: factId,
           ...(updates.statement !== undefined && { statement: updates.statement }),
           ...(updates.kind !== undefined && { kind: updates.kind }),
           ...(updates.confidence !== undefined && { confidence: updates.confidence }),
@@ -82,17 +103,17 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
   server.delete<{ Params: { campaignId: string; factId: string } }>(
     "/api/campaigns/:campaignId/facts/:factId",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const factId = request.params.factId;
 
       try {
-        await getRepository(vaultId).executeCommand(campaignId as any, {
+        await getRepository(vaultId).executeCommand(campaignId, {
           type: "ArchiveFact",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
-          factId: factId as any,
+          factId: factId,
         });
         return { ok: true };
       } catch (err: any) {

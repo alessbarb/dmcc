@@ -13,6 +13,25 @@ import {
   hashPlayerToken,
 } from "../auth.js";
 
+type CreatePlayerBody = {
+  displayName?: string;
+  name?: string;
+  id?: string;
+  playerId?: string;
+  email?: string;
+  role?: string;
+  color?: string;
+  imageUrl?: string;
+};
+
+type UpdatePlayerBody = {
+  displayName?: string;
+  imageUrl?: string;
+  role?: string;
+  color?: string;
+  isActive?: boolean;
+};
+
 export async function registerPlayerRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
 
@@ -20,13 +39,13 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
     return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
   }
 
-  server.post<{ Params: { campaignId: string }; Body: any }>(
+  server.post<{ Params: { campaignId: string }; Body: CreatePlayerBody }>(
     "/api/campaigns/:campaignId/players",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const body = request.body as any;
+      const body = request.body;
 
       const displayName = body.displayName || body.name;
       if (!displayName || displayName.trim() === "") {
@@ -41,13 +60,13 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
 
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
 
-        assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
+        assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
 
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "CreatePlayerProfile",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           playerId,
           name: displayName,
@@ -89,9 +108,9 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
 
-        const role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
+        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
         const playerId = request.headers["x-player-id"] as string | undefined;
         const players = Array.from(state.players.values()).filter((p: any) => !p.archived);
 
@@ -120,14 +139,14 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
     const vaultId = getValidatedVaultId(request);
     const campaignId = getValidatedCampaignId(request.params.campaignId);
     const playerId = request.params.playerId;
-    const updates = request.body as any;
+    const updates = request.body;
     const headerPlayerId = request.headers["x-player-id"] as string;
 
     try {
       const repo = getRepository(vaultId);
-      const state = await repo.getCampaignState(campaignId as any);
+      const state = await repo.getCampaignState(campaignId);
 
-      const role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
+      const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
 
       if (role !== "dm" && playerId !== headerPlayerId) {
         reply.code(403);
@@ -140,9 +159,9 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         return { error: "Player profile not found" };
       }
 
-      await repo.executeCommand(campaignId as any, {
+      await repo.executeCommand(campaignId, {
         type: "UpdatePlayerProfile",
-        campaignId: campaignId as any,
+        campaignId: campaignId,
         actorId: role === "player" ? headerPlayerId : "usr_dm",
         playerId,
         displayName: updates.displayName,
@@ -169,11 +188,11 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
     }
   };
 
-  server.put<{ Params: { campaignId: string; playerId: string }; Body: any }>(
+  server.put<{ Params: { campaignId: string; playerId: string }; Body: UpdatePlayerBody }>(
     "/api/campaigns/:campaignId/players/:playerId",
     handleEditPlayer
   );
-  server.patch<{ Params: { campaignId: string; playerId: string }; Body: any }>(
+  server.patch<{ Params: { campaignId: string; playerId: string }; Body: UpdatePlayerBody }>(
     "/api/campaigns/:campaignId/players/:playerId",
     handleEditPlayer
   );
@@ -187,18 +206,18 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
 
       try {
         const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId as any);
+        const state = await repo.getCampaignState(campaignId);
 
-        const role = assertCampaignAccess(request, state, campaignId, (server as any).dmSessionToken);
+        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
 
         if (role !== "dm") {
           reply.code(403);
           return { error: "Forbidden: Only DMs can archive players" };
         }
 
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "ArchivePlayerProfile",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           playerId,
         });
@@ -215,10 +234,10 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
     }
   );
 
-  server.post<{ Params: { campaignId: string; playerId: string }; Body: any }>(
+  server.post<{ Params: { campaignId: string; playerId: string }; Body: { label?: string } }>(
     "/api/campaigns/:campaignId/players/:playerId/token",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { playerId } = request.params;
@@ -228,14 +247,14 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         const rawToken = generatePlayerToken();
         const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
 
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "IssuePlayerToken",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           playerId,
           tokenId,
           tokenHash: hashPlayerToken(rawToken),
-          label: (request.body as any)?.label,
+          label: request.body?.label,
           createdAt: new Date().toISOString(),
         });
 
@@ -254,7 +273,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
   server.delete<{ Params: { campaignId: string; playerId: string; tokenId: string } }>(
     "/api/campaigns/:campaignId/players/:playerId/token/:tokenId",
     async (request, reply) => {
-      assertDM(request, (server as any).dmSessionToken);
+      assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { playerId, tokenId } = request.params;
@@ -262,9 +281,9 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
       try {
         const repo = getRepository(vaultId);
 
-        await repo.executeCommand(campaignId as any, {
+        await repo.executeCommand(campaignId, {
           type: "RevokePlayerToken",
-          campaignId: campaignId as any,
+          campaignId: campaignId,
           actorId: "usr_dm",
           playerId,
           tokenId,

@@ -8,7 +8,7 @@ export async function registerVaultRoutes(server: FastifyInstance, opts: { dataD
   const { dataDir } = opts;
 
   server.get("/api/vaults", async (request, _reply) => {
-    assertDM(request, (server as any).dmSessionToken);
+    assertDM(request, server.dmSessionToken);
     const vaultsDir = join(dataDir, "vaults");
     try {
       await fs.mkdir(vaultsDir, { recursive: true });
@@ -32,7 +32,7 @@ export async function registerVaultRoutes(server: FastifyInstance, opts: { dataD
   });
 
   server.post<{ Body: { name: string } }>("/api/vaults", async (request, reply) => {
-    assertDM(request, (server as any).dmSessionToken);
+    assertDM(request, server.dmSessionToken);
     const { name } = request.body;
     if (!name || name.trim() === "") {
       reply.code(400);
