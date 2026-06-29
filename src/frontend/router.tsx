@@ -27,6 +27,9 @@ const SettingsPageLazy = React.lazy(() => import("./dm/pages/SettingsPage.js").t
 const PlayerPortalPageLazy = React.lazy(() => import("./player/pages/PlayerPortalPage.js").then((m) => ({ default: m.PlayerPortalPage })));
 const RegisterPageLazy = React.lazy(() => import("./player/pages/RegisterPage.js").then((m) => ({ default: m.RegisterPage })));
 const CanvasPageLazy = React.lazy(() => import("./dm/canvas/pages/CanvasPage.js").then((m) => ({ default: m.CanvasPage })));
+const OnboardingPageLazy = React.lazy(() =>
+  import("./dm/pages/OnboardingPage.js").then((m) => ({ default: m.OnboardingPage }))
+);
 
 function withSuspense(Component: React.ComponentType) {
   return function SuspenseRoute() {
@@ -187,10 +190,18 @@ const canvasRoute = createRoute({
   component: withSuspense(CanvasPageLazy),
 });
 
+// Onboarding wizard — shown to new DMs with zero campaigns
+const onboardingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/onboarding",
+  component: withSuspense(OnboardingPageLazy),
+});
+
 // Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   dmRoute,
+  onboardingRoute,
   dmSetupRoute,
   dmUnlockRoute,
   playerJoinRoute,
