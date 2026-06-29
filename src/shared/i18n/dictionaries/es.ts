@@ -536,6 +536,7 @@ export const es: TranslationDictionary = {
       players: "Jugadores",
       search: "Búsqueda",
       settings: "Ajustes",
+      knowledge: "Conocimiento",
     },
     meta: {
       canvasTitle: "Campaign Canvas",
@@ -571,6 +572,9 @@ export const es: TranslationDictionary = {
       settingsTitle: "Ajustes y exportación",
       settingsEyebrow: "Administración",
       settingsDescription: "Configura campaña, exportaciones, copias y opciones de acceso local.",
+      knowledgeTitle: "Conocimiento",
+      knowledgeEyebrow: "DM",
+      knowledgeDescription: "Visibilidad por jugador",
     },
   },
   searchPage: {
@@ -1060,5 +1064,13 @@ export const es: TranslationDictionary = {
     collapseGroup: "Colapsar grupo",
     expandGroup: "Expandir grupo",
     noSelectedEntityActions: "Selecciona un nodo para ver acciones.",
+  },
+  playerKnowledge: {
+    title: "Conocimiento por jugador",
+    subtitle: "Qué puede ver cada PJ en comparación con lo que sabe el DM",
+    noPlayers: "No hay jugadores en esta campaña todavía",
+    entityColumn: "Entidad",
+    visible: "Visible",
+    hidden: "Oculto",
   },
 };
