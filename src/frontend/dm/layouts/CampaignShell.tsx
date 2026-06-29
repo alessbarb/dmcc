@@ -8,6 +8,7 @@ import { RelationCreateModal } from "../entities/RelationCreateModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { QuickCaptureFAB } from "../capture/QuickCaptureFAB.js";
+import { useKeyboardShortcuts } from "../../shared/hooks/useKeyboardShortcuts.js";
 import {
   Shield,
   Activity,
@@ -119,6 +120,20 @@ export function CampaignShell() {
   const pathname = routerState.location.pathname;
 
   const role = sessionStorage.getItem("dmcc_role");
+
+  const isDM = !role || role === "dm";
+
+  useKeyboardShortcuts(
+    {
+      "g d": () => navigate({ to: `/campaigns/${campaignId}/dashboard` }),
+      "g s": () => navigate({ to: `/campaigns/${campaignId}/session` }),
+      "g e": () => navigate({ to: `/campaigns/${campaignId}/entities` }),
+      "g b": () => navigate({ to: `/campaigns/${campaignId}/boards` }),
+      "/": () => navigate({ to: `/campaigns/${campaignId}/search` }),
+      n: () => setIsEntityModalOpen(true),
+    },
+    isDM
+  );
 
   const [showExitTransition, setShowExitTransition] = useState(true);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
