@@ -1059,4 +1059,13 @@ export const en = {
     expandGroup: "Expand group",
     noSelectedEntityActions: "Select a node to see actions.",
   },
+  factSource: {
+    session: "Session {number}: {title}",
+    sessionUnknown: "Unknown session",
+    preparation: "Preparation",
+    manual: "Manual entry",
+    manualWithNote: "Manual: {note}",
+    player: "Player portal",
+    import: "Imported",
+  },
 } as const;
