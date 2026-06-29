@@ -1,5 +1,17 @@
 import type { FastifyInstance } from "fastify";
 import { randomBytes } from "crypto";
+import { EventStore } from "@core/persistence/eventStore/eventStore.js";
+import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
+import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
+import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
+import { getRuleSystem } from "@core/domain/rules/index.js";
+import { createId } from "@shared/ids.js";
+import {
+  assertDM,
+  getValidatedVaultId,
+  getValidatedCampaignId,
+  hashPlayerToken,
+} from "../auth.js";
 
 type StatusBody = {
   characterEntityId?: string;
@@ -10,13 +22,15 @@ type StatusBody = {
   conditions?: string[];
 };
 
+type ResourceRecovery = "short_rest" | "long_rest" | "manual";
+
 type ResourceBody = {
   resourceId?: string;
   characterEntityId?: string;
   label?: string;
   current?: number;
   max?: number;
-  recovery?: "short_rest" | "long_rest" | "manual";
+  recovery?: ResourceRecovery | string;
 };
 
 type NoteBody = {
@@ -53,16 +67,6 @@ type ResolveProposalBody = {
   status?: "approved" | "rejected";
   dmResolutionNote?: string;
 };
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
-import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
-import {
-  assertDM,
-  getValidatedVaultId,
-  getValidatedCampaignId,
-  hashPlayerToken,
-} from "../auth.js";
 
 export async function registerPlayerPortalRoutes(
   server: FastifyInstance,
@@ -85,14 +89,215 @@ export async function registerPlayerPortalRoutes(
     if (!rawToken) {
       throw Object.assign(new Error("Player token is required"), { statusCode: 401 });
     }
+
     const state = await repository.getCampaignState(campaignId);
     const events = await repository.loadEvents(campaignId);
     const portal = buildPlayerPortalProjection(state, events);
     const token = portal.tokensByHash.get(hashPlayerToken(rawToken));
+
     if (!token || token.revokedAt) {
       throw Object.assign(new Error("Invalid player token"), { statusCode: 401 });
     }
+
     return { state, portal, playerId: token.playerId };
+  }
+
+  function toPublicCharacter(e: any) {
+    return {
+      entityId: e.entityId,
+      title: e.title,
+      subtitle: e.subtitle,
+      summary: e.summary,
+      content: e.content,
+      status: e.status,
+      metadata: e.metadata ?? {},
+    };
+  }
+
+  function getLinkedCharacterIdForPlayer(portal: any, playerId: string, requestedCharacterEntityId?: string): string {
+    const link = portal.linksByPlayerId.get(playerId);
+    if (!link?.characterEntityId) {
+      throw Object.assign(new Error("Player has no linked character yet"), { statusCode: 409 });
+    }
+
+    if (requestedCharacterEntityId && requestedCharacterEntityId !== link.characterEntityId) {
+      throw Object.assign(new Error("Player cannot update another character"), { statusCode: 403 });
+    }
+
+    return link.characterEntityId;
+  }
+
+  function getCharacterLinkedToAnotherPlayer(portal: any, characterEntityId: string, playerId?: string): any | null {
+    for (const link of portal.linksByPlayerId.values()) {
+      if (link.characterEntityId === characterEntityId && link.playerId !== playerId) {
+        return link;
+      }
+    }
+    return null;
+  }
+
+  function assertCharacterCanBeLinked(state: any, portal: any, playerId: string, characterEntityId: string) {
+    const entity = state.entities.get(characterEntityId);
+    if (!entity || entity.entityType !== "player_character" || entity.archived) {
+      throw Object.assign(new Error("Target entity is not an active player_character"), { statusCode: 400 });
+    }
+
+    const visibilityKind = entity.visibility?.kind ?? entity.visibility?.mode;
+    if (visibilityKind !== "party" && visibilityKind !== "public") {
+      throw Object.assign(new Error("Target character is not visible to players"), { statusCode: 400 });
+    }
+
+    const currentPlayerLink = portal.linksByPlayerId.get(playerId);
+    if (currentPlayerLink && currentPlayerLink.characterEntityId !== characterEntityId) {
+      throw Object.assign(new Error("Player already has a linked character"), { statusCode: 409 });
+    }
+
+    const otherLink = getCharacterLinkedToAnotherPlayer(portal, characterEntityId, playerId);
+    if (otherLink) {
+      throw Object.assign(new Error("Character is already linked to another player"), { statusCode: 409 });
+    }
+
+    return entity;
+  }
+
+  function asTrimmedString(value: unknown, fallback = ""): string {
+    return typeof value === "string" && value.trim() ? value.trim() : fallback;
+  }
+
+  function asInteger(value: unknown, fallback: number): number {
+    const parsed = typeof value === "number" ? value : Number.parseInt(String(value ?? ""), 10);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  function normalizeRecovery(value: unknown, fallback: ResourceRecovery = "manual"): ResourceRecovery {
+    if (value === "short_rest" || value === "long_rest" || value === "manual") {
+      return value;
+    }
+
+    const normalized = typeof value === "string" ? value.trim().toLowerCase() : "";
+    if (["short", "short rest", "descanso corto", "corto"].includes(normalized)) return "short_rest";
+    if (["long", "long rest", "descanso largo", "largo"].includes(normalized)) return "long_rest";
+    return fallback;
+  }
+
+  function buildInitialStatusFromMetadata(metadata: Record<string, unknown>) {
+    return {
+      hitPointsCurrent: asInteger(metadata.hitPointsCurrent, asInteger(metadata.hitPointsMax, 10)),
+      hitPointsMax: asInteger(metadata.hitPointsMax, 10),
+      armorClass: asInteger(metadata.armorClass, 10),
+      inspiration: false,
+      conditions: [] as string[],
+    };
+  }
+
+  function buildCharacterEntityFromCreateProposal(options: {
+    campaignId: string;
+    playerId: string;
+    proposalId: string;
+    campaignSystem?: string;
+    proposedChanges: Record<string, unknown>;
+  }) {
+    const { campaignId, playerId, proposalId, campaignSystem, proposedChanges } = options;
+    const rules = getRuleSystem(campaignSystem);
+    const initial = rules.getInitialCharacterMetadata();
+    const nestedMetadata =
+      proposedChanges.metadata && typeof proposedChanges.metadata === "object" && !Array.isArray(proposedChanges.metadata)
+        ? (proposedChanges.metadata as Record<string, unknown>)
+        : {};
+
+    const title = asTrimmedString(proposedChanges.title, asTrimmedString(proposedChanges.name, "Nuevo personaje"));
+    const className = asTrimmedString(proposedChanges.className, asTrimmedString((proposedChanges as any).class, asTrimmedString(nestedMetadata.className, initial.className ?? "Aventurero")));
+    const species = asTrimmedString(proposedChanges.species, asTrimmedString((proposedChanges as any).race, asTrimmedString(nestedMetadata.species, initial.species ?? "Humano")));
+    const background = asTrimmedString(proposedChanges.background, asTrimmedString(nestedMetadata.background, initial.background ?? "Aventurero"));
+    const level = Math.max(1, asInteger(proposedChanges.level ?? nestedMetadata.level, asInteger(initial.level, 1)));
+    const hitPointsMax = Math.max(1, asInteger(proposedChanges.hitPointsMax ?? nestedMetadata.hitPointsMax, asInteger(initial.hitPointsMax, 10)));
+    const hitPointsCurrent = Math.max(0, asInteger(proposedChanges.hitPointsCurrent ?? nestedMetadata.hitPointsCurrent, hitPointsMax));
+    const armorClass = Math.max(0, asInteger(proposedChanges.armorClass ?? nestedMetadata.armorClass, asInteger(initial.armorClass, 10)));
+
+    const metadata = {
+      ...initial,
+      ...nestedMetadata,
+      playerId,
+      isPremade: false,
+      className,
+      species,
+      background,
+      level,
+      armorClass,
+      hitPointsCurrent,
+      hitPointsMax,
+      hitPointsTemp: asInteger(nestedMetadata.hitPointsTemp, asInteger(initial.hitPointsTemp, 0)),
+      hitDice: asTrimmedString(nestedMetadata.hitDice, asTrimmedString(initial.hitDice, "1d8")),
+      speed: asInteger(nestedMetadata.speed, asInteger(initial.speed, 30)),
+      initiative: asInteger(nestedMetadata.initiative, asInteger(initial.initiative, 0)),
+      passivePerception: asInteger(nestedMetadata.passivePerception, asInteger(initial.passivePerception, 10)),
+      passiveInsight: asInteger(nestedMetadata.passiveInsight, asInteger(initial.passiveInsight, 10)),
+      passiveInvestigation: asInteger(nestedMetadata.passiveInvestigation, asInteger(initial.passiveInvestigation, 10)),
+      strength: asInteger(nestedMetadata.strength, asInteger(initial.strength, 10)),
+      dexterity: asInteger(nestedMetadata.dexterity, asInteger(initial.dexterity, 10)),
+      constitution: asInteger(nestedMetadata.constitution, asInteger(initial.constitution, 10)),
+      intelligence: asInteger(nestedMetadata.intelligence, asInteger(initial.intelligence, 10)),
+      wisdom: asInteger(nestedMetadata.wisdom, asInteger(initial.wisdom, 10)),
+      charisma: asInteger(nestedMetadata.charisma, asInteger(initial.charisma, 10)),
+      note: asTrimmedString(proposedChanges.description, asTrimmedString(nestedMetadata.note, "")) || undefined,
+    };
+
+    return {
+      entityId: createId("ent"),
+      campaignId,
+      entityType: "player_character" as const,
+      title,
+      subtitle: `${metadata.species} ${metadata.className}`.trim(),
+      summary: asTrimmedString(proposedChanges.description, `Propuesta creada desde el portal del jugador (${proposalId}).`),
+      content: asTrimmedString(proposedChanges.description) || undefined,
+      status: "active",
+      importance: "high" as const,
+      visibility: { kind: "party" as const },
+      metadata,
+    };
+  }
+
+  async function upsertPlayerResource(options: {
+    repo: CampaignRepository;
+    campaignId: string;
+    playerId: string;
+    portal: any;
+    body: ResourceBody;
+    resourceId?: string;
+  }) {
+    const { repo, campaignId, playerId, portal, body, resourceId: routeResourceId } = options;
+    const characterEntityId = getLinkedCharacterIdForPlayer(portal, playerId, body.characterEntityId);
+    const resourceId = routeResourceId ?? body.resourceId ?? `pres_${randomBytes(8).toString("hex")}`;
+    const sheet = portal.sheetsByPlayerId.get(playerId);
+    const existing = sheet?.resources?.find((r: any) => r.resourceId === resourceId);
+
+    const label = body.label ?? existing?.label;
+    if (!label || !String(label).trim()) {
+      throw Object.assign(new Error("Resource label is required"), { statusCode: 400 });
+    }
+
+    const max = asInteger(body.max, asInteger(existing?.max, 0));
+    const current = asInteger(body.current, asInteger(existing?.current, max));
+    const recovery = normalizeRecovery(body.recovery, normalizeRecovery(existing?.recovery, "manual"));
+
+    await repo.executeCommand(campaignId, {
+      type: "UpsertPlayerResource",
+      campaignId,
+      actorId: playerId,
+      playerId,
+      characterEntityId,
+      resource: {
+        resourceId,
+        label: String(label).trim(),
+        current,
+        max,
+        recovery,
+      },
+      updatedBy: "player",
+      updatedAt: new Date().toISOString(),
+    });
+
+    return resourceId;
   }
 
   // GET /api/campaigns/:campaignId/player-portal/state
@@ -108,27 +313,59 @@ export async function registerPlayerPortalRoutes(
         const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
 
         const link = portal.linksByPlayerId.get(playerId) ?? null;
+        const player = state.players.get(playerId) ?? null;
         const linkedCharacter = link
           ? (() => {
               const e = state.entities.get(link.characterEntityId);
-              return e ? { entityId: e.entityId, title: e.title } : null;
+              return e ? toPublicCharacter(e) : null;
             })()
           : null;
+        const linkedCharacterIds = new Set(
+          Array.from(portal.linksByPlayerId.values()).map((item: any) => item.characterEntityId)
+        );
         const availableCharacters = Array.from(state.entities.values())
           .filter(
             (e: any) =>
               e.entityType === "player_character" &&
               !e.archived &&
+              !linkedCharacterIds.has(e.entityId) &&
               (e.visibility?.kind === "party" || e.visibility?.kind === "public")
           )
-          .map((e: any) => ({ entityId: e.entityId, title: e.title }));
+          .map(toPublicCharacter);
+
+        const storedSheet = portal.sheetsByPlayerId.get(playerId) ?? null;
+        const fallbackSheet = link && linkedCharacter
+          ? {
+              campaignId,
+              playerId,
+              characterEntityId: link.characterEntityId,
+              status: buildInitialStatusFromMetadata(linkedCharacter.metadata ?? {}),
+              resources: [],
+              updatedBy: "system" as const,
+              updatedAt: link.updatedAt ?? link.createdAt ?? "",
+            }
+          : null;
 
         return {
+          campaign: state.campaign
+            ? {
+                campaignId: state.campaign.campaignId ?? campaignId,
+                title: state.campaign.title ?? campaignId,
+                system: state.campaign.system,
+              }
+            : { campaignId, title: campaignId },
+          player: player
+            ? {
+                playerId: player.playerId,
+                displayName: player.displayName ?? player.name ?? player.playerId,
+                color: player.color,
+              }
+            : { playerId, displayName: playerId },
           playerId,
           link,
           linkedCharacter,
           availableCharacters,
-          sheet: portal.sheetsByPlayerId.get(playerId) ?? null,
+          sheet: storedSheet ?? fallbackSheet,
           notes: portal.notesByPlayerId.get(playerId) ?? [],
           objectives: portal.objectivesByPlayerId.get(playerId) ?? [],
           proposals: portal.proposalsByPlayerId.get(playerId) ?? [],
@@ -155,21 +392,22 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
         const body = request.body;
+        const characterEntityId = getLinkedCharacterIdForPlayer(portal, playerId, body.characterEntityId);
 
         await repo.executeCommand(campaignId, {
           type: "UpdatePlayerLiveStatus",
-          campaignId: campaignId,
+          campaignId,
           actorId: playerId,
           playerId,
-          characterEntityId: body.characterEntityId!,
+          characterEntityId,
           status: {
-            hitPointsCurrent: body.hitPointsCurrent,
-            hitPointsMax: body.hitPointsMax,
-            armorClass: body.armorClass,
-            inspiration: body.inspiration,
-            conditions: body.conditions ?? [],
+            ...(body.hitPointsCurrent !== undefined && { hitPointsCurrent: body.hitPointsCurrent }),
+            ...(body.hitPointsMax !== undefined && { hitPointsMax: body.hitPointsMax }),
+            ...(body.armorClass !== undefined && { armorClass: body.armorClass }),
+            ...(body.inspiration !== undefined && { inspiration: body.inspiration }),
+            ...(body.conditions !== undefined && { conditions: body.conditions }),
           },
           updatedBy: "player",
           updatedAt: new Date().toISOString(),
@@ -197,26 +435,8 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
-        const body = request.body;
-        const resourceId = body.resourceId ?? `pres_${randomBytes(8).toString("hex")}`;
-
-        await repo.executeCommand(campaignId, {
-          type: "UpsertPlayerResource",
-          campaignId: campaignId,
-          actorId: playerId,
-          playerId,
-          characterEntityId: body.characterEntityId!,
-          resource: {
-            resourceId,
-            label: body.label!,
-            current: body.current!,
-            max: body.max!,
-            recovery: body.recovery,
-          },
-          updatedBy: "player",
-          updatedAt: new Date().toISOString(),
-        });
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const resourceId = await upsertPlayerResource({ repo, campaignId, playerId, portal, body: request.body });
 
         reply.code(201);
         return { ok: true, resourceId };
@@ -241,25 +461,14 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
-        const body = request.body;
-        const { resourceId } = request.params;
-
-        await repo.executeCommand(campaignId, {
-          type: "UpsertPlayerResource",
-          campaignId: campaignId,
-          actorId: playerId,
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        await upsertPlayerResource({
+          repo,
+          campaignId,
           playerId,
-          characterEntityId: body.characterEntityId!,
-          resource: {
-            resourceId,
-            label: body.label!,
-            current: body.current!,
-            max: body.max!,
-            recovery: body.recovery,
-          },
-          updatedBy: "player",
-          updatedAt: new Date().toISOString(),
+          portal,
+          body: request.body,
+          resourceId: request.params.resourceId,
         });
 
         return { ok: true };
@@ -298,7 +507,7 @@ export async function registerPlayerPortalRoutes(
 
         await repo.executeCommand(campaignId, {
           type: "CreatePlayerPortalNote",
-          campaignId: campaignId,
+          campaignId,
           actorId: playerId,
           playerId,
           noteId,
@@ -336,7 +545,7 @@ export async function registerPlayerPortalRoutes(
         const body = request.body;
 
         const playerNotes = portal.notesByPlayerId.get(playerId) ?? [];
-        const ownsNote = playerNotes.some((n) => n.noteId === request.params.noteId);
+        const ownsNote = playerNotes.some((n: any) => n.noteId === request.params.noteId);
         if (!ownsNote) {
           reply.code(404);
           return { error: "Note not found" };
@@ -349,7 +558,7 @@ export async function registerPlayerPortalRoutes(
 
         await repo.executeCommand(campaignId, {
           type: "UpdatePlayerPortalNote",
-          campaignId: campaignId,
+          campaignId,
           actorId: playerId,
           playerId,
           noteId: request.params.noteId,
@@ -397,7 +606,7 @@ export async function registerPlayerPortalRoutes(
 
         await repo.executeCommand(campaignId, {
           type: "CreatePlayerPortalObjective",
-          campaignId: campaignId,
+          campaignId,
           actorId: playerId,
           playerId,
           objectiveId,
@@ -437,7 +646,7 @@ export async function registerPlayerPortalRoutes(
         const body = request.body;
 
         const playerObjectives = portal.objectivesByPlayerId.get(playerId) ?? [];
-        const ownsObjective = playerObjectives.some((o) => o.objectiveId === request.params.objectiveId);
+        const ownsObjective = playerObjectives.some((o: any) => o.objectiveId === request.params.objectiveId);
         if (!ownsObjective) {
           reply.code(404);
           return { error: "Objective not found" };
@@ -450,7 +659,7 @@ export async function registerPlayerPortalRoutes(
 
         await repo.executeCommand(campaignId, {
           type: "UpdatePlayerPortalObjective",
-          campaignId: campaignId,
+          campaignId,
           actorId: playerId,
           playerId,
           objectiveId: request.params.objectiveId,
@@ -486,20 +695,83 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
+        const state = await repo.getCampaignState(campaignId);
+        const events = await repo.loadEvents(campaignId);
+        const portal = buildPlayerPortalProjection(state, events);
         const now = new Date().toISOString();
+
+        if (!body.playerId || !body.characterEntityId) {
+          reply.code(400);
+          return { error: "playerId and characterEntityId are required" };
+        }
+
+        assertCharacterCanBeLinked(state, portal, body.playerId, body.characterEntityId);
 
         await repo.executeCommand(campaignId, {
           type: "LinkPlayerCharacter",
-          campaignId: campaignId,
+          campaignId,
           actorId: "usr_dm",
-          playerId: body.playerId!,
-          characterEntityId: body.characterEntityId!,
+          playerId: body.playerId,
+          characterEntityId: body.characterEntityId,
           ownership: body.ownership ?? "campaign_premade",
           syncMode: body.syncMode ?? "live_player_editable",
           createdAt: now,
         });
 
+        const character = state.entities.get(body.characterEntityId);
+        await repo.executeCommand(campaignId, {
+          type: "UpdatePlayerLiveStatus",
+          campaignId,
+          actorId: "usr_dm",
+          playerId: body.playerId,
+          characterEntityId: body.characterEntityId,
+          status: buildInitialStatusFromMetadata(character?.metadata ?? {}),
+          updatedBy: "dm",
+          updatedAt: now,
+        });
+
         reply.code(201);
+        return { ok: true };
+      } catch (err: any) {
+        if (err.statusCode) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
+        reply.code(500);
+        return { error: err.message };
+      }
+    }
+  );
+
+  // DELETE /api/campaigns/:campaignId/player-portal/links/:playerId (DM auth)
+  server.delete<{ Params: { campaignId: string; playerId: string } }>(
+    "/api/campaigns/:campaignId/player-portal/links/:playerId",
+    async (request, reply) => {
+      assertDM(request, server.dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+      const { playerId } = request.params;
+
+      try {
+        const repo = getRepository(vaultId);
+        const state = await repo.getCampaignState(campaignId);
+        const events = await repo.loadEvents(campaignId);
+        const portal = buildPlayerPortalProjection(state, events);
+        const link = portal.linksByPlayerId.get(playerId);
+        if (!link) {
+          reply.code(404);
+          return { error: "Player character link not found" };
+        }
+
+        await repo.executeCommand(campaignId, {
+          type: "UnlinkPlayerCharacter",
+          campaignId,
+          actorId: "usr_dm",
+          playerId,
+          characterEntityId: link.characterEntityId,
+          removedAt: new Date().toISOString(),
+        });
+
         return { ok: true };
       } catch (err: any) {
         if (err.statusCode) {
@@ -522,25 +794,21 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { state, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
         const body = request.body;
+        const kind = body.kind ?? "update_character_core";
 
-        // Validate link_request target is a visible player_character
-        if (body.kind === "link_request") {
+        if (kind === "link_request") {
           if (!body.targetCharacterEntityId) {
             reply.code(400);
             return { error: "link_request requires targetCharacterEntityId" };
           }
-          const targetEntity = state.entities.get(body.targetCharacterEntityId);
-          if (
-            !targetEntity ||
-            targetEntity.entityType !== "player_character" ||
-            targetEntity.archived ||
-            !["party", "public"].includes(targetEntity.visibility?.kind)
-          ) {
-            reply.code(400);
-            return { error: "Target entity is not a visible player_character" };
-          }
+          assertCharacterCanBeLinked(state, portal, playerId, body.targetCharacterEntityId);
+        }
+
+        if (kind === "create_character" && portal.linksByPlayerId.has(playerId)) {
+          reply.code(409);
+          return { error: "Player already has a linked character" };
         }
 
         const proposalId = `pprop_${randomBytes(8).toString("hex")}`;
@@ -548,12 +816,12 @@ export async function registerPlayerPortalRoutes(
 
         await repo.executeCommand(campaignId, {
           type: "CreatePlayerCharacterProposal",
-          campaignId: campaignId,
+          campaignId,
           actorId: playerId,
           playerId,
           proposalId,
           targetCharacterEntityId: body.targetCharacterEntityId,
-          kind: body.kind ?? "update_character_core",
+          kind,
           proposedChanges: body.proposedChanges ?? {},
           createdAt: now,
         });
@@ -587,7 +855,6 @@ export async function registerPlayerPortalRoutes(
         const events = await repo.loadEvents(campaignId);
         const portal = buildPlayerPortalProjection(state, events);
 
-        // Find proposal across all players
         let foundProposal: any = undefined;
         for (const proposals of portal.proposalsByPlayerId.values()) {
           for (const p of proposals) {
@@ -622,9 +889,16 @@ export async function registerPlayerPortalRoutes(
               linkedAt: string;
             }
           | undefined;
+        let createdCharacterId: string | undefined;
+        let createdCharacterMetadata: Record<string, unknown> | undefined;
 
-        if (status === "approved" && foundProposal.targetCharacterEntityId) {
+        if (status === "approved") {
           if (foundProposal.kind === "link_request") {
+            if (!foundProposal.targetCharacterEntityId) {
+              reply.code(400);
+              return { error: "link_request proposal has no target character" };
+            }
+            assertCharacterCanBeLinked(state, portal, foundProposal.playerId, foundProposal.targetCharacterEntityId);
             linkUpdate = {
               playerId: foundProposal.playerId,
               characterEntityId: foundProposal.targetCharacterEntityId,
@@ -632,9 +906,49 @@ export async function registerPlayerPortalRoutes(
               syncMode: "live_player_editable",
               linkedAt: now,
             };
-          } else {
+            createdCharacterMetadata = state.entities.get(foundProposal.targetCharacterEntityId)?.metadata ?? {};
+          } else if (foundProposal.kind === "create_character") {
+            if (portal.linksByPlayerId.has(foundProposal.playerId)) {
+              reply.code(409);
+              return { error: "Player already has a linked character" };
+            }
+            const character = buildCharacterEntityFromCreateProposal({
+              campaignId,
+              playerId: foundProposal.playerId,
+              proposalId,
+              campaignSystem: state.campaign?.system,
+              proposedChanges: foundProposal.proposedChanges ?? {},
+            });
+            createdCharacterId = character.entityId;
+            createdCharacterMetadata = character.metadata;
+
+            await repo.executeCommand(campaignId, {
+              type: "CreateEntity",
+              campaignId,
+              actorId: "usr_dm",
+              entityId: character.entityId,
+              entityType: "player_character" as const,
+              title: character.title,
+              subtitle: character.subtitle,
+              summary: character.summary,
+              content: character.content,
+              status: character.status,
+              importance: "high" as const,
+              visibility: { kind: "party" as const },
+              metadata: character.metadata,
+            });
+
+            linkUpdate = {
+              playerId: foundProposal.playerId,
+              characterEntityId: character.entityId,
+              ownership: "player_owned",
+              syncMode: "live_player_editable",
+              linkedAt: now,
+            };
+          } else if (foundProposal.kind === "update_character_core") {
+            const linkedCharacterId = getLinkedCharacterIdForPlayer(portal, foundProposal.playerId, foundProposal.targetCharacterEntityId);
             entityUpdate = {
-              entityId: foundProposal.targetCharacterEntityId,
+              entityId: linkedCharacterId,
               updates: foundProposal.proposedChanges,
             };
           }
@@ -642,7 +956,7 @@ export async function registerPlayerPortalRoutes(
 
         await repo.executeCommand(campaignId, {
           type: "ResolvePlayerCharacterProposal",
-          campaignId: campaignId,
+          campaignId,
           actorId: "usr_dm",
           proposal: foundProposal,
           status,
@@ -652,7 +966,20 @@ export async function registerPlayerPortalRoutes(
           linkUpdate,
         });
 
-        return { ok: true };
+        if (status === "approved" && linkUpdate) {
+          await repo.executeCommand(campaignId, {
+            type: "UpdatePlayerLiveStatus",
+            campaignId,
+            actorId: "usr_dm",
+            playerId: linkUpdate.playerId,
+            characterEntityId: linkUpdate.characterEntityId,
+            status: buildInitialStatusFromMetadata(createdCharacterMetadata ?? {}),
+            updatedBy: "dm",
+            updatedAt: now,
+          });
+        }
+
+        return { ok: true, characterEntityId: createdCharacterId ?? linkUpdate?.characterEntityId };
       } catch (err: any) {
         if (err.statusCode) {
           reply.code(err.statusCode);
@@ -677,8 +1004,30 @@ export async function registerPlayerPortalRoutes(
         const state = await repo.getCampaignState(campaignId);
         const events = await repo.loadEvents(campaignId);
         const portal = buildPlayerPortalProjection(state, events);
+        const linkedCharacterIds = new Set(
+          Array.from(portal.linksByPlayerId.values()).map((link: any) => link.characterEntityId)
+        );
+        const availableCharacters = Array.from(state.entities.values())
+          .filter(
+            (e: any) =>
+              e.entityType === "player_character" &&
+              !e.archived &&
+              !linkedCharacterIds.has(e.entityId) &&
+              (e.visibility?.kind === "party" || e.visibility?.kind === "public")
+          )
+          .map(toPublicCharacter);
 
-        return { players: portal.dmSummaries };
+        const players = portal.dmSummaries.map((summary) => {
+          const linkedEntity = summary.link?.characterEntityId
+            ? state.entities.get(summary.link.characterEntityId)
+            : null;
+          return {
+            ...summary,
+            linkedCharacter: linkedEntity ? toPublicCharacter(linkedEntity) : null,
+          };
+        });
+
+        return { players, availableCharacters };
       } catch (err: any) {
         if (err.statusCode) {
           reply.code(err.statusCode);

@@ -19,12 +19,154 @@ import { logoutPlayer } from "@frontend/shared/auth/authClient.js";
 
 type PortalTab = "summary" | "character" | "resources" | "diary" | "objectives" | "history";
 
+type CharacterMetadata = Record<string, any>;
+
+type EffectiveStatus = {
+  hitPointsCurrent?: number;
+  hitPointsMax?: number;
+  armorClass?: number;
+  inspiration?: boolean;
+  conditions: string[];
+};
+
+const ABILITIES: Array<{ key: string; label: string; short: string }> = [
+  { key: "strength", label: "Fuerza", short: "FUE" },
+  { key: "dexterity", label: "Destreza", short: "DES" },
+  { key: "constitution", label: "Constitución", short: "CON" },
+  { key: "intelligence", label: "Inteligencia", short: "INT" },
+  { key: "wisdom", label: "Sabiduría", short: "SAB" },
+  { key: "charisma", label: "Carisma", short: "CAR" },
+];
+
+const KNOWN_LABELS: Record<string, string> = {
+  str: "Fuerza",
+  strength: "Fuerza",
+  dex: "Destreza",
+  dexterity: "Destreza",
+  con: "Constitución",
+  constitution: "Constitución",
+  int: "Inteligencia",
+  intelligence: "Inteligencia",
+  wis: "Sabiduría",
+  wisdom: "Sabiduría",
+  cha: "Carisma",
+  charisma: "Carisma",
+  acrobatics: "Acrobacias",
+  animal_handling: "Trato con animales",
+  arcana: "Arcano",
+  athletics: "Atletismo",
+  deception: "Engaño",
+  history: "Historia",
+  insight: "Perspicacia",
+  intimidation: "Intimidación",
+  investigation: "Investigación",
+  medicine: "Medicina",
+  nature: "Naturaleza",
+  perception: "Percepción",
+  performance: "Interpretación",
+  persuasion: "Persuasión",
+  religion: "Religión",
+  sleight_of_hand: "Juego de manos",
+  stealth: "Sigilo",
+  survival: "Supervivencia",
+  comun: "Común",
+  común: "Común",
+  elfico: "Élfico",
+  enano: "Enano",
+  mediano: "Mediano",
+  celestial: "Celestial",
+};
+
+function asNumber(value: unknown): number | undefined {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+  return undefined;
+}
+
+function asList(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
+  }
+  if (typeof value === "string") {
+    return value.split(",").map((item) => item.trim()).filter(Boolean);
+  }
+  return [];
+}
+
+function labelValue(value: string): string {
+  const key = value.trim().toLowerCase();
+  return KNOWN_LABELS[key] ?? value.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function abilityModifier(score: number | undefined): string {
+  if (score === undefined) return "—";
+  const modifier = Math.floor((score - 10) / 2);
+  return modifier >= 0 ? `+${modifier}` : String(modifier);
+}
+
+function signedNumber(value: unknown): string {
+  const parsed = asNumber(value);
+  if (parsed === undefined) return "—";
+  return parsed >= 0 ? `+${parsed}` : String(parsed);
+}
+
+function buildEffectiveStatus(status: any, metadata: CharacterMetadata): EffectiveStatus {
+  return {
+    hitPointsCurrent: asNumber(status?.hitPointsCurrent) ?? asNumber(metadata.hitPointsCurrent),
+    hitPointsMax: asNumber(status?.hitPointsMax) ?? asNumber(metadata.hitPointsMax),
+    armorClass: asNumber(status?.armorClass) ?? asNumber(metadata.armorClass),
+    inspiration: Boolean(status?.inspiration),
+    conditions: asList(status?.conditions),
+  };
+}
+
+function CharacterFact({ label, value }: { label: string; value: React.ReactNode }) {
+  const empty = value === undefined || value === null || value === "";
+  return (
+    <div className="card" style={{ padding: "14px", minHeight: "74px" }}>
+      <div style={{ fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", fontWeight: 800 }}>
+        {label}
+      </div>
+      <div style={{ marginTop: "6px", fontSize: "1rem", fontWeight: 750, color: "var(--text-main)" }}>
+        {empty ? "—" : value}
+      </div>
+    </div>
+  );
+}
+
+function PillList({ items, empty = "—" }: { items: string[]; empty?: string }) {
+  if (items.length === 0) {
+    return <span style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>{empty}</span>;
+  }
+
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+      {items.map((item) => (
+        <span key={item} className="badge badge-default" style={{ fontSize: "0.72rem" }}>
+          {labelValue(item)}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function CharacterInfoBlock({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="card" style={{ padding: "18px" }}>
+      <h4 style={{ fontWeight: 800, marginBottom: "14px" }}>{title}</h4>
+      {children}
+    </div>
+  );
+}
+
 export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const {
     campaignState,
-    selectCampaign,
     playerPortalState,
     loadPlayerPortalState,
     updatePlayerPortalStatus,
@@ -34,6 +176,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     createPlayerPortalObjective,
     updatePlayerPortalObjective,
     createPlayerCharacterProposal,
+    error,
   } = useCampaignStore();
 
   const [activeTab, setActiveTab] = useState<PortalTab>("summary");
@@ -53,7 +196,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     label: "",
     current: "",
     max: "",
-    recovery: "",
+    recovery: "manual" as "manual" | "short_rest" | "long_rest",
   });
 
   // Resource inline edits: resourceId -> { current, max }
@@ -82,7 +225,11 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const [createCharForm, setCreateCharForm] = useState({
     name: "",
     className: "",
+    species: "",
+    background: "",
     level: "1",
+    armorClass: "10",
+    hitPointsMax: "10",
     description: "",
   });
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -95,53 +242,67 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     visibility: "private" as "private" | "dm_visible",
   });
 
-  const playerId = sessionStorage.getItem("dmcc_playerId");
+  const playerId = playerPortalState?.playerId ?? sessionStorage.getItem("dmcc_playerId");
 
   useEffect(() => {
-    void selectCampaign(campaignId);
+    useCampaignStore.setState({ activeCampaignId: campaignId });
     void loadPlayerPortalState(campaignId);
-  }, [campaignId, selectCampaign, loadPlayerPortalState]);
+  }, [campaignId, loadPlayerPortalState]);
 
-  // Derive portal data with safe defaults
+  // Derived linked character info. Player portal must not require the protected DM campaign snapshot.
+  const linkedCharacter: { entityId: string; title: string; metadata?: any; status?: string; subtitle?: string; summary?: string; content?: string } | null =
+    playerPortalState?.linkedCharacter ?? null;
+  const availableCharacters: Array<{ entityId: string; title: string; metadata?: any; status?: string; subtitle?: string; summary?: string }> =
+    playerPortalState?.availableCharacters ?? [];
+  const player =
+    playerPortalState?.player ??
+    campaignState?.players?.find((p) => p.playerId === playerId) ??
+    null;
+  const myCharacter =
+    linkedCharacter ??
+    campaignState?.entities?.find(
+      (e) => e.entityType === "player_character" && e.metadata?.playerId === playerId
+    );
+  const characterMetadata: CharacterMetadata = (myCharacter?.metadata ?? linkedCharacter?.metadata ?? {}) as CharacterMetadata;
+
+  // Derive portal data with safe defaults. Live state overrides static sheet data, but premade metadata fills gaps.
   const sheet = playerPortalState?.sheet;
-  const status = sheet?.status ?? { conditions: [] };
+  const status = buildEffectiveStatus(sheet?.status, characterMetadata);
   const resources: any[] = sheet?.resources ?? [];
   const notes: any[] = playerPortalState?.notes ?? [];
   const objectives: any[] = playerPortalState?.objectives ?? [];
+  const summaryText = myCharacter?.summary ?? linkedCharacter?.summary ?? characterMetadata.note ?? "";
+  const characterContent = (myCharacter as any)?.content ?? linkedCharacter?.content ?? characterMetadata.note ?? "";
+  const savingThrows = asList(characterMetadata.savingThrows);
+  const skills = asList(characterMetadata.skills);
+  const languages = asList(characterMetadata.languages);
+  const feats = asList(characterMetadata.feats);
+  const keyTraits = asList(characterMetadata.keyTraits);
+  const personalGoals = asList(characterMetadata.personalGoals);
+  const importantItems = asList(characterMetadata.importantItems);
 
   // Sync char form when portal state loads
   useEffect(() => {
-    if (sheet) {
+    if (sheet || myCharacter) {
       setCharForm({
-        hitPointsCurrent: String(status?.hitPointsCurrent ?? ""),
-        hitPointsMax: String(status?.hitPointsMax ?? ""),
-        armorClass: String(status?.armorClass ?? ""),
-        inspiration: status?.inspiration ?? false,
-        conditions: (status?.conditions ?? []).join(", "),
+        hitPointsCurrent: String(status.hitPointsCurrent ?? ""),
+        hitPointsMax: String(status.hitPointsMax ?? ""),
+        armorClass: String(status.armorClass ?? ""),
+        inspiration: status.inspiration ?? false,
+        conditions: status.conditions.join(", "),
       });
     }
-  }, [playerPortalState]);
-
-  const player = campaignState?.players?.find((p) => p.playerId === playerId);
-  const myCharacter = campaignState?.entities?.find(
-    (e) => e.entityType === "player_character" && e.metadata?.playerId === playerId
-  );
+  }, [playerPortalState, myCharacter?.entityId]);
 
   // Poll every 10s when no character is linked yet
   useEffect(() => {
-    const noLink = !playerPortalState?.link && !myCharacter;
+    const noLink = !playerPortalState?.link && !linkedCharacter;
     if (!noLink) return;
     const interval = setInterval(() => {
       void loadPlayerPortalState(campaignId);
     }, 10000);
     return () => clearInterval(interval);
-  }, [playerPortalState?.link, myCharacter, campaignId, loadPlayerPortalState]);
-
-  // Derived linked character info
-  const linkedCharacter: { entityId: string; title: string } | null =
-    playerPortalState?.linkedCharacter ?? null;
-  const availableCharacters: { entityId: string; title: string }[] =
-    playerPortalState?.availableCharacters ?? [];
+  }, [playerPortalState?.link, linkedCharacter, campaignId, loadPlayerPortalState]);
   interface PortalProposal {
     proposalId: string;
     kind: "link_request" | "create_character" | "update_character_core";
@@ -204,9 +365,9 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
       label: resourceForm.label.trim(),
       current: parseInt(resourceForm.current) || 0,
       max: parseInt(resourceForm.max) || 0,
-      recovery: resourceForm.recovery.trim() || undefined,
+      recovery: resourceForm.recovery,
     });
-    setResourceForm({ label: "", current: "", max: "", recovery: "" });
+    setResourceForm({ label: "", current: "", max: "", recovery: "manual" });
     setShowResourceForm(false);
   };
 
@@ -279,11 +440,16 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
       proposedChanges: {
         title: createCharForm.name.trim(),
         className: createCharForm.className.trim(),
+        species: createCharForm.species.trim(),
+        background: createCharForm.background.trim(),
         level: parseInt(createCharForm.level, 10) || 1,
+        armorClass: parseInt(createCharForm.armorClass, 10) || 10,
+        hitPointsMax: parseInt(createCharForm.hitPointsMax, 10) || 10,
+        hitPointsCurrent: parseInt(createCharForm.hitPointsMax, 10) || 10,
         description: createCharForm.description.trim(),
       },
     });
-    setCreateCharForm({ name: "", className: "", level: "1", description: "" });
+    setCreateCharForm({ name: "", className: "", species: "", background: "", level: "1", armorClass: "10", hitPointsMax: "10", description: "" });
     setShowCreateCharForm(false);
   };
 
@@ -296,7 +462,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     }
   };
 
-  if (!campaignState) {
+  if (!playerPortalState) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", color: "var(--text-muted)" }}>
         Cargando portal del jugador...
@@ -327,7 +493,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
       {/* Sidebar */}
       <aside className="sidebar" style={{ width: "260px", flexShrink: 0 }}>
         <div className="sidebar-header">
-          <div className="sidebar-logo">{campaignState.campaign?.title}</div>
+          <div className="sidebar-logo">{campaignState?.campaign?.title ?? playerPortalState.campaign?.title ?? campaignId}</div>
           <div className="sidebar-logo-subtitle">Portal del Jugador</div>
         </div>
 
@@ -378,22 +544,56 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
         </div>
 
         <div className="content-body" style={{ padding: "32px", maxWidth: "900px", width: "100%", margin: "0 auto" }}>
+          {error && (
+            <div className="card" style={{ padding: "12px 14px", marginBottom: "16px", border: "1px solid rgba(239,68,68,0.45)", background: "rgba(239,68,68,0.08)", color: "#fca5a5", fontSize: "0.85rem" }}>
+              {error}
+            </div>
+          )}
 
           {/* ── TAB: Summary ──────────────────────────────────────────────── */}
           {activeTab === "summary" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
               {/* Character header */}
               {(myCharacter || linkedCharacter) ? (
-                <div className="card" style={{ display: "flex", gap: "20px", padding: "24px", background: "linear-gradient(135deg, hsla(255, 85%, 65%, 0.1), transparent)" }}>
-                  <div style={{ flexGrow: 1 }}>
-                    <h2 style={{ fontSize: "1.4rem", fontWeight: "800" }}>
-                      {myCharacter?.title ?? linkedCharacter?.title}
-                    </h2>
-                    <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginTop: "4px" }}>
-                      Nivel {myCharacter?.metadata?.level ?? 1} {myCharacter?.metadata?.species ?? ""} {myCharacter?.metadata?.className ?? ""}
-                    </p>
+                <>
+                  <div className="card" style={{ display: "flex", gap: "20px", padding: "24px", background: "linear-gradient(135deg, hsla(255, 85%, 65%, 0.14), transparent)" }}>
+                    <div style={{ flexGrow: 1 }}>
+                      <h2 style={{ fontSize: "1.4rem", fontWeight: "800" }}>
+                        {myCharacter?.title ?? linkedCharacter?.title}
+                      </h2>
+                      <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginTop: "4px" }}>
+                        Nivel {characterMetadata.level ?? 1} {characterMetadata.species ?? ""} {characterMetadata.className ?? ""}
+                        {characterMetadata.subclass ? ` · ${characterMetadata.subclass}` : ""}
+                      </p>
+                      {(summaryText || characterMetadata.background) && (
+                        <p style={{ color: "var(--text-main)", fontSize: "0.9rem", lineHeight: 1.6, marginTop: "12px", maxWidth: "720px" }}>
+                          {summaryText || `Trasfondo: ${characterMetadata.background}`}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
+
+                  <div className="grid grid-cols-3" style={{ gap: "16px" }}>
+                    <CharacterFact label="Clase" value={characterMetadata.className} />
+                    <CharacterFact label="Especie" value={characterMetadata.species} />
+                    <CharacterFact label="Trasfondo" value={characterMetadata.background} />
+                  </div>
+
+                  <CharacterInfoBlock title="Características">
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(6, minmax(0, 1fr))", gap: "10px" }}>
+                      {ABILITIES.map((ability) => {
+                        const score = asNumber(characterMetadata[ability.key]);
+                        return (
+                          <div key={ability.key} style={{ padding: "12px", borderRadius: "var(--radius-sm)", background: "var(--surface-2)", border: "1px solid var(--border-color)", textAlign: "center" }}>
+                            <div style={{ fontSize: "0.68rem", fontWeight: 800, color: "var(--text-muted)" }}>{ability.short}</div>
+                            <div style={{ fontSize: "1.35rem", fontWeight: 850, marginTop: "4px" }}>{score ?? "—"}</div>
+                            <div style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>{abilityModifier(score)}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </CharacterInfoBlock>
+                </>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                   {/* No character yet — selection/request UI */}
@@ -488,22 +688,54 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                               onChange={(e) => setCreateCharForm((f) => ({ ...f, name: e.target.value }))}
                               required
                             />
-                            <input
-                              className="input"
-                              type="text"
-                              placeholder="Clase (ej. Wizard, Fighter)"
-                              value={createCharForm.className}
-                              onChange={(e) => setCreateCharForm((f) => ({ ...f, className: e.target.value }))}
-                            />
-                            <input
-                              className="input"
-                              type="number"
-                              placeholder="Nivel"
-                              min="1"
-                              max="20"
-                              value={createCharForm.level}
-                              onChange={(e) => setCreateCharForm((f) => ({ ...f, level: e.target.value }))}
-                            />
+                            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "8px" }}>
+                              <input
+                                className="input"
+                                type="text"
+                                placeholder="Clase *"
+                                value={createCharForm.className}
+                                onChange={(e) => setCreateCharForm((f) => ({ ...f, className: e.target.value }))}
+                              />
+                              <input
+                                className="input"
+                                type="text"
+                                placeholder="Especie *"
+                                value={createCharForm.species}
+                                onChange={(e) => setCreateCharForm((f) => ({ ...f, species: e.target.value }))}
+                              />
+                              <input
+                                className="input"
+                                type="text"
+                                placeholder="Trasfondo *"
+                                value={createCharForm.background}
+                                onChange={(e) => setCreateCharForm((f) => ({ ...f, background: e.target.value }))}
+                              />
+                              <input
+                                className="input"
+                                type="number"
+                                placeholder="Nivel"
+                                min="1"
+                                max="20"
+                                value={createCharForm.level}
+                                onChange={(e) => setCreateCharForm((f) => ({ ...f, level: e.target.value }))}
+                              />
+                              <input
+                                className="input"
+                                type="number"
+                                placeholder="CA"
+                                min="0"
+                                value={createCharForm.armorClass}
+                                onChange={(e) => setCreateCharForm((f) => ({ ...f, armorClass: e.target.value }))}
+                              />
+                              <input
+                                className="input"
+                                type="number"
+                                placeholder="PG máximos"
+                                min="1"
+                                value={createCharForm.hitPointsMax}
+                                onChange={(e) => setCreateCharForm((f) => ({ ...f, hitPointsMax: e.target.value }))}
+                              />
+                            </div>
                             <textarea
                               className="input"
                               placeholder={t("players.dmNotes")}
@@ -519,7 +751,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                               <button
                                 type="button"
                                 className="btn btn-secondary btn-sm"
-                                onClick={() => { setShowCreateCharForm(false); setCreateCharForm({ name: "", className: "", level: "1", description: "" }); }}
+                                onClick={() => { setShowCreateCharForm(false); setCreateCharForm({ name: "", className: "", species: "", background: "", level: "1", armorClass: "10", hitPointsMax: "10", description: "" }); }}
                               >
                                 Cancelar
                               </button>
@@ -624,81 +856,194 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
           {/* ── TAB: Character / State ─────────────────────────────────────── */}
           {activeTab === "character" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-              {(myCharacter || playerPortalState?.link) && (
+              {(myCharacter || linkedCharacter) ? (
+                <>
+                  <div className="card" style={{ padding: "24px", background: "linear-gradient(135deg, hsla(255, 85%, 65%, 0.12), transparent)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: "16px", alignItems: "flex-start", flexWrap: "wrap" }}>
+                      <div>
+                        <h2 style={{ fontSize: "1.55rem", fontWeight: "850", marginBottom: "4px" }}>
+                          {myCharacter?.title ?? linkedCharacter?.title}
+                        </h2>
+                        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+                          Nivel {characterMetadata.level ?? 1} {characterMetadata.species ?? ""} {characterMetadata.className ?? ""}
+                          {characterMetadata.subclass ? ` · ${characterMetadata.subclass}` : ""}
+                        </p>
+                      </div>
+                      {characterMetadata.isPremade !== undefined && (
+                        <span className="badge badge-default">
+                          {characterMetadata.isPremade ? "Premade de campaña" : "Personaje propio"}
+                        </span>
+                      )}
+                    </div>
+                    {(summaryText || characterContent || characterMetadata.note) && (
+                      <div style={{ marginTop: "16px", color: "var(--text-main)", fontSize: "0.92rem", lineHeight: 1.65, whiteSpace: "pre-line" }}>
+                        {characterContent || summaryText || characterMetadata.note}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-3" style={{ gap: "16px" }}>
+                    <CharacterFact label="Clase" value={characterMetadata.className} />
+                    <CharacterFact label="Subclase" value={characterMetadata.subclass} />
+                    <CharacterFact label="Especie" value={characterMetadata.species} />
+                    <CharacterFact label="Trasfondo" value={characterMetadata.background} />
+                    <CharacterFact label="Nivel" value={characterMetadata.level ?? 1} />
+                    <CharacterFact label="PX" value={characterMetadata.xp ?? 0} />
+                  </div>
+
+                  <CharacterInfoBlock title="Combate y exploración">
+                    <div className="grid grid-cols-3" style={{ gap: "12px" }}>
+                      <CharacterFact label="PG" value={`${status.hitPointsCurrent ?? "—"} / ${status.hitPointsMax ?? characterMetadata.hitPointsMax ?? "—"}`} />
+                      <CharacterFact label="PG temporales" value={characterMetadata.hitPointsTemp ?? 0} />
+                      <CharacterFact label="CA" value={status.armorClass ?? characterMetadata.armorClass} />
+                      <CharacterFact label="Dados de golpe" value={characterMetadata.hitDice} />
+                      <CharacterFact label="Velocidad" value={characterMetadata.speed !== undefined ? `${characterMetadata.speed} pies` : undefined} />
+                      <CharacterFact label="Iniciativa" value={signedNumber(characterMetadata.initiative)} />
+                      <CharacterFact label="CD conjuros" value={characterMetadata.spellSaveDC} />
+                      <CharacterFact label="Ataque conjuros" value={characterMetadata.spellAttackBonus !== undefined ? signedNumber(characterMetadata.spellAttackBonus) : undefined} />
+                    </div>
+                  </CharacterInfoBlock>
+
+                  <CharacterInfoBlock title="Características">
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(6, minmax(0, 1fr))", gap: "10px" }}>
+                      {ABILITIES.map((ability) => {
+                        const score = asNumber(characterMetadata[ability.key]);
+                        return (
+                          <div key={ability.key} style={{ padding: "14px", borderRadius: "var(--radius-sm)", background: "var(--surface-2)", border: "1px solid var(--border-color)", textAlign: "center" }}>
+                            <div style={{ fontSize: "0.68rem", fontWeight: 800, color: "var(--text-muted)" }}>{ability.short}</div>
+                            <div style={{ fontSize: "1.45rem", fontWeight: 850, marginTop: "4px" }}>{score ?? "—"}</div>
+                            <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{abilityModifier(score)}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </CharacterInfoBlock>
+
+                  <CharacterInfoBlock title="Sentidos pasivos">
+                    <div className="grid grid-cols-3" style={{ gap: "12px" }}>
+                      <CharacterFact label="Percepción pasiva" value={characterMetadata.passivePerception} />
+                      <CharacterFact label="Perspicacia pasiva" value={characterMetadata.passiveInsight} />
+                      <CharacterFact label="Investigación pasiva" value={characterMetadata.passiveInvestigation} />
+                    </div>
+                  </CharacterInfoBlock>
+
+                  <CharacterInfoBlock title="Competencias, idiomas y rasgos">
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "18px" }}>
+                      <div>
+                        <div className="form-label">Tiradas de salvación</div>
+                        <PillList items={savingThrows} />
+                      </div>
+                      <div>
+                        <div className="form-label">Habilidades</div>
+                        <PillList items={skills} />
+                      </div>
+                      <div>
+                        <div className="form-label">Idiomas</div>
+                        <PillList items={languages} />
+                      </div>
+                      <div>
+                        <div className="form-label">Dotes / rasgos</div>
+                        <PillList items={[...feats, ...keyTraits]} />
+                      </div>
+                    </div>
+                  </CharacterInfoBlock>
+
+                  {(personalGoals.length > 0 || importantItems.length > 0) && (
+                    <CharacterInfoBlock title="Historia personal y vínculos">
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "18px" }}>
+                        <div>
+                          <div className="form-label">Objetivos personales</div>
+                          <PillList items={personalGoals} />
+                        </div>
+                        <div>
+                          <div className="form-label">Objetos importantes</div>
+                          <PillList items={importantItems} />
+                        </div>
+                      </div>
+                    </CharacterInfoBlock>
+                  )}
+
+                  <div className="card" style={{ padding: "24px" }}>
+                    <h3 style={{ fontWeight: "700", marginBottom: "6px" }}>Estado vivo del personaje</h3>
+                    <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "18px" }}>
+                      Esta parte puede cambiar durante la sesión. La ficha base queda arriba como referencia.
+                    </p>
+                    <form onSubmit={handleCharSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+                        <div className="form-group" style={{ marginBottom: 0, flex: "1 1 100px" }}>
+                          <label className="form-label">HP Actual</label>
+                          <input
+                            type="number"
+                            className="form-input"
+                            value={charForm.hitPointsCurrent}
+                            onChange={(e) => setCharForm({ ...charForm, hitPointsCurrent: e.target.value })}
+                            placeholder="10"
+                          />
+                        </div>
+                        <div className="form-group" style={{ marginBottom: 0, flex: "1 1 100px" }}>
+                          <label className="form-label">HP Máximo</label>
+                          <input
+                            type="number"
+                            className="form-input"
+                            value={charForm.hitPointsMax}
+                            onChange={(e) => setCharForm({ ...charForm, hitPointsMax: e.target.value })}
+                            placeholder="10"
+                          />
+                        </div>
+                        <div className="form-group" style={{ marginBottom: 0, flex: "1 1 100px" }}>
+                          <label className="form-label">Armadura (AC)</label>
+                          <input
+                            type="number"
+                            className="form-input"
+                            value={charForm.armorClass}
+                            onChange={(e) => setCharForm({ ...charForm, armorClass: e.target.value })}
+                            placeholder="10"
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <input
+                          type="checkbox"
+                          id="inspiration"
+                          checked={charForm.inspiration}
+                          onChange={(e) => setCharForm({ ...charForm, inspiration: e.target.checked })}
+                        />
+                        <label htmlFor="inspiration" className="form-label" style={{ margin: 0, cursor: "pointer" }}>
+                          Inspiración
+                        </label>
+                      </div>
+
+                      <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label className="form-label">Condiciones (separadas por coma)</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={charForm.conditions}
+                          onChange={(e) => setCharForm({ ...charForm, conditions: e.target.value })}
+                          placeholder="envenenado, asustado"
+                        />
+                      </div>
+
+                      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                        <button type="submit" className="btn btn-primary btn-sm" disabled={!myCharacter && !playerPortalState?.link}>
+                          Guardar Estado
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </>
+              ) : (
                 <div className="card" style={{ padding: "20px" }}>
-                  <h3 style={{ fontWeight: "800", marginBottom: "4px" }}>{myCharacter?.title ?? playerPortalState?.linkedCharacter?.title}</h3>
-                  <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                    Nivel {myCharacter?.metadata?.level ?? 1} {myCharacter?.metadata?.species ?? ""} {myCharacter?.metadata?.className ?? ""}
+                  <h3 style={{ fontWeight: "800", marginBottom: "8px" }}>Todavía no tienes personaje vinculado</h3>
+                  <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "12px" }}>
+                    Cuando el DM apruebe tu solicitud o tu propuesta, aquí aparecerá la ficha completa del personaje.
                   </p>
+                  <button className="btn btn-primary btn-sm" onClick={() => setActiveTab("summary")}>
+                    Elegir o proponer personaje
+                  </button>
                 </div>
               )}
-
-              <div className="card" style={{ padding: "24px" }}>
-                <h3 style={{ fontWeight: "700", marginBottom: "20px" }}>Estado del Personaje</h3>
-                <form onSubmit={handleCharSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-                    <div className="form-group" style={{ marginBottom: 0, flex: "1 1 100px" }}>
-                      <label className="form-label">HP Actual</label>
-                      <input
-                        type="number"
-                        className="form-input"
-                        value={charForm.hitPointsCurrent}
-                        onChange={(e) => setCharForm({ ...charForm, hitPointsCurrent: e.target.value })}
-                        placeholder="10"
-                      />
-                    </div>
-                    <div className="form-group" style={{ marginBottom: 0, flex: "1 1 100px" }}>
-                      <label className="form-label">HP Máximo</label>
-                      <input
-                        type="number"
-                        className="form-input"
-                        value={charForm.hitPointsMax}
-                        onChange={(e) => setCharForm({ ...charForm, hitPointsMax: e.target.value })}
-                        placeholder="10"
-                      />
-                    </div>
-                    <div className="form-group" style={{ marginBottom: 0, flex: "1 1 100px" }}>
-                      <label className="form-label">Armadura (AC)</label>
-                      <input
-                        type="number"
-                        className="form-input"
-                        value={charForm.armorClass}
-                        onChange={(e) => setCharForm({ ...charForm, armorClass: e.target.value })}
-                        placeholder="10"
-                      />
-                    </div>
-                  </div>
-
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <input
-                      type="checkbox"
-                      id="inspiration"
-                      checked={charForm.inspiration}
-                      onChange={(e) => setCharForm({ ...charForm, inspiration: e.target.checked })}
-                    />
-                    <label htmlFor="inspiration" className="form-label" style={{ margin: 0, cursor: "pointer" }}>
-                      Inspiración
-                    </label>
-                  </div>
-
-                  <div className="form-group" style={{ marginBottom: 0 }}>
-                    <label className="form-label">Condiciones (separadas por coma)</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={charForm.conditions}
-                      onChange={(e) => setCharForm({ ...charForm, conditions: e.target.value })}
-                      placeholder="envenenado, asustado"
-                    />
-                  </div>
-
-                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <button type="submit" className="btn btn-primary btn-sm" disabled={!myCharacter && !playerPortalState?.link}>
-                      Guardar Estado
-                    </button>
-                  </div>
-                </form>
-              </div>
             </div>
           )}
 
@@ -779,7 +1124,15 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                       </div>
                       <div className="form-group" style={{ marginBottom: 0, flexGrow: 1 }}>
                         <label className="form-label">Recuperación</label>
-                        <input type="text" className="form-input" placeholder="descanso largo" value={resourceForm.recovery} onChange={(e) => setResourceForm({ ...resourceForm, recovery: e.target.value })} />
+                        <select
+                          className="form-input"
+                          value={resourceForm.recovery}
+                          onChange={(e) => setResourceForm({ ...resourceForm, recovery: e.target.value as "manual" | "short_rest" | "long_rest" })}
+                        >
+                          <option value="manual">Manual</option>
+                          <option value="short_rest">Descanso corto</option>
+                          <option value="long_rest">Descanso largo</option>
+                        </select>
                       </div>
                     </div>
                     <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>

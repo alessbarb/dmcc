@@ -236,6 +236,7 @@ export interface CampaignStateStore {
   loadDmPlayerPortalSummary: () => Promise<void>;
   resolvePlayerCharacterProposal: (proposalId: string, payload: any) => Promise<void>;
   linkPlayerCharacter: (playerId: string, characterEntityId: string, ownership?: string, syncMode?: string) => Promise<void>;
+  unlinkPlayerCharacter: (playerId: string) => Promise<void>;
 
   createCanvas: (title: string, kind: string, description?: string) => Promise<void>;
   setActiveCanvasId: (canvasId: string | null) => void;
@@ -1069,11 +1070,12 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   loadPlayerPortalState: async (campaignIdOverride) => {
-    const campaignId = campaignIdOverride ?? get().activeCampaignId;
+    const campaignId = campaignIdOverride ?? get().activeCampaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!campaignId) return;
+    set({ activeCampaignId: campaignId, error: null });
     try {
       const res = await fetchWithVault(`/api/campaigns/${campaignId}/player-portal/state`);
-      if (!res.ok) throw new Error("Failed to load player portal state");
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to load player portal state"));
       set({ playerPortalState: await res.json() });
     } catch (err: any) {
       set({ error: err.message });
@@ -1081,7 +1083,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   updatePlayerPortalStatus: async (payload) => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/status`, {
@@ -1097,15 +1099,21 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   upsertPlayerPortalResource: async (payload) => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/resources`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error("Failed to upsert player portal resource");
+      const resourceId = typeof payload?.resourceId === "string" ? payload.resourceId : null;
+      const res = await fetchWithVault(
+        resourceId
+          ? `/api/campaigns/${activeCampaignId}/player-portal/resources/${resourceId}`
+          : `/api/campaigns/${activeCampaignId}/player-portal/resources`,
+        {
+          method: resourceId ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to upsert player portal resource"));
       await get().loadPlayerPortalState(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message });
@@ -1113,7 +1121,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   createPlayerPortalNote: async (payload) => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/notes`, {
@@ -1129,7 +1137,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   updatePlayerPortalNote: async (noteId, payload) => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/notes/${noteId}`, {
@@ -1145,7 +1153,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   createPlayerPortalObjective: async (payload) => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/objectives`, {
@@ -1161,7 +1169,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   updatePlayerPortalObjective: async (objectiveId, payload) => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/objectives/${objectiveId}`, {
@@ -1177,7 +1185,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   createPlayerCharacterProposal: async (payload) => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/proposals`, {
@@ -1185,7 +1193,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Failed to create player character proposal");
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to create player character proposal"));
       await get().loadPlayerPortalState(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message });
@@ -1193,7 +1201,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   loadDmPlayerPortalSummary: async () => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/dm-summary`);
@@ -1205,7 +1213,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   resolvePlayerCharacterProposal: async (proposalId, payload) => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/proposals/${proposalId}/resolve`, {
@@ -1213,7 +1221,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Failed to resolve player character proposal");
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to resolve player character proposal"));
       await Promise.all([get().loadDmPlayerPortalSummary(), get().selectCampaign(activeCampaignId)]);
     } catch (err: any) {
       set({ error: err.message });
@@ -1221,7 +1229,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   linkPlayerCharacter: async (playerId, characterEntityId, ownership = "campaign_premade", syncMode = "live_player_editable") => {
-    const { activeCampaignId } = get();
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
       const res = await fetchWithVault(
@@ -1232,8 +1240,22 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
           body: JSON.stringify({ playerId, characterEntityId, ownership, syncMode }),
         }
       );
-      if (!res.ok) throw new Error("Failed to link character");
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to link character"));
       await get().loadDmPlayerPortalSummary();
+    } catch (err: any) {
+      set({ error: err.message });
+    }
+  },
+
+  unlinkPlayerCharacter: async (playerId) => {
+    const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
+    if (!activeCampaignId) return;
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/links/${playerId}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to unlink character"));
+      await Promise.all([get().loadDmPlayerPortalSummary(), get().selectCampaign(activeCampaignId)]);
     } catch (err: any) {
       set({ error: err.message });
     }

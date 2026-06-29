@@ -48,7 +48,9 @@ export function setVaultId(vaultId: string): void {
 
 export function upsertPlayerProfile(profile: PlayerProfileEntry): void {
   const identity = readIdentity();
-  const existing = identity.playerProfiles.findIndex((p) => p.campaignId === profile.campaignId);
+  const existing = identity.playerProfiles.findIndex(
+    (p) => p.campaignId === profile.campaignId && p.playerId === profile.playerId
+  );
   const updated = existing >= 0
     ? identity.playerProfiles.map((p, i) => (i === existing ? { ...p, ...profile } : p))
     : [...identity.playerProfiles, profile];

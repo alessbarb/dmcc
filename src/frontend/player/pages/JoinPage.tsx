@@ -52,11 +52,12 @@ export function JoinPage() {
       const { playerToken, playerId } = data as { playerToken: string; playerId: string; campaignTitle: string };
 
       sessionStorage.setItem("dmcc_role", "player");
+      sessionStorage.setItem("dmcc_activeCampaignId", campaignId);
       sessionStorage.setItem("dmcc_playerId", playerId);
       sessionStorage.setItem("dmcc_accessCode", accessCode.trim());
       sessionStorage.setItem("dmcc_playerToken", playerToken);
-
-      await useCampaignStore.getState().selectCampaign(campaignId);
+      sessionStorage.setItem(`dmcc_playerToken:${campaignId}`, playerToken);
+      useCampaignStore.setState({ activeCampaignId: campaignId, campaignState: null, playerPortalState: null });
 
       navigate({ to: `/campaigns/${campaignId}/player-portal` });
     } catch (err: any) {

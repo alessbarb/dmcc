@@ -3,6 +3,7 @@ export interface PlayerProfileEntry {
   campaignTitle: string;
   playerId: string;
   displayName: string;
+  email?: string;
   characterName?: string;
   lastAccessed: string;
   rememberToken?: boolean;

@@ -630,14 +630,18 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       inviteToken: string;
       displayName: string;
       email: string;
-      characterChoice: { kind: "premade"; entityId: string } | { kind: "new"; name: string; characterClass?: string; race?: string } | null;
+      /**
+       * Deprecated. Character selection now happens inside the player portal,
+       * after the player profile and session token have been created.
+       */
+      characterChoice?: unknown;
     };
   }>(
     "/api/campaigns/:campaignId/register",
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { inviteToken, displayName, email, characterChoice } = request.body;
+      const { inviteToken, displayName, email } = request.body;
 
       if (!inviteToken || !displayName?.trim() || !email?.trim()) {
         reply.code(400);
@@ -716,37 +720,10 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           consumedAt: now,
         });
 
-        // Handle character choice
-        if (characterChoice?.kind === "new" && characterChoice.name?.trim()) {
-          const newEntityId = createId("ent");
-          await repo.executeCommand(campaignId, {
-            type: "CreateEntity",
-            campaignId: campaignId,
-            actorId: playerId,
-            entityId: newEntityId,
-            entityType: "player_character",
-            title: characterChoice.name.trim(),
-            status: "active",
-            importance: "high",
-            visibility: { kind: "party" },
-            metadata: {
-              playerId,
-              class: characterChoice.characterClass ?? "",
-              race: characterChoice.race ?? "",
-            },
-          });
-        } else if (characterChoice?.kind === "premade" && characterChoice.entityId) {
-          await repo.executeCommand(campaignId, {
-            type: "LinkPlayerCharacter",
-            campaignId: campaignId,
-            actorId: "usr_dm",
-            playerId,
-            characterEntityId: characterChoice.entityId,
-            ownership: "campaign_premade",
-            syncMode: "live_player_editable",
-            createdAt: now,
-          });
-        }
+        // Character selection is intentionally not handled during registration.
+        // The invite only creates/recovers the player profile and issues a session token.
+        // Players choose an available premade character or propose a custom one from
+        // the player portal, where the DM can review and approve the link/proposal.
 
         // Issue session token
         const playerToken = generatePlayerToken() + randomBytes(8).toString("hex");

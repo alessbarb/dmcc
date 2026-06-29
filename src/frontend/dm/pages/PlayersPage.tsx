@@ -37,7 +37,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
 
   const { dmPlayerPortalSummary, loadDmPlayerPortalSummary, resolvePlayerCharacterProposal } = store;
-  const { linkPlayerCharacter } = store;
+  const { linkPlayerCharacter, unlinkPlayerCharacter } = store;
   const [assignSelections, setAssignSelections] = useState<Record<string, string>>({});
 
   // Invitation state
@@ -121,9 +121,15 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   }, [loadDmPlayerPortalSummary]);
 
   const campaignState = props.campaignState ?? store.campaignState;
-  const playerCharacters: Entity[] = (campaignState?.entities ?? []).filter(
-    (e: any) => e.entityType === "player_character" && !e.archived
+  const linkedCharacterIds = new Set(
+    ((dmPlayerPortalSummary?.players ?? []) as any[])
+      .map((p: any) => p.link?.characterEntityId)
+      .filter(Boolean)
   );
+  const playerCharacters: Entity[] = ((dmPlayerPortalSummary?.availableCharacters as Entity[] | undefined) ??
+    (campaignState?.entities ?? []).filter(
+      (e: any) => e.entityType === "player_character" && !e.archived && !linkedCharacterIds.has(e.entityId)
+    ));
   const visibility = props.visibility ?? store.visibility;
   const createPlayer = props.createPlayer ?? store.createPlayer;
   const updatePlayer = props.updatePlayer ?? store.updatePlayer;
@@ -505,9 +511,22 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                         {pendingProposals.map((proposal: any) => (
                           <div key={proposal.proposalId} style={{ padding: "10px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
-                            <p style={{ fontSize: "0.8rem", color: "var(--text-main)", marginBottom: "8px" }}>
+                            <p style={{ fontSize: "0.8rem", color: "var(--text-main)", marginBottom: "6px", fontWeight: 700 }}>
                               {proposal.kind === "link_request" ? "Solicitud de personaje" : proposal.kind === "create_character" ? "Nuevo personaje" : proposal.kind === "update_character_core" ? "Cambio de personaje" : "Propuesta"}
                             </p>
+                            {proposal.kind === "link_request" && proposal.targetCharacterEntityId && (
+                              <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginBottom: "8px" }}>
+                                Pide vincularse a: {playerCharacters.find((pc) => pc.entityId === proposal.targetCharacterEntityId)?.title ?? proposal.targetCharacterEntityId}
+                              </p>
+                            )}
+                            {proposal.kind === "create_character" && proposal.proposedChanges && (
+                              <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginBottom: "8px", display: "grid", gap: "2px" }}>
+                                <span><strong>Nombre:</strong> {proposal.proposedChanges.title ?? proposal.proposedChanges.name ?? "—"}</span>
+                                <span><strong>Clase:</strong> {proposal.proposedChanges.className ?? "—"}</span>
+                                <span><strong>Especie:</strong> {proposal.proposedChanges.species ?? proposal.proposedChanges.race ?? "—"}</span>
+                                <span><strong>Trasfondo:</strong> {proposal.proposedChanges.background ?? "—"}</span>
+                              </div>
+                            )}
                             <div style={{ display: "flex", gap: "6px" }}>
                               <button className="btn btn-primary btn-sm" onClick={() => resolvePlayerCharacterProposal(proposal.proposalId, { status: "approved", dmResolutionNote: "Aprobado" })}>
                                 Aprobar
@@ -528,9 +547,21 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                       Asignar personaje
                     </p>
                     {portalPlayer.link?.characterEntityId ? (
-                      <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic" }}>
-                        Vinculado: {portalPlayer.linkedCharacter?.title ?? portalPlayer.link.characterEntityId}
-                      </p>
+                      <div style={{ display: "flex", gap: "8px", alignItems: "center", justifyContent: "space-between" }}>
+                        <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic", margin: 0 }}>
+                          Vinculado: {portalPlayer.linkedCharacter?.title ?? portalPlayer.link.characterEntityId}
+                        </p>
+                        <button
+                          className="btn btn-secondary btn-sm"
+                          onClick={() => {
+                            if (confirm("¿Desvincular este personaje del jugador?")) {
+                              void unlinkPlayerCharacter(portalPlayer.playerId);
+                            }
+                          }}
+                        >
+                          Desvincular
+                        </button>
+                      </div>
                     ) : (
                       <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
                         <select
