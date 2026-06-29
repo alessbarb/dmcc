@@ -13,6 +13,7 @@ import {
   Lock,
   Play,
   Activity,
+  Trash2,
 } from "lucide-react";
 import { lockDm } from "./shared/auth/authClient.js";
 import { LandingCampaignCard } from "./shared/components/LandingCampaignCard.js";
@@ -32,6 +33,7 @@ export function App() {
     fetchCampaigns,
     selectCampaign,
     createCampaign,
+    deleteCampaign,
     restoreBackup,
   } = useCampaignStore();
 
@@ -48,6 +50,48 @@ export function App() {
   const [backupRestorePath, setBackupRestorePath] = useState("");
 
   const [mysticalTransitionId, setMysticalTransitionId] = useState<string | null>(null);
+
+  // Delete confirmation state
+  const [deleteTarget, setDeleteTarget] = useState<{ campaignId: string; title: string } | null>(null);
+  const [deleteConfirmStep, setDeleteConfirmStep] = useState<1 | 2>(1);
+  const [deleteConfirmInput, setDeleteConfirmInput] = useState("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const openDeleteModal = (campaignId: string, title: string) => {
+    setDeleteTarget({ campaignId, title });
+    setDeleteConfirmStep(1);
+    setDeleteConfirmInput("");
+    setDeleteError(null);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteTarget(null);
+    setDeleteConfirmInput("");
+    setDeleteError(null);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
+    if (deleteConfirmStep === 1) {
+      setDeleteConfirmStep(2);
+      return;
+    }
+    if (deleteConfirmInput.trim() !== deleteTarget.title) {
+      setDeleteError(t("landing.deleteConfirmMismatch"));
+      return;
+    }
+    setDeleteLoading(true);
+    setDeleteError(null);
+    try {
+      await deleteCampaign(deleteTarget.campaignId, deleteTarget.title);
+      closeDeleteModal();
+    } catch (err: any) {
+      setDeleteError(err.message);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
 
   const triggerMysticalTransition = (campaignId: string) => {
     setMysticalTransitionId(campaignId);
@@ -270,6 +314,7 @@ export function App() {
                   onSelect={(campaignId) => {
                     triggerMysticalTransition(campaignId);
                   }}
+                  onDelete={openDeleteModal}
                 />
               ))}
             </div>
@@ -397,6 +442,65 @@ export function App() {
       </div>
 
       <AppFooter variant="landing" />
+
+      {deleteTarget && (
+        <div
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}
+          onClick={(e) => { if (e.target === e.currentTarget) closeDeleteModal(); }}
+        >
+          <div style={{ background: "var(--bg-card, #1a1a2e)", border: "1px solid var(--border)", borderRadius: "12px", padding: "28px", maxWidth: "420px", width: "100%" }}>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "20px" }}>
+              <Trash2 size={20} style={{ color: "var(--color-danger, #e55)", flexShrink: 0, marginTop: "2px" }} />
+              <div>
+                <h3 style={{ margin: 0, color: "var(--text-main)", fontSize: "1rem" }}>
+                  {deleteConfirmStep === 1 ? t("landing.deleteStep1Title") : t("landing.deleteStep2Title")}
+                </h3>
+                <p style={{ margin: "6px 0 0", color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                  {deleteConfirmStep === 1
+                    ? t("landing.deleteStep1Desc", { title: deleteTarget.title })
+                    : t("landing.deleteStep2Desc", { title: deleteTarget.title })}
+                </p>
+              </div>
+            </div>
+
+            {deleteConfirmStep === 2 && (
+              <div style={{ marginBottom: "16px" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "6px" }}>
+                  {t("landing.deleteTypeLabel")}
+                </label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={deleteConfirmInput}
+                  onChange={(e) => { setDeleteConfirmInput(e.target.value); setDeleteError(null); }}
+                  placeholder={deleteTarget.title}
+                  autoFocus
+                  onKeyDown={(e) => { if (e.key === "Enter") void handleDeleteConfirm(); if (e.key === "Escape") closeDeleteModal(); }}
+                />
+              </div>
+            )}
+
+            {deleteError && (
+              <p style={{ color: "var(--color-danger, #e55)", fontSize: "0.82rem", margin: "0 0 12px" }}>{deleteError}</p>
+            )}
+
+            <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+              <button type="button" className="btn btn-secondary btn-sm" onClick={closeDeleteModal} disabled={deleteLoading}>
+                {t("landing.deleteCancel")}
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm"
+                style={{ background: "var(--color-danger, #c33)", color: "#fff", border: "none" }}
+                onClick={() => void handleDeleteConfirm()}
+                disabled={deleteLoading || (deleteConfirmStep === 2 && deleteConfirmInput.trim() !== deleteTarget.title)}
+              >
+                {deleteLoading ? "…" : deleteConfirmStep === 1 ? t("landing.deleteStep1Btn") : t("landing.deleteStep2Btn")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {mysticalTransitionId && (
         <div className="mystical-portal-overlay mystical-portal-overlay--in" aria-live="assertive">

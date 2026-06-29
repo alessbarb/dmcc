@@ -138,7 +138,9 @@ export interface CampaignStateStore {
   fetchCampaigns: () => Promise<void>;
   selectCampaign: (campaignId: string) => Promise<void>;
   reloadCampaign: () => Promise<void>;
+  clearCampaign: () => void;
   createCampaign: (title: string, system: string) => Promise<string | undefined>;
+  deleteCampaign: (campaignId: string, confirmTitle: string) => Promise<void>;
 
   createEntity: (payload: {
     entityType: string;
@@ -519,6 +521,26 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     } catch (err: any) {
       console.error("Silent reload failed", err);
     }
+  },
+
+  clearCampaign: () => {
+    set({ activeCampaignId: null, campaignState: null, error: null });
+  },
+
+  deleteCampaign: async (campaignId: string, confirmTitle: string) => {
+    const res = await fetchWithVault(`/api/campaigns/${campaignId}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ confirmTitle }),
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error((body as any).error || `Failed to delete campaign (${res.status})`);
+    }
+    if (get().activeCampaignId === campaignId) {
+      get().clearCampaign();
+    }
+    await get().fetchCampaigns();
   },
 
   createCampaign: async (title: string, system: string) => {

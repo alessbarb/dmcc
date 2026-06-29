@@ -1,5 +1,5 @@
 import React from "react";
-import { Shield, MapPin, Key, ArrowRight, Users } from "lucide-react";
+import { Shield, MapPin, Key, ArrowRight, Users, Trash2 } from "lucide-react";
 import { useTranslation } from "../i18n/useTranslation.js";
 
 interface CampaignStats {
@@ -22,9 +22,10 @@ interface Campaign {
 interface LandingCampaignCardProps {
   campaign: Campaign;
   onSelect: (campaignId: string) => void;
+  onDelete: (campaignId: string, title: string) => void;
 }
 
-export function LandingCampaignCard({ campaign, onSelect }: LandingCampaignCardProps) {
+export function LandingCampaignCard({ campaign, onSelect, onDelete }: LandingCampaignCardProps) {
   const { title, system, stats } = campaign;
   const { t } = useTranslation();
 
@@ -51,9 +52,22 @@ export function LandingCampaignCard({ campaign, onSelect }: LandingCampaignCardP
               <span className="campaign-card-id">{campaign.campaignId}</span>
             </div>
           </div>
-          <button type="button" className="campaign-card-enter-btn" aria-label={t("landing.enterCampaign", { title })}>
-            <ArrowRight size={18} />
-          </button>
+          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+            <button
+              type="button"
+              className="campaign-card-delete-btn"
+              aria-label={t("landing.deleteCampaign", { title })}
+              onClick={(e) => { e.stopPropagation(); onDelete(campaign.campaignId, title); }}
+              style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", padding: "4px", borderRadius: "4px", display: "flex", alignItems: "center", opacity: 0.5, transition: "opacity 0.15s, color 0.15s" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; (e.currentTarget as HTMLButtonElement).style.color = "var(--color-danger, #e55)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.5"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
+            >
+              <Trash2 size={15} />
+            </button>
+            <button type="button" className="campaign-card-enter-btn" aria-label={t("landing.enterCampaign", { title })}>
+              <ArrowRight size={18} />
+            </button>
+          </div>
         </header>
 
         {/* Active Session Status Banner */}

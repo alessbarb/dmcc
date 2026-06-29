@@ -112,6 +112,7 @@ export function CampaignShell() {
   const { campaignId } = useParams({ from: "/campaigns/$campaignId" });
   const {
     selectCampaign,
+    clearCampaign,
     activeCampaignId,
     campaignState,
     loading,
@@ -121,6 +122,11 @@ export function CampaignShell() {
     isRelationModalOpen,
     setIsRelationModalOpen
   } = useCampaignStore();
+
+  const exitCampaign = () => {
+    clearCampaign();
+    navigate({ to: "/dm" });
+  };
   const navigate = useNavigate();
   const { toasts, removeToast } = useToast();
   const { t } = useTranslation();
@@ -248,7 +254,7 @@ export function CampaignShell() {
               {t("campaignShell.loading.retry")}
             </button>
             <button
-              onClick={() => navigate({ to: "/dm" })}
+              onClick={exitCampaign}
               style={{ padding: "8px 16px", background: "transparent", color: "var(--text-main)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
             >
               <ArrowLeft size={14} />
@@ -314,7 +320,7 @@ export function CampaignShell() {
           {sidebarCollapsed ? (
             <button
               className="btn btn-secondary btn-sm"
-              onClick={() => navigate({ to: "/dm" })}
+              onClick={exitCampaign}
               title={t("nav.exit")}
               style={{ width: "100%", padding: "6px", justifyContent: "center" }}
             >
@@ -325,7 +331,7 @@ export function CampaignShell() {
               <span>{t("nav.activeCampaign")}</span>
               <button
                 className="btn btn-secondary btn-sm"
-                onClick={() => navigate({ to: "/dm" })}
+                onClick={exitCampaign}
               >
                 <ArrowLeft size={14} /> {t("nav.exit")}
               </button>
@@ -393,7 +399,7 @@ export function CampaignShell() {
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
-                onClick={() => navigate({ to: "/dm" })}
+                onClick={exitCampaign}
               >
                 <ArrowLeft size={14} />
                 {t("nav.exit")}
