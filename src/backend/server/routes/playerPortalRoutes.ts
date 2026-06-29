@@ -147,11 +147,9 @@ export async function registerPlayerPortalRoutes(
       throw Object.assign(new Error("Target character is not visible to players"), { statusCode: 400 });
     }
 
-    const currentPlayerLink = portal.linksByPlayerId.get(playerId);
-    if (currentPlayerLink && currentPlayerLink.characterEntityId !== characterEntityId) {
-      throw Object.assign(new Error("Player already has a linked character"), { statusCode: 409 });
-    }
-
+    // A player may request a different available character; the DM approval is the
+    // explicit decision point that replaces any legacy soft link or prior link.
+    // Only block when the target character already belongs to someone else.
     const otherLink = getCharacterLinkedToAnotherPlayer(portal, characterEntityId, playerId);
     if (otherLink) {
       throw Object.assign(new Error("Character is already linked to another player"), { statusCode: 409 });
