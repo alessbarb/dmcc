@@ -1016,6 +1016,9 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ],
       };
     }
+    case "DuplicateCampaign": {
+      throw new Error("DuplicateCampaign must be handled by the repository layer, not the command bus");
+    }
     case "ConvertCanvasNoteToEntity": {
       const canvases = new Map(state.canvases || new Map());
       const canvas = canvases.get(command.canvasId);

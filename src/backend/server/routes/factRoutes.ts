@@ -36,7 +36,7 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
           visibility: visibility || { kind: "dm_only" as const },
           relatedEntityIds: relatedEntityIds || [],
           relatedRelationIds: relatedRelationIds || [],
-          source: source || { type: "manual" },
+          source: source || { kind: "manual" },
         });
         reply.code(201);
         return { campaignId, statement, kind };

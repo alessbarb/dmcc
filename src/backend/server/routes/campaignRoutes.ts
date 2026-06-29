@@ -3,6 +3,7 @@ import { join } from "path";
 import * as fs from "fs/promises";
 import { randomInt, randomBytes } from "crypto";
 import { createId } from "@shared/ids.js";
+import type { CampaignId } from "@shared/ids.js";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
@@ -325,36 +326,24 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         return { error: "New campaign title is required" };
       }
 
-      const sourceDir = getCampaignDir(campaignId, vaultId);
       const newCampaignId = `cmp_${createId("cmp").split("_")[1]}`;
-      const targetDir = getCampaignDir(newCampaignId, vaultId);
 
       try {
-        await fs.mkdir(targetDir, { recursive: true });
-        let eventsContent: string;
-        try {
-          eventsContent = await fs.readFile(join(sourceDir, "events.ndjson"), "utf8");
-        } catch {
-          reply.code(404);
-          return { error: "Source campaign not found" };
-        }
-
-        const newRepo = getRepository(vaultId);
-        const lines = eventsContent.trim().split("\n").filter(Boolean);
-        for (const line of lines) {
-          const ev = JSON.parse(line);
-          const payload = { ...ev.payload, campaignId: newCampaignId };
-          if (ev.type === "CampaignCreated") {
-            payload.campaignId = newCampaignId;
-            payload.title = newTitle;
-          }
-          await newRepo.appendEvent(newCampaignId as any, ev.type, ev.actorId || "usr_dm", payload);
-        }
-
-        await newRepo.rebuildSnapshot(newCampaignId as any);
+        const repo = getRepository(vaultId);
+        await repo.executeCommand(newCampaignId as CampaignId, {
+          type: "DuplicateCampaign",
+          sourceCampaignId: campaignId as CampaignId,
+          newCampaignId: newCampaignId as CampaignId,
+          newTitle,
+          actorId: "usr_dm",
+        });
         reply.code(201);
         return { campaignId: newCampaignId, title: newTitle };
       } catch (err: any) {
+        if (err.message?.includes("Source campaign not found")) {
+          reply.code(404);
+          return { error: "Source campaign not found" };
+        }
         reply.code(500);
         return { error: `Duplication failed: ${err.message}` };
       }

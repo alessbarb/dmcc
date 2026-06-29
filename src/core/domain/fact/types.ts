@@ -3,6 +3,7 @@ import {
   factIdSchema,
   campaignIdSchema,
   entityIdSchema,
+  playerIdSchema,
   relationIdSchema,
   sessionIdSchema,
   sessionEventIdSchema,
@@ -30,29 +31,12 @@ export const factConfidenceSchema = z.enum([
 ]);
 export type FactConfidence = z.infer<typeof factConfidenceSchema>;
 
-export const factSourceSchema = z.union([
-  z.object({
-    type: z.string().optional(),
-    kind: z.string().optional(),
-    sessionId: sessionIdSchema,
-    sessionEventId: sessionEventIdSchema,
-  }),
-  z.object({
-    type: z.string().optional(),
-    kind: z.string().optional(),
-    note: z.string().optional(),
-  }),
-  z.object({
-    type: z.string().optional(),
-    kind: z.string().optional(),
-    importId: z.string(),
-    sourcePath: z.string().optional(),
-  }),
-  z.object({
-    type: z.string().optional(),
-    kind: z.string().optional(),
-    note: z.string().optional(),
-  }),
+export const factSourceSchema = z.discriminatedUnion("kind", [
+  z.object({ kind: z.literal("session"), sessionId: sessionIdSchema, sessionEventId: sessionEventIdSchema.optional() }),
+  z.object({ kind: z.literal("preparation") }),
+  z.object({ kind: z.literal("manual"), note: z.string().optional() }),
+  z.object({ kind: z.literal("player"), playerId: playerIdSchema }),
+  z.object({ kind: z.literal("import"), importId: z.string(), sourcePath: z.string().optional() }),
 ]);
 export type FactSource = z.infer<typeof factSourceSchema>;
 

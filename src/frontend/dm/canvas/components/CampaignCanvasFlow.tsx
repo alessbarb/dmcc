@@ -647,7 +647,7 @@ export function CampaignCanvasFlow({
       const statement = window.prompt(t("canvas.factNode.newFactPrompt", { kind: factKind }));
       if (!statement?.trim()) return;
       try {
-        const newFactId = await createFact({ statement: statement.trim(), kind: factKind, confidence: "suspected", relatedEntityIds: [], source: { type: "manual" } });
+        const newFactId = await createFact({ statement: statement.trim(), kind: factKind, confidence: "suspected", relatedEntityIds: [], source: { kind: "manual" } });
         if (newFactId) {
           await placeNodeOnCanvas(canvasId, { kind: "fact", factId: newFactId, x, y });
         }

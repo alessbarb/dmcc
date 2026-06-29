@@ -106,6 +106,12 @@ export class CampaignRepository {
    * This is the preferred write path for all domain mutations.
    */
   public async executeCommand(campaignId: CampaignId, command: Command): Promise<CampaignProjection> {
+    // DuplicateCampaign requires cross-campaign event access and is handled here
+    // rather than in the pure command bus (which has no I/O access).
+    if (command.type === "DuplicateCampaign") {
+      return this.executeDuplicateCampaign(command);
+    }
+
     const projection = await this.getCampaignState(campaignId);
     const state = projectionToCampaignState(campaignId, projection);
     const result = handleCommand(state, command);
@@ -114,6 +120,31 @@ export class CampaignRepository {
       currentProjection = await this.appendEvent(campaignId, event.type as DomainEventType, event.actorId, event.payload);
     }
     return currentProjection;
+  }
+
+  /**
+   * Handles campaign duplication by loading source events and replaying them into
+   * the new campaign, updating the campaignId (and title for CampaignCreated) in each payload.
+   */
+  private async executeDuplicateCampaign(command: {
+    type: "DuplicateCampaign";
+    sourceCampaignId: CampaignId;
+    newCampaignId: CampaignId;
+    newTitle: string;
+    actorId: string;
+  }): Promise<CampaignProjection> {
+    const sourceEvents = await this.eventStore.loadEvents(command.sourceCampaignId);
+    if (sourceEvents.length === 0) {
+      throw new Error("Source campaign not found or has no events");
+    }
+    for (const ev of sourceEvents) {
+      const payload: Record<string, unknown> = { ...(ev.payload as Record<string, unknown>), campaignId: command.newCampaignId };
+      if (ev.type === "CampaignCreated") {
+        payload.title = command.newTitle;
+      }
+      await this.eventStore.appendEvent(command.newCampaignId, ev.type as DomainEventType, ev.actorId || command.actorId, payload);
+    }
+    return this.rebuildSnapshot(command.newCampaignId);
   }
 
   /**
