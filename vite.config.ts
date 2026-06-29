@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "prompt",
+      registerType: "autoUpdate",
       injectRegister: null,
       manifest: {
         name: "DM Campaign Companion",
@@ -35,6 +35,19 @@ export default defineConfig({
         ],
       },
       workbox: {
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+        navigateFallbackDenylist: [
+          /^\/api\//,
+          /^\/assets\//,
+          /^\/icons\//,
+          /^\/favicon\.ico$/,
+          /^\/sw\.js$/,
+          /^\/manifest\.webmanifest$/,
+          /^\/workbox-/,
+          /\.[^/]+$/,
+        ],
         globPatterns: ["**/*.{js,css,html,svg,woff2}", "icons/*.png"],
         runtimeCaching: [
           {

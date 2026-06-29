@@ -3,7 +3,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import fastifyStatic from "@fastify/static";
 import { existsSync } from "fs";
-import { join, dirname, resolve } from "path";
+import { basename, join, dirname, resolve, sep } from "path";
 import { fileURLToPath } from "url";
 import { homedir } from "os";
 import { randomBytes } from "crypto";
@@ -70,26 +70,95 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   const hasBuiltSpa = Boolean(publicPath);
 
   if (publicPath) {
-    server.register(fastifyStatic, { root: publicPath, prefix: "/", wildcard: false });
+    server.register(fastifyStatic, {
+      root: publicPath,
+      prefix: "/",
+      wildcard: false,
+      setHeaders(response, pathName) {
+        const fileName = basename(pathName);
+        const isBuildAsset = pathName.includes(`${sep}assets${sep}`);
+        const isServiceWorkerAsset =
+          fileName === "sw.js" ||
+          fileName === "manifest.webmanifest" ||
+          fileName.startsWith("workbox-");
+
+        if (fileName === "index.html" || isServiceWorkerAsset) {
+          response.setHeader("Cache-Control", "no-store, max-age=0, must-revalidate");
+          return;
+        }
+
+        if (isBuildAsset) {
+          response.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+        }
+      },
+    });
+  }
+
+  function getRequestPath(rawUrl?: string): string {
+    if (!rawUrl) {
+      return "/";
+    }
+
+    try {
+      return new URL(rawUrl, "http://dmcc.local").pathname;
+    } catch {
+      return rawUrl.split("?")[0] ?? "/";
+    }
+  }
+
+  function shouldServeSpaFallback(rawUrl?: string): boolean {
+    const pathname = getRequestPath(rawUrl);
+
+    if (pathname.startsWith("/api")) {
+      return false;
+    }
+
+    if (
+      pathname.startsWith("/assets/") ||
+      pathname.startsWith("/icons/") ||
+      pathname === "/favicon.ico" ||
+      pathname === "/sw.js" ||
+      pathname === "/manifest.webmanifest" ||
+      pathname.startsWith("/workbox-")
+    ) {
+      return false;
+    }
+
+    const lastSegment = pathname.split("/").pop() ?? "";
+
+    // Any unknown file-like URL must be a real 404.
+    // This prevents missing JS/CSS assets from receiving index.html as text/html.
+    if (lastSegment.includes(".")) {
+      return false;
+    }
+
+    return true;
   }
 
   server.setNotFoundHandler(async (request, reply) => {
-    if (request.raw.url?.startsWith("/api")) {
+    const rawUrl = request.raw.url;
+    const pathname = getRequestPath(rawUrl);
+
+    if (pathname.startsWith("/api")) {
       reply.code(404);
       return { error: "API route not found" };
     }
-    if (!hasBuiltSpa && request.raw.url?.startsWith("/join/")) {
+
+    if (!hasBuiltSpa && pathname.startsWith("/join/")) {
       const hostHeader = request.headers.host ?? "127.0.0.1:4877";
       let hostname = "127.0.0.1";
+
       try {
         hostname = new URL(`http://${hostHeader}`).hostname;
       } catch {
         hostname = "127.0.0.1";
       }
+
       const devUiPort = Number(process.env.DMCC_DEV_UI_PORT ?? "5173");
-      return reply.redirect(`http://${hostname}:${devUiPort}${request.raw.url}`);
+      return reply.redirect(`http://${hostname}:${devUiPort}${rawUrl ?? pathname}`);
     }
-    if (hasBuiltSpa) {
+
+    if (hasBuiltSpa && shouldServeSpaFallback(rawUrl)) {
       try {
         return reply.sendFile("index.html");
       } catch {
@@ -97,6 +166,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
         return { error: "Not found" };
       }
     }
+
     reply.code(404);
     return { error: "Not found" };
   });
