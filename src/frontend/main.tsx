@@ -4,12 +4,14 @@ import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./router.js";
 import { I18nProvider } from "./shared/i18n/I18nProvider.js";
 import { PwaUpdateBanner } from "./shared/components/PwaUpdateBanner.js";
+import { BetaWatermark } from "./shared/components/BetaWatermark.js";
 import "./shared/styles/index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <I18nProvider>
       <RouterProvider router={router} />
+      <BetaWatermark />
       <PwaUpdateBanner />
     </I18nProvider>
   </React.StrictMode>
