@@ -1,5 +1,8 @@
 node_modules/
 dist/
+/build/*
+!/build/icons/
+!/build/icons/**
 coverage/
 test-results/
 playwright-report/
