@@ -10,13 +10,17 @@ import {
   FolderOpen,
   Layers,
   Sparkles,
-  Lock,
+  LogOut,
+  UserPlus,
+  UserRound,
   Play,
   Activity,
   Trash2,
+  Eye,
 } from "lucide-react";
-import { lockDm } from "./shared/auth/authClient.js";
+import { logoutDm } from "./shared/auth/authClient.js";
 import { LandingCampaignCard } from "./shared/components/LandingCampaignCard.js";
+import { PremadeImportDialog, type PremadeImportMode } from "./shared/components/PremadeImportDialog.js";
 import { AppFooter } from "./shared/components/AppFooter.js";
 import { PortalTopBar } from "./shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
@@ -26,12 +30,17 @@ export function App() {
   const { t } = useTranslation();
   const {
     campaigns,
+    premadeTemplates,
     activeCampaignId,
     loading,
     error,
     fetchVaults,
     fetchCampaigns,
+    fetchPremadeCampaigns,
+    importPremadeCampaign,
+    updateCampaign,
     selectCampaign,
+    clearCampaign,
     createCampaign,
     deleteCampaign,
     restoreBackup,
@@ -50,6 +59,9 @@ export function App() {
   const [backupRestorePath, setBackupRestorePath] = useState("");
 
   const [mysticalTransitionId, setMysticalTransitionId] = useState<string | null>(null);
+  const [importingTemplateId, setImportingTemplateId] = useState<string | null>(null);
+  const [premadeDialogTemplateId, setPremadeDialogTemplateId] = useState<string | null>(null);
+  const [premadeImportError, setPremadeImportError] = useState<string | null>(null);
 
   // Delete confirmation state
   const [deleteTarget, setDeleteTarget] = useState<{ campaignId: string; title: string } | null>(null);
@@ -57,6 +69,13 @@ export function App() {
   const [deleteConfirmInput, setDeleteConfirmInput] = useState("");
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const [editTarget, setEditTarget] = useState<{ campaignId: string; title: string; summary?: string; system?: string } | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editSummary, setEditSummary] = useState("");
+  const [editSystem, setEditSystem] = useState("generic_fantasy_d20");
+  const [editLoading, setEditLoading] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
 
   const openDeleteModal = (campaignId: string, title: string) => {
     setDeleteTarget({ campaignId, title });
@@ -69,6 +88,37 @@ export function App() {
     setDeleteTarget(null);
     setDeleteConfirmInput("");
     setDeleteError(null);
+  };
+
+  const openEditModal = (campaign: { campaignId: string; title: string; summary?: string; system?: string }) => {
+    setEditTarget(campaign);
+    setEditTitle(campaign.title);
+    setEditSummary(campaign.summary ?? "");
+    setEditSystem(campaign.system ?? "generic_fantasy_d20");
+    setEditError(null);
+  };
+
+  const closeEditModal = () => {
+    setEditTarget(null);
+    setEditError(null);
+  };
+
+  const handleEditConfirm = async () => {
+    if (!editTarget || !editTitle.trim()) return;
+    setEditLoading(true);
+    setEditError(null);
+    try {
+      await updateCampaign(editTarget.campaignId, {
+        title: editTitle.trim(),
+        summary: editSummary.trim(),
+        system: editSystem,
+      });
+      closeEditModal();
+    } catch (err: any) {
+      setEditError(err.message);
+    } finally {
+      setEditLoading(false);
+    }
   };
 
   const handleDeleteConfirm = async () => {
@@ -109,33 +159,25 @@ export function App() {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const { acquireLocalDmToken, fetchAuthStatus, getDmSessionToken } = await import("./shared/auth/authClient.js");
+        const { fetchAuthStatus } = await import("./shared/auth/authClient.js");
         const status = await fetchAuthStatus();
-        // On /dm: ensure we have a DM session
-        if (!status.dmSessionValid && status.localRequest && !status.dmPinConfigured) {
-          await acquireLocalDmToken(); // also calls setDmLastUnlocked internally
-        } else if (!status.dmSessionValid && !getDmSessionToken()) {
-          // No valid session and not local/no PIN — SmartLanding will handle routing
+        if (!status.dmSessionValid) {
+          await navigate({ to: status.dmAccountConfigured || status.dmPinConfigured ? "/dm/unlock" : "/dm/setup" });
+          return;
         }
       } catch {
-        // Non-fatal: server may not have new auth endpoints yet
-        const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-        if (isLocalhost) {
-          try {
-            const resToken = await fetch("/api/auth/local-token");
-            if (resToken.ok) {
-              const { token } = await resToken.json();
-              sessionStorage.setItem("dmcc_dmSessionToken", token);
-            }
-          } catch { /* ignore */ }
-        }
+        await navigate({ to: "/" });
+        return;
       }
       fetchVaults();
-      await fetchCampaigns().catch(() => {});
+      await Promise.all([
+        fetchCampaigns().catch(() => {}),
+        fetchPremadeCampaigns().catch(() => {}),
+      ]);
       setCampaignsFetched(true);
     };
-    initAuth();
-  }, []);
+    void initAuth();
+  }, [fetchCampaigns, fetchPremadeCampaigns, fetchVaults, navigate]);
 
   // When user lands on /dm with an active campaign, redirect to campaign shell
   useEffect(() => {
@@ -162,6 +204,34 @@ export function App() {
     }
   };
 
+
+  const openPremadeImportDialog = (templateId: string) => {
+    setPremadeImportError(null);
+    setPremadeDialogTemplateId(templateId);
+  };
+
+  const handleImportPremade = async (templateId: string, options: { title: string; summary?: string; importMode: PremadeImportMode; openAfterCreate: boolean }) => {
+    setImportingTemplateId(templateId);
+    setPremadeImportError(null);
+    try {
+      const campaignId = await importPremadeCampaign(templateId, {
+        title: options.title,
+        summary: options.summary,
+        importMode: options.importMode,
+      });
+      setPremadeDialogTemplateId(null);
+      if (campaignId && options.openAfterCreate) {
+        await navigate({ to: `/campaigns/${campaignId}/dashboard` });
+      } else {
+        await fetchCampaigns();
+      }
+    } catch (err: any) {
+      setPremadeImportError(err.message || t("premadeImport.genericError"));
+    } finally {
+      setImportingTemplateId(null);
+    }
+  };
+
   const handleRestoreBackupSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!backupRestorePath.trim()) return;
@@ -169,9 +239,20 @@ export function App() {
     setBackupRestorePath("");
   };
 
-  const handleLockDm = async () => {
-    await lockDm();
+  const handleSignOutDm = async () => {
+    clearCampaign();
+    await logoutDm();
     await navigate({ to: "/" });
+  };
+
+  const handleAddDm = () => {
+    navigate({ to: "/dm/setup" });
+  };
+
+  const handleSwitchDm = async () => {
+    clearCampaign();
+    await logoutDm();
+    await navigate({ to: "/dm/unlock" });
   };
 
   const filteredCampaigns = campaigns.filter(
@@ -179,20 +260,43 @@ export function App() {
       c.title.toLowerCase().includes(landingSearchQuery.toLowerCase()) ||
       c.campaignId.toLowerCase().includes(landingSearchQuery.toLowerCase())
   );
+  const selectedPremadeTemplate = premadeTemplates.find((template) => template.templateId === premadeDialogTemplateId) ?? null;
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <PortalTopBar actions={
-        <button
-          type="button"
-          onClick={() => void handleLockDm()}
-          style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", padding: "5px 12px", color: "var(--text-muted)", fontSize: "0.8rem", cursor: "pointer", transition: "border-color 0.2s, color 0.2s" }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.3)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
-        >
-          <Lock size={13} />
-          {t("nav.lockWorkspace")}
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <button
+            type="button"
+            onClick={handleAddDm}
+            style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", padding: "5px 12px", color: "var(--text-muted)", fontSize: "0.8rem", cursor: "pointer", transition: "border-color 0.2s, color 0.2s" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.3)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
+          >
+            <UserPlus size={13} />
+            {t("nav.addDm")}
+          </button>
+          <button
+            type="button"
+            onClick={() => void handleSwitchDm()}
+            style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", padding: "5px 12px", color: "var(--text-muted)", fontSize: "0.8rem", cursor: "pointer", transition: "border-color 0.2s, color 0.2s" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.3)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
+          >
+            <UserRound size={13} />
+            {t("nav.switchDm")}
+          </button>
+          <button
+            type="button"
+            onClick={() => void handleSignOutDm()}
+            style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", padding: "5px 12px", color: "var(--text-muted)", fontSize: "0.8rem", cursor: "pointer", transition: "border-color 0.2s, color 0.2s" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.3)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.12)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
+          >
+            <LogOut size={13} />
+            {t("nav.signOut")}
+          </button>
+        </div>
       } />
     <div className="landing-shell">
       {/* Animated Hero Header */}
@@ -315,8 +419,73 @@ export function App() {
                     triggerMysticalTransition(campaignId);
                   }}
                   onDelete={openDeleteModal}
+                  onRename={() => openEditModal(c)}
                 />
               ))}
+            </div>
+          )}
+        </section>
+
+        <section className="card landing-card landing-premade-section">
+          <div className="landing-section-header">
+            <h2>
+              <Sparkles size={18} />
+              {t("landing.premadeTitle")}
+            </h2>
+          </div>
+          <p className="landing-muted" style={{ marginTop: 0 }}>
+            {t("landing.premadeDescription")}
+          </p>
+
+          {premadeTemplates.length === 0 ? (
+            <p className="landing-muted">{t("landing.premadeEmpty")}</p>
+          ) : (
+            <div className="premade-template-list">
+              {premadeTemplates.map((template) => {
+                const copies = campaigns.filter((campaign) => campaign.metadata?.createdFromTemplateId === template.templateId);
+                return (
+                <article className="premade-template-card" key={template.templateId}>
+                  <div className="premade-template-card__header">
+                    <div>
+                      <h3>{template.title}</h3>
+                      <p>{template.subtitle}</p>
+                    </div>
+                    <span className="premade-template-card__badge">v{template.version}</span>
+                  </div>
+                  <p className="premade-template-card__description">{template.description}</p>
+                  <div className="premade-template-card__meta">
+                    <span>{t("landing.premadeDifficulty", { difficulty: template.difficulty })}</span>
+                    {copies.length > 0 ? <span>{t("landing.premadeExistingCopies", { count: String(copies.length) })}</span> : null}
+                    <span>{t("landing.premadeStats", {
+                      entities: String(template.stats.entities),
+                      sessions: String(template.stats.preparedSessions),
+                    })}</span>
+                  </div>
+                  <div className="premade-template-card__tags" aria-label={t("landing.premadeTagsLabel")}>
+                    {template.tags.slice(0, 5).map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                  <div className="premade-template-card__actions">
+                    <button
+                      type="button"
+                      className="btn btn-secondary landing-secondary-action"
+                      onClick={() => navigate({ to: `/premades/${template.templateId}` })}
+                    >
+                      <Eye size={14} />
+                      {t("landing.premadeExploreButton")}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary landing-secondary-action"
+                      onClick={() => openPremadeImportDialog(template.templateId)}
+                      disabled={loading || importingTemplateId === template.templateId}
+                    >
+                      {importingTemplateId === template.templateId ? "…" : t("landing.premadeImportButton")}
+                    </button>
+                  </div>
+                </article>
+              );})}
             </div>
           )}
         </section>
@@ -501,6 +670,48 @@ export function App() {
           </div>
         </div>
       )}
+
+      {editTarget && (
+        <div className="modal-overlay campaign-edit-dialog-overlay" role="presentation" onClick={(e) => { if (e.target === e.currentTarget) closeEditModal(); }}>
+          <section className="card campaign-edit-dialog" role="dialog" aria-modal="true">
+            <h3>{t("landing.editCampaignTitle")}</h3>
+            <p className="landing-muted">{t("landing.editCampaignDesc")}</p>
+            <div className="form-group">
+              <label className="form-label">{t("landing.campaignTitleLabel")}</label>
+              <input className="form-input" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} autoFocus />
+            </div>
+            <div className="form-group">
+              <label className="form-label">{t("common.summary")}</label>
+              <textarea className="form-input" rows={4} value={editSummary} onChange={(e) => setEditSummary(e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">{t("landing.systemLabel")}</label>
+              <select className="form-select" value={editSystem} onChange={(e) => setEditSystem(e.target.value)}>
+                <option value="generic_fantasy_d20">{t("landing.systemFantasyD20Generic")}</option>
+                <option value="dnd_srd_5_2_1">{t("landing.systemDnD")}</option>
+                <option value="custom">{t("landing.systemCustom")}</option>
+              </select>
+            </div>
+            {editError ? <p className="form-error">{editError}</p> : null}
+            <footer className="campaign-edit-dialog__footer">
+              <button type="button" className="btn btn-secondary" onClick={closeEditModal} disabled={editLoading}>{t("common.cancel")}</button>
+              <button type="button" className="btn btn-primary" onClick={() => void handleEditConfirm()} disabled={editLoading || !editTitle.trim()}>
+                {editLoading ? "…" : t("common.saveChanges")}
+              </button>
+            </footer>
+          </section>
+        </div>
+      )}
+
+      <PremadeImportDialog
+        template={selectedPremadeTemplate}
+        campaigns={campaigns}
+        importing={Boolean(importingTemplateId)}
+        error={premadeImportError}
+        onClose={() => { if (!importingTemplateId) setPremadeDialogTemplateId(null); }}
+        onOpenExisting={(campaignId) => { setPremadeDialogTemplateId(null); triggerMysticalTransition(campaignId); }}
+        onConfirm={(options) => selectedPremadeTemplate ? handleImportPremade(selectedPremadeTemplate.templateId, options) : undefined}
+      />
 
       {mysticalTransitionId && (
         <div className="mystical-portal-overlay mystical-portal-overlay--in" aria-live="assertive">
