@@ -25,6 +25,94 @@ import { logoutPlayer } from "@frontend/shared/auth/authClient.js";
 
 
 type PortalTab = "session" | "summary" | "character" | "knowledge" | "resources" | "diary" | "objectives" | "history";
+type PlayerPortalMode = "family" | "advanced";
+type QuickActionKind = "question" | "note" | "objective";
+
+
+const PLAYER_PORTAL_COPY = {
+  en: {
+    modes: { family: "Family mode", advanced: "Advanced mode" },
+    modeHintFamily: "Big buttons, table-first actions and fewer sections.",
+    modeHintAdvanced: "Full character sheet, resources, memory and history.",
+    attentionTitle: "Before the next scene",
+    attentionSubtitle: "A short checklist so you can play without hunting through menus.",
+    attentionCharacterMissing: "Choose or propose a character",
+    attentionCharacterReady: "Character linked",
+    attentionHpMissing: "Set current hit points",
+    attentionHpReady: "Hit points ready",
+    attentionObjectiveMissing: "Pick one goal for today",
+    attentionObjectiveReady: "Open goal ready",
+    attentionQuestionMissing: "Ask the DM if something matters",
+    attentionQuestionReady: "Question sent to the DM",
+    quickActions: "Quick actions",
+    quickAsk: "Ask the DM",
+    quickNote: "Private note",
+    quickObjective: "Goal for today",
+    quickModalTitleQuestion: "Ask the DM without interrupting the table",
+    quickModalTitleNote: "Write a quick note",
+    quickModalTitleObjective: "Set a goal for today",
+    quickTitleLabel: "Title",
+    quickDetailsLabel: "Details",
+    quickVisibleToDm: "Visible to the DM",
+    quickPrivate: "Only me",
+    quickSubmitQuestion: "Send question",
+    quickSubmitNote: "Save note",
+    quickSubmitObjective: "Save goal",
+    quickCancel: "Cancel",
+    quickQuestionPlaceholder: "Can my character recognize this symbol?",
+    quickNotePlaceholder: "I think Halia is hiding something...",
+    quickObjectivePlaceholder: "Talk to Sildar before leaving town",
+    noRecapYet: "No shared recap yet.",
+    recapTitle: "Last shared recap",
+    tableMemory: "Useful memory for the table",
+    openMemory: "Open memory",
+    openDiary: "Open diary",
+    openObjectives: "Open goals",
+  },
+  es: {
+    modes: { family: "Modo familiar", advanced: "Modo avanzado" },
+    modeHintFamily: "Botones grandes, acciones de mesa y menos secciones.",
+    modeHintAdvanced: "Ficha completa, recursos, memoria e historia.",
+    attentionTitle: "Antes de la siguiente escena",
+    attentionSubtitle: "Lista corta para jugar sin perderse por menús.",
+    attentionCharacterMissing: "Elige o propón un personaje",
+    attentionCharacterReady: "Personaje vinculado",
+    attentionHpMissing: "Ajusta los PG actuales",
+    attentionHpReady: "PG listos",
+    attentionObjectiveMissing: "Elige un objetivo para hoy",
+    attentionObjectiveReady: "Objetivo abierto listo",
+    attentionQuestionMissing: "Pregunta al DM si algo importa",
+    attentionQuestionReady: "Pregunta enviada al DM",
+    quickActions: "Acciones rápidas",
+    quickAsk: "Preguntar al DM",
+    quickNote: "Nota privada",
+    quickObjective: "Objetivo de hoy",
+    quickModalTitleQuestion: "Pregunta al DM sin cortar la mesa",
+    quickModalTitleNote: "Apuntar una nota rápida",
+    quickModalTitleObjective: "Crear un objetivo para hoy",
+    quickTitleLabel: "Título",
+    quickDetailsLabel: "Detalle",
+    quickVisibleToDm: "Visible para el DM",
+    quickPrivate: "Solo yo",
+    quickSubmitQuestion: "Enviar pregunta",
+    quickSubmitNote: "Guardar nota",
+    quickSubmitObjective: "Guardar objetivo",
+    quickCancel: "Cancelar",
+    quickQuestionPlaceholder: "¿Mi personaje reconoce este símbolo?",
+    quickNotePlaceholder: "Creo que Halia oculta algo...",
+    quickObjectivePlaceholder: "Hablar con Sildar antes de salir del pueblo",
+    noRecapYet: "Todavía no hay recap compartido.",
+    recapTitle: "Último recap compartido",
+    tableMemory: "Memoria útil en mesa",
+    openMemory: "Abrir memoria",
+    openDiary: "Abrir diario",
+    openObjectives: "Abrir objetivos",
+  },
+} as const;
+
+function playerCopy(locale: string) {
+  return locale === "es" ? PLAYER_PORTAL_COPY.es : PLAYER_PORTAL_COPY.en;
+}
 
 type CharacterMetadata = Record<string, any>;
 
@@ -315,7 +403,8 @@ function ResourceMeter({ current, max }: { current: number; max: number }) {
 }
 
 export function PlayerPortalView({ campaignId }: { campaignId: string }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
+  const copy = playerCopy(locale);
   const navigate = useNavigate();
   const {
     campaignState,
@@ -332,6 +421,15 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   } = useCampaignStore();
 
   const [activeTab, setActiveTab] = useState<PortalTab>("session");
+  const [portalMode, setPortalMode] = useState<PlayerPortalMode>(() => {
+    try {
+      return localStorage.getItem("dmcc_player_portal_mode") === "advanced" ? "advanced" : "family";
+    } catch {
+      return "family";
+    }
+  });
+  const [quickAction, setQuickAction] = useState<QuickActionKind | null>(null);
+  const [quickActionForm, setQuickActionForm] = useState({ title: "", details: "", visibility: "dm_visible" as "private" | "dm_visible" });
 
   // Character/State form
   const [charForm, setCharForm] = useState({
@@ -397,9 +495,21 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const playerId = playerPortalState?.playerId ?? sessionStorage.getItem("dmcc_playerId");
 
   useEffect(() => {
-    useCampaignStore.setState({ activeCampaignId: campaignId });
+    useCampaignStore.getState().enterPlayerCampaign(campaignId);
     void loadPlayerPortalState(campaignId);
   }, [campaignId, loadPlayerPortalState]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("dmcc_player_portal_mode", portalMode);
+    } catch {}
+  }, [portalMode]);
+
+  useEffect(() => {
+    if (portalMode === "family" && ["character", "resources"].includes(activeTab)) {
+      setActiveTab("session");
+    }
+  }, [activeTab, portalMode]);
 
   // Derived linked character info. Player portal must not require the protected DM campaign snapshot.
   const linkedCharacter: { entityId: string; title: string; metadata?: any; status?: string; subtitle?: string; summary?: string; content?: string } | null =
@@ -454,6 +564,34 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     [memory.activeThreads, knownNpcs, knownLocations]
   );
 
+  const latestSharedRecap = historyEntries.find((session) => Boolean(session.playerSummary));
+  const onboardingSteps = [
+    {
+      id: "character",
+      done: Boolean(myCharacter || linkedCharacter),
+      label: myCharacter || linkedCharacter ? copy.attentionCharacterReady : copy.attentionCharacterMissing,
+      tab: "summary" as PortalTab,
+    },
+    {
+      id: "hp",
+      done: Boolean(characterEntityId && status.hitPointsCurrent !== undefined && status.hitPointsMax !== undefined),
+      label: status.hitPointsCurrent !== undefined ? copy.attentionHpReady : copy.attentionHpMissing,
+      tab: "session" as PortalTab,
+    },
+    {
+      id: "objective",
+      done: openObjectives.length > 0,
+      label: openObjectives.length > 0 ? copy.attentionObjectiveReady : copy.attentionObjectiveMissing,
+      tab: "objectives" as PortalTab,
+    },
+    {
+      id: "question",
+      done: dmQuestions.length > 0,
+      label: dmQuestions.length > 0 ? copy.attentionQuestionReady : copy.attentionQuestionMissing,
+      tab: "session" as PortalTab,
+    },
+  ];
+
   // Sync char form when portal state loads
   useEffect(() => {
     if (sheet || myCharacter) {
@@ -492,7 +630,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
 
   const handleExit = async () => {
     await logoutPlayer(campaignId);
-    useCampaignStore.setState({ activeCampaignId: null, campaignState: null, playerPortalState: null });
+    useCampaignStore.getState().leavePlayerPortal();
     navigate({ to: "/player/join" });
   };
 
@@ -630,6 +768,53 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     setShowObjectiveForm(false);
   };
 
+  const openQuickAction = (kind: QuickActionKind) => {
+    setQuickAction(kind);
+    setQuickActionForm({
+      title:
+        kind === "question"
+          ? copy.quickQuestionPlaceholder
+          : kind === "objective"
+            ? copy.quickObjectivePlaceholder
+            : "",
+      details: "",
+      visibility: kind === "note" ? "private" : "dm_visible",
+    });
+  };
+
+  const handleQuickActionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!quickAction || !quickActionForm.title.trim()) return;
+
+    if (quickAction === "question") {
+      await createPlayerPortalObjective({
+        title: quickActionForm.title.trim(),
+        description: quickActionForm.details.trim() || undefined,
+        kind: "question_for_dm",
+        status: "open",
+        visibility: "dm_visible",
+      });
+    } else if (quickAction === "objective") {
+      await createPlayerPortalObjective({
+        title: quickActionForm.title.trim(),
+        description: quickActionForm.details.trim() || undefined,
+        kind: "session",
+        status: "open",
+        visibility: quickActionForm.visibility,
+      });
+    } else {
+      await createPlayerPortalNote({
+        title: quickActionForm.title.trim(),
+        content: quickActionForm.details.trim(),
+        visibility: quickActionForm.visibility,
+        linkedEntityIds: [],
+      });
+    }
+
+    setQuickAction(null);
+    setQuickActionForm({ title: "", details: "", visibility: "dm_visible" });
+  };
+
   // ── Submit: Objective complete ──────────────────────────────────────────
   const handleObjectiveComplete = async (objectiveId: string) => {
     await updatePlayerPortalObjective(objectiveId, { status: "done" });
@@ -683,16 +868,17 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     );
   }
 
-  const TABS: { id: PortalTab; label: string; icon: React.ReactNode }[] = [
-    { id: "session", label: "Mesa", icon: <HeartPulse size={16} /> },
-    { id: "summary", label: t("session.summary"), icon: <Shield size={16} /> },
+  const ALL_TABS: { id: PortalTab; label: string; icon: React.ReactNode; family?: boolean }[] = [
+    { id: "session", label: "Mesa", icon: <HeartPulse size={16} />, family: true },
+    { id: "summary", label: t("session.summary"), icon: <Shield size={16} />, family: true },
     { id: "character", label: "Personaje", icon: <User size={16} /> },
-    { id: "knowledge", label: "Memoria", icon: <MapPinned size={16} /> },
+    { id: "knowledge", label: "Memoria", icon: <MapPinned size={16} />, family: true },
     { id: "resources", label: "Recursos", icon: <Clock size={16} /> },
-    { id: "diary", label: "Diario", icon: <FileText size={16} /> },
-    { id: "objectives", label: t("playerPortal.objectives"), icon: <Target size={16} /> },
-    { id: "history", label: "Historia", icon: <BookOpen size={16} /> },
+    { id: "diary", label: "Diario", icon: <FileText size={16} />, family: true },
+    { id: "objectives", label: t("playerPortal.objectives"), icon: <Target size={16} />, family: true },
+    { id: "history", label: "Historia", icon: <BookOpen size={16} />, family: true },
   ];
+  const TABS = portalMode === "family" ? ALL_TABS.filter((tab) => tab.family) : ALL_TABS;
 
   const tabLabel: Record<PortalTab, string> = {
     session: "Modo mesa",
@@ -724,6 +910,26 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
               {myCharacter ? myCharacter.title : "Sin personaje"}
             </div>
           </div>
+        </div>
+
+        <div className="player-mode-switcher" style={{ padding: "12px 16px", borderBottom: "1px solid var(--border-color)" }}>
+          <div className="player-mode-buttons">
+            <button
+              type="button"
+              className={portalMode === "family" ? "active" : ""}
+              onClick={() => setPortalMode("family")}
+            >
+              {copy.modes.family}
+            </button>
+            <button
+              type="button"
+              className={portalMode === "advanced" ? "active" : ""}
+              onClick={() => setPortalMode("advanced")}
+            >
+              {copy.modes.advanced}
+            </button>
+          </div>
+          <p>{portalMode === "family" ? copy.modeHintFamily : copy.modeHintAdvanced}</p>
         </div>
 
         <nav className="sidebar-nav" style={{ flexGrow: 1, padding: "16px 0" }}>
@@ -770,6 +976,37 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
           {/* ── TAB: Session / Table Mode ───────────────────────────────────── */}
           {activeTab === "session" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              <div className="card player-onboarding-card">
+                <div className="player-onboarding-header">
+                  <div>
+                    <div className="player-session-kicker">{copy.attentionTitle}</div>
+                    <h3>{copy.attentionSubtitle}</h3>
+                  </div>
+                  <button className="btn btn-secondary btn-sm" onClick={() => void handleRefresh()} disabled={isRefreshing}>
+                    <RefreshCw size={13} /> {isRefreshing ? "..." : "Sync"}
+                  </button>
+                </div>
+                <div className="player-onboarding-grid">
+                  {onboardingSteps.map((step) => (
+                    <button
+                      key={step.id}
+                      type="button"
+                      className={step.done ? "done" : ""}
+                      onClick={() => step.id === "question" && !step.done ? openQuickAction("question") : setActiveTab(step.tab)}
+                    >
+                      <CheckSquare size={15} />
+                      <span>{step.label}</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="player-quick-actions">
+                  <span>{copy.quickActions}</span>
+                  <button className="btn btn-primary btn-sm" onClick={() => openQuickAction("question")}><MessageSquare size={13} /> {copy.quickAsk}</button>
+                  <button className="btn btn-secondary btn-sm" onClick={() => openQuickAction("note")}><FileText size={13} /> {copy.quickNote}</button>
+                  <button className="btn btn-secondary btn-sm" onClick={() => openQuickAction("objective")}><Target size={13} /> {copy.quickObjective}</button>
+                </div>
+              </div>
+
               {!myCharacter && !linkedCharacter ? (
                 <EmptyPortalState title="Todavía no hay personaje vinculado">
                   El portal ya está listo, pero necesitas que el DM apruebe tu personaje o tu solicitud. Puedes pedir uno de campaña o proponer el tuyo desde el resumen.
@@ -802,6 +1039,36 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                         <strong>{status.inspiration ? "Sí" : "No"}</strong>
                       </div>
                     </div>
+                  </div>
+
+                  <div className="player-session-layout">
+                    <PortalSection
+                      title={copy.recapTitle}
+                      subtitle={latestSharedRecap ? latestSharedRecap.title : copy.noRecapYet}
+                      action={<button className="btn btn-secondary btn-sm" onClick={() => setActiveTab("history")}>{copy.openMemory}</button>}
+                    >
+                      {latestSharedRecap?.playerSummary ? (
+                        <p className="player-session-recap">{latestSharedRecap.playerSummary}</p>
+                      ) : (
+                        <p className="player-muted-line">{copy.noRecapYet}</p>
+                      )}
+                    </PortalSection>
+
+                    <PortalSection
+                      title={copy.tableMemory}
+                      subtitle="NPCs, lugares, pistas y objetivos que pueden importar ahora."
+                      action={<button className="btn btn-secondary btn-sm" onClick={() => setActiveTab("knowledge")}>{copy.openMemory}</button>}
+                    >
+                      {keyMemoryCards.length === 0 ? (
+                        <p className="player-muted-line">No hay memoria visible todavía.</p>
+                      ) : (
+                        <div className="player-card-list">
+                          {keyMemoryCards.slice(0, 5).map((entity) => (
+                            <MemoryEntityCard key={entity.entityId} entity={entity} compact />
+                          ))}
+                        </div>
+                      )}
+                    </PortalSection>
                   </div>
 
                   <div className="player-session-layout">
@@ -1965,6 +2232,74 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                   </div>
                 ))
               )}
+            </div>
+          )}
+
+          {quickAction && (
+            <div className="modal-overlay" onClick={() => setQuickAction(null)}>
+              <form className="modal-content player-quick-modal" onSubmit={(e) => void handleQuickActionSubmit(e)} onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                  <h3>
+                    {quickAction === "question"
+                      ? copy.quickModalTitleQuestion
+                      : quickAction === "objective"
+                        ? copy.quickModalTitleObjective
+                        : copy.quickModalTitleNote}
+                  </h3>
+                  <button type="button" className="btn btn-icon btn-secondary" onClick={() => setQuickAction(null)} aria-label={copy.quickCancel}>×</button>
+                </div>
+                <div className="modal-body" style={{ display: "grid", gap: "14px" }}>
+                  <label className="form-group" style={{ marginBottom: 0 }}>
+                    <span className="form-label">{copy.quickTitleLabel}</span>
+                    <input
+                      className="form-input"
+                      value={quickActionForm.title}
+                      onChange={(e) => setQuickActionForm((form) => ({ ...form, title: e.target.value }))}
+                      placeholder={
+                        quickAction === "question"
+                          ? copy.quickQuestionPlaceholder
+                          : quickAction === "objective"
+                            ? copy.quickObjectivePlaceholder
+                            : copy.quickNotePlaceholder
+                      }
+                      autoFocus
+                      required
+                    />
+                  </label>
+                  <label className="form-group" style={{ marginBottom: 0 }}>
+                    <span className="form-label">{copy.quickDetailsLabel}</span>
+                    <textarea
+                      className="form-input"
+                      rows={4}
+                      value={quickActionForm.details}
+                      onChange={(e) => setQuickActionForm((form) => ({ ...form, details: e.target.value }))}
+                    />
+                  </label>
+                  {quickAction !== "question" && (
+                    <label className="form-group" style={{ marginBottom: 0 }}>
+                      <span className="form-label">Visibilidad</span>
+                      <select
+                        className="form-input"
+                        value={quickActionForm.visibility}
+                        onChange={(e) => setQuickActionForm((form) => ({ ...form, visibility: e.target.value as "private" | "dm_visible" }))}
+                      >
+                        <option value="private">{copy.quickPrivate}</option>
+                        <option value="dm_visible">{copy.quickVisibleToDm}</option>
+                      </select>
+                    </label>
+                  )}
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" onClick={() => setQuickAction(null)}>{copy.quickCancel}</button>
+                  <button type="submit" className="btn btn-primary">
+                    {quickAction === "question"
+                      ? copy.quickSubmitQuestion
+                      : quickAction === "objective"
+                        ? copy.quickSubmitObjective
+                        : copy.quickSubmitNote}
+                  </button>
+                </div>
+              </form>
             </div>
           )}
 

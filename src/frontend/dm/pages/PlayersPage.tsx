@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Plus, X, User, Pencil, Archive, Eye, EyeOff, ShieldCheck, Link2, Copy, Trash2, Clock, Wifi } from "lucide-react";
+import { Plus, X, User, Pencil, Archive, Eye, EyeOff, ShieldCheck, Link2, Copy, Trash2, Clock, Wifi, MessageSquare, Target } from "lucide-react";
 import type { Entity, PlayerProfile } from "../../shared/stores/campaignStore.js";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
@@ -144,6 +144,22 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
   const addToast = props.addToast ?? toastAdd;
 
+  const portalPlayers = (dmPlayerPortalSummary?.players ?? []) as any[];
+  const pendingProposalItems = portalPlayers.flatMap((portalPlayer: any) =>
+    (portalPlayer.proposals ?? [])
+      .filter((proposal: any) => proposal.status === "pending")
+      .map((proposal: any) => ({ portalPlayer, proposal }))
+  );
+  const dmQuestionItems = portalPlayers.flatMap((portalPlayer: any) =>
+    (portalPlayer.objectives ?? [])
+      .filter((objective: any) => objective.status === "open" && objective.kind === "question_for_dm")
+      .map((objective: any) => ({ portalPlayer, objective }))
+  );
+  const dmVisibleNotes = portalPlayers.flatMap((portalPlayer: any) =>
+    (portalPlayer.notes ?? []).map((note: any) => ({ portalPlayer, note }))
+  );
+  const dmInboxCount = pendingProposalItems.length + dmQuestionItems.length + dmVisibleNotes.length;
+
   return (<>
     <div>
       <h2 style={{ fontWeight: "700", marginBottom: "16px" }}>Jugadores y personajes</h2>
@@ -247,6 +263,52 @@ export function PlayersPage(props: PlayersPageProps = {}) {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {dmInboxCount > 0 && (
+        <div className="card dm-player-inbox" style={{ marginBottom: "20px", padding: "18px", border: "1px solid rgba(99,102,241,0.34)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px", marginBottom: "14px" }}>
+            <div>
+              <h3 style={{ fontWeight: 800, margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
+                <MessageSquare size={18} style={{ color: "var(--primary)" }} /> Bandeja del DM
+              </h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.84rem", margin: "4px 0 0" }}>
+                Preguntas, notas visibles y propuestas que los jugadores han enviado desde su portal.
+              </p>
+            </div>
+            <span className="badge badge-default">{dmInboxCount} pendiente{dmInboxCount === 1 ? "" : "s"}</span>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "12px" }}>
+            {pendingProposalItems.slice(0, 4).map(({ portalPlayer, proposal }: any) => (
+              <div key={proposal.proposalId} className="dm-player-inbox-item">
+                <Target size={15} />
+                <div>
+                  <strong>{portalPlayer.displayName}</strong>
+                  <p>{proposal.kind === "link_request" ? "Solicita personaje existente" : proposal.kind === "create_character" ? "Propone personaje nuevo" : "Propone cambio de personaje"}</p>
+                </div>
+              </div>
+            ))}
+            {dmQuestionItems.slice(0, 6).map(({ portalPlayer, objective }: any) => (
+              <div key={objective.objectiveId} className="dm-player-inbox-item">
+                <MessageSquare size={15} />
+                <div>
+                  <strong>{portalPlayer.displayName}: {objective.title}</strong>
+                  {objective.description && <p>{objective.description}</p>}
+                </div>
+              </div>
+            ))}
+            {dmVisibleNotes.slice(0, 4).map(({ portalPlayer, note }: any) => (
+              <div key={note.noteId} className="dm-player-inbox-item">
+                <Eye size={15} />
+                <div>
+                  <strong>{portalPlayer.displayName}: {note.title}</strong>
+                  {note.content && <p>{note.content}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

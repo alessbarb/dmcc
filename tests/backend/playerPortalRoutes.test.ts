@@ -390,3 +390,53 @@ it("player cannot update another player note", async () => {
     expect(attempt.statusCode).toBe(404);
   });
 });
+
+it("surfaces DM-visible player questions and notes for the DM inbox", async () => {
+  await withTempDataDir(async (dataDir) => {
+    const server = createServer({ dataDir });
+    const dmToken = await seedPlayer(server);
+    const playerToken = await issueToken(server, dmToken);
+
+    const question = await server.inject({
+      method: "POST",
+      url: "/api/campaigns/cmp_portal/player-portal/objectives",
+      payload: {
+        title: "Can I recognize the black seal?",
+        description: "It may connect to my background.",
+        kind: "question_for_dm",
+        visibility: "dm_visible",
+      },
+      headers: { "x-player-token": playerToken },
+    });
+    expect(question.statusCode).toBe(201);
+
+    const note = await server.inject({
+      method: "POST",
+      url: "/api/campaigns/cmp_portal/player-portal/notes",
+      payload: { title: "Halia follow-up", content: "I want to talk to her privately.", visibility: "dm_visible", linkedEntityIds: [] },
+      headers: { "x-player-token": playerToken },
+    });
+    expect(note.statusCode).toBe(201);
+
+    const summary = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_portal/player-portal/dm-summary",
+      headers: { "x-dm-token": dmToken },
+    });
+
+    expect(summary.statusCode).toBe(200);
+    expect(summary.json().players[0].objectives).toMatchObject([
+      {
+        title: "Can I recognize the black seal?",
+        kind: "question_for_dm",
+        visibility: "dm_visible",
+      },
+    ]);
+    expect(summary.json().players[0].notes).toMatchObject([
+      {
+        title: "Halia follow-up",
+        visibility: "dm_visible",
+      },
+    ]);
+  });
+});
