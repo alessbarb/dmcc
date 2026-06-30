@@ -11,7 +11,7 @@
   "main": "desktop/main.mjs",
   "desktopName": "local.dmcc.app.desktop",
   "scripts": {
-    "archive": "mkdir -p dist && git ls-files -z --cached --others --exclude-standard | tar --null -czf dist/dmcc.tar.gz --files-from=-",
+    "archive": "node scripts/archive.mjs",
     "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "clean:release": "node -e \"require('node:fs').rmSync('release', { recursive: true, force: true })\"",
     "clean:desktop": "npm run clean && npm run clean:release",
