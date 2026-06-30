@@ -796,14 +796,33 @@ function PanelCerrarSesion({
 }) {
   const { t } = useTranslation();
   const [busy, setBusy] = useState(false);
+  const [decisions, setDecisions] = useState("");
+  const [openThreads, setOpenThreads] = useState("");
+  const [nextPrep, setNextPrep] = useState("");
+
+  const buildStructuredSummary = () => {
+    const sections = [
+      [t("sessionPage.closingSummarySection"), sessionSummary.trim()],
+      [t("sessionPage.closingDecisionsSection"), decisions.trim()],
+      [t("sessionPage.closingOpenThreadsSection"), openThreads.trim()],
+      [t("sessionPage.closingNextPrepSection"), nextPrep.trim()],
+    ].filter(([, value]) => value.length > 0);
+
+    return sections
+      .map(([title, value]) => `${title}\n${value}`)
+      .join("\n\n");
+  };
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!sessionSummary.trim()) return;
     setBusy(true);
-    await closeSession(activeSession.sessionId, sessionSummary.trim());
+    await closeSession(activeSession.sessionId, buildStructuredSummary());
     addToast(t("toasts.sessionClosed"), "success");
     setSessionSummary("");
+    setDecisions("");
+    setOpenThreads("");
+    setNextPrep("");
     setBusy(false);
     setCurrentPage("dashboard");
   };
@@ -830,7 +849,7 @@ function PanelCerrarSesion({
 
       <div className="form-group">
         <label className="form-label" htmlFor="close-summary">
-          Resumen de la sesión
+          {t("sessionPage.closingSummaryLabel")}
         </label>
         <textarea
           id="close-summary"
@@ -840,7 +859,50 @@ function PanelCerrarSesion({
           onChange={(e) => setSessionSummary(e.target.value)}
           required
           autoFocus
-          style={{ minHeight: "120px" }}
+          style={{ minHeight: "110px" }}
+        />
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+        <div className="form-group">
+          <label className="form-label" htmlFor="close-decisions">
+            {t("sessionPage.closingDecisionsLabel")}
+          </label>
+          <textarea
+            id="close-decisions"
+            className="form-textarea"
+            placeholder={t("sessionPage.closingDecisionsPlaceholder")}
+            value={decisions}
+            onChange={(e) => setDecisions(e.target.value)}
+            style={{ minHeight: "82px" }}
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="close-open-threads">
+            {t("sessionPage.closingOpenThreadsLabel")}
+          </label>
+          <textarea
+            id="close-open-threads"
+            className="form-textarea"
+            placeholder={t("sessionPage.closingOpenThreadsPlaceholder")}
+            value={openThreads}
+            onChange={(e) => setOpenThreads(e.target.value)}
+            style={{ minHeight: "82px" }}
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label className="form-label" htmlFor="close-next-prep">
+          {t("sessionPage.closingNextPrepLabel")}
+        </label>
+        <textarea
+          id="close-next-prep"
+          className="form-textarea"
+          placeholder={t("sessionPage.closingNextPrepPlaceholder")}
+          value={nextPrep}
+          onChange={(e) => setNextPrep(e.target.value)}
+          style={{ minHeight: "74px" }}
         />
       </div>
 

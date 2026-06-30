@@ -24,7 +24,7 @@ import type { Viewport } from "./CanvasGroupHulls.js";
 import { RelationshipTypePopover } from "./RelationshipTypePopover.js";
 import { CanvasToolbar } from "./CanvasToolbar.js";
 import type { InteractionMode } from "./CanvasToolbar.js";
-
+import type { ProOptions } from "reactflow";
 
 // Register custom node types — group nodes are no longer rendered as boxes
 const nodeTypes = {
@@ -32,6 +32,8 @@ const nodeTypes = {
   note: CanvasNoteNode,
   fact: CanvasFactNode,
 };
+
+const reactFlowProOptions: ProOptions = { hideAttribution: true };
 
 export interface CampaignCanvasFlowProps {
   canvasId: string;
@@ -678,6 +680,7 @@ export function CampaignCanvasFlow({
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        proOptions={reactFlowProOptions}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onNodeDragStop={onNodeDragStop}

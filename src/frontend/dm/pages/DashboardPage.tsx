@@ -16,6 +16,11 @@ import {
   CalendarDays,
   Flame,
   BookOpen,
+  ClipboardList,
+  Download,
+  Search,
+  Share2,
+  Sparkles,
 } from "lucide-react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
@@ -70,6 +75,82 @@ function EmptySlot({ label }: { label: string }) {
     <span style={{ color: "var(--text-muted)", fontStyle: "italic", fontSize: "0.88rem" }}>
       {label}
     </span>
+  );
+}
+
+function CommandMetric({
+  label,
+  value,
+  detail,
+}: {
+  label: string;
+  value: string | number;
+  detail?: string;
+}) {
+  return (
+    <div
+      style={{
+        padding: "12px 14px",
+        borderRadius: "var(--radius-md)",
+        backgroundColor: "var(--bg-input)",
+        border: "1px solid var(--border-color)",
+        minWidth: 0,
+      }}
+    >
+      <div
+        style={{
+          fontSize: "0.68rem",
+          fontWeight: 800,
+          textTransform: "uppercase",
+          letterSpacing: "0.1em",
+          color: "var(--text-muted)",
+          marginBottom: "5px",
+        }}
+      >
+        {label}
+      </div>
+      <div style={{ fontSize: "1.35rem", fontWeight: 900, color: "var(--text-main)" }}>
+        {value}
+      </div>
+      {detail && (
+        <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "3px" }}>
+          {detail}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FlowStep({
+  icon,
+  title,
+  description,
+  active,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  active?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "10px",
+        padding: "12px",
+        borderRadius: "var(--radius-md)",
+        backgroundColor: active ? "var(--bg-card-hover)" : "var(--bg-input)",
+        border: active ? "1px solid hsla(255, 85%, 65%, 0.45)" : "1px solid var(--border-color)",
+      }}
+    >
+      <span style={{ color: active ? "var(--primary)" : "var(--text-muted)", flexShrink: 0, marginTop: "2px" }}>
+        {icon}
+      </span>
+      <span style={{ minWidth: 0 }}>
+        <strong style={{ display: "block", fontSize: "0.86rem", color: "var(--text-main)" }}>{title}</strong>
+        <span style={{ display: "block", fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "2px" }}>{description}</span>
+      </span>
+    </div>
   );
 }
 
@@ -137,10 +218,11 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
   const storeData = useCampaignStore();
   const dashboard = _props.dashboard ?? storeData.dashboard;
   const campaignState = _props.campaignState ?? storeData.campaignState;
-  const { updateEntity, archiveEntity } = storeData;
+  const { updateEntity, archiveEntity, exportMarkdown } = storeData;
   const { addToast } = useToast();
   const { t, locale } = useTranslation();
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
+  const [exportingMarkdown, setExportingMarkdown] = useState(false);
   const selectedEntity = selectedEntityLocal;
   const setSelectedEntity = _props.setSelectedEntity ?? setSelectedEntityLocal;
 
@@ -152,6 +234,14 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
   const campaign = campaignState?.campaign ?? null;
   const sessions: any[] = campaignState?.sessions ?? [];
   const activeSession = sessions.find((s: any) => s.status === "active") ?? null;
+  const plannedSessions = sessions
+    .filter((s: any) => s.status === "planned")
+    .sort(
+      (a: any, b: any) =>
+        new Date(a.scheduledAt ?? a.createdAt ?? 0).getTime() -
+        new Date(b.scheduledAt ?? b.createdAt ?? 0).getTime()
+    );
+  const nextPreparedSession = plannedSessions[0] ?? null;
 
   const currentLocationId = campaign?.currentLocationId ?? null;
   const currentLocationEntity =
@@ -181,6 +271,36 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
     blockedQuests.length > 0 ||
     criticalHiddenClues.length > 0 ||
     pendingConsequences.length > 0;
+
+  const attentionCount =
+    npcWarnings.length +
+    blockedQuests.length +
+    criticalHiddenClues.length +
+    pendingConsequences.length;
+  const activeQuestCount = dashboard?.activeQuests?.length ?? 0;
+  const playerCount = campaignState?.players?.filter((player: any) => !player.archived).length ?? 0;
+  const preparedClueCount = preparedClues.length;
+
+  const handleMarkdownExport = async () => {
+    setExportingMarkdown(true);
+    try {
+      const result = await exportMarkdown();
+      const path = result?.path ?? result?.primaryFile ?? "";
+      if (path && navigator.clipboard) {
+        await navigator.clipboard.writeText(path);
+      }
+      addToast(
+        path
+          ? t("dashboard.markdownExportedWithPath")
+          : t("dashboard.markdownExported"),
+        "success"
+      );
+    } catch (err: any) {
+      addToast(t("dashboard.markdownExportError", { error: err?.message ?? String(err) }), "error");
+    } finally {
+      setExportingMarkdown(false);
+    }
+  };
 
   const importanceBadge = (importance: string | undefined) => {
     if (!importance) return { label: t("dashboard.importanceNormal"), cls: "badge-default" };
@@ -273,15 +393,23 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                   <span className="badge badge-primary">{campaign.system}</span>
                 )}
               </div>
-              {campaign?.description && (
+              {(campaign?.summary || campaign?.description) && (
                 <p
                   style={{
                     fontSize: "0.85rem",
                     color: "var(--text-muted)",
-                    maxWidth: "520px",
+                    maxWidth: "620px",
                   }}
                 >
-                  {campaign.description}
+                  {campaign.summary || campaign.description}
+                </p>
+              )}
+              {campaign?.metadata?.createdFromTemplateTitle && (
+                <p style={{ marginTop: "8px", fontSize: "0.78rem", color: "var(--text-muted)" }}>
+                  {t("dashboard.createdFromTemplate", {
+                    title: String(campaign.metadata.createdFromTemplateTitle),
+                    version: String(campaign.metadata.createdFromTemplateVersion ?? ""),
+                  })}
                 </p>
               )}
             </div>
@@ -319,6 +447,110 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 </span>
               </div>
             ) : null}
+          </div>
+        </div>
+
+        <div
+          className="card"
+          style={{
+            padding: "20px",
+            marginBottom: "20px",
+            borderColor: "hsla(255, 85%, 65%, 0.22)",
+            background:
+              "linear-gradient(135deg, hsla(255, 85%, 14%, 0.55), hsla(224, 36%, 10%, 0.92))",
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "minmax(260px, 1.2fr) minmax(280px, 1fr)",
+              gap: "18px",
+              alignItems: "stretch",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    color: "var(--primary)",
+                    fontSize: "0.76rem",
+                    fontWeight: 900,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    marginBottom: "6px",
+                  }}
+                >
+                  <Sparkles size={14} /> {t("dashboard.commandCenter")}
+                </div>
+                <h2
+                  style={{
+                    margin: 0,
+                    fontSize: "1.25rem",
+                    fontWeight: 900,
+                    letterSpacing: "-0.02em",
+                    color: "var(--text-main)",
+                  }}
+                >
+                  {nextPreparedSession
+                    ? t("dashboard.nextPreparedSessionTitle", { title: nextPreparedSession.title })
+                    : activeSession
+                      ? t("dashboard.runningSessionTitle", { title: activeSession.title })
+                      : t("dashboard.noPreparedSessionTitle")}
+                </h2>
+                <p style={{ marginTop: "8px", color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.45 }}>
+                  {nextPreparedSession?.prep?.summary ||
+                    activeSession?.prep?.summary ||
+                    t("dashboard.commandCenterDescription")}
+                </p>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: "10px" }}>
+                <CommandMetric label={t("dashboard.metricAttention")} value={attentionCount} detail={t("dashboard.metricAttentionDetail")} />
+                <CommandMetric label={t("dashboard.metricQuests")} value={activeQuestCount} detail={t("dashboard.metricQuestsDetail")} />
+                <CommandMetric label={t("dashboard.metricClues")} value={preparedClueCount} detail={t("dashboard.metricCluesDetail")} />
+                <CommandMetric label={t("dashboard.metricPlayers")} value={playerCount} detail={t("dashboard.metricPlayersDetail")} />
+              </div>
+
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                <button className="btn btn-primary btn-sm" onClick={() => setCurrentPage("session")}>
+                  <Play size={14} /> {activeSession ? t("dashboard.runSession") : t("dashboard.prepareOrStart")}
+                </button>
+                <button className="btn btn-secondary btn-sm" onClick={() => setCurrentPage("what-now")}>
+                  <ClipboardList size={14} /> {t("dashboard.reviewWhatNow")}
+                </button>
+                <button className="btn btn-secondary btn-sm" onClick={() => setCurrentPage("knowledge")}>
+                  <Share2 size={14} /> {t("dashboard.reviewPlayerKnowledge")}
+                </button>
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+              <FlowStep
+                icon={<ClipboardList size={16} />}
+                title={t("dashboard.flowPrepareTitle")}
+                description={t("dashboard.flowPrepareDescription")}
+                active={!activeSession}
+              />
+              <FlowStep
+                icon={<Play size={16} />}
+                title={t("dashboard.flowRunTitle")}
+                description={t("dashboard.flowRunDescription")}
+                active={Boolean(activeSession)}
+              />
+              <FlowStep
+                icon={<CheckCircle2 size={16} />}
+                title={t("dashboard.flowCloseTitle")}
+                description={t("dashboard.flowCloseDescription")}
+              />
+              <FlowStep
+                icon={<Share2 size={16} />}
+                title={t("dashboard.flowShareTitle")}
+                description={t("dashboard.flowShareDescription")}
+              />
+            </div>
           </div>
         </div>
 
@@ -1057,6 +1289,34 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                 transform: "translateY(-50%)",
               }}
             />
+          </button>
+
+          <button
+            className="btn btn-secondary"
+            style={quickActionButtonStyle}
+            onClick={() => setCurrentPage("search")}
+          >
+            <Search size={20} style={{ color: "var(--text-muted)" }} />
+            <span>{t("dashboard.globalSearch")}</span>
+          </button>
+
+          <button
+            className="btn btn-secondary"
+            style={quickActionButtonStyle}
+            onClick={() => campaignId && navigate({ to: `/campaigns/${campaignId}/player-portal` })}
+          >
+            <Share2 size={20} style={{ color: "var(--text-muted)" }} />
+            <span>{t("dashboard.openPlayerPortal")}</span>
+          </button>
+
+          <button
+            className="btn btn-secondary"
+            style={quickActionButtonStyle}
+            onClick={() => void handleMarkdownExport()}
+            disabled={exportingMarkdown}
+          >
+            <Download size={20} style={{ color: "var(--text-muted)" }} />
+            <span>{exportingMarkdown ? t("dashboard.exportingMarkdown") : t("dashboard.exportMarkdown")}</span>
           </button>
         </div>
       </section>

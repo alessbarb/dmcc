@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Plus, X, Zap } from "lucide-react";
+import { Plus, X, Zap, Play } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { useNavigate } from "@tanstack/react-router";
 
 type QuickEntityType = "npc" | "location" | "quest" | "clue" | "note" | "item";
 
@@ -22,12 +23,14 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
   const [name, setName] = useState("");
   const [type, setType] = useState<QuickEntityType>("note");
   const [saving, setSaving] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const { addToast } = useToast();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   // Get the createEntity action from the store (uses activeCampaignId internally)
   const createEntity = useCampaignStore((s) => s.createEntity);
+  const activeSession = useCampaignStore((s) => s.campaignState?.sessions?.find((session) => session.status === "active"));
 
   useEffect(() => {
     if (open) {
@@ -52,7 +55,15 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
     if (!name.trim()) return;
     setSaving(true);
     try {
-      await createEntity({ title: name.trim(), entityType: type });
+      const trimmed = name.trim();
+      await createEntity({
+        title: trimmed.substring(0, type === "note" ? 60 : 120),
+        entityType: type,
+        content: type === "note" ? trimmed : undefined,
+        summary: type !== "note" ? trimmed : undefined,
+        status: type === "clue" ? "prepared" : "active",
+        createdInSessionId: activeSession?.sessionId,
+      });
       addToast(t("toasts.success"), "success");
       setOpen(false);
     } catch {
@@ -111,17 +122,17 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
             </div>
 
             <div className="quick-capture-sheet__body">
-              <input
+              <textarea
                 ref={inputRef}
-                type="text"
-                className="input"
-                placeholder={`${t("common.name")}...`}
+                className="form-textarea"
+                placeholder={t("session.quickCaptureLongPlaceholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSave();
+                  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void handleSave();
                 }}
-                maxLength={120}
+                maxLength={500}
+                style={{ minHeight: "96px", resize: "vertical" }}
               />
 
               <div className="quick-capture-type-grid">
@@ -140,6 +151,18 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
             </div>
 
             <div className="quick-capture-sheet__footer">
+              {activeSession && (
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => {
+                    setOpen(false);
+                    void navigate({ to: `/campaigns/${_campaignId}/session` });
+                  }}
+                >
+                  <Play size={14} /> {t("session.openActiveSession")}
+                </button>
+              )}
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
