@@ -33,6 +33,9 @@ const PlayerKnowledgePageLazy = React.lazy(() =>
 const OnboardingPageLazy = React.lazy(() =>
   import("./dm/pages/OnboardingPage.js").then((m) => ({ default: m.OnboardingPage }))
 );
+const PremadeCampaignPreviewPageLazy = React.lazy(() =>
+  import("./dm/pages/PremadeCampaignPreviewPage.js").then((m) => ({ default: m.PremadeCampaignPreviewPage }))
+);
 
 function withSuspense(Component: React.ComponentType) {
   return function SuspenseRoute() {
@@ -205,11 +208,18 @@ const onboardingRoute = createRoute({
   component: withSuspense(OnboardingPageLazy),
 });
 
+const premadePreviewRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/premades/$templateId",
+  component: withSuspense(PremadeCampaignPreviewPageLazy),
+});
+
 // Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   dmRoute,
   onboardingRoute,
+  premadePreviewRoute,
   dmSetupRoute,
   dmUnlockRoute,
   playerJoinRoute,

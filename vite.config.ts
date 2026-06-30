@@ -48,7 +48,7 @@ export default defineConfig({
           /^\/workbox-/,
           /\.[^/]+$/,
         ],
-        globPatterns: ["**/*.{js,css,html,svg,woff2}", "icons/*.png"],
+        globPatterns: ["**/*.{js,css,html,svg,woff2}", "icons/*.png", "premades/*.json"],
         runtimeCaching: [
           {
             urlPattern: /^\/api\//,

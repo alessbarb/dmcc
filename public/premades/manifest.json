@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "templateId": "oracle-triple-eclipse",
+      "version": "1.1.0",
+      "title": "La Sombra del Oráculo",
+      "subtitle": "Intriga, facciones, secretos y consecuencias",
+      "description": "Campaña de ejemplo avanzada para probar memoria narrativa, facciones, secretos revelables, relojes de tensión y preparación de sesiones con consecuencias.",
+      "locale": "es",
+      "system": "generic_fantasy_d20",
+      "difficulty": "advanced",
+      "recommendedFor": "DMs que quieren probar una campaña densa sin preparar desde cero: facciones con intereses incompatibles, pistas que apuntan a secretos, relojes que presionan y consecuencias listas para activar según las decisiones del grupo.",
+      "tags": [
+        "intriga",
+        "facciones",
+        "misterio",
+        "secretos",
+        "consecuencias"
+      ],
+      "stats": {
+        "entities": 26,
+        "relations": 24,
+        "facts": 12,
+        "preparedSessions": 4
+      },
+      "file": "oracle-triple-eclipse.dmcc-template.json",
+      "pitch": "Una campaña breve de intriga fantástica para ver cómo DMCC conecta facciones, pistas, secretos y consecuencias. Está pensada para que un DM pueda abrir el dashboard, revisar el canvas, dirigir cuatro sesiones y entender cómo se conserva la memoria narrativa.",
+      "learningGoals": [
+        "Usar entidades como mapa vivo de PNJs, lugares, facciones, pistas y relojes.",
+        "Preparar sesiones conectando objetivos, escenas, pistas disponibles y secretos en riesgo.",
+        "Separar lo que sabe el DM de lo que puede ver el grupo en el portal del jugador.",
+        "Registrar consecuencias para que el mundo reaccione después de cada sesión."
+      ],
+      "includedMaterial": [
+        "Cuatro sesiones preparadas con objetivos, escenas y checklist de mesa.",
+        "Facciones, PNJs, pistas, secretos, rumores, decisiones y consecuencias conectadas.",
+        "Canvas narrativo para entender el conflicto central de un vistazo.",
+        "Hechos públicos y secretos del DM listos para revelar durante la partida."
+      ],
+      "quickStart": {
+        "title": "Cómo empezar con La Sombra del Oráculo",
+        "steps": [
+          "Lee la guía rápida y abre el canvas del Oráculo para entender qué facción presiona a cada personaje.",
+          "Dirige la sesión 1 con el objetivo de presentar Luminara, Iria y la primera pista de tinta.",
+          "Al final de cada sesión, marca qué pistas salieron y crea una consecuencia si el grupo expuso a alguien en público.",
+          "Usa la copia editable para ajustar nombres, facciones o nivel de amenaza a tu mesa."
+        ]
+      },
+      "highlightEntityIds": [
+        "ent_tpl_oracle_city",
+        "ent_tpl_oracle_object",
+        "ent_tpl_oracle_eclipse",
+        "ent_tpl_oracle_faction_pantheon",
+        "ent_tpl_oracle_faction_ink",
+        "ent_tpl_oracle_npc_iria",
+        "ent_tpl_oracle_npc_malvus",
+        "ent_tpl_oracle_scene_council",
+        "ent_tpl_oracle_decision_public_truth",
+        "ent_tpl_oracle_consequence_martial_rite"
+      ],
+      "featuredFactIds": [
+        "fact_tpl_oracle_1",
+        "fact_tpl_oracle_2",
+        "fact_tpl_oracle_3",
+        "fact_tpl_oracle_6",
+        "fact_tpl_oracle_8",
+        "fact_tpl_oracle_10",
+        "fact_tpl_oracle_11",
+        "fact_tpl_oracle_12"
+      ],
+      "featuredRelationIds": [
+        "rel_tpl_oracle_city_object",
+        "rel_tpl_oracle_ink_pantheon",
+        "rel_tpl_oracle_malvus_secret",
+        "rel_tpl_oracle_clue_secret",
+        "rel_tpl_oracle_tovan_iria",
+        "rel_tpl_oracle_key_object",
+        "rel_tpl_oracle_decision_consequence",
+        "rel_tpl_oracle_masks_council"
+      ]
+    },
+    {
+      "templateId": "phandalin-starter",
+      "version": "1.1.0",
+      "title": "Las Sombras sobre Phandalin",
+      "subtitle": "Starter familiar, sesiones preparadas y pueblo vivo",
+      "description": "Campaña de ejemplo de frontera pensada para enseñar preparación de sesión, pistas claras, PNJs memorables, consecuencias de pueblo y portal de jugador.",
+      "locale": "es",
+      "system": "dnd_srd_5_2_1",
+      "difficulty": "starter",
+      "recommendedFor": "DMs que quieren probar DMCC con una campaña fácil de dirigir en mesa, ideal para familias o grupos nuevos: escenas preparadas, objetivos claros, material público para el portal del jugador y suficientes secretos para practicar revelaciones sin abrumar.",
+      "tags": [
+        "starter",
+        "frontera",
+        "familia",
+        "dnd",
+        "sesiones"
+      ],
+      "stats": {
+        "entities": 29,
+        "relations": 23,
+        "facts": 12,
+        "preparedSessions": 5
+      },
+      "file": "phandalin-starter.dmcc-template.json",
+      "pitch": "Una campaña starter para aprender DMCC con una estructura cómoda: pueblo central, misiones claras, PNJs fáciles de recordar, pistas visibles y consecuencias que hacen que los jugadores sientan que Phandalin cambia con sus decisiones.",
+      "learningGoals": [
+        "Preparar sesiones de aventura clásica con objetivos, pistas y checklist breve.",
+        "Usar el pueblo como centro vivo donde cada PNJ puede reaccionar a las acciones del grupo.",
+        "Diferenciar pistas públicas, secretos del DM y consecuencias que cambian el tono de Phandalin.",
+        "Publicar información segura para jugadores sin revelar el misterio completo."
+      ],
+      "includedMaterial": [
+        "Cinco sesiones preparadas desde la emboscada inicial hasta la mina perdida.",
+        "PNJs de pueblo, facciones, lugares, pistas, rumores y ayudas de mesa.",
+        "Arcos de consecuencia para liberar Phandalin o dejar que el miedo crezca.",
+        "Canvas de amenazas para entender de un vistazo Redbrands, Gundren y la Araña Negra."
+      ],
+      "quickStart": {
+        "title": "Cómo empezar con Las Sombras sobre Phandalin",
+        "steps": [
+          "Abre el canvas de frentes y localiza tres ejes: Gundren desaparecido, Redbrands en el pueblo y la mina como promesa futura.",
+          "Dirige la sesión 1 como una aventura sencilla: emboscada, pista clara y decisión de seguir huellas o proteger suministros.",
+          "En la sesión 2 usa a los PNJs del pueblo para que cada jugador tenga alguien con quien hablar.",
+          "Cuando el grupo actúe contra los Redbrands, registra la consecuencia de cómo cambia el ánimo de Phandalin."
+        ]
+      },
+      "highlightEntityIds": [
+        "ent_tpl_phandalin_town",
+        "ent_tpl_phandalin_gundren",
+        "ent_tpl_phandalin_sildar",
+        "ent_tpl_phandalin_redbrands",
+        "ent_tpl_phandalin_iarno",
+        "ent_tpl_phandalin_nezznar",
+        "ent_tpl_phandalin_quest_gundren",
+        "ent_tpl_phandalin_quest_break_fear",
+        "ent_tpl_phandalin_clue_dead_horses",
+        "ent_tpl_phandalin_handout_map"
+      ],
+      "featuredFactIds": [
+        "fact_tpl_phandalin_1",
+        "fact_tpl_phandalin_2",
+        "fact_tpl_phandalin_3",
+        "fact_tpl_phandalin_6",
+        "fact_tpl_phandalin_8",
+        "fact_tpl_phandalin_10",
+        "fact_tpl_phandalin_12"
+      ],
+      "featuredRelationIds": [
+        "rel_tpl_phandalin_trail_hideout",
+        "rel_tpl_phandalin_gundren_quest",
+        "rel_tpl_phandalin_redbrands_town",
+        "rel_tpl_phandalin_iarno_secret",
+        "rel_tpl_phandalin_halia_redbrands",
+        "rel_tpl_phandalin_map_wave",
+        "rel_tpl_phandalin_qelline_hideout",
+        "rel_tpl_phandalin_break_fear_consequence"
+      ]
+    }
+  ]
+}

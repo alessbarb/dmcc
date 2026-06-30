@@ -1,0 +1,1298 @@
+{
+  "schemaVersion": 1,
+  "templateId": "phandalin-starter",
+  "version": "1.1.0",
+  "title": "Las Sombras sobre Phandalin",
+  "subtitle": "Starter familiar, sesiones preparadas y pueblo vivo",
+  "description": "Campaña de ejemplo de frontera pensada para enseñar preparación de sesión, pistas claras, PNJs memorables, consecuencias de pueblo y portal de jugador.",
+  "summary": "Phandalin es un pueblo de frontera construido sobre ruinas antiguas, rutas inseguras y promesas mineras. La desaparición de Gundren empuja al grupo hacia goblins, bandidos, vecinos asustados y una amenaza que todavía opera desde lejos.",
+  "locale": "es",
+  "system": "dnd_srd_5_2_1",
+  "difficulty": "starter",
+  "recommendedFor": "DMs que quieren probar DMCC con una campaña fácil de dirigir en mesa, ideal para familias o grupos nuevos: escenas preparadas, objetivos claros, material público para el portal del jugador y suficientes secretos para practicar revelaciones sin abrumar.",
+  "tags": [
+    "starter",
+    "frontera",
+    "familia",
+    "dnd",
+    "sesiones"
+  ],
+  "stats": {
+    "entities": 29,
+    "relations": 23,
+    "facts": 12,
+    "preparedSessions": 5
+  },
+  "entities": [
+    {
+      "entityId": "ent_tpl_phandalin_note",
+      "entityType": "note",
+      "title": "Cómo usar Phandalin en DMCC",
+      "summary": "Este ejemplo enseña el flujo más directo de DMCC: prepara una sesión, dirige escenas claras, registra pistas y deja que el pueblo reaccione a lo que hace el grupo.",
+      "content": "Esta plantilla está pensada para mesa familiar: objetivos claros, PNJs reconocibles y decisiones sencillas con consecuencias visibles.",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "previewRole": "guide"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_town",
+      "entityType": "location",
+      "title": "Phandalin",
+      "subtitle": "Pueblo de frontera",
+      "summary": "Un asentamiento pequeño que quiere prosperar, pero vive intimidado por amenazas externas y abusos internos.",
+      "status": "inestable",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "region": "Frontera de la Costa de la Espada",
+        "atmosphere": "polvo, madera nueva, miedo contenido"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_trail",
+      "entityType": "location",
+      "title": "Camino de Triboar",
+      "summary": "Ruta donde el grupo encuentra las primeras señales de que Gundren ha sido atacado.",
+      "status": "peligroso",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "type": "route"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_hideout",
+      "entityType": "location",
+      "title": "Guarida Cragmaw",
+      "summary": "Cueva goblin que enseña al grupo que la desaparición de Gundren no fue casual.",
+      "status": "explorable",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "type": "dungeon"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_tresendar",
+      "entityType": "location",
+      "title": "Mansión Tresendar",
+      "summary": "Ruinas que esconden la base Redbrand y varias decisiones morales para el grupo.",
+      "status": "amenaza activa",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "type": "dungeon urbano"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_wave_echo",
+      "entityType": "location",
+      "title": "Cueva del Eco de la Ola",
+      "summary": "Destino final de la búsqueda de Gundren y corazón del conflicto por la Forja de los Conjuros.",
+      "status": "oculta",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "type": "final dungeon"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_gundren",
+      "entityType": "npc",
+      "title": "Gundren Rockseeker",
+      "subtitle": "Enano buscador de minas",
+      "summary": "Contrató al grupo para escoltar suministros. Su mapa es la pieza que todos quieren.",
+      "status": "desaparecido",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "patrón inicial",
+        "desire": "recuperar la mina familiar"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_sildar",
+      "entityType": "npc",
+      "title": "Sildar Hallwinter",
+      "subtitle": "Veterano y aliado potencial",
+      "summary": "Puede explicar el contexto y dar al grupo una razón para proteger Phandalin.",
+      "status": "aliado",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "mentor de campaña"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_redbrands",
+      "entityType": "faction",
+      "title": "Redbrands",
+      "subtitle": "Matones de capa roja",
+      "summary": "Controlan el miedo del pueblo con violencia de baja intensidad y amenazas públicas.",
+      "status": "activo",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "agenda": "mantener control social"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_iarno",
+      "entityType": "npc",
+      "title": "Iarno Albrek / Glasstaff",
+      "subtitle": "Mago desaparecido con doble identidad",
+      "summary": "La pista de Sildar apunta a un aliado perdido, pero la realidad lo conecta con los Redbrands.",
+      "status": "oculto",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "publicMask": "mago perdido",
+        "secretIdentity": "Glasstaff"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_nezznar",
+      "entityType": "npc",
+      "title": "Nezznar, la Araña Negra",
+      "summary": "Quiere llegar antes que nadie a la Cueva del Eco de la Ola y controlar la Forja.",
+      "status": "amenaza lejana",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "role": "antagonista final"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_gundren",
+      "entityType": "quest",
+      "title": "Encontrar a Gundren",
+      "summary": "El hilo principal: seguir el rastro desde la emboscada hasta Cragmaw y finalmente la mina.",
+      "status": "active",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "objective": "rescatar a Gundren y recuperar el mapa"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_dead_horses",
+      "entityType": "clue",
+      "title": "Caballos muertos en el camino",
+      "summary": "La primera pista física: el ataque fue preparado y Gundren iba delante del grupo.",
+      "status": "lista",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "delivery": "escena inicial",
+        "pointsTo": "ent_tpl_phandalin_hideout"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_iarno",
+      "entityType": "secret",
+      "title": "Iarno es Glasstaff",
+      "summary": "El aliado perdido de Sildar lidera o manipula a los Redbrands desde Tresendar.",
+      "status": "hidden",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "anchorClueIds": [
+          "ent_tpl_phandalin_tresendar"
+        ],
+        "revealImpact": "cambia la confianza en los aliados adultos"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_consequence_town",
+      "entityType": "consequence",
+      "title": "Phandalin recupera la voz",
+      "summary": "Si los Redbrands caen, el pueblo vuelve a actuar, opinar y pedir ayuda de forma visible.",
+      "status": "pending",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "trigger": "derrotar o exponer a los Redbrands"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_inn",
+      "entityType": "location",
+      "title": "Posada Stonehill",
+      "subtitle": "Lugar seguro para conversaciones",
+      "summary": "Centro social donde el grupo puede oír rumores, descansar y medir el miedo del pueblo.",
+      "content": "Úsala para presentar PNJs sin forzar escenas: alguien siempre está escuchando, exagerando o pidiendo ayuda.",
+      "status": "active",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_shrine",
+      "entityType": "location",
+      "title": "Santuario de la Suerte",
+      "subtitle": "Refugio pequeño con información útil",
+      "summary": "Lugar de calma donde una conversación amable puede dar pistas sobre desapariciones y movimientos nocturnos.",
+      "content": "Buen lugar para jugadores que buscan ayuda sin entrar por la vía violenta.",
+      "status": "active",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_toblen",
+      "entityType": "npc",
+      "title": "Toblen Stonehill",
+      "subtitle": "Posadero que sabe más de lo que quiere admitir",
+      "summary": "Escucha rumores de todos, pero teme que los Redbrands castiguen a su familia.",
+      "content": "Toblen ayuda si el grupo demuestra que no viene solo a provocar una pelea.",
+      "status": "active",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_linene",
+      "entityType": "npc",
+      "title": "Linene Graywind",
+      "subtitle": "Mercader pragmática",
+      "summary": "Quiere rutas seguras y no confía en héroes improvisados hasta ver resultados.",
+      "content": "Puede dar equipo, información sobre suministros perdidos o una advertencia seca sobre los Redbrands.",
+      "status": "active",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_halia",
+      "entityType": "npc",
+      "title": "Halia Thornton",
+      "subtitle": "Ambiciosa, útil y peligrosa",
+      "summary": "Puede ayudar contra los Redbrands si eso aumenta su influencia sobre Phandalin.",
+      "content": "Halia ofrece información práctica, pero siempre intenta quedarse con una ventaja política.",
+      "status": "active",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_qelline",
+      "entityType": "npc",
+      "title": "Qelline Alderleaf",
+      "subtitle": "Vecina amable con contactos discretos",
+      "summary": "Sabe que hay caminos menos vigilados y puede orientar al grupo hacia ayuda exterior.",
+      "content": "Ideal para mesas familiares: ofrece calidez, comida y una forma no violenta de obtener dirección.",
+      "status": "active",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_break_fear",
+      "entityType": "quest",
+      "title": "Romper el miedo de los Redbrands",
+      "subtitle": "Arco urbano de Phandalin",
+      "summary": "El grupo debe pasar de oír quejas a dar al pueblo una razón concreta para actuar.",
+      "content": "No se resuelve solo derrotando enemigos: el pueblo cambia cuando ve protección, pruebas o liderazgo.",
+      "status": "open",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_blackseal",
+      "entityType": "clue",
+      "title": "Nota con sello negro",
+      "subtitle": "Pista hacia una mano lejana",
+      "summary": "Una nota breve ordena mantener vivo a Gundren hasta encontrar el mapa completo.",
+      "content": "No revela todo sobre Nezznar, pero introduce que los Redbrands no son el final de la cadena.",
+      "status": "ready",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "content": "La orden viene de alguien que firma con una araña negra, no de Glasstaff."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_redclay",
+      "entityType": "clue",
+      "title": "Botas con arcilla roja",
+      "subtitle": "Pista física en el pueblo",
+      "summary": "Varias botas de bandido tienen arcilla del camino viejo hacia Tresendar.",
+      "content": "Sirve para que el grupo encuentre la base sin depender de interrogatorios.",
+      "status": "ready",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "content": "La arcilla coincide con el sendero abandonado bajo la Mansión Tresendar."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_rumor_well",
+      "entityType": "rumor",
+      "title": "El pozo viejo canta de noche",
+      "subtitle": "Rumor para colorear el pueblo",
+      "summary": "Niños y mineros dicen que el pozo devuelve ecos que no pertenecen a nadie del pueblo.",
+      "content": "Puede ser solo color local o una pista suave hacia ruinas antiguas bajo Phandalin.",
+      "status": "active",
+      "importance": "low",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_handout_map",
+      "entityType": "handout",
+      "title": "Mapa roto de Gundren",
+      "subtitle": "Ayuda para jugadores",
+      "summary": "Fragmento de mapa con una marca incompleta hacia la Cueva del Eco de la Ola.",
+      "content": "Entrega solo una parte al principio. La segunda parte puede aparecer en Tresendar o con Gundren.",
+      "status": "ready",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_encounter_street",
+      "entityType": "encounter",
+      "title": "Pelea en la calle mayor",
+      "subtitle": "Encuentro flexible contra matones",
+      "summary": "Los Redbrands prueban si el grupo se deja intimidar delante de vecinos asustados.",
+      "content": "Puede resolverse con combate, humillación pública, negociación dura o una trampa social.",
+      "status": "ready",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_consequence_people_rise",
+      "entityType": "consequence",
+      "title": "El pueblo empieza a organizarse",
+      "subtitle": "Consecuencia positiva",
+      "summary": "Si el grupo protege a vecinos concretos, Phandalin deja de esperar salvadores y empieza a actuar.",
+      "content": "Activa esta consecuencia cuando los jugadores ayuden a una persona con nombre, no solo cuando ganen una pelea.",
+      "status": "pending",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_nezznar_funds",
+      "entityType": "secret",
+      "title": "La Araña Negra financia el caos desde lejos",
+      "subtitle": "Secreto de campaña",
+      "summary": "Nezznar no necesita controlar Phandalin directamente; le basta con que nadie mire hacia la mina.",
+      "content": "Permite que los Redbrands sean un problema local conectado a una amenaza mayor sin convertirlo todo en exposición inmediata.",
+      "status": "hidden",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "truth": "Nezznar usa intermediarios para mantener distraído al pueblo mientras busca la Cueva del Eco de la Ola."
+      }
+    }
+  ],
+  "relations": [
+    {
+      "relationId": "rel_tpl_phandalin_trail_hideout",
+      "sourceEntityId": "ent_tpl_phandalin_trail",
+      "targetEntityId": "ent_tpl_phandalin_hideout",
+      "relationType": "points_to",
+      "description": "Las huellas llevan desde el camino hasta la guarida goblin.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_gundren_quest",
+      "sourceEntityId": "ent_tpl_phandalin_quest_gundren",
+      "targetEntityId": "ent_tpl_phandalin_gundren",
+      "relationType": "depends_on",
+      "description": "Encontrar a Gundren mantiene la campaña en movimiento.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_hideout_gundren",
+      "sourceEntityId": "ent_tpl_phandalin_hideout",
+      "targetEntityId": "ent_tpl_phandalin_gundren",
+      "relationType": "points_to",
+      "description": "La guarida revela que Gundren fue trasladado.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_redbrands_town",
+      "sourceEntityId": "ent_tpl_phandalin_redbrands",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "threatens",
+      "description": "El pueblo evita actuar por miedo a represalias.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_redbrands_tresendar",
+      "sourceEntityId": "ent_tpl_phandalin_redbrands",
+      "targetEntityId": "ent_tpl_phandalin_tresendar",
+      "relationType": "located_in",
+      "description": "La base de operaciones está bajo la Mansión Tresendar.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_iarno_redbrands",
+      "sourceEntityId": "ent_tpl_phandalin_iarno",
+      "targetEntityId": "ent_tpl_phandalin_redbrands",
+      "relationType": "leader_of",
+      "description": "Glasstaff dirige a los Redbrands desde la sombra.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_iarno_secret",
+      "sourceEntityId": "ent_tpl_phandalin_iarno",
+      "targetEntityId": "ent_tpl_phandalin_secret_iarno",
+      "relationType": "hides",
+      "description": "Su identidad doble debe revelarse con pistas, no con exposición gratuita.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_tresendar_secret",
+      "sourceEntityId": "ent_tpl_phandalin_tresendar",
+      "targetEntityId": "ent_tpl_phandalin_secret_iarno",
+      "relationType": "unlocks",
+      "description": "Explorar Tresendar puede revelar correspondencia o pruebas.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nezznar_wave",
+      "sourceEntityId": "ent_tpl_phandalin_nezznar",
+      "targetEntityId": "ent_tpl_phandalin_wave_echo",
+      "relationType": "knows",
+      "description": "Nezznar conoce el valor real de la mina.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_wave_gundren",
+      "sourceEntityId": "ent_tpl_phandalin_wave_echo",
+      "targetEntityId": "ent_tpl_phandalin_gundren",
+      "relationType": "depends_on",
+      "description": "La ubicación final depende del mapa de Gundren.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_redbrands_consequence",
+      "sourceEntityId": "ent_tpl_phandalin_redbrands",
+      "targetEntityId": "ent_tpl_phandalin_consequence_town",
+      "relationType": "causes",
+      "description": "Resolver el arco urbano transforma el comportamiento de Phandalin.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_inn_toblen",
+      "sourceEntityId": "ent_tpl_phandalin_inn",
+      "targetEntityId": "ent_tpl_phandalin_toblen",
+      "relationType": "contains",
+      "description": "La posada permite escuchar el miedo del pueblo a través de Toblen y sus clientes.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_toblen_redbrands",
+      "sourceEntityId": "ent_tpl_phandalin_toblen",
+      "targetEntityId": "ent_tpl_phandalin_redbrands",
+      "relationType": "threatens",
+      "description": "Toblen calla porque los Redbrands pueden castigar a su familia.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_halia_redbrands",
+      "sourceEntityId": "ent_tpl_phandalin_halia",
+      "targetEntityId": "ent_tpl_phandalin_redbrands",
+      "relationType": "enemy_of",
+      "description": "Halia quiere quitar a los Redbrands del medio, pero no por altruismo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_qelline_hideout",
+      "sourceEntityId": "ent_tpl_phandalin_qelline",
+      "targetEntityId": "ent_tpl_phandalin_hideout",
+      "relationType": "points_to",
+      "description": "Qelline conoce a gente que puede orientar hacia rutas menos vigiladas.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_clay_tresendar",
+      "sourceEntityId": "ent_tpl_phandalin_clue_redclay",
+      "targetEntityId": "ent_tpl_phandalin_tresendar",
+      "relationType": "points_to",
+      "description": "La arcilla roja conduce hacia el sendero bajo Tresendar.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_blackseal_nezznar",
+      "sourceEntityId": "ent_tpl_phandalin_clue_blackseal",
+      "targetEntityId": "ent_tpl_phandalin_nezznar",
+      "relationType": "points_to",
+      "description": "El sello negro insinúa que alguien dirige el conflicto desde fuera del pueblo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_map_wave",
+      "sourceEntityId": "ent_tpl_phandalin_handout_map",
+      "targetEntityId": "ent_tpl_phandalin_wave_echo",
+      "relationType": "unlocks",
+      "description": "El mapa roto convierte la mina en promesa visible sin revelar toda la ruta.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_break_fear_consequence",
+      "sourceEntityId": "ent_tpl_phandalin_quest_break_fear",
+      "targetEntityId": "ent_tpl_phandalin_consequence_people_rise",
+      "relationType": "causes",
+      "description": "Romper el miedo permite que Phandalin empiece a actuar como comunidad.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_street_breakfear",
+      "sourceEntityId": "ent_tpl_phandalin_encounter_street",
+      "targetEntityId": "ent_tpl_phandalin_quest_break_fear",
+      "relationType": "unlocks",
+      "description": "La pelea en la calle mayor puede convertir una queja del pueblo en misión concreta.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nezznar_secret",
+      "sourceEntityId": "ent_tpl_phandalin_nezznar",
+      "targetEntityId": "ent_tpl_phandalin_secret_nezznar_funds",
+      "relationType": "hides",
+      "description": "La influencia de Nezznar aparece primero como dinero, notas y órdenes indirectas.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_shrine_rumor",
+      "sourceEntityId": "ent_tpl_phandalin_shrine",
+      "targetEntityId": "ent_tpl_phandalin_rumor_well",
+      "relationType": "knows",
+      "description": "El santuario recoge rumores que los vecinos no se atreven a decir en la posada.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_linene_trail",
+      "sourceEntityId": "ent_tpl_phandalin_linene",
+      "targetEntityId": "ent_tpl_phandalin_trail",
+      "relationType": "depends_on",
+      "description": "Linene necesita rutas seguras para mantener vivo el comercio de la frontera.",
+      "visibility": {
+        "kind": "party"
+      }
+    }
+  ],
+  "facts": [
+    {
+      "factId": "fact_tpl_phandalin_1",
+      "statement": "Gundren desapareció antes de que los suministros llegaran a Phandalin.",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "party"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_gundren",
+        "ent_tpl_phandalin_trail"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_2",
+      "statement": "Los Redbrands controlan el miedo del pueblo más que el territorio físico.",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_redbrands",
+        "ent_tpl_phandalin_town"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_3",
+      "statement": "Iarno y Glasstaff son la misma persona.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_iarno",
+        "ent_tpl_phandalin_secret_iarno"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_4",
+      "statement": "La Cueva del Eco de la Ola no es solo una mina: contiene una fuente de poder mágico codiciada.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_wave_echo",
+        "ent_tpl_phandalin_nezznar"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_5",
+      "statement": "Si el grupo salva Phandalin de los Redbrands, los vecinos empezarán a ofrecer información sin ser interrogados.",
+      "kind": "canon",
+      "confidence": "likely",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_consequence_town"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_6",
+      "statement": "Toblen sabe qué vecinos pagan a los Redbrands, pero necesita ver que el grupo puede proteger a gente concreta.",
+      "kind": "canon",
+      "confidence": "likely",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_toblen",
+        "ent_tpl_phandalin_redbrands"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_7",
+      "statement": "Halia puede ser aliada temporal contra los Redbrands, aunque intentará ocupar el hueco de poder que dejen.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_halia",
+        "ent_tpl_phandalin_redbrands"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_8",
+      "statement": "La nota con sello negro demuestra que Glasstaff recibe presión de alguien interesado en la mina.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_clue_blackseal",
+        "ent_tpl_phandalin_iarno",
+        "ent_tpl_phandalin_nezznar"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_9",
+      "statement": "El mapa de Gundren funciona mejor si se entrega incompleto: así la mesa tiene una promesa clara sin saltarse el arco del pueblo.",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_handout_map",
+        "ent_tpl_phandalin_gundren",
+        "ent_tpl_phandalin_wave_echo"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_10",
+      "statement": "Si los personajes resuelven una amenaza en público sin humillar al pueblo, los vecinos empezarán a ofrecer ayuda voluntaria.",
+      "kind": "canon",
+      "confidence": "likely",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_consequence_people_rise",
+        "ent_tpl_phandalin_town"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_11",
+      "statement": "Qelline no tiene poder político, pero sí una red de confianza que evita peleas innecesarias.",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_qelline"
+      ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_12",
+      "statement": "Nezznar prefiere que los aventureros pierdan tiempo con problemas locales antes de mirar hacia la Cueva del Eco de la Ola.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_nezznar",
+        "ent_tpl_phandalin_secret_nezznar_funds",
+        "ent_tpl_phandalin_wave_echo"
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "sessionId": "sess_tpl_phandalin_road",
+      "title": "Sesión 1 — La emboscada del Camino de Triboar",
+      "prep": {
+        "state": "ready",
+        "summary": "Inicio directo: ataque, rastro, rescate y primer vínculo emocional con la desaparición de Gundren.",
+        "openingPrompt": "El camino se estrecha entre árboles. Dos caballos bloquean la ruta. No relinchan. No se mueven. Y las flechas ya están preparadas.",
+        "goals": [
+          "Enseñar el tono de aventura familiar.",
+          "Revelar que Gundren está en peligro.",
+          "Dar una decisión clara: seguir el rastro o proteger la carga."
+        ],
+        "sceneIds": [
+          "ent_tpl_phandalin_trail",
+          "ent_tpl_phandalin_hideout"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_phandalin_gundren",
+          "ent_tpl_phandalin_sildar"
+        ],
+        "availableClueIds": [
+          "ent_tpl_phandalin_clue_dead_horses"
+        ],
+        "secretsAtRiskIds": [],
+        "expectedConsequenceIds": [],
+        "checklist": [
+          {
+            "id": "chk_ph_1",
+            "label": "Mostrar los caballos antes del ataque.",
+            "priority": "high"
+          },
+          {
+            "id": "chk_ph_2",
+            "label": "Dar al grupo una pista visible hacia la guarida.",
+            "priority": "high"
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_phandalin_town",
+      "title": "Sesión 2 — Un pueblo con miedo",
+      "prep": {
+        "state": "ready",
+        "summary": "Presentar Phandalin como lugar vivo y preparar el arco de los Redbrands.",
+        "openingPrompt": "Phandalin parece tranquilo hasta que alguien baja la voz al ver una capa roja al otro lado de la calle.",
+        "goals": [
+          "Conectar a los jugadores con vecinos concretos.",
+          "Mostrar que los Redbrands son un problema cercano.",
+          "Ofrecer varias entradas hacia Tresendar."
+        ],
+        "sceneIds": [
+          "ent_tpl_phandalin_town",
+          "ent_tpl_phandalin_tresendar"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_phandalin_redbrands",
+          "ent_tpl_phandalin_sildar"
+        ],
+        "availableClueIds": [],
+        "secretsAtRiskIds": [
+          "ent_tpl_phandalin_secret_iarno"
+        ],
+        "expectedConsequenceIds": [
+          "ent_tpl_phandalin_consequence_town"
+        ],
+        "checklist": [
+          {
+            "id": "chk_ph_3",
+            "label": "Hacer que el miedo del pueblo sea visible, no explicado.",
+            "priority": "high"
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_phandalin_tresendar",
+      "title": "Sesión 3 — Bajo la Mansión Tresendar",
+      "prep": {
+        "state": "draft",
+        "summary": "Resolver el arco Redbrand con infiltración, combate, rescate o negociación.",
+        "openingPrompt": "La mansión no parece una fortaleza. Ese es el problema: nadie quiere mirar debajo.",
+        "goals": [
+          "Permitir un triunfo claro.",
+          "Revelar pistas de Glasstaff si los jugadores investigan.",
+          "Preparar la consecuencia social del pueblo."
+        ],
+        "sceneIds": [
+          "ent_tpl_phandalin_tresendar"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_phandalin_redbrands",
+          "ent_tpl_phandalin_iarno"
+        ],
+        "availableClueIds": [],
+        "secretsAtRiskIds": [
+          "ent_tpl_phandalin_secret_iarno"
+        ],
+        "expectedConsequenceIds": [
+          "ent_tpl_phandalin_consequence_town"
+        ],
+        "checklist": [
+          {
+            "id": "chk_ph_4",
+            "label": "Cerrar preguntando qué cambia en Phandalin tras la victoria.",
+            "priority": "medium"
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_phandalin_allies",
+      "title": "Sesión 4 — Aliados en un pueblo que despierta",
+      "prep": {
+        "state": "ready",
+        "summary": "Después de tocar a los Redbrands, el grupo puede convertir favores dispersos en apoyo real del pueblo.",
+        "openingPrompt": "A la mañana siguiente, nadie mira igual a los aventureros. Algunos bajan la voz; otros, por primera vez, se acercan.",
+        "goals": [
+          "Dar protagonismo a PNJs de pueblo.",
+          "Mostrar consecuencias de proteger o ignorar a vecinos concretos.",
+          "Entregar una pista hacia la red más grande detrás de Glasstaff."
+        ],
+        "sceneIds": [
+          "ent_tpl_phandalin_inn",
+          "ent_tpl_phandalin_shrine",
+          "ent_tpl_phandalin_encounter_street"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_phandalin_toblen",
+          "ent_tpl_phandalin_linene",
+          "ent_tpl_phandalin_halia",
+          "ent_tpl_phandalin_qelline",
+          "ent_tpl_phandalin_redbrands"
+        ],
+        "availableClueIds": [
+          "ent_tpl_phandalin_clue_redclay",
+          "ent_tpl_phandalin_clue_blackseal"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_phandalin_secret_iarno",
+          "ent_tpl_phandalin_secret_nezznar_funds"
+        ],
+        "expectedConsequenceIds": [
+          "ent_tpl_phandalin_consequence_people_rise"
+        ],
+        "checklist": [
+          {
+            "id": "ph_s4_pnjs",
+            "label": "Elegir tres PNJs que reaccionan a lo ocurrido.",
+            "done": false,
+            "priority": "high"
+          },
+          {
+            "id": "ph_s4_public",
+            "label": "Decidir qué información ya es pública para el portal del jugador.",
+            "done": false,
+            "priority": "medium"
+          },
+          {
+            "id": "ph_s4_next",
+            "label": "Cerrar con una pista hacia Tresendar o la mina.",
+            "done": false,
+            "priority": "high"
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_phandalin_wave",
+      "title": "Sesión 5 — Ecos de la mina perdida",
+      "prep": {
+        "state": "draft",
+        "summary": "La campaña apunta hacia la Cueva del Eco de la Ola: promesa de tesoro, rescate y verdad sobre la Araña Negra.",
+        "openingPrompt": "El fragmento del mapa encaja por fin con las marcas de Gundren. La ruta no lleva solo a una mina, sino a una vieja promesa que todos quieren reclamar.",
+        "goals": [
+          "Conectar el arco local con la amenaza mayor.",
+          "Mostrar por qué Gundren era importante.",
+          "Preparar el siguiente tramo de campaña si la mesa quiere continuar."
+        ],
+        "sceneIds": [
+          "ent_tpl_phandalin_wave_echo"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_phandalin_gundren",
+          "ent_tpl_phandalin_nezznar",
+          "ent_tpl_phandalin_handout_map",
+          "ent_tpl_phandalin_wave_echo"
+        ],
+        "availableClueIds": [
+          "ent_tpl_phandalin_clue_blackseal"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_phandalin_secret_nezznar_funds"
+        ],
+        "expectedConsequenceIds": [
+          "ent_tpl_phandalin_consequence_people_rise"
+        ],
+        "checklist": [
+          {
+            "id": "ph_s5_map",
+            "label": "Decidir qué parte del mapa aún falta.",
+            "done": false,
+            "priority": "medium"
+          },
+          {
+            "id": "ph_s5_nezznar",
+            "label": "Mostrar una acción indirecta de Nezznar antes de revelarlo.",
+            "done": false,
+            "priority": "high"
+          },
+          {
+            "id": "ph_s5_continue",
+            "label": "Preparar una decisión: rescatar, negociar o perseguir.",
+            "done": false,
+            "priority": "medium"
+          }
+        ]
+      }
+    }
+  ],
+  "canvases": [
+    {
+      "canvasId": "cvs_tpl_phandalin_fronts",
+      "title": "Frentes de Phandalin",
+      "kind": "world",
+      "description": "Vista rápida de los hilos principales para dirigir sin perderse.",
+      "nodes": [
+        {
+          "id": "node_tpl_ph_town",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_town",
+          "x": 40,
+          "y": 80,
+          "width": 240,
+          "height": 110,
+          "status": "ready"
+        },
+        {
+          "id": "node_tpl_ph_quest",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_quest_gundren",
+          "x": 360,
+          "y": 80,
+          "width": 240,
+          "height": 110,
+          "status": "ready"
+        },
+        {
+          "id": "node_tpl_ph_redbrands",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_redbrands",
+          "x": 40,
+          "y": 280,
+          "width": 240,
+          "height": 110,
+          "status": "ready"
+        },
+        {
+          "id": "node_tpl_ph_tresendar",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_tresendar",
+          "x": 360,
+          "y": 280,
+          "width": 240,
+          "height": 110,
+          "status": "draft"
+        },
+        {
+          "id": "node_tpl_ph_nezznar",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_nezznar",
+          "x": 680,
+          "y": 80,
+          "width": 240,
+          "height": 110,
+          "status": "draft",
+          "visibility": "dm"
+        },
+        {
+          "id": "node_tpl_ph_wave",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_wave_echo",
+          "x": 680,
+          "y": 280,
+          "width": 240,
+          "height": 110,
+          "status": "draft",
+          "visibility": "dm"
+        },
+        {
+          "id": "note_tpl_ph_family",
+          "kind": "note",
+          "title": "Mesa familiar",
+          "text": "Haz visibles las decisiones: ayudar al pueblo, buscar a Gundren o investigar la mansión. No escondas la diversión detrás de demasiados nombres.",
+          "color": "green",
+          "x": 40,
+          "y": 470,
+          "width": 620,
+          "height": 110
+        },
+        {
+          "id": "node_tpl_ph_halia",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_halia",
+          "x": -200,
+          "y": 330,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "node_tpl_ph_map",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_handout_map",
+          "x": 520,
+          "y": 300,
+          "status": "ready",
+          "visibility": "public"
+        },
+        {
+          "id": "node_tpl_ph_people",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_consequence_people_rise",
+          "x": -470,
+          "y": 260,
+          "status": "draft",
+          "visibility": "dm"
+        },
+        {
+          "id": "node_tpl_ph_blackseal",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_blackseal",
+          "x": 370,
+          "y": 110,
+          "status": "ready",
+          "visibility": "dm"
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge_tpl_ph_1",
+          "sourceNodeId": "node_tpl_ph_town",
+          "targetNodeId": "node_tpl_ph_redbrands",
+          "label": "amenazado por",
+          "status": "draft",
+          "style": "strong"
+        },
+        {
+          "id": "edge_tpl_ph_2",
+          "sourceNodeId": "node_tpl_ph_redbrands",
+          "targetNodeId": "node_tpl_ph_tresendar",
+          "label": "se esconden en",
+          "status": "draft",
+          "style": "solid"
+        },
+        {
+          "id": "edge_tpl_ph_3",
+          "sourceNodeId": "node_tpl_ph_quest",
+          "targetNodeId": "node_tpl_ph_wave",
+          "label": "termina en",
+          "status": "draft",
+          "style": "secret"
+        },
+        {
+          "id": "edge_tpl_ph_4",
+          "sourceNodeId": "node_tpl_ph_nezznar",
+          "targetNodeId": "node_tpl_ph_wave",
+          "label": "busca",
+          "status": "draft",
+          "style": "secret"
+        },
+        {
+          "id": "edge_tpl_ph_halia_redbrands",
+          "sourceNodeId": "node_tpl_ph_halia",
+          "targetNodeId": "node_tpl_ph_redbrands",
+          "label": "quiere desplazar",
+          "status": "domain",
+          "visibility": "dm",
+          "style": "dashed",
+          "relationshipId": "rel_tpl_phandalin_halia_redbrands"
+        },
+        {
+          "id": "edge_tpl_ph_map_wave",
+          "sourceNodeId": "node_tpl_ph_map",
+          "targetNodeId": "node_tpl_ph_wave",
+          "label": "abre ruta",
+          "status": "domain",
+          "visibility": "public",
+          "style": "strong",
+          "relationshipId": "rel_tpl_phandalin_map_wave"
+        },
+        {
+          "id": "edge_tpl_ph_people_town",
+          "sourceNodeId": "node_tpl_ph_people",
+          "targetNodeId": "node_tpl_ph_town",
+          "label": "cambia el ánimo",
+          "status": "draft",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "edge_tpl_ph_blackseal_nezznar",
+          "sourceNodeId": "node_tpl_ph_blackseal",
+          "targetNodeId": "node_tpl_ph_nezznar",
+          "label": "apunta a",
+          "status": "domain",
+          "visibility": "dm",
+          "style": "secret",
+          "relationshipId": "rel_tpl_phandalin_blackseal_nezznar"
+        }
+      ]
+    }
+  ],
+  "pitch": "Una campaña starter para aprender DMCC con una estructura cómoda: pueblo central, misiones claras, PNJs fáciles de recordar, pistas visibles y consecuencias que hacen que los jugadores sientan que Phandalin cambia con sus decisiones.",
+  "learningGoals": [
+    "Preparar sesiones de aventura clásica con objetivos, pistas y checklist breve.",
+    "Usar el pueblo como centro vivo donde cada PNJ puede reaccionar a las acciones del grupo.",
+    "Diferenciar pistas públicas, secretos del DM y consecuencias que cambian el tono de Phandalin.",
+    "Publicar información segura para jugadores sin revelar el misterio completo."
+  ],
+  "includedMaterial": [
+    "Cinco sesiones preparadas desde la emboscada inicial hasta la mina perdida.",
+    "PNJs de pueblo, facciones, lugares, pistas, rumores y ayudas de mesa.",
+    "Arcos de consecuencia para liberar Phandalin o dejar que el miedo crezca.",
+    "Canvas de amenazas para entender de un vistazo Redbrands, Gundren y la Araña Negra."
+  ],
+  "quickStart": {
+    "title": "Cómo empezar con Las Sombras sobre Phandalin",
+    "steps": [
+      "Abre el canvas de frentes y localiza tres ejes: Gundren desaparecido, Redbrands en el pueblo y la mina como promesa futura.",
+      "Dirige la sesión 1 como una aventura sencilla: emboscada, pista clara y decisión de seguir huellas o proteger suministros.",
+      "En la sesión 2 usa a los PNJs del pueblo para que cada jugador tenga alguien con quien hablar.",
+      "Cuando el grupo actúe contra los Redbrands, registra la consecuencia de cómo cambia el ánimo de Phandalin."
+    ]
+  },
+  "highlightEntityIds": [
+    "ent_tpl_phandalin_town",
+    "ent_tpl_phandalin_gundren",
+    "ent_tpl_phandalin_sildar",
+    "ent_tpl_phandalin_redbrands",
+    "ent_tpl_phandalin_iarno",
+    "ent_tpl_phandalin_nezznar",
+    "ent_tpl_phandalin_quest_gundren",
+    "ent_tpl_phandalin_quest_break_fear",
+    "ent_tpl_phandalin_clue_dead_horses",
+    "ent_tpl_phandalin_handout_map"
+  ],
+  "featuredFactIds": [
+    "fact_tpl_phandalin_1",
+    "fact_tpl_phandalin_2",
+    "fact_tpl_phandalin_3",
+    "fact_tpl_phandalin_6",
+    "fact_tpl_phandalin_8",
+    "fact_tpl_phandalin_10",
+    "fact_tpl_phandalin_12"
+  ],
+  "featuredRelationIds": [
+    "rel_tpl_phandalin_trail_hideout",
+    "rel_tpl_phandalin_gundren_quest",
+    "rel_tpl_phandalin_redbrands_town",
+    "rel_tpl_phandalin_iarno_secret",
+    "rel_tpl_phandalin_halia_redbrands",
+    "rel_tpl_phandalin_map_wave",
+    "rel_tpl_phandalin_qelline_hideout",
+    "rel_tpl_phandalin_break_fear_consequence"
+  ]
+}
