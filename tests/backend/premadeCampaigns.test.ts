@@ -65,8 +65,19 @@ describe("premade campaign templates", () => {
         templateId: "phandalin-starter",
         title: expect.any(String),
       });
+      expect(response.json().title).toBe("Shadows over Phandalin");
+      expect(response.json().locale).toBe("en");
       expect(response.json().entities.length).toBeGreaterThan(5);
       expect(response.json().sessions.length).toBeGreaterThan(0);
+
+      const spanish = await server.inject({
+        method: "GET",
+        url: "/api/premade-campaigns/phandalin-starter?locale=es",
+        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+      });
+      expect(spanish.statusCode).toBe(200);
+      expect(spanish.json().title).toBe("Las Sombras sobre Phandalin");
+      expect(spanish.json().locale).toBe("es");
 
       const campaigns = await server.inject({
         method: "GET",

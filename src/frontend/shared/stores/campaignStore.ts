@@ -1,6 +1,19 @@
 import { create } from "zustand";
 import { createId } from "@shared/ids.js";
 
+function getPremadeLocale(): string {
+  try {
+    const saved = localStorage.getItem("dmcc_language");
+    if (saved) return saved.toLowerCase().split(/[._-]/)[0] || "en";
+    return (navigator.language || "en").toLowerCase().split(/[._-]/)[0] || "en";
+  } catch {}
+  return "en";
+}
+
+function withPremadeLocale(path: string): string {
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}locale=${encodeURIComponent(getPremadeLocale())}`;
+}
 
 export interface PremadeCampaignTemplateSummary {
   templateId: string;
@@ -9,6 +22,8 @@ export interface PremadeCampaignTemplateSummary {
   subtitle: string;
   description: string;
   locale: string;
+  defaultLocale?: string;
+  availableLocales?: string[];
   system: string;
   difficulty: "starter" | "medium" | "advanced";
   recommendedFor: string;
@@ -217,7 +232,7 @@ export interface CampaignStateStore {
   fetchCampaigns: () => Promise<void>;
   fetchPremadeCampaigns: () => Promise<void>;
   fetchPremadeCampaignTemplate: (templateId: string) => Promise<PremadeCampaignTemplate | null>;
-  importPremadeCampaign: (templateId: string, options?: { title?: string; summary?: string; importMode?: "full" | "structure" | "sessions" }) => Promise<string | undefined>;
+  importPremadeCampaign: (templateId: string, options?: { title?: string; summary?: string; importMode?: "full" | "structure" | "sessions"; locale?: string }) => Promise<string | undefined>;
   updateCampaign: (campaignId: string, updates: { title?: string; summary?: string; system?: string; status?: string; metadata?: Record<string, unknown> }) => Promise<Campaign | undefined>;
   selectCampaign: (campaignId: string) => Promise<void>;
   reloadCampaign: () => Promise<void>;
@@ -460,7 +475,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
 
   fetchPremadeCampaigns: async () => {
     try {
-      const res = await fetchWithVault("/api/premade-campaigns");
+      const res = await fetchWithVault(withPremadeLocale("/api/premade-campaigns"));
       if (!res.ok) {
         const message = await readApiError(res, "Failed to fetch premade campaigns");
         throw new Error(message);
@@ -475,7 +490,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   fetchPremadeCampaignTemplate: async (templateId) => {
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/premade-campaigns/${encodeURIComponent(templateId)}`);
+      const res = await fetchWithVault(withPremadeLocale(`/api/premade-campaigns/${encodeURIComponent(templateId)}`));
       if (!res.ok) {
         const message = await readApiError(res, "Failed to fetch premade campaign");
         throw new Error(message);
@@ -495,7 +510,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await fetchWithVault(`/api/premade-campaigns/${encodeURIComponent(templateId)}/import`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(options ?? {}),
+        body: JSON.stringify({ ...(options ?? {}), locale: options?.locale ?? getPremadeLocale() }),
       });
       if (!res.ok) {
         const message = await readApiError(res, "Failed to import premade campaign");

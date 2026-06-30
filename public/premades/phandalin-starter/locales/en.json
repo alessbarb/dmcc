@@ -1,0 +1,488 @@
+{
+  "locale": "en",
+  "templateId": "phandalin-starter",
+  "templateVersion": "1.1.0",
+  "translationVersion": "1.0.0",
+  "translatedFromLocale": "es",
+  "title": "Shadows over Phandalin",
+  "subtitle": "Family-friendly starter, prepared sessions and a living town",
+  "description": "Frontier sample campaign designed to teach session prep, clear clues, memorable NPCs, town consequences and the player portal.",
+  "summary": "Phandalin is a frontier town built over old ruins, unsafe roads and mining promises. Gundren’s disappearance pushes the party toward goblins, bandits, frightened neighbors and a threat still operating from afar.",
+  "recommendedFor": "DMs who want to try DMCC with an easy-to-run table campaign, ideal for families or new groups: prepared scenes, clear goals, public material for the player portal and enough secrets to practice revelations without overwhelming the table.",
+  "pitch": "A starter campaign for learning DMCC through a comfortable structure: central town, clear quests, memorable NPCs, visible clues and consequences that make players feel Phandalin changing with their decisions.",
+  "learningGoals": [
+    "Prepare classic adventure sessions with goals, clues and a short checklist.",
+    "Use the town as a living hub where each NPC can react to the party’s actions.",
+    "Separate public clues, DM secrets and consequences that change Phandalin’s tone.",
+    "Publish safe player-facing information without revealing the whole mystery."
+  ],
+  "includedMaterial": [
+    "Five prepared sessions from the opening ambush to the lost mine.",
+    "Town NPCs, factions, locations, clues, rumors and table handouts.",
+    "Consequence arcs for freeing Phandalin or letting fear grow.",
+    "A threat canvas for reading Redbrands, Gundren and the Black Spider at a glance."
+  ],
+  "quickStart": {
+    "title": "How to start Shadows over Phandalin",
+    "steps": [
+      "Open the fronts canvas and find three axes: missing Gundren, Redbrands in town and the mine as a future promise.",
+      "Run session 1 as a simple adventure: ambush, clear clue and a choice to follow tracks or protect supplies.",
+      "In session 2, use town NPCs so every player has someone to talk to.",
+      "When the party acts against the Redbrands, record how Phandalin’s mood changes as a consequence."
+    ]
+  },
+  "entities": {
+    "ent_tpl_phandalin_note": {
+      "title": "How to use Phandalin in DMCC",
+      "summary": "This example teaches DMCC’s most direct flow: prepare a session, run clear scenes, record clues and let the town react to the party.",
+      "content": "This template is designed for family tables: clear goals, recognizable NPCs and simple decisions with visible consequences."
+    },
+    "ent_tpl_phandalin_town": {
+      "title": "Phandalin",
+      "subtitle": "Frontier town",
+      "summary": "A small settlement trying to prosper while living under external threats and internal intimidation.",
+      "status": "unstable",
+      "metadata": {
+        "region": "Sword Coast frontier",
+        "atmosphere": "dust, fresh timber, restrained fear"
+      }
+    },
+    "ent_tpl_phandalin_trail": {
+      "title": "Triboar Trail",
+      "summary": "The road where the party finds the first signs that Gundren has been attacked.",
+      "status": "dangerous"
+    },
+    "ent_tpl_phandalin_hideout": {
+      "title": "Cragmaw Hideout",
+      "summary": "A goblin cave that teaches the group Gundren’s disappearance was not random.",
+      "status": "explorable"
+    },
+    "ent_tpl_phandalin_tresendar": {
+      "title": "Tresendar Manor",
+      "summary": "Ruins hiding the Redbrand base and several moral choices for the group.",
+      "status": "active threat",
+      "metadata": {
+        "type": "urban dungeon"
+      }
+    },
+    "ent_tpl_phandalin_wave_echo": {
+      "title": "Wave Echo Cave",
+      "summary": "Final destination of Gundren’s search and the heart of the conflict over the Forge of Spells.",
+      "status": "hidden"
+    },
+    "ent_tpl_phandalin_gundren": {
+      "title": "Gundren Rockseeker",
+      "subtitle": "Dwarven prospector",
+      "summary": "He hired the party to escort supplies. His map is the piece everyone wants.",
+      "status": "missing",
+      "metadata": {
+        "role": "opening patron",
+        "desire": "recover the family mine"
+      }
+    },
+    "ent_tpl_phandalin_sildar": {
+      "title": "Sildar Hallwinter",
+      "subtitle": "Veteran and potential ally",
+      "summary": "He can explain the context and give the group a reason to protect Phandalin.",
+      "status": "ally",
+      "metadata": {
+        "role": "campaign mentor"
+      }
+    },
+    "ent_tpl_phandalin_redbrands": {
+      "title": "Redbrands",
+      "subtitle": "Red-cloaked thugs",
+      "summary": "They control the town’s fear through low-intensity violence and public threats.",
+      "status": "active",
+      "metadata": {
+        "agenda": "maintain social control"
+      }
+    },
+    "ent_tpl_phandalin_iarno": {
+      "title": "Iarno Albrek / Glasstaff",
+      "subtitle": "Missing wizard with a double identity",
+      "summary": "Sildar’s clue points to a lost ally, but the truth connects him to the Redbrands.",
+      "status": "hidden",
+      "metadata": {
+        "publicMask": "missing wizard",
+        "secretIdentity": "Glasstaff"
+      }
+    },
+    "ent_tpl_phandalin_nezznar": {
+      "title": "Nezznar, the Black Spider",
+      "summary": "He wants to reach Wave Echo Cave first and control the Forge.",
+      "status": "distant threat",
+      "metadata": {
+        "role": "final antagonist"
+      }
+    },
+    "ent_tpl_phandalin_quest_gundren": {
+      "title": "Find Gundren",
+      "summary": "The main thread: follow the trail from the ambush to Cragmaw and eventually the mine.",
+      "metadata": {
+        "objective": "rescue Gundren and recover the map"
+      }
+    },
+    "ent_tpl_phandalin_clue_dead_horses": {
+      "title": "Dead horses on the road",
+      "summary": "The first physical clue: the attack was prepared and Gundren was ahead of the party.",
+      "status": "ready",
+      "metadata": {
+        "delivery": "opening scene"
+      }
+    },
+    "ent_tpl_phandalin_secret_iarno": {
+      "title": "Iarno is Glasstaff",
+      "summary": "Sildar’s missing ally leads or manipulates the Redbrands from Tresendar.",
+      "metadata": {
+        "revealImpact": "changes trust in adult allies"
+      }
+    },
+    "ent_tpl_phandalin_consequence_town": {
+      "title": "Phandalin finds its voice again",
+      "summary": "If the Redbrands fall, the town starts acting, speaking and asking for help in visible ways.",
+      "metadata": {
+        "trigger": "defeat or expose the Redbrands"
+      }
+    },
+    "ent_tpl_phandalin_inn": {
+      "title": "Stonehill Inn",
+      "subtitle": "Safe place for conversations",
+      "summary": "Social hub where the party can hear rumors, rest and measure the town’s fear.",
+      "content": "Use it to introduce NPCs without forcing scenes: someone is always listening, exaggerating or asking for help."
+    },
+    "ent_tpl_phandalin_shrine": {
+      "title": "Shrine of Luck",
+      "subtitle": "Small refuge with useful information",
+      "summary": "A calm place where a kind conversation can provide clues about disappearances and night movements.",
+      "content": "Good place for players seeking help without going through violence."
+    },
+    "ent_tpl_phandalin_toblen": {
+      "title": "Toblen Stonehill",
+      "subtitle": "Innkeeper who knows more than he wants to admit",
+      "summary": "He hears everyone’s rumors, but fears the Redbrands will punish his family.",
+      "content": "Toblen helps if the group shows they are not here just to provoke a fight."
+    },
+    "ent_tpl_phandalin_linene": {
+      "title": "Linene Graywind",
+      "subtitle": "Pragmatic merchant",
+      "summary": "She wants safe roads and does not trust improvised heroes until she sees results.",
+      "content": "She can offer gear, information about lost supplies or a dry warning about the Redbrands."
+    },
+    "ent_tpl_phandalin_halia": {
+      "title": "Halia Thornton",
+      "subtitle": "Ambitious, useful and dangerous",
+      "summary": "She may help against the Redbrands if that increases her influence over Phandalin.",
+      "content": "Halia gives practical information, but always tries to keep a political advantage."
+    },
+    "ent_tpl_phandalin_qelline": {
+      "title": "Qelline Alderleaf",
+      "subtitle": "Kind neighbor with discreet contacts",
+      "summary": "She knows less-watched roads and can point the group toward outside help.",
+      "content": "Ideal for family tables: offers warmth, food and a nonviolent way to gain direction."
+    },
+    "ent_tpl_phandalin_quest_break_fear": {
+      "title": "Break the Redbrands’ fear",
+      "subtitle": "Urban arc of Phandalin",
+      "summary": "The group must move from hearing complaints to giving the town a concrete reason to act.",
+      "content": "It is not solved only by defeating enemies: the town changes when it sees protection, proof or leadership."
+    },
+    "ent_tpl_phandalin_clue_blackseal": {
+      "title": "Note with a black seal",
+      "subtitle": "Clue toward a distant hand",
+      "summary": "A short note orders Gundren kept alive until the full map is found.",
+      "content": "It does not reveal everything about Nezznar, but introduces that the Redbrands are not the end of the chain.",
+      "metadata": {
+        "content": "The order comes from someone signing with a black spider, not from Glasstaff."
+      }
+    },
+    "ent_tpl_phandalin_clue_redclay": {
+      "title": "Boots with red clay",
+      "subtitle": "Physical clue in town",
+      "summary": "Several bandit boots carry clay from the old path toward Tresendar.",
+      "content": "Lets the group find the base without relying on interrogations.",
+      "metadata": {
+        "content": "The clay matches the abandoned path below Tresendar Manor."
+      }
+    },
+    "ent_tpl_phandalin_rumor_well": {
+      "title": "The old well sings at night",
+      "subtitle": "Rumor to color the town",
+      "summary": "Children and miners say the well returns echoes that belong to no one in town.",
+      "content": "It can be local color or a soft clue toward old ruins under Phandalin."
+    },
+    "ent_tpl_phandalin_handout_map": {
+      "title": "Gundren’s torn map",
+      "subtitle": "Player handout",
+      "summary": "Map fragment with an incomplete mark toward Wave Echo Cave.",
+      "content": "Give only one part at first. The second part can appear in Tresendar or with Gundren."
+    },
+    "ent_tpl_phandalin_encounter_street": {
+      "title": "Fight on the main street",
+      "subtitle": "Flexible encounter against thugs",
+      "summary": "The Redbrands test whether the group can be intimidated in front of frightened neighbors.",
+      "content": "Can be resolved through combat, public humiliation, hard negotiation or a social trap."
+    },
+    "ent_tpl_phandalin_consequence_people_rise": {
+      "title": "The town starts organizing",
+      "subtitle": "Positive consequence",
+      "summary": "If the group protects specific neighbors, Phandalin stops waiting for saviors and starts acting.",
+      "content": "Trigger this consequence when players help a named person, not just when they win a fight."
+    },
+    "ent_tpl_phandalin_secret_nezznar_funds": {
+      "title": "The Black Spider funds chaos from afar",
+      "subtitle": "Campaign secret",
+      "summary": "Nezznar does not need to control Phandalin directly; he only needs nobody looking toward the mine.",
+      "content": "Lets the Redbrands be a local problem connected to a larger threat without turning everything into exposition.",
+      "metadata": {
+        "truth": "Nezznar uses intermediaries to keep the town distracted while he searches for Wave Echo Cave."
+      }
+    }
+  },
+  "relations": {
+    "rel_tpl_phandalin_trail_hideout": {
+      "description": "The tracks lead from the road to the goblin hideout."
+    },
+    "rel_tpl_phandalin_gundren_quest": {
+      "description": "Finding Gundren keeps the campaign moving."
+    },
+    "rel_tpl_phandalin_hideout_gundren": {
+      "description": "The hideout reveals that Gundren was moved."
+    },
+    "rel_tpl_phandalin_redbrands_town": {
+      "description": "The town avoids acting because it fears retaliation."
+    },
+    "rel_tpl_phandalin_redbrands_tresendar": {
+      "description": "The base of operations lies beneath Tresendar Manor."
+    },
+    "rel_tpl_phandalin_iarno_redbrands": {
+      "description": "Glasstaff leads the Redbrands from the shadows."
+    },
+    "rel_tpl_phandalin_iarno_secret": {
+      "description": "His double identity should be revealed through clues, not free exposition."
+    },
+    "rel_tpl_phandalin_tresendar_secret": {
+      "description": "Exploring Tresendar can reveal correspondence or proof."
+    },
+    "rel_tpl_phandalin_nezznar_wave": {
+      "description": "Nezznar understands the mine’s true value."
+    },
+    "rel_tpl_phandalin_wave_gundren": {
+      "description": "The final location depends on Gundren’s map."
+    },
+    "rel_tpl_phandalin_redbrands_consequence": {
+      "description": "Resolving the urban arc transforms Phandalin’s behavior."
+    },
+    "rel_tpl_phandalin_inn_toblen": {
+      "description": "The inn lets the party hear the town’s fear through Toblen and his customers."
+    },
+    "rel_tpl_phandalin_toblen_redbrands": {
+      "description": "Toblen stays quiet because the Redbrands can punish his family."
+    },
+    "rel_tpl_phandalin_halia_redbrands": {
+      "description": "Halia wants the Redbrands gone, but not out of altruism."
+    },
+    "rel_tpl_phandalin_qelline_hideout": {
+      "description": "Qelline knows people who can point toward less-watched routes."
+    },
+    "rel_tpl_phandalin_clay_tresendar": {
+      "description": "The red clay leads toward the path beneath Tresendar."
+    },
+    "rel_tpl_phandalin_blackseal_nezznar": {
+      "description": "The black seal suggests someone outside town is directing the conflict."
+    },
+    "rel_tpl_phandalin_map_wave": {
+      "description": "The torn map makes the mine a visible promise without revealing the whole route."
+    },
+    "rel_tpl_phandalin_break_fear_consequence": {
+      "description": "Breaking the fear lets Phandalin start acting as a community."
+    },
+    "rel_tpl_phandalin_street_breakfear": {
+      "description": "The main-street fight can turn a complaint into a concrete quest."
+    },
+    "rel_tpl_phandalin_nezznar_secret": {
+      "description": "Nezznar’s influence appears first as money, notes and indirect orders."
+    },
+    "rel_tpl_phandalin_shrine_rumor": {
+      "description": "The shrine gathers rumors neighbors will not say in the inn."
+    },
+    "rel_tpl_phandalin_linene_trail": {
+      "description": "Linene needs safe roads to keep frontier trade alive."
+    }
+  },
+  "facts": {
+    "fact_tpl_phandalin_1": {
+      "statement": "Gundren disappeared before the supplies reached Phandalin."
+    },
+    "fact_tpl_phandalin_2": {
+      "statement": "The Redbrands control the town’s fear more than its physical territory."
+    },
+    "fact_tpl_phandalin_3": {
+      "statement": "Iarno and Glasstaff are the same person."
+    },
+    "fact_tpl_phandalin_4": {
+      "statement": "Wave Echo Cave is not only a mine: it contains a coveted source of magical power."
+    },
+    "fact_tpl_phandalin_5": {
+      "statement": "If the party saves Phandalin from the Redbrands, neighbors will start offering information without interrogation."
+    },
+    "fact_tpl_phandalin_6": {
+      "statement": "Toblen knows which neighbors pay the Redbrands, but needs to see that the party can protect specific people."
+    },
+    "fact_tpl_phandalin_7": {
+      "statement": "Halia can be a temporary ally against the Redbrands, though she will try to fill the power vacuum they leave."
+    },
+    "fact_tpl_phandalin_8": {
+      "statement": "The black-seal note proves Glasstaff is under pressure from someone interested in the mine."
+    },
+    "fact_tpl_phandalin_9": {
+      "statement": "Gundren’s map works best if handed out incomplete: the table gets a clear promise without skipping the town arc."
+    },
+    "fact_tpl_phandalin_10": {
+      "statement": "If the characters resolve a public threat without humiliating the town, neighbors will begin offering voluntary help."
+    },
+    "fact_tpl_phandalin_11": {
+      "statement": "Qelline has no political power, but she does have a trusted network that avoids unnecessary fights."
+    },
+    "fact_tpl_phandalin_12": {
+      "statement": "Nezznar prefers adventurers wasting time on local trouble before they look toward Wave Echo Cave."
+    }
+  },
+  "sessions": {
+    "sess_tpl_phandalin_road": {
+      "title": "Session 1 — The Triboar Trail ambush",
+      "summary": "Direct opening: attack, trail, rescue and first emotional link to Gundren’s disappearance.",
+      "openingPrompt": "The road narrows between trees. Two horses block the path. They do not neigh. They do not move. And the arrows are already ready.",
+      "goals": [
+        "Teach the family-adventure tone.",
+        "Reveal that Gundren is in danger.",
+        "Offer a clear decision: follow the trail or protect the cargo."
+      ],
+      "checklist": {
+        "chk_ph_1": {
+          "label": "Show the horses before the attack."
+        },
+        "chk_ph_2": {
+          "label": "Give the group a visible clue toward the hideout."
+        }
+      }
+    },
+    "sess_tpl_phandalin_town": {
+      "title": "Session 2 — A town afraid",
+      "summary": "Present Phandalin as a living place and prepare the Redbrand arc.",
+      "openingPrompt": "Phandalin looks quiet until someone lowers their voice when a red cloak appears across the street.",
+      "goals": [
+        "Connect players to specific neighbors.",
+        "Show the Redbrands as a nearby problem.",
+        "Offer several entrances toward Tresendar."
+      ],
+      "checklist": {
+        "chk_ph_3": {
+          "label": "Make the town’s fear visible, not explained."
+        }
+      }
+    },
+    "sess_tpl_phandalin_tresendar": {
+      "title": "Session 3 — Beneath Tresendar Manor",
+      "summary": "Resolve the Redbrand arc through infiltration, combat, rescue or negotiation.",
+      "openingPrompt": "The manor does not look like a fortress. That is the problem: nobody wants to look underneath.",
+      "goals": [
+        "Allow a clear victory.",
+        "Reveal Glasstaff clues if players investigate.",
+        "Prepare the town’s social consequence."
+      ],
+      "checklist": {
+        "chk_ph_4": {
+          "label": "Close by asking what changes in Phandalin after the victory."
+        }
+      }
+    },
+    "sess_tpl_phandalin_allies": {
+      "title": "Session 4 — Allies in an awakening town",
+      "summary": "After striking the Redbrands, the group can turn scattered favors into real town support.",
+      "openingPrompt": "The next morning, no one looks at the adventurers the same way. Some lower their voices; others, for the first time, approach.",
+      "goals": [
+        "Give town NPCs spotlight.",
+        "Show consequences of protecting or ignoring specific neighbors.",
+        "Deliver a clue toward the larger network behind Glasstaff."
+      ],
+      "checklist": {
+        "ph_s4_pnjs": {
+          "label": "Choose three NPCs who react to what happened."
+        },
+        "ph_s4_public": {
+          "label": "Decide what information is now public for the player portal."
+        },
+        "ph_s4_next": {
+          "label": "Close with a clue toward Tresendar or the mine."
+        }
+      }
+    },
+    "sess_tpl_phandalin_wave": {
+      "title": "Session 5 — Echoes of the lost mine",
+      "summary": "The campaign points toward Wave Echo Cave: promise of treasure, rescue and truth about the Black Spider.",
+      "openingPrompt": "The map fragment finally matches Gundren’s marks. The route leads not only to a mine, but to an old promise everyone wants to claim.",
+      "goals": [
+        "Connect the local arc to the larger threat.",
+        "Show why Gundren mattered.",
+        "Prepare the next stretch if the table wants to continue."
+      ],
+      "checklist": {
+        "ph_s5_map": {
+          "label": "Decide which part of the map is still missing."
+        },
+        "ph_s5_nezznar": {
+          "label": "Show one indirect action by Nezznar before revealing him."
+        },
+        "ph_s5_continue": {
+          "label": "Prepare a choice: rescue, negotiate or pursue."
+        }
+      }
+    }
+  },
+  "canvases": {
+    "cvs_tpl_phandalin_fronts": {
+      "title": "Phandalin fronts",
+      "description": "Quick view of the main threads so you can run without getting lost.",
+      "edges": {
+        "edge_tpl_ph_1": {
+          "label": "threatened by"
+        },
+        "edge_tpl_ph_2": {
+          "label": "hide in"
+        },
+        "edge_tpl_ph_3": {
+          "label": "ends at"
+        },
+        "edge_tpl_ph_4": {
+          "label": "seeks"
+        },
+        "edge_tpl_ph_halia_redbrands": {
+          "label": "wants to replace"
+        },
+        "edge_tpl_ph_map_wave": {
+          "label": "opens route"
+        },
+        "edge_tpl_ph_people_town": {
+          "label": "changes morale"
+        },
+        "edge_tpl_ph_blackseal_nezznar": {
+          "label": "points to"
+        }
+      },
+      "nodes": {
+        "note_tpl_ph_family": {
+          "title": "Family table",
+          "text": "Make decisions visible: help the town, search for Gundren or investigate the manor. Do not hide the fun behind too many names."
+        }
+      }
+    }
+  },
+  "tags": [
+    "starter",
+    "frontier",
+    "family",
+    "dnd",
+    "sessions"
+  ]
+}

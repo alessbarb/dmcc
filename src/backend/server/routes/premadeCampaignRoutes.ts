@@ -74,17 +74,17 @@ export async function registerPremadeCampaignRoutes(server: FastifyInstance, opt
     return `${clean} ${index}`;
   }
 
-  server.get("/api/premade-campaigns", async (request) => {
+  server.get<{ Querystring: { locale?: string } }>("/api/premade-campaigns", async (request) => {
     assertDM(request, server.dmSessionToken);
     return {
-      schemaVersion: 1,
-      templates: listPremadeCampaignTemplates(),
+      schemaVersion: 2,
+      templates: listPremadeCampaignTemplates(request.query.locale),
     };
   });
 
-  server.get<{ Params: { templateId: string } }>("/api/premade-campaigns/:templateId", async (request, reply) => {
+  server.get<{ Params: { templateId: string }; Querystring: { locale?: string } }>("/api/premade-campaigns/:templateId", async (request, reply) => {
     assertDM(request, server.dmSessionToken);
-    const template = getPremadeCampaignTemplate(request.params.templateId);
+    const template = getPremadeCampaignTemplate(request.params.templateId, request.query.locale);
     if (!template) {
       reply.code(404);
       return { error: "Premade campaign template not found" };
@@ -93,13 +93,13 @@ export async function registerPremadeCampaignRoutes(server: FastifyInstance, opt
     return template;
   });
 
-  server.post<{ Params: { templateId: string }; Body: { title?: string; summary?: string; campaignId?: string; importMode?: PremadeImportMode } }>(
+  server.post<{ Params: { templateId: string }; Body: { title?: string; summary?: string; campaignId?: string; importMode?: PremadeImportMode; locale?: string } }>(
     "/api/premade-campaigns/:templateId/import",
     async (request, reply) => {
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const dmId = getRequestDmId(request, server.dmSessionToken) ?? "usr_dm";
-      const template = getPremadeCampaignTemplate(request.params.templateId);
+      const template = getPremadeCampaignTemplate(request.params.templateId, request.body?.locale);
 
       if (!template) {
         reply.code(404);

@@ -1,0 +1,470 @@
+{
+  "locale": "en",
+  "templateId": "oracle-triple-eclipse",
+  "templateVersion": "1.1.0",
+  "translationVersion": "1.0.0",
+  "translatedFromLocale": "es",
+  "title": "The Oracle’s Shadow",
+  "subtitle": "Intrigue, factions, secrets and consequences",
+  "description": "Advanced sample campaign for testing narrative memory, factions, revealable secrets, tension clocks and session prep with consequences.",
+  "summary": "The Triple Eclipse is approaching. Luminara prepares a public rite to consult the Oracle of Habits, but someone has replaced a page of the ceremonial oath. Every faction tries to use the crisis to confirm its own version of the future.",
+  "recommendedFor": "DMs who want to test a dense campaign without preparing from scratch: factions with incompatible interests, clues that point to secrets, pressure clocks and consequences ready to trigger from player decisions.",
+  "pitch": "A short fantasy intrigue campaign that shows how DMCC connects factions, clues, secrets and consequences. It is designed so a DM can open the dashboard, review the canvas, run four sessions and understand how narrative memory is preserved.",
+  "learningGoals": [
+    "Use entities as a living map of NPCs, locations, factions, clues and clocks.",
+    "Prepare sessions by connecting goals, scenes, available clues and secrets at risk.",
+    "Separate what the DM knows from what the group can see in the player portal.",
+    "Record consequences so the world reacts after every session."
+  ],
+  "includedMaterial": [
+    "Four prepared sessions with goals, scenes and table checklists.",
+    "Connected factions, NPCs, clues, secrets, rumors, decisions and consequences.",
+    "A narrative canvas for understanding the central conflict at a glance.",
+    "Public facts and DM secrets ready to reveal during play."
+  ],
+  "quickStart": {
+    "title": "How to start The Oracle’s Shadow",
+    "steps": [
+      "Read the quick guide and open the Oracle canvas to understand which faction is pressuring each character.",
+      "Run session 1 with the goal of introducing Luminara, Iria and the first ink clue.",
+      "At the end of each session, mark which clues appeared and create a consequence if the group exposed someone publicly.",
+      "Use the editable copy to adjust names, factions or threat level for your table."
+    ]
+  },
+  "entities": {
+    "ent_tpl_oracle_campaign_note": {
+      "title": "How to use this sample campaign",
+      "summary": "This example teaches how DMCC preserves narrative memory: use the clock to create pressure, clues to guide without overexplaining, and consequences so every session leaves a mark.",
+      "content": "This campaign is designed to teach the DMCC flow: prepare a session, reveal clues, record decisions and leave pending consequences for the next game."
+    },
+    "ent_tpl_oracle_city": {
+      "title": "Luminara, City beneath Three Shadows",
+      "subtitle": "Sanctuary-city where the Eclipse Council will gather",
+      "summary": "A ceremonial city, bright outside and fractured inside: temples, guilds and noble houses compete to control the interpretation of the Oracle.",
+      "status": "tense",
+      "metadata": {
+        "region": "Aram Valley",
+        "atmosphere": "solemn, oppressive, luminous"
+      }
+    },
+    "ent_tpl_oracle_object": {
+      "title": "The Oracle of Habits",
+      "subtitle": "Artifact capable of showing repeated futures",
+      "summary": "It does not predict the future: it reveals the pattern that people will repeat unless they change in time.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_eclipse": {
+      "title": "Triple Eclipse Clock",
+      "summary": "Each tick brings the city closer to a moment when hidden decisions become public.",
+      "metadata": {
+        "trigger": "Oracle ritual"
+      }
+    },
+    "ent_tpl_oracle_faction_pantheon": {
+      "title": "Pantheon of Habits",
+      "subtitle": "Priests who protect sacred routines",
+      "summary": "They claim social order depends on repeating the old rites exactly as written.",
+      "status": "active",
+      "metadata": {
+        "agenda": "keep the ritual intact"
+      }
+    },
+    "ent_tpl_oracle_faction_ink": {
+      "title": "The Fractured Ink",
+      "subtitle": "Network of scribes, forgers and forbidden memory",
+      "summary": "They want to alter the official chronicle before the Oracle turns it into accepted fate.",
+      "status": "hidden",
+      "metadata": {
+        "agenda": "rewrite the public record"
+      }
+    },
+    "ent_tpl_oracle_npc_iria": {
+      "title": "Iria Val-Sen",
+      "subtitle": "Archivist of the lesser temple",
+      "summary": "She knows a page of the rite was replaced, but fears that reporting it will trigger a purge.",
+      "status": "undecided",
+      "metadata": {
+        "role": "archivist",
+        "instinct": "protect the innocent",
+        "secret": "saw the ink change"
+      }
+    },
+    "ent_tpl_oracle_npc_malvus": {
+      "title": "Malvus Corda",
+      "subtitle": "Council adviser",
+      "summary": "He speaks like a mediator, but pushes each faction toward choices that favor the altered rite.",
+      "status": "influential",
+      "metadata": {
+        "role": "council advisor",
+        "publicMask": "moderate mediator",
+        "privateGoal": "activate the modified Oracle"
+      }
+    },
+    "ent_tpl_oracle_quest_open": {
+      "title": "Discover who altered the rite",
+      "summary": "The group must connect archive clues, faction testimony and astronomical signs before the last shadow.",
+      "metadata": {
+        "objective": "identify the author, motive and consequence"
+      }
+    },
+    "ent_tpl_oracle_clue_ink": {
+      "title": "The ink ages differently",
+      "summary": "One line of the rite looks old, but reacts to heat like fresh ink.",
+      "status": "prepared",
+      "metadata": {
+        "delivery": "archive, candle or minor spell"
+      }
+    },
+    "ent_tpl_oracle_secret_page": {
+      "title": "The replaced page reverses the oath",
+      "summary": "The rite will not protect the city: it will force every leader to repeat their worst public decision.",
+      "metadata": {
+        "risk": "social rupture"
+      }
+    },
+    "ent_tpl_oracle_consequence_public_panic": {
+      "title": "Panic in the Council",
+      "summary": "If the truth is revealed without complete proof, each faction will accuse the others and the city will lock down.",
+      "metadata": {
+        "trigger": "rushed revelation",
+        "fallout": "closures, arrests and social pressure"
+      }
+    },
+    "ent_tpl_oracle_scene_archive": {
+      "title": "Archive under the First Shadow",
+      "subtitle": "Opening investigation scene",
+      "summary": "The characters find an oath with a line that casts no shadow and a sealed archive that is too recent.",
+      "content": "Use this scene to set the tone: public liturgy, impossible documents and archivists who measure every word."
+    },
+    "ent_tpl_oracle_scene_council": {
+      "title": "Hearing of the Eclipse Council",
+      "subtitle": "Social pressure and rival factions",
+      "summary": "Each faction offers a self-serving version of the truth while the ritual clock advances.",
+      "content": "Dialogue scene. Give each faction one simple demand: control the discourse, expose the fraud or delay the rite."
+    },
+    "ent_tpl_oracle_scene_chamber": {
+      "title": "Chamber of the Sealed Oracle",
+      "subtitle": "End of the sample arc",
+      "summary": "The Oracle waits beneath the sanctuary. It does not answer the future: it repeats unresolved habits.",
+      "content": "Use this scene to close with a decision: reveal the manipulation, rewrite the oath or destroy the mechanism."
+    },
+    "ent_tpl_oracle_npc_tovan": {
+      "title": "Tovan, junior archivist",
+      "subtitle": "Wants to do the right thing without ruining his mentor",
+      "summary": "A young scribe who saw Malvus enter the archive late. He fears Iria will be blamed.",
+      "content": "Tovan whispers and remembers material details: resin smell, chrono-salt dust and a bell that rang out of time."
+    },
+    "ent_tpl_oracle_faction_bells": {
+      "title": "Consortium of Bells",
+      "subtitle": "Guild controlling public signals",
+      "summary": "They want to delay the rite because an old prediction threatens their monopoly over signals and calendars.",
+      "content": "They are not direct villains: they prefer buying silence, creating doubt and turning any revelation into bureaucracy."
+    },
+    "ent_tpl_oracle_clue_chronosalt": {
+      "title": "Chrono-salt dust on the lectern",
+      "subtitle": "Physical clue",
+      "summary": "The oath lectern has silver crystals that appear only when a document has been artificially aged.",
+      "content": "Can be found by inspection, magic, scribal craft or questioning Tovan. Points to a recent substitution.",
+      "metadata": {
+        "content": "The document was aged with chrono-salt to look ceremonially old."
+      }
+    },
+    "ent_tpl_oracle_clue_no_echo": {
+      "title": "The oath without an echo",
+      "subtitle": "Ritual clue",
+      "summary": "One line of the text does not repeat when recited in the oath hall.",
+      "content": "The false line reverses the duty to remember: it turns the rite into a repetition of errors.",
+      "metadata": {
+        "content": "The altered line is not part of the original oath and opens the central secret."
+      }
+    },
+    "ent_tpl_oracle_item_key": {
+      "title": "Key of the Seven Habits",
+      "subtitle": "Ceremonial object",
+      "summary": "A bronze key with seven notches that opens the lower chamber if turned by following a sequence of daily habits.",
+      "content": "The key is not forced: it activates through simple city gestures — greeting, yielding, folding a page, touching a bell."
+    },
+    "ent_tpl_oracle_secret_iria_ink": {
+      "title": "Iria once helped the Fractured Ink",
+      "subtitle": "Social secret, not current betrayal",
+      "summary": "Iria leaked documents years ago to protect junior archivists, but she is not involved in the current substitution.",
+      "content": "This secret complicates the investigation: finding it too early can make her look guilty.",
+      "metadata": {
+        "truth": "Iria worked with the Fractured Ink in the past, but now she is trying to keep the city from breaking."
+      }
+    },
+    "ent_tpl_oracle_rumor_bells": {
+      "title": "The bells dream names",
+      "subtitle": "Street rumor",
+      "summary": "Some neighbors say the bells pronounce names before each eclipse.",
+      "content": "The rumor is a popular way to talk about the Consortium: someone is using public signals to point at suspects."
+    },
+    "ent_tpl_oracle_decision_public_truth": {
+      "title": "Reveal the fraud in public or contain it?",
+      "subtitle": "Central campaign decision",
+      "summary": "The group can expose the false page before the city or handle the truth privately to avoid riots.",
+      "content": "There is no perfect answer. Fast exposure cleans the lie but inflames factions; containment buys time but looks like a cover-up."
+    },
+    "ent_tpl_oracle_consequence_martial_rite": {
+      "title": "The Pantheon declares ritual emergency",
+      "subtitle": "Consequence if the city panics",
+      "summary": "The Pantheon restricts public gatherings and turns the investigation into a closed ceremonial matter.",
+      "content": "Use this if the group reveals the fraud without preparing allies, or if Malvus turns suspicion into unrest."
+    },
+    "ent_tpl_oracle_handout_edict": {
+      "title": "Edict of Bell Silence",
+      "subtitle": "Public player handout",
+      "summary": "A document announcing three hours with no lesser bells during the eclipse. It looks administrative, but hides a political maneuver.",
+      "content": "Suggested text: By order of the Consortium, every lesser bell shall remain silent until the oath is read without shadow."
+    },
+    "ent_tpl_oracle_encounter_masks": {
+      "title": "Procession of repeated masks",
+      "subtitle": "Pressure encounter during the investigation",
+      "summary": "A procession crosses the square wearing masks identical to leaders who committed historical mistakes.",
+      "content": "Not mandatory combat. Use it to show that the Oracle is leaking past habits into public life."
+    }
+  },
+  "relations": {
+    "rel_tpl_oracle_city_object": {
+      "description": "The Oracle is hidden beneath the central sanctuary."
+    },
+    "rel_tpl_oracle_eclipse_object": {
+      "description": "The final phase of the eclipse awakens the artifact."
+    },
+    "rel_tpl_oracle_pantheon_city": {
+      "description": "The Pantheon preserves Luminara’s ceremonial order."
+    },
+    "rel_tpl_oracle_ink_pantheon": {
+      "description": "The Fractured Ink sees the Pantheon as a prison of narrative."
+    },
+    "rel_tpl_oracle_iria_clue": {
+      "description": "Iria can guide the group toward the ink discrepancy."
+    },
+    "rel_tpl_oracle_malvus_secret": {
+      "description": "Malvus knows about the replaced page and protects it."
+    },
+    "rel_tpl_oracle_clue_secret": {
+      "description": "The clue does not solve everything, but opens the right question."
+    },
+    "rel_tpl_oracle_secret_consequence": {
+      "description": "A badly managed revelation triggers political panic."
+    },
+    "rel_tpl_oracle_quest_secret": {
+      "description": "Solving the quest opens the central secret."
+    },
+    "rel_tpl_oracle_malvus_quest": {
+      "description": "Malvus redirects questions and offers comfortable answers."
+    },
+    "rel_tpl_oracle_tovan_iria": {
+      "description": "Tovan wants to protect Iria, but his silences can look like complicity."
+    },
+    "rel_tpl_oracle_tovan_chronosalt": {
+      "description": "Tovan knows the chrono-salt dust was not there the night before."
+    },
+    "rel_tpl_oracle_noecho_secret": {
+      "description": "The oath without echo can prove which line was replaced."
+    },
+    "rel_tpl_oracle_key_object": {
+      "description": "The key opens the lower chamber without breaking the ritual seals."
+    },
+    "rel_tpl_oracle_bells_rumor": {
+      "description": "The Consortium feeds the rumor to steer attention toward specific names."
+    },
+    "rel_tpl_oracle_bells_council": {
+      "description": "The Consortium demands delaying any decision until it controls the public signals."
+    },
+    "rel_tpl_oracle_iria_past_ink": {
+      "description": "Iria hides her past help to the Ink because it could destroy her credibility."
+    },
+    "rel_tpl_oracle_decision_consequence": {
+      "description": "A public revelation without allies pushes the Pantheon to close the investigation."
+    },
+    "rel_tpl_oracle_masks_council": {
+      "description": "The procession turns political debate into a spectacle of collective guilt."
+    },
+    "rel_tpl_oracle_chamber_object": {
+      "description": "The chamber reveals the Oracle as a machine of habits, not a divine voice."
+    },
+    "rel_tpl_oracle_archive_chronosalt": {
+      "description": "The first scene contains the cleanest physical clue of the substitution."
+    },
+    "rel_tpl_oracle_handout_bells": {
+      "description": "The edict lets the group suspect the Consortium without naming it directly."
+    },
+    "rel_tpl_oracle_bells_object": {
+      "description": "The Bell Consortium wants to control the Oracle and turn its visions into public propaganda."
+    },
+    "rel_tpl_oracle_tovan_clue_ink": {
+      "description": "Tovan recognizes the fractured ink and can explain why it does not belong to the original archive."
+    }
+  },
+  "facts": {
+    "fact_tpl_oracle_1": {
+      "statement": "The Triple Eclipse has already begun, and three phases remain before the public rite."
+    },
+    "fact_tpl_oracle_2": {
+      "statement": "The Oracle does not show a fixed future; it shows patterns people insist on repeating."
+    },
+    "fact_tpl_oracle_3": {
+      "statement": "Malvus needs the group to suspect the Fractured Ink before reviewing the rite."
+    },
+    "fact_tpl_oracle_4": {
+      "statement": "Iria will not betray the temple unless the group promises to protect the junior archivists."
+    },
+    "fact_tpl_oracle_5": {
+      "statement": "If the Council panics, the Pantheon can lawfully close the investigation for ritual reasons."
+    },
+    "fact_tpl_oracle_6": {
+      "statement": "The false page was aged with chrono-salt so it would look older than it is."
+    },
+    "fact_tpl_oracle_7": {
+      "statement": "Tovan saw Malvus near the archive after the bells should have gone silent."
+    },
+    "fact_tpl_oracle_8": {
+      "statement": "The Bell Consortium is not innocent, but it is not the only force moving the crisis."
+    },
+    "fact_tpl_oracle_9": {
+      "statement": "The Key of the Seven Habits opens the chamber only when the city’s daily gestures are repeated in order."
+    },
+    "fact_tpl_oracle_10": {
+      "statement": "Iria’s old link to the Fractured Ink can be used to frame her."
+    },
+    "fact_tpl_oracle_11": {
+      "statement": "The mask procession is a symptom of the Oracle leaking repeated habits into public life."
+    },
+    "fact_tpl_oracle_12": {
+      "statement": "The group’s final choice should decide whether Luminara remembers honestly, repeats its mistakes or buries the truth again."
+    }
+  },
+  "sessions": {
+    "sess_tpl_oracle_opening": {
+      "title": "Session 1 — The archive beneath the First Shadow",
+      "summary": "Open with investigation: an impossible document, a nervous archivist and the first sign that the rite was altered.",
+      "openingPrompt": "The first shadow falls over the archive skylight. The oath parchment should darken with the room, but one line stays bright as if the eclipse refuses to touch it.",
+      "goals": [
+        "Present Luminara and its ceremonial pressure.",
+        "Introduce Iria and the altered ink clue.",
+        "Give the group a clear first question: who touched the oath?"
+      ],
+      "checklist": {
+        "ora_s1_1": {
+          "label": "Show the public ceremony before revealing the private problem."
+        },
+        "ora_s1_2": {
+          "label": "Let the group discover the ink or chrono-salt clue through their own approach."
+        },
+        "ora_s1_3": {
+          "label": "End with Malvus offering a convenient explanation."
+        }
+      }
+    },
+    "sess_tpl_oracle_council": {
+      "title": "Session 2 — Voices in the Council",
+      "summary": "A social session where factions pressure the group and the ritual clock advances.",
+      "openingPrompt": "The council chamber is arranged like a theater: every seat has a witness, every witness has a faction and every faction already knows who it wants blamed.",
+      "goals": [
+        "Make faction agendas visible.",
+        "Let players choose who they trust.",
+        "Reveal that delaying the rite has political cost."
+      ],
+      "checklist": {
+        "ora_s2_1": {
+          "label": "Give each faction one demand and one fear."
+        },
+        "ora_s2_2": {
+          "label": "Advance the Triple Eclipse clock if the group stalls."
+        },
+        "ora_s2_3": {
+          "label": "Keep the central secret hidden unless players connect two clues."
+        }
+      }
+    },
+    "sess_tpl_oracle_masks": {
+      "title": "Session 3 — The procession of repeated masks",
+      "summary": "Pressure encounter and investigation escalation: the city starts showing consequences before the secret is solved.",
+      "openingPrompt": "The square fills with silent masks. Each face is familiar, not because of who wears it, but because of the mistake it repeats.",
+      "goals": [
+        "Show the Oracle affecting public life.",
+        "Give the group another way to suspect Malvus or the Bells.",
+        "Force a choice between public action and quiet investigation."
+      ],
+      "checklist": {
+        "ora_s3_1": {
+          "label": "Frame the procession as a problem to interpret, not just fight."
+        },
+        "ora_s3_2": {
+          "label": "Offer the Edict of Bell Silence as a player handout."
+        },
+        "ora_s3_3": {
+          "label": "Record who the group protects or exposes."
+        }
+      }
+    },
+    "sess_tpl_oracle_chamber": {
+      "title": "Session 4 — The chamber that repeats habits",
+      "summary": "Final sample session: open the lower chamber, confront what the Oracle really does and choose what truth reaches the city.",
+      "openingPrompt": "The key turns only when every notch repeats a habit of Luminara: greeting, yielding, folding, ringing. Below, the Oracle is already whispering choices the city has made before.",
+      "goals": [
+        "Reveal the nature of the Oracle.",
+        "Let the party decide what to do with the altered rite.",
+        "Create one lasting consequence for Luminara."
+      ],
+      "checklist": {
+        "ora_s4_1": {
+          "label": "Bring back at least one earlier clue as proof."
+        },
+        "ora_s4_2": {
+          "label": "Offer three endings: reveal, rewrite or destroy."
+        },
+        "ora_s4_3": {
+          "label": "Close by writing the consequence that will define the next arc."
+        }
+      }
+    }
+  },
+  "canvases": {
+    "cvs_tpl_oracle_map": {
+      "title": "Oracle tension map",
+      "description": "Initial canvas for understanding clues, secrets and factions.",
+      "edges": {
+        "edge_tpl_oracle_1": {
+          "label": "hides"
+        },
+        "edge_tpl_oracle_2": {
+          "label": "pressures"
+        },
+        "edge_tpl_oracle_3": {
+          "label": "reveals"
+        },
+        "edge_tpl_oracle_4": {
+          "label": "could trigger"
+        },
+        "edge_tpl_oracle_tovan_iria": {
+          "label": "protects"
+        },
+        "edge_tpl_oracle_noecho_secret": {
+          "label": "proves"
+        },
+        "edge_tpl_oracle_decision_consequence": {
+          "label": "can trigger"
+        },
+        "edge_tpl_oracle_chamber_object": {
+          "label": "contains"
+        }
+      },
+      "nodes": {
+        "note_tpl_oracle_clock": {
+          "title": "Table pressure",
+          "text": "Advance the clock when the group delays, reveals something without proof or trusts a faction too quickly."
+        }
+      }
+    }
+  },
+  "tags": [
+    "intrigue",
+    "factions",
+    "mystery",
+    "secrets",
+    "consequences"
+  ]
+}

@@ -2,7 +2,7 @@
 
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
-import { basename, resolve, sep } from "node:path";
+import { resolve, sep } from "node:path";
 
 const args = process.argv.slice(2);
 const checkOnly = args.includes("--check");
@@ -26,19 +26,16 @@ function formatJson(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-function resolveTemplateFile(file) {
+function safePremadePath(file, label) {
   if (typeof file !== "string" || file.trim().length === 0) {
-    throw new Error("Template file must be a non-empty string");
-  }
-  if (file !== basename(file)) {
-    throw new Error(`Template file must stay inside premades directory: ${file}`);
+    throw new Error(`${label} must be a non-empty string`);
   }
 
   const resolvedDir = resolve(premadeDir);
   const resolvedFile = resolve(resolvedDir, file);
   const allowedPrefix = `${resolvedDir}${sep}`;
   if (resolvedFile === resolvedDir || !resolvedFile.startsWith(allowedPrefix)) {
-    throw new Error(`Template file resolves outside premades directory: ${file}`);
+    throw new Error(`${label} resolves outside premades directory: ${file}`);
   }
   return resolvedFile;
 }
@@ -72,65 +69,49 @@ async function main() {
   const touchedFiles = [];
   const nextManifest = {
     ...manifest,
+    schemaVersion: typeof manifest.schemaVersion === "number" ? manifest.schemaVersion : 2,
+    defaultLocale: typeof manifest.defaultLocale === "string" ? manifest.defaultLocale : "en",
     templates: [],
   };
 
-  for (const summary of manifest.templates) {
-    if (!isRecord(summary)) {
+  for (const entry of manifest.templates) {
+    if (!isRecord(entry)) {
       throw new Error("Every manifest template entry must be an object");
     }
 
-    const templatePath = resolveTemplateFile(summary.file);
+    const templatePath = safePremadePath(entry.templateFile ?? entry.file, `manifest entry ${entry.templateId ?? "?"} templateFile`);
     const template = await readJson(templatePath);
     if (!isRecord(template)) {
-      throw new Error(`Premade template must be an object: ${summary.file}`);
+      throw new Error(`Premade template must be an object: ${entry.templateFile ?? entry.file}`);
     }
 
     const stats = computeStats(template);
-    const nextTemplate = {
-      ...template,
-      stats,
-    };
-    const nextSummary = {
-      ...summary,
-      version: typeof template.templateVersion === "string" ? template.templateVersion : (typeof template.version === "string" ? template.version : summary.version),
-      title: typeof template.title === "string" ? template.title : summary.title,
-      subtitle: typeof template.subtitle === "string" ? template.subtitle : summary.subtitle,
-      description: typeof template.description === "string" ? template.description : summary.description,
-      locale: typeof template.locale === "string" ? template.locale : summary.locale,
-      system: typeof template.system === "string" ? template.system : summary.system,
-      difficulty: typeof template.difficulty === "string" ? template.difficulty : summary.difficulty,
-      recommendedFor: typeof template.recommendedFor === "string" ? template.recommendedFor : summary.recommendedFor,
-      tags: Array.isArray(template.tags) ? template.tags.filter((tag) => typeof tag === "string") : summary.tags,
-      pitch: typeof template.pitch === "string" ? template.pitch : summary.pitch,
-      learningGoals: Array.isArray(template.learningGoals) ? template.learningGoals.filter((item) => typeof item === "string") : summary.learningGoals,
-      includedMaterial: Array.isArray(template.includedMaterial) ? template.includedMaterial.filter((item) => typeof item === "string") : summary.includedMaterial,
-      quickStart: isRecord(template.quickStart) ? template.quickStart : summary.quickStart,
-      highlightEntityIds: Array.isArray(template.highlightEntityIds) ? template.highlightEntityIds.filter((item) => typeof item === "string") : summary.highlightEntityIds,
-      featuredFactIds: Array.isArray(template.featuredFactIds) ? template.featuredFactIds.filter((item) => typeof item === "string") : summary.featuredFactIds,
-      featuredRelationIds: Array.isArray(template.featuredRelationIds) ? template.featuredRelationIds.filter((item) => typeof item === "string") : summary.featuredRelationIds,
+    const nextTemplate = { ...template, stats };
+    const nextEntry = {
+      ...entry,
+      version: typeof template.version === "string" ? template.version : entry.version,
+      defaultLocale: typeof entry.defaultLocale === "string" ? entry.defaultLocale : nextManifest.defaultLocale,
+      availableLocales: Array.isArray(entry.availableLocales)
+        ? entry.availableLocales.filter((item) => typeof item === "string")
+        : (isRecord(entry.locales) ? Object.keys(entry.locales) : [nextManifest.defaultLocale]),
       stats,
     };
 
     await writeJsonIfChanged(templatePath, nextTemplate, touchedFiles);
-    nextManifest.templates.push(nextSummary);
+    nextManifest.templates.push(nextEntry);
   }
 
   await writeJsonIfChanged(manifestPath, nextManifest, touchedFiles);
 
   if (checkOnly && touchedFiles.length > 0) {
     console.error("❌ Premade campaign library is not normalized. Run npm run premade:build.");
-    for (const filePath of touchedFiles) {
-      console.error(` - ${filePath}`);
-    }
+    for (const filePath of touchedFiles) console.error(` - ${filePath}`);
     process.exit(1);
   }
 
   if (touchedFiles.length > 0) {
     console.log(`✓ Updated premade campaign metadata (${touchedFiles.length} files)`);
-    for (const filePath of touchedFiles) {
-      console.log(`  - ${filePath}`);
-    }
+    for (const filePath of touchedFiles) console.log(`  - ${filePath}`);
   } else {
     console.log(`✓ Premade campaign metadata already up to date — ${premadeDir}`);
   }

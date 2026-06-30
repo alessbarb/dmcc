@@ -7,11 +7,19 @@ La aplicación ya no necesita ejecutar seeds para mostrar ejemplos: las campaña
 ```txt
 public/premades/
   manifest.json
-  oracle-triple-eclipse.dmcc-template.json
-  phandalin-starter.dmcc-template.json
+  oracle-triple-eclipse/
+    template.json
+    locales/
+      en.json
+      es.json
+  phandalin-starter/
+    template.json
+    locales/
+      en.json
+      es.json
 ```
 
-La UI lee esos templates mediante `/api/premade-campaigns` y cada DM puede crear su propia copia editable sin ensuciar el vault hasta que pulsa “Crear mi copia”.
+La UI lee esos templates mediante `/api/premade-campaigns?locale=<idioma>`. El idioma por defecto de las premades es inglés (`en`) y cada DM puede crear su propia copia editable sin ensuciar el vault hasta que pulsa “Crear mi copia”.
 
 ## Estructura
 
@@ -85,9 +93,11 @@ npm run premade:validate
 ## Guía de contribución para nuevas campañas premade
 
 1. Crea o actualiza un seed bajo `seeds/campaigns/<nombre_campana>/` si necesitas generar contenido.
-2. Exporta el resultado final a `public/premades/<templateId>.dmcc-template.json`.
-3. Añade la entrada correspondiente en `public/premades/manifest.json`.
-4. Ejecuta `npm run premade:build` para recalcular metadatos derivados.
-5. Ejecuta `npm run premade:validate` para detectar relaciones, hechos, sesiones o canvas con referencias huérfanas.
-6. Comprueba que `/api/premade-campaigns` lista el template.
-7. Comprueba que `POST /api/premade-campaigns/:templateId/import` crea una copia editable para el DM actual.
+2. Exporta la estructura estable a `public/premades/<templateId>/template.json`.
+3. Añade o actualiza los overlays narrativos en `public/premades/<templateId>/locales/en.json` y `public/premades/<templateId>/locales/es.json`.
+4. Añade la entrada correspondiente en `public/premades/manifest.json`, con `defaultLocale`, `availableLocales`, `templateFile` y `locales`.
+5. Ejecuta `npm run premade:build` para recalcular metadatos derivados.
+6. Ejecuta `npm run premade:validate` para detectar referencias huérfanas y overlays que apunten a IDs inexistentes.
+7. Comprueba que `/api/premade-campaigns?locale=en` lista el template en inglés.
+8. Comprueba que `/api/premade-campaigns?locale=es` lista el template en español.
+9. Comprueba que `POST /api/premade-campaigns/:templateId/import` crea una copia editable para el DM actual en el idioma seleccionado.

@@ -1,0 +1,499 @@
+{
+  "title": "La Sombra del Oráculo",
+  "subtitle": "Intriga, facciones, secretos y consecuencias",
+  "description": "Campaña de ejemplo avanzada para probar memoria narrativa, facciones, secretos revelables, relojes de tensión y preparación de sesiones con consecuencias.",
+  "summary": "La Triple Eclipse se acerca. Luminara prepara un ritual público para consultar el Oráculo de los Hábitos, pero alguien ha sustituido una página del juramento ceremonial. Cada facción intenta usar la crisis para confirmar su propia versión del futuro.",
+  "recommendedFor": "DMs que quieren probar una campaña densa sin preparar desde cero: facciones con intereses incompatibles, pistas que apuntan a secretos, relojes que presionan y consecuencias listas para activar según las decisiones del grupo.",
+  "pitch": "Una campaña breve de intriga fantástica para ver cómo DMCC conecta facciones, pistas, secretos y consecuencias. Está pensada para que un DM pueda abrir el dashboard, revisar el canvas, dirigir cuatro sesiones y entender cómo se conserva la memoria narrativa.",
+  "learningGoals": [
+    "Usar entidades como mapa vivo de PNJs, lugares, facciones, pistas y relojes.",
+    "Preparar sesiones conectando objetivos, escenas, pistas disponibles y secretos en riesgo.",
+    "Separar lo que sabe el DM de lo que puede ver el grupo en el portal del jugador.",
+    "Registrar consecuencias para que el mundo reaccione después de cada sesión."
+  ],
+  "includedMaterial": [
+    "Cuatro sesiones preparadas con objetivos, escenas y checklist de mesa.",
+    "Facciones, PNJs, pistas, secretos, rumores, decisiones y consecuencias conectadas.",
+    "Canvas narrativo para entender el conflicto central de un vistazo.",
+    "Hechos públicos y secretos del DM listos para revelar durante la partida."
+  ],
+  "quickStart": {
+    "title": "Cómo empezar con La Sombra del Oráculo",
+    "steps": [
+      "Lee la guía rápida y abre el canvas del Oráculo para entender qué facción presiona a cada personaje.",
+      "Dirige la sesión 1 con el objetivo de presentar Luminara, Iria y la primera pista de tinta.",
+      "Al final de cada sesión, marca qué pistas salieron y crea una consecuencia si el grupo expuso a alguien en público.",
+      "Usa la copia editable para ajustar nombres, facciones o nivel de amenaza a tu mesa."
+    ]
+  },
+  "locale": "es",
+  "templateId": "oracle-triple-eclipse",
+  "templateVersion": "1.1.0",
+  "translationVersion": "1.0.0",
+  "entities": {
+    "ent_tpl_oracle_campaign_note": {
+      "title": "Cómo usar esta campaña de ejemplo",
+      "summary": "Este ejemplo enseña cómo DMCC conserva memoria narrativa: usa el reloj para presionar, las pistas para guiar sin revelar demasiado, y las consecuencias para que cada sesión deje huella.",
+      "content": "Esta campaña está pensada para enseñar el flujo de DMCC: prepara una sesión, revela pistas, registra decisiones y deja consecuencias pendientes para la siguiente partida.",
+      "metadata": {
+        "previewRole": "guide"
+      }
+    },
+    "ent_tpl_oracle_city": {
+      "title": "Luminara, ciudad bajo tres sombras",
+      "subtitle": "Ciudad-santuario donde se reunirá el Concilio de la Eclipse",
+      "summary": "Una ciudad ceremonial brillante por fuera y rota por dentro: templos, gremios y casas nobles compiten por controlar la interpretación del Oráculo.",
+      "status": "tensa",
+      "metadata": {
+        "region": "Valle de Aram",
+        "atmosphere": "solemne, opresiva, luminosa"
+      }
+    },
+    "ent_tpl_oracle_object": {
+      "title": "El Oráculo de los Hábitos",
+      "subtitle": "Artefacto capaz de mostrar futuros repetidos",
+      "summary": "No predice el futuro: revela qué patrón volverán a repetir quienes no cambien a tiempo.",
+      "status": "oculto",
+      "metadata": {
+        "category": "artifact"
+      }
+    },
+    "ent_tpl_oracle_eclipse": {
+      "title": "Reloj de la Triple Eclipse",
+      "summary": "Cada avance acerca la ciudad a un momento donde las decisiones ocultas se vuelven públicas.",
+      "status": "3/6",
+      "metadata": {
+        "segments": 6,
+        "filled": 3,
+        "trigger": "ritual del Oráculo"
+      }
+    },
+    "ent_tpl_oracle_faction_pantheon": {
+      "title": "Panteón de los Hábitos",
+      "subtitle": "Sacerdotes que protegen rutinas sagradas",
+      "summary": "Sostienen que el orden social depende de repetir los ritos antiguos exactamente como fueron escritos.",
+      "status": "activo",
+      "metadata": {
+        "agenda": "mantener el ritual intacto"
+      }
+    },
+    "ent_tpl_oracle_faction_ink": {
+      "title": "La Tinta Fracturada",
+      "subtitle": "Red de escribas, falsificadores y memoria prohibida",
+      "summary": "Quieren alterar la crónica oficial antes de que el Oráculo la convierta en destino aceptado.",
+      "status": "oculta",
+      "metadata": {
+        "agenda": "reescribir el relato público"
+      }
+    },
+    "ent_tpl_oracle_npc_iria": {
+      "title": "Iria Val-Sen",
+      "subtitle": "Archivista del templo menor",
+      "summary": "Sabe que una página del ritual fue sustituida, pero teme que denunciarlo provoque una purga.",
+      "status": "indecisa",
+      "metadata": {
+        "role": "archivista",
+        "instinct": "proteger a los inocentes",
+        "secret": "vio el cambio de tinta"
+      }
+    },
+    "ent_tpl_oracle_npc_malvus": {
+      "title": "Malvus Corda",
+      "subtitle": "Consejero del Concilio",
+      "summary": "Habla como mediador, pero empuja a cada facción hacia decisiones que favorecen el ritual alterado.",
+      "status": "influyente",
+      "metadata": {
+        "role": "consejero",
+        "publicMask": "moderado",
+        "privateGoal": "activar el Oráculo modificado"
+      }
+    },
+    "ent_tpl_oracle_quest_open": {
+      "title": "Descubrir quién alteró el ritual",
+      "summary": "El grupo debe unir pistas de archivo, testimonios de facción y señales astronómicas antes de la última sombra.",
+      "status": "active",
+      "metadata": {
+        "objective": "identificar autor, móvil y consecuencia"
+      }
+    },
+    "ent_tpl_oracle_clue_ink": {
+      "title": "La tinta no envejece igual",
+      "summary": "Una línea del ritual parece antigua, pero reacciona al calor como tinta reciente.",
+      "status": "preparada",
+      "metadata": {
+        "delivery": "archivo, vela o conjuro menor",
+        "pointsTo": "ent_tpl_oracle_secret_page"
+      }
+    },
+    "ent_tpl_oracle_secret_page": {
+      "title": "La página sustituida invierte el juramento",
+      "summary": "El ritual no protegerá la ciudad: obligará a cada líder a repetir su peor decisión pública.",
+      "status": "hidden",
+      "metadata": {
+        "anchorClueIds": [
+          "ent_tpl_oracle_clue_ink"
+        ],
+        "risk": "ruptura social"
+      }
+    },
+    "ent_tpl_oracle_consequence_public_panic": {
+      "title": "Pánico en el Concilio",
+      "summary": "Si la verdad se revela sin pruebas completas, cada facción acusará a la otra y la ciudad se bloqueará.",
+      "status": "pending",
+      "metadata": {
+        "trigger": "revelación precipitada",
+        "fallout": "cierres, arrestos, presión social"
+      }
+    },
+    "ent_tpl_oracle_scene_archive": {
+      "title": "Archivo bajo la primera sombra",
+      "subtitle": "Escena inicial de investigación",
+      "summary": "Los personajes encuentran un juramento con una línea que no proyecta sombra y un archivo sellado demasiado reciente.",
+      "content": "Usa esta escena para presentar el tono: liturgia pública, documentos imposibles y archivistas que miden cada palabra.",
+      "status": "ready"
+    },
+    "ent_tpl_oracle_scene_council": {
+      "title": "Audiencia del Concilio de la Eclipse",
+      "subtitle": "Presión social y facciones enfrentadas",
+      "summary": "Cada facción ofrece una versión interesada de la verdad mientras el reloj ritual avanza.",
+      "content": "Escena de diálogo. Da a cada facción una demanda simple: controlar el discurso, exponer el fraude o retrasar el ritual.",
+      "status": "ready"
+    },
+    "ent_tpl_oracle_scene_chamber": {
+      "title": "Cámara del Oráculo Sellado",
+      "subtitle": "Final del arco de ejemplo",
+      "summary": "El Oráculo espera bajo el santuario. No responde al futuro: repite hábitos no resueltos.",
+      "content": "Usa esta escena para cerrar con una decisión: revelar la manipulación, reescribir el juramento o destruir el mecanismo.",
+      "status": "draft"
+    },
+    "ent_tpl_oracle_npc_tovan": {
+      "title": "Tovan, archivista menor",
+      "subtitle": "Quiere hacer lo correcto sin hundir a su maestra",
+      "summary": "Joven escriba que vio a Malvus entrar tarde al archivo. Tiene miedo de que culpen a Iria.",
+      "content": "Tovan habla en susurros y recuerda detalles materiales: olor a resina, polvo de crono-sal y una campana que sonó fuera de hora.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_faction_bells": {
+      "title": "Consorcio de Campanas",
+      "subtitle": "Gremio que controla los avisos públicos",
+      "summary": "Quiere retrasar el ritual porque una predicción antigua amenaza su monopolio de señales y calendarios.",
+      "content": "No son villanos directos: prefieren comprar silencio, crear dudas y convertir cualquier revelación en trámite burocrático.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_clue_chronosalt": {
+      "title": "Polvo de crono-sal en el atril",
+      "subtitle": "Pista física",
+      "summary": "El atril del juramento tiene cristales plateados que solo aparecen cuando un documento fue envejecido artificialmente.",
+      "content": "Puede descubrirse con inspección, magia, oficio de escriba o preguntando a Tovan. Apunta a una sustitución reciente.",
+      "status": "ready",
+      "metadata": {
+        "content": "El documento fue envejecido con crono-sal para parecer ceremonialmente antiguo."
+      }
+    },
+    "ent_tpl_oracle_clue_no_echo": {
+      "title": "El juramento sin eco",
+      "subtitle": "Pista ritual",
+      "summary": "Una línea del texto no se repite cuando se recita en la sala de juramentos.",
+      "content": "La línea falsa invierte la obligación de recordar: convierte el ritual en repetición de errores.",
+      "status": "ready",
+      "metadata": {
+        "content": "La línea alterada no pertenece al juramento original y abre el secreto central."
+      }
+    },
+    "ent_tpl_oracle_item_key": {
+      "title": "Llave de los Siete Hábitos",
+      "subtitle": "Objeto ceremonial",
+      "summary": "Llave de bronce con siete muescas que abre la cámara inferior si se gira siguiendo una secuencia de hábitos cotidianos.",
+      "content": "La llave no se fuerza: se activa repitiendo gestos simples de la ciudad — saludar, ceder paso, doblar una página, tocar campana.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_secret_iria_ink": {
+      "title": "Iria ayudó una vez a la Tinta Fracturada",
+      "subtitle": "Secreto social, no traición actual",
+      "summary": "Iria filtró documentos años atrás para proteger a archivistas menores, pero no participa en la sustitución actual.",
+      "content": "Este secreto complica la investigación: descubrirlo demasiado pronto puede hacer que parezca culpable.",
+      "status": "hidden",
+      "metadata": {
+        "truth": "Iria colaboró con la Tinta Fracturada en el pasado, pero ahora intenta evitar que la ciudad se rompa."
+      }
+    },
+    "ent_tpl_oracle_rumor_bells": {
+      "title": "Las campanas sueñan nombres",
+      "subtitle": "Rumor de calle",
+      "summary": "Algunos vecinos dicen que las campanas pronuncian nombres antes de cada eclipse.",
+      "content": "El rumor es una forma popular de hablar del Consorcio: alguien usa los avisos públicos para señalar culpables.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_decision_public_truth": {
+      "title": "¿Revelar el fraude en público o contenerlo?",
+      "subtitle": "Decisión central de campaña",
+      "summary": "El grupo puede exponer la página falsa ante la ciudad o manejar la verdad en privado para evitar disturbios.",
+      "content": "No hay respuesta perfecta. Exponer rápido limpia la mentira pero dispara facciones; contener compra tiempo pero parece encubrimiento.",
+      "status": "open"
+    },
+    "ent_tpl_oracle_consequence_martial_rite": {
+      "title": "El Panteón declara estado ritual",
+      "subtitle": "Consecuencia si la ciudad entra en pánico",
+      "summary": "El Panteón limita reuniones públicas y convierte la investigación en asunto ceremonial cerrado.",
+      "content": "Úsalo si el grupo revela el fraude sin preparar aliados o si Malvus convierte la sospecha en disturbio.",
+      "status": "pending"
+    },
+    "ent_tpl_oracle_handout_edict": {
+      "title": "Edicto de Silencio de Campanas",
+      "subtitle": "Ayuda pública para jugadores",
+      "summary": "Documento que anuncia tres horas sin campanas durante la eclipse. Parece administrativo, pero oculta una maniobra política.",
+      "content": "Texto sugerido: Por orden del Consorcio, toda campana menor callará hasta que el juramento sea leído sin sombra.",
+      "status": "ready"
+    },
+    "ent_tpl_oracle_encounter_masks": {
+      "title": "Procesión de máscaras repetidas",
+      "subtitle": "Encuentro de presión durante la investigación",
+      "summary": "Una procesión cruza la plaza con máscaras idénticas a líderes que cometieron errores históricos.",
+      "content": "No es combate obligatorio. Sirve para mostrar que el Oráculo está filtrando hábitos pasados a la vida pública.",
+      "status": "ready"
+    }
+  },
+  "relations": {
+    "rel_tpl_oracle_city_object": {
+      "description": "El Oráculo está oculto bajo el santuario central."
+    },
+    "rel_tpl_oracle_eclipse_object": {
+      "description": "La última fase de la eclipse despierta el artefacto."
+    },
+    "rel_tpl_oracle_pantheon_city": {
+      "description": "El Panteón conserva el orden ceremonial de Luminara."
+    },
+    "rel_tpl_oracle_ink_pantheon": {
+      "description": "La Tinta Fracturada considera al Panteón una cárcel narrativa."
+    },
+    "rel_tpl_oracle_iria_clue": {
+      "description": "Iria puede guiar al grupo hacia la diferencia de tinta."
+    },
+    "rel_tpl_oracle_malvus_secret": {
+      "description": "Malvus conoce la página sustituida y la protege."
+    },
+    "rel_tpl_oracle_clue_secret": {
+      "description": "La pista no resuelve todo, pero abre la pregunta correcta."
+    },
+    "rel_tpl_oracle_secret_consequence": {
+      "description": "Una revelación mal gestionada dispara el pánico político."
+    },
+    "rel_tpl_oracle_quest_secret": {
+      "description": "Resolver la misión abre el secreto central."
+    },
+    "rel_tpl_oracle_malvus_quest": {
+      "description": "Malvus desvía preguntas y ofrece soluciones cómodas."
+    },
+    "rel_tpl_oracle_tovan_iria": {
+      "description": "Tovan quiere proteger a Iria, pero sus silencios pueden parecer complicidad."
+    },
+    "rel_tpl_oracle_tovan_chronosalt": {
+      "description": "Tovan sabe que el polvo de crono-sal no estaba allí la noche anterior."
+    },
+    "rel_tpl_oracle_noecho_secret": {
+      "description": "El juramento sin eco permite demostrar qué línea fue sustituida."
+    },
+    "rel_tpl_oracle_key_object": {
+      "description": "La llave permite abrir la cámara inferior sin romper los sellos rituales."
+    },
+    "rel_tpl_oracle_bells_rumor": {
+      "description": "El Consorcio alimenta el rumor para dirigir la atención hacia nombres concretos."
+    },
+    "rel_tpl_oracle_bells_council": {
+      "description": "El Consorcio exige aplazar cualquier decisión hasta controlar los avisos públicos."
+    },
+    "rel_tpl_oracle_iria_past_ink": {
+      "description": "Iria oculta su ayuda pasada a la Tinta porque teme que destruya su credibilidad."
+    },
+    "rel_tpl_oracle_decision_consequence": {
+      "description": "Una revelación pública sin aliados empuja al Panteón a cerrar la investigación."
+    },
+    "rel_tpl_oracle_masks_council": {
+      "description": "La procesión convierte el debate político en espectáculo de culpa colectiva."
+    },
+    "rel_tpl_oracle_chamber_object": {
+      "description": "La cámara muestra el Oráculo como una máquina de hábitos, no como una voz divina."
+    },
+    "rel_tpl_oracle_archive_chronosalt": {
+      "description": "La primera escena contiene la pista física más limpia de la sustitución."
+    },
+    "rel_tpl_oracle_handout_bells": {
+      "description": "El edicto permite sospechar del Consorcio sin señalarlo directamente."
+    },
+    "rel_tpl_oracle_bells_object": {
+      "description": "El Consorcio de las Campanas quiere controlar el Oráculo para convertir sus visiones en propaganda pública."
+    },
+    "rel_tpl_oracle_tovan_clue_ink": {
+      "description": "Tovan reconoce la tinta fracturada y puede explicar por qué no pertenece al archivo original."
+    }
+  },
+  "facts": {
+    "fact_tpl_oracle_1": {
+      "statement": "La Triple Eclipse ya ha empezado y quedan tres fases antes del ritual público."
+    },
+    "fact_tpl_oracle_2": {
+      "statement": "El Oráculo no muestra un futuro fijo, sino patrones que la gente insiste en repetir."
+    },
+    "fact_tpl_oracle_3": {
+      "statement": "Malvus necesita que el grupo sospeche de la Tinta Fracturada antes de revisar el ritual."
+    },
+    "fact_tpl_oracle_4": {
+      "statement": "Iria no traicionará al templo salvo que el grupo prometa proteger a los archivistas menores."
+    },
+    "fact_tpl_oracle_5": {
+      "statement": "Si el ritual alterado llega a completarse, los líderes repetirán públicamente sus peores decisiones."
+    },
+    "fact_tpl_oracle_6": {
+      "statement": "La crono-sal solo se usa para envejecer documentos cuando alguien necesita falsificar antigüedad ceremonial."
+    },
+    "fact_tpl_oracle_7": {
+      "statement": "El Consorcio de Campanas no quiere destruir el ritual; quiere que nadie pueda consultarlo sin pasar por sus avisos públicos."
+    },
+    "fact_tpl_oracle_8": {
+      "statement": "Iria colaboró con la Tinta Fracturada años atrás, pero su objetivo fue salvar a archivistas menores, no alterar el Oráculo."
+    },
+    "fact_tpl_oracle_9": {
+      "statement": "La gente de Luminara cree que el Oráculo predice, pero en realidad refleja decisiones repetidas por costumbre."
+    },
+    "fact_tpl_oracle_10": {
+      "statement": "Si el grupo protege a Tovan, Iria aceptará entregar la ruta hacia la cámara inferior."
+    },
+    "fact_tpl_oracle_11": {
+      "statement": "El edicto de silencio de campanas permite al Consorcio controlar cuándo se extiende cada rumor."
+    },
+    "fact_tpl_oracle_12": {
+      "statement": "Destruir el Oráculo evita la manipulación inmediata, pero deja a la ciudad sin una ceremonia que mantenía la paz entre facciones."
+    }
+  },
+  "sessions": {
+    "sess_tpl_oracle_opening": {
+      "title": "Sesión 1 — El archivo bajo la primera sombra",
+      "prep": {
+        "summary": "Presentar Luminara, introducir a Iria y dejar que el grupo descubra que el ritual no está intacto.",
+        "openingPrompt": "La primera sombra cruza el sol cuando las campanas del santuario callan a la vez. Iria os espera en un archivo donde ninguna vela debería estar encendida.",
+        "goals": [
+          "Presentar la ciudad y sus facciones.",
+          "Entregar la pista de la tinta sin resolver el secreto completo.",
+          "Hacer que Malvus parezca útil, no sospechoso."
+        ],
+        "notes": "No empujes a una solución única. La gracia del ejemplo es registrar decisiones y consecuencias.",
+        "checklist": {
+          "chk_oracle_1": {
+            "label": "Mostrar tensión pública sin explicar todavía el complot."
+          },
+          "chk_oracle_2": {
+            "label": "Dar una razón emocional para confiar en Iria."
+          },
+          "chk_oracle_3": {
+            "label": "Cerrar con una pregunta clara: ¿a quién enseñan la página?"
+          }
+        }
+      }
+    },
+    "sess_tpl_oracle_council": {
+      "title": "Sesión 2 — Voces en el Concilio",
+      "prep": {
+        "summary": "Sesión de presión social: cada facción ofrece una versión interesada de la verdad.",
+        "openingPrompt": "El Concilio abre sus puertas. Todos sonríen como si la ciudad no estuviera a punto de repetirse a sí misma.",
+        "goals": [
+          "Forzar elección de aliados.",
+          "Permitir revelar la pista si el grupo preparó pruebas.",
+          "Activar o evitar el pánico."
+        ],
+        "checklist": {
+          "chk_oracle_4": {
+            "label": "Preguntar qué prueba enseñan y a quién."
+          }
+        }
+      }
+    },
+    "sess_tpl_oracle_masks": {
+      "title": "Sesión 3 — La procesión de máscaras repetidas",
+      "prep": {
+        "summary": "El grupo sigue el edicto de campanas, descubre cómo se fabrican los culpables públicos y decide a quién proteger antes de bajar al santuario.",
+        "openingPrompt": "Las campanas callan por primera vez en años. En el silencio, una procesión avanza con máscaras de líderes que aún están vivos.",
+        "goals": [
+          "Mostrar que los rumores ya están cambiando el comportamiento de la ciudad.",
+          "Permitir que Tovan entregue una pieza de verdad si se siente protegido.",
+          "Hacer que el grupo elija entre exponer al Consorcio o conservar su ayuda táctica."
+        ],
+        "checklist": {
+          "oracle_s3_handout": {
+            "label": "Entregar o leer el Edicto de Silencio."
+          },
+          "oracle_s3_tovan": {
+            "label": "Decidir qué sabe Tovan y qué calla por miedo."
+          },
+          "oracle_s3_clock": {
+            "label": "Avanzar el Reloj de la Triple Eclipse si hay exposición pública."
+          }
+        }
+      }
+    },
+    "sess_tpl_oracle_chamber": {
+      "title": "Sesión 4 — La cámara que repite hábitos",
+      "prep": {
+        "summary": "Final del ejemplo: la cámara del Oráculo obliga a resolver qué verdad se hace pública y qué precio paga Luminara por conservar su ritual.",
+        "openingPrompt": "Bajo el santuario, el Oráculo no habla con voz divina. Imita gestos, tonos y errores de quienes lo consultaron antes.",
+        "goals": [
+          "Revelar la naturaleza real del Oráculo.",
+          "Resolver la página sustituida y el papel de Malvus.",
+          "Elegir una consecuencia final para el estado político de Luminara."
+        ],
+        "checklist": {
+          "oracle_s4_choice": {
+            "label": "Preparar tres finales: revelar, contener o destruir."
+          },
+          "oracle_s4_malvus": {
+            "label": "Decidir qué ofrece Malvus para salvarse."
+          },
+          "oracle_s4_epilogue": {
+            "label": "Cerrar con un cambio visible en la ciudad."
+          }
+        }
+      }
+    }
+  },
+  "canvases": {
+    "cvs_tpl_oracle_map": {
+      "title": "Mapa de tensión del Oráculo",
+      "description": "Canvas inicial para entender pistas, secretos y facciones.",
+      "nodes": {
+        "note_tpl_oracle_table": {
+          "title": "Consejo de mesa",
+          "text": "Usa esta campaña para probar el ciclo: pista revelada → secreto en riesgo → consecuencia pendiente."
+        }
+      },
+      "edges": {
+        "edge_tpl_oracle_1": {
+          "label": "puede revelar"
+        },
+        "edge_tpl_oracle_2": {
+          "label": "apunta a"
+        },
+        "edge_tpl_oracle_3": {
+          "label": "oculta"
+        },
+        "edge_tpl_oracle_bells_council": {
+          "label": "quiere controlar"
+        },
+        "edge_tpl_oracle_tovan_clue": {
+          "label": "puede explicar"
+        },
+        "edge_tpl_oracle_decision_object": {
+          "label": "define el final"
+        },
+        "edge_tpl_oracle_chamber_object": {
+          "label": "contiene"
+        }
+      }
+    }
+  },
+  "tags": [
+    "intriga",
+    "facciones",
+    "misterio",
+    "secretos",
+    "consecuencias"
+  ]
+}

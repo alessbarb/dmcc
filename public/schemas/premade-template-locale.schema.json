@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dmcc.local/schemas/premade-template-locale.schema.json",
+  "title": "DMCC Premade Campaign Locale Overlay",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["locale", "templateId", "templateVersion", "translationVersion", "title", "description", "summary"],
+  "properties": {
+    "locale": { "type": "string", "enum": ["en", "es", "fr", "de", "it", "pt"] },
+    "templateId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "templateVersion": { "type": "string" },
+    "translationVersion": { "type": "string" },
+    "translatedFromLocale": { "type": "string" },
+    "title": { "type": "string", "minLength": 1 },
+    "subtitle": { "type": "string" },
+    "description": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "recommendedFor": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "pitch": { "type": "string" },
+    "learningGoals": { "type": "array", "items": { "type": "string" } },
+    "includedMaterial": { "type": "array", "items": { "type": "string" } },
+    "quickStart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "steps"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "steps": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "entities": { "$ref": "#/$defs/idMap" },
+    "relations": { "$ref": "#/$defs/idMap" },
+    "facts": { "$ref": "#/$defs/idMap" },
+    "sessions": { "$ref": "#/$defs/idMap" },
+    "canvases": { "$ref": "#/$defs/idMap" }
+  },
+  "$defs": {
+    "idMap": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  }
+}
