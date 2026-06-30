@@ -89,7 +89,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId);
 
-        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
+        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
 
         const rawEntities = Array.from(state.entities.values());
         const characterEntityId = playerId ? getCharacterEntityIdForPlayer(rawEntities, playerId) : undefined;
@@ -192,7 +192,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId);
 
-        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
+        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
 
         const rawEntities = Array.from(state.entities.values());
         const characterEntityId = playerId ? getCharacterEntityIdForPlayer(rawEntities, playerId) : undefined;

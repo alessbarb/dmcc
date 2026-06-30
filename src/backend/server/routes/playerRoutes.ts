@@ -257,7 +257,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId);
 
-        assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
+        assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
 
         await repo.executeCommand(campaignId, {
           type: "CreatePlayerProfile",
@@ -305,7 +305,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId);
 
-        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
+        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
         const playerId = request.headers["x-player-id"] as string | undefined;
         const players = Array.from(state.players.values()).filter((p: any) => !p.archived);
 
@@ -341,7 +341,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
       const repo = getRepository(vaultId);
       const state = await repo.getCampaignState(campaignId);
 
-      const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
+      const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
 
       if (role !== "dm" && playerId !== headerPlayerId) {
         reply.code(403);
@@ -403,7 +403,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId);
 
-        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
+        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
 
         if (role !== "dm") {
           reply.code(403);

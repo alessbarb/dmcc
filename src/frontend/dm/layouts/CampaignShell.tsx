@@ -6,6 +6,7 @@ import { useToast } from "../../shared/hooks/useToast.js";
 import { EntityCreateModal } from "../entities/EntityCreateModal.js";
 import { RelationCreateModal } from "../entities/RelationCreateModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
+import { logoutDm } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { QuickCaptureFAB } from "../capture/QuickCaptureFAB.js";
 import { useKeyboardShortcuts } from "../../shared/hooks/useKeyboardShortcuts.js";
@@ -30,6 +31,7 @@ import {
   ChevronRight,
   MoreHorizontal,
   X,
+  LogOut,
 } from "lucide-react";
 
 type CampaignNavItem = {
@@ -128,6 +130,12 @@ export function CampaignShell() {
     navigate({ to: "/dm" });
   };
   const navigate = useNavigate();
+
+  const handleSignOutDm = async () => {
+    clearCampaign();
+    await logoutDm();
+    await navigate({ to: "/" });
+  };
   const { toasts, removeToast } = useToast();
   const { t } = useTranslation();
   const routerState = useRouterState();
@@ -318,22 +326,41 @@ export function CampaignShell() {
 
         <div className="sidebar-footer" style={{ padding: sidebarCollapsed ? "12px 8px" : undefined }}>
           {sidebarCollapsed ? (
-            <button
-              className="btn btn-secondary btn-sm"
-              onClick={exitCampaign}
-              title={t("nav.exit")}
-              style={{ width: "100%", padding: "6px", justifyContent: "center" }}
-            >
-              <ArrowLeft size={14} />
-            </button>
-          ) : (
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span>{t("nav.activeCampaign")}</span>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               <button
                 className="btn btn-secondary btn-sm"
                 onClick={exitCampaign}
+                title={t("nav.exit")}
+                style={{ width: "100%", padding: "6px", justifyContent: "center" }}
               >
-                <ArrowLeft size={14} /> {t("nav.exit")}
+                <ArrowLeft size={14} />
+              </button>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={() => void handleSignOutDm()}
+                title={t("nav.signOut")}
+                style={{ width: "100%", padding: "6px", justifyContent: "center" }}
+              >
+                <LogOut size={14} />
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span>{t("nav.activeCampaign")}</span>
+                <button
+                  className="btn btn-secondary btn-sm"
+                  onClick={exitCampaign}
+                >
+                  <ArrowLeft size={14} /> {t("nav.exit")}
+                </button>
+              </div>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={() => void handleSignOutDm()}
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                <LogOut size={14} /> {t("nav.signOut")}
               </button>
             </div>
           )}
@@ -395,7 +422,7 @@ export function CampaignShell() {
               </div>
             </div>
 
-            <div className="campaign-mobile-nav-sheet__footer">
+            <div className="campaign-mobile-nav-sheet__footer" style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
@@ -403,6 +430,14 @@ export function CampaignShell() {
               >
                 <ArrowLeft size={14} />
                 {t("nav.exit")}
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => void handleSignOutDm()}
+              >
+                <LogOut size={14} />
+                {t("nav.signOut")}
               </button>
             </div>
           </section>
@@ -429,7 +464,7 @@ export function CampaignShell() {
           onClick={() => setMobileNavOpen(true)}
         >
           <MoreHorizontal size={19} />
-          <span>Más</span>
+          <span>{t("campaignShell.mobileMore")}</span>
         </button>
       </nav>
 
@@ -479,6 +514,10 @@ export function CampaignShell() {
 
               <button className="btn btn-secondary btn-sm" onClick={() => setIsEntityModalOpen(true)}>
                 <Plus size={14} /> {t("campaignShell.newEntity")}
+              </button>
+
+              <button className="btn btn-secondary btn-sm" onClick={() => void handleSignOutDm()}>
+                <LogOut size={14} /> {t("nav.signOut")}
               </button>
             </div>
           </header>

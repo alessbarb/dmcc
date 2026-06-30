@@ -3,6 +3,7 @@ import type { SessionCreds } from "./authTypes.js";
 const KEYS = {
   dmSessionToken: "dmcc_dmSessionToken",
   activeRole: "dmcc_role",
+  activeDmId: "dmcc_activeDmId",
   activeCampaignId: "dmcc_activeCampaignId",
   playerTokenPrefix: "dmcc_playerToken:",
   // legacy keys — kept for compat during migration
@@ -34,20 +35,25 @@ export function readSessionCreds(): SessionCreds {
   return {
     dmSessionToken: sessionStorage.getItem(KEYS.dmSessionToken) ?? undefined,
     activeRole: (sessionStorage.getItem(KEYS.activeRole) as "dm" | "player" | null) ?? undefined,
+    activeDmId: sessionStorage.getItem(KEYS.activeDmId) ?? undefined,
     activeCampaignId: sessionStorage.getItem(KEYS.activeCampaignId) ?? undefined,
     playerTokens,
   };
 }
 
-export function setDmSessionToken(token: string): void {
+export function setDmSessionToken(token: string, dmId?: string): void {
   sessionStorage.setItem(KEYS.dmSessionToken, token);
   sessionStorage.setItem(KEYS.activeRole, "dm");
+  if (dmId) sessionStorage.setItem(KEYS.activeDmId, dmId);
 }
 
 export function clearDmSessionToken(): void {
+  const activeRole = sessionStorage.getItem(KEYS.activeRole);
   sessionStorage.removeItem(KEYS.dmSessionToken);
-  if (sessionStorage.getItem(KEYS.activeRole) === "dm") {
+  sessionStorage.removeItem(KEYS.activeDmId);
+  if (activeRole === "dm") {
     sessionStorage.removeItem(KEYS.activeRole);
+    sessionStorage.removeItem(KEYS.activeCampaignId);
   }
 }
 

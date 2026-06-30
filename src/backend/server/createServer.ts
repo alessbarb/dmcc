@@ -7,7 +7,8 @@ import { basename, join, dirname, resolve, sep } from "path";
 import { fileURLToPath } from "url";
 import { homedir } from "os";
 import { randomBytes } from "crypto";
-import { isLoopbackRequest } from "./auth.js";
+import { getRequestDmSession, getValidatedCampaignId, getValidatedVaultId } from "./auth.js";
+import { hasCampaignDmAccessSync } from "./campaignAclStore.js";
 import { registerVaultRoutes } from "./routes/vaultRoutes.js";
 import { registerCampaignRoutes } from "./routes/campaignRoutes.js";
 import { registerPlayerRoutes } from "./routes/playerRoutes.js";
@@ -23,6 +24,7 @@ import { registerCanvasRoutes } from "./routes/canvasRoutes.js";
 import { registerPlayerPortalRoutes } from "./routes/playerPortalRoutes.js";
 import { registerHardeningRoutes } from "./routes/hardeningRoutes.js";
 import { registerAuthRoutes } from "./routes/authRoutes.js";
+import { registerPremadeCampaignRoutes } from "./routes/premadeCampaignRoutes.js";
 
 export interface ServerConfig {
   dataDir?: string;
@@ -33,6 +35,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   const dataDir = config?.dataDir ?? join(homedir(), "Documents", "DMCampaignCompanion");
 
   const dmSessionToken = randomBytes(32).toString("hex");
+  // Signing secret for DM session tokens. In tests it is also accepted as a legacy DM token.
   server.decorate("dmSessionToken", dmSessionToken);
 
   // Whether the server is exposed on LAN (0.0.0.0) — set by entry/serverConfig.ts
@@ -171,13 +174,28 @@ export function createServer(config?: ServerConfig): FastifyInstance {
     return { error: "Not found" };
   });
 
-  server.get("/api/auth/local-token", async (request, reply) => {
-    if (!isLoopbackRequest(request)) {
+  server.addHook("preValidation", async (request, reply) => {
+    const pathname = getRequestPath(request.raw.url);
+    const match = pathname.match(/^\/api\/campaigns\/([^/]+)/);
+    if (!match) return;
+
+    const dmSession = getRequestDmSession(request, server.dmSessionToken);
+    if (!dmSession) return;
+
+    const vaultId = getValidatedVaultId(request);
+    const campaignId = getValidatedCampaignId(decodeURIComponent(match[1]));
+    if (!hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmSession.dmId)) {
       reply.code(403);
-      return { error: "Forbidden: Local token is only available on loopback interface" };
+      return reply.send({ error: "Forbidden: You do not have access to this campaign" });
+    }
+  });
+
+  server.get("/api/auth/local-token", async (_request, reply) => {
+    if (process.env.NODE_ENV !== "test") {
+      reply.code(410);
+      return { error: "Local DM token shortcut has been removed. Use DM email + key login." };
     }
     const token = server.dmSessionToken;
-    // Return both keys: legacy `token` for compat + new `dmSessionToken`
     return { token, dmSessionToken: token };
   });
 
@@ -196,6 +214,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerCanvasRoutes, opts);
   server.register(registerPlayerPortalRoutes, opts);
   server.register(registerHardeningRoutes, opts);
+  server.register(registerPremadeCampaignRoutes, opts);
   server.register(registerAuthRoutes, opts);
 
   return server;

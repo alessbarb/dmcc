@@ -12,6 +12,7 @@ import { buildPlayerPortalProjection } from "@core/projections/playerPortalProje
 import {
   assertDM,
   assertCampaignAccess,
+  getRequestDmId,
   getRequestRoleWithTokens,
   getValidatedVaultId,
   getValidatedCampaignId,
@@ -28,6 +29,7 @@ import {
   assertWithinDir,
 } from "../helpers.js";
 import { createCampaignBackup } from "../hardening/backups.js";
+import { copyCampaignAcl, ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
 
 export async function registerCampaignRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -65,6 +67,8 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   server.get("/api/campaigns", async (request, reply) => {
     assertDM(request, server.dmSessionToken);
     const vaultId = getValidatedVaultId(request);
+    const dmId = getRequestDmId(request, server.dmSessionToken);
+    const allowedCampaignIds = dmId ? listCampaignIdsForDmSync(dataDir, vaultId, dmId) : new Set<string>();
     const campaignsDir = join(dataDir, "vaults", vaultId, "campaigns");
     try {
       await fs.mkdir(campaignsDir, { recursive: true });
@@ -72,6 +76,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       const campaigns = [];
       for (const dirName of dirs) {
         if (!dirName.startsWith("cmp_")) continue;
+        if (allowedCampaignIds && !allowedCampaignIds.has(dirName)) continue;
         
         const dirPath = join(campaignsDir, dirName);
         let hasEvents = false;
@@ -136,15 +141,17 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     async (request, reply) => {
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
+      const dmId = getRequestDmId(request, server.dmSessionToken) ?? "usr_dm";
       const campaignId = getValidatedCampaignId(request.body.campaignId);
       const { actorId, title, system } = request.body;
+      const commandActorId = actorId || dmId;
 
       try {
         const repo = getRepository(vaultId);
         await repo.executeCommand(campaignId, {
           type: "CreateCampaign",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: commandActorId,
           title,
           system: system || "generic_fantasy_d20",
           settings: { backupOnClose: true, lanModeEnabled: false, activeQuestsLimit: 5 },
@@ -155,17 +162,58 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         await repo.executeCommand(campaignId, {
           type: "CreateCanvas",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: commandActorId,
           canvasId,
           title: "Campaña",
           kind: "world",
         });
+
+        await ensureCampaignOwner(dataDir, vaultId, campaignId, dmId);
 
         reply.code(201);
         return { campaignId, title };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
+      }
+    }
+  );
+
+  // Update Campaign Basics
+  server.patch<{ Params: { campaignId: string }; Body: Partial<{ title: string; summary: string; system: string; status: string; metadata: Record<string, unknown> }> }>(
+    "/api/campaigns/:campaignId",
+    async (request, reply) => {
+      assertDM(request, server.dmSessionToken);
+      const vaultId = getValidatedVaultId(request);
+      const dmId = getRequestDmId(request, server.dmSessionToken) ?? "usr_dm";
+      const campaignId = getValidatedCampaignId(request.params.campaignId);
+
+      const title = typeof request.body?.title === "string" ? request.body.title.trim() : undefined;
+      if (request.body?.title !== undefined && !title) {
+        reply.code(400);
+        return { error: "Campaign title is required" };
+      }
+
+      try {
+        await getRepository(vaultId).executeCommand(campaignId, {
+          type: "UpdateCampaign",
+          campaignId,
+          actorId: dmId,
+          ...(title !== undefined && { title }),
+          ...(request.body?.summary !== undefined && { summary: request.body.summary }),
+          ...(request.body?.system !== undefined && { system: request.body.system }),
+          ...(request.body?.status !== undefined && { status: request.body.status }),
+          ...(request.body?.metadata !== undefined && { metadata: request.body.metadata }),
+        });
+        const state = await getRepository(vaultId).getCampaignState(campaignId);
+        return { ok: true, campaign: state.campaign };
+      } catch (err: any) {
+        if (err.statusCode === 401 || err.statusCode === 403) {
+          reply.code(err.statusCode);
+          return { error: err.message };
+        }
+        reply.code(500);
+        return { error: `Failed to update campaign: ${err.message}` };
       }
     }
   );
@@ -217,6 +265,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         assertWithinDir(deletedPath, deletedDir);
         await fs.rename(campaignDir, deletedPath);
         server.activeAccessCodes.delete(campaignId);
+        await removeCampaignAcl(dataDir, vaultId, campaignId);
 
         return { ok: true, campaignId, deletedPath, autoBackup };
       } catch (err: any) {
@@ -246,7 +295,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           request,
           server.dmSessionToken,
           server.playerTokens,
-          campaignId
+          campaignId,
+          dataDir,
+          vaultId
         );
 
         // If authenticated via player token, derive playerId from token session
@@ -271,7 +322,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           if (playerToken) {
             throw Object.assign(new Error("Unauthorized: Invalid player token"), { statusCode: 401 });
           }
-          role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken) as "dm" | "player" | "observer";
+          role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId) as "dm" | "player" | "observer";
         }
 
         if (role === "player" && !state.campaign?.settings?.lanModeEnabled) {
@@ -317,6 +368,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     async (request, reply) => {
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
+      const dmId = getRequestDmId(request, server.dmSessionToken) ?? "usr_dm";
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { newTitle } = request.body;
 
@@ -334,8 +386,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           sourceCampaignId: campaignId as CampaignId,
           newCampaignId: newCampaignId as CampaignId,
           newTitle,
-          actorId: "usr_dm",
+          actorId: dmId,
         });
+        await copyCampaignAcl(dataDir, vaultId, campaignId, newCampaignId, dmId);
         reply.code(201);
         return { campaignId: newCampaignId, title: newTitle };
       } catch (err: any) {

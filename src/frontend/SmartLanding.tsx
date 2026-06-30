@@ -1,7 +1,7 @@
 import React, { useEffect, useState, type KeyboardEvent } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Shield, Sword, type LucideIcon } from "lucide-react";
-import { fetchAuthStatus, lockDm } from "./shared/auth/authClient.js";
+import { fetchAuthStatus, logoutDm } from "./shared/auth/authClient.js";
 import { readIdentity } from "./shared/auth/localIdentity.js";
 import { getDmSessionToken } from "./shared/auth/sessionCreds.js";
 import type { AuthStatus } from "./shared/auth/authTypes.js";
@@ -49,10 +49,8 @@ export function SmartLanding() {
   const handleDmNavigate = () => {
     if (hasDm) {
       navigate({ to: "/dm" });
-    } else if (status?.dmPinConfigured) {
+    } else if (status?.dmAccountConfigured || status?.dmPinConfigured) {
       navigate({ to: "/dm/unlock" });
-    } else if (status?.localRequest) {
-      navigate({ to: "/dm" });
     } else {
       navigate({ to: "/dm/setup" });
     }
@@ -60,12 +58,12 @@ export function SmartLanding() {
 
   const dmCtaLabel = hasDm
     ? t("landing.dmCtaOpen")
-    : status?.dmPinConfigured
+    : status?.dmAccountConfigured || status?.dmPinConfigured
       ? t("landing.dmCtaUnlock")
       : t("landing.dmCtaSetup");
 
   const handleDmSignOut = async () => {
-    await lockDm();
+    await logoutDm();
     setHasDmSession(false);
   };
 

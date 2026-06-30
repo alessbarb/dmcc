@@ -1,4 +1,4 @@
-import type { LocalIdentity, PlayerProfileEntry } from "./authTypes.js";
+import type { DmProfileEntry, LocalIdentity, PlayerProfileEntry } from "./authTypes.js";
 
 const STORAGE_KEY = "dmcc_identity";
 const CURRENT_VERSION = 1;
@@ -8,6 +8,7 @@ function defaultIdentity(): LocalIdentity {
     version: 1,
     serverOrigin: window.location.origin,
     vaultId: "default",
+    dmProfiles: [],
     playerProfiles: [],
   };
 }
@@ -18,7 +19,12 @@ export function readIdentity(): LocalIdentity {
     if (!raw) return defaultIdentity();
     const parsed = JSON.parse(raw);
     if (parsed.version !== CURRENT_VERSION) return defaultIdentity();
-    return parsed as LocalIdentity;
+    return {
+      ...defaultIdentity(),
+      ...parsed,
+      dmProfiles: Array.isArray(parsed.dmProfiles) ? parsed.dmProfiles : [],
+      playerProfiles: Array.isArray(parsed.playerProfiles) ? parsed.playerProfiles : [],
+    } as LocalIdentity;
   } catch {
     return defaultIdentity();
   }
@@ -26,6 +32,16 @@ export function readIdentity(): LocalIdentity {
 
 function writeIdentity(identity: LocalIdentity): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(identity));
+}
+
+export function upsertDmProfile(profile: Omit<DmProfileEntry, "lastAccessed"> & { lastAccessed?: string }): void {
+  const identity = readIdentity();
+  const withAccessed = { ...profile, lastAccessed: profile.lastAccessed ?? new Date().toISOString() };
+  const existing = identity.dmProfiles.findIndex((item) => item.dmId === profile.dmId);
+  const dmProfiles = existing >= 0
+    ? identity.dmProfiles.map((item, index) => (index === existing ? { ...item, ...withAccessed } : item))
+    : [...identity.dmProfiles, withAccessed];
+  writeIdentity({ ...identity, dmProfiles });
 }
 
 export function setDmPinStatus(pinSet: boolean): void {

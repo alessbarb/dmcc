@@ -1,72 +1,68 @@
 import type { FastifyInstance } from "fastify";
-import { readFile, writeFile, mkdir, readdir } from "fs/promises";
+import { readdir } from "fs/promises";
 import { join } from "path";
 import { randomBytes } from "crypto";
-import { hashPin, verifyPin, isLoopbackRequest, hashAccessCode, hashPlayerToken, generatePlayerToken, getValidatedVaultId } from "../auth.js";
+import {
+  assertDM,
+  createDmSessionToken,
+  getRequestDmSession,
+  getValidatedVaultId,
+  hashAccessCode,
+  hashPlayerToken,
+  generatePlayerToken,
+  isLoopbackRequest,
+  verifySecret,
+} from "../auth.js";
+import {
+  createDmAccount,
+  findDmAccountByEmail,
+  readDmAuthStore,
+  toPublicDmProfile,
+  updateDmLastLogin,
+} from "../dmAuthStore.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
 
-interface AuthConfig {
-  dmPinEnabled: boolean;
-  dmPinHash: string;
-  dmPinSalt: string;
-  pinHashAlgorithm: "scrypt";
-  createdAt: string;
-}
-
-interface PinAttemptState {
+interface DmAttemptState {
   count: number;
-  lockedUntil: number;     // epoch ms, 0 = not locked
+  lockedUntil: number;
   lastAttemptAt: number;
 }
 
 const MAX_ATTEMPTS = 5;
-const LOCKOUT_1 = 30_000;   // 30s after 5 failures
-const LOCKOUT_2 = 120_000;  // 2min if they keep trying
-
-async function readAuthConfig(vaultDir: string): Promise<AuthConfig | null> {
-  try {
-    const raw = await readFile(join(vaultDir, "auth.json"), "utf-8");
-    return JSON.parse(raw) as AuthConfig;
-  } catch {
-    return null;
-  }
-}
-
-async function writeAuthConfig(vaultDir: string, config: AuthConfig): Promise<void> {
-  await mkdir(vaultDir, { recursive: true });
-  await writeFile(join(vaultDir, "auth.json"), JSON.stringify(config, null, 2), "utf-8");
-}
+const LOCKOUT_1 = 30_000;
+const LOCKOUT_2 = 120_000;
 
 export async function registerAuthRoutes(
   server: FastifyInstance,
   options: { dataDir: string }
 ): Promise<void> {
   const { dataDir } = options;
-  // Per-vault PIN attempt tracking (in-memory, resets on server restart)
-  const pinAttempts = new Map<string, PinAttemptState>();
+  const dmAttempts = new Map<string, DmAttemptState>();
 
   function getVaultDir(vaultId: string): string {
     return join(dataDir, "vaults", vaultId);
   }
 
-  function getAttemptState(vaultId: string): PinAttemptState {
-    return pinAttempts.get(vaultId) ?? { count: 0, lockedUntil: 0, lastAttemptAt: 0 };
+  function attemptKey(vaultId: string, email: string): string {
+    return `${vaultId}:${email.trim().toLowerCase()}`;
   }
 
-  function checkRateLimit(vaultId: string): { blocked: boolean; retryAfterMs: number } {
-    const state = getAttemptState(vaultId);
+  function getAttemptState(key: string): DmAttemptState {
+    return dmAttempts.get(key) ?? { count: 0, lockedUntil: 0, lastAttemptAt: 0 };
+  }
+
+  function checkRateLimit(key: string): { blocked: boolean; retryAfterMs: number } {
+    const state = getAttemptState(key);
     const now = Date.now();
-    if (state.lockedUntil > now) {
-      return { blocked: true, retryAfterMs: state.lockedUntil - now };
-    }
+    if (state.lockedUntil > now) return { blocked: true, retryAfterMs: state.lockedUntil - now };
     return { blocked: false, retryAfterMs: 0 };
   }
 
-  function recordFailedAttempt(vaultId: string): void {
-    const state = getAttemptState(vaultId);
+  function recordFailedAttempt(key: string): void {
+    const state = getAttemptState(key);
     const now = Date.now();
     const newCount = state.count + 1;
     let lockedUntil = 0;
@@ -74,110 +70,144 @@ export async function registerAuthRoutes(
       const alreadyLocked = state.lockedUntil > 0;
       lockedUntil = now + (alreadyLocked ? LOCKOUT_2 : LOCKOUT_1);
     }
-    pinAttempts.set(vaultId, { count: newCount, lockedUntil, lastAttemptAt: now });
+    dmAttempts.set(key, { count: newCount, lockedUntil, lastAttemptAt: now });
   }
 
-  function clearAttempts(vaultId: string): void {
-    pinAttempts.delete(vaultId);
+  function clearAttempts(key: string): void {
+    dmAttempts.delete(key);
   }
 
-  // GET /api/auth/status
   server.get("/api/auth/status", async (request) => {
     const vaultId = getValidatedVaultId(request);
     const vaultDir = getVaultDir(vaultId);
-    const authConfig = await readAuthConfig(vaultDir);
+    const store = await readDmAuthStore(vaultDir);
+    const dmSession = getRequestDmSession(request, server.dmSessionToken);
+    const dmSessionValid = Boolean(dmSession && dmSession.vaultId === vaultId);
+    const activeProfiles = store.dmAccounts.filter((account) => !account.archivedAt).map(toPublicDmProfile);
 
-    const dmPinConfigured = authConfig?.dmPinEnabled ?? false;
-
-    const dmToken = request.headers["x-dm-token"] as string | undefined;
-    const dmSessionValid = Boolean(dmToken && dmToken === server.dmSessionToken);
-
-    const localRequest = isLoopbackRequest(request);
-    const lanExposed = server.lanExposed ?? false;
-
-    return { dmPinConfigured, dmSessionValid, localRequest, lanExposed };
+    return {
+      dmAccountConfigured: activeProfiles.length > 0,
+      dmPinConfigured: activeProfiles.length > 0,
+      legacyPinConfigured: Boolean(store.legacyPinConfigured),
+      dmSessionValid,
+      dm: dmSessionValid && dmSession
+        ? {
+            dmId: dmSession.dmId,
+            email: dmSession.email,
+            displayName: dmSession.displayName,
+          }
+        : null,
+      // Do not expose local DM account emails/names to unauthenticated LAN callers.
+      // The login screen already remembers known local profiles in localStorage.
+      dmProfiles: dmSessionValid ? activeProfiles : [],
+      localRequest: isLoopbackRequest(request),
+      lanExposed: server.lanExposed ?? false,
+    };
   });
 
-  // POST /api/auth/setup-pin
-  server.post<{ Body: { pin: string } }>(
-    "/api/auth/setup-pin",
+  server.post<{ Body: { email: string; secret: string; displayName?: string } }>(
+    "/api/auth/dm/setup",
     async (request, reply) => {
-      const dmToken = request.headers["x-dm-token"] as string | undefined;
-      const isLocal = isLoopbackRequest(request);
-      // Must be either local request OR have a valid DM token to set up PIN
-      if (!isLocal && dmToken !== server.dmSessionToken) {
-        reply.code(403);
-        return { error: "Forbidden" };
-      }
-
-      const { pin } = request.body;
-      if (!pin || pin.length < 4 || pin.length > 64) {
-        reply.code(400);
-        return { error: "PIN must be 4–64 characters" };
-      }
-
       const vaultId = getValidatedVaultId(request);
-      const vaultDir = getVaultDir(vaultId);
-      const { hash, salt } = await hashPin(pin);
-
-      await writeAuthConfig(vaultDir, {
-        dmPinEnabled: true,
-        dmPinHash: hash,
-        dmPinSalt: salt,
-        pinHashAlgorithm: "scrypt",
-        createdAt: new Date().toISOString(),
-      });
-
-      return { ok: true };
+      // DM accounts are self-service. Creating another DM does not grant access
+      // to existing campaigns; ACL ownership keeps every DM isolated unless
+      // campaigns are explicitly shared later.
+      try {
+        const { account, firstAccount } = await createDmAccount({
+          dataDir,
+          vaultId,
+          email: request.body.email,
+          secret: request.body.secret,
+          displayName: request.body.displayName,
+        });
+        const dmSessionToken = createDmSessionToken(
+          {
+            dmId: account.dmId,
+            vaultId,
+            email: account.emailNormalized,
+            displayName: account.displayName,
+          },
+          server.dmSessionToken
+        );
+        return { ok: true, dmSessionToken, dm: toPublicDmProfile(account), firstAccount };
+      } catch (err: any) {
+        reply.code(err.statusCode ?? 500);
+        return { error: err.message ?? "Failed to create DM account" };
+      }
     }
   );
 
-  // POST /api/auth/unlock
-  server.post<{ Body: { pin: string } }>(
-    "/api/auth/unlock",
+  server.post<{ Body: { email: string; secret: string } }>(
+    "/api/auth/dm/login",
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
       const vaultDir = getVaultDir(vaultId);
+      const email = request.body.email?.trim().toLowerCase() ?? "";
+      const key = attemptKey(vaultId, email);
 
-      const { blocked, retryAfterMs } = checkRateLimit(vaultId);
+      const { blocked, retryAfterMs } = checkRateLimit(key);
       if (blocked) {
         reply.code(429);
         return { error: "Too many attempts", retryAfterMs };
       }
 
-      const authConfig = await readAuthConfig(vaultDir);
-      if (!authConfig?.dmPinEnabled) {
-        reply.code(400);
-        return { error: "PIN not configured" };
-      }
-
-      const { pin } = request.body;
-      const valid = await verifyPin(pin, authConfig.dmPinSalt, authConfig.dmPinHash);
-      if (!valid) {
-        recordFailedAttempt(vaultId);
+      const account = await findDmAccountByEmail(vaultDir, email);
+      if (!account) {
+        recordFailedAttempt(key);
         reply.code(401);
-        return { error: "Incorrect PIN" };
+        return { error: "Invalid email or key" };
       }
 
-      clearAttempts(vaultId);
-      return { dmSessionToken: server.dmSessionToken };
+      const valid = await verifySecret(request.body.secret ?? "", account.secretSalt, account.secretHash);
+      if (!valid) {
+        recordFailedAttempt(key);
+        reply.code(401);
+        return { error: "Invalid email or key" };
+      }
+
+      clearAttempts(key);
+      const updatedAccount = await updateDmLastLogin(vaultDir, account.dmId);
+      const currentAccount = updatedAccount ?? account;
+      const dmSessionToken = createDmSessionToken(
+        {
+          dmId: currentAccount.dmId,
+          vaultId,
+          email: currentAccount.emailNormalized,
+          displayName: currentAccount.displayName,
+        },
+        server.dmSessionToken
+      );
+
+      return { dmSessionToken, dm: toPublicDmProfile(currentAccount) };
     }
   );
 
-  // POST /api/auth/lock
-  server.post(
-    "/api/auth/lock",
-    async (request, reply) => {
-      const dmToken = request.headers["x-dm-token"] as string | undefined;
-      if (!dmToken || dmToken !== server.dmSessionToken) {
-        reply.code(403);
-        return { error: "Forbidden" };
-      }
-      // Rotate the DM session token so existing sessions are invalidated
+  server.post("/api/auth/dm/logout", async () => {
+    // DM sessions are signed, process-local tokens. The client drops the token;
+    // server restart or /lock rotates the signing secret and invalidates them.
+    return { ok: true };
+  });
+
+  server.post("/api/auth/lock", async (request, reply) => {
+    try {
+      assertDM(request, server.dmSessionToken);
       server.dmSessionToken = randomBytes(32).toString("hex");
       return { ok: true };
+    } catch {
+      reply.code(403);
+      return { error: "Forbidden" };
     }
-  );
+  });
+
+  server.post("/api/auth/setup-pin", async (_request, reply) => {
+    reply.code(410);
+    return { error: "PIN setup has been replaced by DM email + key setup" };
+  });
+
+  server.post("/api/auth/unlock", async (_request, reply) => {
+    reply.code(410);
+    return { error: "PIN unlock has been replaced by DM email + key login" };
+  });
 
   // POST /api/auth/player-logout — invalidate a player token server-side
   server.post(

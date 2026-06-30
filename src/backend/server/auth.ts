@@ -1,21 +1,82 @@
-import { createHash, randomBytes, randomInt, scrypt, timingSafeEqual } from "crypto";
+import { createHash, createHmac, randomBytes, randomInt, scrypt, timingSafeEqual } from "crypto";
 import { promisify } from "util";
+import { hasCampaignDmAccessSync } from "./campaignAclStore.js";
 
 const scryptAsync = promisify(scrypt);
 
-export async function hashPin(pin: string): Promise<{ hash: string; salt: string }> {
+export async function hashSecret(secret: string): Promise<{ hash: string; salt: string }> {
   const salt = randomBytes(16).toString("hex");
-  const derived = (await scryptAsync(pin, salt, 64)) as Buffer;
+  const derived = (await scryptAsync(secret, salt, 64)) as Buffer;
   return { hash: derived.toString("hex"), salt };
 }
 
-export async function verifyPin(pin: string, salt: string, expectedHash: string): Promise<boolean> {
+export async function verifySecret(secret: string, salt: string, expectedHash: string): Promise<boolean> {
   try {
-    const derived = (await scryptAsync(pin, salt, 64)) as Buffer;
+    const derived = (await scryptAsync(secret, salt, 64)) as Buffer;
     const expected = Buffer.from(expectedHash, "hex");
+    if (derived.length !== expected.length) return false;
     return timingSafeEqual(derived, expected);
   } catch {
     return false;
+  }
+}
+
+// Legacy names retained while older modules/tests are migrated.
+export const hashPin = hashSecret;
+export const verifyPin = verifySecret;
+
+export interface DmSessionPayload {
+  dmId: string;
+  vaultId: string;
+  email?: string;
+  displayName?: string;
+  issuedAt: string;
+}
+
+function base64UrlEncode(value: string): string {
+  return Buffer.from(value, "utf-8").toString("base64url");
+}
+
+function base64UrlDecode(value: string): string {
+  return Buffer.from(value, "base64url").toString("utf-8");
+}
+
+function signPayload(payload: string, secret: string): string {
+  return createHmac("sha256", secret).update(payload).digest("base64url");
+}
+
+export function createDmSessionToken(payload: Omit<DmSessionPayload, "issuedAt">, secret: string): string {
+  const encoded = base64UrlEncode(JSON.stringify({ ...payload, issuedAt: new Date().toISOString() }));
+  const signature = signPayload(encoded, secret);
+  return `dmst_${encoded}.${signature}`;
+}
+
+export function verifyDmSessionToken(token: string | undefined, secret: string): DmSessionPayload | null {
+  if (!token) return null;
+
+  // Existing tests use server.dmSessionToken directly. Keep that bypass isolated to NODE_ENV=test.
+  if (process.env.NODE_ENV === "test" && token === secret) {
+    return { dmId: "usr_dm", vaultId: "default", issuedAt: new Date(0).toISOString() };
+  }
+
+  if (!token.startsWith("dmst_")) return null;
+  const unsigned = token.slice("dmst_".length);
+  const [encoded, signature] = unsigned.split(".");
+  if (!encoded || !signature) return null;
+
+  const expectedSignature = signPayload(encoded, secret);
+  const provided = Buffer.from(signature, "base64url");
+  const expected = Buffer.from(expectedSignature, "base64url");
+  if (provided.length !== expected.length || !timingSafeEqual(provided, expected)) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(base64UrlDecode(encoded)) as Partial<DmSessionPayload>;
+    if (!parsed.dmId || !parsed.vaultId || !parsed.issuedAt) return null;
+    return parsed as DmSessionPayload;
+  } catch {
+    return null;
   }
 }
 
@@ -36,20 +97,24 @@ export function generatePlayerToken(): string {
   return token;
 }
 
-export function getRequestRole(request: any, dmSessionToken: string): "dm" | "player" | "observer" | "unauthenticated" {
-  const roleHeader = request.headers["x-role"];
-  const dmTokenHeader = request.headers["x-dm-token"];
+export function getRequestDmSession(request: any, dmSessionSecret: string): DmSessionPayload | null {
+  const dmTokenHeader = request.headers["x-dm-token"] as string | undefined;
+  const session = verifyDmSessionToken(dmTokenHeader, dmSessionSecret);
+  if (session) return session;
 
-  if (process.env.NODE_ENV === "test") {
-    if (dmTokenHeader && dmTokenHeader === dmSessionToken) return "dm";
-    if (roleHeader === "dm") return "dm";
-    return "unauthenticated";
+  if (process.env.NODE_ENV === "test" && request.headers["x-role"] === "dm") {
+    return { dmId: "usr_dm", vaultId: getValidatedVaultId(request), issuedAt: new Date(0).toISOString() };
   }
 
-  if (dmTokenHeader === dmSessionToken) {
-    return "dm";
-  }
+  return null;
+}
 
+export function getRequestDmId(request: any, dmSessionSecret: string): string | null {
+  return getRequestDmSession(request, dmSessionSecret)?.dmId ?? null;
+}
+
+export function getRequestRole(request: any, dmSessionSecret: string): "dm" | "player" | "observer" | "unauthenticated" {
+  if (getRequestDmSession(request, dmSessionSecret)) return "dm";
   return "unauthenticated";
 }
 
@@ -58,8 +123,8 @@ export function isLoopbackRequest(request: any): boolean {
   return ip === "127.0.0.1" || ip === "::1" || ip === "localhost" || ip === "::ffff:127.0.0.1";
 }
 
-export function assertDM(request: any, dmSessionToken: string): void {
-  const role = getRequestRole(request, dmSessionToken);
+export function assertDM(request: any, dmSessionSecret: string): void {
+  const role = getRequestRole(request, dmSessionSecret);
   if (role !== "dm") {
     const err = new Error("Forbidden: DM access required");
     (err as any).statusCode = 403;
@@ -67,9 +132,42 @@ export function assertDM(request: any, dmSessionToken: string): void {
   }
 }
 
-export function assertCampaignAccess(request: any, state: any, campaignId: string, dmSessionToken: string): string {
-  const role = getRequestRole(request, dmSessionToken);
+export function assertDmCampaignAccess(
+  request: any,
+  dmSessionSecret: string,
+  dataDir: string,
+  vaultId: string,
+  campaignId: string
+): string {
+  const dmSession = getRequestDmSession(request, dmSessionSecret);
+  if (!dmSession) {
+    const err = new Error("Forbidden: DM access required");
+    (err as any).statusCode = 403;
+    throw err;
+  }
+
+  if (!hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmSession.dmId)) {
+    const err = new Error("Forbidden: You do not have access to this campaign");
+    (err as any).statusCode = 403;
+    throw err;
+  }
+
+  return dmSession.dmId;
+}
+
+export function assertCampaignAccess(
+  request: any,
+  state: any,
+  campaignId: string,
+  dmSessionSecret: string,
+  dataDir?: string,
+  vaultId?: string
+): string {
+  const role = getRequestRole(request, dmSessionSecret);
   if (role === "dm") {
+    if (dataDir && vaultId) {
+      assertDmCampaignAccess(request, dmSessionSecret, dataDir, vaultId, campaignId);
+    }
     return "dm";
   }
 
@@ -103,20 +201,18 @@ export function assertCampaignAccess(request: any, state: any, campaignId: strin
 
 export function getRequestRoleWithTokens(
   request: any,
-  dmSessionToken: string,
+  dmSessionSecret: string,
   playerTokens: Map<string, { campaignId: string; playerId: string }>,
-  campaignId: string
+  campaignId: string,
+  dataDir?: string,
+  vaultId?: string
 ): "dm" | "player" | "observer" | "unauthenticated" {
-  // DM token is checked first
-  const dmTokenHeader = request.headers["x-dm-token"];
-  if (dmTokenHeader && dmTokenHeader === dmSessionToken) {
+  const dmSession = getRequestDmSession(request, dmSessionSecret);
+  if (dmSession) {
+    if (dataDir && vaultId && !hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmSession.dmId)) {
+      return "unauthenticated";
+    }
     return "dm";
-  }
-
-  // Test mode bypass for DM role only
-  if (process.env.NODE_ENV === "test") {
-    const roleHeader = request.headers["x-role"];
-    if (roleHeader === "dm") return "dm";
   }
 
   // Player must present a valid player token — x-role header is not a credential
@@ -148,4 +244,3 @@ export function getValidatedCampaignId(campaignId: string): string {
   }
   return campaignId;
 }
-

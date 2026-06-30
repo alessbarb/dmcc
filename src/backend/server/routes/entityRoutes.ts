@@ -83,7 +83,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
         return { error: "Campaign not found" };
       }
 
-      const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
+      const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
 
       if (role !== "dm") {
         if (!playerId) {
@@ -152,7 +152,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
         return { error: "Entity not found" };
       }
 
-      const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
+      const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
 
       if (role !== "dm") {
         const rawEntities = Array.from(state.entities.values());
@@ -229,7 +229,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
           return { error: "Entity not found" };
         }
 
-        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken);
+        const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
 
         if (role !== "dm") {
           const isPlayerNote = existing.entityType === "note"
