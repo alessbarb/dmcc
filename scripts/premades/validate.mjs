@@ -67,6 +67,7 @@ function validateTemplateReferences(template, templateLabel, errors) {
   const facts = requireArray(template.facts, `${templateLabel}.facts`, errors);
   const sessions = requireArray(template.sessions, `${templateLabel}.sessions`, errors);
   const canvases = requireArray(template.canvases, `${templateLabel}.canvases`, errors);
+  const sessionChecklistIds = new Map();
 
   const entityIds = addDuplicateErrors(entities, (entity) => typeof entity?.entityId === "string" ? entity.entityId : "", `${templateLabel}.entities`, errors);
   const relationIds = addDuplicateErrors(relations, (relation) => typeof relation?.relationId === "string" ? relation.relationId : "", `${templateLabel}.relations`, errors);
@@ -103,6 +104,18 @@ function validateTemplateReferences(template, templateLabel, errors) {
         if (!entityIds.has(entityId)) errors.push(`${templateLabel}.sessions[${sessionId}].prep.${key} references missing entity ${entityId}`);
       }
     }
+
+    const checklist = requireArray(prep.checklist ?? [], `${templateLabel}.sessions[${sessionId || "?"}].prep.checklist`, errors);
+    const checklistIds = addDuplicateErrors(
+      checklist,
+      (item) => typeof item?.id === "string" ? item.id : "",
+      `${templateLabel}.sessions[${sessionId}].prep.checklist`,
+      errors,
+    );
+    for (const item of checklist) {
+      requireString(item?.id, `${templateLabel}.sessions[${sessionId || "?"}].prep.checklist[].id`, errors);
+    }
+    if (sessionId) sessionChecklistIds.set(sessionId, checklistIds);
   }
 
   for (const entityId of Array.isArray(template.highlightEntityIds) ? template.highlightEntityIds : []) {
@@ -136,7 +149,61 @@ function validateTemplateReferences(template, templateLabel, errors) {
     }
   }
 
-  return { entityIds, relationIds, factIds, sessionIds: new Set(sessions.map((s) => s.sessionId).filter(Boolean)), canvasIds: new Set(canvases.map((c) => c.canvasId).filter(Boolean)) };
+  return {
+    entityIds,
+    relationIds,
+    factIds,
+    sessionIds: new Set(sessions.map((s) => s.sessionId).filter(Boolean)),
+    canvasIds: new Set(canvases.map((c) => c.canvasId).filter(Boolean)),
+    sessionChecklistIds,
+  };
+}
+
+function validateLocaleSessionChecklist(overlaySession, templateChecklistIds, label, errors) {
+  if (!isRecord(overlaySession)) {
+    errors.push(`${label} must be an object`);
+    return;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(overlaySession, "checklist")) {
+    errors.push(`${label}.checklist must be nested under prep.checklist`);
+  }
+
+  const overlayPrep = overlaySession.prep;
+  if (overlayPrep !== undefined && !isRecord(overlayPrep)) {
+    errors.push(`${label}.prep must be an object`);
+    return;
+  }
+
+  if (templateChecklistIds.size === 0) {
+    return;
+  }
+
+  const checklist = isRecord(overlayPrep) ? overlayPrep.checklist : undefined;
+  if (!isRecord(checklist)) {
+    errors.push(`${label}.prep.checklist must be an object keyed by template checklist item id`);
+    return;
+  }
+
+  for (const checklistId of Object.keys(checklist)) {
+    if (!templateChecklistIds.has(checklistId)) {
+      errors.push(`${label}.prep.checklist references missing checklist item ${checklistId}`);
+      continue;
+    }
+
+    const checklistItem = checklist[checklistId];
+    if (!isRecord(checklistItem)) {
+      errors.push(`${label}.prep.checklist.${checklistId} must be an object`);
+      continue;
+    }
+    requireString(checklistItem.label, `${label}.prep.checklist.${checklistId}.label`, errors);
+  }
+
+  for (const checklistId of templateChecklistIds) {
+    if (!Object.prototype.hasOwnProperty.call(checklist, checklistId)) {
+      errors.push(`${label}.prep.checklist is missing template checklist item ${checklistId}`);
+    }
+  }
 }
 
 function validateLocaleOverlay(locale, overlay, ids, label, errors) {
@@ -152,7 +219,13 @@ function validateLocaleOverlay(locale, overlay, ids, label, errors) {
     for (const id of Object.keys(overlay.facts)) if (!ids.factIds.has(id)) errors.push(`${label}.facts references missing fact ${id}`);
   }
   if (overlay.sessions && isRecord(overlay.sessions)) {
-    for (const id of Object.keys(overlay.sessions)) if (!ids.sessionIds.has(id)) errors.push(`${label}.sessions references missing session ${id}`);
+    for (const [id, session] of Object.entries(overlay.sessions)) {
+      if (!ids.sessionIds.has(id)) {
+        errors.push(`${label}.sessions references missing session ${id}`);
+        continue;
+      }
+      validateLocaleSessionChecklist(session, ids.sessionChecklistIds.get(id) ?? new Set(), `${label}.sessions[${id}]`, errors);
+    }
   }
   if (overlay.canvases && isRecord(overlay.canvases)) {
     for (const id of Object.keys(overlay.canvases)) if (!ids.canvasIds.has(id)) errors.push(`${label}.canvases references missing canvas ${id}`);

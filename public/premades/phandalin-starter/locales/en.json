@@ -351,91 +351,101 @@
   "sessions": {
     "sess_tpl_phandalin_road": {
       "title": "Session 1 — The Triboar Trail ambush",
-      "summary": "Direct opening: attack, trail, rescue and first emotional link to Gundren’s disappearance.",
-      "openingPrompt": "The road narrows between trees. Two horses block the path. They do not neigh. They do not move. And the arrows are already ready.",
-      "goals": [
-        "Teach the family-adventure tone.",
-        "Reveal that Gundren is in danger.",
-        "Offer a clear decision: follow the trail or protect the cargo."
-      ],
-      "checklist": {
-        "chk_ph_1": {
-          "label": "Show the horses before the attack."
-        },
-        "chk_ph_2": {
-          "label": "Give the group a visible clue toward the hideout."
+      "prep": {
+        "summary": "Direct opening: attack, trail, rescue and first emotional link to Gundren’s disappearance.",
+        "openingPrompt": "The road narrows between trees. Two horses block the path. They do not neigh. They do not move. And the arrows are already ready.",
+        "goals": [
+          "Teach the family-adventure tone.",
+          "Reveal that Gundren is in danger.",
+          "Offer a clear decision: follow the trail or protect the cargo."
+        ],
+        "checklist": {
+          "chk_ph_1": {
+            "label": "Show the horses before the attack."
+          },
+          "chk_ph_2": {
+            "label": "Give the group a visible clue toward the hideout."
+          }
         }
       }
     },
     "sess_tpl_phandalin_town": {
       "title": "Session 2 — A town afraid",
-      "summary": "Present Phandalin as a living place and prepare the Redbrand arc.",
-      "openingPrompt": "Phandalin looks quiet until someone lowers their voice when a red cloak appears across the street.",
-      "goals": [
-        "Connect players to specific neighbors.",
-        "Show the Redbrands as a nearby problem.",
-        "Offer several entrances toward Tresendar."
-      ],
-      "checklist": {
-        "chk_ph_3": {
-          "label": "Make the town’s fear visible, not explained."
+      "prep": {
+        "summary": "Present Phandalin as a living place and prepare the Redbrand arc.",
+        "openingPrompt": "Phandalin looks quiet until someone lowers their voice when a red cloak appears across the street.",
+        "goals": [
+          "Connect players to specific neighbors.",
+          "Show the Redbrands as a nearby problem.",
+          "Offer several entrances toward Tresendar."
+        ],
+        "checklist": {
+          "chk_ph_3": {
+            "label": "Make the town’s fear visible, not explained."
+          }
         }
       }
     },
     "sess_tpl_phandalin_tresendar": {
       "title": "Session 3 — Beneath Tresendar Manor",
-      "summary": "Resolve the Redbrand arc through infiltration, combat, rescue or negotiation.",
-      "openingPrompt": "The manor does not look like a fortress. That is the problem: nobody wants to look underneath.",
-      "goals": [
-        "Allow a clear victory.",
-        "Reveal Glasstaff clues if players investigate.",
-        "Prepare the town’s social consequence."
-      ],
-      "checklist": {
-        "chk_ph_4": {
-          "label": "Close by asking what changes in Phandalin after the victory."
+      "prep": {
+        "summary": "Resolve the Redbrand arc through infiltration, combat, rescue or negotiation.",
+        "openingPrompt": "The manor does not look like a fortress. That is the problem: nobody wants to look underneath.",
+        "goals": [
+          "Allow a clear victory.",
+          "Reveal Glasstaff clues if players investigate.",
+          "Prepare the town’s social consequence."
+        ],
+        "checklist": {
+          "chk_ph_4": {
+            "label": "Close by asking what changes in Phandalin after the victory."
+          }
         }
       }
     },
     "sess_tpl_phandalin_allies": {
       "title": "Session 4 — Allies in an awakening town",
-      "summary": "After striking the Redbrands, the group can turn scattered favors into real town support.",
-      "openingPrompt": "The next morning, no one looks at the adventurers the same way. Some lower their voices; others, for the first time, approach.",
-      "goals": [
-        "Give town NPCs spotlight.",
-        "Show consequences of protecting or ignoring specific neighbors.",
-        "Deliver a clue toward the larger network behind Glasstaff."
-      ],
-      "checklist": {
-        "ph_s4_pnjs": {
-          "label": "Choose three NPCs who react to what happened."
-        },
-        "ph_s4_public": {
-          "label": "Decide what information is now public for the player portal."
-        },
-        "ph_s4_next": {
-          "label": "Close with a clue toward Tresendar or the mine."
+      "prep": {
+        "summary": "After striking the Redbrands, the group can turn scattered favors into real town support.",
+        "openingPrompt": "The next morning, no one looks at the adventurers the same way. Some lower their voices; others, for the first time, approach.",
+        "goals": [
+          "Give town NPCs spotlight.",
+          "Show consequences of protecting or ignoring specific neighbors.",
+          "Deliver a clue toward the larger network behind Glasstaff."
+        ],
+        "checklist": {
+          "ph_s4_pnjs": {
+            "label": "Choose three NPCs who react to what happened."
+          },
+          "ph_s4_public": {
+            "label": "Decide what information is now public for the player portal."
+          },
+          "ph_s4_next": {
+            "label": "Close with a clue toward Tresendar or the mine."
+          }
         }
       }
     },
     "sess_tpl_phandalin_wave": {
       "title": "Session 5 — Echoes of the lost mine",
-      "summary": "The campaign points toward Wave Echo Cave: promise of treasure, rescue and truth about the Black Spider.",
-      "openingPrompt": "The map fragment finally matches Gundren’s marks. The route leads not only to a mine, but to an old promise everyone wants to claim.",
-      "goals": [
-        "Connect the local arc to the larger threat.",
-        "Show why Gundren mattered.",
-        "Prepare the next stretch if the table wants to continue."
-      ],
-      "checklist": {
-        "ph_s5_map": {
-          "label": "Decide which part of the map is still missing."
-        },
-        "ph_s5_nezznar": {
-          "label": "Show one indirect action by Nezznar before revealing him."
-        },
-        "ph_s5_continue": {
-          "label": "Prepare a choice: rescue, negotiate or pursue."
+      "prep": {
+        "summary": "The campaign points toward Wave Echo Cave: promise of treasure, rescue and truth about the Black Spider.",
+        "openingPrompt": "The map fragment finally matches Gundren’s marks. The route leads not only to a mine, but to an old promise everyone wants to claim.",
+        "goals": [
+          "Connect the local arc to the larger threat.",
+          "Show why Gundren mattered.",
+          "Prepare the next stretch if the table wants to continue."
+        ],
+        "checklist": {
+          "ph_s5_map": {
+            "label": "Decide which part of the map is still missing."
+          },
+          "ph_s5_nezznar": {
+            "label": "Show one indirect action by Nezznar before revealing him."
+          },
+          "ph_s5_continue": {
+            "label": "Prepare a choice: rescue, negotiate or pursue."
+          }
         }
       }
     }
