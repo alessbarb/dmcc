@@ -1,4 +1,9 @@
 {
+  "locale": "es",
+  "templateId": "oracle-triple-eclipse",
+  "templateVersion": "1.1.0",
+  "translationVersion": "1.0.0",
+  "translatedFromLocale": "en",
   "title": "La Sombra del Oráculo",
   "subtitle": "Intriga, facciones, secretos y consecuencias",
   "description": "Campaña de ejemplo avanzada para probar memoria narrativa, facciones, secretos revelables, relojes de tensión y preparación de sesiones con consecuencias.",
@@ -26,10 +31,13 @@
       "Usa la copia editable para ajustar nombres, facciones o nivel de amenaza a tu mesa."
     ]
   },
-  "locale": "es",
-  "templateId": "oracle-triple-eclipse",
-  "templateVersion": "1.1.0",
-  "translationVersion": "1.0.0",
+  "tags": [
+    "intriga",
+    "facciones",
+    "misterio",
+    "secretos",
+    "consecuencias"
+  ],
   "entities": {
     "ent_tpl_oracle_campaign_note": {
       "title": "Cómo usar esta campaña de ejemplo",
@@ -488,12 +496,5 @@
         }
       }
     }
-  },
-  "tags": [
-    "intriga",
-    "facciones",
-    "misterio",
-    "secretos",
-    "consecuencias"
-  ]
+  }
 }
