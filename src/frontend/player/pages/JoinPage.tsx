@@ -57,7 +57,7 @@ export function JoinPage() {
       sessionStorage.setItem("dmcc_accessCode", accessCode.trim());
       sessionStorage.setItem("dmcc_playerToken", playerToken);
       sessionStorage.setItem(`dmcc_playerToken:${campaignId}`, playerToken);
-      useCampaignStore.setState({ activeCampaignId: campaignId, campaignState: null, playerPortalState: null });
+      useCampaignStore.getState().enterPlayerCampaign(campaignId);
 
       navigate({ to: `/campaigns/${campaignId}/player-portal` });
     } catch (err: any) {

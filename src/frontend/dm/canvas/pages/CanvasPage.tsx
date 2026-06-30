@@ -697,21 +697,52 @@ export function CanvasPage() {
   const [, setSelectedEdges] = useState<any[]>([]);
   const [bulkGroupId, setBulkGroupId] = useState<string>("");
 
+  useEffect(() => {
+    setSelectedNodeId(null);
+    setSelectedEdgeId(null);
+    setSelectedNodes([]);
+    setSelectedEdges([]);
+    setBulkGroupId("");
+  }, [campaignId]);
+
   // Session Prep Dialog
   const [isSessionPrepOpen, setIsSessionPrepOpen] = useState(false);
 
-  const selectedEntityLocal = detailEntityId && campaignState ? campaignState.entities.find((e: any) => e.entityId === detailEntityId) : null;
-  const canvases = Object.values(canvasesById || {}).filter(c => !c.archived);
-  const activeCanvas = activeCanvasId ? canvasesById[activeCanvasId] : null;
-  const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
-  const preparedSessions = (campaignState?.sessions ?? []).filter((session: any) => session.status === "planned");
+  const isCurrentCampaignLoaded = activeCampaignId === campaignId && campaignState?.campaign?.campaignId === campaignId;
+  const selectedEntityLocal = detailEntityId && isCurrentCampaignLoaded && campaignState
+    ? campaignState.entities.find((e: any) => e.entityId === detailEntityId)
+    : null;
+  const canvases = isCurrentCampaignLoaded
+    ? Object.values(canvasesById || {}).filter(c => !c.archived)
+    : [];
+  const activeCanvas = isCurrentCampaignLoaded && activeCanvasId && canvasesById[activeCanvasId] && !canvasesById[activeCanvasId].archived
+    ? canvasesById[activeCanvasId]
+    : null;
+  const activeSession = isCurrentCampaignLoaded ? campaignState?.sessions?.find((s: any) => s.status === "active") : undefined;
+  const preparedSessions = isCurrentCampaignLoaded
+    ? (campaignState?.sessions ?? []).filter((session: any) => session.status === "planned")
+    : [];
 
-  // Auto-select first canvas if none selected
+  // Keep the selected canvas scoped to the current campaign.
+  // When switching campaigns, the previous campaign's activeCanvasId may still be in local state
+  // until the fresh campaign snapshot arrives. Never keep an id that does not exist in the
+  // currently loaded canvas collection.
   useEffect(() => {
-    if (!activeCanvasId && canvases.length > 0) {
+    if (canvases.length === 0) {
+      if (activeCanvasId) {
+        setActiveCanvasId(null);
+      }
+      return;
+    }
+
+    const selectedCanvasBelongsToCurrentCampaign = Boolean(
+      activeCanvasId && canvases.some((canvas: any) => canvas.id === activeCanvasId),
+    );
+
+    if (!selectedCanvasBelongsToCurrentCampaign) {
       setActiveCanvasId(canvases[0].id);
     }
-  }, [canvases, activeCanvasId]);
+  }, [canvases, activeCanvasId, setActiveCanvasId]);
 
   // Seed pending template if campaign was newly created from landing page
   useEffect(() => {
@@ -1320,8 +1351,9 @@ export function CanvasPage() {
           {!isPlayerView && <CanvasPalette canvasId={activeCanvas.id} isDirectionMode={isDirectionMode} selectedNodeId={selectedNodeId} />}
           
           <div className="canvas-work-area">
-            <ReactFlowProvider>
+            <ReactFlowProvider key={`${campaignId}:${activeCanvas.id}`}>
               <CampaignCanvasFlow
+                key={`${campaignId}:${activeCanvas.id}`}
                 canvasId={activeCanvas.id}
                 canvas={activeCanvas}
                 selectedNodeId={selectedNodeId}

@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { createId } from "@shared/ids.js";
+import { resolveActiveCanvasId } from "../utils/canvasSelection.js";
+import { markCampaignGuidedTourPending } from "../../dm/onboarding/campaignGuidedTourStorage.js";
 
 function getPremadeLocale(): string {
   try {
@@ -13,6 +15,40 @@ function getPremadeLocale(): string {
 function withPremadeLocale(path: string): string {
   const separator = path.includes("?") ? "&" : "?";
   return `${path}${separator}locale=${encodeURIComponent(getPremadeLocale())}`;
+}
+
+type ActiveCampaignRole = "dm" | "player";
+
+function getActiveSessionRole(): ActiveCampaignRole {
+  return sessionStorage.getItem("dmcc_role") === "player" ? "player" : "dm";
+}
+
+const campaignScopedReset = () => ({
+  campaignState: null,
+  canvasesById: {},
+  activeCanvasId: null,
+  dashboard: null,
+  whatNow: null,
+  graph: null,
+  timeline: null,
+  visibility: null,
+  lanStatus: null,
+  dmPlayerPortalSummary: null,
+});
+
+const playerScopedReset = () => ({
+  playerPortalState: null,
+});
+
+function buildCanvasesById(campaignState: any): Record<string, any> {
+  const canvasesById: Record<string, any> = {};
+  if (campaignState?.canvases) {
+    campaignState.canvases.forEach((canvas: any) => {
+      const canvasId = typeof canvas?.id === "string" ? canvas.id : typeof canvas?.canvasId === "string" ? canvas.canvasId : null;
+      if (canvasId) canvasesById[canvasId] = canvas;
+    });
+  }
+  return canvasesById;
 }
 
 export interface PremadeCampaignTemplateSummary {
@@ -188,8 +224,12 @@ export interface PlayerProfile {
 export interface CampaignStateStore {
   campaigns: Campaign[];
   premadeTemplates: PremadeCampaignTemplateSummary[];
+  premadeTemplatesLocale: string | null;
   activePremadeTemplate: PremadeCampaignTemplate | null;
+  activePremadeTemplateKey: string | null;
   activeCampaignId: string | null;
+  activeCampaignLoadId: string | null;
+  activeCampaignRole: ActiveCampaignRole;
   campaignState: {
     campaign: Campaign | null;
     entities: Entity[];
@@ -203,6 +243,7 @@ export interface CampaignStateStore {
   
   canvasesById: Record<string, any>;
   activeCanvasId: string | null;
+  activeCanvasIdByCampaignId: Record<string, string | null>;
   
   vaults: any[];
   activeVaultId: string;
@@ -235,7 +276,11 @@ export interface CampaignStateStore {
   importPremadeCampaign: (templateId: string, options?: { title?: string; summary?: string; importMode?: "full" | "structure" | "sessions"; locale?: string }) => Promise<string | undefined>;
   updateCampaign: (campaignId: string, updates: { title?: string; summary?: string; system?: string; status?: string; metadata?: Record<string, unknown> }) => Promise<Campaign | undefined>;
   selectCampaign: (campaignId: string) => Promise<void>;
+  enterDmCampaign: (campaignId: string) => void;
+  enterPlayerCampaign: (campaignId: string) => void;
+  leavePlayerPortal: () => void;
   reloadCampaign: () => Promise<void>;
+  reloadCampaignIfActive: (campaignId: string) => Promise<void>;
   clearCampaign: () => void;
   createCampaign: (title: string, system: string) => Promise<string | undefined>;
   deleteCampaign: (campaignId: string, confirmTitle: string) => Promise<void>;
@@ -392,18 +437,24 @@ const syncChannel = typeof window !== "undefined" ? new BroadcastChannel("dmcc_c
 
 const broadcastMutation = (campaignId: string) => {
   if (syncChannel) {
-    syncChannel.postMessage({ type: "MUTATION", campaignId });
+    const vaultId = useCampaignStore.getState().activeVaultId || "default";
+    syncChannel.postMessage({ type: "MUTATION", vaultId, campaignId });
   }
 };
 
 export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   campaigns: [],
   premadeTemplates: [],
+  premadeTemplatesLocale: null,
   activePremadeTemplate: null,
+  activePremadeTemplateKey: null,
   activeCampaignId: null,
+  activeCampaignLoadId: null,
+  activeCampaignRole: "dm",
   campaignState: null,
   canvasesById: {},
   activeCanvasId: null,
+  activeCanvasIdByCampaignId: {},
   vaults: [],
   activeVaultId: "default",
   dashboard: null,
@@ -445,7 +496,18 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       if (!res.ok) throw new Error("Failed to create vault");
       const vaultInfo = await res.json();
       await get().fetchVaults();
-      set({ activeVaultId: vaultInfo.vaultId, loading: false });
+      set({
+        activeVaultId: vaultInfo.vaultId,
+        campaigns: [],
+        activeCampaignId: null,
+        activeCampaignLoadId: null,
+        activeCampaignRole: "dm",
+        activeCanvasIdByCampaignId: {},
+        ...campaignScopedReset(),
+        ...playerScopedReset(),
+        loading: false,
+        error: null,
+      });
       await get().fetchCampaigns();
     } catch (err: any) {
       set({ error: err.message, loading: false });
@@ -453,11 +515,23 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   setActiveVaultId: (vaultId: string) => {
-    set({ activeVaultId: vaultId });
-    get().fetchCampaigns();
+    set({
+      activeVaultId: vaultId,
+      campaigns: [],
+      activeCampaignId: null,
+      activeCampaignLoadId: null,
+      activeCampaignRole: "dm",
+      activeCanvasIdByCampaignId: {},
+      ...campaignScopedReset(),
+      ...playerScopedReset(),
+      loading: false,
+      error: null,
+    });
+    void get().fetchCampaigns();
   },
 
   fetchCampaigns: async () => {
+    const vaultId = get().activeVaultId || "default";
     set({ loading: true, error: null });
     try {
       const res = await fetchWithVault("/api/campaigns");
@@ -467,13 +541,17 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         throw new Error(message);
       }
       const campaigns = await res.json();
+      if ((get().activeVaultId || "default") !== vaultId) return;
       set({ campaigns, loading: false });
     } catch (err: any) {
-      set({ error: err.message, loading: false });
+      if ((get().activeVaultId || "default") === vaultId) {
+        set({ error: err.message, loading: false });
+      }
     }
   },
 
   fetchPremadeCampaigns: async () => {
+    const locale = getPremadeLocale();
     try {
       const res = await fetchWithVault(withPremadeLocale("/api/premade-campaigns"));
       if (!res.ok) {
@@ -481,13 +559,14 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         throw new Error(message);
       }
       const data = await res.json();
-      set({ premadeTemplates: Array.isArray(data.templates) ? data.templates : [] });
+      set({ premadeTemplates: Array.isArray(data.templates) ? data.templates : [], premadeTemplatesLocale: locale });
     } catch (err: any) {
-      set({ premadeTemplates: [], error: err.message });
+      set({ premadeTemplates: [], premadeTemplatesLocale: locale, error: err.message });
     }
   },
 
   fetchPremadeCampaignTemplate: async (templateId) => {
+    const locale = getPremadeLocale();
     set({ loading: true, error: null });
     try {
       const res = await fetchWithVault(withPremadeLocale(`/api/premade-campaigns/${encodeURIComponent(templateId)}`));
@@ -496,10 +575,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         throw new Error(message);
       }
       const template = await res.json() as PremadeCampaignTemplate;
-      set({ activePremadeTemplate: template, loading: false });
+      set({ activePremadeTemplate: template, activePremadeTemplateKey: `${templateId}:${locale}`, loading: false });
       return template;
     } catch (err: any) {
-      set({ activePremadeTemplate: null, error: err.message, loading: false });
+      set({ activePremadeTemplate: null, activePremadeTemplateKey: null, error: err.message, loading: false });
       return null;
     }
   },
@@ -518,6 +597,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       }
       const data = await res.json();
       await get().fetchCampaigns();
+      markCampaignGuidedTourPending(data.campaignId);
       await get().selectCampaign(data.campaignId);
       return data.campaignId as string;
     } catch (err: any) {
@@ -526,16 +606,61 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
   },
 
+  enterDmCampaign: (campaignId: string) => {
+    set({
+      activeCampaignId: campaignId,
+      activeCampaignRole: "dm",
+      activeCampaignLoadId: null,
+      ...campaignScopedReset(),
+      ...playerScopedReset(),
+      loading: false,
+      error: null,
+    });
+  },
+
+  enterPlayerCampaign: (campaignId: string) => {
+    set({
+      activeCampaignId: campaignId,
+      activeCampaignRole: "player",
+      activeCampaignLoadId: null,
+      ...campaignScopedReset(),
+      ...playerScopedReset(),
+      loading: false,
+      error: null,
+    });
+  },
+
+  leavePlayerPortal: () => {
+    set({
+      activeCampaignId: null,
+      activeCampaignLoadId: null,
+      activeCampaignRole: "dm",
+      ...campaignScopedReset(),
+      ...playerScopedReset(),
+      loading: false,
+      error: null,
+    });
+  },
+
   selectCampaign: async (campaignId: string) => {
-    set({ loading: true, error: null, activeCampaignId: campaignId });
+    const loadId = createId("load");
+    const role = getActiveSessionRole();
+
+    set({
+      loading: true,
+      error: null,
+      activeCampaignId: campaignId,
+      activeCampaignRole: role,
+      activeCampaignLoadId: loadId,
+      ...campaignScopedReset(),
+      ...(role === "dm" ? playerScopedReset() : {}),
+    });
+
     try {
-      // 1. Fetch details (snapshot)
       const resDetails = await fetchWithVault(`/api/campaigns/${campaignId}`);
       if (!resDetails.ok) throw new Error("Failed to load campaign state");
       const campaignState = await resDetails.json();
-      
-      const role = sessionStorage.getItem("dmcc_role") || "dm";
-      
+
       let dashboard = null;
       let whatNow = null;
       let graph = null;
@@ -544,7 +669,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       let lanStatus = null;
 
       if (role === "dm") {
-        // 2. Fetch projections (only for DM)
         const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility, resLanStatus] = await Promise.all([
           fetchWithVault(`/api/campaigns/${campaignId}/dashboard`),
           fetchWithVault(`/api/campaigns/${campaignId}/what-now`),
@@ -561,12 +685,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         visibility = resVisibility.ok ? await resVisibility.json() : null;
         lanStatus = resLanStatus.ok ? await resLanStatus.json() : null;
       } else {
-        // For players, we can fetch filtered graph
         const resGraph = await fetchWithVault(`/api/campaigns/${campaignId}/graph`);
         graph = resGraph.ok ? await resGraph.json() : null;
       }
-      
-      // Ensure players array exists in campaignState
+
       if (campaignState && !campaignState.players) {
         campaignState.players = [];
       }
@@ -577,43 +699,55 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         }
       }
 
-      const canvasesById: Record<string, any> = {};
-      let firstCanvasId: string | null = null;
-      if (campaignState && campaignState.canvases) {
-        campaignState.canvases.forEach((c: any) => {
-          canvasesById[c.id] = c;
-          if (!firstCanvasId) firstCanvasId = c.id;
-        });
+      if (get().activeCampaignId !== campaignId || get().activeCampaignLoadId !== loadId) {
+        return;
       }
+
+      const canvasesById = buildCanvasesById(campaignState);
+      const preferredCanvasId = get().activeCanvasIdByCampaignId[campaignId] ?? null;
+      const nextActiveCanvasId = resolveActiveCanvasId(canvasesById, preferredCanvasId);
 
       set({
         campaignState,
         canvasesById,
-        activeCanvasId: get().activeCanvasId || firstCanvasId,
+        activeCanvasId: nextActiveCanvasId,
+        activeCanvasIdByCampaignId: {
+          ...get().activeCanvasIdByCampaignId,
+          [campaignId]: nextActiveCanvasId,
+        },
         dashboard,
         whatNow,
         graph,
         timeline,
         visibility,
         lanStatus,
-        loading: false
+        loading: false,
       });
-      broadcastMutation(campaignId);
     } catch (err: any) {
-      set({ error: err.message, loading: false });
+      if (get().activeCampaignId === campaignId && get().activeCampaignLoadId === loadId) {
+        set({ error: err.message, loading: false });
+      }
     }
   },
 
   reloadCampaign: async () => {
     const campaignId = get().activeCampaignId;
     if (!campaignId) return;
+    await get().reloadCampaignIfActive(campaignId);
+  },
+
+  reloadCampaignIfActive: async (campaignId: string) => {
+    if (get().activeCampaignId !== campaignId) return;
+
+    const loadId = createId("reload");
+    const role = get().activeCampaignRole || getActiveSessionRole();
+    set({ activeCampaignLoadId: loadId, error: null });
+
     try {
       const resDetails = await fetchWithVault(`/api/campaigns/${campaignId}`);
       if (!resDetails.ok) throw new Error("Failed to load campaign state");
       const campaignState = await resDetails.json();
-      
-      const role = sessionStorage.getItem("dmcc_role") || "dm";
-      
+
       let dashboard = null;
       let whatNow = null;
       let graph = null;
@@ -641,7 +775,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         const resGraph = await fetchWithVault(`/api/campaigns/${campaignId}/graph`);
         graph = resGraph.ok ? await resGraph.json() : null;
       }
-      
+
       if (campaignState && !campaignState.players) {
         campaignState.players = [];
       }
@@ -652,33 +786,48 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         }
       }
 
-      const canvasesById: Record<string, any> = {};
-      let firstCanvasId: string | null = null;
-      if (campaignState && campaignState.canvases) {
-        campaignState.canvases.forEach((c: any) => {
-          canvasesById[c.id] = c;
-          if (!firstCanvasId) firstCanvasId = c.id;
-        });
+      if (get().activeCampaignId !== campaignId || get().activeCampaignLoadId !== loadId) {
+        return;
       }
+
+      const canvasesById = buildCanvasesById(campaignState);
+      const preferredCanvasId = get().activeCanvasIdByCampaignId[campaignId] ?? get().activeCanvasId;
+      const nextActiveCanvasId = resolveActiveCanvasId(canvasesById, preferredCanvasId);
 
       set({
         campaignState,
         canvasesById,
-        activeCanvasId: get().activeCanvasId || firstCanvasId,
+        activeCanvasId: nextActiveCanvasId,
+        activeCanvasIdByCampaignId: {
+          ...get().activeCanvasIdByCampaignId,
+          [campaignId]: nextActiveCanvasId,
+        },
         dashboard,
         whatNow,
         graph,
         timeline,
         visibility,
-        lanStatus
+        lanStatus,
+        loading: false,
       });
     } catch (err: any) {
+      if (get().activeCampaignId === campaignId && get().activeCampaignLoadId === loadId) {
+        set({ error: err.message, loading: false });
+      }
       console.error("Silent reload failed", err);
     }
   },
 
   clearCampaign: () => {
-    set({ activeCampaignId: null, campaignState: null, error: null });
+    set({
+      activeCampaignId: null,
+      activeCampaignLoadId: null,
+      activeCampaignRole: "dm",
+      ...campaignScopedReset(),
+      ...playerScopedReset(),
+      loading: false,
+      error: null,
+    });
   },
 
   deleteCampaign: async (campaignId: string, confirmTitle: string) => {
@@ -691,6 +840,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const body = await res.json().catch(() => ({}));
       throw new Error((body as any).error || `Failed to delete campaign (${res.status})`);
     }
+    const { [campaignId]: _deletedCanvasId, ...remainingCanvasSelections } = get().activeCanvasIdByCampaignId;
+    set({ activeCanvasIdByCampaignId: remainingCanvasSelections });
     if (get().activeCampaignId === campaignId) {
       get().clearCampaign();
     }
@@ -708,6 +859,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       });
       if (!res.ok) throw new Error("Failed to create campaign");
       await get().fetchCampaigns();
+      markCampaignGuidedTourPending(campaignId);
       await get().selectCampaign(campaignId);
       return campaignId;
     } catch (err: any) {
@@ -760,7 +912,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       });
       if (!res.ok) throw new Error("Failed to create entity");
       const data = await res.json();
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
       return { ...data, entityId };
     } catch (err: any) {
       set({ error: err.message, loading: false });
@@ -790,7 +942,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         const body = await res.json().catch(() => null);
         throw new Error(body?.error || "Failed to create relation");
       }
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
       return relationId;
     } catch (err: any) {
       set({ error: err.message, loading: false });
@@ -814,7 +966,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         })
       });
       if (!res.ok) throw new Error("Failed to record fact");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
       return factId;
     } catch (err: any) {
       set({ error: err.message, loading: false });
@@ -832,7 +984,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify(updates),
       });
       if (!res.ok) throw new Error("Failed to update fact");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -855,7 +1007,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         const data = await res.json().catch(() => ({}));
         throw new Error((data as any).error || "Failed to update entity");
       }
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -873,7 +1025,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm" }),
       });
       if (!res.ok) throw new Error("Failed to archive entity");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -890,7 +1042,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm" }),
       });
       if (!res.ok) throw new Error("Failed to archive relation");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -907,7 +1059,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify(updates),
       });
       if (!res.ok) throw new Error("Failed to update relation");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -932,7 +1084,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         }),
       });
       if (!res.ok) throw new Error("Failed to create player");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -949,7 +1101,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", ...updates }),
       });
       if (!res.ok) throw new Error("Failed to update player");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -966,7 +1118,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm" }),
       });
       if (!res.ok) throw new Error("Failed to archive player");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -990,7 +1142,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         })
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to prepare session"));
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
       return sessionId;
     } catch (err: any) {
       set({ error: err.message, loading: false });
@@ -1009,7 +1161,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", ...updates })
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to update session preparation"));
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -1027,7 +1179,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm" })
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to cancel session"));
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -1045,7 +1197,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm" })
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to archive session"));
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -1063,7 +1215,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm" })
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to activate session"));
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -1086,7 +1238,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         })
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to start session"));
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -1109,7 +1261,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         })
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to reveal clue"));
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -1130,7 +1282,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         })
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to close session"));
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -1151,7 +1303,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         })
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to record session event"));
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;
@@ -1193,7 +1345,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ backupId })
       });
       if (!res.ok) throw new Error("Failed to restore backup");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -1210,7 +1362,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify(settings)
       });
       if (!res.ok) throw new Error("Failed to update settings");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -1228,7 +1380,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       });
       if (!res.ok) throw new Error("Failed to toggle LAN mode");
       const data = await res.json();
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
       return data;
     } catch (err: any) {
       set({ error: err.message, loading: false });
@@ -1250,13 +1402,32 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   loadPlayerPortalState: async (campaignIdOverride) => {
     const campaignId = campaignIdOverride ?? get().activeCampaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!campaignId) return;
-    set({ activeCampaignId: campaignId, error: null });
+
+    const isAlreadyActivePlayerCampaign = get().activeCampaignId === campaignId && get().activeCampaignRole === "player";
+    if (!isAlreadyActivePlayerCampaign) {
+      get().enterPlayerCampaign(campaignId);
+    }
+
+    const loadId = createId("portal_load");
+    set({
+      activeCampaignId: campaignId,
+      activeCampaignRole: "player",
+      activeCampaignLoadId: loadId,
+      error: null,
+    });
+
     try {
       const res = await fetchWithVault(`/api/campaigns/${campaignId}/player-portal/state`);
       if (!res.ok) throw new Error(await readApiError(res, "Failed to load player portal state"));
-      set({ playerPortalState: await res.json() });
+      const playerPortalState = await res.json();
+      if (get().activeCampaignId !== campaignId || get().activeCampaignLoadId !== loadId || get().activeCampaignRole !== "player") {
+        return;
+      }
+      set({ playerPortalState });
     } catch (err: any) {
-      set({ error: err.message });
+      if (get().activeCampaignId === campaignId && get().activeCampaignLoadId === loadId) {
+        set({ error: err.message });
+      }
     }
   },
 
@@ -1384,9 +1555,14 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     try {
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/dm-summary`);
       if (!res.ok) throw new Error("Failed to load DM player portal summary");
-      set({ dmPlayerPortalSummary: await res.json() });
+      const dmPlayerPortalSummary = await res.json();
+      if (get().activeCampaignId === activeCampaignId) {
+        set({ dmPlayerPortalSummary });
+      }
     } catch (err: any) {
-      set({ error: err.message });
+      if (get().activeCampaignId === activeCampaignId) {
+        set({ error: err.message });
+      }
     }
   },
 
@@ -1400,7 +1576,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to resolve player character proposal"));
-      await Promise.all([get().loadDmPlayerPortalSummary(), get().selectCampaign(activeCampaignId)]);
+      await Promise.all([get().loadDmPlayerPortalSummary(), get().reloadCampaignIfActive(activeCampaignId)]);
     } catch (err: any) {
       set({ error: err.message });
     }
@@ -1433,7 +1609,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         method: "DELETE",
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to unlink character"));
-      await Promise.all([get().loadDmPlayerPortalSummary(), get().selectCampaign(activeCampaignId)]);
+      await Promise.all([get().loadDmPlayerPortalSummary(), get().reloadCampaignIfActive(activeCampaignId)]);
     } catch (err: any) {
       set({ error: err.message });
     }
@@ -1451,15 +1627,32 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", canvasId, title, kind, description }),
       });
       if (!res.ok) throw new Error("Failed to create canvas");
-      set({ activeCanvasId: canvasId });
-      await get().selectCampaign(activeCampaignId);
+      set({
+        activeCanvasId: canvasId,
+        activeCanvasIdByCampaignId: {
+          ...get().activeCanvasIdByCampaignId,
+          [activeCampaignId]: canvasId,
+        },
+      });
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
   },
 
   setActiveCanvasId: (canvasId) => {
-    set({ activeCanvasId: canvasId });
+    const campaignId = get().activeCampaignId;
+    set({
+      activeCanvasId: canvasId,
+      ...(campaignId
+        ? {
+            activeCanvasIdByCampaignId: {
+              ...get().activeCanvasIdByCampaignId,
+              [campaignId]: canvasId,
+            },
+          }
+        : {}),
+    });
   },
 
   placeNodeOnCanvas: async (canvasId, node) => {
@@ -1511,10 +1704,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", node: nodeObj }),
       });
       if (!res.ok) throw new Error("Failed to place node");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message });
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     }
   },
 
@@ -1543,10 +1736,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", updates }),
       });
       if (!res.ok) throw new Error("Failed to update node");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message });
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     }
   },
 
@@ -1586,10 +1779,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", nodeUpdates }),
       });
       if (!res.ok) throw new Error("Failed to update layout");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message });
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     }
   },
 
@@ -1617,10 +1810,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm" }),
       });
       if (!res.ok) throw new Error("Failed to remove node");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message });
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     }
   },
 
@@ -1665,10 +1858,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", edge: edgeObj }),
       });
       if (!res.ok) throw new Error("Failed to add edge");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message });
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     }
   },
 
@@ -1697,10 +1890,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", updates }),
       });
       if (!res.ok) throw new Error("Failed to update edge");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message });
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     }
   },
 
@@ -1727,10 +1920,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm" }),
       });
       if (!res.ok) throw new Error("Failed to remove edge");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message });
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     }
   },
 
@@ -1745,7 +1938,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         body: JSON.stringify({ actorId: "usr_dm", ...payload }),
       });
       if (!res.ok) throw new Error("Failed to convert note to entity");
-      await get().selectCampaign(activeCampaignId);
+      await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }
@@ -1780,9 +1973,12 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
 if (typeof window !== "undefined" && syncChannel) {
   syncChannel.onmessage = (event) => {
     if (event.data && event.data.type === "MUTATION") {
-      const activeId = useCampaignStore.getState().activeCampaignId;
-      if (event.data.campaignId === activeId) {
-        useCampaignStore.getState().reloadCampaign();
+      const store = useCampaignStore.getState();
+      const activeId = store.activeCampaignId;
+      const activeVaultId = store.activeVaultId || "default";
+      const messageVaultId = event.data.vaultId || "default";
+      if (event.data.campaignId === activeId && messageVaultId === activeVaultId) {
+        void store.reloadCampaign();
       }
     }
   };

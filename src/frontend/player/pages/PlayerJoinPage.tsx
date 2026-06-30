@@ -50,7 +50,7 @@ export function PlayerJoinPage() {
   );
 
   const openPortal = (campaignId: string) => {
-    useCampaignStore.setState({ activeCampaignId: campaignId, campaignState: null, playerPortalState: null });
+    useCampaignStore.getState().enterPlayerCampaign(campaignId);
     navigate({ to: `/campaigns/${campaignId}/player-portal` });
   };
 

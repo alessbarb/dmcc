@@ -86,7 +86,7 @@ export function RegisterPage() {
         email: email.trim(),
       });
 
-      useCampaignStore.setState({ activeCampaignId: campaignId, campaignState: null, playerPortalState: null });
+      useCampaignStore.getState().enterPlayerCampaign(campaignId);
       navigate({ to: `/campaigns/${campaignId}/player-portal` });
     } catch (err: any) {
       setError(err.message || "Connection error");
