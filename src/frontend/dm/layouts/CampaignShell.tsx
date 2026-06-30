@@ -9,6 +9,7 @@ import { AppFooter } from "../../shared/components/AppFooter.js";
 import { logoutDm } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { QuickCaptureFAB } from "../capture/QuickCaptureFAB.js";
+import { CampaignGuidedTour } from "../onboarding/CampaignGuidedTour.js";
 import { useKeyboardShortcuts } from "../../shared/hooks/useKeyboardShortcuts.js";
 import {
   Shield,
@@ -281,7 +282,11 @@ export function CampaignShell() {
         className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}
         style={{ width: sidebarCollapsed ? "52px" : "260px", transition: "width 0.2s ease" }}
       >
-        <div className="sidebar-header" style={{ padding: sidebarCollapsed ? "16px 8px" : undefined, overflow: "hidden" }}>
+        <div
+          className="sidebar-header"
+          data-tour-id="campaign-current-campaign"
+          style={{ padding: sidebarCollapsed ? "16px 8px" : undefined, overflow: "hidden" }}
+        >
           {!sidebarCollapsed && (
             <>
               <div className="sidebar-logo">{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</div>
@@ -314,6 +319,7 @@ export function CampaignShell() {
             <div
               key={path}
               className={`nav-item ${currentSegment === path ? "active" : ""}`}
+              data-tour-id={`campaign-nav-${path}`}
               onClick={() => handleNavClick(path)}
               title={sidebarCollapsed ? label : undefined}
               style={sidebarCollapsed ? { padding: "10px", justifyContent: "center", gap: 0 } : undefined}
@@ -369,7 +375,7 @@ export function CampaignShell() {
 
       {/* Mobile top navigation */}
       <header className="campaign-mobile-header">
-        <div className="campaign-mobile-header__title">
+        <div className="campaign-mobile-header__title" data-tour-id="campaign-mobile-title">
           <strong>{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</strong>
           <span>{campaignState?.campaign?.system ?? ""}</span>
         </div>
@@ -413,6 +419,7 @@ export function CampaignShell() {
                     key={path}
                     type="button"
                     className={`campaign-mobile-nav-sheet__item ${currentSegment === path ? "active" : ""}`}
+                    data-tour-id={`campaign-mobile-nav-${path}`}
                     onClick={() => handleNavClick(path)}
                   >
                     <Icon size={18} />
@@ -451,6 +458,7 @@ export function CampaignShell() {
             key={path}
             type="button"
             className={`campaign-mobile-bottom-nav__item ${currentSegment === path ? "active" : ""}`}
+            data-tour-id={`campaign-mobile-nav-${path}`}
             onClick={() => handleNavClick(path)}
           >
             <Icon size={19} />
@@ -461,6 +469,7 @@ export function CampaignShell() {
         <button
           type="button"
           className="campaign-mobile-bottom-nav__item"
+          data-tour-id="campaign-mobile-nav-more"
           onClick={() => setMobileNavOpen(true)}
         >
           <MoreHorizontal size={19} />
@@ -469,7 +478,10 @@ export function CampaignShell() {
       </nav>
 
       {/* Main Content Area */}
-      <main className={`main-content ${currentSegment === "canvas" ? "main-content--canvas" : ""}`}>
+      <main
+        className={`main-content ${currentSegment === "canvas" ? "main-content--canvas" : ""}`}
+        data-tour-id="campaign-main-workspace"
+      >
         {currentSegment !== "canvas" && (
           <header className="content-header">
             <div className="page-heading">
@@ -500,20 +512,29 @@ export function CampaignShell() {
 
             <div className="top-bar-actions header-actions">
               {activeSession ? (
-                <span className="badge badge-success" style={{ padding: "8px 12px" }}>
+                <span className="badge badge-success" data-tour-id="campaign-action-session" style={{ padding: "8px 12px" }}>
                   {t("campaignShell.activeSession", { number: activeSession.number || 1, title: activeSession.title })}
                 </span>
               ) : (
                 <button
                   className="btn btn-primary btn-sm"
+                  data-tour-id="campaign-action-session"
                   onClick={() => navigate({ to: `/campaigns/${campaignId}/session` })}
                 >
                   <Play size={14} /> {t("campaignShell.prepareOrStartSession")}
                 </button>
               )}
 
-              <button className="btn btn-secondary btn-sm" onClick={() => setIsEntityModalOpen(true)}>
+              <button className="btn btn-secondary btn-sm" data-tour-id="campaign-action-new-entity" onClick={() => setIsEntityModalOpen(true)}>
                 <Plus size={14} /> {t("campaignShell.newEntity")}
+              </button>
+
+              <button
+                className="btn btn-secondary btn-sm"
+                data-tour-id="campaign-action-tour"
+                onClick={() => window.dispatchEvent(new CustomEvent("dmcc:start-campaign-tour", { detail: { campaignId } }))}
+              >
+                <BookOpen size={14} /> {t("campaignTour.replayShort")}
               </button>
 
               <button className="btn btn-secondary btn-sm" onClick={() => void handleSignOutDm()}>
@@ -541,6 +562,10 @@ export function CampaignShell() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
 
       {campaignId && <QuickCaptureFAB campaignId={campaignId} />}
+
+      {campaignId && (
+        <CampaignGuidedTour campaignId={campaignId} enabled={isDM && Boolean(campaignState?.campaign)} />
+      )}
 
       {showExitTransition && (
         <div className="mystical-portal-overlay mystical-portal-overlay--out" aria-hidden="true">

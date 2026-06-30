@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import ForceGraph3D from "react-force-graph-3d";
 import * as THREE from "three";
 import SpriteText from "three-spritetext";
-import { Plus, Eye, EyeOff, AlertTriangle, X, Maximize, ExternalLink, Lock } from "lucide-react";
+import { Plus, Eye, EyeOff, AlertTriangle, X, Maximize, ExternalLink, Lock, Network, Layers } from "lucide-react";
 import type { Entity } from "../../shared/stores/campaignStore.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { findNarrativeAnchor, findUndirectedShortestPath } from "./findNarrativePath.js";
@@ -13,6 +13,7 @@ import { getEntityDefaultImage } from "../entities/entityVisuals.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatEntityType, formatRelationType } from "@shared/i18n/index.js";
+import { GuidedEmptyState } from "../onboarding/CampaignStarterHub.js";
 
 export interface GraphPageProps {
   graph?: any;
@@ -618,6 +619,19 @@ export function GraphPage(props: GraphPageProps = {}) {
         </div>
       </div>
 
+      {visibleEntities.length > 1 && graphData.links.length === 0 ? (
+        <div className="guided-inline-callout">
+          <Network size={18} />
+          <div>
+            <strong>{t("guidedStart.empty.graph.noRelationsTitle")}</strong>
+            <span>{t("guidedStart.empty.graph.noRelationsDescription")}</span>
+          </div>
+          <button type="button" className="btn btn-primary btn-sm" onClick={() => setIsRelationModalOpen(true)}>
+            <Plus size={14} /> {t("guidedStart.empty.graph.createRelation")}
+          </button>
+        </div>
+      ) : null}
+
       {/* Graph + panel */}
       <div style={{ display: "flex", gap: "0", width: "100%", borderRadius: "var(--radius-md)", overflow: "hidden", border: "1px solid var(--border-color)", height: "calc(100vh - 210px)", minHeight: "500px" }}>
 
@@ -633,9 +647,28 @@ export function GraphPage(props: GraphPageProps = {}) {
           }}
         >
           {visibleEntities.length === 0 ? (
-            <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: "12px", color: "var(--text-muted)" }}>
-              <AlertTriangle size={32} />
-              <p>Sin entidades para este filtro</p>
+            <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+              <GuidedEmptyState
+                icon={<Layers size={30} />}
+                title={t("guidedStart.empty.graph.title")}
+                description={t("guidedStart.empty.graph.description")}
+                actions={[
+                  {
+                    label: t("guidedStart.empty.graph.createEntity"),
+                    icon: <Plus size={14} />,
+                    primary: true,
+                    onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "npc", content: t("guidedStart.templates.npc.content"), metadata: { role: "", attitudeToParty: "neutral", goal: "" } } })),
+                  },
+                  {
+                    label: t("guidedStart.empty.graph.resetFilter"),
+                    icon: <AlertTriangle size={14} />,
+                    onClick: () => {
+                      setPreset("todos");
+                      setViewMode("all");
+                    },
+                  },
+                ]}
+              />
             </div>
           ) : (
             <>

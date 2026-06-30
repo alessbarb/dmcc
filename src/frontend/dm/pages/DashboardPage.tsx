@@ -27,6 +27,7 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { CampaignStarterHub } from "../onboarding/CampaignStarterHub.js";
 
 export interface DashboardPageProps {
   dashboard?: any;
@@ -449,6 +450,14 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
             ) : null}
           </div>
         </div>
+
+        {campaignId && campaignState ? (
+          <CampaignStarterHub
+            campaignId={campaignId}
+            campaignState={campaignState}
+            setCurrentPage={setCurrentPage}
+          />
+        ) : null}
 
         <div
           className="card"

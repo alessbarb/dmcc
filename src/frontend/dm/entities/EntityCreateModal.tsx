@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { getRuleSystem } from "@core/domain/rules/index.js";
@@ -13,7 +13,7 @@ interface EntityCreateModalProps {
 
 export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
   const { t } = useTranslation();
-  const { campaignState, createEntity } = useCampaignStore();
+  const { campaignState, createEntity, setIsEntityModalOpen } = useCampaignStore();
 
   const [entityForm, setEntityForm] = useState({
     entityType: "npc",
@@ -26,6 +26,63 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
     visibility: { kind: "dm_only" },
     metadata: { role: "", attitudeToParty: "neutral", goal: "", imageUrl: "" } as any
   });
+
+  useEffect(() => {
+    const listener = (event: Event) => {
+      const detail = (event as CustomEvent<Partial<typeof entityForm>>).detail ?? {};
+      const nextType = typeof detail.entityType === "string" ? detail.entityType : "npc";
+      let defaultStatus = "active";
+      let defaultMetadata: Record<string, any> = {};
+
+      if (nextType === "npc") {
+        defaultStatus = "known";
+        defaultMetadata = { role: "", attitudeToParty: "neutral", goal: "" };
+      } else if (nextType === "location") {
+        defaultStatus = "visited";
+        defaultMetadata = { locationType: "settlement", atmosphere: "" };
+      } else if (nextType === "quest") {
+        defaultStatus = "active";
+        defaultMetadata = { priority: "main", rewardPromised: "" };
+      } else if (nextType === "clue") {
+        defaultStatus = "prepared";
+        defaultMetadata = { clueType: "verbal", content: "" };
+      } else if (nextType === "secret") {
+        defaultStatus = "dm_only";
+        defaultMetadata = { truth: "" };
+      } else if (nextType === "front") {
+        defaultStatus = "active";
+        defaultMetadata = { stakes: "", countdown: "" };
+      } else if (nextType === "consequence") {
+        defaultStatus = "pending";
+        defaultMetadata = { impact: "", triggerCondition: "" };
+      } else if (nextType === "scene") {
+        defaultStatus = "planned";
+        defaultMetadata = { mood: "", trigger: "" };
+      } else if (nextType === "faction") {
+        defaultStatus = "active";
+        defaultMetadata = { goal: "", attitudeToParty: "neutral", influence: "minor" };
+      } else if (nextType === "rumor") {
+        defaultStatus = "unverified";
+        defaultMetadata = { source: "", truth: "unknown" };
+      }
+
+      setEntityForm({
+        entityType: nextType,
+        title: typeof detail.title === "string" ? detail.title : "",
+        subtitle: typeof detail.subtitle === "string" ? detail.subtitle : "",
+        summary: typeof detail.summary === "string" ? detail.summary : "",
+        content: typeof detail.content === "string" ? detail.content : "",
+        status: typeof detail.status === "string" ? detail.status : defaultStatus,
+        importance: typeof detail.importance === "string" ? detail.importance : "normal",
+        visibility: detail.visibility ?? { kind: "dm_only" },
+        metadata: { imageUrl: "", ...defaultMetadata, ...(detail.metadata ?? {}) },
+      });
+      setIsEntityModalOpen(true);
+    };
+
+    window.addEventListener("dmcc:open-entity-template", listener);
+    return () => window.removeEventListener("dmcc:open-entity-template", listener);
+  }, [campaignState?.campaign?.system, setIsEntityModalOpen]);
 
   // Sync default status when entity type changes in form
   const handleEntityTypeChange = (type: string) => {

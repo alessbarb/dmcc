@@ -15,6 +15,8 @@ import {
   ChevronDown,
   ChevronUp,
   Terminal,
+  HelpCircle,
+  MapPin,
 } from "lucide-react";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { createId } from "@shared/ids.js";
@@ -22,6 +24,7 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+import { GuidedEmptyState } from "../onboarding/CampaignStarterHub.js";
 
 
 export interface SessionPageProps {
@@ -1851,6 +1854,37 @@ export function SessionPage(props: SessionPageProps = {}) {
             </div>
           </form>
         </section>
+
+        {sessions.length === 0 && (
+          <section style={{ maxWidth: "720px", margin: "0 auto", width: "100%" }}>
+            <GuidedEmptyState
+              icon={<HelpCircle size={30} />}
+              title={t("guidedStart.empty.session.title")}
+              description={t("guidedStart.empty.session.description")}
+              actions={[
+                {
+                  label: t("guidedStart.empty.session.createPlace"),
+                  icon: <MapPin size={14} />,
+                  onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "location", content: t("guidedStart.templates.location.content"), metadata: { locationType: "settlement", atmosphere: "" } } })),
+                },
+                {
+                  label: t("guidedStart.empty.session.createNpc"),
+                  icon: <UserPlus size={14} />,
+                  onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "npc", content: t("guidedStart.templates.npc.content"), metadata: { role: "", attitudeToParty: "neutral", goal: "" } } })),
+                },
+                {
+                  label: t("guidedStart.empty.session.prepare"),
+                  icon: <StickyNote size={14} />,
+                  primary: true,
+                  onClick: () => {
+                    const input = document.getElementById("session-title-input") as HTMLInputElement | null;
+                    input?.focus();
+                  },
+                },
+              ]}
+            />
+          </section>
+        )}
 
         {preparedSessions.length > 0 && (
           <section style={{ maxWidth: "720px", margin: "0 auto", width: "100%" }}>

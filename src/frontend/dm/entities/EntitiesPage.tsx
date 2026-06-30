@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Search, Plus, Eye, EyeOff, Filter } from "lucide-react";
+import { Search, Plus, Eye, EyeOff, Filter, MapPin, Users, Zap, Network } from "lucide-react";
 import { getEntityDefaultImage } from "./entityVisuals.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { EntityDetailModal } from "./EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatEntityType, formatVisibility } from "@shared/i18n/index.js";
+import { GuidedEmptyState } from "../onboarding/CampaignStarterHub.js";
 
 export interface EntitiesPageProps {
   campaignState?: any;
@@ -19,6 +20,10 @@ export interface EntitiesPageProps {
 }
 
 const ENTITY_TYPE_FILTERS = ["npc", "location", "quest", "clue", "secret", "clock", "consequence"] as const;
+
+function LayersIconFallback() {
+  return <Plus size={30} />;
+}
 
 const getImportanceKey = (imp: string) => {
   const map: Record<string, string> = {
@@ -87,10 +92,42 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
             return e.title.toLowerCase().includes(query) || (e.summary && e.summary.toLowerCase().includes(query));
           });
         if (filtered.length === 0) {
+          if (!entitySearchQuery && entityTypeFilter === "all") {
+            return (
+              <GuidedEmptyState
+                icon={<LayersIconFallback />}
+                title={t("guidedStart.empty.entities.title")}
+                description={t("guidedStart.empty.entities.description")}
+                actions={[
+                  {
+                    label: t("guidedStart.empty.entities.createPlace"),
+                    icon: <MapPin size={14} />,
+                    primary: true,
+                    onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "location", content: t("guidedStart.templates.location.content"), metadata: { locationType: "settlement", atmosphere: "" } } })),
+                  },
+                  {
+                    label: t("guidedStart.empty.entities.createNpc"),
+                    icon: <Users size={14} />,
+                    onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "npc", content: t("guidedStart.templates.npc.content"), metadata: { role: "", attitudeToParty: "neutral", goal: "" } } })),
+                  },
+                  {
+                    label: t("guidedStart.empty.entities.createThreat"),
+                    icon: <Zap size={14} />,
+                    onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "front", importance: "high", status: "active", content: t("guidedStart.templates.threat.content"), metadata: { stakes: "", countdown: "" } } })),
+                  },
+                  {
+                    label: t("guidedStart.empty.entities.openGraph"),
+                    icon: <Network size={14} />,
+                    onClick: () => window.dispatchEvent(new CustomEvent("dmcc:start-campaign-tour")),
+                  },
+                ]}
+              />
+            );
+          }
           return (
             <div className="card" style={{ textAlign: "center", padding: "40px", color: "var(--text-muted)" }}>
               <Filter size={36} style={{ opacity: 0.3, marginBottom: "12px" }} />
-              <p>{entitySearchQuery || entityTypeFilter !== "all" ? t("entitiesPage.noResults") : t("entitiesPage.noEntities")}</p>
+              <p>{t("entitiesPage.noResults")}</p>
             </div>
           );
         }
