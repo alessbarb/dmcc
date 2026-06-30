@@ -1360,6 +1360,8 @@ export const en = {
     readyDescription: "You already have enough structure to play. From here, DMCC will help you keep continuity through sessions, relations, consequences, and player knowledge.",
     compactTitle: "Initial preparation",
     compactDescription: "The guide is folded away. Use it whenever you want a gentle next step.",
+    normalTitle: "Next useful step",
+    normalDescription: "Normal mode keeps the starter compact and shows only the most useful next action. Expand it when you want to review the checklist.",
     progress: "{completed} of {total} useful pieces ready",
     recommended: "Recommended next step: {step}",
     allDone: "The initial core is complete. Keep preparing only what helps the next table.",
@@ -1375,6 +1377,11 @@ export const en = {
       guided: "Guided",
       normal: "Normal",
       minimal: "Minimal",
+    },
+    helpLevelDescriptions: {
+      guided: "Shows the full checklist, detailed explanations, recipes, and proactive prompts.",
+      normal: "Shows a compact next-step card and keeps extra guidance one click away.",
+      minimal: "Hides proactive onboarding. You can bring it back from this button whenever you need it.",
     },
     steps: {
       premise: {
@@ -1412,6 +1419,15 @@ export const en = {
         description: "Review what players can see before sharing the portal or revealing knowledge.",
         action: "Review knowledge",
       },
+    },
+    premiseModal: {
+      eyebrow: "Campaign core",
+      title: "Edit campaign premise",
+      description: "Write the short sentence you would read before preparing the table. It can describe the situation, tone, promise, or conflict. You can change it later.",
+      label: "Premise or short campaign summary",
+      placeholder: "Example: A misty border town is losing people to the old mine, and every local faction knows more than it admits.",
+      save: "Save premise",
+      emptyHint: "Leaving this empty is allowed, but the starter will keep recommending it until the campaign has a short summary.",
     },
     helpModal: {
       eyebrow: "Choose a practical start",
@@ -1466,6 +1482,8 @@ export const en = {
     toasts: {
       sessionScaffoldCreated: "First session scaffold created.",
       recipeError: "Could not apply the guided start recipe: {error}",
+      premiseSaved: "Campaign premise saved.",
+      premiseError: "Could not save the campaign premise: {error}",
     },
     empty: {
       entities: {

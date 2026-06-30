@@ -1383,6 +1383,8 @@ export const de: TranslationDictionary = {
     readyDescription: "Du hast genug Struktur, um zu spielen. Ab jetzt hilft DMCC vor allem dabei, Kontinuität über Sitzungen, Beziehungen, Konsequenzen und Spielerwissen zu halten.",
     compactTitle: "Anfangsvorbereitung",
     compactDescription: "Der Leitfaden ist eingeklappt. Öffne ihn, wenn du einen sanften nächsten Schritt brauchst.",
+    normalTitle: "Nächster sinnvoller Schritt",
+    normalDescription: "Der Normalmodus hält den Einstieg kompakt und zeigt nur die nützlichste nächste Aktion. Klappe ihn auf, wenn du die Checkliste prüfen willst.",
     progress: "{completed} von {total} nützlichen Bausteinen bereit",
     recommended: "Empfohlener nächster Schritt: {step}",
     allDone: "Der Anfangskern ist vollständig. Bereite nur weiter vor, was der nächsten Runde hilft.",
@@ -1395,6 +1397,11 @@ export const de: TranslationDictionary = {
     showAgain: "Geführten Start anzeigen",
     helpLevelLabel: "Hilfestufe",
     helpLevels: { guided: "Geführt", normal: "Normal", minimal: "Minimal" },
+    helpLevelDescriptions: {
+      guided: "Zeigt die vollständige Checkliste, ausführliche Erklärungen, Rezepte und proaktive Hinweise.",
+      normal: "Zeigt eine kompakte Karte mit dem nächsten Schritt und hält zusätzliche Hilfe einen Klick entfernt.",
+      minimal: "Blendet proaktive Hilfe aus. Du kannst sie über diese Schaltfläche jederzeit zurückholen.",
+    },
     steps: {
       premise: { title: "Kampagnenprämisse", description: "Ein kurzer Satz dazu, worum es geht und welchen Ton die Kampagne hat.", action: "Prämisse bearbeiten" },
       place: { title: "Startort", description: "Dorf, Lager, Viertel, Taverne, Grenze, Schiff, Ruine oder ein klarer Einstiegspunkt.", action: "Ort erstellen" },
@@ -1403,6 +1410,15 @@ export const de: TranslationDictionary = {
       session: { title: "Erste Sitzung", description: "Ein leichter Plan für die nächste Runde: Einstieg, Szenen, Hinweise, Entscheidungen und Nachwirkung.", action: "Sitzung vorbereiten" },
       relations: { title: "Erste Beziehungen", description: "Verbinde zwei Bausteine, damit aus losen Notizen Kampagnengedächtnis wird.", action: "Entitäten verbinden" },
       visibility: { title: "Spielersichtbarkeit", description: "Prüfe, was die Runde sehen darf, bevor du Portal oder Wissen freigibst.", action: "Wissen prüfen" },
+    },
+    premiseModal: {
+      eyebrow: "Kampagnenkern",
+      title: "Kampagnenprämisse bearbeiten",
+      description: "Schreibe den kurzen Satz, den du vor der Vorbereitung der Runde lesen würdest. Er kann Situation, Ton, Versprechen oder Konflikt beschreiben und lässt sich später ändern.",
+      label: "Prämisse oder kurzer Kampagnenüberblick",
+      placeholder: "Beispiel: Ein nebliges Grenzdorf verliert Menschen an die alte Mine, und jede örtliche Fraktion weiß mehr, als sie zugibt.",
+      save: "Prämisse speichern",
+      emptyHint: "Du kannst das Feld leer lassen, aber der Einstieg wird es weiter empfehlen, bis die Kampagne eine kurze Zusammenfassung hat.",
     },
     helpModal: { eyebrow: "Praktischen Start wählen", title: "Was brauchst du gerade?", description: "Wähle eine kleine Aktion. DMCC öffnet die passende Vorlage oder erstellt einen sauberen Sitzungsvorschlag, den du vor der Runde bearbeiten kannst." },
     recipes: {
@@ -1420,7 +1436,12 @@ export const de: TranslationDictionary = {
       threat: { content: "Was schlimmer wird:\n\nWer oder was dahinter steckt:\n\nSichtbare Zeichen:\n\nWas passiert, wenn niemand eingreift:\n\nWie es eskalieren kann:" },
       quest: { content: "Aufhänger:\n\nEinsatz:\n\nWer um Hilfe bittet oder Druck erzeugt:\n\nMögliche Spuren:\n\nWas sich bei Lösung ändern kann:" },
     },
-    toasts: { sessionScaffoldCreated: "Struktur für die erste Sitzung erstellt.", recipeError: "Startrezept konnte nicht angewendet werden: {error}" },
+    toasts: {
+      sessionScaffoldCreated: "Struktur für die erste Sitzung erstellt.",
+      recipeError: "Startrezept konnte nicht angewendet werden: {error}",
+      premiseSaved: "Kampagnenprämisse gespeichert.",
+      premiseError: "Kampagnenprämisse konnte nicht gespeichert werden: {error}",
+    },
     empty: {
       entities: { title: "Beginne mit drei nützlichen Bausteinen", description: "Eine Kampagne lässt sich leichter leiten, wenn sie einen Ort, jemanden mit einem Ziel und einen Druck für die nächste Sitzung hat.", createPlace: "Ort erstellen", createNpc: "NSC erstellen", createThreat: "Bedrohung erstellen", openGraph: "Leitfaden anzeigen" },
       graph: { title: "Der Graph braucht Kampagnenbausteine", description: "Erstelle zuerst einige Entitäten und verbinde sie dann mit einfachen Beziehungen: Schuld, Bündnis, Geheimnis, Hinweis oder Bedrohung.", createEntity: "Entität erstellen", resetFilter: "Filter zurücksetzen", noRelationsTitle: "Dein Graph hat Knoten, aber noch keine Beziehungen", noRelationsDescription: "Verbinde zwei Entitäten, damit DMCC das Kampagnengedächtnis als Netzwerk und nicht als Einzelnachrichten zeigt.", createRelation: "Beziehung erstellen" },

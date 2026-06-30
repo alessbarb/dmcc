@@ -7123,6 +7123,14 @@ body {
   padding: 16px 18px;
 }
 
+.guided-start__compact-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
 .guided-start__top,
 .guided-start__summary,
 .guided-start__footer,
@@ -7324,10 +7332,27 @@ body {
 }
 
 .guided-start__level {
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
   color: var(--text-muted);
   font-size: 0.75rem;
+  max-width: 320px;
+  text-align: right;
+}
+
+.guided-start__level label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   white-space: nowrap;
+}
+
+.guided-start__level small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  line-height: 1.35;
 }
 
 .guided-start__level .form-select {
@@ -7346,6 +7371,23 @@ body {
 
 .guided-start-modal {
   max-width: 860px;
+}
+
+.guided-start-premise-modal {
+  max-width: 640px;
+}
+
+.guided-start-premise-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.guided-start-premise-modal__hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 
 .guided-start-modal__body {
@@ -7450,6 +7492,16 @@ body {
   .guided-inline-callout {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .guided-start__compact-side,
+  .guided-start__level {
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .guided-start__level label {
+    justify-content: space-between;
   }
 
   .guided-start-recipes {

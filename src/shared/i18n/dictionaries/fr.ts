@@ -1383,6 +1383,8 @@ export const fr: TranslationDictionary = {
     readyDescription: "Vous avez déjà assez de structure pour jouer. Ensuite, DMCC vous aidera surtout à garder la continuité avec les séances, les relations, les conséquences et les connaissances des joueurs.",
     compactTitle: "Préparation initiale",
     compactDescription: "Le guide est replié. Ouvrez-le quand vous voulez un prochain pas clair.",
+    normalTitle: "Prochaine étape utile",
+    normalDescription: "Le mode Normal garde le démarrage compact et montre seulement l’action la plus utile. Développez-le pour revoir la liste.",
     progress: "{completed} sur {total} éléments utiles prêts",
     recommended: "Prochaine étape recommandée : {step}",
     allDone: "Le noyau initial est complet. Continuez à préparer uniquement ce qui aide la prochaine table.",
@@ -1395,6 +1397,11 @@ export const fr: TranslationDictionary = {
     showAgain: "Afficher le démarrage guidé",
     helpLevelLabel: "Niveau d'aide",
     helpLevels: { guided: "Guidé", normal: "Normal", minimal: "Minimal" },
+    helpLevelDescriptions: {
+      guided: "Affiche la liste complète, les explications détaillées, les recettes et les conseils proactifs.",
+      normal: "Affiche une carte compacte avec la prochaine étape et garde l’aide supplémentaire à portée de clic.",
+      minimal: "Masque l’aide proactive. Vous pouvez la réactiver avec ce bouton quand vous en avez besoin.",
+    },
     steps: {
       premise: { title: "Prémisse de campagne", description: "Une phrase courte sur le sujet de la campagne et son ton.", action: "Modifier la prémisse" },
       place: { title: "Lieu de départ", description: "Village, camp, quartier, taverne, frontière, navire, ruine ou point d'entrée clair.", action: "Créer un lieu" },
@@ -1403,6 +1410,15 @@ export const fr: TranslationDictionary = {
       session: { title: "Première séance", description: "Un plan léger : ouverture, scènes, indices, décisions et suite à vérifier.", action: "Préparer la séance" },
       relations: { title: "Premières relations", description: "Reliez deux éléments pour transformer des notes isolées en mémoire de campagne.", action: "Relier des entités" },
       visibility: { title: "Visibilité joueurs", description: "Vérifiez ce que la table peut voir avant de partager le portail ou de révéler des informations.", action: "Vérifier les connaissances" },
+    },
+    premiseModal: {
+      eyebrow: "Noyau de campagne",
+      title: "Modifier la prémisse de campagne",
+      description: "Écrivez la phrase courte que vous liriez avant de préparer la table. Elle peut décrire la situation, le ton, la promesse ou le conflit. Vous pourrez la modifier plus tard.",
+      label: "Prémisse ou résumé court de campagne",
+      placeholder: "Exemple : Un village frontalier noyé dans la brume perd des habitants près de l’ancienne mine, et chaque faction locale en sait plus qu’elle ne l’admet.",
+      save: "Enregistrer la prémisse",
+      emptyHint: "Vous pouvez laisser ce champ vide, mais le démarrage continuera à le recommander tant que la campagne n’a pas de bref résumé.",
     },
     helpModal: { eyebrow: "Choisir un départ pratique", title: "De quoi avez-vous besoin maintenant ?", description: "Choisissez une petite action. DMCC ouvrira le bon modèle ou créera une préparation de séance propre, modifiable avant la table." },
     recipes: {
@@ -1420,7 +1436,12 @@ export const fr: TranslationDictionary = {
       threat: { content: "Ce qui empire :\n\nQui ou quoi est derrière :\n\nSignes visibles :\n\nCe qui se passe si personne n'intervient :\n\nComment cela peut escalader :" },
       quest: { content: "Accroche :\n\nEnjeux :\n\nQui demande de l'aide ou crée la pression :\n\nPistes possibles :\n\nCe qui peut changer une fois résolu :" },
     },
-    toasts: { sessionScaffoldCreated: "Structure de première séance créée.", recipeError: "Impossible d'appliquer la recette de démarrage : {error}" },
+    toasts: {
+      sessionScaffoldCreated: "Structure de première séance créée.",
+      recipeError: "Impossible d'appliquer la recette de démarrage : {error}",
+      premiseSaved: "Prémisse de campagne enregistrée.",
+      premiseError: "Impossible d’enregistrer la prémisse de campagne : {error}",
+    },
     empty: {
       entities: { title: "Commencez par trois éléments utiles", description: "Une campagne est plus facile à mener avec un lieu, quelqu'un qui veut quelque chose et une pression pour lancer la prochaine séance.", createPlace: "Créer un lieu", createNpc: "Créer un PNJ", createThreat: "Créer une menace", openGraph: "Voir le guide" },
       graph: { title: "Le graphe a besoin d'éléments de campagne", description: "Créez quelques entités, puis reliez-les avec des relations simples : dette, alliance, secret, indice ou menace.", createEntity: "Créer une entité", resetFilter: "Réinitialiser le filtre", noRelationsTitle: "Votre graphe a des nœuds, mais pas encore de relations", noRelationsDescription: "Reliez deux entités pour que DMCC affiche la mémoire comme un réseau plutôt que comme des notes isolées.", createRelation: "Créer une relation" },

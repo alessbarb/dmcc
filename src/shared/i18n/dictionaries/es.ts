@@ -1362,6 +1362,8 @@ export const es: TranslationDictionary = {
     readyDescription: "Ya tienes estructura suficiente para jugar. A partir de aquí, DMCC te ayudará a mantener continuidad con sesiones, relaciones, consecuencias y conocimiento de jugadores.",
     compactTitle: "Preparación inicial",
     compactDescription: "La guía está plegada. Úsala cuando quieras un siguiente paso amable.",
+    normalTitle: "Siguiente paso útil",
+    normalDescription: "El modo Normal mantiene el arranque compacto y muestra solo la acción más útil. Expándelo cuando quieras revisar la lista completa.",
     progress: "{completed} de {total} piezas útiles listas",
     recommended: "Siguiente paso recomendado: {step}",
     allDone: "El núcleo inicial está completo. Sigue preparando solo lo que ayude a la próxima mesa.",
@@ -1378,6 +1380,11 @@ export const es: TranslationDictionary = {
       normal: "Normal",
       minimal: "Mínimo",
     },
+    helpLevelDescriptions: {
+      guided: "Muestra lista completa, explicaciones detalladas, recetas y sugerencias proactivas.",
+      normal: "Muestra una tarjeta compacta con el siguiente paso y deja la ayuda extra a un clic.",
+      minimal: "Oculta la ayuda proactiva. Puedes recuperarla desde este botón cuando la necesites.",
+    },
     steps: {
       premise: { title: "Premisa de campaña", description: "Una frase breve sobre de qué va la campaña y qué tono tiene.", action: "Editar premisa" },
       place: { title: "Lugar inicial", description: "Una aldea, campamento, distrito, taberna, frontera, nave, ruina o punto claro de entrada.", action: "Crear lugar" },
@@ -1386,6 +1393,15 @@ export const es: TranslationDictionary = {
       session: { title: "Primera sesión", description: "Un plan ligero para la próxima mesa: apertura, escenas, pistas, decisiones y cierre.", action: "Preparar sesión" },
       relations: { title: "Primeras relaciones", description: "Conecta dos piezas para que la campaña deje de ser notas sueltas y empiece a tener memoria.", action: "Conectar entidades" },
       visibility: { title: "Visibilidad de jugadores", description: "Revisa qué puede ver la mesa antes de compartir el portal o revelar conocimiento.", action: "Revisar conocimiento" },
+    },
+    premiseModal: {
+      eyebrow: "Núcleo de campaña",
+      title: "Editar premisa de campaña",
+      description: "Escribe la frase corta que leerías antes de preparar la mesa. Puede describir la situación, el tono, la promesa o el conflicto. Podrás cambiarla más adelante.",
+      label: "Premisa o resumen breve de campaña",
+      placeholder: "Ejemplo: Un pueblo fronterizo cubierto de bruma está perdiendo vecinos en la vieja mina, y cada facción local sabe más de lo que admite.",
+      save: "Guardar premisa",
+      emptyHint: "Puedes dejarla vacía, pero el arranque seguirá recomendándola hasta que la campaña tenga un resumen breve.",
     },
     helpModal: {
       eyebrow: "Elige un comienzo práctico",
@@ -1422,7 +1438,12 @@ export const es: TranslationDictionary = {
       threat: { content: "Qué está empeorando:\n\nQuién o qué está detrás:\n\nSeñales visibles:\n\nQué pasa si nadie interviene:\n\nCómo puede escalar:" },
       quest: { content: "Gancho:\n\nRiesgos:\n\nQuién pide ayuda o crea presión:\n\nPosibles pistas:\n\nQué puede cambiar al resolverse:" },
     },
-    toasts: { sessionScaffoldCreated: "Estructura de primera sesión creada.", recipeError: "No se pudo aplicar la receta de arranque: {error}" },
+    toasts: {
+      sessionScaffoldCreated: "Estructura de primera sesión creada.",
+      recipeError: "No se pudo aplicar la receta de arranque: {error}",
+      premiseSaved: "Premisa de campaña guardada.",
+      premiseError: "No se pudo guardar la premisa de campaña: {error}",
+    },
     empty: {
       entities: { title: "Empieza con tres piezas útiles", description: "Una campaña es más fácil de dirigir cuando tiene un lugar, alguien que quiere algo y una presión que pueda mover la próxima sesión.", createPlace: "Crear lugar", createNpc: "Crear PNJ", createThreat: "Crear amenaza", openGraph: "Ver guía" },
       graph: { title: "El grafo necesita piezas de campaña", description: "Crea algunas entidades primero y luego conéctalas con relaciones simples: una deuda, una alianza, un secreto, una pista o una amenaza.", createEntity: "Crear entidad", resetFilter: "Reiniciar filtro", noRelationsTitle: "Tu grafo tiene nodos, pero aún no tiene relaciones", noRelationsDescription: "Conecta dos entidades para que DMCC muestre la memoria de campaña como una red y no como notas aisladas.", createRelation: "Crear relación" },

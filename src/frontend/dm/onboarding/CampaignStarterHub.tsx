@@ -75,18 +75,21 @@ function helpLevelLabelKey(level: GuidedHelpLevel): string {
 function HelpLevelSelect({ value, onChange }: { value: GuidedHelpLevel; onChange: (value: GuidedHelpLevel) => void }) {
   const { t } = useTranslation();
   return (
-    <label className="guided-start__level">
-      <span>{t("guidedStart.helpLevelLabel")}</span>
-      <select
-        className="form-select"
-        value={value}
-        onChange={(event) => onChange(event.target.value as GuidedHelpLevel)}
-      >
-        <option value="guided">{t(helpLevelLabelKey("guided"))}</option>
-        <option value="normal">{t(helpLevelLabelKey("normal"))}</option>
-        <option value="minimal">{t(helpLevelLabelKey("minimal"))}</option>
-      </select>
-    </label>
+    <div className="guided-start__level">
+      <label>
+        <span>{t("guidedStart.helpLevelLabel")}</span>
+        <select
+          className="form-select"
+          value={value}
+          onChange={(event) => onChange(event.target.value as GuidedHelpLevel)}
+        >
+          <option value="guided">{t(helpLevelLabelKey("guided"))}</option>
+          <option value="normal">{t(helpLevelLabelKey("normal"))}</option>
+          <option value="minimal">{t(helpLevelLabelKey("minimal"))}</option>
+        </select>
+      </label>
+      <small>{t(`guidedStart.helpLevelDescriptions.${value}`)}</small>
+    </div>
   );
 }
 
@@ -279,11 +282,76 @@ function GuidanceModal({
   );
 }
 
+function CampaignPremiseModal({
+  campaignId,
+  campaign,
+  onClose,
+}: {
+  campaignId: string;
+  campaign?: { summary?: string; description?: string };
+  onClose: () => void;
+}) {
+  const store = useCampaignStore();
+  const { addToast } = useToast();
+  const { t } = useTranslation();
+  const [summary, setSummary] = useState(campaign?.summary ?? campaign?.description ?? "");
+  const [saving, setSaving] = useState(false);
+
+  const savePremise = async () => {
+    setSaving(true);
+    try {
+      await store.updateCampaign(campaignId, { summary: summary.trim() });
+      addToast(t("guidedStart.toasts.premiseSaved"), "success");
+      onClose();
+    } catch (err: any) {
+      addToast(t("guidedStart.toasts.premiseError", { error: err?.message ?? String(err) }), "error");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content guided-start-premise-modal" role="dialog" aria-modal="true" aria-labelledby="guided-start-premise-title">
+        <div className="modal-header">
+          <div>
+            <span className="guided-start__eyebrow">{t("guidedStart.premiseModal.eyebrow")}</span>
+            <h2 id="guided-start-premise-title" style={{ fontWeight: 800 }}>{t("guidedStart.premiseModal.title")}</h2>
+          </div>
+          <button type="button" className="btn btn-icon btn-secondary" onClick={onClose} aria-label={t("common.close")} disabled={saving}>
+            <X size={18} />
+          </button>
+        </div>
+        <div className="modal-body guided-start-premise-modal__body">
+          <p className="guided-start-modal__intro">{t("guidedStart.premiseModal.description")}</p>
+          <label className="form-label" htmlFor="guided-start-premise-summary">{t("guidedStart.premiseModal.label")}</label>
+          <textarea
+            id="guided-start-premise-summary"
+            className="form-textarea"
+            value={summary}
+            onChange={(event) => setSummary(event.target.value)}
+            placeholder={t("guidedStart.premiseModal.placeholder")}
+            rows={5}
+          />
+          <p className="guided-start-premise-modal__hint">{t("guidedStart.premiseModal.emptyHint")}</p>
+        </div>
+        <div className="modal-footer">
+          <button type="button" className="btn btn-secondary" onClick={onClose} disabled={saving}>{t("common.cancel")}</button>
+          <button type="button" className="btn btn-primary" onClick={() => void savePremise()} disabled={saving}>
+            {saving ? t("common.saving") : t("guidedStart.premiseModal.save")}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function CampaignStarterHub({ campaignId, campaignState, setCurrentPage }: CampaignStarterHubProps) {
   const store = useCampaignStore();
   const { t } = useTranslation();
   const [prefs, setPrefs] = useState(() => readGuidedStartPreferences());
   const [helpOpen, setHelpOpen] = useState(false);
+  const [premiseOpen, setPremiseOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
@@ -294,8 +362,10 @@ export function CampaignStarterHub({ campaignId, campaignState, setCurrentPage }
 
   const progress = useMemo(() => computeStarterProgress(campaignState), [campaignState]);
   const hidden = isStarterHubHidden(campaignId) || prefs.helpLevel === "minimal";
-  const compact = isStarterHubCompact(campaignId) || progress.isReadyForFirstSession;
-  const visibleSteps = showAll || prefs.helpLevel === "guided" ? progress.steps : progress.steps.filter((step) => !step.completed).slice(0, 3);
+  const compact = !showAll && (prefs.helpLevel === "normal" || isStarterHubCompact(campaignId) || progress.isReadyForFirstSession);
+  const visibleSteps = showAll || prefs.helpLevel === "guided"
+    ? progress.steps
+    : progress.steps.filter((step) => !step.completed).slice(0, 3);
   const recommended = progress.recommendedStep;
 
   const openRelation = () => {
@@ -306,7 +376,7 @@ export function CampaignStarterHub({ campaignId, campaignState, setCurrentPage }
   const runStepAction = (stepId: StarterStepId) => {
     switch (stepId) {
       case "premise":
-        setCurrentPage("settings");
+        setPremiseOpen(true);
         break;
       case "place":
         dispatchEntityTemplate({ entityType: "location", content: t("guidedStart.templates.location.content"), metadata: { locationType: "settlement", atmosphere: "" } });
@@ -331,6 +401,7 @@ export function CampaignStarterHub({ campaignId, campaignState, setCurrentPage }
 
   const changeHelpLevel = (level: GuidedHelpLevel) => {
     setGuidedHelpLevel(level);
+    setShowAll(false);
     setPrefs(readGuidedStartPreferences());
   };
 
@@ -359,32 +430,36 @@ export function CampaignStarterHub({ campaignId, campaignState, setCurrentPage }
           <span className="guided-start__icon" aria-hidden="true"><Sparkles size={18} /></span>
           <div>
             <span className="guided-start__eyebrow">{t("guidedStart.eyebrow")}</span>
-            <h2 id="guided-start-title">{progress.isReadyForFirstSession ? t("guidedStart.readyTitle") : t("guidedStart.compactTitle")}</h2>
-            <p>{progress.isReadyForFirstSession ? t("guidedStart.readyDescription") : t("guidedStart.compactDescription")}</p>
+            <h2 id="guided-start-title">{progress.isReadyForFirstSession ? t("guidedStart.readyTitle") : prefs.helpLevel === "normal" ? t("guidedStart.normalTitle") : t("guidedStart.compactTitle")}</h2>
+            <p>{progress.isReadyForFirstSession ? t("guidedStart.readyDescription") : prefs.helpLevel === "normal" ? t("guidedStart.normalDescription") : t("guidedStart.compactDescription")}</p>
           </div>
         </div>
-        <div className="guided-start__compact-actions">
-          {recommended ? (
-            <button type="button" className="btn btn-primary btn-sm" onClick={() => runStepAction(recommended.id)}>
-              {t(`guidedStart.steps.${recommended.id}.action`)}
+        <div className="guided-start__compact-side">
+          <div className="guided-start__compact-actions">
+            {recommended ? (
+              <button type="button" className="btn btn-primary btn-sm" onClick={() => runStepAction(recommended.id)}>
+                {t(`guidedStart.steps.${recommended.id}.action`)}
+              </button>
+            ) : null}
+            <button type="button" className="btn btn-secondary btn-sm" onClick={() => setHelpOpen(true)}>
+              <HelpCircle size={14} /> {t("guidedStart.needHelp")}
             </button>
-          ) : null}
-          <button type="button" className="btn btn-secondary btn-sm" onClick={() => setHelpOpen(true)}>
-            <HelpCircle size={14} /> {t("guidedStart.needHelp")}
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={() => {
-              setStarterHubCompact(campaignId, false);
-              setShowAll(true);
-              setPrefs(readGuidedStartPreferences());
-            }}
-          >
-            <ChevronDown size={14} /> {t("guidedStart.expand")}
-          </button>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={() => {
+                setStarterHubCompact(campaignId, false);
+                setShowAll(true);
+                setPrefs(readGuidedStartPreferences());
+              }}
+            >
+              <ChevronDown size={14} /> {t("guidedStart.expand")}
+            </button>
+          </div>
+          <HelpLevelSelect value={prefs.helpLevel} onChange={changeHelpLevel} />
         </div>
         {helpOpen && <GuidanceModal campaignState={campaignState} onClose={() => setHelpOpen(false)} onNavigate={setCurrentPage} onOpenRelation={openRelation} />}
+        {premiseOpen && <CampaignPremiseModal campaignId={campaignId} campaign={campaignState?.campaign} onClose={() => setPremiseOpen(false)} />}
       </section>
     );
   }
@@ -454,6 +529,7 @@ export function CampaignStarterHub({ campaignId, campaignState, setCurrentPage }
       </div>
 
       {helpOpen && <GuidanceModal campaignState={campaignState} onClose={() => setHelpOpen(false)} onNavigate={setCurrentPage} onOpenRelation={openRelation} />}
+      {premiseOpen && <CampaignPremiseModal campaignId={campaignId} campaign={campaignState?.campaign} onClose={() => setPremiseOpen(false)} />}
     </section>
   );
 }
