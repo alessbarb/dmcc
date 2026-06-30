@@ -12,6 +12,7 @@ export interface Campaign {
   createdAt?: string;
   updatedAt?: string;
   settings?: CampaignSettings;
+  metadata?: Record<string, unknown>;
   archived: boolean;
 }
 
@@ -22,6 +23,7 @@ export function createCampaign(input: {
   system?: string;
   status?: string;
   settings?: CampaignSettings;
+  metadata?: Record<string, unknown>;
 }): Campaign {
   if (input.title.trim().length === 0) {
     throw new Error("Campaign title is required");
@@ -33,6 +35,7 @@ export function createCampaign(input: {
     system: input.system || "generic_fantasy_d20",
     status: input.status || "active",
     settings: input.settings || { backupOnClose: true, lanModeEnabled: false, activeQuestsLimit: 10 },
+    metadata: input.metadata ?? {},
     archived: false,
   };
 }

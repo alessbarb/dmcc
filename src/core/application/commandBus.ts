@@ -31,9 +31,35 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         summary: command.summary,
         system: command.system,
         settings: command.settings,
+        metadata: command.metadata,
       });
       const nextState = { ...state, campaign };
       return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "CampaignCreated", campaign));
+    }
+    case "UpdateCampaign": {
+      if (!state.campaign) throw new Error("Campaign not found");
+      const title = command.title !== undefined ? command.title.trim() : undefined;
+      if (title !== undefined && title.length === 0) {
+        throw new Error("Campaign title is required");
+      }
+      const nextCampaign = {
+        ...state.campaign,
+        ...(title !== undefined && { title }),
+        ...(command.summary !== undefined && { summary: command.summary }),
+        ...(command.system !== undefined && { system: command.system }),
+        ...(command.status !== undefined && { status: command.status }),
+        ...(command.metadata !== undefined && { metadata: { ...(state.campaign as any).metadata, ...command.metadata } }),
+        updatedAt: new Date().toISOString(),
+      };
+      return singleEvent({ ...state, campaign: nextCampaign }, makeEvent(command.actorId, command.campaignId, "CampaignUpdated", {
+        id: command.campaignId,
+        campaignId: command.campaignId,
+        ...(title !== undefined && { title }),
+        ...(command.summary !== undefined && { summary: command.summary }),
+        ...(command.system !== undefined && { system: command.system }),
+        ...(command.status !== undefined && { status: command.status }),
+        ...(command.metadata !== undefined && { metadata: nextCampaign.metadata }),
+      }));
     }
     case "CreateEntity": {
       const entity = createEntity({

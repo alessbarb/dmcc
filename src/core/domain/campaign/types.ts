@@ -31,6 +31,7 @@ export const campaignSchema = z.object({
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
   settings: campaignSettingsSchema.optional().default({ backupOnClose: true, lanModeEnabled: false, activeQuestsLimit: 10 }),
+  metadata: z.record(z.string(), z.any()).optional().default({}),
   archived: z.boolean().optional().default(false),
 });
 

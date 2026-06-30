@@ -1,5 +1,5 @@
 import React from "react";
-import { Shield, MapPin, Key, ArrowRight, Users, Trash2 } from "lucide-react";
+import { Shield, MapPin, Key, ArrowRight, Users, Trash2, Pencil } from "lucide-react";
 import { useTranslation } from "../i18n/useTranslation.js";
 
 interface CampaignStats {
@@ -17,15 +17,18 @@ interface Campaign {
   system?: string;
   archived?: boolean;
   stats?: CampaignStats;
+  summary?: string;
+  metadata?: Record<string, unknown>;
 }
 
 interface LandingCampaignCardProps {
   campaign: Campaign;
   onSelect: (campaignId: string) => void;
   onDelete: (campaignId: string, title: string) => void;
+  onRename?: (campaign: Campaign) => void;
 }
 
-export function LandingCampaignCard({ campaign, onSelect, onDelete }: LandingCampaignCardProps) {
+export function LandingCampaignCard({ campaign, onSelect, onDelete, onRename }: LandingCampaignCardProps) {
   const { title, system, stats } = campaign;
   const { t } = useTranslation();
 
@@ -50,9 +53,23 @@ export function LandingCampaignCard({ campaign, onSelect, onDelete }: LandingCam
             <div className="campaign-card-badges">
               {getSystemBadge()}
               <span className="campaign-card-id">{campaign.campaignId}</span>
+              {campaign.metadata?.createdFromTemplateTitle ? (
+                <span className="campaign-card-origin">{t("landing.createdFromTemplate", { title: String(campaign.metadata.createdFromTemplateTitle) })}</span>
+              ) : null}
             </div>
           </div>
           <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+            <button
+              type="button"
+              className="campaign-card-delete-btn"
+              aria-label={t("landing.renameCampaign", { title })}
+              onClick={(e) => { e.stopPropagation(); onRename?.(campaign); }}
+              style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", padding: "4px", borderRadius: "4px", display: "flex", alignItems: "center", opacity: 0.55, transition: "opacity 0.15s, color 0.15s" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; (e.currentTarget as HTMLButtonElement).style.color = "var(--accent)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.55"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
+            >
+              <Pencil size={15} />
+            </button>
             <button
               type="button"
               className="campaign-card-delete-btn"

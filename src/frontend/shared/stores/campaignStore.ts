@@ -1,6 +1,81 @@
 import { create } from "zustand";
 import { createId } from "@shared/ids.js";
 
+
+export interface PremadeCampaignTemplateSummary {
+  templateId: string;
+  version: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  locale: string;
+  system: string;
+  difficulty: "starter" | "medium" | "advanced";
+  recommendedFor: string;
+  tags: string[];
+  pitch?: string;
+  learningGoals?: string[];
+  includedMaterial?: string[];
+  quickStart?: { title: string; steps: string[] };
+  highlightEntityIds?: string[];
+  featuredFactIds?: string[];
+  featuredRelationIds?: string[];
+  file?: string;
+  stats: {
+    entities: number;
+    relations: number;
+    facts: number;
+    preparedSessions: number;
+  };
+}
+
+export interface PremadeCampaignTemplate extends PremadeCampaignTemplateSummary {
+  schemaVersion?: number;
+  summary: string;
+  entities: Array<{
+    entityId: string;
+    entityType: string;
+    title: string;
+    subtitle?: string;
+    summary?: string;
+    content?: string;
+    status?: string;
+    importance?: string;
+    visibility?: any;
+    metadata?: Record<string, unknown>;
+  }>;
+  relations: Array<{
+    relationId: string;
+    sourceEntityId: string;
+    targetEntityId: string;
+    relationType: string;
+    description?: string;
+    visibility?: any;
+  }>;
+  facts: Array<{
+    factId: string;
+    statement: string;
+    kind: string;
+    confidence: string;
+    visibility?: any;
+    relatedEntityIds?: string[];
+  }>;
+  sessions: Array<{
+    sessionId: string;
+    title: string;
+    scheduledAt?: string;
+    prep?: any;
+  }>;
+  canvases: Array<{
+    canvasId: string;
+    title: string;
+    kind: string;
+    description?: string;
+    nodes?: any[];
+    edges?: any[];
+  }>;
+}
+
 export interface Campaign {
   campaignId: string;
   title: string;
@@ -10,6 +85,8 @@ export interface Campaign {
   archived?: boolean;
   currentLocationId?: string;
   currentQuestId?: string;
+  metadata?: Record<string, unknown>;
+  stats?: any;
 }
 
 export interface Entity {
@@ -95,6 +172,8 @@ export interface PlayerProfile {
 
 export interface CampaignStateStore {
   campaigns: Campaign[];
+  premadeTemplates: PremadeCampaignTemplateSummary[];
+  activePremadeTemplate: PremadeCampaignTemplate | null;
   activeCampaignId: string | null;
   campaignState: {
     campaign: Campaign | null;
@@ -136,6 +215,10 @@ export interface CampaignStateStore {
   setActiveVaultId: (vaultId: string) => void;
   
   fetchCampaigns: () => Promise<void>;
+  fetchPremadeCampaigns: () => Promise<void>;
+  fetchPremadeCampaignTemplate: (templateId: string) => Promise<PremadeCampaignTemplate | null>;
+  importPremadeCampaign: (templateId: string, options?: { title?: string; summary?: string; importMode?: "full" | "structure" | "sessions" }) => Promise<string | undefined>;
+  updateCampaign: (campaignId: string, updates: { title?: string; summary?: string; system?: string; status?: string; metadata?: Record<string, unknown> }) => Promise<Campaign | undefined>;
   selectCampaign: (campaignId: string) => Promise<void>;
   reloadCampaign: () => Promise<void>;
   clearCampaign: () => void;
@@ -300,6 +383,8 @@ const broadcastMutation = (campaignId: string) => {
 
 export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   campaigns: [],
+  premadeTemplates: [],
+  activePremadeTemplate: null,
   activeCampaignId: null,
   campaignState: null,
   canvasesById: {},
@@ -370,6 +455,59 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       set({ campaigns, loading: false });
     } catch (err: any) {
       set({ error: err.message, loading: false });
+    }
+  },
+
+  fetchPremadeCampaigns: async () => {
+    try {
+      const res = await fetchWithVault("/api/premade-campaigns");
+      if (!res.ok) {
+        const message = await readApiError(res, "Failed to fetch premade campaigns");
+        throw new Error(message);
+      }
+      const data = await res.json();
+      set({ premadeTemplates: Array.isArray(data.templates) ? data.templates : [] });
+    } catch (err: any) {
+      set({ premadeTemplates: [], error: err.message });
+    }
+  },
+
+  fetchPremadeCampaignTemplate: async (templateId) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/premade-campaigns/${encodeURIComponent(templateId)}`);
+      if (!res.ok) {
+        const message = await readApiError(res, "Failed to fetch premade campaign");
+        throw new Error(message);
+      }
+      const template = await res.json() as PremadeCampaignTemplate;
+      set({ activePremadeTemplate: template, loading: false });
+      return template;
+    } catch (err: any) {
+      set({ activePremadeTemplate: null, error: err.message, loading: false });
+      return null;
+    }
+  },
+
+  importPremadeCampaign: async (templateId, options) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/premade-campaigns/${encodeURIComponent(templateId)}/import`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(options ?? {}),
+      });
+      if (!res.ok) {
+        const message = await readApiError(res, "Failed to import premade campaign");
+        throw new Error(message);
+      }
+      const data = await res.json();
+      await get().fetchCampaigns();
+      await get().selectCampaign(data.campaignId);
+      return data.campaignId as string;
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      throw err;
     }
   },
 
@@ -557,6 +695,31 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await get().fetchCampaigns();
       await get().selectCampaign(campaignId);
       return campaignId;
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+      throw err;
+    }
+  },
+
+  updateCampaign: async (campaignId, updates) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetchWithVault(`/api/campaigns/${campaignId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      if (!res.ok) {
+        const message = await readApiError(res, "Failed to update campaign");
+        throw new Error(message);
+      }
+      const data = await res.json();
+      await get().fetchCampaigns();
+      if (get().activeCampaignId === campaignId) {
+        await get().reloadCampaign();
+      }
+      set({ loading: false });
+      return data.campaign as Campaign;
     } catch (err: any) {
       set({ error: err.message, loading: false });
       throw err;

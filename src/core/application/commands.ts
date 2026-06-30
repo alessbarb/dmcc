@@ -14,6 +14,17 @@ export type Command =
       summary?: string;
       system?: string;
       settings?: any;
+      metadata?: Record<string, unknown>;
+    }
+  | {
+      type: "UpdateCampaign";
+      campaignId: CampaignId;
+      actorId: string;
+      title?: string;
+      summary?: string;
+      system?: string;
+      status?: string;
+      metadata?: Record<string, unknown>;
     }
   | {
       type: "CreateEntity";
