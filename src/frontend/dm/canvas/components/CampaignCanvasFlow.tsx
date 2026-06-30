@@ -504,9 +504,6 @@ export function CampaignCanvasFlow({
     updateCanvasNodesLayout(canvasId, updates);
   }, [canvasId, updateCanvasNodesLayout]);
 
-  // Handle group resizing finished: commit size/positions
-  // (Handled directly inside CanvasGroupNode using NodeResizer onResizeEnd now)
-
   // Viewport change end: save zoom/pan coords
   const onMoveEnd = useCallback((_event: any) => {
     if (rfInstance) {

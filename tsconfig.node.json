@@ -27,7 +27,6 @@
     "./src/shared",
     "./seeds",
     "./scripts",
-    "./scratch",
     "./e2e",
     "./tests"
   ],

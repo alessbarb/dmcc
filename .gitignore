@@ -17,3 +17,7 @@ docs/
 .*/
 release/
 git-state*
+
+# Local scratch experiments are intentionally untracked.
+scratch/*
+!scratch/README.md

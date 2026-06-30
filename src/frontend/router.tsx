@@ -12,7 +12,6 @@ const AppPage = React.lazy(() => import("./App.js").then((m) => ({ default: m.Ap
 const CampaignShellPage = React.lazy(() => import("./dm/layouts/CampaignShell.js").then((m) => ({ default: m.CampaignShell })));
 const DmSetupPageLazy = React.lazy(() => import("./dm/pages/DmSetupPage.js").then((m) => ({ default: m.DmSetupPage })));
 const DmUnlockPageLazy = React.lazy(() => import("./dm/pages/DmUnlockPage.js").then((m) => ({ default: m.DmUnlockPage })));
-const JoinPageLazy = React.lazy(() => import("./player/pages/JoinPage.js").then((m) => ({ default: m.JoinPage })));
 const PlayerJoinPageLazy = React.lazy(() => import("./player/pages/PlayerJoinPage.js").then((m) => ({ default: m.PlayerJoinPage })));
 const DashboardPageLazy = React.lazy(() => import("./dm/pages/DashboardPage.js").then((m) => ({ default: m.DashboardPage })));
 const WhatNowPageLazy = React.lazy(() => import("./dm/pages/WhatNowPage.js").then((m) => ({ default: m.WhatNowPage })));
@@ -94,8 +93,7 @@ const joinRoute = createRoute({
   beforeLoad: ({ params }) => {
     throw redirect({ to: "/player/join", search: { campaignId: params.campaignId } });
   },
-  // Fallback component (should not render due to redirect)
-  component: withSuspense(JoinPageLazy),
+  component: () => null,
 });
 
 // Player registration route — consume invite token
