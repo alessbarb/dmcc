@@ -1,498 +1,1118 @@
 {
   "locale": "es",
   "templateId": "oracle-triple-eclipse",
-  "templateVersion": "1.1.0",
-  "translationVersion": "1.0.0",
+  "templateVersion": "1.2.0",
+  "translationVersion": "1.1.0",
   "translatedFromLocale": "en",
   "title": "La Sombra del Oráculo",
-  "subtitle": "Intriga, facciones, secretos y consecuencias",
-  "description": "Campaña de ejemplo avanzada para probar memoria narrativa, facciones, secretos revelables, relojes de tensión y preparación de sesiones con consecuencias.",
-  "summary": "La Triple Eclipse se acerca. Luminara prepara un ritual público para consultar el Oráculo de los Hábitos, pero alguien ha sustituido una página del juramento ceremonial. Cada facción intenta usar la crisis para confirmar su propia versión del futuro.",
-  "recommendedFor": "DMs que quieren probar una campaña densa sin preparar desde cero: facciones con intereses incompatibles, pistas que apuntan a secretos, relojes que presionan y consecuencias listas para activar según las decisiones del grupo.",
-  "pitch": "Una campaña breve de intriga fantástica para ver cómo DMCC conecta facciones, pistas, secretos y consecuencias. Está pensada para que un DM pueda abrir el dashboard, revisar el canvas, dirigir cuatro sesiones y entender cómo se conserva la memoria narrativa.",
+  "subtitle": "Conspiración urbana, facciones, secretos y consecuencias",
+  "description": "Campaña de investigación urbana para probar memoria narrativa, facciones, secretos revelables, relojes de presión y preparación de sesiones en Valdris.",
+  "summary": "Los aventureros llegan a Valdris siguiendo una profecía que resulta ser una falsificación mágica. Para desenmascarar al Oráculo deberán conectar pistas, negociar con facciones incompatibles y decidir cómo revelar una verdad capaz de romper la ciudad.",
+  "recommendedFor": "DMs que quieren dirigir una campaña densa de investigación sin preparar desde cero: ciudad viva, facciones con intereses incompatibles, pistas conectadas a secretos, relojes de presión y sesiones listas para mesa.",
+  "pitch": "Una campaña de intriga fantástica centrada en Valdris, una ciudad portuaria gobernada por el miedo al Oráculo. El premade muestra cómo DMCC conecta PNJ, facciones, pistas, secretos, localizaciones y consecuencias para conservar memoria narrativa sesión a sesión.",
   "learningGoals": [
-    "Usar entidades como mapa vivo de PNJs, lugares, facciones, pistas y relojes.",
+    "Usar entidades como mapa vivo de PNJ, lugares, facciones, pistas, secretos y relojes.",
     "Preparar sesiones conectando objetivos, escenas, pistas disponibles y secretos en riesgo.",
-    "Separar lo que sabe el DM de lo que puede ver el grupo en el portal del jugador.",
-    "Registrar consecuencias para que el mundo reaccione después de cada sesión."
+    "Separar verdades públicas, rumores y secretos del DM para alimentar el portal de jugador sin destripar la campaña.",
+    "Registrar decisiones y consecuencias para que Valdris reaccione después de cada sesión.",
+    "Dirigir una investigación no lineal donde varias pistas pueden revelar el mismo secreto."
   ],
   "includedMaterial": [
-    "Cuatro sesiones preparadas con objetivos, escenas y checklist de mesa.",
-    "Facciones, PNJs, pistas, secretos, rumores, decisiones y consecuencias conectadas.",
-    "Canvas narrativo para entender el conflicto central de un vistazo.",
+    "Ocho sesiones preparadas con objetivos, escenas y checklist de mesa.",
+    "Facciones, PNJ, localizaciones, pistas, secretos, decisiones y consecuencias conectadas.",
+    "Canvas narrativo de la conspiración de Valdris.",
+    "Relojes de presión para vigilancia del culto y huida de Veradis.",
     "Hechos públicos y secretos del DM listos para revelar durante la partida."
   ],
   "quickStart": {
     "title": "Cómo empezar con La Sombra del Oráculo",
     "steps": [
-      "Lee la guía rápida y abre el canvas del Oráculo para entender qué facción presiona a cada personaje.",
-      "Dirige la sesión 1 con el objetivo de presentar Luminara, Iria y la primera pista de tinta.",
-      "Al final de cada sesión, marca qué pistas salieron y crea una consecuencia si el grupo expuso a alguien en público.",
-      "Usa la copia editable para ajustar nombres, facciones o nivel de amenaza a tu mesa."
+      "Lee el resumen y abre el canvas de la conspiración de Valdris.",
+      "Dirige la sesión 1 con tres puertas claras: audiencia del Oráculo, Taberna del Cuervo o Archivo de la Ciudad.",
+      "Al final de cada sesión, marca qué pistas salieron y qué secretos quedaron en riesgo.",
+      "Avanza los relojes si el grupo acusa públicamente sin pruebas o si Veradis descubre que la bóveda está en peligro.",
+      "Usa la decisión final para elegir entre reforma, revuelta, huida o pacto incómodo."
     ]
   },
   "tags": [
-    "intriga",
-    "facciones",
-    "misterio",
-    "secretos",
-    "consecuencias"
+    "intrigue",
+    "factions",
+    "mystery",
+    "secrets",
+    "urban",
+    "consequences"
   ],
   "entities": {
     "ent_tpl_oracle_campaign_note": {
-      "title": "Cómo usar esta campaña de ejemplo",
-      "summary": "Este ejemplo enseña cómo DMCC conserva memoria narrativa: usa el reloj para presionar, las pistas para guiar sin revelar demasiado, y las consecuencias para que cada sesión deje huella.",
-      "content": "Esta campaña está pensada para enseñar el flujo de DMCC: prepara una sesión, revela pistas, registra decisiones y deja consecuencias pendientes para la siguiente partida.",
+      "title": "Cómo usar esta campaña",
+      "summary": "Dirige Valdris como una conspiración viva: las pistas abren secretos, las facciones reaccionan y cada revelación cambia la ciudad.",
+      "content": "Usa el panel de campaña como control del DM. Mantén visibles las misiones y verdades públicas; conserva ocultos el fraude, la bóveda y los compromisos de facción hasta que el grupo consiga pruebas.",
+      "status": "lista",
       "metadata": {
-        "previewRole": "guide"
+        "previewRole": "guía"
       }
     },
-    "ent_tpl_oracle_city": {
-      "title": "Luminara, ciudad bajo tres sombras",
-      "subtitle": "Ciudad-santuario donde se reunirá el Concilio de la Eclipse",
-      "summary": "Una ciudad ceremonial brillante por fuera y rota por dentro: templos, gremios y casas nobles compiten por controlar la interpretación del Oráculo.",
+    "ent_tpl_oracle_valdris": {
+      "title": "Ciudad de Valdris",
+      "subtitle": "Ciudad portuaria gobernada por fe, comercio y miedo",
+      "summary": "Ciudad costera de piedra blanca cuya estabilidad política depende de la autoridad pública del Oráculo.",
+      "content": "Valdris es próspera, tensa y vigilada. Su consejo, sus templos, los gremios del puerto y las casas nobles dependen de las profecías del Oráculo, incluso cuando esas profecías arruinan vidas corrientes.",
       "status": "tensa",
       "metadata": {
-        "region": "Valle de Aram",
-        "atmosphere": "solemne, opresiva, luminosa"
+        "region": "costa",
+        "atmosphere": "intriga portuaria, presión religiosa, sospecha política"
       }
     },
-    "ent_tpl_oracle_object": {
-      "title": "El Oráculo de los Hábitos",
-      "subtitle": "Artefacto capaz de mostrar futuros repetidos",
-      "summary": "No predice el futuro: revela qué patrón volverán a repetir quienes no cambien a tiempo.",
-      "status": "oculto",
+    "ent_tpl_oracle_quest_broken_prophecy": {
+      "title": "La Profecía Rota",
+      "subtitle": "Arco principal de investigación",
+      "summary": "La profecía que llevó a los aventureros a Valdris es una falsificación mágica y abre la puerta a una conspiración de veinte años.",
+      "content": "Empieza con un documento que debería ser sagrado pero no encaja: estilo discordante, caligrafía imperfecta y pequeños detalles que no coinciden con registros antiguos del templo.",
+      "status": "activa",
       "metadata": {
-        "category": "artifact"
+        "objective": "demostrar si la profecía es divina, falsa o fabricada políticamente"
       }
     },
-    "ent_tpl_oracle_eclipse": {
-      "title": "Reloj de la Triple Eclipse",
-      "summary": "Cada avance acerca la ciudad a un momento donde las decisiones ocultas se vuelven públicas.",
-      "status": "3/6",
-      "metadata": {
-        "segments": 6,
-        "filled": 3,
-        "trigger": "ritual del Oráculo"
-      }
-    },
-    "ent_tpl_oracle_faction_pantheon": {
-      "title": "Panteón de los Hábitos",
-      "subtitle": "Sacerdotes que protegen rutinas sagradas",
-      "summary": "Sostienen que el orden social depende de repetir los ritos antiguos exactamente como fueron escritos.",
+    "ent_tpl_oracle_faction_cult": {
+      "title": "Culto del Oráculo",
+      "subtitle": "Fe pública, fraude oculto",
+      "summary": "Orden religiosa estricta dividida entre iniciados sinceros, inquisidores brutales y un círculo interno corrupto.",
+      "content": "El culto controla el miedo público mediante profecías, tasas, sermones e intimidación inquisitorial. Su cúpula sabe que el Oráculo es una construcción fraudulenta.",
       "status": "activo",
       "metadata": {
-        "agenda": "mantener el ritual intacto"
+        "agenda": "preservar la autoridad del Oráculo"
       }
     },
-    "ent_tpl_oracle_faction_ink": {
-      "title": "La Tinta Fracturada",
-      "subtitle": "Red de escribas, falsificadores y memoria prohibida",
-      "summary": "Quieren alterar la crónica oficial antes de que el Oráculo la convierta en destino aceptado.",
-      "status": "oculta",
+    "ent_tpl_oracle_faction_council": {
+      "title": "Consejo de la Ciudad",
+      "subtitle": "Gobierno dividido entre estabilidad y reforma",
+      "summary": "El consejo gobernante está dividido entre reformistas leales a Lena y conservadores comprometidos por Vantis.",
+      "content": "El Consejo quiere orden por encima de todo. Algunos creen en el Oráculo; otros sospechan corrupción, pero temen que la ciudad colapse si la verdad sale mal.",
+      "status": "dividido",
       "metadata": {
-        "agenda": "reescribir el relato público"
+        "agenda": "evitar desorden civil"
       }
     },
-    "ent_tpl_oracle_npc_iria": {
-      "title": "Iria Val-Sen",
-      "subtitle": "Archivista del templo menor",
-      "summary": "Sabe que una página del ritual fue sustituida, pero teme que denunciarlo provoque una purga.",
-      "status": "indecisa",
+    "ent_tpl_oracle_faction_guild": {
+      "title": "Gremio de Ladrones",
+      "subtitle": "Contrabando, información y supervivencia",
+      "summary": "Red criminal que controla contrabando, juego e información alrededor de los muelles.",
+      "content": "El Gremio teme la expansión del culto, pero no ayudará por altruismo. Sus pruebas contra Vantis son también su seguro de vida.",
+      "status": "vigilante",
+      "metadata": {
+        "agenda": "proteger rutas del puerto y capacidad de chantaje"
+      }
+    },
+    "ent_tpl_oracle_faction_truth_temple": {
+      "title": "Templo de la Verdad",
+      "subtitle": "Fe desacreditada que guarda la historia real",
+      "summary": "Orden pobre y marginada que denuncia las profecías manipuladas y protege registros teológicos antiguos.",
+      "content": "El templo carece de fuerza, dinero y credibilidad pública, pero conserva fuentes capaces de desmontar la teología del Oráculo.",
+      "status": "marginado",
+      "metadata": {
+        "agenda": "restaurar la memoria verdadera"
+      }
+    },
+    "ent_tpl_oracle_faction_merchants": {
+      "title": "Consorcio de Mercaderes",
+      "subtitle": "Poder comercial tras puertas educadas",
+      "summary": "Coalición de familias mercantiles con gran influencia sobre aranceles, campañas del Consejo y logística portuaria.",
+      "content": "El Consorcio es pragmático. No necesita que el Oráculo sea verdadero; necesita que el comercio continúe y que la información llegue antes de las votaciones públicas.",
+      "status": "calculador",
+      "metadata": {
+        "agenda": "proteger rutas y aranceles"
+      }
+    },
+    "ent_tpl_oracle_npc_veradis": {
+      "title": "Veradis el Oráculo",
+      "subtitle": "Profeta venerado en público, impostor en secreto",
+      "summary": "La temida autoridad espiritual de Valdris lleva más de veinte años falsificando profecías divinas.",
+      "content": "En público es sereno e intocable. En privado es Jack Corvo, un ilusionista exiliado que asesinó al verdadero vidente y construyó una mentira a escala de ciudad.",
+      "status": "intocable",
+      "metadata": {
+        "publicMask": "oráculo sagrado",
+        "privateTruth": "Jack Corvo, ilusionista impostor"
+      }
+    },
+    "ent_tpl_oracle_npc_senra": {
+      "title": "Maga Senra",
+      "subtitle": "Operadora de la falsa voz divina",
+      "summary": "Ilusionista que sostiene la proyección del Oráculo desde una cámara oculta, atrapada por amenazas contra su familia.",
+      "content": "Si Senra deja de canalizar el cristal de resonancia, la voz y la imagen del Oráculo colapsan. Puede confesar si recibe protección.",
+      "status": "coaccionada",
+      "metadata": {
+        "role": "operadora de ilusión",
+        "leverage": "familia retenida"
+      }
+    },
+    "ent_tpl_oracle_npc_lyra": {
+      "title": "Capitana Lyra Stonehaven",
+      "subtitle": "Capitana con notas secretas",
+      "summary": "Investigadora honesta que sospecha del culto, pero teme que actuar sin pruebas provoque violencia civil.",
+      "content": "Lyra ha documentado desapariciones en los muelles y presiones del Consejo. Puede ser una aliada clave si el grupo aporta pruebas en vez de ruido.",
+      "status": "cauta",
+      "metadata": {
+        "role": "capitana de la guardia",
+        "instinct": "proteger la ciudad antes que a sí misma"
+      }
+    },
+    "ent_tpl_oracle_npc_kael": {
+      "title": "Kael Nightblade",
+      "subtitle": "Jefe del Gremio con el libro contable",
+      "summary": "Líder criminal pragmático que conserva pruebas contables contra Vantis y el culto como seguro de vida.",
+      "content": "Kael intercambia verdad por ventaja. Puede abrir la línea financiera de la conspiración, pero solo si el grupo acepta un pacto incómodo.",
+      "status": "calculador",
+      "metadata": {
+        "role": "jefe del gremio",
+        "asset": "libro contable paralelo"
+      }
+    },
+    "ent_tpl_oracle_npc_vantis": {
+      "title": "Lord Vantis",
+      "subtitle": "Noble financiador de profecías útiles",
+      "summary": "Aristócrata rico que financia al culto a cambio de profecías que destruyen rivales comerciales.",
+      "content": "Vantis no es devoto; es transaccional. Acorralado con documentos, puede confesar, traicionar a Brann o revelar la ruta de huida de Veradis.",
+      "status": "protegido",
+      "metadata": {
+        "role": "aristócrata",
+        "privateGoal": "lucrarse mediante profecías"
+      }
+    },
+    "ent_tpl_oracle_npc_sera": {
+      "title": "Sera Moonwhisper",
+      "subtitle": "Sacerdotisa del Templo de la Verdad",
+      "summary": "Joven sacerdotisa que custodia crónicas antiguas capaces de socavar la autoridad religiosa del Oráculo.",
+      "content": "Sera tiene poco poder material, pero sabe interpretar textos que nadie más se atreve a conservar. Es una brújula moral, no una solución automática.",
+      "status": "devota",
+      "metadata": {
+        "role": "sacerdotisa",
+        "asset": "Crónicas del Verdadero Vidente"
+      }
+    },
+    "ent_tpl_oracle_npc_mira": {
+      "title": "Mira la Archivista",
+      "subtitle": "Guardiana de registros quemados",
+      "summary": "Anciana jefa del archivo que sobrevivió al viejo incendio y protege fragmentos capaces de exponer la purga de los videntes reales.",
+      "content": "Mira no confía con facilidad. Conseguir su ayuda debe sentirse como acceder a la memoria herida de Valdris.",
+      "status": "reservada",
       "metadata": {
         "role": "archivista",
-        "instinct": "proteger a los inocentes",
-        "secret": "vio el cambio de tinta"
+        "scar": "manos quemadas"
       }
     },
-    "ent_tpl_oracle_npc_malvus": {
-      "title": "Malvus Corda",
-      "subtitle": "Consejero del Concilio",
-      "summary": "Habla como mediador, pero empuja a cada facción hacia decisiones que favorecen el ritual alterado.",
-      "status": "influyente",
+    "ent_tpl_oracle_npc_mors": {
+      "title": "Inquisidor Mors",
+      "subtitle": "Ejecutor del culto",
+      "summary": "Comandante fanático de los guardianes del culto, responsable de intimidaciones, sabotajes y desapariciones.",
+      "content": "Mors es convicción convertida en arma. Vigila a Lyra, amenaza testigos y se convierte en la respuesta directa del culto al avance del grupo.",
+      "status": "hostil",
       "metadata": {
-        "role": "consejero",
-        "publicMask": "moderado",
-        "privateGoal": "activar el Oráculo modificado"
+        "role": "jefe de seguridad",
+        "method": "miedo y limpieza"
       }
     },
-    "ent_tpl_oracle_quest_open": {
-      "title": "Descubrir quién alteró el ritual",
-      "summary": "El grupo debe unir pistas de archivo, testimonios de facción y señales astronómicas antes de la última sombra.",
-      "status": "active",
+    "ent_tpl_oracle_npc_brann": {
+      "title": "Consejero Brann",
+      "subtitle": "Conservador que eligió callar",
+      "summary": "Líder conservador del Consejo que sabe lo bastante de la corrupción para actuar, pero ha preferido estabilidad y sobornos.",
+      "content": "Brann no diseñó el fraude; es el rostro respetable de la cobardía. Puede caer por registros o por el testimonio de Vantis.",
+      "status": "comprometido",
       "metadata": {
-        "objective": "identificar autor, móvil y consecuencia"
+        "role": "conservador del Consejo",
+        "weakness": "rastro documental"
       }
     },
-    "ent_tpl_oracle_clue_ink": {
-      "title": "La tinta no envejece igual",
-      "summary": "Una línea del ritual parece antigua, pero reacciona al calor como tinta reciente.",
+    "ent_tpl_oracle_npc_dorian": {
+      "title": "Dorian Vex",
+      "subtitle": "Diplomático del Consorcio y agente doble",
+      "summary": "Intermediario refinado que vende información al culto y al Gremio según quién pague más.",
+      "content": "Usa a Dorian para explicar por qué el enemigo se anticipa al grupo. Deja que la sospecha crezca antes de revelar su papel.",
+      "status": "sonriente",
+      "metadata": {
+        "role": "diplomático",
+        "secret": "agente doble"
+      }
+    },
+    "ent_tpl_oracle_npc_asha": {
+      "title": "Asha la Viuda",
+      "subtitle": "Víctima de una profecía falsa pagada",
+      "summary": "Mujer desesperada que busca noticias de su hijo, sin saber que murió meses antes de su audiencia con el Oráculo.",
+      "content": "Asha vuelve personal el fraude. Su caso convierte la corrupción abstracta en crueldad visible en mesa.",
+      "status": "desesperada",
+      "metadata": {
+        "role": "peticionaria",
+        "emotionalUse": "coste humano del fraude"
+      }
+    },
+    "ent_tpl_oracle_npc_drez": {
+      "title": "Capitán Drez",
+      "subtitle": "Contrabandista con el barco de huida",
+      "summary": "Capitán de la Gaviota de Plata, contratado para mantener un barco listo si el fraude de Veradis colapsa.",
+      "content": "Drez es una válvula de presión para el final. Si el grupo se retrasa, Veradis puede llegar hasta él y escapar de Valdris por mar.",
+      "status": "esperando",
+      "metadata": {
+        "role": "capitán contrabandista",
+        "ship": "Gaviota de Plata"
+      }
+    },
+    "ent_tpl_oracle_npc_fenwick": {
+      "title": "Abad Fenwick",
+      "subtitle": "Superviviente de la antigua purga",
+      "summary": "Anciano guardián del santuario del bosque que recuerda la fe anterior al ascenso del impostor.",
+      "content": "Fenwick conecta la investigación con el primer Veradis y las ruinas bajo el templo antiguo.",
+      "status": "aliado oculto",
+      "metadata": {
+        "role": "abad",
+        "memory": "purga del templo antiguo"
+      }
+    },
+    "ent_tpl_oracle_loc_chamber": {
+      "title": "Sala del Oráculo",
+      "subtitle": "Sanctum público y sala de ilusión oculta",
+      "summary": "Cámara ceremonial donde Veradis pronuncia profecías mediante sonido teatral, incienso y resonancia arcana.",
+      "content": "La sala está diseñada para impresionar: espejos cóncavos, amplificadores ocultos, incienso en capas y un cristal resonante camuflado junto al altar.",
+      "status": "sagrada",
+      "metadata": {
+        "sceneUse": "audiencia, infiltración, colapso final"
+      }
+    },
+    "ent_tpl_oracle_loc_archive": {
+      "title": "Archivo de la Ciudad",
+      "subtitle": "Memoria quemada de Valdris",
+      "summary": "Archivo polvoriento cuya sección histórica aún conserva cicatrices del incendio que borró registros de los antiguos videntes.",
+      "content": "El Archivo es el lugar donde chocan la historia pública y el miedo privado. Mira controla el acceso a lo que sobrevivió al fuego.",
+      "status": "marcado",
+      "metadata": {
+        "contains": "registros del incendio"
+      }
+    },
+    "ent_tpl_oracle_loc_ruins": {
+      "title": "Ruinas del Templo Antiguo",
+      "subtitle": "Restos quemados sobre la bóveda",
+      "summary": "Restos carbonizados del antiguo Templo de la Verdad, destruido durante el ascenso del impostor.",
+      "content": "Bajo las losas agrietadas del altar se oculta el acceso sellado a la bóveda de pruebas.",
+      "status": "olvidadas",
+      "metadata": {
+        "contains": "acceso oculto a la bóveda"
+      }
+    },
+    "ent_tpl_oracle_loc_vault": {
+      "title": "Bóveda Subterránea",
+      "subtitle": "Veinte años de profecías falsas",
+      "summary": "Cámara oculta bajo las ruinas con libros, nombres, pagos y el archivo completo del fraude.",
+      "content": "La bóveda conserva registros de 847 profecías falsificadas durante veinte años. Es la prueba más fuerte de la campaña.",
+      "status": "sellada",
+      "metadata": {
+        "password": "Umbra Veritatis"
+      }
+    },
+    "ent_tpl_oracle_loc_port": {
+      "title": "Puerto de Valdris",
+      "subtitle": "Arteria comercial y escena del crimen",
+      "summary": "Corazón económico de la ciudad, donde cargamentos, rumores y cadáveres marcados emergen juntos.",
+      "content": "Usa el puerto para desapariciones, contactos del Gremio, pistas de contrabando y la posible huida de Veradis.",
+      "status": "inquieto",
+      "metadata": {
+        "sceneUse": "asesinatos, contrabando, huida"
+      }
+    },
+    "ent_tpl_oracle_loc_raven_tavern": {
+      "title": "Taberna del Cuervo",
+      "subtitle": "Terreno neutral de susurros",
+      "summary": "Taberna portuaria tosca donde el Gremio mantiene la paz y la información cambia de manos.",
+      "content": "Torben puede entregar la primera grieta de la versión oficial: el viejo incendio no fue accidental.",
+      "status": "concurrida",
+      "metadata": {
+        "sceneUse": "rumores y reuniones discretas"
+      }
+    },
+    "ent_tpl_oracle_loc_vantis_mansion": {
+      "title": "Mansión Vantis",
+      "subtitle": "Lujo construido sobre profecías a medida",
+      "summary": "Finca noble fuertemente custodiada donde convergen riqueza comercial y acuerdos ocultos.",
+      "content": "Buena localización para infiltración, pruebas financieras, presión política o una confesión acorralada de Vantis.",
+      "status": "vigilada",
+      "metadata": {
+        "sceneUse": "infiltración o confesión"
+      }
+    },
+    "ent_tpl_oracle_loc_guard_barracks": {
+      "title": "Cuartel de la Guardia",
+      "subtitle": "Frágil base legal de Lyra",
+      "summary": "Sede fortificada de la guardia donde Lyra guarda sus notas privadas y oficiales de confianza.",
+      "content": "El cuartel no es del todo seguro; la presión del Consejo y la vigilancia del culto llegan incluso aquí.",
+      "status": "presionado",
+      "metadata": {
+        "sceneUse": "ley, pruebas, presión"
+      }
+    },
+    "ent_tpl_oracle_loc_truth_temple": {
+      "title": "Templo de la Verdad urbano",
+      "subtitle": "Santuario pobre con libros peligrosos",
+      "summary": "Templo venido a menos cuya doctrina y reliquias amenazan la legitimidad del Oráculo.",
+      "content": "Sera guarda aquí las Crónicas, normalmente en un lugar que parece demasiado pobre para merecer una búsqueda.",
+      "status": "vigilado",
+      "metadata": {
+        "contains": "Crónicas del Verdadero Vidente"
+      }
+    },
+    "ent_tpl_oracle_clue_broken_prophecy": {
+      "title": "Texto de la profecía rota",
+      "subtitle": "Primera grieta del fraude",
+      "summary": "Un papiro sagrado con discrepancias de estilo y caligrafía frente a registros antiguos del templo.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
       "status": "preparada",
       "metadata": {
-        "delivery": "archivo, vela o conjuro menor",
-        "pointsTo": "ent_tpl_oracle_secret_page"
+        "use": "primera grieta del fraude"
       }
     },
-    "ent_tpl_oracle_secret_page": {
-      "title": "La página sustituida invierte el juramento",
-      "summary": "El ritual no protegerá la ciudad: obligará a cada líder a repetir su peor decisión pública.",
-      "status": "hidden",
+    "ent_tpl_oracle_clue_ledger": {
+      "title": "Libro de cuentas paralelo del Gremio",
+      "subtitle": "Prueba financiera",
+      "summary": "Libro sustraído que registra sobornos, inversiones y pagos que conectan a Vantis con el culto.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
       "metadata": {
-        "anchorClueIds": [
-          "ent_tpl_oracle_clue_ink"
-        ],
-        "risk": "ruptura social"
+        "use": "prueba financiera"
       }
     },
-    "ent_tpl_oracle_consequence_public_panic": {
-      "title": "Pánico en el Concilio",
-      "summary": "Si la verdad se revela sin pruebas completas, cada facción acusará a la otra y la ciudad se bloqueará.",
-      "status": "pending",
+    "ent_tpl_oracle_clue_vault_evidence": {
+      "title": "Evidencia documental de la Bóveda",
+      "subtitle": "Prueba del fraude completo",
+      "summary": "Archivo maestro de profecías falsas guardado en cofres de hierro bajo las ruinas antiguas.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
       "metadata": {
-        "trigger": "revelación precipitada",
-        "fallout": "cierres, arrestos, presión social"
+        "use": "prueba del fraude completo"
       }
     },
-    "ent_tpl_oracle_scene_archive": {
-      "title": "Archivo bajo la primera sombra",
-      "subtitle": "Escena inicial de investigación",
-      "summary": "Los personajes encuentran un juramento con una línea que no proyecta sombra y un archivo sellado demasiado reciente.",
-      "content": "Usa esta escena para presentar el tono: liturgia pública, documentos imposibles y archivistas que miden cada palabra.",
-      "status": "ready"
-    },
-    "ent_tpl_oracle_scene_council": {
-      "title": "Audiencia del Concilio de la Eclipse",
-      "subtitle": "Presión social y facciones enfrentadas",
-      "summary": "Cada facción ofrece una versión interesada de la verdad mientras el reloj ritual avanza.",
-      "content": "Escena de diálogo. Da a cada facción una demanda simple: controlar el discurso, exponer el fraude o retrasar el ritual.",
-      "status": "ready"
-    },
-    "ent_tpl_oracle_scene_chamber": {
-      "title": "Cámara del Oráculo Sellado",
-      "subtitle": "Final del arco de ejemplo",
-      "summary": "El Oráculo espera bajo el santuario. No responde al futuro: repite hábitos no resueltos.",
-      "content": "Usa esta escena para cerrar con una decisión: revelar la manipulación, reescribir el juramento o destruir el mecanismo.",
-      "status": "draft"
-    },
-    "ent_tpl_oracle_npc_tovan": {
-      "title": "Tovan, archivista menor",
-      "subtitle": "Quiere hacer lo correcto sin hundir a su maestra",
-      "summary": "Joven escriba que vio a Malvus entrar tarde al archivo. Tiene miedo de que culpen a Iria.",
-      "content": "Tovan habla en susurros y recuerda detalles materiales: olor a resina, polvo de crono-sal y una campana que sonó fuera de hora.",
-      "status": "active"
-    },
-    "ent_tpl_oracle_faction_bells": {
-      "title": "Consorcio de Campanas",
-      "subtitle": "Gremio que controla los avisos públicos",
-      "summary": "Quiere retrasar el ritual porque una predicción antigua amenaza su monopolio de señales y calendarios.",
-      "content": "No son villanos directos: prefieren comprar silencio, crear dudas y convertir cualquier revelación en trámite burocrático.",
-      "status": "active"
-    },
-    "ent_tpl_oracle_clue_chronosalt": {
-      "title": "Polvo de crono-sal en el atril",
-      "subtitle": "Pista física",
-      "summary": "El atril del juramento tiene cristales plateados que solo aparecen cuando un documento fue envejecido artificialmente.",
-      "content": "Puede descubrirse con inspección, magia, oficio de escriba o preguntando a Tovan. Apunta a una sustitución reciente.",
-      "status": "ready",
+    "ent_tpl_oracle_clue_illusion_components": {
+      "title": "Componentes de ilusión en el templo",
+      "subtitle": "Pista del mecanismo",
+      "summary": "Cristales y reactivos exóticos ocultos tras la sala de preparación del altar.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
       "metadata": {
-        "content": "El documento fue envejecido con crono-sal para parecer ceremonialmente antiguo."
+        "use": "pista del mecanismo"
       }
     },
-    "ent_tpl_oracle_clue_no_echo": {
-      "title": "El juramento sin eco",
-      "subtitle": "Pista ritual",
-      "summary": "Una línea del texto no se repite cuando se recita en la sala de juramentos.",
-      "content": "La línea falsa invierte la obligación de recordar: convierte el ritual en repetición de errores.",
-      "status": "ready",
+    "ent_tpl_oracle_clue_resonance": {
+      "title": "Resonancia mágica de la voz profética",
+      "subtitle": "Prueba arcana",
+      "summary": "Muestras residuales arcanas que prueban que la voz divina fue proyectada y fabricada.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
       "metadata": {
-        "content": "La línea alterada no pertenece al juramento original y abre el secreto central."
+        "use": "prueba arcana"
       }
     },
-    "ent_tpl_oracle_item_key": {
-      "title": "Llave de los Siete Hábitos",
-      "subtitle": "Objeto ceremonial",
-      "summary": "Llave de bronce con siete muescas que abre la cámara inferior si se gira siguiendo una secuencia de hábitos cotidianos.",
-      "content": "La llave no se fuerza: se activa repitiendo gestos simples de la ciudad — saludar, ceder paso, doblar una página, tocar campana.",
-      "status": "hidden"
-    },
-    "ent_tpl_oracle_secret_iria_ink": {
-      "title": "Iria ayudó una vez a la Tinta Fracturada",
-      "subtitle": "Secreto social, no traición actual",
-      "summary": "Iria filtró documentos años atrás para proteger a archivistas menores, pero no participa en la sustitución actual.",
-      "content": "Este secreto complica la investigación: descubrirlo demasiado pronto puede hacer que parezca culpable.",
-      "status": "hidden",
+    "ent_tpl_oracle_clue_fire_records": {
+      "title": "Registros fragmentarios del incendio",
+      "subtitle": "Pista histórica",
+      "summary": "Actas chamuscadas que muestran desapariciones coordinadas durante el antiguo incendio del archivo.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
       "metadata": {
-        "truth": "Iria colaboró con la Tinta Fracturada en el pasado, pero ahora intenta evitar que la ciudad se rompa."
+        "use": "pista histórica"
       }
     },
-    "ent_tpl_oracle_rumor_bells": {
-      "title": "Las campanas sueñan nombres",
-      "subtitle": "Rumor de calle",
-      "summary": "Algunos vecinos dicen que las campanas pronuncian nombres antes de cada eclipse.",
-      "content": "El rumor es una forma popular de hablar del Consorcio: alguien usa los avisos públicos para señalar culpables.",
-      "status": "active"
+    "ent_tpl_oracle_clue_chronicles": {
+      "title": "Crónicas del Verdadero Vidente",
+      "subtitle": "Prueba religiosa",
+      "summary": "Manuscrito teológico antiguo protegido por Sera Moonwhisper.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
+      "metadata": {
+        "use": "prueba religiosa"
+      }
+    },
+    "ent_tpl_oracle_clue_senra_confession": {
+      "title": "Confesión escrita de Senra",
+      "subtitle": "Pista de deserción",
+      "summary": "Borrador de carta oculto bajo el colchón de Senra, pidiendo protección a Lyra.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
+      "metadata": {
+        "use": "pista de deserción"
+      }
+    },
+    "ent_tpl_oracle_clue_ritual_marks": {
+      "title": "Marcas rituales de la Inquisición",
+      "subtitle": "Pista de violencia",
+      "summary": "Marcas quemadas en cuerpos recuperados del agua, vinculando asesinatos del puerto con el culto.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
+      "metadata": {
+        "use": "pista de violencia"
+      }
+    },
+    "ent_tpl_oracle_clue_escape_plan": {
+      "title": "Plan de contingencia del Impostor",
+      "subtitle": "Pista de huida",
+      "summary": "Carta cifrada y sellada que describe la ruta de Veradis hacia la Gaviota de Plata.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
+      "metadata": {
+        "use": "pista de huida"
+      }
+    },
+    "ent_tpl_oracle_clue_military_letter": {
+      "title": "Carta militar sellada del frente oriental",
+      "subtitle": "Pista de coste humano",
+      "summary": "Carta oficial que confirma que el hijo de Asha murió antes de la falsa profecía prevista por el Oráculo.",
+      "content": "Entrega esta pista mediante escena, no mediante exposición. Debe responder una pregunta y abrir otra mayor.",
+      "status": "preparada",
+      "metadata": {
+        "use": "pista de coste humano"
+      }
+    },
+    "ent_tpl_oracle_secret_fraud": {
+      "title": "El Oráculo es un fraude",
+      "summary": "Veradis lleva veinte años falsificando profecías divinas.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_voice_illusion": {
+      "title": "La voz divina es una ilusión arcana",
+      "summary": "La voz que oyen los peticionarios es una proyección sostenida por Senra y un cristal de resonancia.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_vantis_funds": {
+      "title": "Lord Vantis financia el culto",
+      "summary": "Vantis paga al Oráculo por profecías que favorecen sus monopolios y arruinan rivales.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_vault_location": {
+      "title": "La bóveda de pruebas está bajo las ruinas",
+      "summary": "El templo antiguo oculta un archivo sellado con veinte años de registros.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_true_veradis": {
+      "title": "El primer Veradis era real",
+      "summary": "El verdadero Veradis Thorn fue un vidente auténtico asesinado por el impostor Jack Corvo.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_archive_fire": {
+      "title": "El culto provocó el incendio del archivo",
+      "summary": "El incendio del archivo histórico fue deliberado y buscaba borrar los registros de los videntes reales.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_senra_defects": {
+      "title": "Senra puede desertar",
+      "summary": "Senra mantiene la ilusión por miedo, no por lealtad, y puede ser rescatada.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_guild_proof": {
+      "title": "El Gremio tiene las pruebas",
+      "summary": "Kael conserva un libro contable duplicado como seguro contra Vantis y el culto.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_escape_ship": {
+      "title": "Veradis tiene un barco de huida",
+      "summary": "La Gaviota de Plata zarpará si Veradis envía la señal de alarma.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_dorian_spy": {
+      "title": "Dorian Vex es un agente doble",
+      "summary": "Dorian vende información al culto y al Gremio según quién pague más.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_brann_knew": {
+      "title": "El Consejero Brann lo sabía",
+      "summary": "Brann conocía suficiente corrupción y eligió callar por estabilidad y beneficio.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_asha_son_dead": {
+      "title": "El hijo de Asha ha muerto",
+      "summary": "La profecía que busca Asha será falsa; su hijo murió hace meses en el frente oriental.",
+      "content": "Mantén esto oculto hasta que el grupo conecte suficientes pistas o consiga testimonio de la facción adecuada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clock_cult_watch": {
+      "title": "Reloj de vigilancia del culto",
+      "summary": "Cada avance significa que el culto entiende mejor la investigación del grupo y reacciona de forma más directa.",
+      "content": "1: los iniciados observan. 2: Mors recibe informes. 3: Dorian filtra un plan. 4: emboscada. 5: aíslan a Senra. 6: Veradis prepara la huida.",
+      "status": "0/6",
+      "metadata": {
+        "segments": 6,
+        "filled": 0,
+        "trigger": "investigación imprudente o acusación pública"
+      }
+    },
+    "ent_tpl_oracle_clock_escape": {
+      "title": "Reloj de huida de Veradis",
+      "summary": "Mide lo cerca que está el falso Oráculo de llegar a la Gaviota de Plata y abandonar Valdris.",
+      "content": "Avanza cuando se descubre la bóveda, Vantis queda acorralado, Senra deserta o Mors fracasa en público.",
+      "status": "0/6",
+      "metadata": {
+        "segments": 6,
+        "filled": 0,
+        "trigger": "el fraude empieza a ser accionable"
+      }
     },
     "ent_tpl_oracle_decision_public_truth": {
       "title": "¿Revelar el fraude en público o contenerlo?",
       "subtitle": "Decisión central de campaña",
-      "summary": "El grupo puede exponer la página falsa ante la ciudad o manejar la verdad en privado para evitar disturbios.",
-      "content": "No hay respuesta perfecta. Exponer rápido limpia la mentira pero dispara facciones; contener compra tiempo pero parece encubrimiento.",
-      "status": "open"
+      "summary": "El grupo puede exponer al Oráculo ante la ciudad o construir un caso controlado con Lyra, Lena y aliados concretos.",
+      "content": "Exponer rápido limpia la mentira, pero puede causar pánico. Contener compra tiempo, pero puede parecer otro encubrimiento.",
+      "status": "abierta"
     },
-    "ent_tpl_oracle_consequence_martial_rite": {
-      "title": "El Panteón declara estado ritual",
-      "subtitle": "Consecuencia si la ciudad entra en pánico",
-      "summary": "El Panteón limita reuniones públicas y convierte la investigación en asunto ceremonial cerrado.",
-      "content": "Úsalo si el grupo revela el fraude sin preparar aliados o si Malvus convierte la sospecha en disturbio.",
-      "status": "pending"
+    "ent_tpl_oracle_consequence_panic": {
+      "title": "Pánico público en Valdris",
+      "summary": "Si la verdad aparece sin pruebas suficientes, las facciones se acusan entre sí y la ciudad se bloquea.",
+      "content": "Úsalo si los jugadores revelan el fraude demasiado pronto, pierden pruebas clave o permiten que Dorian convierta la sospecha en espectáculo.",
+      "status": "pendiente",
+      "metadata": {
+        "trigger": "revelación precipitada"
+      }
     },
-    "ent_tpl_oracle_handout_edict": {
-      "title": "Edicto de Silencio de Campanas",
-      "subtitle": "Ayuda pública para jugadores",
-      "summary": "Documento que anuncia tres horas sin campanas durante la eclipse. Parece administrativo, pero oculta una maniobra política.",
-      "content": "Texto sugerido: Por orden del Consorcio, toda campana menor callará hasta que el juramento sea leído sin sombra.",
-      "status": "ready"
+    "ent_tpl_oracle_consequence_reform": {
+      "title": "Transición reformista",
+      "summary": "Con pruebas y aliados, Lyra y Lena pueden exponer el fraude sin que Valdris colapse.",
+      "content": "El Oráculo cae, el Consejo se fractura y el Templo de la Verdad recupera una voz cautelosa en la vida pública.",
+      "status": "posible"
     },
-    "ent_tpl_oracle_encounter_masks": {
-      "title": "Procesión de máscaras repetidas",
-      "subtitle": "Encuentro de presión durante la investigación",
-      "summary": "Una procesión cruza la plaza con máscaras idénticas a líderes que cometieron errores históricos.",
-      "content": "No es combate obligatorio. Sirve para mostrar que el Oráculo está filtrando hábitos pasados a la vida pública.",
-      "status": "ready"
+    "ent_tpl_oracle_consequence_chaos": {
+      "title": "Revuelta del templo",
+      "summary": "Una revelación precipitada convierte la liberación en desorden; el culto cae, pero Valdris arde políticamente.",
+      "content": "Usa este final si las pruebas son parciales, los testigos mueren o Veradis incrimina al grupo antes de huir.",
+      "status": "posible"
+    },
+    "ent_tpl_oracle_handout_audience_notice": {
+      "title": "Aviso de audiencias públicas",
+      "subtitle": "Ayuda para jugadores",
+      "summary": "El Oráculo concede audiencias públicas los martes y viernes por una ofrenda obligatoria de diez monedas de oro.",
+      "content": "Texto sugerido: Por gracia del Oráculo, todo fiel podrá presentar duelo, duda o deuda ante la voz divina en el segundo y quinto día. La ofrenda será de diez coronas de oro.",
+      "status": "lista"
+    },
+    "ent_tpl_oracle_scene_public_audience": {
+      "title": "Audiencia pública del Oráculo",
+      "summary": "Escena inicial que muestra fe, pago y profecía teatral.",
+      "content": "Prepara la escena con un objetivo, una presión, una pista y una consecuencia posible.",
+      "status": "lista"
+    },
+    "ent_tpl_oracle_scene_port_body": {
+      "title": "Cadáver en el puerto",
+      "summary": "Un cadáver marcado conecta desapariciones del muelle con la violencia del culto.",
+      "content": "Prepara la escena con un objetivo, una presión, una pista y una consecuencia posible.",
+      "status": "lista"
+    },
+    "ent_tpl_oracle_scene_archive_mira": {
+      "title": "El archivo quemado de Mira",
+      "summary": "Escena cauta de archivo donde la confianza desbloquea la historia.",
+      "content": "Prepara la escena con un objetivo, una presión, una pista y una consecuencia posible.",
+      "status": "lista"
+    },
+    "ent_tpl_oracle_scene_guild_bargain": {
+      "title": "Pacto bajo los muelles",
+      "summary": "El Gremio ofrece pruebas, pero nunca gratis.",
+      "content": "Prepara la escena con un objetivo, una presión, una pista y una consecuencia posible.",
+      "status": "lista"
+    },
+    "ent_tpl_oracle_scene_oracle_infiltration": {
+      "title": "Tras la voz divina",
+      "summary": "La infiltración revela componentes, resonancia y el papel de Senra.",
+      "content": "Prepara la escena con un objetivo, una presión, una pista y una consecuencia posible.",
+      "status": "lista"
+    },
+    "ent_tpl_oracle_scene_vault_descent": {
+      "title": "Descenso a la bóveda de pruebas",
+      "summary": "El grupo encuentra el archivo maestro del fraude.",
+      "content": "Prepara la escena con un objetivo, una presión, una pista y una consecuencia posible.",
+      "status": "lista"
+    },
+    "ent_tpl_oracle_scene_final_confrontation": {
+      "title": "La caída del Oráculo",
+      "summary": "Confrontación final: exponer, contener, arrestar o dejar escapar a Veradis.",
+      "content": "Prepara la escena con un objetivo, una presión, una pista y una consecuencia posible.",
+      "status": "lista"
     }
   },
   "relations": {
-    "rel_tpl_oracle_city_object": {
-      "description": "El Oráculo está oculto bajo el santuario central."
+    "rel_tpl_oracle_valdris_chamber": {
+      "description": "La Sala del Oráculo domina el centro monumental de Valdris."
     },
-    "rel_tpl_oracle_eclipse_object": {
-      "description": "La última fase de la eclipse despierta el artefacto."
+    "rel_tpl_oracle_valdris_archive": {
+      "description": "El Archivo de la Ciudad se encuentra cerca de los edificios del Consejo."
     },
-    "rel_tpl_oracle_pantheon_city": {
-      "description": "El Panteón conserva el orden ceremonial de Luminara."
+    "rel_tpl_oracle_valdris_port": {
+      "description": "El puerto es la arteria económica de Valdris y su mercado de rumores más peligroso."
     },
-    "rel_tpl_oracle_ink_pantheon": {
-      "description": "La Tinta Fracturada considera al Panteón una cárcel narrativa."
+    "rel_tpl_oracle_valdris_tavern": {
+      "description": "La Taberna del Cuervo opera en los distritos bajos del puerto."
     },
-    "rel_tpl_oracle_iria_clue": {
-      "description": "Iria puede guiar al grupo hacia la diferencia de tinta."
+    "rel_tpl_oracle_valdris_vantis": {
+      "description": "La Mansión Vantis se alza sobre el barrio noble."
     },
-    "rel_tpl_oracle_malvus_secret": {
-      "description": "Malvus conoce la página sustituida y la protege."
+    "rel_tpl_oracle_valdris_guard": {
+      "description": "El Cuartel de la Guardia sostiene la respuesta legal de la ciudad ante la crisis."
     },
-    "rel_tpl_oracle_clue_secret": {
-      "description": "La pista no resuelve todo, pero abre la pregunta correcta."
+    "rel_tpl_oracle_valdris_truth_temple": {
+      "description": "El Templo de la Verdad urbano sobrevive en el barrio viejo."
     },
-    "rel_tpl_oracle_secret_consequence": {
-      "description": "Una revelación mal gestionada dispara el pánico político."
+    "rel_tpl_oracle_ruins_vault": {
+      "description": "La bóveda sellada está bajo las losas quemadas del altar del templo antiguo."
     },
-    "rel_tpl_oracle_quest_secret": {
-      "description": "Resolver la misión abre el secreto central."
+    "rel_tpl_oracle_cult_veradis": {
+      "description": "Veradis es el objeto público de culto y el arquitecto oculto de la orden."
     },
-    "rel_tpl_oracle_malvus_quest": {
-      "description": "Malvus desvía preguntas y ofrece soluciones cómodas."
+    "rel_tpl_oracle_cult_senra": {
+      "description": "Senra trabaja dentro del culto por coacción, no por lealtad."
     },
-    "rel_tpl_oracle_tovan_iria": {
-      "description": "Tovan quiere proteger a Iria, pero sus silencios pueden parecer complicidad."
+    "rel_tpl_oracle_cult_mors": {
+      "description": "Mors dirige a los guardianes del culto y sus operaciones de limpieza."
     },
-    "rel_tpl_oracle_tovan_chronosalt": {
-      "description": "Tovan sabe que el polvo de crono-sal no estaba allí la noche anterior."
+    "rel_tpl_oracle_council_lyra": {
+      "description": "La guardia de Lyra responde ante el Consejo aunque ella desconfíe de sus órdenes."
     },
-    "rel_tpl_oracle_noecho_secret": {
-      "description": "El juramento sin eco permite demostrar qué línea fue sustituida."
+    "rel_tpl_oracle_council_brann": {
+      "description": "Brann lidera el bloque conservador que prefiere el silencio al escándalo."
     },
-    "rel_tpl_oracle_key_object": {
-      "description": "La llave permite abrir la cámara inferior sin romper los sellos rituales."
+    "rel_tpl_oracle_guild_kael": {
+      "description": "Kael dirige el Gremio y guarda sus pruebas más peligrosas."
     },
-    "rel_tpl_oracle_bells_rumor": {
-      "description": "El Consorcio alimenta el rumor para dirigir la atención hacia nombres concretos."
+    "rel_tpl_oracle_truth_sera": {
+      "description": "Sera custodia la doctrina y los manuscritos más peligrosos del Templo."
     },
-    "rel_tpl_oracle_bells_council": {
-      "description": "El Consorcio exige aplazar cualquier decisión hasta controlar los avisos públicos."
+    "rel_tpl_oracle_truth_fenwick": {
+      "description": "Fenwick conserva la memoria de la fe anterior al impostor."
     },
-    "rel_tpl_oracle_iria_past_ink": {
-      "description": "Iria oculta su ayuda pasada a la Tinta porque teme que destruya su credibilidad."
+    "rel_tpl_oracle_merchants_dorian": {
+      "description": "Dorian representa al Consorcio mientras vende información en privado."
     },
-    "rel_tpl_oracle_decision_consequence": {
-      "description": "Una revelación pública sin aliados empuja al Panteón a cerrar la investigación."
+    "rel_tpl_oracle_cult_council": {
+      "description": "El culto blinda decisiones del Consejo presentándolas como necesidad profética."
     },
-    "rel_tpl_oracle_masks_council": {
-      "description": "La procesión convierte el debate político en espectáculo de culpa colectiva."
+    "rel_tpl_oracle_cult_truth_enemy": {
+      "description": "El culto presenta públicamente al Templo de la Verdad como herejía."
     },
-    "rel_tpl_oracle_chamber_object": {
-      "description": "La cámara muestra el Oráculo como una máquina de hábitos, no como una voz divina."
+    "rel_tpl_oracle_cult_guild_enemy": {
+      "description": "Los guardianes del culto amenazan el contrabando y el control portuario del Gremio."
     },
-    "rel_tpl_oracle_archive_chronosalt": {
-      "description": "La primera escena contiene la pista física más limpia de la sustitución."
+    "rel_tpl_oracle_vantis_cult": {
+      "description": "Los pagos mensuales de Vantis financian la seguridad del culto y sus profecías a medida."
     },
-    "rel_tpl_oracle_handout_bells": {
-      "description": "El edicto permite sospechar del Consorcio sin señalarlo directamente."
+    "rel_tpl_oracle_mors_lyra": {
+      "description": "Mors espía la investigación de Lyra y sabotea sus pruebas."
     },
-    "rel_tpl_oracle_bells_object": {
-      "description": "El Consorcio de las Campanas quiere controlar el Oráculo para convertir sus visiones en propaganda pública."
+    "rel_tpl_oracle_dorian_party_plans": {
+      "description": "La mediación educada de Dorian oculta la filtración que permite al culto anticiparse al grupo."
     },
-    "rel_tpl_oracle_tovan_clue_ink": {
-      "description": "Tovan reconoce la tinta fracturada y puede explicar por qué no pertenece al archivo original."
+    "rel_tpl_oracle_drez_escape": {
+      "description": "Drez conoce el barco, el pago y la señal de salida para la huida de Veradis."
+    },
+    "rel_tpl_oracle_broken_prophecy_fraud": {
+      "description": "La profecía rota es la primera grieta verificable en la autoridad del Oráculo."
+    },
+    "rel_tpl_oracle_broken_prophecy_quest": {
+      "description": "El documento da al grupo una razón clara para investigar."
+    },
+    "rel_tpl_oracle_ledger_vantis": {
+      "description": "El libro confirma pagos de Vantis al culto."
+    },
+    "rel_tpl_oracle_ledger_guild_proof": {
+      "description": "El libro demuestra por qué Kael conserva ventaja en vez de hablar abiertamente."
+    },
+    "rel_tpl_oracle_vault_fraud": {
+      "description": "Los registros de la bóveda documentan el fraude completo de veinte años."
+    },
+    "rel_tpl_oracle_vault_vantis": {
+      "description": "La bóveda conserva registros de pagos y beneficiarios."
+    },
+    "rel_tpl_oracle_components_voice": {
+      "description": "Los componentes ocultos muestran cómo se fabrica la voz divina."
+    },
+    "rel_tpl_oracle_resonance_voice": {
+      "description": "La resonancia mágica es incompatible con una voz natural o divina."
+    },
+    "rel_tpl_oracle_fire_archive": {
+      "description": "Los registros quemados muestran que el antiguo incendio fue coordinado, no accidental."
+    },
+    "rel_tpl_oracle_fire_true_veradis": {
+      "description": "Los registros del incendio apuntan a desapariciones alrededor de la muerte del vidente real."
+    },
+    "rel_tpl_oracle_chronicles_true_veradis": {
+      "description": "Las Crónicas conservan la memoria de un Veradis real anterior al impostor."
+    },
+    "rel_tpl_oracle_senra_defect": {
+      "description": "La carta de Senra prueba que puede cambiar de bando si recibe protección."
+    },
+    "rel_tpl_oracle_senra_vault": {
+      "description": "La confesión de Senra puede incluir la palabra o ruta necesaria para abrir la bóveda."
+    },
+    "rel_tpl_oracle_marks_cult": {
+      "description": "Las marcas rituales vinculan la violencia del puerto con los inquisidores del culto."
+    },
+    "rel_tpl_oracle_marks_escape": {
+      "description": "La actividad del culto en el puerto puede conducir hasta Drez y el plan de huida."
+    },
+    "rel_tpl_oracle_escape_plan_ship": {
+      "description": "El plan cifrado describe la ruta de Veradis hacia el barco preparado."
+    },
+    "rel_tpl_oracle_military_asha": {
+      "description": "La carta militar sellada prueba que la profecía de Asha sería una mentira cruel."
+    },
+    "rel_tpl_oracle_veradis_fraud": {
+      "description": "Veradis oculta activamente que es Jack Corvo y no posee don profético."
+    },
+    "rel_tpl_oracle_senra_voice": {
+      "description": "Senra sabe exactamente cómo se fabrican la voz y la proyección."
+    },
+    "rel_tpl_oracle_kael_ledger": {
+      "description": "Kael sabe dónde está oculto el libro contable del Gremio."
+    },
+    "rel_tpl_oracle_mira_fire": {
+      "description": "Mira puede revelar los registros supervivientes del incendio si confía en el grupo."
+    },
+    "rel_tpl_oracle_sera_chronicles": {
+      "description": "Sera oculta y protege las Crónicas del Verdadero Vidente."
+    },
+    "rel_tpl_oracle_asha_letter": {
+      "description": "La próxima audiencia de Asha apunta hacia la carta militar y la crueldad del fraude."
+    },
+    "rel_tpl_oracle_brann_knew": {
+      "description": "Brann oculta que eligió beneficio y estabilidad por encima de la verdad."
+    },
+    "rel_tpl_oracle_cult_clock_mors": {
+      "description": "Cuando avanza el reloj de vigilancia del culto, Mors actúa de forma más directa."
+    },
+    "rel_tpl_oracle_escape_clock_drez": {
+      "description": "Cuando avanza el reloj de huida, Drez prepara la Gaviota de Plata."
+    },
+    "rel_tpl_oracle_public_truth_panic": {
+      "description": "Una revelación pública sin aliados puede provocar pánico en toda la ciudad."
+    },
+    "rel_tpl_oracle_public_truth_reform": {
+      "description": "Un caso público apoyado por pruebas y aliados puede activar una transición reformista."
+    },
+    "rel_tpl_oracle_public_truth_chaos": {
+      "description": "Una revelación incompleta puede convertirse en revuelta antes de que llegue la justicia."
+    },
+    "rel_tpl_oracle_scene_audience_chamber": {
+      "description": "La escena de audiencia pública ocurre en la Sala del Oráculo."
+    },
+    "rel_tpl_oracle_scene_port_marks": {
+      "description": "La escena del cadáver del puerto puede revelar las marcas rituales."
+    },
+    "rel_tpl_oracle_scene_archive_fire": {
+      "description": "La escena del archivo puede revelar los registros quemados."
+    },
+    "rel_tpl_oracle_scene_guild_ledger": {
+      "description": "El pacto con el Gremio puede poner el libro contable al alcance."
+    },
+    "rel_tpl_oracle_scene_infiltration_components": {
+      "description": "La infiltración del templo puede revelar los componentes de ilusión."
+    },
+    "rel_tpl_oracle_scene_vault_evidence": {
+      "description": "El descenso a la bóveda entrega la prueba más fuerte de la campaña."
+    },
+    "rel_tpl_oracle_scene_final_decision": {
+      "description": "El final fuerza una decisión sobre cómo llega la verdad a Valdris."
     }
   },
   "facts": {
     "fact_tpl_oracle_1": {
-      "statement": "La Triple Eclipse ya ha empezado y quedan tres fases antes del ritual público."
+      "statement": "El orden público de Valdris depende de la autoridad del Oráculo, incluso cuando la ciudadanía teme sus profecías."
     },
     "fact_tpl_oracle_2": {
-      "statement": "El Oráculo no muestra un futuro fijo, sino patrones que la gente insiste en repetir."
+      "statement": "La profecía que llevó a los aventureros a Valdris contiene incoherencias estilísticas y mágicas."
     },
     "fact_tpl_oracle_3": {
-      "statement": "Malvus necesita que el grupo sospeche de la Tinta Fracturada antes de revisar el ritual."
+      "statement": "El Oráculo concede audiencias públicas los martes y viernes por una ofrenda obligatoria de diez monedas de oro."
     },
     "fact_tpl_oracle_4": {
-      "statement": "Iria no traicionará al templo salvo que el grupo prometa proteger a los archivistas menores."
+      "statement": "La Capitana Lyra ha investigado desapariciones en los muelles, pero no ha publicado ningún informe oficial."
     },
     "fact_tpl_oracle_5": {
-      "statement": "Si el ritual alterado llega a completarse, los líderes repetirán públicamente sus peores decisiones."
+      "statement": "El Archivo de la Ciudad ardió hace veinte años y destruyó registros de la antigua orden."
     },
     "fact_tpl_oracle_6": {
-      "statement": "La crono-sal solo se usa para envejecer documentos cuando alguien necesita falsificar antigüedad ceremonial."
+      "statement": "Veradis no posee don profético; es Jack Corvo, un ilusionista impostor."
     },
     "fact_tpl_oracle_7": {
-      "statement": "El Consorcio de Campanas no quiere destruir el ritual; quiere que nadie pueda consultarlo sin pasar por sus avisos públicos."
+      "statement": "Senra sostiene la falsa voz divina con el cristal de resonancia y puede colapsar la ilusión si deja de canalizarlo."
     },
     "fact_tpl_oracle_8": {
-      "statement": "Iria colaboró con la Tinta Fracturada años atrás, pero su objetivo fue salvar a archivistas menores, no alterar el Oráculo."
+      "statement": "Lord Vantis ha financiado al culto durante años a cambio de profecías rentables."
     },
     "fact_tpl_oracle_9": {
-      "statement": "La gente de Luminara cree que el Oráculo predice, pero en realidad refleja decisiones repetidas por costumbre."
+      "statement": "El libro contable de Kael es uno de los caminos más seguros para demostrar los pagos de Vantis."
     },
     "fact_tpl_oracle_10": {
-      "statement": "Si el grupo protege a Tovan, Iria aceptará entregar la ruta hacia la cámara inferior."
+      "statement": "La bóveda bajo el templo antiguo contiene registros de 847 profecías falsificadas durante veinte años."
     },
     "fact_tpl_oracle_11": {
-      "statement": "El edicto de silencio de campanas permite al Consorcio controlar cuándo se extiende cada rumor."
+      "statement": "El verdadero Veradis Thorn fue un vidente real asesinado antes del ascenso del impostor."
     },
     "fact_tpl_oracle_12": {
-      "statement": "Destruir el Oráculo evita la manipulación inmediata, pero deja a la ciudad sin una ceremonia que mantenía la paz entre facciones."
+      "statement": "La contraseña que abre la bóveda es Umbra Veritatis."
+    },
+    "fact_tpl_oracle_13": {
+      "statement": "Dorian Vex es la filtración que puede hacer que el culto se anticipe a los planes de los aventureros."
+    },
+    "fact_tpl_oracle_14": {
+      "statement": "El hijo de Asha murió meses antes de la respuesta que el Oráculo planea darle en su audiencia pagada."
+    },
+    "fact_tpl_oracle_15": {
+      "statement": "Si el grupo expone el fraude sin pruebas ni aliados, Valdris puede caer en pánico antes de que empiece la reforma."
+    },
+    "fact_tpl_oracle_16": {
+      "statement": "Veradis ha pagado al Capitán Drez para mantener preparada la Gaviota de Plata."
     }
   },
   "sessions": {
-    "sess_tpl_oracle_opening": {
-      "title": "Sesión 1 — El archivo bajo la primera sombra",
+    "sess_tpl_oracle_01_arrival": {
+      "title": "Sesión 1 — Llegada a Valdris",
       "prep": {
-        "summary": "Presentar Luminara, introducir a Iria y dejar que el grupo descubra que el ritual no está intacto.",
-        "openingPrompt": "La primera sombra cruza el sol cuando las campanas del santuario callan a la vez. Iria os espera en un archivo donde ninguna vela debería estar encendida.",
+        "summary": "Presenta la ciudad, el poder social del Oráculo y el primer fallo visible de la profecía.",
+        "openingPrompt": "Valdris se alza sobre la costa con piedra blanca y tejados grises. Las campanas del templo suenan antes de que veáis las puertas, y cada transeúnte parece saber cuándo bajar la voz.",
         "goals": [
-          "Presentar la ciudad y sus facciones.",
-          "Entregar la pista de la tinta sin resolver el secreto completo.",
-          "Hacer que Malvus parezca útil, no sospechoso."
+          "Presentar Valdris como bella, próspera y asustada.",
+          "Poner la Profecía Rota en manos de los jugadores.",
+          "Cerrar con una elección: audiencia, taberna, archivo o puerto."
         ],
-        "notes": "No empujes a una solución única. La gracia del ejemplo es registrar decisiones y consecuencias.",
+        "notes": "Mantén las pistas flexibles. La idea es preservar agencia y hacer legible la investigación.",
         "checklist": {
-          "chk_oracle_1": {
-            "label": "Mostrar tensión pública sin explicar todavía el complot."
+          "chk_oracle_s1_city": {
+            "label": "Mostrar la influencia del Oráculo en gestos cotidianos de la calle."
           },
-          "chk_oracle_2": {
-            "label": "Dar una razón emocional para confiar en Iria."
+          "chk_oracle_s1_prophecy": {
+            "label": "Hacer que la profecía parezca extraña antes de explicar por qué."
           },
-          "chk_oracle_3": {
-            "label": "Cerrar con una pregunta clara: ¿a quién enseñan la página?"
+          "chk_oracle_s1_routes": {
+            "label": "Ofrecer al menos tres rutas de investigación."
           }
         }
       }
     },
-    "sess_tpl_oracle_council": {
-      "title": "Sesión 2 — Voces en el Concilio",
+    "sess_tpl_oracle_02_port": {
+      "title": "Sesión 2 — Sangre en el puerto",
       "prep": {
-        "summary": "Sesión de presión social: cada facción ofrece una versión interesada de la verdad.",
-        "openingPrompt": "El Concilio abre sus puertas. Todos sonríen como si la ciudad no estuviera a punto de repetirse a sí misma.",
+        "summary": "Convierte la sospecha en investigación criminal mediante cadáveres marcados, la cautela de Lyra y testigos del puerto.",
+        "openingPrompt": "La marea trae algo más que madera flotante. Un cuerpo golpea suavemente el muelle, con el hombro quemado por una marca que ningún marinero quiere nombrar.",
         "goals": [
-          "Forzar elección de aliados.",
-          "Permitir revelar la pista si el grupo preparó pruebas.",
-          "Activar o evitar el pánico."
+          "Presentar a Lyra como útil pero limitada.",
+          "Revelar que el culto usa violencia, no solo sermones.",
+          "Apuntar hacia Ilva, Riku, Torben o el Gremio."
         ],
+        "notes": "Mantén las pistas flexibles. La idea es preservar agencia y hacer legible la investigación.",
         "checklist": {
-          "chk_oracle_4": {
-            "label": "Preguntar qué prueba enseñan y a quién."
+          "chk_oracle_s2_body": {
+            "label": "Describir la marca con claridad para que pueda reconocerse después."
+          },
+          "chk_oracle_s2_lyra": {
+            "label": "Hacer que Lyra pida pruebas, no confianza ciega."
+          },
+          "chk_oracle_s2_pressure": {
+            "label": "Avanzar el reloj de vigilancia del culto si el grupo acusa al culto en público."
           }
         }
       }
     },
-    "sess_tpl_oracle_masks": {
-      "title": "Sesión 3 — La procesión de máscaras repetidas",
+    "sess_tpl_oracle_03_archive": {
+      "title": "Sesión 3 — El archivo quemado",
       "prep": {
-        "summary": "El grupo sigue el edicto de campanas, descubre cómo se fabrican los culpables públicos y decide a quién proteger antes de bajar al santuario.",
-        "openingPrompt": "Las campanas callan por primera vez en años. En el silencio, una procesión avanza con máscaras de líderes que aún están vivos.",
+        "summary": "Abre la línea histórica: Mira, el antiguo incendio y las primeras señales de que el Veradis actual no es el original.",
+        "openingPrompt": "El archivo huele a tinta seca y polvo de piedra. En el ala quemada, las cicatrices negras trepan por la pared como dedos intentando borrar nombres.",
         "goals": [
-          "Mostrar que los rumores ya están cambiando el comportamiento de la ciudad.",
-          "Permitir que Tovan entregue una pieza de verdad si se siente protegido.",
-          "Hacer que el grupo elija entre exponer al Consorcio o conservar su ayuda táctica."
+          "Ganar la confianza de Mira.",
+          "Recuperar registros fragmentarios del incendio.",
+          "Conectar el incendio con los antiguos videntes y el templo en ruinas."
         ],
+        "notes": "Mantén las pistas flexibles. La idea es preservar agencia y hacer legible la investigación.",
         "checklist": {
-          "oracle_s3_handout": {
-            "label": "Entregar o leer el Edicto de Silencio."
+          "chk_oracle_s3_mira": {
+            "label": "Dar a Mira una razón para resistirse antes de ayudar."
           },
-          "oracle_s3_tovan": {
-            "label": "Decidir qué sabe Tovan y qué calla por miedo."
+          "chk_oracle_s3_records": {
+            "label": "Revelar una incoherencia histórica, no toda la verdad."
           },
-          "oracle_s3_clock": {
-            "label": "Avanzar el Reloj de la Triple Eclipse si hay exposición pública."
+          "chk_oracle_s3_watch": {
+            "label": "Permitir que el grupo note que alguien lo vigila."
           }
         }
       }
     },
-    "sess_tpl_oracle_chamber": {
-      "title": "Sesión 4 — La cámara que repite hábitos",
+    "sess_tpl_oracle_04_guild": {
+      "title": "Sesión 4 — Pacto con el Gremio de Ladrones",
       "prep": {
-        "summary": "Final del ejemplo: la cámara del Oráculo obliga a resolver qué verdad se hace pública y qué precio paga Luminara por conservar su ritual.",
-        "openingPrompt": "Bajo el santuario, el Oráculo no habla con voz divina. Imita gestos, tonos y errores de quienes lo consultaron antes.",
+        "summary": "Vuelve accionable la conspiración financiera mediante Kael, el libro contable y un pacto moralmente incómodo.",
+        "openingPrompt": "Bajo los muelles, el agua golpea la piedra con ritmo paciente. Kael espera junto a un cofre de hierro cerrado, sonriendo como si la prueba fuera un cuchillo.",
         "goals": [
-          "Revelar la naturaleza real del Oráculo.",
-          "Resolver la página sustituida y el papel de Malvus.",
-          "Elegir una consecuencia final para el estado político de Luminara."
+          "Mostrar por qué el Gremio tiene ventaja.",
+          "Permitir que el grupo negocie por el libro contable.",
+          "Hacer visible a Vantis como algo más que un sospechoso rico."
         ],
+        "notes": "Mantén las pistas flexibles. La idea es preservar agencia y hacer legible la investigación.",
         "checklist": {
-          "oracle_s4_choice": {
-            "label": "Preparar tres finales: revelar, contener o destruir."
+          "chk_oracle_s4_price": {
+            "label": "Fijar un precio para la ayuda de Kael que sea útil pero incómodo."
           },
-          "oracle_s4_malvus": {
-            "label": "Decidir qué ofrece Malvus para salvarse."
+          "chk_oracle_s4_ledger": {
+            "label": "Permitir que el libro revele a Vantis sin resolver todavía a Veradis."
           },
-          "oracle_s4_epilogue": {
-            "label": "Cerrar con un cambio visible en la ciudad."
+          "chk_oracle_s4_guild": {
+            "label": "Decidir si el Gremio pasa a ser aliado, acreedor o rival."
+          }
+        }
+      }
+    },
+    "sess_tpl_oracle_05_voice": {
+      "title": "Sesión 5 — Tras la voz divina",
+      "prep": {
+        "summary": "Revela el mecanismo de la falsa profecía mediante infiltración, resonancia y la posible deserción de Senra.",
+        "openingPrompt": "Tras el muro del sanctum, la voz divina es más pequeña: zumbido de cristal, respiración medida, una mujer susurrando palabras que deberían sonar a cielo.",
+        "goals": [
+          "Exponer el mecanismo de la ilusión.",
+          "Presentar a Senra como coaccionada, no simplemente culpable.",
+          "Dar al grupo una vía hacia la contraseña de la bóveda."
+        ],
+        "notes": "Mantén las pistas flexibles. La idea es preservar agencia y hacer legible la investigación.",
+        "checklist": {
+          "chk_oracle_s5_components": {
+            "label": "Hacer física la ilusión: cristales, espejos, sonido y residuo."
+          },
+          "chk_oracle_s5_senra": {
+            "label": "Permitir que Senra pida protección antes de confesar."
+          },
+          "chk_oracle_s5_mors": {
+            "label": "Usar a Mors si el grupo hace demasiado ruido o se retrasa."
+          }
+        }
+      }
+    },
+    "sess_tpl_oracle_06_traitor": {
+      "title": "Sesión 6 — El traidor interior",
+      "prep": {
+        "summary": "El culto se anticipa al grupo. La investigación mira hacia dentro hasta que el papel de Dorian se vuelve accionable.",
+        "openingPrompt": "La trampa es demasiado precisa. Alguien sabía no solo dónde estaríais, sino qué puerta escogeríais cuando el miedo estrechara la habitación.",
+        "goals": [
+          "Hacer que la filtración se sienta ganada, no aleatoria.",
+          "Permitir que la sospecha caiga sobre varias figuras plausibles.",
+          "Revelar a Dorian solo si el grupo reúne suficiente patrón de pruebas."
+        ],
+        "notes": "Mantén las pistas flexibles. La idea es preservar agencia y hacer legible la investigación.",
+        "checklist": {
+          "chk_oracle_s6_pattern": {
+            "label": "Mostrar algo que el culto solo podría saber mediante una filtración."
+          },
+          "chk_oracle_s6_false_leads": {
+            "label": "Permitir que un aliado inocente parezca sospechoso durante una escena."
+          },
+          "chk_oracle_s6_dorian": {
+            "label": "Decidir si Dorian negocia, huye o incrimina a otra persona."
+          }
+        }
+      }
+    },
+    "sess_tpl_oracle_07_vault": {
+      "title": "Sesión 7 — La bóveda bajo las ruinas",
+      "prep": {
+        "summary": "Abre la bóveda sellada y pasa de la sospecha a la prueba incontestable.",
+        "openingPrompt": "La palabra Umbra Veritatis deja el aire más frío. Bajo el altar en ruinas, la piedra se abre como una memoria que decide hablar.",
+        "goals": [
+          "Usar a Fenwick o Senra para legitimar la ruta.",
+          "Revelar la escala del fraude.",
+          "Forzar al grupo a decidir qué pruebas lleva y qué deja atrás."
+        ],
+        "notes": "Mantén las pistas flexibles. La idea es preservar agencia y hacer legible la investigación.",
+        "checklist": {
+          "chk_oracle_s7_password": {
+            "label": "Exigir la contraseña, una vía alternativa o un coste."
+          },
+          "chk_oracle_s7_scale": {
+            "label": "Decir con claridad el número de profecías falsas."
+          },
+          "chk_oracle_s7_escape": {
+            "label": "Avanzar el reloj de huida cuando se abra la bóveda."
+          }
+        }
+      }
+    },
+    "sess_tpl_oracle_08_fall": {
+      "title": "Sesión 8 — La caída del Oráculo",
+      "prep": {
+        "summary": "Resuelve cómo recibe Valdris la verdad: acusación pública, caso legal controlado, revuelta, huida o reforma.",
+        "openingPrompt": "El templo está lleno cuando habla el Oráculo. Esta vez, cada mecanismo oculto, cada testigo y cada mentira están lo bastante cerca como para romperse.",
+        "goals": [
+          "Dejar que el grupo elija la forma de la revelación.",
+          "Dar a Veradis un intento de huida creíble.",
+          "Cerrar con un cambio visible en Valdris."
+        ],
+        "notes": "Mantén las pistas flexibles. La idea es preservar agencia y hacer legible la investigación.",
+        "checklist": {
+          "chk_oracle_s8_truth": {
+            "label": "Preguntar exactamente qué prueba se muestra y ante quién."
+          },
+          "chk_oracle_s8_senra": {
+            "label": "Decidir si Senra rompe la ilusión en público."
+          },
+          "chk_oracle_s8_ending": {
+            "label": "Elegir reforma, revuelta, huida o pacto incómodo según lo jugado."
           }
         }
       }
     }
   },
   "canvases": {
-    "cvs_tpl_oracle_map": {
-      "title": "Mapa de tensión del Oráculo",
-      "description": "Canvas inicial para entender pistas, secretos y facciones.",
+    "cvs_tpl_oracle_valdris_conspiracy": {
+      "title": "Mapa de la conspiración de Valdris",
+      "description": "Canvas principal para dirigir el fraude del Oráculo: ciudad pública, mecanismo oculto, prueba financiera, registros antiguos y decisión final.",
       "nodes": {
         "note_tpl_oracle_table": {
           "title": "Consejo de mesa",
-          "text": "Usa esta campaña para probar el ciclo: pista revelada → secreto en riesgo → consecuencia pendiente."
+          "text": "Dirige el misterio como una red, no como una línea: cada pista debería revelar un secreto, apuntar a un PNJ y crear riesgo de consecuencia."
         }
       },
       "edges": {
-        "edge_tpl_oracle_1": {
-          "label": "puede revelar"
+        "edge_tpl_prophecy_fraud": {
+          "label": "primera grieta"
         },
-        "edge_tpl_oracle_2": {
-          "label": "apunta a"
-        },
-        "edge_tpl_oracle_3": {
+        "edge_tpl_veradis_fraud": {
           "label": "oculta"
         },
-        "edge_tpl_oracle_bells_council": {
-          "label": "quiere controlar"
+        "edge_tpl_cult_veradis": {
+          "label": "venera"
         },
-        "edge_tpl_oracle_tovan_clue": {
-          "label": "puede explicar"
+        "edge_tpl_senra_voice": {
+          "label": "opera"
         },
-        "edge_tpl_oracle_decision_object": {
-          "label": "define el final"
+        "edge_tpl_voice_fraud": {
+          "label": "prueba"
         },
-        "edge_tpl_oracle_chamber_object": {
-          "label": "contiene"
+        "edge_tpl_vantis_cult": {
+          "label": "financia"
+        },
+        "edge_tpl_ledger_vantis": {
+          "label": "incrimina"
+        },
+        "edge_tpl_kael_ledger": {
+          "label": "custodia"
+        },
+        "edge_tpl_mira_archive": {
+          "label": "protege"
+        },
+        "edge_tpl_archive_fire": {
+          "label": "herida antigua"
+        },
+        "edge_tpl_ruins_vault": {
+          "label": "oculta debajo"
+        },
+        "edge_tpl_vault_fraud": {
+          "label": "demuestra"
+        },
+        "edge_tpl_decision_fraud": {
+          "label": "fuerza decisión"
         }
       }
     }
