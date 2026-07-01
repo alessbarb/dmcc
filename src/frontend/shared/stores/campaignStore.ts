@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createId } from "@shared/ids.js";
 import { resolveActiveCanvasId } from "../utils/canvasSelection.js";
 import { markCampaignGuidedTourPending } from "../../dm/onboarding/campaignGuidedTourStorage.js";
+import { apiFetch, readApiError } from "../api/apiClient.js";
 
 function getPremadeLocale(): string {
   try {
@@ -20,7 +21,7 @@ function withPremadeLocale(path: string): string {
 type ActiveCampaignRole = "dm" | "player";
 
 function getActiveSessionRole(): ActiveCampaignRole {
-  return sessionStorage.getItem("dmcc_role") === "player" ? "player" : "dm";
+  return "dm";
 }
 
 const campaignScopedReset = () => ({
@@ -394,44 +395,10 @@ export interface CampaignStateStore {
   saveViewport: (canvasId: string, viewport: { x: number; y: number; zoom: number }) => Promise<void>;
 }
 
-const fetchWithVault = (url: string, init?: RequestInit) => {
-  const vaultId = useCampaignStore.getState().activeVaultId || "default";
-  const headers = new Headers(init?.headers);
-  headers.set("x-vault-id", vaultId);
-  
-  // Player portal headers if present
-  const playerRole = sessionStorage.getItem("dmcc_role");
-  const playerId = sessionStorage.getItem("dmcc_playerId");
-  const accessCode = sessionStorage.getItem("dmcc_accessCode");
-  const dmToken = sessionStorage.getItem("dmcc_dmSessionToken");
-  const playerToken = sessionStorage.getItem("dmcc_playerToken");
-
-  if (playerRole) {
-    headers.set("x-role", playerRole);
-  }
-  if (playerId) {
-    headers.set("x-player-id", playerId);
-  }
-  if (accessCode) {
-    headers.set("x-access-code", accessCode);
-  }
-  if (dmToken) {
-    headers.set("x-dm-token", dmToken);
-  }
-  if (playerToken) {
-    headers.set("x-player-token", playerToken);
-  }
-
-  return fetch(url, {
-    ...init,
-    headers
-  });
+const fetchWithVault = (url: string, init?: RequestInit): Promise<Response> => {
+  const vaultId: string = useCampaignStore.getState().activeVaultId || "default";
+  return apiFetch(url, { vaultId, init });
 };
-
-async function readApiError(res: Response, fallback: string): Promise<string> {
-  const body = await res.json().catch(() => null);
-  return body?.error || `${fallback} (${res.status})`;
-}
 
 const syncChannel = typeof window !== "undefined" ? new BroadcastChannel("dmcc_campaign_sync") : null;
 
