@@ -36,11 +36,28 @@ export type AuthSession = {
   revokedAt?: string;
 };
 
+export type RecoveryCode = {
+  userId: string;
+  codeHash: string;
+  createdAt: string;
+  usedAt?: string;
+};
+
+export type PasswordResetToken = {
+  userId: string;
+  tokenHash: string;
+  createdAt: string;
+  expiresAt: string;
+  usedAt?: string;
+};
+
 export type UserAuthStore = {
   schemaVersion: 3;
   users: UserAccount[];
   memberships: CampaignMembership[];
   sessions: AuthSession[];
+  recoveryCodes: RecoveryCode[];
+  passwordResetTokens: PasswordResetToken[];
   createdAt: string;
   updatedAt: string;
   migration?: {
@@ -77,6 +94,8 @@ export async function readUserAuthStore(vaultDir: string): Promise<UserAuthStore
         users: parsed.users,
         memberships: parsed.memberships ?? [],
         sessions: parsed.sessions ?? [],
+        recoveryCodes: parsed.recoveryCodes ?? [],
+        passwordResetTokens: parsed.passwordResetTokens ?? [],
         createdAt: parsed.createdAt ?? nowIso(),
         updatedAt: parsed.updatedAt ?? nowIso(),
         migration: parsed.migration,
@@ -104,12 +123,23 @@ export async function readUserAuthStore(vaultDir: string): Promise<UserAuthStore
       users: migratedUsers,
       memberships: [],
       sessions: [],
+      recoveryCodes: [],
+      passwordResetTokens: [],
       createdAt,
       updatedAt: nowIso(),
     };
   } catch {
     const now = nowIso();
-    return { schemaVersion: 3, users: [], memberships: [], sessions: [], createdAt: now, updatedAt: now };
+    return {
+      schemaVersion: 3,
+      users: [],
+      memberships: [],
+      sessions: [],
+      recoveryCodes: [],
+      passwordResetTokens: [],
+      createdAt: now,
+      updatedAt: now,
+    };
   }
 }
 
@@ -297,6 +327,108 @@ export async function changeUserPassword(
       : item),
     sessions: store.sessions.map((session) =>
       session.userId === userId && !session.revokedAt ? { ...session, revokedAt } : session
+    ),
+  });
+  return true;
+}
+
+export async function regenerateRecoveryCodes(
+  vaultDir: string,
+  userId: string,
+  currentPassword: string
+): Promise<string[] | null> {
+  const store = await readUserAuthStore(vaultDir);
+  const user = store.users.find((item) => item.userId === userId && !item.disabledAt);
+  if (!user || !(await verifySecret(currentPassword, user.passwordSalt, user.passwordHash))) return null;
+  const codes = Array.from({ length: 10 }, () => randomBytes(12).toString("base64url"));
+  const createdAt = nowIso();
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    recoveryCodes: [
+      ...store.recoveryCodes.filter((item) => item.userId !== userId),
+      ...codes.map((code) => ({ userId, codeHash: hashOpaque(code), createdAt })),
+    ],
+  });
+  return codes;
+}
+
+export async function recoverUserPassword(
+  vaultDir: string,
+  email: string,
+  recoveryCode: string,
+  newPassword: string
+): Promise<boolean> {
+  if (newPassword.length < 12 || newPassword.length > 128) return false;
+  const store = await readUserAuthStore(vaultDir);
+  const user = store.users.find(
+    (item) => item.emailHash === hashOpaque(normalizeEmail(email ?? "")) && !item.disabledAt
+  );
+  const codeHash = hashOpaque(recoveryCode ?? "");
+  const code = user
+    ? store.recoveryCodes.find((item) => item.userId === user.userId && item.codeHash === codeHash && !item.usedAt)
+    : undefined;
+  if (!user || !code) return false;
+
+  const password = await hashSecret(newPassword);
+  const now = nowIso();
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    users: store.users.map((item) => item.userId === user.userId
+      ? { ...item, passwordHash: password.hash, passwordSalt: password.salt }
+      : item),
+    recoveryCodes: store.recoveryCodes.map((item) =>
+      item === code ? { ...item, usedAt: now } : item
+    ),
+    sessions: store.sessions.map((session) =>
+      session.userId === user.userId && !session.revokedAt ? { ...session, revokedAt: now } : session
+    ),
+  });
+  return true;
+}
+
+export async function issuePasswordResetToken(vaultDir: string, userId: string): Promise<string | null> {
+  const store = await readUserAuthStore(vaultDir);
+  if (!store.users.some((user) => user.userId === userId && !user.disabledAt)) return null;
+  const token = randomBytes(32).toString("base64url");
+  const now = new Date();
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    passwordResetTokens: [
+      ...store.passwordResetTokens,
+      {
+        userId,
+        tokenHash: hashOpaque(token),
+        createdAt: now.toISOString(),
+        expiresAt: new Date(now.getTime() + 30 * 60 * 1000).toISOString(),
+      },
+    ],
+  });
+  return token;
+}
+
+export async function resetPasswordWithToken(
+  vaultDir: string,
+  resetToken: string,
+  newPassword: string
+): Promise<boolean> {
+  if (newPassword.length < 12 || newPassword.length > 128) return false;
+  const store = await readUserAuthStore(vaultDir);
+  const token = store.passwordResetTokens.find(
+    (item) => item.tokenHash === hashOpaque(resetToken ?? "") && !item.usedAt && Date.parse(item.expiresAt) > Date.now()
+  );
+  if (!token) return false;
+  const password = await hashSecret(newPassword);
+  const now = nowIso();
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    users: store.users.map((item) => item.userId === token.userId
+      ? { ...item, passwordHash: password.hash, passwordSalt: password.salt }
+      : item),
+    passwordResetTokens: store.passwordResetTokens.map((item) =>
+      item === token ? { ...item, usedAt: now } : item
+    ),
+    sessions: store.sessions.map((session) =>
+      session.userId === token.userId && !session.revokedAt ? { ...session, revokedAt: now } : session
     ),
   });
   return true;

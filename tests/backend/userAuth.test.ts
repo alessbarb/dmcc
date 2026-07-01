@@ -303,4 +303,103 @@ describe("unified user authentication", () => {
       })).statusCode).toBe(200);
     });
   });
+
+  it("generates recovery codes that are stored hashed and can only be used once", async () => {
+    await withServer(async (server, dataDir) => {
+      await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        payload: { email: "alice@example.com", password: "correct horse battery" },
+      });
+      const login = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "alice@example.com", password: "correct horse battery" },
+      });
+      const generated = await server.inject({
+        method: "POST",
+        url: "/api/auth/recovery-codes/regenerate",
+        headers: { cookie: sessionCookie(login) },
+        payload: { currentPassword: "correct horse battery" },
+      });
+      expect(generated.statusCode).toBe(200);
+      expect(generated.json().codes).toHaveLength(10);
+      const [code] = generated.json().codes;
+      const persisted = await readFile(join(dataDir, "vaults", "default", "auth.json"), "utf8");
+      expect(persisted).not.toContain(code);
+
+      const recovered = await server.inject({
+        method: "POST",
+        url: "/api/auth/recover",
+        payload: {
+          email: "alice@example.com",
+          recoveryCode: code,
+          newPassword: "recovered horse battery",
+        },
+      });
+      expect(recovered.statusCode).toBe(200);
+      expect((await server.inject({
+        method: "POST",
+        url: "/api/auth/recover",
+        payload: {
+          email: "alice@example.com",
+          recoveryCode: code,
+          newPassword: "another secure password",
+        },
+      })).statusCode).toBe(400);
+      expect((await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "alice@example.com", password: "recovered horse battery" },
+      })).statusCode).toBe(200);
+    });
+  });
+
+  it("lets an admin issue a one-use password reset token without choosing the password", async () => {
+    await withServer(async (server, dataDir) => {
+      await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        payload: { email: "admin@example.com", password: "correct horse battery" },
+      });
+      await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        payload: { email: "player@example.com", password: "initial horse battery" },
+      });
+      const store = JSON.parse(await readFile(join(dataDir, "vaults", "default", "auth.json"), "utf8"));
+      const playerId = store.users.find((user: any) => user.emailNormalized === "player@example.com").userId;
+      const adminLogin = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "admin@example.com", password: "correct horse battery" },
+      });
+
+      const issued = await server.inject({
+        method: "POST",
+        url: `/api/admin/users/${playerId}/password-reset`,
+        headers: { cookie: sessionCookie(adminLogin) },
+      });
+      expect(issued.statusCode).toBe(200);
+      expect(issued.json()).toHaveProperty("resetToken");
+      expect(await readFile(join(dataDir, "vaults", "default", "auth.json"), "utf8"))
+        .not.toContain(issued.json().resetToken);
+
+      expect((await server.inject({
+        method: "POST",
+        url: "/api/auth/recover",
+        payload: { resetToken: issued.json().resetToken, newPassword: "replacement horse battery" },
+      })).statusCode).toBe(200);
+      expect((await server.inject({
+        method: "POST",
+        url: "/api/auth/recover",
+        payload: { resetToken: issued.json().resetToken, newPassword: "another horse battery" },
+      })).statusCode).toBe(400);
+      expect((await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "player@example.com", password: "replacement horse battery" },
+      })).statusCode).toBe(200);
+    });
+  });
 });

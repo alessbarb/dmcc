@@ -11,6 +11,10 @@ import {
   revokeSession,
   readUserAuthStore,
   migrateLegacyAuthStore,
+  recoverUserPassword,
+  regenerateRecoveryCodes,
+  issuePasswordResetToken,
+  resetPasswordWithToken,
 } from "../userAuthStore.js";
 import { getValidatedCampaignId, getValidatedVaultId, hashAccessCode } from "../auth.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
@@ -169,6 +173,84 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
       } catch (error: any) {
         reply.code(error.statusCode ?? 500);
         return { error: error.statusCode ? error.message : "Unable to change password" };
+      }
+    }
+  );
+
+  server.post<{ Body: { currentPassword?: string } }>(
+    "/api/auth/recovery-codes/regenerate",
+    async (request, reply) => {
+      try {
+        assertSameOrigin(request);
+        const user = await requireUser(request);
+        const codes = await regenerateRecoveryCodes(
+          vaultDirFor(request),
+          user.userId,
+          request.body?.currentPassword ?? ""
+        );
+        if (!codes) {
+          reply.code(401);
+          return { error: "Unable to regenerate recovery codes" };
+        }
+        return { codes };
+      } catch (error: any) {
+        reply.code(error.statusCode ?? 500);
+        return { error: error.statusCode ? error.message : "Unable to regenerate recovery codes" };
+      }
+    }
+  );
+
+  server.post<{ Body: { email?: string; recoveryCode?: string; resetToken?: string; newPassword?: string } }>(
+    "/api/auth/recover",
+    async (request, reply) => {
+      try {
+        assertSameOrigin(request);
+        enforceLimit(request, "recover", 8);
+        const recovered = request.body?.resetToken
+          ? await resetPasswordWithToken(
+              vaultDirFor(request),
+              request.body.resetToken,
+              request.body?.newPassword ?? ""
+            )
+          : await recoverUserPassword(
+              vaultDirFor(request),
+              request.body?.email ?? "",
+              request.body?.recoveryCode ?? "",
+              request.body?.newPassword ?? ""
+            );
+        if (!recovered) {
+          reply.code(400);
+          return { error: "Unable to recover account" };
+        }
+        clearLimit(request, "recover");
+        return { ok: true };
+      } catch (error: any) {
+        if (error.retryAfter) reply.header("Retry-After", String(error.retryAfter));
+        reply.code(error.statusCode ?? 500);
+        return { error: error.statusCode ? error.message : "Unable to recover account" };
+      }
+    }
+  );
+
+  server.post<{ Params: { userId: string } }>(
+    "/api/admin/users/:userId/password-reset",
+    async (request, reply) => {
+      try {
+        assertSameOrigin(request);
+        const admin = await requireUser(request);
+        if (admin.vaultRole !== "admin") {
+          reply.code(403);
+          return { error: "Administrator access required" };
+        }
+        const resetToken = await issuePasswordResetToken(vaultDirFor(request), request.params.userId);
+        if (!resetToken) {
+          reply.code(404);
+          return { error: "Unable to issue password reset" };
+        }
+        return { resetToken, expiresInSeconds: 1800 };
+      } catch (error: any) {
+        reply.code(error.statusCode ?? 500);
+        return { error: error.statusCode ? error.message : "Unable to issue password reset" };
       }
     }
   );
