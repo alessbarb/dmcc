@@ -214,3 +214,29 @@ export async function addCampaignMembership(
   await writeUserAuthStore(vaultDir, { ...store, memberships: [...store.memberships, created] });
   return created;
 }
+
+export async function changeUserPassword(
+  vaultDir: string,
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+): Promise<boolean> {
+  if (newPassword.length < 12 || newPassword.length > 128) {
+    throw Object.assign(new Error("New password must be 12–128 characters"), { statusCode: 400 });
+  }
+  const store = await readUserAuthStore(vaultDir);
+  const user = store.users.find((item) => item.userId === userId && !item.disabledAt);
+  if (!user || !(await verifySecret(currentPassword, user.passwordSalt, user.passwordHash))) return false;
+  const replacement = await hashSecret(newPassword);
+  const revokedAt = nowIso();
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    users: store.users.map((item) => item.userId === userId
+      ? { ...item, passwordHash: replacement.hash, passwordSalt: replacement.salt }
+      : item),
+    sessions: store.sessions.map((session) =>
+      session.userId === userId && !session.revokedAt ? { ...session, revokedAt } : session
+    ),
+  });
+  return true;
+}

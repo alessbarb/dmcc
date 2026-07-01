@@ -4,6 +4,7 @@ import {
   addCampaignMembership,
   authenticateUser,
   createSession,
+  changeUserPassword,
   getSessionUser,
   publicUser,
   registerUser,
@@ -51,6 +52,25 @@ function assertSameOrigin(request: FastifyRequest): void {
 }
 
 export async function registerUserAuthRoutes(server: FastifyInstance, options: { dataDir: string }) {
+  const attempts = new Map<string, { count: number; resetAt: number }>();
+  const enforceLimit = (request: FastifyRequest, operation: string, limit: number) => {
+    const vaultId = getValidatedVaultId(request);
+    const key = `${vaultId}:${request.ip}:${operation}`;
+    const now = Date.now();
+    const current = attempts.get(key);
+    if (!current || current.resetAt <= now) {
+      attempts.set(key, { count: 1, resetAt: now + 60_000 });
+      return;
+    }
+    if (current.count >= limit) {
+      const retryAfter = Math.max(1, Math.ceil((current.resetAt - now) / 1000));
+      throw Object.assign(new Error("Too many attempts"), { statusCode: 429, retryAfter });
+    }
+    current.count += 1;
+  };
+  const clearLimit = (request: FastifyRequest, operation: string) => {
+    attempts.delete(`${getValidatedVaultId(request)}:${request.ip}:${operation}`);
+  };
   const vaultDirFor = (request: FastifyRequest) =>
     join(options.dataDir, "vaults", getValidatedVaultId(request));
   const repositoryFor = (request: FastifyRequest) => {
@@ -84,6 +104,7 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
   server.post<{ Body: { email: string; password: string } }>("/api/auth/login", async (request, reply) => {
     try {
       assertSameOrigin(request);
+      enforceLimit(request, "login", 5);
       const vaultDir = vaultDirFor(request);
       const user = await authenticateUser(vaultDir, request.body.email, request.body.password);
       if (!user) {
@@ -91,9 +112,11 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
         return { error: "Invalid email or password" };
       }
       const rawSessionId = await createSession(vaultDir, user.userId);
+      clearLimit(request, "login");
       reply.header("Set-Cookie", cookieValue(rawSessionId, request.protocol === "https"));
       return { ok: true, user: publicUser(user) };
     } catch (error: any) {
+      if (error.retryAfter) reply.header("Retry-After", String(error.retryAfter));
       reply.code(error.statusCode ?? 500);
       return { error: error.statusCode ? error.message : "Unable to log in" };
     }
@@ -120,11 +143,37 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
     }
   });
 
+  server.post<{ Body: { currentPassword?: string; newPassword?: string } }>(
+    "/api/auth/password/change",
+    async (request, reply) => {
+      try {
+        assertSameOrigin(request);
+        const user = await requireUser(request);
+        const changed = await changeUserPassword(
+          vaultDirFor(request),
+          user.userId,
+          request.body?.currentPassword ?? "",
+          request.body?.newPassword ?? ""
+        );
+        if (!changed) {
+          reply.code(401);
+          return { error: "Unable to change password" };
+        }
+        reply.header("Set-Cookie", expiredCookie());
+        return { ok: true };
+      } catch (error: any) {
+        reply.code(error.statusCode ?? 500);
+        return { error: error.statusCode ? error.message : "Unable to change password" };
+      }
+    }
+  );
+
   server.post<{ Params: { campaignId: string }; Body: { accessCode?: string; playerId?: string } }>(
     "/api/campaigns/:campaignId/join",
     async (request, reply) => {
       try {
         assertSameOrigin(request);
+        enforceLimit(request, `join:${request.params.campaignId}`, 8);
         if (request.body?.playerId !== undefined) {
           reply.code(400);
           return { error: "playerId cannot be selected during join" };
@@ -163,6 +212,7 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
           role: "player",
           playerId,
         });
+        clearLimit(request, `join:${request.params.campaignId}`);
         reply.code(201);
         return { membership, campaign: { campaignId, title: state.campaign?.title } };
       } catch (error: any) {

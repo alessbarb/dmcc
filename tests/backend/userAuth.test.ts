@@ -159,4 +159,66 @@ describe("unified user authentication", () => {
       ]);
     });
   });
+
+  it("rate limits repeated login failures with Retry-After", async () => {
+    await withServer(async (server) => {
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        const response = await server.inject({
+          method: "POST",
+          url: "/api/auth/login",
+          payload: { email: "missing@example.com", password: "wrong password value" },
+        });
+        expect(response.statusCode).toBe(401);
+      }
+      const blocked = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "missing@example.com", password: "wrong password value" },
+      });
+      expect(blocked.statusCode).toBe(429);
+      expect(Number(blocked.headers["retry-after"])).toBeGreaterThan(0);
+    });
+  });
+
+  it("changes a password and revokes every existing session for that user", async () => {
+    await withServer(async (server) => {
+      await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        payload: { email: "alice@example.com", password: "correct horse battery" },
+      });
+      const login = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "alice@example.com", password: "correct horse battery" },
+      });
+      const cookie = sessionCookie(login);
+
+      const changed = await server.inject({
+        method: "POST",
+        url: "/api/auth/password/change",
+        headers: { cookie },
+        payload: {
+          currentPassword: "correct horse battery",
+          newPassword: "different horse battery",
+        },
+      });
+      expect(changed.statusCode).toBe(200);
+      expect((await server.inject({
+        method: "GET",
+        url: "/api/auth/session",
+        headers: { cookie },
+      })).statusCode).toBe(401);
+      expect((await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "alice@example.com", password: "correct horse battery" },
+      })).statusCode).toBe(401);
+      expect((await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "alice@example.com", password: "different horse battery" },
+      })).statusCode).toBe(200);
+    });
+  });
 });
