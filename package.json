@@ -44,6 +44,7 @@
     "premade:build": "node scripts/premades/build.mjs",
     "premade:build:check": "node scripts/premades/build.mjs --check",
     "premade:validate": "node scripts/premades/validate.mjs",
+    "benchmark:event-store": "vitest run --config vitest.benchmark.config.ts",
     "gen:icons": "node scripts/generate-icons.mjs",
     "desktop:dev": "npm run build && electron desktop/main.mjs",
     "desktop:pack": "npm run build && electron-builder --dir",

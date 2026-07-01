@@ -102,6 +102,25 @@ describe("Persistence Layer", () => {
       expect(loaded.length).toBe(10);
     });
 
+    it("repairs a stale append index and keeps full verification explicit", async () => {
+      await eventStore.appendEvent(campaignId, "VaultCreated", "usr_dm", { name: "one" });
+      const indexPath = eventStore.getIndexFilePath(campaignId);
+      const initialIndex = JSON.parse(await fs.readFile(indexPath, "utf8"));
+      expect(initialIndex).toMatchObject({ sequence: 1 });
+
+      await fs.writeFile(indexPath, JSON.stringify({ ...initialIndex, sequence: 99, offset: 0 }));
+      const second = await eventStore.appendEvent(campaignId, "VaultCreated", "usr_dm", { name: "two" });
+      expect(second.sequence).toBe(2);
+      expect(JSON.parse(await fs.readFile(indexPath, "utf8"))).toMatchObject({
+        sequence: 2,
+        hash: second.hash,
+      });
+      await expect(eventStore.verifyAndRebuildIndex(campaignId)).resolves.toMatchObject({
+        sequence: 2,
+        hash: second.hash,
+      });
+    });
+
     it("saves and loads snapshot atomically", async () => {
       const projection = {
         campaign: null,

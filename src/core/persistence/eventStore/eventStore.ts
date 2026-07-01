@@ -35,6 +35,12 @@ export function normalizePayload(type: string, payload: any, occurredAt = nowIso
 
 const writeQueues = new Map<string, Promise<any>>();
 
+type EventAppendIndex = {
+  sequence: number;
+  hash?: string;
+  offset: number;
+};
+
 export class EventStore {
   private baseDir: string;
   private vaultId: string;
@@ -58,6 +64,56 @@ export class EventStore {
 
   public getEventsFilePath(campaignId: CampaignId): string {
     return path.join(this.getCampaignDir(campaignId), "events.ndjson");
+  }
+
+  public getIndexFilePath(campaignId: CampaignId): string {
+    return path.join(this.getCampaignDir(campaignId), "events.index.json");
+  }
+
+  private async writeIndex(campaignId: CampaignId, index: EventAppendIndex): Promise<void> {
+    const indexPath = this.getIndexFilePath(campaignId);
+    const temporaryPath = `${indexPath}.tmp`;
+    await fs.mkdir(path.dirname(indexPath), { recursive: true });
+    await fs.writeFile(temporaryPath, JSON.stringify(index), "utf8");
+    await fs.rename(temporaryPath, indexPath);
+  }
+
+  public async verifyAndRebuildIndex(campaignId: CampaignId): Promise<EventAppendIndex> {
+    const events = await this.loadEvents(campaignId);
+    const filePath = this.getEventsFilePath(campaignId);
+    const offset = await fs.stat(filePath).then((stat) => stat.size).catch(() => 0);
+    const last = events.at(-1);
+    const index = { sequence: last?.sequence ?? 0, hash: last?.hash, offset };
+    await this.writeIndex(campaignId, index);
+    return index;
+  }
+
+  private async getAppendIndex(campaignId: CampaignId): Promise<EventAppendIndex> {
+    const filePath = this.getEventsFilePath(campaignId);
+    const fileSize = await fs.stat(filePath).then((stat) => stat.size).catch(() => 0);
+    try {
+      const index = JSON.parse(await fs.readFile(this.getIndexFilePath(campaignId), "utf8")) as EventAppendIndex;
+      if (!Number.isInteger(index.sequence) || index.sequence < 0 || index.offset !== fileSize) {
+        throw new Error("stale index");
+      }
+      if (index.sequence === 0 && fileSize === 0) return index;
+      const handle = await fs.open(filePath, "r");
+      try {
+        const length = Math.min(fileSize, 64 * 1024);
+        const buffer = Buffer.alloc(length);
+        await handle.read(buffer, 0, length, fileSize - length);
+        const lines = buffer.toString("utf8").trim().split("\n");
+        const last = storedEventSchema.parse(JSON.parse(lines.at(-1) ?? ""));
+        if (last.sequence !== index.sequence || last.hash !== index.hash || computeEventHash(last) !== last.hash) {
+          throw new Error("index tip mismatch");
+        }
+      } finally {
+        await handle.close();
+      }
+      return index;
+    } catch {
+      return this.verifyAndRebuildIndex(campaignId);
+    }
   }
 
   /**
@@ -167,10 +223,9 @@ export class EventStore {
   ): Promise<StoredEvent<T>> {
     const occurredAt = nowIso();
     const normalized = normalizeEventPayload(type, payload, occurredAt);
-    const events = await this.loadEvents(campaignId);
-    const lastEvent = events[events.length - 1];
-    const sequence = events.length + 1;
-    const previousHash = lastEvent ? lastEvent.hash : undefined;
+    const index = await this.getAppendIndex(campaignId);
+    const sequence = index.sequence + 1;
+    const previousHash = index.hash;
     const eventId = generateEventId();
 
     const eventWithoutHash: Omit<StoredEvent<T>, "hash"> = {
@@ -215,6 +270,11 @@ export class EventStore {
     try {
       await fs.mkdir(path.dirname(filePath), { recursive: true });
       await fs.appendFile(filePath, ndjsonLine, "utf-8");
+      await this.writeIndex(campaignId, {
+        sequence,
+        hash,
+        offset: index.offset + Buffer.byteLength(ndjsonLine, "utf8"),
+      });
     } catch (writeError: any) {
       throw new EventStoreError(`Failed to write event to disk: ${writeError.message}`);
     }
