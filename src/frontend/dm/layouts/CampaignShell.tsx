@@ -142,9 +142,8 @@ export function CampaignShell() {
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
 
-  const role = sessionStorage.getItem("dmcc_role");
-
-  const isDM = !role || role === "dm";
+  const role = useCampaignStore((state) => state.activeCampaignRole);
+  const isDM = role === "dm";
 
   useKeyboardShortcuts(
     {

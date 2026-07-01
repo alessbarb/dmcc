@@ -866,13 +866,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const entityId = payload.entityId || `ent_${createId("ent").split("_")[1]}`;
-      const role = sessionStorage.getItem("dmcc_role") || "dm";
-      const actorId = role === "player" ? (sessionStorage.getItem("dmcc_playerId") || "usr_player") : "usr_dm";
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/entities`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId,
           entityId,
           ...payload
         })
@@ -963,12 +960,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const role = sessionStorage.getItem("dmcc_role") || "dm";
-      const actorId = role === "player" ? (sessionStorage.getItem("dmcc_playerId") || "usr_player") : "usr_dm";
       const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/entities/${entityId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId, ...updates }),
+        body: JSON.stringify(updates),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));

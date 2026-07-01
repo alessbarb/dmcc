@@ -6,7 +6,7 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
-import { getDmSessionToken } from "../../shared/auth/authClient.js";
+import { apiFetch } from "../../shared/api/apiClient.js";
 
 
 export interface PlayersPageProps {
@@ -47,26 +47,19 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const [newInviteUrl, setNewInviteUrl] = useState<string | null>(null);
   const [networkUrl, setNetworkUrl] = useState<string | null>(null);
 
-  const dmHeaders = useCallback((): Record<string, string> => {
-    const token = getDmSessionToken();
-    const h: Record<string, string> = { "x-vault-id": store.activeVaultId || "default" };
-    if (token) h["x-dm-token"] = token;
-    return h;
-  }, [store.activeVaultId]);
-
   const fetchInvitations = useCallback(async () => {
     const activeCampaignId = store.activeCampaignId;
     if (!activeCampaignId) return;
     try {
-      const res = await fetch(`/api/campaigns/${activeCampaignId}/invitations`, {
-        headers: dmHeaders(),
+      const res = await apiFetch(`/api/campaigns/${activeCampaignId}/invitations`, {
+        vaultId: store.activeVaultId || "default",
       });
       if (res.ok) {
         const data = await res.json();
         setInvitations(data.invitations ?? []);
       }
     } catch { /* non-fatal */ }
-  }, [store.activeCampaignId, dmHeaders]);
+  }, [store.activeCampaignId, store.activeVaultId]);
 
   useEffect(() => {
     void fetchInvitations();
@@ -85,10 +78,13 @@ export function PlayersPage(props: PlayersPageProps = {}) {
     setInviteLoading(true);
     setNewInviteUrl(null);
     try {
-      const res = await fetch(`/api/campaigns/${activeCampaignId}/invitations`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", ...dmHeaders() },
-        body: JSON.stringify({ expiresInHours: 72 }),
+      const res = await apiFetch(`/api/campaigns/${activeCampaignId}/invitations`, {
+        vaultId: store.activeVaultId || "default",
+        init: {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ expiresInHours: 72 }),
+        },
       });
       const data = await res.json();
       if (res.ok) {
@@ -108,9 +104,9 @@ export function PlayersPage(props: PlayersPageProps = {}) {
     const activeCampaignId = store.activeCampaignId;
     if (!activeCampaignId) return;
     try {
-      await fetch(`/api/campaigns/${activeCampaignId}/invitations/${inviteId}`, {
-        method: "DELETE",
-        headers: dmHeaders(),
+      await apiFetch(`/api/campaigns/${activeCampaignId}/invitations/${inviteId}`, {
+        vaultId: store.activeVaultId || "default",
+        init: { method: "DELETE" },
       });
       await fetchInvitations();
     } catch { /* non-fatal */ }

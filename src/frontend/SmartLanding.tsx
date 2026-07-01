@@ -3,7 +3,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { Shield, Sword, type LucideIcon } from "lucide-react";
 import { fetchAuthStatus, logoutDm } from "./shared/auth/authClient.js";
 import { readIdentity } from "./shared/auth/localIdentity.js";
-import { getDmSessionToken } from "./shared/auth/sessionCreds.js";
 import type { AuthStatus } from "./shared/auth/authTypes.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "./shared/components/PortalTopBar.js";
@@ -24,8 +23,7 @@ export function SmartLanding() {
         const authStatus = await fetchAuthStatus();
         setStatus(authStatus);
 
-        const existingToken = getDmSessionToken();
-        setHasDmSession(!!existingToken && authStatus.dmSessionValid);
+        setHasDmSession(authStatus.dmSessionValid);
       } catch {
         // Server unreachable — show landing anyway
       }

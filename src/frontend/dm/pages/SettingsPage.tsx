@@ -5,6 +5,7 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { LanguageSelector } from "../../shared/i18n/LanguageSelector.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { apiFetch } from "../../shared/api/apiClient.js";
 
 export interface SettingsPageProps {
   campaigns?: any[];
@@ -59,11 +60,9 @@ export function SettingsPage(props: SettingsPageProps = {}) {
 const handleDownloadMarkdown = async () => {
     if (!lastMarkdownExport?.downloadUrl) return;
     try {
-      const headers = new Headers();
-      headers.set("x-vault-id", activeVaultId || "default");
-      const dmToken = sessionStorage.getItem("dmcc_dmSessionToken");
-      if (dmToken) headers.set("x-dm-token", dmToken);
-      const res = await fetch(lastMarkdownExport.downloadUrl, { headers });
+      const res = await apiFetch(lastMarkdownExport.downloadUrl, {
+        vaultId: activeVaultId || "default",
+      });
       if (!res.ok) throw new Error("download failed");
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);

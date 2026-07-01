@@ -492,7 +492,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     visibility: "private" as "private" | "dm_visible",
   });
 
-  const playerId = playerPortalState?.playerId ?? sessionStorage.getItem("dmcc_playerId");
+  const playerId = playerPortalState?.playerId;
 
   useEffect(() => {
     useCampaignStore.getState().enterPlayerCampaign(campaignId);

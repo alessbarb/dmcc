@@ -94,14 +94,6 @@ export async function acquireLocalDmToken(): Promise<void> {
   throw new Error("Local token login has been removed");
 }
 
-export function getDmSessionToken(): null {
-  return null;
-}
-
-export function registerPlayerSession(..._legacyArguments: unknown[]): void {
-  // Cookie sessions and campaign memberships replace browser-stored player tokens.
-}
-
 export async function logoutPlayer(_campaignId: string): Promise<void> {
   await logoutDm();
 }
