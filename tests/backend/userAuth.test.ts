@@ -165,6 +165,48 @@ describe("unified user authentication", () => {
     });
   });
 
+  it("lets a vault admin lock the vault and revoke every active session", async () => {
+    await withServer(async (server) => {
+      await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        payload: { email: "admin@example.com", password: "correct horse battery" },
+      });
+      await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        payload: { email: "user@example.com", password: "different horse battery" },
+      });
+      const adminLogin = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "admin@example.com", password: "correct horse battery" },
+      });
+      const userLogin = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "user@example.com", password: "different horse battery" },
+      });
+      const adminCookie = sessionCookie(adminLogin);
+      const userCookie = sessionCookie(userLogin);
+
+      const locked = await server.inject({
+        method: "POST",
+        url: "/api/auth/lock",
+        headers: { cookie: adminCookie },
+      });
+      expect(locked.statusCode).toBe(200);
+
+      for (const cookie of [adminCookie, userCookie]) {
+        expect((await server.inject({
+          method: "GET",
+          url: "/api/auth/session",
+          headers: { cookie },
+        })).statusCode).toBe(401);
+      }
+    });
+  });
+
   it("uses the authenticated account as the actor when an admin creates a campaign", async () => {
     await withServer(async (server, dataDir) => {
       await server.inject({

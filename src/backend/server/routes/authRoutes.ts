@@ -24,6 +24,8 @@ import { CampaignRepository } from "@core/persistence/repositories/campaignRepos
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
+import { getSessionUser, revokeAllSessions } from "../userAuthStore.js";
+import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
 
 interface DmAttemptState {
   count: number;
@@ -190,7 +192,18 @@ export async function registerAuthRoutes(
 
   server.post("/api/auth/lock", async (request, reply) => {
     try {
-      assertDM(request, server.dmSessionToken);
+      const vaultDir = getVaultDir(getValidatedVaultId(request));
+      const unified = await getSessionUser(vaultDir, readSessionCookie(request));
+      if (unified) {
+        if (unified.user.vaultRole !== "admin") {
+          reply.code(403);
+          return { error: "Administrator access required" };
+        }
+        await revokeAllSessions(vaultDir);
+        reply.header("Set-Cookie", `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`);
+      } else {
+        assertDM(request, server.dmSessionToken);
+      }
       server.dmSessionToken = randomBytes(32).toString("hex");
       return { ok: true };
     } catch {

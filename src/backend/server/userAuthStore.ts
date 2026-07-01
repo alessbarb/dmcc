@@ -292,6 +292,17 @@ export async function revokeSession(vaultDir: string, rawSessionId: string | und
   });
 }
 
+export async function revokeAllSessions(vaultDir: string): Promise<void> {
+  const store = await readUserAuthStore(vaultDir);
+  const revokedAt = nowIso();
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    sessions: store.sessions.map((session) =>
+      session.revokedAt ? session : { ...session, revokedAt }
+    ),
+  });
+}
+
 export async function addCampaignMembership(
   vaultDir: string,
   membership: Omit<CampaignMembership, "createdAt">
