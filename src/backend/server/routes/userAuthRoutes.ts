@@ -21,25 +21,14 @@ import { CampaignRepository } from "@core/persistence/repositories/campaignRepos
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { randomBytes } from "node:crypto";
-
-const COOKIE = "dmcc_session";
-
-function readCookie(request: FastifyRequest): string | undefined {
-  const header = request.headers.cookie;
-  if (!header) return undefined;
-  for (const part of header.split(";")) {
-    const [name, ...value] = part.trim().split("=");
-    if (name === COOKIE) return decodeURIComponent(value.join("="));
-  }
-  return undefined;
-}
+import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
 
 function cookieValue(raw: string, secure: boolean): string {
-  return `${COOKIE}=${encodeURIComponent(raw)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000${secure ? "; Secure" : ""}`;
+  return `${SESSION_COOKIE}=${encodeURIComponent(raw)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000${secure ? "; Secure" : ""}`;
 }
 
 function expiredCookie(): string {
-  return `${COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`;
+  return `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`;
 }
 
 function assertSameOrigin(request: FastifyRequest): void {
@@ -90,7 +79,7 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
     );
   };
   const requireUser = async (request: FastifyRequest) => {
-    const resolved = await getSessionUser(vaultDirFor(request), readCookie(request));
+    const resolved = await getSessionUser(vaultDirFor(request), readSessionCookie(request));
     if (!resolved) throw Object.assign(new Error("Authentication required"), { statusCode: 401 });
     return resolved.user;
   };
@@ -132,7 +121,7 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
   });
 
   server.get("/api/auth/session", async (request, reply) => {
-    const resolved = await getSessionUser(vaultDirFor(request), readCookie(request));
+    const resolved = await getSessionUser(vaultDirFor(request), readSessionCookie(request));
     if (!resolved) {
       reply.code(401);
       return { error: "Authentication required" };
@@ -143,7 +132,7 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
   server.post("/api/auth/logout", async (request, reply) => {
     try {
       assertSameOrigin(request);
-      await revokeSession(vaultDirFor(request), readCookie(request));
+      await revokeSession(vaultDirFor(request), readSessionCookie(request));
       reply.header("Set-Cookie", expiredCookie());
       return { ok: true };
     } catch (error: any) {

@@ -98,6 +98,7 @@ export function generatePlayerToken(): string {
 }
 
 export function getRequestDmSession(request: any, dmSessionSecret: string): DmSessionPayload | null {
+  if (request.unifiedDmSession) return request.unifiedDmSession as DmSessionPayload;
   const dmTokenHeader = request.headers["x-dm-token"] as string | undefined;
   const session = verifyDmSessionToken(dmTokenHeader, dmSessionSecret);
   if (session) return session;

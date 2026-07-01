@@ -31,6 +31,7 @@ import {
 } from "../helpers.js";
 import { createCampaignBackup } from "../hardening/backups.js";
 import { copyCampaignAcl, ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
+import { addCampaignMembership } from "../userAuthStore.js";
 
 export async function registerCampaignRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -144,8 +145,8 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       const vaultId = getValidatedVaultId(request);
       const dmId = getRequestDmId(request, server.dmSessionToken) ?? "usr_dm";
       const campaignId = getValidatedCampaignId(request.body.campaignId);
-      const { actorId, title, system } = request.body;
-      const commandActorId = actorId || dmId;
+      const { title, system } = request.body;
+      const commandActorId = dmId;
 
       try {
         const repo = getRepository(vaultId);
@@ -170,6 +171,13 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         });
 
         await ensureCampaignOwner(dataDir, vaultId, campaignId, dmId);
+        if ((request as any).unifiedUser) {
+          await addCampaignMembership(join(dataDir, "vaults", vaultId), {
+            campaignId,
+            userId: dmId,
+            role: "dm",
+          });
+        }
 
         reply.code(201);
         return { campaignId, title };

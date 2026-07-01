@@ -26,6 +26,8 @@ import { registerHardeningRoutes } from "./routes/hardeningRoutes.js";
 import { registerAuthRoutes } from "./routes/authRoutes.js";
 import { registerUserAuthRoutes } from "./routes/userAuthRoutes.js";
 import { registerPremadeCampaignRoutes } from "./routes/premadeCampaignRoutes.js";
+import { getSessionUser, readUserAuthStore } from "./userAuthStore.js";
+import { readSessionCookie } from "./sessionAuth.js";
 
 export interface ServerConfig {
   dataDir?: string;
@@ -177,13 +179,41 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   server.addHook("preValidation", async (request, reply) => {
     const pathname = getRequestPath(request.raw.url);
+    const vaultId = getValidatedVaultId(request);
+    const vaultDir = join(dataDir, "vaults", vaultId);
+    const resolved = await getSessionUser(vaultDir, readSessionCookie(request));
+    if (resolved) {
+      (request as any).unifiedUser = resolved.user;
+      const store = await readUserAuthStore(vaultDir);
+      const campaignMatch = pathname.match(/^\/api\/campaigns\/([^/]+)/);
+      const campaignId = campaignMatch
+        ? getValidatedCampaignId(decodeURIComponent(campaignMatch[1]))
+        : undefined;
+      const hasDmMembership = store.memberships.some(
+        (membership) =>
+          membership.userId === resolved.user.userId &&
+          membership.role === "dm" &&
+          !membership.revokedAt &&
+          (!campaignId || membership.campaignId === campaignId)
+      );
+      const canActAsDm = campaignId ? hasDmMembership : resolved.user.vaultRole === "admin" || hasDmMembership;
+      if (canActAsDm) {
+        (request as any).unifiedDmSession = {
+          dmId: resolved.user.userId,
+          vaultId,
+          email: resolved.user.emailNormalized,
+          displayName: resolved.user.displayName,
+          issuedAt: resolved.session.createdAt,
+        };
+      }
+    }
+
     const match = pathname.match(/^\/api\/campaigns\/([^/]+)/);
     if (!match) return;
 
     const dmSession = getRequestDmSession(request, server.dmSessionToken);
     if (!dmSession) return;
 
-    const vaultId = getValidatedVaultId(request);
     const campaignId = getValidatedCampaignId(decodeURIComponent(match[1]));
     if (!hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmSession.dmId)) {
       reply.code(403);

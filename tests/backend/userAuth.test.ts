@@ -165,6 +165,41 @@ describe("unified user authentication", () => {
     });
   });
 
+  it("uses the authenticated account as the actor when an admin creates a campaign", async () => {
+    await withServer(async (server, dataDir) => {
+      await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        payload: { email: "admin@example.com", password: "correct horse battery" },
+      });
+      const login = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "admin@example.com", password: "correct horse battery" },
+      });
+      const cookie = sessionCookie(login);
+      const created = await server.inject({
+        method: "POST",
+        url: "/api/campaigns",
+        headers: { cookie },
+        payload: { campaignId: "cmp_cookie", title: "Cookie campaign", actorId: "spoofed_actor" },
+      });
+      expect(created.statusCode).toBe(201);
+
+      const store = JSON.parse(await readFile(join(dataDir, "vaults", "default", "auth.json"), "utf8"));
+      const admin = store.users.find((user: any) => user.emailNormalized === "admin@example.com");
+      expect(store.memberships).toEqual([
+        expect.objectContaining({ campaignId: "cmp_cookie", userId: admin.userId, role: "dm" }),
+      ]);
+      const events = await readFile(
+        join(dataDir, "vaults", "default", "campaigns", "cmp_cookie", "events.ndjson"),
+        "utf8"
+      );
+      expect(events).toContain(`"actorId":"${admin.userId}"`);
+      expect(events).not.toContain("spoofed_actor");
+    });
+  });
+
   it("rejects cross-origin mutations", async () => {
     await withServer(async (server) => {
       const response = await server.inject({
