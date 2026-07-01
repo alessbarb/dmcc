@@ -10,6 +10,7 @@ import {
   registerUser,
   revokeSession,
   readUserAuthStore,
+  migrateLegacyAuthStore,
 } from "../userAuthStore.js";
 import { getValidatedCampaignId, getValidatedVaultId, hashAccessCode } from "../auth.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
@@ -52,6 +53,10 @@ function assertSameOrigin(request: FastifyRequest): void {
 }
 
 export async function registerUserAuthRoutes(server: FastifyInstance, options: { dataDir: string }) {
+  server.addHook("preHandler", async (request) => {
+    await migrateLegacyAuthStore(options.dataDir, getValidatedVaultId(request));
+  });
+
   const attempts = new Map<string, { count: number; resetAt: number }>();
   const enforceLimit = (request: FastifyRequest, operation: string, limit: number) => {
     const vaultId = getValidatedVaultId(request);

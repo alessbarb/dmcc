@@ -1,5 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { constants } from "node:fs";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { hashSecret, verifySecret } from "./auth.js";
 
@@ -42,6 +43,10 @@ export type UserAuthStore = {
   sessions: AuthSession[];
   createdAt: string;
   updatedAt: string;
+  migration?: {
+    fromSchemaVersion: 2;
+    completedAt: string;
+  };
 };
 
 const ABSOLUTE_SESSION_MS = 30 * 24 * 60 * 60 * 1000;
@@ -74,6 +79,7 @@ export async function readUserAuthStore(vaultDir: string): Promise<UserAuthStore
         sessions: parsed.sessions ?? [],
         createdAt: parsed.createdAt ?? nowIso(),
         updatedAt: parsed.updatedAt ?? nowIso(),
+        migration: parsed.migration,
       };
     }
 
@@ -105,6 +111,61 @@ export async function readUserAuthStore(vaultDir: string): Promise<UserAuthStore
     const now = nowIso();
     return { schemaVersion: 3, users: [], memberships: [], sessions: [], createdAt: now, updatedAt: now };
   }
+}
+
+export async function migrateLegacyAuthStore(dataDir: string, vaultId: string): Promise<UserAuthStore> {
+  const vaultDir = join(dataDir, "vaults", vaultId);
+  const authPath = pathFor(vaultDir);
+  let legacySchemaVersion: number | undefined;
+  try {
+    const raw = JSON.parse(await readFile(authPath, "utf8")) as { schemaVersion?: number };
+    legacySchemaVersion = raw.schemaVersion;
+    if (legacySchemaVersion === 2) {
+      try {
+        await copyFile(authPath, `${authPath}.v2.bak`, constants.COPYFILE_EXCL);
+      } catch (error: any) {
+        if (error?.code !== "EEXIST") throw error;
+      }
+    }
+  } catch (error: any) {
+    if (error?.code !== "ENOENT") throw error;
+  }
+
+  const store = await readUserAuthStore(vaultDir);
+  if (store.migration || legacySchemaVersion !== 2) return store;
+
+  let acl: any = { campaigns: {} };
+  try {
+    acl = JSON.parse(await readFile(join(vaultDir, "campaign-acl.json"), "utf8"));
+  } catch (error: any) {
+    if (error?.code !== "ENOENT") throw error;
+  }
+
+  const knownUsers = new Set(store.users.map((user) => user.userId));
+  const memberships = [...store.memberships];
+  for (const entry of Object.values(acl.campaigns ?? {}) as any[]) {
+    const dmIds = new Set<string>([entry.ownerDmId, ...(entry.dmIds ?? [])].filter(Boolean));
+    for (const userId of dmIds) {
+      if (!knownUsers.has(userId)) continue;
+      if (memberships.some((item) => item.campaignId === entry.campaignId && item.userId === userId && !item.revokedAt)) {
+        continue;
+      }
+      memberships.push({
+        campaignId: entry.campaignId,
+        userId,
+        role: "dm",
+        createdAt: entry.createdAt ?? nowIso(),
+      });
+    }
+  }
+
+  const migrated: UserAuthStore = {
+    ...store,
+    memberships,
+    migration: { fromSchemaVersion: 2, completedAt: nowIso() },
+  };
+  await writeUserAuthStore(vaultDir, migrated);
+  return migrated;
 }
 
 export async function writeUserAuthStore(vaultDir: string, store: UserAuthStore): Promise<void> {

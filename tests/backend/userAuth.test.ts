@@ -1,8 +1,10 @@
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile, mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { createServer } from "../../src/backend/server/createServer.js";
+import { hashSecret } from "../../src/backend/server/auth.js";
+import { hashOpaque, migrateLegacyAuthStore } from "../../src/backend/server/userAuthStore.js";
 
 async function withServer(run: (server: ReturnType<typeof createServer>, dataDir: string) => Promise<void>) {
   const dataDir = await mkdtemp(join(tmpdir(), "dmcc-user-auth-"));
@@ -24,6 +26,86 @@ function sessionCookie(response: any): string {
 }
 
 describe("unified user authentication", () => {
+  it("migrates legacy DM accounts and ACL memberships once, preserving credentials", async () => {
+    const dataDir = await mkdtemp(join(tmpdir(), "dmcc-user-auth-migration-"));
+    const vaultId = "legacy";
+    const vaultDir = join(dataDir, "vaults", vaultId);
+    await mkdir(vaultDir, { recursive: true });
+    try {
+      const password = await hashSecret("legacy secure password");
+      const createdAt = "2025-01-02T03:04:05.000Z";
+      await writeFile(join(vaultDir, "auth.json"), JSON.stringify({
+        schemaVersion: 2,
+        dmAccounts: [{
+          dmId: "dm_owner",
+          emailNormalized: "owner@example.com",
+          emailHash: hashOpaque("owner@example.com"),
+          displayName: "Owner",
+          secretHash: password.hash,
+          secretSalt: password.salt,
+          secretHashAlgorithm: "scrypt",
+          createdAt,
+        }],
+        createdAt,
+        updatedAt: createdAt,
+      }));
+      await writeFile(join(vaultDir, "campaign-acl.json"), JSON.stringify({
+        schemaVersion: 1,
+        campaigns: {
+          cmp_one: {
+            campaignId: "cmp_one",
+            ownerDmId: "dm_owner",
+            dmIds: ["dm_owner"],
+            createdAt,
+          },
+        },
+        createdAt,
+        updatedAt: createdAt,
+      }));
+
+      const first = await migrateLegacyAuthStore(dataDir, vaultId);
+      const second = await migrateLegacyAuthStore(dataDir, vaultId);
+
+      expect(first.users).toEqual([
+        expect.objectContaining({
+          userId: "dm_owner",
+          emailNormalized: "owner@example.com",
+          passwordHash: password.hash,
+          passwordSalt: password.salt,
+          vaultRole: "admin",
+        }),
+      ]);
+      expect(second.memberships).toEqual([expect.objectContaining({
+        campaignId: "cmp_one",
+        userId: "dm_owner",
+        role: "dm",
+      })]);
+      expect(second.migration).toMatchObject({ fromSchemaVersion: 2 });
+      expect(JSON.parse(await readFile(join(vaultDir, "auth.json.v2.bak"), "utf8")).schemaVersion).toBe(2);
+
+      const server = createServer({ dataDir });
+      try {
+        const login = await server.inject({
+          method: "POST",
+          url: "/api/auth/login",
+          headers: { "x-vault-id": vaultId },
+          payload: { email: "owner@example.com", password: "legacy secure password" },
+        });
+        expect(login.statusCode).toBe(200);
+        const campaigns = await server.inject({
+          method: "GET",
+          url: "/api/me/campaigns",
+          headers: { "x-vault-id": vaultId, cookie: sessionCookie(login) },
+        });
+        expect(campaigns.statusCode).toBe(200);
+      } finally {
+        await server.close();
+      }
+    } finally {
+      await rm(dataDir, { recursive: true, force: true });
+    }
+  });
+
   it("registers the first account as admin without granting campaign memberships", async () => {
     await withServer(async (server, dataDir) => {
       const response = await server.inject({
