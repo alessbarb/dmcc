@@ -327,6 +327,64 @@ describe("unified user authentication", () => {
     });
   });
 
+  it("claims an invitation once for the authenticated account", async () => {
+    await withServer(async (server) => {
+      await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        payload: { email: "admin@example.com", password: "correct horse battery" },
+      });
+      const adminLogin = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "admin@example.com", password: "correct horse battery" },
+      });
+      const adminCookie = sessionCookie(adminLogin);
+      expect((await server.inject({
+        method: "POST",
+        url: "/api/campaigns",
+        headers: { cookie: adminCookie },
+        payload: { campaignId: "cmp_invite", title: "Invited" },
+      })).statusCode).toBe(201);
+      const invitation = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_invite/invitations",
+        headers: { cookie: adminCookie },
+        payload: { expiresInHours: 1 },
+      });
+      expect(invitation.statusCode).toBe(200);
+
+      await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        payload: { email: "player@example.com", password: "different horse battery", displayName: "Player" },
+      });
+      const playerLogin = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        payload: { email: "player@example.com", password: "different horse battery" },
+      });
+      const claim = await server.inject({
+        method: "POST",
+        url: `/api/invitations/${invitation.json().inviteToken}/claim`,
+        headers: { cookie: sessionCookie(playerLogin) },
+        payload: { campaignId: "cmp_invite" },
+      });
+      expect(claim.statusCode).toBe(201);
+      expect(claim.json().membership).toMatchObject({
+        campaignId: "cmp_invite",
+        role: "player",
+      });
+
+      expect((await server.inject({
+        method: "POST",
+        url: `/api/invitations/${invitation.json().inviteToken}/claim`,
+        headers: { cookie: sessionCookie(playerLogin) },
+        payload: { campaignId: "cmp_invite" },
+      })).statusCode).toBe(404);
+    });
+  });
+
   it("rate limits repeated login failures with Retry-After", async () => {
     await withServer(async (server) => {
       for (let attempt = 0; attempt < 5; attempt += 1) {

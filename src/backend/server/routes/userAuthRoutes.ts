@@ -16,7 +16,7 @@ import {
   issuePasswordResetToken,
   resetPasswordWithToken,
 } from "../userAuthStore.js";
-import { getValidatedCampaignId, getValidatedVaultId, hashAccessCode } from "../auth.js";
+import { getValidatedCampaignId, getValidatedVaultId, hashAccessCode, hashPlayerToken } from "../auth.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
@@ -294,6 +294,68 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
       } catch (error: any) {
         reply.code(error.statusCode ?? 404);
         return { error: error.statusCode ? error.message : "Unable to join campaign" };
+      }
+    }
+  );
+
+  server.post<{ Params: { inviteToken: string }; Body: { campaignId?: string; playerId?: string } }>(
+    "/api/invitations/:inviteToken/claim",
+    async (request, reply) => {
+      try {
+        assertSameOrigin(request);
+        enforceLimit(request, "invitation-claim", 8);
+        if (request.body?.playerId !== undefined) {
+          reply.code(400);
+          return { error: "playerId cannot be selected when claiming an invitation" };
+        }
+        const user = await requireUser(request);
+        const campaignId = getValidatedCampaignId(request.body?.campaignId ?? "");
+        const repo = repositoryFor(request);
+        const state = await repo.getCampaignState(campaignId);
+        const tokenHash = hashPlayerToken(request.params.inviteToken);
+        const invitation = Array.from(state.invitations?.values?.() ?? []).find(
+          (candidate: any) =>
+            candidate.inviteTokenHash === tokenHash &&
+            candidate.status === "pending" &&
+            (!candidate.expiresAt || Date.parse(candidate.expiresAt) > Date.now())
+        ) as any;
+        if (!invitation) {
+          reply.code(404);
+          return { error: "Unable to claim invitation" };
+        }
+
+        const playerId = `ply_${randomBytes(12).toString("hex")}`;
+        await repo.executeCommand(campaignId, {
+          type: "CreatePlayerProfile",
+          campaignId,
+          actorId: user.userId,
+          playerId,
+          displayName: user.displayName || "Player",
+          emailHash: user.emailHash,
+          role: "player",
+          color: "#3b82f6",
+        });
+        await repo.executeCommand(campaignId, {
+          type: "ConsumePlayerInvitation",
+          campaignId,
+          actorId: user.userId,
+          inviteId: invitation.inviteId,
+          playerId,
+          emailHash: user.emailHash,
+          consumedAt: new Date().toISOString(),
+        });
+        const membership = await addCampaignMembership(vaultDirFor(request), {
+          campaignId,
+          userId: user.userId,
+          role: "player",
+          playerId,
+        });
+        clearLimit(request, "invitation-claim");
+        reply.code(201);
+        return { membership, campaign: { campaignId, title: state.campaign?.title } };
+      } catch (error: any) {
+        reply.code(error.statusCode ?? 404);
+        return { error: error.statusCode ? error.message : "Unable to claim invitation" };
       }
     }
   );
