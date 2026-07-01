@@ -26,6 +26,7 @@ import {
   getVisibleRelations,
   getVisibleFacts,
   getVisibleSessions,
+  toPublicCampaign,
   assertWithinDir,
 } from "../helpers.js";
 import { createCampaignBackup } from "../hardening/backups.js";
@@ -338,9 +339,15 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         return {
           schemaVersion: 1,
           lastSequence: state.lastSequence,
-          campaign: state.campaign,
+          campaign: role === "dm" ? state.campaign : toPublicCampaign(state.campaign),
           entities: visibleEntities,
-          relations: getVisibleRelations(Array.from(state.relations.values()), visibleEntityIds, role),
+          relations: getVisibleRelations(
+            Array.from(state.relations.values()),
+            visibleEntityIds,
+            role,
+            playerId,
+            characterEntityId
+          ),
           facts: getVisibleFacts(Array.from(state.facts.values()), role, playerId, characterEntityId),
           sessions: getVisibleSessions(Array.from(state.sessions.values()), role),
           sessionEvents: role === "dm" ? Array.from(state.sessionEvents?.values() || []) : [],
@@ -504,6 +511,11 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       const { accessCode, playerId, displayName } = request.body;
       const vaultId = getValidatedVaultId(request);
 
+      if (playerId !== undefined) {
+        reply.code(400);
+        return { error: "playerId cannot be selected during join" };
+      }
+
       if (!accessCode) {
         reply.code(400);
         return { error: "accessCode is required" };
@@ -530,7 +542,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           return { error: "Invalid access code" };
         }
 
-        const pid = playerId ?? `ply_${randomBytes(8).toString("hex")}`;
+        const pid = `ply_${randomBytes(8).toString("hex")}`;
         if (!state.players.has(pid)) {
           await repo.executeCommand(campaignId, {
             type: "CreatePlayerProfile",

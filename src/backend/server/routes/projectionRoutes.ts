@@ -95,7 +95,13 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
         const characterEntityId = playerId ? getCharacterEntityIdForPlayer(rawEntities, playerId) : undefined;
         const visibleEntities = getVisibleEntities(rawEntities, role, playerId, characterEntityId);
         const visibleEntityIds = new Set(visibleEntities.map((e: any) => e.entityId));
-        const visibleRelations = getVisibleRelations(Array.from(state.relations.values()), visibleEntityIds, role);
+        const visibleRelations = getVisibleRelations(
+          Array.from(state.relations.values()),
+          visibleEntityIds,
+          role,
+          playerId,
+          characterEntityId
+        );
 
         return {
           nodes: visibleEntities.map((e: any) => ({

@@ -73,13 +73,21 @@ export function getVisibleEntities(
 export function getVisibleRelations(
   relations: any[],
   visibleEntityIds: Set<string>,
-  role: string
+  role: string,
+  playerId?: string,
+  characterEntityId?: string
 ) {
   return relations.filter((r: any) => {
     if (r.archived) return false;
     if (role === "dm") return true;
     const kind = r.visibility?.kind || "dm_only";
     if (kind === "dm_only") return false;
+    if (kind === "players") {
+      if (!playerId || !r.visibility?.playerIds?.includes(playerId)) return false;
+    }
+    if (kind === "characters") {
+      if (!characterEntityId || !r.visibility?.characterEntityIds?.includes(characterEntityId)) return false;
+    }
     return visibleEntityIds.has(r.sourceEntityId) && visibleEntityIds.has(r.targetEntityId);
   });
 }
@@ -104,6 +112,31 @@ export function getVisibleFacts(
   });
 }
 
-export function getVisibleSessions(sessions: any[], _role: string) {
-  return sessions.filter(() => true);
+export function getVisibleSessions(sessions: any[], role: string) {
+  if (role === "dm") return sessions;
+
+  return sessions
+    .filter((session) => session.status === "active" || session.status === "completed" || session.status === "closed")
+    .map((session) => ({
+      sessionId: session.sessionId ?? session.id,
+      ...(session.number !== undefined && { number: session.number }),
+      ...(session.title !== undefined && { title: session.title }),
+      status: session.status,
+      ...(session.scheduledAt !== undefined && { scheduledAt: session.scheduledAt }),
+      ...(session.startedAt !== undefined && { startedAt: session.startedAt }),
+      ...(session.endedAt !== undefined && { endedAt: session.endedAt }),
+      ...(session.playerSummary !== undefined && { playerSummary: session.playerSummary }),
+    }));
+}
+
+export function toPublicCampaign(campaign: any) {
+  if (!campaign) return null;
+  return {
+    campaignId: campaign.campaignId,
+    title: campaign.title,
+    ...(campaign.summary !== undefined && { summary: campaign.summary }),
+    ...(campaign.system !== undefined && { system: campaign.system }),
+    ...(campaign.status !== undefined && { status: campaign.status }),
+    ...(campaign.archived !== undefined && { archived: campaign.archived }),
+  };
 }
