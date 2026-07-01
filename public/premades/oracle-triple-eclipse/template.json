@@ -15,7 +15,7 @@
   ],
   "stats": {
     "entities": 67,
-    "relations": 60,
+    "relations": 61,
     "facts": 16,
     "preparedSessions": 8
   },
@@ -1183,6 +1183,15 @@
       }
     },
     {
+      "relationId": "rel_tpl_oracle_mira_archive",
+      "sourceEntityId": "ent_tpl_oracle_npc_mira",
+      "targetEntityId": "ent_tpl_oracle_loc_archive",
+      "relationType": "protects",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
       "relationId": "rel_tpl_oracle_sera_chronicles",
       "sourceEntityId": "ent_tpl_oracle_npc_sera",
       "targetEntityId": "ent_tpl_oracle_clue_chronicles",
@@ -2097,7 +2106,9 @@
           "sourceNodeId": "node_tpl_mira",
           "targetNodeId": "node_tpl_archive",
           "style": "solid",
-          "status": "domain"
+          "status": "domain",
+          "relationshipId": "rel_tpl_oracle_mira_archive",
+          "visibility": "dm"
         },
         {
           "id": "edge_tpl_archive_fire",
