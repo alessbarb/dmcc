@@ -55,6 +55,31 @@ export const canvasEdgeSchema = z.object({
   updatedAt: z.string(),
 });
 
+const canvasNodeUpdatesSchema = z.object({
+  text: z.string().optional(),
+  title: z.string().optional(),
+  color: z.enum(["yellow", "blue", "green", "pink", "purple"]).optional(),
+  x: z.number().finite().optional(),
+  y: z.number().finite().optional(),
+  width: z.number().finite().nonnegative().optional(),
+  height: z.number().finite().nonnegative().optional(),
+  collapsed: z.boolean().optional(),
+  zIndex: z.number().finite().optional(),
+  status: z.enum(["draft", "ready", "revealed", "resolved"]).optional(),
+  visibility: z.enum(["dm", "public"]).optional(),
+  groupId: z.string().nullable().optional(),
+  parentId: z.string().nullable().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+}).strict();
+
+const canvasEdgeUpdatesSchema = z.object({
+  label: z.string().optional(),
+  status: z.enum(["draft", "domain"]).optional(),
+  visibility: z.enum(["dm", "public"]).optional(),
+  style: z.enum(["solid", "dashed", "secret", "weak", "strong"]).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+}).strict();
+
 export const canvasSchema = z.object({
   id: z.string(),
   campaignId: z.string(),
@@ -230,16 +255,18 @@ export const eventPayloadSchemas = {
   CanvasNodeUpdated: z.object({
     canvasId: z.string(),
     nodeId: z.string(),
-    updates: z.any(),
+    updates: canvasNodeUpdatesSchema,
   }),
   CanvasNodesLayoutUpdated: z.object({
     canvasId: z.string(),
     nodeUpdates: z.array(z.object({
       nodeId: z.string(),
-      x: z.number(),
-      y: z.number(),
-      width: z.number().optional(),
-      height: z.number().optional(),
+      x: z.number().finite(),
+      y: z.number().finite(),
+      width: z.number().finite().nonnegative().optional(),
+      height: z.number().finite().nonnegative().optional(),
+      parentId: z.string().nullable().optional(),
+      groupId: z.string().nullable().optional(),
     })),
   }),
   CanvasNodeRemoved: z.object({
@@ -253,17 +280,24 @@ export const eventPayloadSchemas = {
   CanvasEdgeUpdated: z.object({
     canvasId: z.string(),
     edgeId: z.string(),
-    updates: z.any(),
+    updates: canvasEdgeUpdatesSchema,
   }),
   CanvasEdgeRemoved: z.object({
     canvasId: z.string(),
     edgeId: z.string(),
   }),
-  CanvasNoteConvertedToEntity: z.object({
-    canvasId: z.string(),
-    nodeId: z.string(),
-    entity: entitySchema,
-  }),
+  CanvasNoteConvertedToEntity: z.union([
+    z.object({
+      canvasId: z.string(),
+      nodeId: z.string(),
+      entityId: z.string(),
+    }),
+    z.object({
+      canvasId: z.string(),
+      nodeId: z.string(),
+      entity: entitySchema,
+    }),
+  ]),
   PlayerTokenIssued: z.object({
     tokenId: z.string().min(1),
     tokenHash: z.string().min(1),

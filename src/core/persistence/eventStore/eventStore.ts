@@ -10,6 +10,7 @@ import { EventStoreError } from "@shared/errors.js";
 import { nowIso } from "@shared/dateTime.js";
 import { EVENT_SCHEMA_VERSION } from "@shared/appVersion.js";
 import { assertWithinDir } from "@backend/server/helpers.js";
+import { normalizeEventPayload } from "../../domain/shared/normalizeEventPayload.js";
 
 export function computeEventHash(eventWithoutHash: Omit<StoredEvent, "hash">): string {
   const hash = createHash("sha256");
@@ -28,62 +29,8 @@ export function computeEventHash(eventWithoutHash: Omit<StoredEvent, "hash">): s
   return hash.digest("hex");
 }
 
-export function normalizePayload(type: string, payload: any): any {
-  if (!payload) return payload;
-  const newPayload = { ...payload };
-  const now = new Date().toISOString();
-
-  // Normalize Entity fields
-  if (type === "EntityCreated" || type === "EntityUpdated" || type === "EntityArchived") {
-    newPayload.entityId = newPayload.entityId || newPayload.id;
-    newPayload.id = newPayload.entityId;
-    newPayload.entityType = newPayload.entityType || newPayload.type;
-    newPayload.type = newPayload.entityType;
-  }
-  if (type === "EntityCreated") {
-    newPayload.createdAt = newPayload.createdAt || now;
-    newPayload.updatedAt = newPayload.updatedAt || now;
-  }
-
-  // Normalize Relation fields
-  if (type === "RelationCreated" || type === "RelationUpdated" || type === "RelationArchived") {
-    newPayload.relationId = newPayload.relationId || newPayload.id;
-    newPayload.id = newPayload.relationId;
-  }
-  if (type === "RelationCreated") {
-    newPayload.createdAt = newPayload.createdAt || now;
-    newPayload.updatedAt = newPayload.updatedAt || now;
-  }
-
-  // Normalize Fact fields
-  if (type === "FactCreated" || type === "FactUpdated" || type === "FactArchived") {
-    newPayload.factId = newPayload.factId || newPayload.id;
-    newPayload.id = newPayload.factId;
-  }
-  if (type === "FactCreated") {
-    newPayload.createdAt = newPayload.createdAt || now;
-    newPayload.updatedAt = newPayload.updatedAt || now;
-  }
-
-  // Normalize Session fields
-  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionPrepUpdated" || type === "SessionClosed") {
-    newPayload.sessionId = newPayload.sessionId || newPayload.id;
-    newPayload.id = newPayload.sessionId;
-  }
-  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionPrepUpdated" || type === "SessionClosed") {
-    newPayload.createdAt = newPayload.createdAt || now;
-    newPayload.updatedAt = newPayload.updatedAt || now;
-  }
-
-  // Normalize visibility — canonical field is `kind`; drop legacy `mode`
-  // Only applies when visibility is an object (domain VisibilityRule), not a portal string enum.
-  if (newPayload.visibility && typeof newPayload.visibility === "object") {
-    const canonicalKind = newPayload.visibility.kind || newPayload.visibility.mode || "dm_only";
-    const { mode: _mode, ...rest } = newPayload.visibility;
-    newPayload.visibility = { ...rest, kind: canonicalKind };
-  }
-
-  return newPayload;
+export function normalizePayload(type: string, payload: any, occurredAt = nowIso()): any {
+  return normalizeEventPayload(type, payload, occurredAt);
 }
 
 const writeQueues = new Map<string, Promise<any>>();
@@ -195,19 +142,36 @@ export class EventStore {
     return next;
   }
 
+  public async appendEvents(
+    campaignId: CampaignId,
+    events: Array<{ type: DomainEventType; actorId: string; payload: any }>
+  ): Promise<StoredEvent[]> {
+    const filePath = this.getEventsFilePath(campaignId);
+    const previous = writeQueues.get(filePath) ?? Promise.resolve();
+    const next = previous.then(async () => {
+      const stored: StoredEvent[] = [];
+      for (const event of events) {
+        stored.push(await this._appendEventInner(campaignId, event.type, event.actorId, event.payload));
+      }
+      return stored;
+    });
+    writeQueues.set(filePath, next.catch(() => {}));
+    return next;
+  }
+
   private async _appendEventInner<T>(
     campaignId: CampaignId,
     type: DomainEventType,
     actorId: string,
     payload: T
   ): Promise<StoredEvent<T>> {
-    const normalized = normalizePayload(type, payload);
+    const occurredAt = nowIso();
+    const normalized = normalizeEventPayload(type, payload, occurredAt);
     const events = await this.loadEvents(campaignId);
     const lastEvent = events[events.length - 1];
     const sequence = events.length + 1;
     const previousHash = lastEvent ? lastEvent.hash : undefined;
     const eventId = generateEventId();
-    const occurredAt = nowIso();
 
     const eventWithoutHash: Omit<StoredEvent<T>, "hash"> = {
       sequence,

@@ -1,4 +1,4 @@
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -292,6 +292,14 @@ describe("Canvas integration and domain flow", () => {
       expect(createdEntity).toBeDefined();
       expect(createdEntity.title).toBe("Rumor Monger");
       expect(createdEntity.importance).toBe("high");
+      const events = (await readFile(
+        join(dataDir, "vaults", "default", "campaigns", campId, "events.ndjson"),
+        "utf8"
+      )).trim().split("\n").map((line) => JSON.parse(line));
+      const conversionIndex = events.findIndex((event) => event.type === "CanvasNoteConvertedToEntity");
+      expect(events[conversionIndex - 1].type).toBe("EntityCreated");
+      expect(events[conversionIndex].payload).not.toHaveProperty("entity");
+      expect(events[conversionIndex].payload.entityId).toBe(events[conversionIndex - 1].payload.entityId);
 
       // 9. RemoveNodeFromCanvas removes node and marks connected visual edges removed
       const removeNodeRes = await server.inject({

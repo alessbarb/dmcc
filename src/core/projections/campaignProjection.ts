@@ -1,4 +1,5 @@
 import type { StoredEvent } from "../domain/shared/events.js";
+import { normalizeEventPayload } from "../domain/shared/normalizeEventPayload.js";
 
 export interface CampaignProjection {
   campaign: any | null;
@@ -52,7 +53,7 @@ export function applyEvent(
   };
 
   const { type, occurredAt } = event;
-  const payload = { ...event.payload };
+  const payload = normalizeEventPayload(event.type, event.payload, event.occurredAt);
 
   // Normalize Entity fields
   if (type === "EntityCreated" || type === "EntityUpdated" || type === "EntityArchived") {
@@ -566,7 +567,8 @@ export function applyEvent(
     }
     case "CanvasNoteConvertedToEntity": {
       const { canvasId, nodeId, entity } = payload;
-      next.entities.set(entity.entityId, entity);
+      if (entity) next.entities.set(entity.entityId, entity);
+      const entityId = payload.entityId ?? entity?.entityId;
       const existing = next.canvases.get(canvasId);
       if (existing) {
         const nodes = existing.nodes.map((n: any) =>
@@ -574,7 +576,7 @@ export function applyEvent(
             ? {
                 ...n,
                 kind: "entity",
-                entityId: entity.entityId,
+                entityId,
                 text: undefined,
                 title: undefined,
                 updatedAt: occurredAt,

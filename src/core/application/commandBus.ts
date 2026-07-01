@@ -1095,11 +1095,17 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       
       canvases.set(command.canvasId, updatedCanvas);
 
-      return singleEvent({ ...state, entities, canvases }, makeEvent(command.actorId, command.campaignId, "CanvasNoteConvertedToEntity", {
-          canvasId: command.canvasId,
-          nodeId: command.nodeId,
-          entity,
-        }));
+      return {
+        state: { ...state, entities, canvases },
+        events: [
+          makeEvent(command.actorId, command.campaignId, "EntityCreated", entity),
+          makeEvent(command.actorId, command.campaignId, "CanvasNoteConvertedToEntity", {
+            canvasId: command.canvasId,
+            nodeId: command.nodeId,
+            entityId,
+          }),
+        ],
+      };
     }
   }
 }

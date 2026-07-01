@@ -13,6 +13,29 @@ import type { Command } from "../../application/commands.js";
 import { handleCommand } from "../../application/commandBus.js";
 import type { CampaignState } from "../../domain/state.js";
 
+export function rewriteCampaignEventPayload(
+  _eventType: DomainEventType,
+  payload: unknown,
+  sourceCampaignId: string,
+  newCampaignId: string
+): any {
+  if (payload === sourceCampaignId) return newCampaignId;
+  if (Array.isArray(payload)) {
+    return payload.map((value) =>
+      rewriteCampaignEventPayload(_eventType, value, sourceCampaignId, newCampaignId)
+    );
+  }
+  if (payload && typeof payload === "object") {
+    return Object.fromEntries(
+      Object.entries(payload).map(([key, value]) => [
+        key,
+        rewriteCampaignEventPayload(_eventType, value, sourceCampaignId, newCampaignId),
+      ])
+    );
+  }
+  return payload;
+}
+
 export class CampaignRepository {
   constructor(
     private readonly eventStore: EventStore,
@@ -116,9 +139,18 @@ export class CampaignRepository {
     const state = projectionToCampaignState(campaignId, projection);
     const result = handleCommand(state, command);
     let currentProjection = projection;
-    for (const event of result.events) {
-      currentProjection = await this.appendEvent(campaignId, event.type as DomainEventType, event.actorId, event.payload);
+    const storedEvents = await this.eventStore.appendEvents(
+      campaignId,
+      result.events.map((event) => ({
+        type: event.type as DomainEventType,
+        actorId: event.actorId,
+        payload: event.payload,
+      }))
+    );
+    for (const event of storedEvents) {
+      currentProjection = applyEvent(currentProjection, event);
     }
+    await this.snapshotStore.saveSnapshot(campaignId, currentProjection.lastSequence, currentProjection);
     return currentProjection;
   }
 
@@ -138,9 +170,18 @@ export class CampaignRepository {
       throw new Error("Source campaign not found or has no events");
     }
     for (const ev of sourceEvents) {
-      const payload: Record<string, unknown> = { ...(ev.payload as Record<string, unknown>), campaignId: command.newCampaignId };
+      const payload: Record<string, unknown> = rewriteCampaignEventPayload(
+        ev.type as DomainEventType,
+        ev.payload,
+        command.sourceCampaignId,
+        command.newCampaignId
+      );
+      payload.campaignId = command.newCampaignId;
       if (ev.type === "CampaignCreated") {
         payload.title = command.newTitle;
+      }
+      if (JSON.stringify(payload).includes(command.sourceCampaignId)) {
+        throw new Error(`Duplication audit failed for ${ev.type}: source campaign reference remains`);
       }
       await this.eventStore.appendEvent(command.newCampaignId, ev.type as DomainEventType, ev.actorId || command.actorId, payload);
     }
