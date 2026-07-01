@@ -24,6 +24,7 @@ import { registerCanvasRoutes } from "./routes/canvasRoutes.js";
 import { registerPlayerPortalRoutes } from "./routes/playerPortalRoutes.js";
 import { registerHardeningRoutes } from "./routes/hardeningRoutes.js";
 import { registerAuthRoutes } from "./routes/authRoutes.js";
+import { registerUserAuthRoutes } from "./routes/userAuthRoutes.js";
 import { registerPremadeCampaignRoutes } from "./routes/premadeCampaignRoutes.js";
 
 export interface ServerConfig {
@@ -216,6 +217,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerHardeningRoutes, opts);
   server.register(registerPremadeCampaignRoutes, opts);
   server.register(registerAuthRoutes, opts);
+  server.register(registerUserAuthRoutes, opts);
 
   return server;
 }
