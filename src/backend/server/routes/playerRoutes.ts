@@ -10,8 +10,10 @@ import { buildPlayerPortalProjection } from "@core/projections/playerPortalProje
 import {
   assertDM,
   assertCampaignAccess,
+  getRequestPlayerId,
   getValidatedVaultId,
   getValidatedCampaignId,
+  getRequestActorId,
   generatePlayerToken,
   hashPlayerToken,
 } from "../auth.js";
@@ -262,7 +264,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "CreatePlayerProfile",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId,
           name: displayName,
           displayName,
@@ -306,7 +308,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         const state = await repo.getCampaignState(campaignId);
 
         const role = assertCampaignAccess(request, state, campaignId, server.dmSessionToken, dataDir, vaultId);
-        const playerId = request.headers["x-player-id"] as string | undefined;
+        const playerId = getRequestPlayerId(request);
         const players = Array.from(state.players.values()).filter((p: any) => !p.archived);
 
         if (role === "dm") {
@@ -335,7 +337,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
     const campaignId = getValidatedCampaignId(request.params.campaignId);
     const playerId = request.params.playerId;
     const updates = request.body;
-    const headerPlayerId = request.headers["x-player-id"] as string;
+    const headerPlayerId = getRequestPlayerId(request);
 
     try {
       const repo = getRepository(vaultId);
@@ -357,7 +359,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
       await repo.executeCommand(campaignId, {
         type: "UpdatePlayerProfile",
         campaignId: campaignId,
-        actorId: role === "player" ? headerPlayerId : "usr_dm",
+        actorId: role === "player" ? headerPlayerId! : "usr_dm",
         playerId,
         displayName: updates.displayName,
         imageUrl: updates.imageUrl,
@@ -413,7 +415,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "ArchivePlayerProfile",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId,
         });
 
@@ -445,7 +447,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "IssuePlayerToken",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId,
           tokenId,
           tokenHash: hashPlayerToken(rawToken),
@@ -479,7 +481,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "RevokePlayerToken",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId,
           tokenId,
           revokedAt: new Date().toISOString(),

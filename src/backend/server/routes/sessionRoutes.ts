@@ -7,6 +7,7 @@ import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
+  getRequestActorId,
 } from "../auth.js";
 
 type PrepBody = { actorId?: string; sessionId?: string; title: string; scheduledAt?: string; prep?: Record<string, unknown> };
@@ -59,7 +60,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         const projection = await getRepository(vaultId).executeCommand(campaignId, {
           type: "CreatePreparedSession",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           sessionId: sessionId,
           title: String(title).trim(),
           scheduledAt,
@@ -93,7 +94,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "UpdateSessionPrep",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           sessionId: sessionId,
           title,
           scheduledAt,
@@ -122,7 +123,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "ActivatePreparedSession",
           campaignId: campaignId,
-          actorId: request.body?.actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           sessionId: sessionId,
         });
         return { ok: true, sessionId };
@@ -148,7 +149,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "CancelPreparedSession",
           campaignId: campaignId,
-          actorId: request.body?.actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           sessionId: sessionId,
         });
         return { ok: true, sessionId };
@@ -174,7 +175,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "ArchiveSession",
           campaignId: campaignId,
-          actorId: request.body?.actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           sessionId: sessionId,
         });
         return { ok: true, sessionId };
@@ -198,7 +199,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         const projection = await getRepository(vaultId).executeCommand(campaignId, {
           type: "StartSession",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           sessionId: sessionId,
           title: title || `Sesión ${new Date().toLocaleDateString("es")}`,
         });
@@ -229,7 +230,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "RevealClue",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           clueEntityId: clueEntityId,
           sessionId: sessionId,
           audience: (audience || { kind: "party" as const }) as VisibilityRule,
@@ -258,7 +259,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "ChangeVisibility",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           targetId,
           targetType,
           visibility,
@@ -287,7 +288,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "CloseSession",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           sessionId: sessionId,
           summary,
         });
@@ -315,7 +316,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "RecordSessionEvent",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           sessionEventId,
           sessionId: sessionId,
           eventType: type,

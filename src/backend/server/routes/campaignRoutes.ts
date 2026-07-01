@@ -14,8 +14,10 @@ import {
   assertCampaignAccess,
   getRequestDmId,
   getRequestRoleWithTokens,
+  getRequestPlayerId,
   getValidatedVaultId,
   getValidatedCampaignId,
+  getRequestActorId,
   hashAccessCode,
   hashPlayerToken,
   generatePlayerToken,
@@ -294,7 +296,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      let playerId = request.headers["x-player-id"] as string | undefined;
+      let playerId = getRequestPlayerId(request);
 
       try {
         const repo = getRepository(vaultId);
@@ -447,7 +449,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "UpdateCampaignSettings",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           settings: request.body,
         });
         return { ok: true };
@@ -476,7 +478,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           await repo.executeCommand(campaignId, {
             type: "UpdateCampaignSettings",
             campaignId: campaignId,
-            actorId: "usr_dm",
+            actorId: getRequestActorId(request, server.dmSessionToken),
             settings: {
               lanModeEnabled: false,
               localAccessCodeHash: undefined,
@@ -491,7 +493,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         await repo.executeCommand(campaignId, {
           type: "UpdateCampaignSettings",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           settings: {
             lanModeEnabled: true,
             localAccessCodeHash: hashAccessCode(accessCode),
@@ -555,7 +557,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           await repo.executeCommand(campaignId, {
             type: "CreatePlayerProfile",
             campaignId: campaignId,
-            actorId: "usr_dm",
+            actorId: getRequestActorId(request, server.dmSessionToken),
             playerId: pid,
             displayName: displayName?.trim() || "Player",
             role: "player",
@@ -570,7 +572,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         await repo.executeCommand(campaignId, {
           type: "IssuePlayerToken",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId: pid,
           tokenId,
           tokenHash: hashPlayerToken(playerToken),
@@ -642,7 +644,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         await repo.executeCommand(campaignId, {
           type: "CreatePlayerInvitation",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           inviteId,
           inviteTokenHash,
           label: label?.trim() || undefined,
@@ -685,7 +687,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         await repo.executeCommand(campaignId, {
           type: "RevokePlayerInvitation",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           inviteId: request.params.inviteId,
         });
         return { ok: true };
@@ -804,7 +806,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         await repo.executeCommand(campaignId, {
           type: "IssuePlayerToken",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId,
           tokenId,
           tokenHash: hashPlayerToken(playerToken),
@@ -890,7 +892,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         await repo.executeCommand(campaignId, {
           type: "IssuePlayerToken",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId: matchedPlayerId,
           tokenId,
           tokenHash: hashPlayerToken(playerToken),

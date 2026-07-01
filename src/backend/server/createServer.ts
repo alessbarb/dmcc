@@ -189,6 +189,17 @@ export function createServer(config?: ServerConfig): FastifyInstance {
       const campaignId = campaignMatch
         ? getValidatedCampaignId(decodeURIComponent(campaignMatch[1]))
         : undefined;
+      const campaignMembership = campaignId
+        ? store.memberships.find(
+            (membership) =>
+              membership.userId === resolved.user.userId &&
+              membership.campaignId === campaignId &&
+              !membership.revokedAt
+          )
+        : undefined;
+      if (campaignMembership) {
+        (request as any).unifiedCampaignMembership = campaignMembership;
+      }
       const hasDmMembership = store.memberships.some(
         (membership) =>
           membership.userId === resolved.user.userId &&

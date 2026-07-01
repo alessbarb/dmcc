@@ -10,6 +10,7 @@ import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
+  getRequestActorId,
   hashPlayerToken,
 } from "../auth.js";
 
@@ -905,7 +906,7 @@ export async function registerPlayerPortalRoutes(
         await repo.executeCommand(campaignId, {
           type: "LinkPlayerCharacter",
           campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId: body.playerId,
           characterEntityId: body.characterEntityId,
           ownership: body.ownership ?? "campaign_premade",
@@ -917,7 +918,7 @@ export async function registerPlayerPortalRoutes(
         await repo.executeCommand(campaignId, {
           type: "UpdatePlayerLiveStatus",
           campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId: body.playerId,
           characterEntityId: body.characterEntityId,
           status: buildInitialStatusFromMetadata(character?.metadata ?? {}),
@@ -961,7 +962,7 @@ export async function registerPlayerPortalRoutes(
         await repo.executeCommand(campaignId, {
           type: "UnlinkPlayerCharacter",
           campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           playerId,
           characterEntityId: link.characterEntityId,
           removedAt: new Date().toISOString(),
@@ -1120,7 +1121,7 @@ export async function registerPlayerPortalRoutes(
             await repo.executeCommand(campaignId, {
               type: "CreateEntity",
               campaignId,
-              actorId: "usr_dm",
+              actorId: getRequestActorId(request, server.dmSessionToken),
               entityId: character.entityId,
               entityType: "player_character" as const,
               title: character.title,
@@ -1152,7 +1153,7 @@ export async function registerPlayerPortalRoutes(
         await repo.executeCommand(campaignId, {
           type: "ResolvePlayerCharacterProposal",
           campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           proposal: foundProposal,
           status,
           dmResolutionNote: body.dmResolutionNote,
@@ -1165,7 +1166,7 @@ export async function registerPlayerPortalRoutes(
           await repo.executeCommand(campaignId, {
             type: "UpdatePlayerLiveStatus",
             campaignId,
-            actorId: "usr_dm",
+            actorId: getRequestActorId(request, server.dmSessionToken),
             playerId: linkUpdate.playerId,
             characterEntityId: linkUpdate.characterEntityId,
             status: buildInitialStatusFromMetadata(createdCharacterMetadata ?? {}),

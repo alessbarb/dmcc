@@ -265,6 +265,14 @@ describe("unified user authentication", () => {
       expect(joined.json().membership).toMatchObject({ campaignId: "cmp_join", role: "player" });
       expect(joined.json().membership.playerId).not.toBe("ply_victim");
 
+      const projection = await server.inject({
+        method: "GET",
+        url: "/api/campaigns/cmp_join",
+        headers: { cookie },
+      });
+      expect(projection.statusCode).toBe(200);
+      expect(projection.json().campaign).not.toHaveProperty("settings");
+
       const campaigns = await server.inject({
         method: "GET",
         url: "/api/me/campaigns",

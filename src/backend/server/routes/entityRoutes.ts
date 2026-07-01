@@ -8,6 +8,8 @@ import {
   assertCampaignAccess,
   getValidatedVaultId,
   getValidatedCampaignId,
+  getRequestPlayerId,
+  getRequestActorId,
 } from "../auth.js";
 import { getCharacterEntityIdForPlayer } from "../helpers.js";
 
@@ -57,9 +59,9 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, entityId, entityType, title, subtitle, summary, content,
+      const { entityId, entityType, title, subtitle, summary, content,
         status, importance, visibility, metadata, tagIds, createdInSessionId } = request.body;
-      const playerId = request.headers["x-player-id"] as string;
+      const playerId = getRequestPlayerId(request);
 
       if (!title || title.trim() === "") {
         reply.code(400);
@@ -107,7 +109,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
         const projection = await repo.executeCommand(campaignId, {
           type: "CreateEntity",
           campaignId: campaignId,
-          actorId: role === "player" ? playerId : (actorId || "usr_dm"),
+          actorId: getRequestActorId(request, server.dmSessionToken, playerId),
           entityId: entityId,
           entityType: entityType as EntityType,
           title,
@@ -116,7 +118,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
           status: status || "",
           importance: (importance || "normal") as EntityImportance,
           visibility: role === "player"
-            ? { kind: "players" as const, playerIds: [playerId] }
+            ? { kind: "players" as const, playerIds: [playerId!] }
             : (visibility || { kind: "dm_only" as const }),
           subtitle,
           tagIds: tagIds || [],
@@ -140,7 +142,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
     const campaignId = getValidatedCampaignId(request.params.campaignId);
     const entityId = request.params.entityId;
     const updates: UpdateEntityBody = request.body;
-    const playerId = request.headers["x-player-id"] as string;
+    const playerId = getRequestPlayerId(request);
 
     const repo = getRepository(vaultId);
 
@@ -179,7 +181,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
       await repo.executeCommand(campaignId, {
         type: "UpdateEntity",
         campaignId: campaignId,
-        actorId: role === "player" ? playerId : "usr_dm",
+        actorId: getRequestActorId(request, server.dmSessionToken, playerId),
         entityId: entityId,
         ...(allowedUpdates.title !== undefined && { title: allowedUpdates.title }),
         ...(allowedUpdates.subtitle !== undefined && { subtitle: allowedUpdates.subtitle }),
@@ -217,7 +219,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const entityId = request.params.entityId;
-      const playerId = request.headers["x-player-id"] as string;
+      const playerId = getRequestPlayerId(request);
 
       const repo = getRepository(vaultId);
 
@@ -244,7 +246,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "ArchiveEntity",
           campaignId: campaignId,
-          actorId: role === "player" ? playerId : "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken, playerId),
           entityId: entityId,
         });
         return { ok: true };

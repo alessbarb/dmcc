@@ -164,6 +164,11 @@ export function assertCampaignAccess(
   dataDir?: string,
   vaultId?: string
 ): string {
+  const membership = request.unifiedCampaignMembership as
+    | { campaignId: string; role: "dm" | "player" | "observer" }
+    | undefined;
+  if (membership?.campaignId === campaignId) return membership.role;
+
   const role = getRequestRole(request, dmSessionSecret);
   if (role === "dm") {
     if (dataDir && vaultId) {
@@ -208,6 +213,11 @@ export function getRequestRoleWithTokens(
   dataDir?: string,
   vaultId?: string
 ): "dm" | "player" | "observer" | "unauthenticated" {
+  const membership = request.unifiedCampaignMembership as
+    | { campaignId: string; role: "dm" | "player" | "observer" }
+    | undefined;
+  if (membership?.campaignId === campaignId) return membership.role;
+
   const dmSession = getRequestDmSession(request, dmSessionSecret);
   if (dmSession) {
     if (dataDir && vaultId && !hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmSession.dmId)) {
@@ -225,6 +235,21 @@ export function getRequestRoleWithTokens(
     }
   }
   return "unauthenticated";
+}
+
+export function getRequestPlayerId(request: any): string | undefined {
+  const membership = request.unifiedCampaignMembership as { role?: string; playerId?: string } | undefined;
+  if (membership?.role === "player") return membership.playerId;
+  return request.headers["x-player-id"] as string | undefined;
+}
+
+export function getRequestActorId(request: any, dmSessionSecret: string, fallback?: string): string {
+  if (request.unifiedUser?.userId) return request.unifiedUser.userId;
+  const dmSession = getRequestDmSession(request, dmSessionSecret);
+  if (dmSession?.dmId) return dmSession.dmId;
+  const membership = request.unifiedCampaignMembership as { playerId?: string } | undefined;
+  if (membership?.playerId) return membership.playerId;
+  return fallback ?? "usr_dm";
 }
 
 export function getValidatedVaultId(request: any): string {

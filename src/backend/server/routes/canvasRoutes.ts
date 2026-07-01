@@ -8,6 +8,7 @@ import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
+  getRequestActorId,
 } from "../auth.js";
 
 type CanvasKind = "world" | "session" | "mystery" | "location" | "characters" | "custom";
@@ -155,7 +156,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "CreateCanvas",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId,
           title,
           kind,
@@ -185,7 +186,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "UpdateCanvas",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
           title,
           viewport,
@@ -213,7 +214,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "ArchiveCanvas",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
         });
         return { success: true };
@@ -243,7 +244,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "PlaceNodeOnCanvas",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
           node,
         });
@@ -270,7 +271,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "UpdateCanvasNode",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
           nodeId: request.params.nodeId,
           updates,
@@ -302,7 +303,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "UpdateCanvasNodesLayout",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
           nodeUpdates,
         });
@@ -328,7 +329,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "RemoveNodeFromCanvas",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
           nodeId: request.params.nodeId,
         });
@@ -359,7 +360,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "AddEdgeToCanvas",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
           edge,
         });
@@ -386,7 +387,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "UpdateCanvasEdge",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
           edgeId: request.params.edgeId,
           updates,
@@ -413,7 +414,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "RemoveEdgeFromCanvas",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
           edgeId: request.params.edgeId,
         });
@@ -455,7 +456,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "ConvertCanvasNoteToEntity",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
           nodeId: request.params.nodeId,
           entityType,

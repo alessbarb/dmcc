@@ -8,6 +8,7 @@ import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
+  getRequestActorId,
 } from "../auth.js";
 
 type CreateRelationBody = {
@@ -58,7 +59,7 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
         await repo.executeCommand(campaignId, {
           type: "CreateRelation",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           relationId: relationId,
           sourceEntityId: sourceEntityId,
           targetEntityId: targetEntityId,
@@ -90,7 +91,7 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
         await repo.executeCommand(campaignId, {
           type: "UpdateRelation",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           relationId: relationId,
           ...(updates.description !== undefined && { description: updates.description }),
           ...(updates.visibility !== undefined && { visibility: updates.visibility }),
@@ -119,7 +120,7 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "ArchiveRelation",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           relationId: relationId,
         });
         return { ok: true };

@@ -2,7 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
-import { assertDM, getValidatedVaultId, getValidatedCampaignId } from "../auth.js";
+import { assertDM, getValidatedVaultId, getValidatedCampaignId, getRequestActorId } from "../auth.js";
 import { createId } from "@shared/ids.js";
 
 export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir: string }) {
@@ -31,7 +31,7 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "CreateTag",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           tagId,
           name: name.trim(),
           color,
@@ -81,7 +81,7 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "AddTagToEntity",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           entityId: entityId,
           tagId,
         });
@@ -106,7 +106,7 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "RemoveTagFromEntity",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           entityId: entityId,
           tagId,
         });

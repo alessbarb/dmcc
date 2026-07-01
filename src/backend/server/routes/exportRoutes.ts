@@ -14,6 +14,7 @@ import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
+  getRequestActorId,
 } from "../auth.js";
 import { assertWithinDir } from "../helpers.js";
 import { writeMarkdownCampaignExport } from "../export/markdownCampaignExport.js";
@@ -68,7 +69,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "AddAttachment",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           attachmentId,
           filename,
           mimeType: `application/${extension}`,
@@ -119,7 +120,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "CreateEntity",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           entityId: entityId,
           entityType: "note",
           title: title || `Imported Note ${new Date().toLocaleDateString()}`,
@@ -133,7 +134,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "RecordImport",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           importId: createId("imp"),
           format: "markdown",
           count: 1,
@@ -189,7 +190,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
             await repo.executeCommand(campaignId, {
               type: "CreateEntity",
               campaignId: campaignId,
-              actorId: "usr_dm",
+              actorId: getRequestActorId(request, server.dmSessionToken),
               entityId: e.entityId || e.id,
               entityType: (e.entityType || e.type) as EntityType,
               title: e.title,
@@ -208,7 +209,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
             await repo.executeCommand(campaignId, {
               type: "CreateRelation",
               campaignId: campaignId,
-              actorId: "usr_dm",
+              actorId: getRequestActorId(request, server.dmSessionToken),
               relationId: r.relationId || r.id,
               sourceEntityId: r.sourceEntityId,
               targetEntityId: r.targetEntityId,
@@ -225,7 +226,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
             await repo.executeCommand(campaignId, {
               type: "RecordFact",
               campaignId: campaignId,
-              actorId: "usr_dm",
+              actorId: getRequestActorId(request, server.dmSessionToken),
               factId: f.factId || f.id,
               statement: f.statement,
               kind: f.kind as FactKind,
@@ -241,7 +242,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "RecordImport",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           importId: createId("imp"),
           format: "json",
           count,
@@ -293,7 +294,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "RecordExport",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           exportId: createId("exp"),
           format: "json",
         });
@@ -393,7 +394,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "RestoreBackup",
           campaignId: campaignId,
-          actorId: "dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           backupId,
         });
 
@@ -435,7 +436,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         await repo.executeCommand(campaignId, {
           type: "RecordExport",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           exportId,
           format: "markdown",
         });

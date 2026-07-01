@@ -12,6 +12,7 @@ import {
   getValidatedVaultId,
   getValidatedCampaignId,
   getRequestRole,
+  getRequestPlayerId,
 } from "../auth.js";
 import {
   getStoredAccessCode,
@@ -83,7 +84,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const playerId = request.headers["x-player-id"] as string;
+      const playerId = getRequestPlayerId(request);
 
       try {
         const repo = getRepository(vaultId);
@@ -192,7 +193,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const query = (request.query.q || "").toLowerCase();
-      const playerId = request.headers["x-player-id"] as string;
+      const playerId = getRequestPlayerId(request);
 
       try {
         const repo = getRepository(vaultId);

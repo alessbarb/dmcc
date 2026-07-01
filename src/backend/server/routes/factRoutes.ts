@@ -9,6 +9,7 @@ import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
+  getRequestActorId,
 } from "../auth.js";
 
 type CreateFactBody = {
@@ -49,7 +50,7 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "RecordFact",
           campaignId: campaignId,
-          actorId: actorId || "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           factId: factId,
           statement,
           kind,
@@ -81,7 +82,7 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "UpdateFact",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           factId: factId,
           ...(updates.statement !== undefined && { statement: updates.statement }),
           ...(updates.kind !== undefined && { kind: updates.kind }),
@@ -112,7 +113,7 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
         await getRepository(vaultId).executeCommand(campaignId, {
           type: "ArchiveFact",
           campaignId: campaignId,
-          actorId: "usr_dm",
+          actorId: getRequestActorId(request, server.dmSessionToken),
           factId: factId,
         });
         return { ok: true };
