@@ -115,15 +115,26 @@ describe("unified user authentication", () => {
       });
 
       expect(response.statusCode).toBe(201);
-      expect(response.json().user).toMatchObject({
-        email: "alice@example.com",
-        vaultRole: "admin",
-      });
+      expect(response.json()).toEqual({ ok: true });
       expect(response.json()).not.toHaveProperty("sessionId");
 
       const persisted = await readFile(join(dataDir, "vaults", "default", "auth.json"), "utf8");
       expect(persisted).not.toContain("correct horse battery");
       expect(JSON.parse(persisted).memberships).toEqual([]);
+    });
+  });
+
+  it("does not reveal whether a registration email already exists", async () => {
+    await withServer(async (server, dataDir) => {
+      const request = {
+        method: "POST" as const,
+        url: "/api/auth/register",
+        payload: { email: "alice@example.com", password: "correct horse battery" },
+      };
+      const created = await server.inject(request);
+      const duplicate = await server.inject(request);
+      expect(duplicate.statusCode).toBe(created.statusCode);
+      expect(duplicate.json()).toEqual(created.json());
     });
   });
 
@@ -255,7 +266,7 @@ describe("unified user authentication", () => {
   });
 
   it("joins a campaign as the authenticated user without accepting a chosen playerId", async () => {
-    await withServer(async (server) => {
+    await withServer(async (server, dataDir) => {
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -269,6 +280,15 @@ describe("unified user authentication", () => {
         payload: { enabled: true },
       });
       const accessCode = toggle.json().accessCode;
+      expect(accessCode).toMatch(/^[A-HJ-NP-Z2-9]{10}$/);
+      const authFile = await readFile(join(dataDir, "vaults", "default", "auth.json"), "utf8");
+      const eventsFile = await readFile(
+        join(dataDir, "vaults", "default", "campaigns", "cmp_join", "events.ndjson"),
+        "utf8"
+      );
+      expect(JSON.parse(authFile).accessCodePepper).toMatch(/^[a-f0-9]{64}$/);
+      expect(eventsFile).toContain("hmac-sha256:");
+      expect(eventsFile).not.toContain(accessCode);
 
       const legacySpoof = await server.inject({
         method: "POST",

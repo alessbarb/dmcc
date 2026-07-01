@@ -53,6 +53,7 @@ export type PasswordResetToken = {
 
 export type UserAuthStore = {
   schemaVersion: 3;
+  accessCodePepper: string;
   users: UserAccount[];
   memberships: CampaignMembership[];
   sessions: AuthSession[];
@@ -91,6 +92,7 @@ export async function readUserAuthStore(vaultDir: string): Promise<UserAuthStore
     if (parsed.schemaVersion === 3 && Array.isArray(parsed.users)) {
       return {
         schemaVersion: 3,
+        accessCodePepper: parsed.accessCodePepper ?? randomBytes(32).toString("hex"),
         users: parsed.users,
         memberships: parsed.memberships ?? [],
         sessions: parsed.sessions ?? [],
@@ -120,6 +122,7 @@ export async function readUserAuthStore(vaultDir: string): Promise<UserAuthStore
     const createdAt = parsed.createdAt ?? nowIso();
     return {
       schemaVersion: 3,
+      accessCodePepper: randomBytes(32).toString("hex"),
       users: migratedUsers,
       memberships: [],
       sessions: [],
@@ -132,6 +135,7 @@ export async function readUserAuthStore(vaultDir: string): Promise<UserAuthStore
     const now = nowIso();
     return {
       schemaVersion: 3,
+      accessCodePepper: randomBytes(32).toString("hex"),
       users: [],
       memberships: [],
       sessions: [],
@@ -203,6 +207,18 @@ export async function writeUserAuthStore(vaultDir: string, store: UserAuthStore)
   await writeFile(pathFor(vaultDir), JSON.stringify({ ...store, updatedAt: nowIso() }, null, 2), "utf8");
 }
 
+export async function getVaultAccessCodePepper(vaultDir: string): Promise<string> {
+  const store = await readUserAuthStore(vaultDir);
+  try {
+    const persisted = JSON.parse(await readFile(pathFor(vaultDir), "utf8")) as { accessCodePepper?: string };
+    if (persisted.accessCodePepper) return persisted.accessCodePepper;
+  } catch (error: any) {
+    if (error?.code !== "ENOENT") throw error;
+  }
+  await writeUserAuthStore(vaultDir, store);
+  return store.accessCodePepper;
+}
+
 export function publicUser(user: UserAccount) {
   return {
     userId: user.userId,
@@ -221,12 +237,11 @@ export async function registerUser(vaultDir: string, input: { email: string; pas
 
   const store = await readUserAuthStore(vaultDir);
   const emailHash = hashOpaque(emailNormalized);
+  const now = nowIso();
+  const password = await hashSecret(input.password);
   if (store.users.some((user) => user.emailHash === emailHash && !user.disabledAt)) {
     throw Object.assign(new Error("Unable to register account"), { statusCode: 409 });
   }
-
-  const password = await hashSecret(input.password);
-  const now = nowIso();
   const user: UserAccount = {
     userId: `usr_${randomBytes(12).toString("hex")}`,
     emailNormalized,
@@ -276,6 +291,10 @@ export async function getSessionUser(vaultDir: string, rawSessionId: string | un
     Date.parse(session.lastSeenAt) + IDLE_SESSION_MS <= now
   ) return null;
   const user = store.users.find((item) => item.userId === session.userId && !item.disabledAt);
+  if (user && now - Date.parse(session.lastSeenAt) >= 60_000) {
+    session.lastSeenAt = new Date(now).toISOString();
+    await writeUserAuthStore(vaultDir, store);
+  }
   return user ? { user, session } : null;
 }
 

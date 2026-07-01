@@ -18,7 +18,8 @@ import {
   getValidatedVaultId,
   getValidatedCampaignId,
   getRequestActorId,
-  hashAccessCode,
+  hashCampaignAccessCode,
+  verifyCampaignAccessCode,
   hashPlayerToken,
   generatePlayerToken,
 } from "../auth.js";
@@ -33,7 +34,7 @@ import {
 } from "../helpers.js";
 import { createCampaignBackup } from "../hardening/backups.js";
 import { copyCampaignAcl, ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
-import { addCampaignMembership } from "../userAuthStore.js";
+import { addCampaignMembership, getVaultAccessCodePepper } from "../userAuthStore.js";
 
 export async function registerCampaignRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -61,7 +62,8 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   }
 
   function generateLanAccessCode(): string {
-    return String(randomInt(0, 1_000_000)).padStart(6, "0");
+    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    return Array.from({ length: 10 }, () => alphabet[randomInt(0, alphabet.length)]).join("");
   }
 
   // Health
@@ -489,6 +491,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         }
 
         const accessCode = generateLanAccessCode();
+        const pepper = await getVaultAccessCodePepper(join(dataDir, "vaults", vaultId));
         server.activeAccessCodes.set(campaignId, accessCode);
         await repo.executeCommand(campaignId, {
           type: "UpdateCampaignSettings",
@@ -496,7 +499,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           actorId: getRequestActorId(request, server.dmSessionToken),
           settings: {
             lanModeEnabled: true,
-            localAccessCodeHash: hashAccessCode(accessCode),
+            localAccessCodeHash: hashCampaignAccessCode(campaignId, accessCode, pepper),
             localAccessCode: undefined,
           },
         });
@@ -542,9 +545,10 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
         const hash = state.campaign.settings?.localAccessCodeHash;
         const legacyCode = state.campaign.settings?.localAccessCode;
+        const pepper = await getVaultAccessCodePepper(join(dataDir, "vaults", vaultId));
 
         const isValid =
-          (hash && hashAccessCode(accessCode) === hash) ||
+          verifyCampaignAccessCode(campaignId, accessCode, hash, pepper) ||
           (legacyCode && accessCode === legacyCode);
 
         if (!isValid) {
@@ -855,8 +859,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
         const codeHash = state.campaign.settings?.localAccessCodeHash;
         const legacyCode = state.campaign.settings?.localAccessCode;
+        const pepper = await getVaultAccessCodePepper(join(dataDir, "vaults", vaultId));
         const isValidCode =
-          (codeHash && hashAccessCode(accessCode) === codeHash) ||
+          verifyCampaignAccessCode(campaignId, accessCode, codeHash, pepper) ||
           (legacyCode && accessCode === legacyCode);
 
         if (!isValidCode) {

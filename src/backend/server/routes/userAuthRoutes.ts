@@ -15,8 +15,9 @@ import {
   regenerateRecoveryCodes,
   issuePasswordResetToken,
   resetPasswordWithToken,
+  getVaultAccessCodePepper,
 } from "../userAuthStore.js";
-import { getValidatedCampaignId, getValidatedVaultId, hashAccessCode, hashPlayerToken } from "../auth.js";
+import { getValidatedCampaignId, getValidatedVaultId, verifyCampaignAccessCode, hashPlayerToken } from "../auth.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
@@ -89,10 +90,14 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
     async (request, reply) => {
       try {
         assertSameOrigin(request);
-        const user = await registerUser(vaultDirFor(request), request.body);
+        await registerUser(vaultDirFor(request), request.body);
         reply.code(201);
-        return { ok: true, user: publicUser(user) };
+        return { ok: true };
       } catch (error: any) {
+        if (error.statusCode === 409) {
+          reply.code(201);
+          return { ok: true };
+        }
         reply.code(error.statusCode ?? 500);
         return { error: error.statusCode ? error.message : "Unable to register account" };
       }
@@ -259,9 +264,15 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
         const repo = repositoryFor(request);
         let state = await repo.getCampaignState(campaignId);
         const accessCode = request.body?.accessCode ?? "";
+        const pepper = await getVaultAccessCodePepper(vaultDirFor(request));
         const valid =
           Boolean(state.campaign?.settings?.localAccessCodeHash) &&
-          hashAccessCode(accessCode) === state.campaign.settings.localAccessCodeHash;
+          verifyCampaignAccessCode(
+            campaignId,
+            accessCode,
+            state.campaign.settings.localAccessCodeHash,
+            pepper
+          );
         const legacyValid =
           Boolean(state.campaign?.settings?.localAccessCode) &&
           accessCode === state.campaign.settings.localAccessCode;

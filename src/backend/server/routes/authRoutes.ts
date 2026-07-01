@@ -7,7 +7,7 @@ import {
   createDmSessionToken,
   getRequestDmSession,
   getValidatedVaultId,
-  hashAccessCode,
+  verifyCampaignAccessCode,
   hashPlayerToken,
   generatePlayerToken,
   isLoopbackRequest,
@@ -24,7 +24,7 @@ import { CampaignRepository } from "@core/persistence/repositories/campaignRepos
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
-import { getSessionUser, revokeAllSessions } from "../userAuthStore.js";
+import { getSessionUser, getVaultAccessCodePepper, revokeAllSessions } from "../userAuthStore.js";
 import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
 
 interface DmAttemptState {
@@ -302,8 +302,9 @@ export async function registerAuthRoutes(
 
         const codeHash = state.campaign.settings?.localAccessCodeHash;
         const legacyCode = state.campaign.settings?.localAccessCode;
+        const pepper = await getVaultAccessCodePepper(join(dataDir, "vaults", vaultId));
         const isValid =
-          (codeHash && hashAccessCode(accessCode) === codeHash) ||
+          verifyCampaignAccessCode(campaignId, accessCode, codeHash, pepper) ||
           (legacyCode && accessCode === legacyCode);
 
         if (!isValid) {
