@@ -1498,7 +1498,7 @@
     },
     {
       "factId": "fact_tpl_oracle_15",
-      "kind": "forecast",
+      "kind": "dm_secret",
       "confidence": "likely",
       "visibility": {
         "kind": "dm_only"
