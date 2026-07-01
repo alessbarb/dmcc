@@ -4,6 +4,10 @@ import { hasCampaignDmAccessSync } from "./campaignAclStore.js";
 
 const scryptAsync = promisify(scrypt);
 
+function allowsLegacyTestAuth(request: any): boolean {
+  return request.server?.allowLegacyTestAuth ?? process.env.NODE_ENV === "test";
+}
+
 export async function hashSecret(secret: string): Promise<{ hash: string; salt: string }> {
   const salt = randomBytes(16).toString("hex");
   const derived = (await scryptAsync(secret, salt, 64)) as Buffer;
@@ -118,6 +122,7 @@ export function generatePlayerToken(): string {
 
 export function getRequestDmSession(request: any, dmSessionSecret: string): DmSessionPayload | null {
   if (request.unifiedDmSession) return request.unifiedDmSession as DmSessionPayload;
+  if (!allowsLegacyTestAuth(request)) return null;
   const dmTokenHeader = request.headers["x-dm-token"] as string | undefined;
   const session = verifyDmSessionToken(dmTokenHeader, dmSessionSecret);
   if (session) return session;
@@ -196,6 +201,12 @@ export function assertCampaignAccess(
     return "dm";
   }
 
+  if (!allowsLegacyTestAuth(request)) {
+    const err = new Error("Unauthorized: Campaign membership is required");
+    (err as any).statusCode = 401;
+    throw err;
+  }
+
   // x-role is never a credential. Non-DM campaign access must present the
   // campaign access code here, or a player token through getRequestRoleWithTokens.
   const accessCode = request.headers["x-access-code"] as string;
@@ -245,6 +256,8 @@ export function getRequestRoleWithTokens(
     return "dm";
   }
 
+  if (!allowsLegacyTestAuth(request)) return "unauthenticated";
+
   // Player must present a valid player token — x-role header is not a credential
   const playerTokenHeader = request.headers["x-player-token"] as string | undefined;
   if (playerTokenHeader) {
@@ -259,7 +272,9 @@ export function getRequestRoleWithTokens(
 export function getRequestPlayerId(request: any): string | undefined {
   const membership = request.unifiedCampaignMembership as { role?: string; playerId?: string } | undefined;
   if (membership?.role === "player") return membership.playerId;
-  return request.headers["x-player-id"] as string | undefined;
+  return allowsLegacyTestAuth(request)
+    ? request.headers["x-player-id"] as string | undefined
+    : undefined;
 }
 
 export function getRequestActorId(request: any, dmSessionSecret: string, fallback?: string): string {

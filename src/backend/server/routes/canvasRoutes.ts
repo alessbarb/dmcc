@@ -140,7 +140,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, canvasId, title, kind, description, template } = request.body;
+      const { canvasId, title, kind, description, template } = request.body;
 
       if (!title || title.trim() === "") {
         reply.code(400);
@@ -179,7 +179,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, title, viewport, description } = request.body;
+      const { title, viewport, description } = request.body;
 
       try {
         const repo = getRepository(vaultId);
@@ -207,8 +207,6 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const actorId = request.body?.actorId;
-
       try {
         const repo = getRepository(vaultId);
         await repo.executeCommand(campaignId, {
@@ -232,7 +230,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, node } = request.body;
+      const { node } = request.body;
 
       if (!node || !node.kind) {
         reply.code(400);
@@ -264,7 +262,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, updates } = request.body;
+      const { updates } = request.body;
 
       try {
         const repo = getRepository(vaultId);
@@ -291,7 +289,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, nodeUpdates } = request.body;
+      const { nodeUpdates } = request.body;
 
       if (!Array.isArray(nodeUpdates)) {
         reply.code(400);
@@ -322,8 +320,6 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const actorId = request.body?.actorId;
-
       try {
         const repo = getRepository(vaultId);
         await repo.executeCommand(campaignId, {
@@ -348,7 +344,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, edge } = request.body;
+      const { edge } = request.body;
 
       if (!edge || !edge.sourceNodeId || !edge.targetNodeId) {
         reply.code(400);
@@ -380,7 +376,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, updates } = request.body;
+      const { updates } = request.body;
 
       try {
         const repo = getRepository(vaultId);
@@ -407,8 +403,6 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const actorId = request.body?.actorId;
-
       try {
         const repo = getRepository(vaultId);
         await repo.executeCommand(campaignId, {
@@ -434,7 +428,6 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const {
-        actorId,
         entityType,
         title,
         subtitle,

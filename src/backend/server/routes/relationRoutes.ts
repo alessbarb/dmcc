@@ -40,7 +40,7 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, relationId, sourceEntityId, targetEntityId, relationType, description, visibility } = request.body;
+      const { relationId, sourceEntityId, targetEntityId, relationType, description, visibility } = request.body;
       const isForced = request.query.force === "true";
 
       try {

@@ -49,19 +49,19 @@ export function RegisterPage() {
       <div className="join-portal-card" style={{ maxWidth: 440 }}>
         <div className="join-portal-header">
           <div className="join-portal-icon-wrapper"><Shield className="join-portal-icon" size={32} /></div>
-          <h1 className="join-portal-title">Reclamar invitación</h1>
-          <p style={{ color: "var(--text-muted)" }}>Inicia sesión o crea una cuenta para vincular esta invitación.</p>
+          <h1 className="join-portal-title">{t("playerJoin.claimTitle")}</h1>
+          <p style={{ color: "var(--text-muted)" }}>{t("playerJoin.claimHint")}</p>
         </div>
         {error && <div className="join-portal-error"><p>{error}</p></div>}
         <form className="join-portal-form" onSubmit={(event) => void submit(event, false)}>
-          <label className="form-label">Nombre visible (solo para registro)</label>
+          <label className="form-label">{t("playerJoin.displayNameRegisterLabel")}</label>
           <input className="form-input" value={displayName} onChange={(event) => setDisplayName(event.target.value)} autoComplete="name" />
-          <label className="form-label">Email</label>
+          <label className="form-label">{t("playerJoin.emailLabel")}</label>
           <input className="form-input" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="email" />
-          <label className="form-label">Contraseña</label>
+          <label className="form-label">{t("playerJoin.passwordLabel")}</label>
           <input className="form-input" type="password" minLength={12} maxLength={128} value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" />
-          <button className="btn btn-primary" disabled={loading}>Entrar y reclamar</button>
-          <button type="button" className="btn btn-secondary" disabled={loading} onClick={(event) => void submit(event as any, true)}>Crear cuenta y reclamar</button>
+          <button className="btn btn-primary" disabled={loading}>{t("playerJoin.signInClaimBtn")}</button>
+          <button type="button" className="btn btn-secondary" disabled={loading} onClick={(event) => void submit(event as any, true)}>{t("playerJoin.createClaimBtn")}</button>
         </form>
       </div>
     </div>

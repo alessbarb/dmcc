@@ -61,6 +61,41 @@ describe("createServer", () => {
     expect(response.json()).toEqual({ ok: true, app: "dm-campaign-companion" });
   });
 
+  it("rejects cross-origin mutations before route authorization", async () => {
+    const server = createServer();
+    const response = await server.inject({
+      method: "POST",
+      url: "/api/campaigns",
+      headers: {
+        host: "localhost:4877",
+        origin: "https://attacker.example",
+      },
+      payload: { campaignId: "cmp_csrf", title: "Rejected" },
+    });
+
+    expect(response.statusCode).toBe(403);
+    expect(response.json()).toEqual({ error: "Cross-origin mutation rejected" });
+  });
+
+  it("does not accept legacy identity headers when compatibility is disabled", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, allowLegacyTestAuth: false });
+      const response = await server.inject({
+        method: "POST",
+        url: "/api/campaigns",
+        headers: {
+          "x-dm-token": (server as any).dmSessionToken,
+          "x-role": "dm",
+          "x-player-id": "ply_spoofed",
+        },
+        payload: { campaignId: "cmp_legacy", title: "Rejected" },
+      });
+
+      expect(response.statusCode).toBe(403);
+      expect(response.json().message).toContain("DM access required");
+    });
+  });
+
   it("creates campaigns through the local API", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
@@ -1280,7 +1315,7 @@ describe("persistent campaign API", () => {
         });
         expect(toggle.statusCode).toBe(200);
         const generatedCode = toggle.json().accessCode;
-        expect(generatedCode).toMatch(/^\d{6}$/);
+        expect(generatedCode).toMatch(/^[A-HJ-NP-Z2-9]{10}$/);
 
         const resPlayerAfterEnable = await server.inject({
           method: "GET",

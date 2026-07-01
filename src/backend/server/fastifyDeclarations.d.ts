@@ -6,5 +6,6 @@ declare module "fastify" {
     lanExposed: boolean;
     activeAccessCodes: Map<string, string>;
     playerTokens: Map<string, { campaignId: string; playerId: string }>;
+    allowLegacyTestAuth: boolean;
   }
 }

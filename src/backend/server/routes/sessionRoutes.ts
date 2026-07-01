@@ -50,7 +50,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, sessionId, title, scheduledAt, prep } = request.body;
+      const { sessionId, title, scheduledAt, prep } = request.body;
 
       try {
         if (!title || !String(title).trim()) {
@@ -88,7 +88,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const { actorId, title, scheduledAt, prep } = request.body;
+      const { title, scheduledAt, prep } = request.body;
 
       try {
         await getRepository(vaultId).executeCommand(campaignId, {
@@ -193,7 +193,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, sessionId, title } = request.body;
+      const { sessionId, title } = request.body;
 
       try {
         const projection = await getRepository(vaultId).executeCommand(campaignId, {
@@ -224,7 +224,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const { actorId, clueEntityId, audience, note } = request.body;
+      const { clueEntityId, audience, note } = request.body;
 
       try {
         await getRepository(vaultId).executeCommand(campaignId, {
@@ -282,7 +282,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const { actorId, summary } = request.body;
+      const { summary } = request.body;
 
       try {
         await getRepository(vaultId).executeCommand(campaignId, {
@@ -310,7 +310,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const sessionId = request.params.sessionId;
-      const { actorId, sessionEventId, type, title, description, relatedEntityIds, relatedFactIds, relatedRelationIds, visibility, metadata } = request.body;
+      const { sessionEventId, type, title, description, relatedEntityIds, relatedFactIds, relatedRelationIds, visibility, metadata } = request.body;
 
       try {
         await getRepository(vaultId).executeCommand(campaignId, {

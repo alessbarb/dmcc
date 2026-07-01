@@ -31,6 +31,8 @@ import { readSessionCookie } from "./sessionAuth.js";
 
 export interface ServerConfig {
   dataDir?: string;
+  /** Keeps pre-migration credentials available only to the legacy test suite. */
+  allowLegacyTestAuth?: boolean;
 }
 
 export function createServer(config?: ServerConfig): FastifyInstance {
@@ -49,6 +51,10 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   // In-memory player session tokens: token → { campaignId, playerId }
   server.decorate("playerTokens", new Map<string, { campaignId: string; playerId: string }>());
+  server.decorate(
+    "allowLegacyTestAuth",
+    process.env.NODE_ENV === "test" && config?.allowLegacyTestAuth !== false
+  );
 
 
   server.register(cors, {
@@ -179,6 +185,23 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   server.addHook("preValidation", async (request, reply) => {
     const pathname = getRequestPath(request.raw.url);
+    if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method)) {
+      const origin = request.headers.origin;
+      if (origin) {
+        const host = request.headers.host;
+        let originHost: string | undefined;
+        try {
+          originHost = new URL(origin).host;
+        } catch {
+          originHost = undefined;
+        }
+        if (!host || originHost !== host) {
+          reply.code(403);
+          return reply.send({ error: "Cross-origin mutation rejected" });
+        }
+      }
+    }
+
     const vaultId = getValidatedVaultId(request);
     const vaultDir = join(dataDir, "vaults", vaultId);
     const resolved = await getSessionUser(vaultDir, readSessionCookie(request));
@@ -233,7 +256,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   });
 
   server.get("/api/auth/local-token", async (_request, reply) => {
-    if (process.env.NODE_ENV !== "test") {
+    if (!server.allowLegacyTestAuth) {
       reply.code(410);
       return { error: "Local DM token shortcut has been removed. Use DM email + key login." };
     }

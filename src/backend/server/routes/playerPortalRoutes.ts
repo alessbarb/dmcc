@@ -85,8 +85,21 @@ export async function registerPlayerPortalRoutes(
   async function requirePlayerFromToken(
     repository: CampaignRepository,
     campaignId: string,
-    rawToken: string | undefined
+    rawToken: string | undefined,
+    membershipPlayerId?: string
   ) {
+    if (membershipPlayerId) {
+      const state = await repository.getCampaignState(campaignId);
+      const events = await repository.loadEvents(campaignId);
+      return {
+        state,
+        portal: buildPlayerPortalProjection(state, events),
+        playerId: membershipPlayerId,
+      };
+    }
+    if (!server.allowLegacyTestAuth) {
+      throw Object.assign(new Error("Player campaign membership is required"), { statusCode: 401 });
+    }
     if (!rawToken) {
       throw Object.assign(new Error("Player token is required"), { statusCode: 401 });
     }
@@ -506,7 +519,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
 
         const link = portal.linksByPlayerId.get(playerId) ?? null;
         const player = state.players.get(playerId) ?? null;
@@ -588,7 +601,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
         const body = request.body;
         const characterEntityId = getLinkedCharacterIdForPlayer(portal, playerId, body.characterEntityId);
 
@@ -631,7 +644,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
         const resourceId = await upsertPlayerResource({ repo, campaignId, playerId, portal, body: request.body });
 
         reply.code(201);
@@ -657,7 +670,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
         await upsertPlayerResource({
           repo,
           campaignId,
@@ -689,7 +702,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
         const body = request.body;
 
         const visibility = body.visibility;
@@ -737,7 +750,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
         const body = request.body;
 
         const playerNotes = portal.notesByPlayerId.get(playerId) ?? [];
@@ -788,7 +801,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
         const body = request.body;
 
         const visibility = body.visibility;
@@ -838,7 +851,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
         const body = request.body;
 
         const playerObjectives = portal.objectivesByPlayerId.get(playerId) ?? [];
@@ -990,7 +1003,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken);
+        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
         const body = request.body;
         const kind = body.kind ?? "update_character_core";
 

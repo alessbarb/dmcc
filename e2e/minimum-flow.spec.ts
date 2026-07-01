@@ -1,4 +1,4 @@
-import { expect, test, type APIRequestContext, type APIResponse } from "@playwright/test";
+import { expect, request as playwrightRequest, test, type APIRequestContext, type APIResponse } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
 type JsonObject = Record<string, any>;
@@ -7,6 +7,7 @@ const CAMPAIGN_ID = `cmp_e2e_${randomUUID().replace(/-/g, "").slice(0, 12)}`;
 const CAMPAIGN_TITLE = `E2E Release ${randomUUID().slice(0, 8)}`;
 const ACTOR_ID = "usr_dm";
 const NPC_ID = "ent_e2e_npc";
+const PLAYER_CHARACTER_ID = "ent_e2e_player_character";
 const CLUE_ID = "ent_e2e_clue";
 const SECRET_ID = "ent_e2e_secret";
 const RELATION_ID = "rel_e2e_reveals";
@@ -28,10 +29,13 @@ async function expectStatus(response: APIResponse, expected: number | number[]):
 }
 
 async function dmHeaders(request: APIRequestContext): Promise<Record<string, string>> {
-  const response = await request.get("/api/auth/local-token");
-  const body = await expectStatus(response, 200);
-  expect(body.token).toEqual(expect.any(String));
-  return { "x-dm-token": body.token };
+  await expectStatus(await request.post("/api/auth/register", {
+    data: { email: "admin@example.com", password: "correct horse battery" },
+  }), 201);
+  await expectStatus(await request.post("/api/auth/login", {
+    data: { email: "admin@example.com", password: "correct horse battery" },
+  }), 200);
+  return {};
 }
 
 test.describe("Minimum release API flow", () => {
@@ -63,6 +67,20 @@ test.describe("Minimum release API flow", () => {
           title: "Lord Malvus",
           summary: "Cult leader hiding behind a noble identity.",
           visibility: { kind: "dm_only" },
+        },
+      }),
+      201,
+    );
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/entities`, {
+        headers,
+        data: {
+          entityId: PLAYER_CHARACTER_ID,
+          entityType: "player_character",
+          title: "E2E Hero",
+          summary: "Character controlled by the authenticated player.",
+          visibility: { kind: "party" },
         },
       }),
       201,
@@ -164,39 +182,56 @@ test.describe("Minimum release API flow", () => {
       }),
       200,
     );
-    expect(lan.accessCode).toMatch(/^\d{6}$/);
+    expect(lan.accessCode).toMatch(/^[A-HJ-NP-Z2-9]{10}$/);
 
+    const playerRequest = await playwrightRequest.newContext({ baseURL: "http://127.0.0.1:4877" });
+    await expectStatus(await playerRequest.post("/api/auth/register", {
+      data: {
+        email: "player@example.com",
+        password: "different horse battery",
+        displayName: "E2E Player",
+      },
+    }), 201);
+    await expectStatus(await playerRequest.post("/api/auth/login", {
+      data: { email: "player@example.com", password: "different horse battery" },
+    }), 200);
     const join = await expectStatus(
-      await request.post(`/api/join/${CAMPAIGN_ID}`, {
+      await playerRequest.post(`/api/campaigns/${CAMPAIGN_ID}/join`, {
         data: {
           accessCode: lan.accessCode,
-          displayName: "E2E Player",
         },
       }),
-      200,
+      201,
     );
-    expect(join.playerToken).toEqual(expect.any(String));
-    expect(join.playerId).toEqual(expect.any(String));
+    expect(join.membership.playerId).toEqual(expect.any(String));
+    await expectStatus(
+      await request.post(`/api/campaigns/${CAMPAIGN_ID}/player-portal/links`, {
+        headers,
+        data: {
+          playerId: join.membership.playerId,
+          characterEntityId: PLAYER_CHARACTER_ID,
+        },
+      }),
+      201,
+    );
 
-    const playerHeaders = { "x-player-token": join.playerToken as string };
     const portalState = await expectStatus(
-      await request.get(`/api/campaigns/${CAMPAIGN_ID}/player-portal/state`, { headers: playerHeaders }),
+      await playerRequest.get(`/api/campaigns/${CAMPAIGN_ID}/player-portal/state`),
       200,
     );
-    expect(portalState.playerId).toBe(join.playerId);
+    expect(portalState.playerId).toBe(join.membership.playerId);
 
     const playerCampaign = await expectStatus(
-      await request.get(`/api/campaigns/${CAMPAIGN_ID}`, { headers: playerHeaders }),
+      await playerRequest.get(`/api/campaigns/${CAMPAIGN_ID}`),
       200,
     );
     expect(playerCampaign.players).toHaveLength(1);
-    expect(playerCampaign.players[0].playerId).toBe(join.playerId);
+    expect(playerCampaign.players[0].playerId).toBe(join.membership.playerId);
 
     await expectStatus(
-      await request.post(`/api/campaigns/${CAMPAIGN_ID}/player-portal/resources`, {
-        headers: playerHeaders,
+      await playerRequest.post(`/api/campaigns/${CAMPAIGN_ID}/player-portal/resources`, {
         data: {
-          characterEntityId: NPC_ID,
+          characterEntityId: PLAYER_CHARACTER_ID,
           label: "Inspiration",
           current: 1,
           max: 1,
@@ -205,6 +240,7 @@ test.describe("Minimum release API flow", () => {
       }),
       201,
     );
+    await playerRequest.dispose();
 
     const jsonExport = await expectStatus(
       await request.post(`/api/campaigns/${CAMPAIGN_ID}/export/json`, { headers }),

@@ -4,7 +4,6 @@ import { Search } from "lucide-react";
 import type { Entity, Fact } from "../../shared/stores/campaignStore.js";
 import { getEntityDefaultImage } from "../entities/entityVisuals.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
-import { useNavigate, useParams } from "@tanstack/react-router";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
@@ -21,8 +20,6 @@ export interface SearchPageProps {
 }
 
 export function SearchPage(props: SearchPageProps = {}) {
-  const { campaignId } = useParams({ strict: false }) as any;
-  const navigate = useNavigate();
   const store = useCampaignStore();
   const { updateEntity, archiveEntity } = store;
   const { addToast } = useToast();
@@ -36,9 +33,6 @@ export function SearchPage(props: SearchPageProps = {}) {
   const searchTypeFilter = props.searchTypeFilter ?? searchTypeFilterLocal;
   const setSearchTypeFilter = props.setSearchTypeFilter ?? setSearchTypeFilterLocal;
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
-  const setCurrentPage = props.setCurrentPage ?? ((page: string) => {
-    if (campaignId) navigate({ to: `/campaigns/${campaignId}/${page}` });
-  });
 
   const searchItems = [
     ...(campaignState?.entities ?? [])

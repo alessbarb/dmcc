@@ -106,26 +106,26 @@ export function PlayerJoinPage() {
         <div className="join-portal-card" style={{ maxWidth: 560 }}>
           <div className="join-portal-header">
             <div className="join-portal-icon-wrapper"><Shield className="join-portal-icon" size={32} /></div>
-            <h1 className="join-portal-title">Acceso a campañas</h1>
-            <p style={{ color: "var(--text-muted)" }}>Tu cuenta identifica quién eres. Los códigos solo conceden acceso a una campaña.</p>
+            <h1 className="join-portal-title">{t("playerJoin.accountTitle")}</h1>
+            <p style={{ color: "var(--text-muted)" }}>{t("playerJoin.accountHint")}</p>
           </div>
           {error && <div className="join-portal-error"><p>{error}</p></div>}
           {!authenticated ? (
             <form className="join-portal-form" onSubmit={(event) => { event.preventDefault(); void authenticate(false); }}>
-              <label className="form-label">Nombre visible (solo para registro)</label>
+              <label className="form-label">{t("playerJoin.displayNameRegisterLabel")}</label>
               <input className="form-input" value={displayName} onChange={(event) => setDisplayName(event.target.value)} autoComplete="name" />
-              <label className="form-label">Email</label>
+              <label className="form-label">{t("playerJoin.emailLabel")}</label>
               <input className="form-input" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="email" />
-              <label className="form-label">Contraseña</label>
+              <label className="form-label">{t("playerJoin.passwordLabel")}</label>
               <input className="form-input" type="password" minLength={12} maxLength={128} value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" />
-              <button className="btn btn-primary" disabled={loading}>Entrar</button>
-              <button type="button" className="btn btn-secondary" disabled={loading} onClick={() => void authenticate(true)}>Crear cuenta</button>
+              <button className="btn btn-primary" disabled={loading}>{t("playerJoin.signInBtn")}</button>
+              <button type="button" className="btn btn-secondary" disabled={loading} onClick={() => void authenticate(true)}>{t("playerJoin.createAccountBtn")}</button>
             </form>
           ) : (
             <>
               {memberships.length > 0 && (
                 <section style={{ display: "grid", gap: 8, marginBottom: 24 }}>
-                  <h2>Tus campañas</h2>
+                  <h2>{t("playerJoin.yourCampaigns")}</h2>
                   {memberships.map((membership) => (
                     <button className="btn btn-secondary" key={membership.campaignId} onClick={() => enterCampaign(membership)}>
                       {membership.title} · {membership.role}
@@ -134,12 +134,12 @@ export function PlayerJoinPage() {
                 </section>
               )}
               <form className="join-portal-form" onSubmit={joinCampaign}>
-                <h2>Unirse con código</h2>
-                <label className="form-label">ID de campaña</label>
+                <h2>{t("playerJoin.joinWithCode")}</h2>
+                <label className="form-label">{t("playerJoin.campaignIdLabel")}</label>
                 <input className="form-input" value={campaignId} onChange={(event) => setCampaignId(event.target.value)} required />
-                <label className="form-label">Código de acceso</label>
+                <label className="form-label">{t("playerJoin.accessCodeLabel")}</label>
                 <input className="form-input" value={accessCode} onChange={(event) => setAccessCode(event.target.value)} required autoComplete="off" />
-                <button className="btn btn-primary" disabled={loading}>Unirse</button>
+                <button className="btn btn-primary" disabled={loading}>{t("playerJoin.joinShortBtn")}</button>
               </form>
             </>
           )}

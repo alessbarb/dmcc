@@ -108,6 +108,10 @@ export async function registerAuthRoutes(
   server.post<{ Body: { email: string; secret: string; displayName?: string } }>(
     "/api/auth/dm/setup",
     async (request, reply) => {
+      if (!server.allowLegacyTestAuth) {
+        reply.code(410);
+        return { error: "Legacy DM setup has been retired; use account registration" };
+      }
       const vaultId = getValidatedVaultId(request);
       // DM accounts are self-service. Creating another DM does not grant access
       // to existing campaigns; ACL ownership keeps every DM isolated unless
@@ -140,6 +144,10 @@ export async function registerAuthRoutes(
   server.post<{ Body: { email: string; secret: string } }>(
     "/api/auth/dm/login",
     async (request, reply) => {
+      if (!server.allowLegacyTestAuth) {
+        reply.code(410);
+        return { error: "Legacy DM login has been retired; use account login" };
+      }
       const vaultId = getValidatedVaultId(request);
       const vaultDir = getVaultDir(vaultId);
       const email = request.body.email?.trim().toLowerCase() ?? "";
@@ -224,6 +232,10 @@ export async function registerAuthRoutes(
   server.post(
     "/api/auth/player-logout",
     async (request, reply) => {
+      if (!server.allowLegacyTestAuth) {
+        reply.code(410);
+        return { error: "Legacy player tokens have been retired; use account logout" };
+      }
       const vaultId = getValidatedVaultId(request);
       const playerToken = request.headers["x-player-token"] as string | undefined;
       if (!playerToken) {

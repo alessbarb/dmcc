@@ -44,7 +44,7 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { actorId, factId, statement, kind, confidence, visibility, relatedEntityIds, relatedRelationIds, source } = request.body;
+      const { factId, statement, kind, confidence, visibility, relatedEntityIds, relatedRelationIds, source } = request.body;
 
       try {
         await getRepository(vaultId).executeCommand(campaignId, {
