@@ -19,7 +19,6 @@ import {
   getValidatedCampaignId,
   getRequestActorId,
   hashCampaignAccessCode,
-  verifyCampaignAccessCode,
   hashPlayerToken,
   generatePlayerToken,
 } from "../auth.js";
@@ -519,7 +518,10 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   // LAN Join — exchange access code for player token
   server.post<{ Params: { campaignId: string }; Body: { accessCode: string; playerId?: string; displayName?: string } }>(
     "/api/join/:campaignId",
-    async (request, reply) => {
+    async (_request, reply) => {
+      reply.code(410);
+      return { error: "Legacy join has been retired; use /api/campaigns/:campaignId/join" };
+      /*
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { accessCode, playerId, displayName } = request.body;
       const vaultId = getValidatedVaultId(request);
@@ -600,6 +602,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         reply.code(404);
         return { error: "Campaign not found" };
       }
+      */
     }
   );
 
@@ -838,7 +841,10 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   // Rejoin by email + campaign access code (cross-device token re-issue)
   server.post<{ Params: { campaignId: string }; Body: { email: string; accessCode: string } }>(
     "/api/campaigns/:campaignId/rejoin",
-    async (request, reply) => {
+    async (_request, reply) => {
+      reply.code(410);
+      return { error: "Legacy rejoin has been retired; sign in to your account" };
+      /*
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { email, accessCode } = request.body;
@@ -918,6 +924,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         reply.code(500);
         return { error: err.message };
       }
+      */
     }
   );
 

@@ -7,9 +7,7 @@ import {
   createDmSessionToken,
   getRequestDmSession,
   getValidatedVaultId,
-  verifyCampaignAccessCode,
   hashPlayerToken,
-  generatePlayerToken,
   isLoopbackRequest,
   verifySecret,
 } from "../auth.js";
@@ -24,7 +22,7 @@ import { CampaignRepository } from "@core/persistence/repositories/campaignRepos
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
-import { getSessionUser, getVaultAccessCodePepper, revokeAllSessions } from "../userAuthStore.js";
+import { getSessionUser, revokeAllSessions } from "../userAuthStore.js";
 import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
 
 interface DmAttemptState {
@@ -275,7 +273,10 @@ export async function registerAuthRoutes(
     };
   }>(
     "/api/player/join",
-    async (request, reply) => {
+    async (_request, reply) => {
+      reply.code(410);
+      return { error: "Legacy join has been retired; sign in and join the campaign" };
+      /*
       const vaultId = getValidatedVaultId(request);
       const { campaignCode, accessCode, email, displayName } = request.body;
 
@@ -372,6 +373,7 @@ export async function registerAuthRoutes(
         reply.code(500);
         return { error: err.message };
       }
+      */
     }
   );
 }

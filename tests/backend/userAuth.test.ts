@@ -125,7 +125,7 @@ describe("unified user authentication", () => {
   });
 
   it("does not reveal whether a registration email already exists", async () => {
-    await withServer(async (server, dataDir) => {
+    await withServer(async (server) => {
       const request = {
         method: "POST" as const,
         url: "/api/auth/register",
@@ -295,7 +295,7 @@ describe("unified user authentication", () => {
         url: "/api/join/cmp_join",
         payload: { accessCode, playerId: "ply_victim" },
       });
-      expect(legacySpoof.statusCode).toBe(400);
+      expect(legacySpoof.statusCode).toBe(410);
 
       await server.inject({
         method: "POST",
