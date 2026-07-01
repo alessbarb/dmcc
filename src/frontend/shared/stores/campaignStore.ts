@@ -395,9 +395,19 @@ export interface CampaignStateStore {
   saveViewport: (canvasId: string, viewport: { x: number; y: number; zoom: number }) => Promise<void>;
 }
 
-const fetchWithVault = (url: string, init?: RequestInit): Promise<Response> => {
+const tabId = typeof crypto !== "undefined" && "randomUUID" in crypto
+  ? crypto.randomUUID()
+  : `tab_${Math.random().toString(36).slice(2)}`;
+
+const fetchWithVault = async (url: string, init?: RequestInit): Promise<Response> => {
   const vaultId: string = useCampaignStore.getState().activeVaultId || "default";
-  return apiFetch(url, { vaultId, init });
+  const response = await apiFetch(url, { vaultId, init });
+  const method = (init?.method ?? "GET").toUpperCase();
+  if (response.ok && !["GET", "HEAD", "OPTIONS"].includes(method)) {
+    const campaignId = url.match(/^\/api\/campaigns\/([^/?]+)/)?.[1];
+    if (campaignId) broadcastMutation(decodeURIComponent(campaignId));
+  }
+  return response;
 };
 
 const syncChannel = typeof window !== "undefined" ? new BroadcastChannel("dmcc_campaign_sync") : null;
@@ -405,7 +415,7 @@ const syncChannel = typeof window !== "undefined" ? new BroadcastChannel("dmcc_c
 const broadcastMutation = (campaignId: string) => {
   if (syncChannel) {
     const vaultId = useCampaignStore.getState().activeVaultId || "default";
-    syncChannel.postMessage({ type: "MUTATION", vaultId, campaignId });
+    syncChannel.postMessage({ type: "MUTATION", vaultId, campaignId, tabId });
   }
 };
 
@@ -1934,7 +1944,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
 
 if (typeof window !== "undefined" && syncChannel) {
   syncChannel.onmessage = (event) => {
-    if (event.data && event.data.type === "MUTATION") {
+    if (event.data && event.data.type === "MUTATION" && event.data.tabId !== tabId) {
       const store = useCampaignStore.getState();
       const activeId = store.activeCampaignId;
       const activeVaultId = store.activeVaultId || "default";
