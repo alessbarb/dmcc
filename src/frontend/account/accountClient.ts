@@ -68,3 +68,23 @@ export async function updatePlayerProfile(
   );
   return result.profile;
 }
+
+export type AccountSession = {
+  sessionRef: string;
+  createdAt: string;
+  lastSeenAt: string;
+  expiresAt: string;
+  current: boolean;
+};
+
+export async function fetchSessions(): Promise<AccountSession[]> {
+  return (await request<{ sessions: AccountSession[] }>("/api/account/sessions")).sessions;
+}
+
+export function revokeSession(sessionRef: string): Promise<{ revoked: true }> {
+  return request(`/api/account/sessions/${encodeURIComponent(sessionRef)}`, { method: "DELETE" });
+}
+
+export function revokeOtherSessions(): Promise<{ revoked: true }> {
+  return request("/api/account/sessions/others", { method: "DELETE" });
+}
