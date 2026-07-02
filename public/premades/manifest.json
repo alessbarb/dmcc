@@ -16,8 +16,8 @@
         "es": "oracle-triple-eclipse/locales/es.json"
       },
       "stats": {
-        "entities": 67,
-        "relations": 61,
+        "entities": 109,
+        "relations": 228,
         "facts": 16,
         "preparedSessions": 8
       }
