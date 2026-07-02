@@ -279,7 +279,6 @@ export function CampaignShell() {
       {/* Sidebar Navigation */}
       <aside
         className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}
-        style={{ width: sidebarCollapsed ? "52px" : "260px", transition: "width 0.2s ease" }}
       >
         <div
           className="sidebar-header"
@@ -315,17 +314,19 @@ export function CampaignShell() {
 
         <nav className="sidebar-nav" style={{ padding: sidebarCollapsed ? "12px 6px" : undefined }}>
           {NAV.map(({ path, label, Icon }) => (
-            <div
+            <button
+              type="button"
               key={path}
               className={`nav-item ${currentSegment === path ? "active" : ""}`}
               data-tour-id={`campaign-nav-${path}`}
               onClick={() => handleNavClick(path)}
               title={sidebarCollapsed ? label : undefined}
+              aria-current={currentSegment === path ? "page" : undefined}
               style={sidebarCollapsed ? { padding: "10px", justifyContent: "center", gap: 0 } : undefined}
             >
               <Icon size={16} />
               {!sidebarCollapsed && <span>{label}</span>}
-            </div>
+            </button>
           ))}
         </nav>
 

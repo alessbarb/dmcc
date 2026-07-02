@@ -483,6 +483,9 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     description: "",
   });
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isTabVisible, setIsTabVisible] = useState(
+    () => typeof document === "undefined" || !document.hidden,
+  );
 
   // Diary inline edit state
   const [noteEditId, setNoteEditId] = useState<string | null>(null);
@@ -498,6 +501,12 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
     useCampaignStore.getState().enterPlayerCampaign(campaignId);
     void loadPlayerPortalState(campaignId);
   }, [campaignId, loadPlayerPortalState]);
+
+  useEffect(() => {
+    const updateVisibility = () => setIsTabVisible(!document.hidden);
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
 
   useEffect(() => {
     try {
@@ -861,8 +870,20 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   };
 
   if (!playerPortalState) {
+    if (error) {
+      return (
+        <div className="player-portal-loading" style={{ flexDirection: "column", gap: "16px" }}>
+          <div className="card" style={{ maxWidth: "400px", padding: "20px", border: "1px solid rgba(239,68,68,0.45)", background: "rgba(239,68,68,0.08)", color: "#fca5a5", fontSize: "0.85rem", textAlign: "center" }}>
+            <p style={{ margin: 0, lineHeight: 1.5 }}>{error}</p>
+            <button className="btn btn-secondary btn-sm" style={{ marginTop: "12px" }} onClick={() => navigate({ to: "/" })}>
+              {t("common.back") || "Volver"}
+            </button>
+          </div>
+        </div>
+      );
+    }
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", color: "var(--text-muted)" }}>
+      <div className="player-portal-loading">
         Cargando portal del jugador...
       </div>
     );
@@ -892,21 +913,21 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   };
 
   return (
-    <div className="player-portal-shell" style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+    <div className={`player-portal-shell ${isTabVisible ? "" : "player-portal-shell--paused"}`}>
       {/* Sidebar */}
-      <aside className="sidebar player-portal-sidebar" style={{ width: "260px", flexShrink: 0 }}>
+      <aside className="sidebar player-portal-sidebar">
         <div className="sidebar-header">
           <div className="sidebar-logo">{campaignState?.campaign?.title ?? playerPortalState.campaign?.title ?? campaignId}</div>
           <div className="sidebar-logo-subtitle">Portal del Jugador</div>
         </div>
 
-        <div style={{ padding: "12px 16px", borderBottom: "1px solid var(--border-color)", display: "flex", gap: "10px", alignItems: "center" }}>
-          <div style={{ width: "36px", height: "36px", borderRadius: "50%", backgroundColor: "var(--primary)", color: "var(--text-main)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700" }}>
+        <div className="player-portal-profile">
+          <div className="player-portal-avatar">
             {player?.displayName?.slice(0, 2).toUpperCase() ?? "PL"}
           </div>
           <div>
-            <div style={{ fontSize: "0.85rem", fontWeight: "700", color: "var(--text-main)" }}>{player?.displayName ?? "Jugador"}</div>
-            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+            <div className="player-portal-profile__name">{player?.displayName ?? "Jugador"}</div>
+            <div className="player-portal-profile__character">
               {myCharacter ? myCharacter.title : "Sin personaje"}
             </div>
           </div>
@@ -932,27 +953,29 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
           <p>{portalMode === "family" ? copy.modeHintFamily : copy.modeHintAdvanced}</p>
         </div>
 
-        <nav className="sidebar-nav" style={{ flexGrow: 1, padding: "16px 0" }}>
+        <nav className="sidebar-nav player-portal-nav" aria-label="Portal del jugador">
           {TABS.map((tab) => (
-            <div
+            <button
+              type="button"
               key={tab.id}
               className={`nav-item ${activeTab === tab.id ? "active" : ""}`}
               onClick={() => setActiveTab(tab.id)}
+              aria-current={activeTab === tab.id ? "page" : undefined}
             >
               {tab.icon} {tab.label}
-            </div>
+            </button>
           ))}
         </nav>
 
         <div className="sidebar-footer">
-          <button className="btn btn-danger btn-sm" style={{ width: "100%" }} onClick={() => void handleExit()}>
+          <button className="btn btn-danger btn-sm player-portal-exit" onClick={() => void handleExit()}>
             {t("playerPortal.leavePortal")}
           </button>
         </div>
       </aside>
 
       {/* Main content */}
-      <main className="main-content player-portal-main" style={{ flexGrow: 1, display: "flex", flexDirection: "column", overflowY: "auto" }}>
+      <main className="main-content player-portal-main">
         <div className="top-bar">
           <div className="top-bar-title" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <span style={{ fontSize: "1.1rem", fontWeight: "800" }}>{tabLabel[activeTab]}</span>
@@ -966,7 +989,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
           </div>
         </div>
 
-        <div className="content-body player-portal-content" style={{ padding: "32px", maxWidth: "980px", width: "100%", margin: "0 auto" }}>
+        <div className="content-body player-portal-content">
           {error && (
             <div className="card" style={{ padding: "12px 14px", marginBottom: "16px", border: "1px solid rgba(239,68,68,0.45)", background: "rgba(239,68,68,0.08)", color: "#fca5a5", fontSize: "0.85rem" }}>
               {error}

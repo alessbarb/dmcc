@@ -14,15 +14,15 @@ export interface PlayersPageProps {
   campaigns?: any[];
   activeCampaignId?: string | null;
   visibility?: any;
-  createPlayer?: (name: string, displayName: string, email?: string, imageUrl?: string) => Promise<any>;
+  createPlayer?: (name: string, displayName: string, email?: string, imageUrl?: string, avatarUrl?: string) => Promise<any>;
   updatePlayer?: (playerId: string, data: any) => Promise<any>;
   archivePlayer?: (playerId: string) => Promise<any>;
   isPlayerModalOpen?: boolean;
   setIsPlayerModalOpen?: (open: boolean) => void;
   editingPlayerId?: string | null;
   setEditingPlayerId?: (id: string | null) => void;
-  playerForm?: { name: string; displayName: string; email: string; imageUrl: string };
-  setPlayerForm?: (form: { name: string; displayName: string; email: string; imageUrl: string }) => void;
+  playerForm?: { name: string; displayName: string; email: string; imageUrl: string; avatarUrl?: string };
+  setPlayerForm?: (form: { name: string; displayName: string; email: string; imageUrl: string; avatarUrl?: string }) => void;
   setSelectedEntity?: (entity: any) => void;
   addToast?: (msg: string, kind?: ToastKind) => void;
 }
@@ -33,7 +33,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const { addToast: toastAdd } = useToast();
   const [isPlayerModalOpenLocal, setIsPlayerModalOpenLocal] = useState(false);
   const [editingPlayerIdLocal, setEditingPlayerIdLocal] = useState<string | null>(null);
-  const [playerFormLocal, setPlayerFormLocal] = useState({ name: "", displayName: "", email: "", imageUrl: "" });
+  const [playerFormLocal, setPlayerFormLocal] = useState<{ name: string; displayName: string; email: string; imageUrl: string; avatarUrl?: string }>({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" });
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
 
   const { dmPlayerPortalSummary, loadDmPlayerPortalSummary, resolvePlayerCharacterProposal } = store;
@@ -325,31 +325,17 @@ export function PlayersPage(props: PlayersPageProps = {}) {
               <div key={player.playerId} className="card" style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "14px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px" }}>
                   <div style={{ display: "flex", gap: "12px", alignItems: "center", minWidth: 0, flex: 1 }}>
-                    {player.imageUrl ? (
-                      <div style={{
-                        width: "46px",
-                        height: "46px",
-                        borderRadius: "8px",
-                        overflow: "hidden",
-                        border: "2px double hsl(38, 60%, 55%)",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.4)",
-                        flexShrink: 0
-                      }}>
-                        <img src={player.imageUrl} alt={player.displayName ?? player.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      </div>
-                    ) : (
-                      <div style={{
-                        width: "46px",
-                        height: "46px",
-                        borderRadius: "8px",
-                        overflow: "hidden",
-                        border: "2px double hsl(38, 60%, 55%)",
-                        boxShadow: "0 2px 4px rgba(0,0,0,0.4)",
-                        flexShrink: 0
-                      }}>
-                        <img src="/assets/default_player.png" alt={player.displayName ?? player.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      </div>
-                    )}
+                    <div style={{
+                      width: "46px",
+                      height: "46px",
+                      borderRadius: "8px",
+                      overflow: "hidden",
+                      border: "2px double hsl(38, 60%, 55%)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.4)",
+                      flexShrink: 0
+                    }}>
+                      <img src={player.avatarUrl || player.imageUrl || "/assets/avatars/default-avatar.jpg"} alt={player.displayName ?? player.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    </div>
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <h3 style={{ fontWeight: "700", color: "var(--text-main)", marginBottom: "2px", fontSize: "1rem", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
                         {player.displayName ?? player.name}
@@ -370,7 +356,8 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                           name: player.name,
                           displayName: player.displayName ?? player.name,
                           email: player.email ?? "",
-                          imageUrl: player.imageUrl ?? ""
+                          imageUrl: player.imageUrl ?? "",
+                          avatarUrl: player.avatarUrl ?? ""
                         });
                         setIsPlayerModalOpen(true);
                       }}
@@ -419,11 +406,11 @@ export function PlayersPage(props: PlayersPageProps = {}) {
 
       {/* Add/Edit Player Modal */}
       {isPlayerModalOpen && (
-        <div className="modal-overlay" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "" }); }}>
+        <div className="modal-overlay" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" }); }}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "500px" }}>
             <div className="modal-header">
               <h3 style={{ fontWeight: "700" }}>{editingPlayerId ? t("players.editProfile") : t("players.addPlayer")}</h3>
-              <button className="btn btn-icon btn-secondary" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "" }); }}><X size={16} /></button>
+              <button className="btn btn-icon btn-secondary" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" }); }}><X size={16} /></button>
             </div>
             <form onSubmit={async (e) => {
               e.preventDefault();
@@ -431,25 +418,28 @@ export function PlayersPage(props: PlayersPageProps = {}) {
               const displayNameVal = playerForm.displayName.trim() || playerForm.name.trim();
               const emailVal = playerForm.email.trim() || null;
               const imageUrlVal = playerForm.imageUrl.trim() || "";
+              const avatarUrlVal = playerForm.avatarUrl?.trim() || "";
 
               if (editingPlayerId) {
                 await updatePlayer(editingPlayerId, {
                   name: playerForm.name.trim(),
                   displayName: displayNameVal,
                   email: emailVal,
-                  imageUrl: imageUrlVal
+                  imageUrl: imageUrlVal,
+                  avatarUrl: avatarUrlVal
                 });
               } else {
                 await createPlayer(
                   playerForm.name.trim(),
                   displayNameVal,
                   emailVal || undefined,
-                  imageUrlVal
+                  imageUrlVal,
+                  avatarUrlVal
                 );
               }
               setIsPlayerModalOpen(false);
               setEditingPlayerId(null);
-              setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "" });
+              setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" });
             }}>
               <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div className="form-group" style={{ marginBottom: 0 }}>
@@ -482,9 +472,13 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                     </div>
                   )}
                 </div>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label">Path del Avatar Local (e.g. /assets/avatars/default-avatar.jpg)</label>
+                  <input className="form-input" value={playerForm.avatarUrl} onChange={e => setPlayerForm({ ...playerForm, avatarUrl: e.target.value })} placeholder="/assets/avatars/default-avatar.jpg" />
+                </div>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "" }); }}>Cancelar</button>
+                <button type="button" className="btn btn-secondary" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" }); }}>Cancelar</button>
                 <button type="submit" className="btn btn-primary">{editingPlayerId ? t("common.saveChanges") : t("players.addPlayer")}</button>
               </div>
             </form>

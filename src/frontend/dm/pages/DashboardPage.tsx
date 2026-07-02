@@ -40,43 +40,15 @@ export interface DashboardPageProps {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "8px",
-        marginBottom: "16px",
-      }}
-    >
-      <span
-        style={{
-          fontSize: "0.65rem",
-          fontWeight: 800,
-          letterSpacing: "0.14em",
-          textTransform: "uppercase",
-          color: "var(--text-muted)",
-        }}
-      >
-        {children}
-      </span>
-      <div
-        style={{
-          flex: 1,
-          height: "1px",
-          background:
-            "linear-gradient(to right, var(--border-color), transparent)",
-        }}
-      />
+    <div className="dashboard-section-label">
+      <span>{children}</span>
+      <div aria-hidden="true" />
     </div>
   );
 }
 
 function EmptySlot({ label }: { label: string }) {
-  return (
-    <span style={{ color: "var(--text-muted)", fontStyle: "italic", fontSize: "0.88rem" }}>
-      {label}
-    </span>
-  );
+  return <span className="dashboard-empty-slot">{label}</span>;
 }
 
 function CommandMetric({
@@ -89,35 +61,10 @@ function CommandMetric({
   detail?: string;
 }) {
   return (
-    <div
-      style={{
-        padding: "12px 14px",
-        borderRadius: "var(--radius-md)",
-        backgroundColor: "var(--bg-input)",
-        border: "1px solid var(--border-color)",
-        minWidth: 0,
-      }}
-    >
-      <div
-        style={{
-          fontSize: "0.68rem",
-          fontWeight: 800,
-          textTransform: "uppercase",
-          letterSpacing: "0.1em",
-          color: "var(--text-muted)",
-          marginBottom: "5px",
-        }}
-      >
-        {label}
-      </div>
-      <div style={{ fontSize: "1.35rem", fontWeight: 900, color: "var(--text-main)" }}>
-        {value}
-      </div>
-      {detail && (
-        <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "3px" }}>
-          {detail}
-        </div>
-      )}
+    <div className="dashboard-command-metric">
+      <div className="dashboard-command-metric__label">{label}</div>
+      <div className="dashboard-command-metric__value">{value}</div>
+      {detail && <div className="dashboard-command-metric__detail">{detail}</div>}
     </div>
   );
 }
@@ -134,22 +81,11 @@ function FlowStep({
   active?: boolean;
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: "10px",
-        padding: "12px",
-        borderRadius: "var(--radius-md)",
-        backgroundColor: active ? "var(--bg-card-hover)" : "var(--bg-input)",
-        border: active ? "1px solid hsla(255, 85%, 65%, 0.45)" : "1px solid var(--border-color)",
-      }}
-    >
-      <span style={{ color: active ? "var(--primary)" : "var(--text-muted)", flexShrink: 0, marginTop: "2px" }}>
-        {icon}
-      </span>
-      <span style={{ minWidth: 0 }}>
-        <strong style={{ display: "block", fontSize: "0.86rem", color: "var(--text-main)" }}>{title}</strong>
-        <span style={{ display: "block", fontSize: "0.78rem", color: "var(--text-muted)", marginTop: "2px" }}>{description}</span>
+    <div className={`dashboard-flow-step ${active ? "dashboard-flow-step--active" : ""}`}>
+      <span className="dashboard-flow-step__icon">{icon}</span>
+      <span className="dashboard-flow-step__copy">
+        <strong>{title}</strong>
+        <span>{description}</span>
       </span>
     </div>
   );
@@ -169,45 +105,19 @@ function EntityRow({
   titleFallback: string;
 }) {
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: "8px",
-        padding: "8px 10px",
-        borderRadius: "var(--radius-sm)",
-        backgroundColor: "var(--bg-input)",
-        cursor: onClick ? "pointer" : "default",
-        transition: "var(--transition-fast)",
-      }}
-      onMouseEnter={(e) => {
-        if (onClick) {
-          (e.currentTarget as HTMLElement).style.backgroundColor =
-            "var(--bg-card-hover)";
-        }
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.backgroundColor =
-          "var(--bg-input)";
-      }}
+      disabled={!onClick}
+      className="dashboard-entity-row"
     >
-      <span
-        style={{
-          fontWeight: 600,
-          fontSize: "0.9rem",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-        }}
-      >
+      <span className="dashboard-entity-row__title">
         {entity.title ?? entity.name ?? titleFallback}
       </span>
       {badge && (
         <span className={`badge ${badgeClass ?? "badge-default"}`}>{badge}</span>
       )}
-    </div>
+    </button>
   );
 }
 
@@ -314,34 +224,9 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
     return map[importance.toLowerCase()] ?? { label: importance, cls: "badge-default" };
   };
 
-  const quickActionsGridStyle: React.CSSProperties = {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(min(138px, 100%), 1fr))",
-    gap: "12px",
-  };
-
-  const quickActionButtonStyle: React.CSSProperties = {
-    minWidth: 0,
-    minHeight: "76px",
-    height: "auto",
-    display: "inline-flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "10px",
-    padding: "16px 10px",
-    fontSize: "0.82rem",
-    fontWeight: 700,
-    lineHeight: 1.15,
-    letterSpacing: "-0.01em",
-    borderRadius: "var(--radius-lg)",
-    textAlign: "center",
-    whiteSpace: "normal",
-  };
-
   // ── layout ──────────────────────────────────────────────────────────────────
   return (<>
-    <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+    <div className="dashboard-page">
 
       {/* ═══════════════════════════════════════════════════════════════════════
           SECTION 1 — ESTADO ACTUAL
@@ -1174,27 +1059,11 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 {recentEntities.slice(0, 5).map((e: any, i: number) => (
-                  <div
+                  <button
+                    type="button"
                     key={e.entityId ?? i}
                     onClick={() => setSelectedEntity(e)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      padding: "7px 10px",
-                      borderRadius: "var(--radius-sm)",
-                      backgroundColor: "var(--bg-input)",
-                      cursor: "pointer",
-                      transition: "var(--transition-fast)",
-                    }}
-                    onMouseEnter={(ev) => {
-                      (ev.currentTarget as HTMLElement).style.backgroundColor =
-                        "var(--bg-card-hover)";
-                    }}
-                    onMouseLeave={(ev) => {
-                      (ev.currentTarget as HTMLElement).style.backgroundColor =
-                        "var(--bg-input)";
-                    }}
+                    className="dashboard-recent-row"
                   >
                     <BookOpen size={12} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
                     <span
@@ -1217,7 +1086,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
                         {e.entityType}
                       </span>
                     )}
-                  </div>
+                  </button>
                 ))}
                 {recentEntities.length > 5 && (
                   <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", paddingLeft: "4px" }}>
@@ -1236,15 +1105,10 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
       <section>
         <SectionLabel>{t("dashboard.quickActions")}</SectionLabel>
 
-        <div style={quickActionsGridStyle}>
+        <div className="dashboard-quick-actions">
           {/* Iniciar sesión */}
           <button
-            className="btn btn-primary"
-            style={{
-              ...quickActionButtonStyle,
-              boxShadow:
-                "var(--shadow-primary), inset 0 1px 0 hsla(255, 100%, 90%, 0.15)",
-            }}
+            className="btn btn-primary dashboard-quick-action dashboard-quick-action--primary"
             onClick={() => setCurrentPage("session")}
           >
             <Play size={20} />
@@ -1253,11 +1117,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
 
           {/* Nueva pista */}
           <button
-            className="btn btn-secondary"
-            style={{
-              ...quickActionButtonStyle,
-              borderColor: "hsla(175, 85%, 45%, 0.3)",
-            }}
+            className="btn btn-secondary dashboard-quick-action dashboard-quick-action--clue"
             onClick={() => setCurrentPage("entities")}
           >
             <Plus size={20} style={{ color: "var(--secondary)" }} />
@@ -1266,8 +1126,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
 
           {/* Nuevo PNJ */}
           <button
-            className="btn btn-secondary"
-            style={quickActionButtonStyle}
+            className="btn btn-secondary dashboard-quick-action"
             onClick={() => setCurrentPage("entities")}
           >
             <Users size={20} style={{ color: "var(--text-muted)" }} />
@@ -1276,12 +1135,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
 
           {/* Ver grafo */}
           <button
-            className="btn btn-secondary"
-            style={{
-              ...quickActionButtonStyle,
-              position: "relative",
-              paddingRight: "26px",
-            }}
+            className="btn btn-secondary dashboard-quick-action dashboard-quick-action--link"
             onClick={() => setCurrentPage("graph")}
           >
             <Network size={20} style={{ color: "var(--text-muted)" }} />
@@ -1290,19 +1144,12 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
             <ChevronRight
               size={14}
               aria-hidden="true"
-              style={{
-                color: "var(--text-muted)",
-                position: "absolute",
-                right: "10px",
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
+              className="dashboard-quick-action__chevron"
             />
           </button>
 
           <button
-            className="btn btn-secondary"
-            style={quickActionButtonStyle}
+            className="btn btn-secondary dashboard-quick-action"
             onClick={() => setCurrentPage("search")}
           >
             <Search size={20} style={{ color: "var(--text-muted)" }} />
@@ -1310,8 +1157,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           </button>
 
           <button
-            className="btn btn-secondary"
-            style={quickActionButtonStyle}
+            className="btn btn-secondary dashboard-quick-action"
             onClick={() => campaignId && navigate({ to: `/campaigns/${campaignId}/player-portal` })}
           >
             <Share2 size={20} style={{ color: "var(--text-muted)" }} />
@@ -1319,8 +1165,7 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
           </button>
 
           <button
-            className="btn btn-secondary"
-            style={quickActionButtonStyle}
+            className="btn btn-secondary dashboard-quick-action"
             onClick={() => void handleMarkdownExport()}
             disabled={exportingMarkdown}
           >

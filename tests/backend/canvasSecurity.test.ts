@@ -45,6 +45,7 @@ describe("Canvas and LAN status security assertions", () => {
       // Create server with allowLegacyTestAuth = false (as it would run in production/E2E)
       const server = createServer({ dataDir });
       server.allowLegacyTestAuth = false;
+      try {
 
       // 1. Setup two DM users in separate vaults, and one Player in DM 1's vault
       const dm1Cookie = await registerAndLogin(server, "dm1@example.com", "secure-password-dm1", "vault1");
@@ -173,6 +174,9 @@ describe("Canvas and LAN status security assertions", () => {
       expect(lanDm2Json.accessCode).toBeNull();
       expect(lanDm2Json.localIp).toBeUndefined();
       expect(lanDm2Json.port).toBeUndefined();
+      } finally {
+        await server.close();
+      }
     });
   });
 });

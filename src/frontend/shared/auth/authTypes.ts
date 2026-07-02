@@ -7,6 +7,7 @@ export interface PlayerProfileEntry {
   characterName?: string;
   lastAccessed: string;
   rememberToken?: boolean;
+  avatarUrl?: string;
 }
 
 export interface DmProfileEntry {
@@ -14,6 +15,7 @@ export interface DmProfileEntry {
   email: string;
   displayName?: string;
   lastAccessed: string;
+  avatarUrl?: string;
 }
 
 export interface LocalIdentity {

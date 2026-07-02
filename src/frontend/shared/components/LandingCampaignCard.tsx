@@ -1,6 +1,7 @@
 import React from "react";
 import { Shield, MapPin, Key, ArrowRight, Users, Trash2, Pencil } from "lucide-react";
 import { useTranslation } from "../i18n/useTranslation.js";
+import { ContextMenu } from "./ContextMenu.js";
 
 interface CampaignStats {
   npcsCount: number;
@@ -45,7 +46,7 @@ export function LandingCampaignCard({ campaign, onSelect, onDelete, onRename }: 
   };
 
   return (
-    <div className="campaign-card-wrapper" onClick={() => onSelect(campaign.campaignId)}>
+    <article className="campaign-card-wrapper" onClick={() => onSelect(campaign.campaignId)}>
       <div className="campaign-card-content">
         <header className="campaign-card-header">
           <div className="campaign-card-title-group">
@@ -58,33 +59,25 @@ export function LandingCampaignCard({ campaign, onSelect, onDelete, onRename }: 
               ) : null}
             </div>
           </div>
-          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-            <button
-              type="button"
-              className="campaign-card-delete-btn"
-              aria-label={t("landing.renameCampaign", { title })}
-              onClick={(e) => { e.stopPropagation(); onRename?.(campaign); }}
-              style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", padding: "4px", borderRadius: "4px", display: "flex", alignItems: "center", opacity: 0.55, transition: "opacity 0.15s, color 0.15s" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; (e.currentTarget as HTMLButtonElement).style.color = "var(--accent)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.55"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
-            >
-              <Pencil size={15} />
-            </button>
-            <button
-              type="button"
-              className="campaign-card-delete-btn"
-              aria-label={t("landing.deleteCampaign", { title })}
-              onClick={(e) => { e.stopPropagation(); onDelete(campaign.campaignId, title); }}
-              style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", padding: "4px", borderRadius: "4px", display: "flex", alignItems: "center", opacity: 0.5, transition: "opacity 0.15s, color 0.15s" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; (e.currentTarget as HTMLButtonElement).style.color = "var(--color-danger, #e55)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.5"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
-            >
-              <Trash2 size={15} />
-            </button>
-            <button type="button" className="campaign-card-enter-btn" aria-label={t("landing.enterCampaign", { title })}>
-              <ArrowRight size={18} />
-            </button>
-          </div>
+          <ContextMenu
+            buttonLabel={t("landing.campaignActions", { title })}
+            items={[
+              {
+                id: "rename",
+                label: t("landing.renameCampaign", { title }),
+                icon: Pencil,
+                disabled: !onRename,
+                onSelect: () => onRename?.(campaign),
+              },
+              {
+                id: "delete",
+                label: t("landing.deleteCampaign", { title }),
+                icon: Trash2,
+                destructive: true,
+                onSelect: () => onDelete(campaign.campaignId, title),
+              },
+            ]}
+          />
         </header>
 
         {/* Active Session Status Banner */}
@@ -130,8 +123,21 @@ export function LandingCampaignCard({ campaign, onSelect, onDelete, onRename }: 
             <span className="stat-label">{t("landing.secretsLabel")}</span>
           </div>
         </div>
+
+        <button
+          type="button"
+          className="campaign-card-enter-btn"
+          aria-label={t("landing.enterCampaign", { title })}
+          onClick={(event) => {
+            event.stopPropagation();
+            onSelect(campaign.campaignId);
+          }}
+        >
+          <span>{t("landing.enterCampaign", { title })}</span>
+          <ArrowRight size={18} aria-hidden="true" />
+        </button>
       </div>
       <div className="campaign-card-border-glow"></div>
-    </div>
+    </article>
   );
 }

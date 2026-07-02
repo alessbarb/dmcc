@@ -285,101 +285,63 @@ export function TimelinePage(props: TimelinePageProps = {}) {
     const live = isLiveEvent(evt);
 
     return (
-      <div key={evt.eventId} className="timeline-item">
+      <article
+        key={evt.eventId}
+        className="timeline-item"
+        style={{
+          "--timeline-event-color": visual.color,
+          "--timeline-event-bg": visual.bgColor,
+        } as React.CSSProperties}
+      >
         <div
           className="timeline-marker"
-          style={{
-            backgroundColor: visual.bgColor,
-            borderColor: visual.color,
-            boxShadow: `0 0 8px ${visual.bgColor}`,
-          }}
+          aria-label={visual.label}
         >
-          <IconComp size={16} style={{ color: visual.color }} />
+          <IconComp size={16} aria-hidden="true" />
         </div>
 
-        <div className="timeline-content" style={{ borderLeft: `4px solid ${visual.color}` }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <span
-                className="badge"
-                style={{
-                  backgroundColor: visual.bgColor,
-                  color: visual.color,
-                  border: `1px solid ${visual.color}`,
-                  fontSize: "0.7rem",
-                  textTransform: "uppercase",
-                }}
-              >
+        <div className="timeline-content">
+          <header className="timeline-event-header">
+            <div className="timeline-event-badges">
+              <span className="badge timeline-event-type">
                 {visual.label}
               </span>
-              <span
-                className="badge"
-                style={{
-                  backgroundColor: live ? "hsla(10,95%,60%,0.15)" : "hsla(220,15%,65%,0.1)",
-                  color: live ? "hsl(10,95%,60%)" : "hsl(220,15%,65%)",
-                  border: `1px solid ${live ? "hsl(10,95%,60%)" : "hsl(220,15%,65%)"}`,
-                  fontSize: "0.65rem",
-                }}
-              >
+              <span className={`badge timeline-event-phase ${live ? "timeline-event-phase--live" : ""}`}>
                 {live ? t("timeline.liveBadge") : t("timeline.prepBadge")}
               </span>
             </div>
-            <span className="timeline-time" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            <time className="timeline-time" dateTime={evt.occurredAt}>
               <Calendar size={12} />
               {new Date(evt.occurredAt).toLocaleString()}
-            </span>
-          </div>
+            </time>
+          </header>
 
-          <div style={{ marginTop: "12px", padding: "4px 0" }}>
+          <div className="timeline-event-description">
             {renderEventDescription(evt.type, evt.payload, campaignState, locale, onEntityClick, timeline.events)}
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: "12px",
-              borderTop: "1px solid var(--border-color)",
-              paddingTop: "10px",
-            }}
-          >
-            <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", margin: 0 }}>
+          <footer className="timeline-event-footer">
+            <p>
               <strong>{t("timeline.actor")}</strong>{" "}
-              <code style={{ backgroundColor: "#1e2230", padding: "2px 4px", borderRadius: "4px" }}>
-                {evt.actorId}
-              </code>{" "}
+              <code>{evt.actorId}</code>{" "}
               | <strong>{t("timeline.sequence")}</strong> #{evt.sequence}
             </p>
             <button
-              className="btn btn-secondary btn-sm"
-              style={{ fontSize: "0.75rem", padding: "4px 8px", display: "flex", alignItems: "center", gap: "4px" }}
+              className="btn btn-secondary btn-sm timeline-event-json-toggle"
               onClick={() => toggleEventJson(evt.eventId)}
             >
               {expandedEvents[evt.eventId] ? <EyeOff size={12} /> : <Eye size={12} />}
               {expandedEvents[evt.eventId] ? t("timeline.hideJson") : t("timeline.showJson")}
             </button>
-          </div>
+          </footer>
 
           {expandedEvents[evt.eventId] && evt.payload && (
-            <pre
-              style={{
-                backgroundColor: "#06070e",
-                padding: "12px",
-                borderRadius: "var(--radius-sm)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.75rem",
-                color: "hsl(120, 70%, 65%)",
-                overflowX: "auto",
-                border: "1px solid var(--border-color)",
-                marginTop: "10px",
-              }}
-            >
+            <pre className="timeline-event-json">
               {JSON.stringify(evt.payload, null, 2)}
             </pre>
           )}
         </div>
-      </div>
+      </article>
     );
   };
 
@@ -614,16 +576,10 @@ export function TimelinePage(props: TimelinePageProps = {}) {
                     key={group.key}
                     style={{ border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", overflow: "hidden" }}
                   >
-                    <div
-                      style={{
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                        padding: "14px 16px",
-                        background: group.isActive
-                          ? "linear-gradient(90deg, hsla(10,95%,60%,0.12), transparent)"
-                          : "var(--bg-card)",
-                        cursor: "pointer",
-                        borderBottom: isCollapsed ? "none" : "1px solid var(--border-color)",
-                      }}
+                    <button
+                      type="button"
+                      className={`timeline-group-header ${group.isActive ? "timeline-group-header--active" : ""}`}
+                      aria-expanded={!isCollapsed}
                       onClick={() => toggleGroup(group.key)}
                     >
                       <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
@@ -651,7 +607,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
                         )}
                         {isCollapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
                       </div>
-                    </div>
+                    </button>
                     {!isCollapsed && (
                       <div className="timeline-list" style={{ padding: "8px 16px" }}>
                         {group.events.map(renderEventItem)}
