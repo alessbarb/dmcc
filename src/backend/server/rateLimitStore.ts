@@ -54,6 +54,14 @@ export class PersistentRateLimit {
     this.scheduleFlush();
   }
 
+  async close(): Promise<void> {
+    if (this.flushTimer) {
+      clearTimeout(this.flushTimer);
+      this.flushTimer = null;
+    }
+    await this.flush();
+  }
+
   private scheduleFlush(): void {
     if (this.flushTimer) return;
     this.dirty = true;
