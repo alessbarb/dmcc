@@ -16,7 +16,7 @@
   "stats": {
     "entities": 109,
     "relations": 228,
-    "facts": 16,
+    "facts": 25,
     "preparedSessions": 8
   },
   "entities": [
@@ -3330,6 +3330,112 @@
       "relatedEntityIds": [
         "ent_tpl_oracle_secret_escape_ship",
         "ent_tpl_oracle_npc_drez"
+      ]
+    },
+    {
+      "factId": "fact_tpl_oracle_17",
+      "kind": "player_theory",
+      "confidence": "unconfirmed",
+      "visibility": {
+        "kind": "party"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_oracle_npc_lyra"
+      ]
+    },
+    {
+      "factId": "fact_tpl_oracle_18",
+      "kind": "unknown",
+      "confidence": "suspected",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_oracle_npc_dorian"
+      ]
+    },
+    {
+      "factId": "fact_tpl_oracle_19",
+      "kind": "unknown",
+      "confidence": "suspected",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_oracle_secret_prophecy_count"
+      ]
+    },
+    {
+      "factId": "fact_tpl_oracle_20",
+      "kind": "retcon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_oracle_npc_veradis"
+      ]
+    },
+    {
+      "factId": "fact_tpl_oracle_21",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_oracle_npc_asha",
+        "ent_tpl_oracle_npc_veradis",
+        "ent_tpl_oracle_secret_asha_son_dead"
+      ]
+    },
+    {
+      "factId": "fact_tpl_oracle_22",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_oracle_faction_cult",
+        "ent_tpl_oracle_loc_port",
+        "ent_tpl_oracle_quest_port_blood"
+      ]
+    },
+    {
+      "factId": "fact_tpl_oracle_23",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_oracle_loc_archive",
+        "ent_tpl_oracle_npc_mira",
+        "ent_tpl_oracle_secret_archive_fire"
+      ]
+    },
+    {
+      "factId": "fact_tpl_oracle_24",
+      "kind": "canon",
+      "confidence": "likely",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_oracle_npc_lena"
+      ]
+    },
+    {
+      "factId": "fact_tpl_oracle_25",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_oracle_npc_sera",
+        "ent_tpl_oracle_clue_chronicles"
       ]
     }
   ],
