@@ -13,6 +13,7 @@ export type Command =
       title: string;
       summary?: string;
       system?: string;
+      coverUrl?: string;
       settings?: any;
       metadata?: Record<string, unknown>;
     }
@@ -24,6 +25,7 @@ export type Command =
       summary?: string;
       system?: string;
       status?: string;
+      coverUrl?: string;
       metadata?: Record<string, unknown>;
     }
   | {
@@ -237,6 +239,7 @@ export type Command =
       email?: string | null;
       emailHash?: string | null;
       imageUrl?: string;
+      avatarUrl?: string;
       role?: string;
       color?: string;
     }
@@ -249,6 +252,7 @@ export type Command =
       email?: string | null;
       emailHash?: string | null;
       imageUrl?: string;
+      avatarUrl?: string;
       role?: string;
       color?: string;
       isActive?: boolean;

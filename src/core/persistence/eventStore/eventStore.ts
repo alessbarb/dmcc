@@ -80,7 +80,7 @@ export class EventStore {
           throw new Error("corrupt command index line");
         }
       }
-    } catch (error: any) {
+    } catch {
       indexMap = await this.rebuildCommandIndexFromEvents(campaignId);
     }
 

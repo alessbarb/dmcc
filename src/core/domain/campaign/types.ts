@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { campaignIdSchema, sessionIdSchema, entityIdSchema } from "@shared/schemas.js";
+import { campaignIdSchema, sessionIdSchema, entityIdSchema, safeImageUrlSchema } from "@shared/schemas.js";
 
 export type CampaignStatus = "draft" | "active" | "paused" | "completed" | "archived";
 export type CampaignSystem = "generic_fantasy_d20" | "dnd_srd_5_2_1" | "custom";
@@ -25,6 +25,7 @@ export const campaignSchema = z.object({
   summary: z.string().optional(),
   system: campaignSystemSchema.optional().default("generic_fantasy_d20"),
   status: campaignStatusSchema.optional().default("active"),
+  coverUrl: safeImageUrlSchema.optional(),
   currentSessionId: sessionIdSchema.optional(),
   currentLocationId: entityIdSchema.optional(),
   currentQuestId: entityIdSchema.optional(),

@@ -31,6 +31,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         title: command.title,
         summary: command.summary,
         system: command.system,
+        coverUrl: command.coverUrl,
         settings: command.settings,
         metadata: command.metadata,
       });
@@ -49,6 +50,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...(command.summary !== undefined && { summary: command.summary }),
         ...(command.system !== undefined && { system: command.system }),
         ...(command.status !== undefined && { status: command.status }),
+        ...(command.coverUrl !== undefined && { coverUrl: command.coverUrl }),
         ...(command.metadata !== undefined && { metadata: { ...(state.campaign as any).metadata, ...command.metadata } }),
         updatedAt: new Date().toISOString(),
       };
@@ -59,6 +61,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...(command.summary !== undefined && { summary: command.summary }),
         ...(command.system !== undefined && { system: command.system }),
         ...(command.status !== undefined && { status: command.status }),
+        ...(command.coverUrl !== undefined && { coverUrl: command.coverUrl }),
         ...(command.metadata !== undefined && { metadata: nextCampaign.metadata }),
       }));
     }
@@ -352,6 +355,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         role: command.role || "player",
         color: command.color || "#3b82f6",
         imageUrl: command.imageUrl || "",
+        avatarUrl: command.avatarUrl,
         isActive: true,
         archived: false,
         createdAt: new Date().toISOString(),
@@ -370,6 +374,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...(command.emailHash !== undefined && { emailHash: command.emailHash }),
         ...(command.email !== undefined && command.emailHash === undefined && { email: command.email }),
         ...(command.imageUrl !== undefined && { imageUrl: command.imageUrl }),
+        ...(command.avatarUrl !== undefined && { avatarUrl: command.avatarUrl }),
         ...(command.role !== undefined && { role: command.role }),
         ...(command.color !== undefined && { color: command.color }),
         ...(command.isActive !== undefined && { isActive: command.isActive }),

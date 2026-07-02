@@ -23,7 +23,7 @@ export class CommandConflictError extends Error {
 }
 
 export function calculateCommandHash(command: any): string {
-  const { type, campaignId, actorId, commandId, ...payload } = command;
+  const { type, campaignId, actorId, commandId: _commandId, ...payload } = command;
 
   const canonicalStringify = (obj: any): string => {
     if (obj === null) return "null";

@@ -7,6 +7,7 @@ export interface Campaign {
   summary?: string;
   system?: string;
   status?: string;
+  coverUrl?: string;
   currentLocationId?: string;
   currentQuestId?: string;
   createdAt?: string;
@@ -22,6 +23,7 @@ export function createCampaign(input: {
   summary?: string;
   system?: string;
   status?: string;
+  coverUrl?: string;
   settings?: CampaignSettings;
   metadata?: Record<string, unknown>;
 }): Campaign {
@@ -34,6 +36,7 @@ export function createCampaign(input: {
     summary: input.summary,
     system: input.system || "generic_fantasy_d20",
     status: input.status || "active",
+    coverUrl: input.coverUrl,
     settings: input.settings || { backupOnClose: true, lanModeEnabled: false, activeQuestsLimit: 10 },
     metadata: input.metadata ?? {},
     archived: false,

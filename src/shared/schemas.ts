@@ -59,3 +59,30 @@ export const visibilityRuleSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("players"), playerIds: z.array(z.string()) }),
   z.object({ kind: z.literal("characters"), characterEntityIds: z.array(z.string()) }),
 ]);
+
+const ALLOWED_ASSET_PREFIXES = [
+  "/assets/campaigns/",
+  "/assets/avatars/",
+  "/assets/entities/",
+  "/assets/ui/",
+];
+
+export function isSafeImageUrl(value: string): boolean {
+  if (typeof value !== "string") return false;
+  const val = value.trim();
+  if (val.length === 0) return false;
+
+  const hasAllowedPrefix = ALLOWED_ASSET_PREFIXES.some((prefix) => val.startsWith(prefix));
+  if (!hasAllowedPrefix) return false;
+
+  if (val.includes("..") || val.includes("\\")) return false;
+  if (/(javascript:|data:|http:|https:)/i.test(val)) return false;
+
+  return true;
+}
+
+export const safeImageUrlSchema = z
+  .string()
+  .refine(isSafeImageUrl, {
+    message: "Must be a safe local path under /assets/campaigns/, /assets/avatars/, /assets/entities/ or /assets/ui/",
+  });

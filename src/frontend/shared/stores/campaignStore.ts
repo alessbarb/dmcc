@@ -139,6 +139,9 @@ export interface Campaign {
   currentQuestId?: string;
   metadata?: Record<string, unknown>;
   stats?: any;
+  createdAt?: string;
+  updatedAt?: string;
+  coverUrl?: string;
 }
 
 export interface Entity {
@@ -220,6 +223,7 @@ export interface PlayerProfile {
   archived: boolean;
   createdAt: string;
   imageUrl?: string;
+  avatarUrl?: string;
 }
 
 export interface CampaignStateStore {
@@ -275,7 +279,7 @@ export interface CampaignStateStore {
   fetchPremadeCampaigns: () => Promise<void>;
   fetchPremadeCampaignTemplate: (templateId: string) => Promise<PremadeCampaignTemplate | null>;
   importPremadeCampaign: (templateId: string, options?: { title?: string; summary?: string; importMode?: "full" | "structure" | "sessions"; locale?: string }) => Promise<string | undefined>;
-  updateCampaign: (campaignId: string, updates: { title?: string; summary?: string; system?: string; status?: string; metadata?: Record<string, unknown> }) => Promise<Campaign | undefined>;
+  updateCampaign: (campaignId: string, updates: { title?: string; summary?: string; system?: string; status?: string; coverUrl?: string; metadata?: Record<string, unknown> }) => Promise<Campaign | undefined>;
   selectCampaign: (campaignId: string) => Promise<void>;
   enterDmCampaign: (campaignId: string) => void;
   enterPlayerCampaign: (campaignId: string) => void;
@@ -283,7 +287,7 @@ export interface CampaignStateStore {
   reloadCampaign: () => Promise<void>;
   reloadCampaignIfActive: (campaignId: string) => Promise<void>;
   clearCampaign: () => void;
-  createCampaign: (title: string, system: string) => Promise<string | undefined>;
+  createCampaign: (title: string, system: string, coverUrl?: string) => Promise<string | undefined>;
   deleteCampaign: (campaignId: string, confirmTitle: string) => Promise<void>;
 
   createEntity: (payload: {
@@ -331,7 +335,7 @@ export interface CampaignStateStore {
   archiveRelation: (relationId: string) => Promise<void>;
   updateRelation: (relationId: string, updates: { description?: string; visibility?: any }) => Promise<void>;
 
-  createPlayer: (name: string, displayName?: string, email?: string, imageUrl?: string) => Promise<void>;
+  createPlayer: (name: string, displayName?: string, email?: string, imageUrl?: string, avatarUrl?: string) => Promise<void>;
   updatePlayer: (playerId: string, updates: Partial<PlayerProfile>) => Promise<void>;
   archivePlayer: (playerId: string) => Promise<void>;
 
@@ -825,14 +829,14 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     await get().fetchCampaigns();
   },
 
-  createCampaign: async (title: string, system: string) => {
+  createCampaign: async (title: string, system: string, coverUrl?: string) => {
     set({ loading: true, error: null });
     try {
       const campaignId = `cmp_${createId("cmp").split("_")[1]}`;
       const res = await fetchWithVault("/api/campaigns", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ campaignId, actorId: "usr_dm", title, system })
+        body: JSON.stringify({ campaignId, actorId: "usr_dm", title, system, coverUrl })
       });
       if (!res.ok) throw new Error("Failed to create campaign");
       await get().fetchCampaigns();
@@ -1037,7 +1041,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
   },
 
-  createPlayer: async (name, displayName, email, imageUrl) => {
+  createPlayer: async (name, displayName, email, imageUrl, avatarUrl) => {
     const { activeCampaignId } = get();
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
@@ -1052,7 +1056,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
           name,
           displayName: displayName ?? name,
           email: email ?? null,
-          imageUrl: imageUrl ?? ""
+          imageUrl: imageUrl ?? "",
+          avatarUrl: avatarUrl
         }),
       });
       if (!res.ok) throw new Error("Failed to create player");
