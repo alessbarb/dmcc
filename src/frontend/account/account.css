@@ -1,0 +1,27 @@
+.account-center { min-height: 100vh; padding: clamp(1rem, 3vw, 2.5rem); }
+.account-center > header { max-width: 1200px; margin: 0 auto 1.5rem; }
+.account-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 1.5rem; max-width: 1200px; margin: auto; }
+.account-nav { display: flex; flex-direction: column; gap: .35rem; }
+.account-nav button { min-height: 44px; padding: .65rem .85rem; text-align: left; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); border-radius: var(--radius-md); }
+.account-nav button[aria-current="page"] { border-color: var(--primary); background: var(--primary-light); }
+.account-layout main, .account-preview, .account-danger-zone { padding: 1.25rem; border: 1px solid var(--border-color); background: var(--bg-card); border-radius: var(--radius-lg); }
+.account-layout section { display: grid; gap: 1rem; }
+.account-form-grid, .account-profile-field { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.account-layout label { display: grid; gap: .35rem; }
+.account-layout input, .account-layout select, .account-layout textarea { width: 100%; min-height: 44px; padding: .6rem; color: var(--text-main); background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); }
+.account-checkbox { grid-template-columns: auto 1fr; align-items: center; }
+.account-checkbox input { width: auto; min-height: auto; }
+.account-session-list { display: grid; gap: .5rem; list-style: none; }
+.account-session-list li { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.account-danger-zone { border-color: var(--color-critical); }
+@media (max-width: 900px) {
+  .account-layout { grid-template-columns: 1fr; }
+  .account-nav { flex-direction: row; overflow-x: auto; padding-bottom: .5rem; }
+  .account-nav button { min-width: max-content; }
+}
+@media (max-width: 600px) {
+  .account-form-grid, .account-profile-field { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .account-center * { scroll-behavior: auto !important; transition: none !important; }
+}

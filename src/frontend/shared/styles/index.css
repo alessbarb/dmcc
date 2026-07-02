@@ -1,5 +1,6 @@
 @import "./tokens.css";
 @import "./primitives.css";
+@import "../../account/account.css";
 
 * {
   box-sizing: border-box;
@@ -7781,4 +7782,3 @@ body {
     padding: 16px;
   }
 }
-

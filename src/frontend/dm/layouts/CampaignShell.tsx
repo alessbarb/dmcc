@@ -343,6 +343,13 @@ export function CampaignShell() {
               </button>
               <button
                 className="btn btn-secondary btn-sm"
+                onClick={() => navigate({ to: "/account" })}
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                Account
+              </button>
+              <button
+                className="btn btn-secondary btn-sm"
                 onClick={() => void handleSignOutDm()}
                 title={t("nav.signOut")}
                 style={{ width: "100%", padding: "6px", justifyContent: "center" }}

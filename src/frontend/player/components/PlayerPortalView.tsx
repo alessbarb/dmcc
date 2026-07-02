@@ -968,6 +968,9 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
         </nav>
 
         <div className="sidebar-footer">
+          <button className="btn btn-secondary btn-sm" onClick={() => navigate({ to: "/account" })}>
+            Account
+          </button>
           <button className="btn btn-danger btn-sm player-portal-exit" onClick={() => void handleExit()}>
             {t("playerPortal.leavePortal")}
           </button>
