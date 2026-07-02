@@ -24,6 +24,7 @@ import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { randomBytes } from "node:crypto";
 import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
+import { assertSameOrigin, isLoopbackIp } from "../sameOrigin.js";
 
 function cookieValue(raw: string, secure: boolean): string {
   return `${SESSION_COOKIE}=${encodeURIComponent(raw)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000${secure ? "; Secure" : ""}`;
@@ -31,10 +32,6 @@ function cookieValue(raw: string, secure: boolean): string {
 
 function expiredCookie(): string {
   return `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`;
-}
-
-function isLoopbackIp(ip: string): boolean {
-  return ip === "127.0.0.1" || ip === "::1" || ip === "::ffff:127.0.0.1";
 }
 
 function validateCredentials(email: unknown, password: unknown): string | null {
@@ -45,27 +42,6 @@ function validateCredentials(email: unknown, password: unknown): string | null {
     return "Password must be between 1 and 128 characters";
   }
   return null;
-}
-
-function assertSameOrigin(request: FastifyRequest): void {
-  const origin = request.headers.origin;
-  if (!origin) {
-    // Browsers always send Origin for cross-origin fetch. If Origin is absent and
-    // the request comes from a non-loopback IP, it is a scripted LAN request — reject it.
-    if (!isLoopbackIp(request.ip)) {
-      throw Object.assign(new Error("Cross-origin mutation rejected"), { statusCode: 403 });
-    }
-    return;
-  }
-  const host = request.headers.host;
-  try {
-    if (!host || new URL(origin).host !== host) {
-      throw Object.assign(new Error("Cross-origin mutation rejected"), { statusCode: 403 });
-    }
-  } catch (error: any) {
-    if (error.statusCode === 403) throw error;
-    throw Object.assign(new Error("Cross-origin mutation rejected"), { statusCode: 403 });
-  }
 }
 
 export async function registerUserAuthRoutes(server: FastifyInstance, options: { dataDir: string }) {

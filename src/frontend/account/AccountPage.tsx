@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { AccountNav, type AccountModuleId } from "./AccountNav.js";
 import {
   fetchAccount,
+  fetchPrivacyPreview,
   updateDmProfile,
+  updateIdentity,
   updatePlayerProfile,
   updatePreferences,
+  type PrivacyPreviews,
 } from "./accountClient.js";
 import type { AccountAggregate, EditableSocialProfile, ProfileAudience, SocialField } from "./accountTypes.js";
 import { DataLifecyclePanel } from "./DataLifecyclePanel.js";
@@ -14,6 +17,7 @@ import { PreferencesPanel } from "./PreferencesPanel.js";
 import { PrivacyPreview } from "./PrivacyPreview.js";
 import { ProfileEditor } from "./ProfileEditor.js";
 import { SecurityPanel } from "./SecurityPanel.js";
+import { IdentityEditor } from "./IdentityEditor.js";
 
 const MODULE_IDS: AccountModuleId[] = [
   "account", "dm-profile", "player-profiles", "privacy",
@@ -29,6 +33,7 @@ export function AccountPage() {
   const [active, setActive] = useState<AccountModuleId>(MODULE_IDS[0]);
   const [aggregate, setAggregate] = useState<AccountAggregate | null>(null);
   const [device, setDevice] = useState<DeviceOverrides>(() => readDeviceOverrides(localStorage));
+  const [previews, setPreviews] = useState<PrivacyPreviews | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -36,6 +41,21 @@ export function AccountPage() {
       setError(cause instanceof Error ? cause.message : "Unable to load account");
     });
   }, []);
+  useEffect(() => {
+    if (active !== "privacy" || !aggregate) return;
+    const profile = aggregate.dmProfile;
+    const playerProfile = aggregate.playerProfiles[0];
+    if (!profile && !playerProfile) {
+      setPreviews({ owner: null, dm: null, table: null, global: null });
+      return;
+    }
+    void fetchPrivacyPreview(
+      profile ? "dm" : "player",
+      profile ? undefined : playerProfile?.campaignId
+    ).then(setPreviews).catch((cause) => {
+      setError(cause instanceof Error ? cause.message : "Unable to load privacy preview");
+    });
+  }, [active, aggregate]);
   const setDeviceOverrides = (value: DeviceOverrides) => {
     setDevice(value);
     writeDeviceOverrides(localStorage, value);
@@ -50,7 +70,13 @@ export function AccountPage() {
           {error ? <p role="alert">{error}</p> : null}
           {!aggregate && !error ? <p>Loading…</p> : null}
           {aggregate && active === "account" ? (
-            <section><h2>Private identity</h2><p>{aggregate.account.email}</p></section>
+            <IdentityEditor
+              identity={aggregate.account}
+              onSave={async (payload) => {
+                const saved = await updateIdentity(payload);
+                setAggregate({ ...aggregate, account: saved.account });
+              }}
+            />
           ) : null}
           {aggregate && active === "dm-profile" && aggregate.dmProfile ? (
             <ProfileEditor
@@ -80,8 +106,8 @@ export function AccountPage() {
               onDiscard={() => setActive("account")}
             />
           )) : null}
-          {active === "privacy" ? (
-            <PrivacyPreview previews={{ owner: {}, dm: {}, table: {}, global: {} }} />
+          {active === "privacy" && previews ? (
+            <PrivacyPreview previews={previews} />
           ) : null}
           {aggregate && active === "appearance" ? (
             <PreferencesPanel

@@ -82,6 +82,59 @@ describe("account routes", () => {
     expect(response.statusCode).toBe(409);
   });
 
+  it("requires the current password to change email and revokes every other session", async () => {
+    const { server, cookie } = await authenticatedServer();
+    const secondLogin = await server.inject({
+      method: "POST",
+      url: "/api/auth/login",
+      payload: { email: "owner@example.com", password: "correct horse battery" },
+    });
+    expect(secondLogin.statusCode, secondLogin.body).toBe(200);
+    const currentCookie = String(secondLogin.headers["set-cookie"]).split(";")[0];
+
+    const denied = await server.inject({
+      method: "PUT",
+      url: "/api/account/identity",
+      headers: { cookie: currentCookie, origin: "http://localhost", host: "localhost" },
+      payload: { email: "new@example.com", currentPassword: "wrong password" },
+    });
+    expect(denied.statusCode, denied.body).toBe(403);
+
+    const changed = await server.inject({
+      method: "PUT",
+      url: "/api/account/identity",
+      headers: { cookie: currentCookie, origin: "http://localhost", host: "localhost" },
+      payload: { email: "new@example.com", currentPassword: "correct horse battery" },
+    });
+    expect(changed.statusCode).toBe(200);
+    expect(changed.json().account.email).toBe("new@example.com");
+
+    const oldSession = await server.inject({
+      method: "GET",
+      url: "/api/account",
+      headers: { cookie },
+    });
+    const currentSession = await server.inject({
+      method: "GET",
+      url: "/api/account",
+      headers: { cookie: currentCookie },
+    });
+    expect(oldSession.statusCode).toBe(401);
+    expect(currentSession.statusCode).toBe(200);
+  });
+
+  it("rejects originless account mutations from non-loopback clients", async () => {
+    const { server, cookie } = await authenticatedServer();
+    const response = await server.inject({
+      method: "PUT",
+      url: "/api/account/identity",
+      headers: { cookie },
+      remoteAddress: "192.168.1.25",
+      payload: { displayName: "Should not change" },
+    });
+    expect(response.statusCode).toBe(403);
+  });
+
   it("updates the owner's DM profile", async () => {
     const { server, cookie } = await authenticatedServer();
 

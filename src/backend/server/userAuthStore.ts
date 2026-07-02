@@ -523,25 +523,86 @@ export async function getAccountAggregate(vaultDir: string, userId: string) {
 export async function updatePrivateIdentity(
   vaultDir: string,
   userId: string,
-  input: { displayName?: unknown; avatarUrl?: unknown }
+  input: {
+    displayName?: unknown;
+    avatarUrl?: unknown;
+    email?: unknown;
+    currentPassword?: unknown;
+  },
+  rawSessionId?: string
 ) {
   const tenantId = getTenantIdFromVaultDir(vaultDir);
   const dbUser = await db.select().from(schema.users).where(and(eq(schema.users.userId, userId), eq(schema.users.vaultId, tenantId))).limit(1);
   const user = dbUser[0];
   if (!user || user.disabledAt) throw Object.assign(new Error("Account not found"), { statusCode: 404 });
 
-  const displayName = validateDisplayName(input.displayName);
-  const avatarUrl = validateAvatarUrl(input.avatarUrl);
+  const displayName = input.displayName === undefined
+    ? user.displayName ?? undefined
+    : validateDisplayName(input.displayName);
+  const avatarUrl = input.avatarUrl === undefined
+    ? user.avatarUrl ?? undefined
+    : validateAvatarUrl(input.avatarUrl);
+  const nextEmail = input.email === undefined
+    ? user.emailNormalized
+    : typeof input.email === "string"
+      ? normalizeEmail(input.email)
+      : "";
+  const emailChanged = nextEmail !== user.emailNormalized;
+  if (emailChanged) {
+    if (!nextEmail.includes("@") || nextEmail.length > 254) {
+      throw Object.assign(new Error("Invalid email"), { statusCode: 400, field: "email" });
+    }
+    if (
+      typeof input.currentPassword !== "string"
+      || !(await verifySecret(input.currentPassword, user.passwordSalt, user.passwordHash))
+    ) {
+      throw Object.assign(new Error("Current password is incorrect"), {
+        statusCode: 403,
+        field: "currentPassword",
+      });
+    }
+    const duplicate = await db.select({ userId: schema.users.userId })
+      .from(schema.users)
+      .where(and(
+        eq(schema.users.vaultId, tenantId),
+        eq(schema.users.emailHash, hashOpaque(nextEmail)),
+        isNull(schema.users.disabledAt)
+      ))
+      .limit(1);
+    if (duplicate.some((item) => item.userId !== userId)) {
+      throw Object.assign(new Error("Email is already in use"), { statusCode: 409, field: "email" });
+    }
+  }
 
   await db.update(schema.users).set({
     displayName,
     avatarUrl,
+    emailNormalized: nextEmail,
+    emailHash: hashOpaque(nextEmail),
   }).where(eq(schema.users.userId, userId));
+
+  if (emailChanged) {
+    const currentHash = rawSessionId ? hashOpaque(rawSessionId) : "";
+    const activeSessions = await db.select().from(schema.authSessions).where(and(
+      eq(schema.authSessions.userId, userId),
+      isNull(schema.authSessions.revokedAt)
+    ));
+    const otherHashes = activeSessions
+      .filter((session) => session.sessionIdHash !== currentHash)
+      .map((session) => session.sessionIdHash);
+    if (otherHashes.length) {
+      await db.update(schema.authSessions)
+        .set({ revokedAt: new Date() })
+        .where(inArray(schema.authSessions.sessionIdHash, otherHashes));
+    }
+  }
 
   await syncToDisk(vaultDir);
 
   return publicUser({
     ...user,
+    emailNormalized: nextEmail,
+    emailHash: hashOpaque(nextEmail),
     displayName: displayName ?? undefined,
     avatarUrl: avatarUrl ?? undefined,
   } as any);

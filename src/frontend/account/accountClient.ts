@@ -38,6 +38,24 @@ export function updateIdentity(payload: Record<string, unknown>) {
   return request<Pick<AccountAggregate, "account">>("/api/account/identity", jsonPut(payload));
 }
 
+export type PrivacyPreviews = Record<
+  "owner" | "dm" | "table" | "global",
+  Record<string, unknown> | null
+>;
+
+export async function fetchPrivacyPreview(
+  profile: "dm" | "player",
+  campaignId?: string
+): Promise<PrivacyPreviews> {
+  const query = new URLSearchParams({ profile });
+  if (campaignId) query.set("campaignId", campaignId);
+  return (
+    await request<{ previews: PrivacyPreviews }>(
+      `/api/account/privacy/preview?${query.toString()}`
+    )
+  ).previews;
+}
+
 export async function updatePreferences(
   preferences: AccountPreferences
 ): Promise<AccountPreferences> {

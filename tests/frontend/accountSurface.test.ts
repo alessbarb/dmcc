@@ -31,4 +31,15 @@ describe("shared account surface", () => {
       expect(read(file)).toContain('to: "/account"');
     }
   });
+
+  it("edits the private identity and loads privacy previews from the account API", () => {
+    const page = read("src/frontend/account/AccountPage.tsx");
+    const client = read("src/frontend/account/accountClient.ts");
+
+    expect(page).toContain("<IdentityEditor");
+    expect(page).toContain("fetchPrivacyPreview");
+    expect(page).not.toContain("previews={{ owner: {}, dm: {}, table: {}, global: {} }}");
+    expect(client).toContain("export async function fetchPrivacyPreview");
+    expect(client).toContain("/api/account/privacy/preview?");
+  });
 });

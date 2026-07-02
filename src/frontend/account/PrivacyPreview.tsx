@@ -3,7 +3,7 @@ import { useState } from "react";
 export function PrivacyPreview({
   previews,
 }: {
-  previews: Record<"owner" | "dm" | "table" | "global", Record<string, string> | null>;
+  previews: Record<"owner" | "dm" | "table" | "global", Record<string, unknown> | null>;
 }) {
   const [audience, setAudience] = useState<keyof typeof previews>("owner");
   return (
