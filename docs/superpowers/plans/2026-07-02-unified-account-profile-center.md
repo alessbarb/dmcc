@@ -71,6 +71,7 @@ the current task and inspect `git status --short` after every build.
 ### Task 1: Add schema-v4 account records and migration
 
 **Files:**
+
 - Create: `src/backend/server/account/accountTypes.ts`
 - Modify: `src/backend/server/userAuthStore.ts`
 - Test: `tests/backend/accountStore.test.ts`
@@ -172,6 +173,7 @@ git commit -m "feat(account): add versioned profile storage"
 ### Task 2: Add validated store operations and owner bootstrap
 
 **Files:**
+
 - Create: `src/backend/server/account/accountValidation.ts`
 - Modify: `src/backend/server/userAuthStore.ts`
 - Create: `src/backend/server/routes/accountRoutes.ts`
@@ -287,6 +289,7 @@ git commit -m "feat(account): expose private account preferences"
 ### Task 3: Add DM and campaign-player profile mutations
 
 **Files:**
+
 - Modify: `src/backend/server/userAuthStore.ts`
 - Modify: `src/backend/server/routes/accountRoutes.ts`
 - Test: `tests/backend/accountRoutes.test.ts`
@@ -357,6 +360,7 @@ git commit -m "feat(account): manage contextual social profiles"
 ### Task 4: Enforce audience projections and publication semantics
 
 **Files:**
+
 - Create: `src/backend/server/account/profileProjection.ts`
 - Modify: `src/backend/server/routes/accountRoutes.ts`
 - Test: `tests/backend/accountPrivacy.test.ts`
@@ -433,6 +437,7 @@ git commit -m "feat(account): enforce profile audience projections"
 ### Task 5: Add account client, state helpers, and authenticated route
 
 **Files:**
+
 - Create: `src/frontend/account/accountTypes.ts`
 - Create: `src/frontend/account/accountClient.ts`
 - Create: `src/frontend/account/accountState.ts`
@@ -500,6 +505,7 @@ git commit -m "feat(account): add shared account route"
 ### Task 6: Build responsive account navigation and profile editors
 
 **Files:**
+
 - Create: `src/frontend/account/AccountNav.tsx`
 - Create: `src/frontend/account/ProfileEditor.tsx`
 - Create: `src/frontend/account/PrivacyPreview.tsx`
@@ -577,6 +583,7 @@ git commit -m "feat(account): build profile and privacy center"
 ### Task 7: Add extensible theme, mode, typography, and device overrides
 
 **Files:**
+
 - Create: `src/frontend/account/themeRegistry.ts`
 - Create: `src/frontend/account/typographyRegistry.ts`
 - Create: `src/frontend/account/deviceOverrides.ts`
@@ -642,6 +649,7 @@ git commit -m "feat(account): add extensible appearance preferences"
 ### Task 8: Add session inventory and security controls
 
 **Files:**
+
 - Modify: `src/backend/server/account/accountTypes.ts`
 - Modify: `src/backend/server/userAuthStore.ts`
 - Modify: `src/backend/server/routes/accountRoutes.ts`
@@ -708,6 +716,7 @@ git commit -m "feat(account): manage account sessions"
 ### Task 9: Add personal export and guarded account deletion
 
 **Files:**
+
 - Modify: `src/backend/server/userAuthStore.ts`
 - Modify: `src/backend/server/routes/accountRoutes.ts`
 - Create: `src/frontend/account/DataLifecyclePanel.tsx`
@@ -781,6 +790,7 @@ git commit -m "feat(account): export and delete personal accounts"
 ### Task 10: Wire every entry point and verify the cross-role experience
 
 **Files:**
+
 - Modify: `src/frontend/App.tsx`
 - Modify: `src/frontend/dm/layouts/CampaignShell.tsx`
 - Modify: `src/frontend/player/components/PlayerPortalView.tsx`
