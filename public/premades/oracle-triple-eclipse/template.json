@@ -774,6 +774,525 @@
       "metadata": {
         "scenePrep": "goal_pressure_clue_consequence"
       }
+    },
+    {
+      "entityId": "ent_tpl_oracle_pc_elowyn",
+      "entityType": "player_character",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "isPremade": true,
+        "className": "Pícaro",
+        "level": 1,
+        "species": "Elfo",
+        "background": "Forajida",
+        "armorClass": 14,
+        "hitPointsMax": 8,
+        "strength": 8,
+        "dexterity": 17,
+        "constitution": 12,
+        "intelligence": 13,
+        "wisdom": 14,
+        "charisma": 10
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_pc_camus",
+      "entityType": "player_character",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "isPremade": true,
+        "className": "Clérigo",
+        "level": 1,
+        "species": "Humano",
+        "background": "Acólito",
+        "armorClass": 16,
+        "hitPointsMax": 9,
+        "strength": 14,
+        "dexterity": 10,
+        "constitution": 14,
+        "intelligence": 10,
+        "wisdom": 16,
+        "charisma": 12
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_pc_ragna",
+      "entityType": "player_character",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "isPremade": true,
+        "className": "Guerrero",
+        "level": 1,
+        "species": "Enano",
+        "background": "Soldado",
+        "armorClass": 18,
+        "hitPointsMax": 12,
+        "strength": 16,
+        "dexterity": 12,
+        "constitution": 15,
+        "intelligence": 8,
+        "wisdom": 12,
+        "charisma": 10
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_pc_silas",
+      "entityType": "player_character",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "isPremade": true,
+        "className": "Bardo",
+        "level": 1,
+        "species": "Mediano",
+        "background": "Embaucador",
+        "armorClass": 13,
+        "hitPointsMax": 7,
+        "strength": 8,
+        "dexterity": 14,
+        "constitution": 13,
+        "intelligence": 12,
+        "wisdom": 10,
+        "charisma": 16
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_loc_noble_district",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "locationType": "region"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_loc_guild_camp",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "locationType": "dungeon"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_loc_forest_shrine",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "locationType": "landmark"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_loc_council_chamber",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "locationType": "building"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_loc_docks",
+      "entityType": "location",
+      "importance": "low",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "locationType": "landmark"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_aldric",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "city_magistrate",
+        "attitudeKey": "neutral",
+        "factionId": "ent_tpl_oracle_faction_council"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_lena",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "reform_councilor",
+        "attitudeKey": "friendly",
+        "factionId": "ent_tpl_oracle_faction_council"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_riku",
+      "entityType": "npc",
+      "importance": "low",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "city_guard",
+        "attitudeKey": "friendly"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_torben",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "tavern_keeper",
+        "attitudeKey": "friendly",
+        "factionId": "ent_tpl_oracle_faction_guild"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_cira",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "guild_operative",
+        "attitudeKey": "neutral",
+        "factionId": "ent_tpl_oracle_faction_guild"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_ola",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "merchant_leader",
+        "attitudeKey": "neutral",
+        "factionId": "ent_tpl_oracle_faction_merchants"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_vorn",
+      "entityType": "npc",
+      "importance": "low",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "temple_herald",
+        "attitudeKey": "suspicious",
+        "factionId": "ent_tpl_oracle_faction_cult"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_initiate",
+      "entityType": "npc",
+      "importance": "low",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "cult_initiate",
+        "attitudeKey": "hostile",
+        "factionId": "ent_tpl_oracle_faction_cult"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_pell",
+      "entityType": "npc",
+      "importance": "low",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "council_scribe",
+        "attitudeKey": "friendly"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_healer",
+      "entityType": "npc",
+      "importance": "low",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "dock_healer",
+        "attitudeKey": "friendly"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_pica",
+      "entityType": "npc",
+      "importance": "low",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "market_gossip",
+        "attitudeKey": "neutral"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_npc_bren",
+      "entityType": "npc",
+      "importance": "low",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "roleKey": "guard_sergeant",
+        "attitudeKey": "neutral"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_quest_silence",
+      "entityType": "quest",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "objectiveKey": "stop_port_intimidation"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_quest_archivist",
+      "entityType": "quest",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "objectiveKey": "gain_archivist_trust"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_quest_port_blood",
+      "entityType": "quest",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "objectiveKey": "investigate_port_murders"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_quest_traitor",
+      "entityType": "quest",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "objectiveKey": "identify_inner_spy"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_quest_epilogue",
+      "entityType": "quest",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "objectiveKey": "stabilize_city_post_oracle"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_petitioner_fear",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "delivery": "verbal"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_merchant_payment",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "delivery": "document"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_torben_tip",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "delivery": "verbal"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_port_bodies",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "delivery": "physical"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_lyra_notes",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "delivery": "document"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_vault_entrance",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "delivery": "physical"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_vantis_confession",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "delivery": "verbal"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_cult_disbands",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "delivery": "verbal"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_eldertome",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "delivery": "document"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_final_truth",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "delivery": "document"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_clue_forgery_tool",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "delivery": "physical"
+      }
+    },
+    {
+      "entityId": "ent_tpl_oracle_secret_lyra_suspects",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_oracle_secret_kael_proof",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_oracle_secret_prophecy_count",
+      "entityType": "secret",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_oracle_secret_council_corrupt",
+      "entityType": "secret",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_oracle_secret_senra_exit",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {}
     }
   ],
   "relations": [
