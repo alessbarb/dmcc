@@ -993,6 +993,57 @@
           }
         }
       }
+    },
+    "sess_tpl_phandalin_castle": {
+      "title": "Cragmaw Castle",
+      "prep": {
+        "summary": "Transition and investigation session: turn loose clues into a route, and decide whether to pursue Gundren directly or clear secondary fronts first.",
+        "checklist": {
+          "prep_castle_sources": {
+            "label": "Prepare two route sources: goblin, Reidoth, document or marks"
+          },
+          "prep_grol_deal": {
+            "label": "Define what Grol wants in a negotiation"
+          },
+          "prep_vyerith_tells": {
+            "label": "Note three details that betray Vyerith without making it obvious"
+          }
+        }
+      }
+    },
+    "sess_tpl_phandalin_final": {
+      "title": "The Black Spider",
+      "prep": {
+        "summary": "Campaign climax: confront Nezznar and decide what happens to the Forge of Spells.",
+        "checklist": {
+          "prep_nezznar_offer": {
+            "label": "Prepare a tempting offer from Nezznar"
+          },
+          "prep_forge_choices": {
+            "label": "Define 3 options for the Forge: protect, exploit, seal"
+          },
+          "prep_final_consequence": {
+            "label": "Prepare a different consequence depending on who controls the mine"
+          }
+        }
+      }
+    },
+    "sess_tpl_phandalin_epilogue": {
+      "title": "Epilogue",
+      "prep": {
+        "summary": "Short closing session to resolve social decisions, distribute rewards and plant seeds for continuation.",
+        "checklist": {
+          "prep_epilogue_questions": {
+            "label": "Prepare a legacy question for each character"
+          },
+          "prep_power_outcome": {
+            "label": "Choose how Phandalin changes based on favored allies"
+          },
+          "prep_next_seed": {
+            "label": "Leave one optional hook for a future campaign"
+          }
+        }
+      }
     }
   },
   "canvases": {

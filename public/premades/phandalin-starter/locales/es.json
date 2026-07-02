@@ -1025,6 +1025,57 @@
           }
         }
       }
+    },
+    "sess_tpl_phandalin_castle": {
+      "title": "Castillo Cragmaw",
+      "prep": {
+        "summary": "Sesión de transición e investigación: convertir pistas sueltas en ruta, y decidir si el grupo busca a Gundren directamente o limpia frentes laterales.",
+        "checklist": {
+          "prep_castle_sources": {
+            "label": "Preparar dos fuentes de ruta: goblin, Reidoth, documento o marcas"
+          },
+          "prep_grol_deal": {
+            "label": "Definir qué quiere Grol en una negociación"
+          },
+          "prep_vyerith_tells": {
+            "label": "Anotar tres detalles que delaten a Vyerith sin hacerlo obvio"
+          }
+        }
+      }
+    },
+    "sess_tpl_phandalin_final": {
+      "title": "La Araña Negra",
+      "prep": {
+        "summary": "Clímax de campaña: confrontar a Nezznar y decidir qué ocurre con la Forja de Conjuros.",
+        "checklist": {
+          "prep_nezznar_offer": {
+            "label": "Preparar una oferta tentadora de Nezznar"
+          },
+          "prep_forge_choices": {
+            "label": "Definir 3 opciones sobre la Forja: proteger, explotar, sellar"
+          },
+          "prep_final_consequence": {
+            "label": "Preparar consecuencia distinta según quién controle la mina"
+          }
+        }
+      }
+    },
+    "sess_tpl_phandalin_epilogue": {
+      "title": "Epílogo",
+      "prep": {
+        "summary": "Sesión corta o cierre de campaña para recoger decisiones sociales, recompensas y semillas de continuación.",
+        "checklist": {
+          "prep_epilogue_questions": {
+            "label": "Preparar una pregunta de legado para cada personaje"
+          },
+          "prep_power_outcome": {
+            "label": "Elegir cómo cambia Phandalin según aliados favorecidos"
+          },
+          "prep_next_seed": {
+            "label": "Dejar una semilla de continuación opcional"
+          }
+        }
+      }
     }
   },
   "canvases": {

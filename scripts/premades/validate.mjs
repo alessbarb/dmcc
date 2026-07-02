@@ -230,6 +230,53 @@ function validateLocaleOverlay(locale, overlay, ids, label, errors) {
   if (overlay.canvases && isRecord(overlay.canvases)) {
     for (const id of Object.keys(overlay.canvases)) if (!ids.canvasIds.has(id)) errors.push(`${label}.canvases references missing canvas ${id}`);
   }
+
+  // Locale parity: every template entity must have a locale entry with non-empty title
+  for (const entityId of ids.entityIds) {
+    const entry = overlay.entities?.[entityId];
+    if (!entry || typeof entry.title !== "string" || entry.title.trim().length === 0) {
+      errors.push(`${label}.entities is missing required title for entity ${entityId}`);
+    }
+  }
+
+  // Every fact must have a statement
+  for (const factId of ids.factIds) {
+    const entry = overlay.facts?.[factId];
+    if (!entry || typeof entry.statement !== "string" || entry.statement.trim().length === 0) {
+      errors.push(`${label}.facts is missing required statement for fact ${factId}`);
+    }
+  }
+
+  // Relations missing description: warn only (not all relations carry editorial prose)
+  let relationsMissingDescription = 0;
+  for (const relationId of ids.relationIds) {
+    const entry = overlay.relations?.[relationId];
+    if (!entry || typeof entry.description !== "string" || entry.description.trim().length === 0) {
+      relationsMissingDescription++;
+    }
+  }
+  if (relationsMissingDescription > 0) {
+    console.warn(`⚠  ${label}: ${relationsMissingDescription} relations missing description (non-blocking)`);
+  }
+
+  // Every session must have title and prep.summary in locale
+  for (const sessionId of ids.sessionIds) {
+    const entry = overlay.sessions?.[sessionId];
+    if (!entry || typeof entry.title !== "string" || entry.title.trim().length === 0) {
+      errors.push(`${label}.sessions is missing required title for session ${sessionId}`);
+    }
+    if (!entry?.prep || typeof entry.prep.summary !== "string" || entry.prep.summary.trim().length === 0) {
+      errors.push(`${label}.sessions[${sessionId}] is missing required prep.summary`);
+    }
+  }
+
+  // Every canvas must have a title
+  for (const canvasId of ids.canvasIds) {
+    const entry = overlay.canvases?.[canvasId];
+    if (!entry || typeof entry.title !== "string" || entry.title.trim().length === 0) {
+      errors.push(`${label}.canvases is missing required title for canvas ${canvasId}`);
+    }
+  }
 }
 
 async function main() {
