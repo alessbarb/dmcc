@@ -222,12 +222,23 @@ export function applyEvent(
       if (targetType === "entity") {
         const existing = next.entities.get(targetId);
         if (existing) {
+          let status = existing.status;
+          if (existing.entityType === "clue") {
+            const isTransitionFromDmOnly = existing.visibility?.kind === "dm_only" || !existing.visibility;
+            const isTransitionToVisible = visibility.kind === "public" || visibility.kind === "party" || visibility.mode === "public" || visibility.mode === "party";
+            if (isTransitionFromDmOnly && isTransitionToVisible) {
+              if (existing.status !== "resolved") {
+                status = "revealed";
+              }
+            }
+          }
           next.entities.set(targetId, {
             ...existing,
             visibility: {
               ...visibility,
               kind: visibility.kind || visibility.mode || "dm_only",
             },
+            status,
             updatedAt: occurredAt,
           });
         }
@@ -255,6 +266,22 @@ export function applyEvent(
             updatedAt: occurredAt,
           });
         }
+      }
+      break;
+    }
+    case "ClueRevealed": {
+      const { clueEntityId, visibility } = payload;
+      const existing = next.entities.get(clueEntityId);
+      if (existing) {
+        next.entities.set(clueEntityId, {
+          ...existing,
+          visibility: {
+            ...visibility,
+            kind: visibility.kind || visibility.mode || "dm_only",
+          },
+          status: "revealed",
+          updatedAt: occurredAt,
+        });
       }
       break;
     }

@@ -213,6 +213,7 @@ export type Command =
       sessionId: SessionId;
       audience: VisibilityRule;
       note?: string;
+      revelationAnchors?: unknown[];
     }
   | {
       type: "UpdateCampaignSettings";

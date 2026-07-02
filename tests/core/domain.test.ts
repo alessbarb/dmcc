@@ -3,6 +3,7 @@ import { entitySchema } from "../../src/core/domain/entity/types.js";
 import { relationSchema } from "../../src/core/domain/relation/types.js";
 import { factSchema } from "../../src/core/domain/fact/types.js";
 import { createEntity } from "../../src/core/domain/entity/entity.js";
+import { normalizeRevelationAnchors } from "../../src/core/domain/entity/revelationAnchors.js";
 import {
   generateCampaignId,
   generateEntityId,
@@ -357,6 +358,34 @@ describe("Domain Aggregates", () => {
       };
 
       expect(factSchema.safeParse(fact).success).toBe(false);
+    });
+  });
+
+  describe("Revelation Anchors", () => {
+    it("normalizes and validates revelation anchors correctly", () => {
+      const rawAnchors = [
+        { nodeId: "node_1", entityId: "ent_a", field: "content" },
+        { nodeId: "node_1", entityId: "ent_a" }, // field defaults to content
+        { nodeId: "node_2", entityId: "ent_b", field: "custom_field" },
+        { nodeId: "   ", entityId: "ent_c" }, // invalid nodeId
+        { nodeId: "node_3", entityId: "   " }, // invalid entityId
+        { nodeId: "node_1", entityId: "ent_a", field: "" }, // empty field defaults to content, duplicate of first
+        null,
+        "not-an-object",
+      ];
+
+      const normalized = normalizeRevelationAnchors(rawAnchors);
+      expect(normalized).toHaveLength(2);
+      expect(normalized[0]).toEqual({
+        nodeId: "node_1",
+        entityId: "ent_a",
+        field: "content",
+      });
+      expect(normalized[1]).toEqual({
+        nodeId: "node_2",
+        entityId: "ent_b",
+        field: "custom_field",
+      });
     });
   });
 });

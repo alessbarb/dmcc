@@ -263,8 +263,9 @@ describe("command bus extended campaign commands", () => {
       note: "Found in the cellar.",
     });
 
-    expect(result.events[0].type).toBe("VisibilityChanged");
+    expect(result.events[0].type).toBe("ClueRevealed");
     expect(result.state.entities.get("ent_clue")?.visibility.kind).toBe("party");
-    expect(result.events[0].payload).toMatchObject({ targetId: "ent_clue", targetType: "entity", sessionId: "sess_one" });
+    expect(result.state.entities.get("ent_clue")?.status).toBe("revealed");
+    expect(result.events[0].payload).toMatchObject({ clueEntityId: "ent_clue", sessionId: "sess_one", visibility: { kind: "party" }, note: "Found in the cellar." });
   });
 });

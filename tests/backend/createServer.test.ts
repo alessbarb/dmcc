@@ -342,7 +342,7 @@ describe("persistent campaign API", () => {
         "RelationCreated",
         "FactCreated",
         "SessionStarted",
-        "VisibilityChanged",
+        "ClueRevealed",
         "SessionClosed",
       ]);
     });

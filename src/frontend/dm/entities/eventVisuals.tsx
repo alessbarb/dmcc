@@ -55,7 +55,7 @@ export function getEventVisualConfig(type: string, locale: SupportedLocale = "es
     } else if (type === "ExportCompleted") {
       label = t("timeline.labels.system"); color = "hsl(255, 85%, 65%)"; bgColor = "hsla(255, 85%, 65%, 0.15)";
       IconComponent = Share2;
-    } else if (type === "VisibilityChanged") {
+    } else if (type === "VisibilityChanged" || type === "ClueRevealed") {
       label = t("timeline.labels.visibility"); color = "hsl(38, 95%, 55%)"; bgColor = "hsla(38, 95%, 55%, 0.15)";
       IconComponent = Eye;
     } else if (type.startsWith("Tag")) {
@@ -189,6 +189,13 @@ export function renderEventDescription(
       return (
         <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>
           {t("timeline.descriptions.visibilityChanged", { title: "" })}<EntityLink id={payload.targetId} />{" "}
+          → <span className="badge badge-primary">{payload.visibility?.kind || "dm_only"}</span>
+        </p>
+      );
+    case "ClueRevealed":
+      return (
+        <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>
+          {t("timeline.descriptions.visibilityChanged", { title: "" })}<EntityLink id={payload.clueEntityId} />{" "}
           → <span className="badge badge-primary">{payload.visibility?.kind || "dm_only"}</span>
         </p>
       );

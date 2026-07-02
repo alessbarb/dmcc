@@ -116,7 +116,18 @@ export function rebuildCampaignSnapshot(events: any[]): CampaignSnapshot {
         if (targetType === "entity") {
           const index = entities.findIndex((e) => e.entityId === targetId);
           if (index !== -1) {
+            let status = entities[index].status;
+            if (entities[index].entityType === "clue") {
+              const isTransitionFromDmOnly = entities[index].visibility?.kind === "dm_only" || !entities[index].visibility;
+              const isTransitionToVisible = visibility.kind === "public" || visibility.kind === "party" || visibility.mode === "public" || visibility.mode === "party";
+              if (isTransitionFromDmOnly && isTransitionToVisible) {
+                if (entities[index].status !== "resolved") {
+                  status = "revealed";
+                }
+              }
+            }
             entities[index].visibility = visibility;
+            entities[index].status = status;
           }
         } else if (targetType === "relation") {
           const index = relations.findIndex((r) => r.relationId === targetId);
@@ -128,6 +139,15 @@ export function rebuildCampaignSnapshot(events: any[]): CampaignSnapshot {
           if (index !== -1) {
             facts[index].visibility = visibility;
           }
+        }
+        break;
+      }
+      case "ClueRevealed": {
+        const { clueEntityId, visibility } = payload;
+        const index = entities.findIndex((e) => e.entityId === clueEntityId);
+        if (index !== -1) {
+          entities[index].visibility = visibility;
+          entities[index].status = "revealed";
         }
         break;
       }

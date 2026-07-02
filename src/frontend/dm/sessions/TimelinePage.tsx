@@ -26,6 +26,7 @@ const NARRATIVE_EVENT_TYPES = new Set([
   "SessionClosed",
   "FactCreated",
   "VisibilityChanged",
+  "ClueRevealed",
   "PlayerProfileCreated",
   "EntityArchived",
 ]);
@@ -187,7 +188,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
     total: narrativeEvents.length,
     sessions: timeline.events.filter((e: any) => e.type === "SessionClosed").length,
     facts: timeline.events.filter((e: any) => e.type === "FactCreated").length,
-    revelaciones: timeline.events.filter((e: any) => e.type === "VisibilityChanged").length,
+    revelaciones: timeline.events.filter((e: any) => e.type === "VisibilityChanged" || e.type === "ClueRevealed").length,
     unrevealedSecrets: (() => {
       const entities: any[] = campaignState?.entities ?? [];
       return entities.filter(

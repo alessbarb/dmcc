@@ -4,6 +4,7 @@ import { createCampaign } from "../domain/campaign/campaign.js";
 import { createEntity } from "../domain/entity/entity.js";
 import type { Entity } from "../domain/entity/entity.js";
 import { validatePlayerCharacterMetadata } from "../domain/entity/metadata.js";
+import { normalizeRevelationAnchors } from "../domain/entity/revelationAnchors.js";
 import { createFact } from "../domain/fact/fact.js";
 import type { Fact } from "../domain/fact/fact.js";
 import { createRelation } from "../domain/relation/relation.js";
@@ -318,16 +319,16 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         throw new Error("RevealClue requires a clue entity");
       }
       requireSession(state, command.sessionId);
-      const updated: Entity = { ...clue, visibility: command.audience };
+      const updated: Entity = { ...clue, visibility: command.audience, status: "revealed" };
       const entities = new Map(state.entities);
       entities.set(updated.entityId, updated);
       const nextState = { ...state, entities };
-      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "VisibilityChanged", {
-          targetId: command.clueEntityId,
-          targetType: "entity" as const,
-          visibility: command.audience,
+      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "ClueRevealed", {
+          clueEntityId: command.clueEntityId,
           sessionId: command.sessionId,
+          visibility: command.audience,
           note: command.note,
+          revelationAnchors: command.revelationAnchors ? normalizeRevelationAnchors(command.revelationAnchors) : undefined,
         }));
     }
     case "UpdateCampaignSettings": {

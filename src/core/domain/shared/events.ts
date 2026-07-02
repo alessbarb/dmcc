@@ -7,6 +7,7 @@ import { relationSchema, baseRelationSchema } from "../relation/types.js";
 import { factSchema } from "../fact/types.js";
 import { sessionSchema, sessionEventSchema, sessionStatusSchema, sessionPrepSchema } from "../session/types.js";
 import { visibilityRuleSchema } from "@shared/schemas.js";
+import { revelationAnchorSchema } from "../entity/revelationAnchors.js";
 
 export const canvasViewportSchema = z.object({
   x: z.number(),
@@ -114,6 +115,7 @@ export const domainEventTypeSchema = z.enum([
   "FactUpdated",
   "FactArchived",
   "VisibilityChanged",
+  "ClueRevealed",
   "SessionCreated",
   "SessionStarted",
   "SessionPrepUpdated",
@@ -170,6 +172,8 @@ export const storedEventSchema = z.object({
   previousHash: z.string().optional(),
   hash: z.string().optional(),
   schemaVersion: z.number().int().default(1),
+  commandId: z.string().optional(),
+  commandHash: z.string().optional(),
 });
 
 export type StoredEvent<TPayload = any> = z.infer<typeof storedEventSchema> & {
@@ -199,6 +203,13 @@ export const eventPayloadSchemas = {
     visibility: visibilityRuleSchema,
     sessionId: z.string().optional(),
     note: z.string().optional(),
+  }),
+  ClueRevealed: z.object({
+    clueEntityId: z.string(),
+    sessionId: z.string(),
+    visibility: visibilityRuleSchema,
+    note: z.string().optional(),
+    revelationAnchors: z.array(revelationAnchorSchema).optional(),
   }),
   SessionCreated: sessionSchema,
   SessionPrepUpdated: sessionSchema,
