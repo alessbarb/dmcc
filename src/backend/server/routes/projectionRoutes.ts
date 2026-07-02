@@ -11,7 +11,9 @@ import {
   getValidatedCampaignId,
   getRequestRole,
   getRequestPlayerId,
+  getRequestDmSession,
 } from "../auth.js";
+import { hasCampaignDmAccessSync } from "../campaignAclStore.js";
 import {
   getStoredAccessCode,
   getCharacterEntityIdForPlayer,
@@ -249,26 +251,38 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
           }
         }
         const port = getAdvertisedPort(request);
-        const role = getRequestRole(request, server.dmSessionToken);
-        const activeAccessCode = server.activeAccessCodes?.get(campaignId);
-        const storedAccessCodeValue = state.campaign?.settings?.localAccessCode;
+        const dmSession = getRequestDmSession(request, server.dmSessionToken);
+        const hasLegacyAuth = server.allowLegacyTestAuth &&
+          (request.headers["x-dm-token"] || request.headers["x-role"] === "dm");
 
-        const accessCode = role === "dm"
-          ? (activeAccessCode || storedAccessCodeValue || getStoredAccessCode(state, campaignId))
-          : null;
+        const dmId = dmSession?.dmId ?? (hasLegacyAuth ? "usr_dm" : undefined);
+        const isDmWithAccess = dmId && hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmId);
 
         const lanModeEnabled = state.campaign?.settings?.lanModeEnabled || false;
+        const joinUrl = lanModeEnabled ? `http://${localIp}:${port}/join/${campaignId}` : null;
 
-        return {
-          lanModeEnabled,
-          accessCode,
-          localIp,
-          port,
-          joinUrl: lanModeEnabled ? `http://${localIp}:${port}/join/${campaignId}` : null,
-        };
-      } catch {
+        if (isDmWithAccess || hasLegacyAuth) {
+          const activeAccessCode = server.activeAccessCodes?.get(campaignId);
+          const storedAccessCodeValue = state.campaign?.settings?.localAccessCode;
+          const accessCode = activeAccessCode || storedAccessCodeValue || getStoredAccessCode(state, campaignId) || null;
+
+          return {
+            lanModeEnabled,
+            joinUrl,
+            accessCode,
+            localIp,
+            port,
+          };
+        } else {
+          return {
+            lanModeEnabled,
+            joinUrl,
+            accessCode: null,
+          };
+        }
+      } catch (err: any) {
         reply.code(404);
-        return { error: "Campaign not found" };
+        return { error: `Campaign not found: ${err.message}` };
       }
     }
   );

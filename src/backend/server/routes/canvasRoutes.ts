@@ -2,11 +2,13 @@ import type { FastifyInstance } from "fastify";
 import { makeRepositoryFactory } from "../repositoryFactory.js";
 import type { EntityType, EntityImportance } from "@core/domain/entity/types.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
+import { hasCampaignDmAccessSync } from "../campaignAclStore.js";
 import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
   getRequestActorId,
+  getRequestDmSession,
 } from "../auth.js";
 
 type CanvasKind = "world" | "session" | "mystery" | "location" | "characters" | "custom";
@@ -94,13 +96,29 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
+        const dmSession = getRequestDmSession(request, server.dmSessionToken);
+        const hasLegacyAuth = server.allowLegacyTestAuth &&
+          (request.headers["x-dm-token"] || request.headers["x-role"] === "dm");
+        const isAuthenticated = !!dmSession || !!(request as any).unifiedUser || hasLegacyAuth;
+
+        if (!isAuthenticated) {
+          throw Object.assign(new Error("Unauthorized: Session required"), { statusCode: 401 });
+        }
+
+        const dmId = dmSession?.dmId ?? (hasLegacyAuth ? "usr_dm" : undefined);
+        const hasAccess = dmId && hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmId);
+
+        if (!hasAccess && !hasLegacyAuth) {
+          throw Object.assign(new Error("Forbidden: You do not have access to this campaign"), { statusCode: 403 });
+        }
+
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId);
         // Only return non-archived canvases
         const canvases = Array.from(state.canvases?.values() || []).filter((c: any) => !c.archived);
         return canvases;
       } catch (err: any) {
-        reply.code(500);
+        reply.code(err.statusCode ?? 500);
         return { error: err.message };
       }
     }
@@ -114,16 +132,31 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
       const campaignId = getValidatedCampaignId(request.params.campaignId);
 
       try {
+        const dmSession = getRequestDmSession(request, server.dmSessionToken);
+        const hasLegacyAuth = server.allowLegacyTestAuth &&
+          (request.headers["x-dm-token"] || request.headers["x-role"] === "dm");
+        const isAuthenticated = !!dmSession || !!(request as any).unifiedUser || hasLegacyAuth;
+
+        if (!isAuthenticated) {
+          throw Object.assign(new Error("Unauthorized: Session required"), { statusCode: 401 });
+        }
+
+        const dmId = dmSession?.dmId ?? (hasLegacyAuth ? "usr_dm" : undefined);
+        const hasAccess = dmId && hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmId);
+
+        if (!hasAccess && !hasLegacyAuth) {
+          throw Object.assign(new Error("Forbidden: You do not have access to this campaign"), { statusCode: 403 });
+        }
+
         const repo = getRepository(vaultId);
         const state = await repo.getCampaignState(campaignId);
         const canvas = state.canvases?.get(request.params.canvasId);
         if (!canvas || canvas.archived) {
-          reply.code(404);
-          return { error: "Canvas not found" };
+          throw Object.assign(new Error("Canvas not found"), { statusCode: 404 });
         }
         return canvas;
       } catch (err: any) {
-        reply.code(500);
+        reply.code(err.statusCode ?? 500);
         return { error: err.message };
       }
     }
