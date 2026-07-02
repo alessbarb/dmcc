@@ -600,6 +600,71 @@ export async function revokeSession(vaultDir: string, rawSessionId: string | und
   });
 }
 
+function sessionRef(userId: string, sessionIdHash: string): string {
+  return hashOpaque(`${userId}:${sessionIdHash}`).slice(0, 24);
+}
+
+export async function listOwnedSessions(
+  vaultDir: string,
+  userId: string,
+  rawSessionId: string
+) {
+  const store = await readUserAuthStore(vaultDir);
+  const currentHash = hashOpaque(rawSessionId);
+  return store.sessions
+    .filter((session) => session.userId === userId && !session.revokedAt)
+    .map((session) => ({
+      sessionRef: sessionRef(userId, session.sessionIdHash),
+      createdAt: session.createdAt,
+      lastSeenAt: session.lastSeenAt,
+      expiresAt: session.expiresAt,
+      current: session.sessionIdHash === currentHash,
+    }));
+}
+
+export async function revokeOwnedSession(
+  vaultDir: string,
+  userId: string,
+  ref: string
+): Promise<boolean> {
+  const store = await readUserAuthStore(vaultDir);
+  let revoked = false;
+  const revokedAt = nowIso();
+  const sessions = store.sessions.map((session) => {
+    if (
+      session.userId === userId
+      && !session.revokedAt
+      && sessionRef(userId, session.sessionIdHash) === ref
+    ) {
+      revoked = true;
+      return { ...session, revokedAt };
+    }
+    return session;
+  });
+  if (revoked) await writeUserAuthStore(vaultDir, { ...store, sessions });
+  return revoked;
+}
+
+export async function revokeOtherOwnedSessions(
+  vaultDir: string,
+  userId: string,
+  rawSessionId: string
+): Promise<void> {
+  const store = await readUserAuthStore(vaultDir);
+  const currentHash = hashOpaque(rawSessionId);
+  const revokedAt = nowIso();
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    sessions: store.sessions.map((session) =>
+      session.userId === userId
+      && session.sessionIdHash !== currentHash
+      && !session.revokedAt
+        ? { ...session, revokedAt }
+        : session
+    ),
+  });
+}
+
 export async function revokeAllSessions(vaultDir: string): Promise<void> {
   const store = await readUserAuthStore(vaultDir);
   const revokedAt = nowIso();

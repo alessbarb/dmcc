@@ -8,6 +8,9 @@ import {
   upsertDmProfile,
   upsertPlayerProfile,
   readUserAuthStore,
+  listOwnedSessions,
+  revokeOtherOwnedSessions,
+  revokeOwnedSession,
 } from "../userAuthStore.js";
 import { getValidatedVaultId } from "../auth.js";
 import { readSessionCookie } from "../sessionAuth.js";
@@ -225,6 +228,57 @@ export async function registerAccountRoutes(
         return {
           error: error.statusCode ? error.message : "Unable to load campaign member profiles",
         };
+      }
+    }
+  );
+
+  server.get("/api/account/sessions", async (request, reply) => {
+    try {
+      const user = await requireUser(request);
+      const rawSessionId = readSessionCookie(request);
+      if (!rawSessionId) throw Object.assign(new Error("Authentication required"), { statusCode: 401 });
+      return {
+        sessions: await listOwnedSessions(vaultDirFor(request), user.userId, rawSessionId),
+      };
+    } catch (error: any) {
+      reply.code(error.statusCode ?? 500);
+      return { error: error.statusCode ? error.message : "Unable to list sessions" };
+    }
+  });
+
+  server.delete("/api/account/sessions/others", async (request, reply) => {
+    try {
+      assertSameOrigin(request);
+      const user = await requireUser(request);
+      const rawSessionId = readSessionCookie(request);
+      if (!rawSessionId) throw Object.assign(new Error("Authentication required"), { statusCode: 401 });
+      await revokeOtherOwnedSessions(vaultDirFor(request), user.userId, rawSessionId);
+      return { revoked: true };
+    } catch (error: any) {
+      reply.code(error.statusCode ?? 500);
+      return { error: error.statusCode ? error.message : "Unable to revoke sessions" };
+    }
+  });
+
+  server.delete<{ Params: { sessionRef: string } }>(
+    "/api/account/sessions/:sessionRef",
+    async (request, reply) => {
+      try {
+        assertSameOrigin(request);
+        const user = await requireUser(request);
+        const revoked = await revokeOwnedSession(
+          vaultDirFor(request),
+          user.userId,
+          request.params.sessionRef
+        );
+        if (!revoked) {
+          reply.code(404);
+          return { error: "Session not found" };
+        }
+        return { revoked: true };
+      } catch (error: any) {
+        reply.code(error.statusCode ?? 500);
+        return { error: error.statusCode ? error.message : "Unable to revoke session" };
       }
     }
   );
