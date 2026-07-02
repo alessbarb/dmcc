@@ -237,6 +237,527 @@
       "metadata": {
         "truth": "Nezznar uses intermediaries to keep the town distracted while he searches for Wave Echo Cave."
       }
+    },
+    "ent_tpl_phandalin_pc_aric": {
+      "title": "Aric Veldan",
+      "subtitle": "Human fighter",
+      "summary": "Human warrior and caravan escort. Wants to prove he is worth more than a hired sword.",
+      "status": "active"
+    },
+    "ent_tpl_phandalin_pc_mira": {
+      "title": "Mira Nightrill",
+      "subtitle": "Halfling rogue",
+      "summary": "Halfling rogue, quick hands and even quicker to smell trouble.",
+      "status": "active"
+    },
+    "ent_tpl_phandalin_pc_brom": {
+      "title": "Brom Cindermug",
+      "subtitle": "Dwarf cleric",
+      "summary": "Dwarf cleric with rough hands and practical faith. Looking for a place where his help matters.",
+      "status": "active"
+    },
+    "ent_tpl_phandalin_pc_nim": {
+      "title": "Nimue Ashbottle",
+      "subtitle": "Elf wizard",
+      "summary": "Curious and methodical elf wizard. Suspects Phandalin hides magic older than the current town.",
+      "status": "active"
+    },
+    "ent_tpl_phandalin_barthen": {
+      "title": "Barthen's Provisions",
+      "subtitle": "Supply store",
+      "summary": "Caravan destination and first friendly stop in town. Key for confirming Gundren's absence."
+    },
+    "ent_tpl_phandalin_lionshield": {
+      "title": "Lionshield Coster",
+      "subtitle": "Supply depot",
+      "summary": "Trading post with goblin-stolen cargo. Connects goblins to local commercial life."
+    },
+    "ent_tpl_phandalin_sleeping_giant": {
+      "title": "Sleeping Giant",
+      "subtitle": "Redbrand-held tavern",
+      "summary": "Rough tavern where the thugs flaunt power, drink and test the group's authority."
+    },
+    "ent_tpl_phandalin_townmaster": {
+      "title": "Town Master's Hall",
+      "subtitle": "Harbin Wester's office",
+      "summary": "Official building with a notice board, minor contracts and the mayor's uncomfortable silences."
+    },
+    "ent_tpl_phandalin_edermath": {
+      "title": "Edermath Orchard",
+      "subtitle": "Veteran's retreat",
+      "summary": "Quiet refuge for Daran, who observes the Redbrands with an old soldier's concern."
+    },
+    "ent_tpl_phandalin_alderleaf": {
+      "title": "Alderleaf Farm",
+      "subtitle": "Qelline and Carp's home",
+      "summary": "Warm family home reminding us Phandalin has families, not just quest hooks."
+    },
+    "ent_tpl_phandalin_miners_exchange": {
+      "title": "Miner's Exchange",
+      "subtitle": "Economic hub",
+      "summary": "Where finds are weighed and Halia measures who could govern the town's economic future."
+    },
+    "ent_tpl_phandalin_cragmaw_castle": {
+      "title": "Cragmaw Castle",
+      "subtitle": "Hidden fortress",
+      "summary": "Goblin-held ruin where Gundren, the map or both may change hands."
+    },
+    "ent_tpl_phandalin_forge_of_spells": {
+      "title": "Forge of Spells",
+      "subtitle": "Arcane heart of the mine",
+      "summary": "Damaged magical focus that can still charge weapons, awaken guardians and attract power-seekers."
+    },
+    "ent_tpl_phandalin_conyberry": {
+      "title": "Conyberry Ruins",
+      "subtitle": "Path to Agatha",
+      "summary": "Ruins of a destroyed village preparing a tone shift before entering ancient territory."
+    },
+    "ent_tpl_phandalin_agatha_lair": {
+      "title": "Agatha's Lair",
+      "subtitle": "Spectral refuge",
+      "summary": "Place of supernatural negotiation where courtesy matters as much as magic."
+    },
+    "ent_tpl_phandalin_old_owl_well": {
+      "title": "Old Owl Well",
+      "subtitle": "Arcane ruin",
+      "summary": "Ancient ruins with undead activity and a mage who does not quite fit as a central villain."
+    },
+    "ent_tpl_phandalin_wyvern_tor": {
+      "title": "Wyvern Tor",
+      "subtitle": "Orc camp",
+      "summary": "Raider stronghold pressuring routes; can become urgent if the group ignores the frontier."
+    },
+    "ent_tpl_phandalin_thundertree": {
+      "title": "Thundertree",
+      "subtitle": "Ruins of ash and growth",
+      "summary": "Ruined town where a druid, ash zombies and a young dragon compete for control."
+    },
+    "ent_tpl_phandalin_faction_town": {
+      "title": "Phandalin Townspeople",
+      "summary": "Farmers, miners, merchants and families who want safety without provoking open war."
+    },
+    "ent_tpl_phandalin_faction_cragmaw": {
+      "title": "Cragmaw Tribe",
+      "summary": "Goblins and goblinoids divided between survival, greed and obedience to more dangerous chiefs."
+    },
+    "ent_tpl_phandalin_faction_rockseeker": {
+      "title": "Rockseeker Brothers",
+      "summary": "Mine-hunters who found more than they could protect."
+    },
+    "ent_tpl_phandalin_faction_lords_alliance": {
+      "title": "Lords' Alliance",
+      "summary": "Political network interested in stabilizing Phandalin without losing prestige or resources."
+    },
+    "ent_tpl_phandalin_faction_zhentarim": {
+      "title": "Zhentarim Network",
+      "summary": "Commercial contacts who see Phandalin as a future investment."
+    },
+    "ent_tpl_phandalin_faction_order_gauntlet": {
+      "title": "Order of the Gauntlet",
+      "summary": "Martial idealists watching for signs of corruption and abuse of power."
+    },
+    "ent_tpl_phandalin_faction_emerald_enclave": {
+      "title": "Emerald Enclave",
+      "summary": "Natural balance guardians worried about Thundertree and forces awakening underground."
+    },
+    "ent_tpl_phandalin_faction_wyvern_orcs": {
+      "title": "Wyvern Tor Orcs",
+      "summary": "Border raiders who test routes and prove their strength."
+    },
+    "ent_tpl_phandalin_faction_ash_zombies": {
+      "title": "Thundertree Ash Zombies",
+      "summary": "Animated remains from an ancient disaster, more symptom than conscious faction."
+    },
+    "ent_tpl_phandalin_elmar": {
+      "title": "Elmar Barthen",
+      "subtitle": "Merchant",
+      "summary": "First friendly contact in town. Knows who expected Gundren and who asks uncomfortable questions."
+    },
+    "ent_tpl_phandalin_trilena": {
+      "title": "Trilena Stonehill",
+      "subtitle": "Town's worried voice",
+      "summary": "Can put a human face on Redbrand abuses and speak what others dare not."
+    },
+    "ent_tpl_phandalin_harbin": {
+      "title": "Harbin Wester",
+      "subtitle": "Nervous mayor",
+      "summary": "Phandalin's official authority, more concerned with not angering the Redbrands than with leading."
+    },
+    "ent_tpl_phandalin_garaele": {
+      "title": "Sister Garaele",
+      "subtitle": "Shrine acolyte",
+      "summary": "Seeks spiritual information and can guide the group toward larger threats."
+    },
+    "ent_tpl_phandalin_daran": {
+      "title": "Daran Edermath",
+      "subtitle": "Retired veteran",
+      "summary": "Calm observer who recognizes patterns of abuse and may recommend acting against the Redbrands."
+    },
+    "ent_tpl_phandalin_carp": {
+      "title": "Carp Alderleaf",
+      "subtitle": "Too-curious child",
+      "summary": "Has seen more than he understands and can reveal a secret entrance if the group listens."
+    },
+    "ent_tpl_phandalin_mirna": {
+      "title": "Mirna Dendrar",
+      "subtitle": "Detained neighbor",
+      "summary": "Her family represents the human cost of Redbrand dominion and offers an emotional, not just material, reward."
+    },
+    "ent_tpl_phandalin_glasstaff": {
+      "title": "Glasstaff",
+      "subtitle": "Urban terror alias",
+      "summary": "Name the Redbrands respect and the town fears. Serves as a narrative mask before Iarno is revealed."
+    },
+    "ent_tpl_phandalin_nothic": {
+      "title": "The Tresendar Nothic",
+      "subtitle": "Hunger and secrets",
+      "summary": "Creature broken by magic and mental hunger. Can be monster, informant or grotesque mirror of the place's secrets."
+    },
+    "ent_tpl_phandalin_grista": {
+      "title": "Grista",
+      "subtitle": "Sleeping Giant innkeeper",
+      "summary": "Runs the tavern where Redbrands boast. Knows much, but prudence pays better than bravery."
+    },
+    "ent_tpl_phandalin_klarg": {
+      "title": "Klarg",
+      "subtitle": "Hideout chief",
+      "summary": "Goblinoid brute who leads through force, fear and promises of bigger rewards."
+    },
+    "ent_tpl_phandalin_yeemik": {
+      "title": "Yeemik",
+      "subtitle": "Ambitious second-in-command",
+      "summary": "Goblin willing to negotiate if it brings him closer to power in the hideout."
+    },
+    "ent_tpl_phandalin_grol": {
+      "title": "King Grol",
+      "subtitle": "Cragmaw chief",
+      "summary": "Goblinoid who can sell prisoners, maps or loyalties to the highest bidder."
+    },
+    "ent_tpl_phandalin_vyerith": {
+      "title": "Vyerith",
+      "subtitle": "Shapeshifter spy",
+      "summary": "Infiltrated agent who complicates Gundren's rescue and can turn certainties into suspicions."
+    },
+    "ent_tpl_phandalin_nundro": {
+      "title": "Nundro Rockseeker",
+      "subtitle": "Survivor",
+      "summary": "Gundren's brother. Can confirm what happened in the mine if the group finds him in time."
+    },
+    "ent_tpl_phandalin_tharden": {
+      "title": "Tharden Rockseeker",
+      "subtitle": "Fallen brother",
+      "summary": "His fate reveals the mine is no longer a promise: it is an ongoing tragedy."
+    },
+    "ent_tpl_phandalin_hamun": {
+      "title": "Hamun Kost",
+      "subtitle": "Ruins mage",
+      "summary": "Arcane researcher at Old Owl Well. Suspicious and dangerous, but not necessarily tied to the Black Spider."
+    },
+    "ent_tpl_phandalin_reidoth": {
+      "title": "Reidoth",
+      "subtitle": "Thundertree druid",
+      "summary": "Cautious guide who knows more about routes and natural dangers than almost anyone in Phandalin."
+    },
+    "ent_tpl_phandalin_agatha": {
+      "title": "Agatha",
+      "subtitle": "Banshee of memories",
+      "summary": "Ancient presence who can answer questions if the group treats the encounter as an audience, not a raid."
+    },
+    "ent_tpl_phandalin_brughor": {
+      "title": "Brughor Axe-Biter",
+      "subtitle": "Raider chief",
+      "summary": "Orc leader of Wyvern Tor. A direct threat to roads and farms if the group ignores the frontier."
+    },
+    "ent_tpl_phandalin_venomfang": {
+      "title": "Venomfang",
+      "subtitle": "Young cunning dragon",
+      "summary": "Thundertree's intelligent predator. His real danger lies in his ability to offer tempting deals."
+    },
+    "ent_tpl_phandalin_quest_escort": {
+      "title": "Deliver the Supplies",
+      "subtitle": "Campaign entry",
+      "summary": "Escort Gundren's wagon to Phandalin and discover why he did not arrive first.",
+      "status": "completed"
+    },
+    "ent_tpl_phandalin_quest_dendrar": {
+      "title": "Rescue the Dendrar Family",
+      "subtitle": "Human cost of fear",
+      "summary": "Find Mirna and her children before the Redbrands sell, move or use them as leverage."
+    },
+    "ent_tpl_phandalin_quest_find_castle": {
+      "title": "Find Cragmaw Castle",
+      "subtitle": "Location search",
+      "summary": "Turn rumors, trail markings and testimonies into a clear route to the hidden fortress."
+    },
+    "ent_tpl_phandalin_quest_wave_echo": {
+      "title": "Reach Wave Echo Cave",
+      "subtitle": "Lost mine",
+      "summary": "Protect the map, locate the entrance and decide who controls the discovery."
+    },
+    "ent_tpl_phandalin_quest_black_spider": {
+      "title": "Unmask the Black Spider",
+      "subtitle": "Antagonist arc",
+      "summary": "Gather enough clues to understand who is buying favors, corpses and silences across the region."
+    },
+    "ent_tpl_phandalin_quest_lionshield": {
+      "title": "Recover the Lionshield Cargo",
+      "subtitle": "Economy at risk",
+      "summary": "Track stolen goods so the town sees tangible benefits from helping the group."
+    },
+    "ent_tpl_phandalin_quest_agatha": {
+      "title": "Ask Agatha",
+      "subtitle": "Dangerous information",
+      "summary": "Get an answer from the banshee without turning the encounter into an absurd provocation."
+    },
+    "ent_tpl_phandalin_quest_old_owl": {
+      "title": "Investigate Old Owl Well",
+      "subtitle": "Arcane ruin",
+      "summary": "Find out why undead walk near the old well and whether Hamun Kost is threat, symptom or source."
+    },
+    "ent_tpl_phandalin_quest_wyvern_tor": {
+      "title": "Drive Orcs from Wyvern Tor",
+      "subtitle": "Frontier under pressure",
+      "summary": "Resolve the raids worrying farmers and caravans."
+    },
+    "ent_tpl_phandalin_quest_thundertree": {
+      "title": "Deal with Thundertree",
+      "subtitle": "Major risk",
+      "summary": "Find Reidoth, avoid ash zombies and decide whether approaching a young dragon is wise."
+    },
+    "ent_tpl_phandalin_quest_future": {
+      "title": "Decide Phandalin's Future",
+      "subtitle": "Campaign consequence",
+      "summary": "After Redbrands and Cragmaw fall, decide who to strengthen: townspeople, Halia, Alliance, Rockseekers or no one."
+    },
+    "ent_tpl_phandalin_clue_goblin_trail": {
+      "title": "Goblin trail to the stream",
+      "subtitle": "Entrance to the Cragmaw hideout",
+      "summary": "Small footprints, broken branches and a trip-rope mark a hidden path."
+    },
+    "ent_tpl_phandalin_clue_sildar_warning": {
+      "title": "Sildar's warning",
+      "subtitle": "Gundren knows too much",
+      "summary": "Sildar confirms Gundren found something important before disappearing."
+    },
+    "ent_tpl_phandalin_clue_redbrand_threats": {
+      "title": "Redbrand threats",
+      "subtitle": "Phandalin is intimidated",
+      "summary": "Several families have paid or stayed silent out of fear of Redbrand reprisals."
+    },
+    "ent_tpl_phandalin_clue_town_fears": {
+      "title": "The town's fear",
+      "subtitle": "Nobody expects official help",
+      "summary": "Townspeople lower their voices when talking about the Redbrands and avoid looking at the mayor."
+    },
+    "ent_tpl_phandalin_clue_carp_tunnel": {
+      "title": "Carp saw a secret entrance",
+      "subtitle": "A child found what adults ignore",
+      "summary": "Carp can describe a hidden tunnel near Tresendar if the group listens carefully."
+    },
+    "ent_tpl_phandalin_clue_giant_boast": {
+      "title": "Sleeping Giant bravado",
+      "subtitle": "The thugs talk too much",
+      "summary": "A Redbrand boasts that the boss has eyes even where there are no windows."
+    },
+    "ent_tpl_phandalin_clue_ledger": {
+      "title": "Redbrand debt ledger",
+      "subtitle": "Fear turned into accounting",
+      "summary": "A record of payments, punishments and favors reveals the gang governs by economy as much as by violence."
+    },
+    "ent_tpl_phandalin_clue_glasstaff_letter": {
+      "title": "Letter signed in blue glass",
+      "subtitle": "Glasstaff answers to someone",
+      "summary": "An incomplete message orders surveillance of adventurers asking about Gundren."
+    },
+    "ent_tpl_phandalin_clue_nothic_whispers": {
+      "title": "Whispers beneath Tresendar",
+      "subtitle": "Something knows secrets it should not",
+      "summary": "An invisible presence mentions the private guilts, fears or desires of the characters."
+    },
+    "ent_tpl_phandalin_clue_mirna_heirloom": {
+      "title": "Mirna's keepsake",
+      "subtitle": "A debt of gratitude",
+      "summary": "Mirna knows of an old family hiding spot in Thundertree and can share it if saved."
+    },
+    "ent_tpl_phandalin_clue_halia_offer": {
+      "title": "Halia's offer",
+      "subtitle": "Help at a political price",
+      "summary": "Halia can point out Redbrand weaknesses, but wants influence in return."
+    },
+    "ent_tpl_phandalin_clue_harbin_notice": {
+      "title": "Town Master's Hall notices",
+      "subtitle": "Problems the authority outsources",
+      "summary": "The bulletin board offers rewards for external threats while avoiding any mention of the Redbrands."
+    },
+    "ent_tpl_phandalin_clue_daran_report": {
+      "title": "Daran's old report",
+      "subtitle": "Patterns of occupation",
+      "summary": "Daran recognizes the Redbrands operate like troops under command, not loose drunks."
+    },
+    "ent_tpl_phandalin_clue_linene_cargo": {
+      "title": "Lionshield cargo marks",
+      "subtitle": "Traceable theft",
+      "summary": "Seals on recovered crates connect goblins, trade routes and buyers who profit from chaos."
+    },
+    "ent_tpl_phandalin_clue_castle_marks": {
+      "title": "Castle trail markers",
+      "subtitle": "Incomplete Cragmaw route",
+      "summary": "Goblin symbols and references to an old castle help narrow down the search area."
+    },
+    "ent_tpl_phandalin_clue_ransom": {
+      "title": "Cragmaw ransom message",
+      "subtitle": "Gundren has a price",
+      "summary": "A dirty note makes clear Gundren is worth more alive than dead, at least for now."
+    },
+    "ent_tpl_phandalin_clue_vyerith_disguise": {
+      "title": "Details that do not fit",
+      "subtitle": "An identity fails under pressure",
+      "summary": "An apparent ally or prisoner knows too little about who they claim to be."
+    },
+    "ent_tpl_phandalin_clue_grol_bargain": {
+      "title": "Grol's negotiation",
+      "subtitle": "The map is merchandise",
+      "summary": "Grol is not devoted to the Black Spider; he is calculating price, fear and opportunity."
+    },
+    "ent_tpl_phandalin_clue_nundro_testimony": {
+      "title": "Nundro's testimony",
+      "subtitle": "The mine was already occupied",
+      "summary": "Nundro saw black spider symbols before being separated from his brothers."
+    },
+    "ent_tpl_phandalin_clue_spider_sigil": {
+      "title": "Black spider seal",
+      "subtitle": "Antagonist's signature",
+      "summary": "A discreet seal appears on messages, payments and seemingly unconnected orders."
+    },
+    "ent_tpl_phandalin_clue_mine_map": {
+      "title": "Gundren's map",
+      "subtitle": "Route to the lost mine",
+      "summary": "The map is the object everyone wants to control."
+    },
+    "ent_tpl_phandalin_clue_forge_echo": {
+      "title": "Magic echo in the rock",
+      "subtitle": "The forge is no legend",
+      "summary": "The mine's stone holds arcane resonances that respond to spells or dwarven symbols."
+    },
+    "ent_tpl_phandalin_clue_tharden_body": {
+      "title": "Tharden's fate",
+      "subtitle": "The mine already extracted a price",
+      "summary": "The body or belongings of Tharden show the Black Spider arrived first and left no useful witnesses."
+    },
+    "ent_tpl_phandalin_clue_reidoth_warning": {
+      "title": "Reidoth's warning",
+      "subtitle": "Not every treasure is worth the journey",
+      "summary": "Reidoth knows routes and dangers, but warns Thundertree is no heroic stroll."
+    },
+    "ent_tpl_phandalin_clue_dragon_signs": {
+      "title": "Dragon signs",
+      "subtitle": "The predator does not fully hide",
+      "summary": "Marked trees, animal silence and acrid smells indicate something large claims Thundertree."
+    },
+    "ent_tpl_phandalin_clue_old_owl_signs": {
+      "title": "Old Owl Well signs",
+      "subtitle": "Magic that does not belong here",
+      "summary": "Ritual remains, undead and arcane notes suggest a dangerous investigation separate from the Redbrands."
+    },
+    "ent_tpl_phandalin_clue_agatha_memory": {
+      "title": "Agatha's memory",
+      "subtitle": "An answer at a cost",
+      "summary": "Agatha can remember names, maps or books, but the question must be precise."
+    },
+    "ent_tpl_phandalin_clue_wyvern_raids": {
+      "title": "Wyvern Tor raid trails",
+      "subtitle": "The frontier is moving",
+      "summary": "Heavy tracks and camp remains show the orcs are testing Phandalin's routes."
+    },
+    "ent_tpl_phandalin_clue_power_vacuum": {
+      "title": "Power vacuum in Phandalin",
+      "subtitle": "Victory also creates problems",
+      "summary": "When the Redbrands fall, several people try to decide what 'order' means for the town."
+    },
+    "ent_tpl_phandalin_secret_nezznar": {
+      "title": "The Black Spider coordinates the region",
+      "subtitle": "An antagonist connects goblins and bandits",
+      "summary": "Nezznar uses intermediaries so no one sees the full network until it is too late."
+    },
+    "ent_tpl_phandalin_secret_castle": {
+      "title": "Cragmaw Castle hidden by false routes",
+      "subtitle": "The goblins use no single entrance",
+      "summary": "The castle cannot be found by following a main road; you must reconstruct the route."
+    },
+    "ent_tpl_phandalin_secret_map": {
+      "title": "Gundren's map is the real key",
+      "subtitle": "Without the map the mine remains a myth",
+      "summary": "Rescuing Gundren is not enough if the map has already changed hands."
+    },
+    "ent_tpl_phandalin_secret_halia": {
+      "title": "Halia wants to inherit the power vacuum",
+      "subtitle": "Useful ally, not innocent",
+      "summary": "Her help against the Redbrands could create another power difficult to control."
+    },
+    "ent_tpl_phandalin_secret_harbin": {
+      "title": "Harbin knows more than he admits",
+      "subtitle": "Fear is also a political choice",
+      "summary": "The mayor is not ignorant of the problem: he has chosen to survive by looking away."
+    },
+    "ent_tpl_phandalin_secret_cragmaw": {
+      "title": "The Cragmaws can be divided",
+      "subtitle": "Not all obey from loyalty",
+      "summary": "Yeemik, Grol and others may switch sides if they see an opportunity for advancement."
+    },
+    "ent_tpl_phandalin_secret_forge": {
+      "title": "The Forge of Spells partially works",
+      "subtitle": "The central treasure is not just gold",
+      "summary": "The mine holds a damaged arcane focus that is still dangerous and valuable."
+    },
+    "ent_tpl_phandalin_secret_dendrars": {
+      "title": "The Dendrar family is still alive",
+      "subtitle": "Victims on a countdown",
+      "summary": "The Redbrands keep hostages who may disappear if the group delays Tresendar too long."
+    },
+    "ent_tpl_phandalin_secret_nothic": {
+      "title": "The nothic knows Tresendar's secrets",
+      "subtitle": "A useful monster if you pay the price",
+      "summary": "The creature beneath the manor knows who commands, who lies and what intruders fear."
+    },
+    "ent_tpl_phandalin_secret_hostages": {
+      "title": "The Redbrands plan to move the hostages",
+      "subtitle": "Delay has a cost",
+      "summary": "If the group does not act, hostages may be moved out of Phandalin or used as insurance."
+    },
+    "ent_tpl_phandalin_secret_vyerith": {
+      "title": "Vyerith is not who she seems",
+      "subtitle": "The castle holds a second lie",
+      "summary": "A shapeshifter agent can steal the map even if the group wins the main fight."
+    },
+    "ent_tpl_phandalin_secret_tharden": {
+      "title": "Tharden is already dead in the mine",
+      "subtitle": "Victory comes too late for someone",
+      "summary": "Nundro's rescue does not repair the full Rockseeker tragedy."
+    },
+    "ent_tpl_phandalin_secret_hamun": {
+      "title": "Hamun Kost is not the central villain",
+      "subtitle": "Lateral threat, not root cause",
+      "summary": "His necromancy is dangerous, but not every strange thread belongs to the Black Spider."
+    },
+    "ent_tpl_phandalin_secret_venomfang": {
+      "title": "Venomfang prefers manipulation over combat",
+      "subtitle": "A dragon also negotiates",
+      "summary": "The Thundertree dragon can offer routes, lies or favors to use the group against his own problems."
+    },
+    "ent_tpl_phandalin_secret_agatha": {
+      "title": "Agatha knows more than one answer",
+      "subtitle": "The question matters",
+      "summary": "The banshee can reveal a location, name or memory, but will not solve the whole campaign for free."
+    },
+    "ent_tpl_phandalin_secret_wyvern": {
+      "title": "The orcs test Phandalin's weakness",
+      "subtitle": "The frontier reads fear",
+      "summary": "If the Redbrands dominate the town, other threats understand no one protects the roads."
+    },
+    "ent_tpl_phandalin_secret_power_vacuum": {
+      "title": "Freeing Phandalin opens a political struggle",
+      "subtitle": "The urban ending is not neutral",
+      "summary": "When the Redbrands fall, Halia, Harbin, Sildar, Daran and townspeople compete to define the new order."
     }
   },
   "relations": {
@@ -346,6 +867,30 @@
     },
     "fact_tpl_phandalin_12": {
       "statement": "Nezznar prefers adventurers wasting time on local trouble before they look toward Wave Echo Cave."
+    },
+    "fact_tpl_phandalin_13": {
+      "statement": "Gundren's map works as a campaign clock: every delay increases the chance it changes hands."
+    },
+    "fact_tpl_phandalin_14": {
+      "statement": "Vyerith can turn a victory at Cragmaw Castle into a chase if she steals or replaces key information."
+    },
+    "fact_tpl_phandalin_15": {
+      "statement": "Tharden Rockseeker has already paid the price of Wave Echo, preventing the ending from being just a race for loot."
+    },
+    "fact_tpl_phandalin_16": {
+      "statement": "Wave Echo Cave holds a real magical source: deteriorated but still powerful."
+    },
+    "fact_tpl_phandalin_17": {
+      "statement": "Hamun Kost is a lateral threat or an uncomfortable source, not an automatic extension of the Black Spider."
+    },
+    "fact_tpl_phandalin_18": {
+      "statement": "Venomfang should appear as a negotiating, intelligent danger; the table should understand that not every challenge is meant to be won by force."
+    },
+    "fact_tpl_phandalin_19": {
+      "statement": "Defeating the Redbrands and the Black Spider raises a political question: who protects Phandalin when the adventurers leave?"
+    },
+    "fact_tpl_phandalin_20": {
+      "statement": "The next prepared session should open with a clear decision: enter Tresendar, seek more local support or pursue the Cragmaw trail to the castle."
     }
   },
   "sessions": {
@@ -486,6 +1031,18 @@
           "text": "Make decisions visible: help the town, search for Gundren or investigate the manor. Do not hide the fun behind too many names."
         }
       }
+    },
+    "cvs_tpl_phandalin_investigation": {
+      "title": "Investigation Chain",
+      "description": "Clue trail from first discovery to hidden secrets."
+    },
+    "cvs_tpl_phandalin_locations": {
+      "title": "Location Map",
+      "description": "All key locations and travel routes across the region."
+    },
+    "cvs_tpl_phandalin_sessions": {
+      "title": "Session Plan",
+      "description": "Session sequence and quest flow for the full campaign."
     }
   },
   "tags": [

@@ -4067,6 +4067,7 @@
     },
     {
       "canvasId": "cvs_tpl_oracle_characters",
+      "kind": "characters",
       "nodes": [
         {
           "id": "grp_c_culto",
@@ -4579,6 +4580,7 @@
     },
     {
       "canvasId": "cvs_tpl_oracle_investigation",
+      "kind": "mystery",
       "nodes": [
         {
           "id": "note_phase1",
@@ -5235,6 +5237,7 @@
     },
     {
       "canvasId": "cvs_tpl_oracle_locations",
+      "kind": "location",
       "nodes": [
         {
           "id": "grp_l_valdris",

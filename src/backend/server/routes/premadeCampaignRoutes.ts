@@ -7,6 +7,7 @@ import { assertDM, getRequestDmId, getValidatedVaultId } from "../auth.js";
 import { ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
 import { getPremadeCampaignTemplate, listPremadeCampaignTemplates } from "../premade/premadeCampaigns.js";
 import { sendCommandError } from "../commandHttp.js";
+import { addCampaignMembership } from "../userAuthStore.js";
 
 type PremadeImportMode = "full" | "structure" | "sessions";
 
@@ -265,6 +266,13 @@ export async function registerPremadeCampaignRoutes(server: FastifyInstance, opt
         });
 
         await ensureCampaignOwner(dataDir, vaultId, campaignId, dmId);
+        if ((request as any).unifiedUser) {
+          await addCampaignMembership(join(dataDir, "vaults", vaultId), {
+            campaignId,
+            userId: dmId,
+            role: "dm",
+          });
+        }
 
         reply.code(201);
         return {

@@ -15,7 +15,8 @@
     "entities": 134,
     "relations": 145,
     "facts": 20,
-    "preparedSessions": 8
+    "preparedSessions": 8,
+    "canvases": 4
   },
   "entities": [
     {
@@ -3773,6 +3774,1232 @@
           "visibility": "dm",
           "style": "secret",
           "relationshipId": "rel_tpl_phandalin_blackseal_nezznar"
+        }
+      ]
+    },
+    {
+      "canvasId": "cvs_tpl_phandalin_investigation",
+      "kind": "mystery",
+      "nodes": [
+        {
+          "id": "grp_i_seen",
+          "kind": "group",
+          "x": 20,
+          "y": 20,
+          "width": 700,
+          "height": 220,
+          "color": "blue"
+        },
+        {
+          "id": "grp_i_ready",
+          "kind": "group",
+          "x": 20,
+          "y": 280,
+          "width": 1400,
+          "height": 560,
+          "color": "purple"
+        },
+        {
+          "id": "grp_i_secrets",
+          "kind": "group",
+          "x": 20,
+          "y": 880,
+          "width": 1400,
+          "height": 280,
+          "color": "pink"
+        },
+        {
+          "id": "node_i_dead_horses",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_dead_horses",
+          "x": 40,
+          "y": 60,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_goblin_trail",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_goblin_trail",
+          "x": 260,
+          "y": 60,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sildar_warn",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_sildar_warning",
+          "x": 480,
+          "y": 60,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_red_threats",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_redbrand_threats",
+          "x": 40,
+          "y": 320,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_town_fears",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_town_fears",
+          "x": 260,
+          "y": 320,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_carp_tunnel",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_carp_tunnel",
+          "x": 480,
+          "y": 320,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_giant_boast",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_giant_boast",
+          "x": 700,
+          "y": 320,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_ledger",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_ledger",
+          "x": 920,
+          "y": 320,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_glasstaff_ltr",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_glasstaff_letter",
+          "x": 1140,
+          "y": 320,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_nothic_whis",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_nothic_whispers",
+          "x": 40,
+          "y": 440,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_mirna_heir",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_mirna_heirloom",
+          "x": 260,
+          "y": 440,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_halia_offer",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_halia_offer",
+          "x": 480,
+          "y": 440,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_harbin_ntc",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_harbin_notice",
+          "x": 700,
+          "y": 440,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_daran_rpt",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_daran_report",
+          "x": 920,
+          "y": 440,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_linene_cargo",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_linene_cargo",
+          "x": 1140,
+          "y": 440,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_castle_marks",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_castle_marks",
+          "x": 40,
+          "y": 560,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_ransom",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_ransom",
+          "x": 260,
+          "y": 560,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_vyerith_disg",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_vyerith_disguise",
+          "x": 480,
+          "y": 560,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_grol_barg",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_grol_bargain",
+          "x": 700,
+          "y": 560,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_nundro_test",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_nundro_testimony",
+          "x": 920,
+          "y": 560,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_spider_sigil",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_spider_sigil",
+          "x": 1140,
+          "y": 560,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_mine_map",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_mine_map",
+          "x": 40,
+          "y": 680,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_forge_echo",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_forge_echo",
+          "x": 260,
+          "y": 680,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_tharden_body",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_tharden_body",
+          "x": 480,
+          "y": 680,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_reidoth_warn",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_reidoth_warning",
+          "x": 700,
+          "y": 680,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_dragon_signs",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_dragon_signs",
+          "x": 920,
+          "y": 680,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_owl_signs",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_old_owl_signs",
+          "x": 1140,
+          "y": 680,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_agatha_mem",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_agatha_memory",
+          "x": 40,
+          "y": 800,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_wyvern_raids",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_wyvern_raids",
+          "x": 260,
+          "y": 800,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_power_vac",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_clue_power_vacuum",
+          "x": 480,
+          "y": 800,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_iarno",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_iarno",
+          "x": 40,
+          "y": 920,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_nezznar",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_nezznar",
+          "x": 260,
+          "y": 920,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_castle",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_castle",
+          "x": 480,
+          "y": 920,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_map",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_map",
+          "x": 700,
+          "y": 920,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_halia",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_halia",
+          "x": 920,
+          "y": 920,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_harbin",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_harbin",
+          "x": 1140,
+          "y": 920,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_cragmaw",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_cragmaw",
+          "x": 40,
+          "y": 1040,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_forge",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_forge",
+          "x": 260,
+          "y": 1040,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_dendrars",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_dendrars",
+          "x": 480,
+          "y": 1040,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_nothic",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_nothic",
+          "x": 700,
+          "y": 1040,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_hostages",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_hostages",
+          "x": 920,
+          "y": 1040,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_vyerith",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_vyerith",
+          "x": 1140,
+          "y": 1040,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_tharden",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_tharden",
+          "x": 40,
+          "y": 1100,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_hamun",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_hamun",
+          "x": 260,
+          "y": 1100,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_venomfang",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_venomfang",
+          "x": 480,
+          "y": 1100,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_agatha",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_agatha",
+          "x": 700,
+          "y": 1100,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_wyvern",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_wyvern",
+          "x": 920,
+          "y": 1100,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_i_sec_pwr_vac",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_secret_power_vacuum",
+          "x": 1140,
+          "y": 1100,
+          "width": 200,
+          "height": 90
+        }
+      ],
+      "edges": [
+        {
+          "id": "ei_deadhorses_castle",
+          "sourceNodeId": "node_i_dead_horses",
+          "targetNodeId": "node_i_sec_castle",
+          "label": "leads to",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_goblin_castle",
+          "sourceNodeId": "node_i_goblin_trail",
+          "targetNodeId": "node_i_sec_castle",
+          "label": "points to",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_sildar_castle",
+          "sourceNodeId": "node_i_sildar_warn",
+          "targetNodeId": "node_i_sec_castle",
+          "label": "confirms",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_red_iarno",
+          "sourceNodeId": "node_i_red_threats",
+          "targetNodeId": "node_i_sec_iarno",
+          "label": "implies",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_carp_iarno",
+          "sourceNodeId": "node_i_carp_tunnel",
+          "targetNodeId": "node_i_sec_iarno",
+          "label": "reveals",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_ledger_iarno",
+          "sourceNodeId": "node_i_ledger",
+          "targetNodeId": "node_i_sec_iarno",
+          "label": "names",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_glsstaff_nezznar",
+          "sourceNodeId": "node_i_glasstaff_ltr",
+          "targetNodeId": "node_i_sec_nezznar",
+          "label": "from",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_nothic_iarno",
+          "sourceNodeId": "node_i_nothic_whis",
+          "targetNodeId": "node_i_sec_iarno",
+          "label": "whispers",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_nothic_nezznar",
+          "sourceNodeId": "node_i_nothic_whis",
+          "targetNodeId": "node_i_sec_nezznar",
+          "label": "whispers",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_halia_halia",
+          "sourceNodeId": "node_i_halia_offer",
+          "targetNodeId": "node_i_sec_halia",
+          "label": "reveals",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_harbin_harbin",
+          "sourceNodeId": "node_i_harbin_ntc",
+          "targetNodeId": "node_i_sec_harbin",
+          "label": "signals",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_castle_castle",
+          "sourceNodeId": "node_i_castle_marks",
+          "targetNodeId": "node_i_sec_castle",
+          "label": "locates",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_ransom_cragmaw",
+          "sourceNodeId": "node_i_ransom",
+          "targetNodeId": "node_i_sec_cragmaw",
+          "label": "implies",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_vyerith_vyerith",
+          "sourceNodeId": "node_i_vyerith_disg",
+          "targetNodeId": "node_i_sec_vyerith",
+          "label": "exposes",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_grol_cragmaw",
+          "sourceNodeId": "node_i_grol_barg",
+          "targetNodeId": "node_i_sec_cragmaw",
+          "label": "admits",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_nundro_forge",
+          "sourceNodeId": "node_i_nundro_test",
+          "targetNodeId": "node_i_sec_forge",
+          "label": "confirms",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_nundro_nezznar",
+          "sourceNodeId": "node_i_nundro_test",
+          "targetNodeId": "node_i_sec_nezznar",
+          "label": "identifies",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_sigil_nezznar",
+          "sourceNodeId": "node_i_spider_sigil",
+          "targetNodeId": "node_i_sec_nezznar",
+          "label": "marks",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_minemap_forge",
+          "sourceNodeId": "node_i_mine_map",
+          "targetNodeId": "node_i_sec_forge",
+          "label": "shows",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_forgeecho_forge",
+          "sourceNodeId": "node_i_forge_echo",
+          "targetNodeId": "node_i_sec_forge",
+          "label": "confirms",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_tharden_tharden",
+          "sourceNodeId": "node_i_tharden_body",
+          "targetNodeId": "node_i_sec_tharden",
+          "label": "reveals",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_reidoth_venom",
+          "sourceNodeId": "node_i_reidoth_warn",
+          "targetNodeId": "node_i_sec_venomfang",
+          "label": "warns about",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_dragon_venom",
+          "sourceNodeId": "node_i_dragon_signs",
+          "targetNodeId": "node_i_sec_venomfang",
+          "label": "traces to",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_agatha_agatha",
+          "sourceNodeId": "node_i_agatha_mem",
+          "targetNodeId": "node_i_sec_agatha",
+          "label": "holds",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_wyvern_wyvern",
+          "sourceNodeId": "node_i_wyvern_raids",
+          "targetNodeId": "node_i_sec_wyvern",
+          "label": "traces to",
+          "status": "hint",
+          "style": "secret"
+        },
+        {
+          "id": "ei_pvac_pvac",
+          "sourceNodeId": "node_i_power_vac",
+          "targetNodeId": "node_i_sec_pwr_vac",
+          "label": "signals",
+          "status": "hint",
+          "style": "secret"
+        }
+      ]
+    },
+    {
+      "canvasId": "cvs_tpl_phandalin_locations",
+      "kind": "location",
+      "nodes": [
+        {
+          "id": "grp_l_town",
+          "kind": "group",
+          "x": 20,
+          "y": 20,
+          "width": 1200,
+          "height": 360,
+          "color": "green"
+        },
+        {
+          "id": "grp_l_wild",
+          "kind": "group",
+          "x": 20,
+          "y": 420,
+          "width": 900,
+          "height": 260,
+          "color": "yellow"
+        },
+        {
+          "id": "grp_l_final",
+          "kind": "group",
+          "x": 960,
+          "y": 420,
+          "width": 460,
+          "height": 260,
+          "color": "pink"
+        },
+        {
+          "id": "node_l_town",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_town",
+          "x": 40,
+          "y": 60,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_inn",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_inn",
+          "x": 280,
+          "y": 60,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_barthen",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_barthen",
+          "x": 520,
+          "y": 60,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_lionshield",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_lionshield",
+          "x": 760,
+          "y": 60,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_sleeping_giant",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_sleeping_giant",
+          "x": 1000,
+          "y": 60,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_townmaster",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_townmaster",
+          "x": 40,
+          "y": 180,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_shrine",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_shrine",
+          "x": 280,
+          "y": 180,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_edermath",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_edermath",
+          "x": 520,
+          "y": 180,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_alderleaf",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_alderleaf",
+          "x": 760,
+          "y": 180,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_miners_exchange",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_miners_exchange",
+          "x": 1000,
+          "y": 180,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_tresendar",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_tresendar",
+          "x": 400,
+          "y": 300,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_trail",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_trail",
+          "x": 40,
+          "y": 460,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_hideout",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_hideout",
+          "x": 40,
+          "y": 580,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_conyberry",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_conyberry",
+          "x": 280,
+          "y": 460,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_agatha_lair",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_agatha_lair",
+          "x": 280,
+          "y": 580,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_old_owl_well",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_old_owl_well",
+          "x": 520,
+          "y": 460,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_wyvern_tor",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_wyvern_tor",
+          "x": 520,
+          "y": 580,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_thundertree",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_thundertree",
+          "x": 760,
+          "y": 460,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_cragmaw_castle",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_cragmaw_castle",
+          "x": 980,
+          "y": 460,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_wave_echo",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_wave_echo",
+          "x": 980,
+          "y": 580,
+          "width": 220,
+          "height": 90
+        },
+        {
+          "id": "node_l_forge_of_spells",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_forge_of_spells",
+          "x": 1200,
+          "y": 580,
+          "width": 220,
+          "height": 90
+        }
+      ],
+      "edges": [
+        {
+          "id": "el_trail_hideout",
+          "sourceNodeId": "node_l_trail",
+          "targetNodeId": "node_l_hideout",
+          "label": "goblin camp",
+          "status": "hint"
+        },
+        {
+          "id": "el_trail_town",
+          "sourceNodeId": "node_l_trail",
+          "targetNodeId": "node_l_town",
+          "label": "leads to",
+          "status": "hint"
+        },
+        {
+          "id": "el_town_tresendar",
+          "sourceNodeId": "node_l_town",
+          "targetNodeId": "node_l_tresendar",
+          "label": "under",
+          "status": "hint"
+        },
+        {
+          "id": "el_town_conyberry",
+          "sourceNodeId": "node_l_town",
+          "targetNodeId": "node_l_conyberry",
+          "label": "road east",
+          "status": "hint"
+        },
+        {
+          "id": "el_town_oldowl",
+          "sourceNodeId": "node_l_town",
+          "targetNodeId": "node_l_old_owl_well",
+          "label": "path north",
+          "status": "hint"
+        },
+        {
+          "id": "el_town_wyvern",
+          "sourceNodeId": "node_l_town",
+          "targetNodeId": "node_l_wyvern_tor",
+          "label": "path east",
+          "status": "hint"
+        },
+        {
+          "id": "el_town_thundertree",
+          "sourceNodeId": "node_l_town",
+          "targetNodeId": "node_l_thundertree",
+          "label": "road north",
+          "status": "hint"
+        },
+        {
+          "id": "el_cony_agatha",
+          "sourceNodeId": "node_l_conyberry",
+          "targetNodeId": "node_l_agatha_lair",
+          "label": "nearby",
+          "status": "hint"
+        },
+        {
+          "id": "el_trail_castle",
+          "sourceNodeId": "node_l_trail",
+          "targetNodeId": "node_l_cragmaw_castle",
+          "label": "north trail",
+          "status": "secret"
+        },
+        {
+          "id": "el_waveecho_forge",
+          "sourceNodeId": "node_l_wave_echo",
+          "targetNodeId": "node_l_forge_of_spells",
+          "label": "inside",
+          "status": "secret"
+        }
+      ]
+    },
+    {
+      "canvasId": "cvs_tpl_phandalin_sessions",
+      "kind": "session",
+      "nodes": [
+        {
+          "id": "grp_s_sequence",
+          "kind": "group",
+          "x": 20,
+          "y": 20,
+          "width": 1600,
+          "height": 260,
+          "color": "blue"
+        },
+        {
+          "id": "note_s1",
+          "kind": "note",
+          "x": 40,
+          "y": 60,
+          "width": 200,
+          "height": 120,
+          "text": "S1: Road to Phandalin\n· Escort wagon\n· Goblin ambush\n· Find Sildar"
+        },
+        {
+          "id": "note_s2",
+          "kind": "note",
+          "x": 260,
+          "y": 60,
+          "width": 200,
+          "height": 120,
+          "text": "S2: Arrival in Town\n· Meet NPCs\n· Redbrand tension\n· Side quest hooks"
+        },
+        {
+          "id": "note_s3",
+          "kind": "note",
+          "x": 480,
+          "y": 60,
+          "width": 200,
+          "height": 120,
+          "text": "S3: Tresendar Manor\n· Glasstaff fight\n· Letter from spider\n· Rescue Dendrars"
+        },
+        {
+          "id": "note_s4",
+          "kind": "note",
+          "x": 700,
+          "y": 60,
+          "width": 200,
+          "height": 120,
+          "text": "S4: Finding Allies\n· Garaele/Agatha\n· Daran/Old Owl\n· Reidoth/Cragmaw"
+        },
+        {
+          "id": "note_s5",
+          "kind": "note",
+          "x": 920,
+          "y": 60,
+          "width": 200,
+          "height": 120,
+          "text": "S5: Wave Echo Cave\n· Infiltrate mine\n· Tharden dead\n· Find Forge"
+        },
+        {
+          "id": "note_s6",
+          "kind": "note",
+          "x": 1140,
+          "y": 60,
+          "width": 200,
+          "height": 120,
+          "text": "S6: Cragmaw Castle\n· Grol negotiation\n· Rescue Gundren\n· Vyerith doppel"
+        },
+        {
+          "id": "note_s7",
+          "kind": "note",
+          "x": 1360,
+          "y": 60,
+          "width": 200,
+          "height": 120,
+          "text": "S7: The Black Spider\n· Nezznar showdown\n· Nundro freed\n· Forge secured"
+        },
+        {
+          "id": "note_s_epi",
+          "kind": "note",
+          "x": 1580,
+          "y": 60,
+          "width": 200,
+          "height": 120,
+          "text": "Epilogue\n· Phandalin future\n· Power vacuum\n· PC rewards"
+        },
+        {
+          "id": "node_s_escort",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_quest_escort",
+          "x": 40,
+          "y": 220,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_s_gundren",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_quest_gundren",
+          "x": 260,
+          "y": 220,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_s_fear",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_quest_break_fear",
+          "x": 480,
+          "y": 220,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_s_castle",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_quest_find_castle",
+          "x": 700,
+          "y": 220,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_s_waveecho",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_quest_wave_echo",
+          "x": 920,
+          "y": 220,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_s_spider",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_quest_black_spider",
+          "x": 1140,
+          "y": 220,
+          "width": 200,
+          "height": 90
+        },
+        {
+          "id": "node_s_future",
+          "kind": "entity",
+          "entityId": "ent_tpl_phandalin_quest_future",
+          "x": 1360,
+          "y": 220,
+          "width": 200,
+          "height": 90
+        }
+      ],
+      "edges": [
+        {
+          "id": "es_s1_s2",
+          "sourceNodeId": "note_s1",
+          "targetNodeId": "note_s2",
+          "label": "next",
+          "status": "hint"
+        },
+        {
+          "id": "es_s2_s3",
+          "sourceNodeId": "note_s2",
+          "targetNodeId": "note_s3",
+          "label": "next",
+          "status": "hint"
+        },
+        {
+          "id": "es_s3_s4",
+          "sourceNodeId": "note_s3",
+          "targetNodeId": "note_s4",
+          "label": "next",
+          "status": "hint"
+        },
+        {
+          "id": "es_s4_s5",
+          "sourceNodeId": "note_s4",
+          "targetNodeId": "note_s5",
+          "label": "next",
+          "status": "hint"
+        },
+        {
+          "id": "es_s4_s6",
+          "sourceNodeId": "note_s4",
+          "targetNodeId": "note_s6",
+          "label": "parallel",
+          "status": "hint"
+        },
+        {
+          "id": "es_s5_s7",
+          "sourceNodeId": "note_s5",
+          "targetNodeId": "note_s7",
+          "label": "next",
+          "status": "hint"
+        },
+        {
+          "id": "es_s6_s7",
+          "sourceNodeId": "note_s6",
+          "targetNodeId": "note_s7",
+          "label": "converges",
+          "status": "hint"
+        },
+        {
+          "id": "es_s7_epi",
+          "sourceNodeId": "note_s7",
+          "targetNodeId": "note_s_epi",
+          "label": "epilogue",
+          "status": "hint"
+        },
+        {
+          "id": "es_s1_escort",
+          "sourceNodeId": "note_s1",
+          "targetNodeId": "node_s_escort",
+          "label": "drives",
+          "status": "hint"
+        },
+        {
+          "id": "es_s2_fear",
+          "sourceNodeId": "note_s2",
+          "targetNodeId": "node_s_fear",
+          "label": "drives",
+          "status": "hint"
+        },
+        {
+          "id": "es_s3_gundren",
+          "sourceNodeId": "note_s3",
+          "targetNodeId": "node_s_gundren",
+          "label": "advances",
+          "status": "hint"
+        },
+        {
+          "id": "es_s4_castle",
+          "sourceNodeId": "note_s4",
+          "targetNodeId": "node_s_castle",
+          "label": "drives",
+          "status": "hint"
+        },
+        {
+          "id": "es_s5_wave",
+          "sourceNodeId": "note_s5",
+          "targetNodeId": "node_s_waveecho",
+          "label": "drives",
+          "status": "hint"
+        },
+        {
+          "id": "es_s7_spider",
+          "sourceNodeId": "note_s7",
+          "targetNodeId": "node_s_spider",
+          "label": "resolves",
+          "status": "hint"
+        },
+        {
+          "id": "es_epi_future",
+          "sourceNodeId": "note_s_epi",
+          "targetNodeId": "node_s_future",
+          "label": "opens",
+          "status": "hint"
         }
       ]
     }

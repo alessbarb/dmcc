@@ -39,7 +39,8 @@
         "entities": 134,
         "relations": 145,
         "facts": 20,
-        "preparedSessions": 8
+        "preparedSessions": 8,
+        "canvases": 4
       }
     }
   ]

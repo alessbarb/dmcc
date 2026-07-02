@@ -388,6 +388,13 @@ function mergeEntities(baseEntities: unknown, localeEntities: unknown): PremadeE
     const id = asString(base.entityId);
     const overlay = isRecord(texts[id]) ? texts[id] : {};
     const merged = applyText(base, overlay, ["title", "subtitle", "summary", "content", "status"]);
+    if (!merged.title) {
+      const idParts = id.split("_");
+      const nameParts = idParts.length > 3 ? idParts.slice(3) : idParts;
+      merged.title = nameParts
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
     const metadata = mergeRecords(base.metadata, overlay.metadata);
     if (metadata) merged.metadata = metadata;
     return merged as unknown as PremadeEntity;
@@ -451,6 +458,13 @@ function mergeSessions(baseSessions: unknown, localeSessions: unknown): PremadeS
     const id = asString(base.sessionId);
     const overlay = isRecord(texts[id]) ? texts[id] : {};
     const merged = applyText(base, overlay, ["title"]);
+    if (!merged.title) {
+      const idParts = id.split("_");
+      const nameParts = idParts.length > 3 ? idParts.slice(3) : idParts;
+      merged.title = nameParts
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
     const prep = mergeSessionPrep(base.prep, getSessionPrepOverlay(overlay));
     if (prep) merged.prep = prep;
     return merged as unknown as PremadeSession;
@@ -464,6 +478,13 @@ function mergeCanvases(baseCanvases: unknown, localeCanvases: unknown): PremadeC
     const id = asString(base.canvasId);
     const overlay = isRecord(texts[id]) ? texts[id] : {};
     const merged = applyText(base, overlay, ["title", "description"]);
+    if (!merged.title) {
+      const idParts = id.split("_");
+      const nameParts = idParts.length > 3 ? idParts.slice(3) : idParts;
+      merged.title = nameParts
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
 
     const nodeTexts = isRecord(overlay.nodes) ? overlay.nodes : {};
     if (Array.isArray(base.nodes)) {
@@ -479,7 +500,11 @@ function mergeCanvases(baseCanvases: unknown, localeCanvases: unknown): PremadeC
       merged.edges = base.edges.map((edge) => {
         if (!isRecord(edge)) return edge;
         const edgeId = asString(edge.id);
-        return applyText(edge, isRecord(edgeTexts[edgeId]) ? edgeTexts[edgeId] : {}, ["label"]);
+        const mergedEdge = applyText(edge, isRecord(edgeTexts[edgeId]) ? edgeTexts[edgeId] : {}, ["label"]);
+        if (mergedEdge.status !== "domain") {
+          mergedEdge.status = "draft";
+        }
+        return mergedEdge;
       });
     }
 

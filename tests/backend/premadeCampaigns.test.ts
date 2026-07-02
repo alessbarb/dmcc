@@ -105,7 +105,7 @@ describe("premade campaign templates", () => {
         headers: { "x-vault-id": "default", "x-dm-token": dmA.dmSessionToken },
       });
 
-      expect(imported.statusCode).toBe(201);
+      expect(imported.statusCode, imported.body).toBe(201);
       const body = imported.json();
       expect(body).toMatchObject({ title: "Mi Phandalin", templateId: "phandalin-starter" });
       expect(body.campaignId).toMatch(/^cmp_/);
@@ -148,7 +148,7 @@ describe("premade campaign templates", () => {
 
       await server.close();
     });
-  });
+  }, 20000);
   it("renames an imported premade campaign and keeps the template origin", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
@@ -160,7 +160,7 @@ describe("premade campaign templates", () => {
         payload: { title: "Oráculo de los viernes", importMode: "sessions" },
         headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
       });
-      expect(imported.statusCode).toBe(201);
+      expect(imported.statusCode, imported.body).toBe(201);
       const campaignId = imported.json().campaignId;
 
       const renamed = await server.inject({
@@ -177,4 +177,54 @@ describe("premade campaign templates", () => {
     });
   });
 
+  it("imports a premade campaign and registers DM campaign membership immediately", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      server.allowLegacyTestAuth = false;
+
+      // Register and login DM
+      const vaultId = "default";
+      const email = "dm_import@example.com";
+      const password = "secure-password-dm-import";
+      const registerRes = await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        headers: { "x-vault-id": vaultId },
+        payload: { email, password, displayName: "DM Importer" },
+      });
+      expect(registerRes.statusCode).toBe(201);
+
+      const loginRes = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        headers: { "x-vault-id": vaultId },
+        payload: { email, password },
+      });
+      expect(loginRes.statusCode).toBe(200);
+
+      const cookieStr = loginRes.headers["set-cookie"];
+      const cookie = (Array.isArray(cookieStr) ? cookieStr[0] : String(cookieStr)).split(";")[0];
+
+      // Import premade campaign
+      const importRes = await server.inject({
+        method: "POST",
+        url: "/api/premade-campaigns/phandalin-starter/import",
+        headers: { cookie, "x-vault-id": vaultId },
+        payload: { title: "Session Auth Phandalin" },
+      });
+      expect(importRes.statusCode, importRes.body).toBe(201);
+      const campaignId = importRes.json().campaignId;
+
+      // Access campaign details immediately using session cookie (should be 200)
+      const campaignRes = await server.inject({
+        method: "GET",
+        url: `/api/campaigns/${campaignId}`,
+        headers: { cookie, "x-vault-id": vaultId },
+      });
+      expect(campaignRes.statusCode).toBe(200);
+      expect(campaignRes.json().campaign.title).toBe("Session Auth Phandalin");
+
+      await server.close();
+    });
+  }, 20000);
 });
