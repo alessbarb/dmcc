@@ -177,6 +177,81 @@ describe("premade campaign templates", () => {
     });
   });
 
+  it("imports oracle with correct entity and canvas counts", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      const dm = await setupDm(server, "oracle@example.com", "secret-oracle");
+
+      const imported = await server.inject({
+        method: "POST",
+        url: "/api/premade-campaigns/oracle-triple-eclipse/import",
+        payload: { title: "My Oracle" },
+        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+      });
+      expect(imported.statusCode).toBe(201);
+
+      const state = await server.inject({
+        method: "GET",
+        url: `/api/campaigns/${imported.json().campaignId}`,
+        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+      });
+      expect(state.statusCode).toBe(200);
+      expect(state.json().entities.length).toBeGreaterThanOrEqual(108);
+      expect(state.json().sessions.length).toBeGreaterThanOrEqual(8);
+      const pcs = state.json().entities.filter((e: any) => e.entityType === "player_character");
+      expect(pcs.length).toBeGreaterThanOrEqual(4);
+
+      await server.close();
+    });
+  }, 20000);
+
+  it("imports phandalin sessions as preparation without historical events", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      const dm = await setupDm(server, "ph@example.com", "secret-ph");
+
+      const imported = await server.inject({
+        method: "POST",
+        url: "/api/premade-campaigns/phandalin-starter/import",
+        payload: { title: "My Phandalin" },
+        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+      });
+      const campaignId = imported.json().campaignId;
+
+      const state = await server.inject({
+        method: "GET",
+        url: `/api/campaigns/${campaignId}`,
+        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+      });
+      expect(state.json().sessions.length).toBeGreaterThanOrEqual(8);
+      for (const session of state.json().sessions) {
+        expect(session.events ?? []).toHaveLength(0);
+      }
+
+      await server.close();
+    });
+  }, 20000);
+
+  it("serves oracle in Spanish with entity titles", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      const dm = await setupDm(server, "es@example.com", "secret-es");
+
+      const response = await server.inject({
+        method: "GET",
+        url: "/api/premade-campaigns/oracle-triple-eclipse?locale=es",
+        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+      });
+      expect(response.statusCode).toBe(200);
+      expect(response.json().locale).toBe("es");
+      for (const entity of response.json().entities) {
+        expect(entity.title).toBeTruthy();
+      }
+
+      await server.close();
+    });
+  });
+
   it("imports a premade campaign and registers DM campaign membership immediately", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
