@@ -14,8 +14,8 @@
   "stats": {
     "entities": 134,
     "relations": 145,
-    "facts": 12,
-    "preparedSessions": 5
+    "facts": 20,
+    "preparedSessions": 8
   },
   "entities": [
     {
@@ -3095,6 +3095,151 @@
         "ent_tpl_phandalin_secret_nezznar_funds",
         "ent_tpl_phandalin_wave_echo"
       ]
+    },
+    {
+      "factId": "fact_tpl_phandalin_13",
+      "statement": "El mapa de Gundren funciona como reloj de campaña: cada retraso aumenta la probabilidad de que cambie de manos.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_clue_mine_map",
+        "ent_tpl_phandalin_secret_map",
+        "ent_tpl_phandalin_quest_find_castle"
+      ],
+      "relatedRelationIds": [],
+      "source": {
+        "kind": "manual"
+      }
+    },
+    {
+      "factId": "fact_tpl_phandalin_14",
+      "statement": "Vyerith puede convertir una victoria en el Castillo Cragmaw en una persecución si roba o sustituye información clave.",
+      "kind": "dm_secret",
+      "confidence": "likely",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_vyerith",
+        "ent_tpl_phandalin_secret_vyerith",
+        "ent_tpl_phandalin_clue_vyerith_disguise"
+      ],
+      "relatedRelationIds": [],
+      "source": {
+        "kind": "manual"
+      }
+    },
+    {
+      "factId": "fact_tpl_phandalin_15",
+      "statement": "Tharden Rockseeker ya ha pagado el precio de Wave Echo, lo que evita que el final sea solo una carrera por botín.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_tharden",
+        "ent_tpl_phandalin_secret_tharden",
+        "ent_tpl_phandalin_clue_tharden_body"
+      ],
+      "relatedRelationIds": [],
+      "source": {
+        "kind": "manual"
+      }
+    },
+    {
+      "factId": "fact_tpl_phandalin_16",
+      "statement": "La Cueva del Eco de la Ola conserva una fuente mágica real, deteriorada pero todavía poderosa.",
+      "kind": "dm_secret",
+      "confidence": "suspected",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_wave_echo",
+        "ent_tpl_phandalin_forge_of_spells",
+        "ent_tpl_phandalin_secret_forge",
+        "ent_tpl_phandalin_clue_forge_echo"
+      ],
+      "relatedRelationIds": [],
+      "source": {
+        "kind": "manual"
+      }
+    },
+    {
+      "factId": "fact_tpl_phandalin_17",
+      "statement": "Hamun Kost es una amenaza lateral o una fuente incómoda, no una extensión automática de la Araña Negra.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_hamun",
+        "ent_tpl_phandalin_old_owl_well",
+        "ent_tpl_phandalin_secret_hamun"
+      ],
+      "relatedRelationIds": [],
+      "source": {
+        "kind": "manual"
+      }
+    },
+    {
+      "factId": "fact_tpl_phandalin_18",
+      "statement": "Venomfang debe aparecer como peligro negociador e inteligente; la mesa debería entender que no todo reto está para ganarse por fuerza.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_venomfang",
+        "ent_tpl_phandalin_secret_venomfang",
+        "ent_tpl_phandalin_clue_dragon_signs"
+      ],
+      "relatedRelationIds": [],
+      "source": {
+        "kind": "manual"
+      }
+    },
+    {
+      "factId": "fact_tpl_phandalin_19",
+      "statement": "Derrotar a los Redbrands y a la Araña Negra abre una pregunta política: quién protege Phandalin cuando los aventureros se marchen.",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_quest_future",
+        "ent_tpl_phandalin_secret_power_vacuum",
+        "ent_tpl_phandalin_clue_power_vacuum"
+      ],
+      "relatedRelationIds": [],
+      "source": {
+        "kind": "manual"
+      }
+    },
+    {
+      "factId": "fact_tpl_phandalin_20",
+      "statement": "La próxima sesión preparada debe abrir con una decisión clara: entrar en Tresendar, buscar más apoyo local o perseguir la pista Cragmaw hacia el castillo.",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_phandalin_quest_break_fear",
+        "ent_tpl_phandalin_quest_find_castle",
+        "ent_tpl_phandalin_tresendar"
+      ],
+      "relatedRelationIds": [],
+      "source": {
+        "kind": "manual"
+      }
     }
   ],
   "sessions": [
@@ -3263,6 +3408,190 @@
             "id": "ph_s5_continue",
             "done": false,
             "priority": "medium"
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_phandalin_castle",
+      "prep": {
+        "state": "ready",
+        "summary": "Sesión de transición e investigación: convertir pistas sueltas en ruta, y decidir si el grupo busca a Gundren directamente o limpia frentes laterales.",
+        "openingPrompt": "Sildar coloca el mapa incompleto sobre la mesa: '¿A quién vais a preguntar y qué estáis dispuestos a prometer?'",
+        "goals": [
+          "Triangular la ubicación del Castillo Cragmaw con al menos dos fuentes.",
+          "Presentar la división interna del clan como alternativa al combate lineal.",
+          "Hacer que el mapa de Gundren se sienta como reloj vivo."
+        ],
+        "sceneIds": [
+          "ent_tpl_phandalin_town",
+          "ent_tpl_phandalin_hideout",
+          "ent_tpl_phandalin_cragmaw_castle"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_phandalin_sildar",
+          "ent_tpl_phandalin_yeemik",
+          "ent_tpl_phandalin_grol",
+          "ent_tpl_phandalin_vyerith",
+          "ent_tpl_phandalin_faction_cragmaw"
+        ],
+        "availableClueIds": [
+          "ent_tpl_phandalin_clue_castle_marks",
+          "ent_tpl_phandalin_clue_ransom",
+          "ent_tpl_phandalin_clue_grol_bargain",
+          "ent_tpl_phandalin_clue_vyerith_disguise",
+          "ent_tpl_phandalin_clue_mine_map"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_phandalin_secret_castle",
+          "ent_tpl_phandalin_secret_cragmaw",
+          "ent_tpl_phandalin_secret_map",
+          "ent_tpl_phandalin_secret_vyerith"
+        ],
+        "expectedConsequenceIds": [
+          "ent_tpl_phandalin_quest_find_castle",
+          "ent_tpl_phandalin_quest_gundren",
+          "ent_tpl_phandalin_quest_wave_echo"
+        ],
+        "notes": "Si la mesa viene de una sesión urbana intensa, abre con exploración y conversación. Si viene con ganas de acción, convierte la ruta en persecución o emboscada.",
+        "checklist": [
+          {
+            "id": "prep_castle_sources",
+            "label": "Preparar dos fuentes de ruta: goblin, Reidoth, documento o mapa parcial",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "prep_grol_deal",
+            "label": "Definir qué quiere Grol en una negociación",
+            "priority": "medium",
+            "done": false
+          },
+          {
+            "id": "prep_vyerith_tells",
+            "label": "Anotar tres detalles que delaten a Vyerith sin hacerlo obvio",
+            "priority": "medium",
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_phandalin_final",
+      "prep": {
+        "state": "ready",
+        "summary": "Clímax de campaña: confrontar a Nezznar y decidir qué ocurre con la Forja de Conjuros.",
+        "openingPrompt": "El eco de la roca responde a magia, metal y respiración. Por primera vez, la mina parece escuchar antes de que la Araña Negra hable.",
+        "goals": [
+          "Resolver el enfrentamiento con Nezznar sin reducirlo a bolsa de puntos de golpe.",
+          "Hacer de la Forja una decisión de poder, no solo recompensa.",
+          "Conectar combate, negociación y consecuencias políticas."
+        ],
+        "sceneIds": [
+          "ent_tpl_phandalin_forge_of_spells",
+          "ent_tpl_phandalin_wave_echo"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_phandalin_nezznar",
+          "ent_tpl_phandalin_nundro",
+          "ent_tpl_phandalin_faction_rockseeker",
+          "ent_tpl_phandalin_halia",
+          "ent_tpl_phandalin_sildar"
+        ],
+        "availableClueIds": [
+          "ent_tpl_phandalin_clue_forge_echo",
+          "ent_tpl_phandalin_clue_spider_sigil",
+          "ent_tpl_phandalin_clue_power_vacuum"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_phandalin_secret_forge",
+          "ent_tpl_phandalin_secret_nezznar",
+          "ent_tpl_phandalin_secret_power_vacuum"
+        ],
+        "expectedConsequenceIds": [
+          "ent_tpl_phandalin_quest_black_spider",
+          "ent_tpl_phandalin_quest_future"
+        ],
+        "notes": "Ten preparada una salida si Nezznar intenta negociar, huir o destruir parte de la Forja.",
+        "checklist": [
+          {
+            "id": "prep_nezznar_offer",
+            "label": "Preparar una oferta tentadora de Nezznar",
+            "priority": "medium",
+            "done": false
+          },
+          {
+            "id": "prep_forge_choices",
+            "label": "Definir 3 opciones sobre la Forja: proteger, explotar, sellar",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "prep_final_consequence",
+            "label": "Preparar consecuencia distinta según quién controle la mina",
+            "priority": "high",
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_phandalin_epilogue",
+      "prep": {
+        "state": "ready",
+        "summary": "Sesión corta o cierre de campaña para recoger decisiones sociales, recompensas y semillas de continuación.",
+        "openingPrompt": "Días después, Phandalin ya no susurra igual. Ahora la pregunta no es quién tuvo miedo, sino quién tendrá autoridad mañana.",
+        "goals": [
+          "Cerrar arcos de PNJ con consecuencias visibles.",
+          "Permitir que los jugadores definan qué legado dejan.",
+          "Sembrar continuación sin quitar cierre a la campaña."
+        ],
+        "sceneIds": [
+          "ent_tpl_phandalin_town",
+          "ent_tpl_phandalin_miners_exchange",
+          "ent_tpl_phandalin_inn",
+          "ent_tpl_phandalin_townmaster"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_phandalin_halia",
+          "ent_tpl_phandalin_sildar",
+          "ent_tpl_phandalin_harbin",
+          "ent_tpl_phandalin_daran",
+          "ent_tpl_phandalin_faction_town",
+          "ent_tpl_phandalin_faction_rockseeker"
+        ],
+        "availableClueIds": [
+          "ent_tpl_phandalin_clue_power_vacuum",
+          "ent_tpl_phandalin_clue_ledger",
+          "ent_tpl_phandalin_clue_halia_offer"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_phandalin_secret_halia",
+          "ent_tpl_phandalin_secret_harbin",
+          "ent_tpl_phandalin_secret_power_vacuum"
+        ],
+        "expectedConsequenceIds": [
+          "ent_tpl_phandalin_quest_future"
+        ],
+        "notes": "Ideal como sesión de 45-90 minutos o como cierre tras el clímax. Haz preguntas directas a cada personaje.",
+        "checklist": [
+          {
+            "id": "prep_epilogue_questions",
+            "label": "Preparar una pregunta de legado para cada personaje",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "prep_power_outcome",
+            "label": "Elegir cómo cambia Phandalin según aliados favorecidos",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "prep_next_seed",
+            "label": "Dejar una semilla de continuación opcional",
+            "priority": "low",
+            "done": false
           }
         ]
       }
