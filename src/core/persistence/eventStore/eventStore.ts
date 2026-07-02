@@ -194,7 +194,10 @@ export class EventStore {
     const filePath = this.getEventsFilePath(campaignId);
     const prev = writeQueues.get(filePath) ?? Promise.resolve();
     const next = prev.then(() => this._appendEventInner(campaignId, type, actorId, payload));
-    writeQueues.set(filePath, next.catch(() => {}));
+    const queued = next.catch(() => {}).finally(() => {
+      if (writeQueues.get(filePath) === queued) writeQueues.delete(filePath);
+    });
+    writeQueues.set(filePath, queued);
     return next;
   }
 
@@ -211,7 +214,10 @@ export class EventStore {
       }
       return stored;
     });
-    writeQueues.set(filePath, next.catch(() => {}));
+    const queued = next.catch(() => {}).finally(() => {
+      if (writeQueues.get(filePath) === queued) writeQueues.delete(filePath);
+    });
+    writeQueues.set(filePath, queued);
     return next;
   }
 

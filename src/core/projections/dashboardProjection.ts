@@ -168,19 +168,31 @@ export function buildDashboardProjection(campaignState: CampaignProjection): Das
       }
     : null;
 
-  // Blocked quests — active quests with no revealed clues
+  // Blocked quests — active quests with no revealed clues (mirrors alerts.ts active_quest_blocked)
   const revealedClueIds = new Set(
     entities
-      .filter((e) => e.entityType === "clue" && (e.status === "revealed" || e.status === "known") && !e.archived)
+      .filter((e) => e.entityType === "clue" && e.status === "revealed" && !e.archived)
       .map((e) => e.entityId)
   );
   const blockedQuests = activeQuests.filter((q) => {
     const relations = Array.from(campaignState.relations.values()) as any[];
-    const relatedClueIds = relations
-      .filter((r) => (r.sourceEntityId === q.entityId || r.targetEntityId === q.entityId))
-      .map((r) => r.sourceEntityId === q.entityId ? r.targetEntityId : r.sourceEntityId);
-    const hasRevealedClue = relatedClueIds.some((id) => revealedClueIds.has(id));
-    return !hasRevealedClue && relatedClueIds.length > 0;
+    const clueRelations = relations.filter((r) => {
+      if (r.archived) return false;
+      if (r.targetEntityId === q.entityId) {
+        const source = campaignState.entities.get(r.sourceEntityId);
+        return source?.entityType === "clue";
+      }
+      if (r.sourceEntityId === q.entityId) {
+        const target = campaignState.entities.get(r.targetEntityId);
+        return target?.entityType === "clue";
+      }
+      return false;
+    });
+    const hasRevealedClue = clueRelations.some((r) => {
+      const clueId = r.targetEntityId === q.entityId ? r.sourceEntityId : r.targetEntityId;
+      return revealedClueIds.has(clueId);
+    });
+    return !hasRevealedClue && clueRelations.length > 0;
   });
 
   // Critical hidden clues — importance=critical and not revealed

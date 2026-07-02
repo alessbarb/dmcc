@@ -29,10 +29,10 @@ export function createEntity(props: {
   const now = new Date().toISOString();
   const metadata = props.metadata ? { ...props.metadata } : {};
   if (props.entityType === "clue" && (!metadata.content || metadata.content.trim() === "")) {
-    throw new Error("Clue entity requires metadata.content");
+    metadata.content = "...";
   }
   if (props.entityType === "secret" && (!metadata.truth || metadata.truth.trim() === "")) {
-    throw new Error("Secret entity requires metadata.truth");
+    metadata.truth = "...";
   }
 
   if (props.entityType === "player_character") {

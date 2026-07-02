@@ -71,7 +71,7 @@ export const rules: CampaignHealthRule[] = [
           // Check if at least one of these clues is revealed
           const hasRevealedClue = clueRelations.some((r) => {
             const clue = context.entities.get(r.sourceEntityId);
-            return clue && (clue.status || "").startsWith("revealed");
+            return clue && clue.status === "revealed";
           });
 
           if (!hasRevealedClue) {

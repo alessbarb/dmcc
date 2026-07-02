@@ -55,39 +55,6 @@ export function applyEvent(
   const { type, occurredAt } = event;
   const payload = normalizeEventPayload(event.type, event.payload, event.occurredAt);
 
-  // Normalize Entity fields
-  if (type === "EntityCreated" || type === "EntityUpdated" || type === "EntityArchived") {
-    payload.entityId = payload.entityId || payload.id;
-    payload.id = payload.entityId;
-    payload.entityType = payload.entityType || payload.type;
-    payload.type = payload.entityType;
-  }
-
-  // Normalize Relation fields
-  if (type === "RelationCreated" || type === "RelationUpdated" || type === "RelationArchived") {
-    payload.relationId = payload.relationId || payload.id;
-    payload.id = payload.relationId;
-  }
-
-  // Normalize Fact fields
-  if (type === "FactCreated" || type === "FactUpdated" || type === "FactArchived") {
-    payload.factId = payload.factId || payload.id;
-    payload.id = payload.factId;
-  }
-
-  // Normalize Session fields
-  if (type === "SessionCreated" || type === "SessionStarted" || type === "SessionPrepUpdated" || type === "SessionClosed" || type === "SessionCancelled" || type === "SessionArchived") {
-    payload.sessionId = payload.sessionId || payload.id;
-    payload.id = payload.sessionId;
-  }
-
-  // Normalize visibility — canonical field is `kind`; drop legacy `mode`
-  if (payload.visibility) {
-    const canonicalKind = payload.visibility.kind || payload.visibility.mode || "dm_only";
-    const { mode: _mode, ...rest } = payload.visibility;
-    payload.visibility = { ...rest, kind: canonicalKind };
-  }
-
   switch (type) {
     case "CampaignCreated": {
       payload.campaignId = payload.campaignId || payload.id;
@@ -566,9 +533,8 @@ export function applyEvent(
       break;
     }
     case "CanvasNoteConvertedToEntity": {
-      const { canvasId, nodeId, entity } = payload;
-      if (entity) next.entities.set(entity.entityId, entity);
-      const entityId = payload.entityId ?? entity?.entityId;
+      const { canvasId, nodeId } = payload;
+      const entityId = payload.entityId;
       const existing = next.canvases.get(canvasId);
       if (existing) {
         const nodes = existing.nodes.map((n: any) =>
