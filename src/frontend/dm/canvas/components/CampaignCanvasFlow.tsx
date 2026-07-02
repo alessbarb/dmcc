@@ -25,6 +25,7 @@ import { RelationshipTypePopover } from "./RelationshipTypePopover.js";
 import { CanvasToolbar } from "./CanvasToolbar.js";
 import type { InteractionMode } from "./CanvasToolbar.js";
 import type { ProOptions } from "reactflow";
+import { getRelationVisual } from "../../entities/entityVisuals.js";
 
 // Register custom node types — group nodes are no longer rendered as boxes
 const nodeTypes = {
@@ -54,6 +55,7 @@ export interface CampaignCanvasFlowProps {
   onSelectionChange?: (selectedNodes: any[], selectedEdges: any[]) => void;
   isDirectionMode?: boolean;
   isPlayerView?: boolean;
+  tablePrivacy?: boolean;
   mysteryFlowMode?: boolean;
   density?: "compact" | "normal" | "detailed";
   relationsFilter?: "all" | "public" | "secret" | "selection";
@@ -78,6 +80,7 @@ export function CampaignCanvasFlow({
   onSelectionChange,
   isDirectionMode = false,
   isPlayerView = false,
+  tablePrivacy = false,
   mysteryFlowMode = false,
   density = "normal",
   relationsFilter = "all",
@@ -243,6 +246,7 @@ export function CampaignCanvasFlow({
             label: node.kind === "note" ? node.text : (entity ? entity.title : node.title),
             isDirectionMode,
             isPlayerView,
+            tablePrivacy,
             isAttenuated,
             density,
             collapsed: node.collapsed,
@@ -250,7 +254,7 @@ export function CampaignCanvasFlow({
           style: nodeStyle,
         };
       });
-  }, [canvas.nodes, campaignState?.entities, campaignState?.facts, canvasId, typeFilter, publicOnly, mysteryFlowMode, highlightedNodeIds, isDirectionMode, isPlayerView, density]);
+  }, [canvas.nodes, campaignState?.entities, campaignState?.facts, canvasId, typeFilter, publicOnly, mysteryFlowMode, highlightedNodeIds, isDirectionMode, isPlayerView, tablePrivacy, density]);
 
   // Map canvas edges to React Flow edges format
   const flowEdges = useMemo(() => {
@@ -292,6 +296,10 @@ export function CampaignCanvasFlow({
         return true;
       })
       .map((edge: any) => {
+        const relation = edge.relationshipId
+          ? campaignState?.relations?.find((item: any) => item.relationId === edge.relationshipId)
+          : undefined;
+        const relationVisual = getRelationVisual(relation?.relationType ?? edge.label ?? "", edge.style);
         const isSecret = edge.style === "secret";
         const isDashed = edge.style === "dashed";
         const isStrong = edge.style === "strong";
@@ -329,6 +337,16 @@ export function CampaignCanvasFlow({
           strokeColor = "hsl(220, 15%, 30%)";
         }
 
+        if (!isSecret && relationVisual.semantic !== "neutral") {
+          strokeColor = relationVisual.color;
+          strokeDasharray = relationVisual.line === "dashed"
+            ? "7 5"
+            : relationVisual.line === "double"
+              ? "2 2"
+              : undefined;
+          strokeWidth = relationVisual.line === "double" ? 3.5 : Math.max(strokeWidth, 2);
+        }
+
         const isSelected = selectedEdgeId === edge.id;
         if (isSelected) {
           strokeColor = "hsl(255, 85%, 72%)";
@@ -345,7 +363,9 @@ export function CampaignCanvasFlow({
           id: edge.id,
           source: edge.sourceNodeId,
           target: edge.targetNodeId,
-          label: edge.label,
+          label: relationVisual.semantic === "neutral"
+            ? edge.label
+            : `${relationVisual.label}${edge.label ? ` · ${edge.label}` : ""}`,
           type: "smoothstep",
           selected: isSelected,
           markerEnd: {

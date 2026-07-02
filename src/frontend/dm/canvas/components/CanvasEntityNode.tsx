@@ -1,12 +1,9 @@
 import { Handle, Position } from "reactflow";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
-import {
-  User, UserCheck, MapPin, Shield, Award, HelpCircle, Key, Box, Skull,
-  Activity, Film, AlertTriangle, Clock, GitPullRequest, RefreshCcw,
-  MessageSquare, BookOpen, FileText, StickyNote, Eye, Zap,
-  CheckCircle2
-} from "lucide-react";
+import { AlertTriangle, CheckCircle2, Eye, FileText, KeyRound, RefreshCcw, StickyNote, Zap } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+import { getEntityVisual } from "../../entities/entityVisuals.js";
 
 
 export interface CanvasEntityNodeProps {
@@ -16,6 +13,7 @@ export interface CanvasEntityNodeProps {
     entityId: string;
     isDirectionMode?: boolean;
     isPlayerView?: boolean;
+    tablePrivacy?: boolean;
     isAttenuated?: boolean;
   };
   selected?: boolean;
@@ -23,28 +21,10 @@ export interface CanvasEntityNodeProps {
 
 export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodeProps) {
   const { t } = useTranslation();
-
-  const TYPE_CONFIGS: Record<string, { label: string; icon: any; color: string; heroStyle: "portrait" | "panorama" | "compact" }> = {
-    player_character: { label: t("domain.entityTypes.player_character"), icon: User,           color: "#6366f1", heroStyle: "portrait"  },
-    npc:              { label: t("domain.entityTypes.npc"),              icon: UserCheck,      color: "#3b82f6", heroStyle: "portrait"  },
-    location:         { label: t("domain.entityTypes.location"),         icon: MapPin,         color: "#10b981", heroStyle: "panorama"  },
-    faction:          { label: t("domain.entityTypes.faction"),          icon: Shield,         color: "#f59e0b", heroStyle: "portrait"  },
-    quest:            { label: t("domain.entityTypes.quest"),            icon: Award,          color: "#f97316", heroStyle: "compact"   },
-    clue:             { label: t("domain.entityTypes.clue"),             icon: HelpCircle,     color: "#eab308", heroStyle: "compact"   },
-    secret:           { label: t("domain.entityTypes.secret"),           icon: Key,            color: "#ef4444", heroStyle: "compact"   },
-    item:             { label: t("domain.entityTypes.item"),             icon: Box,            color: "#8b5cf6", heroStyle: "compact"   },
-    creature:         { label: t("domain.entityTypes.creature"),         icon: Skull,          color: "#dc2626", heroStyle: "portrait"  },
-    encounter:        { label: t("domain.entityTypes.encounter"),        icon: Activity,       color: "#0891b2", heroStyle: "compact"   },
-    scene:            { label: t("domain.entityTypes.scene"),            icon: Film,           color: "#64748b", heroStyle: "panorama"  },
-    front:            { label: t("domain.entityTypes.front"),            icon: AlertTriangle,  color: "#7c3aed", heroStyle: "compact"   },
-    clock:            { label: t("domain.entityTypes.clock"),            icon: Clock,          color: "#0ea5e9", heroStyle: "compact"   },
-    decision:         { label: t("domain.entityTypes.decision"),         icon: GitPullRequest, color: "#d97706", heroStyle: "compact"   },
-    consequence:      { label: t("domain.entityTypes.consequence"),      icon: RefreshCcw,     color: "#b45309", heroStyle: "compact"   },
-    rumor:            { label: t("domain.entityTypes.rumor"),            icon: MessageSquare,  color: "#6b7280", heroStyle: "compact"   },
-    rule_reference:   { label: t("domain.entityTypes.rule_reference"),   icon: BookOpen,       color: "#374151", heroStyle: "compact"   },
-    handout:          { label: t("domain.entityTypes.handout"),          icon: FileText,       color: "#1d4ed8", heroStyle: "compact"   },
-    note:             { label: t("domain.entityTypes.note"),             icon: StickyNote,     color: "#475569", heroStyle: "compact"   },
-  };
+  const [isPrivacyRevealed, setIsPrivacyRevealed] = useState(false);
+  useEffect(() => {
+    if (!data.tablePrivacy) setIsPrivacyRevealed(false);
+  }, [data.tablePrivacy]);
 
   const {
     campaignState,
@@ -74,10 +54,12 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
     );
   }
 
-  const cfg = TYPE_CONFIGS[entity.entityType] || { label: "Entidad", icon: FileText, color: "#64748b", heroStyle: "compact" };
+  const cfg = getEntityVisual(entity.entityType);
   const IconComponent = cfg.icon;
   const imageUrl = entity.metadata?.imageUrl as string | undefined;
   const heroStyle = cfg.heroStyle;
+  const isDmOnly = !entity.visibility || entity.visibility.kind === "dm_only" || entity.visibility.kind === "dm";
+  const isTableHidden = Boolean(data.tablePrivacy && isDmOnly && !isPrivacyRevealed);
 
   const isCritical = entity.importance === "critical";
   const isHigh = entity.importance === "high";
@@ -90,6 +72,8 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
   const cardClasses = [
     "rg-card",
     `rg-card--${heroStyle}`,
+    `rg-card--shape-${cfg.shape}`,
+    `rg-card--border-${cfg.borderPattern}`,
     `rg-card--density-${density}`,
     selected    ? "rg-card--selected"  : "",
     isCritical  ? "rg-card--critical"  : "",
@@ -97,6 +81,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
     isBlocked   ? "rg-card--blocked"   : "",
     isResolved  ? "rg-card--resolved"  : "",
     hasDirectionToolbar ? "has-direction-toolbar" : "",
+    isTableHidden ? "rg-card--table-hidden" : "",
   ].filter(Boolean).join(" ");
 
   const subtitle = entity.subtitle || (entity.summary && entity.summary.length > 0
@@ -104,16 +89,42 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
     : undefined);
 
   return (
-    <div className={cardClasses} style={{ "--rg-accent": cfg.color } as any}>
+    <div
+      className={cardClasses}
+      style={{
+        "--rg-accent": cfg.accent,
+        "--entity-accent": cfg.accent,
+        "--entity-accent-soft": cfg.accentSoft,
+      } as CSSProperties}
+    >
       <Handle type="target" position={Position.Top} className="canvas-handle target-handle" />
+
+      {isTableHidden && (
+        <button
+          type="button"
+          className="rg-card__privacy-cover"
+          onClick={(event) => {
+            event.stopPropagation();
+            setIsPrivacyRevealed(true);
+          }}
+          onFocus={() => setIsPrivacyRevealed(true)}
+          onBlur={() => setIsPrivacyRevealed(false)}
+          aria-label={t("canvas.toolbar.revealPrivateTemporarily")}
+        >
+          <KeyRound aria-hidden="true" size={22} />
+          <span>{t("canvas.toolbar.privateContent")}</span>
+        </button>
+      )}
 
       {/* Hero area */}
       <div className={`rg-card__hero ${imageUrl ? "rg-card__hero--img" : "rg-card__hero--icon"}`}>
         {imageUrl ? (
           <img src={imageUrl} alt={entity.title} className="rg-card__img" />
         ) : (
-          <IconComponent size={heroStyle === "portrait" ? 36 : heroStyle === "panorama" ? 30 : 24}
-                         style={{ color: cfg.color }} />
+          <IconComponent
+            className="rg-card__hero-icon"
+            size={heroStyle === "portrait" ? 36 : heroStyle === "panorama" ? 30 : 24}
+          />
         )}
 
         {/* Gradient overlay for readability over image */}
@@ -122,7 +133,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
         {/* Type badge — overlaid bottom-left of hero */}
         <div className="rg-card__type-badge">
           <IconComponent size={9} />
-          <span>{cfg.label}</span>
+          <span>{t(cfg.labelKey)}</span>
         </div>
 
         {/* Visibility badge — top-right */}

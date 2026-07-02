@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
-import { formatEntityType } from "@shared/i18n/index.js";
 import {
-  Search, User, MapPin, Film, HelpCircle, Key, Award, Skull, Box, Shield,
+  Search, Film,
   StickyNote, BoxSelect, Eye, CheckCircle2, RefreshCcw, Trash2,
   Lock, MessageSquare, XCircle, Lightbulb, AlertTriangle, RefreshCw,
   ChevronLeft, ChevronRight
 } from "lucide-react";
+import { getEntityVisual } from "../../entities/entityVisuals.js";
 
 
 export interface CanvasPaletteProps {
@@ -32,7 +32,7 @@ function makeDragGhost(label: string, color: string): HTMLElement {
 }
 
 export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: CanvasPaletteProps) {
-  const { locale, t } = useTranslation();
+  const { t } = useTranslation();
   const {
     campaignState,
     placeNodeOnCanvas,
@@ -314,16 +314,17 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
   }
 
   const PALETTE_ITEMS = [
-    { label: formatEntityType("npc", locale),       type: "npc",      Icon: User,        color: "#3b82f6" },
-    { label: formatEntityType("location", locale),  type: "location", Icon: MapPin,      color: "#10b981" },
-    { label: formatEntityType("scene", locale),     type: "scene",    Icon: Film,        color: "#64748b" },
-    { label: formatEntityType("clue", locale),      type: "clue",     Icon: HelpCircle,  color: "#eab308" },
-    { label: formatEntityType("secret", locale),    type: "secret",   Icon: Key,         color: "#ef4444" },
-    { label: formatEntityType("quest", locale),     type: "quest",    Icon: Award,       color: "#f97316" },
-    { label: formatEntityType("creature", locale),  type: "creature", Icon: Skull,       color: "#dc2626" },
-    { label: formatEntityType("item", locale),      type: "item",     Icon: Box,         color: "#8b5cf6" },
-    { label: formatEntityType("faction", locale),   type: "faction",  Icon: Shield,      color: "#f59e0b" },
-  ];
+    "npc", "location", "scene", "clue", "secret", "quest", "creature", "item", "faction",
+  ].map((type) => {
+    const visual = getEntityVisual(type);
+    return {
+      label: t(visual.labelKey),
+      type,
+      Icon: visual.icon,
+      color: visual.accent,
+      colorSoft: visual.accentSoft,
+    };
+  });
 
   if (collapsed) {
     return (
@@ -440,12 +441,16 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
                 }}
                 onClick={() => handleCreateNewNode("entity", item.type, item.label)}
                 className="palette-list-item-btn"
-                style={{ "--item-color": item.color, cursor: "grab" } as React.CSSProperties}
+                style={{
+                  "--item-color": item.color,
+                  "--item-color-soft": item.colorSoft,
+                  cursor: "grab",
+                } as React.CSSProperties}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && handleCreateNewNode("entity", item.type, item.label)}
               >
-                <IconComponent size={14} style={{ color: item.color }} />
+                <IconComponent className="palette-item__icon" size={14} />
                 <span>+ {item.label}</span>
               </div>
             );

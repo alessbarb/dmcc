@@ -676,6 +676,7 @@ export function CanvasPage() {
   // Toggles for Phase 2 & Second Wave
   const [isDirectionMode, setIsDirectionMode] = useState(false);
   const [isPlayerView, setIsPlayerView] = useState(false);
+  const [tablePrivacy, setTablePrivacy] = useState(false);
   const [mysteryFlowMode, setMysteryFlowMode] = useState(false);
   const [isFullscreenPresentation, setIsFullscreenPresentation] = useState(false);
   const [newBoardTemplate, setNewBoardTemplate] = useState("custom");
@@ -699,6 +700,7 @@ export function CanvasPage() {
     setSelectedNodes([]);
     setSelectedEdges([]);
     setBulkGroupId("");
+    setTablePrivacy(false);
   }, [campaignId]);
 
   // Session Prep Dialog
@@ -1031,6 +1033,19 @@ export function CanvasPage() {
               >
                 {publicOnly ? <Eye size={12} /> : <EyeOff size={12} />}
                 <span>{publicOnly ? t("canvas.toolbar.publicOnly") : "Mostrar secretos"}</span>
+              </button>
+            )}
+
+            {!isPlayerView && (
+              <button
+                type="button"
+                className={`btn btn-sm btn-icon ${tablePrivacy ? "btn-primary" : "btn-secondary"}`}
+                onClick={() => setTablePrivacy(value => !value)}
+                aria-pressed={tablePrivacy}
+                title={t("canvas.toolbar.tablePrivacyHint")}
+              >
+                <Shield size={12} aria-hidden="true" />
+                <span>{t("canvas.toolbar.tablePrivacy")}</span>
               </button>
             )}
 
@@ -1383,6 +1398,7 @@ export function CanvasPage() {
                 }}
                 isDirectionMode={isDirectionMode}
                 isPlayerView={isPlayerView}
+                tablePrivacy={tablePrivacy}
                 mysteryFlowMode={mysteryFlowMode}
                 density={density}
                 relationsFilter={relationsFilter}

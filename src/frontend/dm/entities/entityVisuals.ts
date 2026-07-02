@@ -1,36 +1,129 @@
+import type { EntityType } from "@core/domain/entity/types.js";
+import type { LucideIcon } from "lucide-react";
+import {
+  Activity, AlertTriangle, Award, BookOpen, Box, Clock, FileText, Film,
+  GitPullRequest, HelpCircle, KeyRound, MapPin, MessageSquare, RefreshCcw,
+  Shield, Skull, StickyNote, User, UserCheck,
+} from "lucide-react";
+
+export type EntityVisualShape = "portrait" | "hex-header" | "compact" | "veiled";
+export type EntityBorderPattern = "solid" | "dashed" | "double";
+
+export interface EntityVisual {
+  labelKey: `domain.entityTypes.${EntityType}`;
+  icon: LucideIcon;
+  accent: string;
+  accentSoft: string;
+  heroStyle: "portrait" | "panorama" | "compact";
+  shape: EntityVisualShape;
+  borderPattern: EntityBorderPattern;
+  privacy?: "private" | "uncertain";
+}
+
+function visual(
+  type: EntityType,
+  icon: LucideIcon,
+  tone: string,
+  heroStyle: EntityVisual["heroStyle"] = "compact",
+  shape: EntityVisualShape = "compact",
+  borderPattern: EntityBorderPattern = "solid",
+  privacy?: EntityVisual["privacy"],
+): EntityVisual {
+  return {
+    labelKey: `domain.entityTypes.${type}`,
+    icon,
+    accent: `var(--entity-${tone})`,
+    accentSoft: `var(--entity-${tone}-soft)`,
+    heroStyle,
+    shape,
+    borderPattern,
+    privacy,
+  };
+}
+
+export const ENTITY_VISUALS: Record<EntityType, EntityVisual> = {
+  player_character: visual("player_character", User, "player", "portrait", "portrait"),
+  npc: visual("npc", UserCheck, "npc", "portrait", "portrait"),
+  location: visual("location", MapPin, "location", "panorama", "hex-header"),
+  faction: visual("faction", Shield, "faction", "portrait", "portrait"),
+  quest: visual("quest", Award, "quest"),
+  clue: visual("clue", HelpCircle, "clue"),
+  secret: visual("secret", KeyRound, "secret", "compact", "veiled", "double", "private"),
+  item: visual("item", Box, "item"),
+  creature: visual("creature", Skull, "creature", "portrait", "portrait"),
+  encounter: visual("encounter", Activity, "encounter"),
+  scene: visual("scene", Film, "scene", "panorama"),
+  front: visual("front", AlertTriangle, "front"),
+  clock: visual("clock", Clock, "clock"),
+  decision: visual("decision", GitPullRequest, "decision"),
+  consequence: visual("consequence", RefreshCcw, "consequence"),
+  rumor: visual("rumor", MessageSquare, "rumor", "compact", "compact", "dashed", "uncertain"),
+  rule_reference: visual("rule_reference", BookOpen, "reference"),
+  handout: visual("handout", FileText, "handout"),
+  note: visual("note", StickyNote, "note"),
+};
+
+export function getEntityVisual(type: string): EntityVisual {
+  return ENTITY_VISUALS[type as EntityType] ?? ENTITY_VISUALS.note;
+}
+
+export interface RelationVisual {
+  semantic: "canon" | "rumor" | "distrust" | "hostility" | "neutral";
+  color: string;
+  line: "solid" | "dashed" | "double";
+  label: string;
+}
+
+const RELATION_VISUALS: Record<RelationVisual["semantic"], RelationVisual> = {
+  canon: { semantic: "canon", color: "var(--semantic-canon)", line: "solid", label: "Canon" },
+  rumor: { semantic: "rumor", color: "var(--semantic-rumor)", line: "dashed", label: "Rumor" },
+  distrust: { semantic: "distrust", color: "var(--semantic-theory)", line: "dashed", label: "Desconfianza" },
+  hostility: { semantic: "hostility", color: "var(--semantic-danger)", line: "double", label: "Hostilidad" },
+  neutral: { semantic: "neutral", color: "var(--text-subtle)", line: "solid", label: "Relation" },
+};
+
+export function getRelationVisual(relationType: string, edgeStyle = ""): RelationVisual {
+  const value = `${relationType} ${edgeStyle}`.toLowerCase();
+  if (/hostil|hostile|enemy|enem|attack|rival/.test(value)) return RELATION_VISUALS.hostility;
+  if (/distrust|desconf|suspect|doubt|theory/.test(value)) return RELATION_VISUALS.distrust;
+  if (/rumor|rumour|hearsay/.test(value)) return RELATION_VISUALS.rumor;
+  if (/canon|confirm|official|truth|fact/.test(value)) return RELATION_VISUALS.canon;
+  return RELATION_VISUALS.neutral;
+}
+
 export function getEntityDefaultImage(type: string): string {
   switch (type) {
     case "location":
-      return "/assets/default_location.png";
+      return "/assets/entities/default_location.png";
     case "scene":
-      return "/assets/default_scene.png";
+      return "/assets/entities/default_scene.png";
     case "npc":
-      return "/assets/default_npc.png";
+      return "/assets/entities/default_npc.png";
     case "player":
-      return "/assets/default_player.png";
+      return "/assets/entities/default_player.png";
     case "player_character":
-      return "/assets/default_player_character.png";
+      return "/assets/entities/default_player_character.png";
     case "creature":
-      return "/assets/default_creature.png";
+      return "/assets/entities/default_creature.png";
     case "quest":
-      return "/assets/default_quest.png";
+      return "/assets/entities/default_quest.png";
     case "objective":
-      return "/assets/default_objective.png";
+      return "/assets/entities/default_objective.png";
     case "clue":
-      return "/assets/default_clue.png";
+      return "/assets/entities/default_clue.png";
     case "rumor":
-      return "/assets/default_rumor.png";
+      return "/assets/entities/default_rumor.png";
     case "secret":
-      return "/assets/default_secret.png";
+      return "/assets/entities/default_secret.png";
     case "consequence":
-      return "/assets/default_consequence.png";
+      return "/assets/entities/default_consequence.png";
     case "clock":
-      return "/assets/default_clock.png";
+      return "/assets/entities/default_clock.png";
     case "fact":
-      return "/assets/default_fact.png";
+      return "/assets/entities/default_fact.png";
     case "item":
-      return "/assets/default_item.png";
+      return "/assets/entities/default_item.png";
     default:
-      return "/assets/default_other.png";
+      return "/assets/entities/default_other.png";
   }
 }
