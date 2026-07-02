@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { makeRepositoryFactory } from "../repositoryFactory.js";
 import { assertDM, getValidatedVaultId, getValidatedCampaignId, getRequestActorId } from "../auth.js";
 import { createId } from "@shared/ids.js";
+import { sendCommandError } from "../commandHttp.js";
 
 export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -35,6 +36,7 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
         reply.code(201);
         return { tagId, name: name.trim(), color };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -84,6 +86,7 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
         reply.code(201);
         return { ok: true, entityId, tagId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -108,6 +111,7 @@ export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir
         });
         return { ok: true, entityId, tagId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }

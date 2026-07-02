@@ -21,6 +21,7 @@ import {
   getVisibleRelations,
   getVisibleFacts,
 } from "../helpers.js";
+import { sendCommandError } from "../commandHttp.js";
 
 export async function registerProjectionRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -125,6 +126,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
           })),
         };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode === 401 || err.statusCode === 403) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -216,6 +218,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
 
         return { results };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode === 401 || err.statusCode === 403) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -281,6 +284,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
           };
         }
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(404);
         return { error: `Campaign not found: ${err.message}` };
       }

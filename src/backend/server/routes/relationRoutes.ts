@@ -8,6 +8,7 @@ import {
   getValidatedCampaignId,
   getRequestActorId,
 } from "../auth.js";
+import { sendCommandError } from "../commandHttp.js";
 
 type CreateRelationBody = {
   actorId?: string;
@@ -67,6 +68,7 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
         reply.code(201);
         return { campaignId, sourceEntityId, targetEntityId, relationType };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -94,6 +96,7 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.message?.includes("not found")) {
           reply.code(404);
           return { error: "Relation not found" };
@@ -121,6 +124,7 @@ export async function registerRelationRoutes(server: FastifyInstance, opts: { da
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }

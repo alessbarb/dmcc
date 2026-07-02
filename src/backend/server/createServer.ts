@@ -6,7 +6,8 @@ import { existsSync } from "fs";
 import { basename, join, dirname, resolve, sep } from "path";
 import { fileURLToPath } from "url";
 import { homedir } from "os";
-import { randomBytes } from "crypto";
+import { requestContextStore } from "../../core/persistence/context.js";
+import { randomBytes, randomUUID } from "crypto";
 import { getRequestDmSession, getValidatedCampaignId, getValidatedVaultId } from "./auth.js";
 import { hasCampaignDmAccessSync } from "./campaignAclStore.js";
 import { registerVaultRoutes } from "./routes/vaultRoutes.js";
@@ -181,6 +182,21 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
     reply.code(404);
     return { error: "Not found" };
+  });
+
+  function getSingleHeader(value: string | string[] | undefined): string | undefined {
+    if (Array.isArray(value)) return value[0];
+    return value;
+  }
+
+  server.addHook("onRequest", (request, _reply, done) => {
+    const commandId =
+      getSingleHeader(request.headers["idempotency-key"]) ??
+      getSingleHeader(request.headers["command-id"]) ??
+      randomUUID();
+
+    request.headers["command-id"] = commandId;
+    requestContextStore.run({ commandId, counter: 0 }, done);
   });
 
   server.addHook("preValidation", async (request, reply) => {

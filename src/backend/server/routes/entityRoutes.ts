@@ -10,6 +10,7 @@ import {
   getRequestActorId,
 } from "../auth.js";
 import { getCharacterEntityIdForPlayer } from "../helpers.js";
+import { sendCommandError } from "../commandHttp.js";
 
 const VALID_ENTITY_TYPES = [
   "player_character", "npc", "location", "faction", "quest", "clue", "secret",
@@ -127,6 +128,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
         reply.code(201);
         return created || { campaignId, entityType, title };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(err.statusCode ?? 400);
         return { error: err.message };
       }
@@ -191,6 +193,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
       });
       return updatedProjection.entities.get(entityId) ?? { ...existing, ...allowedUpdates, entityId };
     } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
       if (err.statusCode) {
         reply.code(err.statusCode);
         return { error: err.message };
@@ -247,6 +250,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };

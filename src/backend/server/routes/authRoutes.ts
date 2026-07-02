@@ -25,6 +25,7 @@ import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js"
 import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
 import { getSessionUser, readUserAuthStore, revokeAllSessions } from "../userAuthStore.js";
 import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
+import { sendCommandError } from "../commandHttp.js";
 
 interface DmAttemptState {
   count: number;
@@ -140,6 +141,7 @@ export async function registerAuthRoutes(
         );
         return { ok: true, dmSessionToken, dm: toPublicDmProfile(account), firstAccount };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(err.statusCode ?? 500);
         return { error: err.message ?? "Failed to create DM account" };
       }

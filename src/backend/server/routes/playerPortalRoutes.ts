@@ -12,6 +12,7 @@ import {
   getRequestActorId,
   hashPlayerToken,
 } from "../auth.js";
+import { sendCommandError } from "../commandHttp.js";
 
 type StatusBody = {
   characterEntityId?: string;
@@ -575,6 +576,7 @@ export async function registerPlayerPortalRoutes(
           memory: buildPlayerCampaignMemory(state, playerId, link?.characterEntityId ?? null),
         };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -618,6 +620,7 @@ export async function registerPlayerPortalRoutes(
 
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -644,6 +647,7 @@ export async function registerPlayerPortalRoutes(
         reply.code(201);
         return { ok: true, resourceId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -676,6 +680,7 @@ export async function registerPlayerPortalRoutes(
 
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -724,6 +729,7 @@ export async function registerPlayerPortalRoutes(
         reply.code(201);
         return { ok: true, noteId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -775,6 +781,7 @@ export async function registerPlayerPortalRoutes(
 
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -825,6 +832,7 @@ export async function registerPlayerPortalRoutes(
         reply.code(201);
         return { ok: true, objectiveId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -877,6 +885,7 @@ export async function registerPlayerPortalRoutes(
 
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -936,6 +945,7 @@ export async function registerPlayerPortalRoutes(
         reply.code(201);
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -977,6 +987,7 @@ export async function registerPlayerPortalRoutes(
 
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -1032,6 +1043,7 @@ export async function registerPlayerPortalRoutes(
         reply.code(201);
         return { ok: true, proposalId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -1184,6 +1196,7 @@ export async function registerPlayerPortalRoutes(
 
         return { ok: true, characterEntityId: createdCharacterId ?? linkUpdate?.characterEntityId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -1232,6 +1245,7 @@ export async function registerPlayerPortalRoutes(
 
         return { players, availableCharacters };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };

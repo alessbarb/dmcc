@@ -6,6 +6,7 @@ import { createId, generateCampaignId } from "@shared/ids.js";
 import { assertDM, getRequestDmId, getValidatedVaultId } from "../auth.js";
 import { ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
 import { getPremadeCampaignTemplate, listPremadeCampaignTemplates } from "../premade/premadeCampaigns.js";
+import { sendCommandError } from "../commandHttp.js";
 
 type PremadeImportMode = "full" | "structure" | "sessions";
 
@@ -276,6 +277,7 @@ export async function registerPremadeCampaignRoutes(server: FastifyInstance, opt
           metadata: importMetadata,
         };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         await removeCampaignAcl(dataDir, vaultId, campaignId).catch(() => {});
         await rm(campaignDir, { recursive: true, force: true }).catch(() => {});
         reply.code(500);

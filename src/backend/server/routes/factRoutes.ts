@@ -9,6 +9,7 @@ import {
   getValidatedCampaignId,
   getRequestActorId,
 } from "../auth.js";
+import { sendCommandError } from "../commandHttp.js";
 
 type CreateFactBody = {
   actorId?: string;
@@ -59,6 +60,7 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
         reply.code(201);
         return { campaignId, statement, kind };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -87,6 +89,7 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.message?.includes("not found")) {
           reply.code(404);
           return { error: "Fact not found" };
@@ -114,6 +117,7 @@ export async function registerFactRoutes(server: FastifyInstance, opts: { dataDi
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }

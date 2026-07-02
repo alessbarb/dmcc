@@ -6,6 +6,7 @@ import { VERSION_INFO } from "@shared/appVersion.js";
 import { assertDM, getValidatedCampaignId, getValidatedVaultId } from "../auth.js";
 import { createCampaignBackup, listCampaignBackups } from "../hardening/backups.js";
 import { buildCampaignIntegrityReport, findMissingAttachmentFiles } from "../hardening/integrity.js";
+import { sendCommandError } from "../commandHttp.js";
 
 export async function registerHardeningRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -65,6 +66,7 @@ export async function registerHardeningRoutes(server: FastifyInstance, opts: { d
       report.ok = report.summary.errors === 0;
       return report;
     } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
       reply.code(500);
       return {
         ok: false,
@@ -98,6 +100,7 @@ export async function registerHardeningRoutes(server: FastifyInstance, opts: { d
         autoBackup,
       };
     } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
       reply.code(500);
       return { ok: false, error: err.message };
     }
@@ -136,6 +139,7 @@ export async function registerHardeningRoutes(server: FastifyInstance, opts: { d
         integrity,
       };
     } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
       reply.code(500);
       return { ok: false, error: err.message };
     }

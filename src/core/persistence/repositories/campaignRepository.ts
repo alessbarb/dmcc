@@ -12,6 +12,40 @@ import { InvariantViolationError } from "@shared/errors.js";
 import type { Command } from "../../application/commands.js";
 import { handleCommand } from "../../application/commandBus.js";
 import type { CampaignState } from "../../domain/state.js";
+import { requestContextStore } from "../context.js";
+import { createHash, randomUUID } from "crypto";
+
+export class CommandConflictError extends Error {
+  constructor(public readonly commandId: string) {
+    super(`Conflict: Command ID ${commandId} already used for a different operation`);
+    Object.setPrototypeOf(this, CommandConflictError.prototype);
+  }
+}
+
+export function calculateCommandHash(command: any): string {
+  const { type, campaignId, actorId, commandId, ...payload } = command;
+
+  const canonicalStringify = (obj: any): string => {
+    if (obj === null) return "null";
+    if (typeof obj !== "object") return JSON.stringify(obj);
+    if (Array.isArray(obj)) {
+      return "[" + obj.map(canonicalStringify).join(",") + "]";
+    }
+    const keys = Object.keys(obj).sort();
+    const parts = keys.map((key) => `${JSON.stringify(key)}:${canonicalStringify(obj[key])}`);
+    return "{" + parts.join(",") + "}";
+  };
+
+  const keyFields = {
+    commandType: type,
+    campaignId,
+    actorId,
+    payload
+  };
+
+  const str = canonicalStringify(keyFields);
+  return createHash("sha256").update(str).digest("hex");
+}
 
 export function rewriteCampaignEventPayload(
   _eventType: DomainEventType,
@@ -39,7 +73,8 @@ export function rewriteCampaignEventPayload(
 export class CampaignRepository {
   constructor(
     private readonly eventStore: EventStore,
-    private readonly snapshotStore: SnapshotStore
+    private readonly snapshotStore: SnapshotStore,
+    private readonly runQueued: <T>(campaignId: string, fn: () => Promise<T>) => Promise<T> = (id, fn) => fn()
   ) {}
 
   /**
@@ -124,34 +159,72 @@ export class CampaignRepository {
     return updatedProjection;
   }
 
-  /**
-   * Executes a domain command through the command bus, then persists the resulting event.
-   * This is the preferred write path for all domain mutations.
-   */
   public async executeCommand(campaignId: CampaignId, command: Command): Promise<CampaignProjection> {
     // DuplicateCampaign requires cross-campaign event access and is handled here
     // rather than in the pure command bus (which has no I/O access).
     if (command.type === "DuplicateCampaign") {
-      return this.executeDuplicateCampaign(command);
+      return this.runQueued(command.newCampaignId, () => this.executeDuplicateCampaign(command));
     }
 
-    const projection = await this.getCampaignState(campaignId);
-    const state = projectionToCampaignState(campaignId, projection);
-    const result = handleCommand(state, command);
-    let currentProjection = projection;
-    const storedEvents = await this.eventStore.appendEvents(
-      campaignId,
-      result.events.map((event) => ({
-        type: event.type as DomainEventType,
-        actorId: event.actorId,
-        payload: event.payload,
-      }))
-    );
-    for (const event of storedEvents) {
-      currentProjection = applyEvent(currentProjection, event);
-    }
-    await this.snapshotStore.saveSnapshot(campaignId, currentProjection.lastSequence, currentProjection);
-    return currentProjection;
+    return this.runQueued(campaignId, async () => {
+      const commandHash = calculateCommandHash(command);
+      const context = requestContextStore.getStore();
+      let commandId = (command as any).commandId;
+      if (!commandId) {
+        if (context) {
+          context.counter++;
+          commandId = context.counter === 1 ? context.commandId : `${context.commandId}:${context.counter}`;
+        } else {
+          commandId = randomUUID();
+        }
+      }
+
+      const commandIndex = await this.eventStore.getCommandIndex(campaignId);
+      const existing = commandIndex.get(commandId);
+
+      if (existing) {
+        if (existing.commandHash !== commandHash) {
+          throw new CommandConflictError(commandId);
+        }
+
+        // The command was already persisted. Return the current projection instead of
+        // throwing a "success" error so multi-command HTTP routes can continue and
+        // finish any later idempotent subcommands or side effects.
+        return this.getCampaignState(campaignId);
+      }
+
+      const projection = await this.getCampaignState(campaignId);
+      const state = projectionToCampaignState(campaignId, projection);
+      const result = handleCommand(state, command);
+      let currentProjection = projection;
+      const storedEvents = await this.eventStore.appendEvents(
+        campaignId,
+        result.events.map((event) => ({
+          type: event.type as DomainEventType,
+          actorId: event.actorId,
+          payload: event.payload,
+        })),
+        { commandId, commandHash }
+      );
+
+      for (const event of storedEvents) {
+        currentProjection = applyEvent(currentProjection, event);
+      }
+
+      if (storedEvents.length > 0) {
+        const firstSequence = storedEvents[0].sequence;
+        const lastSequence = storedEvents[storedEvents.length - 1].sequence;
+        await this.eventStore.appendCommandIndexEntry(campaignId, {
+          commandId,
+          commandHash,
+          firstSequence,
+          lastSequence
+        });
+      }
+
+      await this.snapshotStore.saveSnapshot(campaignId, currentProjection.lastSequence, currentProjection);
+      return currentProjection;
+    });
   }
 
   /**

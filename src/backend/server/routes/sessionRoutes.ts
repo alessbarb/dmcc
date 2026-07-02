@@ -7,6 +7,7 @@ import {
   getValidatedCampaignId,
   getRequestActorId,
 } from "../auth.js";
+import { sendCommandError } from "../commandHttp.js";
 
 type PrepBody = { actorId?: string; sessionId?: string; title: string; scheduledAt?: string; prep?: Record<string, unknown> };
 type UpdatePrepBody = { actorId?: string; title?: string; scheduledAt?: string; prep?: Record<string, unknown> };
@@ -68,6 +69,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         reply.code(201);
         return { sessionId: created?.sessionId || sessionId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }
@@ -98,6 +100,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }
@@ -124,6 +127,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         });
         return { ok: true, sessionId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }
@@ -150,6 +154,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         });
         return { ok: true, sessionId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }
@@ -176,6 +181,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         });
         return { ok: true, sessionId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }
@@ -204,6 +210,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         reply.code(201);
         return { sessionId: newSession?.sessionId || sessionId };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }
@@ -234,6 +241,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }
@@ -262,6 +270,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }
@@ -290,6 +299,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }
@@ -327,6 +337,7 @@ export async function registerSessionRoutes(server: FastifyInstance, opts: { dat
         reply.code(201);
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(statusForDomainError(err));
         return { error: err.message };
       }

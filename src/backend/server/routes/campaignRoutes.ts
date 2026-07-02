@@ -34,6 +34,7 @@ import {
 import { createCampaignBackup } from "../hardening/backups.js";
 import { copyCampaignAcl, ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
 import { addCampaignMembership, getVaultAccessCodePepper } from "../userAuthStore.js";
+import { sendCommandError } from "../commandHttp.js";
 
 function getLocalIp(): string {
   try {
@@ -145,6 +146,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
       }
       return campaigns;
     } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
       reply.code(500);
       return { error: `Failed to list campaigns: ${err?.message ?? "unknown error"}` };
     }
@@ -195,6 +197,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         reply.code(201);
         return { campaignId, title };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -230,6 +233,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         const state = await getRepository(vaultId).getCampaignState(campaignId);
         return { ok: true, campaign: state.campaign };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode === 401 || err.statusCode === 403) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -291,6 +295,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
         return { ok: true, campaignId, deletedPath, autoBackup };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode === 401 || err.statusCode === 403) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -380,6 +385,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
             : [],
         };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode === 401 || err.statusCode === 403) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -420,6 +426,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         reply.code(201);
         return { campaignId: newCampaignId, title: newTitle };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.message?.includes("Source campaign not found")) {
           reply.code(404);
           return { error: "Source campaign not found" };
@@ -442,6 +449,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         await getRepository(vaultId).rebuildSnapshot(campaignId);
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: `Rebuild failed: ${err.message}` };
       }
@@ -465,6 +473,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: `Failed to update settings: ${err.message}` };
       }
@@ -515,6 +524,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
         return { ok: true, lanModeEnabled: true, accessCode };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -550,6 +560,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         ).map(({ inviteTokenHash: _hash, ...rest }) => rest); // strip token hash from response
         return { invitations };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -594,6 +605,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
 
         return { ok: true, inviteId, inviteToken, registerUrl, expiresAt };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -618,6 +630,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -750,6 +763,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           campaignTitle: state.campaign?.title,
         };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) { reply.code(err.statusCode); return { error: err.message }; }
         reply.code(500);
         return { error: err.message };

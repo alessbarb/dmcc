@@ -23,6 +23,7 @@ import {
   writeEventsFromBackup,
 } from "../hardening/backups.js";
 import { VERSION_INFO } from "@shared/appVersion.js";
+import { sendCommandError } from "../commandHttp.js";
 
 export async function registerExportRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
@@ -82,6 +83,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
           createdAt: new Date().toISOString(),
         };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -151,6 +153,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
           archived: false,
         };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -245,6 +248,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true, count };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -323,6 +327,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         reply.code(201);
         return { campaignId, ...backup };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(404);
         return { error: `Campaign not found or backup failed: ${err.message}` };
       }
@@ -402,6 +407,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
 
         return { ok: true, campaignId, restoredFrom: backupId, autoBackup };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: `Failed to restore campaign: ${err.message}` };
       }

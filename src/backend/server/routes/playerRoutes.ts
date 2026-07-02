@@ -12,6 +12,7 @@ import {
   generatePlayerToken,
   hashPlayerToken,
 } from "../auth.js";
+import { sendCommandError } from "../commandHttp.js";
 
 type CreatePlayerBody = {
   displayName?: string;
@@ -105,6 +106,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
           updatedAt: new Date().toISOString(),
         };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -139,6 +141,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
 
         return players.filter((p: any) => p.playerId === playerId);
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -193,6 +196,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         updatedAt: new Date().toISOString(),
       };
     } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
       if (err.statusCode) {
         reply.code(err.statusCode);
         return { error: err.message };
@@ -238,6 +242,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
 
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -274,6 +279,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
 
         return { tokenId, token: rawToken };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };
@@ -306,6 +312,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
 
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         if (err.statusCode) {
           reply.code(err.statusCode);
           return { error: err.message };

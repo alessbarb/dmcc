@@ -10,6 +10,7 @@ import {
   getRequestActorId,
   getRequestDmSession,
 } from "../auth.js";
+import { sendCommandError } from "../commandHttp.js";
 
 type CanvasKind = "world" | "session" | "mystery" | "location" | "characters" | "custom";
 
@@ -118,6 +119,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         const canvases = Array.from(state.canvases?.values() || []).filter((c: any) => !c.archived);
         return canvases;
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(err.statusCode ?? 500);
         return { error: err.message };
       }
@@ -156,6 +158,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         }
         return canvas;
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(err.statusCode ?? 500);
         return { error: err.message };
       }
@@ -195,6 +198,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         reply.code(201);
         return { campaignId, title, kind };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -223,6 +227,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -246,6 +251,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -278,6 +284,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         reply.code(201);
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -305,6 +312,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -336,6 +344,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -360,6 +369,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -392,6 +402,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         reply.code(201);
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -419,6 +430,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -443,6 +455,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }
@@ -493,6 +506,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
         });
         return { ok: true };
       } catch (err: any) {
+        if (sendCommandError(reply, err)) return;
         reply.code(500);
         return { error: err.message };
       }

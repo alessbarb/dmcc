@@ -11,6 +11,7 @@ import { nowIso } from "@shared/dateTime.js";
 import { EVENT_SCHEMA_VERSION } from "@shared/appVersion.js";
 import { assertWithinDir } from "@backend/server/helpers.js";
 import { normalizeEventPayload } from "../../domain/shared/normalizeEventPayload.js";
+import { requestContextStore } from "../context.js";
 
 export function computeEventHash(eventWithoutHash: Omit<StoredEvent, "hash">): string {
   const hash = createHash("sha256");
@@ -24,6 +25,8 @@ export function computeEventHash(eventWithoutHash: Omit<StoredEvent, "hash">): s
     payload: eventWithoutHash.payload,
     previousHash: eventWithoutHash.previousHash,
     schemaVersion: eventWithoutHash.schemaVersion,
+    commandId: eventWithoutHash.commandId,
+    commandHash: eventWithoutHash.commandHash,
   });
   hash.update(data);
   return hash.digest("hex");
@@ -44,6 +47,7 @@ type EventAppendIndex = {
 export class EventStore {
   private baseDir: string;
   private vaultId: string;
+  private commandIndices = new Map<string, Map<string, { commandHash: string; firstSequence: number; lastSequence: number }>>();
 
   constructor(baseDir?: string, vaultId = "default") {
     if (!/^[a-zA-Z0-9_-]+$/.test(vaultId)) {
@@ -51,6 +55,96 @@ export class EventStore {
     }
     this.baseDir = baseDir || path.join(homedir(), "Documents", "DMCampaignCompanion");
     this.vaultId = vaultId;
+  }
+
+  public async getCommandIndex(campaignId: CampaignId): Promise<Map<string, { commandHash: string; firstSequence: number; lastSequence: number }>> {
+    let indexMap = this.commandIndices.get(campaignId);
+    if (indexMap) return indexMap;
+
+    indexMap = new Map();
+    const filePath = path.join(this.getCampaignDir(campaignId), "command-index.ndjson");
+    try {
+      const content = await fs.readFile(filePath, "utf8");
+      const lines = content.split("\n");
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        try {
+          const parsed = JSON.parse(line);
+          indexMap.set(parsed.commandId, {
+            commandHash: parsed.commandHash,
+            firstSequence: parsed.firstSequence,
+            lastSequence: parsed.lastSequence
+          });
+        } catch {
+          throw new Error("corrupt command index line");
+        }
+      }
+    } catch (error: any) {
+      indexMap = await this.rebuildCommandIndexFromEvents(campaignId);
+    }
+
+    this.commandIndices.set(campaignId, indexMap);
+    return indexMap;
+  }
+
+  public async rebuildCommandIndexFromEvents(campaignId: CampaignId): Promise<Map<string, { commandHash: string; firstSequence: number; lastSequence: number }>> {
+    const indexMap = new Map<string, { commandHash: string; firstSequence: number; lastSequence: number }>();
+    const events = await this.loadEvents(campaignId);
+
+    const commandGroups = new Map<string, { commandHash: string; sequences: number[] }>();
+    for (const event of events) {
+      if (event.commandId && event.commandHash) {
+        let group = commandGroups.get(event.commandId);
+        if (!group) {
+          group = { commandHash: event.commandHash, sequences: [] };
+          commandGroups.set(event.commandId, group);
+        }
+        group.sequences.push(event.sequence);
+      }
+    }
+
+    const filePath = path.join(this.getCampaignDir(campaignId), "command-index.ndjson");
+    const tempPath = `${filePath}.tmp`;
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+
+    let ndjson = "";
+    for (const [commandId, group] of commandGroups.entries()) {
+      const firstSequence = Math.min(...group.sequences);
+      const lastSequence = Math.max(...group.sequences);
+
+      indexMap.set(commandId, {
+        commandHash: group.commandHash,
+        firstSequence,
+        lastSequence
+      });
+
+      ndjson += JSON.stringify({
+        commandId,
+        commandHash: group.commandHash,
+        firstSequence,
+        lastSequence
+      }) + "\n";
+    }
+
+    await fs.writeFile(tempPath, ndjson, "utf8");
+    await fs.rename(tempPath, filePath);
+
+    return indexMap;
+  }
+
+  public async appendCommandIndexEntry(campaignId: CampaignId, entry: { commandId: string; commandHash: string; firstSequence: number; lastSequence: number }): Promise<void> {
+    const indexMap = await this.getCommandIndex(campaignId);
+    indexMap.set(entry.commandId, {
+      commandHash: entry.commandHash,
+      firstSequence: entry.firstSequence,
+      lastSequence: entry.lastSequence
+    });
+
+    const filePath = path.join(this.getCampaignDir(campaignId), "command-index.ndjson");
+    const ndjsonLine = JSON.stringify(entry) + "\n";
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.appendFile(filePath, ndjsonLine, "utf8");
   }
 
   public getCampaignDir(campaignId: CampaignId): string {
@@ -189,11 +283,12 @@ export class EventStore {
     campaignId: CampaignId,
     type: DomainEventType,
     actorId: string,
-    payload: T
+    payload: T,
+    options?: { commandId?: string; commandHash?: string }
   ): Promise<StoredEvent<T>> {
     const filePath = this.getEventsFilePath(campaignId);
     const prev = writeQueues.get(filePath) ?? Promise.resolve();
-    const next = prev.then(() => this._appendEventInner(campaignId, type, actorId, payload));
+    const next = prev.then(() => this._appendEventInner(campaignId, type, actorId, payload, options));
     const queued = next.catch(() => {}).finally(() => {
       if (writeQueues.get(filePath) === queued) writeQueues.delete(filePath);
     });
@@ -203,14 +298,15 @@ export class EventStore {
 
   public async appendEvents(
     campaignId: CampaignId,
-    events: Array<{ type: DomainEventType; actorId: string; payload: any }>
+    events: Array<{ type: DomainEventType; actorId: string; payload: any }>,
+    options?: { commandId?: string; commandHash?: string }
   ): Promise<StoredEvent[]> {
     const filePath = this.getEventsFilePath(campaignId);
     const previous = writeQueues.get(filePath) ?? Promise.resolve();
     const next = previous.then(async () => {
       const stored: StoredEvent[] = [];
       for (const event of events) {
-        stored.push(await this._appendEventInner(campaignId, event.type, event.actorId, event.payload));
+        stored.push(await this._appendEventInner(campaignId, event.type, event.actorId, event.payload, options));
       }
       return stored;
     });
@@ -225,8 +321,13 @@ export class EventStore {
     campaignId: CampaignId,
     type: DomainEventType,
     actorId: string,
-    payload: T
+    payload: T,
+    options?: { commandId?: string; commandHash?: string }
   ): Promise<StoredEvent<T>> {
+    const context = requestContextStore.getStore();
+    const commandId = options?.commandId ?? context?.commandId;
+    const commandHash = options?.commandHash;
+
     const occurredAt = nowIso();
     const normalized = normalizeEventPayload(type, payload, occurredAt);
     const index = await this.getAppendIndex(campaignId);
@@ -244,6 +345,8 @@ export class EventStore {
       payload: normalized,
       previousHash,
       schemaVersion: EVENT_SCHEMA_VERSION,
+      ...(commandId && { commandId }),
+      ...(commandHash && { commandHash }),
     };
 
     const hash = computeEventHash(eventWithoutHash);
