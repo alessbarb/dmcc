@@ -143,7 +143,7 @@ describe("Security", () => {
   });
 
   describe("entity metadata type validation", () => {
-    it("rejects clue entity without metadata.content", async () => {
+    it("creates clue entity without metadata.content, defaulting content to '...'", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
         await seedCampaign(server, "cmp_meta");
@@ -153,17 +153,16 @@ describe("Security", () => {
           url: "/api/campaigns/cmp_meta/entities",
           payload: {
             entityType: "clue",
-            title: "Missing Content Clue",
-            // metadata.content intentionally absent
+            title: "New Clue",
           },
           headers: { "x-dm-token": getDmToken(server) },
         });
-        expect(response.statusCode).toBe(500);
-        expect(response.json().error).toMatch(/content/i);
+        expect(response.statusCode).toBe(201);
+        expect(response.json().metadata?.content).toBe("...");
       });
     });
 
-    it("rejects secret entity without metadata.truth", async () => {
+    it("creates secret entity without metadata.truth, defaulting truth to '...'", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
         await seedCampaign(server, "cmp_meta2");
@@ -173,12 +172,12 @@ describe("Security", () => {
           url: "/api/campaigns/cmp_meta2/entities",
           payload: {
             entityType: "secret",
-            title: "Missing Truth Secret",
+            title: "New Secret",
           },
           headers: { "x-dm-token": getDmToken(server) },
         });
-        expect(response.statusCode).toBe(500);
-        expect(response.json().error).toMatch(/truth/i);
+        expect(response.statusCode).toBe(201);
+        expect(response.json().metadata?.truth).toBe("...");
       });
     });
 
@@ -317,12 +316,12 @@ describe("Security", () => {
       });
     });
 
-    it("LAN enabled + valid player token for WRONG campaign → 401", async () => {
+    it("valid player token for WRONG campaign → 401", async () => {
       await withTempDataDir(async (dataDir) => {
         const server = createServer({ dataDir });
         const dmToken = getDmToken(server);
 
-        // Create two campaigns
+        // Create two campaigns with a player in campaign A
         await server.inject({
           method: "POST",
           url: "/api/campaigns",
@@ -335,16 +334,20 @@ describe("Security", () => {
           payload: { campaignId: "cmp_auth3b", title: "Campaign B", actorId: "usr_dm" },
           headers: { "x-dm-token": dmToken },
         });
+        await server.inject({
+          method: "POST",
+          url: "/api/campaigns/cmp_auth3a/players",
+          payload: { playerId: "ply_auth3", name: "Player", displayName: "Player" },
+          headers: { "x-dm-token": dmToken },
+        });
 
-        // Enable LAN on both
-        const toggleA = await server.inject({
+        // Enable LAN on both campaigns
+        await server.inject({
           method: "POST",
           url: "/api/campaigns/cmp_auth3a/lan/toggle",
           payload: { enabled: true },
           headers: { "x-dm-token": dmToken },
         });
-        const { accessCode: codeA } = toggleA.json();
-
         await server.inject({
           method: "POST",
           url: "/api/campaigns/cmp_auth3b/lan/toggle",
@@ -352,15 +355,15 @@ describe("Security", () => {
           headers: { "x-dm-token": dmToken },
         });
 
-        // Join campaign A to get a token scoped to A
-        const joinA = await server.inject({
+        // Issue a token scoped to campaign A
+        const tokenRes = await server.inject({
           method: "POST",
-          url: "/api/join/cmp_auth3a",
-          payload: { accessCode: codeA },
+          url: "/api/campaigns/cmp_auth3a/players/ply_auth3/token",
+          payload: { label: "test" },
+          headers: { "x-dm-token": dmToken },
         });
-        expect(joinA.statusCode).toBe(410);
-        return;
-        const { playerToken } = joinA.json();
+        expect(tokenRes.statusCode).toBe(200);
+        const { token: playerToken } = tokenRes.json();
 
         // Use campaign A's token to try to access campaign B — must be rejected
         const res = await server.inject({
@@ -378,23 +381,27 @@ describe("Security", () => {
         const dmToken = getDmToken(server);
         await seedCampaign(server, "cmp_auth4");
 
-        // Enable LAN, join to get token, then disable LAN
-        const toggleOn = await server.inject({
+        // Create a player and issue them a token while LAN is enabled
+        await server.inject({
+          method: "POST",
+          url: "/api/campaigns/cmp_auth4/players",
+          payload: { playerId: "ply_auth4", name: "Player", displayName: "Player" },
+          headers: { "x-dm-token": dmToken },
+        });
+        await server.inject({
           method: "POST",
           url: "/api/campaigns/cmp_auth4/lan/toggle",
           payload: { enabled: true },
           headers: { "x-dm-token": dmToken },
         });
-        const { accessCode } = toggleOn.json();
-
-        const join = await server.inject({
+        const tokenRes = await server.inject({
           method: "POST",
-          url: "/api/join/cmp_auth4",
-          payload: { accessCode },
+          url: "/api/campaigns/cmp_auth4/players/ply_auth4/token",
+          payload: { label: "test" },
+          headers: { "x-dm-token": dmToken },
         });
-        expect(join.statusCode).toBe(410);
-        return;
-        const { playerToken } = join.json();
+        expect(tokenRes.statusCode).toBe(200);
+        const { token: playerToken } = tokenRes.json();
 
         // Disable LAN
         await server.inject({

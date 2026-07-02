@@ -81,7 +81,7 @@ describe("Domain Aggregates", () => {
       expect(result.success).toBe(true);
     });
 
-    it("rejects Clue without metadata.content", () => {
+    it("defaults metadata.content to '...' for Clue created without content", () => {
       const clueProps = {
         entityId: generateEntityId(),
         campaignId,
@@ -89,10 +89,11 @@ describe("Domain Aggregates", () => {
         title: "Sigil",
         metadata: {}
       };
-      expect(() => createEntity(clueProps)).toThrow("Clue entity requires metadata.content");
+      const entity = createEntity(clueProps);
+      expect(entity.metadata.content).toBe("...");
     });
 
-    it("rejects Secret without metadata.truth", () => {
+    it("defaults metadata.truth to '...' for Secret created without truth", () => {
       const secretProps = {
         entityId: generateEntityId(),
         campaignId,
@@ -100,7 +101,8 @@ describe("Domain Aggregates", () => {
         title: "Curse",
         metadata: {}
       };
-      expect(() => createEntity(secretProps)).toThrow("Secret entity requires metadata.truth");
+      const entity = createEntity(secretProps);
+      expect(entity.metadata.truth).toBe("...");
     });
 
     it("allows Player Character without metadata.playerId (pre-made template) for generic system", () => {
