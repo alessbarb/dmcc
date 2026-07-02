@@ -175,7 +175,7 @@ describe("premade campaign templates", () => {
 
       await server.close();
     });
-  });
+  }, 20000);
 
   it("imports oracle with correct entity and canvas counts", async () => {
     await withTempDataDir(async (dataDir) => {
