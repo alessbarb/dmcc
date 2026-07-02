@@ -284,4 +284,49 @@ describe("account routes", () => {
     expect(JSON.stringify(tableView.json())).not.toContain("keeper@example.com");
     expect(unrelated.statusCode).toBe(403);
   });
+
+  it("lists safe session metadata and revokes other owned sessions", async () => {
+    const { server, cookie } = await authenticatedServer();
+    const secondLogin = await server.inject({
+      method: "POST",
+      url: "/api/auth/login",
+      payload: { email: "owner@example.com", password: "correct horse battery" },
+    });
+    const secondCookie = String(secondLogin.headers["set-cookie"]).split(";")[0];
+
+    const listed = await server.inject({
+      method: "GET",
+      url: "/api/account/sessions",
+      headers: { cookie: secondCookie },
+    });
+    expect(listed.statusCode).toBe(200);
+    expect(listed.json().sessions).toHaveLength(2);
+    expect(listed.json().sessions).toContainEqual(expect.objectContaining({
+      current: true,
+      sessionRef: expect.any(String),
+      createdAt: expect.any(String),
+      lastSeenAt: expect.any(String),
+    }));
+    expect(JSON.stringify(listed.json())).not.toContain("sessionIdHash");
+
+    const revoked = await server.inject({
+      method: "DELETE",
+      url: "/api/account/sessions/others",
+      headers: { cookie: secondCookie, origin: "http://localhost", host: "localhost" },
+    });
+    const oldSession = await server.inject({
+      method: "GET",
+      url: "/api/account",
+      headers: { cookie },
+    });
+    const currentSession = await server.inject({
+      method: "GET",
+      url: "/api/account",
+      headers: { cookie: secondCookie },
+    });
+
+    expect(revoked.statusCode).toBe(200);
+    expect(oldSession.statusCode).toBe(401);
+    expect(currentSession.statusCode).toBe(200);
+  });
 });
