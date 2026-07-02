@@ -4064,6 +4064,2036 @@
           "visibility": "dm"
         }
       ]
+    },
+    {
+      "canvasId": "cvs_tpl_oracle_characters",
+      "nodes": [
+        {
+          "id": "grp_c_culto",
+          "kind": "group",
+          "title": "Culto del Oráculo",
+          "x": 50,
+          "y": 50,
+          "width": 370,
+          "height": 930,
+          "color": "pink"
+        },
+        {
+          "id": "grp_c_consejo",
+          "kind": "group",
+          "title": "Consejo de Valdris",
+          "x": 470,
+          "y": 50,
+          "width": 370,
+          "height": 760,
+          "color": "purple"
+        },
+        {
+          "id": "grp_c_gremio",
+          "kind": "group",
+          "title": "Gremio de Ladrones",
+          "x": 890,
+          "y": 50,
+          "width": 370,
+          "height": 630,
+          "color": "green"
+        },
+        {
+          "id": "grp_c_templo",
+          "kind": "group",
+          "title": "Templo de la Verdad",
+          "x": 1310,
+          "y": 50,
+          "width": 370,
+          "height": 500,
+          "color": "blue"
+        },
+        {
+          "id": "grp_c_consorcio",
+          "kind": "group",
+          "title": "Consorcio Mercantil",
+          "x": 1730,
+          "y": 50,
+          "width": 370,
+          "height": 370,
+          "color": "yellow"
+        },
+        {
+          "id": "grp_c_indep",
+          "kind": "group",
+          "title": "Independientes / Aliados",
+          "x": 2150,
+          "y": 50,
+          "width": 370,
+          "height": 800,
+          "color": "green"
+        },
+        {
+          "id": "grp_c_pcs",
+          "kind": "group",
+          "title": "Personajes Jugadores",
+          "x": 2570,
+          "y": 50,
+          "width": 370,
+          "height": 500,
+          "color": "blue"
+        },
+        {
+          "id": "node_tpl_c_faction_cult",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_faction_cult",
+          "x": 80,
+          "y": 130,
+          "groupId": "grp_c_culto"
+        },
+        {
+          "id": "node_tpl_c_npc_veradis",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_veradis",
+          "x": 80,
+          "y": 260,
+          "groupId": "grp_c_culto"
+        },
+        {
+          "id": "node_tpl_c_npc_vantis",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_vantis",
+          "x": 80,
+          "y": 390,
+          "groupId": "grp_c_culto"
+        },
+        {
+          "id": "node_tpl_c_npc_mors",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_mors",
+          "x": 80,
+          "y": 520,
+          "groupId": "grp_c_culto"
+        },
+        {
+          "id": "node_tpl_c_npc_senra",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_senra",
+          "x": 80,
+          "y": 650,
+          "groupId": "grp_c_culto"
+        },
+        {
+          "id": "node_tpl_c_npc_initiate",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_initiate",
+          "x": 80,
+          "y": 780,
+          "groupId": "grp_c_culto"
+        },
+        {
+          "id": "node_tpl_c_npc_vorn",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_vorn",
+          "x": 80,
+          "y": 910,
+          "groupId": "grp_c_culto"
+        },
+        {
+          "id": "node_tpl_c_faction_council",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_faction_council",
+          "x": 500,
+          "y": 130,
+          "groupId": "grp_c_consejo"
+        },
+        {
+          "id": "node_tpl_c_npc_aldric",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_aldric",
+          "x": 500,
+          "y": 260,
+          "groupId": "grp_c_consejo"
+        },
+        {
+          "id": "node_tpl_c_npc_lena",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_lena",
+          "x": 500,
+          "y": 390,
+          "groupId": "grp_c_consejo"
+        },
+        {
+          "id": "node_tpl_c_npc_brann",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_brann",
+          "x": 500,
+          "y": 520,
+          "groupId": "grp_c_consejo"
+        },
+        {
+          "id": "node_tpl_c_npc_pell",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_pell",
+          "x": 500,
+          "y": 650,
+          "groupId": "grp_c_consejo"
+        },
+        {
+          "id": "node_tpl_c_npc_riku",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_riku",
+          "x": 500,
+          "y": 780,
+          "groupId": "grp_c_consejo"
+        },
+        {
+          "id": "node_tpl_c_faction_guild",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_faction_guild",
+          "x": 920,
+          "y": 130,
+          "groupId": "grp_c_gremio"
+        },
+        {
+          "id": "node_tpl_c_npc_kael",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_kael",
+          "x": 920,
+          "y": 260,
+          "groupId": "grp_c_gremio"
+        },
+        {
+          "id": "node_tpl_c_npc_cira",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_cira",
+          "x": 920,
+          "y": 390,
+          "groupId": "grp_c_gremio"
+        },
+        {
+          "id": "node_tpl_c_npc_torben",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_torben",
+          "x": 920,
+          "y": 520,
+          "groupId": "grp_c_gremio"
+        },
+        {
+          "id": "node_tpl_c_npc_drez",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_drez",
+          "x": 920,
+          "y": 650,
+          "groupId": "grp_c_gremio"
+        },
+        {
+          "id": "node_tpl_c_faction_truth_temple",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_faction_truth_temple",
+          "x": 1340,
+          "y": 130,
+          "groupId": "grp_c_templo"
+        },
+        {
+          "id": "node_tpl_c_npc_sera",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_sera",
+          "x": 1340,
+          "y": 260,
+          "groupId": "grp_c_templo"
+        },
+        {
+          "id": "node_tpl_c_npc_fenwick",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_fenwick",
+          "x": 1340,
+          "y": 390,
+          "groupId": "grp_c_templo"
+        },
+        {
+          "id": "node_tpl_c_npc_healer",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_healer",
+          "x": 1340,
+          "y": 520,
+          "groupId": "grp_c_templo"
+        },
+        {
+          "id": "node_tpl_c_faction_merchants",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_faction_merchants",
+          "x": 1760,
+          "y": 130,
+          "groupId": "grp_c_consorcio"
+        },
+        {
+          "id": "node_tpl_c_npc_ola",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_ola",
+          "x": 1760,
+          "y": 260,
+          "groupId": "grp_c_consorcio"
+        },
+        {
+          "id": "node_tpl_c_npc_asha",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_asha",
+          "x": 1760,
+          "y": 390,
+          "groupId": "grp_c_consorcio"
+        },
+        {
+          "id": "node_tpl_c_npc_lyra",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_lyra",
+          "x": 2180,
+          "y": 130,
+          "groupId": "grp_c_indep"
+        },
+        {
+          "id": "node_tpl_c_npc_mira",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_mira",
+          "x": 2180,
+          "y": 260,
+          "groupId": "grp_c_indep"
+        },
+        {
+          "id": "node_tpl_c_npc_dorian",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_dorian",
+          "x": 2180,
+          "y": 390,
+          "groupId": "grp_c_indep"
+        },
+        {
+          "id": "node_tpl_c_npc_pica",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_pica",
+          "x": 2180,
+          "y": 520,
+          "groupId": "grp_c_indep"
+        },
+        {
+          "id": "node_tpl_c_npc_bren",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_bren",
+          "x": 2180,
+          "y": 650,
+          "groupId": "grp_c_indep"
+        },
+        {
+          "id": "node_tpl_c_pc_elowyn",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_pc_elowyn",
+          "x": 2600,
+          "y": 130,
+          "groupId": "grp_c_pcs"
+        },
+        {
+          "id": "node_tpl_c_pc_camus",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_pc_camus",
+          "x": 2600,
+          "y": 260,
+          "groupId": "grp_c_pcs"
+        },
+        {
+          "id": "node_tpl_c_pc_ragna",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_pc_ragna",
+          "x": 2600,
+          "y": 390,
+          "groupId": "grp_c_pcs"
+        },
+        {
+          "id": "node_tpl_c_pc_silas",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_pc_silas",
+          "x": 2600,
+          "y": 520,
+          "groupId": "grp_c_pcs"
+        },
+        {
+          "id": "note_chars",
+          "kind": "note",
+          "title": "Guía de facciones",
+          "text": "El Culto controla la ciudad mediante profecías falsas. El Consejo las cree reales. El Gremio las teme pero puede ser un aliado. El Templo de la Verdad es el único que investiga. Senra (Culto) puede desertar si los aventureros la ganan.",
+          "x": 50,
+          "y": 1040,
+          "width": 2890,
+          "height": 100,
+          "color": "yellow"
+        }
+      ],
+      "edges": [
+        {
+          "id": "ec_veradis_cult",
+          "sourceNodeId": "node_tpl_c_npc_veradis",
+          "targetNodeId": "node_tpl_c_faction_cult",
+          "status": "draft",
+          "style": "strong",
+          "label": "lidera"
+        },
+        {
+          "id": "ec_mors_cult",
+          "sourceNodeId": "node_tpl_c_npc_mors",
+          "targetNodeId": "node_tpl_c_faction_cult",
+          "status": "draft",
+          "style": "solid",
+          "label": "ejecutor"
+        },
+        {
+          "id": "ec_vantis_cult",
+          "sourceNodeId": "node_tpl_c_npc_vantis",
+          "targetNodeId": "node_tpl_c_faction_cult",
+          "status": "draft",
+          "style": "weak",
+          "label": "financia"
+        },
+        {
+          "id": "ec_senra_cult",
+          "sourceNodeId": "node_tpl_c_npc_senra",
+          "targetNodeId": "node_tpl_c_faction_cult",
+          "status": "draft",
+          "style": "dashed",
+          "label": "iniciada (dubitativa)"
+        },
+        {
+          "id": "ec_heraldo_cult",
+          "sourceNodeId": "node_tpl_c_npc_vorn",
+          "targetNodeId": "node_tpl_c_faction_cult",
+          "status": "draft",
+          "style": "dashed",
+          "label": "vocero"
+        },
+        {
+          "id": "ec_initiate_cult",
+          "sourceNodeId": "node_tpl_c_npc_initiate",
+          "targetNodeId": "node_tpl_c_faction_cult",
+          "status": "draft",
+          "style": "weak",
+          "label": "miembro"
+        },
+        {
+          "id": "ec_aldric_consejo",
+          "sourceNodeId": "node_tpl_c_npc_aldric",
+          "targetNodeId": "node_tpl_c_faction_council",
+          "status": "draft",
+          "style": "strong",
+          "label": "dirige"
+        },
+        {
+          "id": "ec_lena_consejo",
+          "sourceNodeId": "node_tpl_c_npc_lena",
+          "targetNodeId": "node_tpl_c_faction_council",
+          "status": "draft",
+          "style": "solid",
+          "label": "consejera"
+        },
+        {
+          "id": "ec_brann_consejo",
+          "sourceNodeId": "node_tpl_c_npc_brann",
+          "targetNodeId": "node_tpl_c_faction_council",
+          "status": "draft",
+          "style": "solid",
+          "label": "consejero"
+        },
+        {
+          "id": "ec_kael_gremio",
+          "sourceNodeId": "node_tpl_c_npc_kael",
+          "targetNodeId": "node_tpl_c_faction_guild",
+          "status": "draft",
+          "style": "solid",
+          "label": "agente"
+        },
+        {
+          "id": "ec_cira_gremio",
+          "sourceNodeId": "node_tpl_c_npc_cira",
+          "targetNodeId": "node_tpl_c_faction_guild",
+          "status": "draft",
+          "style": "solid",
+          "label": "miembro"
+        },
+        {
+          "id": "ec_torben_gremio",
+          "sourceNodeId": "node_tpl_c_npc_torben",
+          "targetNodeId": "node_tpl_c_faction_guild",
+          "status": "draft",
+          "style": "weak",
+          "label": "informante"
+        },
+        {
+          "id": "ec_sera_templo",
+          "sourceNodeId": "node_tpl_c_npc_sera",
+          "targetNodeId": "node_tpl_c_faction_truth_temple",
+          "status": "draft",
+          "style": "solid",
+          "label": "guardiana"
+        },
+        {
+          "id": "ec_fenwick_templo",
+          "sourceNodeId": "node_tpl_c_npc_fenwick",
+          "targetNodeId": "node_tpl_c_faction_truth_temple",
+          "status": "draft",
+          "style": "solid",
+          "label": "abad"
+        },
+        {
+          "id": "ec_ola_consorcio",
+          "sourceNodeId": "node_tpl_c_npc_ola",
+          "targetNodeId": "node_tpl_c_faction_merchants",
+          "status": "draft",
+          "style": "solid",
+          "label": "lider"
+        },
+        {
+          "id": "ec_dorian_cult",
+          "sourceNodeId": "node_tpl_c_npc_dorian",
+          "targetNodeId": "node_tpl_c_faction_cult",
+          "status": "draft",
+          "style": "secret",
+          "label": "espía infiltrado"
+        },
+        {
+          "id": "ec_veradis_vantis",
+          "sourceNodeId": "node_tpl_c_npc_veradis",
+          "targetNodeId": "node_tpl_c_npc_vantis",
+          "status": "draft",
+          "style": "secret",
+          "label": "socios en el fraude"
+        },
+        {
+          "id": "ec_lyra_consejo",
+          "sourceNodeId": "node_tpl_c_npc_lyra",
+          "targetNodeId": "node_tpl_c_faction_council",
+          "status": "draft",
+          "style": "dashed",
+          "label": "trabaja para"
+        },
+        {
+          "id": "ec_drez_veradis",
+          "sourceNodeId": "node_tpl_c_npc_drez",
+          "targetNodeId": "node_tpl_c_npc_veradis",
+          "status": "draft",
+          "style": "secret",
+          "label": "contratado para huir"
+        }
+      ]
+    },
+    {
+      "canvasId": "cvs_tpl_oracle_investigation",
+      "nodes": [
+        {
+          "id": "note_phase1",
+          "kind": "note",
+          "title": "Fase 1 — Primeros Indicios",
+          "text": "Los aventureros llegan a Valdris. Detectan anomalías: la profecía tiene errores de estilo, los fieles tienen miedo, hay pagos sospechosos. Torben en la taberna puede soltar la primera pista.",
+          "x": 50,
+          "y": 50,
+          "width": 580,
+          "height": 110,
+          "color": "yellow"
+        },
+        {
+          "id": "note_phase2",
+          "kind": "note",
+          "title": "Fase 2 — La Investigación",
+          "text": "El Archivo y el Gremio abren nuevos hilos. Los cadáveres del puerto apuntan a complicidad militar. La investigadora Lyra tiene sus propias sospechas. El rastro llega hasta el Consejo.",
+          "x": 680,
+          "y": 50,
+          "width": 580,
+          "height": 110,
+          "color": "blue"
+        },
+        {
+          "id": "note_phase3",
+          "kind": "note",
+          "title": "Fase 3 — El Círculo Interior",
+          "text": "El culto tiene una reunión secreta. Senra duda y puede ser ganada. Una grabación arcana del oráculo falso ya existe. La bóveda está escondida bajo las ruinas y Veradis tiene un plan de huida.",
+          "x": 1310,
+          "y": 50,
+          "width": 580,
+          "height": 110,
+          "color": "pink"
+        },
+        {
+          "id": "note_phase4",
+          "kind": "note",
+          "title": "Fase 4 — El Desenlace",
+          "text": "La bóveda guarda los instrumentos del fraude y los registros reales. Vantis puede ser quebrado. El culto se desintegra si Veradis cae. El Pergamino Antiguo y la Verdad Final dan la prueba definitiva.",
+          "x": 1940,
+          "y": 50,
+          "width": 580,
+          "height": 110,
+          "color": "green"
+        },
+        {
+          "id": "grp_phase1",
+          "kind": "group",
+          "title": "Pistas — Fase 1",
+          "x": 50,
+          "y": 210,
+          "width": 580,
+          "height": 480,
+          "color": "yellow"
+        },
+        {
+          "id": "grp_phase2",
+          "kind": "group",
+          "title": "Pistas — Fase 2",
+          "x": 680,
+          "y": 210,
+          "width": 580,
+          "height": 480,
+          "color": "blue"
+        },
+        {
+          "id": "grp_phase3",
+          "kind": "group",
+          "title": "Pistas — Fase 3",
+          "x": 1310,
+          "y": 210,
+          "width": 580,
+          "height": 480,
+          "color": "pink"
+        },
+        {
+          "id": "grp_phase4",
+          "kind": "group",
+          "title": "Pistas — Fase 4",
+          "x": 1940,
+          "y": 210,
+          "width": 580,
+          "height": 480,
+          "color": "green"
+        },
+        {
+          "id": "grp_secrets",
+          "kind": "group",
+          "title": "Secretos DM — La Verdad Completa",
+          "x": 50,
+          "y": 750,
+          "width": 2470,
+          "height": 830,
+          "color": "pink"
+        },
+        {
+          "id": "node_tpl_inv_clue_broken_prophecy",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_broken_prophecy",
+          "x": 80,
+          "y": 290,
+          "groupId": "grp_phase1"
+        },
+        {
+          "id": "node_tpl_inv_clue_petitioner_fear",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_petitioner_fear",
+          "x": 80,
+          "y": 420,
+          "groupId": "grp_phase1"
+        },
+        {
+          "id": "node_tpl_inv_clue_merchant_payment",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_merchant_payment",
+          "x": 80,
+          "y": 550,
+          "groupId": "grp_phase1"
+        },
+        {
+          "id": "node_tpl_inv_clue_illusion_components",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_illusion_components",
+          "x": 380,
+          "y": 290,
+          "groupId": "grp_phase1"
+        },
+        {
+          "id": "node_tpl_inv_clue_torben_tip",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_torben_tip",
+          "x": 380,
+          "y": 420,
+          "groupId": "grp_phase1"
+        },
+        {
+          "id": "node_tpl_inv_clue_fire_records",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_fire_records",
+          "x": 710,
+          "y": 290,
+          "groupId": "grp_phase2"
+        },
+        {
+          "id": "node_tpl_inv_clue_ledger",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_ledger",
+          "x": 710,
+          "y": 420,
+          "groupId": "grp_phase2"
+        },
+        {
+          "id": "node_tpl_inv_clue_port_bodies",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_port_bodies",
+          "x": 710,
+          "y": 550,
+          "groupId": "grp_phase2"
+        },
+        {
+          "id": "node_tpl_inv_clue_chronicles",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_chronicles",
+          "x": 1010,
+          "y": 290,
+          "groupId": "grp_phase2"
+        },
+        {
+          "id": "node_tpl_inv_clue_lyra_notes",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_lyra_notes",
+          "x": 1010,
+          "y": 420,
+          "groupId": "grp_phase2"
+        },
+        {
+          "id": "node_tpl_inv_clue_military_letter",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_military_letter",
+          "x": 1010,
+          "y": 550,
+          "groupId": "grp_phase2"
+        },
+        {
+          "id": "node_tpl_inv_clue_ritual_marks",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_ritual_marks",
+          "x": 1340,
+          "y": 290,
+          "groupId": "grp_phase3"
+        },
+        {
+          "id": "node_tpl_inv_clue_resonance",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_resonance",
+          "x": 1340,
+          "y": 420,
+          "groupId": "grp_phase3"
+        },
+        {
+          "id": "node_tpl_inv_clue_senra_confession",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_senra_confession",
+          "x": 1340,
+          "y": 550,
+          "groupId": "grp_phase3"
+        },
+        {
+          "id": "node_tpl_inv_clue_vault_entrance",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_vault_entrance",
+          "x": 1640,
+          "y": 290,
+          "groupId": "grp_phase3"
+        },
+        {
+          "id": "node_tpl_inv_clue_vault_evidence",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_vault_evidence",
+          "x": 1640,
+          "y": 420,
+          "groupId": "grp_phase3"
+        },
+        {
+          "id": "node_tpl_inv_clue_escape_plan",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_escape_plan",
+          "x": 1970,
+          "y": 290,
+          "groupId": "grp_phase4"
+        },
+        {
+          "id": "node_tpl_inv_clue_vantis_confession",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_vantis_confession",
+          "x": 1970,
+          "y": 420,
+          "groupId": "grp_phase4"
+        },
+        {
+          "id": "node_tpl_inv_clue_cult_disbands",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_cult_disbands",
+          "x": 1970,
+          "y": 550,
+          "groupId": "grp_phase4"
+        },
+        {
+          "id": "node_tpl_inv_clue_eldertome",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_eldertome",
+          "x": 2270,
+          "y": 290,
+          "groupId": "grp_phase4"
+        },
+        {
+          "id": "node_tpl_inv_clue_final_truth",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_final_truth",
+          "x": 2270,
+          "y": 420,
+          "groupId": "grp_phase4"
+        },
+        {
+          "id": "node_tpl_inv_clue_forgery_tool",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_forgery_tool",
+          "x": 2270,
+          "y": 550,
+          "groupId": "grp_phase4"
+        },
+        {
+          "id": "node_tpl_inv_secret_fraud",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_fraud",
+          "x": 80,
+          "y": 830,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_vantis_funds",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_vantis_funds",
+          "x": 570,
+          "y": 830,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_voice_illusion",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_voice_illusion",
+          "x": 1060,
+          "y": 830,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_lyra_suspects",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_lyra_suspects",
+          "x": 1550,
+          "y": 830,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_kael_proof",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_kael_proof",
+          "x": 2040,
+          "y": 830,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_archive_fire",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_archive_fire",
+          "x": 80,
+          "y": 990,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_senra_defects",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_senra_defects",
+          "x": 570,
+          "y": 990,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_dorian_spy",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_dorian_spy",
+          "x": 1060,
+          "y": 990,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_true_veradis",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_true_veradis",
+          "x": 1550,
+          "y": 990,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_vault_location",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_vault_location",
+          "x": 2040,
+          "y": 990,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_prophecy_count",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_prophecy_count",
+          "x": 80,
+          "y": 1150,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_council_corrupt",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_council_corrupt",
+          "x": 570,
+          "y": 1150,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_escape_ship",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_escape_ship",
+          "x": 1060,
+          "y": 1150,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_senra_exit",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_senra_exit",
+          "x": 1550,
+          "y": 1150,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "node_tpl_inv_secret_asha_son_dead",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_asha_son_dead",
+          "x": 2040,
+          "y": 1150,
+          "groupId": "grp_secrets"
+        },
+        {
+          "id": "note_mystery_dm",
+          "kind": "note",
+          "title": "Nota DM — Cuándo revelar cada secreto",
+          "text": "Oracle Fraud: se confirma con las pistas de Fase 3+4. Vantis Funding: Fase 2 (libro contable). Divine Voice: Fase 3 (componente arcano). Archive Fire: Fase 2 (registros destruidos). Senra Defect: Fase 3 (sus dudas, si los jugadores la presionan con cuidado). Vault Location: Fase 3 (entrada a las ruinas). Captain Escape: Fase 4 (barco contratado).",
+          "x": 50,
+          "y": 1370,
+          "width": 2470,
+          "height": 140,
+          "color": "pink"
+        }
+      ],
+      "edges": [
+        {
+          "id": "ei_prop_fraud",
+          "sourceNodeId": "node_tpl_inv_clue_broken_prophecy",
+          "targetNodeId": "node_tpl_inv_secret_fraud",
+          "status": "draft",
+          "style": "secret",
+          "label": "evidencia textual"
+        },
+        {
+          "id": "ei_prop_count",
+          "sourceNodeId": "node_tpl_inv_clue_broken_prophecy",
+          "targetNodeId": "node_tpl_inv_secret_prophecy_count",
+          "status": "draft",
+          "style": "secret",
+          "label": "patrón de falsedades"
+        },
+        {
+          "id": "ei_merch_vantis",
+          "sourceNodeId": "node_tpl_inv_clue_merchant_payment",
+          "targetNodeId": "node_tpl_inv_secret_vantis_funds",
+          "status": "draft",
+          "style": "secret",
+          "label": "confirma financiación"
+        },
+        {
+          "id": "ei_arcane_voice",
+          "sourceNodeId": "node_tpl_inv_clue_illusion_components",
+          "targetNodeId": "node_tpl_inv_secret_voice_illusion",
+          "status": "draft",
+          "style": "secret",
+          "label": "origen del cristal"
+        },
+        {
+          "id": "ei_pet_count",
+          "sourceNodeId": "node_tpl_inv_clue_petitioner_fear",
+          "targetNodeId": "node_tpl_inv_secret_prophecy_count",
+          "status": "draft",
+          "style": "dashed",
+          "label": "víctimas conocidas"
+        },
+        {
+          "id": "ei_arch_fire",
+          "sourceNodeId": "node_tpl_inv_clue_fire_records",
+          "targetNodeId": "node_tpl_inv_secret_archive_fire",
+          "status": "draft",
+          "style": "secret",
+          "label": "documenta el incendio"
+        },
+        {
+          "id": "ei_arch_veradis",
+          "sourceNodeId": "node_tpl_inv_clue_fire_records",
+          "targetNodeId": "node_tpl_inv_secret_true_veradis",
+          "status": "draft",
+          "style": "secret",
+          "label": "registros auténticos"
+        },
+        {
+          "id": "ei_ledger_vantis",
+          "sourceNodeId": "node_tpl_inv_clue_ledger",
+          "targetNodeId": "node_tpl_inv_secret_vantis_funds",
+          "status": "draft",
+          "style": "strong",
+          "label": "libro de cuentas"
+        },
+        {
+          "id": "ei_bodies_escape",
+          "sourceNodeId": "node_tpl_inv_clue_port_bodies",
+          "targetNodeId": "node_tpl_inv_secret_escape_ship",
+          "status": "draft",
+          "style": "secret",
+          "label": "barco implicado"
+        },
+        {
+          "id": "ei_sera_oracle",
+          "sourceNodeId": "node_tpl_inv_clue_chronicles",
+          "targetNodeId": "node_tpl_inv_secret_true_veradis",
+          "status": "draft",
+          "style": "secret",
+          "label": "textos auténticos"
+        },
+        {
+          "id": "ei_lyra_suspects",
+          "sourceNodeId": "node_tpl_inv_clue_lyra_notes",
+          "targetNodeId": "node_tpl_inv_secret_lyra_suspects",
+          "status": "draft",
+          "style": "dashed",
+          "label": "lista de sospechosos"
+        },
+        {
+          "id": "ei_inner_dorian",
+          "sourceNodeId": "node_tpl_inv_clue_ritual_marks",
+          "targetNodeId": "node_tpl_inv_secret_dorian_spy",
+          "status": "draft",
+          "style": "secret",
+          "label": "presencia del espía"
+        },
+        {
+          "id": "ei_inner_corrupt",
+          "sourceNodeId": "node_tpl_inv_clue_ritual_marks",
+          "targetNodeId": "node_tpl_inv_secret_council_corrupt",
+          "status": "draft",
+          "style": "secret",
+          "label": "corrupción expuesta"
+        },
+        {
+          "id": "ei_audio_fraud",
+          "sourceNodeId": "node_tpl_inv_clue_resonance",
+          "targetNodeId": "node_tpl_inv_secret_fraud",
+          "status": "draft",
+          "style": "strong",
+          "label": "prueba de audio"
+        },
+        {
+          "id": "ei_senra_defect",
+          "sourceNodeId": "node_tpl_inv_clue_senra_confession",
+          "targetNodeId": "node_tpl_inv_secret_senra_defects",
+          "status": "draft",
+          "style": "dashed",
+          "label": "quiebre de lealtad"
+        },
+        {
+          "id": "ei_senra_exit",
+          "sourceNodeId": "node_tpl_inv_clue_senra_confession",
+          "targetNodeId": "node_tpl_inv_secret_senra_exit",
+          "status": "draft",
+          "style": "secret",
+          "label": "conoce el código"
+        },
+        {
+          "id": "ei_entrance_vault",
+          "sourceNodeId": "node_tpl_inv_clue_vault_entrance",
+          "targetNodeId": "node_tpl_inv_secret_vault_location",
+          "status": "draft",
+          "style": "secret",
+          "label": "localización"
+        },
+        {
+          "id": "ei_records_fraud",
+          "sourceNodeId": "node_tpl_inv_clue_vault_evidence",
+          "targetNodeId": "node_tpl_inv_secret_fraud",
+          "status": "draft",
+          "style": "strong",
+          "label": "prueba definitiva"
+        },
+        {
+          "id": "ei_records_vantis",
+          "sourceNodeId": "node_tpl_inv_clue_vault_evidence",
+          "targetNodeId": "node_tpl_inv_secret_vantis_funds",
+          "status": "draft",
+          "style": "strong",
+          "label": "contabilidad real"
+        },
+        {
+          "id": "ei_forgery_voice",
+          "sourceNodeId": "node_tpl_inv_clue_forgery_tool",
+          "targetNodeId": "node_tpl_inv_secret_voice_illusion",
+          "status": "draft",
+          "style": "strong",
+          "label": "instrumento del fraude"
+        },
+        {
+          "id": "ei_forgery_fraud",
+          "sourceNodeId": "node_tpl_inv_clue_forgery_tool",
+          "targetNodeId": "node_tpl_inv_secret_fraud",
+          "status": "draft",
+          "style": "strong",
+          "label": "prueba material"
+        },
+        {
+          "id": "ei_escape_ship",
+          "sourceNodeId": "node_tpl_inv_clue_escape_plan",
+          "targetNodeId": "node_tpl_inv_secret_escape_ship",
+          "status": "draft",
+          "style": "secret",
+          "label": "plan de huida"
+        },
+        {
+          "id": "ei_vantis_asha",
+          "sourceNodeId": "node_tpl_inv_clue_vantis_confession",
+          "targetNodeId": "node_tpl_inv_secret_asha_son_dead",
+          "status": "draft",
+          "style": "weak",
+          "label": "deuda moral"
+        },
+        {
+          "id": "ei_letter_asha",
+          "sourceNodeId": "node_tpl_inv_clue_military_letter",
+          "targetNodeId": "node_tpl_inv_secret_asha_son_dead",
+          "status": "draft",
+          "style": "strong",
+          "label": "carta militar"
+        },
+        {
+          "id": "ei_truth_fraud",
+          "sourceNodeId": "node_tpl_inv_clue_final_truth",
+          "targetNodeId": "node_tpl_inv_secret_fraud",
+          "status": "draft",
+          "style": "strong",
+          "label": "verdad total"
+        },
+        {
+          "id": "ei_truth_oracle",
+          "sourceNodeId": "node_tpl_inv_clue_final_truth",
+          "targetNodeId": "node_tpl_inv_secret_true_veradis",
+          "status": "draft",
+          "style": "strong",
+          "label": "identidad real"
+        },
+        {
+          "id": "ei_torben_archive",
+          "sourceNodeId": "node_tpl_inv_clue_torben_tip",
+          "targetNodeId": "node_tpl_inv_clue_fire_records",
+          "status": "draft",
+          "style": "dashed",
+          "label": "lleva al archivo"
+        },
+        {
+          "id": "ei_torben_ledger",
+          "sourceNodeId": "node_tpl_inv_clue_torben_tip",
+          "targetNodeId": "node_tpl_inv_clue_ledger",
+          "status": "draft",
+          "style": "dashed",
+          "label": "contacto gremio"
+        },
+        {
+          "id": "ei_lyra_inner",
+          "sourceNodeId": "node_tpl_inv_clue_lyra_notes",
+          "targetNodeId": "node_tpl_inv_clue_ritual_marks",
+          "status": "draft",
+          "style": "dashed",
+          "label": "infiltración"
+        },
+        {
+          "id": "ei_entrance_records",
+          "sourceNodeId": "node_tpl_inv_clue_vault_entrance",
+          "targetNodeId": "node_tpl_inv_clue_vault_evidence",
+          "status": "draft",
+          "style": "solid",
+          "label": "dentro de la bóveda"
+        },
+        {
+          "id": "ei_senra_disbands",
+          "sourceNodeId": "node_tpl_inv_clue_senra_confession",
+          "targetNodeId": "node_tpl_inv_clue_cult_disbands",
+          "status": "draft",
+          "style": "weak",
+          "label": "posible defección"
+        }
+      ]
+    },
+    {
+      "canvasId": "cvs_tpl_oracle_locations",
+      "nodes": [
+        {
+          "id": "grp_l_valdris",
+          "kind": "group",
+          "title": "Ciudad de Valdris",
+          "x": 50,
+          "y": 50,
+          "width": 470,
+          "height": 360,
+          "color": "yellow",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_ruinas",
+          "kind": "group",
+          "title": "Ruinas del Templo Antiguo",
+          "x": 560,
+          "y": 50,
+          "width": 470,
+          "height": 360,
+          "color": "pink",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_boveda",
+          "kind": "group",
+          "title": "Bóveda Subterránea",
+          "x": 1070,
+          "y": 50,
+          "width": 470,
+          "height": 360,
+          "color": "purple",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_taberna",
+          "kind": "group",
+          "title": "Taberna del Cuervo",
+          "x": 1580,
+          "y": 50,
+          "width": 470,
+          "height": 360,
+          "color": "green",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_templo",
+          "kind": "group",
+          "title": "Templo de la Verdad",
+          "x": 50,
+          "y": 460,
+          "width": 470,
+          "height": 360,
+          "color": "blue",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_archivo",
+          "kind": "group",
+          "title": "Archivo de la Ciudad",
+          "x": 560,
+          "y": 460,
+          "width": 470,
+          "height": 360,
+          "color": "yellow",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_puerto",
+          "kind": "group",
+          "title": "Puerto de Valdris",
+          "x": 1070,
+          "y": 460,
+          "width": 470,
+          "height": 360,
+          "color": "green",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_barrio",
+          "kind": "group",
+          "title": "Barrio Noble",
+          "x": 1580,
+          "y": 460,
+          "width": 470,
+          "height": 360,
+          "color": "purple",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_gremio",
+          "kind": "group",
+          "title": "Guarida del Gremio",
+          "x": 50,
+          "y": 870,
+          "width": 470,
+          "height": 360,
+          "color": "green",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_santuario",
+          "kind": "group",
+          "title": "Santuario del Bosque",
+          "x": 560,
+          "y": 870,
+          "width": 470,
+          "height": 360,
+          "color": "blue",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_cuartel",
+          "kind": "group",
+          "title": "Cuartel de la Guardia",
+          "x": 1070,
+          "y": 870,
+          "width": 470,
+          "height": 360,
+          "color": "purple",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "grp_l_muelles",
+          "kind": "group",
+          "title": "Muelles del Puerto",
+          "x": 1580,
+          "y": 870,
+          "width": 470,
+          "height": 360,
+          "color": "yellow",
+          "metadata": {
+            "groupType": "location"
+          }
+        },
+        {
+          "id": "node_l_valdris",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_valdris",
+          "x": 80,
+          "y": 130,
+          "groupId": "grp_l_valdris"
+        },
+        {
+          "id": "node_l_valdris_veradis",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_veradis",
+          "x": 250,
+          "y": 130,
+          "groupId": "grp_l_valdris"
+        },
+        {
+          "id": "node_l_valdris_aldrich",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_aldric",
+          "x": 250,
+          "y": 250,
+          "groupId": "grp_l_valdris"
+        },
+        {
+          "id": "node_l_valdris_profecia",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_broken_prophecy",
+          "x": 80,
+          "y": 250,
+          "groupId": "grp_l_valdris"
+        },
+        {
+          "id": "node_l_ruinas",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_ruins",
+          "x": 590,
+          "y": 130,
+          "groupId": "grp_l_ruinas"
+        },
+        {
+          "id": "node_l_ruinas_abad",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_fenwick",
+          "x": 760,
+          "y": 130,
+          "groupId": "grp_l_ruinas"
+        },
+        {
+          "id": "node_l_ruinas_entrada",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_vault_entrance",
+          "x": 760,
+          "y": 250,
+          "groupId": "grp_l_ruinas"
+        },
+        {
+          "id": "node_l_ruinas_tomo",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_eldertome",
+          "x": 590,
+          "y": 250,
+          "groupId": "grp_l_ruinas"
+        },
+        {
+          "id": "node_l_boveda",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_vault",
+          "x": 1100,
+          "y": 130,
+          "groupId": "grp_l_boveda"
+        },
+        {
+          "id": "node_l_boveda_records",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_vault_evidence",
+          "x": 1270,
+          "y": 130,
+          "groupId": "grp_l_boveda"
+        },
+        {
+          "id": "node_l_boveda_truth",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_final_truth",
+          "x": 1270,
+          "y": 250,
+          "groupId": "grp_l_boveda"
+        },
+        {
+          "id": "node_l_boveda_count",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_secret_prophecy_count",
+          "x": 1100,
+          "y": 250,
+          "groupId": "grp_l_boveda"
+        },
+        {
+          "id": "node_l_taberna",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_raven_tavern",
+          "x": 1610,
+          "y": 130,
+          "groupId": "grp_l_taberna"
+        },
+        {
+          "id": "node_l_taberna_torben",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_torben",
+          "x": 1780,
+          "y": 130,
+          "groupId": "grp_l_taberna"
+        },
+        {
+          "id": "node_l_taberna_silas",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_pc_silas",
+          "x": 1780,
+          "y": 250,
+          "groupId": "grp_l_taberna"
+        },
+        {
+          "id": "node_l_taberna_tip",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_torben_tip",
+          "x": 1610,
+          "y": 250,
+          "groupId": "grp_l_taberna"
+        },
+        {
+          "id": "node_l_templo",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_truth_temple",
+          "x": 80,
+          "y": 540,
+          "groupId": "grp_l_templo"
+        },
+        {
+          "id": "node_l_templo_sera",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_sera",
+          "x": 250,
+          "y": 540,
+          "groupId": "grp_l_templo"
+        },
+        {
+          "id": "node_l_templo_camus",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_pc_camus",
+          "x": 250,
+          "y": 660,
+          "groupId": "grp_l_templo"
+        },
+        {
+          "id": "node_l_templo_cronicas",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_chronicles",
+          "x": 80,
+          "y": 660,
+          "groupId": "grp_l_templo"
+        },
+        {
+          "id": "node_l_archivo",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_archive",
+          "x": 590,
+          "y": 540,
+          "groupId": "grp_l_archivo"
+        },
+        {
+          "id": "node_l_archivo_mira",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_mira",
+          "x": 760,
+          "y": 540,
+          "groupId": "grp_l_archivo"
+        },
+        {
+          "id": "node_l_archivo_records",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_fire_records",
+          "x": 760,
+          "y": 660,
+          "groupId": "grp_l_archivo"
+        },
+        {
+          "id": "node_l_archivo_lyra_diary",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_lyra_notes",
+          "x": 590,
+          "y": 660,
+          "groupId": "grp_l_archivo"
+        },
+        {
+          "id": "node_l_puerto",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_port",
+          "x": 1100,
+          "y": 540,
+          "groupId": "grp_l_puerto"
+        },
+        {
+          "id": "node_l_puerto_ilva",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_healer",
+          "x": 1270,
+          "y": 540,
+          "groupId": "grp_l_puerto"
+        },
+        {
+          "id": "node_l_puerto_pica",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_pica",
+          "x": 1270,
+          "y": 660,
+          "groupId": "grp_l_puerto"
+        },
+        {
+          "id": "node_l_puerto_bodies",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_port_bodies",
+          "x": 1100,
+          "y": 660,
+          "groupId": "grp_l_puerto"
+        },
+        {
+          "id": "node_l_barrio",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_noble_district",
+          "x": 1610,
+          "y": 540,
+          "groupId": "grp_l_barrio"
+        },
+        {
+          "id": "node_l_barrio_vantis",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_vantis",
+          "x": 1780,
+          "y": 540,
+          "groupId": "grp_l_barrio"
+        },
+        {
+          "id": "node_l_barrio_brann",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_brann",
+          "x": 1780,
+          "y": 660,
+          "groupId": "grp_l_barrio"
+        },
+        {
+          "id": "node_l_barrio_payments",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_merchant_payment",
+          "x": 1610,
+          "y": 660,
+          "groupId": "grp_l_barrio"
+        },
+        {
+          "id": "node_l_gremio",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_guild_camp",
+          "x": 80,
+          "y": 950,
+          "groupId": "grp_l_gremio"
+        },
+        {
+          "id": "node_l_gremio_kael",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_kael",
+          "x": 250,
+          "y": 950,
+          "groupId": "grp_l_gremio"
+        },
+        {
+          "id": "node_l_gremio_cira",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_cira",
+          "x": 250,
+          "y": 1070,
+          "groupId": "grp_l_gremio"
+        },
+        {
+          "id": "node_l_gremio_ledger",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_ledger",
+          "x": 80,
+          "y": 1070,
+          "groupId": "grp_l_gremio"
+        },
+        {
+          "id": "node_l_santuario",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_forest_shrine",
+          "x": 590,
+          "y": 950,
+          "groupId": "grp_l_santuario"
+        },
+        {
+          "id": "node_l_santuario_abad",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_fenwick",
+          "x": 760,
+          "y": 950,
+          "groupId": "grp_l_santuario"
+        },
+        {
+          "id": "node_l_santuario_tome",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_eldertome",
+          "x": 760,
+          "y": 1070,
+          "groupId": "grp_l_santuario"
+        },
+        {
+          "id": "node_l_santuario_truth",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_final_truth",
+          "x": 590,
+          "y": 1070,
+          "groupId": "grp_l_santuario"
+        },
+        {
+          "id": "node_l_cuartel",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_guard_barracks",
+          "x": 1100,
+          "y": 950,
+          "groupId": "grp_l_cuartel"
+        },
+        {
+          "id": "node_l_cuartel_lyra",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_lyra",
+          "x": 1270,
+          "y": 950,
+          "groupId": "grp_l_cuartel"
+        },
+        {
+          "id": "node_l_cuartel_riku",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_riku",
+          "x": 1270,
+          "y": 1070,
+          "groupId": "grp_l_cuartel"
+        },
+        {
+          "id": "node_l_cuartel_diary",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_lyra_notes",
+          "x": 1100,
+          "y": 1070,
+          "groupId": "grp_l_cuartel"
+        },
+        {
+          "id": "node_l_muelles",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_loc_docks",
+          "x": 1610,
+          "y": 950,
+          "groupId": "grp_l_muelles"
+        },
+        {
+          "id": "node_l_muelles_drez",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_drez",
+          "x": 1780,
+          "y": 950,
+          "groupId": "grp_l_muelles"
+        },
+        {
+          "id": "node_l_muelles_riku",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_npc_riku",
+          "x": 1780,
+          "y": 1070,
+          "groupId": "grp_l_muelles"
+        },
+        {
+          "id": "node_l_muelles_bodies",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_port_bodies",
+          "x": 1610,
+          "y": 1070,
+          "groupId": "grp_l_muelles"
+        },
+        {
+          "id": "node_l_muelles_escape",
+          "kind": "entity",
+          "entityId": "ent_tpl_oracle_clue_escape_plan",
+          "x": 1610,
+          "y": 1190,
+          "groupId": "grp_l_muelles"
+        },
+        {
+          "id": "note_locations",
+          "kind": "note",
+          "title": "Uso del mapa de Valdris",
+          "text": "Cada grupo es una localización jugable con PNJs y pistas colocadas dentro. Este tablero reduce falsos positivos de lugares vacíos y ayuda a preparar escenas desde zonas concretas del mapa.",
+          "x": 50,
+          "y": 1270,
+          "width": 2000,
+          "height": 110,
+          "color": "yellow"
+        }
+      ],
+      "edges": [
+        {
+          "id": "el_valdris_veradis",
+          "sourceNodeId": "node_l_valdris",
+          "targetNodeId": "node_l_valdris_veradis",
+          "status": "draft",
+          "style": "dashed",
+          "label": "autoridad pública"
+        },
+        {
+          "id": "el_valdris_aldrich",
+          "sourceNodeId": "node_l_valdris",
+          "targetNodeId": "node_l_valdris_aldrich",
+          "status": "draft",
+          "style": "dashed",
+          "label": "gobierno local"
+        },
+        {
+          "id": "el_valdris_prof",
+          "sourceNodeId": "node_l_valdris",
+          "targetNodeId": "node_l_valdris_profecia",
+          "status": "draft",
+          "style": "strong",
+          "label": "incidente inicial"
+        },
+        {
+          "id": "el_ruinas_abad",
+          "sourceNodeId": "node_l_ruinas",
+          "targetNodeId": "node_l_ruinas_abad",
+          "status": "draft",
+          "style": "dashed",
+          "label": "guardián"
+        },
+        {
+          "id": "el_ruinas_entrada",
+          "sourceNodeId": "node_l_ruinas",
+          "targetNodeId": "node_l_ruinas_entrada",
+          "status": "draft",
+          "style": "strong",
+          "label": "acceso oculto"
+        },
+        {
+          "id": "el_ruinas_tomo",
+          "sourceNodeId": "node_l_ruinas",
+          "targetNodeId": "node_l_ruinas_tomo",
+          "status": "draft",
+          "style": "dashed",
+          "label": "memoria antigua"
+        },
+        {
+          "id": "el_boveda_records",
+          "sourceNodeId": "node_l_boveda",
+          "targetNodeId": "node_l_boveda_records",
+          "status": "draft",
+          "style": "strong",
+          "label": "prueba definitiva"
+        },
+        {
+          "id": "el_boveda_truth",
+          "sourceNodeId": "node_l_boveda",
+          "targetNodeId": "node_l_boveda_truth",
+          "status": "draft",
+          "style": "strong",
+          "label": "verdad final"
+        },
+        {
+          "id": "el_boveda_count",
+          "sourceNodeId": "node_l_boveda",
+          "targetNodeId": "node_l_boveda_count",
+          "status": "draft",
+          "style": "secret",
+          "label": "escala del fraude"
+        },
+        {
+          "id": "el_tab_torben",
+          "sourceNodeId": "node_l_taberna",
+          "targetNodeId": "node_l_taberna_torben",
+          "status": "draft",
+          "style": "solid",
+          "label": "informador"
+        },
+        {
+          "id": "el_tab_silas",
+          "sourceNodeId": "node_l_taberna",
+          "targetNodeId": "node_l_taberna_silas",
+          "status": "draft",
+          "style": "weak",
+          "label": "rumorista jugador"
+        },
+        {
+          "id": "el_tab_tip",
+          "sourceNodeId": "node_l_taberna",
+          "targetNodeId": "node_l_taberna_tip",
+          "status": "draft",
+          "style": "solid",
+          "label": "primer testimonio"
+        },
+        {
+          "id": "el_temp_sera",
+          "sourceNodeId": "node_l_templo",
+          "targetNodeId": "node_l_templo_sera",
+          "status": "draft",
+          "style": "solid",
+          "label": "guardiana"
+        },
+        {
+          "id": "el_temp_camus",
+          "sourceNodeId": "node_l_templo",
+          "targetNodeId": "node_l_templo_camus",
+          "status": "draft",
+          "style": "weak",
+          "label": "vínculo espiritual"
+        },
+        {
+          "id": "el_temp_cronicas",
+          "sourceNodeId": "node_l_templo",
+          "targetNodeId": "node_l_templo_cronicas",
+          "status": "draft",
+          "style": "strong",
+          "label": "texto protegido"
+        },
+        {
+          "id": "el_arch_mira",
+          "sourceNodeId": "node_l_archivo",
+          "targetNodeId": "node_l_archivo_mira",
+          "status": "draft",
+          "style": "solid",
+          "label": "custodia"
+        },
+        {
+          "id": "el_arch_records",
+          "sourceNodeId": "node_l_archivo",
+          "targetNodeId": "node_l_archivo_records",
+          "status": "draft",
+          "style": "strong",
+          "label": "registros quemados"
+        },
+        {
+          "id": "el_arch_diary",
+          "sourceNodeId": "node_l_archivo",
+          "targetNodeId": "node_l_archivo_lyra_diary",
+          "status": "draft",
+          "style": "dashed",
+          "label": "investigación paralela"
+        },
+        {
+          "id": "el_pto_ilva",
+          "sourceNodeId": "node_l_puerto",
+          "targetNodeId": "node_l_puerto_ilva",
+          "status": "draft",
+          "style": "solid",
+          "label": "testigo médico"
+        },
+        {
+          "id": "el_pto_pica",
+          "sourceNodeId": "node_l_puerto",
+          "targetNodeId": "node_l_puerto_pica",
+          "status": "draft",
+          "style": "weak",
+          "label": "rumores del mercado"
+        },
+        {
+          "id": "el_pto_bodies",
+          "sourceNodeId": "node_l_puerto",
+          "targetNodeId": "node_l_puerto_bodies",
+          "status": "draft",
+          "style": "strong",
+          "label": "cadáveres marcados"
+        },
+        {
+          "id": "el_bar_vantis",
+          "sourceNodeId": "node_l_barrio",
+          "targetNodeId": "node_l_barrio_vantis",
+          "status": "draft",
+          "style": "solid",
+          "label": "residencia noble"
+        },
+        {
+          "id": "el_bar_brann",
+          "sourceNodeId": "node_l_barrio",
+          "targetNodeId": "node_l_barrio_brann",
+          "status": "draft",
+          "style": "secret",
+          "label": "corrupción política"
+        },
+        {
+          "id": "el_bar_payments",
+          "sourceNodeId": "node_l_barrio",
+          "targetNodeId": "node_l_barrio_payments",
+          "status": "draft",
+          "style": "strong",
+          "label": "rastro financiero"
+        },
+        {
+          "id": "el_gre_kael",
+          "sourceNodeId": "node_l_gremio",
+          "targetNodeId": "node_l_gremio_kael",
+          "status": "draft",
+          "style": "solid",
+          "label": "líder"
+        },
+        {
+          "id": "el_gre_cira",
+          "sourceNodeId": "node_l_gremio",
+          "targetNodeId": "node_l_gremio_cira",
+          "status": "draft",
+          "style": "solid",
+          "label": "operativa"
+        },
+        {
+          "id": "el_gre_ledger",
+          "sourceNodeId": "node_l_gremio",
+          "targetNodeId": "node_l_gremio_ledger",
+          "status": "draft",
+          "style": "strong",
+          "label": "seguro de vida"
+        },
+        {
+          "id": "el_san_abad",
+          "sourceNodeId": "node_l_santuario",
+          "targetNodeId": "node_l_santuario_abad",
+          "status": "draft",
+          "style": "solid",
+          "label": "guardián"
+        },
+        {
+          "id": "el_san_tome",
+          "sourceNodeId": "node_l_santuario",
+          "targetNodeId": "node_l_santuario_tome",
+          "status": "draft",
+          "style": "strong",
+          "label": "tomo antiguo"
+        },
+        {
+          "id": "el_san_truth",
+          "sourceNodeId": "node_l_santuario",
+          "targetNodeId": "node_l_santuario_truth",
+          "status": "draft",
+          "style": "secret",
+          "label": "identidad real"
+        },
+        {
+          "id": "el_cuar_lyra",
+          "sourceNodeId": "node_l_cuartel",
+          "targetNodeId": "node_l_cuartel_lyra",
+          "status": "draft",
+          "style": "solid",
+          "label": "capitana"
+        },
+        {
+          "id": "el_cuar_riku",
+          "sourceNodeId": "node_l_cuartel",
+          "targetNodeId": "node_l_cuartel_riku",
+          "status": "draft",
+          "style": "solid",
+          "label": "testigo nervioso"
+        },
+        {
+          "id": "el_cuar_diary",
+          "sourceNodeId": "node_l_cuartel",
+          "targetNodeId": "node_l_cuartel_diary",
+          "status": "draft",
+          "style": "strong",
+          "label": "diario secreto"
+        },
+        {
+          "id": "el_muel_drez",
+          "sourceNodeId": "node_l_muelles",
+          "targetNodeId": "node_l_muelles_drez",
+          "status": "draft",
+          "style": "secret",
+          "label": "barco de huida"
+        },
+        {
+          "id": "el_muel_riku",
+          "sourceNodeId": "node_l_muelles",
+          "targetNodeId": "node_l_muelles_riku",
+          "status": "draft",
+          "style": "dashed",
+          "label": "testigo ocular"
+        },
+        {
+          "id": "el_muel_bodies",
+          "sourceNodeId": "node_l_muelles",
+          "targetNodeId": "node_l_muelles_bodies",
+          "status": "draft",
+          "style": "strong",
+          "label": "víctimas"
+        },
+        {
+          "id": "el_muel_escape",
+          "sourceNodeId": "node_l_muelles",
+          "targetNodeId": "node_l_muelles_escape",
+          "status": "draft",
+          "style": "secret",
+          "label": "ruta de escape"
+        }
+      ]
     }
   ],
   "highlightEntityIds": [
