@@ -318,5 +318,30 @@ describe("Persistence Layer", () => {
         })
       ).rejects.toThrow(InvariantViolationError);
     });
+
+    it("quarantines a corrupt snapshot.json and rebuilds projection from scratch", async () => {
+      const actorId = "usr_dm";
+      await repo.appendEvent(campaignId, "CampaignCreated", actorId, {
+        id: campaignId,
+        title: "Atomic Campaign",
+        system: "custom",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        settings: { backupOnClose: true, lanModeEnabled: false, activeQuestsLimit: 5 },
+      });
+
+      await repo.getCampaignState(campaignId);
+      const snapshotPath = repo["snapshotStore"].getSnapshotFilePath(campaignId);
+      expect(await fs.stat(snapshotPath).then((s) => s.isFile())).toBe(true);
+
+      await fs.writeFile(snapshotPath, "{ corrupt json ...", "utf-8");
+
+      const state = await repo.getCampaignState(campaignId);
+      expect(state.campaign?.title).toBe("Atomic Campaign");
+
+      const corruptPath = snapshotPath.replace(/\.json$/, ".corrupt.json");
+      expect(await fs.stat(corruptPath).then((s) => s.isFile())).toBe(true);
+    });
   });
 });

@@ -6,6 +6,7 @@ import type { CampaignProjection } from "../../projections/campaignProjection.js
 import { SNAPSHOT_SCHEMA_VERSION, PROJECTION_SCHEMA_VERSION } from "@shared/appVersion.js";
 
 import { assertWithinDir } from "@backend/server/helpers.js";
+import { atomicWriteJson } from "../json.js";
 
 export interface CampaignSnapshot {
   sequence: number;
@@ -103,14 +104,8 @@ export class SnapshotStore {
       projection: serializedProjection,
     };
 
-    const tempPath = this.getTempSnapshotFilePath(campaignId);
     const finalPath = this.getSnapshotFilePath(campaignId);
-
-    // 1. Write to temporary file
-    await fs.writeFile(tempPath, JSON.stringify(snapshot, null, 2), "utf-8");
-
-    // 2. Rename atomically to the final file path
-    await fs.rename(tempPath, finalPath);
+    await atomicWriteJson(finalPath, snapshot);
   }
 
   /**
