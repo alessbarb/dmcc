@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-router";
 import { fetchAuthStatus } from "./shared/auth/authClient.js";
 
-async function requireDmSession() {
+async function requireAccountSession() {
   try {
     const status = await fetchAuthStatus();
     if (!status.dmSessionValid) {
@@ -48,6 +48,9 @@ const OnboardingPageLazy = React.lazy(() =>
 const PremadeCampaignPreviewPageLazy = React.lazy(() =>
   import("./dm/pages/PremadeCampaignPreviewPage.js").then((m) => ({ default: m.PremadeCampaignPreviewPage }))
 );
+const AccountPageLazy = React.lazy(() =>
+  import("./account/AccountPage.js").then((m) => ({ default: m.AccountPage }))
+);
 
 function withSuspense(Component: React.ComponentType) {
   return function SuspenseRoute() {
@@ -75,7 +78,7 @@ const indexRoute = createRoute({
 const dmRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm",
-  beforeLoad: requireDmSession,
+  beforeLoad: requireAccountSession,
   component: withSuspense(AppPage),
 });
 
@@ -128,7 +131,7 @@ const playerPortalRoute = createRoute({
 const campaignRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/campaigns/$campaignId",
-  beforeLoad: requireDmSession,
+  beforeLoad: requireAccountSession,
   component: withSuspense(CampaignShellPage),
 });
 
@@ -227,10 +230,18 @@ const premadePreviewRoute = createRoute({
   component: withSuspense(PremadeCampaignPreviewPageLazy),
 });
 
+const accountRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/account",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AccountPageLazy),
+});
+
 // Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   dmRoute,
+  accountRoute,
   onboardingRoute,
   premadePreviewRoute,
   dmSetupRoute,
