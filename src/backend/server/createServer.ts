@@ -26,6 +26,7 @@ import { registerPlayerPortalRoutes } from "./routes/playerPortalRoutes.js";
 import { registerHardeningRoutes } from "./routes/hardeningRoutes.js";
 import { registerAuthRoutes } from "./routes/authRoutes.js";
 import { registerUserAuthRoutes } from "./routes/userAuthRoutes.js";
+import { registerAccountRoutes } from "./routes/accountRoutes.js";
 import { registerPremadeCampaignRoutes } from "./routes/premadeCampaignRoutes.js";
 import { getSessionUser, readUserAuthStore } from "./userAuthStore.js";
 import { readSessionCookie } from "./sessionAuth.js";
@@ -306,6 +307,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerPremadeCampaignRoutes, opts);
   server.register(registerAuthRoutes, opts);
   server.register(registerUserAuthRoutes, opts);
+  server.register(registerAccountRoutes, opts);
 
   return server;
 }

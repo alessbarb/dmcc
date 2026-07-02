@@ -4,6 +4,20 @@ import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { hashSecret, verifySecret } from "./auth.js";
 import { isSafeImageUrl } from "../../shared/schemas.js";
+import type {
+  DmSocialProfile,
+  PlayerSocialProfile,
+  UserPreferences,
+} from "./account/accountTypes.js";
+import { validateAvatarUrl, validateDisplayName } from "./account/accountValidation.js";
+import { normalizePublicHandle, PROFILE_LIMITS } from "./account/accountValidation.js";
+import type {
+  ProfileAudience,
+  PublicationState,
+  SocialField,
+  SocialProfileBase,
+  SocialVisibility,
+} from "./account/accountTypes.js";
 
 export type UserAccount = {
   userId: string;
@@ -54,17 +68,20 @@ export type PasswordResetToken = {
 };
 
 export type UserAuthStore = {
-  schemaVersion: 3;
+  schemaVersion: 4;
   accessCodePepper: string;
   users: UserAccount[];
   memberships: CampaignMembership[];
   sessions: AuthSession[];
   recoveryCodes: RecoveryCode[];
   passwordResetTokens: PasswordResetToken[];
+  preferences: UserPreferences[];
+  dmProfiles: DmSocialProfile[];
+  playerProfiles: PlayerSocialProfile[];
   createdAt: string;
   updatedAt: string;
   migration?: {
-    fromSchemaVersion: 2;
+    fromSchemaVersion: 2 | 3;
     completedAt: string;
   };
 };
@@ -91,15 +108,18 @@ function pathFor(vaultDir: string): string {
 export async function readUserAuthStore(vaultDir: string): Promise<UserAuthStore> {
   try {
     const parsed = JSON.parse(await readFile(pathFor(vaultDir), "utf8")) as any;
-    if (parsed.schemaVersion === 3 && Array.isArray(parsed.users)) {
+    if ((parsed.schemaVersion === 3 || parsed.schemaVersion === 4) && Array.isArray(parsed.users)) {
       return {
-        schemaVersion: 3,
+        schemaVersion: 4,
         accessCodePepper: parsed.accessCodePepper ?? randomBytes(32).toString("hex"),
         users: parsed.users,
         memberships: parsed.memberships ?? [],
         sessions: parsed.sessions ?? [],
         recoveryCodes: parsed.recoveryCodes ?? [],
         passwordResetTokens: parsed.passwordResetTokens ?? [],
+        preferences: parsed.preferences ?? [],
+        dmProfiles: parsed.dmProfiles ?? [],
+        playerProfiles: parsed.playerProfiles ?? [],
         createdAt: parsed.createdAt ?? nowIso(),
         updatedAt: parsed.updatedAt ?? nowIso(),
         migration: parsed.migration,
@@ -123,26 +143,32 @@ export async function readUserAuthStore(vaultDir: string): Promise<UserAuthStore
       : [];
     const createdAt = parsed.createdAt ?? nowIso();
     return {
-      schemaVersion: 3,
+      schemaVersion: 4,
       accessCodePepper: randomBytes(32).toString("hex"),
       users: migratedUsers,
       memberships: [],
       sessions: [],
       recoveryCodes: [],
       passwordResetTokens: [],
+      preferences: [],
+      dmProfiles: [],
+      playerProfiles: [],
       createdAt,
       updatedAt: nowIso(),
     };
   } catch {
     const now = nowIso();
     return {
-      schemaVersion: 3,
+      schemaVersion: 4,
       accessCodePepper: randomBytes(32).toString("hex"),
       users: [],
       memberships: [],
       sessions: [],
       recoveryCodes: [],
       passwordResetTokens: [],
+      preferences: [],
+      dmProfiles: [],
+      playerProfiles: [],
       createdAt: now,
       updatedAt: now,
     };
@@ -195,13 +221,19 @@ export async function migrateLegacyAuthStore(dataDir: string, vaultId: string): 
   }
 
   const migratedFromV2 = legacySchemaVersion === 2 && !store.migration;
+  const migratedFromV3 = legacySchemaVersion === 3;
   const membershipsChanged = memberships.length !== store.memberships.length;
-  if (!migratedFromV2 && !membershipsChanged) return store;
+  if (!migratedFromV2 && !migratedFromV3 && !membershipsChanged) return store;
 
   const migrated: UserAuthStore = {
     ...store,
     memberships,
-    ...(migratedFromV2 && { migration: { fromSchemaVersion: 2, completedAt: nowIso() } }),
+    ...((migratedFromV2 || migratedFromV3) && {
+      migration: {
+        fromSchemaVersion: migratedFromV2 ? 2 as const : 3 as const,
+        completedAt: nowIso(),
+      },
+    }),
   };
   await writeUserAuthStore(vaultDir, migrated);
   return migrated;
@@ -210,6 +242,251 @@ export async function migrateLegacyAuthStore(dataDir: string, vaultId: string): 
 export async function writeUserAuthStore(vaultDir: string, store: UserAuthStore): Promise<void> {
   await mkdir(vaultDir, { recursive: true });
   await writeFile(pathFor(vaultDir), JSON.stringify({ ...store, updatedAt: nowIso() }, null, 2), "utf8");
+}
+
+export function defaultUserPreferences(userId: string): UserPreferences {
+  return {
+    userId,
+    locale: "en",
+    timeFormat: "system",
+    themeId: "default",
+    colorMode: "system",
+    typographySetId: "cinzel-outfit",
+    density: "comfortable",
+    textScale: 1,
+    enhancedContrast: false,
+    reducedMotion: false,
+    interfaceSounds: true,
+    notifications: {
+      membership: true,
+      campaignActivity: true,
+      sessionReminder: true,
+      direct: true,
+    },
+    campaignNotifications: {},
+    version: 1,
+  };
+}
+
+export async function getOrCreatePreferences(vaultDir: string, userId: string): Promise<UserPreferences> {
+  const store = await readUserAuthStore(vaultDir);
+  const existing = store.preferences.find((item) => item.userId === userId);
+  if (existing) return existing;
+  const preferences = defaultUserPreferences(userId);
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    preferences: [...store.preferences, preferences],
+  });
+  return preferences;
+}
+
+export async function getAccountAggregate(vaultDir: string, userId: string) {
+  const store = await readUserAuthStore(vaultDir);
+  const account = store.users.find((item) => item.userId === userId && !item.disabledAt);
+  if (!account) throw Object.assign(new Error("Account not found"), { statusCode: 404 });
+  const preferences = store.preferences.find((item) => item.userId === userId)
+    ?? await getOrCreatePreferences(vaultDir, userId);
+  return {
+    account: publicUser(account),
+    preferences,
+    dmProfile: store.dmProfiles.find((item) => item.userId === userId) ?? null,
+    playerProfiles: store.playerProfiles.filter((item) => item.userId === userId),
+    memberships: store.memberships.filter((item) => item.userId === userId),
+  };
+}
+
+export async function updatePrivateIdentity(
+  vaultDir: string,
+  userId: string,
+  input: { displayName?: unknown; avatarUrl?: unknown }
+) {
+  const store = await readUserAuthStore(vaultDir);
+  const account = store.users.find((item) => item.userId === userId && !item.disabledAt);
+  if (!account) throw Object.assign(new Error("Account not found"), { statusCode: 404 });
+  const updated = {
+    ...account,
+    displayName: validateDisplayName(input.displayName),
+    avatarUrl: validateAvatarUrl(input.avatarUrl),
+  };
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    users: store.users.map((item) => item.userId === userId ? updated : item),
+  });
+  return publicUser(updated);
+}
+
+export async function updatePreferences(
+  vaultDir: string,
+  userId: string,
+  expectedVersion: number,
+  patch: Partial<Omit<UserPreferences, "userId" | "version">>
+): Promise<UserPreferences> {
+  const current = await getOrCreatePreferences(vaultDir, userId);
+  if (current.version !== expectedVersion) {
+    throw Object.assign(new Error("Preferences changed on another device"), {
+      statusCode: 409,
+      current,
+    });
+  }
+  if (patch.themeId !== undefined && patch.themeId !== "default") {
+    throw Object.assign(new Error("Unknown theme"), { statusCode: 400, field: "themeId" });
+  }
+  if (patch.typographySetId !== undefined && patch.typographySetId !== "cinzel-outfit") {
+    throw Object.assign(new Error("Unknown typography set"), {
+      statusCode: 400,
+      field: "typographySetId",
+    });
+  }
+  const updated = { ...current, ...patch, userId, version: current.version + 1 };
+  const store = await readUserAuthStore(vaultDir);
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    preferences: store.preferences.map((item) => item.userId === userId ? updated : item),
+  });
+  return updated;
+}
+
+const SOCIAL_FIELDS: SocialField[] = [
+  "displayName",
+  "avatarUrl",
+  "pronouns",
+  "timeZone",
+  "biography",
+  "contact",
+];
+const AUDIENCES = new Set<ProfileAudience>(["private", "dm", "table", "global"]);
+const PUBLICATION_STATES = new Set<PublicationState>(["private", "unlisted", "published"]);
+
+function validateSocialProfileInput(input: Record<string, unknown>): Omit<SocialProfileBase, "userId" | "version"> {
+  const visibility = input.visibility as Partial<SocialVisibility> | undefined;
+  if (!visibility || SOCIAL_FIELDS.some((field) => !AUDIENCES.has(visibility[field] as ProfileAudience))) {
+    throw Object.assign(new Error("Invalid profile visibility"), {
+      statusCode: 400,
+      field: "visibility",
+    });
+  }
+  const publicationState = input.publicationState as PublicationState;
+  if (!PUBLICATION_STATES.has(publicationState)) {
+    throw Object.assign(new Error("Invalid publication state"), {
+      statusCode: 400,
+      field: "publicationState",
+    });
+  }
+  const bounded = (field: "pronouns" | "timeZone" | "biography" | "contact") => {
+    const value = input[field];
+    if (value === undefined || value === null || value === "") return undefined;
+    if (typeof value !== "string" || value.trim().length > PROFILE_LIMITS[field]) {
+      throw Object.assign(new Error(`Invalid ${field}`), { statusCode: 400, field });
+    }
+    return value.trim();
+  };
+  const publicHandle = typeof input.publicHandle === "string" && input.publicHandle.trim()
+    ? normalizePublicHandle(input.publicHandle)
+    : undefined;
+  if (publicationState !== "private" && !publicHandle) {
+    throw Object.assign(new Error("A public handle is required for publication"), {
+      statusCode: 400,
+      field: "publicHandle",
+    });
+  }
+  return {
+    displayName: validateDisplayName(input.displayName),
+    avatarUrl: validateAvatarUrl(input.avatarUrl),
+    pronouns: bounded("pronouns"),
+    timeZone: bounded("timeZone"),
+    biography: bounded("biography"),
+    contact: bounded("contact"),
+    visibility: visibility as SocialVisibility,
+    publicHandle,
+    publicationState,
+  };
+}
+
+function assertHandleAvailable(
+  store: UserAuthStore,
+  userId: string,
+  publicHandle: string | undefined
+) {
+  if (!publicHandle) return;
+  const profiles: SocialProfileBase[] = [...store.dmProfiles, ...store.playerProfiles];
+  if (profiles.some((profile) => profile.userId !== userId && profile.publicHandle === publicHandle)) {
+    throw Object.assign(new Error("Public handle is already in use"), {
+      statusCode: 409,
+      field: "publicHandle",
+    });
+  }
+}
+
+export async function upsertDmProfile(
+  vaultDir: string,
+  userId: string,
+  expectedVersion: number,
+  input: Record<string, unknown>
+): Promise<DmSocialProfile> {
+  const store = await readUserAuthStore(vaultDir);
+  const current = store.dmProfiles.find((item) => item.userId === userId);
+  if ((current?.version ?? 0) !== expectedVersion) {
+    throw Object.assign(new Error("Profile changed on another device"), {
+      statusCode: 409,
+      current,
+    });
+  }
+  const values = validateSocialProfileInput(input);
+  assertHandleAvailable(store, userId, values.publicHandle);
+  const profile: DmSocialProfile = { userId, ...values, version: expectedVersion + 1 };
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    dmProfiles: [...store.dmProfiles.filter((item) => item.userId !== userId), profile],
+  });
+  return profile;
+}
+
+export async function upsertPlayerProfile(
+  vaultDir: string,
+  userId: string,
+  campaignId: string,
+  expectedVersion: number,
+  input: Record<string, unknown>
+): Promise<PlayerSocialProfile> {
+  const store = await readUserAuthStore(vaultDir);
+  const membership = store.memberships.find((item) =>
+    item.userId === userId
+    && item.campaignId === campaignId
+    && item.role === "player"
+    && item.playerId
+    && !item.revokedAt
+  );
+  if (!membership?.playerId) {
+    throw Object.assign(new Error("Active player membership required"), { statusCode: 403 });
+  }
+  const current = store.playerProfiles.find((item) =>
+    item.userId === userId && item.campaignId === campaignId
+  );
+  if ((current?.version ?? 0) !== expectedVersion) {
+    throw Object.assign(new Error("Profile changed on another device"), {
+      statusCode: 409,
+      current,
+    });
+  }
+  const values = validateSocialProfileInput(input);
+  assertHandleAvailable(store, userId, values.publicHandle);
+  const profile: PlayerSocialProfile = {
+    userId,
+    campaignId,
+    playerId: membership.playerId,
+    ...values,
+    version: expectedVersion + 1,
+  };
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    playerProfiles: [
+      ...store.playerProfiles.filter((item) =>
+        item.userId !== userId || item.campaignId !== campaignId
+      ),
+      profile,
+    ],
+  });
+  return profile;
 }
 
 export async function getVaultAccessCodePepper(vaultDir: string): Promise<string> {
