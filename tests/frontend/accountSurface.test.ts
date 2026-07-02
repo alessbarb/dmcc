@@ -42,4 +42,17 @@ describe("shared account surface", () => {
     expect(client).toContain("export async function fetchPrivacyPreview");
     expect(client).toContain("/api/account/privacy/preview?");
   });
+
+  it("exposes password, recovery-code, and full sign-out security actions", () => {
+    const security = read("src/frontend/account/SecurityPanel.tsx");
+    const client = read("src/frontend/account/accountClient.ts");
+
+    expect(security).toContain("changePassword");
+    expect(security).toContain("regenerateRecoveryCodes");
+    expect(security).toContain("revokeAllSessions");
+    expect(security).toContain("I have saved these recovery codes");
+    expect(client).toContain('"/api/auth/password/change"');
+    expect(client).toContain('"/api/auth/recovery-codes/regenerate"');
+    expect(client).toContain('"/api/account/sessions"');
+  });
 });

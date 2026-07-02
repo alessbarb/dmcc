@@ -10,6 +10,7 @@ import {
   readUserAuthStore,
   listOwnedSessions,
   revokeOtherOwnedSessions,
+  revokeAllOwnedSessions,
   revokeOwnedSession,
   buildPersonalExport,
   deleteAccount,
@@ -256,6 +257,18 @@ export async function registerAccountRoutes(
       const rawSessionId = readSessionCookie(request);
       if (!rawSessionId) throw Object.assign(new Error("Authentication required"), { statusCode: 401 });
       await revokeOtherOwnedSessions(vaultDirFor(request), user.userId, rawSessionId);
+      return { revoked: true };
+    } catch (error: any) {
+      reply.code(error.statusCode ?? 500);
+      return { error: error.statusCode ? error.message : "Unable to revoke sessions" };
+    }
+  });
+
+  server.delete("/api/account/sessions", async (request, reply) => {
+    try {
+      assertSameOrigin(request);
+      const user = await requireUser(request);
+      await revokeAllOwnedSessions(vaultDirFor(request), user.userId);
       return { revoked: true };
     } catch (error: any) {
       reply.code(error.statusCode ?? 500);

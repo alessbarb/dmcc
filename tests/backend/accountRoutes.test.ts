@@ -135,6 +135,23 @@ describe("account routes", () => {
     expect(response.statusCode).toBe(403);
   });
 
+  it("revokes every session owned by the signed-in account", async () => {
+    const { server, cookie } = await authenticatedServer();
+    const response = await server.inject({
+      method: "DELETE",
+      url: "/api/account/sessions",
+      headers: { cookie, origin: "http://localhost", host: "localhost" },
+    });
+    expect(response.statusCode).toBe(200);
+
+    const signedOut = await server.inject({
+      method: "GET",
+      url: "/api/account",
+      headers: { cookie },
+    });
+    expect(signedOut.statusCode).toBe(401);
+  });
+
   it("updates the owner's DM profile", async () => {
     const { server, cookie } = await authenticatedServer();
 

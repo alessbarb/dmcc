@@ -1099,6 +1099,20 @@ export async function revokeOtherOwnedSessions(
   await syncToDisk(vaultDir);
 }
 
+export async function revokeAllOwnedSessions(
+  vaultDir: string,
+  userId: string
+): Promise<void> {
+  await db.update(schema.authSessions).set({
+    revokedAt: new Date(),
+  }).where(and(
+    eq(schema.authSessions.userId, userId),
+    isNull(schema.authSessions.revokedAt)
+  ));
+
+  await syncToDisk(vaultDir);
+}
+
 export async function revokeAllSessions(vaultDir: string): Promise<void> {
   const tenantId = getTenantIdFromVaultDir(vaultDir);
   const vaultUsers = await db.select().from(schema.users).where(eq(schema.users.vaultId, tenantId));
