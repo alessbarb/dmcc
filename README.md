@@ -277,18 +277,17 @@ npm run lint             # Run ESLint
 npm run quality          # Run lint, typecheck, tests and build
 ```
 
-## Demo campaigns
+## Premade campaigns
 
-The project includes seed scripts for demo campaign data:
+Demo campaign content ships as static JSON premade templates under `public/premades/`. Import them through the UI or use these maintenance scripts:
 
 ```bash
-npm run seed:oracle          # Seed La Sombra del Oráculo
-npm run seed:oracle:dry      # Dry run for La Sombra del Oráculo
-npm run seed:oracle:replace  # Replace the existing Oracle demo campaign
-npm run seed:phandalin       # Seed the Phandalin demo campaign
+npm run premade:validate      # Validate all templates (refs, locale parity)
+npm run premade:build         # Normalize template metadata
+npm run premade:build:check   # Check if normalization is needed (CI-safe)
 ```
 
-These are useful for testing the product with richer data than an empty campaign.
+Templates: **oracle-triple-eclipse** (La Sombra del Oráculo) and **phandalin-starter** (Shadows over Phandalin). Both available in English and Spanish.
 
 ## Project structure
 
@@ -302,7 +301,7 @@ src/
 public/          Static assets
 tests/           Unit and integration tests
 e2e/             End-to-end tests
-seeds/           Demo campaign seed data
+public/premades/ Premade campaign templates (JSON)
 scripts/         Build and maintenance scripts
 ```
 

@@ -1,6 +1,9 @@
 import type { FastifyInstance } from "fastify";
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import cookie from "@fastify/cookie";
+import helmet from "@fastify/helmet";
+import rateLimit from "@fastify/rate-limit";
 import fastifyStatic from "@fastify/static";
 import { existsSync } from "fs";
 import { basename, join, dirname, resolve, sep } from "path";
@@ -30,16 +33,26 @@ import { registerAccountRoutes } from "./routes/accountRoutes.js";
 import { registerPremadeCampaignRoutes } from "./routes/premadeCampaignRoutes.js";
 import { getSessionUser, readUserAuthStore } from "./userAuthStore.js";
 import { readSessionCookie } from "./sessionAuth.js";
+import { resolveWebUser } from "./web/webSession.js";
+import { registerWebPlatformRoutes } from "./web/webPlatformRoutes.js";
 
 export interface ServerConfig {
   dataDir?: string;
   /** Keeps pre-migration credentials available only to the legacy test suite. */
   allowLegacyTestAuth?: boolean;
+  /**
+   * `postgres` enables the final web/app storage model: PostgreSQL, web accounts,
+   * campaign memberships, invitations and no vault/LAN/token persistence.
+   * Legacy remains available for existing tests until the frontend/backend are fully cut over.
+   */
+  storageMode?: "legacy" | "postgres";
 }
 
 export function createServer(config?: ServerConfig): FastifyInstance {
   const server = Fastify({ logger: { level: "warn" } });
   const dataDir = config?.dataDir ?? join(homedir(), "Documents", "DMCampaignCompanion");
+  const storageMode = config?.storageMode ?? (process.env.DMCC_STORAGE_MODE === "postgres" ? "postgres" : "legacy");
+  const isPostgresWebMode = storageMode === "postgres";
 
   const dmSessionToken = randomBytes(32).toString("hex");
   // Signing secret for DM session tokens. In tests it is also accepted as a legacy DM token.
@@ -59,14 +72,22 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   );
 
 
-  server.register(cors, {
-    origin: [
-      "http://localhost:4877",
-      "http://127.0.0.1:4877",
-      "http://localhost:5173",
-      "http://127.0.0.1:5173",
-    ],
-  });
+  if (isPostgresWebMode) {
+    const allowedOrigin = process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173";
+    server.register(cookie, { secret: process.env.DMCC_SESSION_SECRET ?? "dev-change-me" });
+    server.register(helmet);
+    server.register(rateLimit, { max: 200, timeWindow: "1 minute" });
+    server.register(cors, { origin: [allowedOrigin, "http://127.0.0.1:5173", "http://localhost:4877"], credentials: true });
+  } else {
+    server.register(cors, {
+      origin: [
+        "http://localhost:4877",
+        "http://127.0.0.1:4877",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+      ],
+    });
+  }
 
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
@@ -207,12 +228,30 @@ export function createServer(config?: ServerConfig): FastifyInstance {
       if (origin) {
         const host = request.headers.host;
         let originHost: string | undefined;
+        let originValue: string | undefined;
         try {
-          originHost = new URL(origin).host;
+          const parsedOrigin = new URL(origin);
+          originHost = parsedOrigin.host;
+          originValue = parsedOrigin.origin;
         } catch {
           originHost = undefined;
+          originValue = undefined;
         }
-        if (!host || originHost !== host) {
+
+        if (isPostgresWebMode) {
+          const publicOrigin = (process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173").replace(/\/$/, "");
+          const allowedMutationOrigins = new Set([
+            publicOrigin,
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "http://localhost:4877",
+            "http://127.0.0.1:4877",
+          ]);
+          if (!originValue || (!allowedMutationOrigins.has(originValue) && originHost !== host)) {
+            reply.code(403);
+            return reply.send({ error: "Cross-origin mutation rejected" });
+          }
+        } else if (!host || originHost !== host) {
           reply.code(403);
           return reply.send({ error: "Cross-origin mutation rejected" });
         }
@@ -225,6 +264,20 @@ export function createServer(config?: ServerConfig): FastifyInstance {
           return reply.send({ error: "Cross-origin mutation rejected" });
         }
       }
+    }
+
+    if (isPostgresWebMode) {
+      const webUser = await resolveWebUser(request);
+      if (webUser) {
+        (request as any).webUser = webUser;
+        (request as any).unifiedUser = {
+          userId: webUser.userId,
+          emailNormalized: webUser.email,
+          displayName: webUser.displayName,
+          vaultRole: webUser.appRole === "admin" ? "admin" : "user",
+        };
+      }
+      return;
     }
 
     const vaultId = getValidatedVaultId(request);
@@ -280,6 +333,11 @@ export function createServer(config?: ServerConfig): FastifyInstance {
       return reply.send({ error: "Forbidden: You do not have access to this campaign" });
     }
   });
+
+  if (isPostgresWebMode) {
+    registerWebPlatformRoutes(server);
+    return server;
+  }
 
   server.get("/api/auth/local-token", async (_request, reply) => {
     if (!server.allowLegacyTestAuth) {

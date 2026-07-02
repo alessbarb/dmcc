@@ -334,7 +334,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                       boxShadow: "0 2px 4px rgba(0,0,0,0.4)",
                       flexShrink: 0
                     }}>
-                      <img src={player.avatarUrl || player.imageUrl || "/assets/avatars/default-avatar.jpg"} alt={player.displayName ?? player.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <img src={player.avatarUrl || player.imageUrl || "/assets/avatars/default-avatar.png"} alt={player.displayName ?? player.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     </div>
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <h3 style={{ fontWeight: "700", color: "var(--text-main)", marginBottom: "2px", fontSize: "1rem", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
@@ -473,8 +473,8 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                   )}
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">Path del Avatar Local (e.g. /assets/avatars/default-avatar.jpg)</label>
-                  <input className="form-input" value={playerForm.avatarUrl} onChange={e => setPlayerForm({ ...playerForm, avatarUrl: e.target.value })} placeholder="/assets/avatars/default-avatar.jpg" />
+                  <label className="form-label">Path del Avatar Local (e.g. /assets/avatars/default-avatar.png)</label>
+                  <input className="form-input" value={playerForm.avatarUrl} onChange={e => setPlayerForm({ ...playerForm, avatarUrl: e.target.value })} placeholder="/assets/avatars/default-avatar.png" />
                 </div>
               </div>
               <div className="modal-footer">

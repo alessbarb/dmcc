@@ -103,14 +103,11 @@ const playerJoinRoute = createRoute({
   component: withSuspense(PlayerJoinPageLazy),
 });
 
-// Legacy join route — redirect to /player/join with campaignId
+// Invitation join route — /join/:inviteToken is the final web/app entry point.
 const joinRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/join/$campaignId",
-  beforeLoad: ({ params }) => {
-    throw redirect({ to: "/player/join", search: { campaignId: params.campaignId } });
-  },
-  component: () => null,
+  path: "/join/$inviteToken",
+  component: withSuspense(PlayerJoinPageLazy),
 });
 
 // Player registration route — consume invite token
@@ -120,10 +117,16 @@ const registerRoute = createRoute({
   component: withSuspense(RegisterPageLazy),
 });
 
-// Player portal route — direct child of rootRoute, bypasses CampaignShell
+// Player portal routes — direct child of rootRoute, bypasses CampaignShell
 const playerPortalRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/campaigns/$campaignId/player-portal",
+  component: withSuspense(PlayerPortalPageLazy),
+});
+
+const playerPortalWebRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/campaigns/$campaignId",
   component: withSuspense(PlayerPortalPageLazy),
 });
 
@@ -250,6 +253,7 @@ const routeTree = rootRoute.addChildren([
   joinRoute,
   registerRoute,
   playerPortalRoute,
+  playerPortalWebRoute,
   campaignRoute.addChildren([
     campaignIndexRoute,
     canvasRoute,

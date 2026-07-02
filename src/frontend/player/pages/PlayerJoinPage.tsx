@@ -1,59 +1,112 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
-import { Shield } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "@tanstack/react-router";
+import { Shield, Ticket, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
 import { fetchAuthStatus, loginDm, setupDmAccount } from "../../shared/auth/authClient.js";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
-import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 type Membership = {
   campaignId: string;
   title: string;
-  role: "dm" | "player" | "observer";
+  role: "dm" | "co_dm" | "player" | "viewer" | "observer";
+  playerId?: string | null;
 };
+
+type InvitationPreview = {
+  campaign: { campaignId: string; title: string; summary?: string | null };
+  role: string;
+};
+
+function campaignPath(membership: Pick<Membership, "campaignId" | "role">): string {
+  return membership.role === "player"
+    ? `/player/campaigns/${membership.campaignId}`
+    : `/campaigns/${membership.campaignId}/dashboard`;
+}
 
 export function PlayerJoinPage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const vaultId = useCampaignStore((state) => state.activeVaultId) || "default";
+  const params = useParams({ strict: false }) as { inviteToken?: string; campaignId?: string };
+  const inviteToken = params.inviteToken ?? params.campaignId ?? null;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [campaignId, setCampaignId] = useState("");
-  const [accessCode, setAccessCode] = useState("");
   const [memberships, setMemberships] = useState<Membership[]>([]);
+  const [invitation, setInvitation] = useState<InvitationPreview | null>(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const hasInvite = Boolean(inviteToken);
+  const title = hasInvite ? "Unirte a una campaña" : "Entrar en tus campañas";
+  const subtitle = useMemo(() => {
+    if (invitation) return `Invitación para ${invitation.campaign.title}`;
+    if (hasInvite) return "Inicia sesión o crea una cuenta para aceptar la invitación.";
+    return "Accede a las campañas donde tienes permiso como DM o jugador.";
+  }, [hasInvite, invitation]);
+
   const loadMemberships = async () => {
-    const response = await apiFetch("/api/me/campaigns", { vaultId });
+    const response = await apiFetch("/api/campaigns");
     if (!response.ok) {
       setAuthenticated(false);
       setMemberships([]);
       return;
     }
-    const body = await response.json();
+    const campaigns = await response.json();
     setAuthenticated(true);
-    setMemberships(body.campaigns ?? []);
+    setMemberships((Array.isArray(campaigns) ? campaigns : []).map((campaign: any) => ({
+      campaignId: campaign.campaignId,
+      title: campaign.title,
+      role: campaign.role,
+      playerId: campaign.playerId,
+    })));
+  };
+
+  const loadInvitation = async () => {
+    if (!inviteToken) return;
+    const response = await apiFetch(`/api/invitations/${encodeURIComponent(inviteToken)}`);
+    if (!response.ok) {
+      setInvitation(null);
+      setError(await readApiError(response, "Invitación no válida o caducada"));
+      return;
+    }
+    setInvitation(await response.json());
   };
 
   useEffect(() => {
     void fetchAuthStatus().then((status) => {
+      setAuthenticated(status.dmSessionValid);
       if (status.dmSessionValid) void loadMemberships();
     }).catch(() => undefined);
-  }, [vaultId]);
+    void loadInvitation();
+  }, [inviteToken]);
 
   const enterCampaign = (membership: Membership) => {
     const store = useCampaignStore.getState();
-    if (membership.role === "player") {
-      store.enterPlayerCampaign(membership.campaignId);
-      navigate({ to: `/campaigns/${membership.campaignId}/player-portal` });
-    } else {
-      store.selectCampaign(membership.campaignId);
-      navigate({ to: `/campaigns/${membership.campaignId}/dashboard` });
+    if (membership.role === "player") store.enterPlayerCampaign(membership.campaignId);
+    else store.selectCampaign(membership.campaignId);
+    navigate({ to: campaignPath(membership) });
+  };
+
+  const acceptInvite = async () => {
+    if (!inviteToken) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await apiFetch(`/api/invitations/${encodeURIComponent(inviteToken)}/accept`, {
+        init: { method: "POST" },
+      });
+      if (!response.ok) throw new Error(await readApiError(response, "No se pudo aceptar la invitación"));
+      const body = await response.json();
+      const campaignId = body.campaignId ?? invitation?.campaign.campaignId;
+      if (!campaignId) throw new Error("La invitación no devolvió campaña");
+      useCampaignStore.getState().enterPlayerCampaign(campaignId);
+      navigate({ to: body.playerPortalPath ?? `/player/campaigns/${campaignId}` });
+    } catch (cause: any) {
+      setError(cause.message || "No se pudo aceptar la invitación");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,38 +114,13 @@ export function PlayerJoinPage() {
     setLoading(true);
     setError(null);
     try {
-      if (register) {
-        await setupDmAccount({ email, secret: password, displayName });
-      } else {
-        await loginDm(email, password);
-      }
+      if (register) await setupDmAccount({ email, secret: password, displayName });
+      else await loginDm(email, password);
+      setAuthenticated(true);
       await loadMemberships();
+      if (inviteToken) await acceptInvite();
     } catch (cause: any) {
-      setError(cause.message || t("playerJoin.rejoinConnectionError"));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const joinCampaign = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await apiFetch(`/api/campaigns/${campaignId.trim()}/join`, {
-        vaultId,
-        init: {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ accessCode: accessCode.trim() }),
-        },
-      });
-      if (!response.ok) throw new Error(await readApiError(response, t("playerJoin.rejoinError")));
-      await loadMemberships();
-      const body = await response.json();
-      enterCampaign({ ...body.membership, title: body.campaign?.title ?? campaignId });
-    } catch (cause: any) {
-      setError(cause.message || t("playerJoin.rejoinConnectionError"));
+      setError(cause.message || "No se pudo autenticar la cuenta");
     } finally {
       setLoading(false);
     }
@@ -103,29 +131,46 @@ export function PlayerJoinPage() {
       <PortalTopBar />
       <div className="join-portal-container" style={{ flex: 1 }}>
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
-        <div className="join-portal-card" style={{ maxWidth: 560 }}>
+        <div className="join-portal-card" style={{ maxWidth: 620 }}>
           <div className="join-portal-header">
-            <div className="join-portal-icon-wrapper"><Shield className="join-portal-icon" size={32} /></div>
-            <h1 className="join-portal-title">{t("playerJoin.accountTitle")}</h1>
-            <p style={{ color: "var(--text-muted)" }}>{t("playerJoin.accountHint")}</p>
+            <div className="join-portal-icon-wrapper">{hasInvite ? <Ticket className="join-portal-icon" size={32} /> : <Shield className="join-portal-icon" size={32} />}</div>
+            <h1 className="join-portal-title">{title}</h1>
+            <p style={{ color: "var(--text-muted)" }}>{subtitle}</p>
           </div>
+
           {error && <div className="join-portal-error"><p>{error}</p></div>}
+
+          {invitation && (
+            <section className="glass-card" style={{ marginBottom: 20, padding: 16 }}>
+              <h2 style={{ marginTop: 0 }}>{invitation.campaign.title}</h2>
+              {invitation.campaign.summary && <p style={{ color: "var(--text-muted)" }}>{invitation.campaign.summary}</p>}
+              <p style={{ color: "var(--text-muted)" }}>Rol ofrecido: {invitation.role}</p>
+            </section>
+          )}
+
           {!authenticated ? (
             <form className="join-portal-form" onSubmit={(event) => { event.preventDefault(); void authenticate(false); }}>
-              <label className="form-label">{t("playerJoin.displayNameRegisterLabel")}</label>
+              <label className="form-label">Nombre visible</label>
               <input className="form-input" value={displayName} onChange={(event) => setDisplayName(event.target.value)} autoComplete="name" />
-              <label className="form-label">{t("playerJoin.emailLabel")}</label>
+              <label className="form-label">Email</label>
               <input className="form-input" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="email" />
-              <label className="form-label">{t("playerJoin.passwordLabel")}</label>
-              <input className="form-input" type="password" minLength={12} maxLength={128} value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" />
-              <button className="btn btn-primary" disabled={loading}>{t("playerJoin.signInBtn")}</button>
-              <button type="button" className="btn btn-secondary" disabled={loading} onClick={() => void authenticate(true)}>{t("playerJoin.createAccountBtn")}</button>
+              <label className="form-label">Contraseña</label>
+              <input className="form-input" type="password" minLength={8} maxLength={128} value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" />
+              <button className="btn btn-primary" disabled={loading}>Entrar</button>
+              <button type="button" className="btn btn-secondary" disabled={loading} onClick={() => void authenticate(true)}>Crear cuenta y continuar</button>
             </form>
           ) : (
             <>
-              {memberships.length > 0 && (
-                <section style={{ display: "grid", gap: 8, marginBottom: 24 }}>
-                  <h2>{t("playerJoin.yourCampaigns")}</h2>
+              {hasInvite && (
+                <button className="btn btn-primary btn-full" disabled={loading || !invitation} onClick={() => void acceptInvite()}>
+                  Aceptar invitación
+                </button>
+              )}
+
+              {!hasInvite && (
+                <section style={{ display: "grid", gap: 8 }}>
+                  <h2 style={{ display: "flex", alignItems: "center", gap: 8 }}><Users size={18} /> Tus campañas</h2>
+                  {memberships.length === 0 && <p style={{ color: "var(--text-muted)" }}>Todavía no tienes campañas asociadas.</p>}
                   {memberships.map((membership) => (
                     <button className="btn btn-secondary" key={membership.campaignId} onClick={() => enterCampaign(membership)}>
                       {membership.title} · {membership.role}
@@ -133,14 +178,6 @@ export function PlayerJoinPage() {
                   ))}
                 </section>
               )}
-              <form className="join-portal-form" onSubmit={joinCampaign}>
-                <h2>{t("playerJoin.joinWithCode")}</h2>
-                <label className="form-label">{t("playerJoin.campaignIdLabel")}</label>
-                <input className="form-input" value={campaignId} onChange={(event) => setCampaignId(event.target.value)} required />
-                <label className="form-label">{t("playerJoin.accessCodeLabel")}</label>
-                <input className="form-input" value={accessCode} onChange={(event) => setAccessCode(event.target.value)} required autoComplete="off" />
-                <button className="btn btn-primary" disabled={loading}>{t("playerJoin.joinShortBtn")}</button>
-              </form>
             </>
           )}
         </div>

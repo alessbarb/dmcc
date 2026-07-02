@@ -5,8 +5,40 @@ import { describe, expect, it } from "vitest";
 import { createServer } from "../../src/backend/server/createServer.js";
 import { hashSecret } from "../../src/backend/server/auth.js";
 import { hashOpaque, migrateLegacyAuthStore } from "../../src/backend/server/userAuthStore.js";
+import { db } from "../../src/backend/db/client.js";
+import * as schema from "../../src/backend/db/schema.js";
+
+async function cleanDatabase() {
+  await db.delete(schema.activityFeed);
+  await db.delete(schema.attachments);
+  await db.delete(schema.campaignInvitationAcceptances);
+  await db.delete(schema.campaignInvitations);
+  await db.delete(schema.campaignNotes);
+  await db.delete(schema.playerProposals);
+  await db.delete(schema.campaignScenes);
+  await db.delete(schema.campaignSessions);
+  await db.delete(schema.liveTables);
+  await db.delete(schema.visibilityGrants);
+  await db.delete(schema.campaignRelations);
+  await db.delete(schema.campaignFacts);
+  await db.delete(schema.campaignEntities);
+  await db.delete(schema.campaignSnapshots);
+  await db.delete(schema.commandIndex);
+  await db.delete(schema.domainEvents);
+  await db.delete(schema.playerProfiles);
+  await db.delete(schema.dmProfiles);
+  await db.delete(schema.campaignMemberships);
+  await db.delete(schema.workspaces);
+  await db.delete(schema.workspaceMemberships);
+  await db.delete(schema.authSessions);
+  await db.delete(schema.userPreferences);
+  await db.delete(schema.recoveryCodes);
+  await db.delete(schema.passwordResetTokens);
+  await db.delete(schema.users);
+}
 
 async function withServer(run: (server: ReturnType<typeof createServer>, dataDir: string) => Promise<void>) {
+  await cleanDatabase();
   const dataDir = await mkdtemp(join(tmpdir(), "dmcc-user-auth-"));
   const server = createServer({ dataDir });
   try {
@@ -27,6 +59,7 @@ function sessionCookie(response: any): string {
 
 describe("unified user authentication", () => {
   it("migrates legacy DM accounts and ACL memberships once, preserving credentials", async () => {
+    await cleanDatabase();
     const dataDir = await mkdtemp(join(tmpdir(), "dmcc-user-auth-migration-"));
     const vaultId = "legacy";
     const vaultDir = join(dataDir, "vaults", vaultId);
@@ -107,6 +140,7 @@ describe("unified user authentication", () => {
   });
 
   it("reconciles missing ACL memberships in an existing schema v3 store", async () => {
+    await cleanDatabase();
     const dataDir = await mkdtemp(join(tmpdir(), "dmcc-user-auth-reconcile-"));
     const vaultId = "default";
     const vaultDir = join(dataDir, "vaults", vaultId);
@@ -291,6 +325,9 @@ describe("unified user authentication", () => {
         headers: { cookie },
         payload: { campaignId: "cmp_cookie", title: "Cookie campaign", actorId: "spoofed_actor" },
       });
+      if (created.statusCode !== 201) {
+        console.error("CAMPAIGN CREATION FAILED:", created.json());
+      }
       expect(created.statusCode).toBe(201);
 
       const store = JSON.parse(await readFile(join(dataDir, "vaults", "default", "auth.json"), "utf8"));

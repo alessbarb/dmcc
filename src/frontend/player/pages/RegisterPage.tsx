@@ -11,7 +11,7 @@ export function RegisterPage() {
   const { campaignId, inviteToken } = useParams({ strict: false }) as { campaignId: string; inviteToken: string };
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const vaultId = useCampaignStore((state) => state.activeVaultId) || "default";
+  const token = inviteToken || campaignId;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -25,17 +25,14 @@ export function RegisterPage() {
     try {
       if (register) await setupDmAccount({ email, secret: password, displayName });
       else await loginDm(email, password);
-      const response = await apiFetch(`/api/invitations/${encodeURIComponent(inviteToken)}/claim`, {
-        vaultId,
-        init: {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ campaignId }),
-        },
+      const response = await apiFetch(`/api/invitations/${encodeURIComponent(token)}/accept`, {
+        init: { method: "POST" },
       });
       if (!response.ok) throw new Error(await readApiError(response, t("playerJoin.rejoinError")));
-      useCampaignStore.getState().enterPlayerCampaign(campaignId);
-      navigate({ to: `/campaigns/${campaignId}/player-portal` });
+      const body = await response.json().catch(() => ({}));
+      const nextCampaignId = body.campaignId ?? campaignId;
+      useCampaignStore.getState().enterPlayerCampaign(nextCampaignId);
+      navigate({ to: body.playerPortalPath ?? `/player/campaigns/${nextCampaignId}` });
     } catch (cause: any) {
       setError(cause.message || t("playerJoin.rejoinConnectionError"));
     } finally {

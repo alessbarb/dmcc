@@ -281,7 +281,7 @@ export function SmartLanding() {
                       >
                         <div className="card-body row-layout">
                           <div className="avatar-frame">
-                            <img src={profile.avatarUrl || "/assets/avatars/default-avatar.jpg"} alt={profile.displayName} />
+                            <img src={profile.avatarUrl || "/assets/avatars/default-avatar.png"} alt={profile.displayName} />
                           </div>
                           <div className="profile-details">
                             <h3 className="profile-name">{profile.displayName}</h3>

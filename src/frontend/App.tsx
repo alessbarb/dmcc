@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useCampaignStore } from "./shared/stores/campaignStore.js";
 import {
   Plus,
@@ -15,19 +15,11 @@ import {
   UserRound,
   Play,
   Activity,
-  Trash2,
-  Eye,
-  Shield,
-  Sword,
-  Users,
-  MapPin,
-  ShieldAlert,
-  Key,
-  Compass,
   ArrowRight,
   Settings,
-  BookOpen,
-  Network
+  Trash2,
+  Eye,
+  Users,
 } from "lucide-react";
 import { logoutDm } from "./shared/auth/authClient.js";
 import { LandingCampaignCard } from "./shared/components/LandingCampaignCard.js";
@@ -64,8 +56,6 @@ export function App() {
     restoreBackup,
   } = useCampaignStore();
 
-  const routerState = useRouterState();
-  const pathname = routerState.location.pathname;
   const navigate = useNavigate();
 
   // Forms & Modals state
@@ -398,7 +388,7 @@ export function App() {
         <header className="dm-dashboard-header">
           <div className="dm-profile-area">
             <div className="dm-avatar-frame">
-              <img src={dmProfile?.avatarUrl || "/assets/avatars/default-avatar.jpg"} alt={dmProfile?.displayName || "DM"} />
+              <img src={dmProfile?.avatarUrl || "/assets/avatars/default-avatar.png"} alt={dmProfile?.displayName || "DM"} />
             </div>
             <div className="dm-welcome-text">
               <h1>{t("landing.dmWelcome", { name: dmProfile?.displayName || dmProfile?.email || "Game Master" })}</h1>
