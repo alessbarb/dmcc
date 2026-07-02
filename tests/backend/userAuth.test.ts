@@ -106,6 +106,60 @@ describe("unified user authentication", () => {
     }
   });
 
+  it("reconciles missing ACL memberships in an existing schema v3 store", async () => {
+    const dataDir = await mkdtemp(join(tmpdir(), "dmcc-user-auth-reconcile-"));
+    const vaultId = "default";
+    const vaultDir = join(dataDir, "vaults", vaultId);
+    await mkdir(vaultDir, { recursive: true });
+    try {
+      const password = await hashSecret("existing secure password");
+      const createdAt = "2025-01-02T03:04:05.000Z";
+      await writeFile(join(vaultDir, "auth.json"), JSON.stringify({
+        schemaVersion: 3,
+        accessCodePepper: "pepper",
+        users: [{
+          userId: "usr_owner",
+          emailNormalized: "owner@example.com",
+          emailHash: hashOpaque("owner@example.com"),
+          passwordHash: password.hash,
+          passwordSalt: password.salt,
+          passwordAlgorithm: "scrypt",
+          vaultRole: "admin",
+          createdAt,
+        }],
+        memberships: [],
+        sessions: [],
+        recoveryCodes: [],
+        passwordResetTokens: [],
+        createdAt,
+        updatedAt: createdAt,
+      }));
+      await writeFile(join(vaultDir, "campaign-acl.json"), JSON.stringify({
+        schemaVersion: 1,
+        campaigns: {
+          cmp_existing: {
+            campaignId: "cmp_existing",
+            ownerDmId: "usr_owner",
+            dmIds: ["usr_owner"],
+            createdAt,
+          },
+        },
+        createdAt,
+        updatedAt: createdAt,
+      }));
+
+      const reconciled = await migrateLegacyAuthStore(dataDir, vaultId);
+      const persisted = JSON.parse(await readFile(join(vaultDir, "auth.json"), "utf8"));
+
+      expect(reconciled.memberships).toEqual([
+        expect.objectContaining({ campaignId: "cmp_existing", userId: "usr_owner", role: "dm" }),
+      ]);
+      expect(persisted.memberships).toEqual(reconciled.memberships);
+    } finally {
+      await rm(dataDir, { recursive: true, force: true });
+    }
+  });
+
   it("registers the first account as admin without granting campaign memberships", async () => {
     await withServer(async (server, dataDir) => {
       const response = await server.inject({

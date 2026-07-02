@@ -19,10 +19,26 @@ export function readIdentity(): LocalIdentity {
     if (!raw) return defaultIdentity();
     const parsed = JSON.parse(raw);
     if (parsed.version !== CURRENT_VERSION) return defaultIdentity();
+
+    const rawDmProfiles: DmProfileEntry[] = Array.isArray(parsed.dmProfiles) ? parsed.dmProfiles : [];
+
+    // Deduplicate profiles by lowercase email to prevent duplicate account listings on the same device.
+    // Keep the one with the latest lastAccessed timestamp.
+    const sortedProfiles = [...rawDmProfiles].sort((a, b) => b.lastAccessed.localeCompare(a.lastAccessed));
+    const seenEmails = new Set<string>();
+    const dmProfiles: DmProfileEntry[] = [];
+    for (const profile of sortedProfiles) {
+      const emailLower = (profile.email || "").toLowerCase().trim();
+      if (emailLower && !seenEmails.has(emailLower)) {
+        seenEmails.add(emailLower);
+        dmProfiles.push(profile);
+      }
+    }
+
     return {
       ...defaultIdentity(),
       ...parsed,
-      dmProfiles: Array.isArray(parsed.dmProfiles) ? parsed.dmProfiles : [],
+      dmProfiles,
       playerProfiles: Array.isArray(parsed.playerProfiles) ? parsed.playerProfiles : [],
     } as LocalIdentity;
   } catch {
@@ -37,7 +53,11 @@ function writeIdentity(identity: LocalIdentity): void {
 export function upsertDmProfile(profile: Omit<DmProfileEntry, "lastAccessed"> & { lastAccessed?: string }): void {
   const identity = readIdentity();
   const withAccessed = { ...profile, lastAccessed: profile.lastAccessed ?? new Date().toISOString() };
-  const existing = identity.dmProfiles.findIndex((item) => item.dmId === profile.dmId);
+  const existing = identity.dmProfiles.findIndex(
+    (item) =>
+      item.dmId === profile.dmId ||
+      item.email.toLowerCase().trim() === profile.email.toLowerCase().trim()
+  );
   const dmProfiles = existing >= 0
     ? identity.dmProfiles.map((item, index) => (index === existing ? { ...item, ...withAccessed } : item))
     : [...identity.dmProfiles, withAccessed];

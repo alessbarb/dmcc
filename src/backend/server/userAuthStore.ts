@@ -166,7 +166,6 @@ export async function migrateLegacyAuthStore(dataDir: string, vaultId: string): 
   }
 
   const store = await readUserAuthStore(vaultDir);
-  if (store.migration || legacySchemaVersion !== 2) return store;
 
   let acl: any = { campaigns: {} };
   try {
@@ -193,10 +192,14 @@ export async function migrateLegacyAuthStore(dataDir: string, vaultId: string): 
     }
   }
 
+  const migratedFromV2 = legacySchemaVersion === 2 && !store.migration;
+  const membershipsChanged = memberships.length !== store.memberships.length;
+  if (!migratedFromV2 && !membershipsChanged) return store;
+
   const migrated: UserAuthStore = {
     ...store,
     memberships,
-    migration: { fromSchemaVersion: 2, completedAt: nowIso() },
+    ...(migratedFromV2 && { migration: { fromSchemaVersion: 2, completedAt: nowIso() } }),
   };
   await writeUserAuthStore(vaultDir, migrated);
   return migrated;
