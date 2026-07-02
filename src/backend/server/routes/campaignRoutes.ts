@@ -153,14 +153,14 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   });
 
   // Create Campaign
-  server.post<{ Body: { campaignId: string; actorId: string; title: string; system?: string } }>(
+  server.post<{ Body: { campaignId: string; actorId: string; title: string; system?: string; coverUrl?: string } }>(
     "/api/campaigns",
     async (request, reply) => {
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const dmId = getRequestDmId(request, server.dmSessionToken) ?? "usr_dm";
       const campaignId = getValidatedCampaignId(request.body.campaignId);
-      const { title, system } = request.body;
+      const { title, system, coverUrl } = request.body;
       const commandActorId = dmId;
 
       try {
@@ -171,6 +171,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           actorId: commandActorId,
           title,
           system: system || "generic_fantasy_d20",
+          coverUrl,
           settings: { backupOnClose: true, lanModeEnabled: false, activeQuestsLimit: 5 },
         });
 
@@ -205,7 +206,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   );
 
   // Update Campaign Basics
-  server.patch<{ Params: { campaignId: string }; Body: Partial<{ title: string; summary: string; system: string; status: string; metadata: Record<string, unknown> }> }>(
+  server.patch<{ Params: { campaignId: string }; Body: Partial<{ title: string; summary: string; system: string; status: string; coverUrl: string; metadata: Record<string, unknown> }> }>(
     "/api/campaigns/:campaignId",
     async (request, reply) => {
       assertDM(request, server.dmSessionToken);
@@ -228,6 +229,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           ...(request.body?.summary !== undefined && { summary: request.body.summary }),
           ...(request.body?.system !== undefined && { system: request.body.system }),
           ...(request.body?.status !== undefined && { status: request.body.status }),
+          ...(request.body?.coverUrl !== undefined && { coverUrl: request.body.coverUrl }),
           ...(request.body?.metadata !== undefined && { metadata: request.body.metadata }),
         });
         const state = await getRepository(vaultId).getCampaignState(campaignId);
@@ -423,6 +425,13 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           actorId: dmId,
         });
         await copyCampaignAcl(dataDir, vaultId, campaignId, newCampaignId, dmId);
+        if ((request as any).unifiedUser) {
+          await addCampaignMembership(join(dataDir, "vaults", vaultId), {
+            campaignId: newCampaignId,
+            userId: dmId,
+            role: "dm",
+          });
+        }
         reply.code(201);
         return { campaignId: newCampaignId, title: newTitle };
       } catch (err: any) {

@@ -440,3 +440,64 @@ it("surfaces DM-visible player questions and notes for the DM inbox", async () =
     ]);
   });
 });
+
+it("allows DM to access player portal state using their DM session cookie when legacy test auth is disabled", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+      server.allowLegacyTestAuth = false;
+
+      // Register and login DM
+      const dmEmail = "dm_test@example.com";
+      const dmPassword = "secure-password-dm-test";
+      const vaultId = "default";
+      
+      const registerRes = await server.inject({
+        method: "POST",
+        url: "/api/auth/register",
+        headers: { "x-vault-id": vaultId },
+        payload: { email: dmEmail, password: dmPassword, displayName: "DM Tester" },
+      });
+      expect(registerRes.statusCode).toBe(201);
+
+      const loginRes = await server.inject({
+        method: "POST",
+        url: "/api/auth/login",
+        headers: { "x-vault-id": vaultId },
+        payload: { email: dmEmail, password: dmPassword },
+      });
+      expect(loginRes.statusCode).toBe(200);
+      
+      const setCookieHeader = loginRes.headers["set-cookie"];
+      const cookieStr = Array.isArray(setCookieHeader) ? setCookieHeader[0] : String(setCookieHeader);
+      const dmCookie = cookieStr.split(";")[0];
+
+      // Create a campaign as DM
+      const campaignId = "cmp_portal_dm_test";
+      const createCampaignRes = await server.inject({
+        method: "POST",
+        url: "/api/campaigns",
+        headers: { cookie: dmCookie, "x-vault-id": vaultId },
+        payload: { campaignId, title: "DM Portal Campaign" },
+      });
+      expect(createCampaignRes.statusCode).toBe(201);
+
+      // Try to GET player portal state with the DM's session cookie
+      const stateRes = await server.inject({
+        method: "GET",
+        url: `/api/campaigns/${campaignId}/player-portal/state`,
+        headers: { cookie: dmCookie, "x-vault-id": vaultId },
+      });
+
+      expect(stateRes.statusCode).toBe(200);
+      expect(stateRes.json().playerId).toBeDefined();
+      expect(stateRes.json().campaign.campaignId).toBe(campaignId);
+
+      // Attempt to access without DM session and without player token -> 401
+      const unauthRes = await server.inject({
+        method: "GET",
+        url: `/api/campaigns/${campaignId}/player-portal/state`,
+        headers: { "x-vault-id": vaultId },
+      });
+      expect(unauthRes.statusCode).toBe(401);
+    });
+  });

@@ -74,6 +74,9 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
   });
 
   const attempts = await PersistentRateLimit.load(options.dataDir, "user-auth");
+  server.addHook("onClose", async () => {
+    await attempts.close();
+  });
   const enforceLimit = (request: FastifyRequest, operation: string, limit: number) => {
     const vaultId = getValidatedVaultId(request);
     const key = `${vaultId}:${request.ip}:${operation}`;
@@ -108,7 +111,7 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
     return resolved.user;
   };
 
-  server.post<{ Body: { email: string; password: string; displayName?: string } }>(
+  server.post<{ Body: { email: string; password: string; displayName?: string; avatarUrl?: string } }>(
     "/api/auth/register",
     async (request, reply) => {
       try {

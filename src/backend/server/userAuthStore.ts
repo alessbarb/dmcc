@@ -3,12 +3,14 @@ import { constants } from "node:fs";
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { hashSecret, verifySecret } from "./auth.js";
+import { isSafeImageUrl } from "../../shared/schemas.js";
 
 export type UserAccount = {
   userId: string;
   emailNormalized: string;
   emailHash: string;
   displayName?: string;
+  avatarUrl?: string;
   passwordHash: string;
   passwordSalt: string;
   passwordAlgorithm: "scrypt";
@@ -227,15 +229,21 @@ export function publicUser(user: UserAccount) {
     userId: user.userId,
     email: user.emailNormalized,
     displayName: user.displayName,
+    avatarUrl: user.avatarUrl,
     vaultRole: user.vaultRole,
   };
 }
 
-export async function registerUser(vaultDir: string, input: { email: string; password: string; displayName?: string }) {
+export async function registerUser(vaultDir: string, input: { email: string; password: string; displayName?: string; avatarUrl?: string }) {
   const emailNormalized = normalizeEmail(input.email ?? "");
   if (!emailNormalized.includes("@")) throw Object.assign(new Error("Invalid registration"), { statusCode: 400 });
   if (input.password?.length < 12 || input.password.length > 128) {
     throw Object.assign(new Error("Invalid registration"), { statusCode: 400 });
+  }
+
+  const avatarUrlTrimmed = input.avatarUrl?.trim();
+  if (avatarUrlTrimmed && !isSafeImageUrl(avatarUrlTrimmed)) {
+    throw Object.assign(new Error("Invalid registration: avatar image path is unsafe"), { statusCode: 400 });
   }
 
   const store = await readUserAuthStore(vaultDir);
@@ -250,6 +258,7 @@ export async function registerUser(vaultDir: string, input: { email: string; pas
     emailNormalized,
     emailHash,
     displayName: input.displayName?.trim() || undefined,
+    avatarUrl: input.avatarUrl?.trim() || undefined,
     passwordHash: password.hash,
     passwordSalt: password.salt,
     passwordAlgorithm: "scrypt",

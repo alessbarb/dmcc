@@ -1467,5 +1467,67 @@ describe("persistent campaign API", () => {
         ).toBe(true);
       });
     });
+
+    it("allows a DM to duplicate a campaign and registers campaign membership immediately", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir });
+        server.allowLegacyTestAuth = false;
+
+        // Register and login DM
+        const vaultId = "default";
+        const email = "dm_dup@example.com";
+        const password = "secure-password-dm-dup";
+        
+        const registerRes = await server.inject({
+          method: "POST",
+          url: "/api/auth/register",
+          headers: { "x-vault-id": vaultId },
+          payload: { email, password, displayName: "DM Duplicator" },
+        });
+        expect(registerRes.statusCode).toBe(201);
+
+        const loginRes = await server.inject({
+          method: "POST",
+          url: "/api/auth/login",
+          headers: { "x-vault-id": vaultId },
+          payload: { email, password },
+        });
+        expect(loginRes.statusCode).toBe(200);
+
+        const cookieStr = loginRes.headers["set-cookie"];
+        const cookie = (Array.isArray(cookieStr) ? cookieStr[0] : String(cookieStr)).split(";")[0];
+
+        // Create campaign
+        const campaignId = "cmp_source";
+        const createCampaignRes = await server.inject({
+          method: "POST",
+          url: "/api/campaigns",
+          headers: { cookie, "x-vault-id": vaultId },
+          payload: { campaignId, title: "Source Campaign" },
+        });
+        expect(createCampaignRes.statusCode).toBe(201);
+
+        // Duplicate campaign
+        const duplicateRes = await server.inject({
+          method: "POST",
+          url: `/api/campaigns/${campaignId}/duplicate`,
+          headers: { cookie, "x-vault-id": vaultId },
+          payload: { newTitle: "Duplicated Campaign" },
+        });
+        expect(duplicateRes.statusCode).toBe(201);
+        const duplicatedId = duplicateRes.json().campaignId;
+
+        // Access duplicate campaign immediately
+        const campaignRes = await server.inject({
+          method: "GET",
+          url: `/api/campaigns/${duplicatedId}`,
+          headers: { cookie, "x-vault-id": vaultId },
+        });
+        expect(campaignRes.statusCode).toBe(200);
+        expect(campaignRes.json().campaign.title).toBe("Duplicated Campaign");
+
+        await server.close();
+      });
+    });
   });
 });

@@ -514,7 +514,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
+        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
 
         const link = portal.linksByPlayerId.get(playerId) ?? null;
         const player = state.players.get(playerId) ?? null;
@@ -597,7 +597,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
         const body = request.body;
         const characterEntityId = getLinkedCharacterIdForPlayer(portal, playerId, body.characterEntityId);
 
@@ -641,7 +641,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
         const resourceId = await upsertPlayerResource({ repo, campaignId, playerId, portal, body: request.body });
 
         reply.code(201);
@@ -668,7 +668,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
         await upsertPlayerResource({
           repo,
           campaignId,
@@ -701,7 +701,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
+        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
         const body = request.body;
 
         const visibility = body.visibility;
@@ -750,7 +750,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
         const body = request.body;
 
         const playerNotes = portal.notesByPlayerId.get(playerId) ?? [];
@@ -802,7 +802,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
+        const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
         const body = request.body;
 
         const visibility = body.visibility;
@@ -853,7 +853,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
+        const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
         const body = request.body;
 
         const playerObjectives = portal.objectivesByPlayerId.get(playerId) ?? [];
@@ -1008,7 +1008,7 @@ export async function registerPlayerPortalRoutes(
 
       try {
         const repo = getRepository(vaultId);
-        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId);
+        const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
         const body = request.body;
         const kind = body.kind ?? "update_character_core";
 

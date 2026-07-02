@@ -9,7 +9,6 @@ import {
   assertCampaignAccess,
   getValidatedVaultId,
   getValidatedCampaignId,
-  getRequestRole,
   getRequestPlayerId,
   getRequestDmSession,
 } from "../auth.js";

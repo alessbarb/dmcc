@@ -34,6 +34,7 @@ export interface DmSessionPayload {
   vaultId: string;
   email?: string;
   displayName?: string;
+  avatarUrl?: string;
   issuedAt: string;
 }
 

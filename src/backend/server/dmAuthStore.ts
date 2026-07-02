@@ -9,6 +9,7 @@ export interface DmAccount {
   emailNormalized: string;
   emailHash: string;
   displayName?: string;
+  avatarUrl?: string;
   secretHash: string;
   secretSalt: string;
   secretHashAlgorithm: "scrypt";
@@ -29,6 +30,7 @@ export interface PublicDmProfile {
   dmId: string;
   email: string;
   displayName?: string;
+  avatarUrl?: string;
   lastLoginAt?: string;
 }
 
@@ -53,6 +55,7 @@ export function toPublicDmProfile(account: DmAccount): PublicDmProfile {
     dmId: account.dmId,
     email: account.emailNormalized,
     displayName: account.displayName,
+    avatarUrl: account.avatarUrl,
     lastLoginAt: account.lastLoginAt,
   };
 }

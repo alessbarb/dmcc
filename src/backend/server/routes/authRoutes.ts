@@ -43,6 +43,9 @@ export async function registerAuthRoutes(
 ): Promise<void> {
   const { dataDir } = options;
   const dmAttempts = await PersistentRateLimit.load(dataDir, "dm-auth");
+  server.addHook("onClose", async () => {
+    await dmAttempts.close();
+  });
 
   function getVaultDir(vaultId: string): string {
     return join(dataDir, "vaults", vaultId);
@@ -101,6 +104,7 @@ export async function registerAuthRoutes(
             dmId: dmSession.dmId,
             email: dmSession.email,
             displayName: dmSession.displayName,
+            avatarUrl: dmSession.avatarUrl,
           }
         : null,
       // Do not expose local DM account emails/names to unauthenticated LAN callers.
@@ -136,6 +140,7 @@ export async function registerAuthRoutes(
             vaultId,
             email: account.emailNormalized,
             displayName: account.displayName,
+            avatarUrl: account.avatarUrl,
           },
           server.dmSessionToken
         );
@@ -189,6 +194,7 @@ export async function registerAuthRoutes(
           vaultId,
           email: currentAccount.emailNormalized,
           displayName: currentAccount.displayName,
+          avatarUrl: currentAccount.avatarUrl,
         },
         server.dmSessionToken
       );

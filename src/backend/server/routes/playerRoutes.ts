@@ -23,11 +23,13 @@ type CreatePlayerBody = {
   role?: string;
   color?: string;
   imageUrl?: string;
+  avatarUrl?: string;
 };
 
 type UpdatePlayerBody = {
   displayName?: string;
   imageUrl?: string;
+  avatarUrl?: string;
   role?: string;
   color?: string;
   isActive?: boolean;
@@ -90,6 +92,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
           role: body.role || "player",
           color: body.color || "#3b82f6",
           imageUrl: body.imageUrl || "",
+          avatarUrl: body.avatarUrl,
         });
 
         reply.code(201);
@@ -101,6 +104,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
           role: body.role || "player",
           color: body.color || "#3b82f6",
           imageUrl: body.imageUrl || "",
+          avatarUrl: body.avatarUrl,
           isActive: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -183,6 +187,7 @@ export async function registerPlayerRoutes(server: FastifyInstance, opts: { data
         playerId,
         displayName: updates.displayName,
         imageUrl: updates.imageUrl,
+        avatarUrl: updates.avatarUrl,
         role: updates.role,
         color: updates.color,
         isActive: updates.isActive,
