@@ -36,7 +36,7 @@ export interface ServerConfig {
 }
 
 export function createServer(config?: ServerConfig): FastifyInstance {
-  const server = Fastify({ logger: false });
+  const server = Fastify({ logger: { level: "warn" } });
   const dataDir = config?.dataDir ?? join(homedir(), "Documents", "DMCampaignCompanion");
 
   const dmSessionToken = randomBytes(32).toString("hex");
@@ -196,6 +196,14 @@ export function createServer(config?: ServerConfig): FastifyInstance {
           originHost = undefined;
         }
         if (!host || originHost !== host) {
+          reply.code(403);
+          return reply.send({ error: "Cross-origin mutation rejected" });
+        }
+      } else {
+        // No Origin header: reject mutations from non-loopback IPs (scripted LAN requests).
+        const ip = request.ip;
+        const isLoopback = ip === "127.0.0.1" || ip === "::1" || ip === "::ffff:127.0.0.1";
+        if (!isLoopback) {
           reply.code(403);
           return reply.send({ error: "Cross-origin mutation rejected" });
         }

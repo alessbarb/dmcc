@@ -1,5 +1,6 @@
 import type { FastifyInstance, FastifyRequest } from "fastify";
 import { join } from "node:path";
+import { PersistentRateLimit } from "../rateLimitStore.js";
 import {
   addCampaignMembership,
   authenticateUser,
@@ -32,9 +33,30 @@ function expiredCookie(): string {
   return `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`;
 }
 
+function isLoopbackIp(ip: string): boolean {
+  return ip === "127.0.0.1" || ip === "::1" || ip === "::ffff:127.0.0.1";
+}
+
+function validateCredentials(email: unknown, password: unknown): string | null {
+  if (typeof email !== "string" || email.length === 0 || email.length > 254) {
+    return "Invalid email";
+  }
+  if (typeof password !== "string" || password.length === 0 || password.length > 128) {
+    return "Password must be between 1 and 128 characters";
+  }
+  return null;
+}
+
 function assertSameOrigin(request: FastifyRequest): void {
   const origin = request.headers.origin;
-  if (!origin) return;
+  if (!origin) {
+    // Browsers always send Origin for cross-origin fetch. If Origin is absent and
+    // the request comes from a non-loopback IP, it is a scripted LAN request — reject it.
+    if (!isLoopbackIp(request.ip)) {
+      throw Object.assign(new Error("Cross-origin mutation rejected"), { statusCode: 403 });
+    }
+    return;
+  }
   const host = request.headers.host;
   try {
     if (!host || new URL(origin).host !== host) {
@@ -51,12 +73,12 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
     await migrateLegacyAuthStore(options.dataDir, getValidatedVaultId(request));
   });
 
-  const attempts = new Map<string, { count: number; resetAt: number }>();
+  const attempts = await PersistentRateLimit.load(options.dataDir, "user-auth");
   const enforceLimit = (request: FastifyRequest, operation: string, limit: number) => {
     const vaultId = getValidatedVaultId(request);
     const key = `${vaultId}:${request.ip}:${operation}`;
     const now = Date.now();
-    const current = attempts.get(key);
+    const current = attempts.get<{ count: number; resetAt: number }>(key);
     if (!current || current.resetAt <= now) {
       attempts.set(key, { count: 1, resetAt: now + 60_000 });
       return;
@@ -66,6 +88,7 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
       throw Object.assign(new Error("Too many attempts"), { statusCode: 429, retryAfter });
     }
     current.count += 1;
+    attempts.set(key, current);
   };
   const clearLimit = (request: FastifyRequest, operation: string) => {
     attempts.delete(`${getValidatedVaultId(request)}:${request.ip}:${operation}`);
@@ -90,6 +113,22 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
     async (request, reply) => {
       try {
         assertSameOrigin(request);
+        const credError = validateCredentials(request.body?.email, request.body?.password);
+        if (credError) { reply.code(400); return { error: credError }; }
+        enforceLimit(request, "register", 3);
+
+        // After the first user exists, only loopback clients (the DM's own machine) may register.
+        // This prevents a LAN participant from claiming the vault admin role before the DM does.
+        if (!isLoopbackIp(request.ip)) {
+          const vaultDir = vaultDirFor(request);
+          const existingStore = await readUserAuthStore(vaultDir).catch(() => null);
+          const hasUsers = existingStore?.users.some((u) => !u.disabledAt);
+          if (hasUsers) {
+            reply.code(403);
+            return { error: "Registration is closed. Contact the vault administrator." };
+          }
+        }
+
         await registerUser(vaultDirFor(request), request.body);
         reply.code(201);
         return { ok: true };
@@ -107,6 +146,8 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
   server.post<{ Body: { email: string; password: string } }>("/api/auth/login", async (request, reply) => {
     try {
       assertSameOrigin(request);
+      const credError = validateCredentials(request.body?.email, request.body?.password);
+      if (credError) { reply.code(400); return { error: credError }; }
       enforceLimit(request, "login", 5);
       const vaultDir = vaultDirFor(request);
       const user = await authenticateUser(vaultDir, request.body.email, request.body.password);

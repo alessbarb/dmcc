@@ -1,9 +1,7 @@
 import type { FastifyInstance } from "fastify";
+import { makeRepositoryFactory } from "../repositoryFactory.js";
 import { networkInterfaces } from "os";
 import Fuse from "fuse.js";
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { buildDashboardProjection } from "@core/projections/dashboardProjection.js";
 import { buildWhatNowProjection } from "@core/projections/whatNowProjection.js";
 import {
@@ -25,9 +23,7 @@ import {
 export async function registerProjectionRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
 
-  function getRepository(vaultId = "default") {
-    return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
-  }
+  const getRepository = makeRepositoryFactory(dataDir);
 
   function getAdvertisedPort(request: any): number {
     const backendPort = Number(process.env.DMCC_PORT ?? "4877");

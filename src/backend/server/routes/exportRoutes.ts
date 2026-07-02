@@ -1,4 +1,5 @@
 import type { FastifyInstance } from "fastify";
+import { makeRepositoryFactory } from "../repositoryFactory.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import type { EntityType, EntityImportance } from "@core/domain/entity/types.js";
 import type { RelationType } from "@core/domain/relation/types.js";
@@ -7,9 +8,6 @@ import type { FactSource } from "@core/domain/fact/fact.js";
 import { join, basename } from "path";
 import * as fs from "fs/promises";
 import { createId } from "@shared/ids.js";
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import {
   assertDM,
   getValidatedVaultId,
@@ -33,9 +31,7 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
     return join(dataDir, "vaults", vaultId, "campaigns", campaignId);
   }
 
-  function getRepository(vaultId = "default") {
-    return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
-  }
+  const getRepository = makeRepositoryFactory(dataDir);
 
   // Upload Attachment
   server.post<{ Params: { campaignId: string }; Body: { filename: string; base64Content: string } }>(
@@ -391,12 +387,18 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
         const repo = getRepository(vaultId);
         await repo.rebuildSnapshot(campaignId);
 
-        await repo.executeCommand(campaignId, {
-          type: "RestoreBackup",
-          campaignId: campaignId,
-          actorId: getRequestActorId(request, server.dmSessionToken),
-          backupId,
-        });
+        // Audit event is best-effort: the restore is already complete at this point.
+        // A failure here must not roll back the restore or return 500 to the client.
+        try {
+          await repo.executeCommand(campaignId, {
+            type: "RestoreBackup",
+            campaignId: campaignId,
+            actorId: getRequestActorId(request, server.dmSessionToken),
+            backupId,
+          });
+        } catch (auditErr: any) {
+          server.log.error({ err: auditErr, campaignId, backupId }, "RestoreBackup: audit event write failed after successful restore");
+        }
 
         return { ok: true, campaignId, restoredFrom: backupId, autoBackup };
       } catch (err: any) {

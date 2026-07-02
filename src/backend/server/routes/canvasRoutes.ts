@@ -1,8 +1,6 @@
 import type { FastifyInstance } from "fastify";
+import { makeRepositoryFactory } from "../repositoryFactory.js";
 import type { EntityType, EntityImportance } from "@core/domain/entity/types.js";
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import {
   assertDM,
@@ -86,9 +84,7 @@ type ConvertNodeBody = {
 export async function registerCanvasRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
 
-  function getRepository(vaultId = "default") {
-    return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
-  }
+  const getRepository = makeRepositoryFactory(dataDir);
 
   // GET all canvases for campaign
   server.get<{ Params: { campaignId: string } }>(
@@ -192,7 +188,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           viewport,
           description,
         });
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
@@ -215,7 +211,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           actorId: getRequestActorId(request, server.dmSessionToken),
           canvasId: request.params.canvasId,
         });
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
@@ -247,7 +243,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           node,
         });
         reply.code(201);
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
@@ -274,7 +270,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           nodeId: request.params.nodeId,
           updates,
         });
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
@@ -305,7 +301,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           canvasId: request.params.canvasId,
           nodeUpdates,
         });
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
@@ -329,7 +325,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           canvasId: request.params.canvasId,
           nodeId: request.params.nodeId,
         });
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
@@ -361,7 +357,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           edge,
         });
         reply.code(201);
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
@@ -388,7 +384,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           edgeId: request.params.edgeId,
           updates,
         });
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
@@ -412,7 +408,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           canvasId: request.params.canvasId,
           edgeId: request.params.edgeId,
         });
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };
@@ -462,7 +458,7 @@ export async function registerCanvasRoutes(server: FastifyInstance, opts: { data
           visibility,
           metadata,
         });
-        return { success: true };
+        return { ok: true };
       } catch (err: any) {
         reply.code(500);
         return { error: err.message };

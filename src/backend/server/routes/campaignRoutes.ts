@@ -1,13 +1,13 @@
 import type { FastifyInstance } from "fastify";
 import type { AddressInfo } from "net";
+import { networkInterfaces } from "os";
 import { join } from "path";
 import * as fs from "fs/promises";
 import { randomInt, randomBytes } from "crypto";
 import { createId } from "@shared/ids.js";
 import type { CampaignId } from "@shared/ids.js";
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
+import type { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
+import { makeRepositoryFactory } from "../repositoryFactory.js";
 import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
 import {
   assertDM,
@@ -35,6 +35,18 @@ import { createCampaignBackup } from "../hardening/backups.js";
 import { copyCampaignAcl, ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
 import { addCampaignMembership, getVaultAccessCodePepper } from "../userAuthStore.js";
 
+function getLocalIp(): string {
+  try {
+    const nets = networkInterfaces();
+    for (const name of Object.keys(nets)) {
+      for (const net of (nets[name] || [])) {
+        if (net.family === "IPv4" && !net.internal) return net.address;
+      }
+    }
+  } catch { /* ignore */ }
+  return "127.0.0.1";
+}
+
 export async function registerCampaignRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
 
@@ -42,9 +54,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     return join(dataDir, "vaults", vaultId, "campaigns", campaignId);
   }
 
-  function getRepository(vaultId = "default") {
-    return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
-  }
+  const getRepository = makeRepositoryFactory(dataDir);
 
   async function getPersistentTokenSession(
     repo: CampaignRepository,
@@ -515,96 +525,15 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     }
   );
 
-  // LAN Join — exchange access code for player token
-  server.post<{ Params: { campaignId: string }; Body: { accessCode: string; playerId?: string; displayName?: string } }>(
-    "/api/join/:campaignId",
-    async (_request, reply) => {
-      reply.code(410);
-      return { error: "Legacy join has been retired; use /api/campaigns/:campaignId/join" };
-      /*
-      const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { accessCode, playerId, displayName } = request.body;
-      const vaultId = getValidatedVaultId(request);
+  server.post("/api/join/:campaignId", async (_request, reply) => {
+    reply.code(410);
+    return { error: "Legacy join has been retired; use /api/campaigns/:campaignId/join" };
+  });
 
-      if (playerId !== undefined) {
-        reply.code(400);
-        return { error: "playerId cannot be selected during join" };
-      }
-
-      if (!accessCode) {
-        reply.code(400);
-        return { error: "accessCode is required" };
-      }
-
-      try {
-        const repo = getRepository(vaultId);
-        let state = await repo.getCampaignState(campaignId);
-
-        if (!state.campaign?.settings?.lanModeEnabled) {
-          reply.code(403);
-          return { error: "LAN mode is not enabled for this campaign" };
-        }
-
-        const hash = state.campaign.settings?.localAccessCodeHash;
-        const legacyCode = state.campaign.settings?.localAccessCode;
-        const pepper = await getVaultAccessCodePepper(join(dataDir, "vaults", vaultId));
-
-        const isValid =
-          verifyCampaignAccessCode(campaignId, accessCode, hash, pepper) ||
-          (legacyCode && accessCode === legacyCode);
-
-        if (!isValid) {
-          reply.code(401);
-          return { error: "Invalid access code" };
-        }
-
-        const pid = `ply_${randomBytes(8).toString("hex")}`;
-        if (!state.players.has(pid)) {
-          await repo.executeCommand(campaignId, {
-            type: "CreatePlayerProfile",
-            campaignId: campaignId,
-            actorId: getRequestActorId(request, server.dmSessionToken),
-            playerId: pid,
-            displayName: displayName?.trim() || "Player",
-            role: "player",
-            color: "#3b82f6",
-            imageUrl: "",
-          });
-          state = await repo.getCampaignState(campaignId);
-        }
-
-        const playerToken = randomBytes(24).toString("hex");
-        const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
-        await repo.executeCommand(campaignId, {
-          type: "IssuePlayerToken",
-          campaignId: campaignId,
-          actorId: getRequestActorId(request, server.dmSessionToken),
-          playerId: pid,
-          tokenId,
-          tokenHash: hashPlayerToken(playerToken),
-          label: "LAN join",
-          createdAt: new Date().toISOString(),
-        });
-
-        server.playerTokens.set(playerToken, { campaignId, playerId: pid });
-
-        return {
-          playerToken,
-          playerId: pid,
-          tokenId,
-          campaignTitle: state.campaign.title,
-        };
-      } catch (err: any) {
-        if (err.statusCode) {
-          reply.code(err.statusCode);
-          return { error: err.message };
-        }
-        reply.code(404);
-        return { error: "Campaign not found" };
-      }
-      */
-    }
-  );
+  server.post("/api/campaigns/:campaignId/rejoin", async (_request, reply) => {
+    reply.code(410);
+    return { error: "Legacy rejoin has been retired; sign in to your account" };
+  });
 
   // List player invitations (DM only)
   server.get<{ Params: { campaignId: string } }>(
@@ -659,17 +588,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           expiresAt,
         });
 
-        const { networkInterfaces } = await import("os");
-        let localIp = "127.0.0.1";
-        try {
-          const nets = networkInterfaces();
-          for (const name of Object.keys(nets)) {
-            for (const net of (nets[name] || [])) {
-              if (net.family === "IPv4" && !net.internal) { localIp = net.address; break; }
-            }
-          }
-        } catch { /* ignore */ }
-
+        const localIp = getLocalIp();
         const port = (server.server.address() as AddressInfo | null)?.port ?? 4877;
         const registerUrl = `http://${localIp}:${port}/register/${campaignId}/${inviteToken}`;
 
@@ -838,108 +757,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     }
   );
 
-  // Rejoin by email + campaign access code (cross-device token re-issue)
-  server.post<{ Params: { campaignId: string }; Body: { email: string; accessCode: string } }>(
-    "/api/campaigns/:campaignId/rejoin",
-    async (_request, reply) => {
-      reply.code(410);
-      return { error: "Legacy rejoin has been retired; sign in to your account" };
-      /*
-      const vaultId = getValidatedVaultId(request);
-      const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { email, accessCode } = request.body;
-
-      if (!email?.trim() || !accessCode?.trim()) {
-        reply.code(400);
-        return { error: "email and accessCode are required" };
-      }
-
-      try {
-        const repo = getRepository(vaultId);
-        const state = await repo.getCampaignState(campaignId);
-
-        if (!state.campaign?.settings?.lanModeEnabled) {
-          reply.code(403);
-          return { error: "LAN mode is not enabled" };
-        }
-
-        const codeHash = state.campaign.settings?.localAccessCodeHash;
-        const legacyCode = state.campaign.settings?.localAccessCode;
-        const pepper = await getVaultAccessCodePepper(join(dataDir, "vaults", vaultId));
-        const isValidCode =
-          verifyCampaignAccessCode(campaignId, accessCode, codeHash, pepper) ||
-          (legacyCode && accessCode === legacyCode);
-
-        if (!isValidCode) {
-          reply.code(401);
-          return { error: "Invalid campaign access code" };
-        }
-
-        const emailNormalized = email.trim().toLowerCase();
-        const emailHash = hashPlayerToken(emailNormalized);
-
-        // Find player by emailHash
-        let matchedPlayerId: string | null = null;
-        for (const [pid, player] of state.players) {
-          if (
-            (player.emailHash === emailHash ||
-              (player.email && player.email.toLowerCase() === emailNormalized)) &&
-            !player.archived
-          ) {
-            matchedPlayerId = pid;
-            break;
-          }
-        }
-
-        if (!matchedPlayerId) {
-          reply.code(404);
-          return { error: "No player found with this email in this campaign. Ask the DM to send you a new invitation." };
-        }
-
-        const playerToken = generatePlayerToken() + randomBytes(8).toString("hex");
-        const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
-        const now = new Date().toISOString();
-
-        await repo.executeCommand(campaignId, {
-          type: "IssuePlayerToken",
-          campaignId: campaignId,
-          actorId: getRequestActorId(request, server.dmSessionToken),
-          playerId: matchedPlayerId,
-          tokenId,
-          tokenHash: hashPlayerToken(playerToken),
-          label: "rejoin",
-          createdAt: now,
-        });
-
-        server.playerTokens.set(playerToken, { campaignId, playerId: matchedPlayerId });
-
-        return {
-          playerToken,
-          playerId: matchedPlayerId,
-          tokenId,
-          campaignTitle: state.campaign?.title,
-        };
-      } catch (err: any) {
-        if (err.statusCode) { reply.code(err.statusCode); return { error: err.message }; }
-        reply.code(500);
-        return { error: err.message };
-      }
-      */
-    }
-  );
-
   // GET /api/network-info — returns local network address (no auth required, info only)
   server.get("/api/network-info", async () => {
-    const { networkInterfaces } = await import("os");
-    let localIp = "127.0.0.1";
-    try {
-      const nets = networkInterfaces();
-      for (const name of Object.keys(nets)) {
-        for (const net of (nets[name] || [])) {
-          if (net.family === "IPv4" && !net.internal) { localIp = net.address; break; }
-        }
-      }
-    } catch { /* ignore */ }
+    const localIp = getLocalIp();
     const port = (server.server.address() as AddressInfo | null)?.port ?? 4877;
     return { localIp, port, url: `http://${localIp}:${port}` };
   });

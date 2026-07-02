@@ -1,6 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { readdir } from "fs/promises";
 import { join } from "path";
+import { PersistentRateLimit } from "../rateLimitStore.js";
 import { randomBytes } from "crypto";
 import {
   assertDM,
@@ -22,7 +23,7 @@ import { CampaignRepository } from "@core/persistence/repositories/campaignRepos
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
-import { getSessionUser, revokeAllSessions } from "../userAuthStore.js";
+import { getSessionUser, readUserAuthStore, revokeAllSessions } from "../userAuthStore.js";
 import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
 
 interface DmAttemptState {
@@ -40,7 +41,7 @@ export async function registerAuthRoutes(
   options: { dataDir: string }
 ): Promise<void> {
   const { dataDir } = options;
-  const dmAttempts = new Map<string, DmAttemptState>();
+  const dmAttempts = await PersistentRateLimit.load(dataDir, "dm-auth");
 
   function getVaultDir(vaultId: string): string {
     return join(dataDir, "vaults", vaultId);
@@ -51,7 +52,7 @@ export async function registerAuthRoutes(
   }
 
   function getAttemptState(key: string): DmAttemptState {
-    return dmAttempts.get(key) ?? { count: 0, lockedUntil: 0, lastAttemptAt: 0 };
+    return dmAttempts.get<DmAttemptState>(key) ?? { count: 0, lockedUntil: 0, lastAttemptAt: 0 };
   }
 
   function checkRateLimit(key: string): { blocked: boolean; retryAfterMs: number } {
@@ -85,9 +86,13 @@ export async function registerAuthRoutes(
     const dmSessionValid = Boolean(dmSession && dmSession.vaultId === vaultId);
     const activeProfiles = store.dmAccounts.filter((account) => !account.archivedAt).map(toPublicDmProfile);
 
+    const userStore = await readUserAuthStore(vaultDir).catch(() => null);
+    const hasUnifiedUsers = (userStore?.users.filter((u) => !u.disabledAt).length ?? 0) > 0;
+    const accountConfigured = activeProfiles.length > 0 || hasUnifiedUsers;
+
     return {
-      dmAccountConfigured: activeProfiles.length > 0,
-      dmPinConfigured: activeProfiles.length > 0,
+      dmAccountConfigured: accountConfigured,
+      dmPinConfigured: accountConfigured,
       legacyPinConfigured: Boolean(store.legacyPinConfigured),
       dmSessionValid,
       dm: dmSessionValid && dmSession
@@ -228,6 +233,11 @@ export async function registerAuthRoutes(
     return { error: "PIN unlock has been replaced by DM email + key login" };
   });
 
+  server.post("/api/player/join", async (_request, reply) => {
+    reply.code(410);
+    return { error: "Legacy join has been retired; sign in and join the campaign" };
+  });
+
   // POST /api/auth/player-logout — invalidate a player token server-side
   server.post(
     "/api/auth/player-logout",
@@ -275,117 +285,4 @@ export async function registerAuthRoutes(
     }
   );
 
-  // POST /api/player/join — join via campaign code + access code (no invite needed)
-  server.post<{
-    Body: {
-      campaignCode: string;
-      accessCode: string;
-      email?: string;
-      displayName?: string;
-    };
-  }>(
-    "/api/player/join",
-    async (_request, reply) => {
-      reply.code(410);
-      return { error: "Legacy join has been retired; sign in and join the campaign" };
-      /*
-      const vaultId = getValidatedVaultId(request);
-      const { campaignCode, accessCode, email, displayName } = request.body;
-
-      if (!campaignCode?.trim() || !accessCode?.trim()) {
-        reply.code(400);
-        return { error: "campaignCode and accessCode are required" };
-      }
-
-      // campaignCode = campaignId (short code feature is a future enhancement)
-      const campaignId = campaignCode.trim();
-
-      try {
-        const repo = new CampaignRepository(
-          new EventStore(dataDir, vaultId),
-          new SnapshotStore(dataDir, vaultId)
-        );
-
-        let state = await repo.getCampaignState(campaignId);
-
-        if (!state.campaign?.settings?.lanModeEnabled) {
-          reply.code(403);
-          return { error: "LAN mode is not enabled for this campaign" };
-        }
-
-        const codeHash = state.campaign.settings?.localAccessCodeHash;
-        const legacyCode = state.campaign.settings?.localAccessCode;
-        const pepper = await getVaultAccessCodePepper(join(dataDir, "vaults", vaultId));
-        const isValid =
-          verifyCampaignAccessCode(campaignId, accessCode, codeHash, pepper) ||
-          (legacyCode && accessCode === legacyCode);
-
-        if (!isValid) {
-          reply.code(401);
-          return { error: "Invalid access code" };
-        }
-
-        // Find existing player by email if provided
-        const emailNormalized = email?.trim().toLowerCase() ?? null;
-        const emailHash = emailNormalized ? hashPlayerToken(emailNormalized) : null;
-        let playerId: string | null = null;
-
-        if (emailHash) {
-          for (const [pid, player] of state.players) {
-            if (
-              (player.emailHash === emailHash ||
-                (player.email && player.email.toLowerCase() === emailNormalized)) &&
-              !player.archived
-            ) {
-              playerId = pid;
-              break;
-            }
-          }
-        }
-
-        const now = new Date().toISOString();
-        if (!playerId) {
-          playerId = `ply_${randomBytes(8).toString("hex")}`;
-          await repo.executeCommand(campaignId, {
-            type: "CreatePlayerProfile",
-            campaignId: campaignId,
-            actorId: "usr_dm",
-            playerId,
-            displayName: displayName?.trim() || "Player",
-            emailHash: emailHash ?? undefined,
-            role: "player",
-            color: "#3b82f6",
-          });
-          state = await repo.getCampaignState(campaignId);
-        }
-
-        const playerToken = generatePlayerToken() + randomBytes(8).toString("hex");
-        const tokenId = `ptok_${randomBytes(8).toString("hex")}`;
-        await repo.executeCommand(campaignId, {
-          type: "IssuePlayerToken",
-          campaignId: campaignId,
-          actorId: "usr_dm",
-          playerId,
-          tokenId,
-          tokenHash: hashPlayerToken(playerToken),
-          label: "player_join",
-          createdAt: now,
-        });
-
-        server.playerTokens.set(playerToken, { campaignId, playerId });
-
-        return {
-          playerToken,
-          playerId,
-          campaignId,
-          campaignTitle: state.campaign?.title ?? campaignId,
-        };
-      } catch (err: any) {
-        if (err.statusCode) { reply.code(err.statusCode); return { error: err.message }; }
-        reply.code(500);
-        return { error: err.message };
-      }
-      */
-    }
-  );
 }

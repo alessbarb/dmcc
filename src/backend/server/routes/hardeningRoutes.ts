@@ -1,9 +1,7 @@
 import type { FastifyInstance } from "fastify";
+import { makeRepositoryFactory } from "../repositoryFactory.js";
 import * as fs from "fs/promises";
 import { join } from "path";
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { VERSION_INFO } from "@shared/appVersion.js";
 import { assertDM, getValidatedCampaignId, getValidatedVaultId } from "../auth.js";
 import { createCampaignBackup, listCampaignBackups } from "../hardening/backups.js";
@@ -12,9 +10,7 @@ import { buildCampaignIntegrityReport, findMissingAttachmentFiles } from "../har
 export async function registerHardeningRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
 
-  function getRepository(vaultId = "default") {
-    return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
-  }
+  const getRepository = makeRepositoryFactory(dataDir);
 
   async function countCampaignDirs(vaultId: string): Promise<number> {
     const campaignsDir = join(dataDir, "vaults", vaultId, "campaigns");

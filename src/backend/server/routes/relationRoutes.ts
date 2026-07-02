@@ -1,7 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
+import { makeRepositoryFactory } from "../repositoryFactory.js";
 import type { RelationType } from "@core/domain/relation/types.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import {
@@ -30,9 +28,7 @@ type UpdateRelationBody = {
 export async function registerRelationRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
 
-  function getRepository(vaultId = "default") {
-    return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
-  }
+  const getRepository = makeRepositoryFactory(dataDir);
 
   server.post<{ Params: { campaignId: string }; Body: CreateRelationBody; Querystring: { force?: string } }>(
     "/api/campaigns/:campaignId/relations",

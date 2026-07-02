@@ -1,10 +1,8 @@
 import type { FastifyInstance } from "fastify";
+import { makeRepositoryFactory } from "../repositoryFactory.js";
 import { rm } from "node:fs/promises";
 import { join } from "node:path";
 import { createId, generateCampaignId } from "@shared/ids.js";
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { assertDM, getRequestDmId, getValidatedVaultId } from "../auth.js";
 import { ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
 import { getPremadeCampaignTemplate, listPremadeCampaignTemplates } from "../premade/premadeCampaigns.js";
@@ -14,9 +12,7 @@ type PremadeImportMode = "full" | "structure" | "sessions";
 export async function registerPremadeCampaignRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
 
-  function getRepository(vaultId = "default") {
-    return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
-  }
+  const getRepository = makeRepositoryFactory(dataDir);
 
   function normalizeEntityMetadata(entity: { entityType: string; summary?: string; content?: string; metadata?: Record<string, unknown> }, templateId: string, templateVersion: string): Record<string, unknown> {
     const metadata: Record<string, unknown> = {

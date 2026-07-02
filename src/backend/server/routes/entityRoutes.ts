@@ -1,8 +1,6 @@
 import type { FastifyInstance } from "fastify";
+import { makeRepositoryFactory } from "../repositoryFactory.js";
 import type { EntityType, EntityImportance } from "@core/domain/entity/types.js";
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import {
   assertCampaignAccess,
@@ -50,9 +48,7 @@ type UpdateEntityBody = {
 export async function registerEntityRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
 
-  function getRepository(vaultId = "default") {
-    return new CampaignRepository(new EventStore(dataDir, vaultId), new SnapshotStore(dataDir, vaultId));
-  }
+  const getRepository = makeRepositoryFactory(dataDir);
 
   server.post<{ Params: { campaignId: string }; Body: CreateEntityBody }>(
     "/api/campaigns/:campaignId/entities",
@@ -125,13 +121,13 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
           createdInSessionId,
           metadata: resolvedMetadata,
         });
-        const created = Array.from(projection.entities.values()).find(
-          (e: any) => e.title === title && !e.archived
-        );
+        const created = entityId
+          ? projection.entities.get(entityId)
+          : Array.from(projection.entities.values()).find((e: any) => e.title === title && !e.archived);
         reply.code(201);
         return created || { campaignId, entityType, title };
       } catch (err: any) {
-        reply.code(500);
+        reply.code(err.statusCode ?? 400);
         return { error: err.message };
       }
     }
@@ -178,7 +174,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
             ...(updates.metadata !== undefined && { metadata: updates.metadata }),
           };
 
-      await repo.executeCommand(campaignId, {
+      const updatedProjection = await repo.executeCommand(campaignId, {
         type: "UpdateEntity",
         campaignId: campaignId,
         actorId: getRequestActorId(request, server.dmSessionToken, playerId),
@@ -193,7 +189,7 @@ export async function registerEntityRoutes(server: FastifyInstance, opts: { data
         ...(allowedUpdates.visibility !== undefined && { visibility: allowedUpdates.visibility }),
         ...(allowedUpdates.metadata !== undefined && { metadata: allowedUpdates.metadata }),
       });
-      return { ...existing, ...allowedUpdates, entityId, updatedAt: new Date().toISOString() };
+      return updatedProjection.entities.get(entityId) ?? { ...existing, ...allowedUpdates, entityId };
     } catch (err: any) {
       if (err.statusCode) {
         reply.code(err.statusCode);
