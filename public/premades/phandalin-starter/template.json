@@ -12,7 +12,7 @@
     "sessions"
   ],
   "stats": {
-    "entities": 29,
+    "entities": 134,
     "relations": 23,
     "facts": 12,
     "preparedSessions": 5
@@ -300,6 +300,1225 @@
       "visibility": {
         "kind": "dm_only"
       }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_pc_aric",
+      "entityType": "player_character",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "active",
+      "metadata": {
+        "isPremade": true,
+        "className": "Guerrero",
+        "level": 1,
+        "species": "Humano",
+        "background": "Soldado",
+        "armorClass": 17,
+        "hitPointsMax": 12,
+        "hitPointsCurrent": 12,
+        "hitDice": "1d10",
+        "speed": 30,
+        "initiative": 1,
+        "passivePerception": 13,
+        "passiveInsight": 11,
+        "passiveInvestigation": 10,
+        "strength": 16,
+        "dexterity": 12,
+        "constitution": 15,
+        "intelligence": 10,
+        "wisdom": 13,
+        "charisma": 10,
+        "skills": [
+          "athletics",
+          "perception",
+          "intimidation"
+        ]
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_pc_mira",
+      "entityType": "player_character",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "active",
+      "metadata": {
+        "isPremade": true,
+        "className": "Pícara",
+        "level": 1,
+        "species": "Mediana",
+        "background": "Criminal reformada",
+        "armorClass": 14,
+        "hitPointsMax": 8,
+        "hitPointsCurrent": 8,
+        "hitDice": "1d8",
+        "speed": 25,
+        "initiative": 3,
+        "passivePerception": 14,
+        "passiveInsight": 12,
+        "passiveInvestigation": 13,
+        "strength": 8,
+        "dexterity": 17,
+        "constitution": 12,
+        "intelligence": 13,
+        "wisdom": 14,
+        "charisma": 11,
+        "skills": [
+          "stealth",
+          "sleight_of_hand",
+          "perception",
+          "deception"
+        ]
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_pc_brom",
+      "entityType": "player_character",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "active",
+      "metadata": {
+        "isPremade": true,
+        "className": "Clérigo",
+        "level": 1,
+        "species": "Enano",
+        "background": "Artesano gremial",
+        "armorClass": 16,
+        "hitPointsMax": 10,
+        "hitPointsCurrent": 10,
+        "hitDice": "1d8",
+        "speed": 25,
+        "initiative": 0,
+        "passivePerception": 15,
+        "passiveInsight": 15,
+        "passiveInvestigation": 10,
+        "strength": 14,
+        "dexterity": 10,
+        "constitution": 15,
+        "intelligence": 10,
+        "wisdom": 16,
+        "charisma": 12,
+        "skills": [
+          "medicine",
+          "insight",
+          "religion",
+          "history"
+        ]
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_pc_nim",
+      "entityType": "player_character",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "active",
+      "metadata": {
+        "isPremade": true,
+        "className": "Maga",
+        "level": 1,
+        "species": "Elfa",
+        "background": "Sabia",
+        "armorClass": 12,
+        "hitPointsMax": 6,
+        "hitPointsCurrent": 6,
+        "hitDice": "1d6",
+        "speed": 30,
+        "initiative": 2,
+        "passivePerception": 13,
+        "passiveInsight": 13,
+        "passiveInvestigation": 15,
+        "strength": 8,
+        "dexterity": 14,
+        "constitution": 12,
+        "intelligence": 16,
+        "wisdom": 13,
+        "charisma": 10,
+        "skills": [
+          "arcana",
+          "history",
+          "investigation",
+          "insight"
+        ]
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_barthen",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "known",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_lionshield",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "known",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_sleeping_giant",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_townmaster",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "known",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_edermath",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "known",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_alderleaf",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "known",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_miners_exchange",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "known",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_cragmaw_castle",
+      "entityType": "location",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_forge_of_spells",
+      "entityType": "location",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_conyberry",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_agatha_lair",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_old_owl_well",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_wyvern_tor",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_thundertree",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_faction_town",
+      "entityType": "faction",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "active",
+      "metadata": {
+        "agenda": "Sobrevivir, trabajar y que alguien ponga límites a los abusos."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_faction_cragmaw",
+      "entityType": "faction",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "active",
+      "metadata": {
+        "agenda": "Cobrar por Gundren, conservar el mapa y no morir por órdenes ajenas."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_faction_rockseeker",
+      "entityType": "faction",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "active",
+      "metadata": {
+        "agenda": "Recuperar la mina perdida y honrar el trabajo familiar."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_faction_lords_alliance",
+      "entityType": "faction",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {
+        "agenda": "Restaurar orden sin admitir cuánto se les ha escapado la región."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_faction_zhentarim",
+      "entityType": "faction",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "agenda": "Convertir el vacío de poder en ventaja comercial."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_faction_order_gauntlet",
+      "entityType": "faction",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {
+        "agenda": "Que la región no normalice el miedo como gobierno."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_faction_emerald_enclave",
+      "entityType": "faction",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "agenda": "Evitar que ruinas, dragones y magia minera rompan el equilibrio local."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_faction_wyvern_orcs",
+      "entityType": "faction",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {
+        "agenda": "Robar, probar fuerza y retirarse antes de una respuesta organizada."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_faction_ash_zombies",
+      "entityType": "faction",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "agenda": "Ser recordatorio físico de que algunas ruinas no perdonan curiosidad."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_elmar",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "known",
+      "metadata": {
+        "desire": "Que la caravana llegue y el pueblo no se rompa por miedo."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_trilena",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "known",
+      "metadata": {
+        "desire": "Que alguien actúe sin que su familia pague el precio."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_harbin",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "known",
+      "metadata": {
+        "desire": "Sobrevivir políticamente y físicamente; en ese orden variable."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_garaele",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {
+        "desire": "Obtener respuestas sin poner a inocentes en manos de fuerzas antiguas."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_daran",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {
+        "desire": "Que la próxima generación no aprenda a vivir arrodillada."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_carp",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {
+        "desire": "Ser tratado como útil, no como estorbo."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_mirna",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "missing",
+      "metadata": {
+        "desire": "Sacar a sus hijos del sótano y reconstruir una vida."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_glasstaff",
+      "entityType": "npc",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Separar al mago respetable del jefe criminal."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_nothic",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Comer, sobrevivir y saborear secretos ajenos."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_grista",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {
+        "desire": "Que nadie destroce su negocio ni la arrastre a una guerra."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_klarg",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "active",
+      "metadata": {
+        "desire": "Ser visto como jefe temible aunque otros muevan piezas más grandes."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_yeemik",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "available",
+      "metadata": {
+        "desire": "Reemplazar a Klarg y salir vivo."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_grol",
+      "entityType": "npc",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Sacar precio máximo por Gundren y el mapa."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_vyerith",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Asegurar que el mapa llegue a la Araña Negra aunque Grol negocie."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_nundro",
+      "entityType": "npc",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Sobrevivir, hallar a Gundren y llorar a Tharden cuando haya tiempo."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_tharden",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Funciona como consecuencia emocional, no como PNJ activo."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_hamun",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Estudiar la ruina sin que aventureros simplifiquen su presencia."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_reidoth",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Que la gente entienda que algunos lugares no se conquistan, se respetan."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_agatha",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Ser recordada, respetada y no reducida a una máquina de respuestas."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_brughor",
+      "entityType": "npc",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "available",
+      "metadata": {
+        "desire": "Medir si Phandalin sigue siendo presa fácil."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_venomfang",
+      "entityType": "npc",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {
+        "desire": "Convertir a intrusos en herramientas o comida, según convenga."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_escort",
+      "entityType": "quest",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "completed",
+      "metadata": {
+        "successState": "Las provisiones llegan y el grupo gana un punto de anclaje social en Barthen."
+      }
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_dendrar",
+      "entityType": "quest",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_find_castle",
+      "entityType": "quest",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "pending",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_wave_echo",
+      "entityType": "quest",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_black_spider",
+      "entityType": "quest",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_lionshield",
+      "entityType": "quest",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_agatha",
+      "entityType": "quest",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_old_owl",
+      "entityType": "quest",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_wyvern_tor",
+      "entityType": "quest",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "available",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_thundertree",
+      "entityType": "quest",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_quest_future",
+      "entityType": "quest",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_goblin_trail",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "revealed",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_sildar_warning",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "revealed",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_redbrand_threats",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "revealed",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_town_fears",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "revealed",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_carp_tunnel",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_giant_boast",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_ledger",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_glasstaff_letter",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_nothic_whispers",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_mirna_heirloom",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_halia_offer",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_harbin_notice",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_daran_report",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_linene_cargo",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_castle_marks",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_ransom",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_vyerith_disguise",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_grol_bargain",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_nundro_testimony",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_spider_sigil",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_mine_map",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_forge_echo",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_tharden_body",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_reidoth_warning",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_dragon_signs",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_old_owl_signs",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_agatha_memory",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_wyvern_raids",
+      "entityType": "clue",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_clue_power_vacuum",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "prepared",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_nezznar",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_castle",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_map",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_halia",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_harbin",
+      "entityType": "secret",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_cragmaw",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_forge",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_dendrars",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_nothic",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_hostages",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_vyerith",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_tharden",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_hamun",
+      "entityType": "secret",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_venomfang",
+      "entityType": "secret",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_agatha",
+      "entityType": "secret",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_wyvern",
+      "entityType": "secret",
+      "importance": "normal",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
+    },
+    {
+      "entityId": "ent_tpl_phandalin_secret_power_vacuum",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "status": "hidden",
+      "metadata": {}
     }
   ],
   "relations": [

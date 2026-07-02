@@ -36,7 +36,7 @@
         "es": "phandalin-starter/locales/es.json"
       },
       "stats": {
-        "entities": 29,
+        "entities": 134,
         "relations": 23,
         "facts": 12,
         "preparedSessions": 5
