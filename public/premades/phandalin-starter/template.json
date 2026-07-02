@@ -13,7 +13,7 @@
   ],
   "stats": {
     "entities": 134,
-    "relations": 23,
+    "relations": 145,
     "facts": 12,
     "preparedSessions": 5
   },
@@ -1725,6 +1725,1226 @@
       "sourceEntityId": "ent_tpl_phandalin_linene",
       "targetEntityId": "ent_tpl_phandalin_trail",
       "relationType": "depends_on",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_gundren_rockseeker",
+      "sourceEntityId": "ent_tpl_phandalin_gundren",
+      "targetEntityId": "ent_tpl_phandalin_faction_rockseeker",
+      "relationType": "member_of",
+      "description": "Gundren pertenece a los hermanos Rockseeker.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nundro_rockseeker",
+      "sourceEntityId": "ent_tpl_phandalin_nundro",
+      "targetEntityId": "ent_tpl_phandalin_faction_rockseeker",
+      "relationType": "member_of",
+      "description": "Nundro es uno de los hermanos atrapados en la tragedia.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_tharden_rockseeker",
+      "sourceEntityId": "ent_tpl_phandalin_tharden",
+      "targetEntityId": "ent_tpl_phandalin_faction_rockseeker",
+      "relationType": "member_of",
+      "description": "Tharden completa el coste familiar del hallazgo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_escort_gundren",
+      "sourceEntityId": "ent_tpl_phandalin_quest_escort",
+      "targetEntityId": "ent_tpl_phandalin_gundren",
+      "relationType": "depends_on",
+      "description": "La entrega existe porque Gundren contrató la caravana.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_escort_barthen",
+      "sourceEntityId": "ent_tpl_phandalin_quest_escort",
+      "targetEntityId": "ent_tpl_phandalin_barthen",
+      "relationType": "points_to",
+      "description": "El contrato inicial termina en Barthen.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_dead_horses_gundren",
+      "sourceEntityId": "ent_tpl_phandalin_clue_dead_horses",
+      "targetEntityId": "ent_tpl_phandalin_gundren",
+      "relationType": "points_to",
+      "description": "Los caballos pertenecían a Gundren y Sildar.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_dead_horses_trail",
+      "sourceEntityId": "ent_tpl_phandalin_clue_dead_horses",
+      "targetEntityId": "ent_tpl_phandalin_trail",
+      "relationType": "located_in",
+      "description": "La pista aparece en el Camino de Triboar.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_goblin_trail_hideout",
+      "sourceEntityId": "ent_tpl_phandalin_clue_goblin_trail",
+      "targetEntityId": "ent_tpl_phandalin_hideout",
+      "relationType": "points_to",
+      "description": "El rastro lleva a la guarida Cragmaw.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_sildar_rescue",
+      "sourceEntityId": "ent_tpl_phandalin_sildar",
+      "targetEntityId": "ent_tpl_phandalin_quest_gundren",
+      "relationType": "ally_of",
+      "description": "Sildar orienta al grupo hacia el rescate.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_sildar_lords",
+      "sourceEntityId": "ent_tpl_phandalin_sildar",
+      "targetEntityId": "ent_tpl_phandalin_faction_lords_alliance",
+      "relationType": "member_of",
+      "description": "Sildar representa una vía institucional honesta.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_sildar_iarno",
+      "sourceEntityId": "ent_tpl_phandalin_sildar",
+      "targetEntityId": "ent_tpl_phandalin_iarno",
+      "relationType": "points_to",
+      "description": "Sildar quiere encontrar a Iarno.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_warning_map",
+      "sourceEntityId": "ent_tpl_phandalin_clue_sildar_warning",
+      "targetEntityId": "ent_tpl_phandalin_secret_map",
+      "relationType": "points_to",
+      "description": "La advertencia prepara la importancia del mapa.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_phandalin_town",
+      "sourceEntityId": "ent_tpl_phandalin_town",
+      "targetEntityId": "ent_tpl_phandalin_faction_town",
+      "relationType": "custom:home_of",
+      "description": "El pueblo es una comunidad con miedo y memoria.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_stonehill_phandalin",
+      "sourceEntityId": "ent_tpl_phandalin_inn",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "La posada funciona como plaza social.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_barthen_phandalin",
+      "sourceEntityId": "ent_tpl_phandalin_barthen",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "Barthen mantiene el comercio cotidiano.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_lionshield_phandalin",
+      "sourceEntityId": "ent_tpl_phandalin_lionshield",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "Lionshield sostiene la economía de equipo.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_townmaster_phandalin",
+      "sourceEntityId": "ent_tpl_phandalin_townmaster",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "El Salón del Concejo muestra la autoridad oficial.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_sleeping_giant_phandalin",
+      "sourceEntityId": "ent_tpl_phandalin_sleeping_giant",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "El Gigante Dormido muestra la autoridad real.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_tresendar_phandalin_in",
+      "sourceEntityId": "ent_tpl_phandalin_tresendar",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "Tresendar es la herida oculta bajo el pueblo.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_shrine_phandalin",
+      "sourceEntityId": "ent_tpl_phandalin_shrine",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "El santuario ofrece una lectura espiritual.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_edermath_phandalin",
+      "sourceEntityId": "ent_tpl_phandalin_edermath",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "El huerto de Daran da perspectiva veterana.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_alderleaf_phandalin",
+      "sourceEntityId": "ent_tpl_phandalin_alderleaf",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "La granja hace visible a las familias.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_miners_exchange_phandalin",
+      "sourceEntityId": "ent_tpl_phandalin_miners_exchange",
+      "targetEntityId": "ent_tpl_phandalin_town",
+      "relationType": "located_in",
+      "description": "El intercambio canaliza dinero e influencia.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_elmar_barthen",
+      "sourceEntityId": "ent_tpl_phandalin_elmar",
+      "targetEntityId": "ent_tpl_phandalin_barthen",
+      "relationType": "located_in",
+      "description": "Elmar recibe la caravana en Barthen.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_toblen_stonehill",
+      "sourceEntityId": "ent_tpl_phandalin_toblen",
+      "targetEntityId": "ent_tpl_phandalin_inn",
+      "relationType": "located_in",
+      "description": "Toblen escucha casi todos los rumores.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_trilena_stonehill",
+      "sourceEntityId": "ent_tpl_phandalin_trilena",
+      "targetEntityId": "ent_tpl_phandalin_inn",
+      "relationType": "located_in",
+      "description": "Trilena ofrece una lectura humana del miedo.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_harbin_townmaster",
+      "sourceEntityId": "ent_tpl_phandalin_harbin",
+      "targetEntityId": "ent_tpl_phandalin_townmaster",
+      "relationType": "located_in",
+      "description": "Harbin se esconde detrás de su cargo.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_harbin_town",
+      "sourceEntityId": "ent_tpl_phandalin_harbin",
+      "targetEntityId": "ent_tpl_phandalin_faction_town",
+      "relationType": "leader_of",
+      "description": "Harbin es la autoridad oficial aunque no inspire confianza.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_halia_miners",
+      "sourceEntityId": "ent_tpl_phandalin_halia",
+      "targetEntityId": "ent_tpl_phandalin_miners_exchange",
+      "relationType": "located_in",
+      "description": "Halia opera desde el Intercambio de Mineros.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_halia_zhentarim",
+      "sourceEntityId": "ent_tpl_phandalin_halia",
+      "targetEntityId": "ent_tpl_phandalin_faction_zhentarim",
+      "relationType": "member_of",
+      "description": "Halia tiene contactos Zhentarim ocultos.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_daran_edermath",
+      "sourceEntityId": "ent_tpl_phandalin_daran",
+      "targetEntityId": "ent_tpl_phandalin_edermath",
+      "relationType": "located_in",
+      "description": "Daran observa el pueblo desde su huerto.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_daran_order",
+      "sourceEntityId": "ent_tpl_phandalin_daran",
+      "targetEntityId": "ent_tpl_phandalin_faction_order_gauntlet",
+      "relationType": "member_of",
+      "description": "Daran representa una respuesta ética al abuso.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_garaele_shrine",
+      "sourceEntityId": "ent_tpl_phandalin_garaele",
+      "targetEntityId": "ent_tpl_phandalin_shrine",
+      "relationType": "located_in",
+      "description": "Garaele atiende el Santuario de la Suerte.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_qelline_alderleaf",
+      "sourceEntityId": "ent_tpl_phandalin_qelline",
+      "targetEntityId": "ent_tpl_phandalin_alderleaf",
+      "relationType": "located_in",
+      "description": "Qelline y Carp dan al grupo un hogar seguro.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_carp_qelline",
+      "sourceEntityId": "ent_tpl_phandalin_carp",
+      "targetEntityId": "ent_tpl_phandalin_qelline",
+      "relationType": "family_of",
+      "description": "Carp es hijo de Qelline.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_linene_lionshield_loc",
+      "sourceEntityId": "ent_tpl_phandalin_linene",
+      "targetEntityId": "ent_tpl_phandalin_lionshield",
+      "relationType": "located_in",
+      "description": "Linene dirige el puesto Lionshield.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_grista_sleeping_giant",
+      "sourceEntityId": "ent_tpl_phandalin_grista",
+      "targetEntityId": "ent_tpl_phandalin_sleeping_giant",
+      "relationType": "located_in",
+      "description": "Grista está cerca de los Redbrands.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_mirna_tresendar",
+      "sourceEntityId": "ent_tpl_phandalin_mirna",
+      "targetEntityId": "ent_tpl_phandalin_tresendar",
+      "relationType": "hides",
+      "description": "Mirna puede estar retenida en los sótanos.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_redbrands_tresendar_ap",
+      "sourceEntityId": "ent_tpl_phandalin_redbrands",
+      "targetEntityId": "ent_tpl_phandalin_tresendar",
+      "relationType": "appears_in",
+      "description": "Los Redbrands usan los sótanos de Tresendar como base.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_redbrands_sleeping_ap",
+      "sourceEntityId": "ent_tpl_phandalin_redbrands",
+      "targetEntityId": "ent_tpl_phandalin_sleeping_giant",
+      "relationType": "appears_in",
+      "description": "El Gigante Dormido es su fachada social visible.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_redbrand_threats_quest",
+      "sourceEntityId": "ent_tpl_phandalin_clue_redbrand_threats",
+      "targetEntityId": "ent_tpl_phandalin_quest_break_fear",
+      "relationType": "unlocks",
+      "description": "Las amenazas activan el arco urbano.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_town_fears_redbrands",
+      "sourceEntityId": "ent_tpl_phandalin_clue_town_fears",
+      "targetEntityId": "ent_tpl_phandalin_redbrands",
+      "relationType": "points_to",
+      "description": "El miedo señala el control Redbrand.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_carp_tunnel_tresendar",
+      "sourceEntityId": "ent_tpl_phandalin_clue_carp_tunnel",
+      "targetEntityId": "ent_tpl_phandalin_tresendar",
+      "relationType": "points_to",
+      "description": "La pista de Carp ofrece entrada secundaria.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_sleeping_boast_nothic",
+      "sourceEntityId": "ent_tpl_phandalin_clue_giant_boast",
+      "targetEntityId": "ent_tpl_phandalin_nothic",
+      "relationType": "points_to",
+      "description": "La bravuconada prepara algo que ve sin ventanas.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_ledger_redbrands",
+      "sourceEntityId": "ent_tpl_phandalin_clue_ledger",
+      "targetEntityId": "ent_tpl_phandalin_redbrands",
+      "relationType": "confirms",
+      "description": "El libro muestra que la banda gobierna con cuentas.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_ledger_halia",
+      "sourceEntityId": "ent_tpl_phandalin_clue_ledger",
+      "targetEntityId": "ent_tpl_phandalin_halia",
+      "relationType": "points_to",
+      "description": "El libro matiza hasta dónde llega la influencia de Halia.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_glasstaff_alias_iarno",
+      "sourceEntityId": "ent_tpl_phandalin_glasstaff",
+      "targetEntityId": "ent_tpl_phandalin_iarno",
+      "relationType": "custom:alias_of",
+      "description": "Glasstaff es la máscara criminal de Iarno.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_glasstaff_redbrands",
+      "sourceEntityId": "ent_tpl_phandalin_glasstaff",
+      "targetEntityId": "ent_tpl_phandalin_redbrands",
+      "relationType": "leader_of",
+      "description": "El alias Glasstaff sostiene la obediencia de los matones.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_iarno_tresendar",
+      "sourceEntityId": "ent_tpl_phandalin_iarno",
+      "targetEntityId": "ent_tpl_phandalin_tresendar",
+      "relationType": "located_in",
+      "description": "Iarno trabaja desde el laboratorio de Tresendar.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nothic_tresendar",
+      "sourceEntityId": "ent_tpl_phandalin_nothic",
+      "targetEntityId": "ent_tpl_phandalin_tresendar",
+      "relationType": "located_in",
+      "description": "El nothic habita bajo la mansión.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nothic_whispers_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_nothic_whispers",
+      "targetEntityId": "ent_tpl_phandalin_secret_nothic",
+      "relationType": "confirms",
+      "description": "Los susurros explican que el nothic revela secretos.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_dendrar_rescue_mirna",
+      "sourceEntityId": "ent_tpl_phandalin_quest_dendrar",
+      "targetEntityId": "ent_tpl_phandalin_mirna",
+      "relationType": "depends_on",
+      "description": "Salvar a Mirna hace la liberación personal.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_mirna_heirloom_thundertree",
+      "sourceEntityId": "ent_tpl_phandalin_clue_mirna_heirloom",
+      "targetEntityId": "ent_tpl_phandalin_thundertree",
+      "relationType": "points_to",
+      "description": "Mirna abre el hilo de Thundertree como recompensa.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_cragmaw_hideout_ap",
+      "sourceEntityId": "ent_tpl_phandalin_faction_cragmaw",
+      "targetEntityId": "ent_tpl_phandalin_hideout",
+      "relationType": "appears_in",
+      "description": "La primera cara del clan aparece en la guarida.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_klarg_hideout",
+      "sourceEntityId": "ent_tpl_phandalin_klarg",
+      "targetEntityId": "ent_tpl_phandalin_hideout",
+      "relationType": "located_in",
+      "description": "Klarg domina la guarida del arroyo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_yeemik_hideout",
+      "sourceEntityId": "ent_tpl_phandalin_yeemik",
+      "targetEntityId": "ent_tpl_phandalin_hideout",
+      "relationType": "located_in",
+      "description": "Yeemik puede negociar desde la guarida.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_yeemik_klarg",
+      "sourceEntityId": "ent_tpl_phandalin_yeemik",
+      "targetEntityId": "ent_tpl_phandalin_klarg",
+      "relationType": "enemy_of",
+      "description": "Yeemik puede traicionar a Klarg si ve ventaja.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_cragmaw_castle_ap",
+      "sourceEntityId": "ent_tpl_phandalin_faction_cragmaw",
+      "targetEntityId": "ent_tpl_phandalin_cragmaw_castle",
+      "relationType": "appears_in",
+      "description": "El castillo muestra la estructura superior del clan.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_grol_cragmaw",
+      "sourceEntityId": "ent_tpl_phandalin_grol",
+      "targetEntityId": "ent_tpl_phandalin_faction_cragmaw",
+      "relationType": "leader_of",
+      "description": "Grol manda sobre la facción que retiene información.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_grol_castle",
+      "sourceEntityId": "ent_tpl_phandalin_grol",
+      "targetEntityId": "ent_tpl_phandalin_cragmaw_castle",
+      "relationType": "located_in",
+      "description": "Grol gobierna desde el castillo oculto.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_vyerith_castle",
+      "sourceEntityId": "ent_tpl_phandalin_vyerith",
+      "targetEntityId": "ent_tpl_phandalin_cragmaw_castle",
+      "relationType": "appears_in",
+      "description": "Vyerith puede aparecer bajo identidad falsa.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_gundren_castle",
+      "sourceEntityId": "ent_tpl_phandalin_gundren",
+      "targetEntityId": "ent_tpl_phandalin_cragmaw_castle",
+      "relationType": "located_in",
+      "description": "Gundren puede estar retenido en el castillo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_cragmaw_ransom_gundren",
+      "sourceEntityId": "ent_tpl_phandalin_clue_ransom",
+      "targetEntityId": "ent_tpl_phandalin_gundren",
+      "relationType": "points_to",
+      "description": "El rescate confirma que Gundren vale vivo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_grol_bargain_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_grol_bargain",
+      "targetEntityId": "ent_tpl_phandalin_secret_cragmaw",
+      "relationType": "confirms",
+      "description": "Grol permite explotar divisiones del clan.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_castle_marks_castle",
+      "sourceEntityId": "ent_tpl_phandalin_clue_castle_marks",
+      "targetEntityId": "ent_tpl_phandalin_cragmaw_castle",
+      "relationType": "unlocks",
+      "description": "Las marcas convierten rumores en ruta jugable.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_vyerith_disguise_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_vyerith_disguise",
+      "targetEntityId": "ent_tpl_phandalin_secret_vyerith",
+      "relationType": "confirms",
+      "description": "Los detalles raros permiten descubrir la infiltración.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nezznar_iarno",
+      "sourceEntityId": "ent_tpl_phandalin_nezznar",
+      "targetEntityId": "ent_tpl_phandalin_iarno",
+      "relationType": "leader_of",
+      "description": "La Araña Negra usa a Glasstaff como agente urbano.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nezznar_cragmaw",
+      "sourceEntityId": "ent_tpl_phandalin_nezznar",
+      "targetEntityId": "ent_tpl_phandalin_faction_cragmaw",
+      "relationType": "custom:manipulates",
+      "description": "Nezznar presiona al clan para controlar prisioneros.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nezznar_vyerith",
+      "sourceEntityId": "ent_tpl_phandalin_nezznar",
+      "targetEntityId": "ent_tpl_phandalin_vyerith",
+      "relationType": "leader_of",
+      "description": "Vyerith actúa como agente flexible.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_spider_sigils_nezznar",
+      "sourceEntityId": "ent_tpl_phandalin_clue_spider_sigil",
+      "targetEntityId": "ent_tpl_phandalin_secret_nezznar",
+      "relationType": "points_to",
+      "description": "El sello une órdenes y violencia regional.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_glasstaff_letter_iarno",
+      "sourceEntityId": "ent_tpl_phandalin_clue_glasstaff_letter",
+      "targetEntityId": "ent_tpl_phandalin_secret_iarno",
+      "relationType": "confirms",
+      "description": "La carta revela que Glasstaff e Iarno son la misma pieza.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nezznar_wave_echo_pts",
+      "sourceEntityId": "ent_tpl_phandalin_nezznar",
+      "targetEntityId": "ent_tpl_phandalin_wave_echo",
+      "relationType": "points_to",
+      "description": "La Araña Negra quiere controlar la mina perdida.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_rockseekers_wave_echo",
+      "sourceEntityId": "ent_tpl_phandalin_faction_rockseeker",
+      "targetEntityId": "ent_tpl_phandalin_wave_echo",
+      "relationType": "points_to",
+      "description": "Los Rockseeker buscan reabrir la mina perdida.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_wave_echo_forge",
+      "sourceEntityId": "ent_tpl_phandalin_wave_echo",
+      "targetEntityId": "ent_tpl_phandalin_forge_of_spells",
+      "relationType": "contains",
+      "description": "La Forja de Conjuros es el corazón de Wave Echo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_forge_echo_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_forge_echo",
+      "targetEntityId": "ent_tpl_phandalin_secret_forge",
+      "relationType": "confirms",
+      "description": "El eco confirma que la forja no es solo leyenda.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_mine_map_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_mine_map",
+      "targetEntityId": "ent_tpl_phandalin_secret_map",
+      "relationType": "confirms",
+      "description": "El mapa demuestra que la mina puede encontrarse.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_mine_map_wave_echo",
+      "sourceEntityId": "ent_tpl_phandalin_clue_mine_map",
+      "targetEntityId": "ent_tpl_phandalin_wave_echo",
+      "relationType": "unlocks",
+      "description": "El mapa desbloquea la ruta hacia Wave Echo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nundro_wave_echo",
+      "sourceEntityId": "ent_tpl_phandalin_nundro",
+      "targetEntityId": "ent_tpl_phandalin_wave_echo",
+      "relationType": "appears_in",
+      "description": "Nundro puede confirmar qué ocurrió en la mina.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nundro_testimony_nezznar",
+      "sourceEntityId": "ent_tpl_phandalin_clue_nundro_testimony",
+      "targetEntityId": "ent_tpl_phandalin_secret_nezznar",
+      "relationType": "confirms",
+      "description": "Nundro confirma la presencia de la Araña Negra.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_tharden_body_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_tharden_body",
+      "targetEntityId": "ent_tpl_phandalin_secret_tharden",
+      "relationType": "confirms",
+      "description": "El destino de Tharden convierte la mina en tragedia.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_tharden_wave_echo",
+      "sourceEntityId": "ent_tpl_phandalin_tharden",
+      "targetEntityId": "ent_tpl_phandalin_wave_echo",
+      "relationType": "appears_in",
+      "description": "Tharden queda ligado al coste final.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_recover_lionshield_linene",
+      "sourceEntityId": "ent_tpl_phandalin_quest_lionshield",
+      "targetEntityId": "ent_tpl_phandalin_linene",
+      "relationType": "depends_on",
+      "description": "Linene ofrece una misión económica clara.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_cargo_marks_lionshield",
+      "sourceEntityId": "ent_tpl_phandalin_clue_linene_cargo",
+      "targetEntityId": "ent_tpl_phandalin_quest_lionshield",
+      "relationType": "unlocks",
+      "description": "Las marcas dan dirección a la misión.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_harbin_notice_townmaster",
+      "sourceEntityId": "ent_tpl_phandalin_clue_harbin_notice",
+      "targetEntityId": "ent_tpl_phandalin_townmaster",
+      "relationType": "located_in",
+      "description": "Los anuncios están en la oficina de Harbin.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_harbin_notice_wyvern",
+      "sourceEntityId": "ent_tpl_phandalin_clue_harbin_notice",
+      "targetEntityId": "ent_tpl_phandalin_quest_wyvern_tor",
+      "relationType": "unlocks",
+      "description": "El tablón puede enviar al grupo al Tor.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_harbin_notice_old_owl",
+      "sourceEntityId": "ent_tpl_phandalin_clue_harbin_notice",
+      "targetEntityId": "ent_tpl_phandalin_quest_old_owl",
+      "relationType": "unlocks",
+      "description": "El tablón abre el Viejo Pozo del Búho.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_daran_report_redbrands",
+      "sourceEntityId": "ent_tpl_phandalin_clue_daran_report",
+      "targetEntityId": "ent_tpl_phandalin_quest_break_fear",
+      "relationType": "points_to",
+      "description": "Daran enfoca la amenaza Redbrand como organizada.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_garaele_agatha_quest",
+      "sourceEntityId": "ent_tpl_phandalin_garaele",
+      "targetEntityId": "ent_tpl_phandalin_quest_agatha",
+      "relationType": "unlocks",
+      "description": "Garaele puede pedir una pregunta para Agatha.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_agatha_lair_presence",
+      "sourceEntityId": "ent_tpl_phandalin_agatha",
+      "targetEntityId": "ent_tpl_phandalin_agatha_lair",
+      "relationType": "located_in",
+      "description": "Agatha habita su morada y domina el tono.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_agatha_conyberry",
+      "sourceEntityId": "ent_tpl_phandalin_agatha_lair",
+      "targetEntityId": "ent_tpl_phandalin_conyberry",
+      "relationType": "custom:near",
+      "description": "La morada se alcanza desde las ruinas de Conyberry.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_agatha_memory_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_agatha_memory",
+      "targetEntityId": "ent_tpl_phandalin_secret_agatha",
+      "relationType": "confirms",
+      "description": "La memoria confirma que Agatha puede responder bien.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_old_owl_well_hamun",
+      "sourceEntityId": "ent_tpl_phandalin_hamun",
+      "targetEntityId": "ent_tpl_phandalin_old_owl_well",
+      "relationType": "located_in",
+      "description": "Hamun investiga el Viejo Pozo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_old_owl_signs_hamun",
+      "sourceEntityId": "ent_tpl_phandalin_clue_old_owl_signs",
+      "targetEntityId": "ent_tpl_phandalin_hamun",
+      "relationType": "points_to",
+      "description": "Las señales apuntan a Hamun sin convertirlo en enemigo.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_hamun_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_old_owl_signs",
+      "targetEntityId": "ent_tpl_phandalin_secret_hamun",
+      "relationType": "points_to",
+      "description": "El pozo enseña que no todo hilo extraño es la Araña.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_wyvern_tor_brughor",
+      "sourceEntityId": "ent_tpl_phandalin_brughor",
+      "targetEntityId": "ent_tpl_phandalin_wyvern_tor",
+      "relationType": "located_in",
+      "description": "Brughor dirige los asaltos desde el Tor.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_wyvern_orcs_brughor",
+      "sourceEntityId": "ent_tpl_phandalin_brughor",
+      "targetEntityId": "ent_tpl_phandalin_faction_wyvern_orcs",
+      "relationType": "leader_of",
+      "description": "Brughor lidera a los orcos locales.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_wyvern_raids_quest",
+      "sourceEntityId": "ent_tpl_phandalin_clue_wyvern_raids",
+      "targetEntityId": "ent_tpl_phandalin_quest_wyvern_tor",
+      "relationType": "unlocks",
+      "description": "Los rastros activan la misión del Tor.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_wyvern_pressure_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_wyvern_raids",
+      "targetEntityId": "ent_tpl_phandalin_secret_wyvern",
+      "relationType": "points_to",
+      "description": "Los asaltos crecen si Phandalin parece indefenso.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_reidoth_thundertree",
+      "sourceEntityId": "ent_tpl_phandalin_reidoth",
+      "targetEntityId": "ent_tpl_phandalin_thundertree",
+      "relationType": "located_in",
+      "description": "Reidoth puede encontrarse en las ruinas.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_reidoth_enclave",
+      "sourceEntityId": "ent_tpl_phandalin_reidoth",
+      "targetEntityId": "ent_tpl_phandalin_faction_emerald_enclave",
+      "relationType": "member_of",
+      "description": "Reidoth representa la mirada del Enclave.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_reidoth_warning_quest",
+      "sourceEntityId": "ent_tpl_phandalin_clue_reidoth_warning",
+      "targetEntityId": "ent_tpl_phandalin_quest_thundertree",
+      "relationType": "unlocks",
+      "description": "Reidoth convierte Thundertree en opción informada.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_dragon_signs_venomfang",
+      "sourceEntityId": "ent_tpl_phandalin_clue_dragon_signs",
+      "targetEntityId": "ent_tpl_phandalin_venomfang",
+      "relationType": "points_to",
+      "description": "Las señales preparan el peligro de Venomfang.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_venomfang_thundertree",
+      "sourceEntityId": "ent_tpl_phandalin_venomfang",
+      "targetEntityId": "ent_tpl_phandalin_thundertree",
+      "relationType": "located_in",
+      "description": "Venomfang reclama parte de Thundertree.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_ash_zombies_thundertree",
+      "sourceEntityId": "ent_tpl_phandalin_faction_ash_zombies",
+      "targetEntityId": "ent_tpl_phandalin_thundertree",
+      "relationType": "appears_in",
+      "description": "Los muertos de ceniza hacen de Thundertree hostil.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_dragon_manipulates_secret",
+      "sourceEntityId": "ent_tpl_phandalin_clue_dragon_signs",
+      "targetEntityId": "ent_tpl_phandalin_secret_venomfang",
+      "relationType": "points_to",
+      "description": "El dragón deja pistas de inteligencia estratégica.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_anchor_castle",
+      "sourceEntityId": "ent_tpl_phandalin_clue_castle_marks",
+      "targetEntityId": "ent_tpl_phandalin_secret_castle",
+      "relationType": "unlocks",
+      "description": "Las marcas desbloquean la localización oculta.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_anchor_halia",
+      "sourceEntityId": "ent_tpl_phandalin_clue_halia_offer",
+      "targetEntityId": "ent_tpl_phandalin_secret_halia",
+      "relationType": "points_to",
+      "description": "La oferta muestra intención política.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_anchor_harbin",
+      "sourceEntityId": "ent_tpl_phandalin_clue_town_fears",
+      "targetEntityId": "ent_tpl_phandalin_secret_harbin",
+      "relationType": "points_to",
+      "description": "El miedo apunta a la pasividad interesada del alcalde.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_anchor_cragmaw",
+      "sourceEntityId": "ent_tpl_phandalin_clue_goblin_trail",
+      "targetEntityId": "ent_tpl_phandalin_secret_cragmaw",
+      "relationType": "points_to",
+      "description": "El rastro revela una estructura goblin negociable.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_anchor_dendrars",
+      "sourceEntityId": "ent_tpl_phandalin_clue_mirna_heirloom",
+      "targetEntityId": "ent_tpl_phandalin_secret_dendrars",
+      "relationType": "confirms",
+      "description": "El recuerdo confirma que rescatar personas abre futuro.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_anchor_hostages",
+      "sourceEntityId": "ent_tpl_phandalin_clue_ledger",
+      "targetEntityId": "ent_tpl_phandalin_secret_hostages",
+      "relationType": "points_to",
+      "description": "El libro sugiere traslado de rehenes si la presión sube.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_anchor_power_vacuum",
+      "sourceEntityId": "ent_tpl_phandalin_clue_power_vacuum",
+      "targetEntityId": "ent_tpl_phandalin_secret_power_vacuum",
+      "relationType": "confirms",
+      "description": "La pista prepara el epílogo político.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_rescue_castle",
+      "sourceEntityId": "ent_tpl_phandalin_quest_gundren",
+      "targetEntityId": "ent_tpl_phandalin_quest_find_castle",
+      "relationType": "unlocks",
+      "description": "Seguir a los goblins abre la búsqueda del castillo.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_redbrands_dendrar_q",
+      "sourceEntityId": "ent_tpl_phandalin_quest_break_fear",
+      "targetEntityId": "ent_tpl_phandalin_quest_dendrar",
+      "relationType": "contains",
+      "description": "El arco Redbrand incluye liberar rehenes concretos.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_redbrands_power_vacuum",
+      "sourceEntityId": "ent_tpl_phandalin_quest_break_fear",
+      "targetEntityId": "ent_tpl_phandalin_quest_future",
+      "relationType": "unlocks",
+      "description": "La caída de los Redbrands abre la pregunta política.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_castle_wave",
+      "sourceEntityId": "ent_tpl_phandalin_quest_find_castle",
+      "targetEntityId": "ent_tpl_phandalin_quest_wave_echo",
+      "relationType": "unlocks",
+      "description": "El castillo debe revelar el mapa o ubicación de la mina.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_wave_spider",
+      "sourceEntityId": "ent_tpl_phandalin_quest_wave_echo",
+      "targetEntityId": "ent_tpl_phandalin_quest_black_spider",
+      "relationType": "enemy_of",
+      "description": "La mina lleva al enfrentamiento con la Araña Negra.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_spider_future",
+      "sourceEntityId": "ent_tpl_phandalin_quest_black_spider",
+      "targetEntityId": "ent_tpl_phandalin_quest_future",
+      "relationType": "unlocks",
+      "description": "Derrotar a la Araña no decide quién gobernará.",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_aric_redbrands",
+      "sourceEntityId": "ent_tpl_phandalin_pc_aric",
+      "targetEntityId": "ent_tpl_phandalin_quest_break_fear",
+      "relationType": "points_to",
+      "description": "Aric entiende la intimidación como abuso de fuerza.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_mira_tresendar",
+      "sourceEntityId": "ent_tpl_phandalin_pc_mira",
+      "targetEntityId": "ent_tpl_phandalin_tresendar",
+      "relationType": "points_to",
+      "description": "Mira puede brillar con entradas secretas y cerraduras.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_brom_rockseeker",
+      "sourceEntityId": "ent_tpl_phandalin_pc_brom",
+      "targetEntityId": "ent_tpl_phandalin_faction_rockseeker",
+      "relationType": "ally_of",
+      "description": "Brom conecta con la dimensión artesanal.",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_phandalin_nim_forge",
+      "sourceEntityId": "ent_tpl_phandalin_pc_nim",
+      "targetEntityId": "ent_tpl_phandalin_forge_of_spells",
+      "relationType": "points_to",
+      "description": "Nimue tiene motivo para investigar la resonancia mágica.",
       "visibility": {
         "kind": "party"
       }
