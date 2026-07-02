@@ -88,3 +88,29 @@ export function revokeSession(sessionRef: string): Promise<{ revoked: true }> {
 export function revokeOtherSessions(): Promise<{ revoked: true }> {
   return request("/api/account/sessions/others", { method: "DELETE" });
 }
+
+export type DeletionBlocker = {
+  campaignId: string;
+  reason: "sole_responsible_dm";
+};
+
+export async function fetchDeletionImpact(): Promise<DeletionBlocker[]> {
+  return (await request<{ blockers: DeletionBlocker[] }>("/api/account/deletion-impact")).blockers;
+}
+
+export async function downloadPersonalExport(): Promise<Blob> {
+  const response = await apiFetch("/api/account/export");
+  if (!response.ok) throw new Error(await readApiError(response, "Account export failed"));
+  return response.blob();
+}
+
+export function deletePersonalAccount(payload: {
+  currentPassword: string;
+  confirmation: string;
+}): Promise<{ deleted: true }> {
+  return request("/api/account", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}

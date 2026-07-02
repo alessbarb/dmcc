@@ -676,6 +676,83 @@ export async function revokeAllSessions(vaultDir: string): Promise<void> {
   });
 }
 
+export function buildPersonalExport(store: UserAuthStore, userId: string) {
+  const user = store.users.find((item) => item.userId === userId && !item.disabledAt);
+  if (!user) throw Object.assign(new Error("Account not found"), { statusCode: 404 });
+  return {
+    exportedAt: nowIso(),
+    account: publicUser(user),
+    preferences: store.preferences.find((item) => item.userId === userId) ?? null,
+    profiles: {
+      dm: store.dmProfiles.find((item) => item.userId === userId) ?? null,
+      players: store.playerProfiles.filter((item) => item.userId === userId),
+    },
+    memberships: store.memberships.filter((item) => item.userId === userId),
+  };
+}
+
+export function findAccountDeletionBlockers(store: UserAuthStore, userId: string) {
+  return store.memberships
+    .filter((membership) =>
+      membership.userId === userId
+      && membership.role === "dm"
+      && !membership.revokedAt
+    )
+    .filter((membership) => !store.memberships.some((other) =>
+      other.campaignId === membership.campaignId
+      && other.userId !== userId
+      && other.role === "dm"
+      && !other.revokedAt
+    ))
+    .map((membership) => ({
+      campaignId: membership.campaignId,
+      reason: "sole_responsible_dm" as const,
+    }));
+}
+
+export async function deleteAccount(
+  vaultDir: string,
+  userId: string,
+  input: { currentPassword?: string; confirmation?: string }
+): Promise<void> {
+  const store = await readUserAuthStore(vaultDir);
+  const user = store.users.find((item) => item.userId === userId && !item.disabledAt);
+  if (!user || !(await verifySecret(
+    input.currentPassword ?? "",
+    user.passwordSalt,
+    user.passwordHash
+  ))) {
+    throw Object.assign(new Error("Current password is incorrect"), { statusCode: 403 });
+  }
+  const handles = [
+    store.dmProfiles.find((item) => item.userId === userId)?.publicHandle,
+    ...store.playerProfiles.filter((item) => item.userId === userId).map((item) => item.publicHandle),
+  ].filter(Boolean);
+  if (input.confirmation !== user.emailNormalized && !handles.includes(input.confirmation)) {
+    throw Object.assign(new Error("Account confirmation does not match"), { statusCode: 400 });
+  }
+  const blockers = findAccountDeletionBlockers(store, userId);
+  if (blockers.length) {
+    throw Object.assign(new Error("Account deletion is blocked"), { statusCode: 409, blockers });
+  }
+  const revokedAt = nowIso();
+  await writeUserAuthStore(vaultDir, {
+    ...store,
+    users: store.users.filter((item) => item.userId !== userId),
+    preferences: store.preferences.filter((item) => item.userId !== userId),
+    dmProfiles: store.dmProfiles.filter((item) => item.userId !== userId),
+    playerProfiles: store.playerProfiles.filter((item) => item.userId !== userId),
+    sessions: store.sessions.filter((item) => item.userId !== userId),
+    recoveryCodes: store.recoveryCodes.filter((item) => item.userId !== userId),
+    passwordResetTokens: store.passwordResetTokens.filter((item) => item.userId !== userId),
+    memberships: store.memberships.map((membership) =>
+      membership.userId === userId && !membership.revokedAt
+        ? { ...membership, revokedAt }
+        : membership
+    ),
+  });
+}
+
 export async function addCampaignMembership(
   vaultDir: string,
   membership: Omit<CampaignMembership, "createdAt">

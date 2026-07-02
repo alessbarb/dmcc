@@ -11,6 +11,9 @@ import {
   listOwnedSessions,
   revokeOtherOwnedSessions,
   revokeOwnedSession,
+  buildPersonalExport,
+  deleteAccount,
+  findAccountDeletionBlockers,
 } from "../userAuthStore.js";
 import { getValidatedVaultId } from "../auth.js";
 import { readSessionCookie } from "../sessionAuth.js";
@@ -282,4 +285,51 @@ export async function registerAccountRoutes(
       }
     }
   );
+
+  server.get("/api/account/export", async (request, reply) => {
+    try {
+      const user = await requireUser(request);
+      const exported = buildPersonalExport(
+        await readUserAuthStore(vaultDirFor(request)),
+        user.userId
+      );
+      reply.header("Content-Disposition", `attachment; filename="dmcc-account-${user.userId}.json"`);
+      return exported;
+    } catch (error: any) {
+      reply.code(error.statusCode ?? 500);
+      return { error: error.statusCode ? error.message : "Unable to export account" };
+    }
+  });
+
+  server.get("/api/account/deletion-impact", async (request, reply) => {
+    try {
+      const user = await requireUser(request);
+      return {
+        blockers: findAccountDeletionBlockers(
+          await readUserAuthStore(vaultDirFor(request)),
+          user.userId
+        ),
+      };
+    } catch (error: any) {
+      reply.code(error.statusCode ?? 500);
+      return { error: error.statusCode ? error.message : "Unable to analyze deletion" };
+    }
+  });
+
+  server.delete<{
+    Body: { currentPassword?: string; confirmation?: string };
+  }>("/api/account", async (request, reply) => {
+    try {
+      assertSameOrigin(request);
+      const user = await requireUser(request);
+      await deleteAccount(vaultDirFor(request), user.userId, request.body ?? {});
+      return { deleted: true };
+    } catch (error: any) {
+      reply.code(error.statusCode ?? 500);
+      return {
+        error: error.statusCode ? error.message : "Unable to delete account",
+        blockers: error.blockers,
+      };
+    }
+  });
 }
