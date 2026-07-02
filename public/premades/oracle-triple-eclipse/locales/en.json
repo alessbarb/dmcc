@@ -636,6 +636,293 @@
       "summary": "Final confrontation: expose, contain, arrest or let Veradis escape.",
       "content": "Prepare the scene with a goal, one pressure point, one clue and one possible consequence.",
       "status": "ready"
+    },
+    "ent_tpl_oracle_pc_elowyn": {
+      "title": "Elowyn Darkwater",
+      "subtitle": "Elven rogue — infiltration and deception",
+      "summary": "A skilled elven rogue specialising in infiltration and deception. She came to Valdris looking for something taken from her.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_pc_camus": {
+      "title": "Brother Camus",
+      "subtitle": "Human cleric of the Temple of Truth",
+      "summary": "A human cleric consecrated to the Temple of Truth, seeking redemption for a past he would rather forget.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_pc_ragna": {
+      "title": "Ragna Ironsong",
+      "subtitle": "Dwarven warrior — former city guard",
+      "summary": "A dwarven warrior who served in the Valdris city guard for years and knows the city better than anyone.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_pc_silas": {
+      "title": "Silas the Wanderer",
+      "subtitle": "Halfling bard — collector of stories",
+      "summary": "A halfling bard and collector of stories and secrets. Nobody quite knows where he came from.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_loc_noble_district": {
+      "title": "Noble Quarter",
+      "subtitle": "Walled residential district of Valdris's elite",
+      "summary": "The exclusive residential district of the Valdris elite, protected by high polished stone walls and private guards who bar the common folk.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_loc_guild_camp": {
+      "title": "Guild Hideout",
+      "subtitle": "Secret Thieves' Guild base under the docks",
+      "summary": "The Thieves' Guild's secret headquarters, hidden in the ancient sewer network beneath the docks. Its entrance is protected by traps and illusions.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_loc_forest_shrine": {
+      "title": "Forest Shrine",
+      "subtitle": "Remote woodland temple of the Truth faith",
+      "summary": "A modest wooden temple hidden in the forest, several miles from Valdris's walls. It serves as a refuge for genuine believers in the Truth.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_loc_council_chamber": {
+      "title": "Council Chamber",
+      "subtitle": "Grand parliamentary hall in the city hall",
+      "summary": "The ornate parliamentary chamber in the city hall where councillors meet to debate Valdris's laws and taxes.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_loc_docks": {
+      "title": "Harbor Docks",
+      "subtitle": "Rotting quays for smuggling and clandestine meetings",
+      "summary": "The rotting wooden quays of the harbor — ideal for smuggling arcane components and holding clandestine meetings late at night.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_npc_aldric": {
+      "title": "Magister Aldric",
+      "subtitle": "Supreme Magister, leader of the Valdris Council",
+      "summary": "The supreme Magister and leader of the Valdris Council. A firm Oracle supporter who uses prophecies to legitimise unpopular political decisions, genuinely believing in their authenticity.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "neutral"
+      }
+    },
+    "ent_tpl_oracle_npc_lena": {
+      "title": "Councillor Lena Marsh",
+      "subtitle": "Leader of the Council's reform faction",
+      "summary": "Leader of the Council's reform faction. Long suspicious of the Oracle's secrecy and the commercial coincidences that benefit Lord Vantis.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "friendly"
+      }
+    },
+    "ent_tpl_oracle_npc_riku": {
+      "title": "Riku the Guard",
+      "subtitle": "Honest but frightened low-ranking guard",
+      "summary": "An honest but very frightened low-ranking guard. While patrolling the north docks he witnessed inquisitors dropping a suspicious bundle into the sea and now fears for his life.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "neutral"
+      }
+    },
+    "ent_tpl_oracle_npc_torben": {
+      "title": "Torben the Innkeeper",
+      "subtitle": "Former smuggler, Raven Tavern owner",
+      "summary": "The burly and perceptive innkeeper of the Raven Tavern. A reformed smuggler who acts as a key informant for the Thieves' Guild in exchange for keeping his establishment free of trouble.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "friendly"
+      }
+    },
+    "ent_tpl_oracle_npc_cira": {
+      "title": "Cira the Shadow",
+      "subtitle": "Thieves' Guild field operative",
+      "summary": "An agile and lethal Thieves' Guild operative. She acts as the direct link between Kael and the port street gangs, and is the first to assess whether adventurers are trustworthy.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "suspicious"
+      }
+    },
+    "ent_tpl_oracle_npc_ola": {
+      "title": "Mistress Ola Brightstone",
+      "subtitle": "President of the Merchants' Consortium",
+      "summary": "The pragmatic president of the Merchants' Consortium. She cares nothing for the Oracle's theology or the Council's morality, as long as sea routes remain safe and free of excessive taxes.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "neutral"
+      }
+    },
+    "ent_tpl_oracle_npc_vorn": {
+      "title": "Herald Vorn",
+      "subtitle": "Pompous official spokesman of the Oracle",
+      "summary": "The pompous official spokesman of the Oracle. He manages public audiences, reads prophetic edicts, and decides — after a generous payment — who is worthy to receive Veradis's word.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "suspicious"
+      }
+    },
+    "ent_tpl_oracle_npc_initiate": {
+      "title": "Cult Initiate",
+      "subtitle": "True believer, social obstacle",
+      "summary": "Genuine novice believers in the cult. Truly convinced of Veradis's divinity, they handle maintenance, fake charity and minor surveillance around the temple grounds.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "hostile"
+      }
+    },
+    "ent_tpl_oracle_npc_pell": {
+      "title": "Scribe Pell",
+      "subtitle": "Timid Council copyist with access to all correspondence",
+      "summary": "The timid Council copyist. His work lets him read all official correspondence between Magister Aldric, Lord Vantis and the Oracle's temple, recording incriminating minutes.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "friendly"
+      }
+    },
+    "ent_tpl_oracle_npc_healer": {
+      "title": "Mistress Ilva",
+      "subtitle": "Port-district healer, informal witness",
+      "summary": "A healer from the port's low districts. She has clandestinely treated several sailors and guards with strange magical burns and unusual wounds caused by cult weapons.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "friendly"
+      }
+    },
+    "ent_tpl_oracle_npc_pica": {
+      "title": "Pica the Fishmonger",
+      "subtitle": "Market gossip and social thermometer",
+      "summary": "A lively market trader who sells fish and spreads gossip. Her rumours are a chaotic mix of cult propaganda, palace chatter and distorted port truths.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "neutral"
+      }
+    },
+    "ent_tpl_oracle_npc_bren": {
+      "title": "Sergeant Bren",
+      "subtitle": "Veteran guard, Lyra's trusted lieutenant",
+      "summary": "A veteran city guard sergeant. Cynical and battle-scarred, he is the only officer Captain Lyra fully trusts for secret investigations.",
+      "status": "active",
+      "metadata": {
+        "attitudeToParty": "neutral"
+      }
+    },
+    "ent_tpl_oracle_quest_silence": {
+      "title": "The Price of Silence",
+      "subtitle": "Side quest — cult intimidation at the port",
+      "summary": "Several port merchants and sailors are being intimidated by hooded cult figures to prevent them testifying about unusual cargo shipments.",
+      "status": "active",
+      "metadata": {
+        "priority": "side"
+      }
+    },
+    "ent_tpl_oracle_quest_archivist": {
+      "title": "The Archivist and Her Secrets",
+      "subtitle": "Side quest — earning the archivist's trust",
+      "summary": "The elderly Mira holds historical documents of incalculable value but refuses to cooperate with the adventurers until they prove themselves worthy of her trust.",
+      "status": "active",
+      "metadata": {
+        "priority": "side"
+      }
+    },
+    "ent_tpl_oracle_quest_port_blood": {
+      "title": "Blood at the Port",
+      "subtitle": "Side quest — magical murder investigation",
+      "summary": "Several bodies with mysterious magical burns have been found floating near the docks. Captain Lyra is running a parallel official investigation.",
+      "status": "active",
+      "metadata": {
+        "priority": "side"
+      }
+    },
+    "ent_tpl_oracle_quest_traitor": {
+      "title": "The Inside Traitor",
+      "subtitle": "DM-only — information leak investigation",
+      "summary": "Evidence suggests the cult's inner circle anticipates the adventurers' secret plans. Someone is leaking confidential information.",
+      "status": "pending",
+      "metadata": {
+        "priority": "background"
+      }
+    },
+    "ent_tpl_oracle_quest_epilogue": {
+      "title": "Epilogue: Loose Ends",
+      "subtitle": "Narrative epilogue — power vacuum aftermath",
+      "summary": "The Oracle's collapse leaves a great power vacuum in Valdris. The alliances and decisions the adventurers made will determine the city's future.",
+      "status": "pending",
+      "metadata": {
+        "priority": "background"
+      }
+    },
+    "ent_tpl_oracle_clue_petitioner_fear": {
+      "title": "Fear Among the Faithful",
+      "summary": "Several devout citizens who received adverse prophecies have stopped attending the temple, and their neighbours report they act terrified.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_merchant_payment": {
+      "title": "Suspicious Financial Transfers",
+      "summary": "Records of large anonymous donations transferred regularly to the temple treasury accounts.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_torben_tip": {
+      "title": "Torben's Confidence",
+      "summary": "Torben claims the fire that consumed the Temple of Truth and its archives twenty years ago did not start accidentally.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_port_bodies": {
+      "title": "Inquisition Ritual Marks",
+      "summary": "Bodies recovered from the water bear an unmistakable brand burned into their shoulders — the cult's inquisitorial seal.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_lyra_notes": {
+      "title": "Captain Lyra's Secret Diary",
+      "summary": "Handwritten notes by Lyra detailing the loose ends the City Council ordered her to ignore.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_vault_entrance": {
+      "title": "Hidden Access in the Ruins",
+      "summary": "An old topographic map revealing the temple's layout before the fire, including a sealed subterranean entrance.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_vantis_confession": {
+      "title": "Vantis's Testimony Under Pressure",
+      "summary": "A declaration obtained from Lord Vantis after confronting him with his own account books.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_cult_disbands": {
+      "title": "Testimony of the Initiates",
+      "summary": "Voluntary statements from twelve temple novices after the inquisitors' arrest.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_eldertome": {
+      "title": "Tome of the Ancient Faith",
+      "summary": "An ancient Truth Temple record rescued from the ruins by Abbot Fenwick, containing the genealogy of genuine seers.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_final_truth": {
+      "title": "The True Veradis's Fate",
+      "summary": "An unmarked gravestone in the forest cemetery and associated notes found in the vault.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_clue_forgery_tool": {
+      "title": "The Arcane Resonance Crystal",
+      "summary": "The powerful magical artefact used to generate and project the simulated voice of the Oracle.",
+      "status": "hidden"
+    },
+    "ent_tpl_oracle_secret_lyra_suspects": {
+      "title": "The Captain Suspects but Fears to Act",
+      "summary": "Captain Lyra has been documenting anomalies for months but lacks sufficient proof to move against the cult.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_secret_kael_proof": {
+      "title": "The Guild Holds the Evidence",
+      "summary": "The Thieves' Guild leader keeps incriminating accounting records as his personal insurance policy.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_secret_prophecy_count": {
+      "title": "Scale of the Fraud",
+      "summary": "The exact number of people who received false prophecies over twenty years — 847 documented cases in the vault.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_secret_council_corrupt": {
+      "title": "The Conservative Councillor Knew",
+      "summary": "Councillor Brann discovered part of the corruption and chose not to act, accepting commercial bribes in exchange for silence.",
+      "status": "active"
+    },
+    "ent_tpl_oracle_secret_senra_exit": {
+      "title": "Vault Password",
+      "summary": "The arcane passphrase to open the vault trapdoor, held secretly by Senra. Umbra Veritatis.",
+      "status": "active"
     }
   },
   "relations": {
@@ -868,6 +1155,33 @@
     },
     "fact_tpl_oracle_16": {
       "statement": "Veradis has paid Captain Drez to keep the Silver Gull ready for escape."
+    },
+    "fact_tpl_oracle_17": {
+      "statement": "[Theory]: Captain Lyra may be deliberately stalling the investigation to protect a relative implicated in the city guard."
+    },
+    "fact_tpl_oracle_18": {
+      "statement": "Someone from the court or among the adventurers' usual intermediaries is systematically leaking their plans to Inquisitor Mors."
+    },
+    "fact_tpl_oracle_19": {
+      "statement": "The scale of the Oracle's fraud spans hundreds of testimonies and the vault records could shake the foundations of the entire region."
+    },
+    "fact_tpl_oracle_20": {
+      "statement": "Retcon: The rumour that the Oracle predicted the eastern plague was actually a lie manufactured and spread by the temple heralds."
+    },
+    "fact_tpl_oracle_21": {
+      "statement": "Asha the widow has just handed over her last savings at the temple for a false prophecy about her son, unaware he died months ago."
+    },
+    "fact_tpl_oracle_22": {
+      "statement": "Four fishmongers who reported unusual arcane cargo imports to the guard have disappeared under strange circumstances."
+    },
+    "fact_tpl_oracle_23": {
+      "statement": "The deliberate archive fire destroyed the official seer genealogy, allowing the impostor to usurp Veradis Thorn without raising suspicion."
+    },
+    "fact_tpl_oracle_24": {
+      "statement": "Councillor Lena Marsh is quietly seeking support among officers loyal to Captain Lyra to propose a Council audit vote."
+    },
+    "fact_tpl_oracle_25": {
+      "statement": "The volume of the True Seer Chronicles held by Sera Moonwhisper is an authentic 300-year-old relic that exposes the cult's theological falsehoods."
     }
   },
   "sessions": {
@@ -1115,6 +1429,18 @@
           "label": "forces choice"
         }
       }
+    },
+    "cvs_tpl_oracle_characters": {
+      "title": "Factions and Characters",
+      "description": "Full cast canvas organized by faction. Shows every NPC and PC placed in their faction group, with key cross-faction connections highlighted."
+    },
+    "cvs_tpl_oracle_investigation": {
+      "title": "Investigation Chain",
+      "description": "Four-phase clue-to-secret investigation map. Phase notes guide the DM on pacing; edges show how each clue opens or confirms a DM secret."
+    },
+    "cvs_tpl_oracle_locations": {
+      "title": "Valdris Location Map",
+      "description": "Location-centric canvas with each district as a group containing its NPCs, clues and access points — reduces false positives on empty-location alerts."
     }
   }
 }

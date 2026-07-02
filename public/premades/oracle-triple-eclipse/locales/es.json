@@ -636,6 +636,293 @@
       "summary": "Confrontación final: exponer, contener, arrestar o dejar escapar a Veradis.",
       "content": "Prepara la escena con un objetivo, una presión, una pista y una consecuencia posible.",
       "status": "lista"
+    },
+    "ent_tpl_oracle_pc_elowyn": {
+      "title": "Elowyn Darkwater",
+      "subtitle": "Elfa pícara — infiltración y engaño",
+      "summary": "Una hábil elfa pícara especializada en infiltración y engaño. Llegó a Valdris buscando algo que le fue arrebatado.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_pc_camus": {
+      "title": "Hermano Camus",
+      "subtitle": "Clérigo humano del Templo de la Verdad",
+      "summary": "Clérigo humano consagrado al Templo de la Verdad, en busca de redención por un pasado que preferiría olvidar.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_pc_ragna": {
+      "title": "Ragna Ironsong",
+      "subtitle": "Guerrera enana — ex-guardia de Valdris",
+      "summary": "Guerrera enana que sirvió durante años en la guardia de Valdris y conoce la ciudad mejor que nadie.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_pc_silas": {
+      "title": "Silas el Errante",
+      "subtitle": "Bardo halfling — coleccionista de historias",
+      "summary": "Bardo halfling y coleccionista de historias y secretos. Nadie sabe muy bien de dónde viene.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_loc_noble_district": {
+      "title": "Barrio Noble",
+      "subtitle": "Zona residencial amurallada de la élite de Valdris",
+      "summary": "El exclusivo barrio residencial de la élite de Valdris, protegido por altos muros de piedra pulida y guardias privados que impiden el paso a la gente común.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_loc_guild_camp": {
+      "title": "Guarida del Gremio",
+      "subtitle": "Base secreta del Gremio de Ladrones bajo los muelles",
+      "summary": "El cuartel general secreto del Gremio de Ladrones, oculto en la antigua red de alcantarillas bajo los muelles. Su entrada está protegida por trampas e ilusiones.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_loc_forest_shrine": {
+      "title": "Santuario del Bosque",
+      "subtitle": "Templo forestal remoto de la fe de la Verdad",
+      "summary": "Un modesto templo de madera escondido en el bosque, a varias millas de las murallas de Valdris. Sirve de refugio para los creyentes genuinos de la Verdad.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_loc_council_chamber": {
+      "title": "Sala del Consejo",
+      "subtitle": "Gran sala parlamentaria del ayuntamiento",
+      "summary": "La ornamentada sala parlamentaria del ayuntamiento donde los consejeros se reúnen para debatir las leyes y los impuestos de Valdris.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_loc_docks": {
+      "title": "Muelles del Puerto",
+      "subtitle": "Malecones podridos para contrabando y reuniones clandestinas",
+      "summary": "Los malecones de madera podrida del puerto, ideales para el contrabando de componentes arcanos y las reuniones clandestinas a altas horas de la noche.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_npc_aldric": {
+      "title": "Magíster Aldric",
+      "subtitle": "Magíster Supremo, líder del Consejo de Valdris",
+      "summary": "El Magíster Supremo y líder del Consejo de Valdris. Firme defensor del Oráculo, usa las profecías para legitimar decisiones políticas impopulares, creyendo genuinamente en su autenticidad.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "neutral"
+      }
+    },
+    "ent_tpl_oracle_npc_lena": {
+      "title": "Consejera Lena Marsh",
+      "subtitle": "Líder de la facción reformista del Consejo",
+      "summary": "Líder de la facción reformista del Consejo. Lleva tiempo sospechando del secretismo del Oráculo y de las coincidencias comerciales que benefician al señor Vantis.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "amigable"
+      }
+    },
+    "ent_tpl_oracle_npc_riku": {
+      "title": "Riku, el Guardia",
+      "subtitle": "Guardia de bajo rango honesto pero aterrorizado",
+      "summary": "Un guardia de bajo rango honesto pero muy asustado. Mientras patrullaba los muelles norte, fue testigo de cómo unos inquisidores arrojaban un bulto sospechoso al mar y ahora teme por su vida.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "neutral"
+      }
+    },
+    "ent_tpl_oracle_npc_torben": {
+      "title": "Torben el Posadero",
+      "subtitle": "Ex-contrabandista, dueño de La Taberna del Cuervo",
+      "summary": "El fornido y perspicaz posadero de La Taberna del Cuervo. Ex-contrabandista reformado que actúa como informante clave del Gremio de Ladrones a cambio de mantener su establecimiento libre de problemas.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "amigable"
+      }
+    },
+    "ent_tpl_oracle_npc_cira": {
+      "title": "Cira la Sombra",
+      "subtitle": "Operativa de campo del Gremio de Ladrones",
+      "summary": "Una operativa ágil y letal del Gremio de Ladrones. Actúa como vínculo directo entre Kael y las bandas callejeras del puerto, y es la primera en evaluar si los aventureros son de fiar.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "desconfiada"
+      }
+    },
+    "ent_tpl_oracle_npc_ola": {
+      "title": "Maestra Ola Brightstone",
+      "subtitle": "Presidenta del Consorcio de Mercaderes",
+      "summary": "La pragmática presidenta del Consorcio de Mercaderes. No le importa la teología del Oráculo ni la moral del Consejo, mientras las rutas marítimas sigan seguras y libres de impuestos excesivos.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "neutral"
+      }
+    },
+    "ent_tpl_oracle_npc_vorn": {
+      "title": "Heraldo Vorn",
+      "subtitle": "Pomposo portavoz oficial del Oráculo",
+      "summary": "El pomposo portavoz oficial del Oráculo. Gestiona las audiencias públicas, lee los edictos proféticos y decide —tras un generoso pago— quién es digno de recibir la palabra de Veradis.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "desconfiado"
+      }
+    },
+    "ent_tpl_oracle_npc_initiate": {
+      "title": "Iniciado del Culto",
+      "subtitle": "Creyente genuino, obstáculo social",
+      "summary": "Novicios creyentes genuinos en el culto. Completamente convencidos de la divinidad de Veradis, se encargan del mantenimiento, la falsa caridad y la vigilancia menor en los terrenos del templo.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "hostil"
+      }
+    },
+    "ent_tpl_oracle_npc_pell": {
+      "title": "Escriba Pell",
+      "subtitle": "Tímido copista del Consejo con acceso a toda la correspondencia",
+      "summary": "El tímido copista del Consejo. Su trabajo le permite leer toda la correspondencia oficial entre el Magíster Aldric, el señor Vantis y el templo del Oráculo, registrando actas incriminatorias.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "amigable"
+      }
+    },
+    "ent_tpl_oracle_npc_healer": {
+      "title": "Maestra Ilva",
+      "subtitle": "Curandera del barrio portuario, testigo informal",
+      "summary": "Una curandera de los barrios bajos del puerto. Ha atendido clandestinamente a varios marineros y guardias con extrañas quemaduras mágicas y heridas inusuales causadas por armas del culto.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "amigable"
+      }
+    },
+    "ent_tpl_oracle_npc_pica": {
+      "title": "Pica la Pescadera",
+      "subtitle": "Cotilla del mercado y termómetro social",
+      "summary": "Una animada vendedora de pescado que reparte chismorreos. Sus rumores mezclan caóticamente propaganda del culto, charlas palatinas y verdades del puerto distorsionadas.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "neutral"
+      }
+    },
+    "ent_tpl_oracle_npc_bren": {
+      "title": "Sargento Bren",
+      "subtitle": "Veterano de la guardia, teniente de confianza de Lyra",
+      "summary": "Un veterano sargento de la guardia urbana. Cínico y curtido en batalla, es el único oficial en quien la capitana Lyra confía plenamente para investigaciones secretas.",
+      "status": "activo",
+      "metadata": {
+        "actitudHaciaElGrupo": "neutral"
+      }
+    },
+    "ent_tpl_oracle_quest_silence": {
+      "title": "El Precio del Silencio",
+      "subtitle": "Misión secundaria — intimidación del culto en el puerto",
+      "summary": "Varios mercaderes y marineros del puerto están siendo intimidados por figuras encapuchadas del culto para evitar que testifiquen sobre los cargamentos inusuales.",
+      "status": "activo",
+      "metadata": {
+        "prioridad": "secundaria"
+      }
+    },
+    "ent_tpl_oracle_quest_archivist": {
+      "title": "La Archivista y sus Secretos",
+      "subtitle": "Misión secundaria — ganarse la confianza de la archivista",
+      "summary": "La anciana Mira posee documentos históricos de valor incalculable, pero se niega a cooperar con los aventureros hasta que demuestren ser dignos de su confianza.",
+      "status": "activo",
+      "metadata": {
+        "prioridad": "secundaria"
+      }
+    },
+    "ent_tpl_oracle_quest_port_blood": {
+      "title": "Sangre en el Puerto",
+      "subtitle": "Misión secundaria — investigación de asesinatos mágicos",
+      "summary": "Varios cuerpos con misteriosas quemaduras mágicas han aparecido flotando cerca de los muelles. La capitana Lyra lleva una investigación oficial paralela.",
+      "status": "activo",
+      "metadata": {
+        "prioridad": "secundaria"
+      }
+    },
+    "ent_tpl_oracle_quest_traitor": {
+      "title": "El Traidor Interior",
+      "subtitle": "Solo DM — investigación de filtración de información",
+      "summary": "Las pruebas sugieren que el círculo interno del culto anticipa los planes secretos de los aventureros. Alguien está filtrando información confidencial.",
+      "status": "pendiente",
+      "metadata": {
+        "prioridad": "trasfondo"
+      }
+    },
+    "ent_tpl_oracle_quest_epilogue": {
+      "title": "Epílogo: Los Hilos Sueltos",
+      "subtitle": "Epílogo narrativo — consecuencias del vacío de poder",
+      "summary": "El colapso del Oráculo deja un gran vacío de poder en Valdris. Las alianzas y decisiones tomadas por los aventureros determinarán el futuro de la ciudad.",
+      "status": "pendiente",
+      "metadata": {
+        "prioridad": "trasfondo"
+      }
+    },
+    "ent_tpl_oracle_clue_petitioner_fear": {
+      "title": "Temor Generalizado entre los Fieles",
+      "summary": "Varios ciudadanos devotos que recibieron profecías adversas han dejado de acudir al templo y sus vecinos informan de que actúan aterrorizados.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_merchant_payment": {
+      "title": "Transacciones Financieras Sospechosas",
+      "summary": "Registros de grandes donaciones anónimas transferidas regularmente a las cuentas del tesoro del templo.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_torben_tip": {
+      "title": "Confidencia del Tabernero",
+      "summary": "Torben afirma que el incendio que consumió el Templo de la Verdad y sus archivos hace veinte años no fue accidental.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_port_bodies": {
+      "title": "Marcas Rituales de la Inquisición",
+      "summary": "Los cuerpos rescatados del agua presentan una marca inconfundible quemada en el hombro: el sello inquisitorial del culto.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_lyra_notes": {
+      "title": "Diario Secreto de la Capitana Lyra",
+      "summary": "Notas manuscritas de Lyra que detallan los cabos sueltos que el Concejo Municipal le ordenó ignorar.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_vault_entrance": {
+      "title": "Acceso Oculto en las Ruinas",
+      "summary": "Un antiguo mapa topográfico que revela la distribución del templo antes del incendio, incluyendo una entrada subterránea sellada.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_vantis_confession": {
+      "title": "Testimonio bajo Presión de Vantis",
+      "summary": "Una declaración obtenida del señor Vantis tras confrontarle con sus propios libros de cuentas.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_cult_disbands": {
+      "title": "Testimonio de los Iniciados",
+      "summary": "Declaraciones voluntarias de doce novicios del templo tras la detención de los inquisidores.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_eldertome": {
+      "title": "Tomo de la Antigua Fe",
+      "summary": "Un antiguo registro del Templo de la Verdad rescatado de las ruinas por el Abad Fenwick, que contiene la genealogía de los videntes genuinos.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_final_truth": {
+      "title": "El Destino del Verdadero Veradis",
+      "summary": "Una lápida sin nombre en el cementerio del bosque y notas asociadas encontradas en la bóveda.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_clue_forgery_tool": {
+      "title": "El Cristal de Resonancia Arcana",
+      "summary": "El poderoso artefacto mágico empleado para generar y proyectar la voz simulada del Oráculo.",
+      "status": "oculto"
+    },
+    "ent_tpl_oracle_secret_lyra_suspects": {
+      "title": "La Capitana Sospecha pero Teme Actuar",
+      "summary": "La capitana Lyra lleva meses documentando anomalías pero carece de pruebas suficientes para actuar contra el culto.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_secret_kael_proof": {
+      "title": "El Gremio Tiene las Pruebas",
+      "summary": "El líder del Gremio de Ladrones conserva registros contables incriminatorios como póliza de seguro personal.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_secret_prophecy_count": {
+      "title": "Escala del Fraude",
+      "summary": "El número exacto de personas que recibieron profecías falsas durante veinte años: 847 casos documentados en la bóveda.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_secret_council_corrupt": {
+      "title": "El Consejero Conservador Sabía",
+      "summary": "El Consejero Brann descubrió parte de la corrupción y optó por no actuar, aceptando sobornos comerciales a cambio de silencio.",
+      "status": "activo"
+    },
+    "ent_tpl_oracle_secret_senra_exit": {
+      "title": "Contraseña de la Bóveda",
+      "summary": "La contraseña arcana para abrir la trampilla de la bóveda, guardada en secreto por Senra. Umbra Veritatis.",
+      "status": "activo"
     }
   },
   "relations": {
@@ -868,6 +1155,33 @@
     },
     "fact_tpl_oracle_16": {
       "statement": "Veradis ha pagado al Capitán Drez para mantener preparada la Gaviota de Plata."
+    },
+    "fact_tpl_oracle_17": {
+      "statement": "[Teoría]: La capitana Lyra podría estar obstaculizando deliberadamente la investigación para proteger a un familiar implicado en la guardia urbana."
+    },
+    "fact_tpl_oracle_18": {
+      "statement": "Alguien de la corte o entre los intermediarios habituales de los aventureros está filtrando sistemáticamente sus planes al Inquisidor Mors."
+    },
+    "fact_tpl_oracle_19": {
+      "statement": "La escala del fraude del Oráculo abarca cientos de testimonios y los registros de la bóveda podrían sacudir los cimientos de toda la región."
+    },
+    "fact_tpl_oracle_20": {
+      "statement": "Retcon: El rumor de que el Oráculo predijo la plaga oriental era en realidad una mentira fabricada y difundida por los heraldos del templo."
+    },
+    "fact_tpl_oracle_21": {
+      "statement": "Asha la viuda acaba de entregar sus últimos ahorros en el templo por una profecía falsa sobre su hijo, sin saber que él murió hace meses."
+    },
+    "fact_tpl_oracle_22": {
+      "statement": "Cuatro pescadores que denunciaron a la guardia importaciones inusuales de cargamento arcano han desaparecido en circunstancias extrañas."
+    },
+    "fact_tpl_oracle_23": {
+      "statement": "El incendio deliberado del archivo destruyó la genealogía oficial de los videntes, permitiendo al impostor usurpar a Veradis Thorn sin levantar sospechas."
+    },
+    "fact_tpl_oracle_24": {
+      "statement": "La consejera Lena Marsh está buscando discretamente apoyo entre los oficiales leales a Lyra para proponer una votación de auditoría en el Consejo."
+    },
+    "fact_tpl_oracle_25": {
+      "statement": "El volumen de las Crónicas del Verdadero Vidente que posee Sera Moonwhisper es una reliquia auténtica de 300 años que expone las falsedades teológicas del culto."
     }
   },
   "sessions": {
@@ -1115,6 +1429,18 @@
           "label": "fuerza decisión"
         }
       }
+    },
+    "cvs_tpl_oracle_characters": {
+      "title": "Facciones y Personajes",
+      "description": "Lienzo completo del reparto organizado por facciones. Muestra a todos los PNJ y PJs situados en su grupo de facción, con las conexiones clave entre facciones resaltadas."
+    },
+    "cvs_tpl_oracle_investigation": {
+      "title": "Cadena de Investigación",
+      "description": "Mapa de investigación de cuatro fases desde pistas hasta secretos. Las notas de fase guían al DM sobre el ritmo; las aristas muestran cómo cada pista abre o confirma un secreto del DM."
+    },
+    "cvs_tpl_oracle_locations": {
+      "title": "Mapa de Ubicaciones de Valdris",
+      "description": "Lienzo centrado en las ubicaciones, con cada distrito como grupo que contiene sus PNJ, pistas y puntos de acceso, reduciendo los falsos positivos en alertas de ubicaciones vacías."
     }
   }
 }
