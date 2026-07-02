@@ -272,6 +272,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
     const dmSession = getRequestDmSession(request, server.dmSessionToken);
     if (!dmSession) return;
+    if ((request as any).unifiedCampaignMembership?.role === "dm") return;
 
     const campaignId = getValidatedCampaignId(decodeURIComponent(match[1]));
     if (!hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmSession.dmId)) {

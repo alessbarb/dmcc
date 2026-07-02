@@ -3,7 +3,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { createServer } from "../../src/backend/server/createServer.js";
-import { addCampaignMembership } from "../../src/backend/server/userAuthStore.js";
+import {
+  addCampaignMembership,
+  upsertDmProfile,
+  upsertPlayerProfile,
+} from "../../src/backend/server/userAuthStore.js";
 
 const cleanup: Array<() => Promise<void>> = [];
 
@@ -140,5 +144,144 @@ describe("account routes", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.json().profile.playerId).toBe("ply_owned");
+  });
+
+  it("serves a published global projection only to authenticated vault users", async () => {
+    const { server, cookie } = await authenticatedServer();
+    await server.inject({
+      method: "PUT",
+      url: "/api/account/profiles/dm",
+      headers: { cookie, origin: "http://localhost", host: "localhost" },
+      payload: {
+        version: 0,
+        displayName: "Public Alex",
+        biography: "Private notes",
+        publicHandle: "alex-public",
+        visibility: { ...validVisibility, displayName: "global", biography: "private" },
+        publicationState: "published",
+      },
+    });
+
+    const anonymous = await server.inject({
+      method: "GET",
+      url: "/api/profiles/alex-public",
+    });
+    const authenticated = await server.inject({
+      method: "GET",
+      url: "/api/profiles/alex-public",
+      headers: { cookie },
+    });
+
+    expect(anonymous.statusCode).toBe(401);
+    expect(authenticated.statusCode).toBe(200);
+    expect(authenticated.json()).toEqual({
+      profile: { publicHandle: "alex-public", displayName: "Public Alex" },
+    });
+  });
+
+  it("previews the owner's profile for every audience without returning credentials", async () => {
+    const { server, cookie } = await authenticatedServer();
+    await server.inject({
+      method: "PUT",
+      url: "/api/account/profiles/dm",
+      headers: { cookie, origin: "http://localhost", host: "localhost" },
+      payload: {
+        version: 0,
+        displayName: "Alex",
+        publicHandle: "alex-preview",
+        visibility: { ...validVisibility, displayName: "global" },
+        publicationState: "unlisted",
+      },
+    });
+
+    const response = await server.inject({
+      method: "GET",
+      url: "/api/account/privacy/preview?profile=dm",
+      headers: { cookie },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(Object.keys(response.json().previews).sort()).toEqual(["dm", "global", "owner", "table"]);
+    expect(JSON.stringify(response.json())).not.toContain("email");
+  });
+
+  it("projects campaign member profiles according to the requester's active role", async () => {
+    const { server, cookie, dataDir, userId } = await authenticatedServer();
+    const vaultDir = join(dataDir, "vaults", "default");
+    await addCampaignMembership(vaultDir, {
+      campaignId: "cmp_profiles",
+      userId,
+      role: "dm",
+    });
+    await upsertDmProfile(vaultDir, userId, 0, {
+      displayName: "Keeper Alex",
+      contact: "keeper@example.com",
+      visibility: { ...validVisibility, displayName: "table", contact: "dm" },
+      publicationState: "private",
+    });
+
+    await server.inject({
+      method: "POST",
+      url: "/api/auth/register",
+      payload: {
+        email: "player@example.com",
+        password: "correct horse battery",
+        displayName: "Player",
+      },
+    });
+    const playerLogin = await server.inject({
+      method: "POST",
+      url: "/api/auth/login",
+      payload: { email: "player@example.com", password: "correct horse battery" },
+    });
+    const playerCookie = String(playerLogin.headers["set-cookie"]).split(";")[0];
+    const playerUserId = playerLogin.json().user.userId as string;
+    await addCampaignMembership(vaultDir, {
+      campaignId: "cmp_profiles",
+      userId: playerUserId,
+      role: "player",
+      playerId: "ply_profiles",
+    });
+    await upsertPlayerProfile(vaultDir, playerUserId, "cmp_profiles", 0, {
+      displayName: "Rook",
+      contact: "rook@example.com",
+      visibility: { ...validVisibility, displayName: "table", contact: "dm" },
+      publicationState: "private",
+    });
+
+    const dmView = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_profiles/member-profiles",
+      headers: { cookie },
+    });
+    const tableView = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_profiles/member-profiles",
+      headers: { cookie: playerCookie },
+    });
+    const unrelated = await server.inject({
+      method: "GET",
+      url: "/api/campaigns/cmp_other/member-profiles",
+      headers: { cookie: playerCookie },
+    });
+
+    expect(dmView.statusCode, dmView.body).toBe(200);
+    expect(dmView.json().profiles).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        role: "player",
+        userId: playerUserId,
+        profile: { displayName: "Rook", contact: "rook@example.com" },
+      }),
+    ]));
+    expect(tableView.statusCode).toBe(200);
+    expect(tableView.json().profiles).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        role: "dm",
+        userId,
+        profile: { displayName: "Keeper Alex" },
+      }),
+    ]));
+    expect(JSON.stringify(tableView.json())).not.toContain("keeper@example.com");
+    expect(unrelated.statusCode).toBe(403);
   });
 });
