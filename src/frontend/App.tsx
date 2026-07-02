@@ -55,8 +55,12 @@ export function App() {
   const [newCampaignTitle, setNewCampaignTitle] = useState("");
   const [newCampaignSystem, setNewCampaignSystem] = useState("generic_fantasy_d20");
   const [newCampaignTemplate, setNewCampaignTemplate] = useState("empty");
+  const [isCreatingCampaign, setIsCreatingCampaign] = useState(false);
+  const [createCampaignError, setCreateCampaignError] = useState<string | null>(null);
   const [landingSearchQuery, setLandingSearchQuery] = useState("");
   const [backupRestorePath, setBackupRestorePath] = useState("");
+  const [backupRestoreState, setBackupRestoreState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [backupRestoreError, setBackupRestoreError] = useState<string | null>(null);
 
   const [mysticalTransitionId, setMysticalTransitionId] = useState<string | null>(null);
   const [importingTemplateId, setImportingTemplateId] = useState<string | null>(null);
@@ -189,6 +193,8 @@ export function App() {
   const handleCreateCampaignSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!newCampaignTitle.trim()) return;
+    setIsCreatingCampaign(true);
+    setCreateCampaignError(null);
     try {
       if (newCampaignTemplate && newCampaignTemplate !== "empty") {
         sessionStorage.setItem("dmcc_pending_seed_template", newCampaignTemplate);
@@ -199,8 +205,10 @@ export function App() {
       if (campaignId) {
         triggerMysticalTransition(campaignId);
       }
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      setCreateCampaignError(err.message || t("landing.createCampaignError"));
+    } finally {
+      setIsCreatingCampaign(false);
     }
   };
 
@@ -232,11 +240,19 @@ export function App() {
     }
   };
 
-  const handleRestoreBackupSubmit = (e: React.SyntheticEvent) => {
+  const handleRestoreBackupSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!backupRestorePath.trim()) return;
-    restoreBackup(backupRestorePath.trim());
-    setBackupRestorePath("");
+    setBackupRestoreState("loading");
+    setBackupRestoreError(null);
+    try {
+      await restoreBackup(backupRestorePath.trim());
+      setBackupRestorePath("");
+      setBackupRestoreState("success");
+    } catch (err: any) {
+      setBackupRestoreError(err.message || "Restore failed");
+      setBackupRestoreState("error");
+    }
   };
 
   const handleSignOutDm = async () => {
@@ -569,8 +585,12 @@ export function App() {
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-primary landing-primary-action">
-                {t("landing.createButton")}
+              {createCampaignError && (
+                <p className="form-error" role="alert">{createCampaignError}</p>
+              )}
+
+              <button type="submit" className="btn btn-primary landing-primary-action" disabled={isCreatingCampaign}>
+                {isCreatingCampaign ? t("landing.creating") : t("landing.createButton")}
               </button>
             </form>
           </section>
@@ -594,15 +614,26 @@ export function App() {
                     {...{placeholder: t("landing.backupNamePlaceholder")}}
                     value={backupRestorePath}
                     onChange={(e) => setBackupRestorePath(e.target.value)}
+                    disabled={backupRestoreState === "loading"}
                     required
                   />
                   <small className="form-help">
                     {t("landing.backupHelp")}
                   </small>
+                  {backupRestoreError && (
+                    <p className="form-error" role="alert">{backupRestoreError}</p>
+                  )}
+                  {backupRestoreState === "success" && (
+                    <p className="form-success" role="status">{t("landing.restoreSuccess")}</p>
+                  )}
                 </div>
 
-                <button type="submit" className="btn btn-secondary landing-secondary-action">
-                  {t("landing.restoreButton")}
+                <button
+                  type="submit"
+                  className="btn btn-secondary landing-secondary-action"
+                  disabled={backupRestoreState === "loading"}
+                >
+                  {backupRestoreState === "loading" ? t("landing.restoring") : t("landing.restoreButton")}
                 </button>
               </form>
             </details>

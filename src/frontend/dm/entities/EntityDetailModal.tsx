@@ -62,10 +62,10 @@ function getSessionsArray(sessions: any): Session[] {
   return [];
 }
 
-function formatDate(iso: string | undefined): string {
+function formatDate(iso: string | undefined, locale?: string): string {
   if (!iso) return "—";
   try {
-    return new Date(iso).toLocaleString("es-ES", {
+    return new Date(iso).toLocaleString(locale, {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -978,7 +978,7 @@ function TrazabilidadTab({
                   {style.label}
                 </span>
                 <span style={{ fontSize: "0.76rem", color: "var(--text-muted)" }}>
-                  {formatDate(entry.at)}
+                  {formatDate(entry.at, locale)}
                 </span>
               </div>
               <p
@@ -1025,6 +1025,7 @@ export function EntityDetailModal({
   const [activeTab, setActiveTab] = useState<TabId>("resumen");
   const [isEditingEntity, setIsEditingEntity] = useState(false);
   const [editEntityForm, setEditEntityForm] = useState<Partial<Entity>>({});
+  const [isConfirmingArchive, setIsConfirmingArchive] = useState(false);
 
   const imgUrl =
     selectedEntity.metadata?.imageUrl ||
@@ -1039,6 +1040,11 @@ export function EntityDetailModal({
   };
 
   const handleArchive = async () => {
+    if (!isConfirmingArchive) {
+      setIsConfirmingArchive(true);
+      return;
+    }
+    setIsConfirmingArchive(false);
     await onArchive(selectedEntity.entityId);
     addToast(t("entityDetail.archivedToast", { title: selectedEntity.title }), "info");
     onClose();
@@ -1226,10 +1232,11 @@ export function EntityDetailModal({
         <div className="modal-footer" style={{ justifyContent: "space-between" }}>
           <button
             type="button"
-            className="btn btn-danger btn-sm"
+            className={`btn btn-sm ${isConfirmingArchive ? "btn-danger" : "btn-secondary"}`}
             onClick={handleArchive}
+            onBlur={() => setIsConfirmingArchive(false)}
           >
-            <Archive size={14} /> Archivar
+            <Archive size={14} /> {isConfirmingArchive ? t("entityModal.confirmArchive") : t("entityModal.archive")}
           </button>
           <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
             <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>

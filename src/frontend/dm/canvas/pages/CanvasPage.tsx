@@ -30,14 +30,13 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
 
     const createdIds: string[] = [];
     for (const ent of entitiesToCreate) {
-      await createEntity({
+      const result = await createEntity({
         ...ent,
         status: "ready",
         importance: "normal",
         visibility: ent.visibility || { kind: "dm_only" }
       } as any);
-      const created = useCampaignStore.getState().campaignState?.entities?.slice(-1)[0];
-      if (created) createdIds.push(created.entityId);
+      if (result?.entityId) createdIds.push(result.entityId);
     }
 
     const coords = [
@@ -94,14 +93,13 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
 
     const createdIds: string[] = [];
     for (const ent of entities) {
-      await createEntity({
+      const result = await createEntity({
         ...ent,
         status: "ready",
         importance: "normal",
         visibility: ent.visibility || { kind: "dm_only" }
       } as any);
-      const created = useCampaignStore.getState().campaignState?.entities?.slice(-1)[0];
-      if (created) createdIds.push(created.entityId);
+      if (result?.entityId) createdIds.push(result.entityId);
     }
 
     const coords = [
@@ -169,14 +167,13 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
 
     const createdIds: string[] = [];
     for (const ent of entities) {
-      await createEntity({
+      const result = await createEntity({
         ...ent,
         status: "ready",
         importance: "normal",
         visibility: ent.visibility || { kind: "dm_only" }
       } as any);
-      const created = useCampaignStore.getState().campaignState?.entities?.slice(-1)[0];
-      if (created) createdIds.push(created.entityId);
+      if (result?.entityId) createdIds.push(result.entityId);
     }
 
     const coords = [
@@ -241,14 +238,13 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
 
     const createdIds: string[] = [];
     for (const ent of entities) {
-      await createEntity({
+      const result = await createEntity({
         ...ent,
         status: "ready",
         importance: "normal",
         visibility: { kind: "dm_only" }
       } as any);
-      const created = useCampaignStore.getState().campaignState?.entities?.slice(-1)[0];
-      if (created) createdIds.push(created.entityId);
+      if (result?.entityId) createdIds.push(result.entityId);
     }
 
     const coords = [
@@ -292,14 +288,13 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
 
     const createdIds: string[] = [];
     for (const ent of entities) {
-      await createEntity({
+      const result = await createEntity({
         ...ent,
         status: "ready",
         importance: "normal",
         visibility: ent.visibility || { kind: "dm_only" }
       } as any);
-      const created = useCampaignStore.getState().campaignState?.entities?.slice(-1)[0];
-      if (created) createdIds.push(created.entityId);
+      if (result?.entityId) createdIds.push(result.entityId);
     }
 
     const coords = [
@@ -435,7 +430,7 @@ const parseAndImportText = async (text: string, canvasId: string, _campaignId: s
               title: nameStr,
               status: "ready",
               importance: "normal",
-              visibility: { kind: entityType === "secret" ? "dm_only" : "public" }
+              visibility: { kind: entityType === "secret" ? "dm_only" : "public" },
             } as any);
             const created = useCampaignStore.getState().campaignState?.entities?.slice(-1)[0];
             entityId = created?.entityId;
@@ -696,6 +691,7 @@ export function CanvasPage() {
   const [selectedNodes, setSelectedNodes] = useState<any[]>([]);
   const [, setSelectedEdges] = useState<any[]>([]);
   const [bulkGroupId, setBulkGroupId] = useState<string>("");
+  const [bulkConfirm, setBulkConfirm] = useState<"reveal" | "hide" | "remove" | null>(null);
 
   useEffect(() => {
     setSelectedNodeId(null);
@@ -1525,52 +1521,55 @@ export function CanvasPage() {
                   onClick={async () => {
                     const entities = selectedNodes.filter(n => n.type === 'entity');
                     if (entities.length === 0) return;
-                    if (window.confirm(t("canvas.toolbar.revealSelectedConfirm", { count: entities.length }))) {
-                      for (const node of entities) {
-                        if (node.data.entityId) {
-                          await updateEntity(node.data.entityId, { visibility: { kind: 'public' } });
-                        }
+                    if (bulkConfirm !== "reveal") { setBulkConfirm("reveal"); return; }
+                    setBulkConfirm(null);
+                    for (const node of entities) {
+                      if (node.data.entityId) {
+                        await updateEntity(node.data.entityId, { visibility: { kind: 'public' } });
                       }
-                      addToast(`Se han revelado ${entities.length} entidades.`, "success");
                     }
+                    addToast(`Se han revelado ${entities.length} entidades.`, "success");
                   }}
-                  className="btn btn-secondary btn-sm"
+                  onBlur={() => setBulkConfirm(prev => prev === "reveal" ? null : prev)}
+                  className={`btn btn-sm ${bulkConfirm === "reveal" ? "btn-warning" : "btn-secondary"}`}
                   disabled={selectedNodes.filter(n => n.type === 'entity').length === 0}
                 >
-                  👁 Revelar
+                  {bulkConfirm === "reveal" ? t("canvas.toolbar.bulkConfirm") : t("canvas.toolbar.bulkReveal")}
                 </button>
                 <button
                   onClick={async () => {
                     const entities = selectedNodes.filter(n => n.type === 'entity');
                     if (entities.length === 0) return;
-                    if (window.confirm(t("canvas.toolbar.hideSelectedConfirm", { count: entities.length }))) {
-                      for (const node of entities) {
-                        if (node.data.entityId) {
-                          await updateEntity(node.data.entityId, { visibility: { kind: 'dm_only' } });
-                        }
+                    if (bulkConfirm !== "hide") { setBulkConfirm("hide"); return; }
+                    setBulkConfirm(null);
+                    for (const node of entities) {
+                      if (node.data.entityId) {
+                        await updateEntity(node.data.entityId, { visibility: { kind: 'dm_only' } });
                       }
-                      addToast(`Se han marcado como secretas ${entities.length} entidades.`, "success");
                     }
+                    addToast(`Se han marcado como secretas ${entities.length} entidades.`, "success");
                   }}
-                  className="btn btn-secondary btn-sm"
+                  onBlur={() => setBulkConfirm(prev => prev === "hide" ? null : prev)}
+                  className={`btn btn-sm ${bulkConfirm === "hide" ? "btn-warning" : "btn-secondary"}`}
                   disabled={selectedNodes.filter(n => n.type === 'entity').length === 0}
                 >
-                  🔒 Hacer Secreto
+                  {bulkConfirm === "hide" ? t("canvas.toolbar.bulkConfirm") : t("canvas.toolbar.bulkHide")}
                 </button>
                 <button
                   onClick={async () => {
-                    if (window.confirm(t("canvas.toolbar.removeSelectedConfirm", { count: selectedNodes.length }))) {
-                      for (const node of selectedNodes) {
-                        await removeNodeFromCanvas(activeCanvas.id, node.id);
-                      }
-                      setSelectedNodes([]);
-                      setSelectedEdges([]);
-                      addToast(`Se han quitado ${selectedNodes.length} nodos del canvas.`, "info");
+                    if (bulkConfirm !== "remove") { setBulkConfirm("remove"); return; }
+                    setBulkConfirm(null);
+                    for (const node of selectedNodes) {
+                      await removeNodeFromCanvas(activeCanvas.id, node.id);
                     }
+                    setSelectedNodes([]);
+                    setSelectedEdges([]);
+                    addToast(`Se han quitado ${selectedNodes.length} nodos del canvas.`, "info");
                   }}
-                  className="btn btn-secondary btn-sm text-warning"
+                  onBlur={() => setBulkConfirm(prev => prev === "remove" ? null : prev)}
+                  className={`btn btn-sm ${bulkConfirm === "remove" ? "btn-danger" : "btn-secondary text-warning"}`}
                 >
-                  🗑 Quitar
+                  {bulkConfirm === "remove" ? t("canvas.toolbar.bulkConfirm") : t("canvas.toolbar.bulkRemove")}
                 </button>
               </div>
             </div>

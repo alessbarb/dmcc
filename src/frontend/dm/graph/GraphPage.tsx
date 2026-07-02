@@ -114,6 +114,12 @@ export function GraphPage(props: GraphPageProps = {}) {
 
   useEffect(() => { panelEntityRef.current = panelEntity; }, [panelEntity]);
 
+  // Refresh data on mount so the graph always shows current server state.
+  // Shows cached store data immediately, updates in background.
+  useEffect(() => {
+    store.reloadCampaign?.();
+  }, []);
+
   useEffect(() => {
     setHasZoomed(false);
   }, [campaignState?.campaign?.campaignId]);

@@ -15,6 +15,9 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
   const { t } = useTranslation();
   const { campaignState, createEntity, setIsEntityModalOpen } = useCampaignStore();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const [entityForm, setEntityForm] = useState({
     entityType: "npc",
     title: "",
@@ -156,19 +159,27 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
   const handleCreateEntitySubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!entityForm.title.trim()) return;
-    await createEntity(entityForm);
-    onClose();
-    setEntityForm({
-      entityType: "npc",
-      title: "",
-      subtitle: "",
-      summary: "",
-      content: "",
-      status: "known",
-      importance: "normal",
-      visibility: { kind: "dm_only" },
-      metadata: { role: "", attitudeToParty: "neutral", goal: "", imageUrl: "" }
-    });
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      await createEntity(entityForm);
+      onClose();
+      setEntityForm({
+        entityType: "npc",
+        title: "",
+        subtitle: "",
+        summary: "",
+        content: "",
+        status: "known",
+        importance: "normal",
+        visibility: { kind: "dm_only" },
+        metadata: { role: "", attitudeToParty: "neutral", goal: "", imageUrl: "" }
+      });
+    } catch (err: any) {
+      setSubmitError(err.message || "Error al crear la entidad");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -629,11 +640,14 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
             )}
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={onClose}>
+            {submitError && (
+              <p className="form-error" role="alert" style={{ flex: 1, margin: 0 }}>{submitError}</p>
+            )}
+            <button type="button" className="btn btn-secondary" onClick={onClose} disabled={isSubmitting}>
               Cancelar
             </button>
-            <button type="submit" className="btn btn-primary">
-              Registrar
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+              {isSubmitting ? "Registrando…" : "Registrar"}
             </button>
           </div>
         </form>

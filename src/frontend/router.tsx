@@ -6,6 +6,19 @@ import {
   Outlet,
   redirect,
 } from "@tanstack/react-router";
+import { fetchAuthStatus } from "./shared/auth/authClient.js";
+
+async function requireDmSession() {
+  try {
+    const status = await fetchAuthStatus();
+    if (!status.dmSessionValid) {
+      throw redirect({ to: "/" });
+    }
+  } catch (err: any) {
+    if (err?.isRedirect) throw err;
+    throw redirect({ to: "/" });
+  }
+}
 
 const SmartLandingLazy = React.lazy(() => import("./SmartLanding.js").then((m) => ({ default: m.SmartLanding })));
 const AppPage = React.lazy(() => import("./App.js").then((m) => ({ default: m.App })));
@@ -62,6 +75,7 @@ const indexRoute = createRoute({
 const dmRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm",
+  beforeLoad: requireDmSession,
   component: withSuspense(AppPage),
 });
 
@@ -114,6 +128,7 @@ const playerPortalRoute = createRoute({
 const campaignRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/campaigns/$campaignId",
+  beforeLoad: requireDmSession,
   component: withSuspense(CampaignShellPage),
 });
 
