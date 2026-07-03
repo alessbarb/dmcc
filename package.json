@@ -56,7 +56,8 @@
     "db:whoami": "dotenv -e .env -- node -e \"import('pg').then(async ({default: pg}) => { const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: process.env.DATABASE_URL?.includes('neon.tech') ? { rejectUnauthorized: false } : undefined }); const r = await pool.query('select current_database() db, current_user usr, inet_server_addr() addr, version() version'); console.log(r.rows[0]); await pool.end(); })\"",
     "db:studio": "drizzle-kit studio",
     "dev:web": "DMCC_STORAGE_MODE=postgres npm run dev",
-    "dev:server:web": "DMCC_STORAGE_MODE=postgres tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts"
+    "dev:server:web": "DMCC_STORAGE_MODE=postgres tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts",
+    "db:migrate:prod": "tsx src/backend/db/migrate.ts"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
