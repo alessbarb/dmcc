@@ -9,6 +9,8 @@ playwright-report/
 .playwright-mcp/
 .DS_Store
 .env
+.env.*
+!.env.example
 *.log
 *.local
 .claude/

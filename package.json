@@ -52,7 +52,8 @@
     "desktop:win:installer": "npm run build && electron-builder --win nsis",
     "desktop:mac": "npm run build && electron-builder --mac dmg",
     "dev:db": "docker compose up -d postgres",
-    "db:migrate": "tsx src/backend/db/migrate.ts",
+    "db:migrate": "dotenv -e .env -- tsx src/backend/db/migrate.ts",
+    "db:whoami": "dotenv -e .env -- node -e \"import('pg').then(async ({default: pg}) => { const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: process.env.DATABASE_URL?.includes('neon.tech') ? { rejectUnauthorized: false } : undefined }); const r = await pool.query('select current_database() db, current_user usr, inet_server_addr() addr, version() version'); console.log(r.rows[0]); await pool.end(); })\"",
     "db:studio": "drizzle-kit studio",
     "dev:web": "DMCC_STORAGE_MODE=postgres npm run dev",
     "dev:server:web": "DMCC_STORAGE_MODE=postgres tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts"
@@ -87,6 +88,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.185.0",
     "@vitejs/plugin-react": "^6.0.3",
+    "dotenv-cli": "^11.0.0",
     "drizzle-kit": "^0.31.10",
     "electron": "^42.5.1",
     "electron-builder": "^26.15.6",
