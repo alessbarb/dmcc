@@ -1041,7 +1041,7 @@ export const pt = {
     signInToAddBtn: "Iniciar sessão para adicionar outro DM",
     addExistingSubmitBtn: "Criar acesso de DM e mudar",
     displayNameLabel: "Nome visível",
-    displayNamePlaceholder: "Alessandro",
+    displayNamePlaceholder: "Your name",
     emailLabel: "Email",
     emailPlaceholder: "tu@email.com",
     secretLabel: "Chave de Mestre",

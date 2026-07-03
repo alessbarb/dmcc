@@ -1058,7 +1058,7 @@ export const fr: TranslationDictionary = {
     signInToAddBtn: "Se connecter pour ajouter un autre MJ",
     addExistingSubmitBtn: "Créer l’accès MJ et basculer",
     displayNameLabel: "Nom affiché",
-    displayNamePlaceholder: "Alessandro",
+    displayNamePlaceholder: "Your name",
     emailLabel: "Email",
     emailPlaceholder: "vous@example.com",
     secretLabel: "Clé MJ",

@@ -1041,7 +1041,7 @@ export const en = {
     signInToAddBtn: "Sign in to add another DM",
     addExistingSubmitBtn: "Create DM access and switch",
     displayNameLabel: "Display name",
-    displayNamePlaceholder: "Alessandro",
+    displayNamePlaceholder: "Your name",
     emailLabel: "Email",
     emailPlaceholder: "you@example.com",
     secretLabel: "DM key",
