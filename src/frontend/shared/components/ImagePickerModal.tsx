@@ -16,15 +16,22 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
     setLoading(true);
-    fetch(`/api/assets/catalog?type=${catalog}`)
+    fetch(`/api/assets/catalog?type=${catalog}`, { signal: controller.signal })
       .then((r) => r.json() as Promise<{ groups: Groups }>)
       .then(({ groups: g }) => {
         setGroups(g);
         const keys = Object.keys(g);
         setActiveGroup((prev) => (keys.includes(prev) ? prev : keys[0] ?? ""));
       })
+      .catch((err: unknown) => {
+        if ((err as { name?: string }).name !== "AbortError") {
+          console.error("Failed to load image catalog:", err);
+        }
+      })
       .finally(() => setLoading(false));
+    return () => controller.abort();
   }, [catalog]);
 
   const groupNames = Object.keys(groups);

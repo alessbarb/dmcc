@@ -18,6 +18,7 @@ export function ImagePickerButton({
   shape = "circle",
 }: ImagePickerButtonProps) {
   const [open, setOpen] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const displaySrc = value || defaultImage || "";
   const isCircle = shape === "circle";
 
@@ -39,6 +40,8 @@ export function ImagePickerButton({
           cursor: "pointer",
         }}
         onClick={() => setOpen(true)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         title="Cambiar imagen"
       >
         {displaySrc ? (
@@ -72,16 +75,12 @@ export function ImagePickerButton({
             alignItems: "center",
             justifyContent: "center",
             background: "rgba(0,0,0,0.45)",
-            opacity: 0,
+            opacity: hovered ? 1 : 0,
             transition: "opacity 0.15s",
           }}
-          className="image-picker-overlay"
         >
           <Pencil size={18} color="#fff" />
         </div>
-        <style>{`
-          div:hover > .image-picker-overlay { opacity: 1 !important; }
-        `}</style>
       </div>
       {open && (
         <ImagePickerModal

@@ -138,18 +138,6 @@ export function CanvasInspector({
     }
   };
 
-  const handleImageUrlBlur = async () => {
-    if (selectedNode?.kind === "entity" && entity) {
-      const trimmed = imageUrl.trim();
-      const current = (entity.metadata?.imageUrl as string) || "";
-      if (trimmed !== current) {
-        await updateEntity(entity.entityId, {
-          metadata: { ...entity.metadata, imageUrl: trimmed || undefined },
-        });
-      }
-    }
-  };
-
   const handleDramaticObjectiveBlur = async () => {
     if (selectedNode?.kind === "entity" && entity && dramaticObjective !== (entity.metadata?.dramaticObjective || "")) {
       await updateEntity(entity.entityId, {
