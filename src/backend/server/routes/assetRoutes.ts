@@ -18,15 +18,19 @@ function scanAvatars(avatarsDir: string): Record<string, string[]> {
     return groups;
   }
   for (const entry of entries) {
-    const full = join(avatarsDir, entry);
-    const stat = statSync(full);
-    if (stat.isFile() && isImage(entry)) {
-      (groups["default"] ??= []).push(`/assets/avatars/${entry}`);
-    } else if (stat.isDirectory()) {
-      const subEntries = readdirSync(full).filter(isImage);
-      if (subEntries.length > 0) {
-        groups[entry] = subEntries.map((f) => `/assets/avatars/${entry}/${f}`);
+    try {
+      const full = join(avatarsDir, entry);
+      const stat = statSync(full);
+      if (stat.isFile() && isImage(entry)) {
+        (groups["default"] ??= []).push(`/assets/avatars/${entry}`);
+      } else if (stat.isDirectory()) {
+        const subEntries = readdirSync(full).filter(isImage);
+        if (subEntries.length > 0) {
+          groups[entry] = subEntries.map((f) => `/assets/avatars/${entry}/${f}`);
+        }
       }
+    } catch {
+      // file removed between readdir and stat — skip
     }
   }
   return groups;

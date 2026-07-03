@@ -311,9 +311,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
           !membership.revokedAt &&
           (!campaignId || membership.campaignId === campaignId)
       );
-      // A logged-in account is not globally a DM, but it may create a campaign and
-      // become DM of that campaign. For campaign-scoped routes, membership is still required.
-      const canActAsDm = campaignId ? hasDmMembership : true;
+      const canActAsDm = campaignId ? hasDmMembership : resolved.user.vaultRole === "admin" || hasDmMembership;
       if (canActAsDm) {
         (request as any).unifiedDmSession = {
           dmId: resolved.user.userId,
@@ -341,13 +339,16 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   if (isPostgresWebMode) {
     registerWebPlatformRoutes(server);
-    server.register(registerAccountRoutes, { dataDir });
     return server;
   }
 
   server.get("/api/auth/local-token", async (_request, reply) => {
-    reply.code(410);
-    return { error: "Local token login has been removed. Use account email and password." };
+    if (!server.allowLegacyTestAuth) {
+      reply.code(410);
+      return { error: "Local DM token shortcut has been removed. Use DM email + key login." };
+    }
+    const token = server.dmSessionToken;
+    return { token, dmSessionToken: token };
   });
 
   const opts = { dataDir };
