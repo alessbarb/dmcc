@@ -1058,7 +1058,7 @@ export const it: TranslationDictionary = {
     signInToAddBtn: "Accedi per aggiungere un altro DM",
     addExistingSubmitBtn: "Crea accesso DM e cambia",
     displayNameLabel: "Nome visibile",
-    displayNamePlaceholder: "Your name",
+    displayNamePlaceholder: "Il tuo nome",
     emailLabel: "Email",
     emailPlaceholder: "tu@example.com",
     secretLabel: "Chiave DM",

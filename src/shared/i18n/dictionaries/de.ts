@@ -1058,7 +1058,7 @@ export const de: TranslationDictionary = {
     signInToAddBtn: "Anmelden, um eine weitere SL hinzuzufügen",
     addExistingSubmitBtn: "SL-Zugang erstellen und wechseln",
     displayNameLabel: "Anzeigename",
-    displayNamePlaceholder: "Your name",
+    displayNamePlaceholder: "Dein Name",
     emailLabel: "E-Mail",
     emailPlaceholder: "du@example.com",
     secretLabel: "SL-Schlüssel",
