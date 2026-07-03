@@ -28,7 +28,7 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
   const getRepository = makeRepositoryFactory(dataDir);
 
   function getAdvertisedPort(request: any): number {
-    const backendPort = Number(process.env.DMCC_PORT ?? "4877");
+    const backendPort = Number(process.env.PORT ?? "4877");
     const origin = request.headers.origin as string | undefined;
     if (!origin) return backendPort;
 

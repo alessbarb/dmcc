@@ -65,7 +65,7 @@ async function startInternalServer() {
 
   const exposeLan = shouldExposeLan();
   const host = exposeLan ? "0.0.0.0" : "127.0.0.1";
-  const requestedPort = Number(process.env.DMCC_DESKTOP_PORT ?? process.env.DMCC_PORT ?? "0");
+  const requestedPort = Number(process.env.DMCC_DESKTOP_PORT ?? process.env.PORT ?? "0");
   const port = Number.isFinite(requestedPort) ? requestedPort : 0;
 
   if (exposeLan) {

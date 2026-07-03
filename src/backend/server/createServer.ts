@@ -77,7 +77,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   if (isPostgresWebMode) {
     const allowedOrigin = process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173";
-    server.register(cookie, { secret: process.env.DMCC_SESSION_SECRET ?? "dev-change-me" });
+    server.register(cookie, { secret: process.env.SESSION_SECRET ?? "dev-change-me" });
     server.register(helmet);
     server.register(rateLimit, { max: 200, timeWindow: "1 minute" });
     server.register(cors, { origin: [allowedOrigin, "http://127.0.0.1:5173", "http://localhost:4877"], credentials: true });
