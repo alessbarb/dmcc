@@ -76,3 +76,11 @@ describe("EntityCreateModal wiring", () => {
     expect(src).not.toContain('placeholder="https://ejemplo.com/foto.jpg"');
   });
 });
+
+describe("EntityDetailModal wiring", () => {
+  it("uses ImagePickerButton for imageUrl in edit form", () => {
+    const src = read("src/frontend/dm/entities/EntityDetailModal.tsx");
+    expect(src).toContain("ImagePickerButton");
+    expect(src).not.toContain('placeholder="https://ejemplo.com/foto.jpg"');
+  });
+});

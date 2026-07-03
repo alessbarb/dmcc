@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { getEntityDefaultImage } from "./entityVisuals.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
+import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
 import type { Entity, Relation, Fact, Session } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatRelationType, formatVisibility } from "@shared/i18n/index.js";
@@ -597,20 +598,20 @@ function ResumenTab({
             />
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
-            <label className="form-label">URL de la Imagen</label>
-            <input
-              className="form-input"
+            <label className="form-label">Imagen</label>
+            <ImagePickerButton
               value={editEntityForm.metadata?.imageUrl ?? entity.metadata?.imageUrl ?? ""}
-              onChange={(e) =>
+              onChange={(path) =>
                 setEditEntityForm({
                   ...editEntityForm,
                   metadata: {
                     ...(editEntityForm.metadata ?? entity.metadata ?? {}),
-                    imageUrl: e.target.value,
+                    imageUrl: path || undefined,
                   },
                 })
               }
-              placeholder="https://ejemplo.com/foto.jpg"
+              catalog="avatars"
+              shape="circle"
             />
           </div>
           <div className="form-group" style={{ marginBottom: 0 }}>
