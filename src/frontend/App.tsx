@@ -366,7 +366,10 @@ export function App() {
             </button>
             <button
               type="button"
-              onClick={() => setIsAccountModalOpen(true)}
+              onClick={() => {
+                // to: "/account"
+                setIsAccountModalOpen(true);
+              }}
               style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", padding: "5px 12px", color: "var(--text-muted)", fontSize: "0.8rem", cursor: "pointer" }}
             >
               <Settings size={13} />

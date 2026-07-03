@@ -3,12 +3,12 @@ import { createId } from "@shared/ids.js";
 import { resolveActiveCanvasId } from "../utils/canvasSelection.js";
 import { markCampaignGuidedTourPending } from "../../dm/onboarding/campaignGuidedTourStorage.js";
 import { apiFetch, readApiError } from "../api/apiClient.js";
+import { detectBrowserLocale } from "@shared/i18n/index.js";
 
 function getPremadeLocale(): string {
   try {
     const saved = localStorage.getItem("dmcc_language");
-    if (saved) return saved.toLowerCase().split(/[._-]/)[0] || "en";
-    return (navigator.language || "en").toLowerCase().split(/[._-]/)[0] || "en";
+    return detectBrowserLocale(saved);
   } catch {}
   return "en";
 }
@@ -42,14 +42,39 @@ const playerScopedReset = () => ({
 });
 
 function buildCanvasesById(campaignState: any): Record<string, any> {
+  const raw = campaignState?.canvases;
+  if (!raw) return {};
+  // API returns canvases as a plain object {canvasId: canvas} (serialized from Map)
+  // but local/legacy paths may send an array
+  const items: any[] = Array.isArray(raw) ? raw : Object.values(raw);
   const canvasesById: Record<string, any> = {};
-  if (campaignState?.canvases) {
-    campaignState.canvases.forEach((canvas: any) => {
-      const canvasId = typeof canvas?.id === "string" ? canvas.id : typeof canvas?.canvasId === "string" ? canvas.canvasId : null;
-      if (canvasId) canvasesById[canvasId] = canvas;
-    });
+  for (const canvas of items) {
+    const canvasId = typeof canvas?.canvasId === "string" ? canvas.canvasId : typeof canvas?.id === "string" ? canvas.id : null;
+    if (canvasId) canvasesById[canvasId] = canvas;
   }
   return canvasesById;
+}
+
+function toArray(raw: unknown): unknown[] {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  return Object.values(raw as Record<string, unknown>);
+}
+
+function normalizeCampaignState(state: any): any {
+  if (!state) return state;
+  return {
+    ...state,
+    entities: toArray(state.entities),
+    relations: toArray(state.relations),
+    facts: toArray(state.facts),
+    sessions: toArray(state.sessions),
+    canvases: toArray(state.canvases),
+    players: Array.isArray(state.players) ? state.players : Object.values(state.players ?? {}),
+    tags: toArray(state.tags),
+    attachments: toArray(state.attachments),
+    sessionEvents: toArray(state.sessionEvents),
+  };
 }
 
 export interface PremadeCampaignTemplateSummary {
@@ -579,7 +604,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const data = await res.json();
       await get().fetchCampaigns();
       markCampaignGuidedTourPending(data.campaignId);
-      await get().selectCampaign(data.campaignId);
+      set({ loading: false });
       return data.campaignId as string;
     } catch (err: any) {
       set({ error: err.message, loading: false });
@@ -640,7 +665,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     try {
       const resDetails = await fetchWithVault(`/api/campaigns/${campaignId}`);
       if (!resDetails.ok) throw new Error("Failed to load campaign state");
-      const campaignState = await resDetails.json();
+      const rawCampaignState = await resDetails.json();
+      const campaignState = normalizeCampaignState(rawCampaignState);
 
       let dashboard = null;
       let whatNow = null;
@@ -727,7 +753,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     try {
       const resDetails = await fetchWithVault(`/api/campaigns/${campaignId}`);
       if (!resDetails.ok) throw new Error("Failed to load campaign state");
-      const campaignState = await resDetails.json();
+      const campaignState = normalizeCampaignState(await resDetails.json());
 
       let dashboard = null;
       let whatNow = null;
@@ -841,7 +867,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       if (!res.ok) throw new Error("Failed to create campaign");
       await get().fetchCampaigns();
       markCampaignGuidedTourPending(campaignId);
-      await get().selectCampaign(campaignId);
+      set({ loading: false });
       return campaignId;
     } catch (err: any) {
       set({ error: err.message, loading: false });

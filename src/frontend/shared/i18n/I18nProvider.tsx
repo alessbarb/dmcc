@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import type { SupportedLocale, TranslationKey } from "@shared/i18n/index.js";
-import { createTranslator, resolveLocale } from "@shared/i18n/index.js";
+import { createTranslator, detectBrowserLocale } from "@shared/i18n/index.js";
 
 export interface I18nContextType {
   locale: SupportedLocale;
@@ -16,8 +16,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<SupportedLocale>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return resolveLocale(saved);
-      return resolveLocale(navigator.language);
+      return detectBrowserLocale(saved);
     } catch {}
     return "en";
   });

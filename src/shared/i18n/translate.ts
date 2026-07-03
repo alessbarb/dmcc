@@ -34,6 +34,32 @@ export function resolveLocale(input?: unknown): SupportedLocale {
   return FALLBACK_LOCALE;
 }
 
+export function detectBrowserLocale(savedLocale?: string | null): SupportedLocale {
+  if (savedLocale) {
+    const resolved = resolveLocale(savedLocale);
+    if (isSupportedLocale(resolved)) return resolved;
+  }
+
+  if (typeof navigator !== "undefined") {
+    if (Array.isArray(navigator.languages)) {
+      for (const lang of navigator.languages) {
+        const normalized = lang.trim().toLowerCase().replace(/_/g, "-");
+        if (isSupportedLocale(normalized)) return normalized;
+        const [base] = normalized.split("-");
+        if (isSupportedLocale(base)) return base as SupportedLocale;
+      }
+    }
+    if (navigator.language) {
+      const normalized = navigator.language.trim().toLowerCase().replace(/_/g, "-");
+      if (isSupportedLocale(normalized)) return normalized;
+      const [base] = normalized.split("-");
+      if (isSupportedLocale(base)) return base as SupportedLocale;
+    }
+  }
+
+  return FALLBACK_LOCALE;
+}
+
 export function createTranslator(inputLocale?: unknown): Translator {
   const locale = resolveLocale(inputLocale);
   return {
