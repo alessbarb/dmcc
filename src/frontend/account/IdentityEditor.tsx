@@ -1,7 +1,16 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { AccountAggregate } from "./accountTypes.js";
+import { useTranslation } from "../shared/i18n/useTranslation.js";
+import { ImagePickerButton } from "../shared/components/ImagePickerButton.js";
 
 type PrivateIdentity = AccountAggregate["account"];
+
+function getInitials(name?: string, email?: string) {
+  const source = (name?.trim() || email?.trim() || "U").replace(/\s+/g, " ");
+  const words = source.split(" ").filter(Boolean);
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return `${words[0]?.[0] ?? ""}${words[1]?.[0] ?? ""}`.toUpperCase();
+}
 
 export function IdentityEditor({
   identity,
@@ -10,6 +19,7 @@ export function IdentityEditor({
   identity: PrivateIdentity;
   onSave(payload: Record<string, unknown>): Promise<void>;
 }) {
+  const { t } = useTranslation();
   const [displayName, setDisplayName] = useState(identity.displayName ?? "");
   const [avatarUrl, setAvatarUrl] = useState(identity.avatarUrl ?? "");
   const [email, setEmail] = useState(identity.email);
@@ -17,15 +27,55 @@ export function IdentityEditor({
   const [status, setStatus] = useState("");
   const emailChanged = email.trim().toLowerCase() !== identity.email.toLowerCase();
 
+  const isFormDirty =
+    displayName !== (identity.displayName ?? "") ||
+    avatarUrl !== (identity.avatarUrl ?? "") ||
+    emailChanged;
+
+  useEffect(() => {
+    (window as any).__accountCenterDirty = isFormDirty;
+    return () => {
+      (window as any).__accountCenterDirty = false;
+    };
+  }, [isFormDirty]);
+
+  const previewName = useMemo(() => displayName.trim() || identity.displayName || "Unnamed user", [displayName, identity.displayName]);
+  const previewEmail = email.trim() || identity.email;
+
   return (
-    <section aria-labelledby="private-identity-title">
-      <h2 id="private-identity-title">Private identity</h2>
-      <p>Your email and password are never part of a public or campaign profile.</p>
+    <section aria-labelledby="private-identity-title" className="account-section-stack">
+      <div className="account-split-hero">
+        <div className="account-profile-preview-card">
+          <div className="account-avatar-shell large">
+            {avatarUrl ? (
+              <img src={avatarUrl} alt={previewName} className="account-avatar-image" />
+            ) : (
+              <span className="account-avatar-fallback">{getInitials(previewName, previewEmail)}</span>
+            )}
+          </div>
+          <div className="account-profile-preview-copy">
+            <span className="account-role-pill">Private account</span>
+            <h2 id="private-identity-title">{previewName}</h2>
+            <p>{previewEmail}</p>
+            <small>{t("account.identity.subtitle")}</small>
+          </div>
+        </div>
+
+        <div className="account-helper-card">
+          <h3>What lives here</h3>
+          <ul className="account-bullet-list">
+            <li>Your sign-in email and display name.</li>
+            <li>Your private avatar — reused as the base for DM and player profiles.</li>
+            <li>Email changes require your current password.</li>
+          </ul>
+        </div>
+      </div>
+
       <form
-        className="account-form-grid"
+        className="account-form-grid account-form-card"
         onSubmit={(event) => {
           event.preventDefault();
-          setStatus("Saving…");
+          setStatus(t("account.identity.saving"));
           void onSave({
             displayName,
             avatarUrl,
@@ -33,22 +83,28 @@ export function IdentityEditor({
             ...(emailChanged ? { currentPassword } : {}),
           }).then(() => {
             setCurrentPassword("");
-            setStatus("Saved");
+            setStatus(t("account.identity.saved"));
           }).catch((cause) => {
-            setStatus(cause instanceof Error ? cause.message : "Save failed");
+            setStatus(cause instanceof Error ? cause.message : t("account.identity.saveFailed"));
           });
         }}
       >
         <label>
-          Display name
+          {t("account.identity.displayName")}
           <input value={displayName} onChange={(event) => setDisplayName(event.target.value)} />
         </label>
-        <label>
-          Avatar URL
-          <input type="url" value={avatarUrl} onChange={(event) => setAvatarUrl(event.target.value)} />
-        </label>
-        <label>
-          Email
+        <div className="form-group">
+          <label className="form-label">{t("account.identity.avatarUrl")}</label>
+          <ImagePickerButton
+            value={avatarUrl}
+            onChange={setAvatarUrl}
+            catalog="avatars"
+            defaultImage="/assets/avatars/default-avatar.png"
+            shape="circle"
+          />
+        </div>
+        <label className="account-field-span-2">
+          {t("account.identity.email")}
           <input
             type="email"
             autoComplete="email"
@@ -58,8 +114,8 @@ export function IdentityEditor({
           />
         </label>
         {emailChanged ? (
-          <label>
-            Current password
+          <label className="account-field-span-2">
+            {t("account.identity.currentPassword")}
             <input
               type="password"
               autoComplete="current-password"
@@ -69,8 +125,8 @@ export function IdentityEditor({
             />
           </label>
         ) : null}
-        <div>
-          <button type="submit">Save identity</button>
+        <div className="account-form-actions account-field-span-2">
+          <button type="submit">{t("account.identity.saveBtn")}</button>
         </div>
       </form>
       <p aria-live="polite">{status}</p>

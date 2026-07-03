@@ -49,3 +49,12 @@ describe("ImagePickerButton", () => {
     expect(src).toContain("Pencil");
   });
 });
+
+describe("IdentityEditor wiring", () => {
+  it("uses ImagePickerButton instead of URL input for avatarUrl", () => {
+    const src = read("src/frontend/account/IdentityEditor.tsx");
+    expect(src).toContain("ImagePickerButton");
+    expect(src).not.toContain('type="url"');
+    expect(src).toContain('catalog="avatars"');
+  });
+});
