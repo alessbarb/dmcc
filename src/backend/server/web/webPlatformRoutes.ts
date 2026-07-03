@@ -1,5 +1,6 @@
-import { randomUUID } from "node:crypto";
+import { randomUUID, randomBytes } from "node:crypto";
 import argon2 from "argon2";
+import { sendPasswordResetEmail } from "../emailService.js";
 import type { FastifyInstance, FastifyRequest } from "fastify";
 import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../../db/client.js";
@@ -885,6 +886,158 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     clearWebSessionCookie(reply);
     return { ok: true };
   });
+
+  server.post<{ Body: { email?: string } }>(
+    "/api/auth/forgot-password",
+    {
+      config: {
+        rateLimit: {
+          max: 5,
+          timeWindow: "1 minute",
+        },
+      },
+    },
+    async (request, reply) => {
+      const email = normalizeEmail(request.body?.email || "");
+      if (!email) {
+        return { ok: true };
+      }
+
+      // Check if user exists and is not disabled
+      const [user] = await db
+        .select()
+        .from(schema.users)
+        .where(
+          and(
+            eq(schema.users.emailNormalized, email),
+            isNull(schema.users.disabledAt)
+          )
+        )
+        .limit(1);
+
+      let token: string | null = null;
+      if (user) {
+        token = randomBytes(32).toString("base64url");
+        const now = new Date();
+        const expiresAt = new Date(now.getTime() + 30 * 60 * 1000); // 30 mins
+        const tokenHash = hashOpaque(token);
+
+        await db.insert(schema.passwordResetTokens).values({
+          userId: user.userId,
+          tokenHash,
+          createdAt: now,
+          expiresAt,
+        });
+
+        // Try to send email when SMTP is configured.
+        const publicOrigin = process.env.DMCC_PUBLIC_ORIGIN?.replace(/\/$/, "");
+        if (publicOrigin) {
+          const resetUrl = `${publicOrigin}/reset-password/${encodeURIComponent(token)}`;
+          await sendPasswordResetEmail({
+            to: email,
+            resetUrl,
+            expiresInMinutes: 30,
+          });
+        } else if (process.env.NODE_ENV !== "production") {
+          console.warn("[forgot-password] DMCC_PUBLIC_ORIGIN not set; skipping email dispatch.");
+        }
+      }
+
+      // In production the token is NEVER returned in the response, regardless
+      // of SMTP config or caller IP — even if email sending failed.
+      // In non-production it is only surfaced when the operator has explicitly
+      // opted in via DMCC_DEV_PASSWORD_RESET_TOKEN_RESPONSE=true, so a
+      // mis-configured staging/Render environment cannot accidentally leak tokens.
+      const allowDevToken =
+        process.env.NODE_ENV !== "production" &&
+        process.env.DMCC_DEV_PASSWORD_RESET_TOKEN_RESPONSE === "true";
+      return allowDevToken && token
+        ? { ok: true, resetToken: token, expiresInSeconds: 1800 }
+        : { ok: true };
+    }
+  );
+
+  server.post<{ Body: { token?: string; resetToken?: string; newPassword?: string } }>(
+    "/api/auth/reset-password",
+    {
+      config: {
+        rateLimit: {
+          max: 8,
+          timeWindow: "1 minute",
+        },
+      },
+    },
+    async (request, reply) => {
+      const resetToken = request.body?.token ?? request.body?.resetToken;
+      const newPassword = request.body?.newPassword;
+      if (typeof resetToken !== "string" || resetToken.trim().length === 0) {
+        reply.code(400);
+        return { error: "Reset token is required" };
+      }
+      if (typeof newPassword !== "string" || newPassword.length < 12 || newPassword.length > 128) {
+        reply.code(400);
+        return { error: "Password must be between 12 and 128 characters" };
+      }
+
+      const tokenHash = hashOpaque(resetToken.trim());
+      const now = new Date();
+
+      const [tokenRecord] = await db
+        .select()
+        .from(schema.passwordResetTokens)
+        .where(
+          and(
+            eq(schema.passwordResetTokens.tokenHash, tokenHash),
+            isNull(schema.passwordResetTokens.usedAt)
+          )
+        )
+        .limit(1);
+
+      if (!tokenRecord || tokenRecord.expiresAt <= now) {
+        reply.code(400);
+        return { error: "Invalid or expired recovery token" };
+      }
+
+      const passwordHash = await argon2.hash(newPassword);
+
+      await db.transaction(async (tx) => {
+        // Update user password using argon2 (consistent with register/login in web mode)
+        await tx
+          .update(schema.users)
+          .set({
+            passwordHash,
+            passwordSalt: "argon2id",
+            passwordAlgorithm: "argon2id",
+          })
+          .where(eq(schema.users.userId, tokenRecord.userId));
+
+        // Mark token as used
+        await tx
+          .update(schema.passwordResetTokens)
+          .set({
+            usedAt: now,
+          })
+          .where(eq(schema.passwordResetTokens.tokenHash, tokenHash));
+
+        // Revoke all sessions for this user
+        await tx
+          .update(schema.authSessions)
+          .set({
+            revokedAt: now,
+          })
+          .where(
+            and(
+              eq(schema.authSessions.userId, tokenRecord.userId),
+              isNull(schema.authSessions.revokedAt)
+            )
+          );
+      });
+
+      clearWebSessionCookie(reply);
+      return { ok: true };
+    }
+  );
+
 
   server.get("/api/me", async (request, reply) => {
     const user = (request as any).webUser as WebUser | undefined;

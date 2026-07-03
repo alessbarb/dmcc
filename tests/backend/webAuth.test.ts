@@ -126,4 +126,70 @@ describe("web auth", () => {
       await server.close();
     });
   });
+
+  describe("postgres mode password reset", () => {
+    it("forgot-password and reset-password flow", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir, storageMode: "postgres" });
+
+        // Register a user
+        const regRes = await register(server, "user@example.com", "old-password12345");
+        expect(regRes.statusCode).toBe(201);
+
+        // Call forgot-password with dev response flag enabled
+        process.env.DMCC_DEV_PASSWORD_RESET_TOKEN_RESPONSE = "true";
+        const forgotRes = await server.inject({
+          method: "POST",
+          url: "/api/auth/forgot-password",
+          payload: { email: "user@example.com" },
+        });
+        expect(forgotRes.statusCode).toBe(200);
+        const forgotBody = forgotRes.json();
+        expect(forgotBody.ok).toBe(true);
+        expect(forgotBody.resetToken).toBeDefined();
+
+        // Reset password
+        const resetRes = await server.inject({
+          method: "POST",
+          url: "/api/auth/reset-password",
+          payload: {
+            token: forgotBody.resetToken,
+            newPassword: "new-password123456",
+          },
+        });
+        expect(resetRes.statusCode).toBe(200);
+        expect(resetRes.json().ok).toBe(true);
+
+        // Verify login works with new password
+        const loginNewRes = await login(server, "user@example.com", "new-password123456");
+        expect(loginNewRes.statusCode).toBe(200);
+
+        // Verify login fails with old password
+        const loginOldRes = await login(server, "user@example.com", "old-password12345");
+        expect(loginOldRes.statusCode).toBe(401);
+
+        await server.close();
+      });
+    });
+
+    it("forgot-password does not return token if dev flag is false", async () => {
+      await withTempDataDir(async (dataDir) => {
+        const server = createServer({ dataDir, storageMode: "postgres" });
+
+        await register(server, "user@example.com", "password12345");
+
+        process.env.DMCC_DEV_PASSWORD_RESET_TOKEN_RESPONSE = "false";
+        const forgotRes = await server.inject({
+          method: "POST",
+          url: "/api/auth/forgot-password",
+          payload: { email: "user@example.com" },
+        });
+        expect(forgotRes.statusCode).toBe(200);
+        expect(forgotRes.json().ok).toBe(true);
+        expect(forgotRes.json().resetToken).toBeUndefined();
+
+        await server.close();
+      });
+    });
+  });
 });

@@ -248,7 +248,6 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
 
           await sendPasswordResetEmail({
             to: normalizeEmail(email),
-            displayName,
             resetUrl,
             expiresInMinutes: 30,
           });
