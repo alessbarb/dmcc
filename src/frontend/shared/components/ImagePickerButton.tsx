@@ -5,7 +5,7 @@ import { ImagePickerModal } from "./ImagePickerModal.js";
 interface ImagePickerButtonProps {
   value: string;
   onChange: (path: string) => void;
-  catalog: "avatars" | "campaigns";
+  catalog: "avatars" | "campaigns" | "entities";
   defaultImage?: string;
   shape?: "circle" | "rect";
 }

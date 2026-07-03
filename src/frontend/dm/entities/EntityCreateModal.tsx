@@ -279,7 +279,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     metadata: { ...entityForm.metadata, imageUrl: path || undefined },
                   })
                 }
-                catalog="avatars"
+                catalog="entities"
                 defaultImage="/assets/entities/default_npc.png"
                 shape="circle"
               />

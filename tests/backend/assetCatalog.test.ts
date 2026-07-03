@@ -8,11 +8,14 @@ async function withFakeAssets<T>(fn: (assetsDir: string) => Promise<T>): Promise
   const root = await mkdtemp(join(tmpdir(), "dmcc-assets-"));
   const avatarsDir = join(root, "assets", "avatars", "fantasy");
   const campaignsDir = join(root, "assets", "campaigns");
+  const entitiesDir = join(root, "assets", "entities");
   await mkdir(avatarsDir, { recursive: true });
   await mkdir(campaignsDir, { recursive: true });
+  await mkdir(entitiesDir, { recursive: true });
   await writeFile(join(root, "assets", "avatars", "default-avatar.png"), "");
   await writeFile(join(root, "assets", "avatars", "fantasy", "aelar.png"), "");
   await writeFile(join(root, "assets", "campaigns", "default-campaign-cover.jpg"), "");
+  await writeFile(join(root, "assets", "entities", "default-entity.png"), "");
   try {
     return await fn(root);
   } finally {
@@ -45,6 +48,19 @@ describe("GET /api/assets/catalog", () => {
       expect(response.statusCode).toBe(200);
       const body = response.json<{ groups: Record<string, string[]> }>();
       expect(body.groups["all"]).toContain("/assets/campaigns/default-campaign-cover.jpg");
+    });
+  });
+
+  it("returns entities as flat 'all' group", async () => {
+    await withFakeAssets(async (assetsDir) => {
+      const server = createServer({ assetsDir });
+      const response = await server.inject({
+        method: "GET",
+        url: "/api/assets/catalog?type=entities",
+      });
+      expect(response.statusCode).toBe(200);
+      const body = response.json<{ groups: Record<string, string[]> }>();
+      expect(body.groups["all"]).toContain("/assets/entities/default-entity.png");
     });
   });
 

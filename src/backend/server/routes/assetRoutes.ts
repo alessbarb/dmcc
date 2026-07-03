@@ -47,14 +47,25 @@ function scanCampaigns(campaignsDir: string): Record<string, string[]> {
   return { all: entries.map((f) => `/assets/campaigns/${f}`) };
 }
 
+function scanEntities(entitiesDir: string): Record<string, string[]> {
+  let entries: string[];
+  try {
+    entries = readdirSync(entitiesDir).filter(isImage);
+  } catch {
+    return {};
+  }
+  if (entries.length === 0) return {};
+  return { all: entries.map((f) => `/assets/entities/${f}`) };
+}
+
 export async function registerAssetRoutes(
   server: FastifyInstance,
   opts: { assetsDir?: string }
 ) {
   server.get<{ Querystring: { type?: string } }>("/api/assets/catalog", async (request, reply) => {
     const type = request.query.type;
-    if (type !== "avatars" && type !== "campaigns") {
-      return reply.status(400).send({ error: "type must be 'avatars' or 'campaigns'" });
+    if (type !== "avatars" && type !== "campaigns" && type !== "entities") {
+      return reply.status(400).send({ error: "type must be 'avatars', 'campaigns', or 'entities'" });
     }
     if (!opts.assetsDir) {
       return { groups: {} };
@@ -63,6 +74,8 @@ export async function registerAssetRoutes(
     const groups =
       type === "avatars"
         ? scanAvatars(assetsSubdir)
+        : type === "entities"
+        ? scanEntities(assetsSubdir)
         : scanCampaigns(assetsSubdir);
     return { groups };
   });

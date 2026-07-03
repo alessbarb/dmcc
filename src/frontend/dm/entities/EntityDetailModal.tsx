@@ -610,7 +610,7 @@ function ResumenTab({
                   },
                 })
               }
-              catalog="avatars"
+              catalog="entities"
               shape="circle"
             />
           </div>

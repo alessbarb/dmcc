@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
 interface ImagePickerModalProps {
-  catalog: "avatars" | "campaigns";
+  catalog: "avatars" | "campaigns" | "entities";
   value: string;
   onSelect: (path: string) => void;
   onClose: () => void;
@@ -38,7 +38,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
       <div className="modal-container" style={{ maxWidth: "640px", width: "100%" }}>
         <div className="modal-header">
           <h2 className="modal-title">
-            {catalog === "avatars" ? "Elegir avatar" : "Elegir portada"}
+            {catalog === "avatars" || catalog === "entities" ? "Elegir imagen" : "Elegir portada"}
           </h2>
           <button className="btn btn-icon btn-secondary" onClick={onClose} aria-label="Cerrar">
             <X size={16} />

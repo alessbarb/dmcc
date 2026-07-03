@@ -582,7 +582,7 @@ export function CanvasInspector({
                         });
                       }
                     }}
-                    catalog="avatars"
+                    catalog="entities"
                     shape="circle"
                   />
                 </div>
