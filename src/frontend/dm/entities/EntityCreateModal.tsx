@@ -4,6 +4,7 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { getRuleSystem } from "@core/domain/rules/index.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
 
 
 interface EntityCreateModalProps {
@@ -269,25 +270,19 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
             </div>
 
             <div className="form-group">
-              <label className="form-label">URL de la Imagen (PNJ, Entornos, etc.)</label>
-              <input
-                type="text"
-                className="form-input"
+              <label className="form-label">Imagen</label>
+              <ImagePickerButton
                 value={entityForm.metadata?.imageUrl || ""}
-                onChange={(e) => setEntityForm({
-                  ...entityForm,
-                  metadata: {
-                    ...entityForm.metadata,
-                    imageUrl: e.target.value
-                  }
-                })}
-                placeholder="https://ejemplo.com/foto.jpg"
+                onChange={(path) =>
+                  setEntityForm({
+                    ...entityForm,
+                    metadata: { ...entityForm.metadata, imageUrl: path || undefined },
+                  })
+                }
+                catalog="avatars"
+                defaultImage="/assets/entities/default_npc.png"
+                shape="circle"
               />
-              {entityForm.metadata?.imageUrl && (
-                <div style={{ marginTop: "10px", width: "100%", height: "120px", borderRadius: "var(--radius-sm)", overflow: "hidden", border: "1px solid var(--border-color)" }}>
-                  <img src={entityForm.metadata.imageUrl} alt="Vista previa" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                </div>
-              )}
             </div>
 
             <div className="form-group">

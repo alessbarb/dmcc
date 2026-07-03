@@ -68,3 +68,11 @@ describe("PlayersPage wiring", () => {
     expect(src).not.toContain("Path del Avatar Local");
   });
 });
+
+describe("EntityCreateModal wiring", () => {
+  it("uses ImagePickerButton for imageUrl", () => {
+    const src = read("src/frontend/dm/entities/EntityCreateModal.tsx");
+    expect(src).toContain("ImagePickerButton");
+    expect(src).not.toContain('placeholder="https://ejemplo.com/foto.jpg"');
+  });
+});
