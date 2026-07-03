@@ -1,0 +1,72 @@
+import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { createServer } from "../../src/backend/server/createServer.js";
+
+async function withFakeAssets<T>(fn: (assetsDir: string) => Promise<T>): Promise<T> {
+  const root = await mkdtemp(join(tmpdir(), "dmcc-assets-"));
+  const avatarsDir = join(root, "assets", "avatars", "fantasy");
+  const campaignsDir = join(root, "assets", "campaigns");
+  await mkdir(avatarsDir, { recursive: true });
+  await mkdir(campaignsDir, { recursive: true });
+  await writeFile(join(root, "assets", "avatars", "default-avatar.png"), "");
+  await writeFile(join(root, "assets", "avatars", "fantasy", "aelar.png"), "");
+  await writeFile(join(root, "assets", "campaigns", "default-campaign-cover.jpg"), "");
+  try {
+    return await fn(root);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+}
+
+describe("GET /api/assets/catalog", () => {
+  it("returns avatar groups with default and named subfolders", async () => {
+    await withFakeAssets(async (assetsDir) => {
+      const server = createServer({ assetsDir });
+      const response = await server.inject({
+        method: "GET",
+        url: "/api/assets/catalog?type=avatars",
+      });
+      expect(response.statusCode).toBe(200);
+      const body = response.json<{ groups: Record<string, string[]> }>();
+      expect(body.groups["default"]).toContain("/assets/avatars/default-avatar.png");
+      expect(body.groups["fantasy"]).toContain("/assets/avatars/fantasy/aelar.png");
+    });
+  });
+
+  it("returns campaigns as flat 'all' group", async () => {
+    await withFakeAssets(async (assetsDir) => {
+      const server = createServer({ assetsDir });
+      const response = await server.inject({
+        method: "GET",
+        url: "/api/assets/catalog?type=campaigns",
+      });
+      expect(response.statusCode).toBe(200);
+      const body = response.json<{ groups: Record<string, string[]> }>();
+      expect(body.groups["all"]).toContain("/assets/campaigns/default-campaign-cover.jpg");
+    });
+  });
+
+  it("returns 400 for unknown catalog type", async () => {
+    await withFakeAssets(async (assetsDir) => {
+      const server = createServer({ assetsDir });
+      const response = await server.inject({
+        method: "GET",
+        url: "/api/assets/catalog?type=unknown",
+      });
+      expect(response.statusCode).toBe(400);
+    });
+  });
+
+  it("returns empty groups when assetsDir is undefined", async () => {
+    const server = createServer({});
+    const response = await server.inject({
+      method: "GET",
+      url: "/api/assets/catalog?type=avatars",
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json<{ groups: Record<string, string[]> }>();
+    expect(body.groups).toEqual({});
+  });
+});

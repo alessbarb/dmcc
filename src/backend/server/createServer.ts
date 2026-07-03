@@ -31,6 +31,7 @@ import { registerAuthRoutes } from "./routes/authRoutes.js";
 import { registerUserAuthRoutes } from "./routes/userAuthRoutes.js";
 import { registerAccountRoutes } from "./routes/accountRoutes.js";
 import { registerPremadeCampaignRoutes } from "./routes/premadeCampaignRoutes.js";
+import { registerAssetRoutes } from "./routes/assetRoutes.js";
 import { getSessionUser, readUserAuthStore } from "./userAuthStore.js";
 import { readSessionCookie } from "./sessionAuth.js";
 import { resolveWebUser } from "./web/webSession.js";
@@ -38,6 +39,8 @@ import { registerWebPlatformRoutes } from "./web/webPlatformRoutes.js";
 
 export interface ServerConfig {
   dataDir?: string;
+  /** Override the public assets directory (used in tests to inject fake asset trees). */
+  assetsDir?: string;
   /** Keeps pre-migration credentials available only to the legacy test suite. */
   allowLegacyTestAuth?: boolean;
   /**
@@ -308,7 +311,9 @@ export function createServer(config?: ServerConfig): FastifyInstance {
           !membership.revokedAt &&
           (!campaignId || membership.campaignId === campaignId)
       );
-      const canActAsDm = campaignId ? hasDmMembership : resolved.user.vaultRole === "admin" || hasDmMembership;
+      // A logged-in account is not globally a DM, but it may create a campaign and
+      // become DM of that campaign. For campaign-scoped routes, membership is still required.
+      const canActAsDm = campaignId ? hasDmMembership : true;
       if (canActAsDm) {
         (request as any).unifiedDmSession = {
           dmId: resolved.user.userId,
@@ -336,16 +341,13 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   if (isPostgresWebMode) {
     registerWebPlatformRoutes(server);
+    server.register(registerAccountRoutes, { dataDir });
     return server;
   }
 
   server.get("/api/auth/local-token", async (_request, reply) => {
-    if (!server.allowLegacyTestAuth) {
-      reply.code(410);
-      return { error: "Local DM token shortcut has been removed. Use DM email + key login." };
-    }
-    const token = server.dmSessionToken;
-    return { token, dmSessionToken: token };
+    reply.code(410);
+    return { error: "Local token login has been removed. Use account email and password." };
   });
 
   const opts = { dataDir };
@@ -367,6 +369,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerAuthRoutes, opts);
   server.register(registerUserAuthRoutes, opts);
   server.register(registerAccountRoutes, opts);
+  server.register(registerAssetRoutes, { assetsDir: config?.assetsDir ?? publicPath });
 
   return server;
 }
