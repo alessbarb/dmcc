@@ -24,9 +24,11 @@ import {
 import { logoutDm } from "./shared/auth/authClient.js";
 import { LandingCampaignCard } from "./shared/components/LandingCampaignCard.js";
 import { PremadeImportDialog, type PremadeImportMode } from "./shared/components/PremadeImportDialog.js";
+import { AccountModal } from "./account/AccountModal.js";
 import { AppFooter } from "./shared/components/AppFooter.js";
 import { PortalTopBar } from "./shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
+import { ImagePickerButton } from "./shared/components/ImagePickerButton.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
 
 function formatCampaignSystem(system?: string) {
@@ -44,7 +46,6 @@ export function App() {
     campaignState,
     loading,
     error,
-    fetchVaults,
     fetchCampaigns,
     fetchPremadeCampaigns,
     importPremadeCampaign,
@@ -70,6 +71,7 @@ export function App() {
   const [backupRestorePath, setBackupRestorePath] = useState("");
   const [backupRestoreState, setBackupRestoreState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [backupRestoreError, setBackupRestoreError] = useState<string | null>(null);
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
 
   const [mysticalTransitionId, setMysticalTransitionId] = useState<string | null>(null);
   const [importingTemplateId, setImportingTemplateId] = useState<string | null>(null);
@@ -192,7 +194,6 @@ export function App() {
         await navigate({ to: "/" });
         return;
       }
-      fetchVaults();
       await Promise.all([
         fetchCampaigns().catch(() => {}),
         fetchPremadeCampaigns().catch(() => {}),
@@ -200,7 +201,7 @@ export function App() {
       setCampaignsFetched(true);
     };
     void initAuth();
-  }, [fetchCampaigns, fetchPremadeCampaigns, fetchVaults, navigate]);
+  }, [fetchCampaigns, fetchPremadeCampaigns, navigate]);
 
   const handleCreateCampaignSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -220,7 +221,7 @@ export function App() {
       setNewCampaignCoverUrl("");
       setNewCampaignTemplate("empty");
       if (campaignId) {
-        triggerMysticalTransition(campaignId);
+        navigate({ to: `/campaigns/${campaignId}/dashboard` });
       }
     } catch (err: any) {
       setCreateCampaignError(err.message || t("landing.createCampaignError"));
@@ -245,7 +246,7 @@ export function App() {
       });
       setPremadeDialogTemplateId(null);
       if (campaignId && options.openAfterCreate) {
-        triggerMysticalTransition(campaignId);
+        navigate({ to: `/campaigns/${campaignId}/dashboard` });
       } else {
         await fetchCampaigns();
       }
@@ -365,7 +366,7 @@ export function App() {
             </button>
             <button
               type="button"
-              onClick={() => navigate({ to: "/account" })}
+              onClick={() => setIsAccountModalOpen(true)}
               style={{ display: "flex", alignItems: "center", gap: "6px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "6px", padding: "5px 12px", color: "var(--text-muted)", fontSize: "0.8rem", cursor: "pointer" }}
             >
               <Settings size={13} />
@@ -1062,8 +1063,14 @@ export function App() {
               </select>
             </div>
             <div className="form-group">
-              <label className="form-label">Cover Image Path (e.g. /assets/campaigns/default-campaign-cover.jpg)</label>
-              <input className="form-input" value={editCoverUrl} onChange={(e) => setEditCoverUrl(e.target.value)} placeholder="/assets/campaigns/default-campaign-cover.jpg" />
+              <label className="form-label">Portada de campaña</label>
+              <ImagePickerButton
+                value={editCoverUrl}
+                onChange={setEditCoverUrl}
+                catalog="campaigns"
+                defaultImage="/assets/campaigns/default-campaign-cover.jpg"
+                shape="rect"
+              />
             </div>
             {editError ? <p className="form-error">{editError}</p> : null}
             <footer className="campaign-edit-dialog__footer">
@@ -1075,6 +1082,8 @@ export function App() {
           </section>
         </div>
       )}
+
+      <AccountModal open={isAccountModalOpen} onClose={() => setIsAccountModalOpen(false)} />
 
       <PremadeImportDialog
         template={selectedPremadeTemplate}

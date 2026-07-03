@@ -92,3 +92,12 @@ describe("CanvasInspector wiring", () => {
     expect(src).not.toContain("Imagen / Retrato (URL)");
   });
 });
+
+describe("App campaign cover wiring", () => {
+  it("uses ImagePickerButton for campaign coverUrl", () => {
+    const src = read("src/frontend/App.tsx");
+    expect(src).toContain("ImagePickerButton");
+    expect(src).toContain('catalog="campaigns"');
+    expect(src).not.toContain("editCoverUrl} onChange={(e) => setEditCoverUrl");
+  });
+});
