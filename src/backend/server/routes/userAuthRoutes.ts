@@ -230,29 +230,43 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
 
       // Try to send email when SMTP is configured and a token was issued.
       if (token && email) {
-        const publicOrigin = (process.env.DMCC_PUBLIC_ORIGIN ?? `${request.protocol}://${request.headers.host}`).replace(/\/$/, "");
-        const resetUrl = `${publicOrigin}/reset-password/${encodeURIComponent(token)}`;
+        // Build the reset URL exclusively from the configured public origin.
+        // We intentionally avoid falling back to request.Host because that
+        // header can be spoofed or mis-set by a proxy, which would send users
+        // a link pointing at the wrong domain.
+        const publicOrigin = process.env.DMCC_PUBLIC_ORIGIN?.replace(/\/$/, "");
+        if (publicOrigin) {
+          const resetUrl = `${publicOrigin}/reset-password/${encodeURIComponent(token)}`;
 
-        // Read the user's display name from the store for a personalised email.
-        let displayName: string | undefined;
-        try {
-          const store = await readUserAuthStore(vaultDirFor(request));
-          const norm = normalizeEmail(email);
-          displayName = store.users.find((u) => u.emailNormalized === norm)?.displayName;
-        } catch { /* non-critical */ }
+          // Read the user's display name for a personalised email.
+          let displayName: string | undefined;
+          try {
+            const store = await readUserAuthStore(vaultDirFor(request));
+            const norm = normalizeEmail(email);
+            displayName = store.users.find((u) => u.emailNormalized === norm)?.displayName;
+          } catch { /* non-critical */ }
 
-        await sendPasswordResetEmail({
-          to: normalizeEmail(email),
-          displayName,
-          resetUrl,
-          expiresInMinutes: 30,
-        });
+          await sendPasswordResetEmail({
+            to: normalizeEmail(email),
+            displayName,
+            resetUrl,
+            expiresInMinutes: 30,
+          });
+        } else if (process.env.NODE_ENV !== "production") {
+          // Dev/test: log the token path so developers can still test manually.
+          console.warn("[forgot-password] DMCC_PUBLIC_ORIGIN not set; skipping email dispatch.");
+        }
       }
 
-      // Do not reveal whether the email exists. In local/dev/test we surface the
-      // token so the desktop app can complete recovery before SMTP is configured.
-      const exposeToken = Boolean(token) && (isLoopbackIp(request.ip) || process.env.NODE_ENV !== "production");
-      return exposeToken
+      // In production the token is NEVER returned in the response, regardless
+      // of SMTP config or caller IP — even if email sending failed.
+      // In non-production it is only surfaced when the operator has explicitly
+      // opted in via DMCC_DEV_PASSWORD_RESET_TOKEN_RESPONSE=true, so a
+      // mis-configured staging/Render environment cannot accidentally leak tokens.
+      const allowDevToken =
+        process.env.NODE_ENV !== "production" &&
+        process.env.DMCC_DEV_PASSWORD_RESET_TOKEN_RESPONSE === "true";
+      return allowDevToken && token
         ? { ok: true, resetToken: token, expiresInSeconds: 1800 }
         : { ok: true };
     } catch (error: any) {
