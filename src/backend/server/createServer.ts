@@ -78,7 +78,20 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   if (isPostgresWebMode) {
     const allowedOrigin = process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173";
     server.register(cookie, { secret: process.env.SESSION_SECRET ?? "dev-change-me" });
-    server.register(helmet);
+    server.register(helmet, {
+      contentSecurityPolicy: {
+        directives: {
+          "default-src": ["'self'"],
+          "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+          "style-src": ["'self'", "'unsafe-inline'", "https:"],
+          "img-src": ["'self'", "data:", "blob:", "https:"],
+          "connect-src": ["'self'", "ws:", "wss:", "http://localhost:*", "http://127.0.0.1:*"],
+          "font-src": ["'self'", "data:", "https:"],
+          "object-src": ["'none'"],
+          "upgrade-insecure-requests": [],
+        },
+      },
+    });
     server.register(rateLimit, { max: 200, timeWindow: "1 minute" });
     server.register(cors, { origin: [allowedOrigin, "http://127.0.0.1:5173", "http://localhost:4877"], credentials: true });
   } else {
