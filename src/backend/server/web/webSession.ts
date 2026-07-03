@@ -26,12 +26,29 @@ export function issueOpaqueToken(prefix: string): string {
   return `${prefix}_${randomBytes(32).toString("base64url")}`;
 }
 
+function getCookieSameSite(): "lax" | "strict" | "none" | boolean {
+  const value = process.env.DMCC_COOKIE_SAMESITE ?? process.env.COOKIE_SAMESITE;
+  if (value === "none") return "none";
+  if (value === "lax") return "lax";
+  if (value === "strict") return "strict";
+  if (value === "true") return true;
+  if (value === "false") return false;
+  return "lax";
+}
+
+function getCookieSecure(): boolean {
+  const value = process.env.DMCC_COOKIE_SECURE ?? process.env.COOKIE_SECURE;
+  if (value === "true") return true;
+  if (value === "false") return false;
+  return process.env.NODE_ENV === "production";
+}
+
 export function setWebSessionCookie(reply: FastifyReply, token: string, expiresAt: Date): void {
   reply.setCookie(WEB_SESSION_COOKIE, token, {
     path: "/",
     httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: getCookieSameSite(),
+    secure: getCookieSecure(),
     expires: expiresAt,
   });
 }
@@ -40,8 +57,8 @@ export function clearWebSessionCookie(reply: FastifyReply): void {
   reply.clearCookie(WEB_SESSION_COOKIE, {
     path: "/",
     httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: getCookieSameSite(),
+    secure: getCookieSecure(),
   });
 }
 
