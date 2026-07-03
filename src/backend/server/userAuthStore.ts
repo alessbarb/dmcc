@@ -1234,7 +1234,7 @@ export async function changeUserPassword(
   newPassword: string
 ): Promise<boolean> {
   if (newPassword.length < 12 || newPassword.length > 128) {
-    throw Object.assign(new Error("New password must be 12–128 characters"), { statusCode: 400 });
+    throw Object.assign(new Error("New password must be 12-128 characters"), { statusCode: 400 });
   }
 
   const users = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);

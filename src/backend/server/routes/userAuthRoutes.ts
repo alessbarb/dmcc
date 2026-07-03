@@ -17,6 +17,7 @@ import {
   issuePasswordResetTokenByEmail,
   resetPasswordWithToken,
   getVaultAccessCodePepper,
+  normalizeEmail,
 } from "../userAuthStore.js";
 import { getValidatedCampaignId, getValidatedVaultId, verifyCampaignAccessCode, hashPlayerToken } from "../auth.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
@@ -25,6 +26,7 @@ import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js"
 import { randomBytes } from "node:crypto";
 import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
 import { assertSameOrigin, isLoopbackIp } from "../sameOrigin.js";
+import { sendPasswordResetEmail } from "../emailService.js";
 
 function cookieValue(raw: string, secure: boolean): string {
   return `${SESSION_COOKIE}=${encodeURIComponent(raw)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000${secure ? "; Secure" : ""}`;
@@ -221,10 +223,31 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
     try {
       assertSameOrigin(request);
       enforceLimit(request, "forgot-password", 5);
-      const token = typeof request.body?.email === "string"
-        ? await issuePasswordResetTokenByEmail(vaultDirFor(request), request.body.email)
-        : null;
+
+      const email = typeof request.body?.email === "string" ? request.body.email : "";
+      const token = email ? await issuePasswordResetTokenByEmail(vaultDirFor(request), email) : null;
       clearLimit(request, "forgot-password");
+
+      // Try to send email when SMTP is configured and a token was issued.
+      if (token && email) {
+        const publicOrigin = (process.env.DMCC_PUBLIC_ORIGIN ?? `${request.protocol}://${request.headers.host}`).replace(/\/$/, "");
+        const resetUrl = `${publicOrigin}/reset-password/${encodeURIComponent(token)}`;
+
+        // Read the user's display name from the store for a personalised email.
+        let displayName: string | undefined;
+        try {
+          const store = await readUserAuthStore(vaultDirFor(request));
+          const norm = normalizeEmail(email);
+          displayName = store.users.find((u) => u.emailNormalized === norm)?.displayName;
+        } catch { /* non-critical */ }
+
+        await sendPasswordResetEmail({
+          to: normalizeEmail(email),
+          displayName,
+          resetUrl,
+          expiresInMinutes: 30,
+        });
+      }
 
       // Do not reveal whether the email exists. In local/dev/test we surface the
       // token so the desktop app can complete recovery before SMTP is configured.
