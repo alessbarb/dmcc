@@ -28,3 +28,24 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("modal-overlay");
   });
 });
+
+describe("ImagePickerButton", () => {
+  it("exports ImagePickerButton with required props", () => {
+    const src = read("src/frontend/shared/components/ImagePickerButton.tsx");
+    expect(src).toContain("export function ImagePickerButton");
+    expect(src).toContain("onChange");
+    expect(src).toContain("catalog:");
+    expect(src).toContain("defaultImage");
+  });
+
+  it("renders ImagePickerModal on click", () => {
+    const src = read("src/frontend/shared/components/ImagePickerButton.tsx");
+    expect(src).toContain("ImagePickerModal");
+    expect(src).toContain("setOpen");
+  });
+
+  it("uses Pencil icon as edit trigger", () => {
+    const src = read("src/frontend/shared/components/ImagePickerButton.tsx");
+    expect(src).toContain("Pencil");
+  });
+});
