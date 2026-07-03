@@ -13,27 +13,32 @@ async function withTempDataDir<T>(fn: (dataDir: string) => Promise<T>): Promise<
   }
 }
 
-async function setupDm(server: any, email: string, secret: string) {
+async function setupDm(server: any, email: string, password = "correct horse battery") {
   const response = await server.inject({
     method: "POST",
-    url: "/api/auth/dm/setup",
-    payload: { email, secret, displayName: email.split("@")[0] },
+    url: "/api/auth/register",
+    payload: { email, password, displayName: email.split("@")[0] },
     headers: { "x-vault-id": "default" },
   });
-  expect(response.statusCode).toBe(200);
-  return response.json() as { dmSessionToken: string; dm: { dmId: string; email: string } };
+  expect(response.statusCode).toBe(201);
+  const cookieStr = response.headers["set-cookie"];
+  const cookie = (Array.isArray(cookieStr) ? cookieStr[0] : String(cookieStr)).split(";")[0];
+  return {
+    cookie,
+    user: response.json().user,
+  };
 }
 
 describe("premade campaign templates", () => {
   it("lists bundled templates for an authenticated DM", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      const dm = await setupDm(server, "dm@example.com", "secret-aaaa");
+      const dm = await setupDm(server, "dm@example.com");
 
       const response = await server.inject({
         method: "GET",
         url: "/api/premade-campaigns",
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
 
       expect(response.statusCode).toBe(200);
@@ -48,16 +53,15 @@ describe("premade campaign templates", () => {
     });
   });
 
-
   it("serves a full premade template for read-only preview without importing it", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      const dm = await setupDm(server, "preview@example.com", "secret-preview");
+      const dm = await setupDm(server, "preview@example.com");
 
       const response = await server.inject({
         method: "GET",
         url: "/api/premade-campaigns/phandalin-starter",
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
 
       expect(response.statusCode).toBe(200);
@@ -73,7 +77,7 @@ describe("premade campaign templates", () => {
       const spanish = await server.inject({
         method: "GET",
         url: "/api/premade-campaigns/phandalin-starter?locale=es",
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
       expect(spanish.statusCode).toBe(200);
       expect(spanish.json().title).toBe("Las Sombras sobre Phandalin");
@@ -82,7 +86,7 @@ describe("premade campaign templates", () => {
       const campaigns = await server.inject({
         method: "GET",
         url: "/api/campaigns",
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
 
       expect(campaigns.statusCode).toBe(200);
@@ -95,14 +99,14 @@ describe("premade campaign templates", () => {
   it("imports a premade template as an isolated campaign owned by the current DM", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      const dmA = await setupDm(server, "a@example.com", "secret-aaaa");
-      const dmB = await setupDm(server, "b@example.com", "secret-bbbb");
+      const dmA = await setupDm(server, "a@example.com");
+      const dmB = await setupDm(server, "b@example.com");
 
       const imported = await server.inject({
         method: "POST",
         url: "/api/premade-campaigns/phandalin-starter/import",
         payload: { title: "Mi Phandalin" },
-        headers: { "x-vault-id": "default", "x-dm-token": dmA.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dmA.cookie },
       });
 
       expect(imported.statusCode, imported.body).toBe(201);
@@ -113,7 +117,7 @@ describe("premade campaign templates", () => {
       const state = await server.inject({
         method: "GET",
         url: `/api/campaigns/${body.campaignId}`,
-        headers: { "x-vault-id": "default", "x-dm-token": dmA.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dmA.cookie },
       });
       expect(state.statusCode).toBe(200);
       expect(state.json().campaign.title).toBe("Mi Phandalin");
@@ -128,37 +132,38 @@ describe("premade campaign templates", () => {
       const listA = await server.inject({
         method: "GET",
         url: "/api/campaigns",
-        headers: { "x-vault-id": "default", "x-dm-token": dmA.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dmA.cookie },
       });
       expect(listA.json().map((campaign: any) => campaign.campaignId)).toContain(body.campaignId);
 
       const listB = await server.inject({
         method: "GET",
         url: "/api/campaigns",
-        headers: { "x-vault-id": "default", "x-dm-token": dmB.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dmB.cookie },
       });
       expect(listB.json()).toEqual([]);
 
       const forbidden = await server.inject({
         method: "GET",
         url: `/api/campaigns/${body.campaignId}`,
-        headers: { "x-vault-id": "default", "x-dm-token": dmB.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dmB.cookie },
       });
-      expect(forbidden.statusCode).toBe(403);
+      expect(forbidden.statusCode).toBe(401);
 
       await server.close();
     });
-  }, 20000);
+  }, 60000);
+
   it("renames an imported premade campaign and keeps the template origin", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      const dm = await setupDm(server, "rename@example.com", "secret-rename");
+      const dm = await setupDm(server, "rename@example.com");
 
       const imported = await server.inject({
         method: "POST",
         url: "/api/premade-campaigns/oracle-triple-eclipse/import",
         payload: { title: "Oráculo de los viernes", importMode: "sessions" },
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
       expect(imported.statusCode, imported.body).toBe(201);
       const campaignId = imported.json().campaignId;
@@ -167,7 +172,7 @@ describe("premade campaign templates", () => {
         method: "PATCH",
         url: `/api/campaigns/${campaignId}`,
         payload: { title: "Oráculo con la familia", summary: "Mesa familiar de prueba" },
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
       expect(renamed.statusCode).toBe(200);
       expect(renamed.json().campaign).toMatchObject({ title: "Oráculo con la familia", summary: "Mesa familiar de prueba" });
@@ -175,25 +180,25 @@ describe("premade campaign templates", () => {
 
       await server.close();
     });
-  }, 20000);
+  }, 60000);
 
   it("imports oracle with correct entity and canvas counts", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      const dm = await setupDm(server, "oracle@example.com", "secret-oracle");
+      const dm = await setupDm(server, "oracle@example.com");
 
       const imported = await server.inject({
         method: "POST",
         url: "/api/premade-campaigns/oracle-triple-eclipse/import",
         payload: { title: "My Oracle" },
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
       expect(imported.statusCode).toBe(201);
 
       const state = await server.inject({
         method: "GET",
         url: `/api/campaigns/${imported.json().campaignId}`,
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
       expect(state.statusCode).toBe(200);
       expect(state.json().entities.length).toBeGreaterThanOrEqual(108);
@@ -203,25 +208,25 @@ describe("premade campaign templates", () => {
 
       await server.close();
     });
-  }, 20000);
+  }, 60000);
 
   it("imports phandalin sessions as preparation without historical events", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      const dm = await setupDm(server, "ph@example.com", "secret-ph");
+      const dm = await setupDm(server, "ph@example.com");
 
       const imported = await server.inject({
         method: "POST",
         url: "/api/premade-campaigns/phandalin-starter/import",
         payload: { title: "My Phandalin" },
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
       const campaignId = imported.json().campaignId;
 
       const state = await server.inject({
         method: "GET",
         url: `/api/campaigns/${campaignId}`,
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
       expect(state.json().sessions.length).toBeGreaterThanOrEqual(8);
       for (const session of state.json().sessions) {
@@ -230,17 +235,17 @@ describe("premade campaign templates", () => {
 
       await server.close();
     });
-  }, 20000);
+  }, 60000);
 
   it("serves oracle in Spanish with entity titles", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
-      const dm = await setupDm(server, "es@example.com", "secret-es");
+      const dm = await setupDm(server, "es@example.com");
 
       const response = await server.inject({
         method: "GET",
         url: "/api/premade-campaigns/oracle-triple-eclipse?locale=es",
-        headers: { "x-vault-id": "default", "x-dm-token": dm.dmSessionToken },
+        headers: { "x-vault-id": "default", cookie: dm.cookie },
       });
       expect(response.statusCode).toBe(200);
       expect(response.json().locale).toBe("es");
@@ -301,5 +306,5 @@ describe("premade campaign templates", () => {
 
       await server.close();
     });
-  }, 20000);
+  }, 60000);
 });

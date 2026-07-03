@@ -33,7 +33,7 @@ import {
 } from "../helpers.js";
 import { createCampaignBackup } from "../hardening/backups.js";
 import { copyCampaignAcl, ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
-import { addCampaignMembership, getVaultAccessCodePepper } from "../userAuthStore.js";
+import { addCampaignMembership, getVaultAccessCodePepper, readUserAuthStore } from "../userAuthStore.js";
 import { sendCommandError } from "../commandHttp.js";
 
 function getLocalIp(): string {
@@ -79,12 +79,30 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
   // Health
   server.get("/api/health", async () => ({ ok: true, app: "dm-campaign-companion" }));
 
-  // List Campaigns
+  // List Campaigns directed by the signed-in account. Legacy ACL is only used as a test fallback.
   server.get("/api/campaigns", async (request, reply) => {
-    assertDM(request, server.dmSessionToken);
     const vaultId = getValidatedVaultId(request);
+    const vaultDir = join(dataDir, "vaults", vaultId);
+    const unifiedUser = (request as any).unifiedUser as { userId?: string } | undefined;
     const dmId = getRequestDmId(request, server.dmSessionToken);
-    const allowedCampaignIds = dmId ? listCampaignIdsForDmSync(dataDir, vaultId, dmId) : new Set<string>();
+
+    let allowedCampaignIds: Set<string> | null = new Set();
+    if (unifiedUser?.userId) {
+      const store = await readUserAuthStore(vaultDir);
+      allowedCampaignIds = new Set(
+        store.memberships
+          .filter((membership) =>
+            membership.userId === unifiedUser.userId &&
+            membership.role === "dm" &&
+            !membership.revokedAt
+          )
+          .map((membership) => membership.campaignId)
+      );
+    } else {
+      assertDM(request, server.dmSessionToken);
+      allowedCampaignIds = dmId ? listCampaignIdsForDmSync(dataDir, vaultId, dmId) : new Set<string>();
+    }
+
     const campaignsDir = join(dataDir, "vaults", vaultId, "campaigns");
     try {
       await fs.mkdir(campaignsDir, { recursive: true });
@@ -125,7 +143,7 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
             questsCount: entities.filter((e: any) => !e.archived && e.entityType === "quest").length,
             secretsCount: entities.filter((e: any) => !e.archived && e.entityType === "secret").length,
             cluesCount: entities.filter((e: any) => !e.archived && e.entityType === "clue").length,
-            activeSession: sessions.find((s: any) => s.status === "active")?.title || null,
+            activeSession: sessions.find((session: any) => session.status === "active")?.title || null,
             sessionsCount: sessions.length
           };
 
@@ -135,18 +153,19 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
               campaignId: campaign.campaignId ?? dirName,
               title: campaign.title ?? dirName,
               archived: campaign.archived ?? false,
+              role: "dm",
               stats,
             });
           } else {
-            campaigns.push({ campaignId: dirName, title: dirName, archived: false, stats });
+            campaigns.push({ campaignId: dirName, title: dirName, archived: false, role: "dm", stats });
           }
         } catch {
-          campaigns.push({ campaignId: dirName, title: dirName, archived: false });
+          campaigns.push({ campaignId: dirName, title: dirName, archived: false, role: "dm" });
         }
       }
       return campaigns;
     } catch (err: any) {
-        if (sendCommandError(reply, err)) return;
+      if (sendCommandError(reply, err)) return;
       reply.code(500);
       return { error: `Failed to list campaigns: ${err?.message ?? "unknown error"}` };
     }

@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import argon2 from "argon2";
 import type { FastifyInstance, FastifyRequest } from "fastify";
-import { and, desc, eq, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
 import { createId, generateCampaignId } from "@shared/ids.js";
@@ -239,6 +239,322 @@ function sqlRows<T = any>(result: unknown): T[] {
   if (Array.isArray(value)) return value as T[];
   if (Array.isArray(value?.rows)) return value.rows as T[];
   return [];
+}
+
+
+type DmDashboardCampaignRow = {
+  campaign: typeof schema.campaigns.$inferSelect;
+  membership: typeof schema.campaignMemberships.$inferSelect;
+};
+
+type CampaignStatsAccumulator = {
+  playersCount: number;
+  npcsCount: number;
+  locationsCount: number;
+  questsCount: number;
+  secretsCount: number;
+  cluesCount: number;
+  sessionsCount: number;
+  activeSession: string | null;
+};
+
+function toRecord(value: unknown): Record<string, any> {
+  return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, any> : {};
+}
+
+function getMetadataString(metadata: Record<string, any>, keys: string[]): string | undefined {
+  for (const key of keys) {
+    const value = metadata[key];
+    if (typeof value === "string" && value.trim().length > 0) return value.trim();
+  }
+  return undefined;
+}
+
+function getMetadataNumber(metadata: Record<string, any>, keys: string[]): number | null {
+  for (const key of keys) {
+    const value = metadata[key];
+    if (typeof value === "number" && Number.isFinite(value)) return Math.max(0, Math.min(100, Math.round(value)));
+  }
+  return null;
+}
+
+function formatActivityTime(value: unknown): string {
+  const occurredAt = value instanceof Date ? value.getTime() : new Date(String(value ?? "")).getTime();
+  if (!Number.isFinite(occurredAt)) return "Ahora";
+  const minutes = Math.max(0, Math.floor((Date.now() - occurredAt) / 60000));
+  if (minutes < 1) return "Ahora";
+  if (minutes < 60) return `Hace ${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `Hace ${hours}h`;
+  const days = Math.floor(hours / 24);
+  return `Hace ${days} día${days === 1 ? "" : "s"}`;
+}
+
+function iconForActivity(type: string): "session" | "npc" | "note" | "entity" | "campaign" {
+  if (type.includes("session") || type.includes("table")) return "session";
+  if (type.includes("npc") || type.includes("player") || type.includes("invitation")) return "npc";
+  if (type.includes("note") || type.includes("fact") || type.includes("clue")) return "note";
+  if (type.includes("entity") || type.includes("relation")) return "entity";
+  return "campaign";
+}
+
+function labelForActivity(type: string, campaignTitle: string, content: unknown): string {
+  const data = toRecord(content);
+  const subject =
+    getMetadataString(data, ["title", "name", "sessionTitle", "entityTitle", "label"]) ??
+    type.replace(/[._-]+/g, " ");
+
+  if (type.includes("campaign") && type.includes("created")) return `Campaña creada: ${campaignTitle}`;
+  if (type.includes("premade") || type.includes("template")) return `Aventura preparada importada: ${campaignTitle}`;
+  if (type.includes("session") && type.includes("completed")) return `Sesión completada: ${campaignTitle}`;
+  if (type.includes("session") && (type.includes("created") || type.includes("scheduled") || type.includes("planned"))) return `Sesión programada: ${subject}`;
+  if (type.includes("session")) return `Sesión actualizada: ${subject}`;
+  if (type.includes("entity") && type.includes("created")) return `Entidad creada: ${subject}`;
+  if (type.includes("entity")) return `Entidad actualizada: ${subject}`;
+  if (type.includes("note")) return `Nota actualizada: ${subject}`;
+  if (type.includes("proposal")) return `Propuesta de jugador: ${subject}`;
+  return `${subject}: ${campaignTitle}`;
+}
+
+function emptyStats(): CampaignStatsAccumulator {
+  return {
+    playersCount: 0,
+    npcsCount: 0,
+    locationsCount: 0,
+    questsCount: 0,
+    secretsCount: 0,
+    cluesCount: 0,
+    sessionsCount: 0,
+    activeSession: null,
+  };
+}
+
+async function getDmCampaignRows(user: WebUser): Promise<DmDashboardCampaignRow[]> {
+  const rows = await db
+    .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
+    .from(schema.campaignMemberships)
+    .innerJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
+    .where(and(
+      eq(schema.campaignMemberships.userId, user.userId),
+      isNull(schema.campaignMemberships.revokedAt),
+      sql`${schema.campaigns.status} <> 'deleted'`,
+    ));
+  return rows.filter((row) => isDmRole(row.membership.role));
+}
+
+async function buildDmDashboard(user: WebUser, locale?: string) {
+  const rows = await getDmCampaignRows(user);
+  const campaignIds = rows.map((row) => row.campaign.campaignId);
+  const statsByCampaign = new Map<string, CampaignStatsAccumulator>();
+  const playerProposalCounts = new Map<string, number>();
+  const plannedSessionCounts = new Map<string, number>();
+
+  for (const campaignId of campaignIds) statsByCampaign.set(campaignId, emptyStats());
+
+  if (campaignIds.length > 0) {
+    const playerCounts = await db
+      .select({ campaignId: schema.playerProfiles.campaignId, count: sql<number>`count(*)::int` })
+      .from(schema.playerProfiles)
+      .where(and(inArray(schema.playerProfiles.campaignId, campaignIds), eq(schema.playerProfiles.status, "active")))
+      .groupBy(schema.playerProfiles.campaignId);
+    for (const row of playerCounts) statsByCampaign.get(row.campaignId)!.playersCount = Number(row.count ?? 0);
+
+    const sessionCounts = await db
+      .select({
+        campaignId: schema.campaignSessions.campaignId,
+        count: sql<number>`count(*)::int`,
+        activeSession: sql<string | null>`max(case when ${schema.campaignSessions.status} = 'live' then ${schema.campaignSessions.title} else null end)`,
+        plannedCount: sql<number>`sum(case when ${schema.campaignSessions.status} = 'planned' then 1 else 0 end)::int`,
+      })
+      .from(schema.campaignSessions)
+      .where(and(inArray(schema.campaignSessions.campaignId, campaignIds), sql`${schema.campaignSessions.status} <> 'cancelled'`))
+      .groupBy(schema.campaignSessions.campaignId);
+    for (const row of sessionCounts) {
+      const stats = statsByCampaign.get(row.campaignId)!;
+      stats.sessionsCount = Number(row.count ?? 0);
+      stats.activeSession = row.activeSession ?? null;
+      plannedSessionCounts.set(row.campaignId, Number(row.plannedCount ?? 0));
+    }
+
+    const entityTypeCounts = await db
+      .select({ campaignId: schema.campaignEntities.campaignId, type: schema.campaignEntities.type, count: sql<number>`count(*)::int` })
+      .from(schema.campaignEntities)
+      .where(and(inArray(schema.campaignEntities.campaignId, campaignIds), sql`${schema.campaignEntities.status} <> 'archived'`))
+      .groupBy(schema.campaignEntities.campaignId, schema.campaignEntities.type);
+    for (const row of entityTypeCounts) {
+      const stats = statsByCampaign.get(row.campaignId)!;
+      const type = row.type;
+      const count = Number(row.count ?? 0);
+      if (["npc", "creature"].includes(type)) stats.npcsCount += count;
+      else if (["location", "place"].includes(type)) stats.locationsCount += count;
+      else if (["quest", "front", "clock"].includes(type)) stats.questsCount += count;
+      else if (["clue", "rumor"].includes(type)) stats.cluesCount += count;
+    }
+
+    const secretFactCounts = await db
+      .select({ campaignId: schema.campaignFacts.campaignId, count: sql<number>`count(*)::int` })
+      .from(schema.campaignFacts)
+      .where(and(
+        inArray(schema.campaignFacts.campaignId, campaignIds),
+        sql`${schema.campaignFacts.status} <> 'archived'`,
+        eq(schema.campaignFacts.kind, "dm_secret"),
+      ))
+      .groupBy(schema.campaignFacts.campaignId);
+    for (const row of secretFactCounts) statsByCampaign.get(row.campaignId)!.secretsCount = Number(row.count ?? 0);
+
+    const clueCounts = await db
+      .select({ campaignId: schema.campaignClues.campaignId, count: sql<number>`count(*)::int` })
+      .from(schema.campaignClues)
+      .where(and(inArray(schema.campaignClues.campaignId, campaignIds), sql`${schema.campaignClues.status} <> 'archived'`))
+      .groupBy(schema.campaignClues.campaignId);
+    for (const row of clueCounts) statsByCampaign.get(row.campaignId)!.cluesCount += Number(row.count ?? 0);
+
+    const proposalCounts = await db
+      .select({ campaignId: schema.playerProposals.campaignId, count: sql<number>`count(*)::int` })
+      .from(schema.playerProposals)
+      .where(and(inArray(schema.playerProposals.campaignId, campaignIds), eq(schema.playerProposals.status, "submitted")))
+      .groupBy(schema.playerProposals.campaignId);
+    for (const row of proposalCounts) playerProposalCounts.set(row.campaignId, Number(row.count ?? 0));
+  }
+
+  const activeTableRows = campaignIds.length === 0 ? [] : await db
+    .select({ liveTable: schema.liveTables, campaign: schema.campaigns, session: schema.campaignSessions })
+    .from(schema.liveTables)
+    .innerJoin(schema.campaigns, eq(schema.liveTables.campaignId, schema.campaigns.campaignId))
+    .leftJoin(schema.campaignSessions, and(
+      eq(schema.campaignSessions.campaignId, schema.liveTables.campaignId),
+      eq(schema.campaignSessions.sessionId, schema.liveTables.activeSessionId),
+    ))
+    .where(and(
+      inArray(schema.liveTables.campaignId, campaignIds),
+      eq(schema.liveTables.status, "active"),
+      sql`${schema.liveTables.expiresAt} > now()`,
+    ))
+    .orderBy(desc(schema.liveTables.createdAt))
+    .limit(8);
+
+  const activeTables = activeTableRows.map((row) => {
+    const stats = statsByCampaign.get(row.liveTable.campaignId) ?? emptyStats();
+    return {
+      id: row.liveTable.liveTableId,
+      campaignId: row.liveTable.campaignId,
+      tableName: row.campaign.title,
+      campaignTitle: row.campaign.title,
+      sessionTitle: row.session?.title ?? stats.activeSession ?? "Mesa activa",
+      status: "running" as const,
+      elapsed: formatActivityTime(row.liveTable.createdAt).replace("Hace ", ""),
+      playersPresent: 0,
+      playersTotal: stats.playersCount,
+    };
+  });
+
+  const campaignTitleById = new Map(rows.map((row) => [row.campaign.campaignId, row.campaign.title]));
+  const recentActivityRows = campaignIds.length === 0 ? [] : await db
+    .select({ activity: schema.activityFeed })
+    .from(schema.activityFeed)
+    .where(inArray(schema.activityFeed.campaignId, campaignIds))
+    .orderBy(desc(schema.activityFeed.occurredAt))
+    .limit(12);
+
+  const recentActivity = recentActivityRows.map((row) => {
+    const campaignTitle = campaignTitleById.get(row.activity.campaignId) ?? "Campaña";
+    return {
+      id: row.activity.activityId,
+      icon: iconForActivity(row.activity.type),
+      text: labelForActivity(row.activity.type, campaignTitle, row.activity.content),
+      time: formatActivityTime(row.activity.occurredAt),
+      href: `/campaigns/${encodeURIComponent(row.activity.campaignId)}/dashboard`,
+    };
+  });
+
+  const campaigns = rows.map((row) => {
+    const metadata = toRecord(row.campaign.metadata);
+    const stats = statsByCampaign.get(row.campaign.campaignId) ?? emptyStats();
+    const progressPercent = getMetadataNumber(metadata, ["progressPercent", "progress"]);
+    return {
+      ...row.campaign,
+      role: row.membership.role,
+      playerId: row.membership.playerId,
+      system: getMetadataString(metadata, ["system", "ruleset", "ruleSystem"]) ?? "custom",
+      coverUrl: getMetadataString(metadata, ["coverUrl", "coverImage", "coverImagePath"]),
+      stats,
+      progressPercent,
+    };
+  });
+
+  const missingCoverCount = campaigns.filter((campaign) => !campaign.coverUrl).length;
+  const emptyCampaignCount = campaigns.filter((campaign) => {
+    const stats = campaign.stats;
+    return stats.playersCount + stats.sessionsCount + stats.npcsCount + stats.locationsCount + stats.questsCount + stats.secretsCount + stats.cluesCount === 0;
+  }).length;
+  const pendingProposalCount = Array.from(playerProposalCounts.values()).reduce((sum, count) => sum + count, 0);
+  const plannedSessionCount = Array.from(plannedSessionCounts.values()).reduce((sum, count) => sum + count, 0);
+
+  const alerts = [
+    missingCoverCount > 0 ? {
+      id: "missing_campaign_cover",
+      label: missingCoverCount === 1 ? "1 campaña sin portada" : `${missingCoverCount} campañas sin portada`,
+      count: missingCoverCount,
+      severity: "info" as const,
+      href: "/dm/campaigns?filter=missing-cover",
+    } : null,
+    emptyCampaignCount > 0 ? {
+      id: "empty_campaigns",
+      label: emptyCampaignCount === 1 ? "1 campaña todavía vacía" : `${emptyCampaignCount} campañas todavía vacías`,
+      count: emptyCampaignCount,
+      severity: "warning" as const,
+      href: "/dm/campaigns?filter=empty",
+    } : null,
+    pendingProposalCount > 0 ? {
+      id: "pending_player_proposals",
+      label: pendingProposalCount === 1 ? "1 propuesta de jugador pendiente" : `${pendingProposalCount} propuestas de jugador pendientes`,
+      count: pendingProposalCount,
+      severity: "critical" as const,
+      href: "/dm/alerts?type=pending-player-proposals",
+    } : null,
+    plannedSessionCount > 0 ? {
+      id: "planned_sessions",
+      label: plannedSessionCount === 1 ? "1 sesión planificada" : `${plannedSessionCount} sesiones planificadas`,
+      count: plannedSessionCount,
+      severity: "info" as const,
+      href: "/dm/tables?status=planned",
+    } : null,
+  ].filter((alert): alert is NonNullable<typeof alert> => Boolean(alert));
+
+  const totals = campaigns.reduce(
+    (acc, campaign) => {
+      acc.players += campaign.stats.playersCount;
+      acc.sessions += campaign.stats.sessionsCount;
+      acc.npcs += campaign.stats.npcsCount;
+      acc.entities += campaign.stats.npcsCount + campaign.stats.locationsCount + campaign.stats.questsCount + campaign.stats.secretsCount + campaign.stats.cluesCount;
+      if (campaign.status === "completed") acc.completedCampaigns += 1;
+      return acc;
+    },
+    {
+      campaigns: campaigns.length,
+      activeTables: activeTables.length,
+      players: 0,
+      sessions: 0,
+      npcs: 0,
+      entities: 0,
+      completedCampaigns: 0,
+      playtimeLast30DaysLabel: "0h",
+    },
+  );
+
+  return {
+    profile: {
+      displayName: user.displayName,
+      email: user.email,
+      avatarUrl: undefined,
+    },
+    totals,
+    campaigns,
+    activeTables,
+    alerts,
+    recentActivity,
+    premadeTemplates: listPremadeCampaignTemplates(locale),
+  };
 }
 
 function sanitizeSearchQuery(raw?: string): string {
@@ -496,6 +812,24 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
 
   server.get("/api/health", async () => ({ ok: true, app: "dmcc-web", storage: "postgres" }));
 
+  server.get("/api/network-info", async () => {
+    const { networkInterfaces } = await import("node:os");
+    let localIp = "127.0.0.1";
+    try {
+      const nets = networkInterfaces();
+      for (const name of Object.keys(nets)) {
+        for (const net of (nets[name] || [])) {
+          if (net.family === "IPv4" && !net.internal) {
+            localIp = net.address;
+            break;
+          }
+        }
+      }
+    } catch { /* ignore */ }
+    const port = (server.server.address() as any)?.port ?? 4877;
+    return { localIp, port, url: `http://${localIp}:${port}` };
+  });
+
   server.post<{ Body: { email?: string; password?: string; displayName?: string } }>("/api/auth/register", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
     const password = requireBodyString(request.body?.password, "password");
@@ -562,7 +896,11 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
       .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
       .from(schema.campaignMemberships)
       .innerJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
-      .where(and(eq(schema.campaignMemberships.userId, user.userId), isNull(schema.campaignMemberships.revokedAt)));
+      .where(and(
+        eq(schema.campaignMemberships.userId, user.userId),
+        isNull(schema.campaignMemberships.revokedAt),
+        sql`${schema.campaigns.status} <> 'deleted'`,
+      ));
     return { user, campaigns: campaigns.map((row) => ({ ...row.campaign, role: row.membership.role, playerId: row.membership.playerId })) };
   });
 
@@ -572,7 +910,11 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
       .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
       .from(schema.campaignMemberships)
       .innerJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
-      .where(and(eq(schema.campaignMemberships.userId, user.userId), isNull(schema.campaignMemberships.revokedAt)));
+      .where(and(
+        eq(schema.campaignMemberships.userId, user.userId),
+        isNull(schema.campaignMemberships.revokedAt),
+        sql`${schema.campaigns.status} <> 'deleted'`,
+      ));
     return { campaigns: rows.map((row) => ({ ...row.campaign, role: row.membership.role, playerId: row.membership.playerId })) };
   });
 
@@ -585,6 +927,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
       .where(and(
         eq(schema.campaignMemberships.userId, user.userId),
         isNull(schema.campaignMemberships.revokedAt),
+        sql`${schema.campaigns.status} <> 'deleted'`,
       ));
     return { campaigns: rows
       .filter((row) => row.membership.role === "player" || isDmRole(row.membership.role))
@@ -597,20 +940,48 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     return { user };
   });
 
+  // Compatibility endpoint for frontend chunks that still probe the old auth status route.
+  // In PostgreSQL web mode, account state is session/cookie based and /api/me is preferred.
+  server.get("/api/auth/status", async (request) => {
+    const user = (request as any).webUser as WebUser | undefined;
+    const [{ count }] = await db.select({ count: sql<number>`count(*)::int` }).from(schema.users);
+    const hasUsers = count > 0;
+    return {
+      dmAccountConfigured: hasUsers,
+      dmPinConfigured: hasUsers,
+      dmSessionValid: Boolean(user),
+      dm: user ? { dmId: user.userId, email: user.email, displayName: user.displayName } : null,
+      dmProfiles: user ? [{ dmId: user.userId, email: user.email, displayName: user.displayName }] : [],
+      localRequest: true,
+      lanExposed: false,
+      storageMode: "postgres",
+    };
+  });
+
+  server.get<{ Querystring: { locale?: string } }>("/api/dm/dashboard", async (request) => {
+    const user = getRequiredWebUser(request);
+    return buildDmDashboard(user, request.query.locale);
+  });
+
   server.get("/api/campaigns", async (request) => {
     const user = getRequiredWebUser(request);
     const rows = await db
       .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
       .from(schema.campaignMemberships)
       .innerJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
-      .where(and(eq(schema.campaignMemberships.userId, user.userId), isNull(schema.campaignMemberships.revokedAt)));
+      .where(and(
+        eq(schema.campaignMemberships.userId, user.userId),
+        isNull(schema.campaignMemberships.revokedAt),
+        sql`${schema.campaigns.status} <> 'deleted'`,
+      ));
     return rows.map((row) => ({ ...row.campaign, role: row.membership.role, playerId: row.membership.playerId }));
   });
 
-  server.post<{ Body: { title?: string; system?: string; summary?: string; campaignId?: string } }>("/api/campaigns", async (request, reply) => {
+  server.post<{ Body: { title?: string; system?: string; summary?: string; campaignId?: string; coverUrl?: string } }>("/api/campaigns", async (request, reply) => {
     const user = getRequiredWebUser(request);
     const title = requireBodyString(request.body?.title, "title");
     const campaignId = request.body?.campaignId ?? createId("cmp");
+    const coverUrl = request.body?.coverUrl?.trim();
     const workspaceId = await ensureDefaultWorkspace(user);
     const commandId = String(request.headers["idempotency-key"] ?? randomUUID());
 
@@ -621,7 +992,10 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
         title,
         summary: request.body?.summary ?? null,
         status: "active",
-        metadata: { system: request.body?.system ?? "generic_fantasy_d20" },
+        metadata: {
+          system: request.body?.system ?? "generic_fantasy_d20",
+          ...(coverUrl ? { coverUrl } : {}),
+        },
       });
       await tx.insert(schema.campaignMemberships).values({ campaignId, userId: user.userId, role: "dm", playerId: null });
     });
@@ -641,6 +1015,22 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   });
 
 
+
+  server.get<{ Querystring: { locale?: string } }>("/api/premades", async (request) => {
+    getRequiredWebUser(request);
+    return { schemaVersion: 2, templates: listPremadeCampaignTemplates(request.query.locale) };
+  });
+
+  server.get<{ Params: { templateId: string }; Querystring: { locale?: string } }>("/api/premades/:templateId", async (request, reply) => {
+    getRequiredWebUser(request);
+    const template = getPremadeCampaignTemplate(request.params.templateId, request.query.locale);
+    if (!template) { reply.code(404); return { error: "Premade campaign template not found" }; }
+    return template;
+  });
+
+  server.post<{ Params: { templateId: string } }>("/api/premades/:templateId/import", async (request, reply) => {
+    return reply.redirect(`/api/premade-campaigns/${encodeURIComponent(request.params.templateId)}/import`, 307);
+  });
 
   server.get<{ Querystring: { locale?: string } }>("/api/premade-campaigns", async (request) => {
     getRequiredWebUser(request);
@@ -846,8 +1236,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId", async (request) => {
     const { membership } = await requireCampaignMembership(request, request.params.campaignId);
     if (isDmRole(membership.role)) {
-      const projection = await repo.getCampaignState(request.params.campaignId);
-      return projection;
+      return repo.getSerializedCampaignState(request.params.campaignId);
     }
     return buildPlayerPortal(request.params.campaignId, getRequiredWebUser(request));
   });
@@ -1112,6 +1501,43 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     return { invitation: { invitationId, url: makeInviteUrl(request, token), token, expiresAt } };
   });
 
+  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/invitations", async (request) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    const invitations = await db
+      .select()
+      .from(schema.campaignInvitations)
+      .where(eq(schema.campaignInvitations.campaignId, request.params.campaignId))
+      .orderBy(desc(schema.campaignInvitations.createdAt));
+    return {
+      invitations: invitations.map((invitation) => ({
+        invitationId: invitation.invitationId,
+        role: invitation.role,
+        maxUses: invitation.maxUses,
+        usesCount: invitation.usesCount,
+        expiresAt: invitation.expiresAt,
+        revokedAt: invitation.revokedAt,
+        createdAt: invitation.createdAt,
+        status: invitation.revokedAt ? "revoked" : invitation.expiresAt < new Date() ? "expired" : invitation.usesCount >= invitation.maxUses ? "exhausted" : "active",
+      })),
+    };
+  });
+
+  server.post<{ Params: { campaignId: string; invitationId: string } }>("/api/campaigns/:campaignId/invitations/:invitationId/revoke", async (request) => {
+    const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    await db.update(schema.campaignInvitations).set({ revokedAt: new Date() }).where(and(
+      eq(schema.campaignInvitations.campaignId, request.params.campaignId),
+      eq(schema.campaignInvitations.invitationId, request.params.invitationId),
+    ));
+    await db.insert(schema.activityFeed).values({
+      campaignId: request.params.campaignId,
+      activityId: createId("act"),
+      type: "invitation.revoked",
+      actorUserId: user.userId,
+      content: { invitationId: request.params.invitationId },
+    });
+    return { ok: true };
+  });
+
   server.get<{ Params: { token: string } }>("/api/invitations/:token", async (request, reply) => {
     const tokenHash = hashOpaque(request.params.token);
     const [row] = await db
@@ -1255,18 +1681,51 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  server.post<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/objectives", async (request) => {
-    const { user } = await requireCampaignMembership(request, request.params.campaignId);
+  server.post<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/objectives", async (request, reply) => {
+    const { user, membership } = await requireCampaignMembership(request, request.params.campaignId);
+    if (!membership.playerId) { reply.code(403); return { error: "Player membership required" }; }
+    const body = (request.body ?? {}) as any;
+    const objectiveId = createId("obj");
+    await db.insert(schema.campaignObjectives).values({
+      campaignId: request.params.campaignId,
+      objectiveId,
+      playerId: membership.playerId,
+      title: String(body.title ?? body.label ?? "Objetivo personal").slice(0, 180),
+      description: body.description ?? body.details ?? null,
+      kind: body.kind ?? "player",
+      status: body.status ?? "open",
+      visibilityScope: body.visibility ?? "specific_player",
+      linkedEntityIds: body.linkedEntityIds ?? [],
+      sourceType: "player",
+    });
     await db.insert(schema.activityFeed).values({
       campaignId: request.params.campaignId,
       activityId: createId("act"),
       type: "player.objective.created",
       actorUserId: user.userId,
-      content: (request.body ?? {}) as any,
+      content: { objectiveId, title: body.title ?? body.label ?? "Objetivo personal" },
     });
-    return { ok: true, objectiveId: createId("obj") };
+    campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated" });
+    return { ok: true, objectiveId };
   });
-  server.put<{ Params: { campaignId: string; objectiveId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/objectives/:objectiveId", async () => ({ ok: true }));
+
+  server.put<{ Params: { campaignId: string; objectiveId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/objectives/:objectiveId", async (request, reply) => {
+    const { membership } = await requireCampaignMembership(request, request.params.campaignId);
+    if (!membership.playerId) { reply.code(403); return { error: "Player membership required" }; }
+    const body = (request.body ?? {}) as any;
+    await db.update(schema.campaignObjectives).set({
+      title: body.title,
+      description: body.description ?? body.details,
+      status: body.status,
+      updatedAt: new Date(),
+    }).where(and(
+      eq(schema.campaignObjectives.campaignId, request.params.campaignId),
+      eq(schema.campaignObjectives.objectiveId, request.params.objectiveId),
+      eq(schema.campaignObjectives.playerId, membership.playerId),
+    ));
+    campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated" });
+    return { ok: true };
+  });
 
   server.post<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/proposals", async (request, reply) => {
     const { user, membership } = await requireCampaignMembership(request, request.params.campaignId);
@@ -1295,6 +1754,43 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
     const proposals = await db.select().from(schema.playerProposals).where(eq(schema.playerProposals.campaignId, request.params.campaignId));
     return { proposals, notes: [] };
+  });
+
+  server.put<{ Params: { campaignId: string; proposalId: string }; Body: { status?: string; dmNote?: string } }>("/api/campaigns/:campaignId/player-portal/proposals/:proposalId/resolve", async (request, reply) => {
+    const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    const status = request.body?.status === "approved" ? "approved" : request.body?.status === "rejected" ? "rejected" : null;
+    if (!status) { reply.code(400); return { error: "status must be approved or rejected" }; }
+    const [proposal] = await db.select().from(schema.playerProposals).where(and(
+      eq(schema.playerProposals.campaignId, request.params.campaignId),
+      eq(schema.playerProposals.proposalId, request.params.proposalId),
+    )).limit(1);
+    if (!proposal) { reply.code(404); return { error: "Proposal not found" }; }
+    if (proposal.status === "approved" || proposal.status === "rejected") {
+      return { ok: true, proposal };
+    }
+    await db.update(schema.playerProposals).set({
+      status,
+      processedBy: user.userId,
+      processedAt: new Date(),
+    }).where(and(
+      eq(schema.playerProposals.campaignId, request.params.campaignId),
+      eq(schema.playerProposals.proposalId, request.params.proposalId),
+    ));
+    await db.insert(schema.activityFeed).values({
+      campaignId: request.params.campaignId,
+      activityId: createId("act"),
+      type: status === "approved" ? "player.proposal.approved" : "player.proposal.rejected",
+      actorUserId: user.userId,
+      content: { proposalId: request.params.proposalId, dmNote: request.body?.dmNote ?? null },
+    });
+    await db.insert(schema.notifications).values({
+      notificationId: createId("ntf"),
+      userId: proposal.userId,
+      type: status === "approved" ? "proposal.approved" : "proposal.rejected",
+      content: { campaignId: request.params.campaignId, proposalId: request.params.proposalId },
+    });
+    campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated" });
+    return { ok: true, status };
   });
 
 

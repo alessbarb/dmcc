@@ -1104,7 +1104,14 @@ describe("persistent campaign API", () => {
         dmOnlyCount: 2,
       });
       expect(search.json().results).toMatchObject([
-        { entityId: "ent_clue", entityType: "clue", title: "Sigil" },
+        {
+          type: "clue",
+          item: {
+            id: "ent_clue",
+            title: "Sigil",
+            dmSummary: "Sigil content",
+          },
+        },
       ]);
     });
   });

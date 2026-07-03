@@ -22,7 +22,7 @@ async function authenticatedServer() {
     await server.close();
     await rm(dataDir, { recursive: true, force: true });
   });
-  await server.inject({
+  const register = await server.inject({
     method: "POST",
     url: "/api/auth/register",
     payload: {
@@ -31,16 +31,12 @@ async function authenticatedServer() {
       displayName: "Owner",
     },
   });
-  const login = await server.inject({
-    method: "POST",
-    url: "/api/auth/login",
-    payload: { email: "owner@example.com", password: "correct horse battery" },
-  });
+  expect(register.statusCode).toBe(201);
   return {
     server,
-    cookie: String(login.headers["set-cookie"]).split(";")[0],
+    cookie: String(register.headers["set-cookie"]).split(";")[0],
     dataDir,
-    userId: login.json().user.userId as string,
+    userId: register.json().user.userId as string,
   };
 }
 

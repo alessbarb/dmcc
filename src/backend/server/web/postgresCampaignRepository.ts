@@ -194,12 +194,17 @@ async function projectReadModelsTx(tx: DbTransaction, events: StoredEvent[]): Pr
     const payload: any = event.payload;
     switch (event.type) {
       case "CampaignCreated": {
+        const metadata = {
+          ...(payload.metadata && typeof payload.metadata === "object" && !Array.isArray(payload.metadata) ? payload.metadata : {}),
+          ...(typeof payload.system === "string" && payload.system.trim().length > 0 ? { system: payload.system.trim() } : {}),
+          ...(typeof payload.coverUrl === "string" && payload.coverUrl.trim().length > 0 ? { coverUrl: payload.coverUrl.trim() } : {}),
+        };
         await tx
           .update(schema.campaigns)
           .set({
             title: payload.title,
             summary: payload.summary ?? null,
-            metadata: payload.metadata ?? {},
+            metadata,
             updatedAt: new Date(),
           })
           .where(eq(schema.campaigns.campaignId, event.campaignId ?? payload.campaignId));
@@ -794,6 +799,11 @@ async function upsertObjectiveReadModel(tx: DbTransaction, input: {
 export class PostgresCampaignRepository {
   async getCampaignState(campaignId: string): Promise<CampaignProjection> {
     return db.transaction((tx) => loadProjectionTx(tx, campaignId));
+  }
+
+  async getSerializedCampaignState(campaignId: string): Promise<Record<string, any>> {
+    const projection = await db.transaction((tx) => loadProjectionTx(tx, campaignId));
+    return serializeProjection(projection);
   }
 
   async loadEvents(campaignId: string): Promise<StoredEvent[]> {

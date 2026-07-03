@@ -14,8 +14,8 @@ describe("apiFetch", () => {
     });
 
     const [, init] = fetchMock.mock.calls[0];
-    expect(init.credentials).toBe("same-origin");
-    expect(init.headers.get("x-vault-id")).toBe("vault_a");
+    expect(init.credentials).toBe("include");
+    expect(init.headers.has("x-vault-id")).toBe(false);
     expect(init.headers.has("x-role")).toBe(false);
     expect(init.headers.has("x-player-id")).toBe(false);
     expect(init.headers.has("x-dm-token")).toBe(false);

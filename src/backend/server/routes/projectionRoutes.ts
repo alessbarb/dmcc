@@ -215,7 +215,41 @@ export async function registerProjectionRoutes(server: FastifyInstance, opts: { 
               .search(query).map((r) => r.item)
           : items;
 
-        return { results };
+        const formattedResults = results.map((item: any) => {
+          if (item.itemType === "fact") {
+            return {
+              type: "fact",
+              item: {
+                id: item.factId,
+                title: item.statement,
+                summary: item.statement,
+                dmSummary: item.kind,
+                visibility: item.visibility?.kind ?? item.kind ?? "dm",
+              },
+            };
+          } else {
+            let type = "entity";
+            if (item.entityType === "clue") {
+              type = "clue";
+            } else if (item.entityType === "objective") {
+              type = "objective";
+            } else if (item.entityType) {
+              type = item.entityType;
+            }
+            return {
+              type,
+              item: {
+                id: item.entityId,
+                title: item.title,
+                summary: item.summary ?? undefined,
+                dmSummary: item.content ?? item.metadata?.content ?? item.metadata?.dmSummary ?? undefined,
+                visibility: item.visibility?.kind ?? "dm",
+              },
+            };
+          }
+        });
+
+        return { results: formattedResults };
       } catch (err: any) {
         if (sendCommandError(reply, err)) return;
         if (err.statusCode === 401 || err.statusCode === 403) {
