@@ -47,27 +47,27 @@ describe("localIdentity", () => {
     // 1. Upsert a first profile
     upsertDmProfile({
       dmId: "dm_1",
-      email: "Alessandro@example.com",
-      displayName: "Alessandro",
+      email: "User@example.com",
+      displayName: "User",
     });
 
     let identity = readIdentity();
     expect(identity.dmProfiles).toHaveLength(1);
-    expect(identity.dmProfiles[0].email).toBe("Alessandro@example.com");
+    expect(identity.dmProfiles[0].email).toBe("User@example.com");
 
     // 2. Upsert a profile with the same email but different casing and different dmId
     // It should match the existing one, update it, and NOT create a duplicate
     upsertDmProfile({
       dmId: "dm_2",
-      email: "alessandro@example.com",
-      displayName: "Alessandro Updated",
+      email: "user@example.com",
+      displayName: "User Updated",
     });
 
     identity = readIdentity();
     expect(identity.dmProfiles).toHaveLength(1);
     expect(identity.dmProfiles[0].dmId).toBe("dm_2");
-    expect(identity.dmProfiles[0].displayName).toBe("Alessandro Updated");
-    expect(identity.dmProfiles[0].email).toBe("alessandro@example.com");
+    expect(identity.dmProfiles[0].displayName).toBe("User Updated");
+    expect(identity.dmProfiles[0].email).toBe("user@example.com");
   });
 
   it("deduplicates existing duplicates in localStorage keeping the most recent one", () => {
@@ -80,13 +80,13 @@ describe("localIdentity", () => {
         {
           dmId: "dm_older",
           email: "alessbarb@gmail.com",
-          displayName: "Alessandro Old",
+          displayName: "User Old",
           lastAccessed: "2026-07-02T10:00:00.000Z",
         },
         {
           dmId: "dm_newer",
           email: "ALESSBARB@gmail.com",
-          displayName: "Alessandro New",
+          displayName: "User New",
           lastAccessed: "2026-07-02T12:00:00.000Z",
         },
       ],
@@ -97,7 +97,7 @@ describe("localIdentity", () => {
     const identity = readIdentity();
     expect(identity.dmProfiles).toHaveLength(1);
     expect(identity.dmProfiles[0].dmId).toBe("dm_newer");
-    expect(identity.dmProfiles[0].displayName).toBe("Alessandro New");
+    expect(identity.dmProfiles[0].displayName).toBe("User New");
     expect(identity.dmProfiles[0].email).toBe("ALESSBARB@gmail.com");
   });
 });
