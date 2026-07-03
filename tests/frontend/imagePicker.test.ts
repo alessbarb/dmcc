@@ -84,3 +84,11 @@ describe("EntityDetailModal wiring", () => {
     expect(src).not.toContain('placeholder="https://ejemplo.com/foto.jpg"');
   });
 });
+
+describe("CanvasInspector wiring", () => {
+  it("uses ImagePickerButton for imageUrl", () => {
+    const src = read("src/frontend/dm/canvas/components/CanvasInspector.tsx");
+    expect(src).toContain("ImagePickerButton");
+    expect(src).not.toContain("Imagen / Retrato (URL)");
+  });
+});

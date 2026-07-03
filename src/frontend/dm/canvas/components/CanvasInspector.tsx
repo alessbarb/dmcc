@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { X, Trash2, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+import { ImagePickerButton } from "../../../shared/components/ImagePickerButton.js";
 
 
 export interface CanvasInspectorProps {
@@ -568,20 +569,22 @@ export function CanvasInspector({
                 </div>
 
                 <div className="form-group">
-                  <label>Imagen / Retrato (URL)</label>
-                  <input
-                    type="url"
+                  <label>Imagen / Retrato</label>
+                  <ImagePickerButton
                     value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    onBlur={handleImageUrlBlur}
-                    className="form-input"
-                    placeholder="https://… o ruta local /assets/…"
+                    onChange={(path) => {
+                      setImageUrl(path);
+                      // save immediately on picker selection
+                      const current = (entity.metadata?.imageUrl as string) || "";
+                      if (path !== current) {
+                        void updateEntity(entity.entityId, {
+                          metadata: { ...entity.metadata, imageUrl: path || undefined },
+                        });
+                      }
+                    }}
+                    catalog="avatars"
+                    shape="circle"
                   />
-                  {imageUrl && (
-                    <div className="inspector-image-preview">
-                      <img src={imageUrl} alt="preview" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                    </div>
-                  )}
                 </div>
 
                 <div className="form-group">
