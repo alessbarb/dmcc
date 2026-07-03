@@ -92,11 +92,13 @@ function nowIso(): string {
 }
 
 function pathFor(vaultDir: string): string {
-  // TODO: legacy elimination pending
   return join(vaultDir, "auth.json");
 }
 
 export function getTenantIdFromVaultDir(vaultDir: string): string {
+  if (process.env.DMCC_STORAGE_MODE === "postgres") {
+    return "default";
+  }
   const absVault = resolve(vaultDir);
   const vaultId = basename(absVault) || "default";
   const baseDir = resolve(absVault, "..", "..");
@@ -109,8 +111,6 @@ export async function readUserAuthStore(vaultDir: string, skipMigration = false)
   if (!skipMigration && existsSync(authPath)) {
     try {
       const fileData = JSON.parse(await readFile(authPath, "utf8"));
-      // Only auto-migrate files that have a unified user schema (v3+), NOT
-      // the legacy dmAccounts-only format (schemaVersion: 2) used by dmAuthStore.
       if (!fileData.migration && fileData.schemaVersion >= 3 && fileData.schemaVersion < 4) {
         const absVault = resolve(vaultDir);
         const vaultId = basename(absVault) || "default";
@@ -119,7 +119,6 @@ export async function readUserAuthStore(vaultDir: string, skipMigration = false)
       }
     } catch {}
   }
-
   const tenantId = getTenantIdFromVaultDir(vaultDir);
 
   // Load from DB
@@ -501,14 +500,30 @@ export async function getAccountAggregate(vaultDir: string, userId: string) {
     version: pp.version,
   }));
 
-  const dbMemberships = await db.select().from(schema.campaignMemberships).where(eq(schema.campaignMemberships.userId, userId));
-  const memberships: CampaignMembership[] = dbMemberships.map((m) => ({
+  const dbMemberships = await db
+    .select({
+      campaignId: schema.campaignMemberships.campaignId,
+      userId: schema.campaignMemberships.userId,
+      role: schema.campaignMemberships.role,
+      playerId: schema.campaignMemberships.playerId,
+      createdAt: schema.campaignMemberships.createdAt,
+      revokedAt: schema.campaignMemberships.revokedAt,
+      campaignTitle: schema.campaigns.title,
+      campaignStatus: schema.campaigns.status,
+    })
+    .from(schema.campaignMemberships)
+    .leftJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
+    .where(eq(schema.campaignMemberships.userId, userId));
+
+  const memberships = dbMemberships.map((m) => ({
     campaignId: m.campaignId,
     userId: m.userId,
     role: m.role as "dm" | "player" | "observer",
     playerId: m.playerId ?? undefined,
     createdAt: m.createdAt.toISOString(),
     revokedAt: m.revokedAt?.toISOString(),
+    campaignTitle: m.campaignTitle ?? undefined,
+    campaignStatus: m.campaignStatus ?? undefined,
   }));
 
   return {
@@ -827,16 +842,33 @@ export async function upsertPlayerProfile(
 }
 
 export async function getVaultAccessCodePepper(vaultDir: string): Promise<string> {
-  const store = await readUserAuthStore(vaultDir);
   const authPath = pathFor(vaultDir);
+  let persisted: Record<string, unknown> = {};
   try {
-    const persisted = JSON.parse(await readFile(authPath, "utf8")) as { accessCodePepper?: string };
-    if (persisted.accessCodePepper) return persisted.accessCodePepper;
+    persisted = JSON.parse(await readFile(authPath, "utf8")) as Record<string, unknown>;
+    if (typeof persisted.accessCodePepper === "string" && persisted.accessCodePepper) {
+      return persisted.accessCodePepper;
+    }
   } catch (error: any) {
     if (error?.code !== "ENOENT") throw error;
   }
-  await writeUserAuthStore(vaultDir, store);
-  return store.accessCodePepper;
+
+  const accessCodePepper = randomBytes(32).toString("hex");
+  await mkdir(vaultDir, { recursive: true });
+  await writeFile(
+    authPath,
+    JSON.stringify(
+      {
+        schemaVersion: typeof persisted.schemaVersion === "number" ? persisted.schemaVersion : 4,
+        ...persisted,
+        accessCodePepper,
+      },
+      null,
+      2
+    ),
+    "utf8"
+  );
+  return accessCodePepper;
 }
 
 export function publicUser(user: UserAccount | { userId: string; emailNormalized: string; displayName?: string | null; avatarUrl?: string | null; vaultRole: string }) {
@@ -931,7 +963,12 @@ export async function authenticateUser(vaultDir: string, email: string, password
 
   const user = users[0];
   if (!user || !(await verifySecret(password ?? "", user.passwordSalt, user.passwordHash))) return null;
-  return user;
+
+  await db.update(schema.users).set({
+    lastLoginAt: new Date(),
+  }).where(eq(schema.users.userId, user.userId));
+
+  return { ...user, lastLoginAt: new Date() };
 }
 
 export async function createSession(vaultDir: string, userId: string) {
@@ -1316,6 +1353,24 @@ export async function issuePasswordResetToken(vaultDir: string, userId: string):
   await syncToDisk(vaultDir);
 
   return token;
+}
+
+export async function issuePasswordResetTokenByEmail(vaultDir: string, email: string): Promise<string | null> {
+  const tenantId = getTenantIdFromVaultDir(vaultDir);
+  const emailHash = hashOpaque(normalizeEmail(email ?? ""));
+
+  const users = await db.select().from(schema.users).where(
+    and(
+      eq(schema.users.emailHash, emailHash),
+      eq(schema.users.vaultId, tenantId),
+      isNull(schema.users.disabledAt)
+    )
+  ).limit(1);
+
+  const user = users[0];
+  if (!user) return null;
+
+  return issuePasswordResetToken(vaultDir, user.userId);
 }
 
 export async function resetPasswordWithToken(

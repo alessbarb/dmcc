@@ -1,296 +1,119 @@
 import type { FastifyInstance } from "fastify";
-import { readdir } from "fs/promises";
-import { join } from "path";
-import { PersistentRateLimit } from "../rateLimitStore.js";
-import { randomBytes } from "crypto";
+import { join } from "node:path";
+import { randomBytes } from "node:crypto";
 import {
-  assertDM,
-  createDmSessionToken,
-  getRequestDmSession,
   getValidatedVaultId,
-  hashPlayerToken,
   isLoopbackRequest,
-  verifySecret,
 } from "../auth.js";
 import {
-  createDmAccount,
-  findDmAccountByEmail,
-  readDmAuthStore,
-  toPublicDmProfile,
-  updateDmLastLogin,
-} from "../dmAuthStore.js";
-import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
-import { EventStore } from "@core/persistence/eventStore/eventStore.js";
-import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
-import { buildPlayerPortalProjection } from "@core/projections/playerPortalProjection.js";
-import { getSessionUser, readUserAuthStore, revokeAllSessions } from "../userAuthStore.js";
+  getSessionUser,
+  publicUser,
+  readUserAuthStore,
+  revokeAllSessions,
+} from "../userAuthStore.js";
 import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
-import { sendCommandError } from "../commandHttp.js";
 
-interface DmAttemptState {
-  count: number;
-  lockedUntil: number;
-  lastAttemptAt: number;
+function expiredCookie(): string {
+  return `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`;
 }
 
-const MAX_ATTEMPTS = 5;
-const LOCKOUT_1 = 30_000;
-const LOCKOUT_2 = 120_000;
+function retired(reply: { code: (statusCode: number) => unknown }, message: string) {
+  reply.code(410);
+  return { error: message };
+}
 
 export async function registerAuthRoutes(
   server: FastifyInstance,
   options: { dataDir: string }
 ): Promise<void> {
   const { dataDir } = options;
-  const dmAttempts = await PersistentRateLimit.load(dataDir, "dm-auth");
-  server.addHook("onClose", async () => {
-    await dmAttempts.close();
-  });
 
   function getVaultDir(vaultId: string): string {
     return join(dataDir, "vaults", vaultId);
   }
 
-  function attemptKey(vaultId: string, email: string): string {
-    return `${vaultId}:${email.trim().toLowerCase()}`;
-  }
-
-  function getAttemptState(key: string): DmAttemptState {
-    return dmAttempts.get<DmAttemptState>(key) ?? { count: 0, lockedUntil: 0, lastAttemptAt: 0 };
-  }
-
-  function checkRateLimit(key: string): { blocked: boolean; retryAfterMs: number } {
-    const state = getAttemptState(key);
-    const now = Date.now();
-    if (state.lockedUntil > now) return { blocked: true, retryAfterMs: state.lockedUntil - now };
-    return { blocked: false, retryAfterMs: 0 };
-  }
-
-  function recordFailedAttempt(key: string): void {
-    const state = getAttemptState(key);
-    const now = Date.now();
-    const newCount = state.count + 1;
-    let lockedUntil = 0;
-    if (newCount >= MAX_ATTEMPTS) {
-      const alreadyLocked = state.lockedUntil > 0;
-      lockedUntil = now + (alreadyLocked ? LOCKOUT_2 : LOCKOUT_1);
-    }
-    dmAttempts.set(key, { count: newCount, lockedUntil, lastAttemptAt: now });
-  }
-
-  function clearAttempts(key: string): void {
-    dmAttempts.delete(key);
-  }
-
   server.get("/api/auth/status", async (request) => {
     const vaultId = getValidatedVaultId(request);
     const vaultDir = getVaultDir(vaultId);
-    const store = await readDmAuthStore(vaultDir);
-    const dmSession = getRequestDmSession(request, server.dmSessionToken);
-    const dmSessionValid = Boolean(dmSession && dmSession.vaultId === vaultId);
-    const activeProfiles = store.dmAccounts.filter((account) => !account.archivedAt).map(toPublicDmProfile);
-
-    const userStore = await readUserAuthStore(vaultDir).catch(() => null);
-    const hasUnifiedUsers = (userStore?.users.filter((u) => !u.disabledAt).length ?? 0) > 0;
-    const accountConfigured = activeProfiles.length > 0 || hasUnifiedUsers;
+    const resolved = await getSessionUser(vaultDir, readSessionCookie(request));
+    const store = await readUserAuthStore(vaultDir).catch(() => null);
+    const activeUsers = store?.users.filter((user) => !user.disabledAt) ?? [];
+    const memberships = resolved
+      ? (store?.memberships ?? []).filter(
+          (membership) => membership.userId === resolved.user.userId && !membership.revokedAt
+        )
+      : [];
+    const user = resolved ? publicUser(resolved.user) : null;
 
     return {
-      dmAccountConfigured: accountConfigured,
-      dmPinConfigured: accountConfigured,
-      legacyPinConfigured: Boolean(store.legacyPinConfigured),
-      dmSessionValid,
-      dm: dmSessionValid && dmSession
+      accountConfigured: activeUsers.length > 0,
+      dmAccountConfigured: activeUsers.length > 0,
+      dmPinConfigured: activeUsers.length > 0,
+      legacyPinConfigured: false,
+      dmSessionValid: Boolean(user),
+      sessionValid: Boolean(user),
+      user,
+      dm: user
         ? {
-            dmId: dmSession.dmId,
-            email: dmSession.email,
-            displayName: dmSession.displayName,
-            avatarUrl: dmSession.avatarUrl,
+            dmId: user.userId,
+            userId: user.userId,
+            email: user.email,
+            displayName: user.displayName,
+            avatarUrl: user.avatarUrl,
           }
         : null,
-      // Do not expose local DM account emails/names to unauthenticated LAN callers.
-      // The login screen already remembers known local profiles in localStorage.
-      dmProfiles: dmSessionValid ? activeProfiles : [],
+      memberships,
+      dmProfiles: [],
       localRequest: isLoopbackRequest(request),
       lanExposed: server.lanExposed ?? false,
     };
   });
 
-  server.post<{ Body: { email: string; secret: string; displayName?: string } }>(
-    "/api/auth/dm/setup",
-    async (request, reply) => {
-      if (!server.allowLegacyTestAuth) {
-        reply.code(410);
-        return { error: "Legacy DM setup has been retired; use account registration" };
-      }
-      const vaultId = getValidatedVaultId(request);
-      // DM accounts are self-service. Creating another DM does not grant access
-      // to existing campaigns; ACL ownership keeps every DM isolated unless
-      // campaigns are explicitly shared later.
-      try {
-        const { account, firstAccount } = await createDmAccount({
-          dataDir,
-          vaultId,
-          email: request.body.email,
-          secret: request.body.secret,
-          displayName: request.body.displayName,
-        });
-        const dmSessionToken = createDmSessionToken(
-          {
-            dmId: account.dmId,
-            vaultId,
-            email: account.emailNormalized,
-            displayName: account.displayName,
-            avatarUrl: account.avatarUrl,
-          },
-          server.dmSessionToken
-        );
-        return { ok: true, dmSessionToken, dm: toPublicDmProfile(account), firstAccount };
-      } catch (err: any) {
-        if (sendCommandError(reply, err)) return;
-        reply.code(err.statusCode ?? 500);
-        return { error: err.message ?? "Failed to create DM account" };
-      }
-    }
-  );
-
-  server.post<{ Body: { email: string; secret: string } }>(
-    "/api/auth/dm/login",
-    async (request, reply) => {
-      if (!server.allowLegacyTestAuth) {
-        reply.code(410);
-        return { error: "Legacy DM login has been retired; use account login" };
-      }
-      const vaultId = getValidatedVaultId(request);
-      const vaultDir = getVaultDir(vaultId);
-      const email = request.body.email?.trim().toLowerCase() ?? "";
-      const key = attemptKey(vaultId, email);
-
-      const { blocked, retryAfterMs } = checkRateLimit(key);
-      if (blocked) {
-        reply.code(429);
-        return { error: "Too many attempts", retryAfterMs };
-      }
-
-      const account = await findDmAccountByEmail(vaultDir, email);
-      if (!account) {
-        recordFailedAttempt(key);
-        reply.code(401);
-        return { error: "Invalid email or key" };
-      }
-
-      const valid = await verifySecret(request.body.secret ?? "", account.secretSalt, account.secretHash);
-      if (!valid) {
-        recordFailedAttempt(key);
-        reply.code(401);
-        return { error: "Invalid email or key" };
-      }
-
-      clearAttempts(key);
-      const updatedAccount = await updateDmLastLogin(vaultDir, account.dmId);
-      const currentAccount = updatedAccount ?? account;
-      const dmSessionToken = createDmSessionToken(
-        {
-          dmId: currentAccount.dmId,
-          vaultId,
-          email: currentAccount.emailNormalized,
-          displayName: currentAccount.displayName,
-          avatarUrl: currentAccount.avatarUrl,
-        },
-        server.dmSessionToken
-      );
-
-      return { dmSessionToken, dm: toPublicDmProfile(currentAccount) };
-    }
-  );
-
-  server.post("/api/auth/dm/logout", async () => {
-    // DM sessions are signed, process-local tokens. The client drops the token;
-    // server restart or /lock rotates the signing secret and invalidates them.
-    return { ok: true };
-  });
-
   server.post("/api/auth/lock", async (request, reply) => {
     try {
-      const vaultDir = getVaultDir(getValidatedVaultId(request));
-      const unified = await getSessionUser(vaultDir, readSessionCookie(request));
-      if (unified) {
-        if (unified.user.vaultRole !== "admin") {
-          reply.code(403);
-          return { error: "Administrator access required" };
-        }
-        await revokeAllSessions(vaultDir);
-        reply.header("Set-Cookie", `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`);
-      } else {
-        assertDM(request, server.dmSessionToken);
-      }
-      server.dmSessionToken = randomBytes(32).toString("hex");
-      return { ok: true };
-    } catch {
-      reply.code(403);
-      return { error: "Forbidden" };
-    }
-  });
-
-  server.post("/api/auth/setup-pin", async (_request, reply) => {
-    reply.code(410);
-    return { error: "PIN setup has been replaced by DM email + key setup" };
-  });
-
-  server.post("/api/auth/unlock", async (_request, reply) => {
-    reply.code(410);
-    return { error: "PIN unlock has been replaced by DM email + key login" };
-  });
-
-  server.post("/api/player/join", async (_request, reply) => {
-    reply.code(410);
-    return { error: "Legacy join has been retired; sign in and join the campaign" };
-  });
-
-  // POST /api/auth/player-logout — invalidate a player token server-side
-  server.post(
-    "/api/auth/player-logout",
-    async (request, reply) => {
-      if (!server.allowLegacyTestAuth) {
-        reply.code(410);
-        return { error: "Legacy player tokens have been retired; use account logout" };
-      }
       const vaultId = getValidatedVaultId(request);
-      const playerToken = request.headers["x-player-token"] as string | undefined;
-      if (!playerToken) {
-        reply.code(400);
-        return { error: "Missing x-player-token header" };
+      const vaultDir = getVaultDir(vaultId);
+      const resolved = await getSessionUser(vaultDir, readSessionCookie(request));
+      if (!resolved || resolved.user.vaultRole !== "admin") {
+        reply.code(403);
+        return { error: "Administrator access required" };
       }
-      server.playerTokens.delete(playerToken);
-      const tokenHash = hashPlayerToken(playerToken);
-      const repo = new CampaignRepository(
-        new EventStore(dataDir, vaultId),
-        new SnapshotStore(dataDir, vaultId)
-      );
-      const campaignsDir = join(dataDir, "vaults", vaultId, "campaigns");
-      try {
-        const campaignIds = await readdir(campaignsDir);
-        for (const campaignId of campaignIds.filter((id) => id.startsWith("cmp_"))) {
-          const state = await repo.getCampaignState(campaignId);
-          const events = await repo.loadEvents(campaignId);
-          const portal = buildPlayerPortalProjection(state, events);
-          const token = portal.tokensByHash.get(tokenHash);
-          if (token && !token.revokedAt) {
-            await repo.executeCommand(campaignId, {
-              type: "RevokePlayerToken",
-              campaignId: campaignId,
-              actorId: token.playerId,
-              playerId: token.playerId,
-              tokenId: token.tokenId,
-              revokedAt: new Date().toISOString(),
-            });
-            break;
-          }
-        }
-      } catch {
-        // In-memory logout still succeeds when there is no persistent campaign yet.
-      }
+
+      await revokeAllSessions(vaultDir);
+      server.dmSessionToken = randomBytes(32).toString("hex");
+      reply.header("Set-Cookie", expiredCookie());
       return { ok: true };
+    } catch (error: any) {
+      reply.code(error.statusCode ?? 500);
+      return { error: error.statusCode ? error.message : "Unable to lock application" };
     }
+  });
+
+  server.post("/api/auth/dm/setup", async (_request, reply) =>
+    retired(reply, "DM-specific setup has been removed. Use /api/auth/register.")
   );
 
+  server.post("/api/auth/dm/login", async (_request, reply) =>
+    retired(reply, "DM-specific login has been removed. Use /api/auth/login.")
+  );
+
+  server.post("/api/auth/dm/logout", async (_request, reply) =>
+    retired(reply, "DM-specific logout has been removed. Use /api/auth/logout.")
+  );
+
+  server.post("/api/auth/setup-pin", async (_request, reply) =>
+    retired(reply, "PIN setup has been removed. Use account registration.")
+  );
+
+  server.post("/api/auth/unlock", async (_request, reply) =>
+    retired(reply, "PIN unlock has been removed. Use account login.")
+  );
+
+  server.post("/api/player/join", async (_request, reply) =>
+    retired(reply, "Legacy player join has been retired. Sign in and join the campaign.")
+  );
+
+  server.post("/api/auth/player-logout", async (_request, reply) =>
+    retired(reply, "Player tokens have been removed from authentication. Use /api/auth/logout.")
+  );
 }

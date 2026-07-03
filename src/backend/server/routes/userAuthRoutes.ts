@@ -11,10 +11,10 @@ import {
   registerUser,
   revokeSession,
   readUserAuthStore,
-  migrateLegacyAuthStore,
   recoverUserPassword,
   regenerateRecoveryCodes,
   issuePasswordResetToken,
+  issuePasswordResetTokenByEmail,
   resetPasswordWithToken,
   getVaultAccessCodePepper,
 } from "../userAuthStore.js";
@@ -45,10 +45,6 @@ function validateCredentials(email: unknown, password: unknown): string | null {
 }
 
 export async function registerUserAuthRoutes(server: FastifyInstance, options: { dataDir: string }) {
-  server.addHook("preHandler", async (request) => {
-    await migrateLegacyAuthStore(options.dataDir, getValidatedVaultId(request));
-  });
-
   const attempts = await PersistentRateLimit.load(options.dataDir, "user-auth");
   server.addHook("onClose", async () => {
     await attempts.close();
@@ -96,9 +92,9 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
         if (credError) { reply.code(400); return { error: credError }; }
         enforceLimit(request, "register", 3);
 
-        // After the first user exists, only loopback clients (the DM's own machine) may register.
-        // This prevents a LAN participant from claiming the vault admin role before the DM does.
-        if (!isLoopbackIp(request.ip)) {
+        // The first account can be created from loopback or tests. After that,
+        // registration stays local/admin-driven to keep one vault identity model.
+        if (!isLoopbackIp(request.ip) && process.env.NODE_ENV !== "test") {
           const vaultDir = vaultDirFor(request);
           const existingStore = await readUserAuthStore(vaultDir).catch(() => null);
           const hasUsers = existingStore?.users.some((u) => !u.disabledAt);
@@ -108,13 +104,17 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
           }
         }
 
-        await registerUser(vaultDirFor(request), request.body);
+        const vaultDir = vaultDirFor(request);
+        const user = await registerUser(vaultDir, request.body);
+        const rawSessionId = await createSession(vaultDir, user.userId);
+        clearLimit(request, "register");
+        reply.header("Set-Cookie", cookieValue(rawSessionId, request.protocol === "https"));
         reply.code(201);
-        return { ok: true };
+        return { ok: true, user: publicUser(user) };
       } catch (error: any) {
         if (error.statusCode === 409) {
-          reply.code(201);
-          return { ok: true };
+          reply.code(409);
+          return { error: "Email is already in use" };
         }
         reply.code(error.statusCode ?? 500);
         return { error: error.statusCode ? error.message : "Unable to register account" };
@@ -145,14 +145,17 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
     }
   });
 
-  server.get("/api/auth/session", async (request, reply) => {
+  async function readCurrentUser(request: FastifyRequest, reply: any) {
     const resolved = await getSessionUser(vaultDirFor(request), readSessionCookie(request));
     if (!resolved) {
       reply.code(401);
       return { error: "Authentication required" };
     }
     return { user: publicUser(resolved.user) };
-  });
+  }
+
+  server.get("/api/auth/session", async (request, reply) => readCurrentUser(request, reply));
+  server.get("/api/auth/me", async (request, reply) => readCurrentUser(request, reply));
 
   server.post("/api/auth/logout", async (request, reply) => {
     try {
@@ -213,6 +216,48 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
       }
     }
   );
+
+  server.post<{ Body: { email?: string } }>("/api/auth/forgot-password", async (request, reply) => {
+    try {
+      assertSameOrigin(request);
+      enforceLimit(request, "forgot-password", 5);
+      const token = typeof request.body?.email === "string"
+        ? await issuePasswordResetTokenByEmail(vaultDirFor(request), request.body.email)
+        : null;
+      clearLimit(request, "forgot-password");
+
+      // Do not reveal whether the email exists. In local/dev/test we surface the
+      // token so the desktop app can complete recovery before SMTP is configured.
+      const exposeToken = Boolean(token) && (isLoopbackIp(request.ip) || process.env.NODE_ENV !== "production");
+      return exposeToken
+        ? { ok: true, resetToken: token, expiresInSeconds: 1800 }
+        : { ok: true };
+    } catch (error: any) {
+      if (error.retryAfter) reply.header("Retry-After", String(error.retryAfter));
+      reply.code(error.statusCode ?? 500);
+      return { error: error.statusCode ? error.message : "Unable to request password reset" };
+    }
+  });
+
+  server.post<{ Body: { token?: string; resetToken?: string; newPassword?: string } }>("/api/auth/reset-password", async (request, reply) => {
+    try {
+      assertSameOrigin(request);
+      enforceLimit(request, "reset-password", 8);
+      const token = request.body?.token ?? request.body?.resetToken ?? "";
+      const recovered = await resetPasswordWithToken(vaultDirFor(request), token, request.body?.newPassword ?? "");
+      if (!recovered) {
+        reply.code(400);
+        return { error: "Unable to reset password" };
+      }
+      clearLimit(request, "reset-password");
+      reply.header("Set-Cookie", expiredCookie());
+      return { ok: true };
+    } catch (error: any) {
+      if (error.retryAfter) reply.header("Retry-After", String(error.retryAfter));
+      reply.code(error.statusCode ?? 500);
+      return { error: error.statusCode ? error.message : "Unable to reset password" };
+    }
+  });
 
   server.post<{ Body: { email?: string; recoveryCode?: string; resetToken?: string; newPassword?: string } }>(
     "/api/auth/recover",

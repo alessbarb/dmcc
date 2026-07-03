@@ -203,8 +203,16 @@ describe("unified user authentication", () => {
       });
 
       expect(response.statusCode).toBe(201);
-      expect(response.json()).toEqual({ ok: true });
-      expect(response.json()).not.toHaveProperty("sessionId");
+      const body = response.json();
+      expect(body).toEqual({
+        ok: true,
+        user: expect.objectContaining({
+          email: "alice@example.com",
+          vaultRole: "admin",
+        }),
+      });
+      expect(body).not.toHaveProperty("sessionId");
+      expect(body.user).not.toHaveProperty("passwordHash");
 
       const persisted = await readFile(join(dataDir, "vaults", "default", "auth.json"), "utf8");
       expect(persisted).not.toContain("correct horse battery");
@@ -212,8 +220,8 @@ describe("unified user authentication", () => {
     });
   });
 
-  it("does not reveal whether a registration email already exists", async () => {
-    await withServer(async (server) => {
+  it("rejects duplicate registration emails without creating a second account", async () => {
+    await withServer(async (server, dataDir) => {
       const request = {
         method: "POST" as const,
         url: "/api/auth/register",
@@ -221,8 +229,13 @@ describe("unified user authentication", () => {
       };
       const created = await server.inject(request);
       const duplicate = await server.inject(request);
-      expect(duplicate.statusCode).toBe(created.statusCode);
-      expect(duplicate.json()).toEqual(created.json());
+
+      expect(created.statusCode).toBe(201);
+      expect(duplicate.statusCode).toBe(409);
+      expect(duplicate.json()).toEqual({ error: "Email is already in use" });
+
+      const persisted = JSON.parse(await readFile(join(dataDir, "vaults", "default", "auth.json"), "utf8"));
+      expect(persisted.users.filter((user: { emailNormalized?: string }) => user.emailNormalized === "alice@example.com")).toHaveLength(1);
     });
   });
 
