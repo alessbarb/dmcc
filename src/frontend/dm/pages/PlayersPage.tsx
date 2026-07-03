@@ -7,6 +7,7 @@ import { useToast } from "../../shared/hooks/useToast.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { apiFetch } from "../../shared/api/apiClient.js";
+import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
 
 
 export interface PlayersPageProps {
@@ -455,26 +456,14 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                   <input className="form-input" type="email" value={playerForm.email} onChange={e => setPlayerForm({ ...playerForm, email: e.target.value })} placeholder="alicia@example.com" />
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">URL de la Imagen (Foto / Avatar)</label>
-                  <input className="form-input" value={playerForm.imageUrl} onChange={e => setPlayerForm({ ...playerForm, imageUrl: e.target.value })} placeholder="https://example.com/avatar.png" />
-                  {playerForm.imageUrl && (
-                    <div style={{ marginTop: "10px", display: "flex", justifyContent: "center" }}>
-                      <div style={{
-                        width: "80px",
-                        height: "80px",
-                        borderRadius: "20px",
-                        overflow: "hidden",
-                        border: "2px double hsl(38, 60%, 55%)",
-                        boxShadow: "0 3px 6px rgba(0,0,0,0.4)"
-                      }}>
-                        <img src={playerForm.imageUrl} alt="Vista previa del avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">Path del Avatar Local (e.g. /assets/avatars/default-avatar.png)</label>
-                  <input className="form-input" value={playerForm.avatarUrl} onChange={e => setPlayerForm({ ...playerForm, avatarUrl: e.target.value })} placeholder="/assets/avatars/default-avatar.png" />
+                  <label className="form-label">Avatar del jugador</label>
+                  <ImagePickerButton
+                    value={playerForm.imageUrl || playerForm.avatarUrl || ""}
+                    onChange={(path) => setPlayerForm({ ...playerForm, imageUrl: path, avatarUrl: "" })}
+                    catalog="avatars"
+                    defaultImage="/assets/avatars/default-avatar.png"
+                    shape="circle"
+                  />
                 </div>
               </div>
               <div className="modal-footer">
