@@ -1,6 +1,7 @@
 import { randomUUID, randomBytes } from "node:crypto";
 import argon2 from "argon2";
 import { sendPasswordResetEmail } from "../emailService.js";
+import { verifySecret } from "../auth.js";
 import type { FastifyInstance, FastifyRequest } from "fastify";
 import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../../db/client.js";
@@ -871,11 +872,53 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   server.post<{ Body: { email?: string; password?: string } }>("/api/auth/login", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
     const password = requireBodyString(request.body?.password, "password");
-    const [user] = await db.select().from(schema.users).where(eq(schema.users.emailNormalized, email)).limit(1);
-    if (!user || !(await argon2.verify(user.passwordHash, password))) {
+
+    const [user] = await db
+      .select()
+      .from(schema.users)
+      .where(and(
+        eq(schema.users.emailNormalized, email),
+        isNull(schema.users.disabledAt),
+      ))
+      .limit(1);
+
+    let passwordValid = false;
+
+    if (user?.passwordAlgorithm === "argon2id") {
+      passwordValid = await argon2.verify(user.passwordHash, password).catch(() => false);
+    } else if (user?.passwordAlgorithm === "scrypt") {
+      passwordValid = await verifySecret(password, user.passwordSalt, user.passwordHash);
+
+      if (passwordValid) {
+        await db
+          .update(schema.users)
+          .set({
+            passwordHash: await argon2.hash(password),
+            passwordSalt: "argon2id",
+            passwordAlgorithm: "argon2id",
+            lastLoginAt: new Date(),
+          })
+          .where(eq(schema.users.userId, user.userId));
+
+        user.passwordHash = "";
+        user.passwordSalt = "argon2id";
+        user.passwordAlgorithm = "argon2id";
+        user.lastLoginAt = new Date();
+      }
+    }
+
+    if (!user || !passwordValid) {
       reply.code(401);
       return { error: "Invalid email or password" };
     }
+
+    if (user.passwordAlgorithm === "argon2id") {
+      await db
+        .update(schema.users)
+        .set({ lastLoginAt: new Date() })
+        .where(eq(schema.users.userId, user.userId));
+    }
+
     const session = await createWebSession(user.userId);
     setWebSessionCookie(reply, session.token, session.expiresAt);
     return { user: publicWebUser(user) };
