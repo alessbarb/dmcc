@@ -64,16 +64,15 @@ export function upsertDmProfile(profile: Omit<DmProfileEntry, "lastAccessed"> & 
   writeIdentity({ ...identity, dmProfiles });
 }
 
-export function setDmPinStatus(pinSet: boolean): void {
-  const identity = readIdentity();
-  writeIdentity({ ...identity, dm: { ...identity.dm, pinSet } });
+export function setDmPinStatus(_pinSet: boolean): void {
+  // Kept as a no-op while old surfaces are renamed. Authentication no longer uses local PIN state.
 }
 
 export function setDmLastUnlocked(): void {
   const identity = readIdentity();
   writeIdentity({
     ...identity,
-    dm: { ...identity.dm, pinSet: identity.dm?.pinSet ?? false, lastUnlockedAt: new Date().toISOString() },
+    account: { ...identity.account, lastLoginAt: new Date().toISOString() },
   });
 }
 

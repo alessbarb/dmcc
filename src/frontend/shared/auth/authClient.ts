@@ -1,50 +1,83 @@
-import type { AuthStatus } from "./authTypes.js";
+import type { AuthStatus, AuthUser } from "./authTypes.js";
 import { readIdentity, setDmLastUnlocked, upsertDmProfile } from "./localIdentity.js";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 
-function getVaultId(): string {
-  return readIdentity().vaultId || "default";
+function rememberUser(user?: AuthUser | null): void {
+  if (!user?.userId || !user.email) return;
+  upsertDmProfile({
+    dmId: user.userId,
+    email: user.email,
+    displayName: user.displayName,
+    avatarUrl: user.avatarUrl,
+  });
 }
 
-function rememberUser(user?: { userId: string; email?: string; displayName?: string } | null): void {
-  if (!user?.userId || !user.email) return;
-  upsertDmProfile({ dmId: user.userId, email: user.email, displayName: user.displayName });
+function unauthenticatedStatus(): AuthStatus {
+  const accountHints = readIdentity().dmProfiles;
+  return {
+    accountConfigured: accountHints.length > 0,
+    dmAccountConfigured: accountHints.length > 0,
+    dmPinConfigured: accountHints.length > 0,
+    dmSessionValid: false,
+    sessionValid: false,
+    user: null,
+    dm: null,
+    dmProfiles: accountHints,
+    localRequest: true,
+    lanExposed: false,
+  };
 }
 
 export async function fetchAuthStatus(): Promise<AuthStatus> {
-  const res = await apiFetch("/api/auth/session", { vaultId: getVaultId() });
-  if (res.ok) {
-    const { user } = await res.json();
-    rememberUser(user);
-    return {
-      dmAccountConfigured: true,
-      dmPinConfigured: true,
-      dmSessionValid: true,
-      dm: { dmId: user.userId, email: user.email, displayName: user.displayName },
-      dmProfiles: readIdentity().dmProfiles,
-      localRequest: true,
-      lanExposed: false,
-    };
+  const res = await apiFetch("/api/auth/status");
+  if (!res.ok) {
+    if (res.status === 401 || res.status === 404) return unauthenticatedStatus();
+    throw new Error(await readApiError(res, "Failed to fetch auth status"));
   }
-  if (res.status !== 401) throw new Error("Failed to fetch auth status");
-  const legacy = await apiFetch("/api/auth/status", { vaultId: getVaultId() }).then((response) =>
-    response.ok ? response.json() : null
-  ).catch(() => null);
-  const configured = Boolean(legacy?.dmAccountConfigured);
+  const status = await res.json();
+  const user: AuthUser | null = status.user ?? (status.dm
+    ? {
+        userId: status.dm.userId ?? status.dm.dmId,
+        email: status.dm.email,
+        displayName: status.dm.displayName,
+        avatarUrl: status.dm.avatarUrl,
+      }
+    : null);
+
+  if (user) rememberUser(user);
+
+  const sessionValid = Boolean(status.sessionValid ?? status.dmSessionValid ?? user);
+  const accountConfigured = Boolean(status.accountConfigured ?? status.dmAccountConfigured ?? status.dmPinConfigured);
+  const rememberedProfiles = readIdentity().dmProfiles;
+
   return {
-    dmAccountConfigured: configured,
-    dmPinConfigured: configured,
-    dmSessionValid: false,
-    dm: null,
-    dmProfiles: readIdentity().dmProfiles,
-    localRequest: true,
-    lanExposed: Boolean(legacy?.lanExposed),
+    accountConfigured,
+    dmAccountConfigured: accountConfigured,
+    dmPinConfigured: accountConfigured,
+    legacyPinConfigured: false,
+    sessionValid,
+    dmSessionValid: sessionValid,
+    user,
+    dm: user
+      ? {
+          dmId: user.userId,
+          userId: user.userId,
+          email: user.email,
+          displayName: user.displayName,
+          avatarUrl: user.avatarUrl,
+        }
+      : null,
+    dmProfiles: Array.isArray(status.dmProfiles) && status.dmProfiles.length > 0
+      ? status.dmProfiles
+      : rememberedProfiles,
+    memberships: status.memberships ?? [],
+    localRequest: status.localRequest ?? true,
+    lanExposed: Boolean(status.lanExposed),
   };
 }
 
 export async function setupDmAccount(payload: { email: string; secret: string; displayName?: string }): Promise<void> {
   const register = await apiFetch("/api/auth/register", {
-    vaultId: getVaultId(),
     init: {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,12 +85,13 @@ export async function setupDmAccount(payload: { email: string; secret: string; d
     },
   });
   if (!register.ok) throw new Error(await readApiError(register, "Failed to create account"));
-  await loginDm(payload.email, payload.secret);
+  const data = await register.json().catch(() => null);
+  rememberUser(data?.user);
+  setDmLastUnlocked();
 }
 
 export async function loginDm(email: string, secret: string): Promise<void> {
   const res = await apiFetch("/api/auth/login", {
-    vaultId: getVaultId(),
     init: {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -74,6 +108,29 @@ export async function loginDm(email: string, secret: string): Promise<void> {
   rememberUser(user);
 }
 
+export async function requestPasswordReset(email: string): Promise<{ resetToken?: string; expiresInSeconds?: number }> {
+  const res = await apiFetch("/api/auth/forgot-password", {
+    init: {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    },
+  });
+  if (!res.ok) throw new Error(await readApiError(res, "Unable to request password reset"));
+  return res.json().catch(() => ({}));
+}
+
+export async function resetPassword(token: string, newPassword: string): Promise<void> {
+  const res = await apiFetch("/api/auth/reset-password", {
+    init: {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, newPassword }),
+    },
+  });
+  if (!res.ok) throw new Error(await readApiError(res, "Unable to reset password"));
+}
+
 export async function setupPin(_secret: string): Promise<void> {
   throw new Error("Account setup requires email and password");
 }
@@ -83,11 +140,11 @@ export async function unlockDm(_secret: string): Promise<void> {
 }
 
 export async function logoutDm(): Promise<void> {
-  await apiFetch("/api/auth/logout", { vaultId: getVaultId(), init: { method: "POST" } }).catch(() => undefined);
+  await apiFetch("/api/auth/logout", { init: { method: "POST" } }).catch(() => undefined);
 }
 
 export async function lockDm(): Promise<void> {
-  await apiFetch("/api/auth/lock", { vaultId: getVaultId(), init: { method: "POST" } }).catch(() => undefined);
+  await logoutDm();
 }
 
 export async function acquireLocalDmToken(): Promise<void> {

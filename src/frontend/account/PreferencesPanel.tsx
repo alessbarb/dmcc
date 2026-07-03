@@ -1,8 +1,10 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import type { AccountPreferences } from "./accountTypes.js";
 import type { DeviceOverrides } from "./deviceOverrides.js";
 import { themes } from "./themeRegistry.js";
 import { typographySets } from "./typographyRegistry.js";
+import { useTranslation } from "../shared/i18n/useTranslation.js";
+import { isDirty } from "./accountState.js";
 
 type Props = {
   preferences: AccountPreferences;
@@ -17,6 +19,7 @@ export function PreferencesPanel({
   onSave,
   onDeviceChange,
 }: Props) {
+  const { t } = useTranslation();
   const [draft, setDraft] = useState(preferences);
   const preview = useMemo(() => ({
     themeId: deviceOverrides.themeId ?? draft.themeId,
@@ -24,12 +27,21 @@ export function PreferencesPanel({
     typographySetId: deviceOverrides.typographySetId ?? draft.typographySetId,
   }), [deviceOverrides, draft]);
 
+  const isFormDirty = isDirty(preferences, draft);
+
+  useEffect(() => {
+    (window as any).__accountCenterDirty = isFormDirty;
+    return () => {
+      (window as any).__accountCenterDirty = false;
+    };
+  }, [isFormDirty]);
+
   return (
     <section aria-labelledby="appearance-title">
-      <h2 id="appearance-title">Appearance and accessibility</h2>
+      <h2 id="appearance-title">{t("account.appearance.title")}</h2>
       <div className="account-form-grid">
         <label>
-          Theme
+          {t("account.appearance.theme")}
           <select
             value={draft.themeId}
             onChange={(event) => setDraft({ ...draft, themeId: event.target.value })}
@@ -40,7 +52,7 @@ export function PreferencesPanel({
           </select>
         </label>
         <label>
-          Mode
+          {t("account.appearance.mode")}
           <select
             value={draft.colorMode}
             onChange={(event) => setDraft({
@@ -48,13 +60,13 @@ export function PreferencesPanel({
               colorMode: event.target.value as AccountPreferences["colorMode"],
             })}
           >
-            <option value="system">System</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
+            <option value="system">{t("account.appearance.modeOptions.system")}</option>
+            <option value="light">{t("account.appearance.modeOptions.light")}</option>
+            <option value="dark">{t("account.appearance.modeOptions.dark")}</option>
           </select>
         </label>
         <label>
-          Font set
+          {t("account.appearance.fontSet")}
           <select
             value={draft.typographySetId}
             onChange={(event) => setDraft({ ...draft, typographySetId: event.target.value })}
@@ -74,13 +86,13 @@ export function PreferencesPanel({
             themeId: event.target.checked ? draft.themeId : undefined,
           })}
         />
-        Use theme only on this device
+        {t("account.appearance.deviceOverride")}
       </label>
       <div className="account-preview" data-theme={preview.themeId} data-mode={preview.colorMode}>
-        <strong>Live preview</strong>
-        <p data-typography={preview.typographySetId}>Campaign notes remain readable and distinct.</p>
+        <strong>{t("account.appearance.livePreview")}</strong>
+        <p data-typography={preview.typographySetId}>{t("account.appearance.previewText")}</p>
       </div>
-      <button type="button" onClick={() => void onSave(draft)}>Save appearance</button>
+      <button type="button" onClick={() => void onSave(draft)}>{t("account.appearance.saveBtn")}</button>
     </section>
   );
 }

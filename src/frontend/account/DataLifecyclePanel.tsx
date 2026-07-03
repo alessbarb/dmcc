@@ -5,16 +5,18 @@ import {
   fetchDeletionImpact,
   type DeletionBlocker,
 } from "./accountClient.js";
+import { useTranslation } from "../shared/i18n/useTranslation.js";
 
 export function DataLifecyclePanel({ confirmationLabel }: { confirmationLabel: string }) {
+  const { t } = useTranslation();
   const [blockers, setBlockers] = useState<DeletionBlocker[]>([]);
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    void fetchDeletionImpact().then(setBlockers).catch(() => setStatus("Unable to analyze deletion"));
-  }, []);
+    void fetchDeletionImpact().then(setBlockers).catch(() => setStatus(t("account.data.analyzeError")));
+  }, [t]);
 
   const download = async () => {
     const blob = await downloadPersonalExport();
@@ -27,36 +29,47 @@ export function DataLifecyclePanel({ confirmationLabel }: { confirmationLabel: s
   };
 
   return (
-    <section aria-labelledby="data-title">
-      <h2 id="data-title">Your data</h2>
-      <button type="button" onClick={() => void download()}>Download personal data</button>
+    <section aria-labelledby="data-title" className="account-section-stack">
+      <div className="account-panel-card">
+        <h2 id="data-title">{t("account.data.title")}</h2>
+        <p>Export your account data before making irreversible decisions.</p>
+        <div className="account-form-actions">
+          <button type="button" onClick={() => void download()}>{t("account.data.downloadBtn")}</button>
+        </div>
+      </div>
+
       <div className="account-danger-zone">
-        <h3>Delete account</h3>
+        <h3>{t("account.data.deleteTitle")}</h3>
+        <p>This permanently removes your unified account from this vault.</p>
         {blockers.length ? (
-          <ul>{blockers.map((blocker) => (
-            <li key={blocker.campaignId}>
-              Transfer DM responsibility for campaign {blocker.campaignId} first.
-            </li>
-          ))}</ul>
+          <ul className="account-bullet-list danger">
+            {blockers.map((blocker) => (
+              <li key={blocker.campaignId}>
+                {t("account.data.transferDmWarning", { campaignId: blocker.campaignId })}
+              </li>
+            ))}
+          </ul>
         ) : null}
         <label>
-          Current password
+          {t("account.data.currentPassword")}
           <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
         </label>
         <label>
-          Type {confirmationLabel} to confirm
+          {t("account.data.confirmPlaceholder", { confirmationLabel })}
           <input value={confirmation} onChange={(event) => setConfirmation(event.target.value)} />
         </label>
-        <button
-          type="button"
-          disabled={blockers.length > 0 || confirmation !== confirmationLabel || !password}
-          onClick={() => void deletePersonalAccount({
-            currentPassword: password,
-            confirmation,
-          }).then(() => setStatus("Account deleted"))}
-        >
-          Permanently delete account
-        </button>
+        <div className="account-form-actions">
+          <button
+            type="button"
+            disabled={blockers.length > 0 || confirmation !== confirmationLabel || !password}
+            onClick={() => void deletePersonalAccount({
+              currentPassword: password,
+              confirmation,
+            }).then(() => setStatus(t("account.data.accountDeletedMsg")))}
+          >
+            {t("account.data.deleteBtn")}
+          </button>
+        </div>
       </div>
       <p aria-live="polite">{status}</p>
     </section>

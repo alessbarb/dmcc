@@ -20,13 +20,16 @@ async function requireAccountSession() {
   }
 }
 
+const PromoLandingLazy = React.lazy(() => import("./MainLanding.js").then((m) => ({ default: m.MainLanding })));
 const SmartLandingLazy = React.lazy(() => import("./SmartLanding.js").then((m) => ({ default: m.SmartLanding })));
 const AppPage = React.lazy(() => import("./App.js").then((m) => ({ default: m.App })));
+const DmHubPageLazy = React.lazy(() => import("./dm/hub/DmHubPage.js").then((m) => ({ default: m.DmHubPage })));
 const CampaignShellPage = React.lazy(() => import("./dm/layouts/CampaignShell.js").then((m) => ({ default: m.CampaignShell })));
 const DmSetupPageLazy = React.lazy(() => import("./dm/pages/DmSetupPage.js").then((m) => ({ default: m.DmSetupPage })));
 const DmUnlockPageLazy = React.lazy(() => import("./dm/pages/DmUnlockPage.js").then((m) => ({ default: m.DmUnlockPage })));
 const PlayerJoinPageLazy = React.lazy(() => import("./player/pages/PlayerJoinPage.js").then((m) => ({ default: m.PlayerJoinPage })));
 const DashboardPageLazy = React.lazy(() => import("./dm/pages/DashboardPage.js").then((m) => ({ default: m.DashboardPage })));
+const CommandCenterPageLazy = React.lazy(() => import("./dm/pages/CommandCenterPage.js").then((m) => ({ default: m.CommandCenterPage })));
 const WhatNowPageLazy = React.lazy(() => import("./dm/pages/WhatNowPage.js").then((m) => ({ default: m.WhatNowPage })));
 const SessionPageLazy = React.lazy(() => import("./dm/sessions/SessionPage.js").then((m) => ({ default: m.SessionPage })));
 const EntitiesPageLazy = React.lazy(() => import("./dm/entities/EntitiesPage.js").then((m) => ({ default: m.EntitiesPage })));
@@ -37,6 +40,7 @@ const PlayersPageLazy = React.lazy(() => import("./dm/pages/PlayersPage.js").the
 const SearchPageLazy = React.lazy(() => import("./dm/pages/SearchPage.js").then((m) => ({ default: m.SearchPage })));
 const SettingsPageLazy = React.lazy(() => import("./dm/pages/SettingsPage.js").then((m) => ({ default: m.SettingsPage })));
 const PlayerPortalPageLazy = React.lazy(() => import("./player/pages/PlayerPortalPage.js").then((m) => ({ default: m.PlayerPortalPage })));
+const WebPlayerPortalPageLazy = React.lazy(() => import("./player/pages/WebPlayerPortalPage.js").then((m) => ({ default: m.WebPlayerPortalPage })));
 const RegisterPageLazy = React.lazy(() => import("./player/pages/RegisterPage.js").then((m) => ({ default: m.RegisterPage })));
 const CanvasPageLazy = React.lazy(() => import("./dm/canvas/pages/CanvasPage.js").then((m) => ({ default: m.CanvasPage })));
 const PlayerKnowledgePageLazy = React.lazy(() =>
@@ -50,6 +54,12 @@ const PremadeCampaignPreviewPageLazy = React.lazy(() =>
 );
 const AccountPageLazy = React.lazy(() =>
   import("./account/AccountPage.js").then((m) => ({ default: m.AccountPage }))
+);
+const ForgotPasswordPageLazy = React.lazy(() =>
+  import("./shared/auth/ForgotPasswordPage.js").then((m) => ({ default: m.ForgotPasswordPage }))
+);
+const ResetPasswordPageLazy = React.lazy(() =>
+  import("./shared/auth/ResetPasswordPage.js").then((m) => ({ default: m.ResetPasswordPage }))
 );
 
 function withSuspense(Component: React.ComponentType) {
@@ -67,11 +77,63 @@ const rootRoute = createRootRoute({
   component: () => <Outlet />,
 });
 
-// SmartLanding — unified entry point
+// MainLanding — main promotional landing page
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
+  component: withSuspense(PromoLandingLazy),
+});
+
+// Selection Portal — what used to be the index page (role select)
+const portalRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/portal",
+  beforeLoad: requireAccountSession,
   component: withSuspense(SmartLandingLazy),
+});
+
+const loginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/login",
+  component: withSuspense(DmUnlockPageLazy),
+});
+
+const webRegisterRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/register",
+  component: withSuspense(DmSetupPageLazy),
+});
+
+const forgotPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/forgot-password",
+  component: withSuspense(ForgotPasswordPageLazy),
+});
+
+const resetPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/reset-password/$token",
+  component: withSuspense(ResetPasswordPageLazy),
+});
+
+const resetPasswordManualRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/reset-password",
+  component: withSuspense(ResetPasswordPageLazy),
+});
+
+const appRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/app",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AppPage),
+});
+
+const appCampaignsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/app/campaigns",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AppPage),
 });
 
 // DM home (was App at /)
@@ -79,7 +141,29 @@ const dmRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm",
   beforeLoad: requireAccountSession,
-  component: withSuspense(AppPage),
+  component: withSuspense(DmHubPageLazy),
+});
+
+// /dm/campaigns → hub (campaigns panel is there)
+const dmCampaignsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/dm/campaigns",
+  beforeLoad: async ({ context, location }: any) => {
+    await requireAccountSession();
+    throw redirect({ to: "/dm" });
+  },
+  component: () => null,
+});
+
+// /dm/campaigns/new → hub (modal is opened in App.tsx state, not URL-driven yet)
+const dmCampaignsNewRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/dm/campaigns/new",
+  beforeLoad: async () => {
+    await requireAccountSession();
+    throw redirect({ to: "/dm" });
+  },
+  component: () => null,
 });
 
 // DM setup PIN (first run)
@@ -127,7 +211,46 @@ const playerPortalRoute = createRoute({
 const playerPortalWebRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/campaigns/$campaignId",
-  component: withSuspense(PlayerPortalPageLazy),
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: "/player/campaigns/$campaignId/home", params });
+  },
+  component: () => null,
+});
+
+const playerPortalHomeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/campaigns/$campaignId/home",
+  component: withSuspense(WebPlayerPortalPageLazy),
+});
+const playerPortalRecapRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/campaigns/$campaignId/recap",
+  component: withSuspense(WebPlayerPortalPageLazy),
+});
+const playerPortalCharacterRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/campaigns/$campaignId/character",
+  component: withSuspense(WebPlayerPortalPageLazy),
+});
+const playerPortalMemoryRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/campaigns/$campaignId/memory",
+  component: withSuspense(WebPlayerPortalPageLazy),
+});
+const playerPortalObjectivesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/campaigns/$campaignId/objectives",
+  component: withSuspense(WebPlayerPortalPageLazy),
+});
+const playerPortalNotesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/campaigns/$campaignId/notes",
+  component: withSuspense(WebPlayerPortalPageLazy),
+});
+const playerPortalProposalsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/campaigns/$campaignId/proposals",
+  component: withSuspense(WebPlayerPortalPageLazy),
 });
 
 // Campaign shell — parent layout with sidebar
@@ -153,6 +276,21 @@ const dashboardRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/dashboard",
   component: withSuspense(DashboardPageLazy),
+});
+
+const commandCenterRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/command-center",
+  component: withSuspense(CommandCenterPageLazy),
+});
+
+const liveTableRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/live",
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: "/campaigns/$campaignId/command-center", params });
+  },
+  component: () => null,
 });
 
 const whatNowRoute = createRoute({
@@ -243,7 +381,17 @@ const accountRoute = createRoute({
 // Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
+  portalRoute,
+  loginRoute,
+  webRegisterRoute,
+  forgotPasswordRoute,
+  resetPasswordRoute,
+  resetPasswordManualRoute,
+  appRoute,
+  appCampaignsRoute,
   dmRoute,
+  dmCampaignsRoute,
+  dmCampaignsNewRoute,
   accountRoute,
   onboardingRoute,
   premadePreviewRoute,
@@ -254,10 +402,19 @@ const routeTree = rootRoute.addChildren([
   registerRoute,
   playerPortalRoute,
   playerPortalWebRoute,
+  playerPortalHomeRoute,
+  playerPortalRecapRoute,
+  playerPortalCharacterRoute,
+  playerPortalMemoryRoute,
+  playerPortalObjectivesRoute,
+  playerPortalNotesRoute,
+  playerPortalProposalsRoute,
   campaignRoute.addChildren([
     campaignIndexRoute,
     canvasRoute,
     dashboardRoute,
+    commandCenterRoute,
+    liveTableRoute,
     whatNowRoute,
     sessionRoute,
     entitiesRoute,

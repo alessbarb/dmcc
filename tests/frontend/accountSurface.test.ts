@@ -50,7 +50,7 @@ describe("shared account surface", () => {
     expect(security).toContain("changePassword");
     expect(security).toContain("regenerateRecoveryCodes");
     expect(security).toContain("revokeAllSessions");
-    expect(security).toContain("I have saved these recovery codes");
+    expect(security).toContain("account.security.codesSavedLabel");
     expect(client).toContain('"/api/auth/password/change"');
     expect(client).toContain('"/api/auth/recovery-codes/regenerate"');
     expect(client).toContain('"/api/account/sessions"');

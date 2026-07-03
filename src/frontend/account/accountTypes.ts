@@ -64,5 +64,8 @@ export type AccountAggregate = {
     campaignId: string;
     role: "dm" | "player" | "observer";
     playerId?: string;
+    campaignTitle?: string;
+    campaignStatus?: string;
+    revokedAt?: string;
   }>;
 };

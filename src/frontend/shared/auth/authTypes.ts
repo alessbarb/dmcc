@@ -23,36 +23,52 @@ export interface LocalIdentity {
   serverOrigin: string;
   vaultId: string;
   dmProfiles: DmProfileEntry[];
-  dm?: {
-    pinSet?: boolean; // legacy local identity marker
-    lastUnlockedAt?: string;
+  account?: {
+    lastLoginAt?: string;
   };
   playerProfiles: PlayerProfileEntry[];
 }
 
 export interface SessionCreds {
-  dmSessionToken?: string;
   activeRole?: "dm" | "player";
-  activeDmId?: string;
+  activeUserId?: string;
   activeCampaignId?: string;
-  playerTokens: Record<string, string>;  // campaignId → token
+}
+
+export interface AuthUser {
+  userId: string;
+  email?: string;
+  displayName?: string;
+  avatarUrl?: string;
+  vaultRole?: "admin" | "user" | string;
 }
 
 export interface AuthStatus {
+  accountConfigured: boolean;
   dmAccountConfigured: boolean;
-  dmPinConfigured: boolean; // backwards-compatible alias for dmAccountConfigured
+  dmPinConfigured: boolean; // backwards-compatible alias for accountConfigured
   legacyPinConfigured?: boolean;
-  dmSessionValid: boolean;
+  sessionValid: boolean;
+  dmSessionValid: boolean; // backwards-compatible alias for sessionValid
+  user: AuthUser | null;
   dm?: {
     dmId: string;
+    userId?: string;
     email?: string;
     displayName?: string;
+    avatarUrl?: string;
   } | null;
   dmProfiles: Array<{
     dmId: string;
     email: string;
     displayName?: string;
     lastLoginAt?: string;
+  }>;
+  memberships?: Array<{
+    campaignId: string;
+    userId: string;
+    role: "dm" | "player" | "observer";
+    playerId?: string;
   }>;
   localRequest: boolean;
   lanExposed: boolean;
