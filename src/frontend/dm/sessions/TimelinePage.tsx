@@ -29,6 +29,9 @@ const NARRATIVE_EVENT_TYPES = new Set([
   "ClueRevealed",
   "PlayerProfileCreated",
   "EntityArchived",
+  "EntityCreated",
+  "EntityUpdated",
+  "RelationCreated",
 ]);
 
 export interface TimelinePageProps {

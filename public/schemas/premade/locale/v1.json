@@ -6,6 +6,9 @@
   "additionalProperties": false,
   "required": ["locale", "templateId", "templateVersion", "translationVersion", "title", "description", "summary"],
   "properties": {
+    "$schema": {
+      "type": "string"
+    },
     "locale": { "type": "string", "enum": ["en", "es", "fr", "de", "it", "pt"] },
     "templateId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "templateVersion": { "type": "string" },

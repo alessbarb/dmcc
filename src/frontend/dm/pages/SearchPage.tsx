@@ -1,220 +1,85 @@
-import React, { useState } from "react";
-import Fuse from "fuse.js";
-import { Search } from "lucide-react";
-import type { Entity, Fact } from "../../shared/stores/campaignStore.js";
-import { getEntityDefaultImage } from "../entities/entityVisuals.js";
-import { useCampaignStore } from "../../shared/stores/campaignStore.js";
-import { EntityDetailModal } from "../entities/EntityDetailModal.js";
-import { useToast } from "../../shared/hooks/useToast.js";
-import { useTranslation } from "../../shared/i18n/useTranslation.js";
-import { formatEntityType } from "@shared/i18n/index.js";
+import React, { useEffect, useState } from "react";
+import { useParams } from "@tanstack/react-router";
+import { BookOpen, EyeOff, GitFork, Lightbulb, Search } from "lucide-react";
+import { searchCampaign } from "../../shared/api/webProductClient.js";
 
 export interface SearchPageProps {
-  campaignState?: any;
   searchQuery?: string;
   setSearchQuery?: (q: string) => void;
-  searchTypeFilter?: string;
-  setSearchTypeFilter?: (f: string) => void;
-  setSelectedEntity?: (e: Entity | null) => void;
-  setCurrentPage?: (page: string) => void;
+}
+
+function iconFor(type: string) {
+  if (type === "fact") return <BookOpen size={16} />;
+  if (type === "relation") return <GitFork size={16} />;
+  if (type === "clue") return <Lightbulb size={16} />;
+  if (type === "objective") return <Search size={16} />;
+  return <EyeOff size={16} />;
 }
 
 export function SearchPage(props: SearchPageProps = {}) {
-  const store = useCampaignStore();
-  const { updateEntity, archiveEntity } = store;
-  const { addToast } = useToast();
-  const { locale, t } = useTranslation();
-  const campaignState = props.campaignState ?? store.campaignState;
-  const [searchQueryLocal, setSearchQueryLocal] = useState("");
-  const [searchTypeFilterLocal, setSearchTypeFilterLocal] = useState("all");
-  const [selectedEntityLocal, setSelectedEntityLocal] = useState<Entity | null>(null);
-  const searchQuery = props.searchQuery ?? searchQueryLocal;
-  const setSearchQuery = props.setSearchQuery ?? setSearchQueryLocal;
-  const searchTypeFilter = props.searchTypeFilter ?? searchTypeFilterLocal;
-  const setSearchTypeFilter = props.setSearchTypeFilter ?? setSearchTypeFilterLocal;
-  const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
+  const { campaignId } = useParams({ strict: false }) as { campaignId: string };
+  const [queryLocal, setQueryLocal] = useState("");
+  const [results, setResults] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const query = props.searchQuery ?? queryLocal;
+  const setQuery = props.setSearchQuery ?? setQueryLocal;
 
-  const searchItems = [
-    ...(campaignState?.entities ?? [])
-      .filter((e: Entity) => !e.archived)
-      .map((e: Entity) => ({
-        id: e.entityId,
-        kind: "entity" as const,
-        entityType: e.entityType,
-        title: e.title,
-        subtitle: e.subtitle ?? "",
-        summary: e.summary ?? "",
-        content: e.content ?? "",
-        status: e.status,
-        importance: e.importance,
-        _entity: e,
-      })),
-    ...(campaignState?.facts ?? [])
-      .filter((f: Fact) => !f.archived)
-      .map((f: Fact) => ({
-        id: f.factId,
-        kind: "fact" as const,
-        entityType: f.kind,
-        title: f.statement.substring(0, 60) + (f.statement.length > 60 ? "..." : ""),
-        subtitle: f.kind,
-        summary: f.statement,
-        content: "",
-        status: f.kind,
-        importance: "normal",
-        _fact: f,
-      })),
-  ];
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) {
+      setResults([]);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+    const handle = window.setTimeout(async () => {
+      setLoading(true);
+      try {
+        const response = await searchCampaign(campaignId, q);
+        setResults(response.results ?? []);
+        setError(null);
+      } catch (err: any) {
+        setError(err?.message ?? String(err));
+      } finally {
+        setLoading(false);
+      }
+    }, 220);
+    return () => window.clearTimeout(handle);
+  }, [campaignId, query]);
 
-  const fuse = new Fuse(searchItems, {
-    keys: [
-      { name: "title", weight: 0.5 },
-      { name: "subtitle", weight: 0.2 },
-      { name: "summary", weight: 0.2 },
-      { name: "content", weight: 0.1 },
-    ],
-    threshold: 0.35,
-    includeScore: true,
-  });
-
-  const filtered = searchTypeFilter !== "all"
-    ? searchItems.filter(i => i.kind === searchTypeFilter || i.entityType === searchTypeFilter)
-    : searchItems;
-
-  const results = searchQuery.trim()
-    ? (searchTypeFilter !== "all"
-      ? new Fuse(filtered, { keys: [{ name: "title", weight: 0.5 }, { name: "subtitle", weight: 0.2 }, { name: "summary", weight: 0.2 }, { name: "content", weight: 0.1 }], threshold: 0.35, includeScore: true }).search(searchQuery).map(r => r.item)
-      : fuse.search(searchQuery).map(r => r.item).filter(i => searchTypeFilter === "all" || i.kind === searchTypeFilter || i.entityType === searchTypeFilter))
-    : filtered.slice(0, 50);
-
-  const entityTypeColors: Record<string, string> = {
-    npc: "hsl(280, 70%, 65%)", location: "hsl(200, 70%, 60%)", quest: "var(--primary)",
-    clue: "var(--secondary)", secret: "var(--color-danger)", clock: "var(--color-warning)",
-    consequence: "hsl(30, 80%, 60%)", faction: "hsl(160, 60%, 55%)",
-    player_character: "var(--color-success)", canon: "var(--color-success)",
-    dm_secret: "var(--color-danger)", rumor: "var(--color-warning)",
-  };
-
-  return (<>
-    <div>
-      <div style={{ marginBottom: "24px" }}>
-        <h2 style={{ fontWeight: "700", fontSize: "1.4rem", marginBottom: "16px" }}>{t("searchPage.title")}</h2>
-        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <div style={{ position: "relative", flex: 1 }}>
-            <Search size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)", pointerEvents: "none" }} />
-            <input
-              className="form-input"
-              style={{ paddingLeft: "36px" }}
-              placeholder={t("searchPage.placeholder")}
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              autoFocus
-            />
-          </div>
-          <select
-            className="form-input"
-            style={{ width: "160px", flexShrink: 0 }}
-            value={searchTypeFilter}
-            onChange={e => setSearchTypeFilter(e.target.value)}
-          >
-            <option value="all">{t("searchPage.allTypes")}</option>
-            <option value="entity">{t("searchPage.entities")}</option>
-            <option value="fact">{t("searchPage.facts")}</option>
-            <option value="npc">{formatEntityType("npc", locale)}</option>
-            <option value="location">{formatEntityType("location", locale)}</option>
-            <option value="quest">{formatEntityType("quest", locale)}</option>
-            <option value="clue">{formatEntityType("clue", locale)}</option>
-            <option value="secret">{formatEntityType("secret", locale)}</option>
-            <option value="player_character">{formatEntityType("player_character", locale)}</option>
-          </select>
-        </div>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginTop: "8px" }}>
-          {searchQuery
-            ? t("searchPage.resultsFor", { count: results.length, query: searchQuery })
-            : t("searchPage.resultsFirst", { count: results.length })}
-        </p>
+  return (
+    <div style={{ display: "grid", gap: 18 }}>
+      <div>
+        <p style={{ margin: "0 0 6px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: ".12em", fontSize: 12 }}>Búsqueda segura</p>
+        <h1 style={{ margin: 0 }}>Busca en toda la memoria de DM</h1>
+        <p style={{ color: "var(--text-muted)", maxWidth: 760 }}>Esta búsqueda consulta el backend y puede encontrar contenido público y secreto porque estás en vista DM. El portal jugador usa otro endpoint filtrado.</p>
       </div>
-
-      {results.length === 0 ? (
-        <div className="card" style={{ textAlign: "center", padding: "40px", color: "var(--text-muted)" }}>
-          <Search size={48} style={{ opacity: 0.3, marginBottom: "16px" }} />
-          <p>{t("searchPage.noResults")}</p>
-        </div>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          {results.map(item => {
-            const isEntity = item.kind === "entity" && item._entity;
-            const imgUrl = isEntity ? (item._entity.metadata?.imageUrl || getEntityDefaultImage(item.entityType)) : null;
-            return (
-              <div
-                key={item.id}
-                className="card"
-                style={{ padding: "14px 18px", cursor: "pointer", display: "flex", alignItems: "center", gap: "14px" }}
-                onClick={() => {
-                  if (isEntity) {
-                    setSelectedEntity(item._entity);
-                  }
-                }}
-              >
-                <span style={{
-                  padding: "2px 8px",
-                  borderRadius: "var(--radius-sm)",
-                  fontSize: "0.7rem",
-                  fontWeight: "700",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  backgroundColor: "var(--surface-2)",
-                  color: entityTypeColors[item.entityType] ?? "var(--text-muted)",
-                  whiteSpace: "nowrap",
-                  flexShrink: 0
-                }}>
-                  {item.kind === "fact" ? t("searchPage.factBadge") : formatEntityType(item.entityType, locale)}
-                </span>
-
-                {imgUrl && (
-                  <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", overflow: "hidden", border: "1px solid var(--border-color)", flexShrink: 0 }}>
-                    <img src={imgUrl} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                  </div>
-                )}
-
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontWeight: "600", color: "var(--text-main)", marginBottom: "2px" }}>{item.title}</p>
-                  {item.subtitle && item.kind === "entity" && (
-                    <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{item.subtitle}</p>
-                  )}
-                  {item.summary && item.kind === "entity" && (
-                    <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "2px" }}>{item.summary.substring(0, 100)}{item.summary.length > 100 ? "..." : ""}</p>
-                  )}
-                </div>
-                {item.kind === "entity" && (
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", whiteSpace: "nowrap", flexShrink: 0 }}>
-                    {item.status}
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <div className="card" style={{ padding: 18 }}>
+        <label style={{ display: "grid", gap: 8 }}>
+          <span style={{ color: "var(--text-muted)", fontSize: 13 }}>PNJ, pista, secreto, relación, objetivo...</span>
+          <div style={{ position: "relative" }}>
+            <Search size={17} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+            <input className="form-input" style={{ paddingLeft: 38 }} value={query} onChange={(event) => setQuery(event.target.value)} autoFocus placeholder="Busca en la campaña..." />
+          </div>
+        </label>
+      </div>
+      {error && <div className="card" style={{ padding: 16, color: "var(--color-danger)" }}>{error}</div>}
+      {loading && <div className="card" style={{ padding: 16 }}>Buscando...</div>}
+      {!loading && query.trim().length >= 2 && results.length === 0 && !error && <div className="card" style={{ padding: 24, color: "var(--text-muted)" }}>No hay resultados.</div>}
+      <div style={{ display: "grid", gap: 10 }}>
+        {results.map((result, index) => {
+          const item = result.item ?? {};
+          return (
+            <article key={`${result.type}-${item.id ?? index}`} className="card" style={{ padding: 16, display: "grid", gap: 6 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--text-muted)", fontSize: 12, textTransform: "uppercase", letterSpacing: ".08em" }}>{iconFor(result.type)} {result.type} · {item.visibility ?? "dm"}</div>
+              <strong style={{ fontSize: 17 }}>{item.title ?? item.id ?? "Resultado"}</strong>
+              {item.summary && <p style={{ margin: 0, color: "var(--text-muted)", lineHeight: 1.5 }}>{item.summary}</p>}
+              {item.dmSummary && <p style={{ margin: 0, color: "var(--color-warning)", lineHeight: 1.5 }}>DM: {item.dmSummary}</p>}
+            </article>
+          );
+        })}
+      </div>
     </div>
-    {selectedEntityLocal && campaignState && (
-      <EntityDetailModal
-        selectedEntity={selectedEntityLocal}
-        campaignState={campaignState}
-        onClose={() => setSelectedEntityLocal(null)}
-        onEdit={async (entityId, updates) => {
-          await updateEntity(entityId, updates);
-          setSelectedEntityLocal(prev => prev ? { ...prev, ...updates } : null);
-        }}
-        onArchive={async (entityId) => {
-          await archiveEntity(entityId);
-          setSelectedEntityLocal(null);
-        }}
-        onVisibilityChange={async (entityId, visibility) => {
-          await updateEntity(entityId, { visibility });
-          setSelectedEntityLocal(prev => prev ? { ...prev, visibility } : null);
-        }}
-        addToast={addToast}
-      />
-    )}
-  </>);
+  );
 }

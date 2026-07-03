@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "$schema": "../../schemas/premade/template/v1.json",
   "templateId": "phandalin-starter",
   "version": "1.2.0",
   "system": "dnd_srd_5_2_1",

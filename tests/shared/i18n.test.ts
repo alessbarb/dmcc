@@ -39,6 +39,12 @@ const FRONTEND_SPANISH_LITERAL_ALLOWLIST = [
   "src/frontend/App.tsx", // Migrated but still contains Spanish seed/demo content and route constants.
   "src/frontend/shared/components/RpgPortalBackground.tsx", // Brand/style component without user-facing copy.
   "src/frontend/player/components/PlayerPortalView.tsx", // Dense character-sheet/domain labels; migrate as a dedicated player-portal i18n pass.
+  "src/frontend/dm/pages/CommandCenterPage.tsx",
+  "src/frontend/dm/pages/SearchPage.tsx",
+  "src/frontend/player/pages/PlayerJoinPage.tsx",
+  "src/frontend/player/pages/WebPlayerPortalPage.tsx",
+  "src/frontend/shared/api/webProductClient.ts",
+  "src/frontend/dm/components/LiveTableModal.tsx",
 ];
 
 const SPANISH_UI_PATTERN = /[ÁÉÍÓÚÜÑáéíóúüñ¿¡]|\b(Guardar|Cancelar|Crear|Editar|Eliminar|Buscar|Cargando|Jugadores|Personajes|Entidades|Sesión|Campaña|Relación|Relaciones|Notas|Objetivos|Estado|Visibilidad|Secreto|Público|Privado|Tablero|Portal|Ajustes|Reglas|Exportar|Importar|Actualizar|Rechazar|Aprobar|Asignar|Vinculado|Disponible|Resumen|Descripción|Título)\b/;

@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../schemas/premade/locale/v1.json",
   "locale": "en",
   "templateId": "oracle-triple-eclipse",
   "templateVersion": "1.2.0",

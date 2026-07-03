@@ -49,7 +49,7 @@ export function DmUnlockPage() {
     setError(null);
     try {
       await loginDm(email, secret);
-      navigate({ to: "/dm" });
+      navigate({ to: "/portal" });
     } catch (err: any) {
       if (err.message?.toLowerCase().includes("too many")) {
         const match = err.message.match(/\((\d+)s\)/);
@@ -217,8 +217,12 @@ export function DmUnlockPage() {
           </form>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "12px" }}>
-            <button type="button" className="join-portal-back-btn" onClick={() => navigate({ to: "/dm/setup" })}>
-              <Plus size={14} style={{ marginRight: "6px" }} /> {t("dmUnlock.addAnotherDm")}
+            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/dm/setup" })}>
+              <Plus size={14} style={{ marginRight: "6px" }} />
+              {rememberedProfiles.length > 0 ? t("dmUnlock.addAnotherDm") : t("dmUnlock.createAccount")}
+            </button>
+            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/forgot-password" })}>
+              Recuperar contraseña
             </button>
             <button type="button" className="join-portal-back-btn" onClick={() => navigate({ to: "/" })}>
               <ArrowLeft size={14} style={{ marginRight: "6px" }} /> {t("common.back")}

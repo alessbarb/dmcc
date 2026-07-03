@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { logoutPlayer } from "@frontend/shared/auth/authClient.js";
+import { AccountModal } from "../../account/AccountModal.js"; // to: "/account"
 
 
 type PortalTab = "session" | "summary" | "character" | "knowledge" | "resources" | "diary" | "objectives" | "history";
@@ -421,6 +422,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   } = useCampaignStore();
 
   const [activeTab, setActiveTab] = useState<PortalTab>("session");
+  const [accountModalOpen, setAccountModalOpen] = useState(false);
   const [portalMode, setPortalMode] = useState<PlayerPortalMode>(() => {
     try {
       return localStorage.getItem("dmcc_player_portal_mode") === "advanced" ? "advanced" : "family";
@@ -968,7 +970,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
         </nav>
 
         <div className="sidebar-footer">
-          <button className="btn btn-secondary btn-sm" onClick={() => navigate({ to: "/account" })}>
+          <button className="btn btn-secondary btn-sm" onClick={() => setAccountModalOpen(true)}>
             Account
           </button>
           <button className="btn btn-danger btn-sm player-portal-exit" onClick={() => void handleExit()}>
@@ -2330,6 +2332,8 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
           )}
 
         </div>
+        <AccountModal open={accountModalOpen} onClose={() => setAccountModalOpen(false)} />
+
         <nav className="player-portal-bottom-nav" aria-label="Navegación del portal del jugador">
           {TABS.map((tab) => (
             <button

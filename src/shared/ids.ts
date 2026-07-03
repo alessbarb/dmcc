@@ -9,8 +9,19 @@ export type EventId = string;
 export type AttachmentId = string;
 export type TagId = string;
 
+function uuidV4(): string {
+  if (typeof globalThis.crypto?.randomUUID === "function") {
+    return globalThis.crypto.randomUUID();
+  }
+  // Fallback for non-secure HTTP contexts (e.g. LAN access over plain HTTP)
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = Math.trunc(Math.random() * 16);
+    return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+  });
+}
+
 export function createId(prefix: string): string {
-  return `${prefix}_${globalThis.crypto.randomUUID().replace(/-/g, "")}`;
+  return `${prefix}_${uuidV4().replace(/-/g, "")}`;
 }
 
 export function isIdWithPrefix(id: string, prefix: string): boolean {

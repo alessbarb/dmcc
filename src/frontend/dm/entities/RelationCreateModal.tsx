@@ -1,31 +1,88 @@
 import React, { useState } from "react";
 import { X, AlertTriangle } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
+import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 
 interface RelationCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const BUILT_IN_RELATION_TYPES = [
+  "located_in",
+  "lives_in",
+  "member_of",
+  "ally_of",
+  "enemy_of",
+  "hides",
+  "points_to",
+  "causes",
+  "contradicts",
+  "confirms",
+  "works_for",
+  "appears_in",
+  "contains",
+  "leader_of",
+  "family_of",
+  "owes_debt_to",
+  "protects",
+  "threatens",
+  "hates",
+  "loves",
+  "fears",
+  "trusts",
+  "suspects",
+  "knows",
+  "knows_partially",
+  "lies_about",
+  "reveals",
+  "unlocks",
+  "depends_on",
+  "blocks",
+  "foreshadows",
+  "transforms_into",
+  "affected_by",
+  "created_by",
+  "relacionado_con"
+];
+
 export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProps) {
+  const { t } = useTranslation();
   const { campaignState, createRelation, error } = useCampaignStore();
 
-  const [relationForm, setRelationForm] = useState({
-    sourceEntityId: "",
-    targetEntityId: "",
-    relationType: "located_in"
-  });
+  const [sourceEntityId, setSourceEntityId] = useState("");
+  const [targetEntityId, setTargetEntityId] = useState("");
+  const [relationType, setRelationType] = useState("located_in");
+  const [customType, setCustomType] = useState("");
+
+  const builtInOptions = BUILT_IN_RELATION_TYPES.map(type => ({
+    value: type,
+    label: t(`domain.relationTypes.${type}`)
+  })).sort((a, b) => a.label.localeCompare(b.label));
 
   const handleCreateRelationSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (!relationForm.sourceEntityId || !relationForm.targetEntityId) return;
-    await createRelation(relationForm);
-    // If createRelation set an error (duplicate), keep modal open — user sees the error
+    if (!sourceEntityId || !targetEntityId) return;
+
+    const finalRelationType = relationType === "custom" ? `custom:${customType}` : relationType;
+    await createRelation({
+      sourceEntityId,
+      targetEntityId,
+      relationType: finalRelationType
+    });
+
     const storeError = useCampaignStore.getState().error;
     if (!storeError) {
       onClose();
-      setRelationForm({ sourceEntityId: "", targetEntityId: "", relationType: "located_in" });
+      resetForm();
     }
+  };
+
+  const resetForm = () => {
+    setSourceEntityId("");
+    setTargetEntityId("");
+    setRelationType("located_in");
+    setCustomType("");
   };
 
   if (!isOpen) return null;
@@ -35,7 +92,7 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2 style={{ fontWeight: "700" }}>Crear relación</h2>
+          <h2 style={{ fontWeight: "700" }}>{t("relationModal.createRelation")}</h2>
           <button className="btn btn-icon btn-secondary" onClick={() => {
             useCampaignStore.setState({ error: null });
             onClose();
@@ -46,14 +103,14 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
         <form onSubmit={handleCreateRelationSubmit}>
           <div className="modal-body">
             <div className="form-group">
-              <label className="form-label">Source Entity</label>
+              <label className="form-label">{t("relationModal.sourceEntity")}</label>
               <select
                 className="form-select"
-                value={relationForm.sourceEntityId}
-                onChange={(e) => setRelationForm({ ...relationForm, sourceEntityId: e.target.value })}
+                value={sourceEntityId}
+                onChange={(e) => setSourceEntityId(e.target.value)}
                 required
               >
-                <option value="">-- Select Source Node --</option>
+                <option value="">{t("relationModal.selectSource")}</option>
                 {campaignState.entities.filter(e => !e.archived).map(e => (
                   <option key={e.entityId} value={e.entityId}>[{e.entityType}] {e.title}</option>
                 ))}
@@ -61,33 +118,42 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
             </div>
 
             <div className="form-group">
-              <label className="form-label">Relation Type</label>
-              <select
-                className="form-select"
-                value={relationForm.relationType}
-                onChange={(e) => setRelationForm({ ...relationForm, relationType: e.target.value })}
-              >
-                <option value="located_in">located_in</option>
-                <option value="lives_in">lives_in</option>
-                <option value="member_of">member_of</option>
-                <option value="ally_of">ally_of</option>
-                <option value="enemy_of">enemy_of</option>
-                <option value="hides">hides</option>
-                <option value="points_to">points_to</option>
-                <option value="causes">causes</option>
-                <option value="contradicts">contradicts</option>
-              </select>
+              <label className="form-label">{t("relationModal.relationType")}</label>
+              <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
+                <select
+                  className="form-select"
+                  value={relationType}
+                  onChange={(e) => setRelationType(e.target.value)}
+                >
+                  {builtInOptions.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                  <option value="custom">{t("canvas.relationPopover.customOption")}</option>
+                </select>
+
+                {relationType === "custom" && (
+                  <input
+                    type="text"
+                    placeholder={t("canvas.relationPopover.customPlaceholder")}
+                    value={customType}
+                    onChange={(e) => setCustomType(e.target.value)}
+                    className="form-input"
+                    required
+                    autoFocus
+                  />
+                )}
+              </div>
             </div>
 
             <div className="form-group">
-              <label className="form-label">Target Entity</label>
+              <label className="form-label">{t("relationModal.targetEntity")}</label>
               <select
                 className="form-select"
-                value={relationForm.targetEntityId}
-                onChange={(e) => setRelationForm({ ...relationForm, targetEntityId: e.target.value })}
+                value={targetEntityId}
+                onChange={(e) => setTargetEntityId(e.target.value)}
                 required
               >
-                <option value="">-- Select Target Node --</option>
+                <option value="">{t("relationModal.selectTarget")}</option>
                 {campaignState.entities.filter(e => !e.archived).map(e => (
                   <option key={e.entityId} value={e.entityId}>[{e.entityType}] {e.title}</option>
                 ))}
@@ -97,19 +163,25 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
           {error?.includes("Duplicate relation") && (
             <div style={{ padding: "10px 16px", backgroundColor: "hsl(30, 60%, 15%)", borderTop: "1px solid hsl(30, 60%, 30%)", display: "flex", alignItems: "center", gap: "10px", fontSize: "0.85rem" }}>
               <AlertTriangle size={14} style={{ color: "hsl(30, 80%, 60%)", flexShrink: 0 }} />
-              <span style={{ color: "hsl(30, 80%, 70%)" }}>Duplicate relation already exists. Create anyway?</span>
+              <span style={{ color: "hsl(30, 80%, 70%)" }}>{t("relationModal.duplicateWarning")}</span>
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
                 style={{ marginLeft: "auto", flexShrink: 0 }}
                 onClick={async () => {
                   useCampaignStore.setState({ error: null });
-                  await createRelation({ ...relationForm, force: true } as any);
+                  const finalRelationType = relationType === "custom" ? `custom:${customType}` : relationType;
+                  await createRelation({
+                    sourceEntityId,
+                    targetEntityId,
+                    relationType: finalRelationType,
+                    force: true
+                  } as any);
                   onClose();
-                  setRelationForm({ sourceEntityId: "", targetEntityId: "", relationType: "located_in" });
+                  resetForm();
                 }}
               >
-                Crear igualmente
+                {t("relationModal.createAnyway")}
               </button>
             </div>
           )}
@@ -118,10 +190,10 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
               useCampaignStore.setState({ error: null });
               onClose();
             }}>
-              Cancelar
+              {t("relationModal.cancel")}
             </button>
             <button type="submit" className="btn btn-primary">
-              Registrar relación
+              {t("relationModal.registerRelation")}
             </button>
           </div>
         </form>

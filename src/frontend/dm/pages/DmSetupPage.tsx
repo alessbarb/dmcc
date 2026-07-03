@@ -32,7 +32,7 @@ export function DmSetupPage() {
 
   const handleBack = () => {
     if (authStatus?.dmSessionValid) {
-      navigate({ to: "/dm" });
+      navigate({ to: "/portal" });
     } else if (hasExistingDm) {
       navigate({ to: "/dm/unlock" });
     } else {
@@ -44,12 +44,12 @@ export function DmSetupPage() {
     e.preventDefault();
     if (!email.includes("@")) { setError(t("dmSetup.errorInvalidEmail")); return; }
     if (secret !== confirmSecret) { setError(t("dmSetup.errorMismatch")); return; }
-    if (secret.length < 8) { setError(t("dmSetup.errorTooShort")); return; }
+    if (secret.length < 12) { setError("Password must be at least 12 characters."); return; }
     setLoading(true);
     setError(null);
     try {
       await setupDmAccount({ email, secret, displayName });
-      navigate({ to: "/dm" });
+      navigate({ to: "/portal" });
     } catch (err: any) {
       setError(err.message || t("dmSetup.errorCreateAccount"));
     } finally {
@@ -81,16 +81,16 @@ export function DmSetupPage() {
               <div className="join-portal-icon-glow" />
             </div>
             <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>
-              {addingAnotherDm ? t("dmSetup.addExistingTitle") : t("dmSetup.title")}
+              {addingAnotherDm ? "Create another account" : "Create account"}
             </h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", margin: "4px 0 0" }}>
-              {addingAnotherDm ? t("dmSetup.addExistingSubtitle") : t("dmSetup.subtitle")}
+              A single account to run campaigns, play games, and manage your characters.
             </p>
           </div>
 
           {addingAnotherDm && (
             <div style={{ padding: "12px", border: "1px solid var(--border)", borderRadius: "12px", background: "rgba(255,255,255,0.03)", color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "14px" }}>
-              {t("dmSetup.addExistingOpenHint")}
+              This account will not have a global 'DM' or 'player' role. Permissions are resolved per campaign.
             </div>
           )}
 

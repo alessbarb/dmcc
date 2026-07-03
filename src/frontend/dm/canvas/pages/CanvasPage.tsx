@@ -934,7 +934,7 @@ export function CanvasPage() {
           {!isPlayerView && (
             <button
               onClick={() => setIsCreateBoardOpen(true)}
-              className="btn btn-secondary btn-sm btn-icon"
+              className="btn btn-secondary btn-sm"
               title={t("canvas.page.createNewBoard")}
             >
               <Plus size={14} /> Nuevo tablero
@@ -950,7 +950,7 @@ export function CanvasPage() {
             {activeSession && (
               <button
                 type="button"
-                className={`btn btn-sm btn-icon ${isDirectionMode ? "btn-primary" : "btn-secondary"}`}
+                className={`btn btn-sm ${isDirectionMode ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => {
                   setIsDirectionMode(v => !v);
                 }}
@@ -965,7 +965,7 @@ export function CanvasPage() {
             {/* Fullscreen Presentation View Toggle */}
             <button
               type="button"
-              className={`btn btn-sm btn-icon ${isFullscreenPresentation ? "btn-primary" : "btn-secondary"}`}
+              className={`btn btn-sm ${isFullscreenPresentation ? "btn-primary" : "btn-secondary"}`}
               onClick={() => {
                 if (isFullscreenPresentation) {
                   if (document.fullscreenElement) {
@@ -1002,7 +1002,7 @@ export function CanvasPage() {
             {!isFullscreenPresentation && (
               <button
                 type="button"
-                className={`btn btn-sm btn-icon ${isPlayerView ? "btn-primary" : "btn-secondary"}`}
+                className={`btn btn-sm ${isPlayerView ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => {
                   const nextView = !isPlayerView;
                   setIsPlayerView(nextView);
@@ -1026,7 +1026,7 @@ export function CanvasPage() {
             {!isPlayerView && (
               <button
                 type="button"
-                className={`btn btn-sm btn-icon ${publicOnly ? "btn-primary" : "btn-secondary"}`}
+                className={`btn btn-sm ${publicOnly ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setPublicOnly(v => !v)}
                 title={publicOnly ? t("canvas.toolbar.showingPublicOnly") : t("canvas.toolbar.showingAll")}
                 style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
@@ -1039,7 +1039,7 @@ export function CanvasPage() {
             {!isPlayerView && (
               <button
                 type="button"
-                className={`btn btn-sm btn-icon ${tablePrivacy ? "btn-primary" : "btn-secondary"}`}
+                className={`btn btn-sm ${tablePrivacy ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setTablePrivacy(value => !value)}
                 aria-pressed={tablePrivacy}
                 title={t("canvas.toolbar.tablePrivacyHint")}
@@ -1053,7 +1053,7 @@ export function CanvasPage() {
             {!isPlayerView && (
               <button
                 type="button"
-                className={`btn btn-sm btn-icon ${mysteryFlowMode ? "btn-primary" : "btn-secondary"}`}
+                className={`btn btn-sm ${mysteryFlowMode ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setMysteryFlowMode(v => !v)}
                 title={mysteryFlowMode ? "Desactivar Mystery Flow" : t("canvas.toolbar.activateMysteryFlow")}
                 style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
@@ -1121,7 +1121,7 @@ export function CanvasPage() {
           <div className="canvas-toolbar-group" style={{ position: "relative" }}>
             <button
               type="button"
-              className="btn btn-sm btn-secondary btn-icon"
+              className="btn btn-sm btn-secondary"
               onClick={() => setIsActionsDropdownOpen(v => !v)}
               title="Acciones y exportaciones de Canvas"
               style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}

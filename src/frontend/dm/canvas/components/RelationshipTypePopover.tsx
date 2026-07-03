@@ -45,54 +45,106 @@ export function RelationshipTypePopover({
   // Tailored relation options
   const getRelationOptions = () => {
     if (!sourceEntity || !targetEntity) {
-      return [{ value: "relacionado_con", label: "relacionado con" }];
+      return [{ value: "relacionado_con", label: t("domain.relationTypes.relacionado_con") }];
     }
 
     const srcType = sourceEntity.entityType;
     const tgtType = targetEntity.entityType;
 
+    const formatOption = (value: string) => {
+      if (value.startsWith("custom:")) {
+        // Custom types are not translated, they are formatted as-is.
+        return { value, label: value.slice(7).replace(/_/g, " ") };
+      }
+      return { value, label: t(`domain.relationTypes.${value}`) };
+    };
+
     if (srcType === "npc" && tgtType === "location") {
       return [
-        { value: "lives_in", label: "vive en" },
-        { value: "works_for", label: "trabaja en" },
-        { value: "protects", label: "protege" },
-        { value: "located_in", label: "se encuentra en" },
-        { value: "hates", label: "quiere destruir" },
+        formatOption("lives_in"),
+        formatOption("works_for"),
+        formatOption("protects"),
+        formatOption("located_in"),
+        formatOption("hates"),
+        formatOption("custom:guardian_of"),
       ];
     }
 
     if (srcType === "npc" && tgtType === "npc") {
       return [
-        { value: "custom:controls", label: "la controla" },
-        { value: "custom:blackmails", label: "la chantajea" },
+        formatOption("custom:controls"),
+        formatOption("custom:blackmails"),
         { value: "works_for", label: t("canvas.relationPopover.worksFor") },
         { value: "custom:hides_something", label: t("canvas.relationPopover.hidesAbout") },
-        { value: "ally_of", label: "aliado de" },
-        { value: "enemy_of", label: "enemigo de" },
-        { value: "member_of", label: "familia de" },
-        { value: "suspects", label: "sospecha de" },
-        { value: "hates", label: "odia a" },
+        formatOption("ally_of"),
+        formatOption("enemy_of"),
+        formatOption("member_of"),
+        formatOption("suspects"),
+        formatOption("hates"),
+        formatOption("fears"),
+        formatOption("custom:reports_to"),
+        formatOption("custom:subordinate_to"),
+        formatOption("custom:seeks_audience"),
+        formatOption("custom:allied_with"),
+      ];
+    }
+
+    if (srcType === "npc" && tgtType === "faction") {
+      return [
+        formatOption("member_of"),
+        formatOption("leader_of"),
+        formatOption("custom:employs"),
+        formatOption("works_for"),
+      ];
+    }
+
+    if (srcType === "npc" && (tgtType === "clue" || tgtType === "location" || tgtType === "item")) {
+      return [
+        formatOption("custom:guards"),
+        formatOption("located_in"),
+      ];
+    }
+
+    if ((srcType === "clue" || srcType === "location") && tgtType === "faction") {
+      return [
+        formatOption("custom:belongs_to"),
+        formatOption("located_in"),
       ];
     }
 
     if (srcType === "clue" && tgtType === "location") {
       return [
-        { value: "points_to", label: "apunta a" },
-        { value: "located_in", label: "se encuentra en" },
+        formatOption("points_to"),
+        formatOption("located_in"),
         { value: "reveals", label: t("canvas.relationPopover.revealsInfo") },
+      ];
+    }
+
+    if (srcType === "clue" && tgtType === "npc") {
+      return [
+        formatOption("custom:owns"),
+        formatOption("custom:revealed_by"),
+        formatOption("points_to"),
+      ];
+    }
+
+    if (srcType === "secret" && tgtType === "npc") {
+      return [
+        formatOption("custom:owns"),
+        formatOption("points_to"),
       ];
     }
 
     // Generic defaults
     return [
-      { value: "relacionado_con", label: "relacionado con" },
-      { value: "hides", label: "oculta" },
-      { value: "unlocks", label: "desbloquea" },
-      { value: "causes", label: "causa" },
-      { value: "contradicts", label: "contradice" },
-      { value: "confirms", label: "confirma" },
+      formatOption("relacionado_con"),
+      formatOption("hides"),
+      formatOption("unlocks"),
+      formatOption("causes"),
+      formatOption("contradicts"),
+      formatOption("confirms"),
       { value: "located_in", label: t("canvas.relationPopover.memberOf") },
-      { value: "knows", label: "conoce" },
+      formatOption("knows"),
     ];
   };
 
@@ -145,7 +197,7 @@ export function RelationshipTypePopover({
         <div className="modal-header">
           <h2>
             <GitCommit size={18} style={{ color: "var(--primary)" }} />
-            Crear conexión
+            {t("canvas.relationPopover.createConnection")}
           </h2>
           <button onClick={onCancel} className="modal-close-btn">
             <X size={18} />
@@ -155,7 +207,7 @@ export function RelationshipTypePopover({
         <form onSubmit={handleSubmit} className="dialog-form">
           <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <div className="form-group">
-              <label>Tipo de conexión</label>
+              <label>{t("canvas.relationPopover.connectionType")}</label>
               <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
                 <select
                   value={relationType}
@@ -165,13 +217,13 @@ export function RelationshipTypePopover({
                   {options.map(opt => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
-                  <option value="custom">-- Otro (Escribir personalizado) --</option>
+                  <option value="custom">{t("canvas.relationPopover.customOption")}</option>
                 </select>
 
                 {relationType === "custom" && (
                   <input
                     type="text"
-                    placeholder="Ej. odia, apoya a, custodia..."
+                    placeholder={t("canvas.relationPopover.customPlaceholder")}
                     value={customType}
                     onChange={(e) => setCustomType(e.target.value)}
                     className="form-input"
@@ -183,7 +235,7 @@ export function RelationshipTypePopover({
             </div>
 
             <div className="form-group">
-              <label>Nivel de relación</label>
+              <label>{t("canvas.relationPopover.relationLevel")}</label>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }}>
                 <label style={{ display: "flex", alignItems: "start", gap: "8px", fontWeight: "normal", cursor: "pointer" }}>
                   <input
@@ -196,9 +248,9 @@ export function RelationshipTypePopover({
                     style={{ marginTop: "3px" }}
                   />
                   <div>
-                    <strong>Relación real de campaña</strong>
+                    <strong>{t("canvas.relationPopover.realRelation")}</strong>
                     <div className="text-muted" style={{ fontSize: "11px" }}>
-                      Registra esta conexión en el lore de la campaña. visible en búsquedas, grafos, etc.
+                      {t("canvas.relationPopover.realRelationDesc")}
                     </div>
                   </div>
                 </label>
@@ -213,9 +265,9 @@ export function RelationshipTypePopover({
                     style={{ marginTop: "3px" }}
                   />
                   <div>
-                    <strong>Borrador visual</strong>
+                    <strong>{t("canvas.relationPopover.visualDraft")}</strong>
                     <div className="text-muted" style={{ fontSize: "11px" }}>
-                      Solo dibuja una línea visual en este canvas. Útil para ideas y bocetos rápidos.
+                      {t("canvas.relationPopover.visualDraftDesc")}
                     </div>
                   </div>
                 </label>
@@ -223,24 +275,24 @@ export function RelationshipTypePopover({
             </div>
 
             <div className="form-group">
-              <label>Estilo de línea</label>
+              <label>{t("canvas.relationPopover.lineStyle")}</label>
               <select
                 value={edgeStyle}
                 onChange={(e) => setEdgeStyle(e.target.value as any)}
                 className="form-select"
               >
-                <option value="solid">Línea sólida (normal)</option>
-                <option value="dashed">Línea discontinua (débil/borrador)</option>
-                <option value="secret">Línea de secreto (oculta/roja)</option>
-                <option value="strong">Línea gruesa (fuerte)</option>
-                <option value="weak">Línea fina (tenue)</option>
+                <option value="solid">{t("canvas.relationPopover.lineSolid")}</option>
+                <option value="dashed">{t("canvas.relationPopover.lineDashed")}</option>
+                <option value="secret">{t("canvas.relationPopover.lineSecret")}</option>
+                <option value="strong">{t("canvas.relationPopover.lineStrong")}</option>
+                <option value="weak">{t("canvas.relationPopover.lineWeak")}</option>
               </select>
             </div>
 
             {status === "domain" && (
               <>
                 <div className="form-group">
-                  <label>Descripción de la relación (opcional)</label>
+                  <label>{t("canvas.relationPopover.relationDescription")}</label>
                   <input
                     type="text"
                     placeholder={t("canvas.relationPopover.detailsPlaceholder")}
@@ -251,7 +303,7 @@ export function RelationshipTypePopover({
                 </div>
 
                 <div className="form-group">
-                  <label>Visibilidad de la relación</label>
+                  <label>{t("canvas.relationPopover.relationVisibility")}</label>
                   <div style={{ display: "flex", gap: "16px", marginTop: "4px" }}>
                     <label style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "normal", cursor: "pointer" }}>
                       <input
@@ -260,7 +312,7 @@ export function RelationshipTypePopover({
                         checked={visibilityKind === "dm_only"}
                         onChange={() => setVisibilityKind("dm_only")}
                       />
-                      Solo DM
+                      {t("canvas.relationPopover.dmOnly")}
                     </label>
                     <label style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "normal", cursor: "pointer" }}>
                       <input
@@ -269,7 +321,7 @@ export function RelationshipTypePopover({
                         checked={visibilityKind === "public"}
                         onChange={() => setVisibilityKind("public")}
                       />
-                      Público
+                      {t("canvas.relationPopover.public")}
                     </label>
                   </div>
                 </div>
@@ -279,10 +331,10 @@ export function RelationshipTypePopover({
 
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" onClick={onCancel}>
-              Cancelar
+              {t("relationModal.cancel")}
             </button>
             <button type="submit" className="btn btn-primary">
-              Conectar
+              {t("canvas.relationPopover.connect")}
             </button>
           </div>
         </form>

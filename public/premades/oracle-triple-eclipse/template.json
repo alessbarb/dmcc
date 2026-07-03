@@ -1,6 +1,5 @@
 {
-  "$schema": "https://dmcc.local/schemas/premade-template.schema.json",
-  "schemaVersion": 1,
+  "$schema": "../../schemas/premade/template/v1.json",
   "templateId": "oracle-triple-eclipse",
   "version": "1.3.0",
   "system": "generic_fantasy_d20",
@@ -1849,13 +1848,19 @@
       "relationId": "rel_tpl_oracle_062",
       "sourceEntityId": "ent_tpl_oracle_npc_veradis",
       "targetEntityId": "ent_tpl_oracle_faction_cult",
-      "relationType": "leader_of"
+      "relationType": "leader_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_063",
       "sourceEntityId": "ent_tpl_oracle_npc_vantis",
       "targetEntityId": "ent_tpl_oracle_faction_cult",
-      "relationType": "custom:employs"
+      "relationType": "custom:employs",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_064",
@@ -1870,25 +1875,37 @@
       "relationId": "rel_tpl_oracle_065",
       "sourceEntityId": "ent_tpl_oracle_npc_mors",
       "targetEntityId": "ent_tpl_oracle_faction_cult",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_066",
       "sourceEntityId": "ent_tpl_oracle_npc_aldric",
       "targetEntityId": "ent_tpl_oracle_faction_council",
-      "relationType": "leader_of"
+      "relationType": "leader_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_067",
       "sourceEntityId": "ent_tpl_oracle_npc_lena",
       "targetEntityId": "ent_tpl_oracle_faction_council",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_068",
       "sourceEntityId": "ent_tpl_oracle_npc_brann",
       "targetEntityId": "ent_tpl_oracle_faction_council",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_069",
@@ -1912,85 +1929,127 @@
       "relationId": "rel_tpl_oracle_071",
       "sourceEntityId": "ent_tpl_oracle_npc_torben",
       "targetEntityId": "ent_tpl_oracle_faction_guild",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_072",
       "sourceEntityId": "ent_tpl_oracle_npc_sera",
       "targetEntityId": "ent_tpl_oracle_faction_truth_temple",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_073",
       "sourceEntityId": "ent_tpl_oracle_npc_lyra",
       "targetEntityId": "ent_tpl_oracle_faction_council",
-      "relationType": "custom:employs"
+      "relationType": "custom:employs",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_074",
       "sourceEntityId": "ent_tpl_oracle_npc_cira",
       "targetEntityId": "ent_tpl_oracle_faction_guild",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_075",
       "sourceEntityId": "ent_tpl_oracle_npc_ola",
       "targetEntityId": "ent_tpl_oracle_faction_merchants",
-      "relationType": "leader_of"
+      "relationType": "leader_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_076",
       "sourceEntityId": "ent_tpl_oracle_npc_initiate",
       "targetEntityId": "ent_tpl_oracle_faction_cult",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_077",
       "sourceEntityId": "ent_tpl_oracle_npc_vorn",
       "targetEntityId": "ent_tpl_oracle_faction_cult",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_078",
       "sourceEntityId": "ent_tpl_oracle_npc_pell",
       "targetEntityId": "ent_tpl_oracle_faction_council",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_079",
       "sourceEntityId": "ent_tpl_oracle_npc_bren",
       "targetEntityId": "ent_tpl_oracle_faction_council",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_080",
       "sourceEntityId": "ent_tpl_oracle_pc_camus",
       "targetEntityId": "ent_tpl_oracle_faction_truth_temple",
-      "relationType": "member_of"
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_081",
       "sourceEntityId": "ent_tpl_oracle_pc_ragna",
       "targetEntityId": "ent_tpl_oracle_npc_lyra",
-      "relationType": "custom:allied_with"
+      "relationType": "custom:allied_with",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_082",
       "sourceEntityId": "ent_tpl_oracle_pc_silas",
       "targetEntityId": "ent_tpl_oracle_loc_raven_tavern",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_083",
       "sourceEntityId": "ent_tpl_oracle_pc_elowyn",
       "targetEntityId": "ent_tpl_oracle_faction_guild",
-      "relationType": "custom:allied_with"
+      "relationType": "custom:allied_with",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_084",
       "sourceEntityId": "ent_tpl_oracle_npc_veradis",
       "targetEntityId": "ent_tpl_oracle_npc_aldric",
-      "relationType": "leader_of"
+      "relationType": "leader_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_085",
@@ -2032,13 +2091,19 @@
       "relationId": "rel_tpl_oracle_089",
       "sourceEntityId": "ent_tpl_oracle_npc_lyra",
       "targetEntityId": "ent_tpl_oracle_npc_aldric",
-      "relationType": "custom:reports_to"
+      "relationType": "custom:reports_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_090",
       "sourceEntityId": "ent_tpl_oracle_npc_lena",
       "targetEntityId": "ent_tpl_oracle_npc_mira",
-      "relationType": "custom:consults"
+      "relationType": "custom:consults",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_091",
@@ -2062,7 +2127,10 @@
       "relationId": "rel_tpl_oracle_093",
       "sourceEntityId": "ent_tpl_oracle_npc_sera",
       "targetEntityId": "ent_tpl_oracle_npc_fenwick",
-      "relationType": "custom:disciple_of"
+      "relationType": "custom:disciple_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_094",
@@ -2077,7 +2145,10 @@
       "relationId": "rel_tpl_oracle_095",
       "sourceEntityId": "ent_tpl_oracle_npc_riku",
       "targetEntityId": "ent_tpl_oracle_npc_lyra",
-      "relationType": "custom:subordinate_to"
+      "relationType": "custom:subordinate_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_096",
@@ -2092,13 +2163,19 @@
       "relationId": "rel_tpl_oracle_097",
       "sourceEntityId": "ent_tpl_oracle_npc_ola",
       "targetEntityId": "ent_tpl_oracle_npc_dorian",
-      "relationType": "custom:employs"
+      "relationType": "custom:employs",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_098",
       "sourceEntityId": "ent_tpl_oracle_npc_vorn",
       "targetEntityId": "ent_tpl_oracle_npc_veradis",
-      "relationType": "custom:reports_to"
+      "relationType": "custom:reports_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_099",
@@ -2113,25 +2190,37 @@
       "relationId": "rel_tpl_oracle_100",
       "sourceEntityId": "ent_tpl_oracle_npc_pell",
       "targetEntityId": "ent_tpl_oracle_npc_aldric",
-      "relationType": "custom:reports_to"
+      "relationType": "custom:reports_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_101",
       "sourceEntityId": "ent_tpl_oracle_npc_pica",
       "targetEntityId": "ent_tpl_oracle_npc_torben",
-      "relationType": "custom:allied_with"
+      "relationType": "custom:allied_with",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_102",
       "sourceEntityId": "ent_tpl_oracle_npc_bren",
       "targetEntityId": "ent_tpl_oracle_npc_lyra",
-      "relationType": "custom:subordinate_to"
+      "relationType": "custom:subordinate_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_103",
       "sourceEntityId": "ent_tpl_oracle_npc_asha",
       "targetEntityId": "ent_tpl_oracle_npc_veradis",
-      "relationType": "custom:seeks_audience"
+      "relationType": "custom:seeks_audience",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_104",
@@ -2164,49 +2253,73 @@
       "relationId": "rel_tpl_oracle_107",
       "sourceEntityId": "ent_tpl_oracle_clue_port_bodies",
       "targetEntityId": "ent_tpl_oracle_quest_port_blood",
-      "relationType": "points_to"
+      "relationType": "points_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_108",
       "sourceEntityId": "ent_tpl_oracle_clue_fire_records",
       "targetEntityId": "ent_tpl_oracle_quest_archivist",
-      "relationType": "unlocks"
+      "relationType": "unlocks",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_109",
       "sourceEntityId": "ent_tpl_oracle_clue_broken_prophecy",
       "targetEntityId": "ent_tpl_oracle_npc_veradis",
-      "relationType": "points_to"
+      "relationType": "points_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_110",
       "sourceEntityId": "ent_tpl_oracle_clue_petitioner_fear",
       "targetEntityId": "ent_tpl_oracle_npc_asha",
-      "relationType": "points_to"
+      "relationType": "points_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_111",
       "sourceEntityId": "ent_tpl_oracle_clue_merchant_payment",
       "targetEntityId": "ent_tpl_oracle_npc_vantis",
-      "relationType": "points_to"
+      "relationType": "points_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_112",
       "sourceEntityId": "ent_tpl_oracle_clue_illusion_components",
       "targetEntityId": "ent_tpl_oracle_loc_chamber",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_113",
       "sourceEntityId": "ent_tpl_oracle_clue_torben_tip",
       "targetEntityId": "ent_tpl_oracle_npc_torben",
-      "relationType": "custom:revealed_by"
+      "relationType": "custom:revealed_by",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_114",
       "sourceEntityId": "ent_tpl_oracle_clue_fire_records",
       "targetEntityId": "ent_tpl_oracle_loc_archive",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_115",
@@ -2221,19 +2334,28 @@
       "relationId": "rel_tpl_oracle_116",
       "sourceEntityId": "ent_tpl_oracle_clue_port_bodies",
       "targetEntityId": "ent_tpl_oracle_loc_port",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_117",
       "sourceEntityId": "ent_tpl_oracle_clue_chronicles",
       "targetEntityId": "ent_tpl_oracle_faction_truth_temple",
-      "relationType": "custom:belongs_to"
+      "relationType": "custom:belongs_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_118",
       "sourceEntityId": "ent_tpl_oracle_clue_lyra_notes",
       "targetEntityId": "ent_tpl_oracle_npc_lyra",
-      "relationType": "custom:owns"
+      "relationType": "custom:owns",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_119",
@@ -2266,13 +2388,19 @@
       "relationId": "rel_tpl_oracle_122",
       "sourceEntityId": "ent_tpl_oracle_clue_vault_entrance",
       "targetEntityId": "ent_tpl_oracle_loc_ruins",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_123",
       "sourceEntityId": "ent_tpl_oracle_clue_vault_evidence",
       "targetEntityId": "ent_tpl_oracle_loc_vault",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_124",
@@ -2287,19 +2415,28 @@
       "relationId": "rel_tpl_oracle_125",
       "sourceEntityId": "ent_tpl_oracle_clue_vantis_confession",
       "targetEntityId": "ent_tpl_oracle_npc_vantis",
-      "relationType": "custom:revealed_by"
+      "relationType": "custom:revealed_by",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_126",
       "sourceEntityId": "ent_tpl_oracle_clue_cult_disbands",
       "targetEntityId": "ent_tpl_oracle_npc_initiate",
-      "relationType": "custom:revealed_by"
+      "relationType": "custom:revealed_by",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_127",
       "sourceEntityId": "ent_tpl_oracle_clue_eldertome",
       "targetEntityId": "ent_tpl_oracle_npc_fenwick",
-      "relationType": "custom:guards"
+      "relationType": "custom:guards",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_128",
@@ -2494,25 +2631,37 @@
       "relationId": "rel_tpl_oracle_149",
       "sourceEntityId": "ent_tpl_oracle_faction_truth_temple",
       "targetEntityId": "ent_tpl_oracle_faction_cult",
-      "relationType": "contradicts"
+      "relationType": "contradicts",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_150",
       "sourceEntityId": "ent_tpl_oracle_faction_merchants",
       "targetEntityId": "ent_tpl_oracle_faction_council",
-      "relationType": "leader_of"
+      "relationType": "leader_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_151",
       "sourceEntityId": "ent_tpl_oracle_npc_veradis",
       "targetEntityId": "ent_tpl_oracle_loc_chamber",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_152",
       "sourceEntityId": "ent_tpl_oracle_npc_mira",
       "targetEntityId": "ent_tpl_oracle_loc_archive",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_153",
@@ -2527,79 +2676,118 @@
       "relationId": "rel_tpl_oracle_154",
       "sourceEntityId": "ent_tpl_oracle_npc_fenwick",
       "targetEntityId": "ent_tpl_oracle_loc_ruins",
-      "relationType": "custom:guardian_of"
+      "relationType": "custom:guardian_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_155",
       "sourceEntityId": "ent_tpl_oracle_npc_healer",
       "targetEntityId": "ent_tpl_oracle_loc_port",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_156",
       "sourceEntityId": "ent_tpl_oracle_npc_pica",
       "targetEntityId": "ent_tpl_oracle_loc_port",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_157",
       "sourceEntityId": "ent_tpl_oracle_loc_chamber",
       "targetEntityId": "ent_tpl_oracle_valdris",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_158",
       "sourceEntityId": "ent_tpl_oracle_loc_raven_tavern",
       "targetEntityId": "ent_tpl_oracle_valdris",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_159",
       "sourceEntityId": "ent_tpl_oracle_loc_port",
       "targetEntityId": "ent_tpl_oracle_valdris",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_160",
       "sourceEntityId": "ent_tpl_oracle_loc_noble_district",
       "targetEntityId": "ent_tpl_oracle_valdris",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_161",
       "sourceEntityId": "ent_tpl_oracle_loc_archive",
       "targetEntityId": "ent_tpl_oracle_valdris",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_162",
       "sourceEntityId": "ent_tpl_oracle_loc_council_chamber",
       "targetEntityId": "ent_tpl_oracle_valdris",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_163",
       "sourceEntityId": "ent_tpl_oracle_loc_guard_barracks",
       "targetEntityId": "ent_tpl_oracle_valdris",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_164",
       "sourceEntityId": "ent_tpl_oracle_loc_vantis_mansion",
       "targetEntityId": "ent_tpl_oracle_valdris",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_165",
       "sourceEntityId": "ent_tpl_oracle_loc_truth_temple",
       "targetEntityId": "ent_tpl_oracle_valdris",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_166",
       "sourceEntityId": "ent_tpl_oracle_loc_docks",
       "targetEntityId": "ent_tpl_oracle_loc_port",
-      "relationType": "located_in"
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_167",
@@ -2614,25 +2802,37 @@
       "relationId": "rel_tpl_oracle_168",
       "sourceEntityId": "ent_tpl_oracle_loc_forest_shrine",
       "targetEntityId": "ent_tpl_oracle_faction_truth_temple",
-      "relationType": "custom:belongs_to"
+      "relationType": "custom:belongs_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_169",
       "sourceEntityId": "ent_tpl_oracle_quest_silence",
       "targetEntityId": "ent_tpl_oracle_faction_guild",
-      "relationType": "points_to"
+      "relationType": "points_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_170",
       "sourceEntityId": "ent_tpl_oracle_quest_archivist",
       "targetEntityId": "ent_tpl_oracle_npc_mira",
-      "relationType": "points_to"
+      "relationType": "points_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_171",
       "sourceEntityId": "ent_tpl_oracle_quest_port_blood",
       "targetEntityId": "ent_tpl_oracle_npc_lyra",
-      "relationType": "points_to"
+      "relationType": "points_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_172",
@@ -2647,19 +2847,28 @@
       "relationId": "rel_tpl_oracle_173",
       "sourceEntityId": "ent_tpl_oracle_quest_traitor",
       "targetEntityId": "ent_tpl_oracle_quest_broken_prophecy",
-      "relationType": "points_to"
+      "relationType": "points_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_174",
       "sourceEntityId": "ent_tpl_oracle_quest_epilogue",
       "targetEntityId": "ent_tpl_oracle_npc_aldric",
-      "relationType": "points_to"
+      "relationType": "points_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_175",
       "sourceEntityId": "ent_tpl_oracle_npc_sera",
       "targetEntityId": "ent_tpl_oracle_clue_chronicles",
-      "relationType": "custom:guards"
+      "relationType": "custom:guards",
+      "visibility": {
+        "kind": "dm_only"
+      }
     },
     {
       "relationId": "rel_tpl_oracle_176",

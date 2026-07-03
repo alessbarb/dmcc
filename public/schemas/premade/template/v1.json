@@ -6,16 +6,11 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schemaVersion",
+    "schema",
     "templateId",
     "version",
-    "title",
-    "description",
-    "summary",
-    "locale",
     "system",
     "difficulty",
-    "recommendedFor",
     "tags",
     "stats",
     "entities",
@@ -23,17 +18,13 @@
     "facts",
     "sessions",
     "canvases",
-    "pitch",
-    "learningGoals",
-    "includedMaterial",
-    "quickStart",
     "highlightEntityIds",
     "featuredFactIds",
     "featuredRelationIds"
   ],
   "properties": {
-    "schemaVersion": {
-      "const": 1
+    "$schema": {
+      "type": "string"
     },
     "templateId": {
       "type": "string",
@@ -222,8 +213,6 @@
       "required": [
         "entityId",
         "entityType",
-        "title",
-        "summary",
         "importance",
         "visibility"
       ],
@@ -289,7 +278,6 @@
         "sourceEntityId",
         "targetEntityId",
         "relationType",
-        "description",
         "visibility"
       ],
       "properties": {
@@ -306,22 +294,51 @@
           "pattern": "^ent_tpl_[a-z0-9_]+$"
         },
         "relationType": {
-          "type": "string",
-          "enum": [
-            "contains",
-            "unlocks",
-            "protects",
-            "enemy_of",
-            "knows",
-            "hides",
-            "points_to",
-            "causes",
-            "depends_on",
-            "blocks",
-            "reveals",
-            "threatens",
-            "located_in",
-            "leader_of"
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "appears_in",
+                "located_in",
+                "contains",
+                "lives_in",
+                "works_for",
+                "member_of",
+                "leader_of",
+                "ally_of",
+                "enemy_of",
+                "family_of",
+                "owes_debt_to",
+                "protects",
+                "threatens",
+                "hates",
+                "loves",
+                "fears",
+                "trusts",
+                "suspects",
+                "knows",
+                "knows_partially",
+                "hides",
+                "lies_about",
+                "reveals",
+                "unlocks",
+                "points_to",
+                "confirms",
+                "contradicts",
+                "causes",
+                "depends_on",
+                "blocks",
+                "foreshadows",
+                "transforms_into",
+                "affected_by",
+                "created_by",
+                "relacionado_con"
+              ]
+            },
+            {
+              "type": "string",
+              "pattern": "^custom:[a-zA-Z0-9_]+$"
+            }
           ]
         },
         "description": {
@@ -338,7 +355,6 @@
       "additionalProperties": false,
       "required": [
         "factId",
-        "statement",
         "kind",
         "confidence",
         "visibility",
@@ -355,11 +371,26 @@
         },
         "kind": {
           "type": "string",
-          "enum": ["canon", "dm_secret"]
+          "enum": [
+            "canon",
+            "dm_secret",
+            "rumor",
+            "lie",
+            "player_theory",
+            "mistake",
+            "retcon",
+            "unknown"
+          ]
         },
         "confidence": {
           "type": "string",
-          "enum": ["confirmed", "likely", "rumor", "unknown"]
+          "enum": [
+            "unconfirmed",
+            "suspected",
+            "likely",
+            "confirmed",
+            "false"
+          ]
         },
         "visibility": {
           "$ref": "#/$defs/visibility"
@@ -372,7 +403,7 @@
     "session": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["sessionId", "title", "prep"],
+      "required": ["sessionId", "prep"],
       "properties": {
         "sessionId": {
           "type": "string",
@@ -392,14 +423,11 @@
       "additionalProperties": false,
       "required": [
         "state",
-        "summary",
-        "goals",
         "sceneIds",
         "involvedEntityIds",
         "availableClueIds",
         "secretsAtRiskIds",
-        "expectedConsequenceIds",
-        "checklist"
+        "expectedConsequenceIds"
       ],
       "properties": {
         "state": {
@@ -449,7 +477,7 @@
     "checklistItem": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "label", "priority"],
+      "required": ["id", "priority"],
       "properties": {
         "id": {
           "type": "string",
@@ -468,7 +496,7 @@
     "canvas": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["canvasId", "title", "kind", "nodes", "edges"],
+      "required": ["canvasId", "kind", "nodes", "edges"],
       "properties": {
         "canvasId": {
           "type": "string",
@@ -480,7 +508,7 @@
         },
         "kind": {
           "type": "string",
-          "enum": ["world", "mystery", "session", "faction"]
+          "enum": ["world", "session", "mystery", "location", "characters", "custom"]
         },
         "description": {
           "type": "string"
@@ -502,19 +530,23 @@
     "canvasNode": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "kind", "x", "y", "width", "height"],
+      "required": ["id", "kind", "x", "y"],
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^node_tpl_[a-z0-9_]+$"
+          "pattern": "^(node|note|grp)_tpl_[a-z0-9_]+$"
         },
         "kind": {
           "type": "string",
-          "enum": ["entity", "note"]
+          "enum": ["entity", "note", "group", "image", "fact"]
         },
         "entityId": {
           "type": "string",
           "pattern": "^ent_tpl_[a-z0-9_]+$"
+        },
+        "factId": {
+          "type": "string",
+          "pattern": "^fact_tpl_[a-z0-9_]+$"
         },
         "title": {
           "type": "string"
@@ -545,6 +577,13 @@
         },
         "color": {
           "type": "string"
+        },
+        "groupId": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
         }
       },
       "allOf": [
@@ -590,15 +629,15 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^edge_tpl_[a-z0-9_]+$"
+          "pattern": "^(edge_tpl|ec|ei)_[a-z0-9_]+$"
         },
         "sourceNodeId": {
           "type": "string",
-          "pattern": "^node_tpl_[a-z0-9_]+$"
+          "pattern": "^(node|note|grp)_tpl_[a-z0-9_]+$"
         },
         "targetNodeId": {
           "type": "string",
-          "pattern": "^node_tpl_[a-z0-9_]+$"
+          "pattern": "^(node|note|grp)_tpl_[a-z0-9_]+$"
         },
         "label": {
           "type": "string"

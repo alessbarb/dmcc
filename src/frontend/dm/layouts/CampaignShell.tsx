@@ -10,6 +10,8 @@ import { logoutDm } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { QuickCaptureFAB } from "../capture/QuickCaptureFAB.js";
 import { CampaignGuidedTour } from "../onboarding/CampaignGuidedTour.js";
+import { LiveTableModal } from "../components/LiveTableModal.js";
+import { AccountModal } from "../../account/AccountModal.js"; // to: "/account"
 import { useKeyboardShortcuts } from "../../shared/hooks/useKeyboardShortcuts.js";
 import {
   Shield,
@@ -58,6 +60,16 @@ const PAGE_META: Record<string, PageMeta> = {
     titleKey: "campaignShell.meta.dashboardTitle",
     eyebrowKey: "campaignShell.meta.dashboardEyebrow",
     descriptionKey: "campaignShell.meta.dashboardDescription",
+  },
+  "command-center": {
+    titleKey: "campaignShell.meta.dashboardTitle",
+    eyebrowKey: "campaignShell.meta.dashboardEyebrow",
+    descriptionKey: "campaignShell.meta.dashboardDescription",
+  },
+  live: {
+    titleKey: "campaignShell.meta.sessionTitle",
+    eyebrowKey: "campaignShell.meta.sessionEyebrow",
+    descriptionKey: "campaignShell.meta.sessionDescription",
   },
   "what-now": {
     titleKey: "campaignShell.meta.whatNowTitle",
@@ -147,7 +159,7 @@ export function CampaignShell() {
 
   useKeyboardShortcuts(
     {
-      "g d": () => navigate({ to: `/campaigns/${campaignId}/dashboard` }),
+      "g d": () => navigate({ to: `/campaigns/${campaignId}/command-center` }),
       "g s": () => navigate({ to: `/campaigns/${campaignId}/session` }),
       "g e": () => navigate({ to: `/campaigns/${campaignId}/entities` }),
       "g b": () => navigate({ to: `/campaigns/${campaignId}/boards` }),
@@ -159,6 +171,8 @@ export function CampaignShell() {
 
   const [showExitTransition, setShowExitTransition] = useState(true);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
+  const [accountModalOpen, setAccountModalOpen] = useState(false);
 
   useEffect(() => {
     setShowExitTransition(true);
@@ -183,7 +197,8 @@ export function CampaignShell() {
   const currentSegment = pathname.split("/")[3] ?? "";
 
   const NAV: CampaignNavItem[] = [
-    { path: "dashboard", label: t("campaignShell.nav.dashboard"), Icon: Shield, mobilePrimary: true },
+    { path: "command-center", label: "Command Center", Icon: Shield, mobilePrimary: true },
+    { path: "dashboard", label: t("campaignShell.nav.dashboard"), Icon: Activity },
     { path: "what-now", label: t("campaignShell.nav.whatNow"), Icon: BookOpen, mobilePrimary: true },
     { path: "session", label: t("campaignShell.nav.session"), Icon: Play, mobilePrimary: true },
     { path: "entities", label: t("campaignShell.nav.entities"), Icon: Layers, mobilePrimary: true },
@@ -229,6 +244,10 @@ export function CampaignShell() {
 
   const handleNavClick = (path: string) => {
     setMobileNavOpen(false);
+    if (path === "live") {
+      setLiveTableModalOpen(true);
+      return;
+    }
     navigate({ to: `/campaigns/${campaignId}/${path}` });
   };
 
@@ -285,6 +304,35 @@ export function CampaignShell() {
           data-tour-id="campaign-current-campaign"
           style={{ padding: sidebarCollapsed ? "16px 8px" : undefined, overflow: "hidden" }}
         >
+          {/* Hub back button — always visible */}
+          <button
+            type="button"
+            onClick={exitCampaign}
+            title={t("nav.backToHub")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: sidebarCollapsed ? 0 : "6px",
+              background: "rgba(229,173,79,0.06)",
+              border: "1px solid rgba(229,173,79,0.18)",
+              borderRadius: "6px",
+              padding: sidebarCollapsed ? "6px" : "5px 10px",
+              color: "var(--accent, #e5ad4f)",
+              fontSize: "0.72rem",
+              fontWeight: 600,
+              cursor: "pointer",
+              width: "100%",
+              justifyContent: sidebarCollapsed ? "center" : "flex-start",
+              transition: "background 0.15s, border-color 0.15s",
+              marginBottom: "10px",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(229,173,79,0.12)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(229,173,79,0.06)"; }}
+          >
+            <ArrowLeft size={13} />
+            {!sidebarCollapsed && <span>{t("nav.backToHub")}</span>}
+          </button>
+
           {!sidebarCollapsed && (
             <>
               <div className="sidebar-logo">{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</div>
@@ -335,15 +383,7 @@ export function CampaignShell() {
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               <button
                 className="btn btn-secondary btn-sm"
-                onClick={exitCampaign}
-                title={t("nav.exit")}
-                style={{ width: "100%", padding: "6px", justifyContent: "center" }}
-              >
-                <ArrowLeft size={14} />
-              </button>
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() => navigate({ to: "/account" })}
+                onClick={() => setAccountModalOpen(true)}
                 style={{ width: "100%", justifyContent: "center" }}
               >
                 Account
@@ -359,15 +399,13 @@ export function CampaignShell() {
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span>{t("nav.activeCampaign")}</span>
-                <button
-                  className="btn btn-secondary btn-sm"
-                  onClick={exitCampaign}
-                >
-                  <ArrowLeft size={14} /> {t("nav.exit")}
-                </button>
-              </div>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={() => setAccountModalOpen(true)}
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                <User size={14} /> Account
+              </button>
               <button
                 className="btn btn-secondary btn-sm"
                 onClick={() => void handleSignOutDm()}
@@ -443,7 +481,15 @@ export function CampaignShell() {
                 onClick={exitCampaign}
               >
                 <ArrowLeft size={14} />
-                {t("nav.exit")}
+                {t("nav.backToHub")}
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => setAccountModalOpen(true)}
+              >
+                <User size={14} />
+                Account
               </button>
               <button
                 type="button"
@@ -538,14 +584,26 @@ export function CampaignShell() {
 
               <button
                 className="btn btn-secondary btn-sm"
+                data-tour-id="campaign-action-live-table"
+                onClick={() => setLiveTableModalOpen(true)}
+              >
+                <Users size={14} /> Mesa
+              </button>
+
+              <button
+                className="btn btn-secondary btn-sm"
                 data-tour-id="campaign-action-tour"
                 onClick={() => window.dispatchEvent(new CustomEvent("dmcc:start-campaign-tour", { detail: { campaignId } }))}
               >
                 <BookOpen size={14} /> {t("campaignTour.replayShort")}
               </button>
 
-              <button className="btn btn-secondary btn-sm" onClick={() => void handleSignOutDm()}>
-                <LogOut size={14} /> {t("nav.signOut")}
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={exitCampaign}
+                title={t("nav.backToHub")}
+              >
+                <ArrowLeft size={14} /> {t("nav.backToHub")}
               </button>
             </div>
           </header>
@@ -565,6 +623,13 @@ export function CampaignShell() {
       {/* Modals */}
       <EntityCreateModal isOpen={isEntityModalOpen} onClose={() => setIsEntityModalOpen(false)} />
       <RelationCreateModal isOpen={isRelationModalOpen} onClose={() => setIsRelationModalOpen(false)} />
+      <LiveTableModal
+        campaignId={campaignId}
+        isOpen={liveTableModalOpen}
+        onClose={() => setLiveTableModalOpen(false)}
+        activeSessionId={activeSession?.sessionId ?? null}
+      />
+      <AccountModal open={accountModalOpen} onClose={() => setAccountModalOpen(false)} />
 
       <ToastContainer toasts={toasts} onRemove={removeToast} />
 

@@ -17,7 +17,18 @@ export function WhatNowPage(props: WhatNowPageProps = {}) {
   const { campaignId } = useParams({ strict: false }) as any;
   const navigate = useNavigate();
   const store = useCampaignStore();
-  const whatNow = props.whatNow ?? store.whatNow;
+  const rawWhatNow = props.whatNow ?? store.whatNow;
+  const whatNow = rawWhatNow ? {
+    currentLocation: null,
+    currentQuest: null,
+    lastSession: null,
+    preparationChecklist: [],
+    partialKnowledgeAlerts: [],
+    hiddenCriticalSecrets: [],
+    pendingClues: [],
+    unresolvedConsequences: [],
+    ...rawWhatNow,
+  } : null;
   const campaignState = props.campaignState ?? store.campaignState;
   const { updateCampaignSettings, updateEntity, archiveEntity } = store;
   const { addToast } = useToast();
