@@ -2,7 +2,7 @@ import { mkdtemp, readFile, readdir, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
-import { createServer, resolveTrustProxyConfig, type ServerConfig } from "../../src/backend/server/createServer.js";
+import { createServer, resolveCorsAllowedOrigins, resolveTrustProxyConfig, type ServerConfig } from "../../src/backend/server/createServer.js";
 
 
 beforeEach(() => {
@@ -63,6 +63,59 @@ async function withStorageModeEnv<T>(
   }
 }
 
+async function withCorsEnv<T>(
+  env: { nodeEnv?: string; publicOrigin?: string; sessionSecret?: string },
+  fn: () => T | Promise<T>,
+): Promise<T> {
+  const originalNodeEnv = process.env.NODE_ENV;
+  const originalPublicOrigin = process.env.DMCC_PUBLIC_ORIGIN;
+  const originalSessionSecret = process.env.SESSION_SECRET;
+  const originalStorageMode = process.env.DMCC_STORAGE_MODE;
+
+  process.env.DMCC_STORAGE_MODE = "postgres";
+
+  if (env.nodeEnv === undefined) {
+    delete process.env.NODE_ENV;
+  } else {
+    process.env.NODE_ENV = env.nodeEnv;
+  }
+
+  if (env.publicOrigin === undefined) {
+    delete process.env.DMCC_PUBLIC_ORIGIN;
+  } else {
+    process.env.DMCC_PUBLIC_ORIGIN = env.publicOrigin;
+  }
+
+  process.env.SESSION_SECRET = env.sessionSecret ?? "0123456789abcdef0123456789abcdef";
+
+  try {
+    return await fn();
+  } finally {
+    if (originalNodeEnv === undefined) {
+      delete process.env.NODE_ENV;
+    } else {
+      process.env.NODE_ENV = originalNodeEnv;
+    }
+
+    if (originalPublicOrigin === undefined) {
+      delete process.env.DMCC_PUBLIC_ORIGIN;
+    } else {
+      process.env.DMCC_PUBLIC_ORIGIN = originalPublicOrigin;
+    }
+
+    if (originalSessionSecret === undefined) {
+      delete process.env.SESSION_SECRET;
+    } else {
+      process.env.SESSION_SECRET = originalSessionSecret;
+    }
+
+    if (originalStorageMode === undefined) {
+      delete process.env.DMCC_STORAGE_MODE;
+    } else {
+      process.env.DMCC_STORAGE_MODE = originalStorageMode;
+    }
+  }
+}
 
 async function withTrustProxyEnv<T>(
   trustProxy: string | undefined,
@@ -225,6 +278,43 @@ describe("createServer", () => {
       expect(response.statusCode).toBe(200);
       expect(response.json()).toEqual({ ok: true, app: "dmcc-web", storage: "postgres" });
     });
+  });
+
+  it("requires DMCC_PUBLIC_ORIGIN in production postgres mode", async () => {
+    await withCorsEnv({ nodeEnv: "production" }, () => {
+      expect(() => createServer({ storageMode: "postgres" })).toThrow(/DMCC_PUBLIC_ORIGIN is required/);
+    });
+  });
+
+  it("does not include localhost in the production CORS allow-list", () => {
+    expect(resolveCorsAllowedOrigins("production", "https://dmcc.example.com")).toEqual(["https://dmcc.example.com"]);
+  });
+
+  it("rejects localhost CORS origins when NODE_ENV=production", async () => {
+    await withCorsEnv({ nodeEnv: "production", publicOrigin: "https://dmcc.example.com" }, async () => {
+      const server = createServer({ storageMode: "postgres" });
+
+      const response = await server.inject({
+        method: "OPTIONS",
+        url: "/api/health",
+        headers: {
+          origin: "http://localhost:5173",
+          "access-control-request-method": "GET",
+        },
+      });
+
+      expect(response.headers["access-control-allow-origin"]).toBeUndefined();
+      expect(response.headers["access-control-allow-credentials"]).toBeUndefined();
+    });
+  });
+
+  it("allows explicit localhost CORS origins outside production", () => {
+    expect(resolveCorsAllowedOrigins("test", undefined)).toEqual([
+      "http://localhost:4877",
+      "http://127.0.0.1:4877",
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+    ]);
   });
 
   it("rejects cross-origin mutations before route authorization", async () => {

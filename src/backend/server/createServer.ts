@@ -43,6 +43,45 @@ import { registerWebPlatformRoutes } from "./web/webPlatformRoutes.js";
 const PLACEHOLDER_SESSION_SECRETS = new Set(["change-me", "dev-change-me"]);
 const GLOBAL_JSON_BODY_LIMIT_BYTES = 1 * 1024 * 1024;
 
+const LOCAL_CORS_ORIGINS = [
+  "http://localhost:4877",
+  "http://127.0.0.1:4877",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+] as const;
+
+function requireConfiguredPublicOrigin(rawOrigin = process.env.DMCC_PUBLIC_ORIGIN): string {
+  const origin = rawOrigin?.trim();
+
+  if (!origin) {
+    throw new Error("DMCC_PUBLIC_ORIGIN is required when NODE_ENV=production and DMCC_STORAGE_MODE=postgres");
+  }
+
+  try {
+    const parsed = new URL(origin);
+    if (parsed.origin !== origin || parsed.username || parsed.password || parsed.pathname !== "/" || parsed.search || parsed.hash) {
+      throw new Error("invalid origin");
+    }
+  } catch {
+    throw new Error("DMCC_PUBLIC_ORIGIN must be an absolute origin such as https://app.example.com");
+  }
+
+  return origin;
+}
+
+export function resolveCorsAllowedOrigins(nodeEnv = process.env.NODE_ENV, publicOrigin = process.env.DMCC_PUBLIC_ORIGIN): string[] {
+  const configuredPublicOrigin = publicOrigin?.trim();
+
+  if (nodeEnv === "production") {
+    return [requireConfiguredPublicOrigin(configuredPublicOrigin)];
+  }
+
+  return Array.from(new Set([
+    ...(configuredPublicOrigin ? [requireConfiguredPublicOrigin(configuredPublicOrigin)] : []),
+    ...LOCAL_CORS_ORIGINS,
+  ]));
+}
+
 type TrustProxyConfig = FastifyServerOptions["trustProxy"];
 
 /**
@@ -227,20 +266,19 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
 
   if (isPostgresWebMode) {
-    const allowedOrigin = process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173";
+    const allowedOrigins = resolveCorsAllowedOrigins();
     const sessionSecret = getRequiredSessionSecret();
     server.register(cookie, { secret: sessionSecret });
     server.register(rateLimit, { max: 200, timeWindow: "1 minute" });
-    server.register(cors, { origin: [allowedOrigin, "http://127.0.0.1:5173", "http://localhost:4877"], credentials: true });
-  } else {
     server.register(cors, {
-      origin: [
-        "http://localhost:4877",
-        "http://127.0.0.1:4877",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-      ],
+      delegator: (request, callback) => {
+        const requestOrigin = request.headers.origin;
+        const isAllowedOrigin = typeof requestOrigin === "string" && allowedOrigins.includes(requestOrigin);
+        callback(null, { origin: isAllowedOrigin ? requestOrigin : false, credentials: isAllowedOrigin });
+      },
     });
+  } else {
+    server.register(cors, { origin: [...LOCAL_CORS_ORIGINS] });
   }
 
   const __filename = fileURLToPath(import.meta.url);
