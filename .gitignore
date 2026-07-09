@@ -11,6 +11,8 @@ playwright-report/
 .env
 .env.*
 !.env.example
+!.env.development.example
+!.env.production.example
 *.log
 *.local
 .claude/
