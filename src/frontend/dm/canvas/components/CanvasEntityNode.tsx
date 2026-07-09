@@ -5,6 +5,7 @@ import { AlertTriangle, CheckCircle2, Eye, FileText, KeyRound, RefreshCcw, Stick
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
+import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 
 
 export interface CanvasEntityNodeProps {
@@ -60,7 +61,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
   const IconComponent = cfg.icon;
   const imageUrl = entity.metadata?.imageUrl as string | undefined;
   const heroStyle = cfg.heroStyle;
-  const isDmOnly = !entity.visibility || entity.visibility.kind === "dm_only" || entity.visibility.kind === "dm";
+  const isDmOnly = isDmOnlyVisibility(entity.visibility);
   const isTableHidden = Boolean(data.tablePrivacy && isDmOnly && !isPrivacyRevealed);
 
   const isCritical = entity.importance === "critical";
@@ -140,8 +141,8 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
 
         {/* Visibility badge — top-right */}
         {(() => {
-          const kind = entity.visibility?.kind || "dm_only";
-          if (kind === "dm_only" || kind === "dm") {
+          const kind = entity.visibility?.kind;
+          if (isDmOnlyVisibility(entity.visibility)) {
             return (
               <div className="rg-card__dm-badge rg-card__dm-badge--secret" title={t("canvas.node.visibilityDmOnly")}>
                 <span style={{ fontSize: "9px" }}>🔒 Secreto DM</span>

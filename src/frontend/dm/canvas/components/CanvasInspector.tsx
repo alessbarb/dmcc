@@ -4,6 +4,7 @@ import { X, Trash2, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../../shared/components/ImagePickerButton.js";
 import type { Canvas, CanvasEdge, CanvasNode } from "@core/domain/canvas/types.js";
+import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 import type { Entity, Relation, Fact } from "../../../shared/stores/campaignStore.js";
 
 
@@ -190,7 +191,7 @@ export function CanvasInspector({
               (e: Entity) =>
                 e.entityType === "secret" &&
                 !e.archived &&
-                (e.visibility?.kind === "dm_only" || e.visibility?.kind === "dm") &&
+                isDmOnlyVisibility(e.visibility) &&
                 e.metadata?.revelationAnchors?.includes(entity.entityId)
             );
             for (const secret of secrets) {

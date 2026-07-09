@@ -31,6 +31,7 @@ import type { ProOptions } from "reactflow";
 import type { Canvas, CanvasNode, CanvasEdge } from "@core/domain/canvas/types.js";
 import type { Entity, Relation, Fact } from "../../../shared/stores/campaignStore.js";
 import { getRelationVisual } from "../../entities/entityVisuals.js";
+import { isPublicCanvasEdge, isPublicCanvasNode } from "../services/canvasVisibility.js";
 
 // Register custom node types — group nodes are no longer rendered as boxes
 const nodeTypes = {
@@ -41,10 +42,6 @@ const nodeTypes = {
 
 const reactFlowProOptions: ProOptions = { hideAttribution: true };
 
-function hasDmOnlyLegacyVisibility(edge: CanvasEdge): boolean {
-  const { visibility } = edge as { visibility?: unknown };
-  return visibility === "dm_only";
-}
 
 export interface CampaignCanvasFocusOptions {
   zoom?: number;
@@ -197,10 +194,16 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
         const entity = node.entityId ? campaignState?.entities?.find((e: Entity) => e.entityId === node.entityId) : null;
 
-        if (publicOnly && entity) {
-          const isDmOnly = !entity.visibility || entity.visibility.kind === "dm_only" || entity.visibility.kind === "dm";
-          if (isDmOnly) return false;
-        }
+        const facts = campaignState?.facts;
+        const fact = node.factId && facts
+          ? (facts instanceof Map
+              ? facts.get(node.factId)
+              : Array.isArray(facts)
+                ? (facts as Fact[]).find((f: Fact) => f.factId === node.factId)
+                : undefined)
+          : undefined;
+
+        if (publicOnly && !isPublicCanvasNode(node, entity ?? fact ?? null)) return false;
 
         if (mysteryFlowMode) {
           if (node.kind === "entity" && entity) {
@@ -284,15 +287,11 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     const defaultEdges = (canvas.edges || [])
       .filter((edge: CanvasEdge) => visibleNodeIds.has(edge.sourceNodeId) && visibleNodeIds.has(edge.targetNodeId))
       .filter((edge: CanvasEdge) => {
-        if (publicOnly || relationsFilter === "public") {
-          const isSecret = edge.style === "secret" || edge.visibility === "dm" || hasDmOnlyLegacyVisibility(edge);
-          if (isSecret) return false;
-        }
+        const relation = edge.relationshipId ? campaignState?.relations?.find((r: Relation) => r.relationId === edge.relationshipId) : null;
+        const isPublicEdge = isPublicCanvasEdge(edge, relation);
+        if ((publicOnly || relationsFilter === "public") && !isPublicEdge) return false;
 
-        if (relationsFilter === "secret") {
-          const isSecret = edge.style === "secret" || edge.visibility === "dm" || hasDmOnlyLegacyVisibility(edge);
-          if (!isSecret) return false;
-        }
+        if (relationsFilter === "secret" && isPublicEdge) return false;
 
         if (relationsFilter === "selection" && selectedNodeId) {
           if (edge.sourceNodeId !== selectedNodeId && edge.targetNodeId !== selectedNodeId) {
