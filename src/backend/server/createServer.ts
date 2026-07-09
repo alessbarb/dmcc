@@ -41,6 +41,7 @@ import { registerWebPlatformRoutes } from "./web/webPlatformRoutes.js";
 
 
 const PLACEHOLDER_SESSION_SECRETS = new Set(["change-me", "dev-change-me"]);
+const GLOBAL_JSON_BODY_LIMIT_BYTES = 1 * 1024 * 1024;
 
 type TrustProxyConfig = FastifyServerOptions["trustProxy"];
 
@@ -191,7 +192,7 @@ export interface ServerConfig {
 
 export function createServer(config?: ServerConfig): FastifyInstance {
   const trustProxy = resolveTrustProxyConfig();
-  const server = Fastify({ logger: { level: "warn" }, trustProxy });
+  const server = Fastify({ logger: { level: "warn" }, trustProxy, bodyLimit: GLOBAL_JSON_BODY_LIMIT_BYTES });
   const dataDir = config?.dataDir ?? join(homedir(), "Documents", "DMCampaignCompanion");
   const storageMode = resolveStorageMode(config?.storageMode);
   const isPostgresWebMode = storageMode === "postgres";
