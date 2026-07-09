@@ -9,9 +9,13 @@ import {
   searchNoteNodes,
 } from "../../../src/frontend/dm/canvas/selectors/canvasNavigatorSelectors.js";
 
+const isoDate = "2026-01-01T00:00:00.000Z";
+const campaignId = "campaign-1";
+const canvasId = "canvas-1";
+
 const entity = (overrides: Partial<Entity>): Entity => ({
   entityId: "entity-1",
-  campaignId: "campaign-1",
+  campaignId,
   entityType: "npc",
   title: "Mara",
   status: "ready",
@@ -20,24 +24,58 @@ const entity = (overrides: Partial<Entity>): Entity => ({
   metadata: {},
   tagIds: [],
   archived: false,
-  createdAt: "2026-01-01T00:00:00.000Z",
-  updatedAt: "2026-01-01T00:00:00.000Z",
+  createdAt: isoDate,
+  updatedAt: isoDate,
   ...overrides,
 });
 
-const canvas = {
-  id: "canvas-1",
-  canvasId: "canvas-1",
-  campaignId: "campaign-1",
+const canvas: Canvas = {
+  id: canvasId,
+  campaignId,
   title: "Canvas",
   kind: "world",
   nodes: [
-    { id: "node-entity", kind: "entity", entityId: "entity-1", x: 0, y: 0 },
-    { id: "node-fact", kind: "fact", factId: "fact-1", x: 0, y: 0 },
-    { id: "node-note", kind: "note", title: "Session lead", text: "Meet at the docks", x: 0, y: 0 },
+    {
+      id: "node-entity",
+      campaignId,
+      canvasId,
+      kind: "entity",
+      entityId: "entity-1",
+      x: 0,
+      y: 0,
+      createdAt: isoDate,
+      updatedAt: isoDate,
+    },
+    {
+      id: "node-fact",
+      campaignId,
+      canvasId,
+      kind: "fact",
+      factId: "fact-1",
+      x: 0,
+      y: 0,
+      createdAt: isoDate,
+      updatedAt: isoDate,
+    },
+    {
+      id: "node-note",
+      campaignId,
+      canvasId,
+      kind: "note",
+      title: "Session lead",
+      text: "Meet at the docks",
+      x: 0,
+      y: 0,
+      createdAt: isoDate,
+      updatedAt: isoDate,
+    },
   ],
   edges: [],
-} as Canvas;
+  viewport: { x: 0, y: 0, zoom: 1 },
+  archived: false,
+  createdAt: isoDate,
+  updatedAt: isoDate,
+};
 
 describe("canvasNavigatorSelectors", () => {
   it("groups placed nodes by navigable content type", () => {
