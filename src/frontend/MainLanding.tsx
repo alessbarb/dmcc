@@ -265,7 +265,7 @@ export function MainLanding() {
           </div>
 
           <p className="rl-hero__fine">
-            Sin nube · Sin suscripción · Tus campañas viven en tu máquina.
+            Control de tus datos · Exportable · Sin suscripción obligatoria.
           </p>
         </div>
 
@@ -368,15 +368,16 @@ export function MainLanding() {
             Tu campaña es tuya
           </h2>
           <p className="rl-local__body rl-animate rl-animate--from-bottom" data-delay="220">
-            DMCC funciona con una filosofía local-first: tus datos viven en tu máquina
-            y no dependen de una nube externa. Ideal para DMs que quieren controlar
-            su mundo, su mesa y su información sin suscripciones ni servicios cerrados.
+            DMCC funciona con una filosofía local-first: mantén el control de la información
+            de tu campaña, conserva opciones portables y exporta tus datos cuando lo necesites.
+            Ideal para DMs que quieren dirigir mundos largos sin quedar atados a servicios cerrados
+            ni a suscripciones obligatorias.
           </p>
           <div className="rl-local__pills" aria-hidden="true">
-            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="340">Sin cuenta en la nube</span>
-            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="410">Sin límite de campañas</span>
-            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="480">Sin suscripción</span>
-            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="550">Exportable en cualquier momento</span>
+            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="340">Datos bajo tu control</span>
+            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="410">Sin límite artificial de campañas</span>
+            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="480">Exportable en cualquier momento</span>
+            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="550">Pensado para campañas largas</span>
           </div>
         </div>
       </section>
@@ -406,7 +407,7 @@ export function MainLanding() {
       <footer className="rl-footer">
         <div className="rl-footer__inner">
           <div className="rl-footer__brand"><Shield size={13} /><span>DMCC — Campaign Memory Engine</span></div>
-          <div className="rl-footer__meta"><Lock size={11} /><span>Local-first · Offline · Sin nube</span></div>
+          <div className="rl-footer__meta"><Lock size={11} /><span>Local-first · Exportable · Bajo tu control</span></div>
         </div>
       </footer>
 
