@@ -56,6 +56,9 @@ export interface CampaignCanvasFlowHandle {
   getViewportCenter: () => { x: number; y: number } | null;
 }
 
+export type CanvasDeviceMode = "desktop" | "tablet" | "mobile";
+export type CanvasInteractionProfile = "explore" | "direct" | "edit";
+
 export interface CampaignCanvasFlowProps {
   canvasId: string;
   canvas: Canvas;
@@ -79,6 +82,13 @@ export interface CampaignCanvasFlowProps {
   mysteryFlowMode?: boolean;
   density?: "compact" | "normal" | "detailed";
   relationsFilter?: "all" | "public" | "secret" | "selection";
+  deviceMode?: CanvasDeviceMode;
+  interactionProfile?: CanvasInteractionProfile;
+  focusMode?: boolean;
+  focusNodeId?: string | null;
+  maxGraphDepth?: number;
+  showOnlyNeighborhood?: boolean;
+  onNodeContextRequest?: (nodeId: string) => void;
 }
 
 export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, CampaignCanvasFlowProps>(function CampaignCanvasFlow({
@@ -104,6 +114,13 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   mysteryFlowMode = false,
   density = "normal",
   relationsFilter = "all",
+  deviceMode = "desktop",
+  interactionProfile = "edit",
+  focusMode = false,
+  focusNodeId = null,
+  maxGraphDepth: _maxGraphDepth,
+  showOnlyNeighborhood: _showOnlyNeighborhood = false,
+  onNodeContextRequest,
 }: CampaignCanvasFlowProps, ref) {
   const { t } = useTranslation();
   const {
@@ -738,8 +755,10 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     }
   }, [rfInstance, canvasId, campaignState, placeNodeOnCanvas, createEntity, createFact]);
 
-  const isPanMode = interactionMode === "pan";
-  const isMarqueeMode = interactionMode === "multiselect";
+  const isMobileExplore = deviceMode === "mobile" && interactionProfile !== "edit";
+  const isPanMode = interactionMode === "pan" || isMobileExplore;
+  const isMarqueeMode = !isMobileExplore && interactionMode === "multiselect";
+  const mobileNodesDraggable = deviceMode !== "mobile" || interactionProfile === "edit";
 
   const canvasNodes = useCampaignStore(s => s.canvasesById[canvasId]?.nodes);
 
@@ -764,7 +783,12 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
         onEdgesChange={onEdgesChange}
         onNodeDragStop={onNodeDragStop}
         onSelectionDragStop={onSelectionDragStop}
-        onNodeClick={onNodeClick}
+        onNodeClick={(event, node) => {
+          if (isMobileExplore) {
+            onNodeContextRequest?.(node.id);
+          }
+          onNodeClick(event, node);
+        }}
         onEdgeClick={onEdgeClick}
         onPaneClick={onPaneClick}
         onConnect={onConnect}
@@ -775,13 +799,13 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
         onInit={setRfInstance}
         deleteKeyCode={null}
         multiSelectionKeyCode="Shift"
-        fitViewOptions={{ padding: 0.2 }}
+        fitViewOptions={{ padding: focusMode && focusNodeId ? 0.35 : 0.2 }}
         className="campaign-react-flow"
-        panOnDrag={isPanMode}
-        selectionOnDrag={isMarqueeMode}
+        panOnDrag={interactionProfile !== "edit" || isPanMode}
+        selectionOnDrag={deviceMode === "mobile" ? false : isMarqueeMode}
         selectionMode={isMarqueeMode ? SelectionMode.Partial : SelectionMode.Full}
-        nodesDraggable={!isLocked && !isPanMode && !isMarqueeMode}
-        elementsSelectable={!isPanMode}
+        nodesDraggable={!isLocked && !isPanMode && !isMarqueeMode && mobileNodesDraggable}
+        elementsSelectable={!isPanMode || isMobileExplore}
         panOnScroll={false}
         zoomOnDoubleClick={false}
       >
