@@ -2064,6 +2064,117 @@ body:has(.rl-root) .watermark {
   z-index: 5;
 }
 
+.canvas-navigator-panel {
+  width: 260px;
+  background-color: color-mix(in srgb, var(--bg-card) 92%, var(--bg-main));
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding: 14px;
+  z-index: 4;
+}
+
+.canvas-navigator-panel__header h2 {
+  color: var(--text-main);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.canvas-navigator-search {
+  align-items: center;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: 8px;
+  padding: 7px 9px;
+}
+
+.canvas-navigator-search input {
+  background: transparent;
+  border: 0;
+  color: var(--text-main);
+  min-width: 0;
+  outline: 0;
+  width: 100%;
+}
+
+.canvas-navigator-filters {
+  display: grid;
+  gap: 8px;
+}
+
+.canvas-navigator-filters select {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-size: 0.78rem;
+  padding: 6px 8px;
+}
+
+.canvas-navigator-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.canvas-navigator-section h3 {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin: 4px 0 0;
+  text-transform: uppercase;
+}
+
+.canvas-navigator-results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.canvas-navigator-result {
+  align-items: flex-start;
+  background-color: var(--bg-input);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  text-align: left;
+}
+
+.canvas-navigator-result:hover {
+  border-color: var(--primary);
+}
+
+.canvas-navigator-result span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.canvas-navigator-result strong {
+  font-size: 0.78rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.canvas-navigator-result small,
+.canvas-navigator-empty {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
 .palette-section h3 {
   font-size: 0.72rem;
   font-weight: 800;
