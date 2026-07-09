@@ -19,6 +19,7 @@ export type WebUser = {
   email: string;
   displayName: string;
   appRole: "user" | "admin";
+  vaultId: string;
 };
 
 export function normalizeEmail(email: string): string {
@@ -108,6 +109,7 @@ export function publicWebUser(user: typeof schema.users.$inferSelect): WebUser {
     email: user.emailNormalized,
     displayName: user.displayName ?? user.emailNormalized,
     appRole: (user.vaultRole === "admin" ? "admin" : "user"),
+    vaultId: user.vaultId,
   };
 }
 

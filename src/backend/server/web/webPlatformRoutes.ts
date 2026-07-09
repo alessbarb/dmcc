@@ -148,6 +148,7 @@ async function ensureDefaultWorkspace(user: WebUser): Promise<string> {
   await db.transaction(async (tx) => {
     await tx.insert(schema.workspaces).values({
       workspaceId,
+      vaultId: user.vaultId,
       name: `${user.displayName}'s workspace`,
       ownerId: user.userId,
     });
@@ -1395,6 +1396,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     await db.transaction(async (tx) => {
       await tx.insert(schema.campaigns).values({
         campaignId,
+        vaultId: user.vaultId,
         workspaceId,
         ownerId: user.userId,
         title,
@@ -1491,6 +1493,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
         await db.transaction(async (tx) => {
           await tx.insert(schema.campaigns).values({
             campaignId,
+            vaultId: user.vaultId,
             workspaceId,
             ownerId: user.userId,
             title,
