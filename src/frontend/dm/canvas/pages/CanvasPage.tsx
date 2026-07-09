@@ -8,7 +8,7 @@ import { CanvasNavigatorPanel } from "../components/CanvasNavigatorPanel.js";
 import { CanvasPalette } from "../components/CanvasPalette.js";
 import { CanvasInspector } from "../components/CanvasInspector.js";
 import { MysteryHealthPanel } from "../components/MysteryHealthPanel.js";
-import { Plus, Layout, Folder, Eye, EyeOff, Zap, Play, X, User, UserCheck, MapPin, Shield, HelpCircle, Key, Award, Film } from "lucide-react";
+import { Plus, Layout, Folder, Eye, EyeOff, Zap, Play, X, User, UserCheck, MapPin, Shield, HelpCircle, Key, Award, Film, Search, ListPlus, Info, MoreHorizontal } from "lucide-react";
 import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
@@ -23,6 +23,7 @@ import { getCanvasTemplate } from "../templates/index.js";
 import { applyCanvasTemplate } from "../services/applyCanvasTemplate.js";
 
 type CanvasDensity = "compact" | "normal" | "detailed";
+type CanvasMobilePanel = "search" | "add" | "detail" | "more" | null;
 
 const CANVAS_DENSITY_STORAGE_KEY = "dmcc.canvas.density";
 const DEFAULT_CANVAS_DENSITY: CanvasDensity = "normal";
@@ -414,10 +415,17 @@ export function CanvasPage() {
   const [isLintOpen, setIsLintOpen] = useState(false);
   const [density, setDensity] = useState<CanvasDensity>(getStoredCanvasDensity);
   const [relationsFilter, setRelationsFilter] = useState<"all" | "public" | "secret" | "selection">("all");
+  const [mobilePanel, setMobilePanel] = useState<CanvasMobilePanel>(null);
 
   useEffect(() => {
     storeCanvasDensity(density);
   }, [density]);
+
+  useEffect(() => {
+    if (isPlayerView) {
+      setMobilePanel(null);
+    }
+  }, [isPlayerView]);
 
   const focusCanvasNode = (nodeId: string) => {
     const focused = canvasFlowRef.current?.focusNode(nodeId, { zoom: 1.2, duration: 350 }) ?? false;
@@ -1134,6 +1142,8 @@ export function CanvasPage() {
               isDirectionMode={isDirectionMode}
               selectedNodeId={selectedNodeId}
               getViewportCenter={() => canvasFlowRef.current?.getViewportCenter() ?? null}
+              className={mobilePanel === "add" ? "is-open" : undefined}
+              onMobileClose={() => setMobilePanel(null)}
             />
           )}
           {!isPlayerView && (
@@ -1143,6 +1153,8 @@ export function CanvasPage() {
               onFocusEntity={focusCanvasEntity}
               onFocusFact={focusCanvasFact}
               getViewportCenter={() => canvasFlowRef.current?.getViewportCenter() ?? null}
+              className={mobilePanel === "search" ? "is-open" : undefined}
+              onMobileClose={() => setMobilePanel(null)}
             />
           )}
           
@@ -1216,11 +1228,13 @@ export function CanvasPage() {
               onClose={() => {
                 setSelectedNodeId(null);
                 setSelectedEdgeId(null);
+                setMobilePanel(null);
               }}
               onOpenDetail={(entityId) => {
                 setDetailEntityId(entityId);
               }}
               addToast={addToast}
+              className={mobilePanel === "detail" ? "is-open" : undefined}
             />
           )}
 
@@ -1288,6 +1302,32 @@ export function CanvasPage() {
                 })()}
               </div>
             </div>
+          )}
+
+
+          {!isPlayerView && (
+            <>
+              <div className={`canvas-mobile-more-panel ${mobilePanel === "more" ? "is-open" : ""}`} aria-label="Acciones secundarias del canvas">
+                <div className="canvas-mobile-sheet-header">
+                  <span>Más acciones</span>
+                  <button type="button" className="canvas-mobile-sheet-close" onClick={() => setMobilePanel(null)} aria-label="Cerrar panel de más acciones">
+                    <X size={16} />
+                  </button>
+                </div>
+                <div className="canvas-mobile-more-actions">
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsCreateBoardOpen(true); setMobilePanel(null); }}>Nuevo tablero</button>
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsImportOpen(true); setMobilePanel(null); }}>Importar texto</button>
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsLegendOpen(true); setMobilePanel(null); }}>Leyenda</button>
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsLintOpen(true); setMobilePanel(null); }}>Consistencia</button>
+                </div>
+              </div>
+              <nav className="canvas-mobile-dock" aria-label="Paneles del canvas">
+                <button type="button" className={mobilePanel === "search" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "search" ? null : "search")}><Search size={18} /><span>Buscar</span></button>
+                <button type="button" className={mobilePanel === "add" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "add" ? null : "add")}><ListPlus size={18} /><span>Añadir</span></button>
+                <button type="button" className={mobilePanel === "detail" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "detail" ? null : "detail")} disabled={!selectedNodeId && !selectedEdgeId}><Info size={18} /><span>Detalle</span></button>
+                <button type="button" className={mobilePanel === "more" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "more" ? null : "more")}><MoreHorizontal size={18} /><span>Más</span></button>
+              </nav>
+            </>
           )}
 
           {/* Floating bulk actions bar */}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import {
-  Search, Film,
+  Search, Film, X,
   StickyNote, BoxSelect, Eye, CheckCircle2, RefreshCcw, Trash2,
   Lock, MessageSquare, XCircle, Lightbulb, AlertTriangle, RefreshCw,
   ChevronLeft, ChevronRight
@@ -18,6 +18,8 @@ export interface CanvasPaletteProps {
   isDirectionMode?: boolean;
   selectedNodeId: string | null;
   getViewportCenter?: () => { x: number; y: number } | null;
+  className?: string;
+  onMobileClose?: () => void;
 }
 
 function makeDragGhost(label: string, color: string): HTMLElement {
@@ -35,7 +37,7 @@ function makeDragGhost(label: string, color: string): HTMLElement {
   return el;
 }
 
-export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getViewportCenter }: CanvasPaletteProps) {
+export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getViewportCenter, className, onMobileClose }: CanvasPaletteProps) {
   const { t } = useTranslation();
   const {
     campaignState,
@@ -390,7 +392,15 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
   }
 
   return (
-    <div className="canvas-palette">
+    <div className={["canvas-palette", className].filter(Boolean).join(" ")}>
+      {onMobileClose && (
+        <div className="canvas-mobile-sheet-header">
+          <span>Añadir</span>
+          <button type="button" className="canvas-mobile-sheet-close" onClick={onMobileClose} aria-label="Cerrar panel de añadir">
+            <X size={16} />
+          </button>
+        </div>
+      )}
       <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "-8px" }}>
         <button
           onClick={toggleCollapsed}
