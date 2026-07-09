@@ -62,6 +62,24 @@ export function getRequiredSessionSecret(): string {
   return secret;
 }
 
+type StorageMode = "legacy" | "postgres";
+
+function resolveStorageMode(configuredStorageMode?: StorageMode): StorageMode {
+  if (configuredStorageMode) return configuredStorageMode;
+
+  const envStorageMode = process.env.DMCC_STORAGE_MODE;
+  if (envStorageMode === "postgres" || envStorageMode === "legacy") {
+    return envStorageMode;
+  }
+
+  const actual = envStorageMode === undefined || envStorageMode.trim() === ""
+    ? "absent"
+    : `"${envStorageMode}"`;
+  throw new Error(
+    `DMCC_STORAGE_MODE must be explicitly set to "postgres" or "legacy" when config.storageMode is not provided; received ${actual}.`,
+  );
+}
+
 export interface ServerConfig {
   dataDir?: string;
   /** Override the public assets directory (used in tests to inject fake asset trees). */
@@ -73,13 +91,13 @@ export interface ServerConfig {
    * campaign memberships, invitations and no vault/LAN/token persistence.
    * Legacy remains available for existing tests until the frontend/backend are fully cut over.
    */
-  storageMode?: "legacy" | "postgres";
+  storageMode?: StorageMode;
 }
 
 export function createServer(config?: ServerConfig): FastifyInstance {
   const server = Fastify({ logger: { level: "warn" } });
   const dataDir = config?.dataDir ?? join(homedir(), "Documents", "DMCampaignCompanion");
-  const storageMode = config?.storageMode ?? (process.env.DMCC_STORAGE_MODE === "postgres" ? "postgres" : "legacy");
+  const storageMode = resolveStorageMode(config?.storageMode);
   const isPostgresWebMode = storageMode === "postgres";
 
   const dmSessionToken = randomBytes(32).toString("hex");
@@ -94,10 +112,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   // In-memory player session tokens: token → { campaignId, playerId }
   server.decorate("playerTokens", new Map<string, { campaignId: string; playerId: string }>());
-  server.decorate(
-    "allowLegacyTestAuth",
-    process.env.NODE_ENV === "test" && config?.allowLegacyTestAuth !== false
-  );
+  server.decorate("allowLegacyTestAuth", config?.allowLegacyTestAuth === true);
 
 
   if (isPostgresWebMode) {
