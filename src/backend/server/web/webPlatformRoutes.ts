@@ -22,6 +22,7 @@ import {
 } from "./webSession.js";
 import { campaignEventBus } from "../realtime/campaignEventBus.js";
 import { getPremadeCampaignTemplate, listPremadeCampaignTemplates } from "../premade/premadeCampaigns.js";
+import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 
 function requireBodyString(value: unknown, field: string): string {
   if (typeof value !== "string" || value.trim().length === 0) {
@@ -680,6 +681,33 @@ async function runPlayerSearch(campaignId: string, user: WebUser, query: string)
   }));
 }
 
+function isPublicPortalCanvasVisibility(value: unknown): boolean {
+  return value !== "dm" && value !== "dm_only" && !isDmOnlyVisibility(value);
+}
+
+function buildPublicConstellationCanvases(portal: any, state: any) {
+  const publicEntityIds = new Set((portal.entities ?? []).map((entity: any) => entity.entityId));
+  const publicFactIds = new Set((portal.facts ?? []).map((fact: any) => fact.factId));
+  const publicRelationIds = new Set((portal.relations ?? []).map((relation: any) => relation.relationId));
+  const canvases = Array.from(state.canvases?.values?.() ?? []).filter((canvas: any) => !canvas.archived);
+
+  return canvases.map((canvas: any) => {
+    const nodes = (canvas.nodes ?? []).filter((node: any) => {
+      if (!isPublicPortalCanvasVisibility(node.visibility)) return false;
+      if (node.entityId) return publicEntityIds.has(node.entityId);
+      if (node.factId) return publicFactIds.has(node.factId);
+      return node.kind === "note" && isPublicPortalCanvasVisibility(node.visibility);
+    });
+    const visibleNodeIds = new Set(nodes.map((node: any) => node.id));
+    const edges = (canvas.edges ?? []).filter((edge: any) => {
+      if (edge.style === "secret" || !isPublicPortalCanvasVisibility(edge.visibility)) return false;
+      if (!visibleNodeIds.has(edge.sourceNodeId) || !visibleNodeIds.has(edge.targetNodeId)) return false;
+      return !edge.relationshipId || publicRelationIds.has(edge.relationshipId);
+    });
+    return { ...canvas, nodes, edges };
+  }).filter((canvas: any) => canvas.nodes.length > 0);
+}
+
 async function buildPlayerPortal(campaignId: string, user: WebUser) {
   const profile = await playerProfileFor(user.userId, campaignId);
   const [campaign] = await db.select().from(schema.campaigns).where(eq(schema.campaigns.campaignId, campaignId)).limit(1);
@@ -940,7 +968,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
         },
       },
     },
-    async (request, reply) => {
+    async (request, _reply) => {
       const email = normalizeEmail(request.body?.email || "");
       if (!email) {
         return { ok: true };
@@ -1793,6 +1821,22 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/memory", async (request) => {
     const portal = await readPlayerPortalForRequest(request);
     return portal.memory;
+  });
+
+  server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/constellation", async (request) => {
+    const portal = await readPlayerPortalForRequest(request);
+    const state = await repo.getCampaignState(request.params.campaignId);
+    const canvases = buildPublicConstellationCanvases(portal, state);
+    return {
+      campaign: portal.campaign,
+      entities: portal.entities ?? [],
+      facts: portal.facts ?? [],
+      relations: portal.relations ?? [],
+      objectives: portal.objectives ?? [],
+      clues: portal.clues ?? [],
+      proposals: portal.proposals ?? [],
+      canvases,
+    };
   });
 
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/character", async (request) => {

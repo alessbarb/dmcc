@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useRouterState } from "@tanstack/react-router";
-import { BookOpen, CheckCircle2, FileText, Flag, Home, MessageSquare, RefreshCw, Search, Send, Shield, User } from "lucide-react";
+import { BookOpen, CheckCircle2, FileText, Flag, Home, MessageSquare, Network, RefreshCw, Search, Send, Shield, User } from "lucide-react";
 import {
   createPlayerNote,
   createPlayerProposal,
@@ -15,7 +15,7 @@ import {
 } from "../../shared/api/webProductClient.js";
 import { logoutPlayer } from "../../shared/auth/authClient.js";
 
-type PortalTab = "home" | "recap" | "character" | "memory" | "objectives" | "notes" | "proposals";
+type PortalTab = "home" | "recap" | "character" | "memory" | "objectives" | "notes" | "proposals" | "constellation";
 
 function tabFromPath(pathname: string): PortalTab {
   const part = pathname.split("/").filter(Boolean).at(-1);
@@ -33,6 +33,7 @@ function PortalNav({ campaignId, active }: { campaignId: string; active: PortalT
     ["recap", "Recap", BookOpen],
     ["character", "Personaje", User],
     ["memory", "Memoria", Shield],
+    ["constellation", "Constelación", Network],
     ["objectives", "Objetivos", Flag],
     ["notes", "Notas", FileText],
     ["proposals", "Propuestas", Send],
