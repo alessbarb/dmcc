@@ -28,7 +28,8 @@ export function ImagePickerButton({
 
   return (
     <>
-      <div
+      <button
+        type="button"
         style={{
           position: "relative",
           display: "inline-block",
@@ -38,11 +39,14 @@ export function ImagePickerButton({
           border: "2px solid var(--border-color, #444)",
           background: "var(--bg-elevated, #1e1e1e)",
           cursor: "pointer",
+          padding: 0,
+          appearance: "none",
         }}
         onClick={() => setOpen(true)}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         title="Cambiar imagen"
+        aria-label="Cambiar imagen"
       >
         {displaySrc ? (
           <img
@@ -81,7 +85,7 @@ export function ImagePickerButton({
         >
           <Pencil size={18} color="#fff" />
         </div>
-      </div>
+      </button>
       {open && (
         <ImagePickerModal
           catalog={catalog}
