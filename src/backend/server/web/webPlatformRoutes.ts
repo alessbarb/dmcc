@@ -949,24 +949,6 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
 
   server.get("/api/health", async () => ({ ok: true, app: "dmcc-web", storage: "postgres" }));
 
-  server.get("/api/network-info", async () => {
-    const { networkInterfaces } = await import("node:os");
-    let localIp = "127.0.0.1";
-    try {
-      const nets = networkInterfaces();
-      for (const name of Object.keys(nets)) {
-        for (const net of (nets[name] || [])) {
-          if (net.family === "IPv4" && !net.internal) {
-            localIp = net.address;
-            break;
-          }
-        }
-      }
-    } catch { /* ignore */ }
-    const port = (server.server.address() as any)?.port ?? 4877;
-    return { localIp, port, url: `http://${localIp}:${port}` };
-  });
-
   server.post<{ Body: { email?: string; password?: string; displayName?: string } }>("/api/auth/register", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
     const retryAfter = enforceRegisterRateLimit(registerRateLimits, request, email);

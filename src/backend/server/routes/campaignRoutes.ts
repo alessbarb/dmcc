@@ -799,8 +799,9 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
     }
   );
 
-  // GET /api/network-info — returns local network address (no auth required, info only)
-  server.get("/api/network-info", async () => {
+  // GET /api/network-info — returns local network address for authenticated DMs only.
+  server.get("/api/network-info", async (request) => {
+    assertDM(request, server.dmSessionToken);
     const localIp = getLocalIp();
     const port = (server.server.address() as AddressInfo | null)?.port ?? 4877;
     return { localIp, port, url: `http://${localIp}:${port}` };

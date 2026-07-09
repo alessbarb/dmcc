@@ -1704,3 +1704,31 @@ describe("persistent campaign API", () => {
     });
   });
 });
+
+describe("network info security", () => {
+  it("does not return localIp to anonymous legacy requests", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, storageMode: "legacy" });
+
+      const response = await server.inject({ method: "GET", url: "/api/network-info" });
+
+      expect(response.statusCode).toBe(403);
+      expect(response.json().localIp).toBeUndefined();
+
+      await server.close();
+    });
+  });
+
+  it("does not expose /api/network-info in web mode to anonymous requests", async () => {
+    await withSessionSecret("network-info-test-secret-network-info-test-secret", async () => {
+      const server = createServer({ storageMode: "postgres" });
+
+      const response = await server.inject({ method: "GET", url: "/api/network-info" });
+
+      expect(response.statusCode).toBe(404);
+      expect(response.json().localIp).toBeUndefined();
+
+      await server.close();
+    });
+  });
+});

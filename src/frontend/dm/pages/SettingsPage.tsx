@@ -36,9 +36,28 @@ export function SettingsPage(props: SettingsPageProps = {}) {
 
   useEffect(() => {
     fetch("/api/network-info")
-      .then((r) => r.json())
-      .then((d: any) => { if (d?.url) setNetworkInfo(d); })
-      .catch(() => {});
+      .then(async (r) => {
+        if (!r.ok) {
+          setNetworkInfo(null);
+          return null;
+        }
+        return r.json();
+      })
+      .then((d: unknown) => {
+        if (
+          d &&
+          typeof d === "object" &&
+          "localIp" in d &&
+          typeof d.localIp === "string" &&
+          "port" in d &&
+          typeof d.port === "number" &&
+          "url" in d &&
+          typeof d.url === "string"
+        ) {
+          setNetworkInfo({ localIp: d.localIp, port: d.port, url: d.url });
+        }
+      })
+      .catch(() => setNetworkInfo(null));
   }, []);
 
 
