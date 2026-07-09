@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import React, { useState, useEffect, useCallback, useImperativeHandle, useMemo, useRef } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -46,6 +46,18 @@ function hasDmOnlyLegacyVisibility(edge: CanvasEdge): boolean {
   return visibility === "dm_only";
 }
 
+export interface CampaignCanvasFocusOptions {
+  zoom?: number;
+  duration?: number;
+}
+
+/** Public navigation API for external canvas controls. */
+export interface CampaignCanvasFlowHandle {
+  focusNode: (nodeId: string, options?: CampaignCanvasFocusOptions) => boolean;
+  focusEntity: (entityId: string, options?: CampaignCanvasFocusOptions) => boolean;
+  focusFact: (factId: string, options?: CampaignCanvasFocusOptions) => boolean;
+}
+
 export interface CampaignCanvasFlowProps {
   canvasId: string;
   canvas: Canvas;
@@ -71,7 +83,7 @@ export interface CampaignCanvasFlowProps {
   relationsFilter?: "all" | "public" | "secret" | "selection";
 }
 
-export function CampaignCanvasFlow({
+export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, CampaignCanvasFlowProps>(function CampaignCanvasFlow({
   canvasId,
   canvas,
   selectedNodeId,
@@ -94,7 +106,7 @@ export function CampaignCanvasFlow({
   mysteryFlowMode = false,
   density = "normal",
   relationsFilter = "all",
-}: CampaignCanvasFlowProps) {
+}: CampaignCanvasFlowProps, ref) {
   const { t } = useTranslation();
   const {
     campaignState,
@@ -508,6 +520,38 @@ export function CampaignCanvasFlow({
     }
   }, [rfInstance, canvasId]);
 
+
+  const focusNode = useCallback((nodeId: string, options?: CampaignCanvasFocusOptions) => {
+    const node = canvas.nodes?.find((item: CanvasNode) => item.id === nodeId);
+    if (!node || !rfInstance) return false;
+
+    const width = node.width ?? 160;
+    const height = node.height ?? 120;
+    rfInstance.setCenter((node.x ?? 0) + width / 2, (node.y ?? 0) + height / 2, options);
+    setNodes((currentNodes) => currentNodes.map((currentNode) => ({
+      ...currentNode,
+      selected: currentNode.id === node.id,
+    })));
+    onSelectNode(node.id);
+    return true;
+  }, [canvas.nodes, onSelectNode, rfInstance, setNodes]);
+
+  const focusEntity = useCallback((entityId: string, options?: CampaignCanvasFocusOptions) => {
+    const node = canvas.nodes?.find((item: CanvasNode) => item.entityId === entityId);
+    return node ? focusNode(node.id, options) : false;
+  }, [canvas.nodes, focusNode]);
+
+  const focusFact = useCallback((factId: string, options?: CampaignCanvasFocusOptions) => {
+    const node = canvas.nodes?.find((item: CanvasNode) => item.factId === factId);
+    return node ? focusNode(node.id, options) : false;
+  }, [canvas.nodes, focusNode]);
+
+  useImperativeHandle(ref, () => ({
+    focusNode,
+    focusEntity,
+    focusFact,
+  }), [focusEntity, focusFact, focusNode]);
+
   // Handle node drag stop: commit absolute positions.
   // Migrates old parentId-based relative positioning to groupId on first drag.
   const onNodeDragStop = useCallback((_event: React.MouseEvent, _node: Node, draggedNodes: Node[]) => {
@@ -772,4 +816,6 @@ export function CampaignCanvasFlow({
       )}
     </div>
   );
-}
+});
+
+CampaignCanvasFlow.displayName = "CampaignCanvasFlow";

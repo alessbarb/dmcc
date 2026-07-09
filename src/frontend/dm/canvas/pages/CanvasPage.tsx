@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { ReactFlowProvider } from "reactflow";
 import { CampaignCanvasFlow } from "../components/CampaignCanvasFlow.js";
+import type { CampaignCanvasFlowHandle } from "../components/CampaignCanvasFlow.js";
 import { CanvasPalette } from "../components/CanvasPalette.js";
 import { CanvasInspector } from "../components/CanvasInspector.js";
 import { Plus, Layout, Folder, Eye, EyeOff, Zap, Play, X, User, UserCheck, MapPin, Shield, HelpCircle, Key, Award, Film } from "lucide-react";
@@ -318,6 +319,7 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any, t: (key: string
 };
 
 export function CanvasPage() {
+  const canvasFlowRef = useRef<CampaignCanvasFlowHandle>(null);
   const { t } = useTranslation();
   const { campaignId } = useParams({ from: "/campaigns/$campaignId/canvas" });
   const {
@@ -1053,6 +1055,7 @@ export function CanvasPage() {
           <div className="canvas-work-area">
             <ReactFlowProvider key={`${campaignId}:${activeCanvas.id}`}>
               <CampaignCanvasFlow
+                ref={canvasFlowRef}
                 key={`${campaignId}:${activeCanvas.id}`}
                 canvasId={activeCanvas.id}
                 canvas={activeCanvas}
