@@ -1,9 +1,9 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
+import { resolveDatabaseConnectionString } from "./config.js";
 import * as schema from "./schema.js";
 
-const connectionString =
-  process.env.DATABASE_URL ?? "postgresql://dmcc:dmcc_password@localhost:5432/dmcc";
+const connectionString = resolveDatabaseConnectionString();
 
 const isNeon = connectionString.includes("neon.tech");
 

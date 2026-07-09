@@ -264,6 +264,27 @@ The built app is served by the local backend, usually at:
 http://127.0.0.1:4877
 ```
 
+
+## Deployment and database security
+
+DMCC ships with a Docker Compose Postgres service for **local development only**. The Compose credentials (`dmcc` / `dmcc_password`) are intentionally trivial so that contributors can start a local database quickly; never reuse them in staging, production, demos exposed to a network, or shared environments.
+
+For any deployed environment:
+
+- Set `NODE_ENV=production` and provide an explicit `DATABASE_URL`. The backend refuses to start in production without `DATABASE_URL` so it cannot silently fall back to local development credentials.
+- Generate a unique Postgres username, password, and database name per environment. Use least-privilege database roles for the application user.
+- Store `DATABASE_URL`, `SESSION_SECRET`, and other sensitive values in a secret manager such as your platform secret store, Docker/Kubernetes secrets, 1Password, Vault, AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault. Do not commit real secrets to Git or paste them into documentation examples.
+- Rotate credentials if they were shared in chat, logs, terminals, screenshots, or issue trackers.
+- Restrict database network access to the application runtime and operational tooling only. The local Compose file binds Postgres to `127.0.0.1`; production deployments should use private networking or firewall rules rather than public database ports.
+
+Example production environment shape:
+
+```bash
+NODE_ENV=production
+DATABASE_URL=postgresql://<unique-app-user>:<secret-from-manager>@<private-db-host>:5432/<unique-db-name>
+SESSION_SECRET=<secret-from-manager>
+```
+
 ## Useful scripts
 
 ```bash
