@@ -772,7 +772,7 @@ export const en = {
     searchPlaceholder: "Search by title or ID...",
     searchClearAriaLabel: "Clear search",
     loadingCampaigns: "Loading campaigns from archive...",
-    errorTitle: "Error loading the arcanum archive",
+    errorTitle: "Could not load your campaigns",
     retryButton: "Retry",
     searchEmptyTitle: "No campaigns found",
     searchEmptyDesc: "No tomes match the search \"{query}\".",

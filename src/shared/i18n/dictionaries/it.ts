@@ -790,7 +790,7 @@ export const it: TranslationDictionary = {
     searchPlaceholder: "Cerca per titolo o ID...",
     searchClearAriaLabel: "Cancella ricerca",
     loadingCampaigns: "Caricamento campagne dall'archivio...",
-    errorTitle: "Errore durante il caricamento dell'archivio arcanum",
+    errorTitle: "Impossibile caricare le tue campagne",
     retryButton: "Riprova",
     searchEmptyTitle: "Nessuna campagna trovata",
     searchEmptyDesc: "Nessun tomo corrisponde alla ricerca \"{query}\".",

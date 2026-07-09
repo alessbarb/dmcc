@@ -790,7 +790,7 @@ export const de: TranslationDictionary = {
     searchPlaceholder: "Nach Titel oder ID suchen...",
     searchClearAriaLabel: "Suche löschen",
     loadingCampaigns: "Kampagnen werden aus dem Archiv geladen...",
-    errorTitle: "Fehler beim Laden des Arkanum-Archivs",
+    errorTitle: "Deine Kampagnen konnten nicht geladen werden",
     retryButton: "Erneut versuchen",
     searchEmptyTitle: "Keine Kampagnen gefunden",
     searchEmptyDesc: "Keine Bände passen zur Suche \"{query}\".",
