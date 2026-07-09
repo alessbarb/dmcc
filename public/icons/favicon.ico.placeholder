@@ -1,0 +1,7 @@
+Placeholder for the DMCC favicon.
+
+Expected production asset:
+- Path: public/icons/favicon.ico
+- Format: ICO
+
+The binary ICO is intentionally not committed because this PR does not accept binary assets.
