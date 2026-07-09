@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import Fastify from "fastify";
+import Fastify, { type FastifyServerOptions } from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
 import helmet from "@fastify/helmet";
@@ -35,10 +35,52 @@ import { registerAssetRoutes } from "./routes/assetRoutes.js";
 import { getSessionUser, readUserAuthStore } from "./userAuthStore.js";
 import { readSessionCookie } from "./sessionAuth.js";
 import { resolveWebUser } from "./web/webSession.js";
+import { isLoopbackIp } from "./sameOrigin.js";
 import { registerWebPlatformRoutes } from "./web/webPlatformRoutes.js";
 
 
 const PLACEHOLDER_SESSION_SECRETS = new Set(["change-me", "dev-change-me"]);
+
+type TrustProxyConfig = FastifyServerOptions["trustProxy"];
+
+/**
+ * Resolves Fastify trustProxy from an explicit deployment variable.
+ *
+ * DMCC only trusts forwarded IP headers when DMCC_TRUST_PROXY_HOPS is set to a
+ * bounded hop count (for example, "1" on Render) or to specific proxy
+ * addresses/CIDRs supported by Fastify. Empty, absent, and "0" keep local
+ * development safe by disabling trustProxy. The open `true` mode is
+ * intentionally not accepted because it trusts every upstream sender.
+ */
+export function resolveTrustProxyConfig(rawValue = process.env.DMCC_TRUST_PROXY_HOPS): TrustProxyConfig | undefined {
+  const value = rawValue?.trim();
+  if (!value || value === "0") {
+    return undefined;
+  }
+
+  if (/^\d+$/.test(value)) {
+    const hopCount = Number(value);
+    if (!Number.isSafeInteger(hopCount) || hopCount < 0) {
+      throw new Error("DMCC_TRUST_PROXY_HOPS must be 0, a positive integer hop count, or proxy CIDR/address entries");
+    }
+    return hopCount === 0 ? undefined : hopCount;
+  }
+
+  if (value.toLowerCase() === "true") {
+    throw new Error("DMCC_TRUST_PROXY_HOPS=true is not allowed; use a hop count such as 1 or explicit proxy CIDRs/addresses");
+  }
+
+  const entries = value
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+
+  if (entries.length === 0 || entries.some((entry) => entry.toLowerCase() === "true" || entry === "0")) {
+    throw new Error("DMCC_TRUST_PROXY_HOPS must be 0, a positive integer hop count, or proxy CIDR/address entries");
+  }
+
+  return entries.length === 1 ? entries[0] : entries;
+}
 
 export function getRequiredSessionSecret(): string {
   const secret = process.env.SESSION_SECRET;
@@ -95,7 +137,8 @@ export interface ServerConfig {
 }
 
 export function createServer(config?: ServerConfig): FastifyInstance {
-  const server = Fastify({ logger: { level: "warn" } });
+  const trustProxy = resolveTrustProxyConfig();
+  const server = Fastify({ logger: { level: "warn" }, trustProxy });
   const dataDir = config?.dataDir ?? join(homedir(), "Documents", "DMCampaignCompanion");
   const storageMode = resolveStorageMode(config?.storageMode);
   const isPostgresWebMode = storageMode === "postgres";
@@ -314,9 +357,9 @@ export function createServer(config?: ServerConfig): FastifyInstance {
         }
       } else {
         // No Origin header: reject mutations from non-loopback IPs (scripted LAN requests).
-        const ip = request.ip;
-        const isLoopback = ip === "127.0.0.1" || ip === "::1" || ip === "::ffff:127.0.0.1";
-        if (!isLoopback) {
+        // request.ip is normalized by Fastify, including X-Forwarded-For only when
+        // DMCC_TRUST_PROXY_HOPS explicitly enables trustProxy for the deployment.
+        if (!isLoopbackIp(request.ip)) {
           reply.code(403);
           return reply.send({ error: "Cross-origin mutation rejected" });
         }

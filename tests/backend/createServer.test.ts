@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
-import { createServer, type ServerConfig } from "../../src/backend/server/createServer.js";
+import { createServer, resolveTrustProxyConfig, type ServerConfig } from "../../src/backend/server/createServer.js";
 
 
 beforeEach(() => {
@@ -63,6 +63,30 @@ async function withStorageModeEnv<T>(
   }
 }
 
+
+async function withTrustProxyEnv<T>(
+  trustProxy: string | undefined,
+  fn: () => T | Promise<T>,
+): Promise<T> {
+  const originalTrustProxy = process.env.DMCC_TRUST_PROXY_HOPS;
+
+  if (trustProxy === undefined) {
+    delete process.env.DMCC_TRUST_PROXY_HOPS;
+  } else {
+    process.env.DMCC_TRUST_PROXY_HOPS = trustProxy;
+  }
+
+  try {
+    return await fn();
+  } finally {
+    if (originalTrustProxy === undefined) {
+      delete process.env.DMCC_TRUST_PROXY_HOPS;
+    } else {
+      process.env.DMCC_TRUST_PROXY_HOPS = originalTrustProxy;
+    }
+  }
+}
+
 function createLegacyTestServer(config: Omit<ServerConfig, "storageMode" | "allowLegacyTestAuth"> = {}) {
   return createServer({ ...config, storageMode: "legacy", allowLegacyTestAuth: true });
 }
@@ -116,6 +140,53 @@ async function readCampaignSnapshot(dataDir: string, campaignId: string) {
 }
 
 describe("createServer", () => {
+
+  it.each([
+    ["missing", undefined],
+    ["empty", ""],
+    ["zero", "0"],
+  ])("keeps trustProxy disabled by default or with %s DMCC_TRUST_PROXY_HOPS", async (_label, value) => {
+    await withTrustProxyEnv(value, () => {
+      const server = createServer({ storageMode: "legacy" });
+      server.get("/__test/ip", (request) => ({ ip: request.ip }));
+
+      return server.inject({
+        method: "GET",
+        url: "/__test/ip",
+        headers: { "x-forwarded-for": "203.0.113.10" },
+        remoteAddress: "127.0.0.1",
+      }).then((response) => {
+        expect(response.json()).toEqual({ ip: "127.0.0.1" });
+      });
+    });
+  });
+
+  it("enables trustProxy for one explicitly configured proxy hop", async () => {
+    await withTrustProxyEnv("1", async () => {
+      const server = createServer({ storageMode: "legacy" });
+      server.get("/__test/ip", (request) => ({ ip: request.ip }));
+
+      const response = await server.inject({
+        method: "GET",
+        url: "/__test/ip",
+        headers: { "x-forwarded-for": "203.0.113.10" },
+        remoteAddress: "127.0.0.1",
+      });
+
+      expect(response.json()).toEqual({ ip: "203.0.113.10" });
+    });
+  });
+
+  it("accepts explicit proxy CIDR/address entries for trustProxy", () => {
+    expect(resolveTrustProxyConfig("10.0.0.0/8, 192.168.1.1")).toEqual(["10.0.0.0/8", "192.168.1.1"]);
+  });
+
+  it("rejects broad trustProxy=true configuration", async () => {
+    await withTrustProxyEnv("true", () => {
+      expect(() => createServer({ storageMode: "legacy" })).toThrow(/DMCC_TRUST_PROXY_HOPS=true is not allowed/);
+    });
+  });
+
   it("serves health endpoint", async () => {
     const server = createLegacyTestServer();
     const response = await server.inject({ method: "GET", url: "/api/health" });
