@@ -8,7 +8,7 @@ import { CanvasNavigatorPanel } from "../components/CanvasNavigatorPanel.js";
 import { CanvasPalette } from "../components/CanvasPalette.js";
 import { CanvasInspector } from "../components/CanvasInspector.js";
 import { MysteryHealthPanel } from "../components/MysteryHealthPanel.js";
-import { Plus, Layout, Folder, Eye, EyeOff, Zap, Play, X, User, UserCheck, MapPin, Shield, HelpCircle, Key, Award, Film, Search, ListPlus, Info, MoreHorizontal } from "lucide-react";
+import { Plus, Layout, Folder, Eye, EyeOff, Zap, Play, X, User, UserCheck, MapPin, Shield, HelpCircle, Key, Award, Film, Search, ListPlus, MoreHorizontal, MousePointer2, Hand, StickyNote, Frame, Maximize2, ZoomIn, ZoomOut, SlidersHorizontal, CalendarDays } from "lucide-react";
 import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
@@ -377,6 +377,7 @@ export function CanvasPage() {
     createPreparedSession,
     updateSessionPrep,
     recordSessionEvent,
+    placeNodeOnCanvas,
   } = useCampaignStore();
 
   const { addToast } = useToast();
@@ -672,6 +673,37 @@ export function CanvasPage() {
   if (loading && canvases.length === 0) {
     return <div className="canvas-loading">Cargando tableros de campaña…</div>;
   }
+
+
+  const getMobileActionPosition = () => canvasFlowRef.current?.getViewportCenter() ?? { x: 200, y: 200 };
+
+  const handleMobileAddNote = async () => {
+    if (!activeCanvas) return;
+    const position = getMobileActionPosition();
+    await placeNodeOnCanvas(activeCanvas.id, {
+      kind: "note",
+      text: "",
+      color: "yellow",
+      x: position.x,
+      y: position.y,
+    });
+    setMobilePanel(null);
+  };
+
+  const handleMobileAddGroup = async () => {
+    if (!activeCanvas) return;
+    const position = getMobileActionPosition();
+    await placeNodeOnCanvas(activeCanvas.id, {
+      kind: "group",
+      title: t("canvas.toolbar.newGroup"),
+      color: "purple",
+      x: position.x,
+      y: position.y,
+      width: 340,
+      height: 220,
+    });
+    setMobilePanel(null);
+  };
 
   const isViewLocked = isPlayerView || isLocked;
   const isPublicView = isPlayerView || publicOnly;
@@ -1315,6 +1347,15 @@ export function CanvasPage() {
                   </button>
                 </div>
                 <div className="canvas-mobile-more-actions">
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={handleMobileAddNote}><StickyNote size={14} /> Nota rápida</button>
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={handleMobileAddGroup}><Frame size={14} /> Grupo visual</button>
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => canvasFlowRef.current?.fitView()}><Maximize2 size={14} /> Ajustar vista</button>
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => canvasFlowRef.current?.zoomIn()}><ZoomIn size={14} /> Zoom +</button>
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => canvasFlowRef.current?.zoomOut()}><ZoomOut size={14} /> Zoom -</button>
+                  <button type="button" className={`btn btn-sm ${tablePrivacy ? "btn-primary" : "btn-secondary"}`} onClick={() => setTablePrivacy(value => !value)}><Shield size={14} /> Privacidad de mesa</button>
+                  <label className="canvas-mobile-more-field"><SlidersHorizontal size={14} /> Filtros<select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="canvas-select"><option value="all">Todos los tipos</option><option value="npc">PNJs</option><option value="location">Lugares</option><option value="quest">Misiones</option><option value="clue">Pistas</option><option value="secret">Secretos</option><option value="scene">Escenas</option><option value="other">Otros</option></select></label>
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsSessionPrepOpen(true); setMobilePanel(null); }}><CalendarDays size={14} /> Preparar sesión</button>
+                  <button type="button" className={`btn btn-sm ${isFullscreenPresentation ? "btn-primary" : "btn-secondary"}`} onClick={() => { if (isFullscreenPresentation) { if (document.fullscreenElement) document.exitFullscreen(); setIsFullscreenPresentation(false); } else { const elem = document.querySelector(".canvas-page-container"); if (elem?.requestFullscreen) elem.requestFullscreen(); setIsFullscreenPresentation(true); setIsPlayerView(true); setIsDirectionMode(false); setSelectedNodeId(null); setSelectedEdgeId(null); setSelectedNodes([]); setSelectedEdges([]); } setMobilePanel(null); }}><Play size={14} /> Modo presentación</button>
                   <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsCreateBoardOpen(true); setMobilePanel(null); }}>Nuevo tablero</button>
                   <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsImportOpen(true); setMobilePanel(null); }}>Importar texto</button>
                   <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsLegendOpen(true); setMobilePanel(null); }}>Leyenda</button>
@@ -1322,9 +1363,9 @@ export function CanvasPage() {
                 </div>
               </div>
               <nav className="canvas-mobile-dock" aria-label="Paneles del canvas">
+                <button type="button" className={interactionMode === "pan" ? "is-active" : ""} onClick={() => setInteractionMode((mode) => mode === "pan" ? "select" : "pan")} title={interactionMode === "pan" ? "Cambiar a seleccionar" : "Cambiar a mover"}>{interactionMode === "pan" ? <Hand size={18} /> : <MousePointer2 size={18} />}<span>{interactionMode === "pan" ? "Mover" : "Seleccionar"}</span></button>
                 <button type="button" className={mobilePanel === "search" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "search" ? null : "search")}><Search size={18} /><span>Buscar</span></button>
                 <button type="button" className={mobilePanel === "add" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "add" ? null : "add")}><ListPlus size={18} /><span>Añadir</span></button>
-                <button type="button" className={mobilePanel === "detail" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "detail" ? null : "detail")} disabled={!selectedNodeId && !selectedEdgeId}><Info size={18} /><span>Detalle</span></button>
                 <button type="button" className={mobilePanel === "more" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "more" ? null : "more")}><MoreHorizontal size={18} /><span>Más</span></button>
               </nav>
             </>

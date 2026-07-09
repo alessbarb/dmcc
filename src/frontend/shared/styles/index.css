@@ -4376,6 +4376,61 @@ small.canvas-navigator-result-action {
     gap: 10px;
   }
 
+  .canvas-mobile-more-actions .btn,
+  .canvas-mobile-more-field {
+    min-height: 40px;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .canvas-mobile-more-field {
+    display: flex;
+    align-items: center;
+    grid-column: 1 / -1;
+    padding: 6px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    color: var(--text-main);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .canvas-mobile-more-field .canvas-select {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .main-content--canvas .canvas-header-bar {
+    min-height: 44px;
+    max-height: 52px;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 6px 10px;
+    overflow: hidden;
+  }
+
+  .main-content--canvas .canvas-selector-group {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .main-content--canvas .canvas-selector-label,
+  .main-content--canvas .canvas-board-info,
+  .main-content--canvas .canvas-header-filters,
+  .main-content--canvas .canvas-selector-group .btn {
+    display: none !important;
+  }
+
+  .main-content--canvas .canvas-selector-group .canvas-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .main-content--canvas .canvas-toolbar {
+    display: none;
+  }
+
   .app-container--campaign-shell .campaign-mobile-bottom-nav {
     position: fixed;
     left: 0;
