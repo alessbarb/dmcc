@@ -163,7 +163,8 @@ export interface Campaign {
   currentLocationId?: string;
   currentQuestId?: string;
   metadata?: Record<string, unknown>;
-  stats?: any;
+  stats?: any | null;
+  loadWarning?: "snapshot_unreadable";
   createdAt?: string;
   updatedAt?: string;
   coverUrl?: string;

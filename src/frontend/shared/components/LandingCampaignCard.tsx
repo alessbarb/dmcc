@@ -1,5 +1,5 @@
 import React from "react";
-import { Shield, MapPin, Key, ArrowRight, Users, Trash2, Pencil } from "lucide-react";
+import { AlertTriangle, Shield, MapPin, Key, ArrowRight, Users, Trash2, Pencil } from "lucide-react";
 import { useTranslation } from "../i18n/useTranslation.js";
 import { ContextMenu } from "./ContextMenu.js";
 
@@ -17,7 +17,8 @@ interface Campaign {
   title: string;
   system?: string;
   archived?: boolean;
-  stats?: CampaignStats;
+  stats?: CampaignStats | null;
+  loadWarning?: "snapshot_unreadable";
   summary?: string;
   metadata?: Record<string, unknown>;
 }
@@ -79,6 +80,13 @@ export function LandingCampaignCard({ campaign, onSelect, onDelete, onRename }: 
             ]}
           />
         </header>
+
+        {campaign.loadWarning === "snapshot_unreadable" ? (
+          <div className="campaign-card-session-banner campaign-card-session-banner--idle" role="status">
+            <AlertTriangle size={14} aria-hidden="true" />
+            <span className="session-text">Snapshot unreadable; campaign metadata may be incomplete.</span>
+          </div>
+        ) : null}
 
         {/* Active Session Status Banner */}
         {stats?.activeSession ? (
