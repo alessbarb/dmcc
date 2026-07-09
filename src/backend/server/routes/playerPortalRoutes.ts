@@ -1,4 +1,5 @@
 import type { FastifyInstance } from "fastify";
+import { z } from "zod";
 import { randomBytes } from "crypto";
 import type { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { makeRepositoryFactory } from "../repositoryFactory.js";
@@ -14,14 +15,132 @@ import {
 } from "../auth.js";
 import { sendCommandError } from "../commandHttp.js";
 
-type StatusBody = {
-  characterEntityId?: string;
-  hitPointsCurrent?: number;
-  hitPointsMax?: number;
-  armorClass?: number;
-  inspiration?: boolean;
-  conditions?: string[];
-};
+const MAX_TITLE_LENGTH = 120;
+const MAX_BODY_LENGTH = 8_000;
+const MAX_STATUS_TEXT_LENGTH = 80;
+const MAX_ID_LENGTH = 128;
+const MAX_LINKED_ENTITY_IDS = 50;
+
+const boundedIdSchema = z.string().trim().min(1).max(MAX_ID_LENGTH);
+const linkedEntityIdsSchema = z.array(boundedIdSchema).max(MAX_LINKED_ENTITY_IDS);
+
+const statusBodySchema = z
+  .object({
+    characterEntityId: boundedIdSchema.optional(),
+    hitPointsCurrent: z.number().int().min(0).max(9999).optional(),
+    hitPointsMax: z.number().int().min(1).max(9999).optional(),
+    armorClass: z.number().int().min(0).max(100).optional(),
+    inspiration: z.boolean().optional(),
+    conditions: z.array(z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH)).max(30).optional(),
+  })
+  .strict();
+
+const noteCreateBodySchema = z
+  .object({
+    visibility: z.enum(["private", "dm_visible"]),
+    title: z.string().trim().min(1).max(MAX_TITLE_LENGTH),
+    content: z.string().max(MAX_BODY_LENGTH).optional().default(""),
+    linkedEntityIds: linkedEntityIdsSchema.optional().default([]),
+  })
+  .strict();
+
+const noteUpdateBodySchema = z
+  .object({
+    visibility: z.enum(["private", "dm_visible"]).optional(),
+    title: z.string().trim().min(1).max(MAX_TITLE_LENGTH).optional(),
+    content: z.string().max(MAX_BODY_LENGTH).optional(),
+    linkedEntityIds: linkedEntityIdsSchema.optional(),
+    archived: z.boolean().optional(),
+  })
+  .strict();
+
+const objectiveCreateBodySchema = z
+  .object({
+    visibility: z.enum(["private", "dm_visible"]),
+    title: z.string().trim().min(1).max(MAX_TITLE_LENGTH),
+    description: z.string().max(MAX_BODY_LENGTH).optional(),
+    kind: z.enum(["personal", "session", "question_for_dm"]).optional().default("personal"),
+    linkedEntityIds: linkedEntityIdsSchema.optional().default([]),
+  })
+  .strict();
+
+const objectiveUpdateBodySchema = z
+  .object({
+    visibility: z.enum(["private", "dm_visible"]).optional(),
+    title: z.string().trim().min(1).max(MAX_TITLE_LENGTH).optional(),
+    description: z.string().max(MAX_BODY_LENGTH).optional(),
+    kind: z.enum(["personal", "session", "question_for_dm"]).optional(),
+    status: z.enum(["open", "done", "archived"]).optional(),
+    linkedEntityIds: linkedEntityIdsSchema.optional(),
+  })
+  .strict();
+
+const proposalChangesSchema = z
+  .object({
+    title: z.string().trim().min(1).max(MAX_TITLE_LENGTH).optional(),
+    name: z.string().trim().min(1).max(MAX_TITLE_LENGTH).optional(),
+    class: z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH).optional(),
+    className: z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH).optional(),
+    species: z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH).optional(),
+    race: z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH).optional(),
+    background: z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH).optional(),
+    description: z.string().max(MAX_BODY_LENGTH).optional(),
+    level: z.number().int().min(1).max(30).optional(),
+    hitPointsMax: z.number().int().min(1).max(9999).optional(),
+    hitPointsCurrent: z.number().int().min(0).max(9999).optional(),
+    armorClass: z.number().int().min(0).max(100).optional(),
+    metadata: z
+      .object({
+        className: z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH).optional(),
+        species: z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH).optional(),
+        background: z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH).optional(),
+        level: z.number().int().min(1).max(30).optional(),
+        hitPointsMax: z.number().int().min(1).max(9999).optional(),
+        hitPointsCurrent: z.number().int().min(0).max(9999).optional(),
+        hitPointsTemp: z.number().int().min(0).max(9999).optional(),
+        armorClass: z.number().int().min(0).max(100).optional(),
+        hitDice: z.string().trim().min(1).max(MAX_STATUS_TEXT_LENGTH).optional(),
+        speed: z.number().int().min(0).max(999).optional(),
+        initiative: z.number().int().min(-99).max(99).optional(),
+        passivePerception: z.number().int().min(0).max(100).optional(),
+        passiveInsight: z.number().int().min(0).max(100).optional(),
+        passiveInvestigation: z.number().int().min(0).max(100).optional(),
+        strength: z.number().int().min(1).max(99).optional(),
+        dexterity: z.number().int().min(1).max(99).optional(),
+        constitution: z.number().int().min(1).max(99).optional(),
+        intelligence: z.number().int().min(1).max(99).optional(),
+        wisdom: z.number().int().min(1).max(99).optional(),
+        charisma: z.number().int().min(1).max(99).optional(),
+        note: z.string().max(MAX_BODY_LENGTH).optional(),
+      })
+      .strict()
+      .optional(),
+  })
+  .strict();
+
+const proposalBodySchema = z
+  .object({
+    kind: z.enum(["create_character", "update_character_core", "link_request"]).optional().default("update_character_core"),
+    targetCharacterEntityId: boundedIdSchema.optional(),
+    proposedChanges: proposalChangesSchema.optional().default({}),
+  })
+  .strict();
+
+const linkBodySchema = z
+  .object({
+    playerId: boundedIdSchema,
+    characterEntityId: boundedIdSchema,
+    ownership: z.enum(["campaign_premade", "player_owned"]).optional(),
+    syncMode: z.enum(["live_player_editable", "dm_review_required"]).optional(),
+  })
+  .strict();
+
+const resolveProposalBodySchema = z
+  .object({
+    status: z.enum(["approved", "rejected"]),
+    dmResolutionNote: z.string().max(MAX_BODY_LENGTH).optional(),
+  })
+  .strict();
 
 type ResourceRecovery = "short_rest" | "long_rest" | "manual";
 
@@ -34,40 +153,15 @@ type ResourceBody = {
   recovery?: ResourceRecovery | string;
 };
 
-type NoteBody = {
-  visibility?: "private" | "dm_visible";
-  title?: string;
-  content?: string;
-  linkedEntityIds?: string[];
-  archived?: boolean;
-};
 
-type ObjectiveBody = {
-  visibility?: "private" | "dm_visible";
-  title?: string;
-  description?: string;
-  kind?: "personal" | "session" | "question_for_dm";
-  status?: "open" | "done" | "archived";
-  linkedEntityIds?: string[];
-};
 
-type LinkBody = {
-  playerId?: string;
-  characterEntityId?: string;
-  ownership?: "campaign_premade" | "player_owned";
-  syncMode?: "live_player_editable" | "dm_review_required";
-};
+function parseStrictBody<T>(schema: z.ZodType<T>, body: unknown): T {
+  const result = schema.safeParse(body);
+  if (result.success) return result.data;
 
-type ProposalBody = {
-  kind?: "create_character" | "update_character_core" | "link_request";
-  targetCharacterEntityId?: string;
-  proposedChanges?: Record<string, unknown>;
-};
-
-type ResolveProposalBody = {
-  status?: "approved" | "rejected";
-  dmResolutionNote?: string;
-};
+  const issues = result.error.issues.map((issue) => issue.path.length ? `${issue.path.join(".")}: ${issue.message}` : issue.message);
+  throw Object.assign(new Error(`Invalid request body: ${issues.join("; ")}`), { statusCode: 400 });
+}
 
 export async function registerPlayerPortalRoutes(
   server: FastifyInstance,
@@ -588,7 +682,7 @@ export async function registerPlayerPortalRoutes(
   );
 
   // PUT /api/campaigns/:campaignId/player-portal/status
-  server.put<{ Params: { campaignId: string }; Body: StatusBody }>(
+  server.put<{ Params: { campaignId: string }; Body: unknown }>(
     "/api/campaigns/:campaignId/player-portal/status",
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
@@ -598,7 +692,7 @@ export async function registerPlayerPortalRoutes(
       try {
         const repo = getRepository(vaultId);
         const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
-        const body = request.body;
+        const body = parseStrictBody(statusBodySchema, request.body);
         const characterEntityId = getLinkedCharacterIdForPlayer(portal, playerId, body.characterEntityId);
 
         await repo.executeCommand(campaignId, {
@@ -692,7 +786,7 @@ export async function registerPlayerPortalRoutes(
   );
 
   // POST /api/campaigns/:campaignId/player-portal/notes
-  server.post<{ Params: { campaignId: string }; Body: NoteBody }>(
+  server.post<{ Params: { campaignId: string }; Body: unknown }>(
     "/api/campaigns/:campaignId/player-portal/notes",
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
@@ -702,13 +796,9 @@ export async function registerPlayerPortalRoutes(
       try {
         const repo = getRepository(vaultId);
         const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
-        const body = request.body;
+        const body = parseStrictBody(noteCreateBodySchema, request.body);
 
         const visibility = body.visibility;
-        if (visibility !== "private" && visibility !== "dm_visible") {
-          reply.code(400);
-          return { error: "visibility must be 'private' or 'dm_visible'" };
-        }
 
         const noteId = `pnote_${randomBytes(8).toString("hex")}`;
         const now = new Date().toISOString();
@@ -719,7 +809,7 @@ export async function registerPlayerPortalRoutes(
           actorId: playerId,
           playerId,
           noteId,
-          title: body.title!,
+          title: body.title,
           content: body.content ?? "",
           visibility,
           linkedEntityIds: body.linkedEntityIds ?? [],
@@ -741,7 +831,7 @@ export async function registerPlayerPortalRoutes(
   );
 
   // PUT /api/campaigns/:campaignId/player-portal/notes/:noteId
-  server.put<{ Params: { campaignId: string; noteId: string }; Body: NoteBody }>(
+  server.put<{ Params: { campaignId: string; noteId: string }; Body: unknown }>(
     "/api/campaigns/:campaignId/player-portal/notes/:noteId",
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
@@ -751,18 +841,13 @@ export async function registerPlayerPortalRoutes(
       try {
         const repo = getRepository(vaultId);
         const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
-        const body = request.body;
+        const body = parseStrictBody(noteUpdateBodySchema, request.body);
 
         const playerNotes = portal.notesByPlayerId.get(playerId) ?? [];
         const ownsNote = playerNotes.some((n: any) => n.noteId === request.params.noteId);
         if (!ownsNote) {
           reply.code(404);
           return { error: "Note not found" };
-        }
-
-        if (body.visibility !== undefined && body.visibility !== "private" && body.visibility !== "dm_visible") {
-          reply.code(400);
-          return { error: "visibility must be 'private' or 'dm_visible'" };
         }
 
         await repo.executeCommand(campaignId, {
@@ -793,7 +878,7 @@ export async function registerPlayerPortalRoutes(
   );
 
   // POST /api/campaigns/:campaignId/player-portal/objectives
-  server.post<{ Params: { campaignId: string }; Body: ObjectiveBody }>(
+  server.post<{ Params: { campaignId: string }; Body: unknown }>(
     "/api/campaigns/:campaignId/player-portal/objectives",
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
@@ -803,13 +888,9 @@ export async function registerPlayerPortalRoutes(
       try {
         const repo = getRepository(vaultId);
         const { playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
-        const body = request.body;
+        const body = parseStrictBody(objectiveCreateBodySchema, request.body);
 
         const visibility = body.visibility;
-        if (visibility !== "private" && visibility !== "dm_visible") {
-          reply.code(400);
-          return { error: "visibility must be 'private' or 'dm_visible'" };
-        }
 
         const objectiveId = `pobj_${randomBytes(8).toString("hex")}`;
         const now = new Date().toISOString();
@@ -820,7 +901,7 @@ export async function registerPlayerPortalRoutes(
           actorId: playerId,
           playerId,
           objectiveId,
-          title: body.title!,
+          title: body.title,
           description: body.description,
           kind: body.kind ?? "personal",
           status: "open",
@@ -844,7 +925,7 @@ export async function registerPlayerPortalRoutes(
   );
 
   // PUT /api/campaigns/:campaignId/player-portal/objectives/:objectiveId
-  server.put<{ Params: { campaignId: string; objectiveId: string }; Body: ObjectiveBody }>(
+  server.put<{ Params: { campaignId: string; objectiveId: string }; Body: unknown }>(
     "/api/campaigns/:campaignId/player-portal/objectives/:objectiveId",
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
@@ -854,18 +935,13 @@ export async function registerPlayerPortalRoutes(
       try {
         const repo = getRepository(vaultId);
         const { portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
-        const body = request.body;
+        const body = parseStrictBody(objectiveUpdateBodySchema, request.body);
 
         const playerObjectives = portal.objectivesByPlayerId.get(playerId) ?? [];
         const ownsObjective = playerObjectives.some((o: any) => o.objectiveId === request.params.objectiveId);
         if (!ownsObjective) {
           reply.code(404);
           return { error: "Objective not found" };
-        }
-
-        if (body.visibility !== undefined && body.visibility !== "private" && body.visibility !== "dm_visible") {
-          reply.code(400);
-          return { error: "visibility must be 'private' or 'dm_visible'" };
         }
 
         await repo.executeCommand(campaignId, {
@@ -897,13 +973,13 @@ export async function registerPlayerPortalRoutes(
   );
 
   // POST /api/campaigns/:campaignId/player-portal/links (DM auth)
-  server.post<{ Params: { campaignId: string }; Body: LinkBody }>(
+  server.post<{ Params: { campaignId: string }; Body: unknown }>(
     "/api/campaigns/:campaignId/player-portal/links",
     async (request, reply) => {
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const body = request.body;
+      const body = parseStrictBody(linkBodySchema, request.body);
 
       try {
         const repo = getRepository(vaultId);
@@ -999,7 +1075,7 @@ export async function registerPlayerPortalRoutes(
   );
 
   // POST /api/campaigns/:campaignId/player-portal/proposals (player token)
-  server.post<{ Params: { campaignId: string }; Body: ProposalBody }>(
+  server.post<{ Params: { campaignId: string }; Body: unknown }>(
     "/api/campaigns/:campaignId/player-portal/proposals",
     async (request, reply) => {
       const vaultId = getValidatedVaultId(request);
@@ -1009,8 +1085,8 @@ export async function registerPlayerPortalRoutes(
       try {
         const repo = getRepository(vaultId);
         const { state, portal, playerId } = await requirePlayerFromToken(repo, campaignId, rawToken, (request as any).unifiedCampaignMembership?.playerId || (request as any).unifiedDmSession?.dmId);
-        const body = request.body;
-        const kind = body.kind ?? "update_character_core";
+        const body = parseStrictBody(proposalBodySchema, request.body);
+        const kind = body.kind;
 
         if (kind === "link_request") {
           if (!body.targetCharacterEntityId) {
@@ -1055,14 +1131,14 @@ export async function registerPlayerPortalRoutes(
   );
 
   // PUT /api/campaigns/:campaignId/player-portal/proposals/:proposalId/resolve (DM auth)
-  server.put<{ Params: { campaignId: string; proposalId: string }; Body: ResolveProposalBody }>(
+  server.put<{ Params: { campaignId: string; proposalId: string }; Body: unknown }>(
     "/api/campaigns/:campaignId/player-portal/proposals/:proposalId/resolve",
     async (request, reply) => {
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
       const { proposalId } = request.params;
-      const body = request.body;
+      const body = parseStrictBody(resolveProposalBodySchema, request.body);
 
       try {
         const repo = getRepository(vaultId);
@@ -1091,7 +1167,7 @@ export async function registerPlayerPortalRoutes(
           return { error: "Proposal already resolved" };
         }
 
-        const status: "approved" | "rejected" = body.status === "approved" ? "approved" : "rejected";
+        const status = body.status;
         const now = new Date().toISOString();
 
         let entityUpdate: { entityId: string; updates: Record<string, unknown> } | undefined;
