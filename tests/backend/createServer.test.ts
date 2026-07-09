@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, readdir, rm, stat } from "node:fs/promises";
+import { mkdtemp, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -402,6 +402,43 @@ describe("createServer", () => {
           campaignId: "cmp_list",
           title: "Listed Campaign",
           archived: false,
+        }),
+      ]);
+    });
+  });
+
+  it("lists campaigns with a load warning when snapshot JSON is invalid", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createLegacyTestServer({ dataDir });
+      await server.inject({
+        method: "POST",
+        url: "/api/campaigns",
+        payload: {
+          campaignId: "cmp_bad_snapshot",
+          actorId: "usr_dm",
+          title: "Bad Snapshot Campaign",
+        },
+        headers: { "x-dm-token": getDmToken(server) },
+      });
+
+      const campaignDir = join(dataDir, "vaults", "default", "campaigns", "cmp_bad_snapshot");
+      await writeFile(join(campaignDir, "snapshot.json"), "{ invalid json", "utf8");
+
+      const response = await server.inject({
+        method: "GET",
+        url: "/api/campaigns",
+        headers: { "x-dm-token": getDmToken(server) },
+      });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.json()).toEqual([
+        expect.objectContaining({
+          campaignId: "cmp_bad_snapshot",
+          title: "cmp_bad_snapshot",
+          archived: false,
+          role: "dm",
+          loadWarning: "snapshot_unreadable",
+          stats: null,
         }),
       ]);
     });

@@ -580,7 +580,7 @@ export function DmHubPage() {
                 <>
                   <div className="dm-campaigns-grid">
                     {filteredCampaigns.map((c) => {
-                      const isActive = Boolean(c.stats.activeSession) || c.status === "active";
+                      const isActive = Boolean(c.stats?.activeSession) || c.status === "active";
                       const statusLabel = isActive ? "EN CURSO" : "PAUSADA";
                       const lastUpdated = c.updatedAt
                         ? t("landing.daysAgo", { count: String(Math.max(1, Math.floor((Date.now() - new Date(c.updatedAt).getTime()) / 86400000))) })
@@ -636,9 +636,14 @@ export function DmHubPage() {
                             <p className="dm-campaign-card__desc">
                               {c.summary || t("landing.noDescriptionYet")}
                             </p>
+                            {c.loadWarning === "snapshot_unreadable" ? (
+                              <p className="dm-muted-text" role="status">
+                                <AlertTriangle size={12} aria-hidden="true" /> Snapshot unreadable; campaign metadata may be incomplete.
+                              </p>
+                            ) : null}
                             <div className="dm-campaign-card__meta">
-                              <span><Clock size={10} /> Sesión {c.stats.sessionsCount}</span>
-                              <span><Users size={10} /> {c.stats.playersCount} jugadores</span>
+                              <span><Clock size={10} /> Sesión {c.stats?.sessionsCount ?? 0}</span>
+                              <span><Users size={10} /> {c.stats?.playersCount ?? 0} jugadores</span>
                             </div>
                             <div className="dm-campaign-card__footer">
                               <span>Última sesión: {lastUpdated}</span>
@@ -1192,7 +1197,7 @@ export function DmHubPage() {
                       {c.title}
                     </p>
                     <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--text-muted)" }}>
-                      {formatCampaignSystem(c.system)} · Sesión {c.stats.sessionsCount}
+                      {formatCampaignSystem(c.system)} · Sesión {c.stats?.sessionsCount ?? 0}
                     </p>
                   </div>
                   <ArrowRight size={14} style={{ color: "var(--accent)", flexShrink: 0 }} />

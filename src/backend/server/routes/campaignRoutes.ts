@@ -159,8 +159,19 @@ export async function registerCampaignRoutes(server: FastifyInstance, opts: { da
           } else {
             campaigns.push({ campaignId: dirName, title: dirName, archived: false, role: "dm", stats });
           }
-        } catch {
-          campaigns.push({ campaignId: dirName, title: dirName, archived: false, role: "dm" });
+        } catch (err: unknown) {
+          server.log.warn(
+            { err, campaignId: dirName, dirName },
+            "Campaign snapshot unreadable while listing campaigns"
+          );
+          campaigns.push({
+            campaignId: dirName,
+            title: dirName,
+            archived: false,
+            role: "dm",
+            loadWarning: "snapshot_unreadable",
+            stats: null,
+          });
         }
       }
       return campaigns;
