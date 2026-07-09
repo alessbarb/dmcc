@@ -12,17 +12,19 @@ import {
   type CanvasNavigatorStatusFilter,
   type CanvasNavigatorVisibilityFilter,
 } from "../selectors/canvasNavigatorSelectors.js";
+import { placeEntityOnCanvas } from "../services/placeEntityOnCanvas.js";
 
 export interface CanvasNavigatorPanelProps {
   canvas: Canvas;
   onFocusNode: (nodeId: string) => boolean;
   onFocusEntity: (entityId: string) => boolean;
   onFocusFact: (factId: string) => boolean;
+  getViewportCenter?: () => { x: number; y: number } | null;
 }
 
 const ENTITY_TYPES = ["npc", "player_character", "location", "faction", "quest", "clue", "secret", "item", "scene", "consequence", "rumor"];
 
-export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFocusFact }: CanvasNavigatorPanelProps) {
+export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFocusFact, getViewportCenter }: CanvasNavigatorPanelProps) {
   const { t } = useTranslation();
   const { campaignState, placeNodeOnCanvas } = useCampaignStore();
   const [query, setQuery] = useState("");
@@ -56,9 +58,12 @@ export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFoc
   };
 
   const handlePlaceEntity = async (entityId: string) => {
-    const x = 120 + Math.round(Math.random() * 140);
-    const y = 120 + Math.round(Math.random() * 140);
-    await placeNodeOnCanvas(canvas.id, { kind: "entity", entityId, x, y });
+    await placeEntityOnCanvas({
+      canvasId: canvas.id,
+      entityId,
+      viewportCenter: getViewportCenter?.(),
+      placeNodeOnCanvas,
+    });
     const createdNode = (useCampaignStore.getState().canvasesById[canvas.id]?.nodes as CanvasNode[] | undefined)
       ?.find((node) => node.entityId === entityId);
     if (createdNode?.id) {

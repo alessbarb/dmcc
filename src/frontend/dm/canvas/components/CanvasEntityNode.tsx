@@ -5,6 +5,7 @@ import { AlertTriangle, CheckCircle2, Eye, FileText, KeyRound, RefreshCcw, Stick
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
+import { placeEntityOnCanvas } from "../services/placeEntityOnCanvas.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 
 
@@ -282,10 +283,12 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
                   if (created) {
                     const canvas = updatedStore.canvasesById[data.canvasId];
                     const currentNode = canvas?.nodes?.find((n: any) => n.entityId === entity.entityId);
-                    const x = currentNode ? currentNode.x + 200 : 100;
-                    const y = currentNode ? currentNode.y : 100;
-
-                    await placeNodeOnCanvas(data.canvasId, { kind: "entity", entityId: created.entityId, x, y });
+                    await placeEntityOnCanvas({
+                      canvasId: data.canvasId,
+                      entityId: created.entityId,
+                      selectedNode: currentNode,
+                      placeNodeOnCanvas,
+                    });
 
                     const finalStore = useCampaignStore.getState();
                     const finalCanvas = finalStore.canvasesById[data.canvasId];
