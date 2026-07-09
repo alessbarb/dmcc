@@ -8,6 +8,7 @@ import {
   ChevronLeft, ChevronRight
 } from "lucide-react";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
+import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
 
 
 export interface CanvasPaletteProps {
@@ -41,6 +42,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
     updateEntity,
     removeNodeFromCanvas,
     addEdgeToCanvas,
+    createRelation,
     recordSessionEvent
   } = useCampaignStore();
   const [searchQuery, setSearchQuery] = useState("");
@@ -187,13 +189,22 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
           const finalCanvas = finalStore.canvasesById[canvasId];
           const newNode = finalCanvas?.nodes?.find((n: any) => n.entityId === created.entityId);
           if (newNode) {
-            await addEdgeToCanvas(canvasId, {
-              sourceNodeId: selectedNode.id,
-              targetNodeId: newNode.id,
-              label: "consecuencia",
-              status: "domain",
-              visibility: "dm",
-              style: "solid",
+            await connectCanvasNodes({
+              canvasId,
+              sourceNode: { id: selectedNode.id, entityId: selectedEntity.entityId },
+              targetNode: { id: newNode.id, entityId: created.entityId },
+              edge: {
+                label: "consecuencia",
+                status: "domain",
+                visibility: "dm",
+                style: "solid",
+              },
+              relation: {
+                relationType: "consecuencia",
+                visibility: { kind: "dm_only" },
+              },
+              createRelation,
+              addEdgeToCanvas,
             });
           }
         }

@@ -4,6 +4,7 @@ import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { AlertTriangle, CheckCircle2, Eye, FileText, KeyRound, RefreshCcw, StickyNote, Zap } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
+import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
 
 
 export interface CanvasEntityNodeProps {
@@ -32,6 +33,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
     createEntity,
     placeNodeOnCanvas,
     addEdgeToCanvas,
+    createRelation,
     recordSessionEvent
   } = useCampaignStore();
 
@@ -289,13 +291,22 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
                     const newNode = finalCanvas?.nodes?.find((n: any) => n.entityId === created.entityId);
 
                     if (currentNode && newNode) {
-                      await addEdgeToCanvas(data.canvasId, {
-                        sourceNodeId: currentNode.id,
-                        targetNodeId: newNode.id,
-                        label: "consecuencia",
-                        status: "domain",
-                        visibility: "dm",
-                        style: "solid",
+                      await connectCanvasNodes({
+                        canvasId: data.canvasId,
+                        sourceNode: { id: currentNode.id, entityId: entity.entityId },
+                        targetNode: { id: newNode.id, entityId: created.entityId },
+                        edge: {
+                          label: "consecuencia",
+                          status: "domain",
+                          visibility: "dm",
+                          style: "solid",
+                        },
+                        relation: {
+                          relationType: "consecuencia",
+                          visibility: { kind: "dm_only" },
+                        },
+                        createRelation,
+                        addEdgeToCanvas,
                       });
                     }
                   }
