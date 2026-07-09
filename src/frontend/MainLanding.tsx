@@ -51,19 +51,19 @@ function AppPreviewMock() {
             <span className="rl-preview-cover__badge"><span className="rl-preview-pulse" />Sesión activa</span>
           </div>
           <div className="rl-preview-stats">
-            <div className="rl-preview-stat"><Users size={10} /><strong>92</strong><small>entidades</small></div>
-            <div className="rl-preview-stat"><Network size={10} /><strong>167</strong><small>relaciones</small></div>
-            <div className="rl-preview-stat"><Clock size={10} /><strong>9</strong><small>sesiones</small></div>
+            <div className="rl-preview-stat"><Users size={10} /><strong>109</strong><small>entidades</small></div>
+            <div className="rl-preview-stat"><Network size={10} /><strong>228</strong><small>relaciones</small></div>
+            <div className="rl-preview-stat"><Database size={10} /><strong>25</strong><small>hechos</small></div>
           </div>
           <div className="rl-preview-tags">
-            <span className="rl-preview-tag rl-preview-tag--purple">Secretos · 14</span>
-            <span className="rl-preview-tag rl-preview-tag--amber">Facciones · 6</span>
-            <span className="rl-preview-tag rl-preview-tag--blue">Ubicaciones · 23</span>
-            <span className="rl-preview-tag rl-preview-tag--green">PNJs · 38</span>
+            <span className="rl-preview-tag rl-preview-tag--purple">Secreto oculto</span>
+            <span className="rl-preview-tag rl-preview-tag--amber">Pista sin revelar</span>
+            <span className="rl-preview-tag rl-preview-tag--blue">Facción activa</span>
+            <span className="rl-preview-tag rl-preview-tag--green">Sesión preparada</span>
           </div>
           <div className="rl-preview-alert">
             <Shield size={10} />
-            <span>Pista crítica sin revelar: El Grimorio de Azuron</span>
+            <span>Qué toca ahora: prepara la escena con las pistas pendientes</span>
           </div>
         </div>
       </div>
