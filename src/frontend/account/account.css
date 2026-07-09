@@ -772,10 +772,39 @@
 
   .account-modal-shell,
   .account-center.account-center--modal {
-    max-height: calc(100vh - 1.3rem);
+    max-height: calc(100dvh - 1.3rem);
   }
 
   .account-center.account-center--modal .account-page-header {
     align-items: flex-start;
+  }
+}
+
+
+@media (max-width: 700px) {
+  .account-modal-backdrop {
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .account-modal-shell {
+    width: 100%;
+    max-height: 100dvh;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .account-center.account-center--modal {
+    max-height: 100dvh;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+
+  .account-nav {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background: color-mix(in srgb, var(--bg-main) 92%, #000 8%);
+    padding-block: 0.5rem;
   }
 }
