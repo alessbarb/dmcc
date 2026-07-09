@@ -190,6 +190,8 @@ export const fr: TranslationDictionary = {
       fact: "Fact",
       notes: "Notes",
       note: "Note",
+      addToCanvas: "Add to canvas",
+      notFoundInCanvas: "Not found in this canvas",
       untitledNote: "Untitled note",
     },
 

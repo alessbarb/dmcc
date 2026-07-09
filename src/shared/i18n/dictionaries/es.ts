@@ -190,6 +190,8 @@ export const es: TranslationDictionary = {
       fact: "Hecho",
       notes: "Notas",
       note: "Nota",
+      addToCanvas: "Añadir al canvas",
+      notFoundInCanvas: "No encontrado en este canvas",
       untitledNote: "Nota sin título",
     },
     node: {

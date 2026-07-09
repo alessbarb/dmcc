@@ -14,6 +14,7 @@ import { useParams } from "@tanstack/react-router";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
+import type { CanvasNode } from "@core/domain/canvas/types.js";
 
 import { getCanvasTemplate } from "../templates/index.js";
 import { applyCanvasTemplate } from "../services/applyCanvasTemplate.js";
@@ -378,6 +379,34 @@ export function CanvasPage() {
   const [isLintOpen, setIsLintOpen] = useState(false);
   const [density, setDensity] = useState<"compact" | "normal" | "detailed">("normal");
   const [relationsFilter, setRelationsFilter] = useState<"all" | "public" | "secret" | "selection">("all");
+  const focusCanvasNode = (nodeId: string) => {
+    const focused = canvasFlowRef.current?.focusNode(nodeId, { zoom: 1.2, duration: 350 }) ?? false;
+    if (focused) {
+      setSelectedNodeId(nodeId);
+      setSelectedEdgeId(null);
+    }
+    return focused;
+  };
+
+  const focusCanvasEntity = (entityId: string) => {
+    const focused = canvasFlowRef.current?.focusEntity(entityId, { zoom: 1.2, duration: 350 }) ?? false;
+    if (focused) {
+      const nodeId = useCampaignStore.getState().canvasesById[activeCanvasId ?? ""]?.nodes?.find((node: CanvasNode) => node.entityId === entityId)?.id;
+      if (nodeId) setSelectedNodeId(nodeId);
+      setSelectedEdgeId(null);
+    }
+    return focused;
+  };
+
+  const focusCanvasFact = (factId: string) => {
+    const focused = canvasFlowRef.current?.focusFact(factId, { zoom: 1.2, duration: 350 }) ?? false;
+    if (focused) {
+      const nodeId = useCampaignStore.getState().canvasesById[activeCanvasId ?? ""]?.nodes?.find((node: CanvasNode) => node.factId === factId)?.id;
+      if (nodeId) setSelectedNodeId(nodeId);
+      setSelectedEdgeId(null);
+    }
+    return focused;
+  };
   const [isLegendOpen, setIsLegendOpen] = useState(false);
   const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
 
@@ -1056,11 +1085,9 @@ export function CanvasPage() {
           {!isPlayerView && (
             <CanvasNavigatorPanel
               canvas={activeCanvas}
-              canvasFlowRef={canvasFlowRef}
-              onSelectNode={(nodeId) => {
-                setSelectedNodeId(nodeId);
-                setSelectedEdgeId(null);
-              }}
+              onFocusNode={focusCanvasNode}
+              onFocusEntity={focusCanvasEntity}
+              onFocusFact={focusCanvasFact}
             />
           )}
           
