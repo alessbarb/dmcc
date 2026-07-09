@@ -255,12 +255,20 @@ export function MainLanding() {
           </p>
 
           <div className="rl-hero__ctas">
-            <button className="rl-cta-primary" onClick={() => navigate({ to: "/register" })}>
+            <button
+              className="rl-cta-primary"
+              onClick={() =>
+                navigate({
+                  to: "/premades/$templateId",
+                  params: { templateId: "oracle-triple-eclipse" },
+                })
+              }
+            >
               <span className="rl-cta-primary__shimmer" />
-              <span className="rl-cta-primary__text">Empezar gratis</span>
+              <span className="rl-cta-primary__text">Ver campaña de ejemplo</span>
             </button>
-            <button className="rl-cta-secondary" onClick={() => navigate({ to: "/login" })}>
-              Ya tengo cuenta
+            <button className="rl-cta-secondary" onClick={() => navigate({ to: "/register" })}>
+              Crear mi campaña
             </button>
           </div>
 
@@ -394,7 +402,7 @@ export function MainLanding() {
           <div className="rl-final-cta__buttons rl-animate rl-animate--pop" data-delay="280">
             <button className="rl-cta-primary" onClick={() => navigate({ to: "/register" })}>
               <span className="rl-cta-primary__shimmer" />
-              <span className="rl-cta-primary__text">Empezar gratis</span>
+              <span className="rl-cta-primary__text">Crear primera campaña</span>
             </button>
             <button className="rl-cta-secondary" onClick={() => navigate({ to: "/login" })}>
               Iniciar sesión
