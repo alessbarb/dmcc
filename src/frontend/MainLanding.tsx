@@ -302,6 +302,24 @@ export function MainLanding() {
         </div>
       </section>
 
+      {/* ── Audience ────────────────────────────────────── */}
+      <section className="rl-audience">
+        <div className="rl-audience__inner">
+          <p className="rl-features__eyebrow rl-animate rl-animate--from-bottom" data-delay="0">
+            Para campañas que crecen
+          </p>
+          <h2 className="rl-audience__heading rl-animate rl-animate--from-bottom" data-delay="120">
+            Hecho para DMs que dirigen mundos vivos
+          </h2>
+          <p className="rl-audience__body rl-animate rl-animate--from-bottom" data-delay="240">
+            DMCC está pensado para campañas largas, mesas sandbox y mundos donde la investigación,
+            la política, las facciones, los misterios y las consecuencias se entrelazan sesión tras
+            sesión. Mantén cada decisión conectada al mundo, recuerda qué cambió y deja que tus
+            jugadores sientan que sus acciones importan.
+          </p>
+        </div>
+      </section>
+
       {/* ── Features ────────────────────────────────────── */}
       <section className="rl-showcase">
 
