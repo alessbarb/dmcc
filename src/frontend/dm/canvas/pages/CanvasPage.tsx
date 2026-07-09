@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { ReactFlowProvider } from "reactflow";
+import type { Edge, Node } from "reactflow";
 import { CampaignCanvasFlow } from "../components/CampaignCanvasFlow.js";
 import type { CampaignCanvasFlowHandle } from "../components/CampaignCanvasFlow.js";
 import { CanvasNavigatorPanel } from "../components/CanvasNavigatorPanel.js";
@@ -15,7 +16,8 @@ import { useParams } from "@tanstack/react-router";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
-import type { CanvasNode } from "@core/domain/canvas/types.js";
+import type { Canvas, CanvasNode, CanvasEdge } from "@core/domain/canvas/types.js";
+import type { Entity, Relation, Session } from "../../../shared/stores/campaignStore.js";
 
 import { getCanvasTemplate } from "../templates/index.js";
 import { applyCanvasTemplate } from "../services/applyCanvasTemplate.js";
@@ -88,7 +90,7 @@ const parseAndImportText = async (text: string, canvasId: string, _campaignId: s
       await placeNodeOnCanvas(canvasId, { kind: "group", title: groupName, color: "purple", x: currentX, y: currentY, width: 340, height: 240 });
       
       const updatedCanvas = useCampaignStore.getState().canvasesById[canvasId];
-      const groupNode = updatedCanvas?.nodes?.find((n: any) => n.kind === "group" && n.title === groupName && n.x === currentX && n.y === currentY);
+      const groupNode = updatedCanvas?.nodes?.find((n: CanvasNode) => n.kind === "group" && n.title === groupName && n.x === currentX && n.y === currentY);
       currentGroupNodeId = groupNode?.id;
       
       currentX += 380;
@@ -138,7 +140,7 @@ const parseAndImportText = async (text: string, canvasId: string, _campaignId: s
             nodesCreated[nameStr] = noteNode.id;
           }
         } else {
-          const existing = store.campaignState?.entities?.find((e: any) => e.title.toLowerCase() === nameStr.toLowerCase() && !e.archived);
+          const existing = store.campaignState?.entities?.find((e: Entity) => e.title.toLowerCase() === nameStr.toLowerCase() && !e.archived);
           let entityId = existing?.entityId;
           
           if (!entityId) {
@@ -148,7 +150,7 @@ const parseAndImportText = async (text: string, canvasId: string, _campaignId: s
               status: "ready",
               importance: "normal",
               visibility: { kind: entityType === "secret" ? "dm_only" : "public" },
-            } as any);
+            });
             const created = useCampaignStore.getState().campaignState?.entities?.slice(-1)[0];
             entityId = created?.entityId;
           }
@@ -158,7 +160,7 @@ const parseAndImportText = async (text: string, canvasId: string, _campaignId: s
             await placeNodeOnCanvas(canvasId, { kind: "entity", entityId, x: currentX + 50, y: currentY + 50, groupId: currentGroupNodeId });
             
             const updatedCanvas = useCampaignStore.getState().canvasesById[canvasId];
-            const nodeObj = updatedCanvas?.nodes?.find((n: any) => n.entityId === entityId);
+            const nodeObj = updatedCanvas?.nodes?.find((n: CanvasNode) => n.entityId === entityId);
             if (nodeObj) {
               nodesCreated[nameStr] = nodeObj.id;
             }
@@ -183,19 +185,19 @@ const parseAndImportText = async (text: string, canvasId: string, _campaignId: s
         const targetName = parts[2] || parts[1];
         const finalLabel = parts[2] ? relationLabel : "relacionado con";
 
-        const sourceNodeId = nodesCreated[sourceName] || useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: any) => {
-          const ent = n.entityId ? store.campaignState?.entities?.find((e: any) => e.entityId === n.entityId) : null;
+        const sourceNodeId = nodesCreated[sourceName] || useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: CanvasNode) => {
+          const ent = n.entityId ? store.campaignState?.entities?.find((e: Entity) => e.entityId === n.entityId) : null;
           return ent && ent.title.toLowerCase() === sourceName.toLowerCase();
         })?.id;
 
-        const targetNodeId = nodesCreated[targetName] || useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: any) => {
-          const ent = n.entityId ? store.campaignState?.entities?.find((e: any) => e.entityId === n.entityId) : null;
+        const targetNodeId = nodesCreated[targetName] || useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: CanvasNode) => {
+          const ent = n.entityId ? store.campaignState?.entities?.find((e: Entity) => e.entityId === n.entityId) : null;
           return ent && ent.title.toLowerCase() === targetName.toLowerCase();
         })?.id;
 
         if (sourceNodeId && targetNodeId) {
-          const sourceNode = useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: any) => n.id === sourceNodeId);
-          const targetNode = useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: any) => n.id === targetNodeId);
+          const sourceNode = useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: CanvasNode) => n.id === sourceNodeId);
+          const targetNode = useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: CanvasNode) => n.id === targetNodeId);
           
           if (sourceNode?.entityId && targetNode?.entityId) {
             try {
@@ -236,23 +238,23 @@ const parseAndImportText = async (text: string, canvasId: string, _campaignId: s
 };
 
 // Narrative consistency check (Lint) auditor logic
-const runNarrativeLint = (campaignState: any, activeCanvas: any, t: (key: string, params?: Record<string, string | number>) => string) => {
+const runNarrativeLint = (campaignState: { entities: Entity[]; relations: Relation[] }, activeCanvas: Canvas, t: (key: string, params?: Record<string, string | number>) => string) => {
   const issues: { id: string; type: "error" | "warning" | "info"; message: string; entityId?: string }[] = [];
   if (!campaignState || !activeCanvas) return issues;
 
-  const entities = campaignState.entities.filter((e: any) => !e.archived);
-  const relations = campaignState.relations.filter((r: any) => !r.archived);
+  const entities = campaignState.entities.filter((e: Entity) => !e.archived);
+  const relations = campaignState.relations.filter((r: Relation) => !r.archived);
   const canvasNodes = activeCanvas.nodes || [];
   const canvasEdges = activeCanvas.edges || [];
 
   // 1. Secretos sin pistas
-  const secrets = entities.filter((e: any) => e.entityType === "secret");
+  const secrets = entities.filter((e: Entity) => e.entityType === "secret");
   for (const secret of secrets) {
     const anchors = secret.metadata?.revelationAnchors || [];
     const hasAnchors = anchors.length > 0;
     const pointingClues = relations.filter(
-      (r: any) => r.targetEntityId === secret.entityId &&
-                  entities.find((e: any) => e.entityId === r.sourceEntityId)?.entityType === "clue"
+      (r: Relation) => r.targetEntityId === secret.entityId &&
+                  entities.find((e: Entity) => e.entityId === r.sourceEntityId)?.entityType === "clue"
     );
     const hasPointingClues = pointingClues.length > 0;
     
@@ -267,10 +269,10 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any, t: (key: string
   }
 
   // 2. Pistas huérfanas
-  const clues = entities.filter((e: any) => e.entityType === "clue");
+  const clues = entities.filter((e: Entity) => e.entityType === "clue");
   for (const clue of clues) {
-    const isAnchor = secrets.some((s: any) => s.metadata?.revelationAnchors?.includes(clue.entityId));
-    const hasOutgoing = relations.some((r: any) => r.sourceEntityId === clue.entityId);
+    const isAnchor = secrets.some((s: Entity) => s.metadata?.revelationAnchors?.includes(clue.entityId));
+    const hasOutgoing = relations.some((r: Relation) => r.sourceEntityId === clue.entityId);
     if (!isAnchor && !hasOutgoing) {
       issues.push({
         id: `clue-orphan-${clue.entityId}`,
@@ -283,11 +285,11 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any, t: (key: string
 
   // 3. NPCs importantes sin uso
   const importantNpcs = entities.filter(
-    (e: any) => e.entityType === "npc" && (e.importance === "critical" || e.importance === "high")
+    (e: Entity) => e.entityType === "npc" && (e.importance === "critical" || e.importance === "high")
   );
   for (const npc of importantNpcs) {
     const isConnected = relations.some(
-      (r: any) => r.sourceEntityId === npc.entityId || r.targetEntityId === npc.entityId
+      (r: Relation) => r.sourceEntityId === npc.entityId || r.targetEntityId === npc.entityId
     );
     if (!isConnected) {
       issues.push({
@@ -300,10 +302,10 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any, t: (key: string
   }
 
   // 4. Misiones sin cierre
-  const quests = entities.filter((e: any) => e.entityType === "quest");
+  const quests = entities.filter((e: Entity) => e.entityType === "quest");
   for (const quest of quests) {
     const hasConnections = relations.some(
-      (r: any) => r.sourceEntityId === quest.entityId || r.targetEntityId === quest.entityId
+      (r: Relation) => r.sourceEntityId === quest.entityId || r.targetEntityId === quest.entityId
     );
     if (!hasConnections) {
       issues.push({
@@ -316,12 +318,12 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any, t: (key: string
   }
 
   // 5. Lugares vacíos
-  const locationNodes = canvasNodes.filter((n: any) => n.kind === "entity" && entities.find((e: any) => e.entityId === n.entityId)?.entityType === "location");
+  const locationNodes = canvasNodes.filter((n: CanvasNode) => n.kind === "entity" && entities.find((e: Entity) => e.entityId === n.entityId)?.entityType === "location");
   for (const locNode of locationNodes) {
-    const locEntity = entities.find((e: any) => e.entityId === locNode.entityId);
+    const locEntity = entities.find((e: Entity) => e.entityId === locNode.entityId);
     if (!locEntity) continue;
-    const hasChildren = canvasNodes.some((n: any) => n.groupId === locNode.id);
-    const hasEdges = canvasEdges.some((e: any) => e.sourceNodeId === locNode.id || e.targetNodeId === locNode.id);
+    const hasChildren = canvasNodes.some((n: CanvasNode) => n.groupId === locNode.id);
+    const hasEdges = canvasEdges.some((e: CanvasEdge) => e.sourceNodeId === locNode.id || e.targetNodeId === locNode.id);
     
     if (!hasChildren && !hasEdges) {
       issues.push({
@@ -335,8 +337,8 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any, t: (key: string
 
   // 6. Relaciones privadas con fuga
   for (const rel of relations) {
-    const source = entities.find((e: any) => e.entityId === rel.sourceEntityId);
-    const target = entities.find((e: any) => e.entityId === rel.targetEntityId);
+    const source = entities.find((e: Entity) => e.entityId === rel.sourceEntityId);
+    const target = entities.find((e: Entity) => e.entityId === rel.targetEntityId);
     if (source && target) {
       const relIsSecret = isDmOnlyVisibility(rel.visibility);
       const sourceIsPublic = source.visibility?.kind === "public";
@@ -388,7 +390,7 @@ export function CanvasPage() {
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [isCreateBoardOpen, setIsCreateBoardOpen] = useState(false);
   const [newBoardTitle, setNewBoardTitle] = useState("");
-  const [newBoardKind, setNewBoardKind] = useState<any>("world");
+  const [newBoardKind, setNewBoardKind] = useState<Canvas["kind"]>("world");
   
   const [detailEntityId, setDetailEntityId] = useState<string | null>(null);
 
@@ -449,8 +451,8 @@ export function CanvasPage() {
   const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
 
   // Multi-selection
-  const [selectedNodes, setSelectedNodes] = useState<any[]>([]);
-  const [, setSelectedEdges] = useState<any[]>([]);
+  const [selectedNodes, setSelectedNodes] = useState<Node[]>([]);
+  const [, setSelectedEdges] = useState<Edge[]>([]);
   const [bulkGroupId, setBulkGroupId] = useState<string>("");
   const [bulkConfirm, setBulkConfirm] = useState<"reveal" | "hide" | "remove" | null>(null);
 
@@ -468,17 +470,17 @@ export function CanvasPage() {
 
   const isCurrentCampaignLoaded = activeCampaignId === campaignId && campaignState?.campaign?.campaignId === campaignId;
   const selectedEntityLocal = detailEntityId && isCurrentCampaignLoaded && campaignState
-    ? campaignState.entities.find((e: any) => e.entityId === detailEntityId)
+    ? campaignState.entities.find((e: Entity) => e.entityId === detailEntityId)
     : null;
   const canvases = isCurrentCampaignLoaded
-    ? Object.values(canvasesById || {}).filter(c => !c.archived)
+    ? Object.values(canvasesById || {}).filter((c: Canvas) => !c.archived)
     : [];
   const activeCanvas = isCurrentCampaignLoaded && activeCanvasId && canvasesById[activeCanvasId] && !canvasesById[activeCanvasId].archived
     ? canvasesById[activeCanvasId]
     : null;
-  const activeSession = isCurrentCampaignLoaded ? campaignState?.sessions?.find((s: any) => s.status === "active") : undefined;
+  const activeSession = isCurrentCampaignLoaded ? campaignState?.sessions?.find((s: Session) => s.status === "active") : undefined;
   const preparedSessions = isCurrentCampaignLoaded
-    ? (campaignState?.sessions ?? []).filter((session: any) => session.status === "planned")
+    ? (campaignState?.sessions ?? []).filter((session: Session) => session.status === "planned")
     : [];
 
   // Keep the selected canvas scoped to the current campaign.
@@ -494,7 +496,7 @@ export function CanvasPage() {
     }
 
     const selectedCanvasBelongsToCurrentCampaign = Boolean(
-      activeCanvasId && canvases.some((canvas: any) => canvas.id === activeCanvasId),
+      activeCanvasId && canvases.some((canvas: Canvas) => canvas.id === activeCanvasId),
     );
 
     if (!selectedCanvasBelongsToCurrentCampaign) {
@@ -534,14 +536,14 @@ export function CanvasPage() {
   useEffect(() => {
     if (!campaignState || canvases.length === 0) return;
 
-    const allNodes = canvases.flatMap((c: any) => c.nodes || []);
-    const allEdges = canvases.flatMap((c: any) => c.edges || []);
+    const allNodes = canvases.flatMap((c: Canvas) => c.nodes || []);
+    const allEdges = canvases.flatMap((c: Canvas) => c.edges || []);
 
     const orphanEntities = campaignState.entities.filter(
-      (e: any) => !e.archived && !allNodes.some((n: any) => n.entityId === e.entityId)
+      (entity: Entity) => !entity.archived && !allNodes.some((node: CanvasNode) => node.entityId === entity.entityId)
     );
     const orphanRelations = campaignState.relations.filter(
-      (r: any) => !r.archived && !allEdges.some((e: any) => e.relationshipId === r.relationId)
+      (relation: Relation) => !relation.archived && !allEdges.some((edge: CanvasEdge) => edge.relationshipId === relation.relationId)
     );
 
     if (orphanEntities.length === 0 && orphanRelations.length === 0) return;
@@ -649,8 +651,9 @@ export function CanvasPage() {
         };
         img.src = url;
       }
-    } catch (err: any) {
-      addToast(`Error al exportar canvas: ${err.message}`, "error");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      addToast(`Error al exportar canvas: ${message}`, "error");
     } finally {
       setIsPlayerView(originalPlayerView);
       setIsDirectionMode(originalDirectionMode);
@@ -848,7 +851,7 @@ export function CanvasPage() {
             {!isPlayerView && (
               <select
                 value={relationsFilter}
-                onChange={(e) => setRelationsFilter(e.target.value as any)}
+                onChange={(e) => setRelationsFilter(e.target.value as typeof relationsFilter)}
                 className="canvas-select"
                 style={{ fontSize: "11px", padding: "2px 6px", height: "26px", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)" }}
                 title={t("canvas.toolbar.filterConnections")}
@@ -952,7 +955,7 @@ export function CanvasPage() {
                   <label>Tipo de Tablero</label>
                   <select
                     value={newBoardKind}
-                    onChange={(e) => setNewBoardKind(e.target.value as any)}
+                    onChange={(e) => setNewBoardKind(e.target.value as Canvas["kind"])}
                     className="form-select"
                   >
                     <option value="world">Mapa del Mundo / Estructura General</option>
@@ -1033,8 +1036,9 @@ export function CanvasPage() {
                     addToast(t("canvas.page.importSuccess"), "success");
                     setIsImportOpen(false);
                     setImportText("");
-                  } catch (err: any) {
-                    addToast(`Error al importar: ${err.message}`, "error");
+                  } catch (err: unknown) {
+                    const message = err instanceof Error ? err.message : String(err);
+                    addToast(`Error al importar: ${message}`, "error");
                   }
                 }}
               >
@@ -1231,6 +1235,7 @@ export function CanvasPage() {
               </div>
               <div className="inspector-content">
                 {(() => {
+                  if (!campaignState) return null;
                   const issues = runNarrativeLint(campaignState, activeCanvas, t);
                   if (issues.length === 0) {
                     return (
@@ -1266,7 +1271,7 @@ export function CanvasPage() {
                             {iss.entityId && (
                               <button
                                 onClick={() => {
-                                  setSelectedNodeId(activeCanvas.nodes.find((n: any) => n.entityId === iss.entityId)?.id || null);
+                                  setSelectedNodeId(activeCanvas.nodes.find((n: CanvasNode) => n.entityId === iss.entityId)?.id || null);
                                   setSelectedEdgeId(null);
                                 }}
                                 className="btn btn-link btn-xs"
@@ -1294,7 +1299,7 @@ export function CanvasPage() {
               <div className="canvas-multiselect-actions">
                 {/* Assign group to all selected nodes */}
                 {(() => {
-                  const groups = activeCanvas?.nodes?.filter((n: any) => n.kind === "group") ?? [];
+                  const groups = activeCanvas?.nodes?.filter((n: CanvasNode) => n.kind === "group") ?? [];
                   if (groups.length === 0) return null;
                   return (
                     <select
@@ -1304,7 +1309,7 @@ export function CanvasPage() {
                       onChange={async (e) => {
                         const gid = (e.target.value && e.target.value !== "__none__") ? e.target.value : null;
                         setBulkGroupId(e.target.value);
-                        const updates = selectedNodes.map((n: any) => ({
+                        const updates = selectedNodes.map((n: Node) => ({
                           nodeId: n.id,
                           x: Math.round(n.position?.x ?? 0),
                           y: Math.round(n.position?.y ?? 0),
@@ -1318,7 +1323,7 @@ export function CanvasPage() {
                     >
                       <option value="">📁 Asignar grupo...</option>
                       <option value="__none__">Sin grupo</option>
-                      {groups.map((g: any) => (
+                      {groups.map((g: CanvasNode) => (
                         <option key={g.id} value={g.id}>{g.title || "Grupo"}</option>
                       ))}
                     </select>
@@ -1409,7 +1414,7 @@ export function CanvasPage() {
               <button onClick={() => setIsSessionPrepOpen(false)} className="modal-close-btn"><X size={16} /></button>
             </div>
             {(() => {
-              const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+              const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
               const entNames = selectedNodes.map(n => n.data.title || n.data.text || "Elemento").filter(Boolean);
               
               return (
@@ -1448,7 +1453,7 @@ export function CanvasPage() {
                       });
                       addToast(t("toasts.sessionPrepared", { title: sessionTitle }), "success");
                     } else if (targetMode === "prepared" && targetSessionId) {
-                      const targetSession = preparedSessions.find((session: any) => session.sessionId === targetSessionId);
+                      const targetSession = preparedSessions.find((session: Session) => session.sessionId === targetSessionId);
                       if (!targetSession) return;
                       const currentPrep = targetSession.prep ?? { state: "draft" };
                       const mergeIds = (...groups: string[][]) => Array.from(new Set(groups.flat().filter(Boolean)));
@@ -1521,8 +1526,8 @@ function SessionPrepForm({
   onSubmit,
   onCancel
 }: {
-  activeSession: any;
-  preparedSessions: any[];
+  activeSession: Session | undefined;
+  preparedSessions: Session[];
   selectedCount: number;
   elementNames: string[];
   onSubmit: (title: string, mode: "new" | "active" | "prepared", targetSessionId?: string) => Promise<void>;
@@ -1589,7 +1594,7 @@ function SessionPrepForm({
                 </div>
                 {targetMode === "prepared" && (
                   <select className="form-select" value={targetSessionId} onChange={(e) => setTargetSessionId(e.target.value)} required>
-                    {preparedSessions.map((session: any) => (
+                    {preparedSessions.map((session: Session) => (
                       <option key={session.sessionId} value={session.sessionId}>
                         {session.number ? `#${session.number} ` : ""}{session.title}
                       </option>

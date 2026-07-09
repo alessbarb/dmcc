@@ -1,9 +1,16 @@
-function getCanvasId(canvas: any): string | null {
-  return typeof canvas?.id === "string" ? canvas.id : typeof canvas?.canvasId === "string" ? canvas.canvasId : null;
+interface SelectableCanvas {
+  id?: string;
+  canvasId?: string;
+  archived?: boolean;
+  [key: string]: unknown;
 }
 
-export function resolveActiveCanvasId(canvasesById: Record<string, any>, preferredCanvasId?: string | null): string | null {
-  const canvases = Object.values(canvasesById || {}).filter((canvas: any) => !canvas?.archived);
+function getCanvasId(canvas: SelectableCanvas): string | null {
+  return typeof canvas.id === "string" ? canvas.id : typeof canvas.canvasId === "string" ? canvas.canvasId : null;
+}
+
+export function resolveActiveCanvasId(canvasesById: Record<string, SelectableCanvas>, preferredCanvasId?: string | null): string | null {
+  const canvases = Object.values(canvasesById || {}).filter((canvas: SelectableCanvas) => !canvas.archived);
   if (canvases.length === 0) return null;
 
   if (preferredCanvasId) {
