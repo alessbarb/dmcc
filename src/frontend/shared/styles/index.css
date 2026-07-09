@@ -4249,7 +4249,7 @@ small.canvas-navigator-result-action {
     z-index: 950;
     min-height: calc(var(--campaign-mobile-bottom-nav-height) + env(safe-area-inset-bottom));
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 2px;
     padding: 7px 5px calc(7px + env(safe-area-inset-bottom));
     border-top: 1px solid var(--border-color);
@@ -4272,7 +4272,7 @@ small.canvas-navigator-result-action {
     background: transparent;
     color: var(--text-muted);
     font: inherit;
-    font-size: 0.58rem;
+    font-size: 0.62rem;
     font-weight: 700;
     line-height: 1.05;
     cursor: pointer;
