@@ -67,6 +67,10 @@ export async function getPlayerMemory(campaignId: string): Promise<any> {
   return readJson(await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/memory`), "No se pudo cargar la memoria del jugador");
 }
 
+export async function getPlayerConstellation(campaignId: string): Promise<any> {
+  return readJson(await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/constellation`), "No se pudo cargar la constelación del jugador");
+}
+
 export async function getPlayerCharacter(campaignId: string): Promise<any> {
   return readJson(await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/character`), "No se pudo cargar el personaje");
 }

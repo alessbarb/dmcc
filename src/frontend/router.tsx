@@ -41,6 +41,7 @@ const SearchPageLazy = React.lazy(() => import("./dm/pages/SearchPage.js").then(
 const SettingsPageLazy = React.lazy(() => import("./dm/pages/SettingsPage.js").then((m) => ({ default: m.SettingsPage })));
 const PlayerPortalPageLazy = React.lazy(() => import("./player/pages/PlayerPortalPage.js").then((m) => ({ default: m.PlayerPortalPage })));
 const WebPlayerPortalPageLazy = React.lazy(() => import("./player/pages/WebPlayerPortalPage.js").then((m) => ({ default: m.WebPlayerPortalPage })));
+const PlayerConstellationPageLazy = React.lazy(() => import("./player/pages/PlayerConstellationPage.js").then((m) => ({ default: m.PlayerConstellationPage })));
 const RegisterPageLazy = React.lazy(() => import("./player/pages/RegisterPage.js").then((m) => ({ default: m.RegisterPage })));
 const CanvasPageLazy = React.lazy(() => import("./dm/canvas/pages/CanvasPage.js").then((m) => ({ default: m.CanvasPage })));
 const PlayerKnowledgePageLazy = React.lazy(() =>
@@ -148,7 +149,7 @@ const dmRoute = createRoute({
 const dmCampaignsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm/campaigns",
-  beforeLoad: async ({ context, location }: any) => {
+  beforeLoad: async () => {
     await requireAccountSession();
     throw redirect({ to: "/dm" });
   },
@@ -236,6 +237,11 @@ const playerPortalMemoryRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/campaigns/$campaignId/memory",
   component: withSuspense(WebPlayerPortalPageLazy),
+});
+const playerPortalConstellationRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/campaigns/$campaignId/constellation",
+  component: withSuspense(PlayerConstellationPageLazy),
 });
 const playerPortalObjectivesRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -406,6 +412,7 @@ const routeTree = rootRoute.addChildren([
   playerPortalRecapRoute,
   playerPortalCharacterRoute,
   playerPortalMemoryRoute,
+  playerPortalConstellationRoute,
   playerPortalObjectivesRoute,
   playerPortalNotesRoute,
   playerPortalProposalsRoute,
