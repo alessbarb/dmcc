@@ -234,6 +234,8 @@ npm install
 
 ### Run in development
 
+Local-only development binds the Vite dev server and backend to loopback by default:
+
 ```bash
 npm run dev
 ```
@@ -245,6 +247,14 @@ http://localhost:5173
 ```
 
 The local API server runs on port `4877` by default.
+
+To expose development services to other devices on your LAN, opt in explicitly:
+
+```bash
+npm run dev:lan
+```
+
+LAN mode sets `DMCC_VITE_HOST=0.0.0.0` for Vite and `DMCC_HOST=0.0.0.0` for the backend. Exposing a dev server on `0.0.0.0` makes it reachable from other devices on the same network, which can leak campaign data or allow unwanted requests if you are on an untrusted Wi-Fi, hotspot, office, or shared network. Use LAN mode only on trusted networks, stop it when finished, and prefer `npm run dev` for normal local work.
 
 ### Build
 
@@ -291,7 +301,10 @@ SESSION_SECRET=<secret-from-manager>
 ## Useful scripts
 
 ```bash
-npm run dev              # Start backend and frontend in development mode
+npm run dev              # Start backend and frontend bound to localhost/127.0.0.1
+npm run dev:ui           # Start only the Vite UI bound to 127.0.0.1
+npm run dev:lan          # Opt in to LAN exposure for backend and Vite via 0.0.0.0
+npm run dev:ui:lan       # Opt in to LAN exposure for only the Vite UI via 0.0.0.0
 npm run build            # Build the frontend and backend
 npm start                # Start the built application
 npm run test             # Run unit and integration tests
