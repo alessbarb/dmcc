@@ -1291,24 +1291,58 @@ body:has(.rl-root) .watermark {
 
 @media (max-width: 768px) {
   .rl-nav {
-    padding: 0 16px;
+    padding-inline: 14px;
+  }
+
+  .rl-nav__actions {
+    gap: 8px;
   }
 
   .rl-nav__login {
     display: none;
   }
 
+  .rl-hero {
+    min-height: auto;
+    padding: 86px 16px 48px;
+  }
+
   .rl-hero__content {
+    max-width: none;
     padding: 56px 20px 32px;
+    text-align: left;
+  }
+
+  .rl-hero__title {
+    font-size: clamp(2.35rem, 12vw, 3.4rem);
+    line-height: 0.98;
+  }
+
+  .rl-hero__subtitle {
+    font-size: 1rem;
+  }
+
+  .rl-hero__ctas {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .rl-preview-wrapper {
+    width: 100%;
+    margin-top: 28px;
     padding: 0 16px;
+    transform: none;
   }
 
   .rl-preview-frame {
+    max-width: 100%;
     transform: none;
     height: 260px;
+  }
+
+  .rl-block,
+  .rl-block--reversed {
+    grid-template-columns: 1fr;
   }
 
   .rl-features__grid {
