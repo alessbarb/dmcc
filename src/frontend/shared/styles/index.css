@@ -5163,7 +5163,7 @@ small.canvas-navigator-result-action {
 
   .player-portal-main {
     height: 100dvh !important;
-    padding-bottom: 72px;
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
   }
 
   .player-portal-content {
@@ -5236,6 +5236,25 @@ small.canvas-navigator-result-action {
 }
 
 @media (max-width: 560px) {
+  .player-session-hero {
+    padding: 18px;
+  }
+
+  .player-session-hero h2 {
+    font-size: 1.25rem;
+  }
+
+  .player-portal-section {
+    padding: 14px;
+  }
+
+  .player-compact-row,
+  .player-fact-row,
+  .player-relation-row,
+  .player-history-event {
+    padding: 9px 10px;
+  }
+
   .player-session-stat-grid {
     grid-template-columns: 1fr;
   }
