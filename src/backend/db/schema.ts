@@ -62,6 +62,7 @@ export const campaigns = pgTable("campaigns", {
   title: text("title").notNull(),
   summary: text("summary"),
   workspaceId: text("workspace_id").notNull().references(() => workspaces.workspaceId, { onDelete: "cascade" }),
+  ownerId: text("owner_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   status: text("status").notNull().default("active"), // 'active' | 'archived' | 'deleted'
   metadata: jsonb("metadata").notNull().default({}),
   createdAt: timestamp("created_at").notNull().defaultNow(),
