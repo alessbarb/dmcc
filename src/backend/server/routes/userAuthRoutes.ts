@@ -238,14 +238,6 @@ export async function registerUserAuthRoutes(server: FastifyInstance, options: {
         if (publicOrigin) {
           const resetUrl = `${publicOrigin}/reset-password/${encodeURIComponent(token)}`;
 
-          // Read the user's display name for a personalised email.
-          let displayName: string | undefined;
-          try {
-            const store = await readUserAuthStore(vaultDirFor(request));
-            const norm = normalizeEmail(email);
-            displayName = store.users.find((u) => u.emailNormalized === norm)?.displayName;
-          } catch { /* non-critical */ }
-
           await sendPasswordResetEmail({
             to: normalizeEmail(email),
             resetUrl,
