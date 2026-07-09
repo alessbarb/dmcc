@@ -197,12 +197,12 @@ export function CampaignShell() {
   const currentSegment = pathname.split("/")[3] ?? "";
 
   const NAV: CampaignNavItem[] = [
-    { path: "command-center", label: "Command Center", Icon: Shield, mobilePrimary: true },
+    { path: "command-center", label: "Mesa", Icon: Shield, mobilePrimary: true },
     { path: "dashboard", label: t("campaignShell.nav.dashboard"), Icon: Activity },
     { path: "what-now", label: t("campaignShell.nav.whatNow"), Icon: BookOpen, mobilePrimary: true },
     { path: "session", label: t("campaignShell.nav.session"), Icon: Play, mobilePrimary: true },
     { path: "entities", label: t("campaignShell.nav.entities"), Icon: Layers, mobilePrimary: true },
-    { path: "search", label: t("campaignShell.nav.search"), Icon: Search, mobilePrimary: true },
+    { path: "search", label: t("campaignShell.nav.search"), Icon: Search },
     { path: "canvas", label: t("campaignShell.nav.canvas"), Icon: LayoutGrid },
     { path: "graph", label: t("campaignShell.nav.graph"), Icon: GitFork },
     { path: "timeline", label: t("campaignShell.nav.timeline"), Icon: List },
