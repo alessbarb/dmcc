@@ -93,6 +93,69 @@ describe("web auth", () => {
     });
   });
 
+
+  it("rate-limits login attempts by IP", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, storageMode: "postgres" });
+
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        const res = await login(server, `missing-${attempt}@example.com`, "wrongpassword");
+        expect(res.statusCode).toBe(401);
+        expect(res.json()).toEqual({ error: "Invalid email or password" });
+      }
+
+      const limited = await login(server, "another-missing@example.com", "wrongpassword");
+      expect(limited.statusCode).toBe(429);
+      expect(limited.json()).toEqual({ error: "Too many login attempts. Try again later." });
+      expect(limited.headers["retry-after"]).toBeDefined();
+
+      await server.close();
+    });
+  });
+
+  it("rate-limits login attempts by normalized email", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, storageMode: "postgres" });
+
+      for (let attempt = 0; attempt < 10; attempt += 1) {
+        const res = await login(server, " Rotating@example.com ", "wrongpassword");
+        expect(res.statusCode).toBe(401);
+        expect(res.json()).toEqual({ error: "Invalid email or password" });
+      }
+
+      const limited = await login(server, "rotating@EXAMPLE.com", "wrongpassword");
+      expect(limited.statusCode).toBe(429);
+      expect(limited.json()).toEqual({ error: "Too many login attempts. Try again later." });
+      expect(limited.headers["retry-after"]).toBeDefined();
+
+      await server.close();
+    });
+  });
+
+  it("locks an account progressively after repeated failures and keeps login errors generic", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, storageMode: "postgres" });
+      await register(server, "lockout@example.com", "password12345");
+
+      const firstFailure = await login(server, "lockout@example.com", "wrongpassword");
+      expect(firstFailure.statusCode).toBe(401);
+      expect(firstFailure.json()).toEqual({ error: "Invalid email or password" });
+
+      for (let attempt = 1; attempt < 5; attempt += 1) {
+        const res = await login(server, "LOCKOUT@example.com", "wrongpassword");
+        expect(res.statusCode).toBe(401);
+        expect(res.json()).toEqual({ error: "Invalid email or password" });
+      }
+
+      const locked = await login(server, "lockout@example.com", "any-password");
+      expect(locked.statusCode).toBe(401);
+      expect(locked.json()).toEqual({ error: "Invalid email or password" });
+      expect(locked.headers["retry-after"]).toBeDefined();
+
+      await server.close();
+    });
+  });
+
   it("login creates session accessible via GET /api/auth/session", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });

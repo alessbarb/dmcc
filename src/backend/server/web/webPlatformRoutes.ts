@@ -25,11 +25,22 @@ import { getPremadeCampaignTemplate, listPremadeCampaignTemplates } from "../pre
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 
 type RegisterRateLimitEntry = { count: number; resetAt: number };
+type LoginRateLimitEntry = { count: number; resetAt: number };
+type LoginLockoutEntry = { failures: number; windowResetAt: number; lockedUntil: number };
 
 const REGISTER_SUCCESS_RESPONSE = { ok: true, message: "If registration can proceed, you will receive the next steps." };
 const REGISTER_RATE_LIMIT_WINDOW_MS = 60_000;
 const REGISTER_RATE_LIMIT_MAX_BY_IP = 20;
 const REGISTER_RATE_LIMIT_MAX_BY_EMAIL = 5;
+const LOGIN_FAILURE_RESPONSE = { error: "Invalid email or password" };
+const LOGIN_THROTTLED_RESPONSE = { error: "Too many login attempts. Try again later." };
+const LOGIN_RATE_LIMIT_WINDOW_MS = 60_000;
+const LOGIN_RATE_LIMIT_MAX_BY_IP = 5;
+const LOGIN_RATE_LIMIT_MAX_BY_EMAIL = 10;
+const LOGIN_LOCKOUT_WINDOW_MS = 15 * 60_000;
+const LOGIN_LOCKOUT_THRESHOLD = 5;
+const LOGIN_LOCKOUT_BASE_MS = 60_000;
+const LOGIN_LOCKOUT_MAX_MS = 15 * 60_000;
 function getRegisterRateLimitRetryAfter(registerRateLimits: Map<string, RegisterRateLimitEntry>, key: string, limit: number, now = Date.now()): number | null {
   const current = registerRateLimits.get(key);
   if (!current || current.resetAt <= now) {
@@ -42,6 +53,58 @@ function getRegisterRateLimitRetryAfter(registerRateLimits: Map<string, Register
   current.count += 1;
   registerRateLimits.set(key, current);
   return null;
+}
+
+function getLoginRateLimitRetryAfter(loginRateLimits: Map<string, LoginRateLimitEntry>, key: string, limit: number, now = Date.now()): number | null {
+  const current = loginRateLimits.get(key);
+  if (!current || current.resetAt <= now) {
+    loginRateLimits.set(key, { count: 1, resetAt: now + LOGIN_RATE_LIMIT_WINDOW_MS });
+    return null;
+  }
+  if (current.count >= limit) {
+    return Math.max(1, Math.ceil((current.resetAt - now) / 1000));
+  }
+  current.count += 1;
+  loginRateLimits.set(key, current);
+  return null;
+}
+
+function enforceLoginRateLimit(loginRateLimits: Map<string, LoginRateLimitEntry>, request: FastifyRequest, normalizedEmail: string): number | null {
+  const ipRetryAfter = getLoginRateLimitRetryAfter(loginRateLimits, `login:ip:${request.ip}`, LOGIN_RATE_LIMIT_MAX_BY_IP);
+  const emailRetryAfter = getLoginRateLimitRetryAfter(loginRateLimits, `login:email:${hashOpaque(normalizedEmail)}`, LOGIN_RATE_LIMIT_MAX_BY_EMAIL);
+  return Math.max(ipRetryAfter ?? 0, emailRetryAfter ?? 0) || null;
+}
+
+function getLoginLockoutRetryAfter(loginLockouts: Map<string, LoginLockoutEntry>, normalizedEmail: string, now = Date.now()): number | null {
+  const current = loginLockouts.get(hashOpaque(normalizedEmail));
+  if (!current) return null;
+  if (current.windowResetAt <= now && current.lockedUntil <= now) {
+    loginLockouts.delete(hashOpaque(normalizedEmail));
+    return null;
+  }
+  if (current.lockedUntil > now) {
+    return Math.max(1, Math.ceil((current.lockedUntil - now) / 1000));
+  }
+  return null;
+}
+
+function recordFailedLogin(loginLockouts: Map<string, LoginLockoutEntry>, normalizedEmail: string, now = Date.now()): void {
+  const key = hashOpaque(normalizedEmail);
+  const current = loginLockouts.get(key);
+  const entry = !current || current.windowResetAt <= now
+    ? { failures: 1, windowResetAt: now + LOGIN_LOCKOUT_WINDOW_MS, lockedUntil: 0 }
+    : { ...current, failures: current.failures + 1 };
+
+  if (entry.failures >= LOGIN_LOCKOUT_THRESHOLD) {
+    const lockoutStep = entry.failures - LOGIN_LOCKOUT_THRESHOLD;
+    const lockoutMs = Math.min(LOGIN_LOCKOUT_MAX_MS, LOGIN_LOCKOUT_BASE_MS * (2 ** lockoutStep));
+    entry.lockedUntil = now + lockoutMs;
+  }
+  loginLockouts.set(key, entry);
+}
+
+function clearLoginLockout(loginLockouts: Map<string, LoginLockoutEntry>, normalizedEmail: string): void {
+  loginLockouts.delete(hashOpaque(normalizedEmail));
 }
 
 function enforceRegisterRateLimit(registerRateLimits: Map<string, RegisterRateLimitEntry>, request: FastifyRequest, normalizedEmail: string): number | null {
@@ -881,6 +944,8 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
 export async function registerWebPlatformRoutes(server: FastifyInstance) {
   const repo = new PostgresCampaignRepository();
   const registerRateLimits = new Map<string, RegisterRateLimitEntry>();
+  const loginRateLimits = new Map<string, LoginRateLimitEntry>();
+  const loginLockouts = new Map<string, LoginLockoutEntry>();
 
   server.get("/api/health", async () => ({ ok: true, app: "dmcc-web", storage: "postgres" }));
 
@@ -948,6 +1013,20 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
 
   server.post<{ Body: { email?: string; password?: string } }>("/api/auth/login", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
+    const lockoutRetryAfter = getLoginLockoutRetryAfter(loginLockouts, email);
+    if (lockoutRetryAfter) {
+      reply.header("Retry-After", String(lockoutRetryAfter));
+      reply.code(401);
+      return LOGIN_FAILURE_RESPONSE;
+    }
+
+    const retryAfter = enforceLoginRateLimit(loginRateLimits, request, email);
+    if (retryAfter) {
+      reply.header("Retry-After", String(retryAfter));
+      reply.code(429);
+      return LOGIN_THROTTLED_RESPONSE;
+    }
+
     const password = requireBodyString(request.body?.password, "password");
 
     const [user] = await db
@@ -985,9 +1064,14 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     }
 
     if (!user || !passwordValid) {
+      if (user) {
+        recordFailedLogin(loginLockouts, email);
+      }
       reply.code(401);
-      return { error: "Invalid email or password" };
+      return LOGIN_FAILURE_RESPONSE;
     }
+
+    clearLoginLockout(loginLockouts, email);
 
     if (user.passwordAlgorithm === "argon2id") {
       await db
