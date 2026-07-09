@@ -54,6 +54,9 @@ export interface CampaignCanvasFlowHandle {
   focusEntity: (entityId: string, options?: CampaignCanvasFocusOptions) => boolean;
   focusFact: (factId: string, options?: CampaignCanvasFocusOptions) => boolean;
   getViewportCenter: () => { x: number; y: number } | null;
+  fitView: () => void;
+  zoomIn: () => void;
+  zoomOut: () => void;
 }
 
 export type CanvasDeviceMode = "desktop" | "tablet" | "mobile";
@@ -570,12 +573,27 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     return { x: Math.round(position.x), y: Math.round(position.y) };
   }, [rfInstance]);
 
+  const fitCanvasView = useCallback(() => {
+    rfInstance?.fitView({ padding: 0.25, duration: 400 });
+  }, [rfInstance]);
+
+  const zoomCanvasIn = useCallback(() => {
+    rfInstance?.zoomIn({ duration: 200 });
+  }, [rfInstance]);
+
+  const zoomCanvasOut = useCallback(() => {
+    rfInstance?.zoomOut({ duration: 200 });
+  }, [rfInstance]);
+
   useImperativeHandle(ref, () => ({
     focusNode,
     focusEntity,
     focusFact,
     getViewportCenter,
-  }), [focusEntity, focusFact, focusNode, getViewportCenter]);
+    fitView: fitCanvasView,
+    zoomIn: zoomCanvasIn,
+    zoomOut: zoomCanvasOut,
+  }), [fitCanvasView, focusEntity, focusFact, focusNode, getViewportCenter, zoomCanvasIn, zoomCanvasOut]);
 
   // Handle node drag stop: commit absolute positions.
   // Migrates old parentId-based relative positioning to groupId on first drag.
