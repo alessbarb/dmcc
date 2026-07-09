@@ -47,7 +47,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
           <h2 className="modal-title">
             {catalog === "avatars" || catalog === "entities" ? "Elegir imagen" : "Elegir portada"}
           </h2>
-          <button className="btn btn-icon btn-secondary" onClick={onClose} aria-label="Cerrar">
+          <button type="button" className="btn btn-icon btn-secondary" onClick={onClose} aria-label="Cerrar">
             <X size={16} />
           </button>
         </div>
@@ -56,6 +56,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
           <div style={{ display: "flex", gap: "8px", padding: "0 16px 12px", flexWrap: "wrap" }}>
             {Object.entries(groups).map(([g]) => (
               <button
+                type="button"
                 key={g}
                 className={`btn ${activeGroup === g ? "btn-primary" : "btn-secondary"}`}
                 style={{ textTransform: "capitalize", fontSize: "13px", padding: "4px 12px" }}
@@ -80,6 +81,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
             >
               {images.map((path) => (
                 <button
+                  type="button"
                   key={path}
                   onClick={() => { onSelect(path); onClose(); }}
                   style={{
@@ -106,12 +108,13 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
 
         <div className="modal-footer">
           <button
+            type="button"
             className="btn btn-secondary"
             onClick={() => { onSelect(""); onClose(); }}
           >
             Sin imagen
           </button>
-          <button className="btn btn-secondary" onClick={onClose}>
+          <button type="button" className="btn btn-secondary" onClick={onClose}>
             Cancelar
           </button>
         </div>
