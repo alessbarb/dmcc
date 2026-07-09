@@ -19,6 +19,38 @@ import type { CanvasNode } from "@core/domain/canvas/types.js";
 import { getCanvasTemplate } from "../templates/index.js";
 import { applyCanvasTemplate } from "../services/applyCanvasTemplate.js";
 
+type CanvasDensity = "compact" | "normal" | "detailed";
+
+const CANVAS_DENSITY_STORAGE_KEY = "dmcc.canvas.density";
+const DEFAULT_CANVAS_DENSITY: CanvasDensity = "normal";
+const CANVAS_DENSITY_OPTIONS = new Set<CanvasDensity>(["compact", "normal", "detailed"]);
+
+const isCanvasDensity = (value: string | null): value is CanvasDensity => (
+  value !== null && CANVAS_DENSITY_OPTIONS.has(value as CanvasDensity)
+);
+
+const getStoredCanvasDensity = (): CanvasDensity => {
+  if (typeof window === "undefined") return DEFAULT_CANVAS_DENSITY;
+
+  try {
+    const storedDensity = window.localStorage.getItem(CANVAS_DENSITY_STORAGE_KEY);
+    return isCanvasDensity(storedDensity) ? storedDensity : DEFAULT_CANVAS_DENSITY;
+  } catch (error) {
+    console.warn("Unable to read canvas density preference from localStorage", error);
+    return DEFAULT_CANVAS_DENSITY;
+  }
+};
+
+const storeCanvasDensity = (density: CanvasDensity) => {
+  if (typeof window === "undefined") return;
+
+  try {
+    window.localStorage.setItem(CANVAS_DENSITY_STORAGE_KEY, density);
+  } catch (error) {
+    console.warn("Unable to persist canvas density preference to localStorage", error);
+  }
+};
+
 const seedCanvasTemplate = async (canvasId: string, templateId: string, t: (key: string, params?: Record<string, string | number>) => string) => {
   const template = getCanvasTemplate(templateId, t);
   if (!template) return;
@@ -377,8 +409,13 @@ export function CanvasPage() {
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [importText, setImportText] = useState("");
   const [isLintOpen, setIsLintOpen] = useState(false);
-  const [density, setDensity] = useState<"compact" | "normal" | "detailed">("normal");
+  const [density, setDensity] = useState<CanvasDensity>(getStoredCanvasDensity);
   const [relationsFilter, setRelationsFilter] = useState<"all" | "public" | "secret" | "selection">("all");
+
+  useEffect(() => {
+    storeCanvasDensity(density);
+  }, [density]);
+
   const focusCanvasNode = (nodeId: string) => {
     const focused = canvasFlowRef.current?.focusNode(nodeId, { zoom: 1.2, duration: 350 }) ?? false;
     if (focused) {
@@ -792,7 +829,12 @@ export function CanvasPage() {
             {/* Densidad Selector */}
             <select
               value={density}
-              onChange={(e) => setDensity(e.target.value as any)}
+              onChange={(e) => {
+                const nextDensity = e.target.value;
+                if (isCanvasDensity(nextDensity)) {
+                  setDensity(nextDensity);
+                }
+              }}
               className="canvas-select"
               style={{ fontSize: "11px", padding: "2px 6px", height: "26px", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)" }}
             >
