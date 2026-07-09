@@ -126,6 +126,16 @@ function isDmRole(role?: string | null): boolean {
   return role === "dm" || role === "co_dm";
 }
 
+function getExpectedAuthErrorStatusCode(error: unknown): 401 | 403 | null {
+  if (!(error instanceof Error)) return null;
+  const statusCode = (error as { statusCode?: unknown }).statusCode;
+  return statusCode === 401 || statusCode === 403 ? statusCode : null;
+}
+
+function getSafeErrorMessage(error: unknown): string {
+  return error instanceof Error && error.message ? error.message : "Authentication required";
+}
+
 async function ensureDefaultWorkspace(user: WebUser): Promise<string> {
   const existing = await db
     .select({ workspaceId: schema.workspaceMemberships.workspaceId })
@@ -1355,9 +1365,23 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     return buildDmDashboard(user, request.query.locale);
   });
 
-  server.get("/api/campaigns", async (request) => {
-    const user = getRequiredWebUser(request);
-    return listAccessibleCampaigns(user.userId);
+  server.get("/api/campaigns", async (request, reply) => {
+    let user: WebUser | undefined;
+
+    try {
+      user = getRequiredWebUser(request);
+      return await listAccessibleCampaigns(user.userId);
+    } catch (error) {
+      const statusCode = getExpectedAuthErrorStatusCode(error);
+      if (statusCode) {
+        reply.code(statusCode);
+        return { error: getSafeErrorMessage(error) };
+      }
+
+      request.log.error({ err: error, userId: user?.userId }, "Failed to list campaigns for user");
+      reply.code(500);
+      return { error: "No se pudieron cargar las campañas. Inténtalo de nuevo." };
+    }
   });
 
   server.post<{ Body: { title?: string; system?: string; summary?: string; campaignId?: string; coverUrl?: string } }>("/api/campaigns", async (request, reply) => {
