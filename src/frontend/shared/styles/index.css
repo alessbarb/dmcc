@@ -4107,6 +4107,7 @@ small.canvas-navigator-result-action {
     display: block !important;
     min-height: 100vh;
     min-height: 100svh;
+    min-height: 100dvh;
     padding-bottom: calc(var(--campaign-mobile-bottom-nav-height) + env(safe-area-inset-bottom)) !important;
   }
 
@@ -4176,7 +4177,8 @@ small.canvas-navigator-result-action {
     width: 100% !important;
     min-width: 0 !important;
     height: auto !important;
-    min-height: auto !important;
+    min-height: calc(100dvh - var(--campaign-mobile-header-height) - var(--campaign-mobile-bottom-nav-height) - env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(var(--campaign-mobile-bottom-nav-height) + env(safe-area-inset-bottom));
     overflow: visible !important;
   }
 
@@ -4208,7 +4210,7 @@ small.canvas-navigator-result-action {
     width: 100%;
     max-width: none;
     margin: 0;
-    padding: 22px 12px calc(30px + var(--campaign-mobile-bottom-nav-height));
+    padding: 22px 12px calc(36px + var(--campaign-mobile-bottom-nav-height) + env(safe-area-inset-bottom)) !important;
   }
 
   .app-container--campaign-shell .app-footer {
