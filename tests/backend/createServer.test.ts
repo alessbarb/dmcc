@@ -270,13 +270,15 @@ describe("createServer", () => {
     });
   });
 
-  it("starts in postgres mode with a strong SESSION_SECRET", async () => {
+  it("starts in postgres mode without exposing storage details on public health", async () => {
     await withSessionSecret("0123456789abcdef0123456789abcdef", async () => {
       const server = createServer({ storageMode: "postgres" });
       const response = await server.inject({ method: "GET", url: "/api/health" });
 
       expect(response.statusCode).toBe(200);
-      expect(response.json()).toEqual({ ok: true, app: "dmcc-web", storage: "postgres" });
+      expect(response.json()).toEqual({ ok: true });
+      expect(response.json()).not.toHaveProperty("app");
+      expect(response.json()).not.toHaveProperty("storage");
     });
   });
 
