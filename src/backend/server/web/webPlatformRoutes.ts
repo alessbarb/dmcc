@@ -3,7 +3,7 @@ import argon2 from "argon2";
 import { sendExistingAccountRegistrationEmail, sendPasswordResetEmail } from "../emailService.js";
 import { verifySecret } from "../auth.js";
 import type { FastifyInstance, FastifyRequest } from "fastify";
-import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, or, sql } from "drizzle-orm";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
 import { createId, generateCampaignId } from "@shared/ids.js";
@@ -150,7 +150,16 @@ async function ensureDefaultWorkspace(user: WebUser): Promise<string> {
   return workspaceId;
 }
 
-async function getMembership(campaignId: string, userId: string) {
+type CampaignAccessMembership = typeof schema.campaignMemberships.$inferSelect | {
+  campaignId: string;
+  userId: string;
+  role: "dm";
+  playerId: null;
+  createdAt: Date;
+  revokedAt: null;
+};
+
+async function getMembership(campaignId: string, userId: string): Promise<CampaignAccessMembership | undefined> {
   const [membership] = await db
     .select()
     .from(schema.campaignMemberships)
@@ -160,7 +169,28 @@ async function getMembership(campaignId: string, userId: string) {
       isNull(schema.campaignMemberships.revokedAt),
     ))
     .limit(1);
-  return membership;
+  if (membership) return membership;
+
+  const [ownedCampaign] = await db
+    .select({ campaignId: schema.campaigns.campaignId, createdAt: schema.campaigns.createdAt })
+    .from(schema.campaigns)
+    .where(and(
+      eq(schema.campaigns.campaignId, campaignId),
+      eq(schema.campaigns.ownerId, userId),
+      sql`${schema.campaigns.status} <> 'deleted'`,
+    ))
+    .limit(1);
+
+  if (!ownedCampaign) return undefined;
+
+  return {
+    campaignId: ownedCampaign.campaignId,
+    userId,
+    role: "dm",
+    playerId: null,
+    createdAt: ownedCampaign.createdAt,
+    revokedAt: null,
+  };
 }
 
 async function requireCampaignMembership(request: FastifyRequest, campaignId: string) {
@@ -440,14 +470,52 @@ function emptyStats(): CampaignStatsAccumulator {
 async function getDmCampaignRows(user: WebUser): Promise<DmDashboardCampaignRow[]> {
   const rows = await db
     .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
-    .from(schema.campaignMemberships)
-    .innerJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
+    .from(schema.campaigns)
+    .leftJoin(
+      schema.campaignMemberships,
+      and(
+        eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId),
+        eq(schema.campaignMemberships.userId, user.userId),
+        isNull(schema.campaignMemberships.revokedAt),
+      ),
+    )
     .where(and(
-      eq(schema.campaignMemberships.userId, user.userId),
-      isNull(schema.campaignMemberships.revokedAt),
       sql`${schema.campaigns.status} <> 'deleted'`,
+      or(
+        eq(schema.campaigns.ownerId, user.userId),
+        eq(schema.campaignMemberships.userId, user.userId),
+      ),
     ));
-  return rows.filter((row) => isDmRole(row.membership.role));
+
+  return rows.filter((row) => isDmRole(row.membership?.role) || row.campaign.ownerId === user.userId) as DmDashboardCampaignRow[];
+}
+
+
+async function listAccessibleCampaigns(userId: string) {
+  const rows = await db
+    .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
+    .from(schema.campaigns)
+    .leftJoin(
+      schema.campaignMemberships,
+      and(
+        eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId),
+        eq(schema.campaignMemberships.userId, userId),
+        isNull(schema.campaignMemberships.revokedAt),
+      ),
+    )
+    .where(and(
+      sql`${schema.campaigns.status} <> 'deleted'`,
+      or(
+        eq(schema.campaigns.ownerId, userId),
+        eq(schema.campaignMemberships.userId, userId),
+      ),
+    ));
+
+  return rows.map((row) => ({
+    ...row.campaign,
+    role: row.membership?.role ?? "dm",
+    playerId: row.membership?.playerId ?? null,
+  }));
 }
 
 async function buildDmDashboard(user: WebUser, locale?: string) {
@@ -581,8 +649,8 @@ async function buildDmDashboard(user: WebUser, locale?: string) {
     const progressPercent = getMetadataNumber(metadata, ["progressPercent", "progress"]);
     return {
       ...row.campaign,
-      role: row.membership.role,
-      playerId: row.membership.playerId,
+      role: row.membership?.role ?? "dm",
+      playerId: row.membership?.playerId ?? null,
       system: getMetadataString(metadata, ["system", "ruleset", "ruleSystem"]) ?? "custom",
       coverUrl: getMetadataString(metadata, ["coverUrl", "coverImage", "coverImagePath"]),
       stats,
@@ -1232,30 +1300,14 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
       reply.code(401);
       return { error: "Authentication required" };
     }
-    const campaigns = await db
-      .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
-      .from(schema.campaignMemberships)
-      .innerJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
-      .where(and(
-        eq(schema.campaignMemberships.userId, user.userId),
-        isNull(schema.campaignMemberships.revokedAt),
-        sql`${schema.campaigns.status} <> 'deleted'`,
-      ));
-    return { user, campaigns: campaigns.map((row) => ({ ...row.campaign, role: row.membership.role, playerId: row.membership.playerId })) };
+    const campaigns = await listAccessibleCampaigns(user.userId);
+    return { user, campaigns };
   });
 
   server.get("/api/me/campaigns", async (request) => {
     const user = getRequiredWebUser(request);
-    const rows = await db
-      .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
-      .from(schema.campaignMemberships)
-      .innerJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
-      .where(and(
-        eq(schema.campaignMemberships.userId, user.userId),
-        isNull(schema.campaignMemberships.revokedAt),
-        sql`${schema.campaigns.status} <> 'deleted'`,
-      ));
-    return { campaigns: rows.map((row) => ({ ...row.campaign, role: row.membership.role, playerId: row.membership.playerId })) };
+    const campaigns = await listAccessibleCampaigns(user.userId);
+    return { campaigns };
   });
 
   server.get("/api/player/campaigns", async (request) => {
@@ -1305,16 +1357,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
 
   server.get("/api/campaigns", async (request) => {
     const user = getRequiredWebUser(request);
-    const rows = await db
-      .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
-      .from(schema.campaignMemberships)
-      .innerJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
-      .where(and(
-        eq(schema.campaignMemberships.userId, user.userId),
-        isNull(schema.campaignMemberships.revokedAt),
-        sql`${schema.campaigns.status} <> 'deleted'`,
-      ));
-    return rows.map((row) => ({ ...row.campaign, role: row.membership.role, playerId: row.membership.playerId }));
+    return listAccessibleCampaigns(user.userId);
   });
 
   server.post<{ Body: { title?: string; system?: string; summary?: string; campaignId?: string; coverUrl?: string } }>("/api/campaigns", async (request, reply) => {
