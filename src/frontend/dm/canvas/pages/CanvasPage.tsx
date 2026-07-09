@@ -10,6 +10,7 @@ import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useParams } from "@tanstack/react-router";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
+import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
 
 
 // Seeding logic for board templates
@@ -75,7 +76,7 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
           sourceNodeId: sourceId,
           targetNodeId: targetId,
           label: conn.label,
-          status: "domain",
+          status: "draft",
           visibility: "dm",
           style: "solid"
         });
@@ -149,7 +150,7 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
           sourceNodeId: sourceId,
           targetNodeId: targetId,
           label: conn.label,
-          status: "domain",
+          status: "draft",
           visibility: "dm",
           style: "solid"
         });
@@ -221,7 +222,7 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
           sourceNodeId: sourceId,
           targetNodeId: targetId,
           label: conn.label,
-          status: "domain",
+          status: "draft",
           visibility: "dm",
           style: "solid"
         });
@@ -270,7 +271,7 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
           sourceNodeId: sourceId,
           targetNodeId: targetId,
           label: "siguiente",
-          status: "domain",
+          status: "draft",
           visibility: "dm",
           style: "solid"
         });
@@ -343,7 +344,7 @@ const seedCanvasTemplate = async (canvasId: string, template: string, _campaignI
           sourceNodeId: sourceId,
           targetNodeId: targetId,
           label: conn.label,
-          status: "domain",
+          status: "draft",
           visibility: "dm",
           style: "solid"
         });
@@ -480,29 +481,38 @@ const parseAndImportText = async (text: string, canvasId: string, _campaignId: s
           const sourceNode = useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: any) => n.id === sourceNodeId);
           const targetNode = useCampaignStore.getState().canvasesById[canvasId]?.nodes?.find((n: any) => n.id === targetNodeId);
           
-          let relationshipId: string | undefined = undefined;
           if (sourceNode?.entityId && targetNode?.entityId) {
             try {
-              relationshipId = await createRelation({
-                sourceEntityId: sourceNode.entityId,
-                targetEntityId: targetNode.entityId,
-                relationType: finalLabel.replace(/\s+/g, "_"),
-                visibility: { kind: "dm_only" }
-              } as any);
+              await connectCanvasNodes({
+                canvasId,
+                sourceNode: { id: sourceNodeId, entityId: sourceNode.entityId },
+                targetNode: { id: targetNodeId, entityId: targetNode.entityId },
+                edge: {
+                  label: finalLabel,
+                  status: "domain",
+                  visibility: "dm",
+                  style: "solid"
+                },
+                relation: {
+                  relationType: finalLabel.replace(/\s+/g, "_"),
+                  visibility: { kind: "dm_only" }
+                },
+                createRelation,
+                addEdgeToCanvas,
+              });
             } catch (err) {
               console.error("Relation creation failed during text import", err);
             }
+          } else {
+            await addEdgeToCanvas(canvasId, {
+              sourceNodeId,
+              targetNodeId,
+              label: finalLabel,
+              status: "draft",
+              visibility: "dm",
+              style: "solid"
+            });
           }
-
-          await addEdgeToCanvas(canvasId, {
-            sourceNodeId,
-            targetNodeId,
-            label: finalLabel,
-            status: relationshipId ? "domain" : "draft",
-            relationshipId,
-            visibility: "dm",
-            style: "solid"
-          });
         }
       }
     }
