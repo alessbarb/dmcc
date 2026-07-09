@@ -1,12 +1,14 @@
 import { Handle, Position } from "reactflow";
 import { useEffect, useState, type CSSProperties } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
+import type { Entity, Session } from "../../../shared/stores/campaignStore.js";
 import { AlertTriangle, CheckCircle2, Eye, FileText, KeyRound, RefreshCcw, StickyNote, Zap } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
 import { placeEntityOnCanvas } from "../services/placeEntityOnCanvas.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
+import type { CanvasNode } from "@core/domain/canvas/types.js";
 
 
 export interface CanvasEntityNodeProps {
@@ -18,6 +20,7 @@ export interface CanvasEntityNodeProps {
     isPlayerView?: boolean;
     tablePrivacy?: boolean;
     isAttenuated?: boolean;
+    density?: "compact" | "normal" | "detailed";
   };
   selected?: boolean;
 }
@@ -39,12 +42,12 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
     recordSessionEvent
   } = useCampaignStore();
 
-  const entity = campaignState?.entities?.find((e: any) => e.entityId === data.entityId);
+  const entity = campaignState?.entities?.find((e: Entity) => e.entityId === data.entityId);
 
   if (!entity || entity.archived) {
     return (
       <div className={`rg-card rg-card--compact ${selected ? "rg-card--selected" : ""}`}
-           style={{ "--rg-accent": "#475569" } as any}>
+           style={{ "--rg-accent": "#475569" } as CSSProperties}>
         <Handle type="target" position={Position.Top} className="canvas-handle target-handle" />
         <div className="rg-card__hero rg-card__hero--icon">
           <FileText size={24} style={{ color: "#475569", opacity: 0.5 }} />
@@ -70,7 +73,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
   const isBlocked = entity.status === "blocked";
   const isResolved = entity.status === "resolved";
 
-  const density = (data as any).density || "normal";
+  const density = data.density || "normal";
   const hasDirectionToolbar = !!data.isDirectionMode && !data.isPlayerView;
 
   const cardClasses = [
@@ -187,7 +190,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
             onClick={async (e) => {
               e.stopPropagation();
               await updateEntity(entity.entityId, { visibility: { kind: "public" } });
-              const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+              const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
               if (activeSession) {
                 await recordSessionEvent(activeSession.sessionId, {
                   type: "reveal",
@@ -208,7 +211,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
               e.stopPropagation();
               const text = window.prompt(t("canvas.node.addSessionNotePrompt", { title: entity.title }));
               if (text && text.trim()) {
-                const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+                const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
                 if (activeSession) {
                   await recordSessionEvent(activeSession.sessionId, {
                     type: "note_recorded",
@@ -247,7 +250,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
               }
 
               await updateEntity(entity.entityId, { status: newStatus });
-              const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+              const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
               if (activeSession) {
                 await recordSessionEvent(activeSession.sessionId, {
                   type: "status_changed",
@@ -282,7 +285,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
                   const created = updatedStore.campaignState?.entities?.slice(-1)[0];
                   if (created) {
                     const canvas = updatedStore.canvasesById[data.canvasId];
-                    const currentNode = canvas?.nodes?.find((n: any) => n.entityId === entity.entityId);
+                    const currentNode = canvas?.nodes?.find((n: CanvasNode) => n.entityId === entity.entityId);
                     await placeEntityOnCanvas({
                       canvasId: data.canvasId,
                       entityId: created.entityId,
@@ -292,7 +295,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
 
                     const finalStore = useCampaignStore.getState();
                     const finalCanvas = finalStore.canvasesById[data.canvasId];
-                    const newNode = finalCanvas?.nodes?.find((n: any) => n.entityId === created.entityId);
+                    const newNode = finalCanvas?.nodes?.find((n: CanvasNode) => n.entityId === created.entityId);
 
                     if (currentNode && newNode) {
                       await connectCanvasNodes({
