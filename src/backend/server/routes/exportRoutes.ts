@@ -25,6 +25,69 @@ import {
 import { VERSION_INFO } from "@shared/appVersion.js";
 import { sendCommandError } from "../commandHttp.js";
 
+const ATTACHMENT_MAX_DECODED_BYTES = 10 * 1024 * 1024;
+const ATTACHMENT_BODY_LIMIT_BYTES = Math.ceil((ATTACHMENT_MAX_DECODED_BYTES * 4) / 3) + 4096;
+function isValidBase64Content(base64Content: string): boolean {
+  if (base64Content.length === 0 || base64Content.length % 4 !== 0) {
+    return false;
+  }
+
+  const firstPaddingIndex = base64Content.indexOf("=");
+  const contentLength = firstPaddingIndex === -1 ? base64Content.length : firstPaddingIndex;
+  if (firstPaddingIndex !== -1 && !/^(?:=|==)$/.test(base64Content.slice(firstPaddingIndex))) {
+    return false;
+  }
+
+  for (let index = 0; index < contentLength; index += 1) {
+    const code = base64Content.charCodeAt(index);
+    const isUppercase = code >= 65 && code <= 90;
+    const isLowercase = code >= 97 && code <= 122;
+    const isDigit = code >= 48 && code <= 57;
+    if (!isUppercase && !isLowercase && !isDigit && base64Content[index] !== "+" && base64Content[index] !== "/") {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function getBase64DecodedLength(base64Content: string): number | undefined {
+  if (!isValidBase64Content(base64Content)) {
+    return undefined;
+  }
+
+  const padding = base64Content.endsWith("==") ? 2 : base64Content.endsWith("=") ? 1 : 0;
+  return (base64Content.length / 4) * 3 - padding;
+}
+
+function validateAttachmentPayload(args: { base64Content: string; sizeBytes?: number }): { ok: true; decodedLength: number } | { ok: false; statusCode: 400 | 413; error: string } {
+  const decodedLength = getBase64DecodedLength(args.base64Content);
+
+  if (decodedLength === undefined) {
+    return { ok: false, statusCode: 400, error: "base64Content must be valid padded base64" };
+  }
+
+  if (args.base64Content.length > ATTACHMENT_BODY_LIMIT_BYTES || decodedLength > ATTACHMENT_MAX_DECODED_BYTES) {
+    return { ok: false, statusCode: 413, error: "Attachment payload is too large" };
+  }
+
+  if (args.sizeBytes !== undefined) {
+    if (!Number.isSafeInteger(args.sizeBytes) || args.sizeBytes < 0) {
+      return { ok: false, statusCode: 400, error: "sizeBytes must be a non-negative safe integer" };
+    }
+
+    if (args.sizeBytes > ATTACHMENT_MAX_DECODED_BYTES) {
+      return { ok: false, statusCode: 413, error: "Attachment payload is too large" };
+    }
+
+    if (args.sizeBytes !== decodedLength) {
+      return { ok: false, statusCode: 400, error: "sizeBytes does not match decoded base64Content length" };
+    }
+  }
+
+  return { ok: true, decodedLength };
+}
+
 export async function registerExportRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;
 
@@ -35,17 +98,24 @@ export async function registerExportRoutes(server: FastifyInstance, opts: { data
   const getRepository = makeRepositoryFactory(dataDir);
 
   // Upload Attachment
-  server.post<{ Params: { campaignId: string }; Body: { filename: string; base64Content: string } }>(
+  server.post<{ Params: { campaignId: string }; Body: { filename: string; base64Content: string; sizeBytes?: number } }>(
     "/api/campaigns/:campaignId/attachments",
+    { bodyLimit: ATTACHMENT_BODY_LIMIT_BYTES },
     async (request, reply) => {
       assertDM(request, server.dmSessionToken);
       const vaultId = getValidatedVaultId(request);
       const campaignId = getValidatedCampaignId(request.params.campaignId);
-      const { filename, base64Content } = request.body;
+      const { filename, base64Content, sizeBytes } = request.body;
 
       if (!filename || !base64Content) {
         reply.code(400);
         return { error: "Filename and base64Content are required" };
+      }
+
+      const validation = validateAttachmentPayload({ base64Content, sizeBytes });
+      if (!validation.ok) {
+        reply.code(validation.statusCode);
+        return { error: validation.error };
       }
 
       const attachmentsDir = join(getCampaignDir(campaignId, vaultId), "attachments");

@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
+import { mkdtemp, readFile, readdir, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -1728,6 +1728,83 @@ describe("network info security", () => {
       expect(response.statusCode).toBe(404);
       expect(response.json().localIp).toBeUndefined();
 
+      await server.close();
+    });
+  });
+});
+
+
+describe("attachment payload limits", () => {
+  const attachmentLimitBytes = 10 * 1024 * 1024;
+
+  async function createCampaign(server: ReturnType<typeof createServer>, campaignId: string): Promise<void> {
+    const response = await server.inject({
+      method: "POST",
+      url: "/api/campaigns",
+      payload: { campaignId, actorId: "usr_dm", title: "Attachment Limits" },
+      headers: { "x-dm-token": getDmToken(server) },
+    });
+    expect(response.statusCode).toBe(201);
+  }
+
+  it("accepts an attachment at the decoded payload limit", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createLegacyTestServer({ dataDir });
+      await createCampaign(server, "cmp_attachment_limit");
+
+      const base64Content = Buffer.alloc(attachmentLimitBytes, 0x61).toString("base64");
+      const response = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_attachment_limit/attachments",
+        payload: { filename: "limit.bin", base64Content, sizeBytes: attachmentLimitBytes },
+        headers: { "x-dm-token": getDmToken(server) },
+      });
+
+      expect(response.statusCode).toBe(201);
+      expect(response.json().sizeBytes).toBe(attachmentLimitBytes);
+      const files = await readdir(join(dataDir, "vaults", "default", "campaigns", "cmp_attachment_limit", "attachments"));
+      expect(files).toHaveLength(1);
+      const saved = await stat(join(dataDir, "vaults", "default", "campaigns", "cmp_attachment_limit", "attachments", files[0]));
+      expect(saved.size).toBe(attachmentLimitBytes);
+      await server.close();
+    });
+  });
+
+  it("rejects an attachment over the route body limit with 413 before writing to disk", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createLegacyTestServer({ dataDir });
+      await createCampaign(server, "cmp_attachment_too_large");
+
+      const base64Content = Buffer.alloc(attachmentLimitBytes + 1, 0x62).toString("base64");
+      const response = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_attachment_too_large/attachments",
+        payload: { filename: "too-large.bin", base64Content, sizeBytes: attachmentLimitBytes + 1 },
+        headers: { "x-dm-token": getDmToken(server) },
+      });
+
+      expect(response.statusCode).toBe(413);
+      await expect(stat(join(dataDir, "vaults", "default", "campaigns", "cmp_attachment_too_large", "attachments"))).rejects.toThrow();
+      await server.close();
+    });
+  });
+
+  it("rejects mismatched sizeBytes before writing to disk", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createLegacyTestServer({ dataDir });
+      await createCampaign(server, "cmp_attachment_size_mismatch");
+
+      const base64Content = Buffer.from("abc").toString("base64");
+      const response = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_attachment_size_mismatch/attachments",
+        payload: { filename: "mismatch.txt", base64Content, sizeBytes: 2 },
+        headers: { "x-dm-token": getDmToken(server) },
+      });
+
+      expect(response.statusCode).toBe(400);
+      expect(response.json().error).toContain("sizeBytes");
+      await expect(stat(join(dataDir, "vaults", "default", "campaigns", "cmp_attachment_size_mismatch", "attachments"))).rejects.toThrow();
       await server.close();
     });
   });
