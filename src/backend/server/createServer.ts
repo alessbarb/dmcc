@@ -1,4 +1,4 @@
-import type { FastifyInstance, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import Fastify, { type FastifyServerOptions } from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
@@ -188,6 +188,55 @@ function addCspNonceToInlineHtmlAssets(html: string, reply: FastifyReply): strin
     .replace(/<style(?![^>]*\bnonce=)([^>]*)>/gi, `<style nonce="${reply.cspNonce.style}"$1>`);
 }
 
+function getRequestPath(rawUrl?: string): string {
+  if (!rawUrl) {
+    return "/";
+  }
+
+  try {
+    return new URL(rawUrl, "http://dmcc.local").pathname;
+  } catch {
+    return rawUrl.split("?")[0] ?? "/";
+  }
+}
+
+function isApiRequest(request: FastifyRequest): boolean {
+  return getRequestPath(request.raw.url).startsWith("/api/");
+}
+
+function isMutationRequest(request: FastifyRequest): boolean {
+  return ["POST", "PUT", "PATCH", "DELETE"].includes(request.method);
+}
+
+type AuthenticatedRequest = FastifyRequest & {
+  unifiedUser?: unknown;
+  unifiedDmSession?: unknown;
+  unifiedCampaignMembership?: unknown;
+};
+
+function hasAuthenticationSignal(request: FastifyRequest, dmSessionToken: string): boolean {
+  const authenticatedRequest = request as AuthenticatedRequest;
+  if (
+    authenticatedRequest.unifiedUser ||
+    authenticatedRequest.unifiedDmSession ||
+    authenticatedRequest.unifiedCampaignMembership ||
+    getRequestDmSession(request, dmSessionToken)
+  ) {
+    return true;
+  }
+
+  return Boolean(
+    request.headers.authorization ||
+    request.headers.cookie ||
+    request.headers["x-dm-token"] ||
+    request.headers["x-player-token"]
+  );
+}
+
+function shouldDisableApiResponseCache(request: FastifyRequest, dmSessionToken: string): boolean {
+  return isApiRequest(request) && (isMutationRequest(request) || hasAuthenticationSignal(request, dmSessionToken));
+}
+
 function isHtmlReply(reply: FastifyReply): boolean {
   const contentType = reply.getHeader("content-type");
   const value = Array.isArray(contentType) ? contentType.join(";") : String(contentType ?? "");
@@ -238,7 +287,11 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   server.register(helmet, buildHelmetConfig(storageMode));
 
-  server.addHook("onSend", async (_request, reply, payload) => {
+  server.addHook("onSend", async (request, reply, payload) => {
+    if (shouldDisableApiResponseCache(request, server.dmSessionToken)) {
+      reply.header("Cache-Control", "no-store");
+    }
+
     if (typeof payload === "string" && (isHtmlReply(reply) || looksLikeHtml(payload))) {
       return addCspNonceToInlineHtmlAssets(payload, reply);
     }
@@ -330,17 +383,6 @@ export function createServer(config?: ServerConfig): FastifyInstance {
     });
   }
 
-  function getRequestPath(rawUrl?: string): string {
-    if (!rawUrl) {
-      return "/";
-    }
-
-    try {
-      return new URL(rawUrl, "http://dmcc.local").pathname;
-    } catch {
-      return rawUrl.split("?")[0] ?? "/";
-    }
-  }
 
   function shouldServeSpaFallback(rawUrl?: string): boolean {
     const pathname = getRequestPath(rawUrl);
