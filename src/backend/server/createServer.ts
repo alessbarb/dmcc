@@ -1,4 +1,4 @@
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance, FastifyReply } from "fastify";
 import Fastify, { type FastifyServerOptions } from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
@@ -6,6 +6,7 @@ import helmet from "@fastify/helmet";
 import rateLimit from "@fastify/rate-limit";
 import fastifyStatic from "@fastify/static";
 import { existsSync } from "fs";
+import { readFile } from "fs/promises";
 import { basename, join, dirname, resolve, sep } from "path";
 import { fileURLToPath } from "url";
 import { homedir } from "os";
@@ -106,6 +107,58 @@ export function getRequiredSessionSecret(): string {
 
 type StorageMode = "legacy" | "postgres";
 
+function buildHelmetConfig(storageMode: StorageMode): Parameters<typeof helmet>[1] {
+  const isProduction = process.env.NODE_ENV === "production";
+  const isPostgresWebMode = storageMode === "postgres";
+  const connectSrc = isPostgresWebMode
+    ? ["'self'", "ws:", "wss:", "http://localhost:*", "http://127.0.0.1:*"]
+    : ["'self'", "ws:", "wss:", "http://localhost:*", "http://127.0.0.1:*"];
+
+  return {
+    enableCSPNonces: true,
+    hsts: isProduction
+      ? {
+          maxAge: 31536000,
+          includeSubDomains: true,
+          preload: true,
+        }
+      : false,
+    contentSecurityPolicy: {
+      directives: {
+        "default-src": ["'self'"],
+        "script-src": ["'self'"],
+        "style-src": ["'self'", "https:"],
+        // React and the canvas/graph libraries still emit trusted style attributes for layout and positioning.
+        // Keep this exception scoped to style attributes only; script inline execution must use nonces.
+        "style-src-attr": ["'unsafe-inline'"],
+        "img-src": ["'self'", "data:", "blob:", "https:"],
+        "connect-src": connectSrc,
+        "font-src": ["'self'", "data:", "https:"],
+        "object-src": ["'none'"],
+        "upgrade-insecure-requests": [],
+      },
+    },
+  };
+}
+
+function addCspNonceToInlineHtmlAssets(html: string, reply: FastifyReply): string {
+  const nonce = reply.cspNonce.script;
+  return html
+    .replace(/<script(?![^>]*\bsrc=)(?![^>]*\bnonce=)([^>]*)>/gi, `<script nonce="${nonce}"$1>`)
+    .replace(/<style(?![^>]*\bnonce=)([^>]*)>/gi, `<style nonce="${reply.cspNonce.style}"$1>`);
+}
+
+function isHtmlReply(reply: FastifyReply): boolean {
+  const contentType = reply.getHeader("content-type");
+  const value = Array.isArray(contentType) ? contentType.join(";") : String(contentType ?? "");
+  return value.toLowerCase().includes("text/html");
+}
+
+function looksLikeHtml(payload: string | Buffer): boolean {
+  const text = Buffer.isBuffer(payload) ? payload.subarray(0, 256).toString("utf8") : payload.slice(0, 256);
+  return /^\s*<!doctype html|^\s*<html[\s>]/i.test(text);
+}
+
 function resolveStorageMode(configuredStorageMode?: StorageMode): StorageMode {
   if (configuredStorageMode) return configuredStorageMode;
 
@@ -143,6 +196,20 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   const storageMode = resolveStorageMode(config?.storageMode);
   const isPostgresWebMode = storageMode === "postgres";
 
+  server.register(helmet, buildHelmetConfig(storageMode));
+
+  server.addHook("onSend", async (_request, reply, payload) => {
+    if (typeof payload === "string" && (isHtmlReply(reply) || looksLikeHtml(payload))) {
+      return addCspNonceToInlineHtmlAssets(payload, reply);
+    }
+
+    if (Buffer.isBuffer(payload) && (isHtmlReply(reply) || looksLikeHtml(payload))) {
+      return Buffer.from(addCspNonceToInlineHtmlAssets(payload.toString("utf8"), reply), "utf8");
+    }
+
+    return payload;
+  });
+
   const dmSessionToken = randomBytes(32).toString("hex");
   // Signing secret for DM session tokens. In tests it is also accepted as a legacy DM token.
   server.decorate("dmSessionToken", dmSessionToken);
@@ -162,20 +229,6 @@ export function createServer(config?: ServerConfig): FastifyInstance {
     const allowedOrigin = process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173";
     const sessionSecret = getRequiredSessionSecret();
     server.register(cookie, { secret: sessionSecret });
-    server.register(helmet, {
-      contentSecurityPolicy: {
-        directives: {
-          "default-src": ["'self'"],
-          "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-          "style-src": ["'self'", "'unsafe-inline'", "https:"],
-          "img-src": ["'self'", "data:", "blob:", "https:"],
-          "connect-src": ["'self'", "ws:", "wss:", "http://localhost:*", "http://127.0.0.1:*"],
-          "font-src": ["'self'", "data:", "https:"],
-          "object-src": ["'none'"],
-          "upgrade-insecure-requests": [],
-        },
-      },
-    });
     server.register(rateLimit, { max: 200, timeWindow: "1 minute" });
     server.register(cors, { origin: [allowedOrigin, "http://127.0.0.1:5173", "http://localhost:4877"], credentials: true });
   } else {
@@ -204,11 +257,20 @@ export function createServer(config?: ServerConfig): FastifyInstance {
     : publicPathCandidates.find((candidate) => existsSync(join(candidate, "index.html")));
   const hasBuiltSpa = Boolean(publicPath);
 
+  async function sendSpaIndex(reply: FastifyReply): Promise<string> {
+    const html = await readFile(join(publicPath ?? "", "index.html"), "utf8");
+    reply.type("text/html; charset=utf-8");
+    return html;
+  }
+
   if (publicPath) {
+    server.get("/", async (_request, reply) => sendSpaIndex(reply));
+
     server.register(fastifyStatic, {
       root: publicPath,
       prefix: "/",
       wildcard: false,
+      index: false,
       setHeaders(response, pathName) {
         const fileName = basename(pathName);
         const isBuildAsset = pathName.includes(`${sep}assets${sep}`);
@@ -295,7 +357,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
     if (hasBuiltSpa && shouldServeSpaFallback(rawUrl)) {
       try {
-        return reply.sendFile("index.html");
+        return await sendSpaIndex(reply);
       } catch {
         reply.code(404);
         return { error: "Not found" };
