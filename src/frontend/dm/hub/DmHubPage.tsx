@@ -381,7 +381,7 @@ export function DmHubPage() {
 
       {/* ── TOPBAR ── */}
       <PortalTopBar actions={
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <div className="dm-hub-topbar-actions">
           <button
             type="button"
             className="dm-topbar-ghost-btn"
@@ -485,14 +485,33 @@ export function DmHubPage() {
           </div>
         </header>
 
+        <nav className="dm-hub-mobile-actions" aria-label="Acciones rápidas de campañas">
+          <button type="button" className="dm-hub-mobile-action dm-hub-mobile-action--primary" onClick={() => setIsCreateModalOpen(true)}>
+            <Plus size={16} />
+            <span>Nueva</span>
+          </button>
+          <button type="button" className="dm-hub-mobile-action" onClick={() => document.getElementById("dm-campaigns-section")?.scrollIntoView({ behavior: "smooth" })}>
+            <FolderOpen size={16} />
+            <span>Campañas</span>
+          </button>
+          <button type="button" className="dm-hub-mobile-action" onClick={handleQuickTemplates}>
+            <Sparkles size={16} />
+            <span>Aventuras</span>
+          </button>
+          <button type="button" className="dm-hub-mobile-action" onClick={() => setIsRestoreModalOpen(true)}>
+            <RotateCcw size={16} />
+            <span>Restaurar</span>
+          </button>
+        </nav>
+
         {/* ── MAIN GRID: 70 / 30 ── */}
         <div className="dm-hub-grid">
           {/* ──────────── LEFT COLUMN (70%) ──────────── */}
           <div className="dm-hub-grid__left">
 
             {/* ── TUS CAMPAÑAS ── */}
-            <section className="dm-panel">
-              <div className="dm-panel__header">
+            <section id="dm-campaigns-section" className="dm-panel dm-panel--campaigns">
+              <div className="dm-panel__header dm-panel__header--campaigns">
                 <div className="dm-panel__title-group">
                   <FolderOpen size={17} style={{ color: "var(--accent)" }} />
                   <h2 className="dm-panel__title">Tus campañas</h2>
@@ -545,7 +564,7 @@ export function DmHubPage() {
                   <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: 1.5, display: "block", margin: "8px 0 20px", maxWidth: "380px" }}>
                     Crea tu primera campaña desde cero, usa una aventura preparada o restaura una copia de seguridad.
                   </span>
-                  <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                  <div className="dm-empty-state__actions">
                     <button className="btn btn-gold btn-sm" onClick={() => setIsCreateModalOpen(true)}>
                       <Plus size={14} /> {t("landing.createCampaignLabel")}
                     </button>
