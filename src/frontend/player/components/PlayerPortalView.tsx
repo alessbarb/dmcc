@@ -981,47 +981,17 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
 
       {/* Main content */}
       <main className="main-content player-portal-main">
-        <div className="top-bar player-portal-top-bar">
-          <div className="top-bar-title player-portal-top-bar__title">
-            <span>{tabLabel[activeTab]}</span>
-            <small>{campaignState?.campaign?.title ?? playerPortalState.campaign?.title ?? campaignId}</small>
+        <div className="top-bar">
+          <div className="top-bar-title" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ fontSize: "1.1rem", fontWeight: "800" }}>{tabLabel[activeTab]}</span>
           </div>
-          <div className="top-bar-actions player-portal-top-bar__actions">
-            <div className="player-mode-buttons player-mode-buttons--compact" aria-label="Modo del portal">
-              <button
-                type="button"
-                className={portalMode === "family" ? "active" : ""}
-                onClick={() => setPortalMode("family")}
-              >
-                {copy.modes.family}
-              </button>
-              <button
-                type="button"
-                className={portalMode === "advanced" ? "active" : ""}
-                onClick={() => setPortalMode("advanced")}
-              >
-                {copy.modes.advanced}
-              </button>
-            </div>
+          <div className="top-bar-actions">
             {myCharacter && (
               <span className="badge badge-success">
                 {myCharacter.title}
               </span>
             )}
           </div>
-        </div>
-
-        <div className="player-portal-mobile-identity" aria-label="Perfil del jugador">
-          <div className="player-portal-avatar">
-            {player?.displayName?.slice(0, 2).toUpperCase() ?? "PL"}
-          </div>
-          <div>
-            <strong>{player?.displayName ?? "Jugador"}</strong>
-            <span>{myCharacter ? myCharacter.title : "Sin personaje"}</span>
-          </div>
-          <button className="btn btn-secondary btn-sm" onClick={() => void handleRefresh()} disabled={isRefreshing}>
-            <RefreshCw size={13} /> {isRefreshing ? "..." : "Sync"}
-          </button>
         </div>
 
         <div className="content-body player-portal-content">
