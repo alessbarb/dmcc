@@ -14,7 +14,6 @@ import {
   LogOut,
   UserPlus,
   UserRound,
-  Play,
   Activity,
   ArrowRight,
   Settings,
@@ -32,10 +31,8 @@ import {
   LayoutGrid,
   Bell,
   ChevronDown,
-  Upload,
 } from "lucide-react";
 import { logoutDm } from "../../shared/auth/authClient.js";
-import { LandingCampaignCard } from "../../shared/components/LandingCampaignCard.js";
 import { PremadeImportDialog, type PremadeImportMode } from "../../shared/components/PremadeImportDialog.js";
 import { AccountModal } from "../../account/AccountModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
@@ -591,6 +588,28 @@ export function DmHubPage() {
                             >
                               <Star size={11} fill="var(--accent)" style={{ color: "var(--accent)" }} />
                             </button>
+                            <div
+                              className="dm-campaign-card__actions"
+                              onClick={(e) => e.stopPropagation()}
+                              aria-label="Acciones de campaña"
+                            >
+                              <button
+                                type="button"
+                                className="dm-campaign-card__action"
+                                onClick={() => openEditModal(c)}
+                                aria-label="Editar campaña"
+                              >
+                                <Settings size={11} />
+                              </button>
+                              <button
+                                type="button"
+                                className="dm-campaign-card__action dm-campaign-card__action--danger"
+                                onClick={() => openDeleteModal(c.campaignId, c.title)}
+                                aria-label="Eliminar campaña"
+                              >
+                                <Trash2 size={11} />
+                              </button>
+                            </div>
                           </div>
                           <div className="dm-campaign-card__body">
                             <h3 className="dm-campaign-card__title">{c.title}</h3>

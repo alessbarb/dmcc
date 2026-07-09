@@ -9384,6 +9384,39 @@ small.canvas-navigator-result-action {
   align-items: center;
 }
 
+.dm-campaign-card__actions {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  z-index: 1;
+  display: flex;
+  gap: 4px;
+}
+
+.dm-campaign-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.52);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.dm-campaign-card__action:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--accent);
+}
+
+.dm-campaign-card__action--danger:hover {
+  color: var(--color-danger, #e55);
+}
+
 .dm-campaign-card__body {
   padding: 12px 14px;
   display: flex;

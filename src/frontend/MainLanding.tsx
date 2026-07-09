@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import {
-  Sparkles,
   Shield,
   Layers,
   Network,
@@ -14,10 +13,8 @@ import {
   ChevronDown,
   Eye,
   EyeOff,
-  GitBranch,
   Scroll,
   Wifi,
-  ArrowRight,
 } from "lucide-react";
 import { fetchAuthStatus } from "./shared/auth/authClient.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
