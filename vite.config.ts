@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 import { resolve } from "path";
 
+const devServerHost = process.env.DMCC_VITE_HOST ?? "127.0.0.1";
+
 export default defineConfig({
   plugins: [
     react(),
@@ -83,7 +85,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: "0.0.0.0",
+    host: devServerHost,
     port: 5173,
     proxy: {
       "/api": {
