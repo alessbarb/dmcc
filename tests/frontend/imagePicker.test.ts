@@ -22,6 +22,22 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("Sin imagen");
   });
 
+  it("declares every modal button as type=\"button\" to avoid parent form submits", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    const buttonTags = src.match(/<button\b[\s\S]*?>/g) ?? [];
+
+    expect(buttonTags.length).toBeGreaterThanOrEqual(5);
+    expect(buttonTags.every((tag) => tag.includes('type="button"'))).toBe(true);
+  });
+
+  it("selects an image through onSelect before closing without submit-capable buttons", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+
+    expect(src).toContain('onClick={() => { onSelect(path); onClose(); }}');
+    expect(src).toContain('onClick={() => { onSelect(""); onClose(); }}');
+    expect(src).not.toMatch(/<button\b(?:(?!type="button")[\s\S])*onSelect/);
+  });
+
   it("groups tabs render the group name", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain("Object.entries");
@@ -42,6 +58,11 @@ describe("ImagePickerButton", () => {
     const src = read("src/frontend/shared/components/ImagePickerButton.tsx");
     expect(src).toContain("ImagePickerModal");
     expect(src).toContain("setOpen");
+  });
+
+  it("wires modal selection to onChange", () => {
+    const src = read("src/frontend/shared/components/ImagePickerButton.tsx");
+    expect(src).toContain("onSelect={onChange}");
   });
 
   it("uses Pencil icon as edit trigger", () => {
