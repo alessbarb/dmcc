@@ -2138,6 +2138,12 @@ body:has(.rl-root) .watermark {
   gap: 6px;
 }
 
+.canvas-navigator-result-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .canvas-navigator-result {
   align-items: flex-start;
   background-color: var(--bg-input);
@@ -2149,6 +2155,7 @@ body:has(.rl-root) .watermark {
   gap: 8px;
   padding: 8px;
   text-align: left;
+  width: 100%;
 }
 
 .canvas-navigator-result:hover {
@@ -2167,6 +2174,22 @@ body:has(.rl-root) .watermark {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.canvas-navigator-result-action {
+  align-self: flex-start;
+  background: transparent;
+  border: 0;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0 8px 4px;
+}
+
+small.canvas-navigator-result-action {
+  color: var(--text-muted);
+  cursor: default;
 }
 
 .canvas-navigator-result small,

@@ -188,6 +188,8 @@ export const en = {
       fact: "Fact",
       notes: "Notes",
       note: "Note",
+      addToCanvas: "Add to canvas",
+      notFoundInCanvas: "Not found in this canvas",
       untitledNote: "Untitled note",
     },
     node: {
