@@ -172,6 +172,20 @@ function LanIllustration() {
   );
 }
 
+// ─── Landing Copy ───────────────────────────────────────────────────────────
+
+const LANDING_COPY = {
+  heroSubtitle:
+    "Dirige campañas de rol sin perder personajes, pistas, secretos ni consecuencias. DMCC convierte tu campaña en una memoria viva.",
+  heroPrimaryCta: "Ver campaña de ejemplo",
+  heroSecondaryCta: "Crear mi campaña",
+  heroFine: "Control de tus datos · Exportable · Sin suscripción obligatoria.",
+  painTitle: "Dirigir una campaña no falla por falta de imaginación",
+  painBody:
+    "Falla cuando olvidas quién prometió qué, qué pista encontró el grupo, qué PNJ mentía, qué facción movía los hilos o qué secreto todavía no debía revelarse.",
+  painAnswer: "DMCC guarda esa memoria por ti, para que puedas centrarte en dirigir.",
+} as const;
+
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function MainLanding() {
@@ -250,8 +264,7 @@ export function MainLanding() {
           </h1>
 
           <p className="rl-hero__subtitle">
-            Dirige campañas de rol sin perder personajes, pistas, secretos ni consecuencias.
-            DMCC convierte tu campaña en una memoria viva.
+            {LANDING_COPY.heroSubtitle}
           </p>
 
           <div className="rl-hero__ctas">
@@ -265,15 +278,15 @@ export function MainLanding() {
               }
             >
               <span className="rl-cta-primary__shimmer" />
-              <span className="rl-cta-primary__text">Ver campaña de ejemplo</span>
+              <span className="rl-cta-primary__text">{LANDING_COPY.heroPrimaryCta}</span>
             </button>
             <button className="rl-cta-secondary" onClick={() => navigate({ to: "/register" })}>
-              Crear mi campaña
+              {LANDING_COPY.heroSecondaryCta}
             </button>
           </div>
 
           <p className="rl-hero__fine">
-            Control de tus datos · Exportable · Sin suscripción obligatoria.
+            {LANDING_COPY.heroFine}
           </p>
         </div>
 
@@ -290,14 +303,13 @@ export function MainLanding() {
       <section className="rl-pain">
         <div className="rl-pain__inner">
           <h2 className="rl-pain__heading rl-animate rl-animate--from-bottom" data-delay="0">
-            Dirigir una campaña no falla por falta de imaginación
+            {LANDING_COPY.painTitle}
           </h2>
           <p className="rl-pain__body rl-animate rl-animate--from-bottom" data-delay="130">
-            Falla cuando olvidas quién prometió qué, qué pista encontró el grupo,
-            qué PNJ mentía, qué facción movía los hilos o qué secreto todavía no debía revelarse.
+            {LANDING_COPY.painBody}
           </p>
           <p className="rl-pain__answer rl-animate rl-animate--pop" data-delay="300">
-            DMCC guarda esa memoria por ti, para que puedas centrarte en dirigir.
+            {LANDING_COPY.painAnswer}
           </p>
         </div>
       </section>
