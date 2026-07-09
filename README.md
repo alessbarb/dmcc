@@ -272,16 +272,19 @@ DMCC ships with a Docker Compose Postgres service for **local development only**
 For any deployed environment:
 
 - Set `NODE_ENV=production` and provide an explicit `DATABASE_URL`. The backend refuses to start in production without `DATABASE_URL` so it cannot silently fall back to local development credentials.
+- Set `DATABASE_SSL_MODE` explicitly when a deployment needs to override automatic TLS detection. Supported values are `auto` (default: require TLS for remote hosts and disable it only for loopback/Unix socket connections), `require` (always use TLS with normal certificate validation), and `disable` (local development only; production refuses remote database hosts with TLS disabled).
 - Generate a unique Postgres username, password, and database name per environment. Use least-privilege database roles for the application user.
 - Store `DATABASE_URL`, `SESSION_SECRET`, and other sensitive values in a secret manager such as your platform secret store, Docker/Kubernetes secrets, 1Password, Vault, AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault. Do not commit real secrets to Git or paste them into documentation examples.
 - Rotate credentials if they were shared in chat, logs, terminals, screenshots, or issue trackers.
 - Restrict database network access to the application runtime and operational tooling only. The local Compose file binds Postgres to `127.0.0.1`; production deployments should use private networking or firewall rules rather than public database ports.
+- For databases signed by a private CA, keep certificate verification enabled and provide the CA through the runtime instead of disabling verification. For example, set `PGSSLROOTCERT=/path/to/root-ca.pem` or use the equivalent managed-platform secret/file mount before running `npm run db:whoami` or starting the app.
 
 Example production environment shape:
 
 ```bash
 NODE_ENV=production
 DATABASE_URL=postgresql://<unique-app-user>:<secret-from-manager>@<private-db-host>:5432/<unique-db-name>
+DATABASE_SSL_MODE=auto
 SESSION_SECRET=<secret-from-manager>
 ```
 
