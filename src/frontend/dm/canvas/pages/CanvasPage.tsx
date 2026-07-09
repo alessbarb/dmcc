@@ -1081,13 +1081,21 @@ export function CanvasPage() {
       {/* Main workspace */}
       {activeCanvas ? (
         <div className="canvas-layout">
-          {!isPlayerView && <CanvasPalette canvasId={activeCanvas.id} isDirectionMode={isDirectionMode} selectedNodeId={selectedNodeId} />}
+          {!isPlayerView && (
+            <CanvasPalette
+              canvasId={activeCanvas.id}
+              isDirectionMode={isDirectionMode}
+              selectedNodeId={selectedNodeId}
+              getViewportCenter={() => canvasFlowRef.current?.getViewportCenter() ?? null}
+            />
+          )}
           {!isPlayerView && (
             <CanvasNavigatorPanel
               canvas={activeCanvas}
               onFocusNode={focusCanvasNode}
               onFocusEntity={focusCanvasEntity}
               onFocusFact={focusCanvasFact}
+              getViewportCenter={() => canvasFlowRef.current?.getViewportCenter() ?? null}
             />
           )}
           

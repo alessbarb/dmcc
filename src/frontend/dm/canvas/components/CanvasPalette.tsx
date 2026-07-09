@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
+import { placeEntityOnCanvas } from "../services/placeEntityOnCanvas.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 
 
@@ -16,6 +17,7 @@ export interface CanvasPaletteProps {
   canvasId: string;
   isDirectionMode?: boolean;
   selectedNodeId: string | null;
+  getViewportCenter?: () => { x: number; y: number } | null;
 }
 
 function makeDragGhost(label: string, color: string): HTMLElement {
@@ -33,7 +35,7 @@ function makeDragGhost(label: string, color: string): HTMLElement {
   return el;
 }
 
-export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: CanvasPaletteProps) {
+export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getViewportCenter }: CanvasPaletteProps) {
   const { t } = useTranslation();
   const {
     campaignState,
@@ -73,9 +75,13 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
   );
 
   const handlePlaceExisting = async (entity: any) => {
-    const x = 100 + Math.random() * 100;
-    const y = 100 + Math.random() * 100;
-    await placeNodeOnCanvas(canvasId, { kind: "entity", entityId: entity.entityId, x, y });
+    await placeEntityOnCanvas({
+      canvasId,
+      entityId: entity.entityId,
+      selectedNode,
+      viewportCenter: getViewportCenter?.(),
+      placeNodeOnCanvas,
+    });
     setSearchQuery("");
     setIsDropdownOpen(false);
   };
@@ -98,7 +104,13 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
         const currentStore = useCampaignStore.getState();
         const createdEntity = currentStore.campaignState?.entities?.slice(-1)[0];
         if (createdEntity) {
-          await placeNodeOnCanvas(canvasId, { kind: "entity", entityId: createdEntity.entityId, x, y });
+          await placeEntityOnCanvas({
+            canvasId,
+            entityId: createdEntity.entityId,
+            selectedNode,
+            viewportCenter: getViewportCenter?.() ?? { x, y },
+            placeNodeOnCanvas,
+          });
         }
       } catch (err) {
         console.error("Failed to create new entity from canvas", err);
@@ -183,9 +195,13 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
         const updatedStore = useCampaignStore.getState();
         const created = updatedStore.campaignState?.entities?.slice(-1)[0];
         if (created && selectedNode) {
-          const x = selectedNode.x + 200;
-          const y = selectedNode.y;
-          await placeNodeOnCanvas(canvasId, { kind: "entity", entityId: created.entityId, x, y });
+          await placeEntityOnCanvas({
+            canvasId,
+            entityId: created.entityId,
+            selectedNode,
+            viewportCenter: getViewportCenter?.(),
+            placeNodeOnCanvas,
+          });
           const finalStore = useCampaignStore.getState();
           const finalCanvas = finalStore.canvasesById[canvasId];
           const newNode = finalCanvas?.nodes?.find((n: any) => n.entityId === created.entityId);

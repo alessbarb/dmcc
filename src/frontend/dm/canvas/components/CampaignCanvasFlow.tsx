@@ -53,6 +53,7 @@ export interface CampaignCanvasFlowHandle {
   focusNode: (nodeId: string, options?: CampaignCanvasFocusOptions) => boolean;
   focusEntity: (entityId: string, options?: CampaignCanvasFocusOptions) => boolean;
   focusFact: (factId: string, options?: CampaignCanvasFocusOptions) => boolean;
+  getViewportCenter: () => { x: number; y: number } | null;
 }
 
 export interface CampaignCanvasFlowProps {
@@ -545,11 +546,19 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     return node ? focusNode(node.id, options) : false;
   }, [canvas.nodes, focusNode]);
 
+  const getViewportCenter = useCallback(() => {
+    if (!rfInstance || !wrapperRef.current) return null;
+    const bounds = wrapperRef.current.getBoundingClientRect();
+    const position = rfInstance.project({ x: bounds.width / 2, y: bounds.height / 2 });
+    return { x: Math.round(position.x), y: Math.round(position.y) };
+  }, [rfInstance]);
+
   useImperativeHandle(ref, () => ({
     focusNode,
     focusEntity,
     focusFact,
-  }), [focusEntity, focusFact, focusNode]);
+    getViewportCenter,
+  }), [focusEntity, focusFact, focusNode, getViewportCenter]);
 
   // Handle node drag stop: commit absolute positions.
   // Migrates old parentId-based relative positioning to groupId on first drag.
