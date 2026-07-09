@@ -4,6 +4,38 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { createServer } from "../../src/backend/server/createServer.js";
 
+
+async function withSessionSecret<T>(
+  secret: string | undefined,
+  fn: () => T | Promise<T>,
+): Promise<T> {
+  const originalSessionSecret = process.env.SESSION_SECRET;
+  const originalStorageMode = process.env.DMCC_STORAGE_MODE;
+
+  process.env.DMCC_STORAGE_MODE = "postgres";
+  if (secret === undefined) {
+    delete process.env.SESSION_SECRET;
+  } else {
+    process.env.SESSION_SECRET = secret;
+  }
+
+  try {
+    return await fn();
+  } finally {
+    if (originalSessionSecret === undefined) {
+      delete process.env.SESSION_SECRET;
+    } else {
+      process.env.SESSION_SECRET = originalSessionSecret;
+    }
+
+    if (originalStorageMode === undefined) {
+      delete process.env.DMCC_STORAGE_MODE;
+    } else {
+      process.env.DMCC_STORAGE_MODE = originalStorageMode;
+    }
+  }
+}
+
 function getDmToken(server: any): string {
   return (server as any).dmSessionToken;
 }
@@ -59,6 +91,28 @@ describe("createServer", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.json()).toEqual({ ok: true, app: "dm-campaign-companion" });
+  });
+
+  it.each([
+    ["missing", undefined],
+    ["change-me placeholder", "change-me"],
+    ["dev-change-me placeholder", "dev-change-me"],
+    ["empty", ""],
+    ["short", "short-session-secret"],
+  ])("fails to start in postgres mode with %s SESSION_SECRET", async (_label, secret) => {
+    await withSessionSecret(secret, () => {
+      expect(() => createServer({ storageMode: "postgres" })).toThrow(/SESSION_SECRET/);
+    });
+  });
+
+  it("starts in postgres mode with a strong SESSION_SECRET", async () => {
+    await withSessionSecret("0123456789abcdef0123456789abcdef", async () => {
+      const server = createServer({ storageMode: "postgres" });
+      const response = await server.inject({ method: "GET", url: "/api/health" });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.json()).toEqual({ ok: true, app: "dmcc-web", storage: "postgres" });
+    });
   });
 
   it("rejects cross-origin mutations before route authorization", async () => {

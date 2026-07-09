@@ -37,6 +37,31 @@ import { readSessionCookie } from "./sessionAuth.js";
 import { resolveWebUser } from "./web/webSession.js";
 import { registerWebPlatformRoutes } from "./web/webPlatformRoutes.js";
 
+
+const PLACEHOLDER_SESSION_SECRETS = new Set(["change-me", "dev-change-me"]);
+
+export function getRequiredSessionSecret(): string {
+  const secret = process.env.SESSION_SECRET;
+
+  if (!secret || secret.trim().length === 0) {
+    throw new Error("SESSION_SECRET is required when DMCC_STORAGE_MODE=postgres");
+  }
+
+  if (secret !== secret.trim()) {
+    throw new Error("SESSION_SECRET must not contain leading or trailing whitespace");
+  }
+
+  if (PLACEHOLDER_SESSION_SECRETS.has(secret)) {
+    throw new Error("SESSION_SECRET must be a unique deployment secret, not a placeholder value");
+  }
+
+  if (secret.length < 32 || Buffer.byteLength(secret, "utf8") < 32) {
+    throw new Error("SESSION_SECRET must be at least 32 characters and 32 bytes long");
+  }
+
+  return secret;
+}
+
 export interface ServerConfig {
   dataDir?: string;
   /** Override the public assets directory (used in tests to inject fake asset trees). */
@@ -77,7 +102,8 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
   if (isPostgresWebMode) {
     const allowedOrigin = process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173";
-    server.register(cookie, { secret: process.env.SESSION_SECRET ?? "dev-change-me" });
+    const sessionSecret = getRequiredSessionSecret();
+    server.register(cookie, { secret: sessionSecret });
     server.register(helmet, {
       contentSecurityPolicy: {
         directives: {
