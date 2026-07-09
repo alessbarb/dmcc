@@ -68,9 +68,19 @@ export function PlayersPage(props: PlayersPageProps = {}) {
 
   useEffect(() => {
     fetch("/api/network-info")
-      .then((r) => r.json())
-      .then((d: any) => { if (d?.url) setNetworkUrl(d.url); })
-      .catch(() => {});
+      .then(async (r) => {
+        if (!r.ok) {
+          setNetworkUrl(null);
+          return null;
+        }
+        return r.json();
+      })
+      .then((d: unknown) => {
+        if (d && typeof d === "object" && "url" in d && typeof d.url === "string") {
+          setNetworkUrl(d.url);
+        }
+      })
+      .catch(() => setNetworkUrl(null));
   }, []);
 
   const handleCreateInvite = async () => {
