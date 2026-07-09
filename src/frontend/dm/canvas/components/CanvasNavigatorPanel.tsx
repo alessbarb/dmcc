@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Search, Crosshair, PlusCircle } from "lucide-react";
+import { Search, Crosshair, PlusCircle, X } from "lucide-react";
 import type { Canvas, CanvasNode } from "@core/domain/canvas/types.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
@@ -20,11 +20,13 @@ export interface CanvasNavigatorPanelProps {
   onFocusEntity: (entityId: string) => boolean;
   onFocusFact: (factId: string) => boolean;
   getViewportCenter?: () => { x: number; y: number } | null;
+  className?: string;
+  onMobileClose?: () => void;
 }
 
 const ENTITY_TYPES = ["npc", "player_character", "location", "faction", "quest", "clue", "secret", "item", "scene", "consequence", "rumor"];
 
-export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFocusFact, getViewportCenter }: CanvasNavigatorPanelProps) {
+export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFocusFact, getViewportCenter, className, onMobileClose }: CanvasNavigatorPanelProps) {
   const { t } = useTranslation();
   const { campaignState, placeNodeOnCanvas } = useCampaignStore();
   const [query, setQuery] = useState("");
@@ -75,9 +77,14 @@ export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFoc
   };
 
   return (
-    <aside className="canvas-navigator-panel" aria-label={t("canvas.navigator.title")}>
+    <aside className={["canvas-navigator-panel", className].filter(Boolean).join(" ")} aria-label={t("canvas.navigator.title")}>
       <div className="canvas-navigator-panel__header">
         <h2>{t("canvas.navigator.title")}</h2>
+        {onMobileClose && (
+          <button type="button" className="canvas-mobile-sheet-close" onClick={onMobileClose} aria-label="Cerrar panel de búsqueda">
+            <X size={16} />
+          </button>
+        )}
       </div>
 
       <label className="canvas-navigator-search">

@@ -16,6 +16,7 @@ export interface CanvasInspectorProps {
   onClose: () => void;
   onOpenDetail?: (entityId: string) => void;
   addToast?: (message: string, kind: "success" | "error" | "info" | "warning") => void;
+  className?: string;
 }
 
 export function CanvasInspector({
@@ -25,6 +26,7 @@ export function CanvasInspector({
   onClose,
   onOpenDetail,
   addToast,
+  className,
 }: CanvasInspectorProps) {
   const { t } = useTranslation();
   const {
@@ -323,7 +325,7 @@ export function CanvasInspector({
   };
 
   return (
-    <div className="canvas-inspector">
+    <div className={["canvas-inspector", className].filter(Boolean).join(" ")}>
       <div className="inspector-header">
         <h2>Detalle del elemento</h2>
         <button onClick={onClose} className="inspector-close-btn">
