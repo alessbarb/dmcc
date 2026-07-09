@@ -138,12 +138,21 @@ describe("i18n system & dictionary parity", () => {
     const trFr = createTranslator("fr-FR");
     const trDe = createTranslator("de-DE");
     const trIt = createTranslator("it-IT");
+    const trPt = createTranslator("pt-PT");
 
     expect(trEn.t("common.save")).toBe("Save");
     expect(trEs.t("common.save")).toBe("Guardar");
     expect(trFr.t("common.save")).toBe("Enregistrer");
     expect(trDe.t("common.save")).toBe("Speichern");
     expect(trIt.t("common.save")).toBe("Salva");
+    expect(trPt.t("common.save")).toBe("Salvar");
+
+    expect(trEn.t("landing.errorTitle")).toBe("Could not load your campaigns");
+    expect(trEs.t("landing.errorTitle")).toBe("No se pudieron cargar tus campañas");
+    expect(trFr.t("landing.errorTitle")).toBe("Impossible de charger vos campagnes");
+    expect(trDe.t("landing.errorTitle")).toBe("Deine Kampagnen konnten nicht geladen werden");
+    expect(trIt.t("landing.errorTitle")).toBe("Impossibile caricare le tue campagne");
+    expect(trPt.t("landing.errorTitle")).toBe("Não foi possível carregar as tuas campanhas");
   });
 
   it("formats domain entity types and visibility appropriately", () => {

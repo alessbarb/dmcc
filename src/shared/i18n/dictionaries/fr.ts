@@ -790,7 +790,7 @@ export const fr: TranslationDictionary = {
     searchPlaceholder: "Rechercher par titre ou ID...",
     searchClearAriaLabel: "Effacer la recherche",
     loadingCampaigns: "Chargement des campagnes depuis l'archive...",
-    errorTitle: "Erreur lors du chargement des archives arcanes",
+    errorTitle: "Impossible de charger vos campagnes",
     retryButton: "Réessayer",
     searchEmptyTitle: "Aucune campagne trouvée",
     searchEmptyDesc: "Aucun tome ne correspond à la recherche \"{query}\".",

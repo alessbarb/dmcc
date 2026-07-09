@@ -773,7 +773,7 @@ export const pt = {
     searchPlaceholder: "Buscar por título ou ID...",
     searchClearAriaLabel: "Limpar busca",
     loadingCampaigns: "Carregando campanhas do arquivo...",
-    errorTitle: "Erro ao carregar o arquivo arcanum",
+    errorTitle: "Não foi possível carregar as tuas campanhas",
     retryButton: "Tentar novamente",
     searchEmptyTitle: "Nenhuma campanha encontrada",
     searchEmptyDesc: "Nenhum tomo corresponde à busca \"{query}\".",
