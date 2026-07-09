@@ -6,6 +6,7 @@ import type { CampaignCanvasFlowHandle } from "../components/CampaignCanvasFlow.
 import { CanvasNavigatorPanel } from "../components/CanvasNavigatorPanel.js";
 import { CanvasPalette } from "../components/CanvasPalette.js";
 import { CanvasInspector } from "../components/CanvasInspector.js";
+import { MysteryHealthPanel } from "../components/MysteryHealthPanel.js";
 import { Plus, Layout, Folder, Eye, EyeOff, Zap, Play, X, User, UserCheck, MapPin, Shield, HelpCircle, Key, Award, Film } from "lucide-react";
 import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
@@ -1186,6 +1187,22 @@ export function CanvasPage() {
               />
             </ReactFlowProvider>
           </div>
+
+          {!isPlayerView && mysteryFlowMode && campaignState && (
+            <MysteryHealthPanel
+              canvas={activeCanvas}
+              entities={campaignState.entities}
+              facts={campaignState.facts}
+              relations={campaignState.relations}
+              onClose={() => setMysteryFlowMode(false)}
+              onFocusEntity={(entityId) => {
+                focusCanvasEntity(entityId);
+              }}
+              onFocusFact={(factId) => {
+                focusCanvasFact(factId);
+              }}
+            />
+          )}
 
           {!isPlayerView && (selectedNodeId || selectedEdgeId) && (
             <CanvasInspector
