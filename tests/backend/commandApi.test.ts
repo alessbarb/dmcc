@@ -3,6 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { createServer } from "../../src/backend/server/createServer.js";
+import { db } from "../../src/backend/db/client.js";
+import * as schema from "../../src/backend/db/schema.js";
 
 async function withTempDataDir<T>(fn: (dataDir: string) => Promise<T>): Promise<T> {
   const dataDir = await mkdtemp(join(tmpdir(), "dmcc-cmdapi-"));
@@ -35,6 +37,28 @@ async function registerAndLogin(server: any, email: string, secret: string) {
   });
   expect(login.statusCode).toBe(200);
   return sessionCookie(login);
+}
+
+async function registerAndLoginWithUser(server: any, email: string, secret: string) {
+  const register = await server.inject({
+    method: "POST",
+    url: "/api/auth/register",
+    payload: { email, password: secret, displayName: email.split("@")[0] },
+  });
+  expect(register.statusCode).toBe(201);
+  const userId = register.json().user.userId as string;
+
+  const login = await server.inject({
+    method: "POST",
+    url: "/api/auth/login",
+    payload: { email, password: secret },
+  });
+  expect(login.statusCode).toBe(200);
+  return { cookie: sessionCookie(login), userId };
+}
+
+async function addCampaignMember(campaignId: string, userId: string, role: "dm" | "co_dm" | "player" | "viewer") {
+  await db.insert(schema.campaignMemberships).values({ campaignId, userId, role, playerId: null });
 }
 
 async function setupCampaign(server: ReturnType<typeof createServer>, cookie: string) {
@@ -119,4 +143,75 @@ describe("command API", () => {
       await server.close();
     });
   });
+
+  it("allows only the campaign owner to delete a campaign", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, storageMode: "postgres" });
+      const owner = await registerAndLoginWithUser(server, "owner_delete@example.com", "correct horse battery");
+      const coDm = await registerAndLoginWithUser(server, "codm_delete@example.com", "correct horse battery");
+      await setupCampaign(server, owner.cookie);
+      await addCampaignMember("cmp_cmd_test", coDm.userId, "co_dm");
+
+      const coDmDelete = await server.inject({
+        method: "DELETE",
+        url: "/api/campaigns/cmp_cmd_test",
+        headers: { cookie: coDm.cookie },
+      });
+      expect(coDmDelete.statusCode).toBe(403);
+
+      const ownerDelete = await server.inject({
+        method: "DELETE",
+        url: "/api/campaigns/cmp_cmd_test",
+        headers: { cookie: owner.cookie },
+      });
+      expect(ownerDelete.statusCode).toBe(200);
+      expect(ownerDelete.json().ok).toBe(true);
+
+      await server.close();
+    });
+  });
+
+  it("allows only the campaign owner to manage invitations", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, storageMode: "postgres" });
+      const owner = await registerAndLoginWithUser(server, "owner_invite@example.com", "correct horse battery");
+      const coDm = await registerAndLoginWithUser(server, "codm_invite@example.com", "correct horse battery");
+      await setupCampaign(server, owner.cookie);
+      await addCampaignMember("cmp_cmd_test", coDm.userId, "co_dm");
+
+      const coDmInvite = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_cmd_test/invitations",
+        headers: { cookie: coDm.cookie },
+        payload: { role: "player" },
+      });
+      expect(coDmInvite.statusCode).toBe(403);
+
+      const ownerInvite = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_cmd_test/invitations",
+        headers: { cookie: owner.cookie },
+        payload: { role: "player" },
+      });
+      expect(ownerInvite.statusCode).toBe(201);
+
+      const coDmList = await server.inject({
+        method: "GET",
+        url: "/api/campaigns/cmp_cmd_test/invitations",
+        headers: { cookie: coDm.cookie },
+      });
+      expect(coDmList.statusCode).toBe(403);
+
+      const ownerList = await server.inject({
+        method: "GET",
+        url: "/api/campaigns/cmp_cmd_test/invitations",
+        headers: { cookie: owner.cookie },
+      });
+      expect(ownerList.statusCode).toBe(200);
+      expect(ownerList.json().invitations).toHaveLength(1);
+
+      await server.close();
+    });
+  });
+
 });

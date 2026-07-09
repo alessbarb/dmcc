@@ -388,6 +388,7 @@ export async function migrateLegacyAuthStore(dataDir: string, vaultId: string): 
         vaultId: tenantId,
         title: entry.title ?? "Imported Campaign",
         workspaceId,
+        ownerId: userId,
       }).onConflictDoNothing();
 
       await db.insert(schema.campaignMemberships).values({

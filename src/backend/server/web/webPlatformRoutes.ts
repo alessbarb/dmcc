@@ -95,6 +95,21 @@ async function requireCampaignRole(request: FastifyRequest, campaignId: string, 
   return context;
 }
 
+async function requireCampaignOwner(request: FastifyRequest, campaignId: string) {
+  const context = await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
+  const [campaign] = await db
+    .select({ ownerId: schema.campaigns.ownerId })
+    .from(schema.campaigns)
+    .where(eq(schema.campaigns.campaignId, campaignId))
+    .limit(1);
+  if (!campaign || campaign.ownerId !== context.user.userId) {
+    const error = new Error("Forbidden: campaign owner required");
+    (error as any).statusCode = 403;
+    throw error;
+  }
+  return context;
+}
+
 function makeInviteUrl(request: FastifyRequest, token: string): string {
   const origin = process.env.DMCC_PUBLIC_ORIGIN ?? `${request.protocol}://${request.headers.host}`;
   return `${origin.replace(/\/$/, "")}/join/${token}`;
@@ -1213,6 +1228,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
       await tx.insert(schema.campaigns).values({
         campaignId,
         workspaceId,
+        ownerId: user.userId,
         title,
         summary: request.body?.summary ?? null,
         status: "active",
@@ -1308,6 +1324,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
           await tx.insert(schema.campaigns).values({
             campaignId,
             workspaceId,
+            ownerId: user.userId,
             title,
             summary,
             status: "active",
@@ -1524,7 +1541,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   });
 
   server.delete<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId", async (request, _reply) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    await requireCampaignOwner(request, request.params.campaignId);
     await db.update(schema.campaigns).set({ status: "deleted", updatedAt: new Date() }).where(eq(schema.campaigns.campaignId, request.params.campaignId));
     return { ok: true };
   });
@@ -1707,7 +1724,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
 
 
   server.post<{ Params: { campaignId: string }; Body: { role?: string; maxUses?: number; expiresInHours?: number; label?: string } }>("/api/campaigns/:campaignId/invitations", async (request, reply) => {
-    const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    const { user } = await requireCampaignOwner(request, request.params.campaignId);
     const token = issueOpaqueToken("inv");
     const invitationId = createId("inv");
     const expiresAt = new Date(Date.now() + (request.body?.expiresInHours ?? 168) * 60 * 60 * 1000);
@@ -1726,7 +1743,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/invitations", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    await requireCampaignOwner(request, request.params.campaignId);
     const invitations = await db
       .select()
       .from(schema.campaignInvitations)
@@ -1747,7 +1764,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   });
 
   server.post<{ Params: { campaignId: string; invitationId: string } }>("/api/campaigns/:campaignId/invitations/:invitationId/revoke", async (request) => {
-    const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    const { user } = await requireCampaignOwner(request, request.params.campaignId);
     await db.update(schema.campaignInvitations).set({ revokedAt: new Date() }).where(and(
       eq(schema.campaignInvitations.campaignId, request.params.campaignId),
       eq(schema.campaignInvitations.invitationId, request.params.invitationId),
