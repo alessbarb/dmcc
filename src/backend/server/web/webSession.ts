@@ -7,6 +7,13 @@ import * as schema from "../../db/schema.js";
 export const WEB_SESSION_COOKIE = "dmcc_session";
 const SESSION_DAYS = 30;
 
+type CookieSameSite = "lax" | "strict" | "none" | boolean;
+
+type WebSessionCookieOptions = {
+  sameSite: CookieSameSite;
+  secure: boolean;
+};
+
 export type WebUser = {
   userId: string;
   email: string;
@@ -26,8 +33,8 @@ export function issueOpaqueToken(prefix: string): string {
   return `${prefix}_${randomBytes(32).toString("base64url")}`;
 }
 
-function getCookieSameSite(): "lax" | "strict" | "none" | boolean {
-  const value = process.env.DMCC_COOKIE_SAMESITE ?? process.env.COOKIE_SAMESITE;
+function getCookieSameSite(): CookieSameSite {
+  const value = (process.env.DMCC_COOKIE_SAMESITE ?? process.env.COOKIE_SAMESITE)?.toLowerCase();
   if (value === "none") return "none";
   if (value === "lax") return "lax";
   if (value === "strict") return "strict";
@@ -36,29 +43,45 @@ function getCookieSameSite(): "lax" | "strict" | "none" | boolean {
   return "lax";
 }
 
-function getCookieSecure(): boolean {
-  const value = process.env.DMCC_COOKIE_SECURE ?? process.env.COOKIE_SECURE;
+function getCookieSecure(): boolean | undefined {
+  const value = (process.env.DMCC_COOKIE_SECURE ?? process.env.COOKIE_SECURE)?.toLowerCase();
   if (value === "true") return true;
   if (value === "false") return false;
-  return process.env.NODE_ENV === "production";
+  return undefined;
+}
+
+function resolveWebSessionCookieOptions(): WebSessionCookieOptions {
+  const sameSite = getCookieSameSite();
+  const configuredSecure = getCookieSecure();
+
+  if (sameSite === "none") {
+    if (configuredSecure === false) {
+      throw new Error("Invalid cookie configuration: SameSite=None requires Secure. Remove DMCC_COOKIE_SECURE=false or set DMCC_COOKIE_SECURE=true.");
+    }
+    return { sameSite, secure: true };
+  }
+
+  return { sameSite, secure: configuredSecure ?? process.env.NODE_ENV === "production" };
 }
 
 export function setWebSessionCookie(reply: FastifyReply, token: string, expiresAt: Date): void {
+  const cookieOptions = resolveWebSessionCookieOptions();
   reply.setCookie(WEB_SESSION_COOKIE, token, {
     path: "/",
     httpOnly: true,
-    sameSite: getCookieSameSite(),
-    secure: getCookieSecure(),
+    sameSite: cookieOptions.sameSite,
+    secure: cookieOptions.secure,
     expires: expiresAt,
   });
 }
 
 export function clearWebSessionCookie(reply: FastifyReply): void {
+  const cookieOptions = resolveWebSessionCookieOptions();
   reply.clearCookie(WEB_SESSION_COOKIE, {
     path: "/",
     httpOnly: true,
-    sameSite: getCookieSameSite(),
-    secure: getCookieSecure(),
+    sameSite: cookieOptions.sameSite,
+    secure: cookieOptions.secure,
   });
 }
 
