@@ -3,6 +3,7 @@ import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { ReactFlowProvider } from "reactflow";
 import { CampaignCanvasFlow } from "../components/CampaignCanvasFlow.js";
 import type { CampaignCanvasFlowHandle } from "../components/CampaignCanvasFlow.js";
+import { CanvasNavigatorPanel } from "../components/CanvasNavigatorPanel.js";
 import { CanvasPalette } from "../components/CanvasPalette.js";
 import { CanvasInspector } from "../components/CanvasInspector.js";
 import { Plus, Layout, Folder, Eye, EyeOff, Zap, Play, X, User, UserCheck, MapPin, Shield, HelpCircle, Key, Award, Film } from "lucide-react";
@@ -1052,6 +1053,16 @@ export function CanvasPage() {
       {activeCanvas ? (
         <div className="canvas-layout">
           {!isPlayerView && <CanvasPalette canvasId={activeCanvas.id} isDirectionMode={isDirectionMode} selectedNodeId={selectedNodeId} />}
+          {!isPlayerView && (
+            <CanvasNavigatorPanel
+              canvas={activeCanvas}
+              canvasFlowRef={canvasFlowRef}
+              onSelectNode={(nodeId) => {
+                setSelectedNodeId(nodeId);
+                setSelectedEdgeId(null);
+              }}
+            />
+          )}
           
           <div className="canvas-work-area">
             <ReactFlowProvider key={`${campaignId}:${activeCanvas.id}`}>
