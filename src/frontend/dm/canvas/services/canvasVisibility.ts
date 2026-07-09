@@ -1,10 +1,29 @@
 import type { CanvasEdge, CanvasNode } from "@core/domain/canvas/types.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 
+/**
+ * Visual/presentational visibility for canvas items.
+ *
+ * CanvasVisibility only controls whether the canvas node or edge itself is
+ * displayed in public/player canvas views. It is intentionally coarse and is
+ * not the campaign data exposure source of truth; use VisibilityRule on domain
+ * entities, relations, and facts for authoritative access semantics.
+ */
 export type CanvasVisibility = "dm" | "public";
 
 export interface DomainVisibilityCarrier {
   visibility?: unknown;
+}
+
+/** Converts authoritative domain visibility to coarse visual canvas visibility. */
+export function visibilityRuleToCanvasVisibility(visibility: VisibilityRule): CanvasVisibility {
+  return visibility.kind === "dm_only" ? "dm" : "public";
+}
+
+/** Converts visual canvas visibility to the closest authoritative domain rule. */
+export function canvasVisibilityToVisibilityRule(canvasVisibility: CanvasVisibility): VisibilityRule {
+  return canvasVisibility === "dm" ? { kind: "dm_only" } : { kind: "public" };
 }
 
 /**

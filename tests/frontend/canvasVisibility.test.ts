@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { CanvasEdge, CanvasNode } from "../../src/core/domain/canvas/types.js";
-import { isDmOnlyVisibility, toCanvasVisibility, toVisibilityRule } from "../../src/core/domain/visibility/visibility.js";
-import { isPublicCanvasEdge, isPublicCanvasNode } from "../../src/frontend/dm/canvas/services/canvasVisibility.js";
+import { isDmOnlyVisibility } from "../../src/core/domain/visibility/visibility.js";
+import type { VisibilityRule } from "../../src/core/domain/visibility/visibility.js";
+import { canvasVisibilityToVisibilityRule, isPublicCanvasEdge, isPublicCanvasNode, visibilityRuleToCanvasVisibility } from "../../src/frontend/dm/canvas/services/canvasVisibility.js";
 
 const baseNode = (overrides: Partial<CanvasNode>): CanvasNode => ({
   id: "cvn_public",
@@ -28,11 +29,21 @@ const baseEdge = (overrides: Partial<CanvasEdge>): CanvasEdge => ({
 });
 
 describe("canvas visibility helpers", () => {
-  it("converts between domain visibility and visual canvas visibility", () => {
-    expect(toCanvasVisibility({ kind: "dm_only" })).toBe("dm");
-    expect(toCanvasVisibility({ kind: "party" })).toBe("public");
-    expect(toVisibilityRule("dm")).toEqual({ kind: "dm_only" });
-    expect(toVisibilityRule("public")).toEqual({ kind: "public" });
+  it.each<[VisibilityRule, "dm" | "public"]>([
+    [{ kind: "dm_only" }, "dm"],
+    [{ kind: "public" }, "public"],
+    [{ kind: "party" }, "public"],
+    [{ kind: "players", playerIds: ["player-1"] }, "public"],
+    [{ kind: "characters", characterEntityIds: ["entity-1"] }, "public"],
+  ])("converts %j domain visibility to %s visual canvas visibility", (domainVisibility, canvasVisibility) => {
+    expect(visibilityRuleToCanvasVisibility(domainVisibility)).toBe(canvasVisibility);
+  });
+
+  it.each([
+    ["dm" as const, { kind: "dm_only" }],
+    ["public" as const, { kind: "public" }],
+  ])("converts %s visual canvas visibility to coarse domain visibility", (canvasVisibility, domainVisibility) => {
+    expect(canvasVisibilityToVisibilityRule(canvasVisibility)).toEqual(domainVisibility);
   });
 
   it("recognizes current and legacy DM-only domain visibility values", () => {

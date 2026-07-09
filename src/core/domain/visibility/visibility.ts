@@ -1,5 +1,13 @@
 import type { EntityId, PlayerId } from "@shared/ids.js";
 
+/**
+ * Authoritative domain visibility rule for campaign data exposure.
+ *
+ * VisibilityRule belongs to entities, relations, and facts and is the source of
+ * truth for who may know or access campaign data. Canvas-specific visual state
+ * is represented separately by CanvasVisibility in the canvas presentation
+ * layer.
+ */
 export type VisibilityRule =
   | { kind: "dm_only" }
   | { kind: "party" }
@@ -8,19 +16,6 @@ export type VisibilityRule =
   | { kind: "public" };
 
 export const dmOnlyVisibility: VisibilityRule = { kind: "dm_only" };
-
-
-export type CanvasVisibility = "dm" | "public";
-
-/** Converts domain visibility to the canvas visual visibility model. */
-export function toCanvasVisibility(visibility: VisibilityRule): CanvasVisibility {
-  return visibility.kind === "dm_only" ? "dm" : "public";
-}
-
-/** Converts canvas visual visibility back to a coarse domain visibility rule. */
-export function toVisibilityRule(canvasVisibility: CanvasVisibility): VisibilityRule {
-  return canvasVisibility === "dm" ? { kind: "dm_only" } : { kind: "public" };
-}
 
 /** Returns true for DM-only domain visibility, including legacy { kind: "dm" } values. */
 export function isDmOnlyVisibility(value: unknown): boolean {
