@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
+import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 
 
 export interface CanvasPaletteProps {
@@ -221,7 +222,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId }: Can
   };
 
   if (isDirectionMode) {
-    const isSecret = selectedEntity && (!selectedEntity.visibility || selectedEntity.visibility.kind === "dm_only" || selectedEntity.visibility.kind === "dm");
+    const isSecret = selectedEntity && isDmOnlyVisibility(selectedEntity.visibility);
     return (
       <div className="canvas-palette canvas-palette--direction" style={{ backgroundColor: "rgba(15,18,30,0.92)", borderRight: "1px solid var(--border-color)", padding: "16px", display: "flex", flexDirection: "column", gap: "16px", zIndex: 10, position: "relative" }}>
         <button

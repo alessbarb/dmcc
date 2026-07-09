@@ -12,6 +12,7 @@ import { useToast } from "../../../shared/hooks/useToast.js";
 import { useParams } from "@tanstack/react-router";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
+import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 
 import { getCanvasTemplate } from "../templates/index.js";
 import { applyCanvasTemplate } from "../services/applyCanvasTemplate.js";
@@ -302,7 +303,7 @@ const runNarrativeLint = (campaignState: any, activeCanvas: any, t: (key: string
     const source = entities.find((e: any) => e.entityId === rel.sourceEntityId);
     const target = entities.find((e: any) => e.entityId === rel.targetEntityId);
     if (source && target) {
-      const relIsSecret = rel.visibility?.kind === "dm_only" || rel.visibility?.kind === "dm";
+      const relIsSecret = isDmOnlyVisibility(rel.visibility);
       const sourceIsPublic = source.visibility?.kind === "public";
       const targetIsPublic = target.visibility?.kind === "public";
       if (relIsSecret && sourceIsPublic && targetIsPublic) {
