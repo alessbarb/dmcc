@@ -3,6 +3,8 @@ import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { X, Trash2, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../../shared/components/ImagePickerButton.js";
+import type { Canvas, CanvasEdge, CanvasNode } from "@core/domain/canvas/types.js";
+import type { Entity, Relation, Fact } from "../../../shared/stores/campaignStore.js";
 
 
 export interface CanvasInspectorProps {
@@ -42,19 +44,19 @@ export function CanvasInspector({
   const canvas = canvasesById[canvasId];
 
   // Selected Node data
-  const selectedNode = selectedNodeId ? canvas?.nodes?.find((n: any) => n.id === selectedNodeId) : null;
-  const entity = selectedNode?.entityId ? campaignState?.entities?.find((e: any) => e.entityId === selectedNode.entityId) : null;
+  const selectedNode = selectedNodeId ? canvas?.nodes?.find((n: CanvasNode) => n.id === selectedNodeId) : null;
+  const entity = selectedNode?.entityId ? campaignState?.entities?.find((e: Entity) => e.entityId === selectedNode.entityId) : null;
   const fact = selectedNode?.factId
     ? (campaignState?.facts instanceof Map
         ? campaignState.facts.get(selectedNode.factId)
         : Array.isArray(campaignState?.facts)
-          ? (campaignState!.facts as any[]).find((f: any) => f.factId === selectedNode.factId)
+          ? (campaignState!.facts as Fact[]).find((f: Fact) => f.factId === selectedNode.factId)
           : undefined)
     : undefined;
 
   // Selected Edge data
-  const selectedEdge = selectedEdgeId ? canvas?.edges?.find((e: any) => e.id === selectedEdgeId) : null;
-  const relation = selectedEdge?.relationshipId ? campaignState?.relations?.find((r: any) => r.relationId === selectedEdge.relationshipId) : null;
+  const selectedEdge = selectedEdgeId ? canvas?.edges?.find((e: CanvasEdge) => e.id === selectedEdgeId) : null;
+  const relation = selectedEdge?.relationshipId ? campaignState?.relations?.find((r: Relation) => r.relationId === selectedEdge.relationshipId) : null;
 
   // Local form state for selected Node (Entity or Note)
   const [title, setTitle] = useState("");
@@ -180,12 +182,12 @@ export function CanvasInspector({
         await updateEntity(entity.entityId, { status: value });
 
         // --- Revelation Anchors Trigger Check ---
-        const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+        const activeSession = campaignState?.sessions?.find((s) => s.status === "active");
         if (activeSession && campaignState) {
           const isTriggerStatus = value === "found" || value === "visited" || value === "dead" || value === "completed";
           if (isTriggerStatus) {
             const secrets = campaignState.entities.filter(
-              (e: any) =>
+              (e: Entity) =>
                 e.entityType === "secret" &&
                 !e.archived &&
                 (e.visibility?.kind === "dm_only" || e.visibility?.kind === "dm") &&
@@ -265,7 +267,7 @@ export function CanvasInspector({
       if (entityId && addToast) {
         const { canvasesById: updatedCanvases } = useCampaignStore.getState();
         const isOnAnyCanvas = Object.values(updatedCanvases).some(
-          (c: any) => !c.archived && c.nodes?.some((n: any) => n.entityId === entityId)
+          (c: Canvas) => !c.archived && c.nodes?.some((n: CanvasNode) => n.entityId === entityId)
         );
         if (!isOnAnyCanvas) {
           addToast(
@@ -287,7 +289,7 @@ export function CanvasInspector({
       if (relationshipId && addToast) {
         const { canvasesById: updatedCanvases } = useCampaignStore.getState();
         const isInAnyCanvas = Object.values(updatedCanvases).some(
-          (c: any) => !c.archived && c.edges?.some((e: any) => e.relationshipId === relationshipId)
+          (c: Canvas) => !c.archived && c.edges?.some((e: CanvasEdge) => e.relationshipId === relationshipId)
         );
         if (!isInAnyCanvas) {
           addToast(
@@ -775,8 +777,8 @@ export function CanvasInspector({
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "150px", overflowY: "auto", padding: "8px", backgroundColor: "var(--bg-input)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
                       {campaignState.entities
-                        .filter((e: any) => !e.archived && e.entityId !== entity.entityId && ["clue", "location", "npc"].includes(e.entityType))
-                        .map((e: any) => {
+                        .filter((e: Entity) => !e.archived && e.entityId !== entity.entityId && ["clue", "location", "npc"].includes(e.entityType))
+                        .map((e: Entity) => {
                           const currentAnchors = entity.metadata?.revelationAnchors || [];
                           const isChecked = currentAnchors.includes(e.entityId);
                           return (

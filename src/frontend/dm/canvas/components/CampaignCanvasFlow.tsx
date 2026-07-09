@@ -12,6 +12,9 @@ import type {
   Edge,
   Node,
   Connection,
+  OnMove,
+  OnMoveEnd,
+  OnSelectionChangeParams,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
@@ -25,6 +28,8 @@ import { RelationshipTypePopover } from "./RelationshipTypePopover.js";
 import { CanvasToolbar } from "./CanvasToolbar.js";
 import type { InteractionMode } from "./CanvasToolbar.js";
 import type { ProOptions } from "reactflow";
+import type { Canvas, CanvasNode, CanvasEdge } from "@core/domain/canvas/types.js";
+import type { Entity, Relation, Fact } from "../../../shared/stores/campaignStore.js";
 import { getRelationVisual } from "../../entities/entityVisuals.js";
 
 // Register custom node types — group nodes are no longer rendered as boxes
@@ -36,9 +41,14 @@ const nodeTypes = {
 
 const reactFlowProOptions: ProOptions = { hideAttribution: true };
 
+function hasDmOnlyLegacyVisibility(edge: CanvasEdge): boolean {
+  const { visibility } = edge as { visibility?: unknown };
+  return visibility === "dm_only";
+}
+
 export interface CampaignCanvasFlowProps {
   canvasId: string;
-  canvas: any;
+  canvas: Canvas;
   selectedNodeId: string | null;
   selectedEdgeId: string | null;
   onSelectNode: (nodeId: string) => void;
@@ -52,7 +62,7 @@ export interface CampaignCanvasFlowProps {
   onMinimapToggle: () => void;
   typeFilter?: string;
   publicOnly?: boolean;
-  onSelectionChange?: (selectedNodes: any[], selectedEdges: any[]) => void;
+  onSelectionChange?: (selectedNodes: Node[], selectedEdges: Edge[]) => void;
   isDirectionMode?: boolean;
   isPlayerView?: boolean;
   tablePrivacy?: boolean;
@@ -102,7 +112,7 @@ export function CampaignCanvasFlow({
   const [viewport, setViewport] = useState<Viewport>({ x: 0, y: 0, zoom: 1 });
 
   // Sync viewport for the group hull overlay
-  const onMove = useCallback((_: any, vp: Viewport) => {
+  const onMove: OnMove = useCallback((_, vp: Viewport) => {
     setViewport(vp);
   }, []);
   
@@ -110,18 +120,18 @@ export function CampaignCanvasFlow({
   const [connectPopover, setConnectPopover] = useState<{
     sourceNodeId: string;
     targetNodeId: string;
-    sourceEntity?: any;
-    targetEntity?: any;
+    sourceEntity?: Entity | null;
+    targetEntity?: Entity | null;
   } | null>(null);
 
   // Highlighted path in Mystery Flow Mode
   const highlightedNodeIds = useMemo(() => {
     if (!mysteryFlowMode || !selectedNodeId) return null;
-    const startNode = canvas.nodes?.find((n: any) => n.id === selectedNodeId);
+    const startNode = canvas.nodes?.find((n: CanvasNode) => n.id === selectedNodeId);
     if (!startNode) return null;
     
     // Only traverse if starting from a mystery type entity
-    const entity = startNode.entityId ? campaignState?.entities?.find((e: any) => e.entityId === startNode.entityId) : null;
+    const entity = startNode.entityId ? campaignState?.entities?.find((e: Entity) => e.entityId === startNode.entityId) : null;
     if (entity) {
       const mysteryTypes = ["clue", "secret", "quest", "decision"];
       if (!mysteryTypes.includes(entity.entityType)) return null;
@@ -137,7 +147,7 @@ export function CampaignCanvasFlow({
       visited.add(current);
       for (const edge of canvas.edges || []) {
         if (edge.sourceNodeId === current) {
-          const rel = edge.relationshipId ? campaignState?.relations?.find((r: any) => r.relationId === edge.relationshipId) : null;
+          const rel = edge.relationshipId ? campaignState?.relations?.find((r: Relation) => r.relationId === edge.relationshipId) : null;
           const relType = rel?.relationType || "";
           const logicalTypes = ["points_to", "reveals", "unlocks", "causes", "contradicts", "confirms"];
           const labelLower = edge.label?.toLowerCase() || "";
@@ -160,20 +170,20 @@ export function CampaignCanvasFlow({
 
   // Map canvas nodes to React Flow nodes format
   const flowNodes = useMemo(() => {
-    const rawNodes: any[] = canvas.nodes || [];
+    const rawNodes: CanvasNode[] = canvas.nodes || [];
 
     // Build group position lookup for relative→absolute conversion (old data with parentId)
     const groupAbsPos: Record<string, { x: number; y: number }> = {};
-    rawNodes.forEach((n: any) => {
+    rawNodes.forEach((n: CanvasNode) => {
       if (n.kind === "group") groupAbsPos[n.id] = { x: n.x ?? 0, y: n.y ?? 0 };
     });
 
     return rawNodes
-      .filter((node: any) => {
+      .filter((node: CanvasNode) => {
         // Groups are rendered as hull overlays — not as RF nodes
         if (node.kind === "group") return false;
 
-        const entity = node.entityId ? campaignState?.entities?.find((e: any) => e.entityId === node.entityId) : null;
+        const entity = node.entityId ? campaignState?.entities?.find((e: Entity) => e.entityId === node.entityId) : null;
 
         if (publicOnly && entity) {
           const isDmOnly = !entity.visibility || entity.visibility.kind === "dm_only" || entity.visibility.kind === "dm";
@@ -200,8 +210,8 @@ export function CampaignCanvasFlow({
 
         return true;
       })
-      .map((node: any) => {
-        const entity = node.entityId ? campaignState?.entities?.find((e: any) => e.entityId === node.entityId) : null;
+      .map((node: CanvasNode) => {
+        const entity = node.entityId ? campaignState?.entities?.find((e: Entity) => e.entityId === node.entityId) : null;
 
         // Resolve fact data
         const facts = campaignState?.facts;
@@ -209,7 +219,7 @@ export function CampaignCanvasFlow({
           ? (facts instanceof Map
               ? facts.get(node.factId)
               : Array.isArray(facts)
-                ? (facts as any[]).find((f: any) => f.factId === node.factId)
+                ? (facts as Fact[]).find((f: Fact) => f.factId === node.factId)
                 : undefined)
           : undefined;
 
@@ -223,7 +233,7 @@ export function CampaignCanvasFlow({
           absY = absY + groupAbsPos[node.parentId].y;
         }
 
-        const nodeStyle: any = isAttenuated ? { opacity: 0.25, pointerEvents: "none" } : undefined;
+        const nodeStyle: React.CSSProperties | undefined = isAttenuated ? { opacity: 0.25, pointerEvents: "none" } : undefined;
 
         return {
           id: node.id,
@@ -258,17 +268,17 @@ export function CampaignCanvasFlow({
 
   // Map canvas edges to React Flow edges format
   const flowEdges = useMemo(() => {
-    const visibleNodeIds = new Set(flowNodes.map((n: any) => n.id));
+    const visibleNodeIds = new Set(flowNodes.map((n: Node) => n.id));
     const defaultEdges = (canvas.edges || [])
-      .filter((edge: any) => visibleNodeIds.has(edge.sourceNodeId) && visibleNodeIds.has(edge.targetNodeId))
-      .filter((edge: any) => {
+      .filter((edge: CanvasEdge) => visibleNodeIds.has(edge.sourceNodeId) && visibleNodeIds.has(edge.targetNodeId))
+      .filter((edge: CanvasEdge) => {
         if (publicOnly || relationsFilter === "public") {
-          const isSecret = edge.style === "secret" || edge.visibility === "dm" || edge.visibility === "dm_only";
+          const isSecret = edge.style === "secret" || edge.visibility === "dm" || hasDmOnlyLegacyVisibility(edge);
           if (isSecret) return false;
         }
 
         if (relationsFilter === "secret") {
-          const isSecret = edge.style === "secret" || edge.visibility === "dm" || edge.visibility === "dm_only";
+          const isSecret = edge.style === "secret" || edge.visibility === "dm" || hasDmOnlyLegacyVisibility(edge);
           if (!isSecret) return false;
         }
 
@@ -279,7 +289,7 @@ export function CampaignCanvasFlow({
         }
 
         if (mysteryFlowMode) {
-          const rel = edge.relationshipId ? campaignState?.relations?.find((r: any) => r.relationId === edge.relationshipId) : null;
+          const rel = edge.relationshipId ? campaignState?.relations?.find((r: Relation) => r.relationId === edge.relationshipId) : null;
           const relType = rel?.relationType || "";
           const logicalTypes = ["points_to", "reveals", "unlocks", "causes", "contradicts", "confirms"];
           const labelLower = edge.label?.toLowerCase() || "";
@@ -295,9 +305,9 @@ export function CampaignCanvasFlow({
         }
         return true;
       })
-      .map((edge: any) => {
+      .map((edge: CanvasEdge) => {
         const relation = edge.relationshipId
-          ? campaignState?.relations?.find((item: any) => item.relationId === edge.relationshipId)
+          ? campaignState?.relations?.find((item: Relation) => item.relationId === edge.relationshipId)
           : undefined;
         const relationVisual = getRelationVisual(relation?.relationType ?? edge.label ?? "", edge.style);
         const isSecret = edge.style === "secret";
@@ -404,18 +414,18 @@ export function CampaignCanvasFlow({
       });
 
     // Add virtual anchor lines for DM
-    const anchorEdges: any[] = [];
+    const anchorEdges: Edge[] = [];
     if (!publicOnly && !mysteryFlowMode && campaignState?.entities) {
-      const secretNodes = canvas.nodes?.filter((n: any) => {
-        const ent = n.entityId ? campaignState.entities.find((e: any) => e.entityId === n.entityId) : null;
+      const secretNodes = canvas.nodes?.filter((n: CanvasNode) => {
+        const ent = n.entityId ? campaignState.entities.find((e: Entity) => e.entityId === n.entityId) : null;
         return ent?.entityType === "secret" && !ent.archived;
       }) || [];
 
       for (const secretNode of secretNodes) {
-        const secretEntity = campaignState.entities.find((e: any) => e.entityId === secretNode.entityId);
+        const secretEntity = campaignState.entities.find((e: Entity) => e.entityId === secretNode.entityId);
         const anchors = secretEntity?.metadata?.revelationAnchors || [];
         for (const anchorId of anchors) {
-          const anchorNode = canvas.nodes?.find((n: any) => n.entityId === anchorId);
+          const anchorNode = canvas.nodes?.find((n: CanvasNode) => n.entityId === anchorId);
           if (anchorNode && visibleNodeIds.has(anchorNode.id)) {
             // Apply relations filter checks for virtual anchor edges as well
             if (relationsFilter === "selection" && selectedNodeId) {
@@ -477,7 +487,7 @@ export function CampaignCanvasFlow({
   useEffect(() => {
     setNodes(prev => {
       const rfSelectedIds = new Set(prev.filter(n => n.selected).map(n => n.id));
-      return flowNodes.map((n: any) => ({
+      return flowNodes.map((n: Node) => ({
         ...n,
         selected: rfSelectedIds.has(n.id),
       }));
@@ -501,10 +511,10 @@ export function CampaignCanvasFlow({
   // Handle node drag stop: commit absolute positions.
   // Migrates old parentId-based relative positioning to groupId on first drag.
   const onNodeDragStop = useCallback((_event: React.MouseEvent, _node: Node, draggedNodes: Node[]) => {
-    const storeNodes: any[] = useCampaignStore.getState().canvasesById[canvasId]?.nodes ?? [];
+    const storeNodes: CanvasNode[] = useCampaignStore.getState().canvasesById[canvasId]?.nodes ?? [];
     const updates = draggedNodes.map((n) => {
-      const sn = storeNodes.find((s: any) => s.id === n.id);
-      const update: any = { nodeId: n.id, x: Math.round(n.position.x), y: Math.round(n.position.y) };
+      const sn = storeNodes.find((s: CanvasNode) => s.id === n.id);
+      const update: { nodeId: string; x: number; y: number; groupId?: string; parentId?: null } = { nodeId: n.id, x: Math.round(n.position.x), y: Math.round(n.position.y) };
       // On first drag after old-style group parenting: migrate parentId → groupId
       if (sn?.parentId && !sn?.groupId) {
         update.groupId = sn.parentId;
@@ -525,7 +535,7 @@ export function CampaignCanvasFlow({
   }, [canvasId, updateCanvasNodesLayout]);
 
   // Viewport change end: save zoom/pan coords
-  const onMoveEnd = useCallback((_event: any) => {
+  const onMoveEnd: OnMoveEnd = useCallback(() => {
     if (rfInstance) {
       const zoom = rfInstance.getZoom();
       const { x, y } = rfInstance.getViewport();
@@ -564,11 +574,11 @@ export function CampaignCanvasFlow({
     if (!connection.source || !connection.target) return;
     
     // Lookup source and target entities
-    const sourceNode = canvas.nodes.find((n: any) => n.id === connection.source);
-    const targetNode = canvas.nodes.find((n: any) => n.id === connection.target);
+    const sourceNode = canvas.nodes.find((n: CanvasNode) => n.id === connection.source);
+    const targetNode = canvas.nodes.find((n: CanvasNode) => n.id === connection.target);
     
-    const sourceEntity = sourceNode?.entityId ? campaignState?.entities?.find((e: any) => e.entityId === sourceNode.entityId) : null;
-    const targetEntity = targetNode?.entityId ? campaignState?.entities?.find((e: any) => e.entityId === targetNode.entityId) : null;
+    const sourceEntity = sourceNode?.entityId ? campaignState?.entities?.find((e: Entity) => e.entityId === sourceNode.entityId) : null;
+    const targetEntity = targetNode?.entityId ? campaignState?.entities?.find((e: Entity) => e.entityId === targetNode.entityId) : null;
 
     setConnectPopover({
       sourceNodeId: connection.source,
@@ -708,7 +718,7 @@ export function CampaignCanvasFlow({
         onConnect={onConnect}
         onMove={onMove}
         onMoveEnd={onMoveEnd}
-        onSelectionChange={onSelectionChange ? ({ nodes, edges }) => onSelectionChange(nodes, edges) : undefined}
+        onSelectionChange={onSelectionChange ? ({ nodes, edges }: OnSelectionChangeParams) => onSelectionChange(nodes, edges) : undefined}
         nodeTypes={nodeTypes}
         onInit={setRfInstance}
         deleteKeyCode={null}
