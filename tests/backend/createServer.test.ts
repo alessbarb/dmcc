@@ -1,9 +1,13 @@
 import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
-import { createServer } from "../../src/backend/server/createServer.js";
+import { beforeEach, describe, expect, it } from "vitest";
+import { createServer, type ServerConfig } from "../../src/backend/server/createServer.js";
 
+
+beforeEach(() => {
+  process.env.DMCC_STORAGE_MODE = "legacy";
+});
 
 async function withSessionSecret<T>(
   secret: string | undefined,
@@ -34,6 +38,33 @@ async function withSessionSecret<T>(
       process.env.DMCC_STORAGE_MODE = originalStorageMode;
     }
   }
+}
+
+async function withStorageModeEnv<T>(
+  storageMode: string | undefined,
+  fn: () => T | Promise<T>,
+): Promise<T> {
+  const originalStorageMode = process.env.DMCC_STORAGE_MODE;
+
+  if (storageMode === undefined) {
+    delete process.env.DMCC_STORAGE_MODE;
+  } else {
+    process.env.DMCC_STORAGE_MODE = storageMode;
+  }
+
+  try {
+    return await fn();
+  } finally {
+    if (originalStorageMode === undefined) {
+      delete process.env.DMCC_STORAGE_MODE;
+    } else {
+      process.env.DMCC_STORAGE_MODE = originalStorageMode;
+    }
+  }
+}
+
+function createLegacyTestServer(config: Omit<ServerConfig, "storageMode" | "allowLegacyTestAuth"> = {}) {
+  return createServer({ ...config, storageMode: "legacy", allowLegacyTestAuth: true });
 }
 
 function getDmToken(server: any): string {
@@ -86,11 +117,21 @@ async function readCampaignSnapshot(dataDir: string, campaignId: string) {
 
 describe("createServer", () => {
   it("serves health endpoint", async () => {
-    const server = createServer();
+    const server = createLegacyTestServer();
     const response = await server.inject({ method: "GET", url: "/api/health" });
 
     expect(response.statusCode).toBe(200);
     expect(response.json()).toEqual({ ok: true, app: "dm-campaign-companion" });
+  });
+
+  it.each([
+    ["missing", undefined],
+    ["unknown", "sqlite"],
+    ["empty", ""],
+  ])("fails to start with %s DMCC_STORAGE_MODE when config.storageMode is absent", async (_label, storageMode) => {
+    await withStorageModeEnv(storageMode, () => {
+      expect(() => createServer()).toThrow(/DMCC_STORAGE_MODE must be explicitly set to "postgres" or "legacy"/);
+    });
   });
 
   it.each([
@@ -116,7 +157,7 @@ describe("createServer", () => {
   });
 
   it("rejects cross-origin mutations before route authorization", async () => {
-    const server = createServer();
+    const server = createLegacyTestServer();
     const response = await server.inject({
       method: "POST",
       url: "/api/campaigns",
@@ -133,7 +174,7 @@ describe("createServer", () => {
 
   it("does not accept legacy identity headers when compatibility is disabled", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir, allowLegacyTestAuth: false });
+      const server = createServer({ dataDir, storageMode: "legacy", allowLegacyTestAuth: false });
       const response = await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -152,7 +193,7 @@ describe("createServer", () => {
 
   it("creates campaigns through the local API", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       const response = await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -174,7 +215,7 @@ describe("createServer", () => {
 
   it("lists persisted campaigns from snapshots", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -205,7 +246,7 @@ describe("createServer", () => {
 
   it("creates entities through the local API", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -242,7 +283,7 @@ describe("createServer", () => {
 describe("persistent campaign API", () => {
   it("flushes campaign and entity commands to the campaign event log before success", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -278,7 +319,7 @@ describe("persistent campaign API", () => {
 
   it("creates relation, fact, session, close-session, and reveal-clue events through API routes", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -404,7 +445,7 @@ describe("persistent campaign API", () => {
 
   it("deletes campaigns only after exact title confirmation", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -473,7 +514,7 @@ describe("persistent campaign API", () => {
 
   it("updates snapshot.json from persisted API command events", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -512,7 +553,7 @@ describe("persistent campaign API", () => {
 
   it("persists commands against a campaign reopened from disk", async () => {
     await withTempDataDir(async (dataDir) => {
-      const firstServer = createServer({ dataDir });
+      const firstServer = createLegacyTestServer({ dataDir });
       await firstServer.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -524,7 +565,7 @@ describe("persistent campaign API", () => {
         headers: { "x-dm-token": getDmToken(firstServer) },
       });
 
-      const secondServer = createServer({ dataDir });
+      const secondServer = createLegacyTestServer({ dataDir });
       await secondServer.inject({
         method: "GET",
         url: "/api/campaigns/cmp_reopen_write",
@@ -553,7 +594,7 @@ describe("persistent campaign API", () => {
 
   it("reopens campaign state from persisted events in a fresh server", async () => {
     await withTempDataDir(async (dataDir) => {
-      const firstServer = createServer({ dataDir });
+      const firstServer = createLegacyTestServer({ dataDir });
       await firstServer.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -576,7 +617,7 @@ describe("persistent campaign API", () => {
         headers: { "x-dm-token": getDmToken(firstServer) },
       });
 
-      const secondServer = createServer({ dataDir });
+      const secondServer = createLegacyTestServer({ dataDir });
       const response = await secondServer.inject({
         method: "GET",
         url: "/api/campaigns/cmp_reload",
@@ -593,7 +634,7 @@ describe("persistent campaign API", () => {
 
   it("writes complete JSON exports and local backup artifacts", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -671,7 +712,7 @@ describe("persistent campaign API", () => {
 
   it("writes navigable Markdown export artifacts", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -868,7 +909,7 @@ describe("persistent campaign API", () => {
 
   it("restores campaign state from a local backup artifact", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -946,7 +987,7 @@ describe("persistent campaign API", () => {
 
   it("serves dashboard and what-now projections from deterministic campaign state", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -1073,7 +1114,7 @@ describe("persistent campaign API", () => {
 
   it("serves graph, timeline, visibility, and search projections from campaign state", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -1172,7 +1213,7 @@ describe("persistent campaign API", () => {
 
   it("rejects duplicate relations with 409 and allows bypass with ?force=true", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -1253,7 +1294,7 @@ describe("persistent campaign API", () => {
 
   it("creates, updates, and archives player profiles", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createLegacyTestServer({ dataDir });
       await server.inject({
         method: "POST",
         url: "/api/campaigns",
@@ -1315,7 +1356,7 @@ describe("persistent campaign API", () => {
   describe("Security and Authorization Audits", () => {
     it("rejects player access to DM-only endpoints", async () => {
       await withTempDataDir(async (dataDir) => {
-        const server = createServer({ dataDir });
+        const server = createLegacyTestServer({ dataDir });
         await server.inject({
           method: "POST",
           url: "/api/campaigns",
@@ -1347,7 +1388,7 @@ describe("persistent campaign API", () => {
 
     it("masks accessCode inside lan-status for players and observers", async () => {
       await withTempDataDir(async (dataDir) => {
-        const server = createServer({ dataDir });
+        const server = createLegacyTestServer({ dataDir });
         await server.inject({
           method: "POST",
           url: "/api/campaigns",
@@ -1410,7 +1451,7 @@ describe("persistent campaign API", () => {
 
     it("redirects dev LAN join requests from backend port to Vite UI port when the built SPA is absent", async () => {
       await withTempDataDir(async (dataDir) => {
-        const server = createServer({ dataDir });
+        const server = createLegacyTestServer({ dataDir });
 
         const res = await server.inject({
           method: "GET",
@@ -1425,7 +1466,7 @@ describe("persistent campaign API", () => {
 
     it("prevents vaultId path traversal and rejects invalid campaignId format", async () => {
       await withTempDataDir(async (dataDir) => {
-        const server = createServer({ dataDir });
+        const server = createLegacyTestServer({ dataDir });
 
         const badVault = await server.inject({
           method: "GET",
@@ -1449,7 +1490,7 @@ describe("persistent campaign API", () => {
     it("verifies backup campaign ownership and does auto-backup before restore", async () => {
       await withTempDataDir(async (dataDir) => {
         const { copyFile, mkdir } = await import("node:fs/promises");
-        const server = createServer({ dataDir });
+        const server = createLegacyTestServer({ dataDir });
         await server.inject({
           method: "POST",
           url: "/api/campaigns",
@@ -1531,7 +1572,7 @@ describe("persistent campaign API", () => {
 
     it("allows a DM to duplicate a campaign and registers campaign membership immediately", async () => {
       await withTempDataDir(async (dataDir) => {
-        const server = createServer({ dataDir });
+        const server = createLegacyTestServer({ dataDir });
         server.allowLegacyTestAuth = false;
 
         // Register and login DM

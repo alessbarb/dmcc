@@ -5,7 +5,7 @@ import { hasCampaignDmAccessSync } from "./campaignAclStore.js";
 const scryptAsync = promisify(scrypt);
 
 function allowsLegacyTestAuth(request: any): boolean {
-  return request.server?.allowLegacyTestAuth ?? process.env.NODE_ENV === "test";
+  return request.server?.allowLegacyTestAuth === true;
 }
 
 export async function hashSecret(secret: string): Promise<{ hash: string; salt: string }> {
@@ -128,7 +128,7 @@ export function getRequestDmSession(request: any, dmSessionSecret: string): DmSe
   const session = verifyDmSessionToken(dmTokenHeader, dmSessionSecret);
   if (session) return session;
 
-  if (process.env.NODE_ENV === "test" && request.headers["x-role"] === "dm") {
+  if (allowsLegacyTestAuth(request) && request.headers["x-role"] === "dm") {
     return { dmId: "usr_dm", vaultId: getValidatedVaultId(request), issuedAt: new Date(0).toISOString() };
   }
 
