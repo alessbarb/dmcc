@@ -1,5 +1,6 @@
 import type { CanvasTemplate } from "../templates/types.js";
 import { connectCanvasNodes, type CanvasEdgePayload, type CreateRelationPayload } from "./connectCanvasNodes.js";
+import { canvasVisibilityToVisibilityRule } from "./canvasVisibility.js";
 
 export interface CreatedCanvasNodeRef {
   id: string;
@@ -123,7 +124,7 @@ export const applyCanvasTemplate = async (
       relation: relation.status === "domain" ? {
         relationType: relation.relationType ?? relation.label.replace(/\s+/g, "_"),
         description: relation.description,
-        visibility: { kind: relation.visibility === "public" ? "public" : "dm_only" },
+        visibility: canvasVisibilityToVisibilityRule(relation.visibility === "public" ? "public" : "dm"),
       } : undefined,
       createRelation: store.createRelation,
       addEdgeToCanvas: store.addEdgeToCanvas,

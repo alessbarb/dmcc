@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { GitCommit, X } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+import { canvasVisibilityToVisibilityRule, type CanvasVisibility } from "../services/canvasVisibility.js";
 
 
 export interface RelationshipTypePopoverProps {
@@ -35,7 +36,7 @@ export function RelationshipTypePopover({
   const [relationType, setRelationType] = useState("");
   const [customType, setCustomType] = useState("");
   const [description, setDescription] = useState("");
-  const [visibilityKind, setVisibilityKind] = useState<"dm_only" | "public">("dm_only");
+  const [canvasVisibility, setCanvasVisibility] = useState<CanvasVisibility>("dm");
   const [edgeStyle, setEdgeStyle] = useState<"solid" | "dashed" | "secret" | "weak" | "strong">("solid");
 
   // Determine if it CAN be a domain relation (requires both ends to be campaign entities)
@@ -173,7 +174,7 @@ export function RelationshipTypePopover({
           targetEntityId: targetEntity.entityId,
           relationType: relTypeVal,
           description: description || undefined,
-          visibility: { kind: visibilityKind }
+          visibility: canvasVisibilityToVisibilityRule(canvasVisibility)
         } as any);
       } catch (err) {
         console.error("Failed to create domain relation", err);
@@ -185,7 +186,7 @@ export function RelationshipTypePopover({
       relationshipId,
       label: selectedLabel,
       status,
-      visibility: visibilityKind === "dm_only" ? "dm" : "public",
+      visibility: canvasVisibility,
       style: edgeStyle,
       description: description || undefined,
     });
@@ -309,8 +310,8 @@ export function RelationshipTypePopover({
                       <input
                         type="radio"
                         name="relVisibility"
-                        checked={visibilityKind === "dm_only"}
-                        onChange={() => setVisibilityKind("dm_only")}
+                        checked={canvasVisibility === "dm"}
+                        onChange={() => setCanvasVisibility("dm")}
                       />
                       {t("canvas.relationPopover.dmOnly")}
                     </label>
@@ -318,8 +319,8 @@ export function RelationshipTypePopover({
                       <input
                         type="radio"
                         name="relVisibility"
-                        checked={visibilityKind === "public"}
-                        onChange={() => setVisibilityKind("public")}
+                        checked={canvasVisibility === "public"}
+                        onChange={() => setCanvasVisibility("public")}
                       />
                       {t("canvas.relationPopover.public")}
                     </label>

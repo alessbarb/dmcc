@@ -5,6 +5,7 @@ import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../../shared/components/ImagePickerButton.js";
 import type { Canvas, CanvasEdge, CanvasNode } from "@core/domain/canvas/types.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
+import { canvasVisibilityToVisibilityRule, visibilityRuleToCanvasVisibility } from "../services/canvasVisibility.js";
 import type { Entity, Relation, Fact } from "../../../shared/stores/campaignStore.js";
 
 
@@ -243,7 +244,7 @@ export function CanvasInspector({
       if (field === "style") {
         await updateCanvasEdge(canvasId, selectedEdge.id, { style: value });
       } else if (field === "visibility" && relation) {
-        await updateRelation(relation.relationId, { visibility: { kind: value } });
+        await updateRelation(relation.relationId, { visibility: canvasVisibilityToVisibilityRule(value) });
       }
     }
   };
@@ -929,11 +930,11 @@ export function CanvasInspector({
                 <div className="form-group">
                   <label>Visibilidad de la relación</label>
                   <select
-                    value={relation.visibility?.kind || "dm_only"}
+                    value={visibilityRuleToCanvasVisibility(relation.visibility ?? { kind: "dm_only" })}
                     onChange={(e) => handleEdgeSelectChange("visibility", e.target.value)}
                     className="form-select"
                   >
-                    <option value="dm_only">Solo DM (Oculto)</option>
+                    <option value="dm">Solo DM (Oculto)</option>
                     <option value="public">Público (Revelado)</option>
                   </select>
                 </div>
