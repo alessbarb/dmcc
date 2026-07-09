@@ -4184,7 +4184,31 @@ small.canvas-navigator-result-action {
 
   .app-container--campaign-shell .content-header {
     position: relative;
+    display: grid;
+    gap: 12px;
     padding: 22px 16px 16px;
+  }
+
+  .app-container--campaign-shell .page-description {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .app-container--campaign-shell .page-context {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .app-container--campaign-shell .page-context::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app-container--campaign-shell .context-chip {
+    flex: 0 0 auto;
+    max-width: 86vw;
   }
 
   .app-container--campaign-shell .header-actions {
