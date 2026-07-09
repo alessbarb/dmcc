@@ -1,4 +1,4 @@
-import { randomUUID, randomBytes } from "node:crypto";
+import { randomUUID, randomBytes, randomInt } from "node:crypto";
 import argon2 from "argon2";
 import { sendExistingAccountRegistrationEmail, sendPasswordResetEmail } from "../emailService.js";
 import { verifySecret } from "../auth.js";
@@ -204,9 +204,10 @@ function makeInviteUrl(request: FastifyRequest, token: string): string {
   return `${origin.replace(/\/$/, "")}/join/${token}`;
 }
 
-function generateShortTableCode(): string {
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  const pick = () => Array.from({ length: 4 }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");
+export const SHORT_TABLE_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+export function generateShortTableCode(): string {
+  const pick = () => Array.from({ length: 4 }, () => SHORT_TABLE_CODE_ALPHABET[randomInt(SHORT_TABLE_CODE_ALPHABET.length)]).join("");
   return `${pick()}-${pick()}`;
 }
 
