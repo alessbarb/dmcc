@@ -61,7 +61,7 @@ async function issueTokenRaw(server: any, dmToken: string, playerId = "ply_1") {
 describe("player portal tokens", () => {
   it("issues a raw token once and does not expose it in dm summary", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createServer({ dataDir, allowLegacyTestAuth: true });
       const dmToken = await seedPlayer(server);
 
       const res = await server.inject({
@@ -81,7 +81,7 @@ describe("player portal tokens", () => {
 
 it("lets a token-authenticated player update their own live status", async () => {
   await withTempDataDir(async (dataDir) => {
-    const server = createServer({ dataDir });
+    const server = createServer({ dataDir, allowLegacyTestAuth: true });
     const dmToken = await seedPlayer(server);
     const playerToken = await issueToken(server, dmToken);
 
@@ -108,7 +108,7 @@ it("lets a token-authenticated player update their own live status", async () =>
 
 it("does not return private notes in dm summary", async () => {
   await withTempDataDir(async (dataDir) => {
-    const server = createServer({ dataDir });
+    const server = createServer({ dataDir, allowLegacyTestAuth: true });
     const dmToken = await seedPlayer(server);
     const playerToken = await issueToken(server, dmToken);
 
@@ -138,7 +138,7 @@ it("does not return private notes in dm summary", async () => {
 
 it("allows DM to approve a structural proposal and updates the character entity", async () => {
   await withTempDataDir(async (dataDir) => {
-    const server = createServer({ dataDir });
+    const server = createServer({ dataDir, allowLegacyTestAuth: true });
     const dmToken = await seedPlayer(server);
     const playerToken = await issueToken(server, dmToken);
 
@@ -181,7 +181,7 @@ it("allows DM to approve a structural proposal and updates the character entity"
 
 it("writes two events to the event store on proposal approval (multi-event result)", async () => {
   await withTempDataDir(async (dataDir) => {
-    const server = createServer({ dataDir });
+    const server = createServer({ dataDir, allowLegacyTestAuth: true });
     const dmToken = await seedPlayer(server);
     const playerToken = await issueToken(server, dmToken);
 
@@ -237,7 +237,7 @@ it("writes two events to the event store on proposal approval (multi-event resul
 
 it("rejects a revoked player token", async () => {
   await withTempDataDir(async (dataDir) => {
-    const server = createServer({ dataDir });
+    const server = createServer({ dataDir, allowLegacyTestAuth: true });
     const dmToken = await seedPlayer(server);
     const { token, tokenId } = await issueTokenRaw(server, dmToken);
 
@@ -262,7 +262,7 @@ it("rejects a revoked player token", async () => {
 describe("character assignment", () => {
   it("returns availableCharacters in GET /state when party-visible player_character entities exist", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createServer({ dataDir, allowLegacyTestAuth: true });
       const dmToken = await seedPlayer(server);
       const playerToken = await issueToken(server, dmToken);
 
@@ -297,7 +297,7 @@ describe("character assignment", () => {
 
   it("link_request proposal approved by DM results in linked character in GET /state", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
+      const server = createServer({ dataDir, allowLegacyTestAuth: true });
       const dmToken = await seedPlayer(server);
       const playerToken = await issueToken(server, dmToken);
 
@@ -356,7 +356,7 @@ describe("character assignment", () => {
 
 it("player cannot update another player note", async () => {
   await withTempDataDir(async (dataDir) => {
-    const server = createServer({ dataDir });
+    const server = createServer({ dataDir, allowLegacyTestAuth: true });
     const dmToken = await seedPlayer(server);
 
     // seed second player
@@ -393,7 +393,7 @@ it("player cannot update another player note", async () => {
 
 it("surfaces DM-visible player questions and notes for the DM inbox", async () => {
   await withTempDataDir(async (dataDir) => {
-    const server = createServer({ dataDir });
+    const server = createServer({ dataDir, allowLegacyTestAuth: true });
     const dmToken = await seedPlayer(server);
     const playerToken = await issueToken(server, dmToken);
 
@@ -443,8 +443,7 @@ it("surfaces DM-visible player questions and notes for the DM inbox", async () =
 
 it("allows DM to access player portal state using their DM session cookie when legacy test auth is disabled", async () => {
     await withTempDataDir(async (dataDir) => {
-      const server = createServer({ dataDir });
-      server.allowLegacyTestAuth = false;
+      const server = createServer({ dataDir, allowLegacyTestAuth: false });
 
       // Register and login DM
       const dmEmail = "dm_test@example.com";
@@ -501,3 +500,114 @@ it("allows DM to access player portal state using their DM session cookie when l
       expect(unauthRes.statusCode).toBe(401);
     });
   });
+
+describe("player portal input validation and XSS handling", () => {
+  it("rejects malformed status payloads and unknown note fields with 400", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, allowLegacyTestAuth: true });
+      const dmToken = await seedPlayer(server);
+      const playerToken = await issueToken(server, dmToken);
+
+      const malformedStatus = await server.inject({
+        method: "PUT",
+        url: "/api/campaigns/cmp_portal/player-portal/status",
+        payload: { hitPointsCurrent: "7", conditions: ["poisoned"], extra: true },
+        headers: { "x-player-token": playerToken },
+      });
+      expect(malformedStatus.statusCode).toBe(400);
+      expect(malformedStatus.json().error).toContain("Invalid request body");
+
+      const unknownNoteField = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_portal/player-portal/notes",
+        payload: { title: "Note", content: "body", visibility: "private", linkedEntityIds: [], html: "<b>no</b>" },
+        headers: { "x-player-token": playerToken },
+      });
+      expect(unknownNoteField.statusCode).toBe(400);
+      expect(unknownNoteField.json().error).toContain("Invalid request body");
+    });
+  });
+
+  it("rejects malformed objective, proposal, and resolution payloads with 400", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, allowLegacyTestAuth: true });
+      const dmToken = await seedPlayer(server);
+      const playerToken = await issueToken(server, dmToken);
+
+      const badObjective = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_portal/player-portal/objectives",
+        payload: { title: "Question", description: 42, visibility: "dm_visible" },
+        headers: { "x-player-token": playerToken },
+      });
+      expect(badObjective.statusCode).toBe(400);
+
+      const badProposal = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_portal/player-portal/proposals",
+        payload: { kind: "update_character_core", proposedChanges: { metadata: { evil: "field" } } },
+        headers: { "x-player-token": playerToken },
+      });
+      expect(badProposal.statusCode).toBe(400);
+
+      const proposal = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_portal/player-portal/proposals",
+        payload: { kind: "update_character_core", proposedChanges: { metadata: { level: 2 } } },
+        headers: { "x-player-token": playerToken },
+      });
+      expect(proposal.statusCode).toBe(201);
+
+      const badResolve = await server.inject({
+        method: "PUT",
+        url: `/api/campaigns/cmp_portal/player-portal/proposals/${proposal.json().proposalId}/resolve`,
+        payload: { status: "maybe", dmResolutionNote: "no" },
+        headers: { "x-dm-token": dmToken },
+      });
+      expect(badResolve.statusCode).toBe(400);
+    });
+  });
+
+  it("stores player XSS payloads as inert text in portal and DM summary JSON", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, allowLegacyTestAuth: true });
+      const dmToken = await seedPlayer(server);
+      const playerToken = await issueToken(server, dmToken);
+      const xss = `<img src=x onerror=alert(1)><script>alert("x")</script>`;
+
+      const note = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_portal/player-portal/notes",
+        payload: { title: "XSS note", content: xss, visibility: "dm_visible", linkedEntityIds: [] },
+        headers: { "x-player-token": playerToken },
+      });
+      expect(note.statusCode).toBe(201);
+
+      const objective = await server.inject({
+        method: "POST",
+        url: "/api/campaigns/cmp_portal/player-portal/objectives",
+        payload: { title: "XSS objective", description: xss, visibility: "dm_visible" },
+        headers: { "x-player-token": playerToken },
+      });
+      expect(objective.statusCode).toBe(201);
+
+      const state = await server.inject({
+        method: "GET",
+        url: "/api/campaigns/cmp_portal/player-portal/state",
+        headers: { "x-player-token": playerToken },
+      });
+      expect(state.statusCode).toBe(200);
+      expect(state.json().notes[0].content).toBe(xss);
+      expect(state.json().objectives[0].description).toBe(xss);
+
+      const summary = await server.inject({
+        method: "GET",
+        url: "/api/campaigns/cmp_portal/player-portal/dm-summary",
+        headers: { "x-dm-token": dmToken },
+      });
+      expect(summary.statusCode).toBe(200);
+      expect(summary.json().players[0].notes[0].content).toBe(xss);
+      expect(summary.json().players[0].objectives[0].description).toBe(xss);
+    });
+  });
+});
