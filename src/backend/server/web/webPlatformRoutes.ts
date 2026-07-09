@@ -948,7 +948,7 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   const loginRateLimits = new Map<string, LoginRateLimitEntry>();
   const loginLockouts = new Map<string, LoginLockoutEntry>();
 
-  server.get("/api/health", async () => ({ ok: true, app: "dmcc-web", storage: "postgres" }));
+  server.get("/api/health", async () => ({ ok: true }));
 
   server.post<{ Body: { email?: string; password?: string; displayName?: string } }>("/api/auth/register", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
