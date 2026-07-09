@@ -1,6 +1,6 @@
 import { randomUUID, randomBytes } from "node:crypto";
 import argon2 from "argon2";
-import { sendPasswordResetEmail } from "../emailService.js";
+import { sendExistingAccountRegistrationEmail, sendPasswordResetEmail } from "../emailService.js";
 import { verifySecret } from "../auth.js";
 import type { FastifyInstance, FastifyRequest } from "fastify";
 import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
@@ -23,6 +23,32 @@ import {
 import { campaignEventBus } from "../realtime/campaignEventBus.js";
 import { getPremadeCampaignTemplate, listPremadeCampaignTemplates } from "../premade/premadeCampaigns.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
+
+type RegisterRateLimitEntry = { count: number; resetAt: number };
+
+const REGISTER_SUCCESS_RESPONSE = { ok: true, message: "If registration can proceed, you will receive the next steps." };
+const REGISTER_RATE_LIMIT_WINDOW_MS = 60_000;
+const REGISTER_RATE_LIMIT_MAX_BY_IP = 20;
+const REGISTER_RATE_LIMIT_MAX_BY_EMAIL = 5;
+function getRegisterRateLimitRetryAfter(registerRateLimits: Map<string, RegisterRateLimitEntry>, key: string, limit: number, now = Date.now()): number | null {
+  const current = registerRateLimits.get(key);
+  if (!current || current.resetAt <= now) {
+    registerRateLimits.set(key, { count: 1, resetAt: now + REGISTER_RATE_LIMIT_WINDOW_MS });
+    return null;
+  }
+  if (current.count >= limit) {
+    return Math.max(1, Math.ceil((current.resetAt - now) / 1000));
+  }
+  current.count += 1;
+  registerRateLimits.set(key, current);
+  return null;
+}
+
+function enforceRegisterRateLimit(registerRateLimits: Map<string, RegisterRateLimitEntry>, request: FastifyRequest, normalizedEmail: string): number | null {
+  const ipRetryAfter = getRegisterRateLimitRetryAfter(registerRateLimits, `register:ip:${request.ip}`, REGISTER_RATE_LIMIT_MAX_BY_IP);
+  const emailRetryAfter = getRegisterRateLimitRetryAfter(registerRateLimits, `register:email:${hashOpaque(normalizedEmail)}`, REGISTER_RATE_LIMIT_MAX_BY_EMAIL);
+  return Math.max(ipRetryAfter ?? 0, emailRetryAfter ?? 0) || null;
+}
 
 function requireBodyString(value: unknown, field: string): string {
   if (typeof value !== "string" || value.trim().length === 0) {
@@ -854,6 +880,7 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
 
 export async function registerWebPlatformRoutes(server: FastifyInstance) {
   const repo = new PostgresCampaignRepository();
+  const registerRateLimits = new Map<string, RegisterRateLimitEntry>();
 
   server.get("/api/health", async () => ({ ok: true, app: "dmcc-web", storage: "postgres" }));
 
@@ -877,6 +904,13 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
 
   server.post<{ Body: { email?: string; password?: string; displayName?: string } }>("/api/auth/register", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
+    const retryAfter = enforceRegisterRateLimit(registerRateLimits, request, email);
+    if (retryAfter) {
+      reply.header("Retry-After", String(retryAfter));
+      reply.code(429);
+      return { error: "Too many registration attempts" };
+    }
+
     const password = requireBodyString(request.body?.password, "password");
     if (password.length < 8) {
       reply.code(400);
@@ -885,8 +919,10 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     const displayName = request.body?.displayName?.trim() || email.split("@")[0];
     const existing = await db.select().from(schema.users).where(eq(schema.users.emailNormalized, email)).limit(1);
     if (existing[0]) {
-      reply.code(409);
-      return { error: "Email already registered" };
+      console.info("[auth-register] Existing account registration attempt", { emailHash: hashOpaque(email), ip: request.ip });
+      await sendExistingAccountRegistrationEmail({ to: email });
+      reply.code(201);
+      return REGISTER_SUCCESS_RESPONSE;
     }
 
     const userId = createId("usr");
@@ -905,11 +941,9 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
       await tx.insert(schema.workspaces).values({ workspaceId, name: `${displayName}'s workspace`, ownerId: userId });
       await tx.insert(schema.workspaceMemberships).values({ workspaceId, userId, role: "owner" });
     });
-    const [createdUser] = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);
-    const session = await createWebSession(userId);
-    setWebSessionCookie(reply, session.token, session.expiresAt);
+    console.info("[auth-register] Account registered", { userId, emailHash: hashOpaque(email), ip: request.ip });
     reply.code(201);
-    return { user: publicWebUser(createdUser) };
+    return REGISTER_SUCCESS_RESPONSE;
   });
 
   server.post<{ Body: { email?: string; password?: string } }>("/api/auth/login", async (request, reply) => {

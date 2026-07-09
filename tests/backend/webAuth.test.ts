@@ -53,6 +53,46 @@ describe("web auth", () => {
     });
   });
 
+  it("returns an indistinguishable registration response for new and existing emails", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+
+      const first = await register(server, "dm@example.com", "password12345");
+      const duplicate = await register(server, " DM@example.com ", "different-password12345");
+
+      expect(first.statusCode).toBe(201);
+      expect(duplicate.statusCode).toBe(201);
+      expect(duplicate.json()).toEqual(first.json());
+      expect(String(first.headers["set-cookie"] ?? "")).toBe("");
+      expect(String(duplicate.headers["set-cookie"] ?? "")).toBe("");
+
+      const originalLogin = await login(server, "dm@example.com", "password12345");
+      const duplicatePasswordLogin = await login(server, "dm@example.com", "different-password12345");
+      expect(originalLogin.statusCode).toBe(200);
+      expect(duplicatePasswordLogin.statusCode).toBe(401);
+
+      await server.close();
+    });
+  });
+
+  it("rate-limits registration attempts by normalized email", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir });
+
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        const res = await register(server, "rate@example.com", `password${attempt}12345`);
+        expect(res.statusCode).toBe(201);
+      }
+
+      const limited = await register(server, " RATE@example.com ", "password-limited12345");
+      expect(limited.statusCode).toBe(429);
+      expect(limited.json()).toEqual({ error: "Too many registration attempts" });
+      expect(limited.headers["retry-after"]).toBeDefined();
+
+      await server.close();
+    });
+  });
+
   it("login creates session accessible via GET /api/auth/session", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
