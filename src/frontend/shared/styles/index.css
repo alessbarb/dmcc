@@ -4489,7 +4489,7 @@ small.canvas-navigator-result-action {
   display: none; /* hidden on desktop */
   position: fixed;
   right: 16px;
-  bottom: calc(var(--campaign-mobile-bottom-nav-height, 74px) + 16px + env(safe-area-inset-bottom));
+  bottom: calc(var(--campaign-mobile-bottom-nav-height, 74px) + 20px + env(safe-area-inset-bottom));
   z-index: 200;
   width: 52px;
   height: 52px;
@@ -4512,6 +4512,11 @@ small.canvas-navigator-result-action {
   .quick-capture-fab {
     display: flex;
   }
+}
+
+.player-portal-shell .quick-capture-fab,
+.join-portal-container .quick-capture-fab {
+  display: none !important;
 }
 
 .quick-capture-overlay {

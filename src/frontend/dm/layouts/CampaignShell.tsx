@@ -633,7 +633,7 @@ export function CampaignShell() {
 
       <ToastContainer toasts={toasts} onRemove={removeToast} />
 
-      {campaignId && <QuickCaptureFAB campaignId={campaignId} />}
+      {campaignId && currentSegment !== "canvas" && <QuickCaptureFAB campaignId={campaignId} />}
 
       {campaignId && (
         <CampaignGuidedTour campaignId={campaignId} enabled={isDM && Boolean(campaignState?.campaign)} />
