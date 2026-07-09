@@ -11173,6 +11173,42 @@ small.canvas-navigator-result-action {
   letter-spacing: 0.01em;
 }
 
+/* ── Audience Section ─────────────────────────────────────── */
+
+.rl-audience {
+  background:
+    radial-gradient(circle at 50% 0%, hsl(270 52% 70% / 0.08), transparent 42%),
+    var(--bg-abyss);
+  border-bottom: 1px solid hsl(220 20% 13% / 0.7);
+  padding: 96px 24px;
+}
+
+.rl-audience__inner {
+  max-width: min(88vw, 720px);
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.rl-audience__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.18;
+  letter-spacing: 0.01em;
+}
+
+.rl-audience__body {
+  font-size: clamp(0.95rem, 1.5vw, 1.08rem);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 640px;
+}
+
 /* ── Local-first Section ──────────────────────────────────── */
 
 .rl-local {
@@ -11306,6 +11342,7 @@ small.canvas-navigator-result-action {
   }
 
   .rl-pain,
+  .rl-audience,
   .rl-local,
   .rl-final-cta {
     padding: 64px 20px;
