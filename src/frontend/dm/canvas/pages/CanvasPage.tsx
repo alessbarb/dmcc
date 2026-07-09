@@ -12,346 +12,25 @@ import { useParams } from "@tanstack/react-router";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
 
+import { getCanvasTemplate } from "../templates/index.js";
+import { applyCanvasTemplate } from "../services/applyCanvasTemplate.js";
 
-// Seeding logic for board templates
-const seedCanvasTemplate = async (canvasId: string, template: string, _campaignId: string, t: (key: string, params?: Record<string, string | number>) => string) => {
+const seedCanvasTemplate = async (canvasId: string, templateId: string, t: (key: string, params?: Record<string, string | number>) => string) => {
+  const template = getCanvasTemplate(templateId, t);
+  if (!template) return;
+
   const store = useCampaignStore.getState();
-  const { createEntity, placeNodeOnCanvas, addEdgeToCanvas, updateCanvasNode } = store;
-  
-  if (template === "mystery") {
-    const entitiesToCreate = [
-      { entityType: "clue", title: "Incidente Inicial", summary: t("canvas.seedData.investigationTrigger") },
-      { entityType: "npc", title: "Sospechoso Principal", subtitle: "Tiene una coartada dudosa", summary: "Un personaje clave en el misterio." },
-      { entityType: "clue", title: "Pista Real", summary: "Una prueba irrefutable que apunta al sospechoso." },
-      { entityType: "rumor", title: "Pista Falsa", summary: t("canvas.seedData.redHerring") },
-      { entityType: "secret", title: t("canvas.seedData.centralSecret"), summary: "El secreto que el sospechoso intenta ocultar a toda costa.", visibility: { kind: "dm_only" } },
-      { entityType: "quest", title: t("canvas.seedData.finalRevelation"), summary: "La escena donde se confronta al culpable." },
-      { entityType: "consequence", title: "Consecuencia Mayor", summary: "El impacto de resolver o fallar el misterio." }
-    ];
-
-    const createdIds: string[] = [];
-    for (const ent of entitiesToCreate) {
-      const result = await createEntity({
-        ...ent,
-        status: "ready",
-        importance: "normal",
-        visibility: ent.visibility || { kind: "dm_only" }
-      } as any);
-      if (result?.entityId) createdIds.push(result.entityId);
-    }
-
-    const coords = [
-      { x: 100, y: 150 },
-      { x: 300, y: 150 },
-      { x: 500, y: 150 },
-      { x: 300, y: 300 },
-      { x: 500, y: 300 },
-      { x: 700, y: 150 },
-      { x: 700, y: 300 }
-    ];
-
-    for (let i = 0; i < createdIds.length; i++) {
-      await placeNodeOnCanvas(canvasId, { kind: "entity", entityId: createdIds[i], x: coords[i].x, y: coords[i].y });
-    }
-
-    const updatedCanvas = useCampaignStore.getState().canvasesById[canvasId];
-    const placedNodes = updatedCanvas?.nodes || [];
-    const findNodeIdByEntityId = (entId: string) => placedNodes.find((n: any) => n.entityId === entId)?.id;
-
-    const connections = [
-      { from: 0, to: 1, label: "apunta a" },
-      { from: 0, to: 2, label: "revela" },
-      { from: 1, to: 4, label: "oculta" },
-      { from: 2, to: 4, label: "apunta a" },
-      { from: 3, to: 1, label: "sospecha de" },
-      { from: 4, to: 5, label: "desbloquea" },
-      { from: 5, to: 6, label: "causa" }
-    ];
-
-    for (const conn of connections) {
-      const sourceId = findNodeIdByEntityId(createdIds[conn.from]);
-      const targetId = findNodeIdByEntityId(createdIds[conn.to]);
-      if (sourceId && targetId) {
-        await addEdgeToCanvas(canvasId, {
-          sourceNodeId: sourceId,
-          targetNodeId: targetId,
-          label: conn.label,
-          status: "draft",
-          visibility: "dm",
-          style: "solid"
-        });
-      }
-    }
-  } else if (template === "faction") {
-    const entities = [
-      { entityType: "npc", title: t("canvas.seedData.factionLeader"), subtitle: "Dirige con mano de hierro" },
-      { entityType: "npc", title: "Mano Derecha", subtitle: "Ejecuta los planes" },
-      { entityType: "item", title: "Recurso Clave", summary: "Un artefacto o tesoro que les da poder." },
-      { entityType: "secret", title: "Plan Oculto", summary: "Su objetivo secreto.", visibility: { kind: "dm_only" } },
-      { entityType: "faction", title: t("canvas.seedData.enemyFaction"), subtitle: "Su gran rival" },
-      { entityType: "quest", title: "Objetivo Principal", summary: t("canvas.seedData.missionToStop") }
-    ];
-
-    const createdIds: string[] = [];
-    for (const ent of entities) {
-      const result = await createEntity({
-        ...ent,
-        status: "ready",
-        importance: "normal",
-        visibility: ent.visibility || { kind: "dm_only" }
-      } as any);
-      if (result?.entityId) createdIds.push(result.entityId);
-    }
-
-    const coords = [
-      { x: 300, y: 100 },
-      { x: 300, y: 280 },
-      { x: 100, y: 190 },
-      { x: 500, y: 100 },
-      { x: 100, y: 380 },
-      { x: 500, y: 280 }
-    ];
-
-    await placeNodeOnCanvas(canvasId, { kind: "group", title: "Cuartel General", color: "purple", x: 80, y: 60, width: 320, height: 350 });
-
-    const updatedCanvas = useCampaignStore.getState().canvasesById[canvasId];
-    const groupNode = updatedCanvas?.nodes?.find((n: any) => n.kind === "group" && n.title === "Cuartel General");
-    if (groupNode) {
-      await updateCanvasNode(canvasId, groupNode.id, { groupType: "faction" });
-    }
-
-    for (let i = 0; i < createdIds.length; i++) {
-      const groupId = (i === 0 || i === 1) && groupNode ? groupNode.id : undefined;
-      await placeNodeOnCanvas(canvasId, {
-        kind: "entity",
-        entityId: createdIds[i],
-        x: coords[i].x,
-        y: coords[i].y,
-        groupId
-      });
-    }
-
-    const placedNodes = useCampaignStore.getState().canvasesById[canvasId]?.nodes || [];
-    const findNodeIdByEntityId = (entId: string) => placedNodes.find((n: any) => n.entityId === entId)?.id;
-
-    const connections = [
-      { from: 0, to: 1, label: "lidera" },
-      { from: 0, to: 2, label: "custodia" },
-      { from: 0, to: 3, label: "planea" },
-      { from: 0, to: 4, label: "enemigo de" },
-      { from: 3, to: 5, label: "desbloquea" }
-    ];
-
-    for (const conn of connections) {
-      const sourceId = findNodeIdByEntityId(createdIds[conn.from]);
-      const targetId = findNodeIdByEntityId(createdIds[conn.to]);
-      if (sourceId && targetId) {
-        await addEdgeToCanvas(canvasId, {
-          sourceNodeId: sourceId,
-          targetNodeId: targetId,
-          label: conn.label,
-          status: "draft",
-          visibility: "dm",
-          style: "solid"
-        });
-      }
-    }
-  } else if (template === "city") {
-    const entities = [
-      { entityType: "location", title: "Plaza Mayor", subtitle: t("canvas.seedData.publicMeetingPoint") },
-      { entityType: "location", title: "Taberna Local", subtitle: "Rumores y contactos" },
-      { entityType: "location", title: t("canvas.seedData.darkAlley"), subtitle: "Actividad criminal", visibility: { kind: "dm_only" } },
-      { entityType: "npc", title: "Tabernero", subtitle: "Sabe todos los chismes" },
-      { entityType: "faction", title: "Guardia de la Ciudad", subtitle: "Mantiene el orden" },
-      { entityType: "rumor", title: "Rumor Callejero", summary: "Una pista sobre un robo inminente." }
-    ];
-
-    const createdIds: string[] = [];
-    for (const ent of entities) {
-      const result = await createEntity({
-        ...ent,
-        status: "ready",
-        importance: "normal",
-        visibility: ent.visibility || { kind: "dm_only" }
-      } as any);
-      if (result?.entityId) createdIds.push(result.entityId);
-    }
-
-    const coords = [
-      { x: 150, y: 150 },
-      { x: 400, y: 150 },
-      { x: 650, y: 150 },
-      { x: 400, y: 350 },
-      { x: 150, y: 350 },
-      { x: 650, y: 350 }
-    ];
-
-    await placeNodeOnCanvas(canvasId, { kind: "group", title: "Distrito Comercial", color: "green", x: 100, y: 100, width: 480, height: 420 });
-    const updatedCanvas = useCampaignStore.getState().canvasesById[canvasId];
-    const groupNode = updatedCanvas?.nodes?.find((n: any) => n.kind === "group" && n.title === "Distrito Comercial");
-    if (groupNode) {
-      await updateCanvasNode(canvasId, groupNode.id, { groupType: "location" });
-    }
-
-    for (let i = 0; i < createdIds.length; i++) {
-      const groupId = (i === 0 || i === 1 || i === 3) && groupNode ? groupNode.id : undefined;
-      await placeNodeOnCanvas(canvasId, {
-        kind: "entity",
-        entityId: createdIds[i],
-        x: coords[i].x,
-        y: coords[i].y,
-        groupId
-      });
-    }
-
-    const placedNodes = useCampaignStore.getState().canvasesById[canvasId]?.nodes || [];
-    const findNodeIdByEntityId = (entId: string) => placedNodes.find((n: any) => n.entityId === entId)?.id;
-
-    const connections = [
-      { from: 1, to: 3, label: "trabaja en" },
-      { from: 4, to: 0, label: "patrulla" },
-      { from: 3, to: 5, label: "conoce" },
-      { from: 5, to: 2, label: "apunta a" }
-    ];
-
-    for (const conn of connections) {
-      const sourceId = findNodeIdByEntityId(createdIds[conn.from]);
-      const targetId = findNodeIdByEntityId(createdIds[conn.to]);
-      if (sourceId && targetId) {
-        await addEdgeToCanvas(canvasId, {
-          sourceNodeId: sourceId,
-          targetNodeId: targetId,
-          label: conn.label,
-          status: "draft",
-          visibility: "dm",
-          style: "solid"
-        });
-      }
-    }
-  } else if (template === "session") {
-    const entities = [
-      { entityType: "scene", title: t("canvas.seedData.scene1"), summary: t("canvas.seedData.scene1Desc") },
-      { entityType: "scene", title: t("canvas.seedData.scene2"), summary: "Investigan el lugar del incidente." },
-      { entityType: "scene", title: "Escena 3: Combate", summary: "Encuentro con las criaturas." },
-      { entityType: "scene", title: "Escena 4: Cierre", summary: t("canvas.seedData.sessionResolution") },
-      { entityType: "consequence", title: "Consecuencia Inmediata", summary: t("canvas.seedData.nextSessionChanges") }
-    ];
-
-    const createdIds: string[] = [];
-    for (const ent of entities) {
-      const result = await createEntity({
-        ...ent,
-        status: "ready",
-        importance: "normal",
-        visibility: { kind: "dm_only" }
-      } as any);
-      if (result?.entityId) createdIds.push(result.entityId);
-    }
-
-    const coords = [
-      { x: 100, y: 200 },
-      { x: 300, y: 200 },
-      { x: 500, y: 200 },
-      { x: 700, y: 200 },
-      { x: 900, y: 200 }
-    ];
-
-    for (let i = 0; i < createdIds.length; i++) {
-      await placeNodeOnCanvas(canvasId, { kind: "entity", entityId: createdIds[i], x: coords[i].x, y: coords[i].y });
-    }
-
-    const placedNodes = useCampaignStore.getState().canvasesById[canvasId]?.nodes || [];
-    const findNodeIdByEntityId = (entId: string) => placedNodes.find((n: any) => n.entityId === entId)?.id;
-
-    for (let i = 0; i < createdIds.length - 1; i++) {
-      const sourceId = findNodeIdByEntityId(createdIds[i]);
-      const targetId = findNodeIdByEntityId(createdIds[i + 1]);
-      if (sourceId && targetId) {
-        await addEdgeToCanvas(canvasId, {
-          sourceNodeId: sourceId,
-          targetNodeId: targetId,
-          label: "siguiente",
-          status: "draft",
-          visibility: "dm",
-          style: "solid"
-        });
-      }
-    }
-  } else if (template === "dungeon") {
-    const entities = [
-      { entityType: "location", title: "Entrada Inundada", subtitle: "Nivel 1 de la mazmorra" },
-      { entityType: "encounter", title: "Sala de Trampa", summary: "Trampa de flechas oculta." },
-      { entityType: "creature", title: "Guardias Orco", summary: "Dos orcos montando guardia." },
-      { entityType: "item", title: "Cofre del Tesoro", summary: "Contiene oro y una gema brillante." },
-      { entityType: "secret", title: t("canvas.seedData.secretPassage"), summary: t("canvas.seedData.behindTapestry"), visibility: { kind: "dm_only" } },
-      { entityType: "creature", title: "Jefe de la Mazmorra", subtitle: t("canvas.seedData.orcShaman") }
-    ];
-
-    const createdIds: string[] = [];
-    for (const ent of entities) {
-      const result = await createEntity({
-        ...ent,
-        status: "ready",
-        importance: "normal",
-        visibility: ent.visibility || { kind: "dm_only" }
-      } as any);
-      if (result?.entityId) createdIds.push(result.entityId);
-    }
-
-    const coords = [
-      { x: 100, y: 150 },
-      { x: 300, y: 150 },
-      { x: 500, y: 150 },
-      { x: 500, y: 320 },
-      { x: 300, y: 320 },
-      { x: 700, y: 150 }
-    ];
-
-    await placeNodeOnCanvas(canvasId, { kind: "group", title: "Ruinas Olvidadas", color: "blue", x: 80, y: 90, width: 720, height: 350 });
-    const updatedCanvas = useCampaignStore.getState().canvasesById[canvasId];
-    const groupNode = updatedCanvas?.nodes?.find((n: any) => n.kind === "group" && n.title === "Ruinas Olvidadas");
-    if (groupNode) {
-      await updateCanvasNode(canvasId, groupNode.id, { groupType: "location" });
-    }
-
-    for (let i = 0; i < createdIds.length; i++) {
-      const groupId = groupNode ? groupNode.id : undefined;
-      await placeNodeOnCanvas(canvasId, {
-        kind: "entity",
-        entityId: createdIds[i],
-        x: coords[i].x,
-        y: coords[i].y,
-        groupId
-      });
-    }
-
-    const placedNodes = useCampaignStore.getState().canvasesById[canvasId]?.nodes || [];
-    const findNodeIdByEntityId = (entId: string) => placedNodes.find((n: any) => n.entityId === entId)?.id;
-
-    const connections = [
-      { from: 0, to: 1, label: "conecta con" },
-      { from: 1, to: 2, label: "conecta con" },
-      { from: 2, to: 5, label: "custodia" },
-      { from: 2, to: 3, label: "protege" },
-      { from: 4, to: 3, label: "conduce a" }
-    ];
-
-    for (const conn of connections) {
-      const sourceId = findNodeIdByEntityId(createdIds[conn.from]);
-      const targetId = findNodeIdByEntityId(createdIds[conn.to]);
-      if (sourceId && targetId) {
-        await addEdgeToCanvas(canvasId, {
-          sourceNodeId: sourceId,
-          targetNodeId: targetId,
-          label: conn.label,
-          status: "draft",
-          visibility: "dm",
-          style: "solid"
-        });
-      }
-    }
-  }
+  await applyCanvasTemplate(canvasId, template, {
+    createEntity: store.createEntity,
+    createRelation: store.createRelation,
+    addEdgeToCanvas: store.addEdgeToCanvas,
+    placeNodeOnCanvas: store.placeNodeOnCanvas,
+    updateCanvasNode: store.updateCanvasNode,
+    createFact: store.createFact,
+    getCanvasNodes: (targetCanvasId) => useCampaignStore.getState().canvasesById[targetCanvasId]?.nodes ?? [],
+  });
 };
+
 
 // Markdown structured text import parser
 const parseAndImportText = async (text: string, canvasId: string, _campaignId: string) => {
@@ -760,7 +439,7 @@ export function CanvasPage() {
         sessionStorage.removeItem("dmcc_pending_seed_template");
         setTimeout(async () => {
           addToast(t("canvas.page.initializingTemplate", { name: pendingTemplate }), "info");
-          await seedCanvasTemplate(activeCanvasId, pendingTemplate, campaignId, t);
+          await seedCanvasTemplate(activeCanvasId, pendingTemplate, t);
           addToast(t("canvas.page.templateInitialized", { name: pendingTemplate === "mystery" ? "Misterio" : "Facciones" }), "success");
         }, 300);
       }
@@ -819,7 +498,7 @@ export function CanvasPage() {
     
     if (createdCanvasId && campaignId && newBoardTemplate !== "custom") {
       addToast(`Inicializando plantilla: ${newBoardTemplate}...`, "info");
-      await seedCanvasTemplate(createdCanvasId, newBoardTemplate, campaignId, t);
+      await seedCanvasTemplate(createdCanvasId, newBoardTemplate, t);
       addToast(t("canvas.page.boardInitialized", { name: newBoardTemplate }), "success");
     }
 
