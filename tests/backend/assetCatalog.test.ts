@@ -7,15 +7,17 @@ import { createServer } from "../../src/backend/server/createServer.js";
 async function withFakeAssets<T>(fn: (assetsDir: string) => Promise<T>): Promise<T> {
   const root = await mkdtemp(join(tmpdir(), "dmcc-assets-"));
   const avatarsDir = join(root, "assets", "avatars", "fantasy");
-  const campaignsDir = join(root, "assets", "campaigns");
-  const entitiesDir = join(root, "assets", "entities");
+  const campaignsDir = join(root, "assets", "campaigns", "dark-fantasy");
+  const entitiesDir = join(root, "assets", "entities", "npcs");
   await mkdir(avatarsDir, { recursive: true });
   await mkdir(campaignsDir, { recursive: true });
   await mkdir(entitiesDir, { recursive: true });
   await writeFile(join(root, "assets", "avatars", "default-avatar.png"), "");
   await writeFile(join(root, "assets", "avatars", "fantasy", "aelar.png"), "");
   await writeFile(join(root, "assets", "campaigns", "default-campaign-cover.jpg"), "");
+  await writeFile(join(root, "assets", "campaigns", "dark-fantasy", "castle.webp"), "");
   await writeFile(join(root, "assets", "entities", "default-entity.png"), "");
+  await writeFile(join(root, "assets", "entities", "npcs", "innkeeper.png"), "");
   try {
     return await fn(root);
   } finally {
@@ -38,7 +40,7 @@ describe("GET /api/assets/catalog", () => {
     });
   });
 
-  it("returns campaigns as flat 'all' group", async () => {
+  it("returns campaign groups with default and named subfolders", async () => {
     await withFakeAssets(async (assetsDir) => {
       const server = createServer({ assetsDir, storageMode: "legacy" });
       const response = await server.inject({
@@ -47,11 +49,12 @@ describe("GET /api/assets/catalog", () => {
       });
       expect(response.statusCode).toBe(200);
       const body = response.json<{ groups: Record<string, string[]> }>();
-      expect(body.groups["all"]).toContain("/assets/campaigns/default-campaign-cover.jpg");
+      expect(body.groups["default"]).toContain("/assets/campaigns/default-campaign-cover.jpg");
+      expect(body.groups["dark-fantasy"]).toContain("/assets/campaigns/dark-fantasy/castle.webp");
     });
   });
 
-  it("returns entities as flat 'all' group", async () => {
+  it("returns entity groups with default and named subfolders", async () => {
     await withFakeAssets(async (assetsDir) => {
       const server = createServer({ assetsDir, storageMode: "legacy" });
       const response = await server.inject({
@@ -60,7 +63,8 @@ describe("GET /api/assets/catalog", () => {
       });
       expect(response.statusCode).toBe(200);
       const body = response.json<{ groups: Record<string, string[]> }>();
-      expect(body.groups["all"]).toContain("/assets/entities/default-entity.png");
+      expect(body.groups["default"]).toContain("/assets/entities/default-entity.png");
+      expect(body.groups["npcs"]).toContain("/assets/entities/npcs/innkeeper.png");
     });
   });
 
@@ -87,7 +91,8 @@ describe("GET /api/assets/catalog", () => {
         });
         expect(response.statusCode).toBe(200);
         const body = response.json<{ groups: Record<string, string[]> }>();
-        expect(body.groups["all"]).toContain("/assets/campaigns/default-campaign-cover.jpg");
+        expect(body.groups["default"]).toContain("/assets/campaigns/default-campaign-cover.jpg");
+        expect(body.groups["dark-fantasy"]).toContain("/assets/campaigns/dark-fantasy/castle.webp");
       } finally {
         if (previousPublicDir === undefined) {
           delete process.env.DMCC_PUBLIC_DIR;
