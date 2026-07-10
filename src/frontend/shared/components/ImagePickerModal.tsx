@@ -378,13 +378,16 @@ function ImageGrid({ images, value, onSelect, onClose, isMobile }: {
   onClose: () => void;
   isMobile: boolean;
 }) {
+  const mobileTileHeight = 168;
+
   return (
     <div
       style={{
         ...scrollStyle,
         display: "grid",
-        gridTemplateColumns: isMobile ? "repeat(3, minmax(0, 1fr))" : "repeat(auto-fill, minmax(72px, 1fr))",
-        gap: isMobile ? 10 : 8,
+        gridTemplateColumns: isMobile ? "repeat(2, minmax(0, 1fr))" : "repeat(auto-fill, minmax(72px, 1fr))",
+        gridAutoRows: isMobile ? `${mobileTileHeight}px` : undefined,
+        gap: isMobile ? 12 : 8,
         alignContent: "start",
       }}
     >
@@ -394,13 +397,15 @@ function ImageGrid({ images, value, onSelect, onClose, isMobile }: {
           key={path}
           onClick={() => { onSelect(path); onClose(); }}
           style={{
+            width: "100%",
+            height: isMobile ? mobileTileHeight : undefined,
             padding: 0,
             border: value === path ? "2px solid var(--color-accent, #c5a028)" : "2px solid transparent",
-            borderRadius: "var(--radius-sm, 6px)",
+            borderRadius: "var(--radius-sm, 8px)",
             overflow: "hidden",
             cursor: "pointer",
-            background: "none",
-            aspectRatio: "1 / 1",
+            background: "rgba(255,255,255,0.03)",
+            aspectRatio: isMobile ? undefined : "1 / 1",
             minWidth: 0,
           }}
           title={path.split("/").pop()}
