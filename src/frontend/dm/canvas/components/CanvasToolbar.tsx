@@ -30,7 +30,8 @@ function toDesktopInteractionMode(touchMode: CanvasTouchMode): InteractionMode {
   }
 }
 
-function toTouchMode(interactionMode: InteractionMode): CanvasTouchMode {
+function toTouchMode(interactionMode: InteractionMode, isLocked: boolean): CanvasTouchMode {
+  if (isLocked) return "explore";
   switch (interactionMode) {
     case "pan": return "explore";
     case "multiselect": return "multi";
@@ -52,7 +53,7 @@ export function CanvasToolbar({
   const { placeNodeOnCanvas } = useCampaignStore();
   const { t } = useTranslation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const touchMode = toTouchMode(interactionMode);
+  const touchMode = toTouchMode(interactionMode, isLocked);
 
   const closeMobileTools = () => setIsMobileOpen(false);
 
@@ -73,6 +74,7 @@ export function CanvasToolbar({
 
   const handleTouchModeChange = (mode: CanvasTouchMode) => {
     onModeChange(toDesktopInteractionMode(mode));
+    onLockChange(mode === "explore");
     closeMobileTools();
   };
 
@@ -144,30 +146,16 @@ export function CanvasToolbar({
   const desktopToolbarContent = (
     <div className="canvas-toolbar">
       <div className="canvas-toolbar__group">
-        <button className={`canvas-toolbar__btn ${interactionMode === "select" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("select")} title={t("canvas.toolbar.selectMode")}>
-          <MousePointer2 size={15} />
-        </button>
-        <button className={`canvas-toolbar__btn ${interactionMode === "pan" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("pan")} title={t("canvas.toolbar.panMode")}>
-          <Hand size={15} />
-        </button>
-        <button className={`canvas-toolbar__btn ${interactionMode === "multiselect" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("multiselect")} title={t("canvas.toolbar.multiSelectMode")}>
-          <BoxSelect size={15} />
-        </button>
+        <button className={`canvas-toolbar__btn ${interactionMode === "select" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("select")} title={t("canvas.toolbar.selectMode")}><MousePointer2 size={15} /></button>
+        <button className={`canvas-toolbar__btn ${interactionMode === "pan" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("pan")} title={t("canvas.toolbar.panMode")}><Hand size={15} /></button>
+        <button className={`canvas-toolbar__btn ${interactionMode === "multiselect" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("multiselect")} title={t("canvas.toolbar.multiSelectMode")}><BoxSelect size={15} /></button>
       </div>
-
       <div className="canvas-toolbar__divider" />
-
       <div className="canvas-toolbar__group">
-        <button className="canvas-toolbar__btn" onClick={handleAddNote} title={t("canvas.toolbar.quickNote")}>
-          <StickyNote size={15} />
-        </button>
-        <button className="canvas-toolbar__btn" onClick={handleAddGroup} title={t("canvas.toolbar.visualGroup")}>
-          <Frame size={15} />
-        </button>
+        <button className="canvas-toolbar__btn" onClick={handleAddNote} title={t("canvas.toolbar.quickNote")}><StickyNote size={15} /></button>
+        <button className="canvas-toolbar__btn" onClick={handleAddGroup} title={t("canvas.toolbar.visualGroup")}><Frame size={15} /></button>
       </div>
-
       <div className="canvas-toolbar__divider" />
-
       <div className="canvas-toolbar__group">
         <button className="canvas-toolbar__btn" onClick={handleFitView} title={t("canvas.toolbar.fitView")}><Maximize2 size={15} /></button>
         <button className="canvas-toolbar__btn" onClick={handleFocusSelection} title={t("canvas.toolbar.focusSelection")}><Target size={15} /></button>
@@ -176,9 +164,7 @@ export function CanvasToolbar({
         <button className={`canvas-toolbar__btn ${showMinimap ? "canvas-toolbar__btn--active" : ""}`} onClick={handleMinimapToggle} title={t("canvas.toolbar.minimap")}><Map size={15} /></button>
         {groupFocusSelect}
       </div>
-
       <div className="canvas-toolbar__divider" />
-
       <div className="canvas-toolbar__group">
         <button className={`canvas-toolbar__btn ${isLocked ? "canvas-toolbar__btn--active canvas-toolbar__btn--warning" : ""}`} onClick={handleLockToggle} title={isLocked ? t("canvas.toolbar.unlockPositions") : t("canvas.toolbar.lockPositions")}>
           {isLocked ? <Lock size={15} /> : <Unlock size={15} />}
@@ -191,27 +177,17 @@ export function CanvasToolbar({
     <div className="canvas-toolbar canvas-toolbar--touch">
       <span className="canvas-mobile-tools-section">Modo táctil</span>
       <div className="canvas-toolbar__group">
-        <button className={`canvas-toolbar__btn ${touchMode === "explore" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("explore")} title="Explorar: arrastra el mapa y toca tarjetas para verlas">
-          <Hand size={15} />
-        </button>
-        <button className={`canvas-toolbar__btn ${touchMode === "edit" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("edit")} title="Editar: selecciona tarjetas y prepara cambios">
-          <MousePointer2 size={15} />
-        </button>
-        <button className={`canvas-toolbar__btn ${touchMode === "multi" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("multi")} title="Seleccionar varias tarjetas">
-          <BoxSelect size={15} />
-        </button>
+        <button className={`canvas-toolbar__btn ${touchMode === "explore" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("explore")} title="Explorar: arrastra el mapa y toca tarjetas para verlas"><Hand size={15} /></button>
+        <button className={`canvas-toolbar__btn ${touchMode === "edit" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("edit")} title="Editar: arrastra tarjetas y toca para seleccionarlas"><MousePointer2 size={15} /></button>
+        <button className={`canvas-toolbar__btn ${touchMode === "multi" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("multi")} title="Seleccionar varias tarjetas"><BoxSelect size={15} /></button>
       </div>
-
       <div className="canvas-toolbar__divider" />
-
       <span className="canvas-mobile-tools-section">Crear</span>
       <div className="canvas-toolbar__group">
         <button className="canvas-toolbar__btn" onClick={handleAddNote} title={t("canvas.toolbar.quickNote")}><StickyNote size={15} /></button>
         <button className="canvas-toolbar__btn" onClick={handleAddGroup} title={t("canvas.toolbar.visualGroup")}><Frame size={15} /></button>
       </div>
-
       <div className="canvas-toolbar__divider" />
-
       <span className="canvas-mobile-tools-section">Vista</span>
       <div className="canvas-toolbar__group">
         <button className="canvas-toolbar__btn" onClick={handleFitView} title={t("canvas.toolbar.fitView")}><Maximize2 size={15} /></button>
@@ -221,9 +197,7 @@ export function CanvasToolbar({
         <button className={`canvas-toolbar__btn ${showMinimap ? "canvas-toolbar__btn--active" : ""}`} onClick={handleMinimapToggle} title={t("canvas.toolbar.minimap")}><Map size={15} /></button>
         {groupFocusSelect}
       </div>
-
       <div className="canvas-toolbar__divider" />
-
       <span className="canvas-mobile-tools-section">Seguridad</span>
       <div className="canvas-toolbar__group">
         <button className={`canvas-toolbar__btn ${isLocked ? "canvas-toolbar__btn--active canvas-toolbar__btn--warning" : ""}`} onClick={handleLockToggle} title={isLocked ? t("canvas.toolbar.unlockPositions") : t("canvas.toolbar.lockPositions")}>
@@ -235,10 +209,7 @@ export function CanvasToolbar({
 
   return (
     <>
-      <Panel position="top-center" className="canvas-toolbar-panel canvas-toolbar-panel--desktop" style={{ marginTop: "8px" }}>
-        {desktopToolbarContent}
-      </Panel>
-
+      <Panel position="top-center" className="canvas-toolbar-panel canvas-toolbar-panel--desktop" style={{ marginTop: "8px" }}>{desktopToolbarContent}</Panel>
       <Panel position="bottom-right" className="canvas-toolbar-panel canvas-toolbar-panel--mobile">
         {isMobileOpen && (
           <>
@@ -252,15 +223,7 @@ export function CanvasToolbar({
             </div>
           </>
         )}
-        <button
-          type="button"
-          className={`canvas-mobile-tools-fab ${isMobileOpen ? "canvas-mobile-tools-fab--open" : ""}`}
-          onClick={() => setIsMobileOpen((open) => !open)}
-          aria-expanded={isMobileOpen}
-          aria-label="Abrir herramientas del Canvas"
-        >
-          <Wrench size={20} />
-        </button>
+        <button type="button" className={`canvas-mobile-tools-fab ${isMobileOpen ? "canvas-mobile-tools-fab--open" : ""}`} onClick={() => setIsMobileOpen((open) => !open)} aria-expanded={isMobileOpen} aria-label="Abrir herramientas del Canvas"><Wrench size={20} /></button>
       </Panel>
     </>
   );
