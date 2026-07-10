@@ -1,6 +1,28 @@
 /* Mobile graph refinements.
    GraphPage still contains inline layout, so this layer scopes carefully to the graph screen. */
 
+.graph-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.graph-page-header h2 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.graph-page-header p {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.graph-page-header__action {
+  white-space: nowrap;
+}
+
 .graph-mobile-fab-stack,
 .graph-mobile-sheet,
 .graph-mobile-sheet-backdrop,
@@ -9,6 +31,22 @@
 }
 
 @media (max-width: 768px) {
+  .graph-page-header {
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .graph-page-header h2 {
+    font-size: 1.45rem;
+    line-height: 1.05;
+  }
+
+  .graph-page-header__action {
+    min-height: 40px;
+    padding-inline: 12px;
+    border-radius: 14px;
+  }
+
   .content-body > div:has(canvas) {
     gap: 10px !important;
   }
@@ -291,6 +329,15 @@
 }
 
 @media (max-width: 520px) {
+  .graph-page-header {
+    flex-direction: column;
+  }
+
+  .graph-page-header__action {
+    align-self: stretch;
+    justify-content: center;
+  }
+
   .content-body > div:has(canvas) > div:first-child {
     flex-direction: column !important;
   }
