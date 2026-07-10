@@ -25,6 +25,21 @@ export interface CanvasEntityNodeProps {
   selected?: boolean;
 }
 
+function resolveEntityImageUrl(entity: Entity): string | undefined {
+  const metadata = entity.metadata && typeof entity.metadata === "object" ? entity.metadata as Record<string, unknown> : {};
+  const candidates = [
+    metadata.imageUrl,
+    metadata.avatarUrl,
+    metadata.portraitUrl,
+    metadata.coverUrl,
+    (entity as any).imageUrl,
+    (entity as any).avatarUrl,
+    (entity as any).portraitUrl,
+    (entity as any).coverUrl,
+  ];
+  return candidates.find((value): value is string => typeof value === "string" && value.trim().length > 0)?.trim();
+}
+
 export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodeProps) {
   const { t } = useTranslation();
   const [isPrivacyRevealed, setIsPrivacyRevealed] = useState(false);
@@ -63,7 +78,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
 
   const cfg = getEntityVisual(entity.entityType);
   const IconComponent = cfg.icon;
-  const imageUrl = entity.metadata?.imageUrl as string | undefined;
+  const imageUrl = resolveEntityImageUrl(entity);
   const heroStyle = cfg.heroStyle;
   const isDmOnly = isDmOnlyVisibility(entity.visibility);
   const isTableHidden = Boolean(data.tablePrivacy && isDmOnly && !isPrivacyRevealed);
@@ -126,7 +141,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
       {/* Hero area */}
       <div className={`rg-card__hero ${imageUrl ? "rg-card__hero--img" : "rg-card__hero--icon"}`}>
         {imageUrl ? (
-          <img src={imageUrl} alt={entity.title} className="rg-card__img" />
+          <img src={imageUrl} alt={entity.title} className="rg-card__img" loading="lazy" draggable={false} />
         ) : (
           <IconComponent
             className="rg-card__hero-icon"
@@ -238,91 +253,14 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
               if (entity.entityType === "npc") {
                 newStatus = currentStatus === "alive" ? "dead" : "alive";
               } else if (entity.entityType === "location") {
-                newStatus = currentStatus === "unvisited" ? "visited" : "unvisited";
-              } else if (entity.entityType === "clue") {
-                newStatus = currentStatus === "unfound" ? "found" : "unfound";
+                newStatus = currentStatus === "available" ? "visited" : "available";
               } else if (entity.entityType === "quest") {
                 newStatus = currentStatus === "active" ? "completed" : "active";
-              } else if (entity.entityType === "secret") {
-                newStatus = currentStatus === "hidden" ? "revealed" : "hidden";
-              } else {
-                newStatus = currentStatus === "resolved" ? "ready" : "resolved";
               }
 
               await updateEntity(entity.entityId, { status: newStatus });
-              const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
-              if (activeSession) {
-                await recordSessionEvent(activeSession.sessionId, {
-                  type: "status_changed",
-                  title: t("canvas.node.statusPrompt", { title: entity.title, status: newStatus }),
-                  description: t("toasts.statusUpdatedCanvas", { title: entity.title, status: newStatus }),
-                  relatedEntityIds: [entity.entityId],
-                });
-              }
             }}
-            title={t("canvas.node.changeStatus")}
-            className="node-direction-btn"
-          >
-            <CheckCircle2 size={12} />
-          </button>
-          <button
-            onClick={async (e) => {
-              e.stopPropagation();
-              const title = window.prompt(t("canvas.node.consequenceTitlePrompt", { title: entity.title }));
-              if (title && title.trim()) {
-                const campaignId = campaignState?.campaign?.campaignId;
-                if (!campaignId) return;
-                try {
-                  await createEntity({
-                    entityType: "consequence",
-                    title: title.trim(),
-                    status: "ready",
-                    importance: "normal",
-                    visibility: { kind: "dm_only" }
-                  });
-
-                  const updatedStore = useCampaignStore.getState();
-                  const created = updatedStore.campaignState?.entities?.slice(-1)[0];
-                  if (created) {
-                    const canvas = updatedStore.canvasesById[data.canvasId];
-                    const currentNode = canvas?.nodes?.find((n: CanvasNode) => n.entityId === entity.entityId);
-                    await placeEntityOnCanvas({
-                      canvasId: data.canvasId,
-                      entityId: created.entityId,
-                      selectedNode: currentNode,
-                      placeNodeOnCanvas,
-                    });
-
-                    const finalStore = useCampaignStore.getState();
-                    const finalCanvas = finalStore.canvasesById[data.canvasId];
-                    const newNode = finalCanvas?.nodes?.find((n: CanvasNode) => n.entityId === created.entityId);
-
-                    if (currentNode && newNode) {
-                      await connectCanvasNodes({
-                        canvasId: data.canvasId,
-                        sourceNode: { id: currentNode.id, entityId: entity.entityId },
-                        targetNode: { id: newNode.id, entityId: created.entityId },
-                        edge: {
-                          label: "consecuencia",
-                          status: "domain",
-                          visibility: "dm",
-                          style: "solid",
-                        },
-                        relation: {
-                          relationType: "consecuencia",
-                          visibility: { kind: "dm_only" },
-                        },
-                        createRelation,
-                        addEdgeToCanvas,
-                      });
-                    }
-                  }
-                } catch (err) {
-                  console.error("Failed to create consequence", err);
-                }
-              }
-            }}
-            title={t("canvas.node.addConsequence")}
+            title={t("canvas.node.cycleStatusLabel")}
             className="node-direction-btn"
           >
             <RefreshCcw size={12} />
