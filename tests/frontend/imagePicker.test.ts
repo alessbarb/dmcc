@@ -56,9 +56,12 @@ describe("ImagePickerModal", () => {
     expect(src).toContain('touchAction: "pan-y"');
   });
 
-  it("renders three-column mobile grids with inline styles", () => {
+  it("renders stable two-column mobile grids with fixed tile heights", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
-    expect(src).toContain('gridTemplateColumns: isMobile ? "repeat(3, minmax(0, 1fr))"');
+    expect(src).toContain("const mobileTileHeight = 168");
+    expect(src).toContain('gridTemplateColumns: isMobile ? "repeat(2, minmax(0, 1fr))"');
+    expect(src).toContain("gridAutoRows: isMobile ? `${mobileTileHeight}px` : undefined");
+    expect(src).toContain("height: isMobile ? mobileTileHeight : undefined");
     expect(src).toContain("isMobile={isMobilePicker}");
   });
 
