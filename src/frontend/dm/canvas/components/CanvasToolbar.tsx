@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Panel, useReactFlow } from "@xyflow/react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
@@ -33,6 +33,14 @@ export function CanvasToolbar({
   const { placeNodeOnCanvas } = useCampaignStore();
   const { t } = useTranslation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isMobile = window.matchMedia("(max-width: 767px), (hover: none) and (pointer: coarse)").matches;
+    if (isMobile && interactionMode === "select") {
+      onModeChange("pan");
+    }
+  }, []);
 
   const closeMobileTools = () => setIsMobileOpen(false);
 
@@ -118,15 +126,15 @@ export function CanvasToolbar({
 
   const toolbarContent = (
     <div className="canvas-toolbar">
-      <span className="canvas-mobile-tools-section">Modo</span>
+      <span className="canvas-mobile-tools-section">Modo táctil</span>
       <div className="canvas-toolbar__group">
-        <button className={`canvas-toolbar__btn ${interactionMode === "select" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("select")} title={t("canvas.toolbar.selectMode")}>
-          <MousePointer2 size={15} />
-        </button>
-        <button className={`canvas-toolbar__btn ${interactionMode === "pan" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("pan")} title={t("canvas.toolbar.panMode")}>
+        <button className={`canvas-toolbar__btn ${interactionMode === "pan" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("pan")} title="Explorar: arrastra el mapa, toca una tarjeta para verla">
           <Hand size={15} />
         </button>
-        <button className={`canvas-toolbar__btn ${interactionMode === "multiselect" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("multiselect")} title={t("canvas.toolbar.multiSelectMode")}>
+        <button className={`canvas-toolbar__btn ${interactionMode === "select" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("select")} title="Editar: seleccionar y preparar cambios sobre tarjetas">
+          <MousePointer2 size={15} />
+        </button>
+        <button className={`canvas-toolbar__btn ${interactionMode === "multiselect" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("multiselect")} title="Selección múltiple">
           <BoxSelect size={15} />
         </button>
       </div>
@@ -185,12 +193,7 @@ export function CanvasToolbar({
       <Panel position="bottom-right" className="canvas-toolbar-panel canvas-toolbar-panel--mobile">
         {isMobileOpen && (
           <>
-            <button
-              type="button"
-              className="canvas-mobile-tools-backdrop"
-              onClick={closeMobileTools}
-              aria-label="Cerrar herramientas del Canvas"
-            />
+            <button type="button" className="canvas-mobile-tools-backdrop" onClick={closeMobileTools} aria-label="Cerrar herramientas del Canvas" />
             <div className="canvas-mobile-tools-popover" role="dialog" aria-label="Herramientas del Canvas">
               <div className="canvas-mobile-tools-popover__header">
                 <span>Herramientas</span>
