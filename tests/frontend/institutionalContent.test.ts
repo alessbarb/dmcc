@@ -28,11 +28,40 @@ describe("institutionalContent", () => {
   });
 
   it("renders English legal pages with the US-formatted last-updated date", () => {
-    const privacy = getInstitutionalPage("privacy", "en");
-    const terms = getInstitutionalPage("terms", "en");
+    const privacyLastUpdated = getInstitutionalPage("privacy", "en").lastUpdated;
+    const termsLastUpdated = getInstitutionalPage("terms", "en").lastUpdated;
 
-    expect(t("legal.lastUpdated", { date: privacy.lastUpdated }, "en")).toBe("Last updated: July 10, 2026");
-    expect(t("legal.lastUpdated", { date: terms.lastUpdated }, "en")).toBe("Last updated: July 10, 2026");
+    expect(privacyLastUpdated).toBeDefined();
+    expect(termsLastUpdated).toBeDefined();
+    expect(t("legal.lastUpdated", { date: privacyLastUpdated ?? "" }, "en")).toBe("Last updated: July 10, 2026");
+    expect(t("legal.lastUpdated", { date: termsLastUpdated ?? "" }, "en")).toBe("Last updated: July 10, 2026");
+  });
+
+  it("keeps privacy policies aligned across locales", () => {
+    expect(getInstitutionalPage("privacy", "en").sections.map((section) => section.title)).toEqual([
+      "Project controller",
+      "Data we may process",
+      "How we use data",
+      "Legal basis",
+      "Data retention",
+      "Cookies and local storage",
+      "Third-party services",
+      "Your rights",
+      "Security",
+      "Changes to this policy",
+    ]);
+    expect(getInstitutionalPage("privacy", "es").sections.map((section) => section.title)).toEqual([
+      "Responsable del proyecto",
+      "Datos que podemos tratar",
+      "Para qué usamos los datos",
+      "Base legal",
+      "Conservación de los datos",
+      "Cookies y almacenamiento local",
+      "Servicios de terceros",
+      "Tus derechos",
+      "Seguridad",
+      "Cambios en esta política",
+    ]);
   });
 
   it("keeps Spanish legal pages on the localized date", () => {
