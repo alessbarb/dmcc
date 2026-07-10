@@ -1,6 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { existsSync, readdirSync, statSync } from "node:fs";
-import { join, parse } from "node:path";
+import { readFile } from "node:fs/promises";
+import { join, parse, resolve, sep } from "node:path";
 
 const IMAGE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"]);
 const KNOWN_CATALOGS = new Set(["avatars", "campaigns", "entities"]);
@@ -30,6 +31,12 @@ function createCatalogItem(src: string, thumbDir: string, thumbPrefix: string, f
     thumb: existsSync(thumbFilePath) ? `${thumbPrefix}/${thumbFileName}` : src,
     name: fileName,
   };
+}
+
+function isPathInside(parentDir: string, childPath: string): boolean {
+  const resolvedParent = resolve(parentDir);
+  const resolvedChild = resolve(childPath);
+  return resolvedChild === resolvedParent || resolvedChild.startsWith(`${resolvedParent}${sep}`);
 }
 
 function scanImageCatalog(
@@ -119,6 +126,33 @@ export async function registerAssetRoutes(
   server: FastifyInstance,
   opts: { assetsDir?: string }
 ) {
+  server.get<{ Params: { "*": string } }>("/assets/.thumbs/*", async (request, reply) => {
+    if (!opts.assetsDir) {
+      return reply.status(404).send({ error: "Thumbnail not found" });
+    }
+
+    const requestedPath = request.params["*"] ?? "";
+    if (!requestedPath.endsWith(".webp")) {
+      return reply.status(404).send({ error: "Thumbnail not found" });
+    }
+
+    const thumbsRoot = resolve(opts.assetsDir, "assets", THUMB_DIR);
+    const thumbPath = resolve(thumbsRoot, requestedPath);
+    if (!isPathInside(thumbsRoot, thumbPath)) {
+      return reply.status(400).send({ error: "Invalid thumbnail path" });
+    }
+
+    try {
+      const body = await readFile(thumbPath);
+      reply
+        .type("image/webp")
+        .header("Cache-Control", "public, max-age=31536000, immutable");
+      return body;
+    } catch {
+      return reply.status(404).send({ error: "Thumbnail not found" });
+    }
+  });
+
   server.get<{ Querystring: { type?: string } }>("/api/assets/catalog", async (request, reply) => {
     const type = request.query.type;
     if (type !== "all" && !KNOWN_CATALOGS.has(type ?? "")) {
