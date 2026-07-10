@@ -580,10 +580,11 @@ export function createServer(config?: ServerConfig): FastifyInstance {
     }
   });
 
-  if (isPostgresWebMode) {
-    registerWebPlatformRoutes(server);
-    return server;
-  }
+if (isPostgresWebMode) {
+  server.register(registerAssetRoutes, { assetsDir: config?.assetsDir ?? publicAssetsPath });
+  registerWebPlatformRoutes(server);
+  return server;
+}
 
   server.get("/api/auth/local-token", async (_request, reply) => {
     if (!server.allowLegacyTestAuth) {
