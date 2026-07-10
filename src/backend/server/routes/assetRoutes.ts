@@ -3,6 +3,7 @@ import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const IMAGE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"]);
+const KNOWN_CATALOGS = new Set(["avatars", "campaigns", "entities"]);
 
 function isImage(name: string): boolean {
   const dot = name.lastIndexOf(".");
@@ -43,20 +44,50 @@ function scanImageCatalog(catalogDir: string, publicPrefix: string): Record<stri
   return groups;
 }
 
+function listCatalogNames(assetsRoot: string): string[] {
+  try {
+    return readdirSync(assetsRoot).filter((entry) => {
+      try {
+        return statSync(join(assetsRoot, entry)).isDirectory();
+      } catch {
+        return false;
+      }
+    });
+  } catch {
+    return [];
+  }
+}
+
+function scanAllCatalogs(assetsRoot: string): Record<string, string[]> {
+  const groups: Record<string, string[]> = {};
+
+  for (const catalogName of listCatalogNames(assetsRoot)) {
+    const catalogGroups = scanImageCatalog(join(assetsRoot, catalogName), `/assets/${catalogName}`);
+    for (const [groupName, paths] of Object.entries(catalogGroups)) {
+      groups[`${catalogName} · ${groupName}`] = paths;
+    }
+  }
+
+  return groups;
+}
+
 export async function registerAssetRoutes(
   server: FastifyInstance,
   opts: { assetsDir?: string }
 ) {
   server.get<{ Querystring: { type?: string } }>("/api/assets/catalog", async (request, reply) => {
     const type = request.query.type;
-    if (type !== "avatars" && type !== "campaigns" && type !== "entities") {
-      return reply.status(400).send({ error: "type must be 'avatars', 'campaigns', or 'entities'" });
+    if (type !== "all" && !KNOWN_CATALOGS.has(type ?? "")) {
+      return reply.status(400).send({ error: "type must be 'all', 'avatars', 'campaigns', or 'entities'" });
     }
     if (!opts.assetsDir) {
       return { groups: {} };
     }
-    const assetsSubdir = join(opts.assetsDir, "assets", type);
-    const groups = scanImageCatalog(assetsSubdir, `/assets/${type}`);
+
+    const assetsRoot = join(opts.assetsDir, "assets");
+    const groups = type === "all"
+      ? scanAllCatalogs(assetsRoot)
+      : scanImageCatalog(join(assetsRoot, type), `/assets/${type}`);
     return { groups };
   });
 }
