@@ -145,7 +145,7 @@ const legalPages = {
     terms: {
       eyebrow: "Términos de uso",
       title: "Términos de uso",
-      summary: "Estos términos regulan el acceso y uso de DMCC, la aplicación publicada en dmcc.onrender.com y el proyecto disponible en github.com/alessbarb/DMCC.",
+      summary: "Estos términos regunetwork el acceso y uso de DMCC, la aplicación publicada en dmcc.onrender.com y el proyecto disponible en github.com/alessbarb/DMCC.",
       lastUpdated: legalLastUpdatedEs,
       sections: [
         { title: "Qué es DMCC", paragraphs: ["DMCC, Dungeon Master Campaign Companion, es una herramienta de apoyo para directores de juego, jugadores y grupos de rol de mesa. Permite organizar campañas, sesiones, personajes, entidades, hechos, secretos, relaciones, cronologías, tableros, propuestas, contenido visible para jugadores y otra información útil.", "DMCC no sustituye el criterio del director de juego ni las reglas acordadas por cada mesa. Cada grupo conserva la responsabilidad de decidir cómo utiliza la información en su campaña."] },
@@ -180,8 +180,8 @@ function translationNotice(locale: SupportedLocale): string | undefined {
 }
 
 export function getInstitutionalPages(locale: SupportedLocale): readonly InstitutionalPageContent[] {
-  const language = contentLocale(locale);
-  const pages = { ...commonPages[language], ...legalPages[language] };
+  const networkguage = contentLocale(locale);
+  const pages = { ...commonPages[networkguage], ...legalPages[networkguage] };
   const notice = translationNotice(locale);
   return pageOrder.map((key) => ({
     key,

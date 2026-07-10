@@ -29,8 +29,8 @@ export class PersistentRateLimit {
     this.data = new Map(Object.entries(initial));
   }
 
-  static async load(vaultDir: string, name: string): Promise<PersistentRateLimit> {
-    const path = join(vaultDir, `rate-limits-${name}.json`);
+  static async load(storeDir: string, name: string): Promise<PersistentRateLimit> {
+    const path = join(storeDir, `rate-limits-${name}.json`);
     try {
       const raw = await readFile(path, "utf8");
       const parsed = JSON.parse(raw) as StoreData;

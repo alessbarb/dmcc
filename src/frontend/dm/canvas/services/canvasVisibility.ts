@@ -30,7 +30,7 @@ export function canvasVisibilityToVisibilityRule(canvasVisibility: CanvasVisibil
  * CanvasNode.visibility and CanvasEdge.visibility are visual canvas visibility flags.
  * They only decide whether a canvas item itself is shown in public/player canvas views.
  * Domain visibility stays on entities, relations, and facts and remains authoritative
- * for campaign data exposure. While legacy data is migrated, helpers also accept
+ * for campaign data exposure. While previous data is migrated, helpers also accept
  * old domain-style values such as { kind: "dm" } and { kind: "dm_only" }.
  */
 export function isDmOnlyCanvasVisibility(value: unknown): boolean {

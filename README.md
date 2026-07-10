@@ -1,6 +1,6 @@
 # DM Campaign Companion
 
-**DM Campaign Companion** — **DMCC** — is a campaign workspace for tabletop RPG Dungeon Masters.
+**DM Campaign Companion** — **DMCC** — is a web-first campaign workspace for tabletop RPG Dungeon Masters.
 
 It helps you prepare sessions, track what happened at the table, connect clues and secrets, manage NPCs and locations, and keep long-running campaigns coherent as they grow.
 
@@ -167,14 +167,13 @@ The current app includes a D&D SRD 5.2.1 rules dataset with categories such as g
 
 ### Backups and exports
 
-Campaign data can be backed up and exported.
+Campaign data can be exported for review and long-term storage.
 
 DMCC currently supports:
 
-- manual campaign backups,
 - JSON export,
 - Markdown export,
-- and restore from backup.
+- and web-based campaign records backed by PostgreSQL.
 
 Markdown export is especially useful for offline reading, long-term storage or reviewing the campaign outside the app.
 
@@ -198,9 +197,10 @@ DMCC is currently focused on:
 - narrative structure,
 - relationship mapping,
 - player-facing visibility,
-- and local campaign ownership.
+- web invitations,
+- and workspace-based campaign ownership.
 
-The app currently runs locally and stores campaign data on your machine by default. That is the right model for this stage of the project, but it is not meant to limit the future of the product. Future versions may support other deployment or sharing models while keeping the campaign portable and under the DM's control.
+The app is now PostgreSQL-backed and web-first. User access is handled through account sessions, campaign memberships and invitations.
 
 ## Who DMCC is for
 
@@ -223,6 +223,7 @@ It is less about replacing your creativity and more about making sure your campa
 
 - Node.js 20 or higher
 - npm
+- PostgreSQL
 
 ### Install
 
@@ -234,7 +235,7 @@ npm install
 
 ### Run in development
 
-Local-only development binds the Vite dev server and backend to loopback by default:
+Development binds the Vite dev server and backend to loopback by default:
 
 ```bash
 npm run dev
@@ -246,9 +247,7 @@ The development app usually runs at:
 http://localhost:5173
 ```
 
-The local API server runs on port `4877` by default.
-
-Web-first development uses localhost by default. Archived local sharing notes live in `docs/archive/local-lan-mode.md`; do not extend that mode unless it is explicitly reactivated.
+The API server runs on port `4877` by default.
 
 ### Build
 
@@ -262,25 +261,24 @@ npm run build
 npm start
 ```
 
-The built app is served by the local backend, usually at:
+The built app is served by the backend, usually at:
 
 ```txt
 http://127.0.0.1:4877
 ```
 
-
 ## Deployment and database security
 
-DMCC ships with a Docker Compose Postgres service for **local development only**. The Compose credentials (`dmcc` / `dmcc_password`) are intentionally trivial so that contributors can start a local database quickly; never reuse them in staging, production, demos exposed to a network, or shared environments.
+DMCC ships with a Docker Compose Postgres service for **development only**. The Compose credentials (`dmcc` / `dmcc_password`) are intentionally trivial so that contributors can start a database quickly; never reuse them in staging, production, demos exposed to a network, or shared environments.
 
 For any deployed environment:
 
-- Set `NODE_ENV=production` and provide an explicit `DATABASE_URL`. The backend refuses to start in production without `DATABASE_URL` so it cannot silently fall back to local development credentials.
-- Set `DATABASE_SSL_MODE` explicitly when a deployment needs to override automatic TLS detection. Supported values are `auto` (default: require TLS for remote hosts and disable it only for loopback/Unix socket connections), `require` (always use TLS with normal certificate validation), and `disable` (local development only; production refuses remote database hosts with TLS disabled).
+- Set `NODE_ENV=production` and provide an explicit `DATABASE_URL`. The backend refuses to start in production without `DATABASE_URL` so it cannot silently fall back to development credentials.
+- Set `DATABASE_SSL_MODE` explicitly when a deployment needs to override automatic TLS detection. Supported values are `auto` (default: require TLS for remote hosts and disable it only for loopback/Unix socket connections), `require` (always use TLS with normal certificate validation), and `disable` (development only; production refuses remote database hosts with TLS disabled).
 - Generate a unique Postgres username, password, and database name per environment. Use least-privilege database roles for the application user.
 - Store `DATABASE_URL`, `SESSION_SECRET`, and other sensitive values in a secret manager such as your platform secret store, Docker/Kubernetes secrets, 1Password, Vault, AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault. Do not commit real secrets to Git or paste them into documentation examples.
 - Rotate credentials if they were shared in chat, logs, terminals, screenshots, or issue trackers.
-- Restrict database network access to the application runtime and operational tooling only. The local Compose file binds Postgres to `127.0.0.1`; production deployments should use private networking or firewall rules rather than public database ports.
+- Restrict database network access to the application runtime and operational tooling only. The Compose file binds Postgres to `127.0.0.1`; production deployments should use private networking or firewall rules rather than public database ports.
 - For databases signed by a private CA, keep certificate verification enabled and provide the CA through the runtime instead of disabling verification. For example, set `PGSSLROOTCERT=/path/to/root-ca.pem` or use the equivalent managed-platform secret/file mount before running `npm run db:whoami` or starting the app.
 
 Example production environment shape:
@@ -290,6 +288,7 @@ NODE_ENV=production
 DATABASE_URL=postgresql://<unique-app-user>:<secret-from-manager>@<private-db-host>:5432/<unique-db-name>
 DATABASE_SSL_MODE=auto
 SESSION_SECRET=<secret-from-manager>
+DMCC_PUBLIC_ORIGIN=https://your-domain.example
 ```
 
 ## Useful scripts
@@ -297,8 +296,6 @@ SESSION_SECRET=<secret-from-manager>
 ```bash
 npm run dev              # Start backend and frontend bound to localhost/127.0.0.1
 npm run dev:ui           # Start only the Vite UI bound to 127.0.0.1
-npm run dev:host         # Opt in to host binding for backend and Vite via 0.0.0.0
-npm run dev:ui:host      # Opt in to host binding for only the Vite UI via 0.0.0.0
 npm run build            # Build the frontend and backend
 npm start                # Start the built application
 npm run test             # Run unit and integration tests
@@ -306,6 +303,7 @@ npm run test:e2e         # Run Playwright end-to-end tests
 npm run typecheck:all    # Run TypeScript checks
 npm run lint             # Run ESLint
 npm run quality          # Run lint, typecheck, tests and build
+npm run db:migrate       # Apply database migrations
 ```
 
 ## Premade campaigns
@@ -324,7 +322,7 @@ Templates: **oracle-triple-eclipse** (La Sombra del Oráculo) and **phandalin-st
 
 ```txt
 src/
-  backend/       Local server, API routes, exports, backups and persistence
+  backend/       Web API, PostgreSQL repositories and deployment runtime
   frontend/      React application and campaign UI
   core/          Campaign domain, commands, events and projections
   shared/        Shared schemas, IDs, rules, i18n and utilities
@@ -338,7 +336,7 @@ scripts/         Build and maintenance scripts
 
 ## Technical overview
 
-DMCC is built as a TypeScript web application with a local backend.
+DMCC is built as a TypeScript web application.
 
 ### Frontend
 
@@ -354,8 +352,9 @@ DMCC is built as a TypeScript web application with a local backend.
 
 - Node.js
 - Fastify
+- PostgreSQL
+- Drizzle ORM
 - Zod
-- Local file-based persistence
 - Event-based campaign state with projections
 
 ### Quality
@@ -369,7 +368,7 @@ DMCC is built as a TypeScript web application with a local backend.
 
 DMCC is in active development.
 
-The current version is suitable for local experimentation, campaign modelling, feature testing and product iteration. Some workflows may still change as the application evolves.
+The current version is suitable for web-first campaign modelling, feature testing and product iteration. Some workflows may still change as the application evolves.
 
 ## License
 

@@ -8,7 +8,7 @@ describe("command bus", () => {
     const result = handleCommand(state, {
       type: "CreateCampaign",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       title: "Valleverde",
     });
 
@@ -21,7 +21,7 @@ describe("command bus", () => {
     const result = handleCommand(state, {
       type: "CreateEntity",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       entityType: "npc",
       title: "Mira",
     });
@@ -34,13 +34,13 @@ describe("command bus", () => {
 describe("command bus extended campaign commands", () => {
   it("creates relations between entities in the same campaign", () => {
     let state = createCampaignState("cmp_one");
-    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_a", entityType: "npc", title: "A" }).state;
-    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_b", entityType: "npc", title: "B" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_a", entityType: "npc", title: "A" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_b", entityType: "npc", title: "B" }).state;
 
     const result = handleCommand(state, {
       type: "CreateRelation",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       relationId: "rel_one",
       sourceEntityId: "ent_a",
       targetEntityId: "ent_b",
@@ -53,26 +53,26 @@ describe("command bus extended campaign commands", () => {
 
   it("rejects duplicate relations without explicit confirmation", () => {
     let state = createCampaignState("cmp_one");
-    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_a", entityType: "npc", title: "A" }).state;
-    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_b", entityType: "npc", title: "B" }).state;
-    state = handleCommand(state, { type: "CreateRelation", campaignId: "cmp_one", actorId: "usr_dm", relationId: "rel_one", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "knows" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_a", entityType: "npc", title: "A" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_b", entityType: "npc", title: "B" }).state;
+    state = handleCommand(state, { type: "CreateRelation", campaignId: "cmp_one", actorId: "usr_core", relationId: "rel_one", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "knows" }).state;
 
     expect(() =>
-      handleCommand(state, { type: "CreateRelation", campaignId: "cmp_one", actorId: "usr_dm", relationId: "rel_two", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "knows" }),
+      handleCommand(state, { type: "CreateRelation", campaignId: "cmp_one", actorId: "usr_core", relationId: "rel_two", sourceEntityId: "ent_a", targetEntityId: "ent_b", relationType: "knows" }),
     ).toThrow("Duplicate relation requires confirmation");
   });
 
   it("allows relating one source entity to multiple target entities", () => {
     let state = createCampaignState("cmp_one");
-    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_source", entityType: "faction", title: "Faction A" }).state;
-    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_target1", entityType: "npc", title: "NPC 1" }).state;
-    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_target2", entityType: "npc", title: "NPC 2" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_source", entityType: "faction", title: "Faction A" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_target1", entityType: "npc", title: "NPC 1" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_target2", entityType: "npc", title: "NPC 2" }).state;
 
     // Relate to target 1
     state = handleCommand(state, {
       type: "CreateRelation",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       relationId: "rel_one",
       sourceEntityId: "ent_source",
       targetEntityId: "ent_target1",
@@ -83,7 +83,7 @@ describe("command bus extended campaign commands", () => {
     state = handleCommand(state, {
       type: "CreateRelation",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       relationId: "rel_two",
       sourceEntityId: "ent_source",
       targetEntityId: "ent_target2",
@@ -99,7 +99,7 @@ describe("command bus extended campaign commands", () => {
     const result = handleCommand(state, {
       type: "RecordFact",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       factId: "fact_one",
       statement: "Mira saw the cult symbol.",
       kind: "canon",
@@ -117,7 +117,7 @@ describe("command bus extended campaign commands", () => {
     const result = handleCommand(state, {
       type: "CreatePreparedSession",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_prep",
       title: "Session prep",
       prep: {
@@ -138,7 +138,7 @@ describe("command bus extended campaign commands", () => {
     state = handleCommand(state, {
       type: "CreatePreparedSession",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_prep",
       title: "Session prep",
       prep: { state: "draft" },
@@ -147,7 +147,7 @@ describe("command bus extended campaign commands", () => {
     const updated = handleCommand(state, {
       type: "UpdateSessionPrep",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_prep",
       prep: {
         state: "ready",
@@ -162,7 +162,7 @@ describe("command bus extended campaign commands", () => {
     const activated = handleCommand(updated.state, {
       type: "ActivatePreparedSession",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_prep",
     });
 
@@ -175,7 +175,7 @@ describe("command bus extended campaign commands", () => {
     const state = handleCommand(createCampaignState("cmp_one"), {
       type: "CreatePreparedSession",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_prep",
       title: "Session prep",
     }).state;
@@ -184,7 +184,7 @@ describe("command bus extended campaign commands", () => {
       handleCommand(state, {
         type: "CloseSession",
         campaignId: "cmp_one",
-        actorId: "usr_dm",
+        actorId: "usr_core",
         sessionId: "sess_prep",
         summary: "Should not close.",
       }),
@@ -196,7 +196,7 @@ describe("command bus extended campaign commands", () => {
     let state = handleCommand(createCampaignState("cmp_one"), {
       type: "CreatePreparedSession",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_prep",
       title: "Session prep",
     }).state;
@@ -204,7 +204,7 @@ describe("command bus extended campaign commands", () => {
     const cancelled = handleCommand(state, {
       type: "CancelPreparedSession",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_prep",
     });
 
@@ -215,7 +215,7 @@ describe("command bus extended campaign commands", () => {
     const archived = handleCommand(state, {
       type: "ArchiveSession",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_prep",
     });
 
@@ -228,7 +228,7 @@ describe("command bus extended campaign commands", () => {
     const started = handleCommand(state, {
       type: "StartSession",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_one",
       title: "Session 1",
     });
@@ -239,7 +239,7 @@ describe("command bus extended campaign commands", () => {
     const closed = handleCommand(state, {
       type: "CloseSession",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       sessionId: "sess_one",
       summary: "The party reached Valleverde.",
     });
@@ -250,13 +250,13 @@ describe("command bus extended campaign commands", () => {
 
   it("reveals clues by changing visibility and recording session context", () => {
     let state = createCampaignState("cmp_one");
-    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_dm", entityId: "ent_clue", entityType: "clue", title: "Bloody sigil", metadata: { content: "Bloody sigil content" } }).state;
-    state = handleCommand(state, { type: "StartSession", campaignId: "cmp_one", actorId: "usr_dm", sessionId: "sess_one", title: "Session 1" }).state;
+    state = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_clue", entityType: "clue", title: "Bloody sigil", metadata: { content: "Bloody sigil content" } }).state;
+    state = handleCommand(state, { type: "StartSession", campaignId: "cmp_one", actorId: "usr_core", sessionId: "sess_one", title: "Session 1" }).state;
 
     const result = handleCommand(state, {
       type: "RevealClue",
       campaignId: "cmp_one",
-      actorId: "usr_dm",
+      actorId: "usr_core",
       clueEntityId: "ent_clue",
       sessionId: "sess_one",
       audience: { kind: "party" },

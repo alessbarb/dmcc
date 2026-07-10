@@ -31,6 +31,6 @@ export async function atomicWriteJson(filePath: string, data: any): Promise<void
       await dirHandle.close();
     }
   } catch {
-    // Fallback if directory opening/syncing is not supported on the OS/filesystem
+    // Fallback if directory opening/syncing is not supported on the OS/storage backend
   }
 }

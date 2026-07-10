@@ -19,7 +19,7 @@ export const sendCampaignCommand = (campaignId: string, path: string, init?: Req
 export const getCampaignGraph = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/graph`);
 export const getCampaignTimeline = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/timeline`);
 export const getCampaignVisibility = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/visibility`);
-export const getCampaignLanStatus = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/lan-status`);
+export const getCampaignLanStatus = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/network-status`);
 export const listPlayers = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/players`);
 export const createPlayer = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/players`, { init: jsonInit("POST", payload) });
 export const updatePlayer = (campaignId: string, playerId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/players/${playerId}`, { init: jsonInit("PATCH", payload) });
@@ -51,5 +51,5 @@ export const exportCampaignMarkdown = (campaignId: string) => apiFetch(`/api/cam
 export const createBackup = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/backups`, { init: { method: "POST" } });
 export const restoreBackup = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/restore`, { init: jsonInit("POST", payload) });
 export const updateCampaignSettings = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/settings`, { init: jsonInit("PUT", payload) });
-export const toggleCampaignLan = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/lan/toggle`, { init: jsonInit("POST", payload) });
+export const toggleCampaignLan = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/network/toggle`, { init: jsonInit("POST", payload) });
 export const createTag = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/tags`, { init: jsonInit("POST", payload) });

@@ -416,7 +416,7 @@ function ResumenTab({
 
                       <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "8px" }}>
                         <Field label="Dotes" value={Array.isArray(m.feats) ? m.feats.join(", ") : m.feats} />
-                        <Field label="Idiomas" value={Array.isArray(m.languages) ? m.languages.join(", ") : m.languages} />
+                        <Field label="Idiomas" value={Array.isArray(m.networkguages) ? m.networkguages.join(", ") : m.networkguages} />
                       </div>
 
                       {(m.spellSaveDC != null || m.spellAttackBonus != null) && (

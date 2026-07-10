@@ -33,7 +33,7 @@ export function AppFooter({ variant = "default" }: AppFooterProps) {
             {t(link.labelKey)}
           </Link>
         ))}
-        <a href={institutionalContact.github} className="app-footer__link" target="_blank" rel="noopener noreferrer">
+        <a href={institutionalContact.github} className="app-footer__link" target="_bnetworkk" rel="noopener noreferrer">
           GitHub
         </a>
         <a href={`mailto:${institutionalContact.email}`} className="app-footer__link">

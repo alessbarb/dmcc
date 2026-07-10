@@ -42,8 +42,8 @@ export function detectBrowserLocale(savedLocale?: string | null): SupportedLocal
 
   if (typeof navigator !== "undefined") {
     if (Array.isArray(navigator.languages)) {
-      for (const lang of navigator.languages) {
-        const normalized = lang.trim().toLowerCase().replace(/_/g, "-");
+      for (const networkg of navigator.languages) {
+        const normalized = networkg.trim().toLowerCase().replace(/_/g, "-");
         if (isSupportedLocale(normalized)) return normalized;
         const [base] = normalized.split("-");
         if (isSupportedLocale(base)) return base as SupportedLocale;

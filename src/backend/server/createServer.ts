@@ -11,16 +11,9 @@ import { basename, join, dirname, resolve, sep } from "path";
 import { fileURLToPath } from "url";
 import { homedir } from "os";
 import { requestContextStore } from "../../core/persistence/context.js";
-import { randomBytes, randomUUID } from "crypto";
-import { getRequestDmSession, getValidatedCampaignId, getValidatedVaultId } from "./auth.js";
-import { hasCampaignDmAccessSync } from "./campaignAclStore.js";
-import { registerLegacyRoutes } from "./legacy/registerLegacyRoutes.js";
+import { randomUUID } from "crypto";
 import { registerWebRoutes } from "./web/registerWebRoutes.js";
-import { getSessionUser, readUserAuthStore } from "./userAuthStore.js";
-import { readSessionCookie } from "./sessionAuth.js";
 import { resolveWebUser } from "./web/webSession.js";
-import { isLoopbackIp } from "./sameOrigin.js";
-
 
 const PLACEHOLDER_SESSION_SECRETS = new Set(["change-me", "dev-change-me"]);
 const GLOBAL_JSON_BODY_LIMIT_BYTES = 1 * 1024 * 1024;
@@ -36,7 +29,7 @@ function requireConfiguredPublicOrigin(rawOrigin = process.env.DMCC_PUBLIC_ORIGI
   const origin = rawOrigin?.trim();
 
   if (!origin) {
-    throw new Error("DMCC_PUBLIC_ORIGIN is required when NODE_ENV=production and DMCC_STORAGE_MODE=postgres");
+    throw new Error("DMCC_PUBLIC_ORIGIN is required when NODE_ENV=production");
   }
 
   try {
@@ -109,7 +102,7 @@ export function getRequiredSessionSecret(): string {
   const secret = process.env.SESSION_SECRET;
 
   if (!secret || secret.trim().length === 0) {
-    throw new Error("SESSION_SECRET is required when DMCC_STORAGE_MODE=postgres");
+    throw new Error("SESSION_SECRET is required");
   }
 
   if (secret !== secret.trim()) {
@@ -127,14 +120,9 @@ export function getRequiredSessionSecret(): string {
   return secret;
 }
 
-type StorageMode = "legacy" | "postgres";
-
-function buildHelmetConfig(storageMode: StorageMode): Parameters<typeof helmet>[1] {
+function buildHelmetConfig(): Parameters<typeof helmet>[1] {
   const isProduction = process.env.NODE_ENV === "production";
-  const isPostgresWebMode = storageMode === "postgres";
-  const connectSrc = isPostgresWebMode
-    ? ["'self'", "ws:", "wss:", "http://localhost:*", "http://127.0.0.1:*"]
-    : ["'self'", "ws:", "wss:", "http://localhost:*", "http://127.0.0.1:*"];
+  const connectSrc = ["'self'", "ws:", "wss:", "http://localhost:*", "http://127.0.0.1:*"];
 
   return {
     enableCSPNonces: true,
@@ -150,8 +138,6 @@ function buildHelmetConfig(storageMode: StorageMode): Parameters<typeof helmet>[
         "default-src": ["'self'"],
         "script-src": ["'self'"],
         "style-src": ["'self'", "https:"],
-        // React and the canvas/graph libraries still emit trusted style attributes for layout and positioning.
-        // Keep this exception scoped to style attributes only; script inline execution must use nonces.
         "style-src-attr": ["'unsafe-inline'"],
         "img-src": ["'self'", "data:", "blob:", "https:"],
         "connect-src": connectSrc,
@@ -190,33 +176,23 @@ function isMutationRequest(request: FastifyRequest): boolean {
   return ["POST", "PUT", "PATCH", "DELETE"].includes(request.method);
 }
 
-type AuthenticatedRequest = FastifyRequest & {
+type WebAuthenticatedRequest = FastifyRequest & {
+  webUser?: unknown;
   unifiedUser?: unknown;
-  unifiedDmSession?: unknown;
-  unifiedCampaignMembership?: unknown;
 };
 
-function hasAuthenticationSignal(request: FastifyRequest, dmSessionToken: string): boolean {
-  const authenticatedRequest = request as AuthenticatedRequest;
-  if (
-    authenticatedRequest.unifiedUser ||
-    authenticatedRequest.unifiedDmSession ||
-    authenticatedRequest.unifiedCampaignMembership ||
-    getRequestDmSession(request, dmSessionToken)
-  ) {
-    return true;
-  }
-
+function hasWebAuthenticationSignal(request: FastifyRequest): boolean {
+  const authenticatedRequest = request as WebAuthenticatedRequest;
   return Boolean(
+    authenticatedRequest.webUser ||
+    authenticatedRequest.unifiedUser ||
     request.headers.authorization ||
-    request.headers.cookie ||
-    request.headers["x-dm-token"] ||
-    request.headers["x-player-token"]
+    request.headers.cookie
   );
 }
 
-function shouldDisableApiResponseCache(request: FastifyRequest, dmSessionToken: string): boolean {
-  return isApiRequest(request) && (isMutationRequest(request) || hasAuthenticationSignal(request, dmSessionToken));
+function shouldDisableApiResponseCache(request: FastifyRequest): boolean {
+  return isApiRequest(request) && (isMutationRequest(request) || hasWebAuthenticationSignal(request));
 }
 
 function isHtmlReply(reply: FastifyReply): boolean {
@@ -230,47 +206,21 @@ function looksLikeHtml(payload: string | Buffer): boolean {
   return /^\s*<!doctype html|^\s*<html[\s>]/i.test(text);
 }
 
-function resolveStorageMode(configuredStorageMode?: StorageMode): StorageMode {
-  if (configuredStorageMode) return configuredStorageMode;
-
-  const envStorageMode = process.env.DMCC_STORAGE_MODE;
-  if (envStorageMode === "postgres" || envStorageMode === "legacy") {
-    return envStorageMode;
-  }
-
-  const actual = envStorageMode === undefined || envStorageMode.trim() === ""
-    ? "absent"
-    : `"${envStorageMode}"`;
-  throw new Error(
-    `DMCC_STORAGE_MODE must be explicitly set to "postgres" or "legacy" when config.storageMode is not provided; received ${actual}.`,
-  );
-}
-
 export interface ServerConfig {
   dataDir?: string;
   /** Override the public assets directory (used in tests to inject fake asset trees). */
   assetsDir?: string;
-  /** Keeps pre-migration credentials available only to the legacy test suite. */
-  allowLegacyTestAuth?: boolean;
-  /**
-   * `postgres` enables the final web/app storage model: PostgreSQL, web accounts,
-   * campaign memberships, invitations and no vault/LAN/token persistence.
-   * Legacy remains available for existing tests until the frontend/backend are fully cut over.
-   */
-  storageMode?: StorageMode;
 }
 
 export function createServer(config?: ServerConfig): FastifyInstance {
   const trustProxy = resolveTrustProxyConfig();
   const server = Fastify({ logger: { level: "warn" }, trustProxy, bodyLimit: GLOBAL_JSON_BODY_LIMIT_BYTES });
   const dataDir = config?.dataDir ?? join(homedir(), "Documents", "DMCampaignCompanion");
-  const storageMode = resolveStorageMode(config?.storageMode);
-  const isPostgresWebMode = storageMode === "postgres";
 
-  server.register(helmet, buildHelmetConfig(storageMode));
+  server.register(helmet, buildHelmetConfig());
 
   server.addHook("onSend", async (request, reply, payload) => {
-    if (shouldDisableApiResponseCache(request, server.dmSessionToken)) {
+    if (shouldDisableApiResponseCache(request)) {
       reply.header("Cache-Control", "no-store");
     }
 
@@ -285,36 +235,17 @@ export function createServer(config?: ServerConfig): FastifyInstance {
     return payload;
   });
 
-  const dmSessionToken = randomBytes(32).toString("hex");
-  // Signing secret for DM session tokens. In tests it is also accepted as a legacy DM token.
-  server.decorate("dmSessionToken", dmSessionToken);
-
-  // Whether the server is exposed on LAN (0.0.0.0) — set by entry/serverConfig.ts
-  server.decorate("lanExposed", false);
-
-  // In-memory active access codes mapping campaignId -> plaintext code
-  server.decorate("activeAccessCodes", new Map<string, string>());
-
-  // In-memory player session tokens: token → { campaignId, playerId }
-  server.decorate("playerTokens", new Map<string, { campaignId: string; playerId: string }>());
-  server.decorate("allowLegacyTestAuth", config?.allowLegacyTestAuth === true);
-
-
-  if (isPostgresWebMode) {
-    const allowedOrigins = resolveCorsAllowedOrigins();
-    const sessionSecret = getRequiredSessionSecret();
-    server.register(cookie, { secret: sessionSecret });
-    server.register(rateLimit, { max: 200, timeWindow: "1 minute" });
-    server.register(cors, {
-      delegator: (request, callback) => {
-        const requestOrigin = request.headers.origin;
-        const isAllowedOrigin = typeof requestOrigin === "string" && allowedOrigins.includes(requestOrigin);
-        callback(null, { origin: isAllowedOrigin ? requestOrigin : false, credentials: isAllowedOrigin });
-      },
-    });
-  } else {
-    server.register(cors, { origin: [...LOCAL_CORS_ORIGINS] });
-  }
+  const allowedOrigins = resolveCorsAllowedOrigins();
+  const sessionSecret = getRequiredSessionSecret();
+  server.register(cookie, { secret: sessionSecret });
+  server.register(rateLimit, { max: 200, timeWindow: "1 minute" });
+  server.register(cors, {
+    delegator: (request, callback) => {
+      const requestOrigin = request.headers.origin;
+      const isAllowedOrigin = typeof requestOrigin === "string" && allowedOrigins.includes(requestOrigin);
+      callback(null, { origin: isAllowedOrigin ? requestOrigin : false, credentials: isAllowedOrigin });
+    },
+  });
 
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
@@ -367,7 +298,6 @@ export function createServer(config?: ServerConfig): FastifyInstance {
       },
     });
   }
-
 
   function shouldServeSpaFallback(rawUrl?: string): boolean {
     const pathname = getRequestPath(rawUrl);
@@ -450,7 +380,6 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   });
 
   server.addHook("preValidation", async (request, reply) => {
-    const pathname = getRequestPath(request.raw.url);
     if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method)) {
       const origin = request.headers.origin;
       if (origin) {
@@ -466,110 +395,36 @@ export function createServer(config?: ServerConfig): FastifyInstance {
           originValue = undefined;
         }
 
-        if (isPostgresWebMode) {
-          const publicOrigin = (process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173").replace(/\/$/, "");
-          const allowedMutationOrigins = new Set([
-            publicOrigin,
-            "http://localhost:5173",
-            "http://127.0.0.1:5173",
-            "http://localhost:4877",
-            "http://127.0.0.1:4877",
-          ]);
-          if (!originValue || (!allowedMutationOrigins.has(originValue) && originHost !== host)) {
-            reply.code(403);
-            return reply.send({ error: "Cross-origin mutation rejected" });
-          }
-        } else if (!host || originHost !== host) {
-          reply.code(403);
-          return reply.send({ error: "Cross-origin mutation rejected" });
-        }
-      } else {
-        // No Origin header: reject mutations from non-loopback IPs (scripted LAN requests).
-        // request.ip is normalized by Fastify, including X-Forwarded-For only when
-        // DMCC_TRUST_PROXY_HOPS explicitly enables trustProxy for the deployment.
-        if (!isLoopbackIp(request.ip)) {
+        const publicOrigin = (process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173").replace(/\/$/, "");
+        const allowedMutationOrigins = new Set([
+          publicOrigin,
+          "http://localhost:5173",
+          "http://127.0.0.1:5173",
+          "http://localhost:4877",
+          "http://127.0.0.1:4877",
+        ]);
+        if (!originValue || (!allowedMutationOrigins.has(originValue) && originHost !== host)) {
           reply.code(403);
           return reply.send({ error: "Cross-origin mutation rejected" });
         }
       }
     }
 
-    if (isPostgresWebMode) {
-      const webUser = await resolveWebUser(request);
-      if (webUser) {
-        (request as any).webUser = webUser;
-        (request as any).unifiedUser = {
-          userId: webUser.userId,
-          emailNormalized: webUser.email,
-          displayName: webUser.displayName,
-          vaultRole: webUser.appRole === "admin" ? "admin" : "user",
-        };
-      }
-      return;
-    }
-
-    const vaultId = getValidatedVaultId(request);
-    const vaultDir = join(dataDir, "vaults", vaultId);
-    const resolved = await getSessionUser(vaultDir, readSessionCookie(request));
-    if (resolved) {
-      (request as any).unifiedUser = resolved.user;
-      const store = await readUserAuthStore(vaultDir);
-      const campaignMatch = pathname.match(/^\/api\/campaigns\/([^/]+)/);
-      const campaignId = campaignMatch
-        ? getValidatedCampaignId(decodeURIComponent(campaignMatch[1]))
-        : undefined;
-      const campaignMembership = campaignId
-        ? store.memberships.find(
-            (membership) =>
-              membership.userId === resolved.user.userId &&
-              membership.campaignId === campaignId &&
-              !membership.revokedAt
-          )
-        : undefined;
-      if (campaignMembership) {
-        (request as any).unifiedCampaignMembership = campaignMembership;
-      }
-      const hasDmMembership = store.memberships.some(
-        (membership) =>
-          membership.userId === resolved.user.userId &&
-          membership.role === "dm" &&
-          !membership.revokedAt &&
-          (!campaignId || membership.campaignId === campaignId)
-      );
-      const canActAsDm = campaignId ? hasDmMembership : resolved.user.vaultRole === "admin" || hasDmMembership;
-      if (canActAsDm) {
-        (request as any).unifiedDmSession = {
-          dmId: resolved.user.userId,
-          vaultId,
-          email: resolved.user.emailNormalized,
-          displayName: resolved.user.displayName,
-          issuedAt: resolved.session.createdAt,
-        };
-      }
-    }
-
-    const match = pathname.match(/^\/api\/campaigns\/([^/]+)/);
-    if (!match) return;
-
-    const dmSession = getRequestDmSession(request, server.dmSessionToken);
-    if (!dmSession) return;
-    if ((request as any).unifiedCampaignMembership?.role === "dm") return;
-
-    const campaignId = getValidatedCampaignId(decodeURIComponent(match[1]));
-    if (!hasCampaignDmAccessSync(dataDir, vaultId, campaignId, dmSession.dmId)) {
-      reply.code(403);
-      return reply.send({ error: "Forbidden: You do not have access to this campaign" });
+    const webUser = await resolveWebUser(request);
+    if (webUser) {
+      (request as any).webUser = webUser;
+      (request as any).unifiedUser = {
+        userId: webUser.userId,
+        emailNormalized: webUser.email,
+        displayName: webUser.displayName,
+        appRole: webUser.appRole,
+      };
     }
   });
 
   const routeOptions = { dataDir, assetsDir: config?.assetsDir ?? publicAssetsPath };
 
-  if (isPostgresWebMode) {
-    registerWebRoutes(server, routeOptions);
-    return server;
-  }
-
-  registerLegacyRoutes(server, routeOptions);
+  registerWebRoutes(server, routeOptions);
 
   return server;
 }

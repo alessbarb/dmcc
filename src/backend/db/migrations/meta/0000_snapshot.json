@@ -2145,8 +2145,8 @@
           "notNull": true,
           "default": "'scrypt'"
         },
-        "vault_role": {
-          "name": "vault_role",
+        "app_role": {
+          "name": "app_role",
           "type": "text",
           "primaryKey": false,
           "notNull": true,

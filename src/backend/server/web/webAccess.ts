@@ -45,7 +45,7 @@ export async function ensureDefaultWorkspace(user: WebUser): Promise<string> {
   await db.transaction(async (tx) => {
     await tx.insert(schema.workspaces).values({
       workspaceId,
-      ["vault" + "Id"]: user.workspacePartitionId,
+      workspacePartitionId: user.workspacePartitionId,
       name: `${user.displayName}'s workspace`,
       ownerId: user.userId,
     });

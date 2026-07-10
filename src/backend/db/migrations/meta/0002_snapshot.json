@@ -1000,8 +1000,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "vault_id": {
-          "name": "vault_id",
+        "workspace_partition_id": {
+          "name": "workspace_partition_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -1892,8 +1892,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "vault_id": {
-          "name": "vault_id",
+        "workspace_partition_id": {
+          "name": "workspace_partition_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -1942,8 +1942,8 @@
           "notNull": true,
           "default": "'scrypt'"
         },
-        "vault_role": {
-          "name": "vault_role",
+        "app_role": {
+          "name": "app_role",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -1970,8 +1970,8 @@
         }
       },
       "indexes": {
-        "uq_user_email_vault": {
-          "name": "uq_user_email_vault",
+        "uq_user_email_workspace_partition": {
+          "name": "uq_user_email_workspace_partition",
           "columns": [
             {
               "expression": "email_normalized",
@@ -1980,7 +1980,7 @@
               "nulls": "last"
             },
             {
-              "expression": "vault_id",
+              "expression": "workspace_partition_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1991,8 +1991,8 @@
           "method": "btree",
           "with": {}
         },
-        "uq_user_email_hash_vault": {
-          "name": "uq_user_email_hash_vault",
+        "uq_user_email_hash_workspace_partition": {
+          "name": "uq_user_email_hash_workspace_partition",
           "columns": [
             {
               "expression": "email_hash",
@@ -2001,7 +2001,7 @@
               "nulls": "last"
             },
             {
-              "expression": "vault_id",
+              "expression": "workspace_partition_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -2170,8 +2170,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "vault_id": {
-          "name": "vault_id",
+        "workspace_partition_id": {
+          "name": "workspace_partition_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,

@@ -15,8 +15,23 @@ import type { CampaignState } from "@core/domain/state.js";
 import type { DomainEventType, StoredEvent } from "@core/domain/shared/events.js";
 import { storedEventSchema, eventPayloadSchemas } from "@core/domain/shared/events.js";
 import { normalizeEventPayload } from "@core/domain/shared/normalizeEventPayload.js";
-import { computeEventHash } from "@core/persistence/eventStore/eventStore.js";
 import { calculateCommandHash, CommandConflictError } from "@core/persistence/repositories/campaignRepository.js";
+
+function computeEventHash(eventWithoutHash: Omit<StoredEvent, "hash">): string {
+  return createHash("sha256").update(JSON.stringify({
+    sequence: eventWithoutHash.sequence,
+    eventId: eventWithoutHash.eventId,
+    campaignId: eventWithoutHash.campaignId,
+    type: eventWithoutHash.type,
+    occurredAt: eventWithoutHash.occurredAt,
+    actorId: eventWithoutHash.actorId,
+    payload: eventWithoutHash.payload,
+    previousHash: eventWithoutHash.previousHash,
+    schemaVersion: eventWithoutHash.schemaVersion,
+    commandId: eventWithoutHash.commandId,
+    commandHash: eventWithoutHash.commandHash,
+  })).digest("hex");
+}
 
 function canonicalCommandPayload(command: Command): string {
   const canonicalStringify = (value: any): string => {

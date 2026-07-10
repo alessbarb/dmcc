@@ -88,7 +88,7 @@ export interface CampaignCanvasFlowHandle {
   zoomOut: () => void;
 }
 
-export type CanvasDeviceMode = "desktop" | "tablet" | "mobile";
+export type CanvasDeviceMode = "wide-screen" | "tablet" | "mobile";
 export type CanvasInteractionProfile = "explore" | "direct" | "edit";
 
 export interface CampaignCanvasFlowProps {
@@ -146,7 +146,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   mysteryFlowMode = false,
   density = "normal",
   relationsFilter = "all",
-  deviceMode = "desktop",
+  deviceMode = "wide-screen",
   interactionProfile = "edit",
   focusMode = false,
   focusNodeId = null,

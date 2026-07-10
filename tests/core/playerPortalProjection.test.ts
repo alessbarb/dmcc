@@ -42,14 +42,14 @@ function campaignProjection(): CampaignProjection {
 }
 
 describe("PlayerPortalProjection", () => {
-  it("synthesizes legacy metadata.playerId links when no explicit link exists", () => {
+  it("synthesizes previous metadata.playerId links when no explicit link exists", () => {
     const projection = buildPlayerPortalProjection(campaignProjection(), []);
 
     expect(projection.linksByPlayerId.get("ply_1")?.characterEntityId).toBe("ent_pc_1");
     expect(projection.linksByPlayerId.get("ply_1")?.ownership).toBe("campaign_premade");
   });
 
-  it("uses explicit latest link over legacy metadata.playerId", () => {
+  it("uses explicit latest link over previous metadata.playerId", () => {
     const projection = buildPlayerPortalProjection(campaignProjection(), [
       event("PlayerCharacterLinked", {
         campaignId: "cmp_portal",

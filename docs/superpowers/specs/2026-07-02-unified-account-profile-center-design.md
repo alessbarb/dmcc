@@ -16,7 +16,7 @@ and the player portal while preserving the distinction between:
 - one player profile per campaign membership;
 - characters, which remain separate campaign entities.
 
-The design must work in the current local/LAN application and establish stable
+The design must work in the current local/Network application and establish stable
 privacy semantics for a future hosted web and native app.
 
 ## Product Principles
@@ -50,7 +50,7 @@ The account center contains these modules:
 7. Security and sessions
 8. Data and account deletion
 
-On desktop, the identity summary and module navigation remain in a sidebar
+On wide-screen, the identity summary and module navigation remain in a sidebar
 while one module occupies the content panel. On mobile, the root view is a
 module index and each module opens as a focused subpage. Each module owns its
 save and discard actions.
@@ -66,7 +66,7 @@ identity and credential data:
 - normalized email and email hash;
 - default display name and avatar;
 - password material;
-- vault role;
+- archive role;
 - account lifecycle timestamps.
 
 The email is private and must never be reused as a public identifier.
@@ -91,7 +91,7 @@ loading presentation and notification configuration.
 
 ### DmSocialProfile
 
-Each account has at most one DM social profile per vault:
+Each account has at most one DM social profile per archive:
 
 - public display name;
 - avatar;
@@ -160,7 +160,7 @@ The privacy module provides previews for:
 ### Global Publication
 
 `global` is a durable audience for a future hosted web/native application. It
-does not mean anonymous LAN access in the local product.
+does not mean anonymous Network access in the local product.
 
 The social profile includes:
 
@@ -168,15 +168,15 @@ The social profile includes:
 - publication state `private`, `unlisted`, or `published`;
 - a dedicated restrictive global DTO.
 
-The handle is normalized and reserved within the current vault. The design does
+The handle is normalized and reserved within the current archive. The design does
 not assume global uniqueness across future servers. A hosted service may add a
 separate global reservation process without changing profile semantics.
 
 During the local stage:
 
 - global fields can be selected and previewed;
-- the global DTO is available only to authenticated accounts in the same vault;
-- neither `unlisted` nor `published` creates an anonymous LAN URL;
+- the global DTO is available only to authenticated accounts in the same archive;
+- neither `unlisted` nor `published` creates an anonymous Network URL;
 - publishing requires explicit confirmation.
 
 Moving to the hosted product must not publish existing profiles
@@ -414,7 +414,7 @@ are absent from every social projection.
 ### Frontend
 
 - Enter the same `/account` route from DM and player surfaces.
-- Exercise desktop sidebar and mobile drill-down navigation.
+- Exercise wide-screen sidebar and mobile drill-down navigation.
 - Verify dirty-state protection, save, discard, and field errors.
 - Verify inherited profile defaults and explicit resets.
 - Verify privacy previews for owner, DM, table, and global audiences.
@@ -433,7 +433,7 @@ are absent from every social projection.
 
 ## Explicit Non-Goals for the First Release
 
-- Anonymous public profile URLs on LAN.
+- Anonymous public profile URLs on Network.
 - Hosted cross-server handle uniqueness.
 - Additional visual theme artwork or branded theme packages.
 - Arbitrary user-uploaded fonts or themes.

@@ -30,7 +30,7 @@ const campaignScopedReset = () => ({
   graph: null,
   timeline: null,
   visibility: null,
-  lanStatus: null,
+  networkStatus: null,
   dmPlayerPortalSummary: null,
 });
 
@@ -42,7 +42,7 @@ function buildCanvasesById(campaignState: any): Record<string, any> {
   const raw = campaignState?.canvases;
   if (!raw) return {};
   // API returns canvases as a plain object {canvasId: canvas} (serialized from Map)
-  // but local/legacy paths may send an array
+  // but local/previous paths may send an array
   const items: any[] = Array.isArray(raw) ? raw : Object.values(raw);
   const canvasesById: Record<string, any> = {};
   for (const canvas of items) {
@@ -278,7 +278,7 @@ export interface CampaignStateStore {
   graph: { nodes: any[]; edges: any[] } | null;
   timeline: { events: any[] } | null;
   visibility: any | null;
-  lanStatus: { lanModeEnabled: boolean; accessCode: string | null; localIp: string; port: number; joinUrl: string } | null;
+  networkStatus: { networkModeEnabled: boolean; accessCode: string | null; localIp: string; port: number; joinUrl: string } | null;
 
   playerPortalState: any | null;
   dmPlayerPortalSummary: any | null;
@@ -438,7 +438,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   graph: null,
   timeline: null,
   visibility: null,
-  lanStatus: null,
+  networkStatus: null,
   playerPortalState: null,
   dmPlayerPortalSummary: null,
   loading: false,
@@ -578,7 +578,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       let graph = null;
       let timeline = null;
       let visibility = null;
-      let lanStatus = null;
+      let networkStatus = null;
 
       if (role === "dm") {
         const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility, resLanStatus] = await Promise.all([
@@ -595,7 +595,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         graph = resGraph.ok ? await resGraph.json() : null;
         timeline = resTimeline.ok ? await resTimeline.json() : null;
         visibility = resVisibility.ok ? await resVisibility.json() : null;
-        lanStatus = resLanStatus.ok ? await resLanStatus.json() : null;
+        networkStatus = resLanStatus.ok ? await resLanStatus.json() : null;
       } else {
         const resGraph = await campaignApi.getCampaignGraph(campaignId);
         graph = resGraph.ok ? await resGraph.json() : null;
@@ -632,7 +632,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         graph,
         timeline,
         visibility,
-        lanStatus,
+        networkStatus,
         loading: false,
       });
     } catch (err: any) {
@@ -665,7 +665,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       let graph = null;
       let timeline = null;
       let visibility = null;
-      let lanStatus = null;
+      let networkStatus = null;
 
       if (role === "dm") {
         const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility, resLanStatus] = await Promise.all([
@@ -682,7 +682,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         graph = resGraph.ok ? await resGraph.json() : null;
         timeline = resTimeline.ok ? await resTimeline.json() : null;
         visibility = resVisibility.ok ? await resVisibility.json() : null;
-        lanStatus = resLanStatus.ok ? await resLanStatus.json() : null;
+        networkStatus = resLanStatus.ok ? await resLanStatus.json() : null;
       } else {
         const resGraph = await campaignApi.getCampaignGraph(campaignId);
         graph = resGraph.ok ? await resGraph.json() : null;
@@ -719,7 +719,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         graph,
         timeline,
         visibility,
-        lanStatus,
+        networkStatus,
         loading: false,
       });
     } catch (err: any) {
