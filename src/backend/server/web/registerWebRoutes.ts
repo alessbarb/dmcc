@@ -56,7 +56,7 @@ function createWebPlatformRoutesFacade(server: FastifyInstance): FastifyInstance
 
 /** Registers the PostgreSQL-backed multi-user web API surface. */
 export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOptions): void {
-  registerAuthWebRoutes(server);
+  void registerAuthWebRoutes(server);
   registerWebPlatformRoutes(createWebPlatformRoutesFacade(server));
   server.register(registerAccountRoutes, { dataDir: options.dataDir });
   server.register(registerAssetRoutes, { assetsDir: options.assetsDir });
