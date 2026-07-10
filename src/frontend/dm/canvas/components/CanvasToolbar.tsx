@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Panel, useReactFlow } from "@xyflow/react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import {
   MousePointer2, Hand, BoxSelect, StickyNote, Frame, Maximize2,
-  ZoomIn, ZoomOut, Map, Lock, Unlock, Target, Wrench, X
+  ZoomIn, ZoomOut, Map, Lock, Unlock, Target, Wrench, X, Link2
 } from "lucide-react";
+import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
 import "./canvas-mobile-toolbar.css";
 
 export type InteractionMode = "select" | "pan" | "multiselect";
-export type CanvasTouchMode = "explore" | "edit" | "multi";
+export type CanvasTouchMode = "explore" | "edit" | "connect" | "multi";
 
 export interface CanvasToolbarProps {
   canvasId: string;
@@ -24,6 +25,7 @@ export interface CanvasToolbarProps {
 function toDesktopInteractionMode(touchMode: CanvasTouchMode): InteractionMode {
   switch (touchMode) {
     case "explore": return "pan";
+    case "connect": return "pan";
     case "multi": return "multiselect";
     case "edit":
     default: return "select";
@@ -40,6 +42,15 @@ function toTouchMode(interactionMode: InteractionMode, isLocked: boolean): Canva
   }
 }
 
+function relationTypeFromLabel(label: string): string {
+  return label
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "") || "related_to";
+}
+
 export function CanvasToolbar({
   canvasId,
   interactionMode,
@@ -50,12 +61,80 @@ export function CanvasToolbar({
   onMinimapToggle,
 }: CanvasToolbarProps) {
   const { fitView, zoomIn, zoomOut, getNodes } = useReactFlow();
-  const { placeNodeOnCanvas } = useCampaignStore();
+  const { placeNodeOnCanvas, createRelation, addEdgeToCanvas } = useCampaignStore();
   const { t } = useTranslation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const touchMode = toTouchMode(interactionMode, isLocked);
+  const [mobileTouchMode, setMobileTouchMode] = useState<CanvasTouchMode | null>(null);
+  const [connectSourceNodeId, setConnectSourceNodeId] = useState<string | null>(null);
+  const touchMode = mobileTouchMode ?? toTouchMode(interactionMode, isLocked);
 
   const closeMobileTools = () => setIsMobileOpen(false);
+
+  useEffect(() => {
+    if (touchMode !== "connect") {
+      setConnectSourceNodeId(null);
+      return;
+    }
+
+    const handleNodeClick = async (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const nodeElement = target?.closest?.(".react-flow__node") as HTMLElement | null;
+      const nodeId = nodeElement?.dataset?.id ?? nodeElement?.getAttribute("data-id");
+      if (!nodeId) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const flowNodes = getNodes();
+      const tappedNode = flowNodes.find((node) => node.id === nodeId);
+      if (!tappedNode) return;
+
+      if (!connectSourceNodeId) {
+        setConnectSourceNodeId(nodeId);
+        return;
+      }
+
+      if (connectSourceNodeId === nodeId) {
+        setConnectSourceNodeId(null);
+        return;
+      }
+
+      const sourceNode = flowNodes.find((node) => node.id === connectSourceNodeId);
+      const targetNode = tappedNode;
+      const label = window.prompt("Describe la relación", "relacionado con")?.trim() || "relacionado con";
+      const sourceEntityId = typeof sourceNode?.data?.entityId === "string" ? sourceNode.data.entityId : undefined;
+      const targetEntityId = typeof targetNode.data?.entityId === "string" ? targetNode.data.entityId : undefined;
+
+      if (sourceEntityId && targetEntityId) {
+        await connectCanvasNodes({
+          canvasId,
+          sourceNode: { id: connectSourceNodeId, entityId: sourceEntityId },
+          targetNode: { id: nodeId, entityId: targetEntityId },
+          edge: { label, status: "draft", visibility: "dm", style: "solid" },
+          relation: { relationType: relationTypeFromLabel(label), visibility: { kind: "dm_only" } },
+          createRelation,
+          addEdgeToCanvas,
+        });
+      } else {
+        await addEdgeToCanvas(canvasId, {
+          sourceNodeId: connectSourceNodeId,
+          targetNodeId: nodeId,
+          label,
+          status: "draft",
+          visibility: "dm",
+          style: "solid",
+        });
+      }
+
+      setConnectSourceNodeId(null);
+      setMobileTouchMode("explore");
+      onModeChange("pan");
+      onLockChange(true);
+    };
+
+    document.addEventListener("click", handleNodeClick, true);
+    return () => document.removeEventListener("click", handleNodeClick, true);
+  }, [addEdgeToCanvas, canvasId, connectSourceNodeId, createRelation, getNodes, onLockChange, onModeChange, touchMode]);
 
   const handleAddNote = async () => {
     await placeNodeOnCanvas(canvasId, { kind: "note", text: "", color: "yellow", x: 200, y: 200 });
@@ -68,13 +147,17 @@ export function CanvasToolbar({
   };
 
   const handleModeChange = (mode: InteractionMode) => {
+    setMobileTouchMode(null);
+    setConnectSourceNodeId(null);
     onModeChange(mode);
     closeMobileTools();
   };
 
   const handleTouchModeChange = (mode: CanvasTouchMode) => {
+    setMobileTouchMode(mode);
+    setConnectSourceNodeId(null);
     onModeChange(toDesktopInteractionMode(mode));
-    onLockChange(mode === "explore");
+    onLockChange(mode === "explore" || mode === "connect");
     closeMobileTools();
   };
 
@@ -109,6 +192,8 @@ export function CanvasToolbar({
   };
 
   const handleLockToggle = () => {
+    setMobileTouchMode(null);
+    setConnectSourceNodeId(null);
     onLockChange(!isLocked);
     closeMobileTools();
   };
@@ -179,6 +264,7 @@ export function CanvasToolbar({
       <div className="canvas-toolbar__group">
         <button className={`canvas-toolbar__btn ${touchMode === "explore" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("explore")} title="Explorar: arrastra el mapa y toca tarjetas para verlas"><Hand size={15} /></button>
         <button className={`canvas-toolbar__btn ${touchMode === "edit" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("edit")} title="Editar: arrastra tarjetas y toca para seleccionarlas"><MousePointer2 size={15} /></button>
+        <button className={`canvas-toolbar__btn ${touchMode === "connect" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("connect")} title="Conectar: toca origen y destino"><Link2 size={15} /></button>
         <button className={`canvas-toolbar__btn ${touchMode === "multi" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("multi")} title="Seleccionar varias tarjetas"><BoxSelect size={15} /></button>
       </div>
       <div className="canvas-toolbar__divider" />
@@ -207,9 +293,24 @@ export function CanvasToolbar({
     </div>
   );
 
+  const touchModeLabel = touchMode === "connect"
+    ? (connectSourceNodeId ? "Toca la tarjeta destino" : "Toca la tarjeta origen")
+    : touchMode === "edit"
+      ? "Editar: arrastra tarjetas"
+      : touchMode === "multi"
+        ? "Selección múltiple"
+        : "Explorar: arrastra el mapa";
+
   return (
     <>
       <Panel position="top-center" className="canvas-toolbar-panel canvas-toolbar-panel--desktop" style={{ marginTop: "8px" }}>{desktopToolbarContent}</Panel>
+      <Panel position="top-center" className="canvas-mobile-mode-panel">
+        <div className={`canvas-mobile-mode-pill canvas-mobile-mode-pill--${touchMode}`}>
+          {touchMode === "connect" && <Link2 size={13} />}
+          {touchMode !== "connect" && (touchMode === "explore" ? <Hand size={13} /> : touchMode === "multi" ? <BoxSelect size={13} /> : <MousePointer2 size={13} />)}
+          <span>{touchModeLabel}</span>
+        </div>
+      </Panel>
       <Panel position="bottom-right" className="canvas-toolbar-panel canvas-toolbar-panel--mobile">
         {isMobileOpen && (
           <>
