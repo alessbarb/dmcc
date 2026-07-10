@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Shield, Eye, EyeOff, ArrowLeft, Plus } from "lucide-react";
-import { loginDm, fetchAuthStatus } from "../../shared/auth/authClient.js";
+import { login, fetchAuthStatus } from "../../shared/auth/authClient.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
@@ -39,7 +39,7 @@ export function DmLoginPage() {
     setLoading(true);
     setError(null);
     try {
-      await loginDm(email, secret);
+      await login(email, secret);
       navigate({ to: "/portal" });
     } catch (err: any) {
       if (err.message?.toLowerCase().includes("too many")) {
@@ -138,14 +138,10 @@ export function DmLoginPage() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "12px" }}>
             <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/dm/setup" })}>
-              <Plus size={14} style={{ marginRight: "6px" }} />
-              {t("dmLogin.createAccount")}
+              <Plus size={14} /> {t("dmLogin.setupBtn")}
             </button>
-            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/forgot-password" })}>
-              Recuperar contraseña
-            </button>
-            <button type="button" className="join-portal-back-btn" onClick={() => navigate({ to: "/" })}>
-              <ArrowLeft size={14} style={{ marginRight: "6px" }} /> {t("common.back")}
+            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/" })}>
+              <ArrowLeft size={14} /> {t("common.backToLanding")}
             </button>
           </div>
         </div>
