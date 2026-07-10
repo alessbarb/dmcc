@@ -1,5 +1,6 @@
 import React from "react";
 import { getInstitutionalPage, type InstitutionalPageKey } from "./institutionalContent.js";
+import { useTranslation } from "../shared/i18n/useTranslation.js";
 import { InstitutionalLayout } from "./InstitutionalLayout.js";
 
 interface InstitutionalRoutePageProps {
@@ -7,7 +8,8 @@ interface InstitutionalRoutePageProps {
 }
 
 function InstitutionalRoutePage({ pageKey }: InstitutionalRoutePageProps) {
-  return <InstitutionalLayout page={getInstitutionalPage(pageKey)} />;
+  const { locale } = useTranslation();
+  return <InstitutionalLayout page={getInstitutionalPage(pageKey, locale)} />;
 }
 
 export function AboutPage() {

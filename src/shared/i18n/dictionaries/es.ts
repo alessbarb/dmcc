@@ -1,6 +1,27 @@
 import type { TranslationDictionary } from "../types.js";
 
 export const es: TranslationDictionary = {
+  footer: {
+    about: "Sobre DMCC",
+    contact: "Contacto",
+    privacy: "Privacidad",
+    terms: "Términos",
+  },
+  legal: {
+    lastUpdated: "Última actualización: {date}",
+  },
+  privacy: {
+    title: "Política de privacidad",
+    subtitle: "Cómo DMCC trata datos de cuenta, campaña y datos técnicos.",
+  },
+  terms: {
+    title: "Términos de uso",
+    subtitle: "Reglas para acceder y usar DMCC.",
+  },
+  contact: {
+    cardTitle: "¿Preguntas o comentarios?",
+    cardDescription: "Contacta con el proyecto o revisa el repositorio público.",
+  },
   common: {
     save: "Guardar",
     cancel: "Cancelar",

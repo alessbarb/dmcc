@@ -1,4 +1,25 @@
 export const pt = {
+  footer: {
+    about: "Sobre o DMCC",
+    contact: "Contato",
+    privacy: "Privacidade",
+    terms: "Termos",
+  },
+  legal: {
+    lastUpdated: "Última atualização: {date}",
+  },
+  privacy: {
+    title: "Política de privacidade",
+    subtitle: "Como o DMCC trata dados de conta, campanha e técnicos.",
+  },
+  terms: {
+    title: "Termos de uso",
+    subtitle: "Regras para aceder e usar o DMCC.",
+  },
+  contact: {
+    cardTitle: "Perguntas ou feedback?",
+    cardDescription: "Contacta o projeto ou consulta o repositório público.",
+  },
   common: {
     save: "Salvar",
     cancel: "Cancelar",
