@@ -85,7 +85,7 @@ export async function registerAssetRoutes(
     }
 
     const assetsRoot = join(opts.assetsDir, "assets");
-    const groups = type === "all"
+    const groups = type === "all" || type === "entities"
       ? scanAllCatalogs(assetsRoot)
       : scanImageCatalog(join(assetsRoot, type), `/assets/${type}`);
     return { groups };
