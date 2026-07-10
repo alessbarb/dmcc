@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { normalizeImageCatalogGroups, normalizeImageCatalogResponse, type ImageCatalogGroups } from "./imageCatalog.js";
 
+export type ImageCatalogType = "all" | "avatars" | "campaigns" | "entities";
+
 interface ImagePickerModalProps {
-  catalog: "avatars" | "campaigns" | "entities";
+  catalog: ImageCatalogType;
   value: string;
   onSelect: (path: string) => void;
   onClose: () => void;
@@ -74,6 +76,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
   const groupEntries = Object.entries(safeGroups);
   const groupNames = groupEntries.map(([group]) => group);
   const images = safeGroups[activeGroup] ?? [];
+  const modalTitle = catalog === "campaigns" ? "Elegir portada" : "Elegir imagen";
 
   return (
     <div
@@ -82,9 +85,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
     >
       <div className="modal-container" style={{ maxWidth: "640px", width: "100%" }}>
         <div className="modal-header">
-          <h2 className="modal-title">
-            {catalog === "avatars" || catalog === "entities" ? "Elegir imagen" : "Elegir portada"}
-          </h2>
+          <h2 className="modal-title">{modalTitle}</h2>
           <button type="button" className="btn btn-icon btn-secondary" onClick={onClose} aria-label="Cerrar">
             <X size={16} />
           </button>
