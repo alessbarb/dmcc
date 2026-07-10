@@ -34,6 +34,7 @@ import type { Canvas, CanvasNode, CanvasEdge } from "@core/domain/canvas/types.j
 import type { Entity, Relation, Fact } from "../../../shared/stores/campaignStore.js";
 import { getRelationVisual } from "../../entities/entityVisuals.js";
 import { isPublicCanvasEdge, isPublicCanvasNode } from "../services/canvasVisibility.js";
+import { viewportContainsCanvasNode } from "../services/canvasViewport.js";
 
 // Register custom node types — group nodes are no longer rendered as boxes
 const nodeTypes = {
@@ -559,15 +560,27 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     setEdges(flowEdges);
   }, [flowEdges, setEdges]);
 
-  const lastCanvasIdRef = useRef<string | null>(null);
+  const viewportRecoveryCanvasIdRef = useRef<string | null>(null);
   useEffect(() => {
-    if (rfInstance && canvasId && lastCanvasIdRef.current !== canvasId) {
-      lastCanvasIdRef.current = canvasId;
-      setTimeout(() => {
+    if (!rfInstance || !canvasId || viewportRecoveryCanvasIdRef.current === canvasId || flowNodes.length === 0) return;
+
+    const wrapperBounds = wrapperRef.current?.getBoundingClientRect();
+    if (!wrapperBounds || wrapperBounds.width <= 0 || wrapperBounds.height <= 0) return;
+
+    const currentViewport = canvas.viewport ?? rfInstance.getViewport();
+    const hasVisibleNode = viewportContainsCanvasNode(flowNodes, currentViewport, {
+      width: wrapperBounds.width,
+      height: wrapperBounds.height,
+    });
+
+    viewportRecoveryCanvasIdRef.current = canvasId;
+
+    if (!canvas.viewport || !hasVisibleNode) {
+      window.setTimeout(() => {
         rfInstance.fitView({ padding: 0.25, duration: 800 });
       }, 100);
     }
-  }, [rfInstance, canvasId]);
+  }, [canvas.viewport, canvasId, flowNodes, rfInstance]);
 
 
   const focusNode = useCallback((nodeId: string, options?: CampaignCanvasFocusOptions) => {
