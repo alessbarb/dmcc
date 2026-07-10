@@ -5,9 +5,7 @@ async function gone(_request: FastifyRequest, reply: FastifyReply) {
   return { error: "Legacy vault/LAN/token API removed in PostgreSQL web mode" };
 }
 
-export async function registerWebPlatformRoutes(server: FastifyInstance): Promise<void> {
-  server.get("/api/health", async () => ({ ok: true }));
-
+export async function registerPlatformCompatibilityRoutes(server: FastifyInstance): Promise<void> {
   server.all("/api/vaults/*", gone);
   server.all("/api/join/:campaignId", gone);
   server.all("/api/campaigns/:campaignId/rejoin", gone);
