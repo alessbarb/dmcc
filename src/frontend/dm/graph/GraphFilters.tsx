@@ -1,10 +1,11 @@
-import type { TFunction } from "i18next";
 import { GraphNodeSearch } from "./GraphNodeSearch.js";
 import type { GraphSearchItem } from "./GraphNodeSearch.js";
 
 export type FilterPreset = "todos" | "nextSession" | "criticalClues" | "unrevealedSecrets" | "misiones" | "personajes" | "secretos" | "lugares" | "facciones" | "consecuencias";
 export type GraphViewMode = "all" | "dm_only" | "players";
 export type GraphLabelsMode = "auto" | "all" | "minimal";
+
+type Translate = (key: string) => string;
 
 export const GRAPH_FILTER_PRESETS: FilterPreset[] = [
   "todos",
@@ -28,7 +29,7 @@ export interface GraphFiltersProps {
   onViewModeChange: (mode: GraphViewMode) => void;
   labelsMode: GraphLabelsMode;
   onLabelsModeChange: (mode: GraphLabelsMode) => void;
-  t: TFunction;
+  t: Translate;
 }
 
 export function GraphFilters({
