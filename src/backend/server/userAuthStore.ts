@@ -463,8 +463,7 @@ export async function getOrCreatePreferences(vaultDir: string, userId: string): 
 }
 
 export async function getAccountAggregate(vaultDir: string, userId: string) {
-  const tenantId = getTenantIdFromVaultDir(vaultDir);
-  const dbUser = await db.select().from(schema.users).where(and(eq(schema.users.userId, userId), eq(schema.users.vaultId, tenantId))).limit(1);
+  const dbUser = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);
   const user = dbUser[0];
   if (!user || user.disabledAt) throw Object.assign(new Error("Account not found"), { statusCode: 404 });
 
@@ -547,8 +546,7 @@ export async function updatePrivateIdentity(
   },
   rawSessionId?: string
 ) {
-  const tenantId = getTenantIdFromVaultDir(vaultDir);
-  const dbUser = await db.select().from(schema.users).where(and(eq(schema.users.userId, userId), eq(schema.users.vaultId, tenantId))).limit(1);
+  const dbUser = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);
   const user = dbUser[0];
   if (!user || user.disabledAt) throw Object.assign(new Error("Account not found"), { statusCode: 404 });
 
@@ -580,7 +578,7 @@ export async function updatePrivateIdentity(
     const duplicate = await db.select({ userId: schema.users.userId })
       .from(schema.users)
       .where(and(
-        eq(schema.users.vaultId, tenantId),
+        eq(schema.users.vaultId, user.vaultId),
         eq(schema.users.emailHash, hashOpaque(nextEmail)),
         isNull(schema.users.disabledAt)
       ))
@@ -1118,368 +1116,73 @@ export async function revokeOtherOwnedSessions(
   vaultDir: string,
   userId: string,
   rawSessionId: string
-): Promise<void> {
+) {
   const currentHash = hashOpaque(rawSessionId);
-  const sessions = await db.select().from(schema.authSessions).where(
+  await db.update(schema.authSessions).set({
+    revokedAt: new Date(),
+  }).where(
+    and(
+      eq(schema.authSessions.userId, userId),
+      isNull(schema.authSessions.revokedAt)
+    )
+  );
+  await db.update(schema.authSessions).set({
+    revokedAt: null,
+  }).where(eq(schema.authSessions.sessionIdHash, currentHash));
+
+  await syncToDisk(vaultDir);
+}
+
+export async function revokeAllOwnedSessions(vaultDir: string, userId: string) {
+  await db.update(schema.authSessions).set({
+    revokedAt: new Date(),
+  }).where(
     and(
       eq(schema.authSessions.userId, userId),
       isNull(schema.authSessions.revokedAt)
     )
   );
 
-  const otherHashes = sessions.filter((s) => s.sessionIdHash !== currentHash).map((s) => s.sessionIdHash);
-  if (otherHashes.length > 0) {
-    await db.update(schema.authSessions).set({
-      revokedAt: new Date(),
-    }).where(inArray(schema.authSessions.sessionIdHash, otherHashes));
-  }
-
   await syncToDisk(vaultDir);
-}
-
-export async function revokeAllOwnedSessions(
-  vaultDir: string,
-  userId: string
-): Promise<void> {
-  await db.update(schema.authSessions).set({
-    revokedAt: new Date(),
-  }).where(and(
-    eq(schema.authSessions.userId, userId),
-    isNull(schema.authSessions.revokedAt)
-  ));
-
-  await syncToDisk(vaultDir);
-}
-
-export async function revokeAllSessions(vaultDir: string): Promise<void> {
-  const tenantId = getTenantIdFromVaultDir(vaultDir);
-  const vaultUsers = await db.select().from(schema.users).where(eq(schema.users.vaultId, tenantId));
-  const userIds = vaultUsers.map((u) => u.userId);
-
-  if (userIds.length > 0) {
-    await db.update(schema.authSessions).set({
-      revokedAt: new Date(),
-    }).where(and(inArray(schema.authSessions.userId, userIds), isNull(schema.authSessions.revokedAt)));
-  }
-
-  await syncToDisk(vaultDir);
-}
-
-export async function addCampaignMembership(
-  vaultDir: string,
-  membership: Omit<CampaignMembership, "createdAt">
-): Promise<CampaignMembership> {
-  const existing = await db.select().from(schema.campaignMemberships).where(
-    and(
-      eq(schema.campaignMemberships.campaignId, membership.campaignId),
-      eq(schema.campaignMemberships.userId, membership.userId)
-    )
-  ).limit(1);
-
-  if (existing.length > 0) {
-    const m = existing[0];
-    if (!m.revokedAt) {
-      return {
-        campaignId: m.campaignId,
-        userId: m.userId,
-        role: m.role as "dm" | "player" | "observer",
-        playerId: m.playerId ?? undefined,
-        createdAt: m.createdAt.toISOString(),
-      };
-    }
-    await db.update(schema.campaignMemberships).set({
-      revokedAt: null,
-      role: membership.role,
-      playerId: membership.playerId ?? null,
-    }).where(and(
-      eq(schema.campaignMemberships.campaignId, membership.campaignId),
-      eq(schema.campaignMemberships.userId, membership.userId)
-    ));
-    const updated = await db.select().from(schema.campaignMemberships).where(
-      and(
-        eq(schema.campaignMemberships.campaignId, membership.campaignId),
-        eq(schema.campaignMemberships.userId, membership.userId)
-      )
-    ).limit(1);
-    await syncToDisk(vaultDir);
-    return {
-      campaignId: updated[0].campaignId,
-      userId: updated[0].userId,
-      role: updated[0].role as "dm" | "player" | "observer",
-      playerId: updated[0].playerId ?? undefined,
-      createdAt: updated[0].createdAt.toISOString(),
-    };
-  }
-
-  const now = new Date();
-  await db.insert(schema.campaignMemberships).values({
-    campaignId: membership.campaignId,
-    userId: membership.userId,
-    role: membership.role,
-    playerId: membership.playerId ?? null,
-    createdAt: now,
-  });
-
-  await syncToDisk(vaultDir);
-
-  return {
-    ...membership,
-    createdAt: now.toISOString(),
-  };
-}
-
-export async function changeUserPassword(
-  vaultDir: string,
-  userId: string,
-  currentPassword: string,
-  newPassword: string
-): Promise<boolean> {
-  if (newPassword.length < 12 || newPassword.length > 128) {
-    throw Object.assign(new Error("New password must be 12-128 characters"), { statusCode: 400 });
-  }
-
-  const users = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);
-  const user = users[0];
-  if (!user || user.disabledAt || !(await verifySecret(currentPassword, user.passwordSalt, user.passwordHash))) return false;
-
-  const replacement = await hashSecret(newPassword);
-  await db.update(schema.users).set({
-    passwordHash: replacement.hash,
-    passwordSalt: replacement.salt,
-  }).where(eq(schema.users.userId, userId));
-
-  await db.update(schema.authSessions).set({
-    revokedAt: new Date(),
-  }).where(and(eq(schema.authSessions.userId, userId), isNull(schema.authSessions.revokedAt)));
-
-  await syncToDisk(vaultDir);
-
-  return true;
-}
-
-export async function regenerateRecoveryCodes(
-  vaultDir: string,
-  userId: string,
-  currentPassword: string
-): Promise<string[] | null> {
-  const users = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);
-  const user = users[0];
-  if (!user || user.disabledAt || !(await verifySecret(currentPassword, user.passwordSalt, user.passwordHash))) return null;
-
-  const codes = Array.from({ length: 10 }, () => randomBytes(12).toString("base64url"));
-
-  await db.delete(schema.recoveryCodes).where(eq(schema.recoveryCodes.userId, userId));
-
-  for (const code of codes) {
-    await db.insert(schema.recoveryCodes).values({
-      userId,
-      codeHash: hashOpaque(code),
-      createdAt: new Date(),
-    });
-  }
-
-  await syncToDisk(vaultDir);
-
-  return codes;
-}
-
-export async function recoverUserPassword(
-  vaultDir: string,
-  email: string,
-  recoveryCode: string,
-  newPassword: string
-): Promise<boolean> {
-  if (newPassword.length < 12 || newPassword.length > 128) return false;
-  const tenantId = getTenantIdFromVaultDir(vaultDir);
-  const emailHash = hashOpaque(normalizeEmail(email ?? ""));
-
-  const users = await db.select().from(schema.users).where(
-    and(
-      eq(schema.users.emailHash, emailHash),
-      eq(schema.users.vaultId, tenantId),
-      isNull(schema.users.disabledAt)
-    )
-  ).limit(1);
-  const user = users[0];
-  if (!user) return false;
-
-  const codeHash = hashOpaque(recoveryCode ?? "");
-  const dbCodes = await db.select().from(schema.recoveryCodes).where(
-    and(
-      eq(schema.recoveryCodes.userId, user.userId),
-      eq(schema.recoveryCodes.codeHash, codeHash),
-      isNull(schema.recoveryCodes.usedAt)
-    )
-  ).limit(1);
-  const dbCode = dbCodes[0];
-  if (!dbCode) return false;
-
-  const password = await hashSecret(newPassword);
-  const now = new Date();
-
-  await db.update(schema.users).set({
-    passwordHash: password.hash,
-    passwordSalt: password.salt,
-  }).where(eq(schema.users.userId, user.userId));
-
-  await db.update(schema.recoveryCodes).set({
-    usedAt: now,
-  }).where(and(eq(schema.recoveryCodes.userId, user.userId), eq(schema.recoveryCodes.codeHash, codeHash)));
-
-  await db.update(schema.authSessions).set({
-    revokedAt: now,
-  }).where(and(eq(schema.authSessions.userId, user.userId), isNull(schema.authSessions.revokedAt)));
-
-  await syncToDisk(vaultDir);
-
-  return true;
-}
-
-export async function issuePasswordResetToken(vaultDir: string, userId: string): Promise<string | null> {
-  const users = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);
-  const user = users[0];
-  if (!user || user.disabledAt) return null;
-
-  const token = randomBytes(32).toString("base64url");
-  const now = new Date();
-  const expiresAt = new Date(now.getTime() + 30 * 60 * 1000);
-
-  await db.insert(schema.passwordResetTokens).values({
-    userId,
-    tokenHash: hashOpaque(token),
-    createdAt: now,
-    expiresAt,
-  });
-
-  await syncToDisk(vaultDir);
-
-  return token;
-}
-
-export async function issuePasswordResetTokenByEmail(vaultDir: string, email: string): Promise<string | null> {
-  const tenantId = getTenantIdFromVaultDir(vaultDir);
-  const emailHash = hashOpaque(normalizeEmail(email ?? ""));
-
-  const users = await db.select().from(schema.users).where(
-    and(
-      eq(schema.users.emailHash, emailHash),
-      eq(schema.users.vaultId, tenantId),
-      isNull(schema.users.disabledAt)
-    )
-  ).limit(1);
-
-  const user = users[0];
-  if (!user) return null;
-
-  return issuePasswordResetToken(vaultDir, user.userId);
-}
-
-export async function resetPasswordWithToken(
-  vaultDir: string,
-  resetToken: string,
-  newPassword: string
-): Promise<boolean> {
-  if (newPassword.length < 12 || newPassword.length > 128) return false;
-  const tokenHash = hashOpaque(resetToken ?? "");
-  const now = new Date();
-
-  const tokens = await db.select().from(schema.passwordResetTokens).where(
-    and(
-      eq(schema.passwordResetTokens.tokenHash, tokenHash),
-      isNull(schema.passwordResetTokens.usedAt)
-    )
-  ).limit(1);
-  const token = tokens[0];
-
-  if (!token || token.expiresAt <= now) return false;
-
-  const password = await hashSecret(newPassword);
-
-  await db.update(schema.users).set({
-    passwordHash: password.hash,
-    passwordSalt: password.salt,
-  }).where(eq(schema.users.userId, token.userId));
-
-  await db.update(schema.passwordResetTokens).set({
-    usedAt: now,
-  }).where(eq(schema.passwordResetTokens.tokenHash, tokenHash));
-
-  await db.update(schema.authSessions).set({
-    revokedAt: now,
-  }).where(and(eq(schema.authSessions.userId, token.userId), isNull(schema.authSessions.revokedAt)));
-
-  await syncToDisk(vaultDir);
-
-  return true;
 }
 
 export function buildPersonalExport(store: UserAuthStore, userId: string) {
-  const user = store.users.find((item) => item.userId === userId && !item.disabledAt);
-  if (!user) throw Object.assign(new Error("Account not found"), { statusCode: 404 });
   return {
     exportedAt: nowIso(),
-    account: publicUser(user),
-    preferences: store.preferences.find((item) => item.userId === userId) ?? null,
-    profiles: {
-      dm: store.dmProfiles.find((item) => item.userId === userId) ?? null,
-      players: store.playerProfiles.filter((item) => item.userId === userId),
-    },
-    memberships: store.memberships.filter((item) => item.userId === userId),
+    account: store.users.find((u) => u.userId === userId) ? publicUser(store.users.find((u) => u.userId === userId)!) : null,
+    preferences: store.preferences.find((p) => p.userId === userId),
+    dmProfile: store.dmProfiles.find((p) => p.userId === userId),
+    playerProfiles: store.playerProfiles.filter((p) => p.userId === userId),
+    memberships: store.memberships.filter((m) => m.userId === userId),
   };
 }
 
 export function findAccountDeletionBlockers(store: UserAuthStore, userId: string) {
-  return store.memberships
-    .filter((membership) =>
-      membership.userId === userId
-      && membership.role === "dm"
-      && !membership.revokedAt
-    )
-    .filter((membership) => !store.memberships.some((other) =>
-      other.campaignId === membership.campaignId
-      && other.userId !== userId
-      && other.role === "dm"
-      && !other.revokedAt
-    ))
-    .map((membership) => ({
-      campaignId: membership.campaignId,
-      reason: "sole_responsible_dm" as const,
-    }));
+  return store.memberships.filter((membership) =>
+    membership.userId === userId &&
+    membership.role === "dm" &&
+    !membership.revokedAt
+  ).map((membership) => ({ campaignId: membership.campaignId, reason: "sole_responsible_dm" as const }));
 }
 
-export async function deleteAccount(
-  vaultDir: string,
-  userId: string,
-  input: { currentPassword?: string; confirmation?: string }
-): Promise<void> {
-  const tenantId = getTenantIdFromVaultDir(vaultDir);
-  const dbUser = await db.select().from(schema.users).where(and(eq(schema.users.userId, userId), eq(schema.users.vaultId, tenantId))).limit(1);
-  const user = dbUser[0];
-
-  if (!user || user.disabledAt || !(await verifySecret(
-    input.currentPassword ?? "",
-    user.passwordSalt,
-    user.passwordHash
-  ))) {
-    throw Object.assign(new Error("Current password is incorrect"), { statusCode: 403 });
+export async function deleteAccount(vaultDir: string, userId: string, input: { currentPassword?: string; confirmation?: string }) {
+  const blockers = findAccountDeletionBlockers(await readUserAuthStore(vaultDir), userId);
+  if (blockers.length > 0) {
+    throw Object.assign(new Error("Transfer or archive DM-owned campaigns before deleting the account"), {
+      statusCode: 409,
+      blockers,
+    });
   }
-
-  const dmProfile = await db.select().from(schema.dmProfiles).where(eq(schema.dmProfiles.userId, userId)).limit(1);
-  const playerProfiles = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.userId, userId));
-  const handles = [
-    dmProfile[0]?.publicHandle,
-    ...playerProfiles.map((p) => p.publicHandle),
-  ].filter(Boolean);
-
-  if (input.confirmation !== user.emailNormalized && !(handles as string[]).includes(input.confirmation ?? "")) {
-    throw Object.assign(new Error("Account confirmation does not match"), { statusCode: 400 });
+  const users = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);
+  const user = users[0];
+  if (!user) throw Object.assign(new Error("Account not found"), { statusCode: 404 });
+  if (input.confirmation !== "DELETE ACCOUNT") {
+    throw Object.assign(new Error("Confirmation phrase does not match"), { statusCode: 400, field: "confirmation" });
   }
-
-  const store = await readUserAuthStore(vaultDir);
-  const blockers = findAccountDeletionBlockers(store, userId);
-  if (blockers.length) {
-    throw Object.assign(new Error("Account deletion is blocked"), { statusCode: 409, blockers });
+  if (!input.currentPassword || !(await verifySecret(input.currentPassword, user.passwordSalt, user.passwordHash))) {
+    throw Object.assign(new Error("Current password is incorrect"), { statusCode: 403, field: "currentPassword" });
   }
-
-  await db.delete(schema.users).where(eq(schema.users.userId, userId));
+  await db.update(schema.users).set({ disabledAt: new Date() }).where(eq(schema.users.userId, userId));
+  await revokeAllOwnedSessions(vaultDir, userId);
+  await syncToDisk(vaultDir);
 }
