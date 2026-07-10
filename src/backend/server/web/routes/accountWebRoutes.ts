@@ -152,24 +152,10 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       return { error: "Account not found" };
     }
 
-    const [storedPreferences] = await db
-      .select()
-      .from(schema.userPreferences)
-      .where(eq(schema.userPreferences.userId, webUser.userId))
-      .limit(1);
-    const [dmProfileRow] = await db
-      .select()
-      .from(schema.dmProfiles)
-      .where(eq(schema.dmProfiles.userId, webUser.userId))
-      .limit(1);
-    const playerProfileRows = await db
-      .select()
-      .from(schema.playerProfiles)
-      .where(eq(schema.playerProfiles.userId, webUser.userId));
-    const membershipRows = await db
-      .select()
-      .from(schema.campaignMemberships)
-      .where(eq(schema.campaignMemberships.userId, webUser.userId));
+    const [storedPreferences] = await db.select().from(schema.userPreferences).where(eq(schema.userPreferences.userId, webUser.userId)).limit(1);
+    const [dmProfileRow] = await db.select().from(schema.dmProfiles).where(eq(schema.dmProfiles.userId, webUser.userId)).limit(1);
+    const playerProfileRows = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.userId, webUser.userId));
+    const membershipRows = await db.select().from(schema.campaignMemberships).where(eq(schema.campaignMemberships.userId, webUser.userId));
     const campaignIds = Array.from(new Set(membershipRows.map((membership) => membership.campaignId)));
     const campaignRows = campaignIds.length
       ? await db.select().from(schema.campaigns).where(inArray(schema.campaigns.campaignId, campaignIds))
@@ -267,10 +253,7 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       version: (body.version ?? 0) + 1,
       updatedAt: new Date(),
     };
-    await db
-      .insert(schema.dmProfiles)
-      .values(values)
-      .onConflictDoUpdate({ target: schema.dmProfiles.userId, set: values });
+    await db.insert(schema.dmProfiles).values(values).onConflictDoUpdate({ target: schema.dmProfiles.userId, set: values });
     return { profile: { ...body, ...values } };
   });
 
@@ -331,10 +314,7 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       const [profile] = await db
         .select()
         .from(schema.playerProfiles)
-        .where(and(
-          eq(schema.playerProfiles.userId, webUser.userId),
-          eq(schema.playerProfiles.campaignId, request.query.campaignId),
-        ))
+        .where(and(eq(schema.playerProfiles.userId, webUser.userId), eq(schema.playerProfiles.campaignId, request.query.campaignId)))
         .limit(1);
       const projected = projectProfile(profile ? toPlayerProfile(profile) : null);
       return { previews: { owner: projected, dm: projected, table: projected, global: projected } };
@@ -345,17 +325,9 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
   });
 
   server.get<{ Params: { publicHandle: string } }>("/api/profiles/:publicHandle", async (request, reply) => {
-    const [dmProfile] = await db
-      .select()
-      .from(schema.dmProfiles)
-      .where(eq(schema.dmProfiles.publicHandle, request.params.publicHandle))
-      .limit(1);
+    const [dmProfile] = await db.select().from(schema.dmProfiles).where(eq(schema.dmProfiles.publicHandle, request.params.publicHandle)).limit(1);
     if (dmProfile) return { profile: projectProfile(toDmProfile(dmProfile)) };
-    const [playerProfile] = await db
-      .select()
-      .from(schema.playerProfiles)
-      .where(eq(schema.playerProfiles.publicHandle, request.params.publicHandle))
-      .limit(1);
+    const [playerProfile] = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.publicHandle, request.params.publicHandle)).limit(1);
     if (playerProfile) return { profile: projectProfile(toPlayerProfile(playerProfile)) };
     reply.code(404);
     return { error: "Profile not found" };
@@ -376,16 +348,10 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       reply.code(403);
       return { error: "Active campaign membership required" };
     }
-    const members = await db
-      .select()
-      .from(schema.campaignMemberships)
-      .where(eq(schema.campaignMemberships.campaignId, request.params.campaignId));
+    const members = await db.select().from(schema.campaignMemberships).where(eq(schema.campaignMemberships.campaignId, request.params.campaignId));
     const userIds = members.map((member) => member.userId);
     const dmRows = userIds.length ? await db.select().from(schema.dmProfiles).where(inArray(schema.dmProfiles.userId, userIds)) : [];
-    const playerRows = await db
-      .select()
-      .from(schema.playerProfiles)
-      .where(eq(schema.playerProfiles.campaignId, request.params.campaignId));
+    const playerRows = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, request.params.campaignId));
     return {
       profiles: members.flatMap((member) => {
         const source = member.role === "dm" || member.role === "co_dm"
@@ -402,10 +368,7 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
   server.get("/api/account/sessions", async (request) => {
     const webUser = getRequiredWebUser(request);
     const currentHash = getCurrentSessionHash(request);
-    const sessions = await db
-      .select()
-      .from(schema.authSessions)
-      .where(and(eq(schema.authSessions.userId, webUser.userId), isNull(schema.authSessions.revokedAt)));
+    const sessions = await db.select().from(schema.authSessions).where(and(eq(schema.authSessions.userId, webUser.userId), isNull(schema.authSessions.revokedAt)));
     return {
       sessions: sessions.map((session) => ({
         sessionRef: session.sessionIdHash.slice(0, 24),
@@ -432,14 +395,12 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
 
   server.delete<{ Params: { sessionRef: string } }>("/api/account/sessions/:sessionRef", async (request, reply) => {
     const webUser = getRequiredWebUser(request);
-    const [session] = await db
+    const sessions = await db
       .select()
       .from(schema.authSessions)
-      .where(and(
-        eq(schema.authSessions.userId, webUser.userId),
-        isNull(schema.authSessions.revokedAt),
-      ));
-    if (!session || !session.sessionIdHash.startsWith(request.params.sessionRef)) {
+      .where(and(eq(schema.authSessions.userId, webUser.userId), isNull(schema.authSessions.revokedAt)));
+    const session = sessions.find((candidate) => candidate.sessionIdHash.startsWith(request.params.sessionRef));
+    if (!session) {
       reply.code(404);
       return { error: "Session not found" };
     }
