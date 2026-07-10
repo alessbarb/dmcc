@@ -25,10 +25,12 @@ const AUTH_WEB_ROUTES = new Set([
  * Transitional facade for Oleada 1.
  *
  * Auth routes now live in `routes/authWebRoutes.ts`, but the remaining platform
- * module still contains the old handlers until the monolith is physically
- * reduced. The facade lets us wire the new auth module without registering
- * duplicate Fastify routes. Remove this once the duplicated auth block is deleted
- * from `webPlatformRoutes.ts`.
+ * module still contains the old auth handlers until the monolith is physically
+ * reduced. The facade lets us make the extracted module authoritative without
+ * registering duplicate Fastify routes.
+ *
+ * Next cleanup: delete the now-skipped auth block from `webPlatformRoutes.ts`
+ * once the full monolith can be edited safely in a local checkout.
  */
 function createWebPlatformRoutesFacade(server: FastifyInstance): FastifyInstance {
   const routeMethods = new Set(["get", "post"]);
