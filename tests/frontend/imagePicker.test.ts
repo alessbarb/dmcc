@@ -40,8 +40,18 @@ describe("ImagePickerModal", () => {
 
   it("groups tabs render the group name", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
-    expect(src).toContain("Object.entries");
+    expect(src).toContain("groupEntries.map");
     expect(src).toContain("modal-overlay");
+  });
+
+  it("normalizes local groups before rendering tabs and images", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+
+    expect(src).toContain("const safeGroups = normalizeImageCatalogGroups(groups)");
+    expect(src).toContain("const images = safeGroups[activeGroup] ?? []");
+    expect(src).not.toContain("Object.keys(groups)");
+    expect(src).not.toContain("Object.entries(groups)");
+    expect(src).not.toContain("Object.keys(nextGroups)");
   });
 });
 
@@ -126,7 +136,7 @@ describe("App campaign cover wiring", () => {
   });
 });
 
-describe("normalizeImageCatalogResponse", () => {
+describe("image catalog normalization", () => {
   it("returns an empty catalog when groups is missing or null", async () => {
     const { normalizeImageCatalogResponse } = await import("../../src/frontend/shared/components/imageCatalog.js");
 
@@ -135,10 +145,11 @@ describe("normalizeImageCatalogResponse", () => {
   });
 
   it("keeps only array groups and string image paths", async () => {
-    const { normalizeImageCatalogResponse } = await import("../../src/frontend/shared/components/imageCatalog.js");
+    const { normalizeImageCatalogGroups, normalizeImageCatalogResponse } = await import("../../src/frontend/shared/components/imageCatalog.js");
 
-    expect(normalizeImageCatalogResponse({ groups: { heroes: ["/a.png", null, 7], bad: null } })).toEqual({
-      heroes: ["/a.png"],
-    });
+    const expected = { heroes: ["/a.png"] };
+    expect(normalizeImageCatalogResponse({ groups: { heroes: ["/a.png", null, 7], bad: null } })).toEqual(expected);
+    expect(normalizeImageCatalogGroups({ heroes: ["/a.png", null, 7], bad: null })).toEqual(expected);
+    expect(normalizeImageCatalogGroups(null)).toEqual({});
   });
 });
