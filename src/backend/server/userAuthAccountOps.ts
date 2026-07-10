@@ -88,7 +88,6 @@ export async function addCampaignMembership(
         role: current.role as CampaignMembership["role"],
         playerId: current.playerId ?? undefined,
         createdAt: current.createdAt.toISOString(),
-        revokedAt: current.revokedAt?.toISOString(),
       };
     }
 
