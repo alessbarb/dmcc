@@ -75,7 +75,6 @@ describe("GET /api/assets/catalog", () => {
     });
   });
 
-
   it("discovers image assets from DMCC_PUBLIC_DIR even when the SPA is not built", async () => {
     await withFakeAssets(async (assetsDir) => {
       const previousPublicDir = process.env.DMCC_PUBLIC_DIR;
@@ -97,33 +96,33 @@ describe("GET /api/assets/catalog", () => {
         }
       }
     });
-
-it("registers the asset catalog route in postgres web mode", async () => {
-  await withFakeAssets(async (assetsDir) => {
-    const previousSessionSecret = process.env.SESSION_SECRET;
-    process.env.SESSION_SECRET = "0123456789abcdef0123456789abcdef";
-
-    try {
-      const server = createServer({ assetsDir, storageMode: "postgres" });
-      const response = await server.inject({
-        method: "GET",
-        url: "/api/assets/catalog?type=avatars",
-      });
-
-      expect(response.statusCode).toBe(200);
-
-      const body = response.json<{ groups: Record<string, string[]> }>();
-      expect(body.groups["default"]).toContain("/assets/avatars/default-avatar.png");
-      expect(body.groups["fantasy"]).toContain("/assets/avatars/fantasy/aelar.png");
-    } finally {
-      if (previousSessionSecret === undefined) {
-        delete process.env.SESSION_SECRET;
-      } else {
-        process.env.SESSION_SECRET = previousSessionSecret;
-      }
-    }
   });
-});
+
+  it("registers the asset catalog route in postgres web mode", async () => {
+    await withFakeAssets(async (assetsDir) => {
+      const previousSessionSecret = process.env.SESSION_SECRET;
+      process.env.SESSION_SECRET = "0123456789abcdef0123456789abcdef";
+
+      try {
+        const server = createServer({ assetsDir, storageMode: "postgres" });
+        const response = await server.inject({
+          method: "GET",
+          url: "/api/assets/catalog?type=avatars",
+        });
+
+        expect(response.statusCode).toBe(200);
+
+        const body = response.json<{ groups: Record<string, string[]> }>();
+        expect(body.groups["default"]).toContain("/assets/avatars/default-avatar.png");
+        expect(body.groups["fantasy"]).toContain("/assets/avatars/fantasy/aelar.png");
+      } finally {
+        if (previousSessionSecret === undefined) {
+          delete process.env.SESSION_SECRET;
+        } else {
+          process.env.SESSION_SECRET = previousSessionSecret;
+        }
+      }
+    });
   });
 
   it("returns empty groups when assetsDir is undefined", async () => {
