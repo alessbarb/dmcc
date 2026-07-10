@@ -48,7 +48,7 @@ export function SmartLanding() {
         setHasDmSession(authStatus.dmSessionValid);
 
         if (authStatus.dmSessionValid) {
-          const res = await apiFetch("/api/campaigns", { vaultId: identity.vaultId });
+          const res = await apiFetch("/api/campaigns");
           if (res.ok) {
             const data = await res.json();
             setCampaigns(Array.isArray(data) ? data : []);

@@ -7,7 +7,6 @@ function defaultIdentity(): LocalIdentity {
   return {
     version: 1,
     serverOrigin: window.location.origin,
-    vaultId: "default",
     dmProfiles: [],
     playerProfiles: [],
   };
@@ -76,10 +75,6 @@ export function setDmLastUnlocked(): void {
   });
 }
 
-export function setVaultId(vaultId: string): void {
-  const identity = readIdentity();
-  writeIdentity({ ...identity, vaultId });
-}
 
 export function upsertPlayerProfile(profile: PlayerProfileEntry): void {
   const identity = readIdentity();

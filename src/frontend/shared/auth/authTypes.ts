@@ -21,7 +21,6 @@ export interface DmProfileEntry {
 export interface LocalIdentity {
   version: 1;
   serverOrigin: string;
-  vaultId: string;
   dmProfiles: DmProfileEntry[];
   account?: {
     lastLoginAt?: string;

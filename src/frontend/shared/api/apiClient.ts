@@ -9,8 +9,6 @@ const IDENTITY_HEADERS = [
 ] as const;
 
 export type ApiFetchOptions = {
-  /** @deprecated Vaults are ignored by the web/PostgreSQL API. Kept only for callers not yet refactored. */
-  vaultId?: string;
   init?: RequestInit;
 };
 
