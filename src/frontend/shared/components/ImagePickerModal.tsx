@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { ArrowLeft, ChevronRight, X } from "lucide-react";
-import { normalizeImageCatalogGroups, normalizeImageCatalogResponse, type ImageCatalogGroups } from "./imageCatalog.js";
+import {
+  normalizeImageCatalogGroups,
+  normalizeImageCatalogResponse,
+  type ImageCatalogGroups,
+  type ImageCatalogItem,
+} from "./imageCatalog.js";
 
 export type ImageCatalogType = "all" | "avatars" | "campaigns" | "entities";
 type ImagePickerView = "groups" | "images";
@@ -55,13 +60,13 @@ function sortCatalogs(a: string, b: string): number {
   return a.localeCompare(b);
 }
 
-function buildCatalogSections(groupEntries: Array<[string, string[]]>): CatalogGroupSection[] {
+function buildCatalogSections(groupEntries: Array<[string, ImageCatalogItem[]]>): CatalogGroupSection[] {
   const byCatalog = new Map<string, CatalogGroupSection>();
 
-  for (const [key, paths] of groupEntries) {
+  for (const [key, items] of groupEntries) {
     const { catalog: catalogName, group } = splitGroupKey(key);
     const section = byCatalog.get(catalogName) ?? { catalog: catalogName, groups: [] };
-    section.groups.push({ key, label: group, count: paths.length });
+    section.groups.push({ key, label: group, count: items.length });
     byCatalog.set(catalogName, section);
   }
 
@@ -203,26 +208,26 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
   const groupEntries = Object.entries(safeGroups);
   const groupSections = useMemo(() => buildCatalogSections(groupEntries), [groupEntries]);
   const images = safeGroups[activeGroup] ?? [];
-  const imagePathsKey = images.join("\n");
+  const thumbnailPathsKey = images.map((image) => image.thumb).join("\n");
   const activeGroupLabel = activeGroup ? splitGroupKey(activeGroup) : null;
   const modalTitle = catalog === "campaigns" ? "Elegir portada" : "Elegir imagen";
 
   useEffect(() => {
-    if (loadingCatalog || error || imagePathsKey.length === 0) {
+    if (loadingCatalog || error || thumbnailPathsKey.length === 0) {
       setLoadingImages(false);
       return;
     }
 
     let cancelled = false;
     setLoadingImages(true);
-    preloadImagePaths(imagePathsKey.split("\n").filter(Boolean)).finally(() => {
+    preloadImagePaths(thumbnailPathsKey.split("\n").filter(Boolean)).finally(() => {
       if (!cancelled) setLoadingImages(false);
     });
 
     return () => {
       cancelled = true;
     };
-  }, [activeGroup, error, imagePathsKey, loadingCatalog]);
+  }, [activeGroup, error, thumbnailPathsKey, loadingCatalog]);
 
   function openGroup(group: string) {
     setActiveGroup(group);
@@ -372,7 +377,7 @@ function GroupBrowser({ sections, onOpenGroup }: { sections: CatalogGroupSection
 }
 
 function ImageGrid({ images, value, onSelect, onClose, isMobile }: {
-  images: string[];
+  images: ImageCatalogItem[];
   value: string;
   onSelect: (path: string) => void;
   onClose: () => void;
@@ -391,16 +396,16 @@ function ImageGrid({ images, value, onSelect, onClose, isMobile }: {
         alignContent: "start",
       }}
     >
-      {images.map((path) => (
+      {images.map((image) => (
         <button
           type="button"
-          key={path}
-          onClick={() => { onSelect(path); onClose(); }}
+          key={image.src}
+          onClick={() => { onSelect(image.src); onClose(); }}
           style={{
             width: "100%",
             height: isMobile ? mobileTileHeight : undefined,
             padding: 0,
-            border: value === path ? "2px solid var(--color-accent, #c5a028)" : "2px solid transparent",
+            border: value === image.src ? "2px solid var(--color-accent, #c5a028)" : "2px solid transparent",
             borderRadius: "var(--radius-sm, 8px)",
             overflow: "hidden",
             cursor: "pointer",
@@ -408,13 +413,14 @@ function ImageGrid({ images, value, onSelect, onClose, isMobile }: {
             aspectRatio: isMobile ? undefined : "1 / 1",
             minWidth: 0,
           }}
-          title={path.split("/").pop()}
+          title={image.name}
         >
           <img
-            src={path}
-            alt={path.split("/").pop()}
+            src={image.thumb}
+            alt={image.name}
             loading="lazy"
             decoding="async"
+            fetchPriority="low"
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
         </button>
