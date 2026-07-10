@@ -85,9 +85,11 @@ export async function registerAssetRoutes(
     }
 
     const assetsRoot = join(opts.assetsDir, "assets");
-    const groups = type === "all" || type === "entities"
-      ? scanAllCatalogs(assetsRoot)
-      : scanImageCatalog(join(assetsRoot, type), `/assets/${type}`);
-    return { groups };
+    if (type === "all" || type === "entities") {
+      return { groups: scanAllCatalogs(assetsRoot) };
+    }
+
+    const catalogType = type as "avatars" | "campaigns";
+    return { groups: scanImageCatalog(join(assetsRoot, catalogType), `/assets/${catalogType}`) };
   });
 }
