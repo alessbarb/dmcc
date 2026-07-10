@@ -13,12 +13,19 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
   const [groups, setGroups] = useState<ImageCatalogGroups>({});
   const [activeGroup, setActiveGroup] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
+    setError(null);
     fetch(`/api/assets/catalog?type=${catalog}`, { signal: controller.signal })
-      .then((r) => r.json() as Promise<unknown>)
+      .then(async (r) => {
+        if (!r.ok) {
+          throw new Error(`No se pudo cargar el catálogo de imágenes (${r.status})`);
+        }
+        return r.json() as Promise<unknown>;
+      })
       .then((response) => {
         const nextGroups = normalizeImageCatalogResponse(response);
         setGroups(nextGroups);
@@ -28,6 +35,9 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
       .catch((err: unknown) => {
         if ((err as { name?: string }).name !== "AbortError") {
           console.error("Failed to load image catalog:", err);
+          setError(err instanceof Error ? err.message : "No se pudo cargar el catálogo de imágenes.");
+          setGroups({});
+          setActiveGroup("");
         }
       })
       .finally(() => setLoading(false));
@@ -73,6 +83,12 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
         <div className="modal-body">
           {loading ? (
             <p style={{ textAlign: "center", padding: "24px" }}>Cargando…</p>
+          ) : error ? (
+            <p role="alert" style={{ textAlign: "center", padding: "24px", color: "var(--color-danger, #f87171)" }}>
+              {error}
+            </p>
+          ) : images.length === 0 ? (
+            <p style={{ textAlign: "center", padding: "24px" }}>No hay imágenes disponibles en este catálogo.</p>
           ) : (
             <div
               style={{

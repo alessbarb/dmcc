@@ -26,7 +26,7 @@ async function withFakeAssets<T>(fn: (assetsDir: string) => Promise<T>): Promise
 describe("GET /api/assets/catalog", () => {
   it("returns avatar groups with default and named subfolders", async () => {
     await withFakeAssets(async (assetsDir) => {
-      const server = createServer({ assetsDir });
+      const server = createServer({ assetsDir, storageMode: "legacy" });
       const response = await server.inject({
         method: "GET",
         url: "/api/assets/catalog?type=avatars",
@@ -40,7 +40,7 @@ describe("GET /api/assets/catalog", () => {
 
   it("returns campaigns as flat 'all' group", async () => {
     await withFakeAssets(async (assetsDir) => {
-      const server = createServer({ assetsDir });
+      const server = createServer({ assetsDir, storageMode: "legacy" });
       const response = await server.inject({
         method: "GET",
         url: "/api/assets/catalog?type=campaigns",
@@ -53,7 +53,7 @@ describe("GET /api/assets/catalog", () => {
 
   it("returns entities as flat 'all' group", async () => {
     await withFakeAssets(async (assetsDir) => {
-      const server = createServer({ assetsDir });
+      const server = createServer({ assetsDir, storageMode: "legacy" });
       const response = await server.inject({
         method: "GET",
         url: "/api/assets/catalog?type=entities",
@@ -66,7 +66,7 @@ describe("GET /api/assets/catalog", () => {
 
   it("returns 400 for unknown catalog type", async () => {
     await withFakeAssets(async (assetsDir) => {
-      const server = createServer({ assetsDir });
+      const server = createServer({ assetsDir, storageMode: "legacy" });
       const response = await server.inject({
         method: "GET",
         url: "/api/assets/catalog?type=unknown",
@@ -75,8 +75,32 @@ describe("GET /api/assets/catalog", () => {
     });
   });
 
+
+  it("discovers image assets from DMCC_PUBLIC_DIR even when the SPA is not built", async () => {
+    await withFakeAssets(async (assetsDir) => {
+      const previousPublicDir = process.env.DMCC_PUBLIC_DIR;
+      process.env.DMCC_PUBLIC_DIR = assetsDir;
+      try {
+        const server = createServer({ storageMode: "legacy" });
+        const response = await server.inject({
+          method: "GET",
+          url: "/api/assets/catalog?type=campaigns",
+        });
+        expect(response.statusCode).toBe(200);
+        const body = response.json<{ groups: Record<string, string[]> }>();
+        expect(body.groups["all"]).toContain("/assets/campaigns/default-campaign-cover.jpg");
+      } finally {
+        if (previousPublicDir === undefined) {
+          delete process.env.DMCC_PUBLIC_DIR;
+        } else {
+          process.env.DMCC_PUBLIC_DIR = previousPublicDir;
+        }
+      }
+    });
+  });
+
   it("returns empty groups when assetsDir is undefined", async () => {
-    const server = createServer({});
+    const server = createServer({ storageMode: "legacy" });
     const response = await server.inject({
       method: "GET",
       url: "/api/assets/catalog?type=avatars",

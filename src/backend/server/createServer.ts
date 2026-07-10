@@ -347,6 +347,9 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   const publicPath = process.env.NODE_ENV === "test" && !explicitPublicPath
     ? undefined
     : publicPathCandidates.find((candidate) => existsSync(join(candidate, "index.html")));
+  const publicAssetsPath = process.env.NODE_ENV === "test" && !explicitPublicPath
+    ? undefined
+    : publicPathCandidates.find((candidate) => existsSync(join(candidate, "assets")));
   const hasBuiltSpa = Boolean(publicPath);
 
   async function sendSpaIndex(reply: FastifyReply): Promise<string> {
@@ -610,7 +613,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(registerAuthRoutes, opts);
   server.register(registerUserAuthRoutes, opts);
   server.register(registerAccountRoutes, opts);
-  server.register(registerAssetRoutes, { assetsDir: config?.assetsDir ?? publicPath });
+  server.register(registerAssetRoutes, { assetsDir: config?.assetsDir ?? publicAssetsPath });
 
   return server;
 }
