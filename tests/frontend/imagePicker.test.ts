@@ -12,6 +12,11 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("onClose");
   });
 
+  it("supports the all catalog type for current and future asset catalogs", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain('export type ImageCatalogType = "all" | "avatars" | "campaigns" | "entities"');
+  });
+
   it("fetches catalog from /api/assets/catalog", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain("/api/assets/catalog");
@@ -78,6 +83,12 @@ describe("ImagePickerButton", () => {
     expect(src).toContain("onChange");
     expect(src).toContain("catalog:");
     expect(src).toContain("defaultImage");
+  });
+
+  it("uses the shared ImageCatalogType", () => {
+    const src = read("src/frontend/shared/components/ImagePickerButton.tsx");
+    expect(src).toContain("type ImageCatalogType");
+    expect(src).toContain("catalog: ImageCatalogType");
   });
 
   it("renders ImagePickerModal on click", () => {
