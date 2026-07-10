@@ -23,7 +23,7 @@ export function AppFooter({ variant = "default" }: AppFooterProps) {
     <footer className={`app-footer app-footer--${variant}`}>
       <div className="app-footer__brand">
         <strong>DM Campaign Companion</strong>
-        <span>{t("appFooter.tagline")}</span>
+        <span>Campaign Memory Engine</span>
       </div>
 
       <nav className="app-footer__links" aria-label={t("appFooter.ariaLabel")}>
@@ -40,7 +40,7 @@ export function AppFooter({ variant = "default" }: AppFooterProps) {
         </a>
       </nav>
 
-      <div className="app-footer__meta" aria-label={t("appFooter.metaAriaLabel")}>
+      <div className="app-footer__meta" aria-label="DMCC metadata">
         <span>v{APP_VERSION}</span>
         <span>© {currentYear}</span>
         <span>DMCC</span>
