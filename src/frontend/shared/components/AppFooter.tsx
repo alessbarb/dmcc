@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "../i18n/useTranslation.js";
 import { institutionalContact } from "../../institutional/institutionalContent.js";
 import "../styles/appFooter.css";
+import "../../dm/layouts/campaign-route-transitions.css";
 
 const APP_VERSION = "0.1.0";
 
@@ -33,7 +34,7 @@ export function AppFooter({ variant = "default" }: AppFooterProps) {
             {t(link.labelKey)}
           </Link>
         ))}
-        <a href={institutionalContact.github} className="app-footer__link" target="_bnetworkk" rel="noopener noreferrer">
+        <a href={institutionalContact.github} className="app-footer__link" target="_blank" rel="noopener noreferrer">
           GitHub
         </a>
         <a href={`mailto:${institutionalContact.email}`} className="app-footer__link">
