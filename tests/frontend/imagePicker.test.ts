@@ -17,6 +17,15 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("/api/assets/catalog");
   });
 
+  it("preloads catalog thumbnails before rendering the grid", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain("function preloadImage");
+    expect(src).toContain("new Image()");
+    expect(src).toContain("async function preloadCatalogImages");
+    expect(src).toContain("await preloadCatalogImages(nextGroups)");
+    expect(src).toContain("Preparando imágenes…");
+  });
+
   it("renders a helpful error and empty-catalog state", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain("No se pudo cargar el catálogo de imágenes");
