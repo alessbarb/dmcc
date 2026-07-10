@@ -16,7 +16,7 @@ const DEFAULT_CAMPAIGN_COVER = "/assets/campaigns/default-campaign-cover.jpg";
 
 function getPremadeLocale(): string {
   try {
-    const saved = localStorage.getItem("dmcc_language");
+    const saved = localStorage.getItem("dmcc_networkguage");
     return detectBrowserLocale(saved);
   } catch {}
   return "en";
@@ -189,7 +189,7 @@ function normalizeActiveTable(raw: any, t: (key: string) => string): DmHubActive
   const id = getString(raw?.id);
   const campaignId = getString(raw?.campaignId);
   if (!id || !campaignId) return null;
-  const status = raw?.status === "paused" || raw?.status === "planned" ? raw.status : "running";
+  const status = raw?.status === "paused" || raw?.status === "pnetworkned" ? raw.status : "running";
   return {
     id,
     campaignId,

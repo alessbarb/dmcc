@@ -14,7 +14,7 @@ It is the memory layer around your campaign.
 
 Campaign notes usually start simple. A few NPCs, a couple of places, one main quest.
 
-Then the players spare the wrong villain, adopt a suspicious goblin, ignore the obvious clue, invent a theory that is better than your plan, and accidentally start a political crisis.
+Then the players spare the wrong villain, adopt a suspicious goblin, ignore the obvious clue, invent a theory that is better than your pnetwork, and accidentally start a political crisis.
 
 A few sessions later, the hard part is no longer imagination. The hard part is continuity.
 
@@ -41,9 +41,9 @@ It is designed as a quick briefing before you start preparing or running a sessi
 
 ### Visual campaign canvas
 
-The canvas is the main visual workspace for planning and understanding your campaign.
+The canvas is the main visual workspace for pnetworkning and understanding your campaign.
 
-You can place entities, facts, quick notes and visual groups on a board, then connect them with meaningful relationships. Use it for mysteries, factions, cities, dungeons, session plans or any custom structure that helps you think.
+You can place entities, facts, quick notes and visual groups on a board, then connect them with meaningful relationships. Use it for mysteries, factions, cities, dungeons, session pnetworks or any custom structure that helps you think.
 
 The canvas supports:
 
@@ -137,7 +137,7 @@ This is especially useful when there are weeks between sessions and everyone rem
 
 The **What's Next** view helps prepare the next session from the current campaign state.
 
-It surfaces open threads, relevant quests, unresolved consequences and preparation tasks so the next session starts from what actually happened, not from what you vaguely remember planning three weeks ago.
+It surfaces open threads, relevant quests, unresolved consequences and preparation tasks so the next session starts from what actually happened, not from what you vaguely remember pnetworkning three weeks ago.
 
 ### Boards
 
@@ -178,9 +178,9 @@ DMCC currently supports:
 
 Markdown export is especially useful for offline reading, long-term storage or reviewing the campaign outside the app.
 
-### Multiple languages
+### Multiple networkguages
 
-The interface supports multiple languages:
+The interface supports multiple networkguages:
 
 - English,
 - Spanish,
@@ -248,7 +248,7 @@ http://localhost:5173
 
 The local API server runs on port `4877` by default.
 
-Web-first development uses localhost by default. Archived local sharing notes live in `docs/archive/local-lan-mode.md`; do not extend that mode unless it is explicitly reactivated.
+Web-first development uses localhost by default. Archived local sharing notes live in `docs/archive/local-network-mode.md`; do not extend that mode unless it is explicitly reactivated.
 
 ### Build
 
@@ -278,7 +278,7 @@ For any deployed environment:
 - Set `NODE_ENV=production` and provide an explicit `DATABASE_URL`. The backend refuses to start in production without `DATABASE_URL` so it cannot silently fall back to local development credentials.
 - Set `DATABASE_SSL_MODE` explicitly when a deployment needs to override automatic TLS detection. Supported values are `auto` (default: require TLS for remote hosts and disable it only for loopback/Unix socket connections), `require` (always use TLS with normal certificate validation), and `disable` (local development only; production refuses remote database hosts with TLS disabled).
 - Generate a unique Postgres username, password, and database name per environment. Use least-privilege database roles for the application user.
-- Store `DATABASE_URL`, `SESSION_SECRET`, and other sensitive values in a secret manager such as your platform secret store, Docker/Kubernetes secrets, 1Password, Vault, AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault. Do not commit real secrets to Git or paste them into documentation examples.
+- Store `DATABASE_URL`, `SESSION_SECRET`, and other sensitive values in a secret manager such as your platform secret store, Docker/Kubernetes secrets, 1Password, Archive, AWS Secrets Manager, GCP Secret Manager, or Azure Key Archive. Do not commit real secrets to Git or paste them into documentation examples.
 - Rotate credentials if they were shared in chat, logs, terminals, screenshots, or issue trackers.
 - Restrict database network access to the application runtime and operational tooling only. The local Compose file binds Postgres to `127.0.0.1`; production deployments should use private networking or firewall rules rather than public database ports.
 - For databases signed by a private CA, keep certificate verification enabled and provide the CA through the runtime instead of disabling verification. For example, set `PGSSLROOTCERT=/path/to/root-ca.pem` or use the equivalent managed-platform secret/file mount before running `npm run db:whoami` or starting the app.

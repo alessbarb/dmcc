@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { resolveListenHost } from "../../src/backend/entry/serverConfig.js";
 
 describe("server listen configuration", () => {
-  it("listens on localhost by default (LAN mode must be explicitly enabled)", () => {
+  it("listens on localhost by default (remote exposure requires explicit host config)", () => {
     expect(resolveListenHost({})).toBe("127.0.0.1");
   });
 

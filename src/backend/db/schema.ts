@@ -2,7 +2,7 @@ import { pgTable, text, timestamp, integer, jsonb, primaryKey, uniqueIndex } fro
 
 export const users = pgTable("users", {
   userId: text("user_id").primaryKey(),
-  vaultId: text("vault_id").notNull().default("default"),
+  workspacePartitionId: text("workspace_partition_id").notNull().default("default"),
   emailNormalized: text("email_normalized").notNull(),
   emailHash: text("email_hash").notNull(),
   displayName: text("display_name"),
@@ -10,14 +10,14 @@ export const users = pgTable("users", {
   passwordHash: text("password_hash").notNull(),
   passwordSalt: text("password_salt").notNull(),
   passwordAlgorithm: text("password_algorithm").notNull().default("scrypt"),
-  vaultRole: text("vault_role").notNull().default("user"), // 'admin' | 'user'
+  appRole: text("app_role").notNull().default("user"), // 'admin' | 'user'
   createdAt: timestamp("created_at").notNull().defaultNow(),
   lastLoginAt: timestamp("last_login_at"),
   disabledAt: timestamp("disabled_at"),
 }, (table) => {
   return {
-    emailVaultUq: uniqueIndex("uq_user_email_vault").on(table.emailNormalized, table.vaultId),
-    emailHashVaultUq: uniqueIndex("uq_user_email_hash_vault").on(table.emailHash, table.vaultId),
+    emailWorkspacePartitionUq: uniqueIndex("uq_user_email_workspace_partition").on(table.emailNormalized, table.workspacePartitionId),
+    emailHashWorkspacePartitionUq: uniqueIndex("uq_user_email_hash_workspace_partition").on(table.emailHash, table.workspacePartitionId),
   };
 });
 
@@ -38,7 +38,7 @@ export const userPreferences = pgTable("user_preferences", {
 
 export const workspaces = pgTable("workspaces", {
   workspaceId: text("workspace_id").primaryKey(),
-  vaultId: text("vault_id").notNull().default("default"),
+  workspacePartitionId: text("workspace_partition_id").notNull().default("default"),
   name: text("name").notNull(),
   ownerId: text("owner_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -58,7 +58,6 @@ export const workspaceMemberships = pgTable("workspace_memberships", {
 
 export const campaigns = pgTable("campaigns", {
   campaignId: text("campaign_id").primaryKey(),
-  vaultId: text("vault_id").notNull().default("default"),
   title: text("title").notNull(),
   summary: text("summary"),
   workspaceId: text("workspace_id").notNull().references(() => workspaces.workspaceId, { onDelete: "cascade" }),

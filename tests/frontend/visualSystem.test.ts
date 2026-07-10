@@ -48,7 +48,7 @@ describe("Modern Dark Narrative visual system", () => {
     expect(tokens.match(/--touch-target-min\s*:/g)).toHaveLength(1);
   });
 
-  it("loads tokens before primitives and legacy surface rules", () => {
+  it("loads tokens before primitives and previous surface rules", () => {
     const styles = read("src/frontend/shared/styles/index.css");
     const tokensIndex = styles.indexOf('@import "./tokens.css"');
     const primitivesIndex = styles.indexOf('@import "./primitives.css"');

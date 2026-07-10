@@ -56,10 +56,10 @@ const storeCanvasDensity = (density: CanvasDensity) => {
 };
 
 const getCanvasDeviceMode = (): CanvasDeviceMode => {
-  if (typeof window === "undefined") return "desktop";
+  if (typeof window === "undefined") return "wide-screen";
   if (window.matchMedia("(max-width: 767px)").matches) return "mobile";
   if (window.matchMedia("(max-width: 1024px)").matches) return "tablet";
-  return "desktop";
+  return "wide-screen";
 };
 
 const seedCanvasTemplate = async (canvasId: string, templateId: string, t: (key: string, params?: Record<string, string | number>) => string) => {
@@ -514,7 +514,7 @@ export function CanvasPage() {
     : null;
   const activeSession = isCurrentCampaignLoaded ? campaignState?.sessions?.find((s: Session) => s.status === "active") : undefined;
   const preparedSessions = isCurrentCampaignLoaded
-    ? (campaignState?.sessions ?? []).filter((session: Session) => session.status === "planned")
+    ? (campaignState?.sessions ?? []).filter((session: Session) => session.status === "pnetworkned")
     : [];
 
   // Keep the selected canvas scoped to the current campaign.
@@ -604,7 +604,7 @@ export function CanvasPage() {
     const campaignId = useCampaignStore.getState().activeCampaignId;
     
     if (createdCanvasId && campaignId && newBoardTemplate !== "custom") {
-      addToast(`Inicializando plantilla: ${newBoardTemplate}...`, "info");
+      addToast(`Inicializando pnetworktilla: ${newBoardTemplate}...`, "info");
       await seedCanvasTemplate(createdCanvasId, newBoardTemplate, t);
       addToast(t("canvas.page.boardInitialized", { name: newBoardTemplate }), "success");
     }
@@ -1028,17 +1028,17 @@ export function CanvasPage() {
                     <option value="mystery">Mapa de Conspiración (Pistas, sospechosos)</option>
                     <option value="location">Ubicación / Mazmorra (Salas, trampas)</option>
                     <option value="characters">Personajes (Relaciones sociales, familias)</option>
-                    <option value="custom">Tablero en blanco personalizado</option>
+                    <option value="custom">Tablero en bnetworkco personalizado</option>
                   </select>
                 </div>
                 <div className="form-group">
-                  <label>Plantilla de inicio</label>
+                  <label>Pnetworktilla de inicio</label>
                   <select
                     value={newBoardTemplate}
                     onChange={(e) => setNewBoardTemplate(e.target.value)}
                     className="form-select"
                   >
-                    <option value="custom">Ninguna (Tablero en blanco)</option>
+                    <option value="custom">Ninguna (Tablero en bnetworkco)</option>
                     <option value="mystery">🕵️ Misterio (Pistas, sospechosos y secretos)</option>
                     <option value="faction">🛡️ Facción (Líder, agentes y recursos)</option>
                     <option value="city">🏙️ Ciudad (Barrios, PNJ y rumores)</option>

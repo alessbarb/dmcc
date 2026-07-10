@@ -34,9 +34,9 @@ export function assertWithinDir(filePath: string, allowedDir: string): void {
 }
 
 export function getStoredAccessCode(state: any, _campaignId: string): string | null {
-  // Only return explicitly persisted legacy cleartext codes.
+  // Only return explicitly persisted previous cleartext codes.
   // New campaigns persist only localAccessCodeHash, so the cleartext code is available
-  // exclusively during the LAN toggle response and the current process lifetime.
+  // exclusively during the web toggle response and the current process lifetime.
   return state?.campaign?.settings?.localAccessCode ?? null;
 }
 

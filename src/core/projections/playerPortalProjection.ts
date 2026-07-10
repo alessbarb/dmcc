@@ -51,7 +51,7 @@ export function buildPlayerPortalProjection(
   const objectivesById = new Map<string, PlayerPortalObjective>();
   const proposalsById = new Map<string, PlayerCharacterProposal>();
 
-  // Synthesize legacy soft links from player_character entities with metadata.playerId
+  // Synthesize previous soft links from player_character entities with metadata.playerId
   for (const item of toValues<any>(campaign.entities as any)) {
     if (item.entityType !== "player_character" || item.archived) continue;
     const playerId = item.metadata?.playerId;
@@ -190,7 +190,7 @@ export function buildPlayerPortalProjection(
     }
   }
 
-  // Supersede any soft legacy link for players that had explicit link/unlink events.
+  // Supersede any soft previous link for players that had explicit link/unlink events.
   // The event processing already handled Linked (set) and Unlinked (delete), so
   // this ensures that players with only Unlinked events don't retain a soft link.
   for (const playerId of explicitLinkedPlayers) {

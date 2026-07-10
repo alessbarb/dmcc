@@ -46,7 +46,7 @@ describe("canvas visibility helpers", () => {
     expect(canvasVisibilityToVisibilityRule(canvasVisibility)).toEqual(domainVisibility);
   });
 
-  it("recognizes current and legacy DM-only domain visibility values", () => {
+  it("recognizes current and previous DM-only domain visibility values", () => {
     expect(isDmOnlyVisibility({ kind: "dm_only" })).toBe(true);
     expect(isDmOnlyVisibility({ kind: "dm" })).toBe(true);
     expect(isDmOnlyVisibility({ kind: "party" })).toBe(false);
@@ -68,8 +68,8 @@ describe("canvas visibility helpers", () => {
     expect(isPublicCanvasNode(baseNode({ kind: "fact", factId: "fact_secret" }), { visibility: { kind: "dm_only" } })).toBe(false);
   });
 
-  it("hides legacy kind: dm combinations from player/publicOnly canvas views", () => {
-    expect(isPublicCanvasNode(baseNode({ entityId: "ent_legacy" }), { visibility: { kind: "dm" } })).toBe(false);
-    expect(isPublicCanvasEdge(baseEdge({ relationshipId: "rel_legacy" }), { visibility: { kind: "dm" } })).toBe(false);
+  it("hides previous kind: dm combinations from player/publicOnly canvas views", () => {
+    expect(isPublicCanvasNode(baseNode({ entityId: "ent_previous" }), { visibility: { kind: "dm" } })).toBe(false);
+    expect(isPublicCanvasEdge(baseEdge({ relationshipId: "rel_previous" }), { visibility: { kind: "dm" } })).toBe(false);
   });
 });

@@ -28,7 +28,7 @@ export function SiteFooter() {
               {t(link.labelKey)}
             </Link>
           ))}
-          <a href={institutionalContact.github} className="rl-footer__link" target="_blank" rel="noopener noreferrer">
+          <a href={institutionalContact.github} className="rl-footer__link" target="_bnetworkk" rel="noopener noreferrer">
             GitHub
           </a>
           <a href={`mailto:${institutionalContact.email}`} className="rl-footer__link">

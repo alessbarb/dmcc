@@ -123,12 +123,9 @@ export async function createWebSession(userId: string): Promise<{ token: string;
   return { token, expiresAt };
 }
 
-const workspacePartitionKey = "vault" + "Id" as keyof typeof schema.users.$inferSelect;
-const appRoleKey = "vault" + "Role" as keyof typeof schema.users.$inferSelect;
-
 export function publicWebUser(user: typeof schema.users.$inferSelect): WebUser {
-  const appRole = String(user[appRoleKey]);
-  const workspacePartitionId = String(user[workspacePartitionKey]);
+  const appRole = String(user.appRole);
+  const workspacePartitionId = String(user.workspacePartitionId);
   return {
     userId: user.userId,
     email: user.emailNormalized,

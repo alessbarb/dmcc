@@ -17,7 +17,7 @@ export type VisibilityRule =
 
 export const dmOnlyVisibility: VisibilityRule = { kind: "dm_only" };
 
-/** Returns true for DM-only domain visibility, including legacy { kind: "dm" } values. */
+/** Returns true for DM-only domain visibility, including previous { kind: "dm" } values. */
 export function isDmOnlyVisibility(value: unknown): boolean {
   if (!value || typeof value !== "object") return false;
   const kind = (value as { kind?: unknown }).kind;

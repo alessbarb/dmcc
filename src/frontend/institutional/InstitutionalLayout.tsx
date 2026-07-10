@@ -66,7 +66,7 @@ export function InstitutionalLayout({ page }: InstitutionalLayoutProps) {
             <Mail size={16} aria-hidden="true" />
             <span>{institutionalContact.email}</span>
           </a>
-          <a href={institutionalContact.github} className="institutional-contact__link" target="_blank" rel="noopener noreferrer">
+          <a href={institutionalContact.github} className="institutional-contact__link" target="_bnetworkk" rel="noopener noreferrer">
             <GitBranch size={16} aria-hidden="true" />
             <span>github.com/alessbarb/DMCC</span>
           </a>

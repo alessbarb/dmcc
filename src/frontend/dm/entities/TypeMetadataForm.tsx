@@ -83,8 +83,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
                 <option value="dungeon">Mazmorra</option>
                 <option value="region">Región</option>
                 <option value="room">Habitación</option>
-                <option value="landmark">Punto de interés</option>
-                <option value="plane">Plano</option>
+                <option value="networkdmark">Punto de interés</option>
+                <option value="pnetworke">Pnetworko</option>
                 <option value="other">Otro</option>
               </select>
             </div>
@@ -377,8 +377,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
             <div className="form-group">
               <label className="form-label">Idiomas conocidos (ej. Común, Élfico)</label>
               <input type="text" className="form-input" placeholder="Separados por comas"
-                value={Array.isArray(metadata.languages) ? metadata.languages.join(", ") : ""}
-                onChange={e => onChange("languages", e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean))} />
+                value={Array.isArray(metadata.networkguages) ? metadata.networkguages.join(", ") : ""}
+                onChange={e => onChange("networkguages", e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean))} />
             </div>
             <div className="form-group">
               <label className="form-label">Dotes (ej. Alerta, Duro)</label>

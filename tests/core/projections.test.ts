@@ -16,7 +16,7 @@ import {
 
 describe("Projections and Alerts", () => {
   const campaignId = generateCampaignId();
-  const actorId = "usr_dm";
+  const actorId = "usr_core";
 
   it("calculates campaign projection, alerts, dashboard, and what-now projection correctly", () => {
     let state = createEmptyCampaignProjection();

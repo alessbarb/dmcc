@@ -17,5 +17,5 @@ function useMediaQuery(query: string): boolean {
 export function useMobileExperienceMode(): { deviceMode: CanvasDeviceMode; isMobile: boolean; isTablet: boolean } {
   const isMobile = useMediaQuery("(max-width: 599px)");
   const isTablet = useMediaQuery("(min-width: 600px) and (max-width: 899px)");
-  return { deviceMode: isMobile ? "mobile" : isTablet ? "tablet" : "desktop", isMobile, isTablet };
+  return { deviceMode: isMobile ? "mobile" : isTablet ? "tablet" : "wide-screen", isMobile, isTablet };
 }

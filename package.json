@@ -8,13 +8,10 @@
   "private": true,
   "type": "module",
   "description": "Web-first campaign memory and player portal for tabletop RPGs.",
-  "main": "desktop/main.mjs",
-  "desktopName": "local.dmcc.app.desktop",
   "scripts": {
     "archive": "node scripts/archive.mjs",
     "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "clean:release": "node -e \"require('node:fs').rmSync('release', { recursive: true, force: true })\"",
-    "clean:desktop": "npm run clean && npm run clean:release",
     "assets:thumbs": "tsx scripts/generate-asset-thumbs.ts",
     "assets:thumbs:dist": "DMCC_ASSETS_ROOT=dist/public/assets tsx scripts/generate-asset-thumbs.ts",
     "build": "npm run clean && vite build && npm run assets:thumbs:dist && tsc -p tsconfig.build.json && node scripts/fix-dist-imports.mjs",
@@ -40,28 +37,12 @@
     "premade:build": "node scripts/premades/build.mjs",
     "premade:build:check": "node scripts/premades/build.mjs --check",
     "premade:validate": "node scripts/premades/validate.mjs",
-    "benchmark:event-store": "vitest run --config vitest.benchmark.config.ts",
     "gen:icons": "node scripts/generate-icons.mjs",
-    "desktop:dev": "npm run build && electron desktop/main.mjs",
-    "desktop:pack": "npm run build && electron-builder --dir",
-    "desktop:release": "node scripts/desktop-release.mjs",
-    "desktop:release:clean": "node scripts/desktop-release.mjs --clean",
-    "desktop:build": "npm run desktop:release:clean",
-    "desktop:linux": "npm run build && electron-builder --linux AppImage deb",
-    "desktop:win": "npm run build && electron-builder --win nsis portable",
-    "desktop:win:dir": "npm run build && electron-builder --win --dir",
-    "desktop:win:portable": "npm run build && electron-builder --win portable",
-    "desktop:win:installer": "npm run build && electron-builder --win nsis",
-    "desktop:mac": "npm run build && electron-builder --mac dmg",
     "dev:db": "docker compose up -d postgres",
     "db:migrate": "dotenv -e .env -- tsx src/backend/db/migrate.ts",
     "db:whoami": "dotenv -e .env -- node -e \"import('pg').then(async ({default: pg}) => { const url = process.env.DATABASE_URL; const parsed = url ? new URL(url) : undefined; const mode = (process.env.DATABASE_SSL_MODE || 'auto').toLowerCase(); const local = parsed && ['localhost','127.0.0.1','::1','[::1]'].includes(parsed.hostname.toLowerCase()); const socket = parsed && (parsed.searchParams.has('host') || parsed.hostname.startsWith('/')); const remote = parsed && !local && !socket; if (!url) throw new Error('DATABASE_URL is required'); if (!['auto','require','disable'].includes(mode)) throw new Error('DATABASE_SSL_MODE must be auto, require, or disable'); if (process.env.NODE_ENV === 'production' && remote && mode === 'disable') throw new Error('DATABASE_SSL_MODE=disable is not allowed for remote production databases'); const pool = new pg.Pool({ connectionString: url, ssl: mode === 'disable' ? undefined : (mode === 'require' || remote ? true : undefined) }); const r = await pool.query('select current_database() db, current_user usr, inet_server_addr() addr, version() version'); console.log(r.rows[0]); await pool.end(); })\"",
     "db:studio": "drizzle-kit studio",
-    "dev:web": "DMCC_STORAGE_MODE=postgres npm run dev",
-    "dev:server:web": "DMCC_STORAGE_MODE=postgres tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts",
-    "db:migrate:prod": "tsx src/backend/db/migrate.ts",
-    "dev:ui:host": "DMCC_VITE_HOST=0.0.0.0 vite",
-    "dev:host": "DMCC_HOST=0.0.0.0 DMCC_VITE_HOST=0.0.0.0 tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts & DMCC_VITE_HOST=0.0.0.0 vite"
+    "db:migrate:prod": "tsx src/backend/db/migrate.ts"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
@@ -95,8 +76,6 @@
     "@vitejs/plugin-react": "^6.0.3",
     "dotenv-cli": "^11.0.0",
     "drizzle-kit": "^0.31.10",
-    "electron": "^42.5.1",
-    "electron-builder": "^26.15.6",
     "eslint": "^10.5.0",
     "sharp": "^0.35.2",
     "tsx": "^4.22.4",
@@ -108,50 +87,6 @@
   },
   "engines": {
     "node": ">=20"
-  },
-  "build": {
-    "appId": "local.dmcc.app",
-    "productName": "DM Campaign Companion",
-    "asar": true,
-    "asarUnpack": [
-      "**/*.node"
-    ],
-    "directories": {
-      "output": "release",
-      "buildResources": "build"
-    },
-    "files": [
-      "desktop/**/*",
-      "dist/**/*",
-      "package.json"
-    ],
-    "extraMetadata": {
-      "main": "desktop/main.mjs"
-    },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ],
-      "category": "Game",
-      "icon": "build/icons",
-      "syncDesktopName": true
-    },
-    "deb": {
-      "maintainer": "Alessandro Barbagallo <alessbarb@gmail.com>"
-    },
-    "win": {
-      "target": [
-        "nsis",
-        "portable"
-      ]
-    },
-    "mac": {
-      "target": [
-        "dmg"
-      ],
-      "category": "public.app-category.games"
-    }
   },
   "overrides": {
     "@esbuild-kit/core-utils": {

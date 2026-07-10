@@ -224,7 +224,7 @@ describe("image catalog normalization", () => {
     expect(normalizeImageCatalogResponse({ groups: null })).toEqual({});
   });
 
-  it("keeps legacy string entries as original-backed thumbnail items", async () => {
+  it("keeps previous string entries as original-backed thumbnail items", async () => {
     const { normalizeImageCatalogGroups, normalizeImageCatalogResponse } = await import("../../src/frontend/shared/components/imageCatalog.js");
 
     const expected = { heroes: [{ src: "/a.png", thumb: "/a.png", name: "a.png" }] };

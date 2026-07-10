@@ -754,7 +754,7 @@ export function CanvasInspector({
                         onBlur={handleComplicationsBlur}
                         rows={2}
                         className="form-textarea"
-                        placeholder="Ej. El nivel del agua sube, los guardias patrullan..."
+                        placeholder="Ej. El nivel del agua sube, los guardias patrulnetwork..."
                       />
                     </div>
                     <div className="form-group">

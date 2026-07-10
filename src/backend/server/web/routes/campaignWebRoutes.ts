@@ -107,11 +107,6 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
     return { grants };
   });
 
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/lan-status", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { enabled: false, mode: "web_invitations", message: "Local network sharing has been replaced by web invitations." };
-  });
-
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/players", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
     const profiles = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, request.params.campaignId));

@@ -286,7 +286,7 @@ CREATE TABLE "users" (
 	"password_hash" text NOT NULL,
 	"password_salt" text NOT NULL,
 	"password_algorithm" text DEFAULT 'scrypt' NOT NULL,
-	"vault_role" text DEFAULT 'user' NOT NULL,
+	"app_role" text DEFAULT 'user' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"last_login_at" timestamp,
 	"disabled_at" timestamp,

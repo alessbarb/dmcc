@@ -132,40 +132,40 @@ function MemoryIllustration() {
 
 function LanIllustration() {
   return (
-    <div className="rl-illus rl-illus-lan">
-      <div className="rl-lan-dm">
-        <div className="rl-lan-dm__icon"><Shield size={20} /></div>
+    <div className="rl-illus rl-illus-network">
+      <div className="rl-network-dm">
+        <div className="rl-network-dm__icon"><Shield size={20} /></div>
         <span>DM</span>
-        <div className="rl-lan-pulse" />
+        <div className="rl-network-pulse" />
       </div>
-      <div className="rl-lan-players">
-        <div className="rl-lan-player rl-lan-player--connected">
-          <div className="rl-lan-player__avatar">Z</div>
+      <div className="rl-network-players">
+        <div className="rl-network-player rl-network-player--connected">
+          <div className="rl-network-player__avatar">Z</div>
           <span>Zara</span>
-          <div className="rl-lan-player__status status--online"><Wifi size={9} /></div>
+          <div className="rl-network-player__status status--online"><Wifi size={9} /></div>
         </div>
-        <div className="rl-lan-player rl-lan-player--connected">
-          <div className="rl-lan-player__avatar">B</div>
+        <div className="rl-network-player rl-network-player--connected">
+          <div className="rl-network-player__avatar">B</div>
           <span>Borin</span>
-          <div className="rl-lan-player__status status--online"><Wifi size={9} /></div>
+          <div className="rl-network-player__status status--online"><Wifi size={9} /></div>
         </div>
-        <div className="rl-lan-player rl-lan-player--offline">
-          <div className="rl-lan-player__avatar">L</div>
+        <div className="rl-network-player rl-network-player--offline">
+          <div className="rl-network-player__avatar">L</div>
           <span>Lirael</span>
-          <div className="rl-lan-player__status status--offline"><Wifi size={9} /></div>
+          <div className="rl-network-player__status status--offline"><Wifi size={9} /></div>
         </div>
       </div>
-      <div className="rl-lan-visibility">
-        <div className="rl-lan-vis-row vis--visible">
+      <div className="rl-network-visibility">
+        <div className="rl-network-vis-row vis--visible">
           <Eye size={10} /><span>El Tabernero · PNJ</span>
         </div>
-        <div className="rl-lan-vis-row vis--hidden">
+        <div className="rl-network-vis-row vis--hidden">
           <EyeOff size={10} /><span>El Pacto · Secreto</span>
         </div>
-        <div className="rl-lan-vis-row vis--visible">
+        <div className="rl-network-vis-row vis--visible">
           <Eye size={10} /><span>Misión Principal · Quest</span>
         </div>
-        <div className="rl-lan-vis-row vis--hidden">
+        <div className="rl-network-vis-row vis--hidden">
           <EyeOff size={10} /><span>Torre Norte · Ubicación</span>
         </div>
       </div>
@@ -175,7 +175,7 @@ function LanIllustration() {
 
 // ─── Landing Copy ───────────────────────────────────────────────────────────
 
-const LANDING_COPY = {
+const NetworkDING_COPY = {
   heroSubtitle:
     "Dirige campañas de rol sin perder personajes, pistas, secretos ni consecuencias. DMCC convierte tu campaña en una memoria viva.",
   heroPrimaryCta: "Ver campaña de ejemplo",
@@ -265,7 +265,7 @@ export function MainLanding() {
           </h1>
 
           <p className="rl-hero__subtitle">
-            {LANDING_COPY.heroSubtitle}
+            {NetworkDING_COPY.heroSubtitle}
           </p>
 
           <div className="rl-hero__ctas">
@@ -279,15 +279,15 @@ export function MainLanding() {
               }
             >
               <span className="rl-cta-primary__shimmer" />
-              <span className="rl-cta-primary__text">{LANDING_COPY.heroPrimaryCta}</span>
+              <span className="rl-cta-primary__text">{NetworkDING_COPY.heroPrimaryCta}</span>
             </button>
             <button className="rl-cta-secondary" onClick={() => navigate({ to: "/register" })}>
-              {LANDING_COPY.heroSecondaryCta}
+              {NetworkDING_COPY.heroSecondaryCta}
             </button>
           </div>
 
           <p className="rl-hero__fine">
-            {LANDING_COPY.heroFine}
+            {NetworkDING_COPY.heroFine}
           </p>
         </div>
 
@@ -304,13 +304,13 @@ export function MainLanding() {
       <section className="rl-pain">
         <div className="rl-pain__inner">
           <h2 className="rl-pain__heading rl-animate rl-animate--from-bottom" data-delay="0">
-            {LANDING_COPY.painTitle}
+            {NetworkDING_COPY.painTitle}
           </h2>
           <p className="rl-pain__body rl-animate rl-animate--from-bottom" data-delay="130">
-            {LANDING_COPY.painBody}
+            {NetworkDING_COPY.painBody}
           </p>
           <p className="rl-pain__answer rl-animate rl-animate--pop" data-delay="300">
-            {LANDING_COPY.painAnswer}
+            {NetworkDING_COPY.painAnswer}
           </p>
         </div>
       </section>

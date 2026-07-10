@@ -22,7 +22,7 @@ describe("multi-event command bus", () => {
     const result = handleCommand(emptyState(), {
       type: "CreateCampaign",
       campaignId: "cmp_multi" as any,
-      actorId: "usr_dm",
+      actorId: "usr_core",
       title: "Multi Event Campaign",
     });
 

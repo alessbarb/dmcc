@@ -24,7 +24,7 @@ export type DmHubActiveTable = {
   tableName: string;
   campaignTitle: string;
   sessionTitle: string;
-  status: "running" | "paused" | "planned";
+  status: "running" | "paused" | "pnetworkned";
   elapsed: string;
   playersPresent: number;
   playersTotal: number;

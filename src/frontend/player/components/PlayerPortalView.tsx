@@ -273,7 +273,7 @@ function statusLabel(value: string | undefined): string {
     done: "Completado",
     completed: "Completado",
     closed: "Cerrado",
-    planned: "Preparado",
+    pnetworkned: "Preparado",
     suspected: "Sospecha",
     confirmed: "Confirmado",
     unconfirmed: "Sin confirmar",
@@ -548,7 +548,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const characterContent = (myCharacter as any)?.content ?? linkedCharacter?.content ?? characterMetadata.note ?? "";
   const savingThrows = asList(characterMetadata.savingThrows);
   const skills = asList(characterMetadata.skills);
-  const languages = asList(characterMetadata.languages);
+  const networkguages = asList(characterMetadata.networkguages);
   const feats = asList(characterMetadata.feats);
   const keyTraits = asList(characterMetadata.keyTraits);
   const personalGoals = asList(characterMetadata.personalGoals);
@@ -1649,7 +1649,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                       </div>
                       <div>
                         <div className="form-label">Idiomas</div>
-                        <PillList items={languages} />
+                        <PillList items={networkguages} />
                       </div>
                       <div>
                         <div className="form-label">Dotes / rasgos</div>
@@ -1887,7 +1887,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                   <form onSubmit={handleNoteCreate} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Título</label>
-                      <input type="text" className="form-input" placeholder="Sospechas sobre el villano..." value={noteForm.title} onChange={(e) => setNoteForm({ ...noteForm, title: e.target.value })} required />
+                      <input type="text" className="form-input" placeholder="Sospechas sobre el vilnetworko..." value={noteForm.title} onChange={(e) => setNoteForm({ ...noteForm, title: e.target.value })} required />
                     </div>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Contenido</label>

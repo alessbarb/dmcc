@@ -1682,7 +1682,7 @@ export function SessionPage(props: SessionPageProps = {}) {
   if (!activeSession) {
     const sessions = campaignState?.sessions ?? [];
     const preparedSessions = [...sessions]
-      .filter((session: any) => session.status === "planned")
+      .filter((session: any) => session.status === "pnetworkned")
       .sort(
         (a: any, b: any) =>
           new Date(a.scheduledAt ?? a.createdAt ?? 0).getTime() -

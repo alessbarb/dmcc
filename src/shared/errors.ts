@@ -30,8 +30,3 @@ export class SessionError extends AppError {
   }
 }
 
-export class EventStoreError extends AppError {
-  constructor(message: string) {
-    super(message, "EVENT_STORE_ERROR");
-  }
-}

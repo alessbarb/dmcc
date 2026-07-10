@@ -10,7 +10,7 @@ export interface I18nContextType {
 
 export const I18nContext = createContext<I18nContextType | null>(null);
 
-const STORAGE_KEY = "dmcc_language";
+const STORAGE_KEY = "dmcc_networkguage";
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<SupportedLocale>(() => {
