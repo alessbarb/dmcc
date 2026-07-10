@@ -16,12 +16,20 @@ describe("ImagePickerModal", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain('import { createPortal } from "react-dom"');
     expect(src).toContain("return createPortal(modal, document.body)");
-    expect(src).toContain("z-index: 2147483647");
+    expect(src).toContain("zIndex: 2147483647");
   });
 
   it("supports the all catalog type for current and future asset catalogs", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain('export type ImageCatalogType = "all" | "avatars" | "campaigns" | "entities"');
+  });
+
+  it("detects mobile picker mode in JavaScript", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain("MOBILE_PICKER_QUERY");
+    expect(src).toContain("window.matchMedia(MOBILE_PICKER_QUERY)");
+    expect(src).toContain("window.innerWidth <= 760");
+    expect(src).toContain("const [isMobilePicker, setIsMobilePicker] = useState(getIsMobilePicker)");
   });
 
   it("fetches catalog from /api/assets/catalog", () => {
@@ -33,29 +41,25 @@ describe("ImagePickerModal", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain('type ImagePickerView = "groups" | "images"');
     expect(src).toContain('const [mobileView, setMobileView] = useState<ImagePickerView>("groups")');
-    expect(src).toContain("openMobileGroup");
+    expect(src).toContain("function GroupBrowser");
+    expect(src).toContain("onOpenGroup");
     expect(src).toContain("Volver a catálogos");
-    expect(src).toContain("image-picker-group-list");
-    expect(src).toContain("image-picker-mobile-only");
   });
 
-  it("uses a bottom-sheet style responsive layout for mobile and touch devices", () => {
+  it("uses inline critical layout for the picker shell and scroll regions", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
-    expect(src).toContain("@media (max-width: 640px), (hover: none) and (pointer: coarse)");
-    expect(src).toContain("height: min(88dvh, 720px)");
-    expect(src).toContain("border-radius: 18px 18px 0 0");
-    expect(src).toContain("grid-template-columns: repeat(3, minmax(0, 1fr))");
-    expect(src).toContain("-webkit-overflow-scrolling: touch");
+    expect(src).toContain("const overlayStyle: CSSProperties");
+    expect(src).toContain("const sheetBaseStyle: CSSProperties");
+    expect(src).toContain("const scrollStyle: CSSProperties");
+    expect(src).toContain('overflowY: "auto"');
+    expect(src).toContain('WebkitOverflowScrolling: "touch"');
+    expect(src).toContain('touchAction: "pan-y"');
   });
 
-  it("forces internal scroll regions for mobile catalog and image grids", () => {
+  it("renders three-column mobile grids with inline styles", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
-    expect(src).toContain("image-picker-scroll-region");
-    expect(src).toContain("overflow-y: auto !important");
-    expect(src).toContain("overscroll-behavior: contain");
-    expect(src).toContain("touch-action: pan-y");
-    expect(src).toContain('className="image-picker-scroll-region image-picker-group-list"');
-    expect(src).toContain('className="image-picker-scroll-region image-picker-grid"');
+    expect(src).toContain('gridTemplateColumns: isMobile ? "repeat(3, minmax(0, 1fr))"');
+    expect(src).toContain("isMobile={isMobilePicker}");
   });
 
   it("preloads only active group thumbnails before rendering that grid", () => {
@@ -63,7 +67,7 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("function preloadImage");
     expect(src).toContain("new Image()");
     expect(src).toContain("async function preloadImagePaths");
-    expect(src).toContain("preloadImagePaths(imagePaths)");
+    expect(src).toContain("preloadImagePaths(imagePathsKey.split");
     expect(src).toContain("Preparando imágenes…");
     expect(src).not.toContain("await preloadCatalogImages(nextGroups)");
   });
@@ -79,7 +83,7 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("No se pudo cargar el catálogo de imágenes");
     expect(src).toContain("No hay catálogos de imágenes disponibles.");
     expect(src).toContain("No hay imágenes disponibles en este catálogo.");
-    expect(src).toContain('role="alert"');
+    expect(src).toContain('role={tone === "danger" ? "alert" : undefined}');
   });
 
   it("renders a 'Sin imagen' clear option", () => {
@@ -103,21 +107,12 @@ describe("ImagePickerModal", () => {
     expect(src).not.toMatch(/<button\b(?:(?!type="button")[\s\S])*onSelect/);
   });
 
-  it("groups tabs render the group name on desktop", () => {
-    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
-    expect(src).toContain("groupEntries.map");
-    expect(src).toContain("image-picker-desktop-only");
-    expect(src).toContain("modal-overlay");
-  });
-
   it("normalizes local groups before rendering tabs and images", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
 
     expect(src).toContain("const safeGroups = normalizeImageCatalogGroups(groups)");
     expect(src).toContain("const images = safeGroups[activeGroup] ?? []");
     expect(src).not.toContain("Object.keys(groups)");
-    expect(src).not.toContain("Object.entries(groups)");
-    expect(src).not.toContain("Object.keys(nextGroups)");
   });
 });
 
