@@ -1,4 +1,4 @@
-import { Handle, Position } from "reactflow";
+import { Handle, Position } from "@xyflow/react";
 import { useEffect, useState, type CSSProperties } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import type { Entity, Session } from "../../../shared/stores/campaignStore.js";

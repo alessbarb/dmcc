@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
-import { ReactFlowProvider } from "reactflow";
-import type { Edge, Node } from "reactflow";
+import { ReactFlowProvider } from "@xyflow/react";
+import type { Edge, Node } from "@xyflow/react";
 import { CampaignCanvasFlow } from "../components/CampaignCanvasFlow.js";
 import type { CampaignCanvasFlowHandle } from "../components/CampaignCanvasFlow.js";
 import { CanvasNavigatorPanel } from "../components/CanvasNavigatorPanel.js";

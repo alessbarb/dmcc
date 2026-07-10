@@ -1,5 +1,5 @@
 import React from "react";
-import { Panel, useReactFlow } from "reactflow";
+import { Panel, useReactFlow } from "@xyflow/react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import {

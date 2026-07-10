@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useImperativeHandle, useMemo, useRef } from "react";
-import ReactFlow, {
+import { ReactFlow,
   useNodesState,
   useEdgesState,
   MiniMap,
   Background,
   MarkerType,
   SelectionMode,
-} from "reactflow";
+} from "@xyflow/react";
 import type {
   ReactFlowInstance,
   Edge,
@@ -15,8 +15,8 @@ import type {
   OnMove,
   OnMoveEnd,
   OnSelectionChangeParams,
-} from "reactflow";
-import "reactflow/dist/style.css";
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { CanvasEntityNode } from "./CanvasEntityNode.js";
@@ -27,7 +27,7 @@ import type { Viewport } from "./CanvasGroupHulls.js";
 import { RelationshipTypePopover } from "./RelationshipTypePopover.js";
 import { CanvasToolbar } from "./CanvasToolbar.js";
 import type { InteractionMode } from "./CanvasToolbar.js";
-import type { ProOptions } from "reactflow";
+import type { ProOptions } from "@xyflow/react";
 import type { Canvas, CanvasNode, CanvasEdge } from "@core/domain/canvas/types.js";
 import type { Entity, Relation, Fact } from "../../../shared/stores/campaignStore.js";
 import { getRelationVisual } from "../../entities/entityVisuals.js";
