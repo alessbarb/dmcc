@@ -45,7 +45,7 @@ function campaignSummary(row: typeof schema.campaigns.$inferSelect & { role?: st
   };
 }
 
-function projectionMapValues(value: unknown): unknown[] {
+function projectionMapValues(value: unknown): any[] {
   if (!value) return [];
   if (value instanceof Map) return Array.from(value.values());
   if (Array.isArray(value)) return value;
@@ -64,21 +64,52 @@ function serializeCanvas(canvas: any) {
   };
 }
 
-function entityDto(row: typeof schema.campaignEntities.$inferSelect) {
+function entityDto(row: typeof schema.campaignEntities.$inferSelect, projected?: any) {
+  const metadata = projected?.metadata && typeof projected.metadata === "object" && !Array.isArray(projected.metadata)
+    ? projected.metadata
+    : {};
   return {
     campaignId: row.campaignId,
     entityId: row.entityId,
-    entityType: row.type,
-    title: row.name,
-    summary: row.publicSummary ?? undefined,
-    content: row.dmSummary ?? undefined,
-    status: row.status,
-    importance: row.importance,
-    visibility: { kind: "dm_only" },
-    metadata: {},
-    tagIds: Array.isArray(row.tags) ? row.tags : [],
-    archived: row.status === "archived",
-    updatedAt: row.updatedAt?.toISOString?.() ?? String(row.updatedAt),
+    entityType: projected?.entityType ?? row.type,
+    title: projected?.title ?? row.name,
+    subtitle: projected?.subtitle,
+    summary: projected?.summary ?? row.publicSummary ?? undefined,
+    content: projected?.content ?? row.dmSummary ?? undefined,
+    status: projected?.status ?? row.status,
+    importance: projected?.importance ?? row.importance,
+    visibility: projected?.visibility ?? { kind: "dm_only" },
+    metadata,
+    imageUrl: metadata.imageUrl ?? projected?.imageUrl,
+    avatarUrl: metadata.avatarUrl ?? projected?.avatarUrl,
+    portraitUrl: metadata.portraitUrl ?? projected?.portraitUrl,
+    coverUrl: metadata.coverUrl ?? projected?.coverUrl,
+    tagIds: projected?.tagIds ?? (Array.isArray(row.tags) ? row.tags : []),
+    archived: Boolean(projected?.archived ?? row.status === "archived"),
+    updatedAt: projected?.updatedAt ?? row.updatedAt?.toISOString?.() ?? String(row.updatedAt),
+  };
+}
+
+function projectedEntityDto(entity: any, campaignId: string) {
+  const metadata = entity?.metadata && typeof entity.metadata === "object" && !Array.isArray(entity.metadata) ? entity.metadata : {};
+  return {
+    ...entity,
+    campaignId: entity.campaignId ?? campaignId,
+    entityId: entity.entityId ?? entity.id,
+    entityType: entity.entityType ?? entity.type ?? "note",
+    title: entity.title ?? entity.name ?? "Untitled entity",
+    summary: entity.summary,
+    content: entity.content,
+    status: entity.status ?? "active",
+    importance: entity.importance ?? "normal",
+    visibility: entity.visibility ?? { kind: "dm_only" },
+    metadata,
+    imageUrl: metadata.imageUrl ?? entity.imageUrl,
+    avatarUrl: metadata.avatarUrl ?? entity.avatarUrl,
+    portraitUrl: metadata.portraitUrl ?? entity.portraitUrl,
+    coverUrl: metadata.coverUrl ?? entity.coverUrl,
+    tagIds: entity.tagIds ?? [],
+    archived: Boolean(entity.archived),
   };
 }
 
@@ -148,21 +179,8 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
       ...(request.body?.coverUrl ? { coverUrl: request.body.coverUrl } : {}),
     };
     await db.transaction(async (tx) => {
-      await tx.insert(schema.campaigns).values({
-        campaignId,
-        title,
-        summary: request.body?.summary ?? null,
-        workspaceId,
-        ownerId: user.userId,
-        status: "active",
-        metadata,
-      });
-      await tx.insert(schema.campaignMemberships).values({
-        campaignId,
-        userId: user.userId,
-        role: "dm",
-        playerId: null,
-      }).onConflictDoNothing();
+      await tx.insert(schema.campaigns).values({ campaignId, title, summary: request.body?.summary ?? null, workspaceId, ownerId: user.userId, status: "active", metadata });
+      await tx.insert(schema.campaignMemberships).values({ campaignId, userId: user.userId, role: "dm", playerId: null }).onConflictDoNothing();
     });
     await repo.executeCommand(campaignId, {
       type: "CreateCampaign",
@@ -189,13 +207,21 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
       db.select().from(schema.campaignSessions).where(eq(schema.campaignSessions.campaignId, request.params.campaignId)),
       db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, request.params.campaignId)),
     ]);
+    const projectedEntities = new Map(projectionMapValues((projection as any).entities).map((entity) => [entity.entityId ?? entity.id, entity]));
+    const readModelEntityIds = new Set(entities.map((entity) => entity.entityId));
+    const mergedEntities = [
+      ...entities.map((entity) => entityDto(entity, projectedEntities.get(entity.entityId))),
+      ...projectionMapValues((projection as any).entities)
+        .filter((entity) => !readModelEntityIds.has(entity.entityId ?? entity.id))
+        .map((entity) => projectedEntityDto(entity, request.params.campaignId)),
+    ];
     const canvases = projectionMapValues((projection as any).canvases).map(serializeCanvas).filter(Boolean);
     const tags = projectionMapValues((projection as any).tags);
     const attachments = projectionMapValues((projection as any).attachments);
     const sessionEvents = projectionMapValues((projection as any).sessionEvents);
     return {
       campaign: campaign ? campaignSummary(campaign) : null,
-      entities: entities.map(entityDto),
+      entities: mergedEntities,
       facts: facts.map(factDto),
       relations: relations.map(relationDto),
       sessions: sessions.map(sessionDto),
@@ -217,8 +243,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
 
   server.get("/api/player/campaigns", async (request) => {
     const user = getRequiredWebUser(request);
-    const campaigns = (await listAccessibleCampaigns(user.userId))
-      .filter((campaign) => campaign.role === "player" || isDmRole(campaign.role));
+    const campaigns = (await listAccessibleCampaigns(user.userId)).filter((campaign) => campaign.role === "player" || isDmRole(campaign.role));
     return { campaigns: campaigns.map(campaignSummary) };
   });
 
@@ -231,11 +256,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
     }
     const command = request.body.command ?? request.body as DmCommandInput;
     try {
-      const projection = await repo.executeCommand(request.params.campaignId, {
-        ...command,
-        campaignId: request.params.campaignId,
-        actorId: user.userId,
-      } as Command, { commandId, actorUserId: user.userId });
+      const projection = await repo.executeCommand(request.params.campaignId, { ...command, campaignId: request.params.campaignId, actorId: user.userId } as Command, { commandId, actorUserId: user.userId });
       campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
       return { ok: true, sequence: projection.lastSequence, projection };
     } catch (error: unknown) {
@@ -245,17 +266,12 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
     }
   });
 
-
   async function executeDmCommand(request: FastifyRequest<{ Params: { campaignId: string }; Body?: RequestBody }>, reply: FastifyReply, command: DmCommandInput) {
     const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
     const commandIdHeader = request.headers["idempotency-key"];
     const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
     try {
-      const projection = await repo.executeCommand(request.params.campaignId, {
-        ...command,
-        campaignId: request.params.campaignId,
-        actorId: user.userId,
-      } as Command, { commandId, actorUserId: user.userId });
+      const projection = await repo.executeCommand(request.params.campaignId, { ...command, campaignId: request.params.campaignId, actorId: user.userId } as Command, { commandId, actorUserId: user.userId });
       campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
       return { ok: true, sequence: projection.lastSequence, projection };
     } catch (error: unknown) {
@@ -265,9 +281,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
     }
   }
 
-  server.patch<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "UpdateCampaign", ...(request.body ?? {}) });
-  });
+  server.patch<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateCampaign", ...(request.body ?? {}) }));
 
   server.delete<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId", async (request, _reply) => {
     await requireCampaignOwner(request, request.params.campaignId);
@@ -307,13 +321,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/players", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
     const profiles = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, request.params.campaignId));
-    return profiles.map((profile) => ({
-      playerId: profile.profileId,
-      displayName: profile.displayName,
-      email: null,
-      isActive: profile.status === "active",
-      linkedCharacterEntityId: profile.linkedCharacterId,
-    }));
+    return profiles.map((profile) => ({ playerId: profile.profileId, displayName: profile.displayName, email: null, isActive: profile.status === "active", linkedCharacterEntityId: profile.linkedCharacterId }));
   });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/entities", async (request) => {
@@ -346,25 +354,13 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
     return { activity: await db.select().from(schema.activityFeed).where(eq(schema.activityFeed.campaignId, request.params.campaignId)).orderBy(desc(schema.activityFeed.occurredAt)).limit(100) };
   });
 
-  server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "CreateEntity", ...(request.body ?? {}) });
-  });
-  server.patch<{ Params: { campaignId: string; entityId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities/:entityId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "UpdateEntity", entityId: request.params.entityId, ...(request.body ?? {}) });
-  });
-  server.delete<{ Params: { campaignId: string; entityId: string } }>("/api/campaigns/:campaignId/entities/:entityId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "ArchiveEntity", entityId: request.params.entityId });
-  });
+  server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities", async (request, reply) => executeDmCommand(request, reply, { type: "CreateEntity", ...(request.body ?? {}) }));
+  server.patch<{ Params: { campaignId: string; entityId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities/:entityId", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateEntity", entityId: request.params.entityId, ...(request.body ?? {}) }));
+  server.delete<{ Params: { campaignId: string; entityId: string } }>("/api/campaigns/:campaignId/entities/:entityId", async (request, reply) => executeDmCommand(request, reply, { type: "ArchiveEntity", entityId: request.params.entityId }));
 
-  server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/relations", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "CreateRelation", ...(request.body ?? {}) });
-  });
-  server.put<{ Params: { campaignId: string; relationId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/relations/:relationId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "UpdateRelation", relationId: request.params.relationId, ...(request.body ?? {}) });
-  });
-  server.delete<{ Params: { campaignId: string; relationId: string } }>("/api/campaigns/:campaignId/relations/:relationId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "ArchiveRelation", relationId: request.params.relationId });
-  });
+  server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/relations", async (request, reply) => executeDmCommand(request, reply, { type: "CreateRelation", ...(request.body ?? {}) }));
+  server.put<{ Params: { campaignId: string; relationId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/relations/:relationId", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateRelation", relationId: request.params.relationId, ...(request.body ?? {}) }));
+  server.delete<{ Params: { campaignId: string; relationId: string } }>("/api/campaigns/:campaignId/relations/:relationId", async (request, reply) => executeDmCommand(request, reply, { type: "ArchiveRelation", relationId: request.params.relationId }));
 
   server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/facts", async (request, reply) => {
     const body = request.body ?? {};
@@ -380,8 +376,5 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
       source: body.source ?? { kind: "manual" },
     });
   });
-  server.put<{ Params: { campaignId: string; factId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/facts/:factId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "UpdateFact", factId: request.params.factId, ...(request.body ?? {}) });
-  });
-
+  server.put<{ Params: { campaignId: string; factId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/facts/:factId", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateFact", factId: request.params.factId, ...(request.body ?? {}) }));
 }
