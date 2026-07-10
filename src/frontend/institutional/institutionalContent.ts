@@ -24,7 +24,7 @@ export const institutionalContact = {
   github: "https://github.com/alessbarb/DMCC",
   } as const;
 
-const legalLastUpdated = "10 July 2026";
+const legalLastUpdated = "July 10, 2026";
 const legalLastUpdatedEs = "10 de julio de 2026";
 
 const commonPages = {
