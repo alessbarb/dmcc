@@ -1,0 +1,250 @@
+.institutional-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  color: #f8efe2;
+  background:
+    radial-gradient(circle at top left, rgb(158 113 50 / 0.24), transparent 34rem),
+    radial-gradient(circle at bottom right, rgb(104 75 168 / 0.22), transparent 32rem),
+    linear-gradient(135deg, #120d16 0%, #201528 48%, #0f111d 100%);
+}
+
+.institutional-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(18px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.institutional-orb--gold {
+  top: 8%;
+  right: 8%;
+  width: 11rem;
+  height: 11rem;
+  background: rgb(225 169 74 / 0.3);
+}
+
+.institutional-orb--violet {
+  bottom: 10%;
+  left: 7%;
+  width: 14rem;
+  height: 14rem;
+  background: rgb(122 92 211 / 0.24);
+}
+
+.institutional-hero,
+.institutional-frame {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.institutional-hero {
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem) 1rem clamp(1rem, 3vw, 1.75rem);
+  text-align: center;
+}
+
+.institutional-hero__mark {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 1px solid rgb(232 190 109 / 0.4);
+  border-radius: 999px;
+  color: #f0c977;
+  background: rgb(255 255 255 / 0.07);
+  box-shadow: 0 0 28px rgb(232 190 109 / 0.18);
+}
+
+.institutional-hero__kicker,
+.institutional-panel__eyebrow,
+.institutional-contact__eyebrow {
+  margin: 0;
+  color: #e8c27b;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.institutional-hero h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  line-height: 1.05;
+}
+
+.institutional-hero p:last-child {
+  max-width: 42rem;
+  margin: 0;
+  color: rgb(248 239 226 / 0.76);
+}
+
+.institutional-frame {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr) 18rem;
+  gap: 1rem;
+  align-items: start;
+}
+
+.institutional-nav,
+.institutional-panel,
+.institutional-contact {
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: rgb(18 13 22 / 0.62);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.institutional-nav {
+  position: sticky;
+  top: 1rem;
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 1.25rem;
+}
+
+.institutional-nav__link {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 0.9rem;
+  color: rgb(248 239 226 / 0.76);
+  font-weight: 750;
+  text-decoration: none;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.institutional-nav__link:hover,
+.institutional-nav__link:focus-visible,
+.institutional-nav__link.is-active {
+  border-color: rgb(232 190 109 / 0.36);
+  color: #fff7ea;
+  background: rgb(232 190 109 / 0.12);
+  outline: none;
+}
+
+.institutional-panel {
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border-radius: 1.5rem;
+}
+
+.institutional-panel h2,
+.institutional-contact h2 {
+  margin: 0.35rem 0 0;
+  line-height: 1.1;
+}
+
+.institutional-panel h2 {
+  font-size: clamp(1.65rem, 3vw, 2.55rem);
+}
+
+.institutional-panel__summary {
+  margin: 1rem 0 0;
+  color: rgb(248 239 226 / 0.78);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.institutional-panel__sections {
+  display: grid;
+  gap: 1.15rem;
+  margin-top: 1.75rem;
+}
+
+.institutional-section {
+  padding-top: 1rem;
+  border-top: 1px solid rgb(255 255 255 / 0.11);
+}
+
+.institutional-section h3 {
+  margin: 0 0 0.5rem;
+  color: #ffe2aa;
+}
+
+.institutional-section p,
+.institutional-contact p {
+  margin: 0.55rem 0 0;
+  color: rgb(248 239 226 / 0.74);
+  line-height: 1.7;
+}
+
+.institutional-contact {
+  display: grid;
+  gap: 0.7rem;
+  padding: 1rem;
+  border-radius: 1.25rem;
+}
+
+.institutional-contact__link {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 0.9rem;
+  color: #ffe2aa;
+  background: rgb(255 255 255 / 0.06);
+  text-decoration: none;
+}
+
+.institutional-contact__link span {
+  overflow-wrap: anywhere;
+}
+
+.institutional-contact__link:hover,
+.institutional-contact__link:focus-visible {
+  border-color: rgb(232 190 109 / 0.42);
+  background: rgb(232 190 109 / 0.12);
+  outline: none;
+}
+
+@media (max-width: 920px) {
+  .institutional-frame {
+    grid-template-columns: 1fr;
+  }
+
+  .institutional-nav {
+    position: static;
+    grid-template-columns: repeat(4, minmax(max-content, 1fr));
+    overflow-x: auto;
+  }
+
+  .institutional-nav__link {
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .institutional-shell {
+    padding: 0.75rem;
+  }
+
+  .institutional-nav {
+    display: flex;
+    padding: 0.45rem;
+    border-radius: 999px;
+  }
+
+  .institutional-nav__link {
+    min-height: 2.35rem;
+    padding: 0 0.85rem;
+    border-radius: 999px;
+  }
+
+  .institutional-panel,
+  .institutional-contact {
+    border-radius: 1rem;
+  }
+}

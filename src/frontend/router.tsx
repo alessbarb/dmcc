@@ -63,6 +63,19 @@ const ResetPasswordPageLazy = React.lazy(() =>
   import("./shared/auth/ResetPasswordPage.js").then((m) => ({ default: m.ResetPasswordPage }))
 );
 
+const AboutPageLazy = React.lazy(() =>
+  import("./institutional/InstitutionalPage.js").then((m) => ({ default: m.AboutPage }))
+);
+const ContactPageLazy = React.lazy(() =>
+  import("./institutional/InstitutionalPage.js").then((m) => ({ default: m.ContactPage }))
+);
+const PrivacyPageLazy = React.lazy(() =>
+  import("./institutional/InstitutionalPage.js").then((m) => ({ default: m.PrivacyPage }))
+);
+const TermsPageLazy = React.lazy(() =>
+  import("./institutional/InstitutionalPage.js").then((m) => ({ default: m.TermsPage }))
+);
+
 function withSuspense(Component: React.ComponentType) {
   return function SuspenseRoute() {
     return (
@@ -121,6 +134,30 @@ const resetPasswordManualRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/reset-password",
   component: withSuspense(ResetPasswordPageLazy),
+});
+
+const aboutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/about",
+  component: withSuspense(AboutPageLazy),
+});
+
+const contactRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/contact",
+  component: withSuspense(ContactPageLazy),
+});
+
+const privacyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/privacy",
+  component: withSuspense(PrivacyPageLazy),
+});
+
+const termsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/terms",
+  component: withSuspense(TermsPageLazy),
 });
 
 const appRoute = createRoute({
@@ -393,6 +430,10 @@ const routeTree = rootRoute.addChildren([
   forgotPasswordRoute,
   resetPasswordRoute,
   resetPasswordManualRoute,
+  aboutRoute,
+  contactRoute,
+  privacyRoute,
+  termsRoute,
   appRoute,
   appCampaignsRoute,
   dmRoute,
