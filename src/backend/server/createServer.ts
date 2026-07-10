@@ -581,8 +581,10 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   });
 
 if (isPostgresWebMode) {
+  const opts = { dataDir };
   server.register(registerAssetRoutes, { assetsDir: config?.assetsDir ?? publicAssetsPath });
   registerWebPlatformRoutes(server);
+  server.register(registerAccountRoutes, opts);
   return server;
 }
 
