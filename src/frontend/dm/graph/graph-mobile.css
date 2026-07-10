@@ -1,6 +1,5 @@
 /* Mobile graph refinements.
-   This is intentionally CSS-first because GraphPage currently uses a lot of inline layout.
-   The selectors are scoped to the campaign content area and the graph viewport shape. */
+   GraphPage still contains inline layout, so this layer scopes carefully to the graph screen. */
 
 @media (max-width: 768px) {
   .content-body > div:has(canvas) {
@@ -24,51 +23,100 @@
     white-space: nowrap !important;
   }
 
-  /* Search + filter cloud: make it behave like a compact sheet header, not a full page block. */
   .content-body > div:has(canvas) > div:nth-child(2) {
-    gap: 10px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 15 !important;
+    gap: 8px !important;
     align-items: stretch !important;
+    margin-inline: -2px !important;
+    padding: 8px 2px 10px !important;
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--bg-main) 96%, transparent), color-mix(in srgb, var(--bg-main) 78%, transparent));
+    backdrop-filter: blur(12px);
   }
 
   .content-body > div:has(canvas) > div:nth-child(2) > * {
     width: 100% !important;
   }
 
+  .content-body > div:has(canvas) > div:nth-child(2) > div:last-child {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 7px !important;
+    padding: 2px 0 4px !important;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .content-body > div:has(canvas) > div:nth-child(2) > div:last-child::-webkit-scrollbar {
+    display: none;
+  }
+
   .content-body > div:has(canvas) > div:nth-child(2) .btn {
-    min-height: 38px !important;
-    padding: 8px 12px !important;
-    border-radius: 13px !important;
-    font-size: 0.76rem !important;
+    flex: 0 0 auto !important;
+    min-height: 36px !important;
+    padding: 7px 11px !important;
+    border-radius: 999px !important;
+    font-size: 0.74rem !important;
+    scroll-snap-align: start;
   }
 
   .content-body > div:has(canvas) > div:nth-child(2) span[style*="font-size: 0.75rem"] {
-    width: 100% !important;
-    margin: 4px 0 0 !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    align-self: center !important;
+    margin: 0 2px 0 8px !important;
     color: var(--text-muted) !important;
-    font-size: 0.65rem !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.12em !important;
+    font-size: 0.62rem !important;
+    font-weight: 850 !important;
+    letter-spacing: 0.1em !important;
     text-transform: uppercase !important;
+    opacity: 0.8;
   }
 
-  /* The graph viewport itself. */
   .content-body div[style*="calc(100vh - 210px)"] {
-    height: min(62dvh, 520px) !important;
-    min-height: 360px !important;
-    border-radius: 18px !important;
+    height: min(68dvh, 570px) !important;
+    min-height: 410px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.38);
   }
 
   .content-body div[style*="calc(100vh - 210px)"] > div:first-child {
-    min-height: 360px !important;
+    min-height: 410px !important;
   }
 
-  /* Fit-to-screen control: keep it, but make it a compact mobile pill. */
+  .content-body div[style*="calc(100vh - 210px)"]::before {
+    content: "Explorar grafo · arrastra con un dedo · pellizca para zoom";
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    z-index: 9;
+    max-width: calc(100% - 82px);
+    padding: 6px 10px;
+    border: 1px solid color-mix(in srgb, var(--primary) 22%, var(--border-color));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg-card) 84%, transparent);
+    color: var(--text-muted);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    backdrop-filter: blur(12px);
+  }
+
   .content-body div[style*="calc(100vh - 210px)"] button[style*="top: 16px"][style*="right: 16px"] {
     top: 10px !important;
     right: 10px !important;
-    padding: 7px 10px !important;
+    width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
     border-radius: 999px !important;
     font-size: 0 !important;
+    justify-content: center !important;
   }
 
   .content-body div[style*="calc(100vh - 210px)"] button[style*="top: 16px"][style*="right: 16px"] svg {
@@ -76,18 +124,15 @@
     height: 17px !important;
   }
 
-  /* The desktop legend is too large on mobile. Hide it by default. */
   .content-body div[style*="calc(100vh - 210px)"] div[style*="bottom: 16px"][style*="left: 16px"][style*="maxWidth: 220px"],
   .content-body div[style*="calc(100vh - 210px)"] div[style*="bottom: 16px"][style*="left: 16px"][style*="max-width: 220px"] {
     display: none !important;
   }
 
-  /* Desktop instructions are actively misleading on touch devices. */
   .content-body div[style*="calc(100vh - 210px)"] div[style*="bottom: 16px"][style*="right: 16px"] {
     display: none !important;
   }
 
-  /* Selected entity panel becomes a bottom sheet instead of a side panel. */
   .content-body div[style*="calc(100vh - 210px)"] > div[style*="width: 290px"] {
     position: fixed !important;
     left: 12px !important;
@@ -105,9 +150,23 @@
     max-height: 120px !important;
   }
 
-  /* Floating + button should not sit on top of the bottom nav. */
   .content-body > div:has(canvas) > button,
   .content-body > div:has(canvas) button[style*="border-radius: 50%"] {
     bottom: calc(var(--campaign-mobile-bottom-nav-height, 74px) + env(safe-area-inset-bottom, 0px) + 22px) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .content-body > div:has(canvas) > div:first-child {
+    flex-direction: column !important;
+  }
+
+  .content-body > div:has(canvas) > div:first-child > button {
+    align-self: stretch !important;
+    justify-content: center !important;
+  }
+
+  .content-body div[style*="calc(100vh - 210px)"] {
+    margin-inline: -2px !important;
   }
 }
