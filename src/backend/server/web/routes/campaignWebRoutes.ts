@@ -7,7 +7,7 @@ import * as schema from "../../../db/schema.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { getRequiredWebUser } from "../webSession.js";
-import { isDmRole, listAccessibleCampaigns, requireCampaignOwner, requireCampaignRole } from "../webAccess.js";
+import { ensureDefaultWorkspace, isDmRole, listAccessibleCampaigns, requireCampaignOwner, requireCampaignRole } from "../webAccess.js";
 
 type RequestBody = Record<string, unknown>;
 type DmCommandInput = { type: string } & RequestBody;
@@ -26,13 +26,176 @@ function commandErrorPayload(error: unknown): { message: string; statusCode: num
   };
 }
 
+function campaignSummary(row: typeof schema.campaigns.$inferSelect & { role?: string; playerId?: string | null }) {
+  const metadata = row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+    ? row.metadata as Record<string, unknown>
+    : {};
+  return {
+    campaignId: row.campaignId,
+    title: row.title,
+    summary: row.summary ?? undefined,
+    status: row.status,
+    system: typeof metadata.system === "string" ? metadata.system : undefined,
+    coverUrl: typeof metadata.coverUrl === "string" ? metadata.coverUrl : undefined,
+    metadata,
+    role: row.role ?? "dm",
+    playerId: row.playerId ?? null,
+    createdAt: row.createdAt?.toISOString?.() ?? String(row.createdAt),
+    updatedAt: row.updatedAt?.toISOString?.() ?? String(row.updatedAt),
+  };
+}
+
+function entityDto(row: typeof schema.campaignEntities.$inferSelect) {
+  return {
+    campaignId: row.campaignId,
+    entityId: row.entityId,
+    entityType: row.type,
+    title: row.name,
+    summary: row.publicSummary ?? undefined,
+    content: row.dmSummary ?? undefined,
+    status: row.status,
+    importance: row.importance,
+    visibility: { kind: "dm_only" },
+    metadata: {},
+    tagIds: Array.isArray(row.tags) ? row.tags : [],
+    archived: row.status === "archived",
+    updatedAt: row.updatedAt?.toISOString?.() ?? String(row.updatedAt),
+  };
+}
+
+function factDto(row: typeof schema.campaignFacts.$inferSelect) {
+  return {
+    campaignId: row.campaignId,
+    factId: row.factId,
+    statement: row.contentDm ?? row.contentPublic ?? "",
+    kind: row.kind,
+    confidence: row.confidence,
+    relatedEntityIds: row.subjectEntityId ? [row.subjectEntityId] : [],
+    visibility: row.kind === "dm_secret" ? { kind: "dm_only" } : { kind: "party" },
+    source: row.source ? { kind: row.source } : { kind: "manual" },
+    archived: row.status === "archived",
+  };
+}
+
+function relationDto(row: typeof schema.campaignRelations.$inferSelect) {
+  return {
+    campaignId: row.campaignId,
+    relationId: row.relationId,
+    sourceEntityId: row.sourceEntityId,
+    targetEntityId: row.targetEntityId,
+    relationType: row.type,
+    description: row.dmSummary ?? row.publicSummary ?? undefined,
+    visibility: { kind: row.visibility },
+    archived: false,
+  };
+}
+
+function sessionDto(row: typeof schema.campaignSessions.$inferSelect) {
+  return {
+    campaignId: row.campaignId,
+    sessionId: row.sessionId,
+    number: row.number,
+    title: row.title,
+    summary: row.recapDm ?? row.recapPublic ?? undefined,
+    status: row.status === "live" ? "active" : row.status,
+    scheduledAt: row.plannedDate ?? undefined,
+    startedAt: undefined,
+    endedAt: row.playedDate ?? undefined,
+    prep: row.notes ? { notes: row.notes } : undefined,
+  };
+}
+
 export async function registerCampaignWebRoutes(server: FastifyInstance): Promise<void> {
   const repo = new PostgresCampaignRepository();
+
+  server.get("/api/campaigns", async (request) => {
+    const user = getRequiredWebUser(request);
+    const campaigns = await listAccessibleCampaigns(user.userId);
+    return campaigns.map(campaignSummary);
+  });
+
+  server.post<{ Body: { title?: string; summary?: string; system?: string; coverUrl?: string; metadata?: Record<string, unknown> } }>("/api/campaigns", async (request, reply) => {
+    const user = getRequiredWebUser(request);
+    const title = request.body?.title?.trim();
+    if (!title) {
+      reply.code(400);
+      return { error: "Campaign title is required" };
+    }
+    const campaignId = createId("cmp");
+    const workspaceId = await ensureDefaultWorkspace(user);
+    const metadata = {
+      ...(request.body?.metadata && typeof request.body.metadata === "object" ? request.body.metadata : {}),
+      ...(request.body?.system ? { system: request.body.system } : {}),
+      ...(request.body?.coverUrl ? { coverUrl: request.body.coverUrl } : {}),
+    };
+    await db.transaction(async (tx) => {
+      await tx.insert(schema.campaigns).values({
+        campaignId,
+        title,
+        summary: request.body?.summary ?? null,
+        workspaceId,
+        ownerId: user.userId,
+        status: "active",
+        metadata,
+      });
+      await tx.insert(schema.campaignMemberships).values({
+        campaignId,
+        userId: user.userId,
+        role: "dm",
+        playerId: null,
+      }).onConflictDoNothing();
+    });
+    await repo.executeCommand(campaignId, {
+      type: "CreateCampaign",
+      campaignId,
+      title,
+      summary: request.body?.summary,
+      system: request.body?.system,
+      coverUrl: request.body?.coverUrl,
+      metadata,
+      actorId: user.userId,
+    } as Command, { commandId: createId("cmd"), actorUserId: user.userId });
+    reply.code(201);
+    return { campaignId };
+  });
+
+  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId", async (request) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm", "player", "viewer"]);
+    const [campaign] = await db.select().from(schema.campaigns).where(eq(schema.campaigns.campaignId, request.params.campaignId)).limit(1);
+    const [entities, facts, relations, sessions, players] = await Promise.all([
+      db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, request.params.campaignId)),
+      db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, request.params.campaignId)),
+      db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, request.params.campaignId)),
+      db.select().from(schema.campaignSessions).where(eq(schema.campaignSessions.campaignId, request.params.campaignId)),
+      db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, request.params.campaignId)),
+    ]);
+    return {
+      campaign: campaign ? campaignSummary(campaign) : null,
+      entities: entities.map(entityDto),
+      facts: facts.map(factDto),
+      relations: relations.map(relationDto),
+      sessions: sessions.map(sessionDto),
+      players: players.map((player) => ({
+        campaignId: player.campaignId,
+        playerId: player.profileId,
+        name: player.displayName,
+        displayName: player.displayName,
+        email: null,
+        archived: player.status === "archived",
+        createdAt: player.createdAt?.toISOString?.() ?? String(player.createdAt),
+      })),
+      canvases: [],
+      tags: [],
+      attachments: [],
+      sessionEvents: [],
+    };
+  });
+
   server.get("/api/player/campaigns", async (request) => {
     const user = getRequiredWebUser(request);
     const campaigns = (await listAccessibleCampaigns(user.userId))
       .filter((campaign) => campaign.role === "player" || isDmRole(campaign.role));
-    return { campaigns };
+    return { campaigns: campaigns.map(campaignSummary) };
   });
 
   server.post<{ Params: { campaignId: string }; Body: CampaignCommandBody }>("/api/campaigns/:campaignId/commands", async (request, reply) => {
@@ -86,6 +249,16 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
     await requireCampaignOwner(request, request.params.campaignId);
     await db.update(schema.campaigns).set({ status: "deleted", updatedAt: new Date() }).where(eq(schema.campaigns.campaignId, request.params.campaignId));
     return { ok: true };
+  });
+
+  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/network-status", async (request) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    return { networkModeEnabled: false, accessCode: null, localIp: "", port: 0, joinUrl: "" };
+  });
+
+  server.post<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/network/toggle", async (request) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    return { networkModeEnabled: false, accessCode: null, localIp: "", port: 0, joinUrl: "" };
   });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/graph", async (request) => {
