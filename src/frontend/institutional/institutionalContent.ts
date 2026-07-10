@@ -71,29 +71,81 @@ export const institutionalPages: readonly InstitutionalPageContent[] = [
   {
     key: "privacy",
     path: "/privacy",
-    navLabel: "Privacy",
-    eyebrow: "Data and visibility",
-    title: "Privacy is part of campaign trust.",
+    navLabel: "Privacidad",
+    eyebrow: "Política de privacidad",
+    title: "Política de privacidad",
     summary:
-      "DMCC is built around local-first campaign organization and careful audience boundaries for DM-only notes, table knowledge, and player-facing information.",
+      "Última actualización: 10 de julio de 2026. Esta política explica cómo DMCC trata los datos asociados al uso de la aplicación dmcc.onrender.com y del proyecto publicado en github.com/alessbarb/DMCC.",
     sections: [
       {
-        title: "Information you choose to store",
+        title: "Responsable y contacto",
         body: [
-          "Campaign notes, characters, entities, secrets, session records, and account profile details are information you decide to add while using the app.",
-          "Avoid storing sensitive personal information in campaign material unless every affected participant has agreed to that use.",
+          `El responsable del tratamiento es DMCC. Para consultas sobre privacidad, solicitudes de derechos o comunicaciones relacionadas con esta política, puedes escribir a ${institutionalContact.email}.`,
+          "La aplicación está disponible en dmcc.onrender.com y el repositorio público del proyecto se encuentra en github.com/alessbarb/DMCC.",
         ],
       },
       {
-        title: "Visibility model",
+        title: "Datos tratados",
         body: [
-          "The product separates DM-private material from player-visible surfaces. Review privacy previews and visibility controls before sharing a campaign portal with players.",
+          "DMCC puede tratar los datos que introduces voluntariamente al usar la aplicación, incluyendo datos de cuenta, dirección de correo electrónico, perfiles de usuario, campañas, personajes, jugadores, sesiones, notas, entidades, relaciones, hechos, secretos, cronologías, tableros, propuestas, contenido compartido con jugadores y preferencias de configuración.",
+          "También pueden tratarse datos técnicos necesarios para operar el servicio, como identificadores de sesión, cookies, datos de autenticación, dirección IP, agente de usuario, registros de seguridad, eventos de errores y metadatos de uso razonablemente necesarios para mantener la disponibilidad, integridad y protección de la aplicación.",
+          "No debes introducir categorías especiales de datos personales ni información personal sensible de jugadores u otras personas salvo que exista una base legítima para hacerlo y todas las personas afectadas hayan sido informadas y hayan prestado el consentimiento que corresponda.",
         ],
       },
       {
-        title: "Contact",
+        title: "Finalidades",
         body: [
-          `For privacy questions or deletion requests related to a hosted deployment, contact ${institutionalContact.email}.`,
+          "Los datos se tratan para crear y gestionar cuentas, autenticar sesiones, permitir el acceso seguro a campañas, almacenar y sincronizar información de juego, mostrar portales para jugadores, conservar preferencias, prestar soporte, diagnosticar errores, prevenir abusos, proteger la seguridad del servicio y cumplir obligaciones legales aplicables.",
+          "El contenido de campaña se utiliza para proporcionar las funciones de organización, preparación, consulta, visibilidad y colaboración propias de DMCC. No se utiliza para vender perfiles publicitarios ni para publicidad comportamental.",
+        ],
+      },
+      {
+        title: "Base legal",
+        body: [
+          "La base legal principal es la ejecución de la relación solicitada por el usuario al crear una cuenta o utilizar la aplicación. Determinados tratamientos técnicos y de seguridad se basan en el interés legítimo de DMCC en mantener un servicio estable, seguro y funcional.",
+          "Cuando una operación requiera consentimiento, por ejemplo para determinadas cookies no esenciales o comunicaciones opcionales, el tratamiento se realizará sobre la base de dicho consentimiento y podrá retirarse en cualquier momento. También pueden existir tratamientos necesarios para cumplir obligaciones legales.",
+        ],
+      },
+      {
+        title: "Conservación",
+        body: [
+          "Los datos se conservarán mientras la cuenta esté activa, mientras sean necesarios para prestar la aplicación o mientras exista una obligación legal, técnica o de seguridad que justifique su conservación.",
+          "El contenido de campañas y datos asociados podrá eliminarse o anonimizarse cuando el usuario solicite la supresión y no exista una razón legítima para conservarlo. Las copias de seguridad y registros técnicos pueden permanecer durante un periodo limitado hasta su rotación o eliminación segura.",
+        ],
+      },
+      {
+        title: "Cookies y almacenamiento local",
+        body: [
+          "DMCC puede utilizar cookies, almacenamiento local del navegador y tecnologías similares para mantener sesiones, recordar preferencias, proteger formularios, habilitar funciones de la interfaz y mejorar la estabilidad de la aplicación.",
+          "Puedes configurar el navegador para bloquear o eliminar cookies y almacenamiento local, aunque algunas funciones esenciales, como el inicio de sesión o la persistencia de preferencias, podrían dejar de funcionar correctamente.",
+        ],
+      },
+      {
+        title: "Servicios de terceros",
+        body: [
+          "La aplicación puede depender de proveedores de infraestructura, alojamiento, base de datos, correo electrónico, repositorio de código y herramientas técnicas necesarias para operar, desplegar, mantener y proteger el servicio.",
+          "Estos terceros solo deberían acceder a datos en la medida necesaria para prestar sus servicios a DMCC y conforme a sus propias condiciones y políticas. El repositorio público en github.com/alessbarb/DMCC no debe usarse para publicar secretos, credenciales, datos personales privados ni contenido sensible de campañas.",
+        ],
+      },
+      {
+        title: "Derechos del usuario",
+        body: [
+          `Puedes solicitar el ejercicio de tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad escribiendo a ${institutionalContact.email}.`,
+          "La solicitud debe incluir información suficiente para verificar la identidad de la persona solicitante y localizar los datos afectados. DMCC responderá conforme a los plazos y requisitos establecidos por la normativa aplicable.",
+        ],
+      },
+      {
+        title: "Seguridad",
+        body: [
+          "DMCC aplica medidas técnicas y organizativas orientadas a proteger los datos frente a acceso no autorizado, pérdida, alteración o divulgación indebida, incluyendo controles de sesión, separación entre contenido privado del director de juego y contenido visible para jugadores, y prácticas razonables de mantenimiento seguro.",
+          "Ningún sistema es completamente infalible. Los usuarios deben proteger sus credenciales, revisar los permisos y vistas compartidas, evitar subir secretos innecesarios y mantener copias propias de la información importante de sus campañas.",
+        ],
+      },
+      {
+        title: "Cambios en la política",
+        body: [
+          "DMCC puede actualizar esta política para reflejar cambios legales, técnicos u operativos. Cuando los cambios sean relevantes, se actualizará la fecha de última actualización y, si procede, se comunicará mediante la aplicación o los canales disponibles.",
+          "El uso continuado de la aplicación después de una actualización implica la aceptación de la política vigente, sin perjuicio de los derechos que la normativa aplicable reconozca al usuario.",
         ],
       },
     ],
