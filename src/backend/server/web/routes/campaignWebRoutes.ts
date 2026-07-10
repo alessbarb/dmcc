@@ -45,6 +45,25 @@ function campaignSummary(row: typeof schema.campaigns.$inferSelect & { role?: st
   };
 }
 
+function projectionMapValues(value: unknown): unknown[] {
+  if (!value) return [];
+  if (value instanceof Map) return Array.from(value.values());
+  if (Array.isArray(value)) return value;
+  if (typeof value === "object") return Object.values(value as Record<string, unknown>);
+  return [];
+}
+
+function serializeCanvas(canvas: any) {
+  if (!canvas || canvas.archived) return null;
+  return {
+    ...canvas,
+    id: canvas.id ?? canvas.canvasId,
+    canvasId: canvas.canvasId ?? canvas.id,
+    nodes: Array.isArray(canvas.nodes) ? canvas.nodes : [],
+    edges: Array.isArray(canvas.edges) ? canvas.edges : [],
+  };
+}
+
 function entityDto(row: typeof schema.campaignEntities.$inferSelect) {
   return {
     campaignId: row.campaignId,
@@ -162,13 +181,18 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm", "player", "viewer"]);
     const [campaign] = await db.select().from(schema.campaigns).where(eq(schema.campaigns.campaignId, request.params.campaignId)).limit(1);
-    const [entities, facts, relations, sessions, players] = await Promise.all([
+    const [projection, entities, facts, relations, sessions, players] = await Promise.all([
+      repo.getCampaignState(request.params.campaignId),
       db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, request.params.campaignId)),
       db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, request.params.campaignId)),
       db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, request.params.campaignId)),
       db.select().from(schema.campaignSessions).where(eq(schema.campaignSessions.campaignId, request.params.campaignId)),
       db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, request.params.campaignId)),
     ]);
+    const canvases = projectionMapValues((projection as any).canvases).map(serializeCanvas).filter(Boolean);
+    const tags = projectionMapValues((projection as any).tags);
+    const attachments = projectionMapValues((projection as any).attachments);
+    const sessionEvents = projectionMapValues((projection as any).sessionEvents);
     return {
       campaign: campaign ? campaignSummary(campaign) : null,
       entities: entities.map(entityDto),
@@ -184,10 +208,10 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
         archived: player.status === "archived",
         createdAt: player.createdAt?.toISOString?.() ?? String(player.createdAt),
       })),
-      canvases: [],
-      tags: [],
-      attachments: [],
-      sessionEvents: [],
+      canvases,
+      tags,
+      attachments,
+      sessionEvents,
     };
   });
 
