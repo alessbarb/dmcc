@@ -3,6 +3,7 @@ import { registerAccountRoutes } from "../routes/accountRoutes.js";
 import { registerAssetRoutes } from "../routes/assetRoutes.js";
 import { registerAuthWebRoutes } from "./routes/authWebRoutes.js";
 import { registerInvitationWebRoutes } from "./routes/invitationWebRoutes.js";
+import { registerSearchWebRoutes } from "./routes/searchWebRoutes.js";
 import { registerWebPlatformRoutes } from "./webPlatformRoutes.js";
 
 export interface WebRoutesOptions {
@@ -10,20 +11,22 @@ export interface WebRoutesOptions {
   assetsDir?: string;
 }
 
-const INVITATION_WEB_ROUTES = new Set([
+const EXTRACTED_WEB_ROUTES = new Set([
   "POST /api/campaigns/:campaignId/invitations",
   "GET /api/campaigns/:campaignId/invitations",
   "POST /api/campaigns/:campaignId/invitations/:invitationId/revoke",
   "GET /api/invitations/:token",
   "POST /api/invitations/:token/accept",
+  "GET /api/campaigns/:campaignId/search",
+  "GET /api/player/campaigns/:campaignId/search",
 ]);
 
 /**
  * Transitional facade for Oleada 1 route extraction.
  *
- * Invitation routes now live in `routes/invitationWebRoutes.ts`; this facade
- * prevents the remaining platform monolith from registering the old duplicate
- * handlers until their block is physically removed from `webPlatformRoutes.ts`.
+ * Extracted routes live in focused route modules; this facade prevents the
+ * remaining platform monolith from registering old duplicate handlers until
+ * those blocks are physically removed from `webPlatformRoutes.ts`.
  */
 function createWebPlatformRoutesFacade(server: FastifyInstance): FastifyInstance {
   const routeMethods = new Set(["get", "post"]);
@@ -40,7 +43,7 @@ function createWebPlatformRoutesFacade(server: FastifyInstance): FastifyInstance
       }
 
       return (routePath: unknown, ...args: unknown[]) => {
-        if (typeof routePath === "string" && INVITATION_WEB_ROUTES.has(`${property.toUpperCase()} ${routePath}`)) {
+        if (typeof routePath === "string" && EXTRACTED_WEB_ROUTES.has(`${property.toUpperCase()} ${routePath}`)) {
           return target;
         }
         return registerRoute.call(target, routePath, ...args);
@@ -53,6 +56,7 @@ function createWebPlatformRoutesFacade(server: FastifyInstance): FastifyInstance
 export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOptions): void {
   void registerAuthWebRoutes(server);
   void registerInvitationWebRoutes(server);
+  void registerSearchWebRoutes(server);
   registerWebPlatformRoutes(createWebPlatformRoutesFacade(server));
   server.register(registerAccountRoutes, { dataDir: options.dataDir });
   server.register(registerAssetRoutes, { assetsDir: options.assetsDir });
