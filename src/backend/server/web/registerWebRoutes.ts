@@ -3,6 +3,7 @@ import { registerAssetRoutes } from "../routes/assetRoutes.js";
 import { registerAccountWebRoutes } from "./routes/accountWebRoutes.js";
 import { registerAuthWebRoutes } from "./routes/authWebRoutes.js";
 import { registerCampaignWebRoutes } from "./routes/campaignWebRoutes.js";
+import { registerCanvasWebRoutes } from "./routes/canvasWebRoutes.js";
 import { registerDmDashboardWebRoutes } from "./routes/dmDashboardWebRoutes.js";
 import { registerHealthWebRoutes } from "./routes/healthWebRoutes.js";
 import { registerInvitationWebRoutes } from "./routes/invitationWebRoutes.js";
@@ -21,6 +22,7 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerAccountWebRoutes(server);
   void registerHealthWebRoutes(server);
   void registerCampaignWebRoutes(server);
+  void registerCanvasWebRoutes(server);
   void registerDmDashboardWebRoutes(server);
   void registerInvitationWebRoutes(server);
   void registerLiveTableWebRoutes(server);
