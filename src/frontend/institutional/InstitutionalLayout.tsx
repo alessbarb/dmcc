@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "@tanstack/react-router";
 import { GitBranch, Mail, Sparkles } from "lucide-react";
 import { institutionalContact, institutionalPages, type InstitutionalPageContent } from "./institutionalContent.js";
+import { SiteFooter } from "./SiteFooter.js";
 import "./institutional.css";
 
 type InstitutionalLayoutProps = {
@@ -65,6 +66,8 @@ export function InstitutionalLayout({ page }: InstitutionalLayoutProps) {
           </a>
         </aside>
       </div>
+
+      <SiteFooter />
     </main>
   );
 }

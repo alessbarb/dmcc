@@ -1070,13 +1070,18 @@ body:has(.rl-root) .watermark {
 }
 
 .rl-footer__inner {
-  max-width: 920px;
+  max-width: 1120px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
   flex-wrap: wrap;
+}
+
+.rl-footer__identity {
+  display: grid;
+  gap: 5px;
 }
 
 .rl-footer__brand {
@@ -1095,6 +1100,29 @@ body:has(.rl-root) .watermark {
   gap: 6px;
   font-size: 0.7rem;
   color: hsl(32 12% 40%);
+}
+
+.rl-footer__nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px 14px;
+  flex-wrap: wrap;
+}
+
+.rl-footer__link {
+  color: hsl(32 18% 58%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.rl-footer__link:hover,
+.rl-footer__link:focus-visible {
+  color: hsl(38 66% 72%);
+  outline: none;
 }
 
 /* ── Hero fine print ──────────────────────────────────────── */

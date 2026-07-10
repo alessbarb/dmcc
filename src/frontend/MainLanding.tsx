@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { fetchAuthStatus } from "./shared/auth/authClient.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
+import { SiteFooter } from "./institutional/SiteFooter.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
 
 // ─── App Preview Mock ────────────────────────────────────────────────────────
@@ -442,12 +443,7 @@ export function MainLanding() {
       </section>
 
       {/* ── Footer ──────────────────────────────────────── */}
-      <footer className="rl-footer">
-        <div className="rl-footer__inner">
-          <div className="rl-footer__brand"><Shield size={13} /><span>DMCC — Campaign Memory Engine</span></div>
-          <div className="rl-footer__meta"><Lock size={11} /><span>Local-first · Exportable · Bajo tu control</span></div>
-        </div>
-      </footer>
+      <SiteFooter />
 
     </div>
   );

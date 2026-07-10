@@ -92,6 +92,18 @@
   align-items: start;
 }
 
+.institutional-shell .rl-footer {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, 100%);
+  margin: clamp(1rem, 3vw, 2rem) auto 0;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 1.25rem;
+  background: rgb(18 13 22 / 0.62);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.22);
+  backdrop-filter: blur(18px);
+}
+
 .institutional-nav,
 .institutional-panel,
 .institutional-contact {
