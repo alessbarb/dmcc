@@ -186,7 +186,7 @@ export function App() {
         const { fetchAuthStatus } = await import("./shared/auth/authClient.js");
         const status = await fetchAuthStatus();
         if (!status.sessionValid) {
-          await navigate({ to: status.accountConfigured ? "/dm/unlock" : "/dm/setup" });
+          await navigate({ to: status.accountConfigured ? "/dm/login" : "/dm/setup" });
           return;
         }
         setDmProfile(status.user || null);
@@ -285,7 +285,7 @@ export function App() {
   const handleSwitchDm = async () => {
     clearCampaign();
     await logoutDm();
-    await navigate({ to: "/dm/unlock" });
+    await navigate({ to: "/dm/login" });
   };
 
   const filteredCampaigns = campaigns.filter(

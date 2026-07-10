@@ -2,7 +2,7 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 async function gone(_request: FastifyRequest, reply: FastifyReply) {
   reply.code(410);
-  return { error: "Legacy vault/LAN/token API removed in PostgreSQL web mode" };
+  return { error: "Legacy workspace/local token API removed in PostgreSQL web mode" };
 }
 
 export async function registerPlatformCompatibilityRoutes(server: FastifyInstance): Promise<void> {

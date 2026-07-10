@@ -38,7 +38,7 @@ const MODULE_DESCRIPTIONS: Record<AccountModuleId, string> = {
   "dm-profile": "How you appear when acting as DM across campaigns.",
   "player-profiles": "Per-campaign player profiles, one identity for each table you join.",
   privacy: "Preview what each audience can actually see.",
-  appearance: "Theme, typography and accessibility preferences for this vault.",
+  appearance: "Theme, typography and accessibility preferences for this workspace.",
   notifications: "Internal alerts and campaign-related signal preferences.",
   security: "Password, recovery codes and active sessions.",
   data: "Export or permanently remove your personal account data.",

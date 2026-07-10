@@ -26,7 +26,7 @@ const AppPage = React.lazy(() => import("./App.js").then((m) => ({ default: m.Ap
 const DmHubPageLazy = React.lazy(() => import("./dm/hub/DmHubPage.js").then((m) => ({ default: m.DmHubPage })));
 const CampaignShellPage = React.lazy(() => import("./dm/layouts/CampaignShell.js").then((m) => ({ default: m.CampaignShell })));
 const DmSetupPageLazy = React.lazy(() => import("./dm/pages/DmSetupPage.js").then((m) => ({ default: m.DmSetupPage })));
-const DmUnlockPageLazy = React.lazy(() => import("./dm/pages/DmUnlockPage.js").then((m) => ({ default: m.DmUnlockPage })));
+const DmLoginPageLazy = React.lazy(() => import("./dm/pages/DmLoginPage.js").then((m) => ({ default: m.DmLoginPage })));
 const PlayerJoinPageLazy = React.lazy(() => import("./player/pages/PlayerJoinPage.js").then((m) => ({ default: m.PlayerJoinPage })));
 const DashboardPageLazy = React.lazy(() => import("./dm/pages/DashboardPage.js").then((m) => ({ default: m.DashboardPage })));
 const CommandCenterPageLazy = React.lazy(() => import("./dm/pages/CommandCenterPage.js").then((m) => ({ default: m.CommandCenterPage })));
@@ -109,7 +109,7 @@ const portalRoute = createRoute({
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/login",
-  component: withSuspense(DmUnlockPageLazy),
+  component: withSuspense(DmLoginPageLazy),
 });
 
 const webRegisterRoute = createRoute({
@@ -204,18 +204,18 @@ const dmCampaignsNewRoute = createRoute({
   component: () => null,
 });
 
-// DM setup PIN (first run)
+// Account setup (first run)
 const dmSetupRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm/setup",
   component: withSuspense(DmSetupPageLazy),
 });
 
-// DM unlock with PIN
-const dmUnlockRoute = createRoute({
+// Account sign-in
+const dmLoginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/dm/unlock",
-  component: withSuspense(DmUnlockPageLazy),
+  path: "/dm/login",
+  component: withSuspense(DmLoginPageLazy),
 });
 
 // Player join page (code or link)
@@ -443,7 +443,7 @@ const routeTree = rootRoute.addChildren([
   onboardingRoute,
   premadePreviewRoute,
   dmSetupRoute,
-  dmUnlockRoute,
+  dmLoginRoute,
   playerJoinRoute,
   joinRoute,
   registerRoute,

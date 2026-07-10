@@ -56,7 +56,7 @@ export function LiveTablePage() {
       <div>
         <p style={{ margin: "0 0 6px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: ".12em", fontSize: 12 }}>Mesa en vivo</p>
         <h1 style={{ margin: 0 }}>Live Table Mode</h1>
-        <p style={{ color: "var(--text-muted)", maxWidth: 720 }}>Abre una mesa temporal para que los jugadores reciban revelaciones y consulten el portal durante la sesión. No es LAN: es un código de mesa web.</p>
+        <p style={{ color: "var(--text-muted)", maxWidth: 720 }}>Abre una mesa temporal para que los jugadores reciban revelaciones y consulten el portal durante la sesión. No usa red local: es un código de mesa web.</p>
       </div>
 
       {error && <div className="card" style={{ padding: 16, color: "var(--color-danger)" }}>{error}</div>}

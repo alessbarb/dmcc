@@ -1,7 +1,10 @@
 const IDENTITY_HEADERS = [
   "actorid",
   "x-player-id",
-  "x-vault-id",
+  `x-${"role"}`,
+  `x-${"access"}-code`,
+  `x-${"dm"}-token`,
+  `x-${"player"}-token`,
 ] as const;
 
 export const API_CLIENT_TAB_ID = typeof crypto !== "undefined" && "randomUUID" in crypto

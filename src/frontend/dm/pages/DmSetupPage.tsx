@@ -34,7 +34,7 @@ export function DmSetupPage() {
     if (authStatus?.sessionValid) {
       navigate({ to: "/portal" });
     } else if (hasExistingDm) {
-      navigate({ to: "/dm/unlock" });
+      navigate({ to: "/dm/login" });
     } else {
       navigate({ to: "/" });
     }

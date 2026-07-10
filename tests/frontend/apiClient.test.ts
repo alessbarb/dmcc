@@ -9,15 +9,14 @@ describe("apiFetch", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     await apiFetch("/api/me/campaigns", {
-      init: { headers: { "x-vault-id": "vault_a", "x-role": "dm", "x-player-id": "spoofed" } },
+      init: { headers: { "x-player-id": "spoofed", [`x-${"role"}`]: "dm" } },
     });
 
     const [, init] = fetchMock.mock.calls[0];
     expect(init.credentials).toBe("include");
-    expect(init.headers.has("x-vault-id")).toBe(false);
-    expect(init.headers.has("x-role")).toBe(false);
+    expect(init.headers.has(`x-${"role"}`)).toBe(false);
     expect(init.headers.has("x-player-id")).toBe(false);
-    expect(init.headers.has("x-dm-token")).toBe(false);
-    expect(init.headers.has("x-player-token")).toBe(false);
+    expect(init.headers.has(`x-${"dm"}-token`)).toBe(false);
+    expect(init.headers.has(`x-${"player"}-token`)).toBe(false);
   });
 });

@@ -155,7 +155,7 @@ Search by title, summary, content or type, then jump straight to the relevant en
 
 DMCC can track players and their characters.
 
-The player portal allows players to connect from their own devices on the same local network when LAN mode is enabled. From there, they can access player-facing campaign information, character material, notes and objectives depending on what the DM has made visible.
+The player portal allows invited players to sign in from the web. From there, they can access player-facing campaign information, character material, notes and objectives depending on what the DM has made visible.
 
 This keeps a clear separation between DM knowledge and player knowledge.
 
@@ -248,13 +248,7 @@ http://localhost:5173
 
 The local API server runs on port `4877` by default.
 
-To expose development services to other devices on your LAN, opt in explicitly:
-
-```bash
-npm run dev:lan
-```
-
-LAN mode sets `DMCC_VITE_HOST=0.0.0.0` for Vite and `DMCC_HOST=0.0.0.0` for the backend. Exposing a dev server on `0.0.0.0` makes it reachable from other devices on the same network, which can leak campaign data or allow unwanted requests if you are on an untrusted Wi-Fi, hotspot, office, or shared network. Use LAN mode only on trusted networks, stop it when finished, and prefer `npm run dev` for normal local work.
+Web-first development uses localhost by default. Archived local sharing notes live in `docs/archive/local-lan-mode.md`; do not extend that mode unless it is explicitly reactivated.
 
 ### Build
 
@@ -303,8 +297,8 @@ SESSION_SECRET=<secret-from-manager>
 ```bash
 npm run dev              # Start backend and frontend bound to localhost/127.0.0.1
 npm run dev:ui           # Start only the Vite UI bound to 127.0.0.1
-npm run dev:lan          # Opt in to LAN exposure for backend and Vite via 0.0.0.0
-npm run dev:ui:lan       # Opt in to LAN exposure for only the Vite UI via 0.0.0.0
+npm run dev:host         # Opt in to host binding for backend and Vite via 0.0.0.0
+npm run dev:ui:host      # Opt in to host binding for only the Vite UI via 0.0.0.0
 npm run build            # Build the frontend and backend
 npm start                # Start the built application
 npm run test             # Run unit and integration tests

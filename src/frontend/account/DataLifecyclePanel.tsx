@@ -40,7 +40,7 @@ export function DataLifecyclePanel({ confirmationLabel }: { confirmationLabel: s
 
       <div className="account-danger-zone">
         <h3>{t("account.data.deleteTitle")}</h3>
-        <p>This permanently removes your unified account from this vault.</p>
+        <p>This permanently removes your unified account from this workspace.</p>
         {blockers.length ? (
           <ul className="account-bullet-list danger">
             {blockers.map((blocker) => (

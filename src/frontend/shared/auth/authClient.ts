@@ -88,14 +88,6 @@ export async function resetPassword(token: string, newPassword: string): Promise
   if (!res.ok) throw new Error(await readApiError(res, "Unable to reset password"));
 }
 
-export async function setupPin(_secret: string): Promise<void> {
-  throw new Error("Account setup requires email and password");
-}
-
-export async function unlockDm(_secret: string): Promise<void> {
-  throw new Error("Login requires email and password");
-}
-
 export async function logoutDm(): Promise<void> {
   await apiFetch("/api/auth/logout", { init: { method: "POST" } }).catch(() => undefined);
 }
@@ -105,7 +97,7 @@ export async function lockDm(): Promise<void> {
 }
 
 export async function acquireLocalDmToken(): Promise<void> {
-  throw new Error("Local token login has been removed");
+  throw new Error("Account login has moved to web sessions");
 }
 
 export async function logoutPlayer(_campaignId: string): Promise<void> {

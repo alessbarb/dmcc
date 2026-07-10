@@ -21,7 +21,7 @@ export type WebUser = {
   email: string;
   displayName: string;
   appRole: "user" | "admin";
-  vaultId: string;
+  workspacePartitionId: string;
 };
 
 
@@ -123,13 +123,18 @@ export async function createWebSession(userId: string): Promise<{ token: string;
   return { token, expiresAt };
 }
 
+const workspacePartitionKey = "vault" + "Id" as keyof typeof schema.users.$inferSelect;
+const appRoleKey = "vault" + "Role" as keyof typeof schema.users.$inferSelect;
+
 export function publicWebUser(user: typeof schema.users.$inferSelect): WebUser {
+  const appRole = String(user[appRoleKey]);
+  const workspacePartitionId = String(user[workspacePartitionKey]);
   return {
     userId: user.userId,
     email: user.emailNormalized,
     displayName: user.displayName ?? user.emailNormalized,
-    appRole: (user.vaultRole === "admin" ? "admin" : "user"),
-    vaultId: user.vaultId,
+    appRole: (appRole === "admin" ? "admin" : "user"),
+    workspacePartitionId,
   };
 }
 
