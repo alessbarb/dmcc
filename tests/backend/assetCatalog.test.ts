@@ -9,15 +9,18 @@ async function withFakeAssets<T>(fn: (assetsDir: string) => Promise<T>): Promise
   const avatarsDir = join(root, "assets", "avatars", "fantasy");
   const campaignsDir = join(root, "assets", "campaigns", "dark-fantasy");
   const entitiesDir = join(root, "assets", "entities", "npcs");
+  const futureCatalogDir = join(root, "assets", "locations", "cities");
   await mkdir(avatarsDir, { recursive: true });
   await mkdir(campaignsDir, { recursive: true });
   await mkdir(entitiesDir, { recursive: true });
+  await mkdir(futureCatalogDir, { recursive: true });
   await writeFile(join(root, "assets", "avatars", "default-avatar.png"), "");
   await writeFile(join(root, "assets", "avatars", "fantasy", "aelar.png"), "");
   await writeFile(join(root, "assets", "campaigns", "default-campaign-cover.jpg"), "");
   await writeFile(join(root, "assets", "campaigns", "dark-fantasy", "castle.webp"), "");
   await writeFile(join(root, "assets", "entities", "default-entity.png"), "");
   await writeFile(join(root, "assets", "entities", "npcs", "innkeeper.png"), "");
+  await writeFile(join(root, "assets", "locations", "cities", "waterdeep.jpg"), "");
   try {
     return await fn(root);
   } finally {
@@ -54,7 +57,7 @@ describe("GET /api/assets/catalog", () => {
     });
   });
 
-  it("returns entity groups with default and named subfolders", async () => {
+  it("lets entities use every current and future asset catalog", async () => {
     await withFakeAssets(async (assetsDir) => {
       const server = createServer({ assetsDir, storageMode: "legacy" });
       const response = await server.inject({
@@ -63,8 +66,25 @@ describe("GET /api/assets/catalog", () => {
       });
       expect(response.statusCode).toBe(200);
       const body = response.json<{ groups: Record<string, string[]> }>();
-      expect(body.groups["default"]).toContain("/assets/entities/default-entity.png");
-      expect(body.groups["npcs"]).toContain("/assets/entities/npcs/innkeeper.png");
+      expect(body.groups["entities · default"]).toContain("/assets/entities/default-entity.png");
+      expect(body.groups["entities · npcs"]).toContain("/assets/entities/npcs/innkeeper.png");
+      expect(body.groups["avatars · fantasy"]).toContain("/assets/avatars/fantasy/aelar.png");
+      expect(body.groups["campaigns · dark-fantasy"]).toContain("/assets/campaigns/dark-fantasy/castle.webp");
+      expect(body.groups["locations · cities"]).toContain("/assets/locations/cities/waterdeep.jpg");
+    });
+  });
+
+  it("returns all current and future asset catalogs when requested explicitly", async () => {
+    await withFakeAssets(async (assetsDir) => {
+      const server = createServer({ assetsDir, storageMode: "legacy" });
+      const response = await server.inject({
+        method: "GET",
+        url: "/api/assets/catalog?type=all",
+      });
+      expect(response.statusCode).toBe(200);
+      const body = response.json<{ groups: Record<string, string[]> }>();
+      expect(body.groups["avatars · fantasy"]).toContain("/assets/avatars/fantasy/aelar.png");
+      expect(body.groups["locations · cities"]).toContain("/assets/locations/cities/waterdeep.jpg");
     });
   });
 
