@@ -20,6 +20,17 @@ import { PortalTopBar } from "./shared/components/PortalTopBar.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
 import { apiFetch } from "./shared/api/apiClient.js";
 import { getPlayerCampaigns } from "./shared/api/webProductClient.js";
+import type { PlayerCampaignSummary } from "./shared/api/webProductClient.js";
+
+
+interface PlayerCampaignCard {
+  campaignId: string;
+  playerId: string;
+  displayName: string;
+  campaignTitle: string;
+  avatarUrl?: string;
+  characterName?: string;
+}
 
 function formatCampaignSystem(system?: string) {
   if (system === "dnd_srd_5_2_1") return "D&D 5e";
@@ -35,16 +46,16 @@ export function SmartLanding() {
   const [loading, setLoading] = useState(true);
   const [hasDmSession, setHasDmSession] = useState(false);
   const [campaigns, setCampaigns] = useState<any[]>([]);
-  const [playerProfiles, setPlayerProfiles] = useState<any[]>([]);
+  const [playerCampaignCards, setPlayerCampaignCards] = useState<PlayerCampaignCard[]>([]);
 
   useEffect(() => {
     const init = async () => {
       try {
         const authStatus = await fetchAuthStatus();
         setStatus(authStatus);
-        setHasDmSession(authStatus.dmSessionValid);
+        setHasDmSession(authStatus.sessionValid);
 
-        if (authStatus.dmSessionValid) {
+        if (authStatus.sessionValid) {
           const res = await apiFetch("/api/campaigns");
           if (res.ok) {
             const data = await res.json();
@@ -52,12 +63,12 @@ export function SmartLanding() {
           }
 
           const playerCampaigns = await getPlayerCampaigns().catch(() => ({ campaigns: [] }));
-          setPlayerProfiles(playerCampaigns.campaigns.map((campaign: any) => ({
+          setPlayerCampaignCards(playerCampaigns.campaigns.map((campaign: PlayerCampaignSummary) => ({
             campaignId: campaign.campaignId,
             playerId: campaign.playerId ?? campaign.campaignId,
             displayName: campaign.title,
             campaignTitle: campaign.title,
-            avatarUrl: campaign.coverUrl,
+            avatarUrl: campaign.coverUrl ?? undefined,
           })));
         }
       } catch {
@@ -82,7 +93,7 @@ export function SmartLanding() {
   const handleDmNavigate = () => {
     if (hasDmSession) {
       navigate({ to: "/dm" });
-    } else if (status?.dmAccountConfigured || status?.dmPinConfigured) {
+    } else if (status?.accountConfigured) {
       navigate({ to: "/dm/unlock" });
     } else {
       navigate({ to: "/dm/setup" });
@@ -144,7 +155,7 @@ export function SmartLanding() {
                   <div className="card-body">
                     <p className="card-desc">{t("landing.dmDesc")}</p>
                     <button className="btn btn-gold btn-full">
-                      {status?.dmAccountConfigured || status?.dmPinConfigured ? t("landing.unlockArchive") : t("landing.serverConfig")}
+                      {status?.accountConfigured ? t("landing.unlockArchive") : t("landing.serverConfig")}
                       <ArrowRight size={16} />
                     </button>
                   </div>
@@ -259,7 +270,7 @@ export function SmartLanding() {
                 <h2>{t("landing.playerTitle")}</h2>
               </div>
 
-              {playerProfiles.length === 0 ? (
+              {playerCampaignCards.length === 0 ? (
                 // Player empty join state
                 <div className="glass-card player-join-card" onClick={() => navigate({ to: "/player/join" })}>
                   <div className="card-body">
@@ -279,7 +290,7 @@ export function SmartLanding() {
                 <div className="player-portal-stack">
                   <span className="section-label-amethyst">{t("landing.yourCharacters")}</span>
                   <div className="player-profiles-list">
-                    {playerProfiles.map((profile) => (
+                    {playerCampaignCards.map((profile) => (
                       <div
                         key={`${profile.campaignId}-${profile.playerId}`}
                         className="glass-card player-profile-row-card"

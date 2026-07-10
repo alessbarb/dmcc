@@ -11,7 +11,7 @@ import { fetchAuthStatus } from "./shared/auth/authClient.js";
 async function requireAccountSession() {
   try {
     const status = await fetchAuthStatus();
-    if (!status.dmSessionValid) {
+    if (!status.sessionValid) {
       throw redirect({ to: "/" });
     }
   } catch (err: any) {

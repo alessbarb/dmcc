@@ -76,8 +76,8 @@ export function PlayerJoinPage() {
 
   useEffect(() => {
     void fetchAuthStatus().then((status) => {
-      setAuthenticated(status.dmSessionValid);
-      if (status.dmSessionValid) void loadMemberships();
+      setAuthenticated(status.sessionValid);
+      if (status.sessionValid) void loadMemberships();
     }).catch(() => undefined);
     void loadInvitation();
   }, [inviteToken]);

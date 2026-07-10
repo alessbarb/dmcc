@@ -147,11 +147,11 @@ export function DmHubPage() {
       try {
         const { fetchAuthStatus } = await import("../../shared/auth/authClient.js");
         const status = await fetchAuthStatus();
-        if (!status.dmSessionValid) {
-          await navigate({ to: status.dmAccountConfigured || status.dmPinConfigured ? "/dm/unlock" : "/dm/setup" });
+        if (!status.sessionValid) {
+          await navigate({ to: status.accountConfigured ? "/dm/unlock" : "/dm/setup" });
           return;
         }
-        setDmProfile(status.dm || null);
+        setDmProfile(status.user || null);
       } catch {
         await navigate({ to: "/" });
         return;

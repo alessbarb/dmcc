@@ -4,14 +4,9 @@ import { apiFetch, readApiError } from "../api/apiClient.js";
 function unauthenticatedStatus(): AuthStatus {
   return {
     accountConfigured: false,
-    dmAccountConfigured: false,
-    dmPinConfigured: false,
-    dmSessionValid: false,
     sessionValid: false,
     user: null,
-    dm: null,
-    localRequest: true,
-    lanExposed: false,
+    memberships: [],
   };
 }
 
@@ -32,28 +27,13 @@ export async function fetchAuthStatus(): Promise<AuthStatus> {
     : null);
 
 
-  const sessionValid = Boolean(status.sessionValid ?? status.dmSessionValid ?? user);
-  const accountConfigured = Boolean(status.accountConfigured ?? status.dmAccountConfigured ?? status.dmPinConfigured);
+  const sessionValid = Boolean(status.sessionValid ?? user);
+  const accountConfigured = Boolean(status.accountConfigured);
   return {
     accountConfigured,
-    dmAccountConfigured: accountConfigured,
-    dmPinConfigured: accountConfigured,
-    legacyPinConfigured: false,
     sessionValid,
-    dmSessionValid: sessionValid,
     user,
-    dm: user
-      ? {
-          dmId: user.userId,
-          userId: user.userId,
-          email: user.email,
-          displayName: user.displayName,
-          avatarUrl: user.avatarUrl,
-        }
-      : null,
     memberships: status.memberships ?? [],
-    localRequest: status.localRequest ?? true,
-    lanExposed: Boolean(status.lanExposed),
   };
 }
 

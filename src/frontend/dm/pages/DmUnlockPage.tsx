@@ -15,12 +15,9 @@ export function DmUnlockPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [retryAfterMs, setRetryAfterMs] = useState<number>(0);
-  const [lanWarning, setLanWarning] = useState(false);
-
   useEffect(() => {
     fetchAuthStatus().then((status) => {
-      if (!status.dmAccountConfigured) navigate({ to: "/dm/setup" });
-      if (status.lanExposed) setLanWarning(true);
+      if (!status.accountConfigured) navigate({ to: "/dm/setup" });
     }).catch(() => {});
   }, [navigate]);
 
@@ -81,11 +78,6 @@ export function DmUnlockPage() {
             </p>
           </div>
 
-          {lanWarning && (
-            <div style={{ background: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.2)", borderRadius: "8px", padding: "10px 12px", marginBottom: "12px", fontSize: "0.8rem", color: "#facc15" }}>
-              {t("dmUnlock.lanWarning")}
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="join-portal-form">
             <div className="form-group">
