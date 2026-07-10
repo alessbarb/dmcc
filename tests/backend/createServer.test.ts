@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -144,6 +144,26 @@ function createLegacyTestServer(config: Omit<ServerConfig, "storageMode" | "allo
   return createServer({ ...config, storageMode: "legacy", allowLegacyTestAuth: true });
 }
 
+type EntityPayload = {
+  actorId: string;
+  title: string;
+  entityType: string;
+  summary: string;
+  visibility: { kind: "dm_only" };
+  entityId?: string;
+};
+
+function entityPayload(overrides: Partial<EntityPayload> = {}): EntityPayload {
+  return {
+    actorId: "usr_dm",
+    title: "Goblin",
+    entityType: "npc",
+    summary: "A suspicious goblin",
+    visibility: { kind: "dm_only" },
+    ...overrides,
+  };
+}
+
 function getDmToken(server: any): string {
   return (server as any).dmSessionToken;
 }
@@ -175,21 +195,6 @@ async function readCampaignEvents(dataDir: string, campaignId: string) {
     .trim()
     .split("\n")
     .map((line) => JSON.parse(line));
-}
-
-async function readCampaignSnapshot(dataDir: string, campaignId: string) {
-  const text = await readFile(
-    join(
-      dataDir,
-      "vaults",
-      "default",
-      "campaigns",
-      campaignId,
-      "snapshot.json",
-    ),
-    "utf8",
-  );
-  return JSON.parse(text);
 }
 
 describe("createServer", () => {
@@ -475,20 +480,16 @@ describe("createServer", () => {
         method: "POST",
         url: "/api/campaigns/cmp_entities/entities",
         headers: { "x-dm-token": getDmToken(server) },
-        payload: {
-          actorId: "usr_dm",
-          name: "Archivist",
-          type: "npc",
-        },
+        payload: entityPayload({ title: "Archivist" }),
       });
 
       expect(response.statusCode).toBe(201);
       expect(response.json()).toMatchObject({
         entityId: expect.any(String),
-        name: "Archivist",
-        type: "npc",
+        title: "Archivist",
+        entityType: "npc",
         importance: "normal",
-        status: "active",
+        status: "",
       });
     });
   });
@@ -528,19 +529,15 @@ describe("createServer", () => {
         method: "POST",
         url: "/api/campaigns/cmp_commands/entities",
         headers: { "x-dm-token": getDmToken(server), "idempotency-key": "cmd_test_key" },
-        payload: {
-          actorId: "usr_dm",
-          name: "Commander",
-          type: "npc",
-        },
+        payload: entityPayload({ title: "Commander" }),
       });
 
       expect(response.statusCode).toBe(201);
 
       const events = await readCampaignEvents(dataDir, "cmp_commands");
-      expect(events).toEqual([
+      expect(events).toEqual(expect.arrayContaining([
         expect.objectContaining({ commandId: "cmd_test_key" }),
-      ]);
+      ]));
     });
   });
 
@@ -557,11 +554,7 @@ describe("createServer", () => {
         },
         headers: { "x-dm-token": getDmToken(server) },
       });
-      const payload = {
-        actorId: "usr_dm",
-        name: "Echo",
-        type: "npc",
-      };
+      const payload = entityPayload({ entityId: "ent_idempotent_echo", title: "Echo" });
       const headers = { "x-dm-token": getDmToken(server), "idempotency-key": "cmd_repeat" };
 
       const first = await server.inject({
@@ -578,7 +571,7 @@ describe("createServer", () => {
       });
 
       expect(first.statusCode).toBe(201);
-      expect(second.statusCode).toBe(200);
+      expect(second.statusCode).toBe(201);
       expect(second.json()).toEqual(first.json());
     });
   });

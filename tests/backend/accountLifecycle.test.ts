@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { createServer } from "../../src/backend/server/createServer.js";
-import { addCampaignMembership } from "../../src/backend/server/userAuthStore.js";
+import { addCampaignMembership } from "../../src/backend/server/userAuthAccountOps.js";
 
 const cleanup: Array<() => Promise<void>> = [];
 afterEach(async () => Promise.all(cleanup.splice(0).map((fn) => fn())));
