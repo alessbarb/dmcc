@@ -2,6 +2,10 @@
   display: none;
 }
 
+.canvas-mobile-tools-section {
+  display: none;
+}
+
 .canvas-toolbar__select {
   max-width: 90px;
   padding: 2px 4px;
@@ -28,17 +32,26 @@
 
   .canvas-toolbar-panel--mobile {
     display: block;
-    margin: 0 16px calc(var(--app-footer-height, 64px) + env(safe-area-inset-bottom, 0px) + 16px) 0;
-    z-index: 30;
+    margin: 0 18px calc(var(--campaign-mobile-bottom-nav-height, 74px) + env(safe-area-inset-bottom, 0px) + 28px) 0;
+    z-index: 40;
+  }
+
+  .canvas-mobile-tools-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    border: 0;
+    background: transparent;
+    cursor: default;
   }
 
   .canvas-mobile-tools-fab {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 54px;
-    height: 54px;
-    border: 1px solid color-mix(in srgb, var(--primary) 50%, transparent);
+    width: 52px;
+    height: 52px;
+    border: 1px solid color-mix(in srgb, var(--primary) 54%, transparent);
     border-radius: 999px;
     background:
       radial-gradient(circle at 30% 20%, rgb(255 255 255 / 18%), transparent 35%),
@@ -56,11 +69,11 @@
   .canvas-mobile-tools-popover {
     position: absolute;
     right: 0;
-    bottom: 66px;
-    width: min(300px, calc(100dvw - 32px));
-    padding: 10px;
+    bottom: 62px;
+    width: min(276px, calc(100dvw - 32px));
+    padding: 9px;
     border: 1px solid color-mix(in srgb, var(--primary) 22%, var(--border-color));
-    border-radius: 18px;
+    border-radius: 17px;
     background: color-mix(in srgb, var(--bg-card) 92%, black);
     box-shadow: 0 22px 50px rgb(0 0 0 / 60%);
     backdrop-filter: blur(16px);
@@ -70,11 +83,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
-    padding: 0 2px 4px;
+    margin-bottom: 6px;
+    padding: 0 1px 2px;
     color: var(--text-muted);
-    font-size: 0.72rem;
-    font-weight: 800;
+    font-size: 0.68rem;
+    font-weight: 850;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -83,8 +96,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 27px;
+    height: 27px;
     border: 1px solid var(--border-color);
     border-radius: 999px;
     background: var(--bg-input);
@@ -95,13 +108,29 @@
   .canvas-mobile-tools-popover .canvas-toolbar {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 8px;
+    gap: 6px;
     padding: 0;
     border: 0;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
     backdrop-filter: none;
+  }
+
+  .canvas-mobile-tools-popover .canvas-mobile-tools-section {
+    display: block;
+    grid-column: 1 / -1;
+    margin: 3px 2px -1px;
+    color: var(--text-muted);
+    font-size: 0.56rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.82;
+  }
+
+  .canvas-mobile-tools-popover .canvas-mobile-tools-section:first-child {
+    margin-top: 0;
   }
 
   .canvas-mobile-tools-popover .canvas-toolbar__group {
@@ -115,26 +144,79 @@
 
   .canvas-mobile-tools-popover .canvas-toolbar__btn {
     width: 100%;
-    height: 42px;
+    height: 38px;
     border: 1px solid var(--border-color);
-    border-radius: 14px;
+    border-radius: 13px;
     background: var(--bg-input);
   }
 
   .canvas-mobile-tools-popover .canvas-toolbar__btn--active {
     border-color: color-mix(in srgb, var(--primary) 60%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent);
   }
 
   .canvas-mobile-tools-popover .canvas-toolbar__select {
     grid-column: 1 / -1;
     width: 100%;
     max-width: none;
-    height: 38px;
-    padding: 0 10px;
+    height: 34px;
+    padding: 0 9px;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 11px;
     background: var(--bg-input);
     color: var(--text-main);
-    font-size: 0.78rem;
+    font-size: 0.74rem;
+  }
+
+  .main-content--canvas .canvas-header-bar {
+    min-height: 38px !important;
+    max-height: 42px !important;
+    padding: 4px 8px !important;
+    background: color-mix(in srgb, var(--bg-card) 92%, transparent) !important;
+    backdrop-filter: blur(14px);
+  }
+
+  .main-content--canvas .canvas-selector-group {
+    gap: 6px !important;
+  }
+
+  .main-content--canvas .canvas-selector-group > svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+    opacity: 0.82;
+  }
+
+  .main-content--canvas .canvas-selector-group .canvas-select {
+    height: 32px;
+    padding: 0 34px 0 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 650;
+    background: color-mix(in srgb, var(--bg-input) 92%, black);
+  }
+
+  .main-content--canvas .canvas-mobile-dock {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    left: 18px;
+    right: 18px;
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    padding: 7px;
+    border-radius: 18px;
+  }
+
+  .main-content--canvas .canvas-mobile-dock button:first-child {
+    display: none;
+  }
+
+  .main-content--canvas .canvas-mobile-dock button {
+    min-height: 48px;
+  }
+
+  .canvas-page-container:fullscreen .canvas-header-bar,
+  .canvas-page-container:fullscreen .canvas-mobile-dock,
+  .canvas-page-container:fullscreen .canvas-mobile-more-panel,
+  .canvas-page-container:fullscreen .canvas-toolbar-panel--mobile {
+    display: none !important;
   }
 }
