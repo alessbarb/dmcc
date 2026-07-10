@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Pencil } from "lucide-react";
-import { ImagePickerModal } from "./ImagePickerModal.js";
+import { ImagePickerModal, type ImageCatalogType } from "./ImagePickerModal.js";
 
 interface ImagePickerButtonProps {
   value: string;
   onChange: (path: string) => void;
-  catalog: "avatars" | "campaigns" | "entities";
+  catalog: ImageCatalogType;
   defaultImage?: string;
   shape?: "circle" | "rect";
 }
