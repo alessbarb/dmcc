@@ -70,9 +70,19 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("function preloadImage");
     expect(src).toContain("new Image()");
     expect(src).toContain("async function preloadImagePaths");
-    expect(src).toContain("preloadImagePaths(imagePathsKey.split");
+    expect(src).toContain("const thumbnailPathsKey = images.map((image) => image.thumb).join");
+    expect(src).toContain("preloadImagePaths(thumbnailPathsKey.split");
     expect(src).toContain("Preparando imágenes…");
     expect(src).not.toContain("await preloadCatalogImages(nextGroups)");
+  });
+
+  it("renders thumbnail images but selects original source paths", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain("images: ImageCatalogItem[]");
+    expect(src).toContain("key={image.src}");
+    expect(src).toContain("onClick={() => { onSelect(image.src); onClose(); }}");
+    expect(src).toContain("src={image.thumb}");
+    expect(src).toContain("fetchPriority=\"low\"");
   });
 
   it("renders lazy decoded thumbnails", () => {
@@ -105,7 +115,7 @@ describe("ImagePickerModal", () => {
   it("selects an image through onSelect before closing without submit-capable buttons", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
 
-    expect(src).toContain('onClick={() => { onSelect(path); onClose(); }}');
+    expect(src).toContain('onClick={() => { onSelect(image.src); onClose(); }}');
     expect(src).toContain('onClick={() => { onSelect(""); onClose(); }}');
     expect(src).not.toMatch(/<button\b(?:(?!type="button")[\s\S])*onSelect/);
   });
@@ -214,12 +224,29 @@ describe("image catalog normalization", () => {
     expect(normalizeImageCatalogResponse({ groups: null })).toEqual({});
   });
 
-  it("keeps only array groups and string image paths", async () => {
+  it("keeps legacy string entries as original-backed thumbnail items", async () => {
     const { normalizeImageCatalogGroups, normalizeImageCatalogResponse } = await import("../../src/frontend/shared/components/imageCatalog.js");
 
-    const expected = { heroes: ["/a.png"] };
+    const expected = { heroes: [{ src: "/a.png", thumb: "/a.png", name: "a.png" }] };
     expect(normalizeImageCatalogResponse({ groups: { heroes: ["/a.png", null, 7], bad: null } })).toEqual(expected);
     expect(normalizeImageCatalogGroups({ heroes: ["/a.png", null, 7], bad: null })).toEqual(expected);
     expect(normalizeImageCatalogGroups(null)).toEqual({});
+  });
+
+  it("keeps thumbnail catalog objects and falls back safely", async () => {
+    const { normalizeImageCatalogGroups } = await import("../../src/frontend/shared/components/imageCatalog.js");
+
+    expect(normalizeImageCatalogGroups({
+      heroes: [
+        { src: "/a.png", thumb: "/assets/.thumbs/a.webp", name: "A" },
+        { src: "/b.png" },
+        { thumb: "/broken.webp" },
+      ],
+    })).toEqual({
+      heroes: [
+        { src: "/a.png", thumb: "/assets/.thumbs/a.webp", name: "A" },
+        { src: "/b.png", thumb: "/b.png", name: "b.png" },
+      ],
+    });
   });
 });
