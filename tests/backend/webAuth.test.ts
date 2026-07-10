@@ -156,6 +156,55 @@ describe("web auth", () => {
     });
   });
 
+  it("returns web-only auth status without legacy DM/PIN/LAN aliases", async () => {
+    await withTempDataDir(async (dataDir) => {
+      const server = createServer({ dataDir, storageMode: "postgres" });
+
+      const initial = await server.inject({ method: "GET", url: "/api/auth/status" });
+      expect(initial.statusCode).toBe(200);
+      expect(initial.json()).toEqual({
+        accountConfigured: false,
+        sessionValid: false,
+        user: null,
+        memberships: [],
+      });
+
+      await register(server, "status@example.com", "password12345");
+      const anonymous = await server.inject({ method: "GET", url: "/api/auth/status" });
+      expect(anonymous.statusCode).toBe(200);
+      expect(anonymous.json()).toEqual({
+        accountConfigured: true,
+        sessionValid: false,
+        user: null,
+        memberships: [],
+      });
+
+      const loginRes = await login(server, "status@example.com", "password12345");
+      const authenticated = await server.inject({
+        method: "GET",
+        url: "/api/auth/status",
+        headers: { cookie: cookieFrom(loginRes) },
+      });
+
+      expect(authenticated.statusCode).toBe(200);
+      const body = authenticated.json();
+      expect(body).toMatchObject({
+        accountConfigured: true,
+        sessionValid: true,
+        user: { email: "status@example.com", displayName: "Test User" },
+        memberships: [],
+      });
+      expect(body).not.toHaveProperty("dmAccountConfigured");
+      expect(body).not.toHaveProperty("dmPinConfigured");
+      expect(body).not.toHaveProperty("dmSessionValid");
+      expect(body).not.toHaveProperty("dm");
+      expect(body).not.toHaveProperty("localRequest");
+      expect(body).not.toHaveProperty("lanExposed");
+
+      await server.close();
+    });
+  });
+
   it("login creates session accessible via GET /api/auth/session", async () => {
     await withTempDataDir(async (dataDir) => {
       const server = createServer({ dataDir });
