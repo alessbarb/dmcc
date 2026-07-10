@@ -1,252 +1,162 @@
+import type { SupportedLocale } from "@shared/i18n/index.js";
+
 export type InstitutionalPageKey = "about" | "contact" | "privacy" | "terms";
 
 export type InstitutionalSection = {
   readonly title: string;
-  readonly body: readonly string[];
+  readonly paragraphs: readonly string[];
 };
 
 export type InstitutionalPageContent = {
   readonly key: InstitutionalPageKey;
   readonly path: `/${InstitutionalPageKey}`;
   readonly navLabel: string;
+  readonly navLabelKey: `footer.${InstitutionalPageKey}`;
   readonly eyebrow: string;
   readonly title: string;
   readonly summary: string;
+  readonly lastUpdated?: string;
   readonly sections: readonly InstitutionalSection[];
 };
 
 export const institutionalContact = {
   email: "dmcampaigncompanion@gmail.com",
   github: "https://github.com/alessbarb/DMCC",
+  } as const;
+
+const legalLastUpdated = "10 July 2026";
+const legalLastUpdatedEs = "10 de julio de 2026";
+
+const commonPages = {
+  en: {
+    about: {
+      eyebrow: "Project overview",
+      title: "Campaign memory for tabletop RPG groups.",
+      summary: "DMCC helps Dungeon Masters organize campaign facts, secrets, timelines, players, and table-ready context without losing the magic of improvisation.",
+      sections: [
+        { title: "What DMCC is", paragraphs: ["Dungeon Master Campaign Companion is a local-first campaign workspace for tabletop RPGs. It keeps story memory, world relationships, session context, and player-facing portals close to the table.", "The project focuses on practical prep: remembering what happened, deciding what matters next, and revealing the right information to the right audience."] },
+        { title: "Design principles", paragraphs: ["DMCC favors clarity, privacy-aware campaign notes, and tools that support a DM rather than replacing one. Secrets, rumors, and canonical facts are first-class campaign material."] },
+      ],
+    },
+    contact: {
+      eyebrow: "Support and feedback",
+      title: "Reach the DMCC project.",
+      summary: "Questions, bug reports, feedback, and collaboration ideas are welcome through email or the public GitHub repository.",
+      sections: [
+        { title: "Email", paragraphs: [`For direct contact, write to ${institutionalContact.email}. Please include enough context to reproduce bugs or understand your campaign workflow request.`] },
+        { title: "GitHub", paragraphs: ["Use GitHub for source code, issues, and project discussions. Public reports are most helpful when they include steps to reproduce, expected behavior, and screenshots where relevant."] },
+      ],
+    },
+  },
+  es: {
+    about: {
+      eyebrow: "Resumen del proyecto",
+      title: "Memoria de campa\xf1a para grupos de rol de mesa.",
+      summary: "DMCC ayuda a directores de juego a organizar hechos, secretos, cronolog\xedas, jugadores y contexto listo para la mesa sin perder la magia de improvisar.",
+      sections: [
+        { title: "Qu\xe9 es DMCC", paragraphs: ["Dungeon Master Campaign Companion es un espacio de trabajo local-first para campa\xf1as de rol de mesa. Mantiene la memoria narrativa, las relaciones del mundo, el contexto de sesi\xf3n y los portales para jugadores cerca de la mesa.", "El proyecto se centra en preparaci\xf3n pr\xe1ctica: recordar qu\xe9 ocurri\xf3, decidir qu\xe9 importa despu\xe9s y revelar la informaci\xf3n adecuada a la audiencia correcta."] },
+        { title: "Principios de dise\xf1o", paragraphs: ["DMCC prioriza claridad, notas conscientes de la privacidad y herramientas que apoyan al director de juego sin sustituirlo. Secretos, rumores y hechos can\xf3nicos son material de campa\xf1a de primera clase."] },
+      ],
+    },
+    contact: {
+      eyebrow: "Soporte y feedback",
+      title: "Contacta con el proyecto DMCC.",
+      summary: "Preguntas, errores, comentarios e ideas de colaboraci\xf3n son bienvenidas por email o en el repositorio p\xfablico de GitHub.",
+      sections: [
+        { title: "Email", paragraphs: [`Para contacto directo, escribe a ${institutionalContact.email}. Incluye contexto suficiente para reproducir errores o entender tu necesidad de flujo de campa\xf1a.`] },
+        { title: "GitHub", paragraphs: ["Usa GitHub para c\xf3digo fuente, incidencias y conversaciones del proyecto. Los reportes p\xfablicos son m\xe1s \xfatiles cuando incluyen pasos de reproducci\xf3n, comportamiento esperado y capturas si procede."] },
+      ],
+    },
+  },
 } as const;
 
-export const institutionalPages: readonly InstitutionalPageContent[] = [
-  {
-    key: "about",
-    path: "/about",
-    navLabel: "About",
-    eyebrow: "Project overview",
-    title: "Campaign memory for tabletop RPG groups.",
-    summary:
-      "DMCC helps Dungeon Masters organize campaign facts, secrets, timelines, players, and table-ready context without losing the magic of improvisation.",
-    sections: [
-      {
-        title: "What DMCC is",
-        body: [
-          "Dungeon Master Campaign Companion is a local-first campaign workspace for tabletop RPGs. It is designed to keep story memory, world relationships, session context, and player-facing portals close to the table.",
-          "The project focuses on practical prep: remembering what happened, deciding what matters next, and making it easier to reveal the right information to the right audience.",
-        ],
-      },
-      {
-        title: "Design principles",
-        body: [
-          "DMCC favors clarity, privacy-aware campaign notes, and tools that support a DM rather than replacing one. The app treats secrets, rumors, and canonical facts as first-class campaign material.",
-        ],
-      },
-    ],
+const legalPages = {
+  en: {
+    privacy: {
+      eyebrow: "Privacy policy",
+      title: "Privacy Policy",
+      summary: "This policy explains how DMCC handles data associated with dmcc.onrender.com and the public project at github.com/alessbarb/DMCC.",
+      lastUpdated: legalLastUpdated,
+      sections: [
+        { title: "Controller and contact", paragraphs: [`DMCC is responsible for handling application data. For privacy questions, rights requests, or policy communications, write to ${institutionalContact.email}.`, "The application is available at dmcc.onrender.com and the public project repository is hosted at github.com/alessbarb/DMCC."] },
+        { title: "Data processed", paragraphs: ["DMCC may process information you voluntarily enter, including account data, email address, user profiles, campaigns, characters, players, sessions, notes, entities, relationships, facts, secrets, timelines, boards, proposals, player-visible content, and configuration preferences.", "Technical data required to operate the service may also be processed, including session identifiers, cookies, authentication data, IP address, user agent, security logs, error events, and usage metadata reasonably necessary to maintain availability, integrity, and protection.", "Do not enter special categories of personal data or sensitive personal information about players or other people unless you have a lawful basis and the affected people have been informed and have provided any required consent."] },
+        { title: "Purposes", paragraphs: ["Data is processed to create and manage accounts, authenticate sessions, provide secure campaign access, store and synchronize game information, display player portals, preserve preferences, provide support, diagnose errors, prevent abuse, protect service security, and comply with applicable legal obligations.", "Campaign content is used to provide DMCC organization, preparation, consultation, visibility, and collaboration features. It is not used to sell advertising profiles or behavioral advertising."] },
+        { title: "Legal basis and retention", paragraphs: ["The main legal basis is performance of the relationship requested by the user when creating an account or using the application. Some technical and security processing relies on DMCC's legitimate interest in maintaining a stable, secure, and functional service.", "Data is retained while the account is active, while needed to provide the application, or while a legal, technical, or security reason justifies retention. Backups and technical logs may remain for a limited period until rotation or secure deletion."] },
+        { title: "Cookies, local storage, and providers", paragraphs: ["DMCC may use cookies, browser local storage, and similar technologies to maintain sessions, remember preferences, protect forms, enable interface features, and improve application stability.", "The application may rely on infrastructure, hosting, database, email, code repository, and technical providers needed to operate, deploy, maintain, and protect the service. Those providers should access data only as needed to provide their services."] },
+        { title: "User rights and security", paragraphs: [`You may request access, rectification, deletion, objection, restriction, and portability by writing to ${institutionalContact.email}. Requests should include enough information to verify identity and locate the affected data.`, "DMCC applies technical and organizational measures aimed at protecting data against unauthorized access, loss, alteration, or improper disclosure. No system is infallible, so users should protect credentials, review shared views, avoid unnecessary secrets, and keep their own copies of important campaign information."] },
+        { title: "Changes", paragraphs: ["DMCC may update this policy to reflect legal, technical, or operational changes. Relevant changes will update the last-updated date and may be communicated through the application or available channels."] },
+      ],
+    },
+    terms: {
+      eyebrow: "Terms of use",
+      title: "Terms of Use",
+      summary: "These terms govern access to and use of DMCC, the application published at dmcc.onrender.com, and the project available at github.com/alessbarb/DMCC.",
+      lastUpdated: legalLastUpdated,
+      sections: [
+        { title: "What DMCC is", paragraphs: ["DMCC, Dungeon Master Campaign Companion, is a support tool for game masters, players, and tabletop role-playing groups. It helps organize campaigns, sessions, characters, entities, facts, secrets, relationships, timelines, boards, proposals, player-visible content, and other useful game information.", "DMCC does not replace the game master's judgment or the rules agreed by each table. Each group remains responsible for deciding how information is used in its campaign."] },
+        { title: "Allowed use", paragraphs: ["You may use DMCC to create, save, edit, consult, and share tabletop campaign information, coordinate sessions, manage character and player content, prepare narrative material, record table decisions, and collaborate with participants reasonably and lawfully.", "You may use the public repository to review code, propose improvements, report bugs, open issues, participate in technical discussions, and collaborate with the project according to GitHub rules, the applicable license, and repository instructions."] },
+        { title: "Prohibited use", paragraphs: ["Do not use DMCC for illegal, abusive, fraudulent, discriminatory, defamatory, privacy-invasive, harassing, impersonation, malware, vulnerability exploitation, or service interference activities.", "Do not upload, publish, or share personal data, secrets, credentials, sensitive third-party content, copyrighted material, or private player information without sufficient authorization. Do not attempt to access campaigns, accounts, systems, repositories, or data that are not yours."] },
+        { title: "Account and content responsibility", paragraphs: ["You are responsible for maintaining credential confidentiality, controlling access to your devices, and reviewing what content you share with other users or players.", "You retain ownership of texts, notes, campaigns, characters, worlds, images, ideas, and other content you enter in DMCC, provided that the content is yours or you have permission to use it. By storing or sharing content, you grant DMCC a limited authorization to host, process, display, synchronize, and make it available only as needed to provide the service."] },
+        { title: "Third-party content and availability", paragraphs: ["DMCC may allow you to enter, link, import, mention, or consult third-party content such as game rules, publisher material, community resources, images, external links, technical integrations, or public repositories. That content belongs to its respective owners and may be subject to additional conditions.", "DMCC is provided as an evolving project and application. Interruptions, errors, maintenance, connectivity loss, infrastructure changes, or technical limits may occur. Keep your own copies of important campaign information."] },
+        { title: "Changes and liability", paragraphs: ["DMCC may modify, add, reorganize, or remove features, screens, data models, collaboration flows, integrations, documentation, and settings to improve the product, fix bugs, strengthen security, or adapt the project.", "To the maximum extent allowed by law, DMCC is not liable for indirect damages, data loss, lost profits, interrupted games, participant conflicts, content misuse, user decisions, or consequences from external materials or incorrect settings."] },
+        { title: "Project, GitHub, and contact", paragraphs: [`For questions about these terms, reasonable support, bug reports, account-related requests, or collaboration proposals, write to ${institutionalContact.email}.`, "Do not publish private personal data, campaign secrets, credentials, tokens, API keys, or information that should not be public in GitHub issues, discussions, commits, or pull requests."] },
+      ],
+    },
   },
-  {
-    key: "contact",
-    path: "/contact",
-    navLabel: "Contact",
-    eyebrow: "Support and feedback",
-    title: "Reach the DMCC project.",
-    summary:
-      "Questions, bug reports, feedback, and collaboration ideas are welcome through email or the public GitHub repository.",
-    sections: [
-      {
-        title: "Email",
-        body: [
-          `For direct contact, write to ${institutionalContact.email}. Please include enough context to reproduce bugs or understand your campaign workflow request.`,
-        ],
-      },
-      {
-        title: "GitHub",
-        body: [
-          "Use GitHub for source code, issues, and project discussions. Public reports are especially helpful when they can include steps to reproduce, expected behavior, and screenshots where relevant.",
-        ],
-      },
-    ],
+  es: {
+    privacy: {
+      eyebrow: "Pol\xedtica de privacidad",
+      title: "Pol\xedtica de privacidad",
+      summary: "Esta pol\xedtica explica c\xf3mo DMCC trata los datos asociados al uso de dmcc.onrender.com y del proyecto publicado en github.com/alessbarb/DMCC.",
+      lastUpdated: legalLastUpdatedEs,
+      sections: [
+        { title: "Responsable y contacto", paragraphs: [`El responsable del tratamiento es DMCC. Para consultas de privacidad, solicitudes de derechos o comunicaciones sobre esta pol\xedtica, escribe a ${institutionalContact.email}.`, "La aplicaci\xf3n est\xe1 disponible en dmcc.onrender.com y el repositorio p\xfablico del proyecto se encuentra en github.com/alessbarb/DMCC."] },
+        { title: "Datos tratados", paragraphs: ["DMCC puede tratar datos que introduces voluntariamente, incluyendo cuenta, correo electr\xf3nico, perfiles, campa\xf1as, personajes, jugadores, sesiones, notas, entidades, relaciones, hechos, secretos, cronolog\xedas, tableros, propuestas, contenido visible para jugadores y preferencias.", "Tambi\xe9n pueden tratarse datos t\xe9cnicos necesarios para operar el servicio, como identificadores de sesi\xf3n, cookies, autenticaci\xf3n, IP, agente de usuario, registros de seguridad, eventos de error y metadatos de uso razonablemente necesarios.", "No introduzcas categor\xedas especiales de datos personales ni informaci\xf3n sensible de jugadores u otras personas salvo que exista base leg\xedtima y las personas afectadas hayan sido informadas y hayan prestado el consentimiento necesario."] },
+        { title: "Finalidades", paragraphs: ["Los datos se tratan para crear y gestionar cuentas, autenticar sesiones, permitir acceso seguro a campa\xf1as, almacenar y sincronizar informaci\xf3n de juego, mostrar portales para jugadores, conservar preferencias, prestar soporte, diagnosticar errores, prevenir abusos, proteger el servicio y cumplir obligaciones legales.", "El contenido de campa\xf1a se usa para proporcionar funciones de organizaci\xf3n, preparaci\xf3n, consulta, visibilidad y colaboraci\xf3n propias de DMCC. No se utiliza para vender perfiles publicitarios ni publicidad comportamental."] },
+        { title: "Base legal y conservaci\xf3n", paragraphs: ["La base legal principal es la ejecuci\xf3n de la relaci\xf3n solicitada por el usuario al crear una cuenta o usar la aplicaci\xf3n. Algunos tratamientos t\xe9cnicos y de seguridad se basan en el inter\xe9s leg\xedtimo de mantener un servicio estable, seguro y funcional.", "Los datos se conservar\xe1n mientras la cuenta est\xe9 activa, mientras sean necesarios para prestar la aplicaci\xf3n o mientras exista una raz\xf3n legal, t\xe9cnica o de seguridad. Copias de seguridad y registros t\xe9cnicos pueden permanecer durante un periodo limitado hasta su rotaci\xf3n o eliminaci\xf3n segura."] },
+        { title: "Cookies, almacenamiento local y proveedores", paragraphs: ["DMCC puede usar cookies, almacenamiento local del navegador y tecnolog\xedas similares para mantener sesiones, recordar preferencias, proteger formularios, habilitar funciones y mejorar la estabilidad.", "La aplicaci\xf3n puede depender de proveedores de infraestructura, alojamiento, base de datos, correo, repositorio de c\xf3digo y herramientas t\xe9cnicas necesarias para operar, desplegar, mantener y proteger el servicio. Estos proveedores deber\xedan acceder a datos solo en la medida necesaria."] },
+        { title: "Derechos y seguridad", paragraphs: [`Puedes solicitar acceso, rectificaci\xf3n, supresi\xf3n, oposici\xf3n, limitaci\xf3n y portabilidad escribiendo a ${institutionalContact.email}. La solicitud debe incluir informaci\xf3n suficiente para verificar identidad y localizar datos afectados.`, "DMCC aplica medidas t\xe9cnicas y organizativas para proteger datos frente a acceso no autorizado, p\xe9rdida, alteraci\xf3n o divulgaci\xf3n indebida. Ning\xfan sistema es infalible: protege credenciales, revisa vistas compartidas, evita secretos innecesarios y mant\xe9n copias propias."] },
+        { title: "Cambios", paragraphs: ["DMCC puede actualizar esta pol\xedtica para reflejar cambios legales, t\xe9cnicos u operativos. Los cambios relevantes actualizar\xe1n la fecha de \xfaltima actualizaci\xf3n y podr\xe1n comunicarse mediante la aplicaci\xf3n o canales disponibles."] },
+      ],
+    },
+    terms: {
+      eyebrow: "T\xe9rminos de uso",
+      title: "T\xe9rminos de uso",
+      summary: "Estos t\xe9rminos regulan el acceso y uso de DMCC, la aplicaci\xf3n publicada en dmcc.onrender.com y el proyecto disponible en github.com/alessbarb/DMCC.",
+      lastUpdated: legalLastUpdatedEs,
+      sections: [
+        { title: "Qu\xe9 es DMCC", paragraphs: ["DMCC, Dungeon Master Campaign Companion, es una herramienta de apoyo para directores de juego, jugadores y grupos de rol de mesa. Permite organizar campa\xf1as, sesiones, personajes, entidades, hechos, secretos, relaciones, cronolog\xedas, tableros, propuestas, contenido visible para jugadores y otra informaci\xf3n \xfatil.", "DMCC no sustituye el criterio del director de juego ni las reglas acordadas por cada mesa. Cada grupo conserva la responsabilidad de decidir c\xf3mo utiliza la informaci\xf3n en su campa\xf1a."] },
+        { title: "Uso permitido", paragraphs: ["Puedes usar DMCC para crear, guardar, editar, consultar y compartir informaci\xf3n de campa\xf1as, coordinar sesiones, gestionar contenido de personajes y jugadores, preparar material narrativo, registrar decisiones de mesa y colaborar razonablemente conforme a la ley.", "Tambi\xe9n puedes usar el repositorio p\xfablico para revisar c\xf3digo, proponer mejoras, reportar errores, abrir incidencias, participar en discusiones t\xe9cnicas y colaborar conforme a las reglas de GitHub, la licencia aplicable y las instrucciones del repositorio."] },
+        { title: "Usos no permitidos", paragraphs: ["No debes usar DMCC para actividades ilegales, abusivas, fraudulentas, discriminatorias, difamatorias, invasivas de privacidad, acoso, suplantaci\xf3n, malware, explotaci\xf3n de vulnerabilidades o interferencia con seguridad, disponibilidad o integridad del servicio.", "No debes subir, publicar ni compartir datos personales, secretos, credenciales, contenido sensible de terceros, material protegido por derechos de autor o informaci\xf3n privada de jugadores sin autorizaci\xf3n suficiente. Tampoco intentes acceder a campa\xf1as, cuentas, sistemas, repositorios o datos ajenos."] },
+        { title: "Cuenta y contenido", paragraphs: ["Eres responsable de mantener la confidencialidad de credenciales, controlar el acceso a tus dispositivos y revisar qu\xe9 contenido compartes con otros usuarios o jugadores.", "Conservas la titularidad de textos, notas, campa\xf1as, personajes, mundos, im\xe1genes, ideas y dem\xe1s contenido que introduzcas en DMCC, siempre que sea tuyo o tengas permiso. Al guardar o compartir contenido concedes a DMCC una autorizaci\xf3n limitada para alojarlo, procesarlo, mostrarlo, sincronizarlo y ponerlo a disposici\xf3n solo en la medida necesaria."] },
+        { title: "Terceros y disponibilidad", paragraphs: ["DMCC puede permitir introducir, enlazar, importar, mencionar o consultar contenido de terceros como reglas, material editorial, recursos comunitarios, im\xe1genes, enlaces externos, integraciones o repositorios p\xfablicos. Ese contenido pertenece a sus titulares y puede tener condiciones adicionales.", "DMCC se proporciona como proyecto y aplicaci\xf3n en evoluci\xf3n. Pueden producirse interrupciones, errores, mantenimiento, p\xe9rdida de conectividad, cambios de infraestructura o l\xedmites t\xe9cnicos. Conserva copias propias de la informaci\xf3n importante de tus campa\xf1as."] },
+        { title: "Cambios y responsabilidad", paragraphs: ["DMCC puede modificar, a\xf1adir, reorganizar o retirar funciones, pantallas, modelos de datos, flujos de colaboraci\xf3n, integraciones, documentaci\xf3n y configuraciones para mejorar el producto, corregir errores, reforzar la seguridad o adaptar el proyecto.", "En la m\xe1xima medida permitida por la ley, DMCC no ser\xe1 responsable por da\xf1os indirectos, p\xe9rdida de datos, lucro cesante, interrupciones de partidas, conflictos entre participantes, uso indebido de contenido, decisiones de usuarios o consecuencias de materiales externos o configuraciones incorrectas."] },
+        { title: "Proyecto, GitHub y contacto", paragraphs: [`Para consultas sobre estos t\xe9rminos, soporte razonable, reportes de errores, solicitudes de cuenta o propuestas de colaboraci\xf3n, escribe a ${institutionalContact.email}.`, "No publiques en GitHub datos personales privados, secretos de campa\xf1as, credenciales, tokens, claves de API ni informaci\xf3n que no deba ser p\xfablica."] },
+      ],
+    },
   },
-  {
-    key: "privacy",
-    path: "/privacy",
-    navLabel: "Privacidad",
-    eyebrow: "Política de privacidad",
-    title: "Política de privacidad",
-    summary:
-      "Última actualización: 10 de julio de 2026. Esta política explica cómo DMCC trata los datos asociados al uso de la aplicación dmcc.onrender.com y del proyecto publicado en github.com/alessbarb/DMCC.",
-    sections: [
-      {
-        title: "Responsable y contacto",
-        body: [
-          `El responsable del tratamiento es DMCC. Para consultas sobre privacidad, solicitudes de derechos o comunicaciones relacionadas con esta política, puedes escribir a ${institutionalContact.email}.`,
-          "La aplicación está disponible en dmcc.onrender.com y el repositorio público del proyecto se encuentra en github.com/alessbarb/DMCC.",
-        ],
-      },
-      {
-        title: "Datos tratados",
-        body: [
-          "DMCC puede tratar los datos que introduces voluntariamente al usar la aplicación, incluyendo datos de cuenta, dirección de correo electrónico, perfiles de usuario, campañas, personajes, jugadores, sesiones, notas, entidades, relaciones, hechos, secretos, cronologías, tableros, propuestas, contenido compartido con jugadores y preferencias de configuración.",
-          "También pueden tratarse datos técnicos necesarios para operar el servicio, como identificadores de sesión, cookies, datos de autenticación, dirección IP, agente de usuario, registros de seguridad, eventos de errores y metadatos de uso razonablemente necesarios para mantener la disponibilidad, integridad y protección de la aplicación.",
-          "No debes introducir categorías especiales de datos personales ni información personal sensible de jugadores u otras personas salvo que exista una base legítima para hacerlo y todas las personas afectadas hayan sido informadas y hayan prestado el consentimiento que corresponda.",
-        ],
-      },
-      {
-        title: "Finalidades",
-        body: [
-          "Los datos se tratan para crear y gestionar cuentas, autenticar sesiones, permitir el acceso seguro a campañas, almacenar y sincronizar información de juego, mostrar portales para jugadores, conservar preferencias, prestar soporte, diagnosticar errores, prevenir abusos, proteger la seguridad del servicio y cumplir obligaciones legales aplicables.",
-          "El contenido de campaña se utiliza para proporcionar las funciones de organización, preparación, consulta, visibilidad y colaboración propias de DMCC. No se utiliza para vender perfiles publicitarios ni para publicidad comportamental.",
-        ],
-      },
-      {
-        title: "Base legal",
-        body: [
-          "La base legal principal es la ejecución de la relación solicitada por el usuario al crear una cuenta o utilizar la aplicación. Determinados tratamientos técnicos y de seguridad se basan en el interés legítimo de DMCC en mantener un servicio estable, seguro y funcional.",
-          "Cuando una operación requiera consentimiento, por ejemplo para determinadas cookies no esenciales o comunicaciones opcionales, el tratamiento se realizará sobre la base de dicho consentimiento y podrá retirarse en cualquier momento. También pueden existir tratamientos necesarios para cumplir obligaciones legales.",
-        ],
-      },
-      {
-        title: "Conservación",
-        body: [
-          "Los datos se conservarán mientras la cuenta esté activa, mientras sean necesarios para prestar la aplicación o mientras exista una obligación legal, técnica o de seguridad que justifique su conservación.",
-          "El contenido de campañas y datos asociados podrá eliminarse o anonimizarse cuando el usuario solicite la supresión y no exista una razón legítima para conservarlo. Las copias de seguridad y registros técnicos pueden permanecer durante un periodo limitado hasta su rotación o eliminación segura.",
-        ],
-      },
-      {
-        title: "Cookies y almacenamiento local",
-        body: [
-          "DMCC puede utilizar cookies, almacenamiento local del navegador y tecnologías similares para mantener sesiones, recordar preferencias, proteger formularios, habilitar funciones de la interfaz y mejorar la estabilidad de la aplicación.",
-          "Puedes configurar el navegador para bloquear o eliminar cookies y almacenamiento local, aunque algunas funciones esenciales, como el inicio de sesión o la persistencia de preferencias, podrían dejar de funcionar correctamente.",
-        ],
-      },
-      {
-        title: "Servicios de terceros",
-        body: [
-          "La aplicación puede depender de proveedores de infraestructura, alojamiento, base de datos, correo electrónico, repositorio de código y herramientas técnicas necesarias para operar, desplegar, mantener y proteger el servicio.",
-          "Estos terceros solo deberían acceder a datos en la medida necesaria para prestar sus servicios a DMCC y conforme a sus propias condiciones y políticas. El repositorio público en github.com/alessbarb/DMCC no debe usarse para publicar secretos, credenciales, datos personales privados ni contenido sensible de campañas.",
-        ],
-      },
-      {
-        title: "Derechos del usuario",
-        body: [
-          `Puedes solicitar el ejercicio de tus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad escribiendo a ${institutionalContact.email}.`,
-          "La solicitud debe incluir información suficiente para verificar la identidad de la persona solicitante y localizar los datos afectados. DMCC responderá conforme a los plazos y requisitos establecidos por la normativa aplicable.",
-        ],
-      },
-      {
-        title: "Seguridad",
-        body: [
-          "DMCC aplica medidas técnicas y organizativas orientadas a proteger los datos frente a acceso no autorizado, pérdida, alteración o divulgación indebida, incluyendo controles de sesión, separación entre contenido privado del director de juego y contenido visible para jugadores, y prácticas razonables de mantenimiento seguro.",
-          "Ningún sistema es completamente infalible. Los usuarios deben proteger sus credenciales, revisar los permisos y vistas compartidas, evitar subir secretos innecesarios y mantener copias propias de la información importante de sus campañas.",
-        ],
-      },
-      {
-        title: "Cambios en la política",
-        body: [
-          "DMCC puede actualizar esta política para reflejar cambios legales, técnicos u operativos. Cuando los cambios sean relevantes, se actualizará la fecha de última actualización y, si procede, se comunicará mediante la aplicación o los canales disponibles.",
-          "El uso continuado de la aplicación después de una actualización implica la aceptación de la política vigente, sin perjuicio de los derechos que la normativa aplicable reconozca al usuario.",
-        ],
-      },
-    ],
-  },
-  {
-    key: "terms",
-    path: "/terms",
-    navLabel: "Términos",
-    eyebrow: "Términos de uso",
-    title: "Términos de uso",
-    summary:
-      "Última actualización: 10 de julio de 2026. Estos términos regulan el acceso y uso de DMCC, la aplicación publicada en dmcc.onrender.com y el proyecto disponible en github.com/alessbarb/DMCC.",
-    sections: [
-      {
-        title: "Qué es DMCC",
-        body: [
-          "DMCC, Dungeon Master Campaign Companion, es una herramienta de apoyo para directores de juego, jugadores y grupos de rol de mesa. Permite organizar campañas, sesiones, personajes, entidades, hechos, secretos, relaciones, cronologías, tableros, propuestas, contenido visible para jugadores y otra información útil para preparar y dirigir partidas.",
-          "DMCC no sustituye el criterio del director de juego ni las reglas acordadas por cada mesa. La aplicación sirve como espacio de organización y consulta, y cada grupo conserva la responsabilidad de decidir cómo utiliza la información dentro de su campaña.",
-        ],
-      },
-      {
-        title: "Uso permitido",
-        body: [
-          "Puedes usar DMCC para crear, guardar, editar, consultar y compartir información de campañas de rol, coordinar sesiones, gestionar contenido de personajes y jugadores, preparar material narrativo, registrar decisiones de mesa y colaborar con otros participantes de forma razonable y conforme a la ley.",
-          "También puedes usar el repositorio público para revisar el código, proponer mejoras, reportar errores, abrir incidencias, participar en discusiones técnicas y colaborar con el proyecto conforme a las reglas de GitHub, la licencia aplicable y las instrucciones del repositorio.",
-        ],
-      },
-      {
-        title: "Usos no permitidos",
-        body: [
-          "No debes usar DMCC para actividades ilegales, abusivas, fraudulentas, discriminatorias, difamatorias, invasivas de la privacidad, de acoso, de suplantación de identidad, de distribución de malware, de explotación de vulnerabilidades o de interferencia con la seguridad, disponibilidad o integridad del servicio.",
-          "No debes subir, publicar ni compartir datos personales, secretos, credenciales, contenido sensible de terceros, material protegido por derechos de autor o información privada de jugadores sin autorización suficiente. Tampoco debes intentar acceder a campañas, cuentas, sistemas, repositorios o datos que no te correspondan.",
-        ],
-      },
-      {
-        title: "Responsabilidad sobre la cuenta",
-        body: [
-          "Eres responsable de mantener la confidencialidad de tus credenciales, controlar el acceso a tus dispositivos y revisar qué contenido compartes con otros usuarios o jugadores. Cualquier actividad realizada desde tu cuenta puede atribuirse a ti salvo que comuniques oportunamente un acceso no autorizado.",
-          `Si detectas uso indebido, pérdida de credenciales, acceso no autorizado o una configuración de visibilidad incorrecta, debes corregirla cuanto antes y contactar con DMCC en ${institutionalContact.email} cuando necesites ayuda razonable.`,
-        ],
-      },
-      {
-        title: "Propiedad del contenido del usuario",
-        body: [
-          "Conservas la titularidad de los textos, notas, campañas, personajes, mundos, imágenes, ideas y demás contenido que introduzcas en DMCC, siempre que dicho contenido sea tuyo o tengas permiso para usarlo. Al guardar o compartir contenido en la aplicación, concedes a DMCC una autorización limitada para alojarlo, procesarlo, mostrarlo, sincronizarlo y ponerlo a disposición únicamente en la medida necesaria para prestar el servicio.",
-          "Eres responsable de asegurarte de que tu contenido no infringe derechos de terceros ni obligaciones de confidencialidad. DMCC no reclama propiedad sobre el material creativo de tus campañas por el solo hecho de que lo organices dentro de la aplicación.",
-        ],
-      },
-      {
-        title: "Contenido de terceros",
-        body: [
-          "DMCC puede permitir introducir, enlazar, importar, mencionar o consultar contenido procedente de terceros, como reglas de juego, material de editoriales, recursos de la comunidad, imágenes, enlaces externos, integraciones técnicas o repositorios públicos. Ese contenido pertenece a sus respectivos titulares y puede estar sujeto a condiciones adicionales.",
-          "Debes verificar que tienes derecho a usar, transformar o compartir cualquier contenido de terceros antes de incorporarlo a tus campañas. DMCC no garantiza la exactitud, disponibilidad, legalidad o idoneidad de recursos externos, enlaces o materiales que no controla directamente.",
-        ],
-      },
-      {
-        title: "Disponibilidad del servicio",
-        body: [
-          "DMCC se proporciona como proyecto y aplicación en evolución. Aunque se realizan esfuerzos razonables para mantener el servicio disponible, seguro y funcional, pueden producirse interrupciones, errores, mantenimiento, pérdida de conectividad, cambios de infraestructura o limitaciones técnicas.",
-          "Debes conservar copias propias de la información importante de tus campañas y no depender de DMCC como único archivo de datos críticos. La disponibilidad continua, la ausencia de errores y la conservación indefinida de datos no están garantizadas.",
-        ],
-      },
-      {
-        title: "Cambios en la aplicación",
-        body: [
-          "DMCC puede modificar, añadir, reorganizar o retirar funciones, pantallas, modelos de datos, flujos de colaboración, integraciones, documentación y configuraciones para mejorar el producto, corregir errores, reforzar la seguridad o adaptar el proyecto a nuevas necesidades.",
-          "Cuando un cambio pueda afectar de forma relevante al uso de la aplicación, se procurará comunicarlo mediante la propia aplicación, el repositorio, notas de versión u otros canales disponibles. Algunas funciones experimentales pueden cambiar sin aviso previo.",
-        ],
-      },
-      {
-        title: "Limitación de responsabilidad",
-        body: [
-          "DMCC se ofrece en la medida permitida por la ley, sin garantías de adecuación a un propósito concreto, disponibilidad ininterrumpida, ausencia total de errores, compatibilidad permanente o resultados específicos en una campaña. El uso de la aplicación se realiza bajo tu responsabilidad.",
-          "En la máxima medida permitida por la normativa aplicable, DMCC no será responsable por daños indirectos, pérdida de datos, pérdida de beneficios, interrupciones de partidas, conflictos entre participantes, uso indebido de contenido, decisiones tomadas por usuarios o consecuencias derivadas de materiales externos o configuraciones incorrectas.",
-        ],
-      },
-      {
-        title: "Proyecto, colaboración y GitHub",
-        body: [
-          "El código fuente, las incidencias y parte de la colaboración del proyecto se gestionan en el repositorio público github.com/alessbarb/DMCC. Las contribuciones, comentarios, reportes y propuestas deben ser respetuosos, verificables cuando sea posible y pertinentes para el proyecto.",
-          "Al participar en GitHub aceptas las condiciones de esa plataforma y las reglas del repositorio. No publiques en incidencias, discusiones, commits o pull requests datos personales privados, secretos de campañas, credenciales, tokens, claves de API ni información que no deba ser pública.",
-        ],
-      },
-      {
-        title: "Contacto",
-        body: [
-          `Para consultas sobre estos términos, soporte razonable, reportes de errores, solicitudes relacionadas con cuentas o propuestas de colaboración, puedes escribir a ${institutionalContact.email}.`,
-          "Para asuntos técnicos o seguimiento público del proyecto, también puedes utilizar el repositorio de GitHub enlazado en esta página, evitando siempre publicar información confidencial o privada.",
-        ],
-      },
-      {
-        title: "Cambios en los términos",
-        body: [
-          "DMCC puede actualizar estos términos para reflejar cambios legales, técnicos, operativos o de alcance del proyecto. Cuando se publiquen cambios, se actualizará la fecha de última actualización y la versión vigente será la mostrada en esta página.",
-          "El uso continuado de DMCC después de la publicación de una actualización implica la aceptación de los términos modificados, sin perjuicio de los derechos que la normativa aplicable reconozca al usuario. Si no estás de acuerdo con los términos vigentes, debes dejar de usar la aplicación.",
-        ],
-      },
-    ],
-  },
-] as const;
+} as const;
 
-export function getInstitutionalPage(key: InstitutionalPageKey): InstitutionalPageContent {
-  return institutionalPages.find((page) => page.key === key) ?? institutionalPages[0];
+const pageOrder: readonly InstitutionalPageKey[] = ["about", "contact", "privacy", "terms"];
+
+function contentLocale(locale: SupportedLocale): "en" | "es" {
+  return locale === "es" ? "es" : "en";
+}
+
+export function getInstitutionalPages(locale: SupportedLocale): readonly InstitutionalPageContent[] {
+  const language = contentLocale(locale);
+  const pages = { ...commonPages[language], ...legalPages[language] };
+  return pageOrder.map((key) => ({
+    key,
+    path: `/${key}`,
+    navLabel: key === "about" ? "About" : key === "contact" ? "Contact" : key === "privacy" ? "Privacy" : "Terms",
+    navLabelKey: `footer.${key}`,
+    ...pages[key],
+  }));
+}
+
+export const institutionalPages = getInstitutionalPages("en");
+
+export function getInstitutionalPage(key: InstitutionalPageKey, locale: SupportedLocale = "en"): InstitutionalPageContent {
+  return getInstitutionalPages(locale).find((page) => page.key === key) ?? getInstitutionalPages(locale)[0];
 }
