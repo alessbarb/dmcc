@@ -9,53 +9,38 @@ function isImage(name: string): boolean {
   return dot !== -1 && IMAGE_EXTS.has(name.slice(dot).toLowerCase());
 }
 
-function scanAvatars(avatarsDir: string): Record<string, string[]> {
+function scanImageCatalog(catalogDir: string, publicPrefix: string): Record<string, string[]> {
   const groups: Record<string, string[]> = {};
   let entries: string[];
+
   try {
-    entries = readdirSync(avatarsDir);
+    entries = readdirSync(catalogDir);
   } catch {
     return groups;
   }
+
   for (const entry of entries) {
     try {
-      const full = join(avatarsDir, entry);
+      const full = join(catalogDir, entry);
       const stat = statSync(full);
+
       if (stat.isFile() && isImage(entry)) {
-        (groups["default"] ??= []).push(`/assets/avatars/${entry}`);
-      } else if (stat.isDirectory()) {
+        (groups["default"] ??= []).push(`${publicPrefix}/${entry}`);
+        continue;
+      }
+
+      if (stat.isDirectory()) {
         const subEntries = readdirSync(full).filter(isImage);
         if (subEntries.length > 0) {
-          groups[entry] = subEntries.map((f) => `/assets/avatars/${entry}/${f}`);
+          groups[entry] = subEntries.map((fileName) => `${publicPrefix}/${entry}/${fileName}`);
         }
       }
     } catch {
       // file removed between readdir and stat — skip
     }
   }
+
   return groups;
-}
-
-function scanCampaigns(campaignsDir: string): Record<string, string[]> {
-  let entries: string[];
-  try {
-    entries = readdirSync(campaignsDir).filter(isImage);
-  } catch {
-    return {};
-  }
-  if (entries.length === 0) return {};
-  return { all: entries.map((f) => `/assets/campaigns/${f}`) };
-}
-
-function scanEntities(entitiesDir: string): Record<string, string[]> {
-  let entries: string[];
-  try {
-    entries = readdirSync(entitiesDir).filter(isImage);
-  } catch {
-    return {};
-  }
-  if (entries.length === 0) return {};
-  return { all: entries.map((f) => `/assets/entities/${f}`) };
 }
 
 export async function registerAssetRoutes(
@@ -71,12 +56,7 @@ export async function registerAssetRoutes(
       return { groups: {} };
     }
     const assetsSubdir = join(opts.assetsDir, "assets", type);
-    const groups =
-      type === "avatars"
-        ? scanAvatars(assetsSubdir)
-        : type === "entities"
-        ? scanEntities(assetsSubdir)
-        : scanCampaigns(assetsSubdir);
+    const groups = scanImageCatalog(assetsSubdir, `/assets/${type}`);
     return { groups };
   });
 }
