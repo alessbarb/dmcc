@@ -23,6 +23,76 @@
   white-space: nowrap;
 }
 
+.graph-page-filters {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.graph-filter-chip-cloud {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.graph-filter-label {
+  margin-right: 4px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.graph-legend {
+  background: rgba(0,0,12,0.85);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 10px 14px;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  max-width: 220px;
+}
+
+.graph-legend--compact {
+  max-width: none;
+  pointer-events: auto;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  backdrop-filter: none;
+}
+
+.graph-legend__title {
+  margin: 0 0 8px;
+  color: rgba(148,163,184,0.5);
+  font-size: 0.63rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.graph-legend__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 10px;
+}
+
+.graph-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(203,213,225,0.75);
+  font-size: 0.67rem;
+}
+
+.graph-legend__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 .graph-mobile-fab-stack,
 .graph-mobile-sheet,
 .graph-mobile-sheet-backdrop,
@@ -45,6 +115,55 @@
     min-height: 40px;
     padding-inline: 12px;
     border-radius: 14px;
+  }
+
+  .graph-page-filters {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    gap: 8px;
+    align-items: stretch;
+    margin-inline: -2px;
+    padding: 8px 2px 10px;
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--bg-main) 96%, transparent), color-mix(in srgb, var(--bg-main) 78%, transparent));
+    backdrop-filter: blur(12px);
+  }
+
+  .graph-page-filters > * {
+    width: 100%;
+  }
+
+  .graph-filter-chip-cloud {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 7px;
+    padding: 2px 0 4px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .graph-filter-chip-cloud::-webkit-scrollbar {
+    display: none;
+  }
+
+  .graph-filter-chip-cloud .btn {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    scroll-snap-align: start;
+  }
+
+  .graph-filter-label {
+    flex: 0 0 auto;
+    align-self: center;
+    margin: 0 2px 0 8px;
+    font-size: 0.62rem;
+    font-weight: 850;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.8;
   }
 
   .content-body > div:has(canvas) {
