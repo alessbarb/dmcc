@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { ArrowLeft, ChevronRight, X } from "lucide-react";
 import { normalizeImageCatalogGroups, normalizeImageCatalogResponse, type ImageCatalogGroups } from "./imageCatalog.js";
 
@@ -154,15 +155,24 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
     setMobileView("images");
   }
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  const modal = (
     <div
       className="modal-overlay image-picker-overlay"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <style>{`
+        .image-picker-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 2147483647;
+          overflow: hidden;
+        }
+
         .image-picker-modal {
           max-width: 640px;
-          width: 100%;
+          width: min(640px, calc(100dvw - 24px));
           max-height: calc(100dvh - 48px);
           display: flex;
           flex-direction: column;
@@ -269,9 +279,10 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
           aspect-ratio: 1;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px), (hover: none) and (pointer: coarse) {
           .image-picker-overlay {
             align-items: flex-end;
+            justify-content: center;
             overflow: hidden;
           }
 
@@ -280,7 +291,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
             left: 0;
             right: 0;
             bottom: 0;
-            width: 100%;
+            width: 100dvw;
             max-width: none;
             height: min(88svh, 720px);
             height: min(88dvh, 720px);
@@ -290,15 +301,15 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
           }
 
           .image-picker-desktop-only {
-            display: none;
+            display: none !important;
           }
 
           .image-picker-mobile-only {
-            display: block;
+            display: block !important;
           }
 
           .image-picker-mobile-panel {
-            display: flex;
+            display: flex !important;
             flex-direction: column;
           }
 
@@ -307,7 +318,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
           }
 
           .image-picker-grid {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 10px;
           }
         }
@@ -429,6 +440,8 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
       </div>
     </div>
   );
+
+  return createPortal(modal, document.body);
 }
 
 function ImageGrid({ images, value, onSelect, onClose }: {
