@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "../i18n/useTranslation.js";
 import { institutionalContact } from "../../institutional/institutionalContent.js";
+import "../styles/appFooter.css";
 
 const APP_VERSION = "0.1.0";
 
