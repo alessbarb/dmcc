@@ -127,25 +127,27 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
   const groupSections = useMemo(() => buildCatalogSections(groupEntries), [groupEntries]);
   const groupNames = groupEntries.map(([group]) => group);
   const images = safeGroups[activeGroup] ?? [];
+  const imagePathsKey = images.join("\n");
   const activeGroupLabel = activeGroup ? splitGroupKey(activeGroup) : null;
   const modalTitle = catalog === "campaigns" ? "Elegir portada" : "Elegir imagen";
 
   useEffect(() => {
-    if (loadingCatalog || error || images.length === 0) {
+    if (loadingCatalog || error || imagePathsKey.length === 0) {
       setLoadingImages(false);
       return;
     }
 
     let cancelled = false;
+    const imagePaths = imagePathsKey.split("\n").filter(Boolean);
     setLoadingImages(true);
-    preloadImagePaths(images).finally(() => {
+    preloadImagePaths(imagePaths).finally(() => {
       if (!cancelled) setLoadingImages(false);
     });
 
     return () => {
       cancelled = true;
     };
-  }, [activeGroup, error, images, loadingCatalog]);
+  }, [activeGroup, error, imagePathsKey, loadingCatalog]);
 
   function openMobileGroup(group: string) {
     setActiveGroup(group);
