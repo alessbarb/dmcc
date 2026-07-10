@@ -66,7 +66,7 @@ const handleDownloadMarkdown = async () => {
       <div>
         <h2 style={{ fontWeight: "700" }}>{t("settings.pageTitle")}</h2>
         <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "2px" }}>
-          {t("settings.pageSubtitle")}
+          Administra copias de seguridad, exportaciones e idioma de la aplicación.
         </p>
       </div>
 
@@ -76,7 +76,7 @@ const handleDownloadMarkdown = async () => {
         <section className="card">
           <h3 style={{ fontWeight: "700", marginBottom: "20px" }}>{t("settings.backupsTitle")}</h3>
           <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "16px" }}>
-            {t("settings.backupsDescription")}
+            Crea puntos de recuperación de la campaña con registros históricos y metadatos de restauración.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <button className="btn btn-primary" onClick={async () => {
@@ -95,7 +95,7 @@ const handleDownloadMarkdown = async () => {
         <section className="card">
           <h3 style={{ fontWeight: "700", marginBottom: "20px" }}>{t("settings.exportsTitle")}</h3>
           <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "16px" }}>
-            {t("settings.exportsDescription")}
+            Exporta los registros de la campaña a formatos estructurados para revisión, archivo o documentación.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <button className="btn btn-secondary" onClick={async () => {
@@ -133,7 +133,7 @@ const handleDownloadMarkdown = async () => {
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   <button className="btn btn-secondary btn-sm" onClick={() => handleCopyExportPath(lastMarkdownExport.path)}>
                     {copiedExportPath ? <Check size={14} style={{ color: "var(--primary)" }} /> : <Copy size={14} />}
-                    {t("settings.copyLocalPath")}
+                    Copiar ruta
                   </button>
                   {lastMarkdownExport.downloadUrl && (
                     <button className="btn btn-primary btn-sm" onClick={handleDownloadMarkdown}>
