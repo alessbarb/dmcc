@@ -125,3 +125,20 @@ describe("App campaign cover wiring", () => {
     expect(src).not.toContain("editCoverUrl} onChange={(e) => setEditCoverUrl");
   });
 });
+
+describe("normalizeImageCatalogResponse", () => {
+  it("returns an empty catalog when groups is missing or null", async () => {
+    const { normalizeImageCatalogResponse } = await import("../../src/frontend/shared/components/imageCatalog.js");
+
+    expect(normalizeImageCatalogResponse({})).toEqual({});
+    expect(normalizeImageCatalogResponse({ groups: null })).toEqual({});
+  });
+
+  it("keeps only array groups and string image paths", async () => {
+    const { normalizeImageCatalogResponse } = await import("../../src/frontend/shared/components/imageCatalog.js");
+
+    expect(normalizeImageCatalogResponse({ groups: { heroes: ["/a.png", null, 7], bad: null } })).toEqual({
+      heroes: ["/a.png"],
+    });
+  });
+});
