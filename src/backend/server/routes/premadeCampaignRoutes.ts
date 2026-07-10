@@ -7,7 +7,7 @@ import { assertDM, getRequestDmId, getValidatedVaultId } from "../auth.js";
 import { ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
 import { getPremadeCampaignTemplate, listPremadeCampaignTemplates } from "../premade/premadeCampaigns.js";
 import { sendCommandError } from "../commandHttp.js";
-import { addCampaignMembership } from "../userAuthStore.js";
+import { addCampaignMembership } from "../userAuthAccountOps.js";
 
 type PremadeImportMode = "full" | "structure" | "sessions";
 
