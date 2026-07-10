@@ -33,7 +33,8 @@ import {
 } from "../helpers.js";
 import { createCampaignBackup } from "../hardening/backups.js";
 import { copyCampaignAcl, ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
-import { addCampaignMembership, getVaultAccessCodePepper, readUserAuthStore } from "../userAuthStore.js";
+import { readUserAuthStore } from "../userAuthStore.js";
+import { addCampaignMembership, getVaultAccessCodePepper } from "../userAuthAccountOps.js";
 import { sendCommandError } from "../commandHttp.js";
 
 function getLocalIp(): string {
