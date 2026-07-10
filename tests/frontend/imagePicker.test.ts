@@ -41,6 +41,16 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("-webkit-overflow-scrolling: touch");
   });
 
+  it("forces internal scroll regions for mobile catalog and image grids", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain("image-picker-scroll-region");
+    expect(src).toContain("overflow-y: auto !important");
+    expect(src).toContain("overscroll-behavior: contain");
+    expect(src).toContain("touch-action: pan-y");
+    expect(src).toContain('className="image-picker-scroll-region image-picker-group-list"');
+    expect(src).toContain('className="image-picker-scroll-region image-picker-grid"');
+  });
+
   it("preloads only active group thumbnails before rendering that grid", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain("function preloadImage");
