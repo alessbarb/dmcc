@@ -21,6 +21,15 @@ const AUTH_WEB_ROUTES = new Set([
   "GET /api/me/campaigns",
 ]);
 
+/**
+ * Transitional facade for Oleada 1.
+ *
+ * Auth routes now live in `routes/authWebRoutes.ts`, but the remaining platform
+ * module still contains the old handlers until the monolith is physically
+ * reduced. The facade lets us wire the new auth module without registering
+ * duplicate Fastify routes. Remove this once the duplicated auth block is deleted
+ * from `webPlatformRoutes.ts`.
+ */
 function createWebPlatformRoutesFacade(server: FastifyInstance): FastifyInstance {
   const routeMethods = new Set(["get", "post"]);
 
