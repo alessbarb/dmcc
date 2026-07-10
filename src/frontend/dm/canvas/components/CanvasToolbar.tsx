@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Panel, useReactFlow } from "@xyflow/react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import {
   MousePointer2, Hand, BoxSelect, StickyNote, Frame, Maximize2,
-  ZoomIn, ZoomOut, Map, Lock, Unlock, Target
+  ZoomIn, ZoomOut, Map, Lock, Unlock, Target, Wrench, X
 } from "lucide-react";
+import "./canvas-mobile-toolbar.css";
 
 export type InteractionMode = "select" | "pan" | "multiselect";
 
@@ -31,6 +32,7 @@ export function CanvasToolbar({
   const { fitView, zoomIn, zoomOut, getNodes } = useReactFlow();
   const { placeNodeOnCanvas } = useCampaignStore();
   const { t } = useTranslation();
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const handleAddNote = async () => {
     await placeNodeOnCanvas(canvasId, {
@@ -40,6 +42,7 @@ export function CanvasToolbar({
       x: 200,
       y: 200,
     });
+    setIsMobileOpen(false);
   };
 
   const handleAddGroup = async () => {
@@ -52,158 +55,165 @@ export function CanvasToolbar({
       width: 340,
       height: 220,
     });
+    setIsMobileOpen(false);
   };
 
-  return (
-    <Panel position="top-center" style={{ marginTop: "8px" }}>
-      <div className="canvas-toolbar">
-        {/* Mode group */}
-        <div className="canvas-toolbar__group">
-          <button
-            className={`canvas-toolbar__btn ${interactionMode === "select" ? "canvas-toolbar__btn--active" : ""}`}
-            onClick={() => onModeChange("select")}
-            title={t("canvas.toolbar.selectMode")}
-          >
-            <MousePointer2 size={15} />
-          </button>
-          <button
-            className={`canvas-toolbar__btn ${interactionMode === "pan" ? "canvas-toolbar__btn--active" : ""}`}
-            onClick={() => onModeChange("pan")}
-            title={t("canvas.toolbar.panMode")}
-          >
-            <Hand size={15} />
-          </button>
-          <button
-            className={`canvas-toolbar__btn ${interactionMode === "multiselect" ? "canvas-toolbar__btn--active" : ""}`}
-            onClick={() => onModeChange("multiselect")}
-            title={t("canvas.toolbar.multiSelectMode")}
-          >
-            <BoxSelect size={15} />
-          </button>
-        </div>
+  const handleModeChange = (mode: InteractionMode) => {
+    onModeChange(mode);
+    setIsMobileOpen(false);
+  };
 
-        <div className="canvas-toolbar__divider" />
+  const handleFitView = () => {
+    fitView({ padding: 0.25, duration: 400 });
+    setIsMobileOpen(false);
+  };
 
-        {/* Add group */}
-        <div className="canvas-toolbar__group">
-          <button
-            className="canvas-toolbar__btn"
-            onClick={handleAddNote}
-            title={t("canvas.toolbar.quickNote")}
-          >
-            <StickyNote size={15} />
-          </button>
-          <button
-            className="canvas-toolbar__btn"
-            onClick={handleAddGroup}
-            title={t("canvas.toolbar.visualGroup")}
-          >
-            <Frame size={15} />
-          </button>
-        </div>
+  const handleFocusSelection = () => {
+    const selectedNodes = getNodes().filter(n => n.selected);
+    if (selectedNodes.length > 0) {
+      fitView({ nodes: selectedNodes, padding: 0.3, duration: 400 });
+    } else {
+      fitView({ padding: 0.25, duration: 400 });
+    }
+    setIsMobileOpen(false);
+  };
 
-        <div className="canvas-toolbar__divider" />
+  const handleZoomIn = () => {
+    zoomIn({ duration: 200 });
+    setIsMobileOpen(false);
+  };
 
-        {/* View group */}
-        <div className="canvas-toolbar__group">
-          <button
-            className="canvas-toolbar__btn"
-            onClick={() => fitView({ padding: 0.25, duration: 400 })}
-            title={t("canvas.toolbar.fitView")}
-          >
-            <Maximize2 size={15} />
-          </button>
-          <button
-            className="canvas-toolbar__btn"
-            onClick={() => {
-              const selectedNodes = getNodes().filter(n => n.selected);
-              if (selectedNodes.length > 0) {
-                fitView({ nodes: selectedNodes, padding: 0.3, duration: 400 });
-              } else {
-                fitView({ padding: 0.25, duration: 400 });
+  const handleZoomOut = () => {
+    zoomOut({ duration: 200 });
+    setIsMobileOpen(false);
+  };
+
+  const handleMinimapToggle = () => {
+    onMinimapToggle();
+    setIsMobileOpen(false);
+  };
+
+  const handleLockToggle = () => {
+    onLockChange(!isLocked);
+    setIsMobileOpen(false);
+  };
+
+  const groupFocusSelect = (() => {
+    const groups = getNodes().filter(n => n.type === "group");
+    if (groups.length === 0) return null;
+    return (
+      <>
+        <div className="canvas-toolbar__inline-divider" />
+        <select
+          onChange={(e) => {
+            const groupId = e.target.value;
+            if (groupId) {
+              const gNode = getNodes().find(n => n.id === groupId);
+              if (gNode) {
+                fitView({ nodes: [gNode], padding: 0.25, duration: 400 });
               }
-            }}
-            title={t("canvas.toolbar.focusSelection")}
-          >
-            <Target size={15} />
-          </button>
-          <button
-            className="canvas-toolbar__btn"
-            onClick={() => zoomIn({ duration: 200 })}
-            title={t("canvas.toolbar.zoomIn")}
-          >
-            <ZoomIn size={15} />
-          </button>
-          <button
-            className="canvas-toolbar__btn"
-            onClick={() => zoomOut({ duration: 200 })}
-            title={t("canvas.toolbar.zoomOut")}
-          >
-            <ZoomOut size={15} />
-          </button>
-          <button
-            className={`canvas-toolbar__btn ${showMinimap ? "canvas-toolbar__btn--active" : ""}`}
-            onClick={onMinimapToggle}
-            title={t("canvas.toolbar.minimap")}
-          >
-            <Map size={15} />
-          </button>
+            }
+            e.target.value = "";
+            setIsMobileOpen(false);
+          }}
+          className="canvas-toolbar__select"
+          title={t("canvas.toolbar.focusGroup")}
+        >
+          <option value="" style={{ background: "var(--bg-card)", color: "var(--text-muted)" }}>{t("canvas.toolbar.focusPlaceholder")}</option>
+          {groups.map(g => (
+            <option key={g.id} value={g.id} style={{ background: "var(--bg-card)", color: "var(--text-main)" }}>
+              {typeof g.data?.title === "string" ? g.data.title : t("canvas.toolbar.groupFallback")}
+            </option>
+          ))}
+        </select>
+      </>
+    );
+  })();
 
-          {(() => {
-            const groups = getNodes().filter(n => n.type === "group");
-            if (groups.length === 0) return null;
-            return (
-              <>
-                <div style={{ width: "1px", height: "14px", backgroundColor: "var(--border-color)", margin: "0 2px", opacity: 0.4 }} />
-                <select
-                  onChange={(e) => {
-                    const groupId = e.target.value;
-                    if (groupId) {
-                      const gNode = getNodes().find(n => n.id === groupId);
-                      if (gNode) {
-                        fitView({ nodes: [gNode], padding: 0.25, duration: 400 });
-                      }
-                    }
-                    e.target.value = "";
-                  }}
-                  className="canvas-toolbar__select"
-                  style={{
-                    fontSize: "10px",
-                    background: "transparent",
-                    border: "none",
-                    color: "var(--text-main)",
-                    padding: "2px 4px",
-                    cursor: "pointer",
-                    maxWidth: "90px",
-                    outline: "none"
-                  }}
-                  title={t("canvas.toolbar.focusGroup")}
-                >
-                  <option value="" style={{ background: "var(--bg-card)", color: "var(--text-muted)" }}>{t("canvas.toolbar.focusPlaceholder")}</option>
-                  {groups.map(g => (
-                    <option key={g.id} value={g.id} style={{ background: "var(--bg-card)", color: "var(--text-main)" }}>
-                      {typeof g.data?.title === "string" ? g.data.title : t("canvas.toolbar.groupFallback")}
-                    </option>
-                  ))}
-                </select>
-              </>
-            );
-          })()}
-        </div>
-
-        <div className="canvas-toolbar__divider" />
-
-        {/* Lock group */}
-        <div className="canvas-toolbar__group">
-          <button
-            className={`canvas-toolbar__btn ${isLocked ? "canvas-toolbar__btn--active canvas-toolbar__btn--warning" : ""}`}
-            onClick={() => onLockChange(!isLocked)}
-            title={isLocked ? t("canvas.toolbar.unlockPositions") : t("canvas.toolbar.lockPositions")}
-          >
-            {isLocked ? <Lock size={15} /> : <Unlock size={15} />}
-          </button>
-        </div>
+  const toolbarContent = (
+    <div className="canvas-toolbar">
+      <div className="canvas-toolbar__group">
+        <button className={`canvas-toolbar__btn ${interactionMode === "select" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("select")} title={t("canvas.toolbar.selectMode")}>
+          <MousePointer2 size={15} />
+        </button>
+        <button className={`canvas-toolbar__btn ${interactionMode === "pan" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("pan")} title={t("canvas.toolbar.panMode")}>
+          <Hand size={15} />
+        </button>
+        <button className={`canvas-toolbar__btn ${interactionMode === "multiselect" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("multiselect")} title={t("canvas.toolbar.multiSelectMode")}>
+          <BoxSelect size={15} />
+        </button>
       </div>
-    </Panel>
+
+      <div className="canvas-toolbar__divider" />
+
+      <div className="canvas-toolbar__group">
+        <button className="canvas-toolbar__btn" onClick={handleAddNote} title={t("canvas.toolbar.quickNote")}>
+          <StickyNote size={15} />
+        </button>
+        <button className="canvas-toolbar__btn" onClick={handleAddGroup} title={t("canvas.toolbar.visualGroup")}>
+          <Frame size={15} />
+        </button>
+      </div>
+
+      <div className="canvas-toolbar__divider" />
+
+      <div className="canvas-toolbar__group">
+        <button className="canvas-toolbar__btn" onClick={handleFitView} title={t("canvas.toolbar.fitView")}>
+          <Maximize2 size={15} />
+        </button>
+        <button className="canvas-toolbar__btn" onClick={handleFocusSelection} title={t("canvas.toolbar.focusSelection")}>
+          <Target size={15} />
+        </button>
+        <button className="canvas-toolbar__btn" onClick={handleZoomIn} title={t("canvas.toolbar.zoomIn")}>
+          <ZoomIn size={15} />
+        </button>
+        <button className="canvas-toolbar__btn" onClick={handleZoomOut} title={t("canvas.toolbar.zoomOut")}>
+          <ZoomOut size={15} />
+        </button>
+        <button className={`canvas-toolbar__btn ${showMinimap ? "canvas-toolbar__btn--active" : ""}`} onClick={handleMinimapToggle} title={t("canvas.toolbar.minimap")}>
+          <Map size={15} />
+        </button>
+        {groupFocusSelect}
+      </div>
+
+      <div className="canvas-toolbar__divider" />
+
+      <div className="canvas-toolbar__group">
+        <button className={`canvas-toolbar__btn ${isLocked ? "canvas-toolbar__btn--active canvas-toolbar__btn--warning" : ""}`} onClick={handleLockToggle} title={isLocked ? t("canvas.toolbar.unlockPositions") : t("canvas.toolbar.lockPositions")}>
+          {isLocked ? <Lock size={15} /> : <Unlock size={15} />}
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      <Panel position="top-center" className="canvas-toolbar-panel canvas-toolbar-panel--desktop" style={{ marginTop: "8px" }}>
+        {toolbarContent}
+      </Panel>
+
+      <Panel position="bottom-right" className="canvas-toolbar-panel canvas-toolbar-panel--mobile">
+        {isMobileOpen && (
+          <div className="canvas-mobile-tools-popover">
+            <div className="canvas-mobile-tools-popover__header">
+              <span>Herramientas</span>
+              <button type="button" onClick={() => setIsMobileOpen(false)} aria-label="Cerrar herramientas">
+                <X size={16} />
+              </button>
+            </div>
+            {toolbarContent}
+          </div>
+        )}
+        <button
+          type="button"
+          className={`canvas-mobile-tools-fab ${isMobileOpen ? "canvas-mobile-tools-fab--open" : ""}`}
+          onClick={() => setIsMobileOpen((open) => !open)}
+          aria-expanded={isMobileOpen}
+          aria-label="Abrir herramientas del Canvas"
+        >
+          <Wrench size={20} />
+        </button>
+      </Panel>
+    </>
   );
 }
