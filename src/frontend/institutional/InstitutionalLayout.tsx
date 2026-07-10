@@ -44,6 +44,7 @@ export function InstitutionalLayout({ page }: InstitutionalLayoutProps) {
           <p className="institutional-panel__eyebrow">{page.eyebrow}</p>
           <h2 id="institutional-page-title">{page.key === "privacy" ? t("privacy.title") : page.key === "terms" ? t("terms.title") : page.title}</h2>
           {page.lastUpdated ? <p className="institutional-panel__eyebrow">{t("legal.lastUpdated", { date: page.lastUpdated })}</p> : null}
+          {page.translationNotice ? <p className="institutional-panel__notice">{page.translationNotice}</p> : null}
           <p className="institutional-panel__summary">{page.summary}</p>
           <div className="institutional-panel__sections">
             {page.sections.map((section) => (

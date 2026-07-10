@@ -5,6 +5,7 @@ import {
   institutionalPages,
   type InstitutionalPageKey,
 } from "../../src/frontend/institutional/institutionalContent.js";
+import { SUPPORTED_LOCALE_CODES } from "../../src/shared/i18n/locales.js";
 import { t } from "../../src/shared/i18n/translate.js";
 
 describe("institutionalContent", () => {
@@ -35,6 +36,21 @@ describe("institutionalContent", () => {
     expect(termsLastUpdated).toBeDefined();
     expect(t("legal.lastUpdated", { date: privacyLastUpdated ?? "" }, "en")).toBe("Last updated: July 10, 2026");
     expect(t("legal.lastUpdated", { date: termsLastUpdated ?? "" }, "en")).toBe("Last updated: July 10, 2026");
+  });
+
+  it("uses explicit English-content notices for supported fallback locales", () => {
+    const fallbackLocales = ["fr", "de", "it", "pt"];
+
+    for (const locale of SUPPORTED_LOCALE_CODES) {
+      const page = getInstitutionalPage("about", locale);
+
+      if (fallbackLocales.includes(locale)) {
+        expect(page.translationNotice).toBeDefined();
+        expect(page.title).toBe(getInstitutionalPage("about", "en").title);
+      } else {
+        expect(page.translationNotice).toBeUndefined();
+      }
+    }
   });
 
   it("keeps privacy policies aligned across locales", () => {

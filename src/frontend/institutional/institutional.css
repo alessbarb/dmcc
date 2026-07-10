@@ -167,6 +167,17 @@
   line-height: 1.7;
 }
 
+.institutional-panel__notice {
+  margin: 1rem 0 0;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid rgb(232 190 109 / 0.24);
+  border-radius: 0.9rem;
+  color: rgb(248 239 226 / 0.78);
+  background: rgb(232 190 109 / 0.08);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
 .institutional-panel__sections {
   display: grid;
   gap: 1.15rem;

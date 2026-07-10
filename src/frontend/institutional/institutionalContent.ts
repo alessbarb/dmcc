@@ -16,6 +16,7 @@ export type InstitutionalPageContent = {
   readonly title: string;
   readonly summary: string;
   readonly lastUpdated?: string;
+  readonly translationNotice?: string;
   readonly sections: readonly InstitutionalSection[];
 };
 
@@ -26,6 +27,18 @@ export const institutionalContact = {
 
 const legalLastUpdated = "July 10, 2026";
 const legalLastUpdatedEs = "10 de julio de 2026";
+
+const fallbackContentLocaleCodes = ["fr", "de", "it", "pt"] as const satisfies readonly SupportedLocale[];
+type FallbackContentLocale = (typeof fallbackContentLocaleCodes)[number];
+
+const translationNotices = {
+  fr: "Cette page est disponible en anglais pendant que nous terminons sa traduction.",
+  de: "Diese Seite ist auf Englisch verfügbar, während wir die Übersetzung fertigstellen.",
+  it: "Questa pagina è disponibile in inglese mentre completiamo la traduzione.",
+  pt: "Esta página está disponível em inglês enquanto concluímos a tradução.",
+} satisfies Record<FallbackContentLocale, string>;
+
+const fallbackContentLocales = new Set<SupportedLocale>(fallbackContentLocaleCodes);
 
 const commonPages = {
   en: {
@@ -153,18 +166,29 @@ const legalPages = {
 
 const pageOrder: readonly InstitutionalPageKey[] = ["about", "contact", "privacy", "terms"];
 
+// Option A: long institutional content is intentionally complete only in ES/EN; FR/DE/IT/PT keep localized navigation and show a transparent English-content notice until translations are ready.
 function contentLocale(locale: SupportedLocale): "en" | "es" {
   return locale === "es" ? "es" : "en";
+}
+
+function isFallbackContentLocale(locale: SupportedLocale): locale is FallbackContentLocale {
+  return fallbackContentLocales.has(locale);
+}
+
+function translationNotice(locale: SupportedLocale): string | undefined {
+  return isFallbackContentLocale(locale) ? translationNotices[locale] : undefined;
 }
 
 export function getInstitutionalPages(locale: SupportedLocale): readonly InstitutionalPageContent[] {
   const language = contentLocale(locale);
   const pages = { ...commonPages[language], ...legalPages[language] };
+  const notice = translationNotice(locale);
   return pageOrder.map((key) => ({
     key,
     path: `/${key}`,
     navLabel: key === "about" ? "About" : key === "contact" ? "Contact" : key === "privacy" ? "Privacy" : "Terms",
     navLabelKey: `footer.${key}`,
+    translationNotice: notice,
     ...pages[key],
   }));
 }
