@@ -57,6 +57,18 @@ export function resolveCorsAllowedOrigins(nodeEnv = process.env.NODE_ENV, public
   ]));
 }
 
+export function resolveAllowedMutationOrigins(nodeEnv = process.env.NODE_ENV, publicOrigin = process.env.DMCC_PUBLIC_ORIGIN): Set<string> {
+  if (nodeEnv === "production") {
+    return new Set([requireConfiguredPublicOrigin(publicOrigin)]);
+  }
+
+  const configuredPublicOrigin = publicOrigin?.trim();
+  return new Set([
+    ...(configuredPublicOrigin ? [requireConfiguredPublicOrigin(configuredPublicOrigin)] : []),
+    ...LOCAL_CORS_ORIGINS,
+  ]);
+}
+
 type TrustProxyConfig = FastifyServerOptions["trustProxy"];
 
 /**
@@ -236,6 +248,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   });
 
   const allowedOrigins = resolveCorsAllowedOrigins();
+  const allowedMutationOrigins = resolveAllowedMutationOrigins();
   const sessionSecret = getRequiredSessionSecret();
   server.register(cookie, { secret: sessionSecret });
   server.register(rateLimit, { max: 200, timeWindow: "1 minute" });
@@ -383,27 +396,14 @@ export function createServer(config?: ServerConfig): FastifyInstance {
     if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method)) {
       const origin = request.headers.origin;
       if (origin) {
-        const host = request.headers.host;
-        let originHost: string | undefined;
         let originValue: string | undefined;
         try {
-          const parsedOrigin = new URL(origin);
-          originHost = parsedOrigin.host;
-          originValue = parsedOrigin.origin;
+          originValue = new URL(origin).origin;
         } catch {
-          originHost = undefined;
           originValue = undefined;
         }
 
-        const publicOrigin = (process.env.DMCC_PUBLIC_ORIGIN ?? "http://localhost:5173").replace(/\/$/, "");
-        const allowedMutationOrigins = new Set([
-          publicOrigin,
-          "http://localhost:5173",
-          "http://127.0.0.1:5173",
-          "http://localhost:4877",
-          "http://127.0.0.1:4877",
-        ]);
-        if (!originValue || (!allowedMutationOrigins.has(originValue) && originHost !== host)) {
+        if (!originValue || !allowedMutationOrigins.has(originValue)) {
           reply.code(403);
           return reply.send({ error: "Cross-origin mutation rejected" });
         }
