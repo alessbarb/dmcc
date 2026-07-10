@@ -17,16 +17,7 @@ export async function fetchAuthStatus(): Promise<AuthStatus> {
     throw new Error(await readApiError(res, "Failed to fetch auth status"));
   }
   const status = await res.json();
-  const user: AuthUser | null = status.user ?? (status.dm
-    ? {
-        userId: status.dm.userId ?? status.dm.dmId,
-        email: status.dm.email,
-        displayName: status.dm.displayName,
-        avatarUrl: status.dm.avatarUrl,
-      }
-    : null);
-
-
+  const user: AuthUser | null = status.user ?? null;
   const sessionValid = Boolean(status.sessionValid ?? user);
   const accountConfigured = Boolean(status.accountConfigured);
   return {
@@ -49,7 +40,7 @@ export async function setupDmAccount(payload: { email: string; secret: string; d
   await register.json().catch(() => null);
 }
 
-export async function loginDm(email: string, secret: string): Promise<void> {
+export async function login(email: string, secret: string): Promise<void> {
   const res = await apiFetch("/api/auth/login", {
     init: {
       method: "POST",
@@ -88,21 +79,6 @@ export async function resetPassword(token: string, newPassword: string): Promise
   if (!res.ok) throw new Error(await readApiError(res, "Unable to reset password"));
 }
 
-export async function logoutDm(): Promise<void> {
+export async function logout(): Promise<void> {
   await apiFetch("/api/auth/logout", { init: { method: "POST" } }).catch(() => undefined);
 }
-
-export async function lockDm(): Promise<void> {
-  await logoutDm();
-}
-
-export async function acquireLocalDmToken(): Promise<void> {
-  throw new Error("Account login has moved to web sessions");
-}
-
-export async function logoutPlayer(_campaignId: string): Promise<void> {
-  await logoutDm();
-}
-
-export function forgetPlayerOnDevice(_campaignId: string): void {}
-export function clearAllAuth(): void {}
