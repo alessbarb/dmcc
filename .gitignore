@@ -22,6 +22,9 @@ docs/
 release/
 git-state*
 
+# Generated image thumbnails are rebuilt during npm run build.
+public/assets/.thumbs/
+
 # Local scratch experiments are intentionally untracked.
 scratch/*
 !scratch/README.md
