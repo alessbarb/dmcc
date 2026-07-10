@@ -2,23 +2,25 @@ import type { FastifyInstance, FastifyRequest } from "fastify";
 import { join } from "node:path";
 import { PersistentRateLimit } from "../rateLimitStore.js";
 import {
-  addCampaignMembership,
   authenticateUser,
   createSession,
-  changeUserPassword,
   getSessionUser,
   publicUser,
   registerUser,
   revokeSession,
   readUserAuthStore,
+  normalizeEmail,
+} from "../userAuthStore.js";
+import {
+  addCampaignMembership,
+  changeUserPassword,
   recoverUserPassword,
   regenerateRecoveryCodes,
   issuePasswordResetToken,
   issuePasswordResetTokenByEmail,
   resetPasswordWithToken,
   getVaultAccessCodePepper,
-  normalizeEmail,
-} from "../userAuthStore.js";
+} from "../userAuthAccountOps.js";
 import { getValidatedCampaignId, getValidatedVaultId, verifyCampaignAccessCode, hashPlayerToken } from "../auth.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
