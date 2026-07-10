@@ -12,6 +12,13 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("onClose");
   });
 
+  it("renders through a document.body portal above parent modals", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain('import { createPortal } from "react-dom"');
+    expect(src).toContain("return createPortal(modal, document.body)");
+    expect(src).toContain("z-index: 2147483647");
+  });
+
   it("supports the all catalog type for current and future asset catalogs", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain('export type ImageCatalogType = "all" | "avatars" | "campaigns" | "entities"');
@@ -32,12 +39,12 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("image-picker-mobile-only");
   });
 
-  it("uses a bottom-sheet style responsive layout for mobile", () => {
+  it("uses a bottom-sheet style responsive layout for mobile and touch devices", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
-    expect(src).toContain("@media (max-width: 640px)");
+    expect(src).toContain("@media (max-width: 640px), (hover: none) and (pointer: coarse)");
     expect(src).toContain("height: min(88dvh, 720px)");
     expect(src).toContain("border-radius: 18px 18px 0 0");
-    expect(src).toContain("grid-template-columns: repeat(3, 1fr)");
+    expect(src).toContain("grid-template-columns: repeat(3, minmax(0, 1fr))");
     expect(src).toContain("-webkit-overflow-scrolling: touch");
   });
 
