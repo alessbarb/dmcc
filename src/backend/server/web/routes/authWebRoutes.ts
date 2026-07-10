@@ -5,7 +5,7 @@ import { and, eq, isNull, sql } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
-import { verifySecret } from "../../auth.js";
+import { verifySecret } from "../webSession.js";
 import { sendExistingAccountRegistrationEmail, sendPasswordResetEmail } from "../../emailService.js";
 import { listAccessibleCampaigns } from "../webAccess.js";
 import {

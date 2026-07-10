@@ -1,10 +1,6 @@
 const IDENTITY_HEADERS = [
   "actorid",
-  "x-role",
   "x-player-id",
-  "x-dm-token",
-  "x-player-token",
-  "x-access-code",
   "x-vault-id",
 ] as const;
 

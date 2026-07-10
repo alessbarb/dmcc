@@ -1,4 +1,5 @@
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, randomBytes, scrypt, timingSafeEqual } from "node:crypto";
+import { promisify } from "node:util";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { and, eq, gt, isNull } from "drizzle-orm";
 import { db } from "../../db/client.js";
@@ -6,6 +7,7 @@ import * as schema from "../../db/schema.js";
 
 export const WEB_SESSION_COOKIE = "dmcc_session";
 const SESSION_DAYS = 30;
+const scryptAsync = promisify(scrypt);
 
 type CookieSameSite = "lax" | "strict" | "none" | boolean;
 
@@ -21,6 +23,24 @@ export type WebUser = {
   appRole: "user" | "admin";
   vaultId: string;
 };
+
+
+export async function hashSecret(secret: string): Promise<{ hash: string; salt: string }> {
+  const salt = randomBytes(16).toString("hex");
+  const derived = (await scryptAsync(secret, salt, 64)) as Buffer;
+  return { hash: derived.toString("hex"), salt };
+}
+
+export async function verifySecret(secret: string, salt: string, expectedHash: string): Promise<boolean> {
+  try {
+    const derived = (await scryptAsync(secret, salt, 64)) as Buffer;
+    const expected = Buffer.from(expectedHash, "hex");
+    if (derived.length !== expected.length) return false;
+    return timingSafeEqual(derived, expected);
+  } catch {
+    return false;
+  }
+}
 
 export function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
