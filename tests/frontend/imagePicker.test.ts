@@ -22,18 +22,45 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("/api/assets/catalog");
   });
 
-  it("preloads catalog thumbnails before rendering the grid", () => {
+  it("uses a mobile two-step catalog browser", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain('type ImagePickerView = "groups" | "images"');
+    expect(src).toContain('const [mobileView, setMobileView] = useState<ImagePickerView>("groups")');
+    expect(src).toContain("openMobileGroup");
+    expect(src).toContain("Volver a catálogos");
+    expect(src).toContain("image-picker-group-list");
+    expect(src).toContain("image-picker-mobile-only");
+  });
+
+  it("uses a bottom-sheet style responsive layout for mobile", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain("@media (max-width: 640px)");
+    expect(src).toContain("height: min(88dvh, 720px)");
+    expect(src).toContain("border-radius: 18px 18px 0 0");
+    expect(src).toContain("grid-template-columns: repeat(3, 1fr)");
+    expect(src).toContain("-webkit-overflow-scrolling: touch");
+  });
+
+  it("preloads only active group thumbnails before rendering that grid", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain("function preloadImage");
     expect(src).toContain("new Image()");
-    expect(src).toContain("async function preloadCatalogImages");
-    expect(src).toContain("await preloadCatalogImages(nextGroups)");
+    expect(src).toContain("async function preloadImagePaths");
+    expect(src).toContain("preloadImagePaths(imagePaths)");
     expect(src).toContain("Preparando imágenes…");
+    expect(src).not.toContain("await preloadCatalogImages(nextGroups)");
+  });
+
+  it("renders lazy decoded thumbnails", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain('loading="lazy"');
+    expect(src).toContain('decoding="async"');
   });
 
   it("renders a helpful error and empty-catalog state", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain("No se pudo cargar el catálogo de imágenes");
+    expect(src).toContain("No hay catálogos de imágenes disponibles.");
     expect(src).toContain("No hay imágenes disponibles en este catálogo.");
     expect(src).toContain('role="alert"');
   });
@@ -59,9 +86,10 @@ describe("ImagePickerModal", () => {
     expect(src).not.toMatch(/<button\b(?:(?!type="button")[\s\S])*onSelect/);
   });
 
-  it("groups tabs render the group name", () => {
+  it("groups tabs render the group name on desktop", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain("groupEntries.map");
+    expect(src).toContain("image-picker-desktop-only");
     expect(src).toContain("modal-overlay");
   });
 
