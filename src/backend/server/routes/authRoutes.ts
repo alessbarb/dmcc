@@ -9,8 +9,8 @@ import {
   getSessionUser,
   publicUser,
   readUserAuthStore,
-  revokeAllSessions,
 } from "../userAuthStore.js";
+import { revokeAllSessions } from "../userAuthAccountOps.js";
 import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
 
 function expiredCookie(): string {
