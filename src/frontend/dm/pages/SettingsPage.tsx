@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { RotateCcw, Download, Upload, Wifi, Copy, Check } from "lucide-react";
+import React, { useState } from "react";
+import { RotateCcw, Download, Upload, Copy, Check } from "lucide-react";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
@@ -29,44 +29,8 @@ export function SettingsPage(props: SettingsPageProps = {}) {
   const exportMarkdown = props.exportMarkdown ?? store.exportMarkdown;
   const addToast = props.addToast ?? toastAdd;
   const activeVaultId = props.activeVaultId ?? store.activeVaultId;
-  const [networkInfo, setNetworkInfo] = useState<{ localIp: string; port: number; url: string } | null>(null);
-  const [copiedLink, setCopiedLink] = React.useState(false);
   const [copiedExportPath, setCopiedExportPath] = React.useState(false);
-  const [lastMarkdownExport, setLastMarkdownExport] = React.useState<any | null>(null);
-
-  useEffect(() => {
-    fetch("/api/network-info")
-      .then(async (r) => {
-        if (!r.ok) {
-          setNetworkInfo(null);
-          return null;
-        }
-        return r.json();
-      })
-      .then((d: unknown) => {
-        if (
-          d &&
-          typeof d === "object" &&
-          "localIp" in d &&
-          typeof d.localIp === "string" &&
-          "port" in d &&
-          typeof d.port === "number" &&
-          "url" in d &&
-          typeof d.url === "string"
-        ) {
-          setNetworkInfo({ localIp: d.localIp, port: d.port, url: d.url });
-        }
-      })
-      .catch(() => setNetworkInfo(null));
-  }, []);
-
-
-  const handleCopyLink = (link: string) => {
-    navigator.clipboard.writeText(link);
-    setCopiedLink(true);
-    addToast(t("settings.copyJoinLinkSuccess"), "success");
-    setTimeout(() => setCopiedLink(false), 2000);
-  };
+  const [lastMarkdownExport, setLastMarkdownExport] = useState<any | null>(null);
 
   const handleCopyExportPath = (path: string) => {
     navigator.clipboard.writeText(path);
@@ -182,40 +146,6 @@ const handleDownloadMarkdown = async () => {
           </div>
         </section>
       </div>
-
-      <section className="card" style={{ border: "1px solid rgba(16,185,129,0.25)" }}>
-        <h3 style={{ fontWeight: "700", display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-          <Wifi style={{ color: "#34d399" }} />
-          {t("settings.lanMultiplayerTitle")}
-        </h3>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "16px" }}>
-          {t("settings.lanAlwaysActiveDescription")}
-        </p>
-        {networkInfo ? (
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px", padding: "16px", backgroundColor: "#060a0e", borderRadius: "var(--radius-md)", border: "1px solid var(--border-color)" }}>
-            <div>
-              <span style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>{t("settings.serverIp")}</span>
-              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                <code style={{ fontSize: "1rem", fontWeight: "600", color: "#34d399" }}>{networkInfo.url}</code>
-                <button
-                  className="btn btn-icon btn-secondary btn-sm"
-                  onClick={() => handleCopyLink(networkInfo.url)}
-                  title={t("settings.copyLink")}
-                >
-                  {copiedLink ? <Check size={14} style={{ color: "#34d399" }} /> : <Copy size={14} />}
-                </button>
-              </div>
-            </div>
-            <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", margin: 0 }}>
-              {t("settings.lanShareHint")}
-            </p>
-          </div>
-        ) : (
-          <div style={{ padding: "12px", color: "var(--text-muted)", fontSize: "0.85rem" }}>
-            {t("settings.lanLoadingNetwork")}
-          </div>
-        )}
-      </section>
     </div>
   );
 }
