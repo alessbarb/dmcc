@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createServer } from "../../src/backend/server/createServer.js";
-import { generateShortTableCode, SHORT_TABLE_CODE_ALPHABET } from "../../src/backend/server/web/webPlatformRoutes.js";
+import { generateShortTableCode, SHORT_TABLE_CODE_ALPHABET } from "../../src/backend/server/web/routes/liveTableWebRoutes.js";
 
 describe("web platform table codes", () => {
   it("generates codes in the expected 4-4 format", () => {

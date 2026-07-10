@@ -3,7 +3,9 @@ import { registerAccountRoutes } from "../routes/accountRoutes.js";
 import { registerAssetRoutes } from "../routes/assetRoutes.js";
 import { registerAuthWebRoutes } from "./routes/authWebRoutes.js";
 import { registerCampaignWebRoutes } from "./routes/campaignWebRoutes.js";
+import { registerDmDashboardWebRoutes } from "./routes/dmDashboardWebRoutes.js";
 import { registerInvitationWebRoutes } from "./routes/invitationWebRoutes.js";
+import { registerLiveTableWebRoutes } from "./routes/liveTableWebRoutes.js";
 import { registerPlayerPortalWebRoutes } from "./routes/playerPortalWebRoutes.js";
 import { registerSearchWebRoutes } from "./routes/searchWebRoutes.js";
 import { registerWebPlatformRoutes } from "./webPlatformRoutes.js";
@@ -17,7 +19,9 @@ export interface WebRoutesOptions {
 export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOptions): void {
   void registerAuthWebRoutes(server);
   void registerCampaignWebRoutes(server);
+  void registerDmDashboardWebRoutes(server);
   void registerInvitationWebRoutes(server);
+  void registerLiveTableWebRoutes(server);
   void registerPlayerPortalWebRoutes(server);
   void registerSearchWebRoutes(server);
   registerWebPlatformRoutes(server);
