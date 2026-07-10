@@ -17,6 +17,13 @@ describe("ImagePickerModal", () => {
     expect(src).toContain("/api/assets/catalog");
   });
 
+  it("renders a helpful error and empty-catalog state", () => {
+    const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
+    expect(src).toContain("No se pudo cargar el catálogo de imágenes");
+    expect(src).toContain("No hay imágenes disponibles en este catálogo.");
+    expect(src).toContain('role="alert"');
+  });
+
   it("renders a 'Sin imagen' clear option", () => {
     const src = read("src/frontend/shared/components/ImagePickerModal.tsx");
     expect(src).toContain("Sin imagen");
