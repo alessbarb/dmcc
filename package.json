@@ -150,5 +150,10 @@
       ],
       "category": "public.app-category.games"
     }
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "^0.25.4"
+    }
   }
 }
