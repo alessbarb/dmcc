@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { normalizeImageCatalogResponse, type ImageCatalogGroups } from "./imageCatalog.js";
 
 interface ImagePickerModalProps {
   catalog: "avatars" | "campaigns" | "entities";
@@ -8,10 +9,8 @@ interface ImagePickerModalProps {
   onClose: () => void;
 }
 
-type Groups = Record<string, string[]>;
-
 export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePickerModalProps) {
-  const [groups, setGroups] = useState<Groups>({});
+  const [groups, setGroups] = useState<ImageCatalogGroups>({});
   const [activeGroup, setActiveGroup] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
@@ -19,10 +18,11 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
     const controller = new AbortController();
     setLoading(true);
     fetch(`/api/assets/catalog?type=${catalog}`, { signal: controller.signal })
-      .then((r) => r.json() as Promise<{ groups: Groups }>)
-      .then(({ groups: g }) => {
-        setGroups(g);
-        const keys = Object.keys(g);
+      .then((r) => r.json() as Promise<unknown>)
+      .then((response) => {
+        const nextGroups = normalizeImageCatalogResponse(response);
+        setGroups(nextGroups);
+        const keys = Object.keys(nextGroups);
         setActiveGroup((prev) => (keys.includes(prev) ? prev : keys[0] ?? ""));
       })
       .catch((err: unknown) => {
