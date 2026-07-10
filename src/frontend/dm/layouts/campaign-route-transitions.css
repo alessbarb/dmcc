@@ -1,0 +1,78 @@
+/* Subtle in-campaign route transitions.
+   Kept CSS-only to avoid router complexity and to keep React Flow stable. */
+
+.main-content:not(.main-content--canvas) .content-header {
+  animation: campaignHeaderEnter 150ms ease-out both;
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.main-content:not(.main-content--canvas) .content-header .page-heading,
+.main-content:not(.main-content--canvas) .content-header .header-actions {
+  animation: campaignHeaderContentEnter 170ms ease-out both;
+}
+
+.main-content:not(.main-content--canvas) .content-header .header-actions {
+  animation-delay: 20ms;
+}
+
+.main-content:not(.main-content--canvas) .content-body > * {
+  animation: campaignRouteEnter 180ms ease-out both;
+  transform-origin: top center;
+}
+
+.main-content--canvas > * {
+  animation: campaignCanvasRouteEnter 130ms ease-out both;
+}
+
+@keyframes campaignRouteEnter {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+    filter: blur(1px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes campaignCanvasRouteEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes campaignHeaderEnter {
+  from {
+    border-color: color-mix(in srgb, var(--primary) 16%, var(--border-color));
+    box-shadow: 0 10px 28px rgb(0 0 0 / 12%);
+  }
+  to {
+    border-color: var(--border-color);
+    box-shadow: none;
+  }
+}
+
+@keyframes campaignHeaderContentEnter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-content:not(.main-content--canvas) .content-header,
+  .main-content:not(.main-content--canvas) .content-header .page-heading,
+  .main-content:not(.main-content--canvas) .content-header .header-actions,
+  .main-content:not(.main-content--canvas) .content-body > *,
+  .main-content--canvas > * {
+    animation: none !important;
+    transition: none !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}
