@@ -3,7 +3,7 @@ import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { ReactFlowProvider } from "@xyflow/react";
 import type { Edge } from "@xyflow/react";
 import { CampaignCanvasFlow } from "../components/CampaignCanvasFlow.js";
-import type { CampaignCanvasFlowHandle, CanvasFlowNode } from "../components/CampaignCanvasFlow.js";
+import type { CampaignCanvasFlowHandle, CanvasDeviceMode, CanvasFlowNode } from "../components/CampaignCanvasFlow.js";
 import { CanvasNavigatorPanel } from "../components/CanvasNavigatorPanel.js";
 import { CanvasPalette } from "../components/CanvasPalette.js";
 import { CanvasInspector } from "../components/CanvasInspector.js";
@@ -53,6 +53,13 @@ const storeCanvasDensity = (density: CanvasDensity) => {
   } catch (error) {
     console.warn("Unable to persist canvas density preference to localStorage", error);
   }
+};
+
+const getCanvasDeviceMode = (): CanvasDeviceMode => {
+  if (typeof window === "undefined") return "desktop";
+  if (window.matchMedia("(max-width: 767px)").matches) return "mobile";
+  if (window.matchMedia("(max-width: 1024px)").matches) return "tablet";
+  return "desktop";
 };
 
 const seedCanvasTemplate = async (canvasId: string, templateId: string, t: (key: string, params?: Record<string, string | number>) => string) => {
@@ -417,6 +424,24 @@ export function CanvasPage() {
   const [density, setDensity] = useState<CanvasDensity>(getStoredCanvasDensity);
   const [relationsFilter, setRelationsFilter] = useState<"all" | "public" | "secret" | "selection">("all");
   const [mobilePanel, setMobilePanel] = useState<CanvasMobilePanel>(null);
+  const [deviceMode, setDeviceMode] = useState<CanvasDeviceMode>(getCanvasDeviceMode);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mobileQuery = window.matchMedia("(max-width: 767px)");
+    const tabletQuery = window.matchMedia("(max-width: 1024px)");
+    const updateDeviceMode = () => setDeviceMode(getCanvasDeviceMode());
+
+    updateDeviceMode();
+    mobileQuery.addEventListener("change", updateDeviceMode);
+    tabletQuery.addEventListener("change", updateDeviceMode);
+
+    return () => {
+      mobileQuery.removeEventListener("change", updateDeviceMode);
+      tabletQuery.removeEventListener("change", updateDeviceMode);
+    };
+  }, []);
 
   useEffect(() => {
     storeCanvasDensity(density);
@@ -1232,6 +1257,8 @@ export function CanvasPage() {
                 mysteryFlowMode={mysteryFlowMode}
                 density={density}
                 relationsFilter={relationsFilter}
+                deviceMode={deviceMode}
+                interactionProfile={deviceMode === "mobile" ? "direct" : "edit"}
               />
             </ReactFlowProvider>
           </div>
