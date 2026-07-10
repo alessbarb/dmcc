@@ -3,6 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { existsSync, mkdirSync } from "node:fs";
 import { networkInterfaces } from "node:os";
+import { isAllowedExternalUrl } from "./externalUrl.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -90,6 +91,14 @@ async function startInternalServer() {
   return serverUrl;
 }
 
+function getUrlProtocolForLog(targetUrl) {
+  try {
+    return new URL(targetUrl).protocol || "unknown";
+  } catch {
+    return "invalid";
+  }
+}
+
 async function createMainWindow() {
   const url = await startInternalServer();
 
@@ -113,7 +122,12 @@ async function createMainWindow() {
   });
 
   mainWindow.webContents.setWindowOpenHandler(({ url: targetUrl }) => {
-    void shell.openExternal(targetUrl);
+    if (isAllowedExternalUrl(targetUrl)) {
+      void shell.openExternal(targetUrl);
+    } else {
+      console.warn("Blocked unsafe external URL request", { protocol: getUrlProtocolForLog(targetUrl) });
+    }
+
     return { action: "deny" };
   });
 
