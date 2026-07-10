@@ -4,7 +4,7 @@ import { join, parse } from "node:path";
 
 const IMAGE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"]);
 const KNOWN_CATALOGS = new Set(["avatars", "campaigns", "entities"]);
-const THUMB_DIR = "_thumbs";
+const THUMB_DIR = ".thumbs";
 
 interface ImageCatalogItem {
   src: string;
