@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { Shield } from "lucide-react";
 import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
-import { loginDm, setupDmAccount } from "../../shared/auth/authClient.js";
+import { login, setupDmAccount } from "../../shared/auth/authClient.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
@@ -24,7 +24,7 @@ export function RegisterPage() {
     setError(null);
     try {
       if (register) await setupDmAccount({ email, secret: password, displayName });
-      else await loginDm(email, password);
+      else await login(email, password);
       const response = await apiFetch(`/api/invitations/${encodeURIComponent(token)}/accept`, {
         init: { method: "POST" },
       });
