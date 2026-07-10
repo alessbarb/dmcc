@@ -166,6 +166,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
           max-height: calc(100dvh - 48px);
           display: flex;
           flex-direction: column;
+          overflow: hidden;
         }
 
         .image-picker-header,
@@ -177,8 +178,21 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
         .image-picker-body {
           flex: 1 1 auto;
           min-height: 0;
-          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden !important;
+        }
+
+        .image-picker-scroll-region {
+          flex: 1 1 auto;
+          min-height: 0;
+          height: 100%;
+          max-height: 100%;
+          overflow-y: auto !important;
+          overflow-x: hidden;
           -webkit-overflow-scrolling: touch;
+          overscroll-behavior: contain;
+          touch-action: pan-y;
         }
 
         .image-picker-desktop-only {
@@ -187,6 +201,14 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
 
         .image-picker-mobile-only {
           display: none;
+        }
+
+        .image-picker-mobile-panel,
+        .image-picker-desktop-panel {
+          flex: 1 1 auto;
+          min-height: 0;
+          height: 100%;
+          overflow: hidden;
         }
 
         .image-picker-tabs {
@@ -200,12 +222,14 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
           gap: 8px;
+          align-content: start;
         }
 
         .image-picker-group-list {
           display: flex;
           flex-direction: column;
           gap: 14px;
+          padding-right: 2px;
         }
 
         .image-picker-section-title {
@@ -248,6 +272,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
         @media (max-width: 640px) {
           .image-picker-overlay {
             align-items: flex-end;
+            overflow: hidden;
           }
 
           .image-picker-modal {
@@ -257,8 +282,10 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
             bottom: 0;
             width: 100%;
             max-width: none;
+            height: min(88svh, 720px);
             height: min(88dvh, 720px);
-            max-height: 88dvh;
+            max-height: min(88svh, 720px);
+            max-height: min(88dvh, 720px);
             border-radius: 18px 18px 0 0;
           }
 
@@ -270,8 +297,13 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
             display: block;
           }
 
+          .image-picker-mobile-panel {
+            display: flex;
+            flex-direction: column;
+          }
+
           .image-picker-body {
-            padding-bottom: 8px;
+            padding: 16px;
           }
 
           .image-picker-grid {
@@ -333,9 +365,9 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
             <p style={{ textAlign: "center", padding: "24px" }}>No hay catálogos de imágenes disponibles.</p>
           ) : (
             <>
-              <div className="image-picker-mobile-only">
+              <div className="image-picker-mobile-only image-picker-mobile-panel">
                 {mobileView === "groups" ? (
-                  <div className="image-picker-group-list">
+                  <div className="image-picker-scroll-region image-picker-group-list">
                     {groupSections.map((section) => (
                       <section key={section.catalog}>
                         <h3 className="image-picker-section-title">{titleCase(section.catalog)}</h3>
@@ -369,7 +401,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
                 )}
               </div>
 
-              <div className="image-picker-desktop-only">
+              <div className="image-picker-desktop-only image-picker-desktop-panel">
                 {loadingImages ? (
                   <p style={{ textAlign: "center", padding: "24px" }}>Preparando imágenes…</p>
                 ) : images.length === 0 ? (
@@ -406,7 +438,7 @@ function ImageGrid({ images, value, onSelect, onClose }: {
   onClose: () => void;
 }) {
   return (
-    <div className="image-picker-grid">
+    <div className="image-picker-scroll-region image-picker-grid">
       {images.map((path) => (
         <button
           type="button"
