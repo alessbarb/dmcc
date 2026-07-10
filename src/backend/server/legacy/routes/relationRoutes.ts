@@ -7,8 +7,8 @@ import {
   getValidatedVaultId,
   getValidatedCampaignId,
   getRequestActorId,
-} from "../auth.js";
-import { sendCommandError } from "../commandHttp.js";
+} from "../../auth.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 type CreateRelationBody = {
   actorId?: string;

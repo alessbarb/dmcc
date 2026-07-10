@@ -6,8 +6,8 @@ import {
   getValidatedVaultId,
   getValidatedCampaignId,
   getRequestActorId,
-} from "../auth.js";
-import { sendCommandError } from "../commandHttp.js";
+} from "../../auth.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 type PrepBody = { actorId?: string; sessionId?: string; title: string; scheduledAt?: string; prep?: Record<string, unknown> };
 type UpdatePrepBody = { actorId?: string; title?: string; scheduledAt?: string; prep?: Record<string, unknown> };

@@ -8,9 +8,9 @@ import {
   getValidatedCampaignId,
   getRequestPlayerId,
   getRequestActorId,
-} from "../auth.js";
-import { getCharacterEntityIdForPlayer } from "../helpers.js";
-import { sendCommandError } from "../commandHttp.js";
+} from "../../auth.js";
+import { getCharacterEntityIdForPlayer } from "../../helpers.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 const VALID_ENTITY_TYPES = [
   "player_character", "npc", "location", "faction", "quest", "clue", "secret",

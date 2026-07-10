@@ -3,10 +3,10 @@ import { makeRepositoryFactory } from "../repositoryFactory.js";
 import * as fs from "fs/promises";
 import { join } from "path";
 import { VERSION_INFO } from "@shared/appVersion.js";
-import { assertDM, getValidatedCampaignId, getValidatedVaultId } from "../auth.js";
-import { createCampaignBackup, listCampaignBackups } from "../hardening/backups.js";
-import { buildCampaignIntegrityReport, findMissingAttachmentFiles } from "../hardening/integrity.js";
-import { sendCommandError } from "../commandHttp.js";
+import { assertDM, getValidatedCampaignId, getValidatedVaultId } from "../../auth.js";
+import { createCampaignBackup, listCampaignBackups } from "../../hardening/backups.js";
+import { buildCampaignIntegrityReport, findMissingAttachmentFiles } from "../../hardening/integrity.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 export async function registerHardeningRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;

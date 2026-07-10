@@ -1,6 +1,6 @@
 import type { FastifyInstance, FastifyRequest } from "fastify";
 import { join } from "node:path";
-import { PersistentRateLimit } from "../rateLimitStore.js";
+import { PersistentRateLimit } from "../../rateLimitStore.js";
 import {
   authenticateUser,
   createSession,
@@ -10,7 +10,7 @@ import {
   revokeSession,
   readUserAuthStore,
   normalizeEmail,
-} from "../userAuthStore.js";
+} from "../../userAuthStore.js";
 import {
   addCampaignMembership,
   changeUserPassword,
@@ -20,15 +20,15 @@ import {
   issuePasswordResetTokenByEmail,
   resetPasswordWithToken,
   getVaultAccessCodePepper,
-} from "../userAuthAccountOps.js";
-import { getValidatedCampaignId, getValidatedVaultId, verifyCampaignAccessCode, hashPlayerToken } from "../auth.js";
+} from "../../userAuthAccountOps.js";
+import { getValidatedCampaignId, getValidatedVaultId, verifyCampaignAccessCode, hashPlayerToken } from "../../auth.js";
 import { CampaignRepository } from "@core/persistence/repositories/campaignRepository.js";
 import { EventStore } from "@core/persistence/eventStore/eventStore.js";
 import { SnapshotStore } from "@core/persistence/snapshotStore/snapshotStore.js";
 import { randomBytes } from "node:crypto";
-import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
-import { assertSameOrigin, isLoopbackIp } from "../sameOrigin.js";
-import { sendPasswordResetEmail } from "../emailService.js";
+import { readSessionCookie, SESSION_COOKIE } from "../../sessionAuth.js";
+import { assertSameOrigin, isLoopbackIp } from "../../sameOrigin.js";
+import { sendPasswordResetEmail } from "../../emailService.js";
 
 function cookieValue(raw: string, secure: boolean): string {
   return `${SESSION_COOKIE}=${encodeURIComponent(raw)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=2592000${secure ? "; Secure" : ""}`;

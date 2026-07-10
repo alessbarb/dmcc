@@ -11,8 +11,8 @@ import {
   getRequestActorId,
   generatePlayerToken,
   hashPlayerToken,
-} from "../auth.js";
-import { sendCommandError } from "../commandHttp.js";
+} from "../../auth.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 type CreatePlayerBody = {
   displayName?: string;

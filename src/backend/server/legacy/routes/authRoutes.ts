@@ -4,14 +4,14 @@ import { randomBytes } from "node:crypto";
 import {
   getValidatedVaultId,
   isLoopbackRequest,
-} from "../auth.js";
+} from "../../auth.js";
 import {
   getSessionUser,
   publicUser,
   readUserAuthStore,
-} from "../userAuthStore.js";
-import { revokeAllSessions } from "../userAuthAccountOps.js";
-import { readSessionCookie, SESSION_COOKIE } from "../sessionAuth.js";
+} from "../../userAuthStore.js";
+import { revokeAllSessions } from "../../userAuthAccountOps.js";
+import { readSessionCookie, SESSION_COOKIE } from "../../sessionAuth.js";
 
 function expiredCookie(): string {
   return `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`;
