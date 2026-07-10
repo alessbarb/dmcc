@@ -14,7 +14,9 @@ import type {
   Connection,
   OnMove,
   OnMoveEnd,
+  OnNodeDrag,
   OnSelectionChangeParams,
+  SelectionDragHandler,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
@@ -42,6 +44,32 @@ const nodeTypes = {
 
 const reactFlowProOptions: ProOptions = { hideAttribution: true };
 
+export type CanvasFlowNodeKind = "entity" | "note" | "fact" | "group" | "image";
+
+export interface CanvasFlowNodeData extends Record<string, unknown> {
+  canvasId: string;
+  entityId?: string;
+  entityType?: string;
+  factId?: string;
+  statement?: string;
+  kind?: string;
+  confidence?: string;
+  relatedEntityCount: number;
+  text?: string;
+  title?: string;
+  color?: string;
+  status?: string;
+  visibility?: CanvasNode["visibility"];
+  label?: string;
+  isDirectionMode: boolean;
+  isPlayerView: boolean;
+  tablePrivacy: boolean;
+  isAttenuated: boolean;
+  density: "compact" | "normal" | "detailed";
+  collapsed?: boolean;
+}
+
+export type CanvasFlowNode = Node<CanvasFlowNodeData, CanvasFlowNodeKind>;
 
 export interface CampaignCanvasFocusOptions {
   zoom?: number;
@@ -78,7 +106,7 @@ export interface CampaignCanvasFlowProps {
   onMinimapToggle: () => void;
   typeFilter?: string;
   publicOnly?: boolean;
-  onSelectionChange?: (selectedNodes: Node[], selectedEdges: Edge[]) => void;
+  onSelectionChange?: (selectedNodes: CanvasFlowNode[], selectedEdges: Edge[]) => void;
   isDirectionMode?: boolean;
   isPlayerView?: boolean;
   tablePrivacy?: boolean;
@@ -138,7 +166,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance<CanvasFlowNode, Edge> | null>(null);
   const [viewport, setViewport] = useState<Viewport>({ x: 0, y: 0, zoom: 1 });
 
   // Sync viewport for the group hull overlay
@@ -199,7 +227,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   }, [mysteryFlowMode, selectedNodeId, canvas.nodes, canvas.edges, campaignState?.entities, campaignState?.relations]);
 
   // Map canvas nodes to React Flow nodes format
-  const flowNodes = useMemo(() => {
+  const flowNodes = useMemo<CanvasFlowNode[]>(() => {
     const rawNodes: CanvasNode[] = canvas.nodes || [];
 
     // Build group position lookup for relative→absolute conversion (old data with parentId)
@@ -279,6 +307,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
           data: {
             canvasId,
             entityId: node.entityId,
+            entityType: entity?.entityType,
             factId: node.factId,
             statement: fact?.statement,
             kind: fact?.kind,
@@ -303,8 +332,8 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   }, [canvas.nodes, campaignState?.entities, campaignState?.facts, canvasId, typeFilter, publicOnly, mysteryFlowMode, highlightedNodeIds, isDirectionMode, isPlayerView, tablePrivacy, density]);
 
   // Map canvas edges to React Flow edges format
-  const flowEdges = useMemo(() => {
-    const visibleNodeIds = new Set(flowNodes.map((n: Node) => n.id));
+  const flowEdges = useMemo<Edge[]>(() => {
+    const visibleNodeIds = new Set(flowNodes.map((n) => n.id));
     const defaultEdges = (canvas.edges || [])
       .filter((edge: CanvasEdge) => visibleNodeIds.has(edge.sourceNodeId) && visibleNodeIds.has(edge.targetNodeId))
       .filter((edge: CanvasEdge) => {
@@ -518,8 +547,8 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   // Adding selectedNodeId causes multi-selection bugs (race with onNodesChange).
   useEffect(() => {
     setNodes(prev => {
-      const rfSelectedIds = new Set(prev.filter(n => n.selected).map(n => n.id));
-      return flowNodes.map((n: Node) => ({
+      const rfSelectedIds = new Set(prev.filter((n) => n.selected).map((n) => n.id));
+      return flowNodes.map((n) => ({
         ...n,
         selected: rfSelectedIds.has(n.id),
       }));
@@ -569,7 +598,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   const getViewportCenter = useCallback(() => {
     if (!rfInstance || !wrapperRef.current) return null;
     const bounds = wrapperRef.current.getBoundingClientRect();
-    const position = rfInstance.project({ x: bounds.width / 2, y: bounds.height / 2 });
+    const position = rfInstance.screenToFlowPosition({ x: bounds.left + bounds.width / 2, y: bounds.top + bounds.height / 2 });
     return { x: Math.round(position.x), y: Math.round(position.y) };
   }, [rfInstance]);
 
@@ -597,7 +626,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
   // Handle node drag stop: commit absolute positions.
   // Migrates old parentId-based relative positioning to groupId on first drag.
-  const onNodeDragStop = useCallback((_event: React.MouseEvent, _node: Node, draggedNodes: Node[]) => {
+  const onNodeDragStop: OnNodeDrag<CanvasFlowNode> = useCallback((_event, _node, draggedNodes) => {
     const storeNodes: CanvasNode[] = useCampaignStore.getState().canvasesById[canvasId]?.nodes ?? [];
     const updates = draggedNodes.map((n) => {
       const sn = storeNodes.find((s: CanvasNode) => s.id === n.id);
@@ -612,7 +641,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     updateCanvasNodesLayout(canvasId, updates);
   }, [canvasId, updateCanvasNodesLayout]);
 
-  const onSelectionDragStop = useCallback((_event: React.MouseEvent, draggedNodes: Node[]) => {
+  const onSelectionDragStop: SelectionDragHandler<CanvasFlowNode> = useCallback((_event, draggedNodes) => {
     const updates = draggedNodes.map((n) => ({
       nodeId: n.id,
       x: Math.round(n.position.x),
@@ -644,7 +673,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   }, [canvasId, rfInstance]); // execute once per canvas switch
 
   // Click handler
-  const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
+  const onNodeClick = useCallback((event: React.MouseEvent, node: CanvasFlowNode) => {
     onSelectNode(node.id);
   }, [onSelectNode]);
 
@@ -690,11 +719,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   // Double click pane -> add note at coordinates
   const onPaneDoubleClick = useCallback((event: React.MouseEvent) => {
     if (rfInstance && (event.target as HTMLElement).classList.contains("react-flow__pane")) {
-      const bounds = event.currentTarget.getBoundingClientRect();
-      const position = rfInstance.project({
-        x: event.clientX - bounds.left,
-        y: event.clientY - bounds.top,
-      });
+      const position = rfInstance.screenToFlowPosition({ x: event.clientX, y: event.clientY });
 
       placeNodeOnCanvas(canvasId, {
         kind: "note",
@@ -733,8 +758,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     const label = e.dataTransfer.getData("palette/label");
     if (!kind || !rfInstance) return;
 
-    const bounds = wrapperRef.current!.getBoundingClientRect();
-    const pos = rfInstance.project({ x: e.clientX - bounds.left, y: e.clientY - bounds.top });
+    const pos = rfInstance.screenToFlowPosition({ x: e.clientX, y: e.clientY });
     const x = Math.round(pos.x - 81);  // center node on cursor (card ~162px wide)
     const y = Math.round(pos.y - 95);  // center node on cursor (card ~190px tall)
 
@@ -793,7 +817,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
       {/* Group hull overlay — behind RF nodes, synced with viewport */}
       <CanvasGroupHulls canvasId={canvasId} viewport={viewport} canvasNodes={canvasNodes} rfNodes={nodes} />
 
-      <ReactFlow
+      <ReactFlow<CanvasFlowNode, Edge>
         nodes={nodes}
         edges={edges}
         proOptions={reactFlowProOptions}
@@ -812,7 +836,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
         onConnect={onConnect}
         onMove={onMove}
         onMoveEnd={onMoveEnd}
-        onSelectionChange={onSelectionChange ? ({ nodes, edges }: OnSelectionChangeParams) => onSelectionChange(nodes, edges) : undefined}
+        onSelectionChange={onSelectionChange ? ({ nodes, edges }: OnSelectionChangeParams<CanvasFlowNode, Edge>) => onSelectionChange(nodes, edges) : undefined}
         nodeTypes={nodeTypes}
         onInit={setRfInstance}
         deleteKeyCode={null}

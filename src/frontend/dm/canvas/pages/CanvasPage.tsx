@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { ReactFlowProvider } from "@xyflow/react";
-import type { Edge, Node } from "@xyflow/react";
+import type { Edge } from "@xyflow/react";
 import { CampaignCanvasFlow } from "../components/CampaignCanvasFlow.js";
-import type { CampaignCanvasFlowHandle } from "../components/CampaignCanvasFlow.js";
+import type { CampaignCanvasFlowHandle, CanvasFlowNode } from "../components/CampaignCanvasFlow.js";
 import { CanvasNavigatorPanel } from "../components/CanvasNavigatorPanel.js";
 import { CanvasPalette } from "../components/CanvasPalette.js";
 import { CanvasInspector } from "../components/CanvasInspector.js";
@@ -460,7 +460,7 @@ export function CanvasPage() {
   const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
 
   // Multi-selection
-  const [selectedNodes, setSelectedNodes] = useState<Node[]>([]);
+  const [selectedNodes, setSelectedNodes] = useState<CanvasFlowNode[]>([]);
   const [, setSelectedEdges] = useState<Edge[]>([]);
   const [bulkGroupId, setBulkGroupId] = useState<string>("");
   const [bulkConfirm, setBulkConfirm] = useState<"reveal" | "hide" | "remove" | null>(null);
@@ -1390,7 +1390,7 @@ export function CanvasPage() {
                       onChange={async (e) => {
                         const gid = (e.target.value && e.target.value !== "__none__") ? e.target.value : null;
                         setBulkGroupId(e.target.value);
-                        const updates = selectedNodes.map((n: Node) => ({
+                        const updates = selectedNodes.map((n) => ({
                           nodeId: n.id,
                           x: Math.round(n.position?.x ?? 0),
                           y: Math.round(n.position?.y ?? 0),
@@ -1496,7 +1496,7 @@ export function CanvasPage() {
             </div>
             {(() => {
               const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
-              const entNames = selectedNodes.map(n => n.data.title || n.data.text || "Elemento").filter(Boolean);
+              const entNames = selectedNodes.map((n) => n.data.title || n.data.text || "Elemento");
               
               return (
                 <SessionPrepForm
@@ -1505,19 +1505,19 @@ export function CanvasPage() {
                   selectedCount={selectedNodes.length}
                   elementNames={entNames}
                   onSubmit={async (sessionTitle, targetMode, targetSessionId) => {
-                    const entIds = selectedNodes.filter(n => n.type === "entity").map(n => n.data.entityId);
+                    const entIds = selectedNodes.filter((n) => n.type === "entity" && n.data.entityId).map((n) => n.data.entityId as string);
                     const sceneIds = selectedNodes
-                      .filter((n) => n.type === "entity" && n.data.entityType === "scene")
-                      .map((n) => n.data.entityId);
+                      .filter((n) => n.type === "entity" && n.data.entityType === "scene" && n.data.entityId)
+                      .map((n) => n.data.entityId as string);
                     const clueIds = selectedNodes
-                      .filter((n) => n.type === "entity" && n.data.entityType === "clue")
-                      .map((n) => n.data.entityId);
+                      .filter((n) => n.type === "entity" && n.data.entityType === "clue" && n.data.entityId)
+                      .map((n) => n.data.entityId as string);
                     const secretIds = selectedNodes
-                      .filter((n) => n.type === "entity" && n.data.entityType === "secret")
-                      .map((n) => n.data.entityId);
+                      .filter((n) => n.type === "entity" && n.data.entityType === "secret" && n.data.entityId)
+                      .map((n) => n.data.entityId as string);
                     const consequenceIds = selectedNodes
-                      .filter((n) => n.type === "entity" && n.data.entityType === "consequence")
-                      .map((n) => n.data.entityId);
+                      .filter((n) => n.type === "entity" && n.data.entityType === "consequence" && n.data.entityId)
+                      .map((n) => n.data.entityId as string);
                     
                     if (targetMode === "new") {
                       await createPreparedSession(sessionTitle, {

@@ -182,7 +182,7 @@ export function CanvasToolbar({
                   <option value="" style={{ background: "var(--bg-card)", color: "var(--text-muted)" }}>{t("canvas.toolbar.focusPlaceholder")}</option>
                   {groups.map(g => (
                     <option key={g.id} value={g.id} style={{ background: "var(--bg-card)", color: "var(--text-main)" }}>
-                      {g.data?.title || t("canvas.toolbar.groupFallback")}
+                      {typeof g.data?.title === "string" ? g.data.title : t("canvas.toolbar.groupFallback")}
                     </option>
                   ))}
                 </select>
