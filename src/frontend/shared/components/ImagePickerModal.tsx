@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import { normalizeImageCatalogResponse, type ImageCatalogGroups } from "./imageCatalog.js";
+import { normalizeImageCatalogGroups, normalizeImageCatalogResponse, type ImageCatalogGroups } from "./imageCatalog.js";
 
 interface ImagePickerModalProps {
   catalog: "avatars" | "campaigns" | "entities";
@@ -22,8 +22,8 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
       .then((response) => {
         const nextGroups = normalizeImageCatalogResponse(response);
         setGroups(nextGroups);
-        const keys = Object.keys(nextGroups);
-        setActiveGroup((prev) => (keys.includes(prev) ? prev : keys[0] ?? ""));
+        const nextGroupNames = Object.entries(nextGroups).map(([group]) => group);
+        setActiveGroup((prev) => (nextGroupNames.includes(prev) ? prev : nextGroupNames[0] ?? ""));
       })
       .catch((err: unknown) => {
         if ((err as { name?: string }).name !== "AbortError") {
@@ -34,8 +34,10 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
     return () => controller.abort();
   }, [catalog]);
 
-  const groupNames = Object.keys(groups);
-  const images = groups[activeGroup] ?? [];
+  const safeGroups = normalizeImageCatalogGroups(groups);
+  const groupEntries = Object.entries(safeGroups);
+  const groupNames = groupEntries.map(([group]) => group);
+  const images = safeGroups[activeGroup] ?? [];
 
   return (
     <div
@@ -54,7 +56,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
 
         {groupNames.length > 1 && (
           <div style={{ display: "flex", gap: "8px", padding: "0 16px 12px", flexWrap: "wrap" }}>
-            {Object.entries(groups).map(([g]) => (
+            {groupEntries.map(([g]) => (
               <button
                 type="button"
                 key={g}
