@@ -180,7 +180,7 @@ const LANDING_COPY = {
     "Dirige campañas de rol sin perder personajes, pistas, secretos ni consecuencias. DMCC convierte tu campaña en una memoria viva.",
   heroPrimaryCta: "Ver campaña de ejemplo",
   heroSecondaryCta: "Crear mi campaña",
-  heroFine: "Control de tus datos · Exportable · Sin suscripción obligatoria.",
+  heroFine: "Organización clara · Exportable · Sin suscripción obligatoria.",
   painTitle: "Dirigir una campaña no falla por falta de imaginación",
   painBody:
     "Falla cuando olvidas quién prometió qué, qué pista encontró el grupo, qué PNJ mentía, qué facción movía los hilos o qué secreto todavía no debía revelarse.",
@@ -379,7 +379,7 @@ export function MainLanding() {
           </div>
         </div>
 
-        {/* Block 3: LAN Portal */}
+        {/* Block 3: Player Portal */}
         <div className="rl-block">
           <div className="rl-block__text rl-animate rl-animate--from-left" data-delay="0">
             <div className="rl-feature-icon rl-feature-icon--teal"><Network size={22} /></div>
@@ -387,7 +387,7 @@ export function MainLanding() {
             <p className="rl-block__desc">
               Da a tus jugadores acceso a un portal propio, filtrado por permisos.
               Tú decides qué información es pública, qué sigue oculta y qué detalles
-              pertenecen solo al Director de Juego. Sin internet, en tu red local.
+              pertenecen solo al Director de Juego desde un enlace personal.
             </p>
           </div>
           <div className="rl-block__illus rl-animate rl-animate--from-right" data-delay="180">
@@ -397,7 +397,7 @@ export function MainLanding() {
 
       </section>
 
-      {/* ── Local-first ─────────────────────────────────── */}
+      {/* ── Ownership ───────────────────────────────────── */}
       <section className="rl-local">
         <div className="rl-local__inner">
           <div className="rl-local__icon rl-animate rl-animate--drop" data-delay="0" aria-hidden="true">
@@ -407,13 +407,12 @@ export function MainLanding() {
             Tu campaña es tuya
           </h2>
           <p className="rl-local__body rl-animate rl-animate--from-bottom" data-delay="220">
-            DMCC funciona con una filosofía local-first: mantén el control de la información
-            de tu campaña, conserva opciones portables y exporta tus datos cuando lo necesites.
-            Ideal para DMs que quieren dirigir mundos largos sin quedar atados a servicios cerrados
-            ni a suscripciones obligatorias.
+            DMCC te ayuda a mantener el control narrativo de tu campaña: organiza memoria,
+            permisos, portales y exportaciones sin convertir tu mesa en una herramienta cerrada.
+            Dirige mundos largos con continuidad, claridad y una visión completa de lo que importa.
           </p>
           <div className="rl-local__pills" aria-hidden="true">
-            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="340">Datos bajo tu control</span>
+            <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="340">Control narrativo</span>
             <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="410">Sin límite artificial de campañas</span>
             <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="480">Exportable en cualquier momento</span>
             <span className="rl-local__pill rl-animate rl-animate--pop" data-delay="550">Pensado para campañas largas</span>
