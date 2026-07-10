@@ -14,30 +14,12 @@ import { requestContextStore } from "../../core/persistence/context.js";
 import { randomBytes, randomUUID } from "crypto";
 import { getRequestDmSession, getValidatedCampaignId, getValidatedVaultId } from "./auth.js";
 import { hasCampaignDmAccessSync } from "./campaignAclStore.js";
-import { registerVaultRoutes } from "./routes/vaultRoutes.js";
-import { registerCampaignRoutes } from "./routes/campaignRoutes.js";
-import { registerPlayerRoutes } from "./routes/playerRoutes.js";
-import { registerEntityRoutes } from "./routes/entityRoutes.js";
-import { registerRelationRoutes } from "./routes/relationRoutes.js";
-import { registerFactRoutes } from "./routes/factRoutes.js";
-import { registerSessionRoutes } from "./routes/sessionRoutes.js";
-import { registerExportRoutes } from "./routes/exportRoutes.js";
-import { registerProjectionRoutes } from "./routes/projectionRoutes.js";
-import { registerTagRoutes } from "./routes/tagRoutes.js";
-import { registerRuleRoutes } from "./routes/ruleRoutes.js";
-import { registerCanvasRoutes } from "./routes/canvasRoutes.js";
-import { registerPlayerPortalRoutes } from "./routes/playerPortalRoutes.js";
-import { registerHardeningRoutes } from "./routes/hardeningRoutes.js";
-import { registerAuthRoutes } from "./routes/authRoutes.js";
-import { registerUserAuthRoutes } from "./routes/userAuthRoutes.js";
-import { registerAccountRoutes } from "./routes/accountRoutes.js";
-import { registerPremadeCampaignRoutes } from "./routes/premadeCampaignRoutes.js";
-import { registerAssetRoutes } from "./routes/assetRoutes.js";
+import { registerLegacyRoutes } from "./legacy/registerLegacyRoutes.js";
+import { registerWebRoutes } from "./web/registerWebRoutes.js";
 import { getSessionUser, readUserAuthStore } from "./userAuthStore.js";
 import { readSessionCookie } from "./sessionAuth.js";
 import { resolveWebUser } from "./web/webSession.js";
 import { isLoopbackIp } from "./sameOrigin.js";
-import { registerWebPlatformRoutes } from "./web/webPlatformRoutes.js";
 
 
 const PLACEHOLDER_SESSION_SECRETS = new Set(["change-me", "dev-change-me"]);
@@ -580,43 +562,14 @@ export function createServer(config?: ServerConfig): FastifyInstance {
     }
   });
 
-if (isPostgresWebMode) {
-  const opts = { dataDir };
-  server.register(registerAssetRoutes, { assetsDir: config?.assetsDir ?? publicAssetsPath });
-  registerWebPlatformRoutes(server);
-  server.register(registerAccountRoutes, opts);
-  return server;
-}
+  const routeOptions = { dataDir, assetsDir: config?.assetsDir ?? publicAssetsPath };
 
-  server.get("/api/auth/local-token", async (_request, reply) => {
-    if (!server.allowLegacyTestAuth) {
-      reply.code(410);
-      return { error: "Local DM token shortcut has been removed. Use DM email + key login." };
-    }
-    const token = server.dmSessionToken;
-    return { token, dmSessionToken: token };
-  });
+  if (isPostgresWebMode) {
+    registerWebRoutes(server, routeOptions);
+    return server;
+  }
 
-  const opts = { dataDir };
-  server.register(registerVaultRoutes, opts);
-  server.register(registerCampaignRoutes, opts);
-  server.register(registerPlayerRoutes, opts);
-  server.register(registerEntityRoutes, opts);
-  server.register(registerRelationRoutes, opts);
-  server.register(registerFactRoutes, opts);
-  server.register(registerSessionRoutes, opts);
-  server.register(registerExportRoutes, opts);
-  server.register(registerProjectionRoutes, opts);
-  server.register(registerTagRoutes, opts);
-  server.register(registerRuleRoutes, opts);
-  server.register(registerCanvasRoutes, opts);
-  server.register(registerPlayerPortalRoutes, opts);
-  server.register(registerHardeningRoutes, opts);
-  server.register(registerPremadeCampaignRoutes, opts);
-  server.register(registerAuthRoutes, opts);
-  server.register(registerUserAuthRoutes, opts);
-  server.register(registerAccountRoutes, opts);
-  server.register(registerAssetRoutes, { assetsDir: config?.assetsDir ?? publicAssetsPath });
+  registerLegacyRoutes(server, routeOptions);
 
   return server;
 }
