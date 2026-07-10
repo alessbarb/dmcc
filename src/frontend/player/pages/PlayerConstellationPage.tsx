@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "@tanstack/react-router";
-import { ReactFlowProvider } from "reactflow";
+import { ReactFlowProvider } from "@xyflow/react";
 import { Network, RefreshCw, ShieldAlert } from "lucide-react";
 import type { Canvas } from "@core/domain/canvas/types.js";
 import { CampaignCanvasFlow } from "../../dm/canvas/components/CampaignCanvasFlow.js";
