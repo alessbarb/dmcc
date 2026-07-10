@@ -8,9 +8,6 @@ import { PostgresCampaignRepository } from "./postgresCampaignRepository.js";
 import { getRequiredWebUser } from "./webSession.js";
 import { campaignEventBus } from "../realtime/campaignEventBus.js";
 
-function isDmRole(role?: string | null): boolean {
-  return role === "dm" || role === "co_dm";
-}
 
 type CampaignAccessMembership = typeof schema.campaignMemberships.$inferSelect | {
   campaignId: string;
@@ -76,20 +73,6 @@ async function requireCampaignRole(request: FastifyRequest, campaignId: string, 
   return context;
 }
 
-async function requireCampaignOwner(request: FastifyRequest, campaignId: string) {
-  const context = await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
-  const [campaign] = await db
-    .select({ ownerId: schema.campaigns.ownerId })
-    .from(schema.campaigns)
-    .where(eq(schema.campaigns.campaignId, campaignId))
-    .limit(1);
-  if (!campaign || campaign.ownerId !== context.user.userId) {
-    const error = new Error("Forbidden: campaign owner required");
-    (error as any).statusCode = 403;
-    throw error;
-  }
-  return context;
-}
 
 
 export const SHORT_TABLE_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -105,80 +88,6 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   const repo = new PostgresCampaignRepository();
   server.get("/api/health", async () => ({ ok: true }));
 
-  server.get("/api/player/campaigns", async (request) => {
-    const user = getRequiredWebUser(request);
-    const rows = await db
-      .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
-      .from(schema.campaignMemberships)
-      .innerJoin(schema.campaigns, eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId))
-      .where(and(
-        eq(schema.campaignMemberships.userId, user.userId),
-        isNull(schema.campaignMemberships.revokedAt),
-        sql`${schema.campaigns.status} <> 'deleted'`,
-      ));
-    return { campaigns: rows
-      .filter((row) => row.membership.role === "player" || isDmRole(row.membership.role))
-      .map((row) => ({ ...row.campaign, role: row.membership.role, playerId: row.membership.playerId })) };
-  });
-
-  server.post<{ Params: { campaignId: string }; Body: { command?: any } & Record<string, any> }>("/api/campaigns/:campaignId/commands", async (request, reply) => {
-    const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const commandId = request.headers["idempotency-key"];
-    if (!commandId || Array.isArray(commandId)) {
-      reply.code(400);
-      return { error: "Idempotency-Key header is required" };
-    }
-    const command = request.body.command ?? request.body;
-    try {
-      const projection = await repo.executeCommand(request.params.campaignId, {
-        ...command,
-        campaignId: request.params.campaignId,
-        actorId: user.userId,
-      }, { commandId, actorUserId: user.userId });
-      campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
-      return { ok: true, sequence: projection.lastSequence, projection };
-    } catch (error: any) {
-      if (error.name === "CommandConflictError" || /Conflict/.test(error.message)) {
-        reply.code(409);
-        return { error: error.message };
-      }
-      reply.code(error.statusCode ?? 500);
-      return { error: error.message ?? "Command failed" };
-    }
-  });
-
-
-  async function executeDmCommand(request: FastifyRequest<{ Params: { campaignId: string }; Body?: any }>, reply: any, command: Record<string, any>) {
-    const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const commandIdHeader = request.headers["idempotency-key"];
-    const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
-    try {
-      const projection = await repo.executeCommand(request.params.campaignId, {
-        ...command,
-        campaignId: request.params.campaignId,
-        actorId: user.userId,
-      } as any, { commandId, actorUserId: user.userId });
-      campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
-      return { ok: true, sequence: projection.lastSequence, projection };
-    } catch (error: any) {
-      if (error.name === "CommandConflictError" || /Conflict/.test(error.message)) {
-        reply.code(409);
-        return { error: error.message };
-      }
-      reply.code(error.statusCode ?? 500);
-      return { error: error.message ?? "Command failed" };
-    }
-  }
-
-  server.patch<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "UpdateCampaign", ...((request.body ?? {}) as any) });
-  });
-
-  server.delete<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId", async (request, _reply) => {
-    await requireCampaignOwner(request, request.params.campaignId);
-    await db.update(schema.campaigns).set({ status: "deleted", updatedAt: new Date() }).where(eq(schema.campaigns.campaignId, request.params.campaignId));
-    return { ok: true };
-  });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/command-center", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
@@ -250,110 +159,6 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/what-now", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
     return { suggestions: [], attention: [], nextSession: null };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/graph", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const entities = await db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, request.params.campaignId));
-    const relations = await db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, request.params.campaignId));
-    return { entities, relations };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/timeline", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const sessions = await db.select().from(schema.campaignSessions).where(eq(schema.campaignSessions.campaignId, request.params.campaignId));
-    return { sessions, events: [] };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/visibility", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const grants = await db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, request.params.campaignId));
-    return { grants };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/lan-status", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { enabled: false, mode: "web_invitations", message: "LAN mode has been replaced by web invitations." };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/players", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const profiles = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, request.params.campaignId));
-    return profiles.map((profile) => ({
-      playerId: profile.profileId,
-      displayName: profile.displayName,
-      email: null,
-      isActive: profile.status === "active",
-      linkedCharacterEntityId: profile.linkedCharacterId,
-    }));
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/entities", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { entities: await db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, request.params.campaignId)) };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/facts", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { facts: await db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, request.params.campaignId)) };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/relations", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { relations: await db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, request.params.campaignId)) };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/clues", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { clues: await db.select().from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, request.params.campaignId)) };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/objectives", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { objectives: await db.select().from(schema.campaignObjectives).where(eq(schema.campaignObjectives.campaignId, request.params.campaignId)) };
-  });
-
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/activity", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { activity: await db.select().from(schema.activityFeed).where(eq(schema.activityFeed.campaignId, request.params.campaignId)).orderBy(desc(schema.activityFeed.occurredAt)).limit(100) };
-  });
-
-  server.post<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId/entities", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "CreateEntity", ...((request.body ?? {}) as any) });
-  });
-  server.patch<{ Params: { campaignId: string; entityId: string }; Body: any }>("/api/campaigns/:campaignId/entities/:entityId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "UpdateEntity", entityId: request.params.entityId, ...((request.body ?? {}) as any) });
-  });
-  server.delete<{ Params: { campaignId: string; entityId: string } }>("/api/campaigns/:campaignId/entities/:entityId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "ArchiveEntity", entityId: request.params.entityId });
-  });
-
-  server.post<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId/relations", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "CreateRelation", ...((request.body ?? {}) as any) });
-  });
-  server.put<{ Params: { campaignId: string; relationId: string }; Body: any }>("/api/campaigns/:campaignId/relations/:relationId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "UpdateRelation", relationId: request.params.relationId, ...((request.body ?? {}) as any) });
-  });
-  server.delete<{ Params: { campaignId: string; relationId: string } }>("/api/campaigns/:campaignId/relations/:relationId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "ArchiveRelation", relationId: request.params.relationId });
-  });
-
-  server.post<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId/facts", async (request, reply) => {
-    const body = (request.body ?? {}) as any;
-    return executeDmCommand(request, reply, {
-      type: "RecordFact",
-      factId: body.factId,
-      statement: body.statement ?? body.content ?? "",
-      kind: body.kind ?? "canon",
-      confidence: body.confidence ?? "confirmed",
-      visibility: body.visibility ?? (body.kind === "dm_secret" ? { kind: "dm_only" } : { kind: "party" }),
-      relatedEntityIds: body.relatedEntityIds ?? (body.subjectEntityId ? [body.subjectEntityId] : []),
-      relatedRelationIds: body.relatedRelationIds ?? [],
-      source: body.source ?? { kind: "manual" },
-    });
-  });
-  server.put<{ Params: { campaignId: string; factId: string }; Body: any }>("/api/campaigns/:campaignId/facts/:factId", async (request, reply) => {
-    return executeDmCommand(request, reply, { type: "UpdateFact", factId: request.params.factId, ...((request.body ?? {}) as any) });
   });
 
 
