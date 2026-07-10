@@ -15,10 +15,10 @@ interface RuleEntry {
 
 function resolveRulesPath(): string | null {
   const candidates = [
-    // Production build: dist/src/backend/server/routes -> dist/src/core/domain/rules/data
+    // Production build: dist/src/backend/server/legacy/routes -> dist/src/core/domain/rules/data
+    path.resolve(__dirname, "../../../../../core/domain/rules/data/srd_rules.json"),
+    // Source/dev execution: src/backend/server/legacy/routes -> src/core/domain/rules/data
     path.resolve(__dirname, "../../../../core/domain/rules/data/srd_rules.json"),
-    // Source/dev execution: src/backend/server/routes -> src/core/domain/rules/data
-    path.resolve(__dirname, "../../../core/domain/rules/data/srd_rules.json"),
     // Fallbacks from project root for tests and unusual launch directories.
     path.resolve(process.cwd(), "src/core/domain/rules/data/srd_rules.json"),
     path.resolve(process.cwd(), "dist/src/core/domain/rules/data/srd_rules.json"),

@@ -13,17 +13,17 @@ import {
   getValidatedVaultId,
   getValidatedCampaignId,
   getRequestActorId,
-} from "../auth.js";
-import { assertWithinDir } from "../helpers.js";
-import { writeMarkdownCampaignExport } from "../export/markdownCampaignExport.js";
+} from "../../auth.js";
+import { assertWithinDir } from "../../helpers.js";
+import { writeMarkdownCampaignExport } from "../../export/markdownCampaignExport.js";
 import {
   createCampaignBackup,
   listCampaignBackups,
   readBackupForCampaign,
   writeEventsFromBackup,
-} from "../hardening/backups.js";
+} from "../../hardening/backups.js";
 import { VERSION_INFO } from "@shared/appVersion.js";
-import { sendCommandError } from "../commandHttp.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 const ATTACHMENT_MAX_DECODED_BYTES = 10 * 1024 * 1024;
 const ATTACHMENT_BODY_LIMIT_BYTES = Math.ceil((ATTACHMENT_MAX_DECODED_BYTES * 4) / 3) + 4096;

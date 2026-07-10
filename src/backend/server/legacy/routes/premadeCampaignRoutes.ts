@@ -3,11 +3,11 @@ import { makeRepositoryFactory } from "../repositoryFactory.js";
 import { rm } from "node:fs/promises";
 import { join } from "node:path";
 import { createId, generateCampaignId } from "@shared/ids.js";
-import { assertDM, getRequestDmId, getValidatedVaultId } from "../auth.js";
-import { ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../campaignAclStore.js";
-import { getPremadeCampaignTemplate, listPremadeCampaignTemplates } from "../premade/premadeCampaigns.js";
-import { sendCommandError } from "../commandHttp.js";
-import { addCampaignMembership } from "../userAuthAccountOps.js";
+import { assertDM, getRequestDmId, getValidatedVaultId } from "../../auth.js";
+import { ensureCampaignOwner, listCampaignIdsForDmSync, removeCampaignAcl } from "../../campaignAclStore.js";
+import { getPremadeCampaignTemplate, listPremadeCampaignTemplates } from "../../premade/premadeCampaigns.js";
+import { sendCommandError } from "../../commandHttp.js";
+import { addCampaignMembership } from "../../userAuthAccountOps.js";
 
 type PremadeImportMode = "full" | "structure" | "sessions";
 

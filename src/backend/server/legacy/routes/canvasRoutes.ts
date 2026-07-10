@@ -2,15 +2,15 @@ import type { FastifyInstance } from "fastify";
 import { makeRepositoryFactory } from "../repositoryFactory.js";
 import type { EntityType, EntityImportance } from "@core/domain/entity/types.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
-import { hasCampaignDmAccessSync } from "../campaignAclStore.js";
+import { hasCampaignDmAccessSync } from "../../campaignAclStore.js";
 import {
   assertDM,
   getValidatedVaultId,
   getValidatedCampaignId,
   getRequestActorId,
   getRequestDmSession,
-} from "../auth.js";
-import { sendCommandError } from "../commandHttp.js";
+} from "../../auth.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 type CanvasKind = "world" | "session" | "mystery" | "location" | "characters" | "custom";
 

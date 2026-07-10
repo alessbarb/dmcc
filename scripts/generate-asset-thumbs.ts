@@ -90,6 +90,10 @@ async function generateThumb(sourcePath: string): Promise<boolean> {
   return true;
 }
 
+function isUnsupportedImageError(error: unknown): boolean {
+  return error instanceof Error && /unsupported image format/i.test(error.message);
+}
+
 async function main() {
   if (!existsSync(ASSETS_ROOT)) {
     console.log(`No assets directory found at ${ASSETS_ROOT}. Skipping thumbnail generation.`);
@@ -108,6 +112,10 @@ async function main() {
         skipped += 1;
       }
     } catch (error) {
+      if (isUnsupportedImageError(error)) {
+        skipped += 1;
+        continue;
+      }
       const relativePath = relative(ASSETS_ROOT, image);
       console.warn(`Failed to generate thumbnail for ${relativePath}:`, error);
     }

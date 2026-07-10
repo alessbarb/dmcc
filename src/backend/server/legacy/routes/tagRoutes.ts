@@ -1,8 +1,8 @@
 import type { FastifyInstance } from "fastify";
 import { makeRepositoryFactory } from "../repositoryFactory.js";
-import { assertDM, getValidatedVaultId, getValidatedCampaignId, getRequestActorId } from "../auth.js";
+import { assertDM, getValidatedVaultId, getValidatedCampaignId, getRequestActorId } from "../../auth.js";
 import { createId } from "@shared/ids.js";
-import { sendCommandError } from "../commandHttp.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 export async function registerTagRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;

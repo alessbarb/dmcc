@@ -1145,7 +1145,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const res = await campaignApi.toggleCampaignLan(activeCampaignId, { enabled });
-      if (!res.ok) throw new Error("Failed to toggle LAN mode");
+      if (!res.ok) throw new Error("Failed to update web sharing mode");
       const data = await res.json();
       await get().reloadCampaignIfActive(activeCampaignId);
       return data;

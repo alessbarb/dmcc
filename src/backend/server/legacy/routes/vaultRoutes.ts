@@ -1,8 +1,8 @@
 import type { FastifyInstance } from "fastify";
 import { join } from "path";
 import * as fs from "fs/promises";
-import { assertDM } from "../auth.js";
-import { assertWithinDir } from "../helpers.js";
+import { assertDM } from "../../auth.js";
+import { assertWithinDir } from "../../helpers.js";
 
 export async function registerVaultRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;

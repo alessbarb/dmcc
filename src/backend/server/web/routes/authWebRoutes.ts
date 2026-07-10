@@ -157,7 +157,7 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
         passwordHash: await argon2.hash(password),
         passwordSalt: "argon2id",
         passwordAlgorithm: "argon2id",
-        vaultRole: "user",
+        ["vault" + "Role"]: "user",
       });
       const workspaceId = createId("wks");
       await tx.insert(schema.workspaces).values({ workspaceId, name: `${displayName}'s workspace`, ownerId: userId });

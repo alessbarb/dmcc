@@ -7,7 +7,7 @@
   },
   "private": true,
   "type": "module",
-  "description": "Local-first campaign memory and player portal for tabletop RPGs.",
+  "description": "Web-first campaign memory and player portal for tabletop RPGs.",
   "main": "desktop/main.mjs",
   "desktopName": "local.dmcc.app.desktop",
   "scripts": {
@@ -28,9 +28,7 @@
     "test:watch": "vitest",
     "dev:server": "tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts",
     "dev:ui": "vite",
-    "dev:ui:lan": "DMCC_VITE_HOST=0.0.0.0 vite",
     "dev": "tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts & vite",
-    "dev:lan": "DMCC_HOST=0.0.0.0 DMCC_VITE_HOST=0.0.0.0 tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts & DMCC_VITE_HOST=0.0.0.0 vite",
     "test:e2e": "playwright test",
     "quality:typecheck": "npm run typecheck:all",
     "quality:test": "npm test",
@@ -61,7 +59,9 @@
     "db:studio": "drizzle-kit studio",
     "dev:web": "DMCC_STORAGE_MODE=postgres npm run dev",
     "dev:server:web": "DMCC_STORAGE_MODE=postgres tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts",
-    "db:migrate:prod": "tsx src/backend/db/migrate.ts"
+    "db:migrate:prod": "tsx src/backend/db/migrate.ts",
+    "dev:ui:host": "DMCC_VITE_HOST=0.0.0.0 vite",
+    "dev:host": "DMCC_HOST=0.0.0.0 DMCC_VITE_HOST=0.0.0.0 tsx watch --tsconfig tsconfig.node.json src/backend/entry/index.ts & DMCC_VITE_HOST=0.0.0.0 vite"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",

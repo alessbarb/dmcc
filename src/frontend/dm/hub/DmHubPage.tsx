@@ -148,7 +148,7 @@ export function DmHubPage() {
         const { fetchAuthStatus } = await import("../../shared/auth/authClient.js");
         const status = await fetchAuthStatus();
         if (!status.sessionValid) {
-          await navigate({ to: status.accountConfigured ? "/dm/unlock" : "/dm/setup" });
+          await navigate({ to: status.accountConfigured ? "/dm/login" : "/dm/setup" });
           return;
         }
         setDmProfile(status.user || null);
@@ -393,7 +393,7 @@ export function DmHubPage() {
           <button
             type="button"
             className="dm-topbar-ghost-btn"
-            onClick={() => { void (async () => { await logoutDm(); navigate({ to: "/dm/unlock" }); })(); }}
+            onClick={() => { void (async () => { await logoutDm(); navigate({ to: "/dm/login" }); })(); }}
           >
             <UserRound size={13} />
             {t("nav.switchDm")}

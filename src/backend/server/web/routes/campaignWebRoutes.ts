@@ -109,7 +109,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/lan-status", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { enabled: false, mode: "web_invitations", message: "LAN mode has been replaced by web invitations." };
+    return { enabled: false, mode: "web_invitations", message: "Local network sharing has been replaced by web invitations." };
   });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/players", async (request) => {

@@ -6,7 +6,7 @@ import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
-export function DmUnlockPage() {
+export function DmLoginPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
@@ -45,9 +45,9 @@ export function DmUnlockPage() {
       if (err.message?.toLowerCase().includes("too many")) {
         const match = err.message.match(/\((\d+)s\)/);
         setRetryAfterMs(match ? Number(match[1]) * 1000 : 30_000);
-        setError(t("dmUnlock.errorTooMany"));
+        setError(t("dmLogin.errorTooMany"));
       } else {
-        setError(t("dmUnlock.errorWrongSecret"));
+        setError(t("dmLogin.errorWrongSecret"));
       }
     } finally {
       setLoading(false);
@@ -72,21 +72,21 @@ export function DmUnlockPage() {
               <Shield className="join-portal-icon" size={32} />
               <div className="join-portal-icon-glow" />
             </div>
-            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("dmUnlock.title")}</h1>
+            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("dmLogin.title")}</h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", margin: "4px 0 0" }}>
-              {t("dmUnlock.subtitle")}
+              {t("dmLogin.subtitle")}
             </p>
           </div>
 
 
           <form onSubmit={handleSubmit} className="join-portal-form">
             <div className="form-group">
-              <label className="form-label" htmlFor="email">{t("dmUnlock.emailLabel")}</label>
+              <label className="form-label" htmlFor="email">{t("dmLogin.emailLabel")}</label>
               <input
                 id="email"
                 type="email"
                 className="form-input join-portal-input"
-                placeholder={t("dmUnlock.emailPlaceholder")}
+                placeholder={t("dmLogin.emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -97,13 +97,13 @@ export function DmUnlockPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label" htmlFor="secret">{t("dmUnlock.secretLabel")}</label>
+              <label className="form-label" htmlFor="secret">{t("dmLogin.secretLabel")}</label>
               <div className="access-code-input-wrapper">
                 <input
                   id="secret"
                   type={showSecret ? "text" : "password"}
                   className="form-input join-portal-input"
-                  placeholder={t("dmUnlock.secretPlaceholder")}
+                  placeholder={t("dmLogin.secretPlaceholder")}
                   value={secret}
                   onChange={(e) => setSecret(e.target.value)}
                   required
@@ -129,17 +129,17 @@ export function DmUnlockPage() {
               disabled={loading || !email || !secret || isBlocked}
             >
               {loading
-                ? t("dmUnlock.checkingBtn")
+                ? t("dmLogin.checkingBtn")
                 : isBlocked
-                ? t("dmUnlock.waitBtn", { seconds: String(secondsLeft) })
-                : t("dmUnlock.unlockBtn")}
+                ? t("dmLogin.waitBtn", { seconds: String(secondsLeft) })
+                : t("dmLogin.loginBtn")}
             </button>
           </form>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "12px" }}>
             <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/dm/setup" })}>
               <Plus size={14} style={{ marginRight: "6px" }} />
-              {t("dmUnlock.createAccount")}
+              {t("dmLogin.createAccount")}
             </button>
             <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/forgot-password" })}>
               Recuperar contraseña

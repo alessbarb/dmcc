@@ -11,16 +11,16 @@ import {
   getValidatedCampaignId,
   getRequestPlayerId,
   getRequestDmSession,
-} from "../auth.js";
-import { hasCampaignDmAccessSync } from "../campaignAclStore.js";
+} from "../../auth.js";
+import { hasCampaignDmAccessSync } from "../../campaignAclStore.js";
 import {
   getStoredAccessCode,
   getCharacterEntityIdForPlayer,
   getVisibleEntities,
   getVisibleRelations,
   getVisibleFacts,
-} from "../helpers.js";
-import { sendCommandError } from "../commandHttp.js";
+} from "../../helpers.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 export async function registerProjectionRoutes(server: FastifyInstance, opts: { dataDir: string }) {
   const { dataDir } = opts;

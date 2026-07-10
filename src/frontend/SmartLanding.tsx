@@ -94,7 +94,7 @@ export function SmartLanding() {
     if (hasDmSession) {
       navigate({ to: "/dm" });
     } else if (status?.accountConfigured) {
-      navigate({ to: "/dm/unlock" });
+      navigate({ to: "/dm/login" });
     } else {
       navigate({ to: "/dm/setup" });
     }
@@ -155,7 +155,7 @@ export function SmartLanding() {
                   <div className="card-body">
                     <p className="card-desc">{t("landing.dmDesc")}</p>
                     <button className="btn btn-gold btn-full">
-                      {status?.accountConfigured ? t("landing.unlockArchive") : t("landing.serverConfig")}
+                      {status?.accountConfigured ? t("landing.loginArchive") : t("landing.serverConfig")}
                       <ArrowRight size={16} />
                     </button>
                   </div>

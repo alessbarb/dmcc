@@ -12,8 +12,8 @@ import {
   getValidatedCampaignId,
   getRequestActorId,
   hashPlayerToken,
-} from "../auth.js";
-import { sendCommandError } from "../commandHttp.js";
+} from "../../auth.js";
+import { sendCommandError } from "../../commandHttp.js";
 
 const MAX_TITLE_LENGTH = 120;
 const MAX_BODY_LENGTH = 8_000;
