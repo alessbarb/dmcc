@@ -29,8 +29,7 @@ const AUTH_WEB_ROUTES = new Set([
  * reduced. The facade lets us make the extracted module authoritative without
  * registering duplicate Fastify routes.
  *
- * Next cleanup: delete the now-skipped auth block from `webPlatformRoutes.ts`
- * once the full monolith can be edited safely in a local checkout.
+ * Next cleanup: delete the now-skipped auth block from `webPlatformRoutes.ts`.
  */
 function createWebPlatformRoutesFacade(server: FastifyInstance): FastifyInstance {
   const routeMethods = new Set(["get", "post"]);
