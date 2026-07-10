@@ -1,33 +1,3 @@
-export interface PlayerProfileEntry {
-  campaignId: string;
-  campaignTitle: string;
-  playerId: string;
-  displayName: string;
-  email?: string;
-  characterName?: string;
-  lastAccessed: string;
-  rememberToken?: boolean;
-  avatarUrl?: string;
-}
-
-export interface DmProfileEntry {
-  dmId: string;
-  email: string;
-  displayName?: string;
-  lastAccessed: string;
-  avatarUrl?: string;
-}
-
-export interface LocalIdentity {
-  version: 1;
-  serverOrigin: string;
-  dmProfiles: DmProfileEntry[];
-  account?: {
-    lastLoginAt?: string;
-  };
-  playerProfiles: PlayerProfileEntry[];
-}
-
 export interface SessionCreds {
   activeRole?: "dm" | "player";
   activeUserId?: string;
@@ -57,12 +27,6 @@ export interface AuthStatus {
     displayName?: string;
     avatarUrl?: string;
   } | null;
-  dmProfiles: Array<{
-    dmId: string;
-    email: string;
-    displayName?: string;
-    lastLoginAt?: string;
-  }>;
   memberships?: Array<{
     campaignId: string;
     userId: string;

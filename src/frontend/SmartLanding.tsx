@@ -14,12 +14,12 @@ import {
   Compass
 } from "lucide-react";
 import { fetchAuthStatus, logoutDm } from "./shared/auth/authClient.js";
-import { readIdentity } from "./shared/auth/localIdentity.js";
 import type { AuthStatus } from "./shared/auth/authTypes.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "./shared/components/PortalTopBar.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
 import { apiFetch } from "./shared/api/apiClient.js";
+import { getPlayerCampaigns } from "./shared/api/webProductClient.js";
 
 function formatCampaignSystem(system?: string) {
   if (system === "dnd_srd_5_2_1") return "D&D 5e";
@@ -39,9 +39,6 @@ export function SmartLanding() {
 
   useEffect(() => {
     const init = async () => {
-      const identity = readIdentity();
-      setPlayerProfiles(identity.playerProfiles || []);
-
       try {
         const authStatus = await fetchAuthStatus();
         setStatus(authStatus);
@@ -53,6 +50,15 @@ export function SmartLanding() {
             const data = await res.json();
             setCampaigns(Array.isArray(data) ? data : []);
           }
+
+          const playerCampaigns = await getPlayerCampaigns().catch(() => ({ campaigns: [] }));
+          setPlayerProfiles(playerCampaigns.campaigns.map((campaign: any) => ({
+            campaignId: campaign.campaignId,
+            playerId: campaign.playerId ?? campaign.campaignId,
+            displayName: campaign.title,
+            campaignTitle: campaign.title,
+            avatarUrl: campaign.coverUrl,
+          })));
         }
       } catch {
         // Server unreachable
@@ -277,7 +283,7 @@ export function SmartLanding() {
                       <div
                         key={`${profile.campaignId}-${profile.playerId}`}
                         className="glass-card player-profile-row-card"
-                        onClick={() => navigate({ to: `/campaigns/${profile.campaignId}/player-portal` })}
+                        onClick={() => navigate({ to: `/player/campaigns/${profile.campaignId}/home` })}
                       >
                         <div className="card-body row-layout">
                           <div className="avatar-frame">

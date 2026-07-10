@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Shield, Eye, EyeOff, ArrowLeft, Plus, UserRound } from "lucide-react";
+import { Shield, Eye, EyeOff, ArrowLeft, Plus } from "lucide-react";
 import { loginDm, fetchAuthStatus } from "../../shared/auth/authClient.js";
-import { readIdentity } from "../../shared/auth/localIdentity.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
@@ -10,12 +9,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 export function DmUnlockPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const rememberedProfiles = useMemo(
-    () => [...readIdentity().dmProfiles].sort((a, b) => b.lastAccessed.localeCompare(a.lastAccessed)),
-    []
-  );
-  const rememberedEmail = rememberedProfiles[0]?.email ?? "";
-  const [email, setEmail] = useState(rememberedEmail);
+  const [email, setEmail] = useState("");
   const [secret, setSecret] = useState("");
   const [showSecret, setShowSecret] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -63,18 +57,6 @@ export function DmUnlockPage() {
     }
   };
 
-  const handleSelectProfile = (profileEmail: string) => {
-    setEmail(profileEmail);
-    setSecret("");
-    setError(null);
-  };
-
-  const handleUseAnotherEmail = () => {
-    setEmail("");
-    setSecret("");
-    setError(null);
-  };
-
   const isBlocked = retryAfterMs > 0;
   const secondsLeft = Math.ceil(retryAfterMs / 1000);
 
@@ -103,60 +85,6 @@ export function DmUnlockPage() {
             <div style={{ background: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.2)", borderRadius: "8px", padding: "10px 12px", marginBottom: "12px", fontSize: "0.8rem", color: "#facc15" }}>
               {t("dmUnlock.lanWarning")}
             </div>
-          )}
-
-          {rememberedProfiles.length > 0 && (
-            <section style={{ marginBottom: "14px", padding: "12px", border: "1px solid var(--border)", borderRadius: "12px", background: "rgba(255,255,255,0.03)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: "12px", alignItems: "flex-start", marginBottom: "10px" }}>
-                <div>
-                  <p style={{ margin: 0, color: "var(--text-main)", fontWeight: 700, fontSize: "0.86rem" }}>{t("dmUnlock.savedAccountsTitle")}</p>
-                  <p style={{ margin: "2px 0 0", color: "var(--text-muted)", fontSize: "0.76rem" }}>{t("dmUnlock.savedAccountsHint")}</p>
-                </div>
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-sm"
-                  onClick={handleUseAnotherEmail}
-                  style={{ whiteSpace: "nowrap" }}
-                >
-                  {t("dmUnlock.useAnotherEmail")}
-                </button>
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {rememberedProfiles.map((profile) => {
-                  const selected = profile.email === email;
-                  return (
-                    <button
-                      key={profile.dmId}
-                      type="button"
-                      onClick={() => handleSelectProfile(profile.email)}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "10px",
-                        width: "100%",
-                        padding: "9px 10px",
-                        borderRadius: "10px",
-                        border: selected ? "1px solid var(--accent)" : "1px solid var(--border)",
-                        background: selected ? "rgba(245,158,11,0.12)" : "rgba(255,255,255,0.03)",
-                        color: "var(--text-main)",
-                        cursor: "pointer",
-                        textAlign: "left",
-                      }}
-                    >
-                      <UserRound size={15} />
-                      <span style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
-                        <strong style={{ fontSize: "0.82rem", overflow: "hidden", textOverflow: "ellipsis" }}>{profile.displayName || profile.email}</strong>
-                        <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", overflow: "hidden", textOverflow: "ellipsis" }}>{profile.email}</span>
-                      </span>
-                      {selected && (
-                        <span style={{ marginLeft: "auto", color: "var(--accent)", fontSize: "0.72rem", fontWeight: 700 }}>{t("dmUnlock.selectedAccount")}</span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
           )}
 
           <form onSubmit={handleSubmit} className="join-portal-form">
@@ -219,7 +147,7 @@ export function DmUnlockPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "12px" }}>
             <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/dm/setup" })}>
               <Plus size={14} style={{ marginRight: "6px" }} />
-              {rememberedProfiles.length > 0 ? t("dmUnlock.addAnotherDm") : t("dmUnlock.createAccount")}
+              {t("dmUnlock.createAccount")}
             </button>
             <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/forgot-password" })}>
               Recuperar contraseña
