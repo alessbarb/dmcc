@@ -1,12 +1,21 @@
 const IDENTITY_HEADERS = [
   "actorid",
-  "x-role",
   "x-player-id",
-  "x-dm-token",
-  "x-player-token",
-  "x-access-code",
   "x-vault-id",
 ] as const;
+
+export const API_CLIENT_TAB_ID = typeof crypto !== "undefined" && "randomUUID" in crypto
+  ? crypto.randomUUID()
+  : `tab_${Math.random().toString(36).slice(2)}`;
+
+const syncChannel = typeof window !== "undefined" ? new BroadcastChannel("dmcc_campaign_sync") : null;
+
+function broadcastMutation(url: string): void {
+  const campaignId = url.match(/^\/api\/campaigns\/([^/?]+)/)?.[1];
+  if (campaignId && syncChannel) {
+    syncChannel.postMessage({ type: "MUTATION", campaignId: decodeURIComponent(campaignId), tabId: API_CLIENT_TAB_ID });
+  }
+}
 
 export type ApiFetchOptions = {
   init?: RequestInit;
@@ -22,11 +31,15 @@ export async function apiFetch(url: string, options: ApiFetchOptions = {}): Prom
       : `cmd_${Date.now()}_${Math.random().toString(36).slice(2)}`;
     headers.set("Idempotency-Key", key);
   }
-  return fetch(url, {
+  const response = await fetch(url, {
     ...options.init,
     credentials: "include",
     headers,
   });
+  if (response.ok && !["GET", "HEAD", "OPTIONS"].includes(method)) {
+    broadcastMutation(url);
+  }
+  return response;
 }
 
 export async function readApiError(response: Response, fallback: string): Promise<string> {

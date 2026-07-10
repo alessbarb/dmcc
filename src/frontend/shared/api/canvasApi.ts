@@ -1,0 +1,14 @@
+import { apiFetch } from "./apiClient.js";
+const jsonInit = (method: string, body?: unknown): RequestInit => ({ method, headers: { "Content-Type": "application/json" }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
+export const loadCanvas = (campaignId: string, canvasId: string) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}`);
+export const createCanvas = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases`, { init: jsonInit("POST", payload) });
+export const updateCanvas = (campaignId: string, canvasId: string, updates: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}`, { init: jsonInit("PATCH", updates) });
+export const deleteCanvas = (campaignId: string, canvasId: string) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}`, { init: { method: "DELETE" } });
+export const createNode = (campaignId: string, canvasId: string, node: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/nodes`, { init: jsonInit("POST", { node }) });
+export const updateNode = (campaignId: string, canvasId: string, nodeId: string, updates: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/nodes/${nodeId}`, { init: jsonInit("PATCH", { updates }) });
+export const deleteNode = (campaignId: string, canvasId: string, nodeId: string) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/nodes/${nodeId}`, { init: jsonInit("DELETE", {}) });
+export const createEdge = (campaignId: string, canvasId: string, edge: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/edges`, { init: jsonInit("POST", { edge }) });
+export const updateEdge = (campaignId: string, canvasId: string, edgeId: string, updates: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/edges/${edgeId}`, { init: jsonInit("PATCH", { updates }) });
+export const deleteEdge = (campaignId: string, canvasId: string, edgeId: string) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/edges/${edgeId}`, { init: jsonInit("DELETE", {}) });
+export const moveNode = (campaignId: string, canvasId: string, nodeUpdates: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/layout`, { init: jsonInit("PATCH", { nodeUpdates }) });
+export const convertNoteToEntity = (campaignId: string, canvasId: string, nodeId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/nodes/${nodeId}/convert`, { init: jsonInit("POST", payload) });
