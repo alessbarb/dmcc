@@ -15,7 +15,6 @@ import { randomUUID } from "crypto";
 import { registerWebRoutes } from "./web/registerWebRoutes.js";
 import { resolveWebUser } from "./web/webSession.js";
 
-
 const PLACEHOLDER_SESSION_SECRETS = new Set(["change-me", "dev-change-me"]);
 const GLOBAL_JSON_BODY_LIMIT_BYTES = 1 * 1024 * 1024;
 
@@ -177,6 +176,25 @@ function isMutationRequest(request: FastifyRequest): boolean {
   return ["POST", "PUT", "PATCH", "DELETE"].includes(request.method);
 }
 
+type WebAuthenticatedRequest = FastifyRequest & {
+  webUser?: unknown;
+  unifiedUser?: unknown;
+};
+
+function hasWebAuthenticationSignal(request: FastifyRequest): boolean {
+  const authenticatedRequest = request as WebAuthenticatedRequest;
+  return Boolean(
+    authenticatedRequest.webUser ||
+    authenticatedRequest.unifiedUser ||
+    request.headers.authorization ||
+    request.headers.cookie
+  );
+}
+
+function shouldDisableApiResponseCache(request: FastifyRequest): boolean {
+  return isApiRequest(request) && (isMutationRequest(request) || hasWebAuthenticationSignal(request));
+}
+
 function isHtmlReply(reply: FastifyReply): boolean {
   const contentType = reply.getHeader("content-type");
   const value = Array.isArray(contentType) ? contentType.join(";") : String(contentType ?? "");
@@ -187,7 +205,6 @@ function looksLikeHtml(payload: string | Buffer): boolean {
   const text = Buffer.isBuffer(payload) ? payload.subarray(0, 256).toString("utf8") : payload.slice(0, 256);
   return /^\s*<!doctype html|^\s*<html[\s>]/i.test(text);
 }
-
 
 export interface ServerConfig {
   dataDir?: string;
@@ -203,7 +220,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   server.register(helmet, buildHelmetConfig());
 
   server.addHook("onSend", async (request, reply, payload) => {
-    if (isApiRequest(request) && isMutationRequest(request)) {
+    if (shouldDisableApiResponseCache(request)) {
       reply.header("Cache-Control", "no-store");
     }
 
@@ -281,7 +298,6 @@ export function createServer(config?: ServerConfig): FastifyInstance {
       },
     });
   }
-
 
   function shouldServeSpaFallback(rawUrl?: string): boolean {
     const pathname = getRequestPath(rawUrl);
