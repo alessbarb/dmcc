@@ -9,6 +9,20 @@ interface ImagePickerModalProps {
   onClose: () => void;
 }
 
+function preloadImage(path: string): Promise<void> {
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve();
+    image.onerror = () => resolve();
+    image.src = path;
+  });
+}
+
+async function preloadCatalogImages(groups: ImageCatalogGroups): Promise<void> {
+  const imagePaths = Array.from(new Set(Object.values(groups).flat()));
+  await Promise.all(imagePaths.map(preloadImage));
+}
+
 export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePickerModalProps) {
   const [groups, setGroups] = useState<ImageCatalogGroups>({});
   const [activeGroup, setActiveGroup] = useState<string>("");
@@ -17,6 +31,8 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
 
   useEffect(() => {
     const controller = new AbortController();
+    let cancelled = false;
+
     setLoading(true);
     setError(null);
     fetch(`/api/assets/catalog?type=${catalog}`, { signal: controller.signal })
@@ -26,22 +42,32 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
         }
         return r.json() as Promise<unknown>;
       })
-      .then((response) => {
+      .then(async (response) => {
         const nextGroups = normalizeImageCatalogResponse(response);
+        await preloadCatalogImages(nextGroups);
+
+        if (cancelled) return;
+
         setGroups(nextGroups);
         const nextGroupNames = Object.entries(nextGroups).map(([group]) => group);
         setActiveGroup((prev) => (nextGroupNames.includes(prev) ? prev : nextGroupNames[0] ?? ""));
       })
       .catch((err: unknown) => {
-        if ((err as { name?: string }).name !== "AbortError") {
+        if ((err as { name?: string }).name !== "AbortError" && !cancelled) {
           console.error("Failed to load image catalog:", err);
           setError(err instanceof Error ? err.message : "No se pudo cargar el catálogo de imágenes.");
           setGroups({});
           setActiveGroup("");
         }
       })
-      .finally(() => setLoading(false));
-    return () => controller.abort();
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
   }, [catalog]);
 
   const safeGroups = normalizeImageCatalogGroups(groups);
@@ -82,7 +108,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
 
         <div className="modal-body">
           {loading ? (
-            <p style={{ textAlign: "center", padding: "24px" }}>Cargando…</p>
+            <p style={{ textAlign: "center", padding: "24px" }}>Preparando imágenes…</p>
           ) : error ? (
             <p role="alert" style={{ textAlign: "center", padding: "24px", color: "var(--color-danger, #f87171)" }}>
               {error}
