@@ -1,12 +1,13 @@
 import { randomBytes } from "node:crypto";
 import argon2 from "argon2";
 import type { FastifyInstance, FastifyRequest } from "fastify";
-import { and, eq, isNull, or, sql } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
 import { verifySecret } from "../../auth.js";
 import { sendExistingAccountRegistrationEmail, sendPasswordResetEmail } from "../../emailService.js";
+import { listAccessibleCampaigns } from "../webAccess.js";
 import {
   clearWebSessionCookie,
   createWebSession,
@@ -22,11 +23,6 @@ import {
 type RegisterRateLimitEntry = { count: number; resetAt: number };
 type LoginRateLimitEntry = { count: number; resetAt: number };
 type LoginLockoutEntry = { failures: number; windowResetAt: number; lockedUntil: number };
-
-type AccessibleCampaignRow = typeof schema.campaigns.$inferSelect & {
-  role: typeof schema.campaignMemberships.$inferSelect["role"] | "dm";
-  playerId: string | null;
-};
 
 const REGISTER_SUCCESS_RESPONSE = { ok: true, message: "If registration can proceed, you will receive the next steps." };
 const REGISTER_RATE_LIMIT_WINDOW_MS = 60_000;
@@ -121,33 +117,6 @@ function requireBodyString(value: unknown, field: string): string {
     throw error;
   }
   return value.trim();
-}
-
-async function listAccessibleCampaigns(userId: string): Promise<AccessibleCampaignRow[]> {
-  const rows = await db
-    .select({ campaign: schema.campaigns, membership: schema.campaignMemberships })
-    .from(schema.campaigns)
-    .leftJoin(
-      schema.campaignMemberships,
-      and(
-        eq(schema.campaignMemberships.campaignId, schema.campaigns.campaignId),
-        eq(schema.campaignMemberships.userId, userId),
-        isNull(schema.campaignMemberships.revokedAt),
-      ),
-    )
-    .where(and(
-      sql`${schema.campaigns.status} <> 'deleted'`,
-      or(
-        eq(schema.campaigns.ownerId, userId),
-        eq(schema.campaignMemberships.userId, userId),
-      ),
-    ));
-
-  return rows.map((row) => ({
-    ...row.campaign,
-    role: row.membership?.role ?? "dm",
-    playerId: row.membership?.playerId ?? null,
-  }));
 }
 
 export async function registerAuthWebRoutes(server: FastifyInstance): Promise<void> {
