@@ -791,7 +791,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest("/api/campaigns", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ campaignId, actorId: "usr_dm", title, system, coverUrl })
+        body: JSON.stringify({ campaignId, title, system, coverUrl })
       });
       if (!res.ok) throw new Error("Failed to create campaign");
       await get().fetchCampaigns();
@@ -864,7 +864,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", relationId, ...rest })
+        body: JSON.stringify({ relationId, ...rest })
       });
       if (res.status === 409) {
         const message = "Duplicate relation: this exact connection already exists.";
@@ -893,7 +893,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           factId,
           ...payload
         })
@@ -953,7 +952,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/entities/${entityId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to archive entity");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -970,7 +969,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/relations/${relationId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to archive relation");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1006,7 +1005,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           playerId,
           name,
           displayName: displayName ?? name,
@@ -1030,7 +1028,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/players/${playerId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", ...updates }),
+        body: JSON.stringify(updates),
       });
       if (!res.ok) throw new Error("Failed to update player");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1047,7 +1045,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/players/${playerId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to archive player");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1066,7 +1064,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           sessionId,
           title,
           scheduledAt,
@@ -1090,7 +1087,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/prep`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", ...updates })
+        body: JSON.stringify(updates)
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to update session preparation"));
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1108,7 +1105,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/cancel`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" })
+        body: JSON.stringify({})
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to cancel session"));
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1126,7 +1123,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/archive`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" })
+        body: JSON.stringify({})
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to archive session"));
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1144,7 +1141,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/activate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" })
+        body: JSON.stringify({})
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to activate session"));
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1164,7 +1161,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           sessionId,
           title
         })
@@ -1186,7 +1182,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           clueEntityId,
           audience,
           note
@@ -1209,7 +1204,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           summary
         })
       });
@@ -1230,7 +1224,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           ...eventData
         })
       });
@@ -1556,7 +1549,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", canvasId, title, kind, description }),
+        body: JSON.stringify({ canvasId, title, kind, description }),
       });
       if (!res.ok) throw new Error("Failed to create canvas");
       set({
@@ -1633,7 +1626,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", node: nodeObj }),
+        body: JSON.stringify({ node: nodeObj }),
       });
       if (!res.ok) throw new Error("Failed to place node");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1665,7 +1658,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", updates }),
+        body: JSON.stringify({ updates }),
       });
       if (!res.ok) throw new Error("Failed to update node");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1708,7 +1701,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/layout`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", nodeUpdates }),
+        body: JSON.stringify({ nodeUpdates }),
       });
       if (!res.ok) throw new Error("Failed to update layout");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1739,7 +1732,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to remove node");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1787,7 +1780,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", edge: edgeObj }),
+        body: JSON.stringify({ edge: edgeObj }),
       });
       if (!res.ok) throw new Error("Failed to add edge");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1819,7 +1812,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges/${edgeId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", updates }),
+        body: JSON.stringify({ updates }),
       });
       if (!res.ok) throw new Error("Failed to update edge");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1849,7 +1842,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges/${edgeId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to remove edge");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1867,7 +1860,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}/convert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", ...payload }),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Failed to convert note to entity");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1894,7 +1887,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", viewport }),
+        body: JSON.stringify({ viewport }),
       });
     } catch (err: any) {
       console.error("Failed to save viewport", err);
