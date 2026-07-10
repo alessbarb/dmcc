@@ -5,7 +5,9 @@ import sharp from "sharp";
 
 const IMAGE_EXTS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"]);
 const THUMB_DIR = ".thumbs";
-const ASSETS_ROOT = join(process.cwd(), "public", "assets");
+const ASSETS_ROOT = process.env.DMCC_ASSETS_ROOT
+  ? join(process.cwd(), process.env.DMCC_ASSETS_ROOT)
+  : join(process.cwd(), "public", "assets");
 const THUMBS_ROOT = join(ASSETS_ROOT, THUMB_DIR);
 
 interface ThumbPreset {
@@ -90,7 +92,7 @@ async function generateThumb(sourcePath: string): Promise<boolean> {
 
 async function main() {
   if (!existsSync(ASSETS_ROOT)) {
-    console.log("No public/assets directory found. Skipping thumbnail generation.");
+    console.log(`No assets directory found at ${ASSETS_ROOT}. Skipping thumbnail generation.`);
     return;
   }
 
@@ -111,7 +113,7 @@ async function main() {
     }
   }
 
-  console.log(`Asset thumbnails ready. generated=${generated} skipped=${skipped} total=${images.length}`);
+  console.log(`Asset thumbnails ready in ${ASSETS_ROOT}. generated=${generated} skipped=${skipped} total=${images.length}`);
 }
 
 await main();
