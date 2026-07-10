@@ -52,15 +52,13 @@ export function PlayersPage(props: PlayersPageProps = {}) {
     const activeCampaignId = store.activeCampaignId;
     if (!activeCampaignId) return;
     try {
-      const res = await apiFetch(`/api/campaigns/${activeCampaignId}/invitations`, {
-        vaultId: store.activeVaultId || "default",
-      });
+      const res = await apiFetch(`/api/campaigns/${activeCampaignId}/invitations`);
       if (res.ok) {
         const data = await res.json();
         setInvitations(data.invitations ?? []);
       }
     } catch { /* non-fatal */ }
-  }, [store.activeCampaignId, store.activeVaultId]);
+  }, [store.activeCampaignId]);
 
   useEffect(() => {
     void fetchInvitations();
@@ -90,7 +88,6 @@ export function PlayersPage(props: PlayersPageProps = {}) {
     setNewInviteUrl(null);
     try {
       const res = await apiFetch(`/api/campaigns/${activeCampaignId}/invitations`, {
-        vaultId: store.activeVaultId || "default",
         init: {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -116,7 +113,6 @@ export function PlayersPage(props: PlayersPageProps = {}) {
     if (!activeCampaignId) return;
     try {
       await apiFetch(`/api/campaigns/${activeCampaignId}/invitations/${inviteId}`, {
-        vaultId: store.activeVaultId || "default",
         init: { method: "DELETE" },
       });
       await fetchInvitations();

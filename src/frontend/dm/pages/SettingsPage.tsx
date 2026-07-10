@@ -11,8 +11,6 @@ export interface SettingsPageProps {
   campaigns?: any[];
   activeCampaignId?: string | null;
   campaignState?: any;
-  vaults?: any[];
-  activeVaultId?: string | null;
   createBackup?: () => Promise<any>;
   exportJson?: () => Promise<any>;
   exportMarkdown?: () => Promise<any>;
@@ -28,7 +26,6 @@ export function SettingsPage(props: SettingsPageProps = {}) {
   const exportJson = props.exportJson ?? store.exportJson;
   const exportMarkdown = props.exportMarkdown ?? store.exportMarkdown;
   const addToast = props.addToast ?? toastAdd;
-  const activeVaultId = props.activeVaultId ?? store.activeVaultId;
   const [copiedExportPath, setCopiedExportPath] = React.useState(false);
   const [lastMarkdownExport, setLastMarkdownExport] = useState<any | null>(null);
 
@@ -43,9 +40,7 @@ export function SettingsPage(props: SettingsPageProps = {}) {
 const handleDownloadMarkdown = async () => {
     if (!lastMarkdownExport?.downloadUrl) return;
     try {
-      const res = await apiFetch(lastMarkdownExport.downloadUrl, {
-        vaultId: activeVaultId || "default",
-      });
+      const res = await apiFetch(lastMarkdownExport.downloadUrl);
       if (!res.ok) throw new Error("download failed");
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);

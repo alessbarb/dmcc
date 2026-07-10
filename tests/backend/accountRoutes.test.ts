@@ -3,11 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { createServer } from "../../src/backend/server/createServer.js";
-import {
-  addCampaignMembership,
-  upsertDmProfile,
-  upsertPlayerProfile,
-} from "../../src/backend/server/userAuthStore.js";
+import { upsertDmProfile, upsertPlayerProfile } from "../../src/backend/server/userAuthStore.js";
+import { addCampaignMembership } from "../../src/backend/server/userAuthAccountOps.js";
 
 const cleanup: Array<() => Promise<void>> = [];
 

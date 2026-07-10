@@ -145,8 +145,8 @@ export function PremadeCampaignPreviewPage() {
   useEffect(() => {
     const init = async () => {
       const status = await fetchAuthStatus().catch(() => null);
-      if (!status?.dmSessionValid) {
-        await navigate({ to: status?.dmAccountConfigured || status?.dmPinConfigured ? "/dm/unlock" : "/dm/setup" });
+      if (!status?.sessionValid) {
+        await navigate({ to: status?.accountConfigured ? "/dm/unlock" : "/dm/setup" });
         return;
       }
       await Promise.all([fetchPremadeCampaignTemplate(templateId), fetchCampaigns().catch(() => {})]);

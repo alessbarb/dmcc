@@ -1,30 +1,12 @@
 import type { AuthStatus, AuthUser } from "./authTypes.js";
-import { readIdentity, setDmLastUnlocked, upsertDmProfile } from "./localIdentity.js";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 
-function rememberUser(user?: AuthUser | null): void {
-  if (!user?.userId || !user.email) return;
-  upsertDmProfile({
-    dmId: user.userId,
-    email: user.email,
-    displayName: user.displayName,
-    avatarUrl: user.avatarUrl,
-  });
-}
-
 function unauthenticatedStatus(): AuthStatus {
-  const accountHints = readIdentity().dmProfiles;
   return {
-    accountConfigured: accountHints.length > 0,
-    dmAccountConfigured: accountHints.length > 0,
-    dmPinConfigured: accountHints.length > 0,
-    dmSessionValid: false,
+    accountConfigured: false,
     sessionValid: false,
     user: null,
-    dm: null,
-    dmProfiles: accountHints,
-    localRequest: true,
-    lanExposed: false,
+    memberships: [],
   };
 }
 
@@ -44,35 +26,14 @@ export async function fetchAuthStatus(): Promise<AuthStatus> {
       }
     : null);
 
-  if (user) rememberUser(user);
 
-  const sessionValid = Boolean(status.sessionValid ?? status.dmSessionValid ?? user);
-  const accountConfigured = Boolean(status.accountConfigured ?? status.dmAccountConfigured ?? status.dmPinConfigured);
-  const rememberedProfiles = readIdentity().dmProfiles;
-
+  const sessionValid = Boolean(status.sessionValid ?? user);
+  const accountConfigured = Boolean(status.accountConfigured);
   return {
     accountConfigured,
-    dmAccountConfigured: accountConfigured,
-    dmPinConfigured: accountConfigured,
-    legacyPinConfigured: false,
     sessionValid,
-    dmSessionValid: sessionValid,
     user,
-    dm: user
-      ? {
-          dmId: user.userId,
-          userId: user.userId,
-          email: user.email,
-          displayName: user.displayName,
-          avatarUrl: user.avatarUrl,
-        }
-      : null,
-    dmProfiles: Array.isArray(status.dmProfiles) && status.dmProfiles.length > 0
-      ? status.dmProfiles
-      : rememberedProfiles,
     memberships: status.memberships ?? [],
-    localRequest: status.localRequest ?? true,
-    lanExposed: Boolean(status.lanExposed),
   };
 }
 
@@ -85,9 +46,7 @@ export async function setupDmAccount(payload: { email: string; secret: string; d
     },
   });
   if (!register.ok) throw new Error(await readApiError(register, "Failed to create account"));
-  const data = await register.json().catch(() => null);
-  rememberUser(data?.user);
-  setDmLastUnlocked();
+  await register.json().catch(() => null);
 }
 
 export async function loginDm(email: string, secret: string): Promise<void> {
@@ -103,9 +62,7 @@ export async function loginDm(email: string, secret: string): Promise<void> {
     const suffix = retryAfter > 0 ? ` (${retryAfter}s)` : "";
     throw new Error(`${await readApiError(res, "Invalid email or password")}${suffix}`);
   }
-  const { user } = await res.json();
-  setDmLastUnlocked();
-  rememberUser(user);
+  await res.json().catch(() => null);
 }
 
 export async function requestPasswordReset(email: string): Promise<{ resetToken?: string; expiresInSeconds?: number }> {

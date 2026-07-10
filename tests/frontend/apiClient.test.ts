@@ -9,8 +9,7 @@ describe("apiFetch", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     await apiFetch("/api/me/campaigns", {
-      vaultId: "vault_a",
-      init: { headers: { "x-role": "dm", "x-player-id": "spoofed" } },
+      init: { headers: { "x-vault-id": "vault_a", "x-role": "dm", "x-player-id": "spoofed" } },
     });
 
     const [, init] = fetchMock.mock.calls[0];

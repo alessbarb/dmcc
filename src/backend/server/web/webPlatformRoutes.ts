@@ -1343,21 +1343,24 @@ export async function registerWebPlatformRoutes(server: FastifyInstance) {
     return { user };
   });
 
-  // Compatibility endpoint for frontend chunks that still probe the old auth status route.
-  // In PostgreSQL web mode, account state is session/cookie based and /api/me is preferred.
+  // Web auth status exposes the session/cookie contract used by the frontend.
   server.get("/api/auth/status", async (request) => {
     const user = (request as any).webUser as WebUser | undefined;
     const [{ count }] = await db.select({ count: sql<number>`count(*)::int` }).from(schema.users);
-    const hasUsers = count > 0;
+    const memberships = user
+      ? (await listAccessibleCampaigns(user.userId)).map((campaign) => ({
+          campaignId: campaign.campaignId,
+          userId: user.userId,
+          role: campaign.role,
+          playerId: campaign.playerId ?? null,
+        }))
+      : [];
+
     return {
-      dmAccountConfigured: hasUsers,
-      dmPinConfigured: hasUsers,
-      dmSessionValid: Boolean(user),
-      dm: user ? { dmId: user.userId, email: user.email, displayName: user.displayName } : null,
-      dmProfiles: user ? [{ dmId: user.userId, email: user.email, displayName: user.displayName }] : [],
-      localRequest: true,
-      lanExposed: false,
-      storageMode: "postgres",
+      accountConfigured: count > 0,
+      sessionValid: Boolean(user),
+      user: user ?? null,
+      memberships,
     };
   });
 

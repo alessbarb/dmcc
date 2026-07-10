@@ -14,12 +14,23 @@ import {
   Compass
 } from "lucide-react";
 import { fetchAuthStatus, logoutDm } from "./shared/auth/authClient.js";
-import { readIdentity } from "./shared/auth/localIdentity.js";
 import type { AuthStatus } from "./shared/auth/authTypes.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "./shared/components/PortalTopBar.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
 import { apiFetch } from "./shared/api/apiClient.js";
+import { getPlayerCampaigns } from "./shared/api/webProductClient.js";
+import type { PlayerCampaignSummary } from "./shared/api/webProductClient.js";
+
+
+interface PlayerCampaignCard {
+  campaignId: string;
+  playerId: string;
+  displayName: string;
+  campaignTitle: string;
+  avatarUrl?: string;
+  characterName?: string;
+}
 
 function formatCampaignSystem(system?: string) {
   if (system === "dnd_srd_5_2_1") return "D&D 5e";
@@ -35,24 +46,30 @@ export function SmartLanding() {
   const [loading, setLoading] = useState(true);
   const [hasDmSession, setHasDmSession] = useState(false);
   const [campaigns, setCampaigns] = useState<any[]>([]);
-  const [playerProfiles, setPlayerProfiles] = useState<any[]>([]);
+  const [playerCampaignCards, setPlayerCampaignCards] = useState<PlayerCampaignCard[]>([]);
 
   useEffect(() => {
     const init = async () => {
-      const identity = readIdentity();
-      setPlayerProfiles(identity.playerProfiles || []);
-
       try {
         const authStatus = await fetchAuthStatus();
         setStatus(authStatus);
-        setHasDmSession(authStatus.dmSessionValid);
+        setHasDmSession(authStatus.sessionValid);
 
-        if (authStatus.dmSessionValid) {
-          const res = await apiFetch("/api/campaigns", { vaultId: identity.vaultId });
+        if (authStatus.sessionValid) {
+          const res = await apiFetch("/api/campaigns");
           if (res.ok) {
             const data = await res.json();
             setCampaigns(Array.isArray(data) ? data : []);
           }
+
+          const playerCampaigns = await getPlayerCampaigns().catch(() => ({ campaigns: [] }));
+          setPlayerCampaignCards(playerCampaigns.campaigns.map((campaign: PlayerCampaignSummary) => ({
+            campaignId: campaign.campaignId,
+            playerId: campaign.playerId ?? campaign.campaignId,
+            displayName: campaign.title,
+            campaignTitle: campaign.title,
+            avatarUrl: campaign.coverUrl ?? undefined,
+          })));
         }
       } catch {
         // Server unreachable
@@ -76,7 +93,7 @@ export function SmartLanding() {
   const handleDmNavigate = () => {
     if (hasDmSession) {
       navigate({ to: "/dm" });
-    } else if (status?.dmAccountConfigured || status?.dmPinConfigured) {
+    } else if (status?.accountConfigured) {
       navigate({ to: "/dm/unlock" });
     } else {
       navigate({ to: "/dm/setup" });
@@ -138,7 +155,7 @@ export function SmartLanding() {
                   <div className="card-body">
                     <p className="card-desc">{t("landing.dmDesc")}</p>
                     <button className="btn btn-gold btn-full">
-                      {status?.dmAccountConfigured || status?.dmPinConfigured ? t("landing.unlockArchive") : t("landing.serverConfig")}
+                      {status?.accountConfigured ? t("landing.unlockArchive") : t("landing.serverConfig")}
                       <ArrowRight size={16} />
                     </button>
                   </div>
@@ -253,7 +270,7 @@ export function SmartLanding() {
                 <h2>{t("landing.playerTitle")}</h2>
               </div>
 
-              {playerProfiles.length === 0 ? (
+              {playerCampaignCards.length === 0 ? (
                 // Player empty join state
                 <div className="glass-card player-join-card" onClick={() => navigate({ to: "/player/join" })}>
                   <div className="card-body">
@@ -273,11 +290,11 @@ export function SmartLanding() {
                 <div className="player-portal-stack">
                   <span className="section-label-amethyst">{t("landing.yourCharacters")}</span>
                   <div className="player-profiles-list">
-                    {playerProfiles.map((profile) => (
+                    {playerCampaignCards.map((profile) => (
                       <div
                         key={`${profile.campaignId}-${profile.playerId}`}
                         className="glass-card player-profile-row-card"
-                        onClick={() => navigate({ to: `/campaigns/${profile.campaignId}/player-portal` })}
+                        onClick={() => navigate({ to: `/player/campaigns/${profile.campaignId}/home` })}
                       >
                         <div className="card-body row-layout">
                           <div className="avatar-frame">

@@ -27,11 +27,11 @@ export function DmSetupPage() {
       .finally(() => setStatusLoading(false));
   }, []);
 
-  const hasExistingDm = Boolean(authStatus?.dmAccountConfigured || authStatus?.dmPinConfigured);
+  const hasExistingDm = Boolean(authStatus?.accountConfigured);
   const addingAnotherDm = hasExistingDm;
 
   const handleBack = () => {
-    if (authStatus?.dmSessionValid) {
+    if (authStatus?.sessionValid) {
       navigate({ to: "/portal" });
     } else if (hasExistingDm) {
       navigate({ to: "/dm/unlock" });

@@ -197,7 +197,7 @@ export function MainLanding() {
   useEffect(() => {
     fetchAuthStatus()
       .then((status) => {
-        if (status.dmSessionValid) void navigate({ to: "/portal" });
+        if (status.sessionValid) void navigate({ to: "/portal" });
         else setReady(true);
       })
       .catch(() => setReady(true));

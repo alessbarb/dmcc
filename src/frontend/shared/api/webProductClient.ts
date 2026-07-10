@@ -1,5 +1,13 @@
 import { apiFetch, readApiError } from "./apiClient.js";
 
+
+export interface PlayerCampaignSummary {
+  campaignId: string;
+  playerId?: string | null;
+  title: string;
+  coverUrl?: string | null;
+}
+
 async function readJson<T>(response: Response, fallback: string): Promise<T> {
   if (!response.ok) throw new Error(await readApiError(response, fallback));
   return response.json() as Promise<T>;
@@ -55,7 +63,7 @@ export async function revokeInvitation(campaignId: string, invitationId: string)
   }), "No se pudo revocar la invitación");
 }
 
-export async function getPlayerCampaigns(): Promise<{ campaigns: any[] }> {
+export async function getPlayerCampaigns(): Promise<{ campaigns: PlayerCampaignSummary[] }> {
   return readJson(await apiFetch("/api/player/campaigns"), "No se pudieron cargar las campañas del jugador");
 }
 

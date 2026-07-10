@@ -276,9 +276,6 @@ export interface CampaignStateStore {
   activeCanvasId: string | null;
   activeCanvasIdByCampaignId: Record<string, string | null>;
   
-  vaults: any[];
-  activeVaultId: string;
-  
   dashboard: any | null;
   whatNow: any | null;
   graph: { nodes: any[]; edges: any[] } | null;
@@ -297,10 +294,6 @@ export interface CampaignStateStore {
   isRelationModalOpen: boolean;
   setIsRelationModalOpen: (open: boolean) => void;
 
-  fetchVaults: () => Promise<void>;
-  createVault: (name: string) => Promise<void>;
-  setActiveVaultId: (vaultId: string) => void;
-  
   fetchCampaigns: () => Promise<void>;
   fetchPremadeCampaigns: () => Promise<void>;
   fetchPremadeCampaignTemplate: (templateId: string) => Promise<PremadeCampaignTemplate | null>;
@@ -429,9 +422,8 @@ const tabId = typeof crypto !== "undefined" && "randomUUID" in crypto
   ? crypto.randomUUID()
   : `tab_${Math.random().toString(36).slice(2)}`;
 
-const fetchWithVault = async (url: string, init?: RequestInit): Promise<Response> => {
-  const vaultId: string = useCampaignStore.getState().activeVaultId || "default";
-  const response = await apiFetch(url, { vaultId, init });
+const apiRequest = async (url: string, init?: RequestInit): Promise<Response> => {
+  const response = await apiFetch(url, { init });
   const method = (init?.method ?? "GET").toUpperCase();
   if (response.ok && !["GET", "HEAD", "OPTIONS"].includes(method)) {
     const campaignId = url.match(/^\/api\/campaigns\/([^/?]+)/)?.[1];
@@ -444,8 +436,7 @@ const syncChannel = typeof window !== "undefined" ? new BroadcastChannel("dmcc_c
 
 const broadcastMutation = (campaignId: string) => {
   if (syncChannel) {
-    const vaultId = useCampaignStore.getState().activeVaultId || "default";
-    syncChannel.postMessage({ type: "MUTATION", vaultId, campaignId, tabId });
+    syncChannel.postMessage({ type: "MUTATION", campaignId, tabId });
   }
 };
 
@@ -462,8 +453,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   canvasesById: {},
   activeCanvasId: null,
   activeCanvasIdByCampaignId: {},
-  vaults: [],
-  activeVaultId: "default",
   dashboard: null,
   whatNow: null,
   graph: null,
@@ -480,87 +469,26 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   isRelationModalOpen: false,
   setIsRelationModalOpen: (open) => set({ isRelationModalOpen: open }),
 
-  fetchVaults: async () => {
-    try {
-      const res = await fetchWithVault("/api/vaults");
-      if (res.ok) {
-        const vaults = await res.json();
-        set({ vaults });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  },
-
-  createVault: async (name: string) => {
-    set({ loading: true, error: null });
-    try {
-      const res = await fetchWithVault("/api/vaults", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name })
-      });
-      if (!res.ok) throw new Error("Failed to create vault");
-      const vaultInfo = await res.json();
-      await get().fetchVaults();
-      set({
-        activeVaultId: vaultInfo.vaultId,
-        campaigns: [],
-        activeCampaignId: null,
-        activeCampaignLoadId: null,
-        activeCampaignRole: "dm",
-        activeCanvasIdByCampaignId: {},
-        ...campaignScopedReset(),
-        ...playerScopedReset(),
-        loading: false,
-        error: null,
-      });
-      await get().fetchCampaigns();
-    } catch (err: any) {
-      set({ error: err.message, loading: false });
-    }
-  },
-
-  setActiveVaultId: (vaultId: string) => {
-    set({
-      activeVaultId: vaultId,
-      campaigns: [],
-      activeCampaignId: null,
-      activeCampaignLoadId: null,
-      activeCampaignRole: "dm",
-      activeCanvasIdByCampaignId: {},
-      ...campaignScopedReset(),
-      ...playerScopedReset(),
-      loading: false,
-      error: null,
-    });
-    void get().fetchCampaigns();
-  },
-
   fetchCampaigns: async () => {
-    const vaultId = get().activeVaultId || "default";
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault("/api/campaigns");
+      const res = await apiRequest("/api/campaigns");
       if (!res.ok) {
         const body = await res.json().catch(() => null);
         const message = body?.error ?? `Failed to fetch campaigns (${res.status})`;
         throw new Error(message);
       }
       const campaigns = await res.json();
-      if ((get().activeVaultId || "default") !== vaultId) return;
       set({ campaigns, loading: false });
     } catch (err: any) {
-      if ((get().activeVaultId || "default") === vaultId) {
-        set({ error: err.message, loading: false });
-      }
+      set({ error: err.message, loading: false });
     }
   },
 
   fetchPremadeCampaigns: async () => {
     const locale = getPremadeLocale();
     try {
-      const res = await fetchWithVault(withPremadeLocale("/api/premade-campaigns"));
+      const res = await apiRequest(withPremadeLocale("/api/premade-campaigns"));
       if (!res.ok) {
         const message = await readApiError(res, "Failed to fetch premade campaigns");
         throw new Error(message);
@@ -576,7 +504,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const locale = getPremadeLocale();
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(withPremadeLocale(`/api/premade-campaigns/${encodeURIComponent(templateId)}`));
+      const res = await apiRequest(withPremadeLocale(`/api/premade-campaigns/${encodeURIComponent(templateId)}`));
       if (!res.ok) {
         const message = await readApiError(res, "Failed to fetch premade campaign");
         throw new Error(message);
@@ -593,7 +521,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   importPremadeCampaign: async (templateId, options) => {
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/premade-campaigns/${encodeURIComponent(templateId)}/import`, {
+      const res = await apiRequest(`/api/premade-campaigns/${encodeURIComponent(templateId)}/import`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...(options ?? {}), locale: options?.locale ?? getPremadeLocale() }),
@@ -664,7 +592,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     });
 
     try {
-      const resDetails = await fetchWithVault(`/api/campaigns/${campaignId}`);
+      const resDetails = await apiRequest(`/api/campaigns/${campaignId}`);
       if (!resDetails.ok) throw new Error("Failed to load campaign state");
       const rawCampaignState = await resDetails.json();
       const campaignState = normalizeCampaignState(rawCampaignState);
@@ -678,12 +606,12 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
 
       if (role === "dm") {
         const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility, resLanStatus] = await Promise.all([
-          fetchWithVault(`/api/campaigns/${campaignId}/dashboard`),
-          fetchWithVault(`/api/campaigns/${campaignId}/what-now`),
-          fetchWithVault(`/api/campaigns/${campaignId}/graph`),
-          fetchWithVault(`/api/campaigns/${campaignId}/timeline`),
-          fetchWithVault(`/api/campaigns/${campaignId}/visibility`),
-          fetchWithVault(`/api/campaigns/${campaignId}/lan-status`),
+          apiRequest(`/api/campaigns/${campaignId}/dashboard`),
+          apiRequest(`/api/campaigns/${campaignId}/what-now`),
+          apiRequest(`/api/campaigns/${campaignId}/graph`),
+          apiRequest(`/api/campaigns/${campaignId}/timeline`),
+          apiRequest(`/api/campaigns/${campaignId}/visibility`),
+          apiRequest(`/api/campaigns/${campaignId}/lan-status`),
         ]);
 
         dashboard = resDashboard.ok ? await resDashboard.json() : null;
@@ -693,7 +621,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         visibility = resVisibility.ok ? await resVisibility.json() : null;
         lanStatus = resLanStatus.ok ? await resLanStatus.json() : null;
       } else {
-        const resGraph = await fetchWithVault(`/api/campaigns/${campaignId}/graph`);
+        const resGraph = await apiRequest(`/api/campaigns/${campaignId}/graph`);
         graph = resGraph.ok ? await resGraph.json() : null;
       }
 
@@ -701,7 +629,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         campaignState.players = [];
       }
       if (role === "dm") {
-        const resPlayers = await fetchWithVault(`/api/campaigns/${campaignId}/players`);
+        const resPlayers = await apiRequest(`/api/campaigns/${campaignId}/players`);
         if (resPlayers.ok) {
           campaignState.players = await resPlayers.json();
         }
@@ -752,7 +680,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ activeCampaignLoadId: loadId, error: null });
 
     try {
-      const resDetails = await fetchWithVault(`/api/campaigns/${campaignId}`);
+      const resDetails = await apiRequest(`/api/campaigns/${campaignId}`);
       if (!resDetails.ok) throw new Error("Failed to load campaign state");
       const campaignState = normalizeCampaignState(await resDetails.json());
 
@@ -765,12 +693,12 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
 
       if (role === "dm") {
         const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility, resLanStatus] = await Promise.all([
-          fetchWithVault(`/api/campaigns/${campaignId}/dashboard`),
-          fetchWithVault(`/api/campaigns/${campaignId}/what-now`),
-          fetchWithVault(`/api/campaigns/${campaignId}/graph`),
-          fetchWithVault(`/api/campaigns/${campaignId}/timeline`),
-          fetchWithVault(`/api/campaigns/${campaignId}/visibility`),
-          fetchWithVault(`/api/campaigns/${campaignId}/lan-status`),
+          apiRequest(`/api/campaigns/${campaignId}/dashboard`),
+          apiRequest(`/api/campaigns/${campaignId}/what-now`),
+          apiRequest(`/api/campaigns/${campaignId}/graph`),
+          apiRequest(`/api/campaigns/${campaignId}/timeline`),
+          apiRequest(`/api/campaigns/${campaignId}/visibility`),
+          apiRequest(`/api/campaigns/${campaignId}/lan-status`),
         ]);
 
         dashboard = resDashboard.ok ? await resDashboard.json() : null;
@@ -780,7 +708,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         visibility = resVisibility.ok ? await resVisibility.json() : null;
         lanStatus = resLanStatus.ok ? await resLanStatus.json() : null;
       } else {
-        const resGraph = await fetchWithVault(`/api/campaigns/${campaignId}/graph`);
+        const resGraph = await apiRequest(`/api/campaigns/${campaignId}/graph`);
         graph = resGraph.ok ? await resGraph.json() : null;
       }
 
@@ -788,7 +716,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         campaignState.players = [];
       }
       if (role === "dm") {
-        const resPlayers = await fetchWithVault(`/api/campaigns/${campaignId}/players`);
+        const resPlayers = await apiRequest(`/api/campaigns/${campaignId}/players`);
         if (resPlayers.ok) {
           campaignState.players = await resPlayers.json();
         }
@@ -839,7 +767,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   deleteCampaign: async (campaignId: string, confirmTitle: string) => {
-    const res = await fetchWithVault(`/api/campaigns/${campaignId}`, {
+    const res = await apiRequest(`/api/campaigns/${campaignId}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ confirmTitle }),
@@ -860,10 +788,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const campaignId = `cmp_${createId("cmp").split("_")[1]}`;
-      const res = await fetchWithVault("/api/campaigns", {
+      const res = await apiRequest("/api/campaigns", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ campaignId, actorId: "usr_dm", title, system, coverUrl })
+        body: JSON.stringify({ campaignId, title, system, coverUrl })
       });
       if (!res.ok) throw new Error("Failed to create campaign");
       await get().fetchCampaigns();
@@ -879,7 +807,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   updateCampaign: async (campaignId, updates) => {
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${campaignId}`, {
+      const res = await apiRequest(`/api/campaigns/${campaignId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
@@ -907,7 +835,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const entityId = payload.entityId || `ent_${createId("ent").split("_")[1]}`;
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/entities`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/entities`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -933,10 +861,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const relationId = payload.relationId || `rel_${createId("rel").split("_")[1]}`;
       const { force, ...rest } = payload;
       const url = `/api/campaigns/${activeCampaignId}/relations${force ? "?force=true" : ""}`;
-      const res = await fetchWithVault(url, {
+      const res = await apiRequest(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", relationId, ...rest })
+        body: JSON.stringify({ relationId, ...rest })
       });
       if (res.status === 409) {
         const message = "Duplicate relation: this exact connection already exists.";
@@ -961,11 +889,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     const factId = `fact_${createId("fact").split("_")[1]}`;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/facts`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/facts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           factId,
           ...payload
         })
@@ -983,7 +910,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/facts/${factId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/facts/${factId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
@@ -1001,7 +928,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/entities/${entityId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/entities/${entityId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
@@ -1022,10 +949,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/entities/${entityId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/entities/${entityId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to archive entity");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1039,10 +966,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/relations/${relationId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/relations/${relationId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to archive relation");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1056,7 +983,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/relations/${relationId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/relations/${relationId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
@@ -1074,11 +1001,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const playerId = `ply_${createId("ply").split("_")[1]}`;
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/players`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/players`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           playerId,
           name,
           displayName: displayName ?? name,
@@ -1099,10 +1025,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/players/${playerId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/players/${playerId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", ...updates }),
+        body: JSON.stringify(updates),
       });
       if (!res.ok) throw new Error("Failed to update player");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1116,10 +1042,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/players/${playerId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/players/${playerId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to archive player");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1134,11 +1060,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const sessionId = `sess_${createId("sess").split("_")[1]}`;
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/prepared`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/prepared`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           sessionId,
           title,
           scheduledAt,
@@ -1159,10 +1084,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/prep`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/prep`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", ...updates })
+        body: JSON.stringify(updates)
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to update session preparation"));
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1177,10 +1102,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/cancel`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/cancel`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" })
+        body: JSON.stringify({})
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to cancel session"));
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1195,10 +1120,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/archive`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/archive`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" })
+        body: JSON.stringify({})
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to archive session"));
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1213,10 +1138,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/activate`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/activate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" })
+        body: JSON.stringify({})
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to activate session"));
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1232,11 +1157,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const sessionId = `sess_${createId("sess").split("_")[1]}`;
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           sessionId,
           title
         })
@@ -1254,11 +1178,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/reveal-clue`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/reveal-clue`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           clueEntityId,
           audience,
           note
@@ -1277,11 +1200,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/close`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/close`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           summary
         })
       });
@@ -1298,11 +1220,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/events`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/sessions/${sessionId}/events`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          actorId: "usr_dm",
           ...eventData
         })
       });
@@ -1317,7 +1238,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   exportJson: async () => {
     const { activeCampaignId } = get();
     if (!activeCampaignId) throw new Error("No active campaign");
-    const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/export/json`, { method: "POST" });
+    const res = await apiRequest(`/api/campaigns/${activeCampaignId}/export/json`, { method: "POST" });
     if (!res.ok) throw new Error("Failed to export JSON");
     return res.json();
   },
@@ -1325,7 +1246,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   exportMarkdown: async () => {
     const { activeCampaignId } = get();
     if (!activeCampaignId) throw new Error("No active campaign");
-    const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/export/markdown`, { method: "POST" });
+    const res = await apiRequest(`/api/campaigns/${activeCampaignId}/export/markdown`, { method: "POST" });
     if (!res.ok) throw new Error("Failed to export Markdown");
     return res.json();
   },
@@ -1333,7 +1254,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   createBackup: async () => {
     const { activeCampaignId } = get();
     if (!activeCampaignId) throw new Error("No active campaign");
-    const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/backups`, { method: "POST" });
+    const res = await apiRequest(`/api/campaigns/${activeCampaignId}/backups`, { method: "POST" });
     if (!res.ok) throw new Error("Failed to create backup");
     return res.json();
   },
@@ -1343,7 +1264,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/restore`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/restore`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ backupId })
@@ -1360,7 +1281,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/settings`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/settings`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(settings)
@@ -1377,7 +1298,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/lan/toggle`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/lan/toggle`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ enabled })
@@ -1394,7 +1315,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   createTag: async (name: string, color?: string) => {
     const { activeCampaignId } = get();
     if (!activeCampaignId) throw new Error("No active campaign");
-    const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/tags`, {
+    const res = await apiRequest(`/api/campaigns/${activeCampaignId}/tags`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, color }),
@@ -1421,7 +1342,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     });
 
     try {
-      const res = await fetchWithVault(`/api/campaigns/${campaignId}/player-portal/state`);
+      const res = await apiRequest(`/api/campaigns/${campaignId}/player-portal/state`);
       if (!res.ok) throw new Error(await readApiError(res, "Failed to load player portal state"));
       const playerPortalState = await res.json();
       if (get().activeCampaignId !== campaignId || get().activeCampaignLoadId !== loadId || get().activeCampaignRole !== "player") {
@@ -1439,7 +1360,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/status`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/player-portal/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -1456,7 +1377,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     try {
       const resourceId = typeof payload?.resourceId === "string" ? payload.resourceId : null;
-      const res = await fetchWithVault(
+      const res = await apiRequest(
         resourceId
           ? `/api/campaigns/${activeCampaignId}/player-portal/resources/${resourceId}`
           : `/api/campaigns/${activeCampaignId}/player-portal/resources`,
@@ -1477,7 +1398,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/notes`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/player-portal/notes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -1493,7 +1414,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/notes/${noteId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/player-portal/notes/${noteId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -1509,7 +1430,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/objectives`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/player-portal/objectives`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -1525,7 +1446,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/objectives/${objectiveId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/player-portal/objectives/${objectiveId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -1541,7 +1462,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/proposals`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/player-portal/proposals`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -1557,7 +1478,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/dm-summary`);
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/player-portal/dm-summary`);
       if (!res.ok) throw new Error("Failed to load DM player portal summary");
       const dmPlayerPortalSummary = await res.json();
       if (get().activeCampaignId === activeCampaignId) {
@@ -1574,7 +1495,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/proposals/${proposalId}/resolve`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/player-portal/proposals/${proposalId}/resolve`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -1590,7 +1511,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(
+      const res = await apiRequest(
         `/api/campaigns/${activeCampaignId}/player-portal/links`,
         {
           method: "POST",
@@ -1609,7 +1530,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     const activeCampaignId = get().activeCampaignId ?? get().playerPortalState?.campaign?.campaignId ?? sessionStorage.getItem("dmcc_activeCampaignId");
     if (!activeCampaignId) return;
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/player-portal/links/${playerId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/player-portal/links/${playerId}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error(await readApiError(res, "Failed to unlink character"));
@@ -1625,10 +1546,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const canvasId = createId("cvs");
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", canvasId, title, kind, description }),
+        body: JSON.stringify({ canvasId, title, kind, description }),
       });
       if (!res.ok) throw new Error("Failed to create canvas");
       set({
@@ -1702,10 +1623,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
 
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", node: nodeObj }),
+        body: JSON.stringify({ node: nodeObj }),
       });
       if (!res.ok) throw new Error("Failed to place node");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1734,10 +1655,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
 
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", updates }),
+        body: JSON.stringify({ updates }),
       });
       if (!res.ok) throw new Error("Failed to update node");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1777,10 +1698,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
 
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/layout`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/layout`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", nodeUpdates }),
+        body: JSON.stringify({ nodeUpdates }),
       });
       if (!res.ok) throw new Error("Failed to update layout");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1808,10 +1729,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
 
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to remove node");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1856,10 +1777,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
 
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", edge: edgeObj }),
+        body: JSON.stringify({ edge: edgeObj }),
       });
       if (!res.ok) throw new Error("Failed to add edge");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1888,10 +1809,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
 
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges/${edgeId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges/${edgeId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", updates }),
+        body: JSON.stringify({ updates }),
       });
       if (!res.ok) throw new Error("Failed to update edge");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1918,10 +1839,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
 
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges/${edgeId}`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/edges/${edgeId}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm" }),
+        body: JSON.stringify({}),
       });
       if (!res.ok) throw new Error("Failed to remove edge");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1936,10 +1857,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     if (!activeCampaignId) return;
     set({ loading: true, error: null });
     try {
-      const res = await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}/convert`, {
+      const res = await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}/nodes/${nodeId}/convert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", ...payload }),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Failed to convert note to entity");
       await get().reloadCampaignIfActive(activeCampaignId);
@@ -1963,10 +1884,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
 
     try {
-      await fetchWithVault(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}`, {
+      await apiRequest(`/api/campaigns/${activeCampaignId}/canvases/${canvasId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ actorId: "usr_dm", viewport }),
+        body: JSON.stringify({ viewport }),
       });
     } catch (err: any) {
       console.error("Failed to save viewport", err);
@@ -1979,9 +1900,7 @@ if (typeof window !== "undefined" && syncChannel) {
     if (event.data && event.data.type === "MUTATION" && event.data.tabId !== tabId) {
       const store = useCampaignStore.getState();
       const activeId = store.activeCampaignId;
-      const activeVaultId = store.activeVaultId || "default";
-      const messageVaultId = event.data.vaultId || "default";
-      if (event.data.campaignId === activeId && messageVaultId === activeVaultId) {
+      if (event.data.campaignId === activeId) {
         void store.reloadCampaign();
       }
     }
