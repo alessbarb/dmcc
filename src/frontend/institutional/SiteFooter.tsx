@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
-import { Lock, Shield } from "lucide-react";
+import { Shield } from "lucide-react";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
 import { institutionalContact } from "./institutionalContent.js";
 
@@ -19,7 +19,7 @@ export function SiteFooter() {
       <div className="rl-footer__inner">
         <div className="rl-footer__identity">
           <div className="rl-footer__brand"><Shield size={13} aria-hidden="true" /><span>DMCC — Campaign Memory Engine</span></div>
-          <div className="rl-footer__meta"><Lock size={11} aria-hidden="true" /><span>{t("appFooter.localData")} · {t("settings.exportJson")} · DMCC</span></div>
+          <div className="rl-footer__meta"><span>Privacy-aware campaign workspace · DMCC</span></div>
         </div>
 
         <nav className="rl-footer__nav" aria-label={t("appFooter.ariaLabel")}>
