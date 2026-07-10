@@ -30,15 +30,15 @@ async function withFakeAssets<T>(fn: (assetsDir: string) => Promise<T>): Promise
   await mkdir(futureThumbDir, { recursive: true });
   await writeFile(join(root, "assets", "avatars", "default-avatar.png"), "");
   await writeFile(join(root, "assets", "avatars", "fantasy", "aelar.png"), "");
-  await writeFile(join(root, "assets", ".thumbs", "avatars", "fantasy", "aelar.webp"), "");
+  await writeFile(join(root, "assets", ".thumbs", "avatars", "fantasy", "aelar.webp"), "fake-webp");
   await writeFile(join(root, "assets", "campaigns", "default-campaign-cover.jpg"), "");
   await writeFile(join(root, "assets", "campaigns", "dark-fantasy", "castle.webp"), "");
-  await writeFile(join(root, "assets", ".thumbs", "campaigns", "dark-fantasy", "castle.webp"), "");
+  await writeFile(join(root, "assets", ".thumbs", "campaigns", "dark-fantasy", "castle.webp"), "fake-webp");
   await writeFile(join(root, "assets", "entities", "default-entity.png"), "");
   await writeFile(join(root, "assets", "entities", "npcs", "innkeeper.png"), "");
-  await writeFile(join(root, "assets", ".thumbs", "entities", "npcs", "innkeeper.webp"), "");
+  await writeFile(join(root, "assets", ".thumbs", "entities", "npcs", "innkeeper.webp"), "fake-webp");
   await writeFile(join(root, "assets", "locations", "cities", "waterdeep.jpg"), "");
-  await writeFile(join(root, "assets", ".thumbs", "locations", "cities", "waterdeep.webp"), "");
+  await writeFile(join(root, "assets", ".thumbs", "locations", "cities", "waterdeep.webp"), "fake-webp");
   try {
     return await fn(root);
   } finally {
@@ -226,6 +226,33 @@ describe("GET /api/assets/catalog", () => {
           process.env.SESSION_SECRET = previousSessionSecret;
         }
       }
+    });
+  });
+
+  it("serves hidden thumbnail files explicitly", async () => {
+    await withFakeAssets(async (assetsDir) => {
+      const server = createServer({ assetsDir, storageMode: "legacy" });
+      const response = await server.inject({
+        method: "GET",
+        url: "/assets/.thumbs/avatars/fantasy/aelar.webp",
+      });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.headers["content-type"]).toContain("image/webp");
+      expect(response.headers["cache-control"]).toBe("public, max-age=31536000, immutable");
+      expect(response.body).toBe("fake-webp");
+    });
+  });
+
+  it("blocks thumbnail path traversal", async () => {
+    await withFakeAssets(async (assetsDir) => {
+      const server = createServer({ assetsDir, storageMode: "legacy" });
+      const response = await server.inject({
+        method: "GET",
+        url: "/assets/.thumbs/../../avatars/fantasy/aelar.webp",
+      });
+
+      expect([400, 404]).toContain(response.statusCode);
     });
   });
 
