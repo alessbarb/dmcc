@@ -9,56 +9,10 @@ export interface WebRoutesOptions {
   assetsDir?: string;
 }
 
-const AUTH_WEB_ROUTES = new Set([
-  "POST /api/auth/register",
-  "POST /api/auth/login",
-  "POST /api/auth/logout",
-  "POST /api/auth/forgot-password",
-  "POST /api/auth/reset-password",
-  "GET /api/auth/session",
-  "GET /api/auth/status",
-  "GET /api/me",
-  "GET /api/me/campaigns",
-]);
-
-/**
- * Transitional facade for Oleada 1.
- *
- * Auth routes now live in `routes/authWebRoutes.ts`, but the remaining platform
- * module still contains the old auth handlers until the monolith is physically
- * reduced. The facade lets us make the extracted module authoritative without
- * registering duplicate Fastify routes.
- *
- * Next cleanup: delete the now-skipped auth block from `webPlatformRoutes.ts`.
- */
-function createWebPlatformRoutesFacade(server: FastifyInstance): FastifyInstance {
-  const routeMethods = new Set(["get", "post"]);
-
-  return new Proxy(server, {
-    get(target, property, receiver) {
-      if (typeof property !== "string" || !routeMethods.has(property)) {
-        return Reflect.get(target, property, receiver);
-      }
-
-      const registerRoute = Reflect.get(target, property, receiver);
-      if (typeof registerRoute !== "function") {
-        return registerRoute;
-      }
-
-      return (routePath: unknown, ...args: unknown[]) => {
-        if (typeof routePath === "string" && AUTH_WEB_ROUTES.has(`${property.toUpperCase()} ${routePath}`)) {
-          return target;
-        }
-        return registerRoute.call(target, routePath, ...args);
-      };
-    },
-  });
-}
-
 /** Registers the PostgreSQL-backed multi-user web API surface. */
 export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOptions): void {
   void registerAuthWebRoutes(server);
-  registerWebPlatformRoutes(createWebPlatformRoutesFacade(server));
+  registerWebPlatformRoutes(server);
   server.register(registerAccountRoutes, { dataDir: options.dataDir });
   server.register(registerAssetRoutes, { assetsDir: options.assetsDir });
 }
