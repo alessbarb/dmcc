@@ -1,4 +1,5 @@
-.canvas-toolbar-panel--mobile {
+.canvas-toolbar-panel--mobile,
+.canvas-mobile-mode-panel {
   display: none;
 }
 
@@ -28,6 +29,42 @@
 @media (max-width: 720px), (hover: none) and (pointer: coarse) {
   .canvas-toolbar-panel--desktop {
     display: none !important;
+  }
+
+  .canvas-mobile-mode-panel {
+    display: block;
+    margin-top: 8px;
+    z-index: 35;
+    pointer-events: none;
+  }
+
+  .canvas-mobile-mode-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: calc(100dvw - 88px);
+    padding: 6px 11px;
+    border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--border-color));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg-card) 88%, transparent);
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    box-shadow: 0 10px 28px rgb(0 0 0 / 32%);
+    backdrop-filter: blur(14px);
+  }
+
+  .canvas-mobile-mode-pill span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .canvas-mobile-mode-pill--connect {
+    border-color: color-mix(in srgb, var(--accent-fire) 48%, var(--border-color));
+    color: var(--text-main);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 38%), 0 0 0 3px color-mix(in srgb, var(--accent-fire) 10%, transparent);
   }
 
   .canvas-toolbar-panel--mobile {
@@ -115,6 +152,10 @@
     background: transparent;
     box-shadow: none;
     backdrop-filter: none;
+  }
+
+  .canvas-mobile-tools-popover .canvas-toolbar--touch {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .canvas-mobile-tools-popover .canvas-mobile-tools-section {
@@ -216,6 +257,7 @@
   .canvas-page-container:fullscreen .canvas-header-bar,
   .canvas-page-container:fullscreen .canvas-mobile-dock,
   .canvas-page-container:fullscreen .canvas-mobile-more-panel,
+  .canvas-page-container:fullscreen .canvas-mobile-mode-panel,
   .canvas-page-container:fullscreen .canvas-toolbar-panel--mobile {
     display: none !important;
   }
