@@ -15,6 +15,7 @@ import { registerPlayerCharacterSelectionWebRoutes } from "./routes/playerCharac
 import { registerPlayerKnowledgeWebRoutes } from "./routes/playerKnowledgeWebRoutes.js";
 import { registerPlayerPortalWebRoutes } from "./routes/playerPortalWebRoutes.js";
 import { registerPremadeCampaignWebRoutes } from "./routes/premadeCampaignWebRoutes.js";
+import { registerRoleScopedCampaignListWebRoutes } from "./routes/roleScopedCampaignListWebRoutes.js";
 import { registerRulesWebRoutes } from "./routes/rulesWebRoutes.js";
 import { registerSearchWebRoutes } from "./routes/searchWebRoutes.js";
 
@@ -28,6 +29,7 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerAuthWebRoutes(server);
   void registerAccountWebRoutes(server);
   void registerHealthWebRoutes(server);
+  void registerRoleScopedCampaignListWebRoutes(server);
   void registerCampaignWebRoutes(server);
   void registerCanvasWebRoutes(server);
   void registerDmHubWebRoutes(server);
