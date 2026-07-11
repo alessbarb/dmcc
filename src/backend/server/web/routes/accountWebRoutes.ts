@@ -12,6 +12,7 @@ import {
 } from "../webSession.js";
 
 type SocialVisibility = Record<string, "private" | "dm" | "table" | "global">;
+type ProfileAudience = "owner" | "dm" | "table" | "global";
 
 type EditableSocialProfile = {
   userId?: string;
@@ -104,18 +105,49 @@ function toPlayerProfile(row: typeof schema.playerProfiles.$inferSelect): Editab
   };
 }
 
-function projectProfile(profile: EditableSocialProfile | undefined | null) {
+function canSeeProfileField(audience: ProfileAudience, visibility: SocialVisibility[string] | undefined): boolean {
+  const resolved = visibility ?? "private";
+  if (audience === "owner") return true;
+  if (audience === "dm") return resolved === "dm" || resolved === "table" || resolved === "global";
+  if (audience === "table") return resolved === "table" || resolved === "global";
+  return resolved === "global";
+}
+
+function projectProfile(profile: EditableSocialProfile | undefined | null, audience: ProfileAudience = "owner") {
   if (!profile) return null;
-  return {
-    displayName: profile.displayName ?? null,
-    avatarUrl: profile.avatarUrl ?? null,
-    pronouns: profile.pronouns ?? null,
-    timeZone: profile.timeZone ?? null,
-    biography: profile.biography ?? null,
-    contact: profile.contact ?? null,
+  const visibility = { ...defaultVisibility(), ...(profile.visibility ?? {}) };
+  const projected: Record<string, unknown> = {
     publicHandle: profile.publicHandle ?? null,
     publicationState: profile.publicationState,
   };
+
+  const maybeAdd = (field: keyof Pick<EditableSocialProfile, "displayName" | "avatarUrl" | "pronouns" | "timeZone" | "biography" | "contact">) => {
+    if (canSeeProfileField(audience, visibility[field])) {
+      projected[field] = profile[field] ?? null;
+    }
+  };
+
+  maybeAdd("displayName");
+  maybeAdd("avatarUrl");
+  maybeAdd("pronouns");
+  maybeAdd("timeZone");
+  maybeAdd("biography");
+  maybeAdd("contact");
+
+  return projected;
+}
+
+function projectProfilePreviews(profile: EditableSocialProfile | undefined | null) {
+  return {
+    owner: projectProfile(profile, "owner"),
+    dm: projectProfile(profile, "dm"),
+    table: projectProfile(profile, "table"),
+    global: projectProfile(profile, "global"),
+  };
+}
+
+function isPubliclyAddressable(profile: EditableSocialProfile | undefined | null): profile is EditableSocialProfile {
+  return Boolean(profile?.publicHandle && profile.publicationState !== "private");
 }
 
 function bodyString(value: unknown): string | undefined {
@@ -316,19 +348,21 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
         .from(schema.playerProfiles)
         .where(and(eq(schema.playerProfiles.userId, webUser.userId), eq(schema.playerProfiles.campaignId, request.query.campaignId)))
         .limit(1);
-      const projected = projectProfile(profile ? toPlayerProfile(profile) : null);
-      return { previews: { owner: projected, dm: projected, table: projected, global: projected } };
+      return { previews: projectProfilePreviews(profile ? toPlayerProfile(profile) : null) };
     }
     const [profile] = await db.select().from(schema.dmProfiles).where(eq(schema.dmProfiles.userId, webUser.userId)).limit(1);
-    const projected = projectProfile(toDmProfile(profile));
-    return { previews: { owner: projected, dm: projected, table: projected, global: projected } };
+    return { previews: projectProfilePreviews(toDmProfile(profile)) };
   });
 
   server.get<{ Params: { publicHandle: string } }>("/api/profiles/:publicHandle", async (request, reply) => {
     const [dmProfile] = await db.select().from(schema.dmProfiles).where(eq(schema.dmProfiles.publicHandle, request.params.publicHandle)).limit(1);
-    if (dmProfile) return { profile: projectProfile(toDmProfile(dmProfile)) };
+    const dm = toDmProfile(dmProfile);
+    if (isPubliclyAddressable(dm)) return { profile: projectProfile(dm, "global") };
+
     const [playerProfile] = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.publicHandle, request.params.publicHandle)).limit(1);
-    if (playerProfile) return { profile: projectProfile(toPlayerProfile(playerProfile)) };
+    const player = playerProfile ? toPlayerProfile(playerProfile) : undefined;
+    if (isPubliclyAddressable(player)) return { profile: projectProfile(player, "global") };
+
     reply.code(404);
     return { error: "Profile not found" };
   });
@@ -348,6 +382,7 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       reply.code(403);
       return { error: "Active campaign membership required" };
     }
+    const requesterIsDm = requester[0].role === "dm" || requester[0].role === "co_dm";
     const members = await db.select().from(schema.campaignMemberships).where(eq(schema.campaignMemberships.campaignId, request.params.campaignId));
     const userIds = members.map((member) => member.userId);
     const dmRows = userIds.length ? await db.select().from(schema.dmProfiles).where(inArray(schema.dmProfiles.userId, userIds)) : [];
@@ -357,9 +392,10 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
         const source = member.role === "dm" || member.role === "co_dm"
           ? toDmProfile(dmRows.find((profile) => profile.userId === member.userId))
           : playerRows.find((profile) => profile.userId === member.userId);
+        const audience: ProfileAudience = member.userId === webUser.userId ? "owner" : requesterIsDm ? "dm" : "table";
         const profile = member.role === "dm" || member.role === "co_dm"
-          ? projectProfile(source as EditableSocialProfile | undefined)
-          : projectProfile(source ? toPlayerProfile(source as typeof schema.playerProfiles.$inferSelect) : null);
+          ? projectProfile(source as EditableSocialProfile | undefined, audience)
+          : projectProfile(source ? toPlayerProfile(source as typeof schema.playerProfiles.$inferSelect) : null, audience);
         return profile ? [{ userId: member.userId, role: member.role, playerId: member.playerId ?? undefined, profile }] : [];
       }),
     };
