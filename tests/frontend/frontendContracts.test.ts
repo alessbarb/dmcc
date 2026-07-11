@@ -1,0 +1,92 @@
+import { describe, expect, it } from "vitest";
+import { readdirSync, readFileSync } from "node:fs";
+import { dirname, extname, join, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { sessionStatusSchema } from "../../src/core/domain/session/types.js";
+
+const REPOSITORY_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+const FRONTEND_ROOT = join(REPOSITORY_ROOT, "src/frontend");
+const ROUTER_PATH = join(FRONTEND_ROOT, "router.tsx");
+
+function listSourceFiles(root: string): string[] {
+  return readdirSync(root, { withFileTypes: true }).flatMap((entry) => {
+    const absolutePath = join(root, entry.name);
+    if (entry.isDirectory()) return listSourceFiles(absolutePath);
+    return [".ts", ".tsx"].includes(extname(entry.name)) ? [absolutePath] : [];
+  });
+}
+
+function registeredCampaignDestinations(routerSource: string): Set<string> {
+  const destinations = new Set<string>();
+  const routeBlocks = routerSource.matchAll(
+    /const\s+\w+Route\s*=\s*createRoute\(\{([\s\S]*?)^\}\);/gm,
+  );
+
+  for (const match of routeBlocks) {
+    const block = match[1];
+    const routePath = block.match(/\bpath:\s*"([^"]+)"/)?.[1];
+    if (!routePath) continue;
+
+    if (block.includes("getParentRoute: () => campaignRoute") && routePath !== "/") {
+      destinations.add(routePath.replace(/^\//, ""));
+    }
+
+    const rootCampaignPrefix = "/campaigns/$campaignId/";
+    if (
+      block.includes("getParentRoute: () => rootRoute") &&
+      routePath.startsWith(rootCampaignPrefix)
+    ) {
+      destinations.add(routePath.slice(rootCampaignPrefix.length));
+    }
+  }
+
+  return destinations;
+}
+
+describe("frontend contracts", () => {
+  it("keeps every campaign navigation target registered in the router", () => {
+    const routerSource = readFileSync(ROUTER_PATH, "utf8");
+    const registeredDestinations = registeredCampaignDestinations(routerSource);
+    const unknownReferences: string[] = [];
+    const campaignNavigationPattern =
+      /(?<!\/api)(?<!\/player)\/campaigns\/(?:\$\{[^}]+\}|\$campaignId)\/([a-z0-9-]+)/g;
+
+    for (const sourcePath of listSourceFiles(FRONTEND_ROOT)) {
+      const source = readFileSync(sourcePath, "utf8");
+      for (const match of source.matchAll(campaignNavigationPattern)) {
+        const destination = match[1];
+        if (!registeredDestinations.has(destination)) {
+          unknownReferences.push(`${relative(REPOSITORY_ROOT, sourcePath)} -> ${destination}`);
+        }
+      }
+    }
+
+    expect(registeredDestinations).toContain("rules");
+    expect(unknownReferences).toEqual([]);
+  });
+
+  it("uses the domain session-status contract in all prepared-session consumers", () => {
+    expect(sessionStatusSchema.options).toEqual([
+      "planned",
+      "active",
+      "closed",
+      "cancelled",
+      "archived",
+    ]);
+    expect(sessionStatusSchema.parse("planned")).toBe("planned");
+
+    const consumers: Array<[string, RegExp]> = [
+      ["src/frontend/dm/canvas/pages/CanvasPage.tsx", /session\.status === "planned"/],
+      ["src/frontend/dm/pages/DashboardPage.tsx", /s\.status === "planned"/],
+      ["src/frontend/dm/sessions/SessionPage.tsx", /session\.status === "planned"/],
+      ["src/frontend/dm/hub/useDmHubDashboard.ts", /raw\?\.status === "planned"/],
+      ["src/frontend/dm/hub/dmHubTypes.ts", /"running" \| "paused" \| "planned"/],
+      ["src/frontend/player/components/PlayerPortalView.tsx", /planned:\s*"Preparado"/],
+    ];
+
+    for (const [sourcePath, expectedUsage] of consumers) {
+      const source = readFileSync(join(REPOSITORY_ROOT, sourcePath), "utf8");
+      expect(source, sourcePath).toMatch(expectedUsage);
+    }
+  });
+});
