@@ -76,7 +76,7 @@ export async function registerDmDashboardWebRoutes(server: FastifyInstance): Pro
       }));
 
     return {
-      campaigns: dashboardCampaigns.map(({ activeTable: _activeTable, ...campaign }) => campaign),
+      campaigns: dashboardCampaigns,
       activeTables,
       alerts: [],
       recentActivity: [],
