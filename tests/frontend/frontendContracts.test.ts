@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { sessionStatusSchema } from "../../src/core/domain/session/types.js";
@@ -61,8 +61,42 @@ describe("frontend contracts", () => {
       }
     }
 
+    expect(registeredDestinations).toContain("command-center");
     expect(registeredDestinations).toContain("rules");
+    expect(registeredDestinations).not.toContain("dashboard");
+    expect(registeredDestinations).not.toContain("what-now");
+    expect(registeredDestinations).not.toContain("live");
+    expect(registeredDestinations).not.toContain("player-portal");
     expect(unknownReferences).toEqual([]);
+  });
+
+  it("does not retain duplicate campaign home modules", () => {
+    expect(existsSync(join(FRONTEND_ROOT, "dm/pages/DashboardPage.tsx"))).toBe(false);
+    expect(existsSync(join(FRONTEND_ROOT, "dm/pages/WhatNowPage.tsx"))).toBe(false);
+
+    const routerSource = readFileSync(ROUTER_PATH, "utf8");
+    expect(routerSource).not.toContain("DashboardPage");
+    expect(routerSource).not.toContain("WhatNowPage");
+    expect(routerSource).not.toMatch(/path:\s*"\/(?:dashboard|what-now|live)"/);
+  });
+
+  it("keeps /portal as the only player workspace", () => {
+    const routerSource = readFileSync(ROUTER_PATH, "utf8");
+    expect(routerSource).toMatch(/path:\s*"\/portal"/);
+    expect(routerSource).not.toContain("PlayerPortalPage");
+    expect(routerSource).not.toContain("WebPlayerPortalPage");
+    expect(routerSource).not.toContain("PlayerConstellationPage");
+    expect(routerSource).not.toMatch(/path:\s*"\/player\/campaigns\//);
+    expect(routerSource).not.toMatch(/path:\s*"\/campaigns\/\$campaignId\/player-portal"/);
+
+    for (const path of [
+      "player/pages/PlayerPortalPage.tsx",
+      "player/pages/WebPlayerPortalPage.tsx",
+      "player/pages/PlayerConstellationPage.tsx",
+      "player/components/PlayerPortalView.tsx",
+    ]) {
+      expect(existsSync(join(FRONTEND_ROOT, path)), path).toBe(false);
+    }
   });
 
   it("uses the domain session-status contract in all prepared-session consumers", () => {
@@ -77,11 +111,10 @@ describe("frontend contracts", () => {
 
     const consumers: Array<[string, RegExp]> = [
       ["src/frontend/dm/canvas/pages/CanvasPage.tsx", /session\.status === "planned"/],
-      ["src/frontend/dm/pages/DashboardPage.tsx", /s\.status === "planned"/],
+      ["src/frontend/dm/pages/CommandCenterPage.tsx", /session\.status === "planned"/],
       ["src/frontend/dm/sessions/SessionPage.tsx", /session\.status === "planned"/],
       ["src/frontend/dm/hub/useDmHubDashboard.ts", /raw\?\.status === "planned"/],
       ["src/frontend/dm/hub/dmHubTypes.ts", /"running" \| "paused" \| "planned"/],
-      ["src/frontend/player/components/PlayerPortalView.tsx", /planned:\s*"Preparado"/],
     ];
 
     for (const [sourcePath, expectedUsage] of consumers) {

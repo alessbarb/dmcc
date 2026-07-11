@@ -241,10 +241,10 @@ export function MainLanding() {
           <span>DMCC</span>
         </div>
         <div className="rl-nav__actions">
-          <button className="rl-nav__login" onClick={() => navigate({ to: "/login" })}>
+          <button className="rl-nav__login" onClick={() => navigate({ to: "/dm/login" })}>
             Iniciar sesión
           </button>
-          <button className="btn btn-gold btn-sm" onClick={() => navigate({ to: "/register" })}>
+          <button className="btn btn-gold btn-sm" onClick={() => navigate({ to: "/dm/setup" })}>
             Empezar
           </button>
         </div>
@@ -281,7 +281,7 @@ export function MainLanding() {
               <span className="rl-cta-primary__shimmer" />
               <span className="rl-cta-primary__text">{NetworkDING_COPY.heroPrimaryCta}</span>
             </button>
-            <button className="rl-cta-secondary" onClick={() => navigate({ to: "/register" })}>
+            <button className="rl-cta-secondary" onClick={() => navigate({ to: "/dm/setup" })}>
               {NetworkDING_COPY.heroSecondaryCta}
             </button>
           </div>
@@ -430,11 +430,11 @@ export function MainLanding() {
             Crea tu mundo, importa una aventura preparada o empieza desde cero.
           </p>
           <div className="rl-final-cta__buttons rl-animate rl-animate--pop" data-delay="280">
-            <button className="rl-cta-primary" onClick={() => navigate({ to: "/register" })}>
+            <button className="rl-cta-primary" onClick={() => navigate({ to: "/dm/setup" })}>
               <span className="rl-cta-primary__shimmer" />
               <span className="rl-cta-primary__text">Crear primera campaña</span>
             </button>
-            <button className="rl-cta-secondary" onClick={() => navigate({ to: "/login" })}>
+            <button className="rl-cta-secondary" onClick={() => navigate({ to: "/dm/login" })}>
               Iniciar sesión
             </button>
           </div>

@@ -5,9 +5,8 @@ import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
 import { fetchAuthStatus, login, setupDmAccount } from "../../shared/auth/authClient.js";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
-import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 
-type Membership = {
+ type Membership = {
   campaignId: string;
   title: string;
   role: "dm" | "co_dm" | "player" | "viewer" | "observer";
@@ -21,8 +20,8 @@ type InvitationPreview = {
 
 function campaignPath(membership: Pick<Membership, "campaignId" | "role">): string {
   return membership.role === "player"
-    ? `/player/campaigns/${membership.campaignId}`
-    : `/campaigns/${membership.campaignId}/dashboard`;
+    ? `/portal?campaignId=${encodeURIComponent(membership.campaignId)}&tab=home`
+    : `/campaigns/${membership.campaignId}/command-center`;
 }
 
 export function PlayerJoinPage() {
@@ -75,18 +74,17 @@ export function PlayerJoinPage() {
   };
 
   useEffect(() => {
-    void fetchAuthStatus().then((status) => {
-      setAuthenticated(status.sessionValid);
-      if (status.sessionValid) void loadMemberships();
-    }).catch(() => undefined);
+    void fetchAuthStatus()
+      .then((status) => {
+        setAuthenticated(status.sessionValid);
+        if (status.sessionValid) void loadMemberships();
+      })
+      .catch(() => undefined);
     void loadInvitation();
   }, [inviteToken]);
 
   const enterCampaign = (membership: Membership) => {
-    const store = useCampaignStore.getState();
-    if (membership.role === "player") store.enterPlayerCampaign(membership.campaignId);
-    else store.selectCampaign(membership.campaignId);
-    navigate({ to: campaignPath(membership) });
+    navigate({ to: campaignPath(membership) as any });
   };
 
   const acceptInvite = async () => {
@@ -101,8 +99,7 @@ export function PlayerJoinPage() {
       const body = await response.json();
       const campaignId = body.campaignId ?? invitation?.campaign.campaignId;
       if (!campaignId) throw new Error("La invitación no devolvió campaña");
-      useCampaignStore.getState().enterPlayerCampaign(campaignId);
-      navigate({ to: body.playerPortalPath ?? `/player/campaigns/${campaignId}` });
+      navigate({ to: `/portal?campaignId=${encodeURIComponent(campaignId)}&tab=home` as any });
     } catch (cause: any) {
       setError(cause.message || "No se pudo aceptar la invitación");
     } finally {
@@ -155,7 +152,7 @@ export function PlayerJoinPage() {
               <label className="form-label">Email</label>
               <input className="form-input" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="email" />
               <label className="form-label">Contraseña</label>
-              <input className="form-input" type="password" minLength={8} maxLength={128} value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" />
+              <input className="form-input" type="password" minLength={12} maxLength={128} value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" />
               <button className="btn btn-primary" disabled={loading}>Entrar</button>
               <button type="button" className="btn btn-secondary" disabled={loading} onClick={() => void authenticate(true)}>Crear cuenta y continuar</button>
             </form>

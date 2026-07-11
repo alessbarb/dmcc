@@ -1,5 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useParams, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Outlet, useNavigate, useParams, useRouterState } from "@tanstack/react-router";
+import {
+  ArrowLeft,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
+  Flag,
+  GitFork,
+  Layers,
+  LayoutGrid,
+  List,
+  LogOut,
+  MapPin,
+  MoreHorizontal,
+  Play,
+  Plus,
+  Search,
+  Settings,
+  Shield,
+  User,
+  Users,
+  X,
+} from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { ToastContainer } from "../../shared/components/ToastContainer.js";
 import { useToast } from "../../shared/hooks/useToast.js";
@@ -11,36 +33,16 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { QuickCaptureFAB } from "../capture/QuickCaptureFAB.js";
 import { CampaignGuidedTour } from "../onboarding/CampaignGuidedTour.js";
 import { LiveTableModal } from "../components/LiveTableModal.js";
-import { AccountModal } from "../../account/AccountModal.js"; // to: "/account"
+import { AccountModal } from "../../account/AccountModal.js";
 import { useKeyboardShortcuts } from "../../shared/hooks/useKeyboardShortcuts.js";
-import {
-  Shield,
-  Activity,
-  GitFork,
-  List,
-  Settings,
-  Play,
-  Search,
-  User,
-  Users,
-  Layers,
-  BookOpen,
-  ArrowLeft,
-  Plus,
-  MapPin,
-  Flag,
-  LayoutGrid,
-  ChevronLeft,
-  ChevronRight,
-  MoreHorizontal,
-  X,
-  LogOut,
-} from "lucide-react";
+
+type CampaignNavGroup = "primary" | "secondary";
 
 type CampaignNavItem = {
   path: string;
   label: string;
   Icon: React.ComponentType<{ size?: number }>;
+  group: CampaignNavGroup;
   mobilePrimary?: boolean;
 };
 
@@ -51,30 +53,10 @@ type PageMeta = {
 };
 
 const PAGE_META: Record<string, PageMeta> = {
-  canvas: {
-    titleKey: "campaignShell.meta.canvasTitle",
-    eyebrowKey: "campaignShell.meta.canvasEyebrow",
-    descriptionKey: "campaignShell.meta.canvasDescription",
-  },
-  dashboard: {
-    titleKey: "campaignShell.meta.dashboardTitle",
-    eyebrowKey: "campaignShell.meta.dashboardEyebrow",
-    descriptionKey: "campaignShell.meta.dashboardDescription",
-  },
   "command-center": {
     titleKey: "campaignShell.meta.dashboardTitle",
     eyebrowKey: "campaignShell.meta.dashboardEyebrow",
     descriptionKey: "campaignShell.meta.dashboardDescription",
-  },
-  live: {
-    titleKey: "campaignShell.meta.sessionTitle",
-    eyebrowKey: "campaignShell.meta.sessionEyebrow",
-    descriptionKey: "campaignShell.meta.sessionDescription",
-  },
-  "what-now": {
-    titleKey: "campaignShell.meta.whatNowTitle",
-    eyebrowKey: "campaignShell.meta.whatNowEyebrow",
-    descriptionKey: "campaignShell.meta.whatNowDescription",
   },
   session: {
     titleKey: "campaignShell.meta.sessionTitle",
@@ -86,6 +68,11 @@ const PAGE_META: Record<string, PageMeta> = {
     eyebrowKey: "campaignShell.meta.entitiesEyebrow",
     descriptionKey: "campaignShell.meta.entitiesDescription",
   },
+  canvas: {
+    titleKey: "campaignShell.meta.canvasTitle",
+    eyebrowKey: "campaignShell.meta.canvasEyebrow",
+    descriptionKey: "campaignShell.meta.canvasDescription",
+  },
   graph: {
     titleKey: "campaignShell.meta.graphTitle",
     eyebrowKey: "campaignShell.meta.graphEyebrow",
@@ -95,6 +82,11 @@ const PAGE_META: Record<string, PageMeta> = {
     titleKey: "campaignShell.meta.timelineTitle",
     eyebrowKey: "campaignShell.meta.timelineEyebrow",
     descriptionKey: "campaignShell.meta.timelineDescription",
+  },
+  search: {
+    titleKey: "campaignShell.meta.searchTitle",
+    eyebrowKey: "campaignShell.meta.searchEyebrow",
+    descriptionKey: "campaignShell.meta.searchDescription",
   },
   boards: {
     titleKey: "campaignShell.meta.boardsTitle",
@@ -106,56 +98,65 @@ const PAGE_META: Record<string, PageMeta> = {
     eyebrowKey: "campaignShell.meta.playersEyebrow",
     descriptionKey: "campaignShell.meta.playersDescription",
   },
-  search: {
-    titleKey: "campaignShell.meta.searchTitle",
+  rules: {
+    titleKey: "nav.rules",
     eyebrowKey: "campaignShell.meta.searchEyebrow",
-    descriptionKey: "campaignShell.meta.searchDescription",
-  },
-  settings: {
-    titleKey: "campaignShell.meta.settingsTitle",
-    eyebrowKey: "campaignShell.meta.settingsEyebrow",
-    descriptionKey: "campaignShell.meta.settingsDescription",
+    descriptionKey: "rules.searchInRules",
   },
   knowledge: {
     titleKey: "campaignShell.meta.knowledgeTitle",
     eyebrowKey: "campaignShell.meta.knowledgeEyebrow",
     descriptionKey: "campaignShell.meta.knowledgeDescription",
   },
+  settings: {
+    titleKey: "campaignShell.meta.settingsTitle",
+    eyebrowKey: "campaignShell.meta.settingsEyebrow",
+    descriptionKey: "campaignShell.meta.settingsDescription",
+  },
 };
 
 export function CampaignShell() {
   const { campaignId } = useParams({ from: "/campaigns/$campaignId" });
+  const navigate = useNavigate();
+  const routerState = useRouterState();
+  const pathname = routerState.location.pathname;
+  const { t } = useTranslation();
+  const { toasts, removeToast } = useToast();
   const {
     selectCampaign,
     clearCampaign,
     activeCampaignId,
+    activeCampaignRole,
     campaignState,
     loading,
     error,
     isEntityModalOpen,
     setIsEntityModalOpen,
     isRelationModalOpen,
-    setIsRelationModalOpen
+    setIsRelationModalOpen,
   } = useCampaignStore();
+
+  const [showEnterTransition, setShowEnterTransition] = useState(true);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
+  const [accountModalOpen, setAccountModalOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(
+    () => localStorage.getItem("dmcc-sidebar-collapsed") === "1",
+  );
+
+  const currentSegment = pathname.split("/")[3] ?? "";
+  const isDM = activeCampaignRole === "dm";
 
   const exitCampaign = () => {
     clearCampaign();
     navigate({ to: "/dm" });
   };
-  const navigate = useNavigate();
 
   const handleSignOutDm = async () => {
     clearCampaign();
     await logout();
     await navigate({ to: "/" });
   };
-  const { toasts, removeToast } = useToast();
-  const { t } = useTranslation();
-  const routerState = useRouterState();
-  const pathname = routerState.location.pathname;
-
-  const role = useCampaignStore((state) => state.activeCampaignRole);
-  const isDM = role === "dm";
 
   useKeyboardShortcuts(
     {
@@ -166,126 +167,212 @@ export function CampaignShell() {
       "/": () => navigate({ to: `/campaigns/${campaignId}/search` }),
       n: () => setIsEntityModalOpen(true),
     },
-    isDM
+    isDM,
   );
 
-  const [showExitTransition, setShowExitTransition] = useState(true);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
-  const [accountModalOpen, setAccountModalOpen] = useState(false);
-
   useEffect(() => {
-    setShowExitTransition(true);
-    const timer = setTimeout(() => {
-      setShowExitTransition(false);
-    }, 850);
-    return () => clearTimeout(timer);
+    setShowEnterTransition(true);
+    const timer = window.setTimeout(() => setShowEnterTransition(false), 420);
+    return () => window.clearTimeout(timer);
   }, [campaignId]);
 
   useEffect(() => {
-    if (role === "player") {
-      navigate({ to: `/campaigns/${campaignId}/player-portal` });
+    if (activeCampaignRole === "player") {
+      navigate({ to: "/portal" });
     }
-  }, [campaignId, role]);
+  }, [activeCampaignRole, navigate]);
 
   useEffect(() => {
     if (campaignId && campaignId !== activeCampaignId) {
-      selectCampaign(campaignId as any);
+      void selectCampaign(campaignId);
     }
-  }, [campaignId]);
+  }, [activeCampaignId, campaignId, selectCampaign]);
 
-  const currentSegment = pathname.split("/")[3] ?? "";
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileNavOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [mobileNavOpen]);
 
-  const NAV: CampaignNavItem[] = [
-    { path: "command-center", label: "Mesa", Icon: Shield, mobilePrimary: true },
-    { path: "dashboard", label: t("campaignShell.nav.dashboard"), Icon: Activity },
-    { path: "what-now", label: t("campaignShell.nav.whatNow"), Icon: BookOpen, mobilePrimary: true },
-    { path: "session", label: t("campaignShell.nav.session"), Icon: Play, mobilePrimary: true },
-    { path: "entities", label: t("campaignShell.nav.entities"), Icon: Layers, mobilePrimary: true },
-    { path: "search", label: t("campaignShell.nav.search"), Icon: Search },
-    { path: "canvas", label: t("campaignShell.nav.canvas"), Icon: LayoutGrid },
-    { path: "graph", label: t("campaignShell.nav.graph"), Icon: GitFork },
-    { path: "timeline", label: t("campaignShell.nav.timeline"), Icon: List },
-    { path: "boards", label: t("campaignShell.nav.boards"), Icon: Activity },
-    { path: "players", label: t("campaignShell.nav.players"), Icon: User },
-    { path: "knowledge", label: t("campaignShell.nav.knowledge"), Icon: Users },
-    { path: "settings", label: t("campaignShell.nav.settings"), Icon: Settings },
+  const navItems: CampaignNavItem[] = [
+    {
+      path: "command-center",
+      label: t("campaignShell.nav.dashboard"),
+      Icon: Shield,
+      group: "primary",
+      mobilePrimary: true,
+    },
+    {
+      path: "session",
+      label: t("campaignShell.nav.session"),
+      Icon: Play,
+      group: "primary",
+      mobilePrimary: true,
+    },
+    {
+      path: "entities",
+      label: t("campaignShell.nav.entities"),
+      Icon: Layers,
+      group: "primary",
+      mobilePrimary: true,
+    },
+    {
+      path: "canvas",
+      label: t("campaignShell.nav.canvas"),
+      Icon: LayoutGrid,
+      group: "primary",
+    },
+    {
+      path: "graph",
+      label: t("campaignShell.nav.graph"),
+      Icon: GitFork,
+      group: "primary",
+    },
+    {
+      path: "timeline",
+      label: t("campaignShell.nav.timeline"),
+      Icon: List,
+      group: "primary",
+    },
+    {
+      path: "search",
+      label: t("campaignShell.nav.search"),
+      Icon: Search,
+      group: "secondary",
+      mobilePrimary: true,
+    },
+    {
+      path: "boards",
+      label: t("campaignShell.nav.boards"),
+      Icon: LayoutGrid,
+      group: "secondary",
+    },
+    {
+      path: "players",
+      label: t("campaignShell.nav.players"),
+      Icon: User,
+      group: "secondary",
+    },
+    {
+      path: "rules",
+      label: t("nav.rules"),
+      Icon: BookOpen,
+      group: "secondary",
+    },
+    {
+      path: "knowledge",
+      label: t("campaignShell.nav.knowledge"),
+      Icon: Users,
+      group: "secondary",
+    },
+    {
+      path: "settings",
+      label: t("campaignShell.nav.settings"),
+      Icon: Settings,
+      group: "secondary",
+    },
   ];
 
-  const mobilePrimaryNav = NAV.filter((item) => item.mobilePrimary);
-  const mobileMoreNav = NAV.filter((item) => !item.mobilePrimary);
+  const primaryNav = navItems.filter((item) => item.group === "primary");
+  const secondaryNav = navItems.filter((item) => item.group === "secondary");
+  const mobilePrimaryNav = navItems.filter((item) => item.mobilePrimary);
+  const mobileMoreNav = navItems.filter((item) => !item.mobilePrimary);
 
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(
-    () => localStorage.getItem("dmcc-sidebar-collapsed") === "1"
-  );
   const toggleSidebar = () => {
-    setSidebarCollapsed(v => {
-      const next = !v;
+    setSidebarCollapsed((current) => {
+      const next = !current;
       localStorage.setItem("dmcc-sidebar-collapsed", next ? "1" : "0");
       return next;
     });
   };
 
-  const activeSession = campaignState?.sessions?.find(s => s.status === "active");
-
+  const activeSession = campaignState?.sessions?.find((session) => session.status === "active");
   const pageMeta = PAGE_META[currentSegment] ?? {
-    titleKey: currentSegment ? "" : "campaignShell.defaultTitle",
+    titleKey: "campaignShell.defaultTitle",
     eyebrowKey: "campaignShell.defaultEyebrow",
     descriptionKey: "campaignShell.defaultDescription",
   };
-
   const currentLocation = campaignState?.campaign?.currentLocationId
-    ? campaignState.entities.find(e => e.entityId === campaignState.campaign?.currentLocationId)
+    ? campaignState.entities.find(
+        (entity) => entity.entityId === campaignState.campaign?.currentLocationId,
+      )
     : null;
-
   const currentQuest = campaignState?.campaign?.currentQuestId
-    ? campaignState.entities.find(e => e.entityId === campaignState.campaign?.currentQuestId)
+    ? campaignState.entities.find(
+        (entity) => entity.entityId === campaignState.campaign?.currentQuestId,
+      )
     : null;
 
   const handleNavClick = (path: string) => {
     setMobileNavOpen(false);
-    if (path === "live") {
-      setLiveTableModalOpen(true);
-      return;
-    }
     navigate({ to: `/campaigns/${campaignId}/${path}` });
   };
 
-  const isFirstLoad = loading && !campaignState;
-  const isLoadError = error && !campaignState;
+  const renderSidebarItems = (items: CampaignNavItem[]) =>
+    items.map(({ path, label, Icon }) => (
+      <button
+        type="button"
+        key={path}
+        className={`nav-item ${currentSegment === path ? "active" : ""}`}
+        data-tour-id={`campaign-nav-${path}`}
+        onClick={() => handleNavClick(path)}
+        title={sidebarCollapsed ? label : undefined}
+        aria-current={currentSegment === path ? "page" : undefined}
+        style={sidebarCollapsed ? { padding: "10px", justifyContent: "center", gap: 0 } : undefined}
+      >
+        <Icon size={16} />
+        {!sidebarCollapsed && <span>{label}</span>}
+      </button>
+    ));
 
-  if (isFirstLoad) {
+  if (loading && !campaignState) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg-main)" }}>
-        <div style={{ textAlign: "center", color: "var(--text-muted)" }}>
-          <div style={{ fontSize: "2rem", marginBottom: "12px", opacity: 0.4 }}>⏳</div>
-          <p style={{ margin: 0 }}>{t("campaignShell.loading.loadingTitle")}</p>
-        </div>
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "var(--bg-main)",
+        }}
+      >
+        <p style={{ margin: 0, color: "var(--text-muted)" }}>
+          {t("campaignShell.loading.loadingTitle")}
+        </p>
       </div>
     );
   }
 
-  if (isLoadError) {
+  if (error && !campaignState) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg-main)", padding: "24px" }}>
-        <div style={{ maxWidth: "400px", textAlign: "center" }}>
-          <div style={{ fontSize: "3rem", marginBottom: "16px", opacity: 0.3 }}>⚠️</div>
-          <h2 style={{ color: "var(--text-main)", marginBottom: "8px" }}>{t("campaignShell.loading.errorTitle")}</h2>
-          <p style={{ color: "var(--text-muted)", marginBottom: "24px", fontSize: "0.9rem" }}>{t("campaignShell.loading.errorDesc")}</p>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginBottom: "24px", fontFamily: "monospace", opacity: 0.6 }}>{error}</p>
-          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
-            <button
-              onClick={() => selectCampaign(campaignId as any)}
-              style={{ padding: "8px 16px", background: "var(--accent)", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer" }}
-            >
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "var(--bg-main)",
+          padding: 24,
+        }}
+      >
+        <div style={{ maxWidth: 420, textAlign: "center" }}>
+          <h2>{t("campaignShell.loading.errorTitle")}</h2>
+          <p style={{ color: "var(--text-muted)" }}>{t("campaignShell.loading.errorDesc")}</p>
+          <p style={{ color: "var(--color-danger)", fontFamily: "monospace" }}>{error}</p>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+            <button className="btn btn-primary" type="button" onClick={() => void selectCampaign(campaignId)}>
               {t("campaignShell.loading.retry")}
             </button>
-            <button
-              onClick={exitCampaign}
-              style={{ padding: "8px 16px", background: "transparent", color: "var(--text-main)", border: "1px solid var(--border)", borderRadius: "6px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
-            >
-              <ArrowLeft size={14} />
-              {t("campaignShell.loading.backToCampaigns")}
+            <button className="btn btn-secondary" type="button" onClick={exitCampaign}>
+              <ArrowLeft size={14} /> {t("campaignShell.loading.backToCampaigns")}
             </button>
           </div>
         </div>
@@ -294,40 +381,26 @@ export function CampaignShell() {
   }
 
   return (
-    <div className={`app-container app-container--campaign-shell ${currentSegment === "canvas" ? "app-container--canvas" : ""}`}>
-      {/* Sidebar Navigation */}
-      <aside
-        className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}
-      >
+    <div
+      className={`app-container app-container--campaign-shell ${
+        currentSegment === "canvas" ? "app-container--canvas" : ""
+      }`}
+    >
+      <aside className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}>
         <div
           className="sidebar-header"
           data-tour-id="campaign-current-campaign"
           style={{ padding: sidebarCollapsed ? "16px 8px" : undefined, overflow: "hidden" }}
         >
-          {/* Hub back button — always visible */}
           <button
             type="button"
             onClick={exitCampaign}
             title={t("nav.backToHub")}
+            className="btn btn-secondary btn-sm"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: sidebarCollapsed ? 0 : "6px",
-              background: "rgba(229,173,79,0.06)",
-              border: "1px solid rgba(229,173,79,0.18)",
-              borderRadius: "6px",
-              padding: sidebarCollapsed ? "6px" : "5px 10px",
-              color: "var(--accent, #e5ad4f)",
-              fontSize: "0.72rem",
-              fontWeight: 600,
-              cursor: "pointer",
               width: "100%",
               justifyContent: sidebarCollapsed ? "center" : "flex-start",
-              transition: "background 0.15s, border-color 0.15s",
-              marginBottom: "10px",
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(229,173,79,0.12)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(229,173,79,0.06)"; }}
           >
             <ArrowLeft size={13} />
             {!sidebarCollapsed && <span>{t("nav.backToHub")}</span>}
@@ -335,90 +408,79 @@ export function CampaignShell() {
 
           {!sidebarCollapsed && (
             <>
-              <div className="sidebar-logo">{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</div>
+              <div className="sidebar-logo">
+                {campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}
+              </div>
               <div className="sidebar-logo-subtitle">{campaignState?.campaign?.system ?? ""}</div>
             </>
           )}
+
           <button
+            type="button"
             onClick={toggleSidebar}
-            title={sidebarCollapsed ? t("campaignShell.expandMenu") : t("campaignShell.collapseMenu")}
+            title={
+              sidebarCollapsed
+                ? t("campaignShell.expandMenu")
+                : t("campaignShell.collapseMenu")
+            }
+            aria-label={
+              sidebarCollapsed
+                ? t("campaignShell.expandMenu")
+                : t("campaignShell.collapseMenu")
+            }
             style={{
               background: "none",
               border: "none",
               cursor: "pointer",
               color: "var(--text-muted)",
-              padding: "4px",
-              borderRadius: "4px",
+              padding: 4,
               display: "flex",
-              alignItems: "center",
-              marginTop: sidebarCollapsed ? 0 : "10px",
               width: "100%",
               justifyContent: sidebarCollapsed ? "center" : "flex-end",
+              marginTop: 10,
             }}
           >
             {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
           </button>
         </div>
 
-        <nav className="sidebar-nav" style={{ padding: sidebarCollapsed ? "12px 6px" : undefined }}>
-          {NAV.map(({ path, label, Icon }) => (
-            <button
-              type="button"
-              key={path}
-              className={`nav-item ${currentSegment === path ? "active" : ""}`}
-              data-tour-id={`campaign-nav-${path}`}
-              onClick={() => handleNavClick(path)}
-              title={sidebarCollapsed ? label : undefined}
-              aria-current={currentSegment === path ? "page" : undefined}
-              style={sidebarCollapsed ? { padding: "10px", justifyContent: "center", gap: 0 } : undefined}
-            >
-              <Icon size={16} />
-              {!sidebarCollapsed && <span>{label}</span>}
-            </button>
-          ))}
+        <nav
+          className="sidebar-nav"
+          aria-label={t("campaignShell.mainNavigationLabel")}
+          style={{ padding: sidebarCollapsed ? "12px 6px" : undefined }}
+        >
+          {renderSidebarItems(primaryNav)}
+          <div className="sidebar-nav__separator" aria-hidden="true" />
+          {!sidebarCollapsed && (
+            <p className="sidebar-nav__section-label">{t("campaignShell.mobileTools")}</p>
+          )}
+          {renderSidebarItems(secondaryNav)}
         </nav>
 
         <div className="sidebar-footer" style={{ padding: sidebarCollapsed ? "12px 8px" : undefined }}>
-          {sidebarCollapsed ? (
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() => setAccountModalOpen(true)}
-                style={{ width: "100%", justifyContent: "center" }}
-              >
-                Account
-              </button>
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() => void handleSignOutDm()}
-                title={t("nav.signOut")}
-                style={{ width: "100%", padding: "6px", justifyContent: "center" }}
-              >
-                <LogOut size={14} />
-              </button>
-            </div>
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() => setAccountModalOpen(true)}
-                style={{ width: "100%", justifyContent: "center" }}
-              >
-                <User size={14} /> Account
-              </button>
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() => void handleSignOutDm()}
-                style={{ width: "100%", justifyContent: "center" }}
-              >
-                <LogOut size={14} /> {t("nav.signOut")}
-              </button>
-            </div>
-          )}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <button
+              className="btn btn-secondary btn-sm"
+              type="button"
+              onClick={() => setAccountModalOpen(true)}
+              title={t("account.title")}
+              style={{ width: "100%", justifyContent: "center" }}
+            >
+              <User size={14} /> {!sidebarCollapsed && t("account.title")}
+            </button>
+            <button
+              className="btn btn-secondary btn-sm"
+              type="button"
+              onClick={() => void handleSignOutDm()}
+              title={t("nav.signOut")}
+              style={{ width: "100%", justifyContent: "center" }}
+            >
+              <LogOut size={14} /> {!sidebarCollapsed && t("nav.signOut")}
+            </button>
+          </div>
         </div>
       </aside>
 
-      {/* Mobile top navigation */}
       <header className="campaign-mobile-header">
         <div className="campaign-mobile-header__title" data-tour-id="campaign-mobile-title">
           <strong>{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</strong>
@@ -444,7 +506,6 @@ export function CampaignShell() {
                 <strong>{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</strong>
                 <span>{campaignState?.campaign?.system ?? ""}</span>
               </div>
-
               <button
                 type="button"
                 className="campaign-mobile-icon-btn"
@@ -457,15 +518,17 @@ export function CampaignShell() {
 
             <div className="campaign-mobile-nav-sheet__body">
               <p className="campaign-mobile-nav-sheet__eyebrow">{t("campaignShell.mobileTools")}</p>
-
               <div className="campaign-mobile-nav-sheet__grid">
                 {mobileMoreNav.map(({ path, label, Icon }) => (
                   <button
                     key={path}
                     type="button"
-                    className={`campaign-mobile-nav-sheet__item ${currentSegment === path ? "active" : ""}`}
+                    className={`campaign-mobile-nav-sheet__item ${
+                      currentSegment === path ? "active" : ""
+                    }`}
                     data-tour-id={`campaign-mobile-nav-${path}`}
                     onClick={() => handleNavClick(path)}
+                    aria-current={currentSegment === path ? "page" : undefined}
                   >
                     <Icon size={18} />
                     <span>{label}</span>
@@ -474,63 +537,58 @@ export function CampaignShell() {
               </div>
             </div>
 
-            <div className="campaign-mobile-nav-sheet__footer" style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={exitCampaign}
-              >
-                <ArrowLeft size={14} />
-                {t("nav.backToHub")}
+            <div className="campaign-mobile-nav-sheet__footer">
+              <button type="button" className="btn btn-secondary btn-sm" onClick={exitCampaign}>
+                <ArrowLeft size={14} /> {t("nav.backToHub")}
               </button>
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
                 onClick={() => setAccountModalOpen(true)}
               >
-                <User size={14} />
-                Account
+                <User size={14} /> {t("account.title")}
               </button>
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
                 onClick={() => void handleSignOutDm()}
               >
-                <LogOut size={14} />
-                {t("nav.signOut")}
+                <LogOut size={14} /> {t("nav.signOut")}
               </button>
             </div>
           </section>
         </div>
       )}
 
-      {/* Mobile bottom navigation */}
       <nav className="campaign-mobile-bottom-nav" aria-label={t("campaignShell.mainNavigationLabel")}>
         {mobilePrimaryNav.map(({ path, label, Icon }) => (
           <button
             key={path}
             type="button"
-            className={`campaign-mobile-bottom-nav__item ${currentSegment === path ? "active" : ""}`}
+            className={`campaign-mobile-bottom-nav__item ${
+              currentSegment === path ? "active" : ""
+            }`}
             data-tour-id={`campaign-mobile-nav-${path}`}
             onClick={() => handleNavClick(path)}
+            aria-current={currentSegment === path ? "page" : undefined}
           >
             <Icon size={19} />
             <span>{label}</span>
           </button>
         ))}
-
         <button
           type="button"
           className="campaign-mobile-bottom-nav__item"
           data-tour-id="campaign-mobile-nav-more"
           onClick={() => setMobileNavOpen(true)}
+          aria-expanded={mobileNavOpen}
+          aria-haspopup="dialog"
         >
           <MoreHorizontal size={19} />
           <span>{t("campaignShell.mobileMore")}</span>
         </button>
       </nav>
 
-      {/* Main Content Area */}
       <main
         className={`main-content ${currentSegment === "canvas" ? "main-content--canvas" : ""}`}
         data-tour-id="campaign-main-workspace"
@@ -538,25 +596,27 @@ export function CampaignShell() {
         {currentSegment !== "canvas" && (
           <header className="content-header">
             <div className="page-heading">
-              <span className="page-eyebrow">{pageMeta.eyebrowKey ? t(pageMeta.eyebrowKey) : t("campaignShell.defaultEyebrow")}</span>
+              <span className="page-eyebrow">{t(pageMeta.eyebrowKey)}</span>
               <div className="page-title-row">
-                <h1 className="page-title">{pageMeta.titleKey ? t(pageMeta.titleKey) : currentSegment}</h1>
+                <h1 className="page-title">{t(pageMeta.titleKey)}</h1>
                 {campaignState?.campaign?.system && (
                   <span className="page-system-pill">{campaignState.campaign.system}</span>
                 )}
               </div>
-              <p className="page-description">{pageMeta.descriptionKey ? t(pageMeta.descriptionKey) : t("campaignShell.defaultDescription")}</p>
+              <p className="page-description">{t(pageMeta.descriptionKey)}</p>
 
               {(currentLocation || currentQuest) && (
                 <div className="page-context" aria-label={t("campaignShell.currentContext")}>
                   {currentLocation && (
                     <span className="context-chip">
-                      <MapPin size={14} /> {t("campaignShell.currentLocation", { title: currentLocation.title })}
+                      <MapPin size={14} />
+                      {t("campaignShell.currentLocation", { title: currentLocation.title })}
                     </span>
                   )}
                   {currentQuest && (
                     <span className="context-chip context-chip--primary">
-                      <Flag size={14} /> {t("campaignShell.currentQuest", { title: currentQuest.title })}
+                      <Flag size={14} />
+                      {t("campaignShell.currentQuest", { title: currentQuest.title })}
                     </span>
                   )}
                 </div>
@@ -565,12 +625,16 @@ export function CampaignShell() {
 
             <div className="top-bar-actions header-actions">
               {activeSession ? (
-                <span className="badge badge-success" data-tour-id="campaign-action-session" style={{ padding: "8px 12px" }}>
-                  {t("campaignShell.activeSession", { number: activeSession.number || 1, title: activeSession.title })}
+                <span className="badge badge-success" data-tour-id="campaign-action-session">
+                  {t("campaignShell.activeSession", {
+                    number: activeSession.number || 1,
+                    title: activeSession.title,
+                  })}
                 </span>
               ) : (
                 <button
                   className="btn btn-primary btn-sm"
+                  type="button"
                   data-tour-id="campaign-action-session"
                   onClick={() => navigate({ to: `/campaigns/${campaignId}/session` })}
                 >
@@ -578,51 +642,50 @@ export function CampaignShell() {
                 </button>
               )}
 
-              <button className="btn btn-secondary btn-sm" data-tour-id="campaign-action-new-entity" onClick={() => setIsEntityModalOpen(true)}>
+              <button
+                className="btn btn-secondary btn-sm"
+                type="button"
+                data-tour-id="campaign-action-new-entity"
+                onClick={() => setIsEntityModalOpen(true)}
+              >
                 <Plus size={14} /> {t("campaignShell.newEntity")}
               </button>
 
               <button
                 className="btn btn-secondary btn-sm"
+                type="button"
                 data-tour-id="campaign-action-live-table"
                 onClick={() => setLiveTableModalOpen(true)}
               >
-                <Users size={14} /> Mesa
+                <Users size={14} /> {t("dashboard.runSession")}
               </button>
 
               <button
                 className="btn btn-secondary btn-sm"
+                type="button"
                 data-tour-id="campaign-action-tour"
-                onClick={() => window.dispatchEvent(new CustomEvent("dmcc:start-campaign-tour", { detail: { campaignId } }))}
+                onClick={() =>
+                  window.dispatchEvent(
+                    new CustomEvent("dmcc:start-campaign-tour", { detail: { campaignId } }),
+                  )
+                }
               >
                 <BookOpen size={14} /> {t("campaignTour.replayShort")}
-              </button>
-
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={exitCampaign}
-                title={t("nav.backToHub")}
-              >
-                <ArrowLeft size={14} /> {t("nav.backToHub")}
               </button>
             </div>
           </header>
         )}
 
-        {currentSegment === "canvas" ? (
-          <Outlet />
-        ) : (
-          <div className="content-body">
-            <Outlet />
-          </div>
-        )}
+        {currentSegment === "canvas" ? <Outlet /> : <div className="content-body"><Outlet /></div>}
       </main>
 
       {currentSegment !== "canvas" && <AppFooter />}
 
-      {/* Modals */}
       <EntityCreateModal isOpen={isEntityModalOpen} onClose={() => setIsEntityModalOpen(false)} />
-      <RelationCreateModal isOpen={isRelationModalOpen} onClose={() => setIsRelationModalOpen(false)} />
+      <RelationCreateModal
+        isOpen={isRelationModalOpen}
+        onClose={() => setIsRelationModalOpen(false)}
+      />
       <LiveTableModal
         campaignId={campaignId}
         isOpen={liveTableModalOpen}
@@ -630,18 +693,19 @@ export function CampaignShell() {
         activeSessionId={activeSession?.sessionId ?? null}
       />
       <AccountModal open={accountModalOpen} onClose={() => setAccountModalOpen(false)} />
-
       <ToastContainer toasts={toasts} onRemove={removeToast} />
 
       {campaignId && currentSegment !== "canvas" && <QuickCaptureFAB campaignId={campaignId} />}
-
       {campaignId && (
-        <CampaignGuidedTour campaignId={campaignId} enabled={isDM && Boolean(campaignState?.campaign)} />
+        <CampaignGuidedTour
+          campaignId={campaignId}
+          enabled={isDM && Boolean(campaignState?.campaign)}
+        />
       )}
 
-      {showExitTransition && (
+      {showEnterTransition && (
         <div className="mystical-portal-overlay mystical-portal-overlay--out" aria-hidden="true">
-          <div className="mystical-portal-glow"></div>
+          <div className="mystical-portal-glow" />
         </div>
       )}
     </div>

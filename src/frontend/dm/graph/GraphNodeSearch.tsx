@@ -1,5 +1,5 @@
 import Fuse from "fuse.js";
-import { memo, useEffect, useMemo, useRef, useState, useDeferredValue } from "react";
+import { memo, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
@@ -24,14 +24,21 @@ export const GraphNodeSearch = memo(function GraphNodeSearch({
   onSelectNode,
 }: GraphNodeSearchProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const contextualNodeId = useRef<string | null>(null);
+  const contextualSelectionHandled = useRef(false);
   const { t } = useTranslation();
-
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
-
-  // React prioriza la escritura y retrasa la búsqueda pesada unos frames si hace falta.
   const deferredQuery = useDeferredValue(query);
+
+  if (contextualNodeId.current === null && !contextualSelectionHandled.current) {
+    const parameters = new URLSearchParams(window.location.search);
+    contextualNodeId.current =
+      parameters.get("sourceEntityId") ??
+      parameters.get("targetEntityId") ??
+      parameters.get("entityId");
+  }
 
   const fuse = useMemo(() => {
     return new Fuse(items, {
@@ -50,17 +57,22 @@ export const GraphNodeSearch = memo(function GraphNodeSearch({
 
   const results = useMemo(() => {
     const normalizedQuery = deferredQuery.trim();
-
-    if (normalizedQuery.length < 2) {
-      return items.slice(0, 8);
-    }
-
+    if (normalizedQuery.length < 2) return items.slice(0, 8);
     return fuse.search(normalizedQuery).slice(0, 10).map((result) => result.item);
   }, [deferredQuery, fuse, items]);
 
   useEffect(() => {
     setHighlightedIndex(0);
   }, [deferredQuery]);
+
+  useEffect(() => {
+    const nodeId = contextualNodeId.current;
+    if (!nodeId || contextualSelectionHandled.current) return;
+    if (!items.some((item) => item.nodeId === nodeId)) return;
+    contextualSelectionHandled.current = true;
+    window.setTimeout(() => onSelectNode(nodeId), 140);
+    window.history.replaceState(null, "", window.location.pathname);
+  }, [items, onSelectNode]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -71,7 +83,6 @@ export const GraphNodeSearch = memo(function GraphNodeSearch({
         target?.isContentEditable;
 
       if (isTyping) return;
-
       if (event.key === "/" || (event.ctrlKey && event.key.toLowerCase() === "k")) {
         event.preventDefault();
         inputRef.current?.focus();
@@ -90,8 +101,7 @@ export const GraphNodeSearch = memo(function GraphNodeSearch({
 
   return (
     <div className="graph-search">
-      <Search size={15} className="graph-search__icon" />
-
+      <Search size={15} className="graph-search__icon" aria-hidden="true" />
       <input
         ref={inputRef}
         className="form-input graph-search__input"
@@ -109,27 +119,26 @@ export const GraphNodeSearch = memo(function GraphNodeSearch({
             setIsOpen(false);
             return;
           }
-
           if (event.key === "ArrowDown") {
             event.preventDefault();
             setHighlightedIndex((index) => Math.min(index + 1, results.length - 1));
             return;
           }
-
           if (event.key === "ArrowUp") {
             event.preventDefault();
             setHighlightedIndex((index) => Math.max(index - 1, 0));
             return;
           }
-
           if (event.key === "Enter") {
             event.preventDefault();
             const result = results[highlightedIndex];
-            if (result) {
-              selectResult(result.nodeId);
-            }
+            if (result) selectResult(result.nodeId);
           }
         }}
+        role="combobox"
+        aria-expanded={isOpen && results.length > 0}
+        aria-controls="graph-search-results"
+        aria-autocomplete="list"
       />
 
       {query && (
@@ -148,14 +157,14 @@ export const GraphNodeSearch = memo(function GraphNodeSearch({
       )}
 
       {isOpen && results.length > 0 && (
-        <div className="graph-search__results">
+        <div id="graph-search-results" className="graph-search__results" role="listbox">
           {results.map((result, index) => (
             <button
               key={result.nodeId}
               type="button"
-              className={`graph-search__result ${
-                index === highlightedIndex ? "is-highlighted" : ""
-              }`}
+              role="option"
+              aria-selected={index === highlightedIndex}
+              className={`graph-search__result ${index === highlightedIndex ? "is-highlighted" : ""}`}
               onMouseDown={(event) => {
                 event.preventDefault();
                 selectResult(result.nodeId);
