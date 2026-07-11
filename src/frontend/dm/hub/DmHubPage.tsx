@@ -32,7 +32,7 @@ import {
   Bell,
   ChevronDown,
 } from "lucide-react";
-import { logoutDm } from "../../shared/auth/authClient.js";
+import { logout } from "../../shared/auth/authClient.js";
 import { PremadeImportDialog, type PremadeImportMode } from "../../shared/components/PremadeImportDialog.js";
 import { AccountModal } from "../../account/AccountModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
@@ -193,7 +193,7 @@ export function DmHubPage() {
   };
 
   const handleSignOutDm = async () => {
-    await logoutDm();
+    await logout();
     await navigate({ to: "/" });
   };
 
@@ -393,7 +393,7 @@ export function DmHubPage() {
           <button
             type="button"
             className="dm-topbar-ghost-btn"
-            onClick={() => { void (async () => { await logoutDm(); navigate({ to: "/dm/login" }); })(); }}
+            onClick={() => { void (async () => { await logout(); navigate({ to: "/dm/login" }); })(); }}
           >
             <UserRound size={13} />
             {t("nav.switchDm")}

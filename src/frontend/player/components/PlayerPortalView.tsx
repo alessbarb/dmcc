@@ -21,7 +21,7 @@ import {
   Users,
 } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
-import { logoutPlayer } from "@frontend/shared/auth/authClient.js";
+import { logout } from "@frontend/shared/auth/authClient.js";
 import { AccountModal } from "../../account/AccountModal.js"; // to: "/account"
 
 
@@ -640,7 +640,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   );
 
   const handleExit = async () => {
-    await logoutPlayer(campaignId);
+    await logout();
     useCampaignStore.getState().leavePlayerPortal();
     navigate({ to: "/player/join" });
   };

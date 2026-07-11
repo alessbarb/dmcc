@@ -13,7 +13,7 @@ import {
   ArrowRight,
   Compass
 } from "lucide-react";
-import { fetchAuthStatus, logoutDm } from "./shared/auth/authClient.js";
+import { fetchAuthStatus, logout } from "./shared/auth/authClient.js";
 import type { AuthStatus } from "./shared/auth/authTypes.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "./shared/components/PortalTopBar.js";
@@ -101,7 +101,7 @@ export function SmartLanding() {
   };
 
   const handleDmSignOut = async () => {
-    await logoutDm();
+    await logout();
     setHasDmSession(false);
     setCampaigns([]);
   };

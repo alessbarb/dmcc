@@ -213,7 +213,7 @@ export function renderEventDescription(
     case "SettingsUpdated":
       return (
         <p style={{ fontSize: "0.9rem", color: "var(--text-main)" }}>
-          {t("timeline.descriptions.settingsUpdated", { state: payload.networkModeEnabled ? "On" : "Off" })}
+          {t("timeline.descriptions.settingsUpdated")}
         </p>
       );
     case "ImportCompleted":

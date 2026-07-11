@@ -83,7 +83,3 @@ export async function logout(): Promise<void> {
   await apiFetch("/api/auth/logout", { init: { method: "POST" } }).catch(() => undefined);
 }
 
-export const logoutDm = logout;
-export async function logoutPlayer(_campaignId?: string): Promise<void> {
-  await logout();
-}

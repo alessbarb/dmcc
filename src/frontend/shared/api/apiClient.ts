@@ -17,6 +17,9 @@ export type ApiFetchOptions = {
 
 export async function apiFetch(url: string, options: ApiFetchOptions = {}): Promise<Response> {
   const headers = new Headers(options.init?.headers);
+  for (const legacyHeader of ["x-role", "x-player-id", "x-dm-token", "x-player-token", "x-access-code"]) {
+    headers.delete(legacyHeader);
+  }
   const method = (options.init?.method ?? "GET").toUpperCase();
   if (!["GET", "HEAD", "OPTIONS"].includes(method) && !headers.has("Idempotency-Key")) {
     const key = typeof crypto !== "undefined" && "randomUUID" in crypto
