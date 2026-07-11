@@ -134,7 +134,10 @@ test.describe("Player invitation UI flow", () => {
     const campaignId = campaign.campaignId as string;
 
     await page.goto(`/campaigns/${campaignId}/players`);
-    await expect(page.getByRole("heading", { name: /players and characters|jugadores y personajes/i })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole("heading", {
+      level: 1,
+      name: /players and characters|jugadores y personajes/i,
+    })).toBeVisible({ timeout: 15_000 });
     await page.getByRole("button", { name: /invite player|invitar jugador/i }).click();
     await expect(page.getByRole("heading", { name: /player invitations|invitaciones de jugador/i })).toBeVisible();
 
