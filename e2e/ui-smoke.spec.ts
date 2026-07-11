@@ -59,11 +59,11 @@ test.describe("Critical UI smoke flow", () => {
     await createDialog.locator("input.form-input").first().fill(campaignTitle);
 
     await Promise.all([
-      page.waitForURL(/\/campaigns\/[^/]+\/dashboard$/, { timeout: 15_000 }),
+      page.waitForURL(/\/campaigns\/[^/]+\/command-center$/, { timeout: 15_000 }),
       createDialog.locator('button[type="submit"]').click(),
     ]);
 
-    const campaignId = page.url().match(/\/campaigns\/([^/]+)\/dashboard$/)?.[1];
+    const campaignId = page.url().match(/\/campaigns\/([^/]+)\/command-center$/)?.[1];
     expect(campaignId).toBeTruthy();
 
     const rulesResponsePromise = page.waitForResponse((response) => {
@@ -94,9 +94,9 @@ test.describe("Critical UI smoke flow", () => {
       const url = new URL(response.url());
       return url.pathname === `/api/campaigns/${campaignId}` && response.request().method() === "GET";
     });
-    await page.goto(`/campaigns/${campaignId}/dashboard`);
+    await page.goto(`/campaigns/${campaignId}/command-center`);
     const campaignResponse = await campaignResponsePromise;
     expect(campaignResponse.ok()).toBe(true);
-    await expect(page).toHaveURL(new RegExp(`/campaigns/${campaignId}/dashboard$`));
+    await expect(page).toHaveURL(new RegExp(`/campaigns/${campaignId}/command-center$`));
   });
 });
