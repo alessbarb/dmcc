@@ -1809,12 +1809,12 @@ body:has(.rl-root) .watermark {
     gap: 8px;
   }
 
-  .networkg-pill {
+  .language-pill {
     padding: 3px;
     gap: 1px;
   }
 
-  .networkg-pill__btn {
+  .language-pill__btn {
     padding: 5px 8px;
     font-size: 0.66rem;
   }
@@ -1953,7 +1953,7 @@ body:has(.rl-root) .watermark {
     height: 16px;
   }
 
-  .networkg-pill__btn {
+  .language-pill__btn {
     padding: 5px 6px;
     font-size: 0.62rem;
   }

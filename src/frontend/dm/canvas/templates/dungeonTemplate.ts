@@ -7,7 +7,7 @@ export const dungeonTemplate: CanvasTemplateFactory = (t) => ({
     { entityType: "location", title: "Entrada Inundada", subtitle: "Nivel 1 de la mazmorra" },
     { entityType: "encounter", title: "Sala de Trampa", summary: "Trampa de flechas oculta." },
     { entityType: "creature", title: "Guardias Orco", summary: "Dos orcos montando guardia." },
-    { entityType: "item", title: "Cofre del Tesoro", summary: "Contiene oro y una gema brilnetworkte." },
+    { entityType: "item", title: "Cofre del Tesoro", summary: "Contiene oro y una gema brillante." },
     { entityType: "secret", title: t("canvas.seedData.secretPassage"), summary: t("canvas.seedData.behindTapestry"), visibility: { kind: "dm_only" } },
     { entityType: "creature", title: "Jefe de la Mazmorra", subtitle: t("canvas.seedData.orcShaman") },
   ],

@@ -145,14 +145,14 @@ export function DashboardPage(_props: DashboardPageProps = {}) {
   const campaign = campaignState?.campaign ?? null;
   const sessions: any[] = campaignState?.sessions ?? [];
   const activeSession = sessions.find((s: any) => s.status === "active") ?? null;
-  const pnetworknedSessions = sessions
-    .filter((s: any) => s.status === "pnetworkned")
+  const plannedSessions = sessions
+    .filter((s: any) => s.status === "planned")
     .sort(
       (a: any, b: any) =>
         new Date(a.scheduledAt ?? a.createdAt ?? 0).getTime() -
         new Date(b.scheduledAt ?? b.createdAt ?? 0).getTime()
     );
-  const nextPreparedSession = pnetworknedSessions[0] ?? null;
+  const nextPreparedSession = plannedSessions[0] ?? null;
 
   const currentLocationId = campaign?.currentLocationId ?? null;
   const currentLocationEntity =

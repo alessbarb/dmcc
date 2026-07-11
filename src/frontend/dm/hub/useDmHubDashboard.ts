@@ -186,7 +186,7 @@ function normalizeActiveTable(raw: any, t: (key: string) => string): DmHubActive
   const id = getString(raw?.id);
   const campaignId = getString(raw?.campaignId);
   if (!id || !campaignId) return null;
-  const status = raw?.status === "paused" || raw?.status === "pnetworkned" ? raw.status : "running";
+  const status = raw?.status === "paused" || raw?.status === "planned" ? raw.status : "running";
   return {
     id,
     campaignId,

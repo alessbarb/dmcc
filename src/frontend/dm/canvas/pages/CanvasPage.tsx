@@ -514,7 +514,7 @@ export function CanvasPage() {
     : null;
   const activeSession = isCurrentCampaignLoaded ? campaignState?.sessions?.find((s: Session) => s.status === "active") : undefined;
   const preparedSessions = isCurrentCampaignLoaded
-    ? (campaignState?.sessions ?? []).filter((session: Session) => session.status === "pnetworkned")
+    ? (campaignState?.sessions ?? []).filter((session: Session) => session.status === "planned")
     : [];
 
   // Keep the selected canvas scoped to the current campaign.
@@ -604,7 +604,7 @@ export function CanvasPage() {
     const campaignId = useCampaignStore.getState().activeCampaignId;
     
     if (createdCanvasId && campaignId && newBoardTemplate !== "custom") {
-      addToast(`Inicializando pnetworktilla: ${newBoardTemplate}...`, "info");
+      addToast(`Inicializando plantilla: ${newBoardTemplate}...`, "info");
       await seedCanvasTemplate(createdCanvasId, newBoardTemplate, t);
       addToast(t("canvas.page.boardInitialized", { name: newBoardTemplate }), "success");
     }
@@ -1028,17 +1028,17 @@ export function CanvasPage() {
                     <option value="mystery">Mapa de Conspiración (Pistas, sospechosos)</option>
                     <option value="location">Ubicación / Mazmorra (Salas, trampas)</option>
                     <option value="characters">Personajes (Relaciones sociales, familias)</option>
-                    <option value="custom">Tablero en bnetworkco personalizado</option>
+                    <option value="custom">Tablero en blanco personalizado</option>
                   </select>
                 </div>
                 <div className="form-group">
-                  <label>Pnetworktilla de inicio</label>
+                  <label>Plantilla de inicio</label>
                   <select
                     value={newBoardTemplate}
                     onChange={(e) => setNewBoardTemplate(e.target.value)}
                     className="form-select"
                   >
-                    <option value="custom">Ninguna (Tablero en bnetworkco)</option>
+                    <option value="custom">Ninguna (Tablero en blanco)</option>
                     <option value="mystery">🕵️ Misterio (Pistas, sospechosos y secretos)</option>
                     <option value="faction">🛡️ Facción (Líder, agentes y recursos)</option>
                     <option value="city">🏙️ Ciudad (Barrios, PNJ y rumores)</option>

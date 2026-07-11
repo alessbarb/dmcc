@@ -1014,7 +1014,7 @@ function TrazabilidadTab({
 // ─── Main component ───────────────────────────────────────────────────────────
 
 function getMetadataLanguages(metadata: any): string | undefined {
-  const languages = Array.isArray(metadata.languages) ? metadata.languages : metadata.networkguages;
+  const languages = Array.isArray(metadata.languages) ? metadata.languages : metadata.languages;
   return Array.isArray(languages) ? languages.join(", ") : languages;
 }
 
