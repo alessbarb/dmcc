@@ -1,0 +1,29 @@
+name: Consolidate primary dictionaries
+
+on:
+  pull_request:
+    types: [reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  consolidate:
+    if: github.head_ref == 'agent/p1-complete'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/p1-complete
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Update primary dictionaries
+        run: node scripts/consolidate-primary-i18n.mjs
+      - name: Commit final dictionary tree
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/shared/i18n/dictionaries scripts/consolidate-primary-i18n.mjs .github/workflows/consolidate-primary-i18n.yml
+          git commit -m "Consolidate P1 copy in primary dictionaries"
+          git push origin HEAD:agent/p1-complete
