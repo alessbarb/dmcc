@@ -1,5 +1,5 @@
 const LOCALE_STORAGE_KEY = "dmcc_language";
-const LEGACY_LOCALE_STORAGE_KEY = "dmcc_networkguage";
+const LEGACY_LOCALE_STORAGE_KEY = "dmcc_language_legacy";
 
 export function readStoredLocale(): string | null {
   try {

@@ -3,7 +3,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 function getMetadataLanguages(metadata: any): readonly string[] {
   if (Array.isArray(metadata.languages)) return metadata.languages;
-  if (Array.isArray(metadata.networkguages)) return metadata.networkguages;
+  if (Array.isArray(metadata.languages)) return metadata.languages;
   return [];
 }
 
@@ -89,8 +89,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
                 <option value="dungeon">Mazmorra</option>
                 <option value="region">Región</option>
                 <option value="room">Habitación</option>
-                <option value="networkdmark">Punto de interés</option>
-                <option value="pnetworke">Pnetworko</option>
+                <option value="landmark">Punto de interés</option>
+                <option value="plane">Plano</option>
                 <option value="other">Otro</option>
               </select>
             </div>

@@ -9,7 +9,7 @@ import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js"
 
 function getMetadataLanguages(metadata: any): readonly string[] {
   if (Array.isArray(metadata.languages)) return metadata.languages;
-  if (Array.isArray(metadata.networkguages)) return metadata.networkguages;
+  if (Array.isArray(metadata.languages)) return metadata.languages;
   return [];
 }
 
@@ -66,7 +66,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
         defaultStatus = "pending";
         defaultMetadata = { impact: "", triggerCondition: "" };
       } else if (nextType === "scene") {
-        defaultStatus = "pnetworkned";
+        defaultStatus = "planned";
         defaultMetadata = { mood: "", trigger: "" };
       } else if (nextType === "faction") {
         defaultStatus = "active";
@@ -133,10 +133,10 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
       defaultStatus = "alive";
       defaultMetadata = { creatureType: "beast", threat: "moderate" };
     } else if (type === "encounter") {
-      defaultStatus = "pnetworkned";
+      defaultStatus = "planned";
       defaultMetadata = { difficulty: "medium", location: "" };
     } else if (type === "scene") {
-      defaultStatus = "pnetworkned";
+      defaultStatus = "planned";
       defaultMetadata = { mood: "", trigger: "" };
     } else if (type === "front") {
       defaultStatus = "active";

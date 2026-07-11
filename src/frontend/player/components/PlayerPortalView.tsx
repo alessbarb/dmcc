@@ -31,7 +31,7 @@ type QuickActionKind = "question" | "note" | "objective";
 
 
 function getMetadataLanguages(metadata: Record<string, any>): unknown {
-  return Array.isArray(metadata.languages) ? metadata.languages : metadata.networkguages;
+  return Array.isArray(metadata.languages) ? metadata.languages : metadata.languages;
 }
 
 const PLAYER_PORTAL_COPY = {
@@ -277,7 +277,7 @@ function statusLabel(value: string | undefined): string {
     done: "Completado",
     completed: "Completado",
     closed: "Cerrado",
-    pnetworkned: "Preparado",
+    planned: "Preparado",
     suspected: "Sospecha",
     confirmed: "Confirmado",
     unconfirmed: "Sin confirmar",
@@ -1891,7 +1891,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                   <form onSubmit={handleNoteCreate} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Título</label>
-                      <input type="text" className="form-input" placeholder="Sospechas sobre el vilnetworko..." value={noteForm.title} onChange={(e) => setNoteForm({ ...noteForm, title: e.target.value })} required />
+                      <input type="text" className="form-input" placeholder="Sospechas sobre el villano..." value={noteForm.title} onChange={(e) => setNoteForm({ ...noteForm, title: e.target.value })} required />
                     </div>
                     <div className="form-group" style={{ marginBottom: 0 }}>
                       <label className="form-label">Contenido</label>

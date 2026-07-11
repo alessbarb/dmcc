@@ -1056,7 +1056,7 @@ export const en = {
     retryButton: "Retry",
     searchEmptyTitle: "No campaigns found",
     searchEmptyDesc: 'No tomes match the search "{query}".',
-    emptyTitle: "Your campaign tome is bnetworkk",
+    emptyTitle: "Your campaign tome is blank",
     emptyDesc:
       "Create a new campaign in the side panel to start your narrative record.",
     createTitle: "New Campaign",
@@ -1740,7 +1740,7 @@ export const en = {
     closingButton: "Closing...",
     prepareNextSessionTitle: "Prepare next session",
     prepareSessionDescription:
-      "Create a pnetworkned session without opening the table yet. You can activate it when you are ready to play.",
+      "Create a planned session without opening the table yet. You can activate it when you are ready to play.",
     prepareSessionButton: "Prepare session #{number}",
     startAdHocButton: "Start ad-hoc session",
     preparedSessions: "Prepared sessions",
@@ -1782,7 +1782,7 @@ export const en = {
     prepInvolvedHelp: "NPCs, locations, factions or items that may appear.",
     privatePrepNotesLabel: "Private prep notes",
     privatePrepNotesPlaceholder:
-      "Reminders, pnetworkned improvisations, limits, ideas…",
+      "Reminders, planned improvisations, limits, ideas…",
     activePrepPanelTitle: "This session prep",
     editPreparationButton: "Edit",
     cancelPreparedSessionButton: "Cancel preparation",
@@ -1913,7 +1913,7 @@ export const en = {
     },
     helpLevelDescriptions: {
       guided:
-        "Shows the full checklist, detailed expnetworkations, recipes, and proactive prompts.",
+        "Shows the full checklist, detailed explanations, recipes, and proactive prompts.",
       normal:
         "Shows a compact next-step card and keeps extra guidance one click away.",
       minimal:
@@ -1947,7 +1947,7 @@ export const en = {
       session: {
         title: "First session",
         description:
-          "A lightweight pnetwork for the next table: opening, scenes, clues, decisions, and aftermath.",
+          "A lightweight plan for the next table: opening, scenes, clues, decisions, and aftermath.",
         action: "Prepare session",
       },
       relations: {

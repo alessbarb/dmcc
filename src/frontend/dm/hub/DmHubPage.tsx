@@ -887,7 +887,7 @@ export function DmHubPage() {
                   { icon: <FileText size={18} />, label: t("landing.rulesLabel"), action: handleQuickRules },
                   { icon: <Map size={18} />, label: "Mapa del mundo", action: handleQuickMap },
                   { icon: <Clock size={18} />, label: t("landing.timelineLabel"), action: handleQuickTimeline },
-                  { icon: <Sparkles size={18} />, label: "Pnetworktillas", action: handleQuickTemplates },
+                  { icon: <Sparkles size={18} />, label: "Plantillas", action: handleQuickTemplates },
                   { icon: <Settings size={18} />, label: t("landing.settingsLabel"), action: handleQuickSettings },
                 ].map((item, i) => (
                   <button key={i} type="button" className="dm-quick-btn" onClick={item.action}>

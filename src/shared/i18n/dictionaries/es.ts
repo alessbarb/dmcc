@@ -571,11 +571,11 @@ export const es: TranslationDictionary = {
         'La relación secreta entre "{source}" y "{target}" une dos entidades públicas.',
     },
     page: {
-      initializingTemplate: "Inicializando pnetworktilla de campaña: {name}...",
-      templateInitialized: "Campaña inicializada con pnetworktilla de {name}",
+      initializingTemplate: "Inicializando plantilla de campaña: {name}...",
+      templateInitialized: "Campaña inicializada con plantilla de {name}",
       relationCount: "{count} relación{suffix}",
       notOnBoard: "{count} del lore no están en ningún tablero visual.",
-      boardInitialized: 'Tablero inicializado con pnetworktilla "{name}"',
+      boardInitialized: 'Tablero inicializado con plantilla "{name}"',
       templateConspiration: "Conspiración",
       templateRelations: "Relaciones",
       createNewBoard: "Crear nuevo tablero",
@@ -723,7 +723,7 @@ export const es: TranslationDictionary = {
     goalPlaceholder: "¿Qué es lo que quiere?",
     fearPlaceholder: "¿A qué le teme?",
     privateSecretPlaceholder: "Secreto profundo y oculto...",
-    failurePlaceholder: "¿Qué pasa si falnetwork?",
+    failurePlaceholder: "¿Qué pasa si fallan?",
     clueContentPlaceholder: "El texto exacto o descripción de la pista...",
     truthPlaceholder: "La verdad real detrás de este secreto...",
     impactPlaceholder: "¿Qué cambia cuando se revela?",
@@ -1072,7 +1072,7 @@ export const es: TranslationDictionary = {
     retryButton: "Reintentar lectura",
     searchEmptyTitle: "No se encontraron campañas",
     searchEmptyDesc: 'No hay tomos que coincidan con la búsqueda "{query}".',
-    emptyTitle: "Tu tomo de campañas está en bnetworkco",
+    emptyTitle: "Tu tomo de campañas está en blanco",
     emptyDesc:
       "Crea una nueva campaña en el panel lateral para iniciar tu registro narrativo.",
     createTitle: "Nueva Campaña",
@@ -1081,7 +1081,7 @@ export const es: TranslationDictionary = {
     systemLabel: "Sistema de Reglas",
     systemFantasyD20Generic: "Fantasía d20 Genérica",
     systemDnD: "Dungeons & Dragons SRD 5.2.1",
-    templateLabel: "Pnetworktilla Inicial de Canvas",
+    templateLabel: "Plantilla Inicial de Canvas",
     templateEmpty: "Lienzo vacío",
     templateEmptyDesc: "Inicio limpio sin nodos",
     templateMystery: "Misterio",
@@ -1375,7 +1375,7 @@ export const es: TranslationDictionary = {
     addExistingSubtitle:
       "Crea un acceso separado para otro director en este equipo",
     addExistingOpenHint:
-      "Cada DM puede crear su propio acceso. Este nuevo DM empezará con sus propias campañas y no verá campañas de otros directores salvo que se compartan más adenetworkte.",
+      "Cada DM puede crear su propio acceso. Este nuevo DM empezará con sus propias campañas y no verá campañas de otros directores salvo que se compartan más adelante.",
     addExistingBlockedSubtitle:
       "Inicia sesión con un DM existente antes de crear otro acceso",
     addExistingBlockedHint:
@@ -1545,7 +1545,7 @@ export const es: TranslationDictionary = {
     collapseSession: "Colapsar",
     expandSession: "Expandir",
     eventsCount: "{count} eventos",
-    flatView: "Vista pnetworka",
+    flatView: "Vista plana",
     groupedView: "Por sesión",
     searchPlaceholder: "Buscar en la línea temporal…",
     filterByEntity: "Filtrar por entidad",
@@ -1598,7 +1598,7 @@ export const es: TranslationDictionary = {
     decisionCausesConsequence: "La decisión causa esta consecuencia",
     pendingConsequence:
       "Consecuencia pendiente originada por la decisión: {decision}",
-    exampleConsequence: "Los bandidos reclamarán un favor más adenetworkte…",
+    exampleConsequence: "Los bandidos reclamarán un favor más adelante…",
     recordDecision: "Registrar decisión",
     exampleNote: "El rey convoca al grupo en 3 días…",
     createConsequence: "Crear consecuencia",
@@ -1715,7 +1715,7 @@ export const es: TranslationDictionary = {
     howRevealedOptional: "¿Cómo se reveló? (opcional)",
     howRevealedPlaceholder: "Encontraron una carta, interrogaron al tabernero…",
     revealClueButton: "Revelar pista",
-    revealing: "Revenetworkdo…",
+    revealing: "Revelando…",
     noUnrevealedClues: "No hay pistas preparadas sin revelar.",
     whatDidTheyDecide: "¿Qué decidieron?",
     decidePlaceholder:
@@ -1764,7 +1764,7 @@ export const es: TranslationDictionary = {
     closingButton: "Cerrando…",
     prepareNextSessionTitle: "Preparar próxima sesión",
     prepareSessionDescription:
-      "Crea una sesión pnetworkificada sin abrir todavía la mesa. Podrás activarla cuando vayas a jugar.",
+      "Crea una sesión planificada sin abrir todavía la mesa. Podrás activarla cuando vayas a jugar.",
     prepareSessionButton: "Preparar sesión #{number}",
     startAdHocButton: "Empezar improvisada",
     preparedSessions: "Sesiones preparadas",
@@ -1781,7 +1781,7 @@ export const es: TranslationDictionary = {
     createPreparedSessionHelp:
       "Crea una preparación lista para activar más tarde. No abre una sesión en mesa.",
     addToActiveSessionHelp:
-      "Registra un evento en la sesión en curso vincunetworkdo estas entidades.",
+      "Registra un evento en la sesión en curso vinculando estas entidades.",
     preparedSessionTitleLabel: "Título de la sesión preparada",
     activatePreparedSessionButton: "Activar",
     selectedElementsIntro:
@@ -1894,14 +1894,14 @@ export const es: TranslationDictionary = {
     nameLabel: "Nombre de la campaña",
     namePlaceholder: "Ej: La Sombra del Oráculo",
     systemLabel: "Sistema de juego",
-    step2Title: "Elige una pnetworktilla",
+    step2Title: "Elige una plantilla",
     templateEmpty: "Campaña vacía",
     templateEmptyDesc: "Empieza desde cero con total libertad",
     templateStarter: "Campaña inicial",
     templateStarterDesc: "Con PJs, localizaciones y misiones de ejemplo",
     step3Title: "Confirma tu campaña",
     step3Summary:
-      "Campaña: {title} · Sistema: {system} · Pnetworktilla: {template}",
+      "Campaña: {title} · Sistema: {system} · Plantilla: {template}",
     createBtn: "Crear campaña",
     createError: "No se pudo crear la campaña.",
     back: "Atrás",
@@ -1974,7 +1974,7 @@ export const es: TranslationDictionary = {
       session: {
         title: "Primera sesión",
         description:
-          "Un pnetwork ligero para la próxima mesa: apertura, escenas, pistas, decisiones y cierre.",
+          "Un plan ligero para la próxima mesa: apertura, escenas, pistas, decisiones y cierre.",
         action: "Preparar sesión",
       },
       relations: {
@@ -1994,7 +1994,7 @@ export const es: TranslationDictionary = {
       eyebrow: "Núcleo de campaña",
       title: "Editar premisa de campaña",
       description:
-        "Escribe la frase corta que leerías antes de preparar la mesa. Puede describir la situación, el tono, la promesa o el conflicto. Podrás cambiarla más adenetworkte.",
+        "Escribe la frase corta que leerías antes de preparar la mesa. Puede describir la situación, el tono, la promesa o el conflicto. Podrás cambiarla más adelante.",
       label: "Premisa o resumen breve de campaña",
       placeholder:
         "Ejemplo: Un pueblo fronterizo cubierto de bruma está perdiendo vecinos en la vieja mina, y cada facción local sabe más de lo que admite.",
@@ -2006,10 +2006,10 @@ export const es: TranslationDictionary = {
       eyebrow: "Elige un comienzo práctico",
       title: "¿Qué necesitas ahora?",
       description:
-        "Escoge una acción pequeña. DMCC abrirá la pnetworktilla adecuada o creará una preparación de sesión limpia que podrás editar antes de usarla en mesa.",
+        "Escoge una acción pequeña. DMCC abrirá la plantilla adecuada o creará una preparación de sesión limpia que podrás editar antes de usarla en mesa.",
     },
     recipes: {
-      openTemplate: "Abrir pnetworktilla",
+      openTemplate: "Abrir plantilla",
       createScaffold: "Crear estructura",
       openRelation: "Abrir relaciones",
       place: {
@@ -2040,7 +2040,7 @@ export const es: TranslationDictionary = {
           "Primera sesión jugable. Sustituye este texto por la apertura real cuando decidas dónde empieza la mesa.",
         goal1: "Presentar con claridad la situación inicial.",
         goal2:
-          "Poner al menos una decisión significativa denetworkte de los jugadores.",
+          "Poner al menos una decisión significativa delante de los jugadores.",
         goal3:
           "Cerrar con un cambio, una pista, una consecuencia o una nueva pregunta.",
         checklistOpening: "Escena inicial o punto de llegada",
@@ -2183,7 +2183,7 @@ export const es: TranslationDictionary = {
         body: "En ajustes gestionas la administración de la campaña: idioma, copias de seguridad, exportación JSON, exportación Markdown y otras opciones del sistema.",
         detail:
           "Las copias y exportaciones forman parte del flujo normal. Úsalas antes de cambios grandes, antes de probar algo arriesgado o cuando quieras un archivo legible fuera de la app.",
-        tip: "Hábito recomendado: exporta Markdown después de sesiones importantes y crea una copia antes de grandes ediciones o importaciones de pnetworktilla.",
+        tip: "Hábito recomendado: exporta Markdown después de sesiones importantes y crea una copia antes de grandes ediciones o importaciones de plantilla.",
       },
     },
   },

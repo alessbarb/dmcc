@@ -7,21 +7,21 @@ export function LanguageSelector() {
   const { locale, setLocale, t } = useTranslation();
 
   return (
-    <div className="networkg-selector">
-      <div className="networkg-selector__icon">
+    <div className="language-selector">
+      <div className="language-selector__icon">
         <Languages size={18} />
       </div>
-      <div className="networkg-selector__label">
-        <span className="networkg-selector__title">{t("settings.languageSectionTitle")}</span>
-        <span className="networkg-selector__subtitle">{t("settings.languageSectionSubtitle")}</span>
+      <div className="language-selector__label">
+        <span className="language-selector__title">{t("settings.languageSectionTitle")}</span>
+        <span className="language-selector__subtitle">{t("settings.languageSectionSubtitle")}</span>
       </div>
-      <div className="networkg-selector__toggle">
+      <div className="language-selector__toggle">
         {SUPPORTED_LOCALES.map((item) => (
           <button
             key={item.code}
             type="button"
             onClick={() => setLocale(item.code)}
-            className={`networkg-selector__btn${locale === item.code ? " networkg-selector__btn--active" : ""}`}
+            className={`language-selector__btn${locale === item.code ? " language-selector__btn--active" : ""}`}
             aria-pressed={locale === item.code}
             title={item.nativeLabel}
           >
@@ -37,13 +37,13 @@ export function LanguagePill() {
   const { locale, setLocale } = useTranslation();
 
   return (
-    <div className="networkg-pill">
+    <div className="language-pill">
       {SUPPORTED_LOCALES.map((item) => (
         <button
           key={item.code}
           type="button"
           onClick={() => setLocale(item.code)}
-          className={`networkg-pill__btn${locale === item.code ? " networkg-pill__btn--active" : ""}`}
+          className={`language-pill__btn${locale === item.code ? " language-pill__btn--active" : ""}`}
           aria-pressed={locale === item.code}
           title={item.nativeLabel}
         >
