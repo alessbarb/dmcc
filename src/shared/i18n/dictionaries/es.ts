@@ -18,6 +18,9 @@ export const es: TranslationDictionary = {
     title: "Términos de uso",
     subtitle: "Reglas para acceder y usar DMCC.",
   },
+  institutional: {
+    navAriaLabel: "Páginas institucionales",
+  },
   contact: {
     cardTitle: "¿Preguntas o comentarios?",
     cardDescription: "Contacta con el proyecto o revisa el repositorio público.",
