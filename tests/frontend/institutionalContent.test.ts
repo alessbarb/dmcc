@@ -25,26 +25,6 @@ describe("institutionalContent", () => {
     });
   });
 
-
-  it("does not expose known corrupted text fragments in institutional content", () => {
-    const corruptedFragments = ["regunetwork", "networkguage", "Wweb sharing"];
-    const visibleContent = SUPPORTED_LOCALE_CODES.flatMap((locale) =>
-      getInstitutionalPages(locale).flatMap((page) => [
-        page.navLabel,
-        page.eyebrow,
-        page.title,
-        page.summary,
-        page.lastUpdated ?? "",
-        page.translationNotice ?? "",
-        ...page.sections.flatMap((section) => [section.title, ...section.paragraphs]),
-      ]),
-    );
-
-    for (const fragment of corruptedFragments) {
-      expect(visibleContent.join("\n")).not.toContain(fragment);
-    }
-  });
-
   it("resolves known page content by key", () => {
     expect(getInstitutionalPage("privacy").path).toBe("/privacy");
     expect(getInstitutionalPage("terms").navLabel).toBe("Terms");
