@@ -170,7 +170,7 @@ export async function getPlayerConstellation(campaignId: string): Promise<any> {
 
 export async function getPlayerCharacter(campaignId: string): Promise<any> {
   return readJson(
-    await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/character`),
+    await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/character-selection`),
     "No se pudo cargar el personaje",
   );
 }
