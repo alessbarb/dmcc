@@ -38,6 +38,7 @@ const TimelinePageLazy = React.lazy(() => import("./dm/sessions/TimelinePage.js"
 const BoardsPageLazy = React.lazy(() => import("./dm/pages/BoardsPage.js").then((m) => ({ default: m.BoardsPage })));
 const PlayersPageLazy = React.lazy(() => import("./dm/pages/PlayersPage.js").then((m) => ({ default: m.PlayersPage })));
 const SearchPageLazy = React.lazy(() => import("./dm/pages/SearchPage.js").then((m) => ({ default: m.SearchPage })));
+const RulesPageLazy = React.lazy(() => import("./dm/pages/RulesPage.js").then((m) => ({ default: m.RulesPage })));
 const SettingsPageLazy = React.lazy(() => import("./dm/pages/SettingsPage.js").then((m) => ({ default: m.SettingsPage })));
 const PlayerPortalPageLazy = React.lazy(() => import("./player/pages/PlayerPortalPage.js").then((m) => ({ default: m.PlayerPortalPage })));
 const WebPlayerPortalPageLazy = React.lazy(() => import("./player/pages/WebPlayerPortalPage.js").then((m) => ({ default: m.WebPlayerPortalPage })));
@@ -74,7 +75,6 @@ const ForgotPasswordPageLazy = React.lazy(() =>
 const ResetPasswordPageLazy = React.lazy(() =>
   import("./shared/auth/ResetPasswordPage.js").then((m) => ({ default: m.ResetPasswordPage }))
 );
-
 
 function withSuspense(Component: React.ComponentType) {
   return function SuspenseRoute() {
@@ -384,6 +384,12 @@ const searchRoute = createRoute({
   component: withSuspense(SearchPageLazy),
 });
 
+const rulesRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/rules",
+  component: withSuspense(RulesPageLazy),
+});
+
 const settingsRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/settings",
@@ -471,6 +477,7 @@ const routeTree = rootRoute.addChildren([
     boardsRoute,
     playersRoute,
     searchRoute,
+    rulesRoute,
     settingsRoute,
     knowledgeRoute,
   ]),
