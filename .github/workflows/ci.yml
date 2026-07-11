@@ -34,6 +34,7 @@ jobs:
       DATABASE_URL: postgresql://dmcc:dmcc_password@127.0.0.1:5432/dmcc
       DATABASE_SSL_MODE: disable
       NODE_ENV: test
+      SESSION_SECRET: dmcc-ci-session-secret-2026-07-11-only-for-automated-tests
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -71,6 +72,7 @@ jobs:
       DATABASE_URL: postgresql://dmcc:dmcc_password@127.0.0.1:5432/dmcc
       DATABASE_SSL_MODE: disable
       NODE_ENV: test
+      SESSION_SECRET: dmcc-ci-session-secret-2026-07-11-only-for-automated-tests
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
