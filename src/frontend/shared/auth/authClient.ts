@@ -83,13 +83,7 @@ export async function logout(): Promise<void> {
   await apiFetch("/api/auth/logout", { init: { method: "POST" } }).catch(() => undefined);
 }
 
-// Transitional web-only aliases kept for components that still use older DM/player names.
-// They do not restore local, token, player-device, or legacy authentication behavior.
-export const loginDm = login;
 export const logoutDm = logout;
-export const lockDm = logout;
 export async function logoutPlayer(_campaignId?: string): Promise<void> {
   await logout();
 }
-export function forgetPlayerOnDevice(_campaignId?: string): void {}
-export function clearAllAuth(): void {}
