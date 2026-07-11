@@ -3,7 +3,7 @@ import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
 import { PostgresCampaignRepository } from "./postgresCampaignRepository.js";
 
-export type KnowledgeTargetType = "entity" | "fact" | "relation";
+export type KnowledgeTargetType = "entity" | "fact" | "relation" | "clue" | "objective";
 
 export interface PlayerKnowledgeTarget {
   targetType: KnowledgeTargetType;
@@ -75,10 +75,12 @@ export function grantAllowsPlayer(
 
 export async function synchronizeLegacyKnowledgeVisibility(campaignId: string): Promise<void> {
   const repository = new PostgresCampaignRepository();
-  const [state, facts, relations] = await Promise.all([
+  const [state, facts, relations, clues, objectives] = await Promise.all([
     repository.getCampaignState(campaignId),
     db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId)),
     db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId)),
+    db.select().from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, campaignId)),
+    db.select().from(schema.campaignObjectives).where(eq(schema.campaignObjectives.campaignId, campaignId)),
   ]);
 
   const projectedEntities = valuesOf<any>((state as any)?.entities);
@@ -90,65 +92,60 @@ export async function synchronizeLegacyKnowledgeVisibility(campaignId: string): 
     if (!targetId || entity?.archived) continue;
     const visibility = normalizeVisibility(entity?.visibility);
     if (visibility.commonScope) await insertGrant(campaignId, "entity", targetId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) {
-      await insertGrant(campaignId, "entity", targetId, specificPlayerScope(playerId), playerId);
-    }
+    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "entity", targetId, specificPlayerScope(playerId), playerId);
   }
 
   const projectedFactById = new Map(projectedFacts.map((fact) => [String(fact?.factId ?? fact?.id ?? ""), fact]));
   for (const fact of facts) {
     if (fact.status === "archived" || fact.kind === "dm_secret") continue;
-    const projected = projectedFactById.get(fact.factId);
-    const visibility = normalizeVisibility(projected?.visibility ?? { kind: "party" });
+    const visibility = normalizeVisibility(projectedFactById.get(fact.factId)?.visibility ?? { kind: "party" });
     if (visibility.commonScope) await insertGrant(campaignId, "fact", fact.factId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) {
-      await insertGrant(campaignId, "fact", fact.factId, specificPlayerScope(playerId), playerId);
-    }
+    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "fact", fact.factId, specificPlayerScope(playerId), playerId);
   }
 
   const projectedRelationById = new Map(projectedRelations.map((relation) => [String(relation?.relationId ?? relation?.id ?? ""), relation]));
   for (const relation of relations) {
-    const projected = projectedRelationById.get(relation.relationId);
-    const visibility = normalizeVisibility(projected?.visibility ?? relation.visibility);
+    const visibility = normalizeVisibility(projectedRelationById.get(relation.relationId)?.visibility ?? relation.visibility);
     if (visibility.commonScope) await insertGrant(campaignId, "relation", relation.relationId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) {
-      await insertGrant(campaignId, "relation", relation.relationId, specificPlayerScope(playerId), playerId);
+    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "relation", relation.relationId, specificPlayerScope(playerId), playerId);
+  }
+
+  for (const clue of clues) {
+    if (clue.status === "archived") continue;
+    const visibility = normalizeVisibility(clue.visibilityScope);
+    if (visibility.commonScope) await insertGrant(campaignId, "clue", clue.clueId, visibility.commonScope);
+    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "clue", clue.clueId, specificPlayerScope(playerId), playerId);
+  }
+
+  for (const objective of objectives) {
+    if (objective.status === "archived") continue;
+    if (objective.playerId) {
+      await insertGrant(campaignId, "objective", objective.objectiveId, specificPlayerScope(objective.playerId), objective.playerId);
+      continue;
     }
+    const visibility = normalizeVisibility(objective.visibilityScope);
+    if (visibility.commonScope) await insertGrant(campaignId, "objective", objective.objectiveId, visibility.commonScope);
   }
 }
 
 export async function buildDmPlayerKnowledgeProjection(campaignId: string) {
   await synchronizeLegacyKnowledgeVisibility(campaignId);
-  const [players, entities, facts, relations, grants] = await Promise.all([
-    db.select().from(schema.playerProfiles).where(and(
-      eq(schema.playerProfiles.campaignId, campaignId),
-      eq(schema.playerProfiles.status, "active"),
-    )),
+  const [players, entities, facts, relations, clues, objectives, grants] = await Promise.all([
+    db.select().from(schema.playerProfiles).where(and(eq(schema.playerProfiles.campaignId, campaignId), eq(schema.playerProfiles.status, "active"))),
     db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, campaignId)),
     db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId)),
     db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId)),
+    db.select().from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, campaignId)),
+    db.select().from(schema.campaignObjectives).where(eq(schema.campaignObjectives.campaignId, campaignId)),
     db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, campaignId)),
   ]);
 
   const targets = [
-    ...entities.filter((entity) => entity.status !== "archived").map((entity) => ({
-      targetType: "entity" as const,
-      targetId: entity.entityId,
-      title: entity.name,
-      subtitle: entity.type,
-    })),
-    ...facts.filter((fact) => fact.status !== "archived" && fact.kind !== "dm_secret").map((fact) => ({
-      targetType: "fact" as const,
-      targetId: fact.factId,
-      title: fact.contentPublic ?? fact.contentDm ?? fact.factId,
-      subtitle: fact.kind,
-    })),
-    ...relations.map((relation) => ({
-      targetType: "relation" as const,
-      targetId: relation.relationId,
-      title: relation.publicSummary ?? relation.type,
-      subtitle: relation.type,
-    })),
+    ...entities.filter((entity) => entity.status !== "archived").map((entity) => ({ targetType: "entity" as const, targetId: entity.entityId, title: entity.name, subtitle: entity.type })),
+    ...facts.filter((fact) => fact.status !== "archived" && fact.kind !== "dm_secret").map((fact) => ({ targetType: "fact" as const, targetId: fact.factId, title: fact.contentPublic ?? fact.contentDm ?? fact.factId, subtitle: fact.kind })),
+    ...relations.map((relation) => ({ targetType: "relation" as const, targetId: relation.relationId, title: relation.publicSummary ?? relation.type, subtitle: relation.type })),
+    ...clues.filter((clue) => clue.status !== "archived").map((clue) => ({ targetType: "clue" as const, targetId: clue.clueId, title: clue.title, subtitle: "clue" })),
+    ...objectives.filter((objective) => objective.status !== "archived").map((objective) => ({ targetType: "objective" as const, targetId: objective.objectiveId, title: objective.title, subtitle: objective.kind })),
   ];
 
   return {
@@ -158,11 +155,10 @@ export async function buildDmPlayerKnowledgeProjection(campaignId: string) {
       displayName: player.displayName,
       linkedCharacterId: player.linkedCharacterId,
       knowledge: targets.map((target): PlayerKnowledgeTarget => {
-        if (target.targetType === "entity" && target.targetId === player.linkedCharacterId) {
-          return { ...target, visible: true, reason: "linked_character" };
-        }
-        const matching = grants.filter((grant) => grant.targetType === target.targetType && grant.targetId === target.targetId);
-        const allowedGrant = matching.find((grant) => grantAllowsPlayer(grant, player.userId ?? "", player.profileId));
+        if (target.targetType === "entity" && target.targetId === player.linkedCharacterId) return { ...target, visible: true, reason: "linked_character" };
+        const allowedGrant = grants
+          .filter((grant) => grant.targetType === target.targetType && grant.targetId === target.targetId)
+          .find((grant) => grantAllowsPlayer(grant, player.userId ?? "", player.profileId));
         let reason: PlayerKnowledgeTarget["reason"] = "hidden";
         if (allowedGrant?.scope === "public") reason = "public";
         else if (allowedGrant?.scope === "all_players") reason = "all_players";
