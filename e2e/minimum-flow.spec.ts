@@ -29,7 +29,7 @@ async function registerAndLogin(
 }
 
 test.describe("Minimum release web API flow", () => {
-  test("covers campaigns, graph, canvas, invitations, live table, player portal, and rules", async ({ request }) => {
+  test("covers campaigns, graph, canvas, invitations, live table, player portal, rules, hub, and premades", async ({ request }) => {
     const suffix = randomUUID().replace(/-/g, "").slice(0, 12);
     const dmAccount = {
       email: `dm-${suffix}@example.com`,
@@ -52,6 +52,18 @@ test.describe("Minimum release web API flow", () => {
     await registerAndLogin(request, dmAccount);
     await expectStatus(await request.get("/api/health"), 200);
 
+    const initialDashboard = await expectStatus(await request.get("/api/dm/dashboard"), 200);
+    expect(initialDashboard.campaigns).toEqual([]);
+
+    const premades = await expectStatus(await request.get("/api/premade-campaigns?locale=en"), 200);
+    expect(premades.templates.length).toBeGreaterThan(0);
+    const firstPremade = premades.templates[0];
+    const premadeDetail = await expectStatus(
+      await request.get(`/api/premade-campaigns/${encodeURIComponent(firstPremade.templateId)}?locale=en`),
+      200,
+    );
+    expect(premadeDetail.templateId).toBe(firstPremade.templateId);
+
     const createdCampaign = await expectStatus(await request.post("/api/campaigns", {
       data: {
         title: campaignTitle,
@@ -60,6 +72,9 @@ test.describe("Minimum release web API flow", () => {
     }), 201);
     const campaignId = createdCampaign.campaignId;
     expect(campaignId).toEqual(expect.stringMatching(/^cmp_/));
+
+    const dashboardAfterCreate = await expectStatus(await request.get("/api/dm/dashboard"), 200);
+    expect(dashboardAfterCreate.campaigns.map((campaign: JsonObject) => campaign.campaignId)).toContain(campaignId);
 
     await expectStatus(await request.post(`/api/campaigns/${campaignId}/entities`, {
       data: {
