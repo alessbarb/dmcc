@@ -6,7 +6,7 @@ import { useToast } from "../../shared/hooks/useToast.js";
 import { EntityCreateModal } from "../entities/EntityCreateModal.js";
 import { RelationCreateModal } from "../entities/RelationCreateModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
-import { logoutDm } from "../../shared/auth/authClient.js";
+import { logout } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { QuickCaptureFAB } from "../capture/QuickCaptureFAB.js";
 import { CampaignGuidedTour } from "../onboarding/CampaignGuidedTour.js";
@@ -146,7 +146,7 @@ export function CampaignShell() {
 
   const handleSignOutDm = async () => {
     clearCampaign();
-    await logoutDm();
+    await logout();
     await navigate({ to: "/" });
   };
   const { toasts, removeToast } = useToast();

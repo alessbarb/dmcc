@@ -313,15 +313,6 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
     return { ok: true };
   });
 
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/network-status", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { networkModeEnabled: false, accessCode: null, localIp: "", port: 0, joinUrl: "" };
-  });
-
-  server.post<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/network/toggle", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { networkModeEnabled: false, accessCode: null, localIp: "", port: 0, joinUrl: "" };
-  });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/graph", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);

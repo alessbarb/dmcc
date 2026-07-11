@@ -21,7 +21,7 @@ import {
   Eye,
   Users,
 } from "lucide-react";
-import { logoutDm } from "./shared/auth/authClient.js";
+import { logout } from "./shared/auth/authClient.js";
 import { LandingCampaignCard } from "./shared/components/LandingCampaignCard.js";
 import { PremadeImportDialog, type PremadeImportMode } from "./shared/components/PremadeImportDialog.js";
 import { AccountModal } from "./account/AccountModal.js";
@@ -274,7 +274,7 @@ export function App() {
 
   const handleSignOutDm = async () => {
     clearCampaign();
-    await logoutDm();
+    await logout();
     await navigate({ to: "/" });
   };
 
@@ -284,7 +284,7 @@ export function App() {
 
   const handleSwitchDm = async () => {
     clearCampaign();
-    await logoutDm();
+    await logout();
     await navigate({ to: "/dm/login" });
   };
 

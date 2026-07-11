@@ -7,11 +7,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /**
- * Keeps pre-0.7 databases bootable after the web-first schema rename.
+ * Temporary post-legacy compatibility for pre-0.7 databases after the web-first schema rename.
  *
- * This is intentionally isolated from normal app startup: it only runs as part of
- * db:migrate, where it can safely finish the one-time workspace/app-role rename
- * for databases that were deployed between migration cuts.
+ * This helper is intentionally isolated from normal app startup: it only runs as
+ * part of db:migrate, where it can safely finish the one-time workspace/app-role
+ * rename for databases that were deployed between migration cuts.
+ *
+ * TODO(post-legacy): remove this helper after every deployed database has run the
+ * migration that renamed vault_id/vault_role to workspace_partition_id/app_role.
  */
 async function ensurePostLegacySchemaCompatibility() {
   await pool.query(`

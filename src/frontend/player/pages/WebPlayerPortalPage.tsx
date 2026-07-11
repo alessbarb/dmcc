@@ -13,7 +13,7 @@ import {
   getPlayerRecap,
   searchPlayerCampaign,
 } from "../../shared/api/webProductClient.js";
-import { logoutPlayer } from "../../shared/auth/authClient.js";
+import { logout } from "../../shared/auth/authClient.js";
 
 type PortalTab = "home" | "recap" | "character" | "memory" | "objectives" | "notes" | "proposals" | "constellation";
 
@@ -187,7 +187,7 @@ export function WebPlayerPortalPage() {
             <p style={{ margin: "0 0 4px", color: "var(--text-muted)", fontSize: 12, textTransform: "uppercase", letterSpacing: ".12em" }}>Portal jugador</p>
             <h1 style={{ margin: 0, fontSize: "clamp(1.5rem, 7vw, 2.4rem)" }}>{title}</h1>
           </div>
-          <button type="button" className="btn btn-secondary" onClick={async () => { await logoutPlayer(campaignId); window.location.href = "/"; }}>Salir</button>
+          <button type="button" className="btn btn-secondary" onClick={async () => { await logout(); window.location.href = "/"; }}>Salir</button>
         </header>
         <PortalNav campaignId={campaignId} active={activeTab} />
         {error && <Card style={{ color: "var(--color-danger)" }}>{error}</Card>}

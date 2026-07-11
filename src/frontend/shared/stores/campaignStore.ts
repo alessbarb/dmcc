@@ -30,7 +30,6 @@ const campaignScopedReset = () => ({
   graph: null,
   timeline: null,
   visibility: null,
-  networkStatus: null,
   dmPlayerPortalSummary: null,
 });
 
@@ -278,7 +277,6 @@ export interface CampaignStateStore {
   graph: { nodes: any[]; edges: any[] } | null;
   timeline: { events: any[] } | null;
   visibility: any | null;
-  networkStatus: { networkModeEnabled: boolean; accessCode: string | null; localIp: string; port: number; joinUrl: string } | null;
 
   playerPortalState: any | null;
   dmPlayerPortalSummary: any | null;
@@ -372,7 +370,6 @@ export interface CampaignStateStore {
     relatedRelationIds?: string[];
   }) => Promise<void>;
   updateCampaignSettings: (settings: any) => Promise<void>;
-  toggleLanMode: (enabled: boolean) => Promise<any>;
 
   exportJson: () => Promise<{ path: string }>;
   exportMarkdown: () => Promise<{
@@ -438,7 +435,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   graph: null,
   timeline: null,
   visibility: null,
-  networkStatus: null,
   playerPortalState: null,
   dmPlayerPortalSummary: null,
   loading: false,
@@ -578,16 +574,14 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       let graph = null;
       let timeline = null;
       let visibility = null;
-      let networkStatus = null;
 
       if (role === "dm") {
-        const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility, resLanStatus] = await Promise.all([
+        const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility] = await Promise.all([
           dmDashboardApi.getDmDashboard(campaignId),
           dmDashboardApi.getWhatNow(campaignId),
           campaignApi.getCampaignGraph(campaignId),
           campaignApi.getCampaignTimeline(campaignId),
           campaignApi.getCampaignVisibility(campaignId),
-          campaignApi.getCampaignLanStatus(campaignId),
         ]);
 
         dashboard = resDashboard.ok ? await resDashboard.json() : null;
@@ -595,7 +589,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         graph = resGraph.ok ? await resGraph.json() : null;
         timeline = resTimeline.ok ? await resTimeline.json() : null;
         visibility = resVisibility.ok ? await resVisibility.json() : null;
-        networkStatus = resLanStatus.ok ? await resLanStatus.json() : null;
       } else {
         const resGraph = await campaignApi.getCampaignGraph(campaignId);
         graph = resGraph.ok ? await resGraph.json() : null;
@@ -632,7 +625,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         graph,
         timeline,
         visibility,
-        networkStatus,
         loading: false,
       });
     } catch (err: any) {
@@ -665,16 +657,14 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       let graph = null;
       let timeline = null;
       let visibility = null;
-      let networkStatus = null;
 
       if (role === "dm") {
-        const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility, resLanStatus] = await Promise.all([
+        const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility] = await Promise.all([
           dmDashboardApi.getDmDashboard(campaignId),
           dmDashboardApi.getWhatNow(campaignId),
           campaignApi.getCampaignGraph(campaignId),
           campaignApi.getCampaignTimeline(campaignId),
           campaignApi.getCampaignVisibility(campaignId),
-          campaignApi.getCampaignLanStatus(campaignId),
         ]);
 
         dashboard = resDashboard.ok ? await resDashboard.json() : null;
@@ -682,7 +672,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         graph = resGraph.ok ? await resGraph.json() : null;
         timeline = resTimeline.ok ? await resTimeline.json() : null;
         visibility = resVisibility.ok ? await resVisibility.json() : null;
-        networkStatus = resLanStatus.ok ? await resLanStatus.json() : null;
       } else {
         const resGraph = await campaignApi.getCampaignGraph(campaignId);
         graph = resGraph.ok ? await resGraph.json() : null;
@@ -719,7 +708,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         graph,
         timeline,
         visibility,
-        networkStatus,
         loading: false,
       });
     } catch (err: any) {
@@ -759,9 +747,11 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   createCampaign: async (title: string, system: string, coverUrl?: string) => {
     set({ loading: true, error: null });
     try {
-      const campaignId = `cmp_${createId("cmp").split("_")[1]}`;
-      const res = await campaignApi.createCampaign({ campaignId, title, system, coverUrl });
+      const res = await campaignApi.createCampaign({ title, system, coverUrl });
       if (!res.ok) throw new Error("Failed to create campaign");
+      const data = await res.json();
+      const campaignId = typeof data?.campaignId === "string" ? data.campaignId : null;
+      if (!campaignId) throw new Error("Campaign creation response did not include campaignId");
       await get().fetchCampaigns();
       markCampaignGuidedTourPending(campaignId);
       set({ loading: false });
@@ -1134,21 +1124,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const res = await campaignApi.updateCampaignSettings(activeCampaignId, settings);
       if (!res.ok) throw new Error("Failed to update settings");
       await get().reloadCampaignIfActive(activeCampaignId);
-    } catch (err: any) {
-      set({ error: err.message, loading: false });
-    }
-  },
-
-  toggleLanMode: async (enabled) => {
-    const { activeCampaignId } = get();
-    if (!activeCampaignId) return;
-    set({ loading: true, error: null });
-    try {
-      const res = await campaignApi.toggleCampaignLan(activeCampaignId, { enabled });
-      if (!res.ok) throw new Error("Failed to update web sharing mode");
-      const data = await res.json();
-      await get().reloadCampaignIfActive(activeCampaignId);
-      return data;
     } catch (err: any) {
       set({ error: err.message, loading: false });
     }

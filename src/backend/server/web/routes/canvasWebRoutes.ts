@@ -47,22 +47,23 @@ function getCanvasFromProjection(projection: any, canvasId: string): any | null 
   return serializeCanvas(canvas);
 }
 
-async function executeCanvasCommand<Params extends { campaignId: string }>(
-  request: FastifyRequest<{ Params: Params; Body?: unknown }>,
+async function executeCanvasCommand(
+  request: FastifyRequest,
   reply: FastifyReply,
+  campaignId: string,
   command: Record<string, unknown>,
   repo: PostgresCampaignRepository,
 ) {
-  const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+  const { user } = await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
   const commandIdHeader = request.headers["idempotency-key"];
   const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
   try {
-    const projection = await repo.executeCommand(request.params.campaignId, {
+    const projection = await repo.executeCommand(campaignId, {
       ...command,
-      campaignId: request.params.campaignId,
+      campaignId,
       actorId: user.userId,
     } as Command, { commandId, actorUserId: user.userId });
-    campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
+    campaignEventBus.publish(campaignId, { type: "projection.updated", sequence: projection.lastSequence });
     return { ok: true, sequence: projection.lastSequence, projection };
   } catch (error) {
     const payload = commandErrorPayload(error);
@@ -93,7 +94,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
 
   server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/canvases", async (request, reply) => {
     const body = request.body ?? {};
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "CreateCanvas",
       canvasId: body.canvasId ?? body.id,
       title: body.title ?? "Untitled canvas",
@@ -105,7 +106,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
 
   server.patch<{ Params: CanvasParams; Body: RequestBody }>("/api/campaigns/:campaignId/canvases/:canvasId", async (request, reply) => {
     const body = request.body ?? {};
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "UpdateCanvas",
       canvasId: request.params.canvasId,
       title: body.title,
@@ -115,14 +116,14 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
   });
 
   server.delete<{ Params: CanvasParams }>("/api/campaigns/:campaignId/canvases/:canvasId", async (request, reply) => {
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "ArchiveCanvas",
       canvasId: request.params.canvasId,
     }, repo);
   });
 
   server.post<{ Params: CanvasParams; Body: { node?: unknown } }>("/api/campaigns/:campaignId/canvases/:canvasId/nodes", async (request, reply) => {
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "PlaceNodeOnCanvas",
       canvasId: request.params.canvasId,
       node: request.body?.node ?? request.body ?? {},
@@ -130,7 +131,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
   });
 
   server.patch<{ Params: NodeParams; Body: { updates?: unknown } }>("/api/campaigns/:campaignId/canvases/:canvasId/nodes/:nodeId", async (request, reply) => {
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "UpdateCanvasNode",
       canvasId: request.params.canvasId,
       nodeId: request.params.nodeId,
@@ -139,7 +140,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
   });
 
   server.delete<{ Params: NodeParams }>("/api/campaigns/:campaignId/canvases/:canvasId/nodes/:nodeId", async (request, reply) => {
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "RemoveNodeFromCanvas",
       canvasId: request.params.canvasId,
       nodeId: request.params.nodeId,
@@ -147,7 +148,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
   });
 
   server.post<{ Params: CanvasParams; Body: { edge?: unknown } }>("/api/campaigns/:campaignId/canvases/:canvasId/edges", async (request, reply) => {
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "AddEdgeToCanvas",
       canvasId: request.params.canvasId,
       edge: request.body?.edge ?? request.body ?? {},
@@ -155,7 +156,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
   });
 
   server.patch<{ Params: EdgeParams; Body: { updates?: unknown } }>("/api/campaigns/:campaignId/canvases/:canvasId/edges/:edgeId", async (request, reply) => {
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "UpdateCanvasEdge",
       canvasId: request.params.canvasId,
       edgeId: request.params.edgeId,
@@ -164,7 +165,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
   });
 
   server.delete<{ Params: EdgeParams }>("/api/campaigns/:campaignId/canvases/:canvasId/edges/:edgeId", async (request, reply) => {
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "RemoveEdgeFromCanvas",
       canvasId: request.params.canvasId,
       edgeId: request.params.edgeId,
@@ -172,7 +173,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
   });
 
   server.patch<{ Params: CanvasParams; Body: { nodeUpdates?: unknown } }>("/api/campaigns/:campaignId/canvases/:canvasId/layout", async (request, reply) => {
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "UpdateCanvasNodesLayout",
       canvasId: request.params.canvasId,
       nodeUpdates: request.body?.nodeUpdates ?? [],
@@ -182,7 +183,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
   server.post<{ Params: NodeParams; Body: RequestBody }>("/api/campaigns/:campaignId/canvases/:canvasId/nodes/:nodeId/convert", async (request, reply) => {
     const body = request.body ?? {};
     const entityId = typeof body.entityId === "string" ? body.entityId : createId("ent");
-    const createResult: any = await executeCanvasCommand(request, reply, {
+    const createResult: any = await executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "CreateEntity",
       entityId,
       entityType: body.entityType ?? "note",
@@ -196,7 +197,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
       tagIds: body.tagIds,
     }, repo);
     if (createResult?.error) return createResult;
-    return executeCanvasCommand(request, reply, {
+    return executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "UpdateCanvasNode",
       canvasId: request.params.canvasId,
       nodeId: request.params.nodeId,

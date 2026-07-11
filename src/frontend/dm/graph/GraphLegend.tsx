@@ -1,8 +1,9 @@
 import { formatEntityType } from "@shared/i18n/index.js";
+import type { SupportedLocale } from "@shared/i18n/index.js";
 
 export interface GraphLegendProps {
   colors: Record<string, string>;
-  locale: string;
+  locale: SupportedLocale;
   compact?: boolean;
 }
 
