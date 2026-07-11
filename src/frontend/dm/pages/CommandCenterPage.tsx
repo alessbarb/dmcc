@@ -1,24 +1,127 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { Activity, AlertTriangle, BookOpen, CalendarDays, EyeOff, Flag, Lightbulb, MessageSquare, Play, RefreshCw, Search, Users } from "lucide-react";
+import {
+  Activity,
+  AlertTriangle,
+  BookOpen,
+  CalendarDays,
+  CheckCircle2,
+  Download,
+  EyeOff,
+  Flag,
+  Flame,
+  GitFork,
+  Lightbulb,
+  MapPin,
+  Play,
+  Plus,
+  RefreshCw,
+  Search,
+  Share2,
+  Users,
+} from "lucide-react";
 import { getCommandCenter, getLiveTable } from "../../shared/api/webProductClient.js";
+import { useCampaignStore, type Entity } from "../../shared/stores/campaignStore.js";
+import { useToast } from "../../shared/hooks/useToast.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { CampaignStarterHub } from "../onboarding/CampaignStarterHub.js";
+import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { LiveTableModal } from "../components/LiveTableModal.js";
 
 function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return <section className="card" style={{ padding: 18, ...style }}>{children}</section>;
+  return (
+    <section className="card" style={{ padding: 18, ...style }}>
+      {children}
+    </section>
+  );
 }
 
-function Pill({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "danger" | "warning" | "good" }) {
-  const bg = tone === "danger" ? "rgba(239, 68, 68, .12)" : tone === "warning" ? "rgba(245, 158, 11, .14)" : tone === "good" ? "rgba(34, 197, 94, .12)" : "rgba(148, 163, 184, .12)";
-  const border = tone === "danger" ? "rgba(239, 68, 68, .35)" : tone === "warning" ? "rgba(245, 158, 11, .35)" : tone === "good" ? "rgba(34, 197, 94, .3)" : "rgba(148, 163, 184, .24)";
-  return <span style={{ border: `1px solid ${border}`, background: bg, borderRadius: 999, padding: "4px 9px", fontSize: 12, color: "var(--text-main)" }}>{children}</span>;
+function Pill({
+  children,
+  tone = "neutral",
+}: {
+  children: React.ReactNode;
+  tone?: "neutral" | "danger" | "warning" | "good";
+}) {
+  const background =
+    tone === "danger"
+      ? "rgba(239, 68, 68, .12)"
+      : tone === "warning"
+        ? "rgba(245, 158, 11, .14)"
+        : tone === "good"
+          ? "rgba(34, 197, 94, .12)"
+          : "rgba(148, 163, 184, .12)";
+  const border =
+    tone === "danger"
+      ? "rgba(239, 68, 68, .35)"
+      : tone === "warning"
+        ? "rgba(245, 158, 11, .35)"
+        : tone === "good"
+          ? "rgba(34, 197, 94, .3)"
+          : "rgba(148, 163, 184, .24)";
+
+  return (
+    <span
+      style={{
+        border: `1px solid ${border}`,
+        background,
+        borderRadius: 999,
+        padding: "4px 9px",
+        fontSize: 12,
+        color: "var(--text-main)",
+      }}
+    >
+      {children}
+    </span>
+  );
 }
 
-function ListBlock({ title, items, empty, render }: { title: string; items: any[]; empty: string; render: (item: any) => React.ReactNode }) {
+function MetricCard({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+}) {
+  return (
+    <Card>
+      {icon}
+      <p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 12 }}>{label}</p>
+      <strong style={{ fontSize: 28 }}>{value}</strong>
+    </Card>
+  );
+}
+
+function EmptyMessage({ children }: { children: React.ReactNode }) {
+  return <p style={{ margin: 0, color: "var(--text-muted)", fontSize: 14 }}>{children}</p>;
+}
+
+function EntityList({
+  items,
+  empty,
+  onSelect,
+}: {
+  items: Entity[];
+  empty: string;
+  onSelect: (entity: Entity) => void;
+}) {
+  if (items.length === 0) return <EmptyMessage>{empty}</EmptyMessage>;
+
   return (
     <div style={{ display: "grid", gap: 8 }}>
-      <h3 style={{ margin: 0, fontSize: 14, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: ".08em" }}>{title}</h3>
-      {items.length === 0 ? <p style={{ margin: 0, color: "var(--text-muted)", fontSize: 14 }}>{empty}</p> : items.map((item, index) => <div key={item.id ?? item.objectiveId ?? item.clueId ?? item.proposalId ?? index} style={{ border: "1px solid var(--border-color)", borderRadius: 12, padding: 12, background: "rgba(255,255,255,.025)" }}>{render(item)}</div>)}
+      {items.slice(0, 6).map((entity) => (
+        <button
+          key={entity.entityId}
+          type="button"
+          className="dashboard-entity-row"
+          onClick={() => onSelect(entity)}
+        >
+          <span className="dashboard-entity-row__title">{entity.title}</span>
+          {entity.importance && <span className="badge badge-default">{entity.importance}</span>}
+        </button>
+      ))}
     </div>
   );
 }
@@ -26,107 +129,611 @@ function ListBlock({ title, items, empty, render }: { title: string; items: any[
 export function CommandCenterPage() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
   const navigate = useNavigate();
-  const [data, setData] = useState<any | null>(null);
+  const { addToast } = useToast();
+  const { t, locale } = useTranslation();
+  const {
+    campaignState,
+    dashboard,
+    whatNow,
+    updateCampaignSettings,
+    updateEntity,
+    archiveEntity,
+    exportMarkdown,
+    setIsEntityModalOpen,
+  } = useCampaignStore();
+
+  const [commandCenter, setCommandCenter] = useState<any | null>(null);
   const [liveTable, setLiveTable] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null);
   const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
+  const [exportingMarkdown, setExportingMarkdown] = useState(false);
 
   const load = async () => {
     setLoading(true);
     setError(null);
     try {
-      const [center, live] = await Promise.all([getCommandCenter(campaignId), getLiveTable(campaignId).catch(() => ({ liveTable: null }))]);
-      setData(center);
+      const [center, live] = await Promise.all([
+        getCommandCenter(campaignId),
+        getLiveTable(campaignId).catch(() => ({ liveTable: null })),
+      ]);
+      setCommandCenter(center);
       setLiveTable(live.liveTable ?? null);
-    } catch (err: any) {
-      setError(err?.message ?? String(err));
+    } catch (loadError: any) {
+      setError(loadError?.message ?? String(loadError));
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => { void load(); }, [campaignId]);
+  useEffect(() => {
+    void load();
+  }, [campaignId]);
 
-  const attentionTone = useMemo(() => {
-    const count = data?.attention?.reduce?.((sum: number, item: any) => sum + Number(item.count ?? 0), 0) ?? 0;
-    return count > 8 ? "danger" : count > 0 ? "warning" : "good";
-  }, [data]);
+  const campaign = campaignState?.campaign ?? commandCenter?.campaign ?? null;
+  const entities = campaignState?.entities ?? [];
+  const sessions = campaignState?.sessions ?? [];
+  const activeSession = sessions.find((session) => session.status === "active") ?? null;
+  const nextPreparedSession = sessions
+    .filter((session) => session.status === "planned")
+    .sort(
+      (left, right) =>
+        new Date(left.scheduledAt ?? 0).getTime() - new Date(right.scheduledAt ?? 0).getTime(),
+    )[0] ?? null;
 
-  if (loading) return <div className="card" style={{ padding: 32 }}>Cargando Command Center...</div>;
-  if (error) return <div className="card" style={{ padding: 32, color: "var(--color-danger)" }}>{error}</div>;
-  if (!data) return null;
+  const currentLocation =
+    whatNow?.currentLocation ??
+    (campaign?.currentLocationId
+      ? entities.find((entity) => entity.entityId === campaign.currentLocationId) ?? null
+      : null);
+  const currentQuest =
+    whatNow?.currentQuest ??
+    (campaign?.currentQuestId
+      ? entities.find((entity) => entity.entityId === campaign.currentQuestId) ?? null
+      : dashboard?.activeQuests?.[0] ?? null);
+
+  const npcWarnings: Entity[] = dashboard?.importantNpcWarnings ?? [];
+  const blockedQuests: Entity[] = dashboard?.blockedQuests ?? [];
+  const criticalHiddenClues: Entity[] =
+    whatNow?.hiddenCriticalSecrets ?? dashboard?.criticalHiddenClues ?? [];
+  const preparedClues: Entity[] = whatNow?.pendingClues ?? dashboard?.preparedClues ?? [];
+  const pendingConsequences: Entity[] =
+    whatNow?.unresolvedConsequences ?? dashboard?.pendingConsequences ?? [];
+  const partialKnowledgeAlerts: any[] = whatNow?.partialKnowledgeAlerts ?? [];
+  const preparationChecklist: Array<{ task: string; priority?: string; done?: boolean }> =
+    whatNow?.preparationChecklist ?? [];
+  const completedTasks: string[] =
+    (campaign as any)?.settings?.completedChecklistTasks ?? [];
+
+  const attentionCount =
+    npcWarnings.length +
+    blockedQuests.length +
+    criticalHiddenClues.length +
+    pendingConsequences.length +
+    partialKnowledgeAlerts.length;
+
+  const attentionTone = useMemo<"danger" | "warning" | "good">(() => {
+    if (attentionCount > 8) return "danger";
+    if (attentionCount > 0) return "warning";
+    return "good";
+  }, [attentionCount]);
+
+  const toggleChecklistTask = async (task: string) => {
+    const nextTasks = completedTasks.includes(task)
+      ? completedTasks.filter((item) => item !== task)
+      : [...completedTasks, task];
+    await updateCampaignSettings({ completedChecklistTasks: nextTasks });
+  };
+
+  const handleMarkdownExport = async () => {
+    setExportingMarkdown(true);
+    try {
+      const result = await exportMarkdown();
+      addToast(
+        result.path
+          ? t("dashboard.markdownExportedWithPath")
+          : t("dashboard.markdownExported"),
+        "success",
+      );
+    } catch (exportError: any) {
+      addToast(
+        t("dashboard.markdownExportError", {
+          error: exportError?.message ?? String(exportError),
+        }),
+        "error",
+      );
+    } finally {
+      setExportingMarkdown(false);
+    }
+  };
+
+  if (loading && !commandCenter) {
+    return <div className="card" style={{ padding: 32 }}>{t("common.loading")}</div>;
+  }
+
+  if (error && !commandCenter) {
+    return (
+      <div className="card" style={{ padding: 32, display: "grid", gap: 16 }}>
+        <p style={{ margin: 0, color: "var(--color-danger)" }}>{error}</p>
+        <button className="btn btn-secondary" type="button" onClick={() => void load()}>
+          <RefreshCw size={16} /> {t("campaignShell.loading.retry")}
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ display: "grid", gap: 18 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", alignItems: "flex-start" }}>
-        <div>
-          <p style={{ margin: "0 0 6px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: ".12em", fontSize: 12 }}>Centro de mando narrativo</p>
-          <h1 style={{ margin: 0, fontSize: "clamp(1.8rem, 4vw, 3rem)" }}>{data.campaign?.title ?? "Campaña"}</h1>
-          <p style={{ margin: "8px 0 0", color: "var(--text-muted)", maxWidth: 720 }}>{data.campaign?.summary ?? "Memoria, secretos, objetivos y preparación de la próxima sesión."}</p>
-        </div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button className="btn btn-secondary" type="button" onClick={() => void load()}><RefreshCw size={16} /> Actualizar</button>
-          <button className="btn btn-secondary" type="button" onClick={() => navigate({ to: `/campaigns/${campaignId}/search` })}><Search size={16} /> Buscar</button>
-          <button className="btn btn-primary" type="button" onClick={() => setLiveTableModalOpen(true)}><Play size={16} /> {liveTable ? "Ver modo mesa" : "Abrir modo mesa"}</button>
-        </div>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 12 }}>
-        <Card><BookOpen size={18} /><p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 12 }}>Entidades</p><strong style={{ fontSize: 28 }}>{data.counts?.entities ?? 0}</strong></Card>
-        <Card><EyeOff size={18} /><p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 12 }}>Secretos pendientes</p><strong style={{ fontSize: 28 }}>{data.counts?.hiddenSecrets ?? 0}</strong></Card>
-        <Card><Lightbulb size={18} /><p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 12 }}>Pistas preparadas</p><strong style={{ fontSize: 28 }}>{data.counts?.clues ?? 0}</strong></Card>
-        <Card><Flag size={18} /><p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 12 }}>Objetivos abiertos</p><strong style={{ fontSize: 28 }}>{data.openObjectives?.length ?? 0}</strong></Card>
-      </div>
-
-      <Card style={{ borderColor: attentionTone === "danger" ? "rgba(239,68,68,.4)" : attentionTone === "warning" ? "rgba(245,158,11,.35)" : "rgba(34,197,94,.3)" }}>
-        <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
-          <AlertTriangle size={20} />
-          <h2 style={{ margin: 0 }}>Qué necesita atención</h2>
-          <Pill tone={attentionTone as any}>{data.attention?.length ? `${data.attention.length} bloques` : "Todo tranquilo"}</Pill>
-        </div>
-        {data.attention?.length ? (
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>{data.attention.map((item: any) => <Pill key={item.type} tone={item.type === "hidden_secrets" ? "danger" : "warning"}>{item.label}: {item.count}</Pill>)}</div>
-        ) : <p style={{ margin: 0, color: "var(--text-muted)" }}>No hay propuestas, secretos o pistas urgentes ahora mismo.</p>}
-      </Card>
-
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.25fr) minmax(280px, .75fr)", gap: 18 }}>
-        <Card>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}><CalendarDays size={18} /><h2 style={{ margin: 0 }}>Recap y próxima sesión</h2></div>
-          <p style={{ marginTop: 0, color: "var(--text-main)", lineHeight: 1.6 }}>{data.recap ?? "Todavía no hay recap público. Al cerrar una sesión, aparecerá aquí como punto de continuidad."}</p>
-          {data.nextSession ? <Pill tone="good">Próxima: {data.nextSession.title}</Pill> : <Pill>Sin sesión preparada</Pill>}
-          {liveTable && <div style={{ marginTop: 12 }}><Pill tone="good">Mesa activa: {liveTable.shortCode}</Pill></div>}
-        </Card>
-
-        <Card>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}><Activity size={18} /><h2 style={{ margin: 0 }}>Actividad reciente</h2></div>
-          <div style={{ display: "grid", gap: 8 }}>
-            {(data.recentActivity ?? []).slice(0, 6).map((item: any) => <div key={item.activityId} style={{ fontSize: 13, color: "var(--text-muted)", borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}><strong style={{ color: "var(--text-main)" }}>{item.type}</strong><br />{new Date(item.occurredAt).toLocaleString()}</div>)}
-            {!(data.recentActivity ?? []).length && <p style={{ margin: 0, color: "var(--text-muted)" }}>Sin actividad reciente.</p>}
+    <>
+      <div className="dashboard-page" style={{ display: "grid", gap: 24 }}>
+        <header
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 16,
+            flexWrap: "wrap",
+            alignItems: "flex-start",
+          }}
+        >
+          <div>
+            <p
+              style={{
+                margin: "0 0 6px",
+                color: "var(--text-muted)",
+                textTransform: "uppercase",
+                letterSpacing: ".12em",
+                fontSize: 12,
+              }}
+            >
+              {t("campaignShell.meta.dashboardEyebrow")}
+            </p>
+            <h1 style={{ margin: 0, fontSize: "clamp(1.8rem, 4vw, 3rem)" }}>
+              {campaign?.title ?? t("campaignShell.defaultTitle")}
+            </h1>
+            <p style={{ margin: "8px 0 0", color: "var(--text-muted)", maxWidth: 760 }}>
+              {campaign?.summary ?? t("campaignShell.meta.dashboardDescription")}
+            </p>
           </div>
+
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <button className="btn btn-secondary" type="button" onClick={() => void load()}>
+              <RefreshCw size={16} /> {t("campaignShell.loading.retry")}
+            </button>
+            <button
+              className="btn btn-secondary"
+              type="button"
+              onClick={() => navigate({ to: `/campaigns/${campaignId}/search` })}
+            >
+              <Search size={16} /> {t("campaignShell.nav.search")}
+            </button>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={() => setLiveTableModalOpen(true)}
+            >
+              <Play size={16} /> {t("dashboard.runSession")}
+            </button>
+          </div>
+        </header>
+
+        {campaignState && (
+          <CampaignStarterHub
+            campaignId={campaignId}
+            campaignState={campaignState}
+            setCurrentPage={(page) => navigate({ to: `/campaigns/${campaignId}/${page}` })}
+          />
+        )}
+
+        <section aria-labelledby="command-center-state-title">
+          <h2 id="command-center-state-title" className="dashboard-section-label">
+            <span>{t("dashboard.currentState")}</span>
+            <span aria-hidden="true" />
+          </h2>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
+              gap: 12,
+            }}
+          >
+            <MetricCard
+              icon={<BookOpen size={18} />}
+              label={t("dashboard.metricPlayersDetail")}
+              value={commandCenter?.counts?.entities ?? entities.length}
+            />
+            <MetricCard
+              icon={<EyeOff size={18} />}
+              label={t("dashboard.unrevealedCriticalClues")}
+              value={criticalHiddenClues.length}
+            />
+            <MetricCard
+              icon={<Lightbulb size={18} />}
+              label={t("dashboard.cluesReady")}
+              value={preparedClues.length}
+            />
+            <MetricCard
+              icon={<Flag size={18} />}
+              label={t("dashboard.metricQuests")}
+              value={dashboard?.activeQuests?.length ?? commandCenter?.openObjectives?.length ?? 0}
+            />
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: 12,
+              marginTop: 12,
+            }}
+          >
+            <Card>
+              <h3 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+                <MapPin size={18} /> {t("dashboard.currentLocation")}
+              </h3>
+              {currentLocation ? (
+                <button
+                  className="dashboard-entity-row"
+                  type="button"
+                  onClick={() => setSelectedEntity(currentLocation)}
+                >
+                  <span className="dashboard-entity-row__title">{currentLocation.title}</span>
+                </button>
+              ) : (
+                <EmptyMessage>{t("dashboard.notSet")}</EmptyMessage>
+              )}
+            </Card>
+
+            <Card>
+              <h3 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+                <Flag size={18} /> {t("dashboard.mainQuest")}
+              </h3>
+              {currentQuest ? (
+                <button
+                  className="dashboard-entity-row"
+                  type="button"
+                  onClick={() => setSelectedEntity(currentQuest)}
+                >
+                  <span className="dashboard-entity-row__title">{currentQuest.title}</span>
+                </button>
+              ) : (
+                <EmptyMessage>{t("dashboard.noActiveQuest")}</EmptyMessage>
+              )}
+            </Card>
+
+            <Card>
+              <h3 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+                <CalendarDays size={18} /> {t("dashboard.lastSession")}
+              </h3>
+              {dashboard?.lastSession ? (
+                <div style={{ display: "grid", gap: 4 }}>
+                  <strong>{dashboard.lastSession.title}</strong>
+                  {dashboard.lastSession.date && (
+                    <span style={{ color: "var(--text-muted)", fontSize: 13 }}>
+                      {new Date(dashboard.lastSession.date).toLocaleString(locale, {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}
+                    </span>
+                  )}
+                  {dashboard.lastSession.summary && (
+                    <span style={{ color: "var(--text-muted)", fontSize: 13 }}>
+                      {dashboard.lastSession.summary}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <EmptyMessage>{t("dashboard.noPreviousSessions")}</EmptyMessage>
+              )}
+            </Card>
+          </div>
+        </section>
+
+        <Card
+          style={{
+            borderColor:
+              attentionTone === "danger"
+                ? "rgba(239,68,68,.4)"
+                : attentionTone === "warning"
+                  ? "rgba(245,158,11,.35)"
+                  : "rgba(34,197,94,.3)",
+          }}
+        >
+          <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
+            {attentionCount > 0 ? <AlertTriangle size={20} /> : <CheckCircle2 size={20} />}
+            <h2 style={{ margin: 0 }}>{t("dashboard.needsAttention")}</h2>
+            <Pill tone={attentionTone}>{attentionCount}</Pill>
+          </div>
+          {attentionCount === 0 ? (
+            <EmptyMessage>{t("dashboard.allClear")}</EmptyMessage>
+          ) : (
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {npcWarnings.length > 0 && (
+                <Pill tone="warning">{t("dashboard.forgottenNpcs")}: {npcWarnings.length}</Pill>
+              )}
+              {blockedQuests.length > 0 && (
+                <Pill tone="danger">{t("dashboard.blockedQuests")}: {blockedQuests.length}</Pill>
+              )}
+              {criticalHiddenClues.length > 0 && (
+                <Pill tone="danger">{t("dashboard.unrevealedCriticalClues")}: {criticalHiddenClues.length}</Pill>
+              )}
+              {pendingConsequences.length > 0 && (
+                <Pill tone="warning">{t("dashboard.pendingConsequences")}: {pendingConsequences.length}</Pill>
+              )}
+              {partialKnowledgeAlerts.length > 0 && (
+                <Pill tone="warning">{t("whatNowPage.partialKnowledge")}: {partialKnowledgeAlerts.length}</Pill>
+              )}
+            </div>
+          )}
         </Card>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: 18,
+          }}
+        >
+          <Card>
+            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <CheckCircle2 size={18} /> {t("whatNowPage.prepTitle")}
+            </h2>
+            {preparationChecklist.length === 0 ? (
+              <EmptyMessage>{t("dashboard.noPreparedClues")}</EmptyMessage>
+            ) : (
+              <div style={{ display: "grid", gap: 10 }}>
+                {preparationChecklist.map((item) => {
+                  const checked = item.done === true || completedTasks.includes(item.task);
+                  return (
+                    <label
+                      key={item.task}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        padding: 12,
+                        borderRadius: "var(--radius-md)",
+                        background: "var(--bg-input)",
+                        border: "1px solid var(--border-color)",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => void toggleChecklistTask(item.task)}
+                      />
+                      <span
+                        style={{
+                          flex: 1,
+                          textDecoration: checked ? "line-through" : "none",
+                          color: checked ? "var(--text-muted)" : "var(--text-main)",
+                        }}
+                      >
+                        {item.task}
+                      </span>
+                      {item.priority && <span className="badge badge-default">{item.priority}</span>}
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+          </Card>
+
+          <Card>
+            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <Share2 size={18} /> {t("whatNowPage.confusionRisks")}
+            </h2>
+            {partialKnowledgeAlerts.length === 0 ? (
+              <EmptyMessage>{t("whatNowPage.noConfusionRisks")}</EmptyMessage>
+            ) : (
+              <div style={{ display: "grid", gap: 10 }}>
+                {partialKnowledgeAlerts.map((alert, index) => (
+                  <div
+                    key={alert.id ?? alert.message ?? index}
+                    style={{
+                      border: "1px solid var(--border-color)",
+                      borderRadius: "var(--radius-md)",
+                      padding: 12,
+                    }}
+                  >
+                    {alert.message}
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 18,
+          }}
+        >
+          <Card>
+            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <Users size={18} /> {t("dashboard.forgottenNpcs")}
+            </h2>
+            <EntityList
+              items={npcWarnings}
+              empty={t("dashboard.noneMasculine")}
+              onSelect={setSelectedEntity}
+            />
+          </Card>
+
+          <Card>
+            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <Flag size={18} /> {t("dashboard.blockedQuests")}
+            </h2>
+            <EntityList
+              items={blockedQuests}
+              empty={t("dashboard.noneFeminine")}
+              onSelect={setSelectedEntity}
+            />
+          </Card>
+
+          <Card>
+            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <EyeOff size={18} /> {t("whatNowPage.criticalClues")}
+            </h2>
+            <EntityList
+              items={[...criticalHiddenClues, ...preparedClues]}
+              empty={t("whatNowPage.noCriticalClues")}
+              onSelect={setSelectedEntity}
+            />
+          </Card>
+
+          <Card>
+            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <Flame size={18} /> {t("whatNowPage.readyConsequences")}
+            </h2>
+            <EntityList
+              items={pendingConsequences}
+              empty={t("whatNowPage.noPendingConsequences")}
+              onSelect={setSelectedEntity}
+            />
+          </Card>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1.25fr) minmax(280px, .75fr)",
+            gap: 18,
+          }}
+        >
+          <Card>
+            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <CalendarDays size={18} /> {t("dashboard.nextSessionPrep")}
+            </h2>
+            <p style={{ color: "var(--text-muted)", lineHeight: 1.6 }}>
+              {commandCenter?.recap ?? dashboard?.lastSession?.summary ?? t("dashboard.noPreviousSessions")}
+            </p>
+            {activeSession ? (
+              <Pill tone="good">{t("dashboard.runningSessionTitle", { title: activeSession.title })}</Pill>
+            ) : nextPreparedSession ? (
+              <Pill tone="good">{t("dashboard.nextPreparedSessionTitle", { title: nextPreparedSession.title })}</Pill>
+            ) : (
+              <Pill>{t("dashboard.noPreparedSessionTitle")}</Pill>
+            )}
+            {liveTable && <div style={{ marginTop: 12 }}><Pill tone="good">{liveTable.shortCode}</Pill></div>}
+          </Card>
+
+          <Card>
+            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <Activity size={18} /> {t("dashboard.recentlyUpdated")}
+            </h2>
+            <div style={{ display: "grid", gap: 8 }}>
+              {(commandCenter?.recentActivity ?? []).slice(0, 6).map((item: any) => (
+                <div
+                  key={item.activityId}
+                  style={{
+                    fontSize: 13,
+                    color: "var(--text-muted)",
+                    borderBottom: "1px solid var(--border-color)",
+                    paddingBottom: 8,
+                  }}
+                >
+                  <strong style={{ color: "var(--text-main)" }}>{item.type}</strong>
+                  <br />
+                  {new Date(item.occurredAt).toLocaleString(locale)}
+                </div>
+              ))}
+              {!(commandCenter?.recentActivity ?? []).length && (
+                <EmptyMessage>{t("dashboard.noRecentChanges")}</EmptyMessage>
+              )}
+            </div>
+          </Card>
+        </div>
+
+        <section aria-labelledby="command-center-actions-title">
+          <h2 id="command-center-actions-title" className="dashboard-section-label">
+            <span>{t("dashboard.quickActions")}</span>
+            <span aria-hidden="true" />
+          </h2>
+          <div className="dashboard-quick-actions">
+            <button
+              className="btn btn-primary dashboard-quick-action dashboard-quick-action--primary"
+              type="button"
+              onClick={() => navigate({ to: `/campaigns/${campaignId}/session` })}
+            >
+              <Play size={20} /> <span>{t("dashboard.startSession")}</span>
+            </button>
+            <button
+              className="btn btn-secondary dashboard-quick-action"
+              type="button"
+              onClick={() => setIsEntityModalOpen(true)}
+            >
+              <Plus size={20} /> <span>{t("campaignShell.newEntity")}</span>
+            </button>
+            <button
+              className="btn btn-secondary dashboard-quick-action"
+              type="button"
+              onClick={() => navigate({ to: `/campaigns/${campaignId}/graph` })}
+            >
+              <GitFork size={20} /> <span>{t("dashboard.viewGraph")}</span>
+            </button>
+            <button
+              className="btn btn-secondary dashboard-quick-action"
+              type="button"
+              onClick={() => navigate({ to: `/campaigns/${campaignId}/search` })}
+            >
+              <Search size={20} /> <span>{t("dashboard.globalSearch")}</span>
+            </button>
+            <button
+              className="btn btn-secondary dashboard-quick-action"
+              type="button"
+              onClick={() => navigate({ to: "/portal" })}
+            >
+              <Share2 size={20} /> <span>{t("dashboard.openPlayerPortal")}</span>
+            </button>
+            <button
+              className="btn btn-secondary dashboard-quick-action"
+              type="button"
+              onClick={() => void handleMarkdownExport()}
+              disabled={exportingMarkdown}
+            >
+              <Download size={20} />
+              <span>
+                {exportingMarkdown
+                  ? t("dashboard.exportingMarkdown")
+                  : t("dashboard.exportMarkdown")}
+              </span>
+            </button>
+          </div>
+        </section>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 18 }}>
-        <Card><ListBlock title="Objetivos abiertos" items={data.openObjectives ?? []} empty="No hay objetivos abiertos." render={(item) => <><strong>{item.title}</strong><p style={{ margin: "6px 0 0", color: "var(--text-muted)" }}>{item.description ?? item.kind}</p></>} /></Card>
-        <Card><ListBlock title="Pistas sin resolver" items={data.unresolvedClues ?? []} empty="No hay pistas pendientes." render={(item) => <><strong>{item.title}</strong><p style={{ margin: "6px 0 0", color: "var(--text-muted)" }}>{item.publicSummary ?? item.status}</p></>} /></Card>
-        <Card><ListBlock title="Propuestas de jugadores" items={data.pendingProposals ?? []} empty="No hay propuestas pendientes." render={(item) => <><strong>{item.type}</strong><p style={{ margin: "6px 0 0", color: "var(--text-muted)" }}>{JSON.stringify(item.content).slice(0, 120)}</p></>} /></Card>
-      </div>
-
-      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-        <button className="btn btn-secondary" type="button" onClick={() => navigate({ to: `/campaigns/${campaignId}/session` })}><CalendarDays size={16} /> Preparar sesión</button>
-        <button className="btn btn-secondary" type="button" onClick={() => navigate({ to: `/campaigns/${campaignId}/players` })}><Users size={16} /> Jugadores e invitaciones</button>
-        <button className="btn btn-secondary" type="button" onClick={() => navigate({ to: `/campaigns/${campaignId}/entities` })}><MessageSquare size={16} /> Memoria</button>
-      </div>
+      {selectedEntity && campaignState && (
+        <EntityDetailModal
+          selectedEntity={selectedEntity}
+          campaignState={campaignState}
+          onClose={() => setSelectedEntity(null)}
+          onEdit={async (entityId, updates) => {
+            await updateEntity(entityId, updates);
+            setSelectedEntity({ ...selectedEntity, ...updates });
+          }}
+          onArchive={async (entityId) => {
+            await archiveEntity(entityId);
+            setSelectedEntity(null);
+          }}
+          onVisibilityChange={async (entityId, visibility) => {
+            await updateEntity(entityId, { visibility });
+            setSelectedEntity({ ...selectedEntity, visibility });
+          }}
+          addToast={addToast}
+        />
+      )}
 
       <LiveTableModal
         campaignId={campaignId}
         isOpen={liveTableModalOpen}
         onClose={() => setLiveTableModalOpen(false)}
-        activeSessionId={data?.nextSession?.sessionId ?? null}
+        activeSessionId={activeSession?.sessionId ?? nextPreparedSession?.sessionId ?? null}
         initialLiveTable={liveTable}
         onLiveTableChange={setLiveTable}
       />
-    </div>
+    </>
   );
 }
