@@ -78,7 +78,7 @@ export function PlayerKnowledgePage() {
           <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: 4 }}>{t("playerKnowledge.subtitle")}</p>
         </div>
         <button type="button" className="btn btn-secondary btn-sm" onClick={() => void load()}>
-          <RefreshCw size={15} /> {t("common.refresh")}
+          <RefreshCw size={15} /> {t("playerPortal.actions.refresh")}
         </button>
       </div>
 
