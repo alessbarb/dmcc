@@ -6,6 +6,7 @@ import { I18nProvider } from "./shared/i18n/I18nProvider.js";
 import { PwaUpdateBanner } from "./shared/components/PwaUpdateBanner.js";
 import { Watermark } from "./shared/components/Watermark.js";
 import "./shared/styles/index.css";
+import "./shared/styles/p1.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -14,5 +15,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Watermark />
       <PwaUpdateBanner />
     </I18nProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
