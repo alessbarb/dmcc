@@ -5,10 +5,13 @@ import { registerAuthWebRoutes } from "./routes/authWebRoutes.js";
 import { registerCampaignWebRoutes } from "./routes/campaignWebRoutes.js";
 import { registerCanvasWebRoutes } from "./routes/canvasWebRoutes.js";
 import { registerCommandCenterWebRoutes } from "./routes/commandCenterWebRoutes.js";
+import { registerDmHubWebRoutes } from "./routes/dmHubWebRoutes.js";
 import { registerHealthWebRoutes } from "./routes/healthWebRoutes.js";
 import { registerInvitationWebRoutes } from "./routes/invitationWebRoutes.js";
 import { registerLiveTableWebRoutes } from "./routes/liveTableWebRoutes.js";
 import { registerPlayerPortalWebRoutes } from "./routes/playerPortalWebRoutes.js";
+import { registerPremadeCampaignWebRoutes } from "./routes/premadeCampaignWebRoutes.js";
+import { registerRulesWebRoutes } from "./routes/rulesWebRoutes.js";
 import { registerSearchWebRoutes } from "./routes/searchWebRoutes.js";
 
 export interface WebRoutesOptions {
@@ -23,10 +26,13 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerHealthWebRoutes(server);
   void registerCampaignWebRoutes(server);
   void registerCanvasWebRoutes(server);
+  void registerDmHubWebRoutes(server);
   void registerCommandCenterWebRoutes(server);
   void registerInvitationWebRoutes(server);
   void registerLiveTableWebRoutes(server);
   void registerPlayerPortalWebRoutes(server);
+  void registerPremadeCampaignWebRoutes(server);
+  void registerRulesWebRoutes(server);
   void registerSearchWebRoutes(server);
   server.register(registerAssetRoutes, { assetsDir: options.assetsDir });
 }
