@@ -1,25 +1,20 @@
 import type { TranslationKey } from "./types.js";
 import type { SupportedLocale } from "./locales.js";
 import { FALLBACK_LOCALE, dictionaries, isSupportedLocale } from "./locales.js";
-import { p1Dictionaries } from "./p1Dictionaries.js";
 import type { InterpolationParams } from "./interpolation.js";
 import { interpolate } from "./interpolation.js";
 
 function getRawString(dict: any, path: string): string | undefined {
   const parts = path.split(".");
   let curr = dict;
-  for (const part of parts) {
-    if (curr && typeof curr === "object" && part in curr) {
-      curr = curr[part];
+  for (const p of parts) {
+    if (curr && typeof curr === "object" && p in curr) {
+      curr = curr[p];
     } else {
       return undefined;
     }
   }
   return typeof curr === "string" ? curr : undefined;
-}
-
-function getLocaleString(locale: SupportedLocale, key: string): string | undefined {
-  return getRawString(dictionaries[locale], key) ?? getRawString(p1Dictionaries[locale], key);
 }
 
 export interface Translator {
@@ -70,11 +65,14 @@ export function createTranslator(inputLocale?: unknown): Translator {
   return {
     locale,
     t(key: TranslationKey | string, params?: InterpolationParams): string {
-      let raw = getLocaleString(locale, key);
+      const targetDict = dictionaries[locale] ?? dictionaries[FALLBACK_LOCALE];
+      let raw = getRawString(targetDict, key);
       if (raw === undefined && locale !== FALLBACK_LOCALE) {
-        raw = getLocaleString(FALLBACK_LOCALE, key);
+        raw = getRawString(dictionaries[FALLBACK_LOCALE], key);
       }
-      if (raw === undefined) return key;
+      if (raw === undefined) {
+        return key;
+      }
       return interpolate(raw, params);
     },
   };
