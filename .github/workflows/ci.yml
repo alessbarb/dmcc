@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Typecheck, test and build
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: dmcc
+          POSTGRES_PASSWORD: dmcc_password
+          POSTGRES_DB: dmcc
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dmcc -d dmcc"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://dmcc:dmcc_password@127.0.0.1:5432/dmcc
+      DATABASE_SSL_MODE: disable
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Prepare database environment
+        run: |
+          printf 'DATABASE_URL=%s\nDATABASE_SSL_MODE=disable\n' "$DATABASE_URL" > .env
+          npm run db:migrate
+      - run: npm run typecheck:all
+      - run: npm test
+      - run: npm run build
+
+  e2e:
+    name: Browser smoke tests
+    runs-on: ubuntu-latest
+    needs: quality
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: dmcc
+          POSTGRES_PASSWORD: dmcc_password
+          POSTGRES_DB: dmcc
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dmcc -d dmcc"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://dmcc:dmcc_password@127.0.0.1:5432/dmcc
+      DATABASE_SSL_MODE: disable
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Prepare database environment
+        run: |
+          printf 'DATABASE_URL=%s\nDATABASE_SSL_MODE=disable\n' "$DATABASE_URL" > .env
+          npm run db:migrate
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
