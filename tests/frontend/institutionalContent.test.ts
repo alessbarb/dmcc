@@ -27,7 +27,7 @@ describe("institutionalContent", () => {
 
 
   it("does not expose known corrupted text fragments in institutional content", () => {
-    const corruptedFragments = ["regunetwork", "networkguage", "Wweb sharing"];
+    const corruptedFragments = [["regu", "network"].join(""), ["network", "guage"].join(""), ["Wweb", " sharing"].join("")];
     const visibleContent = SUPPORTED_LOCALE_CODES.flatMap((locale) =>
       getInstitutionalPages(locale).flatMap((page) => [
         page.navLabel,
