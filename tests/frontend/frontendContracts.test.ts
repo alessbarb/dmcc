@@ -3,10 +3,12 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { sessionStatusSchema } from "../../src/core/domain/session/types.js";
+import { dictionaries, SUPPORTED_LOCALE_CODES } from "../../src/shared/i18n/locales.js";
 
 const REPOSITORY_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const FRONTEND_ROOT = join(REPOSITORY_ROOT, "src/frontend");
 const ROUTER_PATH = join(FRONTEND_ROOT, "router.tsx");
+const SMART_LANDING_PATH = join(FRONTEND_ROOT, "SmartLanding.tsx");
 
 function listSourceFiles(root: string): string[] {
   return readdirSync(root, { withFileTypes: true }).flatMap((entry) => {
@@ -44,6 +46,56 @@ function registeredCampaignDestinations(routerSource: string): Set<string> {
 }
 
 describe("frontend contracts", () => {
+  it("keeps unified player portal copy in the six official dictionaries", () => {
+    const source = readFileSync(SMART_LANDING_PATH, "utf8");
+    const keys = [...source.matchAll(/playerPortal\.[A-Za-z0-9_.]+/g)].map((match) => match[0]);
+    expect(keys.length).toBeGreaterThan(20);
+
+    for (const locale of SUPPORTED_LOCALE_CODES) {
+      for (const key of keys) {
+        const value = key.split(".").reduce<unknown>((current, part) => {
+          if (current && typeof current === "object" && part in current) {
+            return (current as Record<string, unknown>)[part];
+          }
+          return undefined;
+        }, dictionaries[locale]);
+        expect(value, `${locale}:${key}`).toEqual(expect.any(String));
+        expect(value, `${locale}:${key}`).not.toBe(key);
+      }
+    }
+
+    expect(source).not.toMatch(/label:\s*"[^"]+"/);
+    expect(source).not.toMatch(/Buscar en lo que sabe|Sin resumen visible|Portal jugador|Cambiar campaña|Cargando constelación/);
+  });
+
+  it("keeps portal i18n on the official dictionary path only", () => {
+    const translateSource = readFileSync(join(REPOSITORY_ROOT, "src/shared/i18n/translate.ts"), "utf8");
+    expect(translateSource).toContain('from "./locales.js"');
+    expect(translateSource).not.toContain("dictionaries/");
+    expect(translateSource).not.toContain(`p1${"Dictionaries"}`);
+
+    const i18nFiles = listSourceFiles(join(REPOSITORY_ROOT, "src/shared/i18n"));
+    const unexpectedPortalFiles = i18nFiles.filter((path) =>
+      /player.*portal|portal.*player|p1/i.test(relative(REPOSITORY_ROOT, path)) &&
+      !/dictionaries\/(?:en|es|fr|de|it|pt)\.ts$/.test(path)
+    );
+    expect(unexpectedPortalFiles.map((path) => relative(REPOSITORY_ROOT, path))).toEqual([]);
+  });
+
+  it("keeps the unified player portal tabs structurally accessible", () => {
+    const source = readFileSync(SMART_LANDING_PATH, "utf8");
+    expect(source).toContain('role="tablist"');
+    expect(source).toContain('role="tab"');
+    expect(source).toContain('role="tabpanel"');
+    expect(source).toContain("aria-selected");
+    expect(source).toContain("aria-controls");
+    expect(source).toContain("aria-labelledby");
+    expect(source).toContain("ArrowRight");
+    expect(source).toContain("ArrowLeft");
+    expect(source).toContain('tabIndex={0}');
+    expect(source).not.toContain('role="listbox"');
+  });
+
   it("keeps every campaign navigation target registered in the router", () => {
     const routerSource = readFileSync(ROUTER_PATH, "utf8");
     const registeredDestinations = registeredCampaignDestinations(routerSource);

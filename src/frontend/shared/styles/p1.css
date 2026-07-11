@@ -139,3 +139,36 @@
     max-width: none;
   }
 }
+
+.player-portal-nav__item.active::after {
+  content: "";
+  width: 1.6rem;
+  height: 0.18rem;
+  border-radius: var(--radius-full);
+  background: currentColor;
+}
+
+.player-portal-field {
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.player-portal-help {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.player-portal-main [role="tabpanel"] {
+  min-width: 0;
+}
+
+@media (max-width: 390px) {
+  .player-portal-header {
+    gap: var(--space-2);
+  }
+
+  .player-portal-nav__item {
+    min-width: 4.75rem;
+  }
+}

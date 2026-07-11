@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ReactFlowProvider } from "@xyflow/react";
 import {
@@ -26,6 +26,7 @@ import {
   Users,
 } from "lucide-react";
 import type { Canvas } from "@core/domain/canvas/types.js";
+import type { TranslationKey } from "@shared/i18n/types.js";
 import { CampaignCanvasFlow } from "./dm/canvas/components/CampaignCanvasFlow.js";
 import type { InteractionMode } from "./dm/canvas/components/CanvasToolbar.js";
 import { isDmOnlyCanvasVisibility } from "./dm/canvas/services/canvasVisibility.js";
@@ -65,17 +66,17 @@ type PortalTab =
 
 const PORTAL_TABS: Array<{
   id: PortalTab;
-  label: string;
+  labelKey: TranslationKey;
   Icon: React.ComponentType<{ size?: number }>;
 }> = [
-  { id: "home", label: "Inicio", Icon: Home },
-  { id: "recap", label: "Recap", Icon: BookOpen },
-  { id: "character", label: "Personaje", Icon: User },
-  { id: "memory", label: "Memoria", Icon: Shield },
-  { id: "constellation", label: "Constelación", Icon: Network },
-  { id: "objectives", label: "Objetivos", Icon: Flag },
-  { id: "notes", label: "Notas", Icon: FileText },
-  { id: "proposals", label: "Propuestas", Icon: Send },
+  { id: "home", labelKey: "playerPortal.tabs.home", Icon: Home },
+  { id: "recap", labelKey: "playerPortal.tabs.recap", Icon: BookOpen },
+  { id: "character", labelKey: "playerPortal.tabs.character", Icon: User },
+  { id: "memory", labelKey: "playerPortal.tabs.memory", Icon: Shield },
+  { id: "constellation", labelKey: "playerPortal.tabs.constellation", Icon: Network },
+  { id: "objectives", labelKey: "playerPortal.tabs.objectives", Icon: Flag },
+  { id: "notes", labelKey: "playerPortal.tabs.notes", Icon: FileText },
+  { id: "proposals", labelKey: "playerPortal.tabs.proposals", Icon: Send },
 ];
 
 function readPortalLocation(): { campaignId: string | null; tab: PortalTab } {
@@ -138,7 +139,7 @@ function hasSecretLeak(payload: any): boolean {
     );
 }
 
-function PlayerSearch({ campaignId }: { campaignId: string }) {
+function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: TranslationKey) => string }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<CampaignSearchResult[]>([]);
   const [selectedResult, setSelectedResult] = useState<CampaignSearchResult | null>(null);
@@ -177,43 +178,41 @@ function PlayerSearch({ campaignId }: { campaignId: string }) {
     <Card>
       <label htmlFor="player-memory-search" style={{ display: "grid", gap: 8 }}>
         <span style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--text-muted)", fontSize: 13 }}>
-          <Search size={15} /> Buscar en lo que sabe tu personaje
+          <Search size={15} /> {t("playerPortal.search.label")}
         </span>
         <input
           id="player-memory-search"
           className="form-input"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="PNJ, pista, lugar, objetivo..."
+          placeholder={t("playerPortal.search.placeholder")}
         />
       </label>
       {error && <p role="alert" style={{ color: "var(--color-danger)", marginBottom: 0 }}>{error}</p>}
       {results.length > 0 && (
-        <div role="listbox" aria-label="Resultados visibles" style={{ display: "grid", gap: 8, marginTop: 12 }}>
+        <section aria-label={t("playerPortal.search.resultsLabel")} style={{ display: "grid", gap: 8, marginTop: 12 }}>
           {results.map((result) => (
             <button
               key={`${result.type}-${result.item.id}`}
               type="button"
-              role="option"
-              aria-selected={selectedResult?.item.id === result.item.id}
               className="card"
               style={{ padding: 10, textAlign: "left", color: "inherit", cursor: "pointer" }}
               onClick={() => setSelectedResult(result)}
             >
               <strong>{result.item.title ?? result.type}</strong>
               <span style={{ display: "block", marginTop: 4, color: "var(--text-muted)", fontSize: 13 }}>
-                {result.item.summary ?? "Sin resumen visible."}
+                {result.item.summary ?? t("playerPortal.empty.noVisibleSummary")}
               </span>
             </button>
           ))}
-        </div>
+        </section>
       )}
       {selectedResult && (
         <article style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--border-color)" }}>
           <span className="badge badge-default">{selectedResult.type}</span>
           <h3>{selectedResult.item.title ?? selectedResult.item.id}</h3>
           <p style={{ color: "var(--text-muted)", whiteSpace: "pre-wrap" }}>
-            {selectedResult.item.summary ?? "Sin contenido visible."}
+            {selectedResult.item.summary ?? t("playerPortal.empty.noVisibleContent")}
           </p>
         </article>
       )}
@@ -221,16 +220,16 @@ function PlayerSearch({ campaignId }: { campaignId: string }) {
   );
 }
 
-function renderMemory(memory: any) {
+function renderMemory(memory: any, t: (key: TranslationKey) => string) {
   const groups = memory?.entities ?? {};
   const facts = memory?.facts ?? [];
   const relations = memory?.relations ?? [];
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <Card>
-        <h2 style={{ marginTop: 0 }}>Memoria conocida</h2>
+        <h2 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownMemory")}</h2>
         <p style={{ color: "var(--text-muted)" }}>
-          Solo aparece información autorizada para tu personaje y tu mesa.
+          {t("playerPortal.memory.visibilityHint")}
         </p>
       </Card>
       {Object.entries(groups).map(([group, items]) => (
@@ -241,34 +240,34 @@ function renderMemory(memory: any) {
               <article key={item.entityId} style={{ border: "1px solid var(--border-color)", borderRadius: 12, padding: 12 }}>
                 <strong>{item.title}</strong>
                 <p style={{ margin: "5px 0 0", color: "var(--text-muted)" }}>
-                  {item.summary ?? item.status ?? "Sin resumen visible."}
+                  {item.summary ?? item.status ?? t("playerPortal.empty.noVisibleSummary")}
                 </p>
               </article>
-            )) : <p style={{ color: "var(--text-muted)" }}>Nada por ahora.</p>}
+            )) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.nothingYet")}</p>}
           </div>
         </Card>
       ))}
       <Card>
-        <h3 style={{ marginTop: 0 }}>Hechos conocidos</h3>
+        <h3 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownFacts")}</h3>
         {facts.length > 0 ? facts.map((fact: any) => (
           <p key={fact.factId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>
             {fact.statement}
           </p>
-        )) : <p style={{ color: "var(--text-muted)" }}>No hay hechos visibles todavía.</p>}
+        )) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noVisibleFacts")}</p>}
       </Card>
       <Card>
-        <h3 style={{ marginTop: 0 }}>Relaciones conocidas</h3>
+        <h3 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownRelations")}</h3>
         {relations.length > 0 ? relations.map((relation: any) => (
           <p key={relation.relationId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>
-            <strong>{relation.label}</strong>: {relation.description ?? "relación conocida"}
+            <strong>{relation.label}</strong>: {relation.description ?? t("playerPortal.memory.knownRelation")}
           </p>
-        )) : <p style={{ color: "var(--text-muted)" }}>No hay relaciones visibles todavía.</p>}
+        )) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noVisibleRelations")}</p>}
       </Card>
     </div>
   );
 }
 
-function PlayerConstellation({ campaignId }: { campaignId: string }) {
+function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: TranslationKey) => string }) {
   const [payload, setPayload] = useState<any | null>(null);
   const [activeCanvasId, setActiveCanvasId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -322,12 +321,12 @@ function PlayerConstellation({ campaignId }: { campaignId: string }) {
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <button className="btn btn-secondary" type="button" onClick={() => void load()} disabled={loading}>
-          <RefreshCw size={16} /> Actualizar
+          <RefreshCw size={16} /> {t("playerPortal.actions.refresh")}
         </button>
       </div>
-      {error && <Card style={{ color: "#fecaca" }}><ShieldAlert size={18} /> {error}</Card>}
-      {loading && <Card>Cargando constelación…</Card>}
-      {!loading && !error && !activeCanvas && <Card>No hay constelaciones públicas disponibles todavía.</Card>}
+      {error && <Card style={{ color: "#fecaca" }}><p role="alert"><ShieldAlert size={18} /> {error}</p></Card>}
+      {loading && <Card><p aria-live="polite">{t("playerPortal.loading.constellation")}</p></Card>}
+      {!loading && !error && !activeCanvas && <Card>{t("playerPortal.empty.noPublicConstellations")}</Card>}
       {activeCanvas && (
         <section className="card" style={{ padding: 0, overflow: "hidden" }}>
           <div style={{ display: "flex", gap: 8, padding: 12, borderBottom: "1px solid var(--border-color)", overflowX: "auto" }}>
@@ -337,6 +336,7 @@ function PlayerConstellation({ campaignId }: { campaignId: string }) {
                 type="button"
                 className={`btn btn-sm ${canvas.id === activeCanvas.id ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setActiveCanvasId(canvas.id)}
+                aria-pressed={canvas.id === activeCanvas.id}
               >
                 {canvas.title}
               </button>
@@ -380,6 +380,7 @@ function PlayerWorkspace({
   onTabChange,
   onCampaignChange,
   onBack,
+  t,
 }: {
   campaignId: string;
   tab: PortalTab;
@@ -387,8 +388,13 @@ function PlayerWorkspace({
   onTabChange: (tab: PortalTab) => void;
   onCampaignChange: (campaignId: string) => void;
   onBack: () => void;
+  t: (key: TranslationKey) => string;
 }) {
   const navigate = useNavigate();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const tabRefs = useRef<Record<PortalTab, HTMLButtonElement | null>>({
+    home: null, recap: null, character: null, memory: null, constellation: null, objectives: null, notes: null, proposals: null,
+  });
   const [home, setHome] = useState<any | null>(null);
   const [payload, setPayload] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -422,125 +428,163 @@ function PlayerWorkspace({
     void load();
   }, [campaignId, tab]);
 
-  const title = home?.campaign?.title ?? campaigns.find((campaign) => campaign.campaignId === campaignId)?.title ?? "Campaña";
+  const title = home?.campaign?.title ?? campaigns.find((campaign) => campaign.campaignId === campaignId)?.title ?? t("playerPortal.campaignFallback");
   const counts = home?.memoryCounts ?? {};
+  const activeTab = PORTAL_TABS.find((item) => item.id === tab) ?? PORTAL_TABS[0];
+  const panelId = `player-portal-panel-${tab}`;
+  const tabId = `player-portal-tab-${tab}`;
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, [campaignId]);
+
+  const changeTabFromKeyboard = (event: React.KeyboardEvent<HTMLButtonElement>, currentTab: PortalTab) => {
+    const currentIndex = PORTAL_TABS.findIndex((item) => item.id === currentTab);
+    let nextIndex = currentIndex;
+    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % PORTAL_TABS.length;
+    else if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + PORTAL_TABS.length) % PORTAL_TABS.length;
+    else if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = PORTAL_TABS.length - 1;
+    else return;
+    event.preventDefault();
+    const nextTab = PORTAL_TABS[nextIndex].id;
+    onTabChange(nextTab);
+    window.setTimeout(() => tabRefs.current[nextTab]?.focus(), 0);
+  };
 
   const content = useMemo(() => {
-    if (tab === "constellation") return <PlayerConstellation campaignId={campaignId} />;
+    if (tab === "constellation") return <PlayerConstellation campaignId={campaignId} t={t} />;
     if (!payload) return null;
     if (tab === "home") return (
       <div style={{ display: "grid", gap: 14 }}>
         <Card>
-          <h2 style={{ marginTop: 0 }}>Antes de jugar</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.55 }}>{payload.recap ?? "Todavía no hay recap compartido."}</p>
+          <h2 style={{ marginTop: 0 }}>{t("playerPortal.home.beforePlay")}</h2>
+          <p style={{ fontSize: 17, lineHeight: 1.55 }}>{payload.recap ?? t("playerPortal.empty.noSharedRecapYet")}</p>
         </Card>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
-          <Card><strong>{counts.visibleEntities ?? 0}</strong><br /><span style={{ color: "var(--text-muted)" }}>recuerdos</span></Card>
-          <Card><strong>{counts.facts ?? 0}</strong><br /><span style={{ color: "var(--text-muted)" }}>hechos</span></Card>
-          <Card><strong>{payload.objectives?.length ?? 0}</strong><br /><span style={{ color: "var(--text-muted)" }}>objetivos</span></Card>
+          <Card><strong>{counts.visibleEntities ?? 0}</strong><br /><span style={{ color: "var(--text-muted)" }}>{t("playerPortal.metrics.memories")}</span></Card>
+          <Card><strong>{counts.facts ?? 0}</strong><br /><span style={{ color: "var(--text-muted)" }}>{t("playerPortal.metrics.facts")}</span></Card>
+          <Card><strong>{payload.objectives?.length ?? 0}</strong><br /><span style={{ color: "var(--text-muted)" }}>{t("playerPortal.metrics.objectives")}</span></Card>
         </div>
-        <PlayerSearch campaignId={campaignId} />
+        <PlayerSearch campaignId={campaignId} t={t} />
       </div>
     );
-    if (tab === "memory") return renderMemory(payload);
+    if (tab === "memory") return renderMemory(payload, t);
     if (tab === "character") return (
       <Card>
-        <h2 style={{ marginTop: 0 }}>Personaje</h2>
+        <h2 style={{ marginTop: 0 }}>{t("playerPortal.character.heading")}</h2>
         {payload.linkedCharacter ? (
-          <><strong>{payload.linkedCharacter.title}</strong><p style={{ color: "var(--text-muted)" }}>{payload.linkedCharacter.summary ?? "Sin resumen visible."}</p></>
-        ) : <p style={{ color: "var(--text-muted)" }}>Todavía no hay personaje vinculado. Puedes enviar una propuesta al DM.</p>}
+          <><strong>{payload.linkedCharacter.title}</strong><p style={{ color: "var(--text-muted)" }}>{payload.linkedCharacter.summary ?? t("playerPortal.empty.noVisibleSummary")}</p></>
+        ) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.character.notLinked")}</p>}
       </Card>
     );
     if (tab === "objectives") return (
       <Card>
-        <h2 style={{ marginTop: 0 }}>Objetivos</h2>
+        <h2 style={{ marginTop: 0 }}>{t("playerPortal.objectivesHeading")}</h2>
         {payload.objectives?.length ? payload.objectives.map((objective: any) => (
           <article key={objective.objectiveId} style={{ borderTop: "1px solid var(--border-color)", padding: "10px 0" }}>
             <strong>{objective.title}</strong>
             <p style={{ color: "var(--text-muted)", margin: "4px 0" }}>{objective.description ?? objective.kind}</p>
             <span style={{ fontSize: 12 }}>{objective.status}</span>
           </article>
-        )) : <p style={{ color: "var(--text-muted)" }}>No hay objetivos abiertos.</p>}
+        )) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noOpenObjectives")}</p>}
       </Card>
     );
-    if (tab === "recap") return <Card><h2 style={{ marginTop: 0 }}>Recap</h2><p style={{ lineHeight: 1.6 }}>{payload.recap ?? "No hay recap compartido."}</p></Card>;
+    if (tab === "recap") return <Card><h2 style={{ marginTop: 0 }}>{t("playerPortal.recap.heading")}</h2><p style={{ lineHeight: 1.6 }}>{payload.recap ?? t("playerPortal.empty.noSharedRecap")}</p></Card>;
     if (tab === "notes") return (
       <div style={{ display: "grid", gap: 14 }}>
         <Card>
-          <h2 style={{ marginTop: 0 }}>Notas personales</h2>
-          <textarea className="form-textarea" rows={4} value={draftNote} onChange={(event) => setDraftNote(event.target.value)} placeholder="Apunta algo que quieras recordar..." />
+          <h2 style={{ marginTop: 0 }}>{t("playerPortal.notes.heading")}</h2>
+          <label htmlFor="player-note-draft" className="player-portal-field">
+            <span>{t("playerPortal.notes.label")}</span>
+            <span id="player-note-help" className="player-portal-help">{t("playerPortal.notes.instructions")}</span>
+            <textarea id="player-note-draft" aria-describedby="player-note-help" className="form-textarea" rows={4} value={draftNote} onChange={(event) => setDraftNote(event.target.value)} placeholder={t("playerPortal.notes.placeholder")} />
+          </label>
           <button className="btn btn-primary" type="button" style={{ marginTop: 10 }} disabled={!draftNote.trim()} onClick={async () => {
             await createPlayerNote(campaignId, { content: draftNote, visibility: "private" });
             setDraftNote("");
             await load();
-          }}><CheckCircle2 size={16} /> Guardar nota</button>
+          }}><CheckCircle2 size={16} /> {t("playerPortal.notes.save")}</button>
         </Card>
-        <Card>{payload.notes?.length ? payload.notes.map((note: any) => <p key={note.noteId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>{note.content}</p>) : <p style={{ color: "var(--text-muted)" }}>Sin notas todavía.</p>}</Card>
+        <Card>{payload.notes?.length ? payload.notes.map((note: any) => <p key={note.noteId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>{note.content}</p>) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noNotesYet")}</p>}</Card>
       </div>
     );
     if (tab === "proposals") return (
       <div style={{ display: "grid", gap: 14 }}>
         <Card>
-          <h2 style={{ marginTop: 0 }}>Proponer al DM</h2>
-          <textarea className="form-textarea" rows={4} value={draftProposal} onChange={(event) => setDraftProposal(event.target.value)} placeholder="Teoría, pregunta, corrección de recap o idea de personaje..." />
+          <h2 style={{ marginTop: 0 }}>{t("playerPortal.proposals.heading")}</h2>
+          <label htmlFor="player-proposal-draft" className="player-portal-field">
+            <span>{t("playerPortal.proposals.label")}</span>
+            <span id="player-proposal-help" className="player-portal-help">{t("playerPortal.proposals.instructions")}</span>
+            <textarea id="player-proposal-draft" aria-describedby="player-proposal-help" className="form-textarea" rows={4} value={draftProposal} onChange={(event) => setDraftProposal(event.target.value)} placeholder={t("playerPortal.proposals.placeholder")} />
+          </label>
           <button className="btn btn-primary" type="button" style={{ marginTop: 10 }} disabled={!draftProposal.trim()} onClick={async () => {
             await createPlayerProposal(campaignId, { type: "player_note", text: draftProposal });
             setDraftProposal("");
             await load();
-          }}><MessageSquare size={16} /> Enviar propuesta</button>
+          }}><MessageSquare size={16} /> {t("playerPortal.proposals.send")}</button>
         </Card>
-        <Card>{payload.proposals?.length ? payload.proposals.map((proposal: any) => <article key={proposal.proposalId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}><strong>{proposal.type}</strong><p style={{ color: "var(--text-muted)" }}>{typeof proposal.content === "string" ? proposal.content : JSON.stringify(proposal.content)}</p><span style={{ fontSize: 12 }}>{proposal.status}</span></article>) : <p style={{ color: "var(--text-muted)" }}>Sin propuestas enviadas.</p>}</Card>
+        <Card>{payload.proposals?.length ? payload.proposals.map((proposal: any) => <article key={proposal.proposalId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}><strong>{proposal.type}</strong><p style={{ color: "var(--text-muted)" }}>{typeof proposal.content === "string" ? proposal.content : JSON.stringify(proposal.content)}</p><span style={{ fontSize: 12 }}>{proposal.status}</span></article>) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noProposalsYet")}</p>}</Card>
       </div>
     );
     return null;
-  }, [campaignId, counts.facts, counts.visibleEntities, draftNote, draftProposal, payload, tab]);
+  }, [campaignId, counts.facts, counts.visibleEntities, draftNote, draftProposal, payload, tab, t]);
 
   return (
-    <div className="player-portal-shell" style={{ minHeight: "100dvh", background: "var(--bg-main)", color: "var(--text-main)" }}>
+    <div className="player-portal-shell">
       <header className="player-portal-header">
         <button type="button" className="btn btn-secondary btn-sm" onClick={onBack}>
-          <ArrowLeft size={15} /> Portal
+          <ArrowLeft size={15} /> {t("playerPortal.actions.portal")}
         </button>
         <div style={{ minWidth: 0, flex: 1 }}>
-          <p style={{ margin: "0 0 3px", color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: ".12em" }}>Portal jugador</p>
-          <h1 style={{ margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</h1>
+          <p style={{ margin: "0 0 3px", color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: ".12em" }}>{t("playerPortal.title")}</p>
+          <h1 ref={headingRef} tabIndex={-1} style={{ margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</h1>
         </div>
         {campaigns.length > 1 && (
           <label>
-            <span className="sr-only">Cambiar campaña</span>
+            <span className="sr-only">{t("playerPortal.actions.changeCampaign")}</span>
             <select className="form-select" value={campaignId} onChange={(event) => onCampaignChange(event.target.value)}>
               {campaigns.map((campaign) => <option key={campaign.campaignId} value={campaign.campaignId}>{campaign.title}</option>)}
             </select>
           </label>
         )}
         <button type="button" className="btn btn-secondary btn-sm" onClick={() => navigate({ to: "/player/join" })}>
-          <Plus size={15} /> Unirse
+          <Plus size={15} /> {t("playerPortal.actions.join")}
         </button>
         <button type="button" className="btn btn-secondary btn-sm" onClick={async () => {
           await logout();
           window.location.assign("/");
         }}>
-          <LogOut size={15} /> Salir
+          <LogOut size={15} /> {t("playerPortal.actions.signOut")}
         </button>
       </header>
 
-      <nav className="player-portal-nav" aria-label="Secciones del portal jugador">
-        {PORTAL_TABS.map(({ id, label, Icon }) => (
+      <div className="player-portal-nav" role="tablist" aria-label={t("playerPortal.tabs.ariaLabel")}>
+        {PORTAL_TABS.map(({ id, labelKey, Icon }) => (
           <button
             key={id}
+            ref={(element) => { tabRefs.current[id] = element; }}
             type="button"
             className={`player-portal-nav__item ${tab === id ? "active" : ""}`}
-            aria-current={tab === id ? "page" : undefined}
+            role="tab"
+            aria-selected={tab === id}
+            aria-controls={`player-portal-panel-${id}`}
+            id={`player-portal-tab-${id}`}
+            tabIndex={tab === id ? 0 : -1}
+            onKeyDown={(event) => changeTabFromKeyboard(event, id)}
             onClick={() => onTabChange(id)}
           >
-            <Icon size={16} /> {label}
+            <Icon size={16} /> {t(labelKey)}
           </button>
         ))}
-      </nav>
+      </div>
 
-      <main className="player-portal-main">
-        {error && <Card style={{ color: "var(--color-danger)" }}>{error}</Card>}
-        {tab !== "constellation" && loading ? <Card><RefreshCw size={16} /> Cargando...</Card> : content}
+      <main className="player-portal-main" aria-labelledby={tabId}>
+        <section role="tabpanel" id={panelId} aria-labelledby={tabId} tabIndex={0}>
+          <h2 className="sr-only">{t(activeTab.labelKey)}</h2>
+          {error && <Card style={{ color: "var(--color-danger)" }}><p role="alert">{error}</p></Card>}
+          {tab !== "constellation" && loading ? <Card><p aria-live="polite"><RefreshCw size={16} /> {t("playerPortal.loading.generic")}</p></Card> : content}
+        </section>
       </main>
     </div>
   );
@@ -596,6 +640,7 @@ export function SmartLanding() {
         onTabChange={(tab) => portalLocation.update(portalLocation.campaignId, tab)}
         onCampaignChange={(campaignId) => portalLocation.update(campaignId, "home")}
         onBack={() => portalLocation.update(null)}
+        t={t}
       />
     );
   }
