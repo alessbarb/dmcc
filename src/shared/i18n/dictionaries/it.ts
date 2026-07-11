@@ -5,6 +5,8 @@ export const it: TranslationDictionary = {
     about: "Informazioni su DMCC",
     contact: "Contatto",
     privacy: "Privacy",
+    github: "GitHub",
+    email: "Email",
     terms: "Termini",
   },
   legal: {

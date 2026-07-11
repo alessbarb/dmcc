@@ -1,4 +1,5 @@
 import type { SupportedLocale } from "@shared/i18n/index.js";
+import { institutionalLinks } from "./institutionalLinks.js";
 
 export type InstitutionalPageKey = "about" | "contact" | "privacy" | "terms";
 
@@ -21,8 +22,8 @@ export type InstitutionalPageContent = {
 };
 
 export const institutionalContact = {
-  email: "dmcampaigncompanion@gmail.com",
-  github: "https://github.com/alessbarb/DMCC",
+  email: institutionalLinks.email.email,
+  github: institutionalLinks.github.href,
 } as const;
 
 const legalLastUpdated = "July 10, 2026";
