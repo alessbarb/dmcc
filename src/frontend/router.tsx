@@ -14,8 +14,8 @@ async function requireAccountSession() {
     if (!status.sessionValid) {
       throw redirect({ to: "/" });
     }
-  } catch (err: any) {
-    if (err?.isRedirect) throw err;
+  } catch (error: any) {
+    if (error?.isRedirect) throw error;
     throw redirect({ to: "/" });
   }
 }
@@ -25,9 +25,6 @@ const PromoLandingLazy = React.lazy(() =>
 );
 const SmartLandingLazy = React.lazy(() =>
   import("./SmartLanding.js").then((module) => ({ default: module.SmartLanding })),
-);
-const AppPage = React.lazy(() =>
-  import("./App.js").then((module) => ({ default: module.App })),
 );
 const DmHubPageLazy = React.lazy(() =>
   import("./dm/hub/DmHubPage.js").then((module) => ({ default: module.DmHubPage })),
@@ -136,18 +133,6 @@ const portalRoute = createRoute({
   component: withSuspense(SmartLandingLazy),
 });
 
-const loginRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/login",
-  component: withSuspense(DmLoginPageLazy),
-});
-
-const webRegisterRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/register",
-  component: withSuspense(DmSetupPageLazy),
-});
-
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/about",
@@ -190,45 +175,11 @@ const resetPasswordManualRoute = createRoute({
   component: withSuspense(ResetPasswordPageLazy),
 });
 
-const appRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/app",
-  beforeLoad: requireAccountSession,
-  component: withSuspense(AppPage),
-});
-
-const appCampaignsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/app/campaigns",
-  beforeLoad: requireAccountSession,
-  component: withSuspense(AppPage),
-});
-
 const dmRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm",
   beforeLoad: requireAccountSession,
   component: withSuspense(DmHubPageLazy),
-});
-
-const dmCampaignsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/dm/campaigns",
-  beforeLoad: async () => {
-    await requireAccountSession();
-    throw redirect({ to: "/dm" });
-  },
-  component: () => null,
-});
-
-const dmCampaignsNewRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/dm/campaigns/new",
-  beforeLoad: async () => {
-    await requireAccountSession();
-    throw redirect({ to: "/dm" });
-  },
-  component: () => null,
 });
 
 const dmSetupRoute = createRoute({
@@ -371,8 +322,6 @@ const accountRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   portalRoute,
-  loginRoute,
-  webRegisterRoute,
   aboutRoute,
   contactRoute,
   privacyRoute,
@@ -380,19 +329,15 @@ const routeTree = rootRoute.addChildren([
   forgotPasswordRoute,
   resetPasswordRoute,
   resetPasswordManualRoute,
-  appRoute,
-  appCampaignsRoute,
   dmRoute,
-  dmCampaignsRoute,
-  dmCampaignsNewRoute,
-  accountRoute,
-  onboardingRoute,
-  premadePreviewRoute,
   dmSetupRoute,
   dmLoginRoute,
   playerJoinRoute,
   joinRoute,
   registerRoute,
+  accountRoute,
+  onboardingRoute,
+  premadePreviewRoute,
   campaignRoute.addChildren([
     campaignIndexRoute,
     commandCenterRoute,
