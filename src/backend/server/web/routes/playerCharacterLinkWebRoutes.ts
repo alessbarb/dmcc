@@ -49,12 +49,42 @@ async function readCampaignCharacters(campaignId: string): Promise<any[]> {
   return valuesOf<any>(state?.entities).filter((entity) => isPlayerCharacter(entity) && !isArchived(entity));
 }
 
+async function ensureCharacterGrant(
+  campaignId: string,
+  characterEntityId: string,
+  profile: typeof schema.playerProfiles.$inferSelect,
+): Promise<void> {
+  if (!profile.userId) return;
+  await db
+    .insert(schema.visibilityGrants)
+    .values({
+      campaignId,
+      targetType: "entity",
+      targetId: characterEntityId,
+      scope: "specific_user",
+      userId: profile.userId,
+      playerId: profile.profileId,
+    })
+    .onConflictDoUpdate({
+      target: [
+        schema.visibilityGrants.campaignId,
+        schema.visibilityGrants.targetType,
+        schema.visibilityGrants.targetId,
+        schema.visibilityGrants.scope,
+      ],
+      set: { userId: profile.userId, playerId: profile.profileId, grantedAt: new Date() },
+    });
+}
+
 async function migrateLegacyLinks(campaignId: string, profiles: Array<typeof schema.playerProfiles.$inferSelect>, characters: any[]) {
   const claimed = new Set(profiles.map((profile) => profile.linkedCharacterId).filter((id): id is string => Boolean(id)));
   let migrated = false;
 
   for (const profile of profiles) {
-    if (profile.linkedCharacterId) continue;
+    if (profile.linkedCharacterId) {
+      await ensureCharacterGrant(campaignId, profile.linkedCharacterId, profile);
+      continue;
+    }
     const legacyCharacter = characters.find((character) => {
       const legacyPlayerId = character?.metadata?.playerId;
       return legacyPlayerId === profile.profileId && !claimed.has(character.entityId);
@@ -69,6 +99,7 @@ async function migrateLegacyLinks(campaignId: string, profiles: Array<typeof sch
         eq(schema.playerProfiles.profileId, profile.profileId),
       ));
     profile.linkedCharacterId = legacyCharacter.entityId;
+    await ensureCharacterGrant(campaignId, legacyCharacter.entityId, profile);
     claimed.add(legacyCharacter.entityId);
     migrated = true;
   }
@@ -220,6 +251,7 @@ export async function registerPlayerCharacterLinkWebRoutes(server: FastifyInstan
         content: { playerId, characterEntityId, ownership: request.body?.ownership, syncMode: request.body?.syncMode },
       });
     }
+    await ensureCharacterGrant(request.params.campaignId, characterEntityId, profile);
     campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated", playerId });
     return { ok: true, playerId, characterEntityId };
   });
@@ -249,6 +281,16 @@ export async function registerPlayerCharacterLinkWebRoutes(server: FastifyInstan
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.profileId, request.params.playerId),
         ));
+      if (profile.linkedCharacterId) {
+        await db
+          .delete(schema.visibilityGrants)
+          .where(and(
+            eq(schema.visibilityGrants.campaignId, request.params.campaignId),
+            eq(schema.visibilityGrants.targetType, "entity"),
+            eq(schema.visibilityGrants.targetId, profile.linkedCharacterId),
+            eq(schema.visibilityGrants.scope, "specific_user"),
+          ));
+      }
       await db.insert(schema.activityFeed).values({
         campaignId: request.params.campaignId,
         activityId: createId("act"),
