@@ -217,7 +217,7 @@ export function PremadeCampaignPreviewPage() {
       });
       setImportDialogOpen(false);
       if (campaignId && options.openAfterCreate) {
-        await navigate({ to: `/campaigns/${campaignId}/dashboard` });
+        await navigate({ to: `/campaigns/${campaignId}/command-center` });
       } else {
         await fetchCampaigns();
       }
@@ -495,7 +495,7 @@ export function PremadeCampaignPreviewPage() {
         importing={importing}
         error={importError}
         onClose={() => { if (!importing) setImportDialogOpen(false); }}
-        onOpenExisting={(campaignId) => { setImportDialogOpen(false); navigate({ to: `/campaigns/${campaignId}/dashboard` }); }}
+        onOpenExisting={(campaignId) => { setImportDialogOpen(false); navigate({ to: `/campaigns/${campaignId}/command-center` }); }}
         onConfirm={(options) => handleCreateCopy(options)}
       />
     </div>

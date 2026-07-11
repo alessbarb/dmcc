@@ -184,7 +184,7 @@ export function DmHubPage() {
       try {
         await selectCampaign(campaignId);
         setMysticalTransitionId(null);
-        navigate({ to: `/campaigns/${campaignId}/dashboard` });
+        navigate({ to: `/campaigns/${campaignId}/command-center` });
       } catch (e) {
         console.error(e);
         setMysticalTransitionId(null);
@@ -211,7 +211,7 @@ export function DmHubPage() {
       setNewCampaignTitle("");
       setNewCampaignCoverUrl("");
       setIsCreateModalOpen(false);
-      if (campaignId) navigate({ to: `/campaigns/${campaignId}/dashboard` });
+      if (campaignId) navigate({ to: `/campaigns/${campaignId}/command-center` });
     } catch (err: any) {
       setCreateCampaignError(err.message || t("landing.createCampaignError"));
     } finally {
@@ -316,7 +316,7 @@ export function DmHubPage() {
       });
       setPremadeDialogTemplateId(null);
       if (campaignId && options.openAfterCreate) {
-        navigate({ to: `/campaigns/${campaignId}/dashboard` });
+        navigate({ to: `/campaigns/${campaignId}/command-center` });
       } else {
         await fetchCampaigns();
       }
