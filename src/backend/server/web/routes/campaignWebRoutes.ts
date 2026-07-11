@@ -155,6 +155,13 @@ function sessionDto(row: typeof schema.campaignSessions.$inferSelect) {
   };
 }
 
+async function deleteCampaignShell(campaignId: string): Promise<void> {
+  await db.transaction(async (tx) => {
+    await tx.delete(schema.campaignMemberships).where(eq(schema.campaignMemberships.campaignId, campaignId));
+    await tx.delete(schema.campaigns).where(eq(schema.campaigns.campaignId, campaignId));
+  });
+}
+
 export async function registerCampaignWebRoutes(server: FastifyInstance): Promise<void> {
   const repo = new PostgresCampaignRepository();
 
@@ -171,6 +178,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
       reply.code(400);
       return { error: "Campaign title is required" };
     }
+
     const campaignId = createId("cmp");
     const workspaceId = await ensureDefaultWorkspace(user);
     const metadata = {
@@ -178,22 +186,38 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
       ...(request.body?.system ? { system: request.body.system } : {}),
       ...(request.body?.coverUrl ? { coverUrl: request.body.coverUrl } : {}),
     };
-    await db.transaction(async (tx) => {
-      await tx.insert(schema.campaigns).values({ campaignId, title, summary: request.body?.summary ?? null, workspaceId, ownerId: user.userId, status: "active", metadata });
-      await tx.insert(schema.campaignMemberships).values({ campaignId, userId: user.userId, role: "dm", playerId: null }).onConflictDoNothing();
-    });
-    await repo.executeCommand(campaignId, {
-      type: "CreateCampaign",
-      campaignId,
-      title,
-      summary: request.body?.summary,
-      system: request.body?.system,
-      coverUrl: request.body?.coverUrl,
-      metadata,
-      actorId: user.userId,
-    } as Command, { commandId: createId("cmd"), actorUserId: user.userId });
-    reply.code(201);
-    return { campaignId };
+    const commandIdHeader = request.headers["idempotency-key"];
+    const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
+
+    try {
+      await db.transaction(async (tx) => {
+        await tx.insert(schema.campaigns).values({ campaignId, title, summary: request.body?.summary ?? null, workspaceId, ownerId: user.userId, status: "active", metadata });
+        await tx.insert(schema.campaignMemberships).values({ campaignId, userId: user.userId, role: "dm", playerId: null }).onConflictDoNothing();
+      });
+
+      try {
+        await repo.executeCommand(campaignId, {
+          type: "CreateCampaign",
+          campaignId,
+          title,
+          summary: request.body?.summary,
+          system: request.body?.system,
+          coverUrl: request.body?.coverUrl,
+          metadata,
+          actorId: user.userId,
+        } as Command, { commandId, actorUserId: user.userId });
+      } catch (error) {
+        await deleteCampaignShell(campaignId).catch(() => undefined);
+        throw error;
+      }
+
+      reply.code(201);
+      return { campaignId };
+    } catch (error) {
+      const payload = commandErrorPayload(error);
+      reply.code(payload.isConflict ? 409 : payload.statusCode);
+      return { error: payload.message };
+    }
   });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId", async (request) => {
