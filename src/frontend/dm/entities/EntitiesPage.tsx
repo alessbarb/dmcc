@@ -41,38 +41,39 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
   const [visibilityFilter, setVisibilityFilter] = useState("all");
   const setIsEntityModalOpen = props.setIsEntityModalOpen ?? store.setIsEntityModalOpen;
 
-  const activeEntities = useMemo(
+  const activeEntities = useMemo<Entity[]>(
     () => (campaignState?.entities ?? []).filter((entity: Entity) => !entity.archived),
     [campaignState?.entities],
   );
 
-  const entityTypes = useMemo(
-    () => Array.from(new Set(activeEntities.map((entity: Entity) => entity.entityType))).sort(),
+  const entityTypes = useMemo<string[]>(
+    () => Array.from(new Set(activeEntities.map((entity) => entity.entityType))).sort(),
     [activeEntities],
   );
-  const statuses = useMemo(
-    () => Array.from(new Set(activeEntities.map((entity: Entity) => entity.status).filter(Boolean))).sort(),
+  const statuses = useMemo<string[]>(
+    () => Array.from(new Set(activeEntities.map((entity) => entity.status).filter(Boolean))).sort(),
     [activeEntities],
   );
-  const importances = useMemo(
-    () => Array.from(new Set(activeEntities.map((entity: Entity) => entity.importance).filter(Boolean))).sort(),
+  const importances = useMemo<string[]>(
+    () => Array.from(new Set(activeEntities.map((entity) => entity.importance).filter(Boolean))).sort(),
     [activeEntities],
   );
-  const visibilities = useMemo(
+  const visibilities = useMemo<string[]>(
     () => Array.from(new Set(activeEntities.map(visibilityKind))).sort(),
     [activeEntities],
   );
 
   const filteredEntities = useMemo(() => {
     const query = normalized(entitySearchQuery);
-    return activeEntities.filter((entity: Entity) => {
+    return activeEntities.filter((entity) => {
       if (entityTypeFilter !== "all" && entity.entityType !== entityTypeFilter) return false;
       if (statusFilter !== "all" && entity.status !== statusFilter) return false;
       if (importanceFilter !== "all" && entity.importance !== importanceFilter) return false;
       if (visibilityFilter !== "all" && visibilityKind(entity) !== visibilityFilter) return false;
       if (!query) return true;
-      return [entity.title, entity.subtitle, entity.summary, entity.content]
-        .some((value) => normalized(value).includes(query));
+      return [entity.title, entity.subtitle, entity.summary, entity.content].some((value) =>
+        normalized(value).includes(query),
+      );
     });
   }, [
     activeEntities,
@@ -103,7 +104,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
     const parameters = new URLSearchParams(window.location.search);
     const entityId = parameters.get("entityId");
     if (!entityId) return;
-    const target = activeEntities.find((entity: Entity) => entity.entityId === entityId);
+    const target = activeEntities.find((entity) => entity.entityId === entityId);
     if (target) setSelectedEntity(target);
     window.history.replaceState(null, "", window.location.pathname);
   }, [activeEntities]);
@@ -111,18 +112,11 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-        <section className="card" aria-label={t("entitiesPage.filters" as any)} style={{ padding: 16 }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "minmax(240px, 2fr) repeat(4, minmax(150px, 1fr)) auto",
-              gap: 12,
-              alignItems: "end",
-            }}
-          >
-            <label style={{ display: "grid", gap: 6 }}>
+        <section className="card" aria-label={t("entitiesPage.filters")} style={{ padding: 16 }}>
+          <div className="entity-filter-grid">
+            <label className="entity-filter-grid__search">
               <span className="form-label">{t("common.search")}</span>
-              <div style={{ position: "relative" }}>
+              <span style={{ position: "relative", display: "block" }}>
                 <Search
                   size={18}
                   aria-hidden="true"
@@ -142,11 +136,11 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
                   value={entitySearchQuery}
                   onChange={(event) => setEntitySearchQuery(event.target.value)}
                 />
-              </div>
+              </span>
             </label>
 
-            <label style={{ display: "grid", gap: 6 }}>
-              <span className="form-label">{t("entitiesPage.type" as any)}</span>
+            <label>
+              <span className="form-label">{t("entitiesPage.type")}</span>
               <select
                 className="form-select"
                 value={entityTypeFilter}
@@ -159,40 +153,40 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
               </select>
             </label>
 
-            <label style={{ display: "grid", gap: 6 }}>
-              <span className="form-label">{t("entitiesPage.status" as any)}</span>
+            <label>
+              <span className="form-label">{t("entitiesPage.status")}</span>
               <select
                 className="form-select"
                 value={statusFilter}
                 onChange={(event) => setStatusFilter(event.target.value)}
               >
-                <option value="all">{t("entitiesPage.allStatuses" as any)}</option>
+                <option value="all">{t("entitiesPage.allStatuses")}</option>
                 {statuses.map((status) => <option key={status} value={status}>{status}</option>)}
               </select>
             </label>
 
-            <label style={{ display: "grid", gap: 6 }}>
-              <span className="form-label">{t("entitiesPage.importanceLabel" as any)}</span>
+            <label>
+              <span className="form-label">{t("entitiesPage.importanceLabel")}</span>
               <select
                 className="form-select"
                 value={importanceFilter}
                 onChange={(event) => setImportanceFilter(event.target.value)}
               >
-                <option value="all">{t("entitiesPage.allImportance" as any)}</option>
+                <option value="all">{t("entitiesPage.allImportance")}</option>
                 {importances.map((importance) => (
                   <option key={importance} value={importance}>{importance}</option>
                 ))}
               </select>
             </label>
 
-            <label style={{ display: "grid", gap: 6 }}>
-              <span className="form-label">{t("entitiesPage.visibility" as any)}</span>
+            <label>
+              <span className="form-label">{t("entitiesPage.visibility")}</span>
               <select
                 className="form-select"
                 value={visibilityFilter}
                 onChange={(event) => setVisibilityFilter(event.target.value)}
               >
-                <option value="all">{t("entitiesPage.allVisibility" as any)}</option>
+                <option value="all">{t("entitiesPage.allVisibility")}</option>
                 {visibilities.map((visibility) => (
                   <option key={visibility} value={visibility}>
                     {formatVisibility(visibility, locale)}
@@ -206,9 +200,9 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
               type="button"
               onClick={resetFilters}
               disabled={!hasFilters}
-              aria-label={t("entitiesPage.clearFilters" as any)}
+              aria-label={t("entitiesPage.clearFilters")}
             >
-              <X size={16} /> {t("entitiesPage.clearFilters" as any)}
+              <X size={16} /> {t("entitiesPage.clearFilters")}
             </button>
           </div>
 
@@ -224,7 +218,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
             }}
           >
             <span style={{ color: "var(--text-muted)", fontSize: 13 }}>
-              {t("entitiesPage.resultCount" as any, { count: filteredEntities.length })}
+              {t("entitiesPage.resultCount", { count: filteredEntities.length })}
             </span>
             <button className="btn btn-primary" type="button" onClick={() => setIsEntityModalOpen(true)}>
               <Plus size={16} /> {t("entitiesPage.createEntity")}
@@ -287,13 +281,13 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
               <Filter size={36} aria-hidden="true" style={{ opacity: 0.3, marginBottom: 12 }} />
               <p>{t("entitiesPage.noResults")}</p>
               <button className="btn btn-secondary" type="button" onClick={resetFilters}>
-                {t("entitiesPage.clearFilters" as any)}
+                {t("entitiesPage.clearFilters")}
               </button>
             </div>
           )
         ) : (
-          <div className="grid grid-cols-3">
-            {filteredEntities.map((entity: Entity) => {
+          <div className="entity-card-grid">
+            {filteredEntities.map((entity) => {
               const visibility = visibilityKind(entity);
               const isDmOnly = visibility === "dm_only";
               const imageUrl = (entity.metadata as any)?.imageUrl || getEntityDefaultImage(entity.entityType);
