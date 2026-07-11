@@ -16,6 +16,9 @@ export const pt = {
     title: "Termos de uso",
     subtitle: "Regras para aceder e usar o DMCC.",
   },
+  institutional: {
+    navAriaLabel: "Páginas institucionais",
+  },
   contact: {
     cardTitle: "Perguntas ou feedback?",
     cardDescription: "Contacta o projeto ou consulta o repositório público.",

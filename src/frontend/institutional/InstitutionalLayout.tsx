@@ -27,7 +27,7 @@ export function InstitutionalLayout({ page }: InstitutionalLayoutProps) {
       </section>
 
       <div className="institutional-frame">
-        <nav className="institutional-nav" aria-label="Institutional pages">
+        <nav className="institutional-nav" aria-label={t("institutional.navAriaLabel")}>
           {institutionalPages.map((item) => (
             <Link
               key={item.key}
