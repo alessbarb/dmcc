@@ -251,7 +251,11 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   const allowedMutationOrigins = resolveAllowedMutationOrigins();
   const sessionSecret = getRequiredSessionSecret();
   server.register(cookie, { secret: sessionSecret });
-  server.register(rateLimit, { max: 200, timeWindow: "1 minute" });
+  server.register(rateLimit, {
+    max: 200,
+    timeWindow: "1 minute",
+    allowList: (request) => !isApiRequest(request),
+  });
   server.register(cors, {
     delegator: (request, callback) => {
       const requestOrigin = request.headers.origin;
