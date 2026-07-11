@@ -1,6 +1,6 @@
 # P1 product decisions
 
-This document records the product decisions that affect the P1 implementation. It exists to keep the branch coherent and prevent silent UX or information-architecture choices.
+This document records the product decisions that affect the P1 implementation. The P1 branch targets the finished product architecture: obsolete routes, components, copy, storage keys, and compatibility paths are removed rather than preserved.
 
 ## Scope
 
@@ -21,7 +21,7 @@ The P1 branch covers:
 
 ### D1 — Campaign home hierarchy
 
-`command-center` is the single campaign home. The operational dashboard and next-action summary are folded into it. Existing `/dashboard` and `/what-now` URLs remain as compatibility redirects, and their duplicate primary navigation entries are removed.
+`command-center` is the only campaign home. The useful operational information from the previous dashboard and next-action surfaces is integrated into it. The old `/dashboard` and `/what-now` routes, components, navigation entries, translation keys, and tests are deleted. No compatibility redirects remain.
 
 ### D2 — Campaign navigation model
 
@@ -40,14 +40,19 @@ Boards becomes a real accessible Kanban interaction with drag and drop on pointe
 
 ### D5 — Player portal consolidation
 
-`/portal` is the canonical player entry. One player-facing shell contains campaign membership, character selection, visible knowledge, session information, and invitations. Legacy player routes redirect to their corresponding destination in that shell.
+`/portal` is the only player entry. One player-facing shell contains campaign membership, character selection, visible knowledge, session information, and invitations. The old player portal route family and duplicate portal components are deleted rather than redirected.
+
+### D6 — Compatibility policy
+
+P1 does not retain legacy or backwards-compatibility code. Internal references and tests are migrated to the final architecture, then obsolete paths and modules are removed.
 
 ## Decision log
 
 | Decision | Status | Outcome |
 | --- | --- | --- |
-| D1 Campaign home hierarchy | Approved | `command-center` becomes the single campaign home; legacy routes redirect. |
+| D1 Campaign home hierarchy | Approved | One `command-center`; old home routes and components are deleted. |
 | D2 Navigation model | Approved | Six primary desktop destinations; five-item mobile bar with full-height More sheet. |
 | D3 Search result behavior | Approved | Results navigate to canonical destinations with context and focus. |
 | D4 Boards interaction model | Approved | Accessible Kanban with drag/drop and explicit move controls. |
-| D5 Player portal consolidation | Approved | `/portal` is canonical and legacy routes redirect into one player shell. |
+| D5 Player portal consolidation | Approved | `/portal` is the sole entry and duplicate portal architecture is removed. |
+| D6 Compatibility policy | Approved | No legacy aliases, redirects, wrappers, fallback keys, or duplicate modules. |
