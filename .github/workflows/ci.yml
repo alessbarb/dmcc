@@ -13,82 +13,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # BEGIN ONE-SHOT MAIN SYNC
-  sync_main:
-    name: Sync current main
-    if: github.event.action == 'reopened' && github.head_ref == 'agent/p1-complete' && github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: agent/p1-complete
-          fetch-depth: 0
-      - name: Merge main and remove sync machinery
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-
-          set +e
-          git merge --no-ff --no-commit origin/main
-          merge_status=$?
-          set -e
-
-          if [ "$merge_status" -ne 0 ]; then
-            git checkout --ours .github/workflows/ci.yml
-            git checkout --ours src/backend/server/web/registerWebRoutes.ts
-            git rm -f src/backend/server/web/routes/dmDashboardWebRoutes.ts
-            git add .github/workflows/ci.yml src/backend/server/web/registerWebRoutes.ts
-          fi
-
-          unresolved="$(git diff --name-only --diff-filter=U)"
-          if [ -n "$unresolved" ]; then
-            printf 'Unresolved merge conflicts:\n%s\n' "$unresolved" >&2
-            exit 1
-          fi
-
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('.github/workflows/ci.yml')
-          source = path.read_text()
-          start = source.index('  # BEGIN ONE-SHOT MAIN SYNC\n')
-          end = source.index('  # END ONE-SHOT MAIN SYNC\n') + len('  # END ONE-SHOT MAIN SYNC\n')
-          path.write_text(source[:start] + source[end:])
-          PY
-
-          git rm -f .github/workflows/sync-main.yml
-          git add -A
-          git commit -m "Merge main into P1 branch"
-          git push origin HEAD:agent/p1-complete
-  # END ONE-SHOT MAIN SYNC
-
-  typecheck:
-    name: Typecheck
-    runs-on: ubuntu-latest
-    env:
-      NODE_ENV: test
-      SESSION_SECRET: dmcc-ci-session-secret-2026-07-11-only-for-automated-tests
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - name: Run typecheck
-        shell: bash
-        run: |
-          set -o pipefail
-          npm run typecheck:all 2>&1 | tail -n 160
-
   quality:
-    name: Test and build
+    name: Typecheck, test and build
     runs-on: ubuntu-latest
-    needs: typecheck
     services:
       postgres:
         image: postgres:16
@@ -119,6 +46,7 @@ jobs:
         run: |
           printf 'DATABASE_URL=%s\nDATABASE_SSL_MODE=disable\n' "$DATABASE_URL" > .env
           npm run db:migrate
+      - run: npm run typecheck:all
       - run: npm test
       - run: npm run build
 
