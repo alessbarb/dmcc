@@ -18,7 +18,7 @@ export const updatePlayerPortalNote = (campaignId: string, noteId: string, paylo
 export const createPlayerPortalObjective = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/objectives`, { init: jsonInit("POST", payload) });
 export const updatePlayerPortalObjective = (campaignId: string, objectiveId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/objectives/${objectiveId}`, { init: jsonInit("PUT", payload) });
 export const createPlayerPortalProposal = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/proposals`, { init: jsonInit("POST", payload) });
-export const getPlayerPortalDmSummary = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/player-portal/dm-summary`);
-export const resolvePlayerPortalProposal = (campaignId: string, proposalId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/proposals/${proposalId}/resolve`, { init: jsonInit("PUT", payload) });
+export const getPlayerPortalDmSummary = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/player-portal/dm-character-summary`);
+export const resolvePlayerPortalProposal = (campaignId: string, proposalId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/proposals/${proposalId}/resolve-character`, { init: jsonInit("PUT", payload) });
 export const linkPlayerCharacter = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/links`, { init: jsonInit("POST", payload) });
 export const unlinkPlayerCharacter = (campaignId: string, playerId: string) => apiFetch(`/api/campaigns/${campaignId}/player-portal/links/${playerId}`, { init: { method: "DELETE" } });

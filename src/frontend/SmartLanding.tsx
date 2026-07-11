@@ -11,7 +11,6 @@ import {
   Flag,
   Home,
   LogOut,
-  MapPin,
   MessageSquare,
   Network,
   Plus,
@@ -23,13 +22,13 @@ import {
   Sparkles,
   Sword,
   User,
-  Users,
 } from "lucide-react";
 import type { Canvas } from "@core/domain/canvas/types.js";
 import type { TranslationKey } from "@shared/i18n/types.js";
 import { CampaignCanvasFlow } from "./dm/canvas/components/CampaignCanvasFlow.js";
 import type { InteractionMode } from "./dm/canvas/components/CanvasToolbar.js";
 import { isDmOnlyCanvasVisibility } from "./dm/canvas/services/canvasVisibility.js";
+import { PlayerCharacterSelectionCard } from "./player/components/PlayerCharacterSelectionCard.js";
 import { fetchAuthStatus, logout } from "./shared/auth/authClient.js";
 import type { AuthStatus } from "./shared/auth/authTypes.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
@@ -428,6 +427,18 @@ function PlayerWorkspace({
     void load();
   }, [campaignId, tab]);
 
+  useEffect(() => {
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === "visible" && tab === "character") void load();
+    };
+    window.addEventListener("focus", refreshWhenVisible);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    return () => {
+      window.removeEventListener("focus", refreshWhenVisible);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+    };
+  }, [campaignId, tab]);
+
   const title = home?.campaign?.title ?? campaigns.find((campaign) => campaign.campaignId === campaignId)?.title ?? t("playerPortal.campaignFallback");
   const counts = home?.memoryCounts ?? {};
   const activeTab = PORTAL_TABS.find((item) => item.id === tab) ?? PORTAL_TABS[0];
@@ -471,12 +482,7 @@ function PlayerWorkspace({
     );
     if (tab === "memory") return renderMemory(payload, t);
     if (tab === "character") return (
-      <Card>
-        <h2 style={{ marginTop: 0 }}>{t("playerPortal.character.heading")}</h2>
-        {payload.linkedCharacter ? (
-          <><strong>{payload.linkedCharacter.title}</strong><p style={{ color: "var(--text-muted)" }}>{payload.linkedCharacter.summary ?? t("playerPortal.empty.noVisibleSummary")}</p></>
-        ) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.character.notLinked")}</p>}
-      </Card>
+      <PlayerCharacterSelectionCard campaignId={campaignId} payload={payload} reload={load} t={t} />
     );
     if (tab === "objectives") return (
       <Card>
