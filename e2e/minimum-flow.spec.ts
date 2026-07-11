@@ -78,6 +78,7 @@ test.describe("Minimum release web API flow", () => {
         title: "E2E Hero",
         summary: "Character controlled by the authenticated player.",
         visibility: { kind: "party" },
+        metadata: { isPremade: true },
       },
     }), 200);
 
