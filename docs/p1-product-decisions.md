@@ -46,6 +46,10 @@ Boards becomes a real accessible Kanban interaction with drag and drop on pointe
 
 P1 does not retain legacy or backwards-compatibility code. Internal references and tests are migrated to the final architecture, then obsolete paths and modules are removed.
 
+### D7 — Translation architecture
+
+All product copy lives in the six primary locale dictionaries. New campaign, Boards, search, Rules, entity, and player-portal keys extend their existing domain sections. P1 does not introduce overlay dictionaries, secondary lookup trees, or compatibility fallbacks.
+
 ## Decision log
 
 | Decision | Status | Outcome |
@@ -56,3 +60,4 @@ P1 does not retain legacy or backwards-compatibility code. Internal references a
 | D4 Boards interaction model | Approved | Accessible Kanban with drag/drop and explicit move controls. |
 | D5 Player portal consolidation | Approved | `/portal` is the sole entry and duplicate portal architecture is removed. |
 | D6 Compatibility policy | Approved | No legacy aliases, redirects, wrappers, fallback keys, or duplicate modules. |
+| D7 Translation architecture | Approved | The primary locale dictionaries remain the only translation source. |
