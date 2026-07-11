@@ -9,6 +9,93 @@ import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { apiFetch } from "../../shared/api/apiClient.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
 
+type CampaignInvitationStatus = "active" | "exhausted" | "expired" | "revoked";
+
+interface CampaignInvitation {
+  invitationId: string;
+  role: string;
+  maxUses: number;
+  usesCount: number;
+  expiresAt: string;
+  revokedAt: string | null;
+  createdAt: string;
+  status: CampaignInvitationStatus;
+}
+
+interface CreateCampaignInvitationResponse {
+  invitation: {
+    invitationId: string;
+    url: string;
+    token: string;
+    expiresAt: string;
+  };
+}
+
+interface ListCampaignInvitationsResponse {
+  invitations: CampaignInvitation[];
+}
+
+function invitationDisplayId(invitationId: string): string {
+  return invitationId.length > 6 ? invitationId.slice(-6) : invitationId;
+}
+
+function isInvitationStatus(value: unknown): value is CampaignInvitationStatus {
+  return value === "active" || value === "exhausted" || value === "expired" || value === "revoked";
+}
+
+function normalizeInvitation(value: unknown): CampaignInvitation | null {
+  if (!value || typeof value !== "object") return null;
+  const record = value as Record<string, unknown>;
+  if (
+    typeof record.invitationId !== "string" ||
+    typeof record.role !== "string" ||
+    typeof record.maxUses !== "number" ||
+    typeof record.usesCount !== "number" ||
+    typeof record.expiresAt !== "string" ||
+    !(record.revokedAt === null || typeof record.revokedAt === "string") ||
+    typeof record.createdAt !== "string" ||
+    !isInvitationStatus(record.status)
+  ) {
+    return null;
+  }
+  return {
+    invitationId: record.invitationId,
+    role: record.role,
+    maxUses: record.maxUses,
+    usesCount: record.usesCount,
+    expiresAt: record.expiresAt,
+    revokedAt: record.revokedAt,
+    createdAt: record.createdAt,
+    status: record.status,
+  };
+}
+
+function normalizeListCampaignInvitationsResponse(value: unknown): ListCampaignInvitationsResponse {
+  if (!value || typeof value !== "object" || !("invitations" in value) || !Array.isArray((value as { invitations: unknown }).invitations)) {
+    throw new Error("Invalid invitations response");
+  }
+  const invitations = (value as { invitations: unknown[] }).invitations.map(normalizeInvitation);
+  if (invitations.some((invitation) => invitation === null)) {
+    throw new Error("Invalid invitation in response");
+  }
+  return { invitations: invitations as CampaignInvitation[] };
+}
+
+function normalizeCreateCampaignInvitationResponse(value: unknown): CreateCampaignInvitationResponse {
+  if (!value || typeof value !== "object") throw new Error("Invalid invitation response");
+  const invitation = (value as { invitation?: unknown }).invitation;
+  if (!invitation || typeof invitation !== "object") throw new Error("Invalid invitation response");
+  const record = invitation as Record<string, unknown>;
+  if (
+    typeof record.invitationId !== "string" ||
+    typeof record.url !== "string" ||
+    typeof record.token !== "string" ||
+    typeof record.expiresAt !== "string"
+  ) {
+    throw new Error("Invalid invitation response");
+  }
+  return { invitation: { invitationId: record.invitationId, url: record.url, token: record.token, expiresAt: record.expiresAt } };
+}
 
 export interface PlayersPageProps {
   campaignState?: any;
@@ -42,23 +129,31 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const [assignSelections, setAssignSelections] = useState<Record<string, string>>({});
 
   // Invitation state
-  const [invitations, setInvitations] = useState<any[]>([]);
+  const [invitations, setInvitations] = useState<CampaignInvitation[]>([]);
+  const [invitationError, setInvitationError] = useState<string | null>(null);
   const [inviteLoading, setInviteLoading] = useState(false);
   const [showInvitePanel, setShowInvitePanel] = useState(false);
   const [newInviteUrl, setNewInviteUrl] = useState<string | null>(null);
   const [networkUrl, setNetworkUrl] = useState<string | null>(null);
+  const addToast = props.addToast ?? toastAdd;
 
   const fetchInvitations = useCallback(async () => {
     const activeCampaignId = store.activeCampaignId;
     if (!activeCampaignId) return;
     try {
       const res = await apiFetch(`/api/campaigns/${activeCampaignId}/invitations`);
-      if (res.ok) {
-        const data = await res.json();
-        setInvitations(data.invitations ?? []);
+      if (!res.ok) {
+        throw new Error(t("players.invitationListError"));
       }
-    } catch { /* non-fatal */ }
-  }, [store.activeCampaignId]);
+      const data: unknown = await res.json();
+      setInvitations(normalizeListCampaignInvitationsResponse(data).invitations);
+      setInvitationError(null);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : t("players.invitationListError");
+      setInvitationError(message);
+      addToast(message, "error");
+    }
+  }, [addToast, store.activeCampaignId, t]);
 
   useEffect(() => {
     void fetchInvitations();
@@ -94,29 +189,36 @@ export function PlayersPage(props: PlayersPageProps = {}) {
           body: JSON.stringify({ expiresInHours: 72 }),
         },
       });
-      const data = await res.json();
+      const data: unknown = await res.json();
       if (res.ok) {
-        setNewInviteUrl(data.registerUrl);
+        const created = normalizeCreateCampaignInvitationResponse(data);
+        setNewInviteUrl(created.invitation.url);
         await fetchInvitations();
       } else {
-        addToast(data.error || "Error creating invitation", "error");
+        const message = data && typeof data === "object" && "error" in data && typeof data.error === "string" ? data.error : t("players.invitationCreateError");
+        addToast(message, "error");
       }
-    } catch (err: any) {
-      addToast(err.message || "Error", "error");
+    } catch (err) {
+      addToast(err instanceof Error ? err.message : t("players.invitationCreateError"), "error");
     } finally {
       setInviteLoading(false);
     }
   };
 
-  const handleRevokeInvite = async (inviteId: string) => {
+  const handleRevokeInvite = async (invitationId: string) => {
     const activeCampaignId = store.activeCampaignId;
     if (!activeCampaignId) return;
     try {
-      await apiFetch(`/api/campaigns/${activeCampaignId}/invitations/${inviteId}`, {
-        init: { method: "DELETE" },
+      const response = await apiFetch(`/api/campaigns/${activeCampaignId}/invitations/${invitationId}/revoke`, {
+        init: { method: "POST" },
       });
+      if (!response.ok) {
+        throw new Error(t("players.invitationRevokeError"));
+      }
       await fetchInvitations();
-    } catch { /* non-fatal */ }
+    } catch (error) {
+      addToast(error instanceof Error ? error.message : t("players.invitationRevokeError"), "error");
+    }
   };
 
   useEffect(() => {
@@ -145,7 +247,6 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const playerForm = props.playerForm ?? playerFormLocal;
   const setPlayerForm = props.setPlayerForm ?? setPlayerFormLocal;
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
-  const addToast = props.addToast ?? toastAdd;
 
   const portalPlayers = (dmPlayerPortalSummary?.players ?? []) as any[];
   const pendingProposalItems = portalPlayers.flatMap((portalPlayer: any) =>
@@ -165,16 +266,16 @@ export function PlayersPage(props: PlayersPageProps = {}) {
 
   return (<>
     <div>
-      <h2 style={{ fontWeight: "700", marginBottom: "16px" }}>Jugadores y personajes</h2>
+      <h2 style={{ fontWeight: "700", marginBottom: "16px" }}>{t("players.title")}</h2>
       <div className="top-bar" style={{ marginBottom: "16px" }}>
         <button className="btn btn-primary btn-sm" onClick={() => setIsPlayerModalOpen(true)}>
-          <Plus size={14} /> Añadir jugador
+          <Plus size={14} /> {t("players.addPlayer")}
         </button>
         <button
           className="btn btn-secondary btn-sm"
           onClick={() => { setShowInvitePanel((v) => !v); setNewInviteUrl(null); }}
         >
-          <Link2 size={14} /> Invitar jugador
+          <Link2 size={14} /> {t("players.invitePlayer")}
         </button>
       </div>
 
@@ -183,16 +284,16 @@ export function PlayersPage(props: PlayersPageProps = {}) {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
             <h3 style={{ fontWeight: "600", fontSize: "0.95rem", margin: 0 }}>
               <Link2 size={14} style={{ marginRight: "6px", verticalAlign: "middle" }} />
-              Invitaciones de jugador
+              {t("players.playerInvitations")}
             </h3>
-            <button className="btn btn-secondary btn-icon" style={{ padding: "4px" }} onClick={() => setShowInvitePanel(false)}>
+            <button className="btn btn-secondary btn-icon" style={{ padding: "4px" }} onClick={() => setShowInvitePanel(false)} aria-label={t("players.closeInvitationsPanel")}>
               <X size={12} />
             </button>
           </div>
           {networkUrl && (
             <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "12px", padding: "6px 10px", borderRadius: "6px", background: "rgba(16,185,129,0.07)", border: "1px solid rgba(16,185,129,0.2)" }}>
               <Wifi size={13} style={{ color: "#34d399", flexShrink: 0 }} />
-              <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>Red local activa: </span>
+              <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>{t("players.localNetworkActive")} </span>
               <code style={{ fontSize: "0.78rem", color: "#34d399" }}>{networkUrl}</code>
             </div>
           )}
@@ -201,22 +302,33 @@ export function PlayersPage(props: PlayersPageProps = {}) {
             className="btn btn-primary btn-sm"
             onClick={handleCreateInvite}
             disabled={inviteLoading}
+            aria-busy={inviteLoading}
+            aria-live="polite"
             style={{ marginBottom: "12px" }}
           >
             <Plus size={14} /> {inviteLoading ? t("players.creatingInvitation") : t("players.createInvitationLink")}
           </button>
 
+          {invitationError && (
+            <p role="alert" style={{ color: "#f87171", fontSize: "0.8rem", marginBottom: "12px" }}>{invitationError}</p>
+          )}
+
           {newInviteUrl && (
-            <div style={{ background: "rgba(99,102,241,0.08)", borderRadius: "8px", padding: "10px 12px", marginBottom: "12px" }}>
+            <div aria-live="polite" style={{ background: "rgba(99,102,241,0.08)", borderRadius: "8px", padding: "10px 12px", marginBottom: "12px" }}>
               <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "6px" }}>
-                Comparte este enlace con el jugador (válido 72h):
+                {t("players.shareInvitationLink")}
               </p>
               <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
                 <code style={{ fontSize: "0.75rem", wordBreak: "break-all", flex: 1, color: "var(--accent)" }}>{newInviteUrl}</code>
                 <button
                   className="btn btn-secondary btn-icon"
                   style={{ padding: "4px", flexShrink: 0 }}
-                  onClick={() => { void navigator.clipboard.writeText(newInviteUrl); addToast("Enlace copiado", "success"); }}
+                  aria-label={t("players.copyInvitationLink")}
+                  onClick={() => {
+                    navigator.clipboard.writeText(newInviteUrl)
+                      .then(() => addToast(t("players.linkCopied"), "success"))
+                      .catch(() => addToast(t("players.copyInvitationError"), "error"));
+                  }}
                 >
                   <Copy size={12} />
                 </button>
@@ -226,10 +338,10 @@ export function PlayersPage(props: PlayersPageProps = {}) {
 
           {invitations.length > 0 && (
             <div>
-              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "6px" }}>Invitaciones activas:</p>
+              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "6px" }}>{t("players.activeInvitations")}</p>
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                {invitations.map((inv: any) => (
-                  <div key={inv.inviteId} style={{
+                {invitations.map((inv) => (
+                  <div key={inv.invitationId} style={{
                     display: "flex",
                     alignItems: "center",
                     gap: "8px",
@@ -239,24 +351,25 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                     fontSize: "0.8rem",
                   }}>
                     <Clock size={12} style={{ flexShrink: 0, opacity: 0.5 }} />
-                    <span style={{ flex: 1, color: inv.status === "pending" ? "var(--text-main)" : "var(--text-muted)" }}>
-                      {inv.label || t("players.invitationFallback", { id: inv.inviteId.slice(-6) })}
+                    <span style={{ flex: 1, color: inv.status === "active" ? "var(--text-main)" : "var(--text-muted)" }}>
+                      {t("players.invitationFallback", { id: invitationDisplayId(inv.invitationId) })}
                     </span>
                     <span style={{
                       padding: "2px 6px",
                       borderRadius: "4px",
                       fontSize: "0.7rem",
                       fontWeight: 600,
-                      background: inv.status === "pending" ? "rgba(99,102,241,0.15)" : inv.status === "consumed" ? "rgba(16,185,129,0.15)" : "rgba(239,68,68,0.15)",
-                      color: inv.status === "pending" ? "#818cf8" : inv.status === "consumed" ? "#34d399" : "#f87171",
+                      background: inv.status === "active" ? "rgba(99,102,241,0.15)" : inv.status === "exhausted" ? "rgba(16,185,129,0.15)" : inv.status === "expired" ? "rgba(245,158,11,0.15)" : "rgba(239,68,68,0.15)",
+                      color: inv.status === "active" ? "#818cf8" : inv.status === "exhausted" ? "#34d399" : inv.status === "expired" ? "#fbbf24" : "#f87171",
                     }}>
-                      {inv.status === "pending" ? "pendiente" : inv.status === "consumed" ? "usada" : "revocada"}
+                      {t(`players.invitationStatus${inv.status.charAt(0).toUpperCase()}${inv.status.slice(1)}`)}
                     </span>
-                    {inv.status === "pending" && (
+                    {inv.status === "active" && (
                       <button
                         className="btn btn-danger btn-icon"
                         style={{ padding: "3px" }}
-                        onClick={() => void handleRevokeInvite(inv.inviteId)}
+                        aria-label={t("players.revokeInvitation")}
+                        onClick={() => void handleRevokeInvite(inv.invitationId)}
                       >
                         <Trash2 size={10} />
                       </button>
