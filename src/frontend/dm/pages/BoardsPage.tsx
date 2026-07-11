@@ -29,71 +29,71 @@ import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
-type BoardType = "misiones" | "pistas" | "consecuencias" | "pnjs" | "secretos";
-type BoardState = { key: string; label: string; color: string };
+type BoardType = "quests" | "clues" | "consequences" | "npcs" | "secrets";
+type BoardState = { key: string; labelKey: string; color: string };
 
 type BoardDefinition = {
   id: BoardType;
-  label: string;
+  labelKey: string;
   entityType: string | string[];
   color: string;
   states: BoardState[];
 };
 
 const QUEST_STATES: BoardState[] = [
-  { key: "active", label: "Activa", color: "#22c55e" },
-  { key: "blocked", label: "Bloqueada", color: "#ef4444" },
-  { key: "completed", label: "Completada", color: "#6366f1" },
-  { key: "failed", label: "Fallida", color: "#94a3b8" },
-  { key: "abandoned", label: "Abandonada", color: "#475569" },
+  { key: "active", labelKey: "boards.statuses.active", color: "#22c55e" },
+  { key: "blocked", labelKey: "boards.statuses.blocked", color: "#ef4444" },
+  { key: "completed", labelKey: "boards.statuses.completed", color: "#6366f1" },
+  { key: "failed", labelKey: "boards.statuses.failed", color: "#94a3b8" },
+  { key: "abandoned", labelKey: "boards.statuses.abandoned", color: "#475569" },
 ];
 
 const CLUE_STATES: BoardState[] = [
-  { key: "prepared", label: "Preparada", color: "#64748b" },
-  { key: "hidden", label: "Oculta", color: "#475569" },
-  { key: "hinted", label: "Insinuada", color: "#d97706" },
-  { key: "revealed_to_one", label: "Revelada a uno", color: "#0891b2" },
-  { key: "revealed_to_some", label: "Revelada a algunos", color: "#2563eb" },
-  { key: "revealed", label: "Revelada al grupo", color: "#22c55e" },
-  { key: "misunderstood", label: "Malinterpretada", color: "#dc2626" },
-  { key: "confirmed", label: "Confirmada", color: "#059669" },
-  { key: "resolved", label: "Resuelta", color: "#6366f1" },
-  { key: "obsolete", label: "Obsoleta", color: "#475569" },
+  { key: "prepared", labelKey: "boards.statuses.prepared", color: "#64748b" },
+  { key: "hidden", labelKey: "boards.statuses.hidden", color: "#475569" },
+  { key: "hinted", labelKey: "boards.statuses.hinted", color: "#d97706" },
+  { key: "revealed_to_one", labelKey: "boards.statuses.revealedToOne", color: "#0891b2" },
+  { key: "revealed_to_some", labelKey: "boards.statuses.revealedToSome", color: "#2563eb" },
+  { key: "revealed", labelKey: "boards.statuses.revealed", color: "#22c55e" },
+  { key: "misunderstood", labelKey: "boards.statuses.misunderstood", color: "#dc2626" },
+  { key: "confirmed", labelKey: "boards.statuses.confirmed", color: "#059669" },
+  { key: "resolved", labelKey: "boards.statuses.resolved", color: "#6366f1" },
+  { key: "obsolete", labelKey: "boards.statuses.obsolete", color: "#475569" },
 ];
 
 const CONSEQUENCE_STATES: BoardState[] = [
-  { key: "pending", label: "Pendiente", color: "#d97706" },
-  { key: "active", label: "Activa", color: "#ef4444" },
-  { key: "triggered", label: "Activada", color: "#dc2626" },
-  { key: "resolved", label: "Resuelta", color: "#22c55e" },
-  { key: "averted", label: "Evitada", color: "#6366f1" },
+  { key: "pending", labelKey: "boards.statuses.pending", color: "#d97706" },
+  { key: "active", labelKey: "boards.statuses.active", color: "#ef4444" },
+  { key: "triggered", labelKey: "boards.statuses.triggered", color: "#dc2626" },
+  { key: "resolved", labelKey: "boards.statuses.resolved", color: "#22c55e" },
+  { key: "averted", labelKey: "boards.statuses.averted", color: "#6366f1" },
 ];
 
 const NPC_STATES: BoardState[] = [
-  { key: "alive", label: "Vivo", color: "#22c55e" },
-  { key: "hidden", label: "Oculto", color: "#64748b" },
-  { key: "revealed", label: "Conocido", color: "#2563eb" },
-  { key: "deceased", label: "Muerto", color: "#94a3b8" },
-  { key: "missing", label: "Desaparecido", color: "#d97706" },
-  { key: "ally", label: "Aliado", color: "#059669" },
-  { key: "enemy", label: "Enemigo", color: "#ef4444" },
-  { key: "neutral", label: "Neutral", color: "#475569" },
+  { key: "alive", labelKey: "boards.statuses.alive", color: "#22c55e" },
+  { key: "hidden", labelKey: "boards.statuses.hidden", color: "#64748b" },
+  { key: "revealed", labelKey: "boards.statuses.revealed", color: "#2563eb" },
+  { key: "deceased", labelKey: "boards.statuses.deceased", color: "#94a3b8" },
+  { key: "missing", labelKey: "boards.statuses.missing", color: "#d97706" },
+  { key: "ally", labelKey: "boards.statuses.ally", color: "#059669" },
+  { key: "enemy", labelKey: "boards.statuses.enemy", color: "#ef4444" },
+  { key: "neutral", labelKey: "boards.statuses.neutral", color: "#475569" },
 ];
 
 const SECRET_STATES: BoardState[] = [
-  { key: "dm_only", label: "Solo DM", color: "#dc2626" },
-  { key: "hinted", label: "Insinuado", color: "#d97706" },
-  { key: "revealed_to_one", label: "Revelado a uno", color: "#0891b2" },
-  { key: "revealed_to_some", label: "Revelado a algunos", color: "#2563eb" },
-  { key: "revealed", label: "Revelado al grupo", color: "#22c55e" },
+  { key: "dm_only", labelKey: "boards.statuses.dmOnly", color: "#dc2626" },
+  { key: "hinted", labelKey: "boards.statuses.hinted", color: "#d97706" },
+  { key: "revealed_to_one", labelKey: "boards.statuses.revealedToOne", color: "#0891b2" },
+  { key: "revealed_to_some", labelKey: "boards.statuses.revealedToSome", color: "#2563eb" },
+  { key: "revealed", labelKey: "boards.statuses.revealed", color: "#22c55e" },
 ];
 
 const BOARDS: BoardDefinition[] = [
-  { id: "misiones", label: "Misiones", entityType: "quest", color: "var(--primary)", states: QUEST_STATES },
-  { id: "pistas", label: "Pistas", entityType: "clue", color: "#059669", states: CLUE_STATES },
-  { id: "consecuencias", label: "Consecuencias", entityType: ["consequence", "front"], color: "#d97706", states: CONSEQUENCE_STATES },
-  { id: "pnjs", label: "PNJs", entityType: "npc", color: "#7c3aed", states: NPC_STATES },
-  { id: "secretos", label: "Secretos", entityType: "secret", color: "#ef4444", states: SECRET_STATES },
+  { id: "quests", labelKey: "boards.tabs.quests", entityType: "quest", color: "var(--primary)", states: QUEST_STATES },
+  { id: "clues", labelKey: "boards.tabs.clues", entityType: "clue", color: "#059669", states: CLUE_STATES },
+  { id: "consequences", labelKey: "boards.tabs.consequences", entityType: ["consequence", "front"], color: "#d97706", states: CONSEQUENCE_STATES },
+  { id: "npcs", labelKey: "boards.tabs.npcs", entityType: "npc", color: "#7c3aed", states: NPC_STATES },
+  { id: "secrets", labelKey: "boards.tabs.secrets", entityType: "secret", color: "#ef4444", states: SECRET_STATES },
 ];
 
 const STATE_ICONS: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
@@ -198,19 +198,19 @@ function KanbanCard({
       </button>
 
       <label className="kanban-card__move">
-        <span>Mover a</span>
+        <span>{t("boards.moveTo")}</span>
         <select
           className="form-select"
           value={entity.status}
           disabled={moving}
           onChange={(event) => onMove(entity, event.target.value)}
-          aria-label={`Mover ${entity.title} a otro estado`}
+          aria-label={t("boards.moveLabel", { title: entity.title })}
         >
           {!states.some((state) => state.key === entity.status) && (
-            <option value={entity.status}>{entity.status || "Sin estado"}</option>
+            <option value={entity.status}>{entity.status || t("boards.unknownStatus")}</option>
           )}
           {states.map((state) => (
-            <option key={state.key} value={state.key}>{state.label}</option>
+            <option key={state.key} value={state.key}>{t(state.labelKey)}</option>
           ))}
         </select>
       </label>
@@ -261,13 +261,13 @@ function KanbanColumn({
       <header className="kanban-column__header">
         <span className="kanban-column__dot" style={{ backgroundColor: state.color }} />
         <Icon size={14} style={{ color: state.color, flexShrink: 0 }} />
-        <strong id={`kanban-column-${state.key}`}>{state.label}</strong>
+        <strong id={`kanban-column-${state.key}`}>{t(state.labelKey)}</strong>
         <span className="kanban-column__count">{entities.length}</span>
       </header>
 
       <div className="kanban-column__body">
         {entities.length === 0 ? (
-          <div className="kanban-column__empty">{t("boards.empty")}</div>
+          <div className="kanban-column__empty">{t("boards.dropHint")}</div>
         ) : (
           entities.map((entity) => (
             <KanbanCard
@@ -291,7 +291,7 @@ export function BoardsPage() {
   const { addToast } = useToast();
   const { t } = useTranslation();
   const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null);
-  const [activeBoard, setActiveBoard] = useState<BoardType>("misiones");
+  const [activeBoard, setActiveBoard] = useState<BoardType>("quests");
   const [movingIds, setMovingIds] = useState<Set<string>>(new Set());
   const [dragOverStatus, setDragOverStatus] = useState<string | null>(null);
 
@@ -335,7 +335,14 @@ export function BoardsPage() {
     setMovingIds((current) => new Set(current).add(entity.entityId));
     try {
       await updateEntity(entity.entityId, { status });
-      addToast(`${entity.title}: ${status}`, "success");
+      const translatedStatus = board.states.find((state) => state.key === status);
+      addToast(
+        t("boards.moved", {
+          title: entity.title,
+          status: translatedStatus ? t(translatedStatus.labelKey) : status,
+        }),
+        "success",
+      );
       setSelectedEntity((current) =>
         current?.entityId === entity.entityId ? { ...current, status } : current,
       );
@@ -366,15 +373,20 @@ export function BoardsPage() {
     if (entity) void moveEntity(entity, status);
   };
 
-  const unknownState: BoardState = { key: "_unknown", label: "Sin estado", color: "#475569" };
+  const unknownState: BoardState = {
+    key: "_unknown",
+    labelKey: "boards.unknownStatus",
+    color: "#475569",
+  };
   const visibleStates = entitiesByStatus._unknown.length > 0
     ? [...board.states, unknownState]
     : board.states;
+  const boardLabel = t(board.labelKey);
 
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        <div role="tablist" aria-label="Tableros" style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <div role="tablist" aria-label={t("boards.ariaLabel")} style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {BOARDS.map((candidate) => (
             <button
               key={candidate.id}
@@ -385,33 +397,33 @@ export function BoardsPage() {
               style={activeBoard === candidate.id ? { borderColor: candidate.color } : undefined}
               onClick={() => setActiveBoard(candidate.id)}
             >
-              {candidate.label}
+              {t(candidate.labelKey)}
             </button>
           ))}
         </div>
 
         <div className="card" style={{ display: "flex", gap: 16, padding: "12px 16px", flexWrap: "wrap" }} aria-live="polite">
           <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-            Total: <strong style={{ color: "var(--text-main)" }}>{boardEntities.length}</strong>
+            {t("boards.total")}: <strong style={{ color: "var(--text-main)" }}>{boardEntities.length}</strong>
           </span>
           {board.states.map((state) => (
             <span key={state.key} style={{ fontSize: "0.85rem", color: state.color }}>
-              {state.label}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
+              {t(state.labelKey)}: <strong>{entitiesByStatus[state.key]?.length ?? 0}</strong>
             </span>
           ))}
           {entitiesByStatus._unknown.length > 0 && (
             <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-              Sin estado: <strong>{entitiesByStatus._unknown.length}</strong>
+              {t("boards.unknownStatus")}: <strong>{entitiesByStatus._unknown.length}</strong>
             </span>
           )}
         </div>
 
         {boardEntities.length === 0 ? (
           <div className="card" style={{ textAlign: "center", padding: 48, color: "var(--text-muted)" }}>
-            <p style={{ fontSize: "1rem" }}>Sin {board.label.toLowerCase()} todavía.</p>
+            <p style={{ fontSize: "1rem" }}>{t("boards.noItems", { board: boardLabel.toLocaleLowerCase() })}</p>
           </div>
         ) : (
-          <div className="kanban-scroll" tabIndex={0} aria-label={`${board.label}. Kanban`}>
+          <div className="kanban-scroll" tabIndex={0} aria-label={`${boardLabel}. Kanban`}>
             <div className="kanban-board">
               {visibleStates.map((state) => (
                 <KanbanColumn
