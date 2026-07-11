@@ -1,0 +1,38 @@
+name: Typecheck diagnostics
+
+on:
+  pull_request:
+    types: [reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostics:
+    if: github.base_ref == 'agent/p1-complete'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/p1-complete
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci >/dev/null
+      - name: Capture typecheck diagnostics
+        shell: bash
+        run: |
+          set +e
+          npm run typecheck:all > typecheck.log 2>&1
+          status=$?
+          tail -n 300 typecheck.log
+          echo "$status" > typecheck.status
+          exit 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: typecheck-diagnostics
+          path: |
+            typecheck.log
+            typecheck.status
+          retention-days: 1
