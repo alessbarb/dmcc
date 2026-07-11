@@ -2,14 +2,7 @@ import React from "react";
 import { Link } from "@tanstack/react-router";
 import { Shield } from "lucide-react";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
-import { institutionalContact } from "./institutionalContent.js";
-
-const footerLinks = [
-  { labelKey: "footer.about", to: "/about" },
-  { labelKey: "footer.contact", to: "/contact" },
-  { labelKey: "footer.privacy", to: "/privacy" },
-  { labelKey: "footer.terms", to: "/terms" },
-] as const;
+import { institutionalLinks, institutionalPageLinks } from "./institutionalLinks.js";
 
 export function SiteFooter() {
   const { t } = useTranslation();
@@ -23,16 +16,16 @@ export function SiteFooter() {
         </div>
 
         <nav className="rl-footer__nav" aria-label={t("appFooter.ariaLabel")}>
-          {footerLinks.map((link) => (
+          {institutionalPageLinks.map((link) => (
             <Link key={link.to} to={link.to} className="rl-footer__link">
               {t(link.labelKey)}
             </Link>
           ))}
-          <a href={institutionalContact.github} className="rl-footer__link" target="_bnetworkk" rel="noopener noreferrer">
-            GitHub
+          <a href={institutionalLinks.github.href} className="rl-footer__link" target="_blank" rel="noopener noreferrer">
+            {t(institutionalLinks.github.labelKey)}
           </a>
-          <a href={`mailto:${institutionalContact.email}`} className="rl-footer__link">
-            {institutionalContact.email}
+          <a href={`mailto:${institutionalLinks.email.email}`} className="rl-footer__link">
+            {institutionalLinks.email.email}
           </a>
         </nav>
       </div>

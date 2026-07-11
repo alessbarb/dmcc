@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "@tanstack/react-router";
 import { GitBranch, Mail, Sparkles } from "lucide-react";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
-import { institutionalContact, getInstitutionalPages, type InstitutionalPageContent } from "./institutionalContent.js";
+import { getInstitutionalPages, type InstitutionalPageContent } from "./institutionalContent.js";
+import { institutionalLinks } from "./institutionalLinks.js";
 import { SiteFooter } from "./SiteFooter.js";
 import "./institutional.css";
 
@@ -62,13 +63,13 @@ export function InstitutionalLayout({ page }: InstitutionalLayoutProps) {
           <p className="institutional-contact__eyebrow">{t("footer.contact")}</p>
           <h2 id="institutional-contact-title">{t("contact.cardTitle")}</h2>
           <p>{t("contact.cardDescription")}</p>
-          <a href={`mailto:${institutionalContact.email}`} className="institutional-contact__link">
+          <a href={`mailto:${institutionalLinks.email.email}`} className="institutional-contact__link">
             <Mail size={16} aria-hidden="true" />
-            <span>{institutionalContact.email}</span>
+            <span>{institutionalLinks.email.email}</span>
           </a>
-          <a href={institutionalContact.github} className="institutional-contact__link" target="_bnetworkk" rel="noopener noreferrer">
+          <a href={institutionalLinks.github.href} className="institutional-contact__link" target="_blank" rel="noopener noreferrer">
             <GitBranch size={16} aria-hidden="true" />
-            <span>github.com/alessbarb/DMCC</span>
+            <span>{t(institutionalLinks.github.labelKey)}</span>
           </a>
         </aside>
       </div>

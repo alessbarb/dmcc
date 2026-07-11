@@ -3,6 +3,8 @@ export const en = {
     about: "About DMCC",
     contact: "Contact",
     privacy: "Privacy",
+    github: "GitHub",
+    email: "Email",
     terms: "Terms",
   },
   legal: {

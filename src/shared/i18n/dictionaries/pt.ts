@@ -3,6 +3,8 @@ export const pt = {
     about: "Sobre o DMCC",
     contact: "Contato",
     privacy: "Privacidade",
+    github: "GitHub",
+    email: "Email",
     terms: "Termos",
   },
   legal: {
