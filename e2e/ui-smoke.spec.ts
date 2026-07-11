@@ -145,10 +145,10 @@ test.describe("Player invitation UI flow", () => {
     await expect(page.getByText(/\/join\//)).toBeVisible({ timeout: 15_000 });
     await expect(page.getByText(/something went wrong/i)).toHaveCount(0);
     await expect(page.getByText(/cannot read properties of undefined \(reading 'slice'\)/i)).toHaveCount(0);
-    await expect(page.getByText(/active|activa/i)).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText(/^(active|activa)$/i)).toBeVisible({ timeout: 15_000 });
 
     await page.getByRole("button", { name: /revoke invitation|revocar invitación/i }).click();
-    await expect(page.getByText(/revoked|revocada/i)).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText(/^(revoked|revocada)$/i)).toBeVisible({ timeout: 15_000 });
 
     expect(pageErrors.filter((message) => message.includes("Cannot read properties of undefined (reading 'slice')"))).toEqual([]);
   });
