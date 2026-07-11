@@ -118,7 +118,7 @@ export function SearchPage(props: SearchPageProps = {}) {
   }, [campaignId, query]);
 
   const groupedResults = useMemo(() => {
-    const groups = new Map<string, CampaignSearchResult[]>();
+    const groups = new Map<CampaignSearchResult["type"], CampaignSearchResult[]>();
     for (const result of results) {
       const current = groups.get(result.type) ?? [];
       current.push(result);
@@ -178,75 +178,79 @@ export function SearchPage(props: SearchPageProps = {}) {
         )}
       </div>
 
-      {groupedResults.map(([type, group]) => (
-        <section key={type} aria-labelledby={`search-group-${type}`} style={{ display: "grid", gap: 10 }}>
-          <h2
-            id={`search-group-${type}`}
-            style={{
-              margin: "8px 0 0",
-              fontSize: 13,
-              color: "var(--text-muted)",
-              textTransform: "uppercase",
-              letterSpacing: ".09em",
-            }}
-          >
-            {type} · {group.length}
-          </h2>
-          {group.map((result) => {
-            const item = result.item;
-            return (
-              <button
-                key={`${result.type}-${item.id}`}
-                type="button"
-                className="card"
-                onClick={() => navigate({ to: resultDestination(campaignId, result) as any })}
-                style={{
-                  width: "100%",
-                  padding: 16,
-                  display: "grid",
-                  gap: 6,
-                  textAlign: "left",
-                  cursor: "pointer",
-                  color: "inherit",
-                }}
-                aria-label={`${item.title ?? item.id}. ${type}`}
-              >
-                <span
+      {groupedResults.map(([type, group]) => {
+        const typeLabel = t(`searchPage.resultTypes.${type}`);
+        return (
+          <section key={type} aria-labelledby={`search-group-${type}`} style={{ display: "grid", gap: 10 }}>
+            <h2
+              id={`search-group-${type}`}
+              style={{
+                margin: "8px 0 0",
+                fontSize: 13,
+                color: "var(--text-muted)",
+                textTransform: "uppercase",
+                letterSpacing: ".09em",
+              }}
+            >
+              {typeLabel} · {group.length}
+            </h2>
+            {group.map((result) => {
+              const item = result.item;
+              const resultTypeLabel = t(`searchPage.resultTypes.${result.type}`);
+              return (
+                <button
+                  key={`${result.type}-${item.id}`}
+                  type="button"
+                  className="card"
+                  onClick={() => navigate({ to: resultDestination(campaignId, result) as any })}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    color: "var(--text-muted)",
-                    fontSize: 12,
-                    textTransform: "uppercase",
-                    letterSpacing: ".08em",
+                    width: "100%",
+                    padding: 16,
+                    display: "grid",
+                    gap: 6,
+                    textAlign: "left",
+                    cursor: "pointer",
+                    color: "inherit",
                   }}
+                  aria-label={`${item.title ?? item.id}. ${resultTypeLabel}`}
                 >
-                  {iconFor(result.type)}
-                  {result.type}
-                  {item.visibility ? ` · ${item.visibility}` : ""}
-                </span>
-                <strong style={{ fontSize: 17 }}>{item.title ?? item.id}</strong>
-                {item.subtitle && (
-                  <span style={{ color: "var(--text-muted)", fontSize: 13 }}>{item.subtitle}</span>
-                )}
-                {item.summary && (
-                  <span style={{ color: "var(--text-muted)", lineHeight: 1.5 }}>
-                    {item.summary.length > 280 ? `${item.summary.slice(0, 280)}…` : item.summary}
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      color: "var(--text-muted)",
+                      fontSize: 12,
+                      textTransform: "uppercase",
+                      letterSpacing: ".08em",
+                    }}
+                  >
+                    {iconFor(result.type)}
+                    {resultTypeLabel}
+                    {item.visibility ? ` · ${item.visibility}` : ""}
                   </span>
-                )}
-                {item.dmSummary && (
-                  <span style={{ color: "var(--color-warning)", lineHeight: 1.5 }}>
-                    {item.dmSummary.length > 280
-                      ? `${item.dmSummary.slice(0, 280)}…`
-                      : item.dmSummary}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </section>
-      ))}
+                  <strong style={{ fontSize: 17 }}>{item.title ?? item.id}</strong>
+                  {item.subtitle && (
+                    <span style={{ color: "var(--text-muted)", fontSize: 13 }}>{item.subtitle}</span>
+                  )}
+                  {item.summary && (
+                    <span style={{ color: "var(--text-muted)", lineHeight: 1.5 }}>
+                      {item.summary.length > 280 ? `${item.summary.slice(0, 280)}…` : item.summary}
+                    </span>
+                  )}
+                  {item.dmSummary && (
+                    <span style={{ color: "var(--color-warning)", lineHeight: 1.5 }}>
+                      {item.dmSummary.length > 280
+                        ? `${item.dmSummary.slice(0, 280)}…`
+                        : item.dmSummary}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </section>
+        );
+      })}
     </div>
   );
 }
