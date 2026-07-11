@@ -38,6 +38,7 @@ export async function setupDmAccount(payload: { email: string; secret: string; d
   });
   if (!register.ok) throw new Error(await readApiError(register, "Failed to create account"));
   await register.json().catch(() => null);
+  await login(payload.email, payload.secret);
 }
 
 export async function login(email: string, secret: string): Promise<void> {
@@ -82,4 +83,3 @@ export async function resetPassword(token: string, newPassword: string): Promise
 export async function logout(): Promise<void> {
   await apiFetch("/api/auth/logout", { init: { method: "POST" } }).catch(() => undefined);
 }
-
