@@ -1,0 +1,29 @@
+name: Replace final auth routes
+
+on:
+  pull_request:
+    types: [reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  replace:
+    if: github.base_ref == 'agent/p1-complete'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/p1-complete
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Replace obsolete route references
+        run: node scripts/replace-final-auth-routes.mjs
+      - name: Commit final route references
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/frontend/MainLanding.tsx src/frontend/shared/auth/ForgotPasswordPage.tsx src/frontend/shared/auth/ResetPasswordPage.tsx
+          git commit -m "Use final authentication routes"
+          git push origin HEAD:agent/p1-complete
