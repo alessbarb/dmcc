@@ -9,6 +9,7 @@ import { registerHealthWebRoutes } from "./routes/healthWebRoutes.js";
 import { registerInvitationWebRoutes } from "./routes/invitationWebRoutes.js";
 import { registerLiveTableWebRoutes } from "./routes/liveTableWebRoutes.js";
 import { registerPlayerPortalWebRoutes } from "./routes/playerPortalWebRoutes.js";
+import { registerRulesWebRoutes } from "./routes/rulesWebRoutes.js";
 import { registerSearchWebRoutes } from "./routes/searchWebRoutes.js";
 
 export interface WebRoutesOptions {
@@ -27,6 +28,7 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerInvitationWebRoutes(server);
   void registerLiveTableWebRoutes(server);
   void registerPlayerPortalWebRoutes(server);
+  void registerRulesWebRoutes(server);
   void registerSearchWebRoutes(server);
   server.register(registerAssetRoutes, { assetsDir: options.assetsDir });
 }
