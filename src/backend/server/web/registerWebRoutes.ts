@@ -9,6 +9,7 @@ import { registerDmHubWebRoutes } from "./routes/dmHubWebRoutes.js";
 import { registerHealthWebRoutes } from "./routes/healthWebRoutes.js";
 import { registerInvitationWebRoutes } from "./routes/invitationWebRoutes.js";
 import { registerLiveTableWebRoutes } from "./routes/liveTableWebRoutes.js";
+import { registerPlayerCharacterLinkWebRoutes } from "./routes/playerCharacterLinkWebRoutes.js";
 import { registerPlayerPortalWebRoutes } from "./routes/playerPortalWebRoutes.js";
 import { registerPremadeCampaignWebRoutes } from "./routes/premadeCampaignWebRoutes.js";
 import { registerRulesWebRoutes } from "./routes/rulesWebRoutes.js";
@@ -31,6 +32,7 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerInvitationWebRoutes(server);
   void registerLiveTableWebRoutes(server);
   void registerPlayerPortalWebRoutes(server);
+  void registerPlayerCharacterLinkWebRoutes(server);
   void registerPremadeCampaignWebRoutes(server);
   void registerRulesWebRoutes(server);
   void registerSearchWebRoutes(server);
