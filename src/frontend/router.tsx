@@ -20,60 +20,102 @@ async function requireAccountSession() {
   }
 }
 
-const PromoLandingLazy = React.lazy(() => import("./MainLanding.js").then((m) => ({ default: m.MainLanding })));
-const SmartLandingLazy = React.lazy(() => import("./SmartLanding.js").then((m) => ({ default: m.SmartLanding })));
-const AppPage = React.lazy(() => import("./App.js").then((m) => ({ default: m.App })));
-const DmHubPageLazy = React.lazy(() => import("./dm/hub/DmHubPage.js").then((m) => ({ default: m.DmHubPage })));
-const CampaignShellPage = React.lazy(() => import("./dm/layouts/CampaignShell.js").then((m) => ({ default: m.CampaignShell })));
-const DmSetupPageLazy = React.lazy(() => import("./dm/pages/DmSetupPage.js").then((m) => ({ default: m.DmSetupPage })));
-const DmLoginPageLazy = React.lazy(() => import("./dm/pages/DmLoginPage.js").then((m) => ({ default: m.DmLoginPage })));
-const PlayerJoinPageLazy = React.lazy(() => import("./player/pages/PlayerJoinPage.js").then((m) => ({ default: m.PlayerJoinPage })));
-const DashboardPageLazy = React.lazy(() => import("./dm/pages/DashboardPage.js").then((m) => ({ default: m.DashboardPage })));
-const CommandCenterPageLazy = React.lazy(() => import("./dm/pages/CommandCenterPage.js").then((m) => ({ default: m.CommandCenterPage })));
-const WhatNowPageLazy = React.lazy(() => import("./dm/pages/WhatNowPage.js").then((m) => ({ default: m.WhatNowPage })));
-const SessionPageLazy = React.lazy(() => import("./dm/sessions/SessionPage.js").then((m) => ({ default: m.SessionPage })));
-const EntitiesPageLazy = React.lazy(() => import("./dm/entities/EntitiesPage.js").then((m) => ({ default: m.EntitiesPage })));
-const GraphPageLazy = React.lazy(() => import("./dm/graph/GraphPage.js").then((m) => ({ default: m.GraphPage })));
-const TimelinePageLazy = React.lazy(() => import("./dm/sessions/TimelinePage.js").then((m) => ({ default: m.TimelinePage })));
-const BoardsPageLazy = React.lazy(() => import("./dm/pages/BoardsPage.js").then((m) => ({ default: m.BoardsPage })));
-const PlayersPageLazy = React.lazy(() => import("./dm/pages/PlayersPage.js").then((m) => ({ default: m.PlayersPage })));
-const SearchPageLazy = React.lazy(() => import("./dm/pages/SearchPage.js").then((m) => ({ default: m.SearchPage })));
-const RulesPageLazy = React.lazy(() => import("./dm/pages/RulesPage.js").then((m) => ({ default: m.RulesPage })));
-const SettingsPageLazy = React.lazy(() => import("./dm/pages/SettingsPage.js").then((m) => ({ default: m.SettingsPage })));
-const PlayerPortalPageLazy = React.lazy(() => import("./player/pages/PlayerPortalPage.js").then((m) => ({ default: m.PlayerPortalPage })));
-const WebPlayerPortalPageLazy = React.lazy(() => import("./player/pages/WebPlayerPortalPage.js").then((m) => ({ default: m.WebPlayerPortalPage })));
-const PlayerConstellationPageLazy = React.lazy(() => import("./player/pages/PlayerConstellationPage.js").then((m) => ({ default: m.PlayerConstellationPage })));
-const RegisterPageLazy = React.lazy(() => import("./player/pages/RegisterPage.js").then((m) => ({ default: m.RegisterPage })));
-const CanvasPageLazy = React.lazy(() => import("./dm/canvas/pages/CanvasPage.js").then((m) => ({ default: m.CanvasPage })));
+const PromoLandingLazy = React.lazy(() =>
+  import("./MainLanding.js").then((module) => ({ default: module.MainLanding })),
+);
+const SmartLandingLazy = React.lazy(() =>
+  import("./SmartLanding.js").then((module) => ({ default: module.SmartLanding })),
+);
+const AppPage = React.lazy(() => import("./App.js").then((module) => ({ default: module.App })));
+const DmHubPageLazy = React.lazy(() =>
+  import("./dm/hub/DmHubPage.js").then((module) => ({ default: module.DmHubPage })),
+);
+const CampaignShellPage = React.lazy(() =>
+  import("./dm/layouts/CampaignShell.js").then((module) => ({ default: module.CampaignShell })),
+);
+const DmSetupPageLazy = React.lazy(() =>
+  import("./dm/pages/DmSetupPage.js").then((module) => ({ default: module.DmSetupPage })),
+);
+const DmLoginPageLazy = React.lazy(() =>
+  import("./dm/pages/DmLoginPage.js").then((module) => ({ default: module.DmLoginPage })),
+);
+const PlayerJoinPageLazy = React.lazy(() =>
+  import("./player/pages/PlayerJoinPage.js").then((module) => ({ default: module.PlayerJoinPage })),
+);
+const CommandCenterPageLazy = React.lazy(() =>
+  import("./dm/pages/CommandCenterPage.js").then((module) => ({ default: module.CommandCenterPage })),
+);
+const SessionPageLazy = React.lazy(() =>
+  import("./dm/sessions/SessionPage.js").then((module) => ({ default: module.SessionPage })),
+);
+const EntitiesPageLazy = React.lazy(() =>
+  import("./dm/entities/EntitiesPage.js").then((module) => ({ default: module.EntitiesPage })),
+);
+const GraphPageLazy = React.lazy(() =>
+  import("./dm/graph/GraphPage.js").then((module) => ({ default: module.GraphPage })),
+);
+const TimelinePageLazy = React.lazy(() =>
+  import("./dm/sessions/TimelinePage.js").then((module) => ({ default: module.TimelinePage })),
+);
+const BoardsPageLazy = React.lazy(() =>
+  import("./dm/pages/BoardsPage.js").then((module) => ({ default: module.BoardsPage })),
+);
+const PlayersPageLazy = React.lazy(() =>
+  import("./dm/pages/PlayersPage.js").then((module) => ({ default: module.PlayersPage })),
+);
+const SearchPageLazy = React.lazy(() =>
+  import("./dm/pages/SearchPage.js").then((module) => ({ default: module.SearchPage })),
+);
+const RulesPageLazy = React.lazy(() =>
+  import("./dm/pages/RulesPage.js").then((module) => ({ default: module.RulesPage })),
+);
+const SettingsPageLazy = React.lazy(() =>
+  import("./dm/pages/SettingsPage.js").then((module) => ({ default: module.SettingsPage })),
+);
+const PlayerPortalPageLazy = React.lazy(() =>
+  import("./player/pages/PlayerPortalPage.js").then((module) => ({ default: module.PlayerPortalPage })),
+);
+const WebPlayerPortalPageLazy = React.lazy(() =>
+  import("./player/pages/WebPlayerPortalPage.js").then((module) => ({ default: module.WebPlayerPortalPage })),
+);
+const PlayerConstellationPageLazy = React.lazy(() =>
+  import("./player/pages/PlayerConstellationPage.js").then((module) => ({ default: module.PlayerConstellationPage })),
+);
+const RegisterPageLazy = React.lazy(() =>
+  import("./player/pages/RegisterPage.js").then((module) => ({ default: module.RegisterPage })),
+);
+const CanvasPageLazy = React.lazy(() =>
+  import("./dm/canvas/pages/CanvasPage.js").then((module) => ({ default: module.CanvasPage })),
+);
 const PlayerKnowledgePageLazy = React.lazy(() =>
-  import("./dm/pages/PlayerKnowledgePage.js").then((m) => ({ default: m.PlayerKnowledgePage }))
+  import("./dm/pages/PlayerKnowledgePage.js").then((module) => ({ default: module.PlayerKnowledgePage })),
 );
 const OnboardingPageLazy = React.lazy(() =>
-  import("./dm/pages/OnboardingPage.js").then((m) => ({ default: m.OnboardingPage }))
+  import("./dm/pages/OnboardingPage.js").then((module) => ({ default: module.OnboardingPage })),
 );
 const PremadeCampaignPreviewPageLazy = React.lazy(() =>
-  import("./dm/pages/PremadeCampaignPreviewPage.js").then((m) => ({ default: m.PremadeCampaignPreviewPage }))
+  import("./dm/pages/PremadeCampaignPreviewPage.js").then((module) => ({ default: module.PremadeCampaignPreviewPage })),
 );
 const AccountPageLazy = React.lazy(() =>
-  import("./account/AccountPage.js").then((m) => ({ default: m.AccountPage }))
+  import("./account/AccountPage.js").then((module) => ({ default: module.AccountPage })),
 );
 const AboutPageLazy = React.lazy(() =>
-  import("./institutional/InstitutionalPage.js").then((m) => ({ default: m.AboutPage }))
+  import("./institutional/InstitutionalPage.js").then((module) => ({ default: module.AboutPage })),
 );
 const ContactPageLazy = React.lazy(() =>
-  import("./institutional/InstitutionalPage.js").then((m) => ({ default: m.ContactPage }))
+  import("./institutional/InstitutionalPage.js").then((module) => ({ default: module.ContactPage })),
 );
 const PrivacyPageLazy = React.lazy(() =>
-  import("./institutional/InstitutionalPage.js").then((m) => ({ default: m.PrivacyPage }))
+  import("./institutional/InstitutionalPage.js").then((module) => ({ default: module.PrivacyPage })),
 );
 const TermsPageLazy = React.lazy(() =>
-  import("./institutional/InstitutionalPage.js").then((m) => ({ default: m.TermsPage }))
+  import("./institutional/InstitutionalPage.js").then((module) => ({ default: module.TermsPage })),
 );
 const ForgotPasswordPageLazy = React.lazy(() =>
-  import("./shared/auth/ForgotPasswordPage.js").then((m) => ({ default: m.ForgotPasswordPage }))
+  import("./shared/auth/ForgotPasswordPage.js").then((module) => ({ default: module.ForgotPasswordPage })),
 );
 const ResetPasswordPageLazy = React.lazy(() =>
-  import("./shared/auth/ResetPasswordPage.js").then((m) => ({ default: m.ResetPasswordPage }))
+  import("./shared/auth/ResetPasswordPage.js").then((module) => ({ default: module.ResetPasswordPage })),
 );
 
 function withSuspense(Component: React.ComponentType) {
@@ -86,19 +128,14 @@ function withSuspense(Component: React.ComponentType) {
   };
 }
 
-// Root route simply renders an Outlet
-const rootRoute = createRootRoute({
-  component: () => <Outlet />,
-});
+const rootRoute = createRootRoute({ component: () => <Outlet /> });
 
-// MainLanding — main promotional landing page
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: withSuspense(PromoLandingLazy),
 });
 
-// Selection Portal — what used to be the index page (role select)
 const portalRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/portal",
@@ -174,7 +211,6 @@ const appCampaignsRoute = createRoute({
   component: withSuspense(AppPage),
 });
 
-// DM home (was App at /)
 const dmRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm",
@@ -182,7 +218,6 @@ const dmRoute = createRoute({
   component: withSuspense(DmHubPageLazy),
 });
 
-// /dm/campaigns → hub (campaigns panel is there)
 const dmCampaignsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm/campaigns",
@@ -193,7 +228,6 @@ const dmCampaignsRoute = createRoute({
   component: () => null,
 });
 
-// /dm/campaigns/new → hub (modal is opened in App.tsx state, not URL-driven yet)
 const dmCampaignsNewRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm/campaigns/new",
@@ -204,42 +238,36 @@ const dmCampaignsNewRoute = createRoute({
   component: () => null,
 });
 
-// Account setup (first run)
 const dmSetupRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm/setup",
   component: withSuspense(DmSetupPageLazy),
 });
 
-// Account sign-in
 const dmLoginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dm/login",
   component: withSuspense(DmLoginPageLazy),
 });
 
-// Player join page (code or link)
 const playerJoinRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/join",
   component: withSuspense(PlayerJoinPageLazy),
 });
 
-// Invitation join route — /join/:inviteToken is the final web/app entry point.
 const joinRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/join/$inviteToken",
   component: withSuspense(PlayerJoinPageLazy),
 });
 
-// Player registration route — consume invite token
 const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/register/$campaignId/$inviteToken",
   component: withSuspense(RegisterPageLazy),
 });
 
-// Player portal routes — direct child of rootRoute, bypasses CampaignShell
 const playerPortalRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/campaigns/$campaignId/player-portal",
@@ -260,43 +288,49 @@ const playerPortalHomeRoute = createRoute({
   path: "/player/campaigns/$campaignId/home",
   component: withSuspense(WebPlayerPortalPageLazy),
 });
+
 const playerPortalRecapRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/campaigns/$campaignId/recap",
   component: withSuspense(WebPlayerPortalPageLazy),
 });
+
 const playerPortalCharacterRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/campaigns/$campaignId/character",
   component: withSuspense(WebPlayerPortalPageLazy),
 });
+
 const playerPortalMemoryRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/campaigns/$campaignId/memory",
   component: withSuspense(WebPlayerPortalPageLazy),
 });
+
 const playerPortalConstellationRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/campaigns/$campaignId/constellation",
   component: withSuspense(PlayerConstellationPageLazy),
 });
+
 const playerPortalObjectivesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/campaigns/$campaignId/objectives",
   component: withSuspense(WebPlayerPortalPageLazy),
 });
+
 const playerPortalNotesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/campaigns/$campaignId/notes",
   component: withSuspense(WebPlayerPortalPageLazy),
 });
+
 const playerPortalProposalsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player/campaigns/$campaignId/proposals",
   component: withSuspense(WebPlayerPortalPageLazy),
 });
 
-// Campaign shell — parent layout with sidebar
 const campaignRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/campaigns/$campaignId",
@@ -304,42 +338,19 @@ const campaignRoute = createRoute({
   component: withSuspense(CampaignShellPage),
 });
 
-// Index redirect: /campaigns/:id → /campaigns/:id/dashboard
 const campaignIndexRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/",
-  beforeLoad: ({ params }) => {
-    throw redirect({ to: "/campaigns/$campaignId/dashboard", params });
-  },
-  component: () => null,
-});
-
-// Sub-routes — each renders its own page component
-const dashboardRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/dashboard",
-  component: withSuspense(DashboardPageLazy),
-});
-
-const commandCenterRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/command-center",
-  component: withSuspense(CommandCenterPageLazy),
-});
-
-const liveTableRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/live",
   beforeLoad: ({ params }) => {
     throw redirect({ to: "/campaigns/$campaignId/command-center", params });
   },
   component: () => null,
 });
 
-const whatNowRoute = createRoute({
+const commandCenterRoute = createRoute({
   getParentRoute: () => campaignRoute,
-  path: "/what-now",
-  component: withSuspense(WhatNowPageLazy),
+  path: "/command-center",
+  component: withSuspense(CommandCenterPageLazy),
 });
 
 const sessionRoute = createRoute({
@@ -354,6 +365,12 @@ const entitiesRoute = createRoute({
   component: withSuspense(EntitiesPageLazy),
 });
 
+const canvasRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/canvas",
+  component: withSuspense(CanvasPageLazy),
+});
+
 const graphRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/graph",
@@ -364,6 +381,12 @@ const timelineRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/timeline",
   component: withSuspense(TimelinePageLazy),
+});
+
+const searchRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/search",
+  component: withSuspense(SearchPageLazy),
 });
 
 const boardsRoute = createRoute({
@@ -378,34 +401,22 @@ const playersRoute = createRoute({
   component: withSuspense(PlayersPageLazy),
 });
 
-const searchRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/search",
-  component: withSuspense(SearchPageLazy),
-});
-
 const rulesRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/rules",
   component: withSuspense(RulesPageLazy),
 });
 
-const settingsRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/settings",
-  component: withSuspense(SettingsPageLazy),
-});
-
-const canvasRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/canvas",
-  component: withSuspense(CanvasPageLazy),
-});
-
 const knowledgeRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/knowledge",
   component: withSuspense(PlayerKnowledgePageLazy),
+});
+
+const settingsRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/settings",
+  component: withSuspense(SettingsPageLazy),
 });
 
 const onboardingRoute = createRoute({
@@ -427,7 +438,6 @@ const accountRoute = createRoute({
   component: withSuspense(AccountPageLazy),
 });
 
-// Build the route tree
 const routeTree = rootRoute.addChildren([
   indexRoute,
   portalRoute,
@@ -465,21 +475,18 @@ const routeTree = rootRoute.addChildren([
   playerPortalProposalsRoute,
   campaignRoute.addChildren([
     campaignIndexRoute,
-    canvasRoute,
-    dashboardRoute,
     commandCenterRoute,
-    liveTableRoute,
-    whatNowRoute,
     sessionRoute,
     entitiesRoute,
+    canvasRoute,
     graphRoute,
     timelineRoute,
+    searchRoute,
     boardsRoute,
     playersRoute,
-    searchRoute,
     rulesRoute,
-    settingsRoute,
     knowledgeRoute,
+    settingsRoute,
   ]),
 ]);
 
