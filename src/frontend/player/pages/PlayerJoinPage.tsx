@@ -46,20 +46,38 @@ export function PlayerJoinPage() {
   }, [hasInvite, invitation]);
 
   const loadMemberships = async () => {
-    const response = await apiFetch("/api/campaigns");
-    if (!response.ok) {
+    const [dmResponse, playerResponse] = await Promise.all([
+      apiFetch("/api/campaigns"),
+      apiFetch("/api/player/campaigns"),
+    ]);
+    if (!dmResponse.ok || !playerResponse.ok) {
       setAuthenticated(false);
       setMemberships([]);
       return;
     }
-    const campaigns = await response.json();
+
+    const [dmCampaigns, playerPayload] = await Promise.all([
+      dmResponse.json(),
+      playerResponse.json(),
+    ]);
+    const playerCampaigns = Array.isArray(playerPayload?.campaigns) ? playerPayload.campaigns : [];
+    const combined = [
+      ...(Array.isArray(dmCampaigns) ? dmCampaigns : []),
+      ...playerCampaigns,
+    ];
+    const uniqueMemberships = new Map<string, Membership>();
+    for (const campaign of combined) {
+      if (!campaign?.campaignId || !campaign?.role) continue;
+      uniqueMemberships.set(`${campaign.campaignId}:${campaign.role}`, {
+        campaignId: campaign.campaignId,
+        title: campaign.title,
+        role: campaign.role,
+        playerId: campaign.playerId,
+      });
+    }
+
     setAuthenticated(true);
-    setMemberships((Array.isArray(campaigns) ? campaigns : []).map((campaign: any) => ({
-      campaignId: campaign.campaignId,
-      title: campaign.title,
-      role: campaign.role,
-      playerId: campaign.playerId,
-    })));
+    setMemberships(Array.from(uniqueMemberships.values()));
   };
 
   const loadInvitation = async () => {
@@ -169,7 +187,7 @@ export function PlayerJoinPage() {
                   <h2 style={{ display: "flex", alignItems: "center", gap: 8 }}><Users size={18} /> Tus campañas</h2>
                   {memberships.length === 0 && <p style={{ color: "var(--text-muted)" }}>Todavía no tienes campañas asociadas.</p>}
                   {memberships.map((membership) => (
-                    <button className="btn btn-secondary" key={membership.campaignId} onClick={() => enterCampaign(membership)}>
+                    <button className="btn btn-secondary" key={`${membership.campaignId}:${membership.role}`} onClick={() => enterCampaign(membership)}>
                       {membership.title} · {membership.role}
                     </button>
                   ))}
