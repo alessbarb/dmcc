@@ -204,6 +204,36 @@ test.describe("Minimum release web API flow", () => {
         200,
       );
       expect(portalState.playerId).toEqual(expect.any(String));
+      expect(portalState.linkedCharacter).toBeNull();
+
+      const dmSummary = await expectStatus(
+        await request.get(`/api/campaigns/${campaignId}/player-portal/dm-character-summary`),
+        200,
+      );
+      expect(dmSummary.players).toContainEqual(expect.objectContaining({ playerId: portalState.playerId }));
+      expect(dmSummary.availableCharacters).toContainEqual(expect.objectContaining({ entityId: playerCharacterId }));
+
+      await expectStatus(await request.post(`/api/campaigns/${campaignId}/player-portal/links`, {
+        data: { playerId: portalState.playerId, characterEntityId: playerCharacterId },
+      }), 200);
+
+      const linkedPortalState = await expectStatus(
+        await playerRequest.get(`/api/campaigns/${campaignId}/player-portal/state`),
+        200,
+      );
+      expect(linkedPortalState.link).toEqual({ characterEntityId: playerCharacterId });
+      expect(linkedPortalState.linkedCharacter).toEqual(expect.objectContaining({
+        entityId: playerCharacterId,
+        title: "E2E Hero",
+      }));
+
+      await expectStatus(await request.delete(`/api/campaigns/${campaignId}/player-portal/links/${portalState.playerId}`), 200);
+      const unlinkedPortalState = await expectStatus(
+        await playerRequest.get(`/api/campaigns/${campaignId}/player-portal/state`),
+        200,
+      );
+      expect(unlinkedPortalState.link).toBeNull();
+      expect(unlinkedPortalState.linkedCharacter).toBeNull();
 
       await expectStatus(await playerRequest.post(`/api/campaigns/${campaignId}/player-portal/notes`, {
         data: { title: "E2E note", content: "Remember the bloodstained map.", visibility: "private" },
