@@ -205,6 +205,29 @@ test.describe("Minimum release web API flow", () => {
       );
       expect(portalState.playerId).toEqual(expect.any(String));
       expect(portalState.linkedCharacter).toBeNull();
+      expect(portalState.entities.map((entity: JsonObject) => entity.entityId)).toContain(clueId);
+      expect(portalState.entities.map((entity: JsonObject) => entity.entityId)).not.toContain(secretId);
+
+      const knowledgeProjection = await expectStatus(
+        await request.get(`/api/campaigns/${campaignId}/player-knowledge`),
+        200,
+      );
+      const playerKnowledge = knowledgeProjection.players.find(
+        (candidate: JsonObject) => candidate.playerId === portalState.playerId,
+      );
+      expect(playerKnowledge).toBeTruthy();
+      expect(playerKnowledge.knowledge).toContainEqual(expect.objectContaining({
+        targetType: "entity",
+        targetId: clueId,
+        visible: true,
+        reason: "all_players",
+      }));
+      expect(playerKnowledge.knowledge).toContainEqual(expect.objectContaining({
+        targetType: "entity",
+        targetId: secretId,
+        visible: false,
+        reason: "hidden",
+      }));
 
       const dmSummary = await expectStatus(
         await request.get(`/api/campaigns/${campaignId}/player-portal/dm-character-summary`),
