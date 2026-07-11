@@ -1,7 +1,7 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
-async function expectAuthenticated(page: Parameters<typeof test>[0] extends never ? never : any): Promise<void> {
+async function expectAuthenticated(page: Page): Promise<void> {
   await expect.poll(async () => {
     const response = await page.request.get("/api/auth/status");
     if (!response.ok()) return false;
@@ -48,12 +48,12 @@ test.describe("Critical UI smoke flow", () => {
     await expect(campaignsSection).toBeVisible({ timeout: 15_000 });
 
     const createCampaignButton = campaignsSection
-      .getByRole("button", { name: /crear campaña|create campaign/i })
+      .getByRole("button", { name: /crear(?: una)? campaña|create(?: a)? campaign/i })
       .first();
     await expect(createCampaignButton).toBeVisible({ timeout: 15_000 });
     await createCampaignButton.click();
 
-    const createDialog = page.getByRole("dialog", { name: /crear campaña|create campaign/i });
+    const createDialog = page.getByRole("dialog", { name: /crear(?: una)? campaña|create(?: a)? campaign/i });
     await expect(createDialog).toBeVisible({ timeout: 15_000 });
     await createDialog.locator("input.form-input").first().fill(campaignTitle);
 
