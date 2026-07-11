@@ -26,7 +26,9 @@ const PromoLandingLazy = React.lazy(() =>
 const SmartLandingLazy = React.lazy(() =>
   import("./SmartLanding.js").then((module) => ({ default: module.SmartLanding })),
 );
-const AppPage = React.lazy(() => import("./App.js").then((module) => ({ default: module.App })));
+const AppPage = React.lazy(() =>
+  import("./App.js").then((module) => ({ default: module.App })),
+);
 const DmHubPageLazy = React.lazy(() =>
   import("./dm/hub/DmHubPage.js").then((module) => ({ default: module.DmHubPage })),
 );
@@ -42,6 +44,9 @@ const DmLoginPageLazy = React.lazy(() =>
 const PlayerJoinPageLazy = React.lazy(() =>
   import("./player/pages/PlayerJoinPage.js").then((module) => ({ default: module.PlayerJoinPage })),
 );
+const RegisterPageLazy = React.lazy(() =>
+  import("./player/pages/RegisterPage.js").then((module) => ({ default: module.RegisterPage })),
+);
 const CommandCenterPageLazy = React.lazy(() =>
   import("./dm/pages/CommandCenterPage.js").then((module) => ({ default: module.CommandCenterPage })),
 );
@@ -51,11 +56,17 @@ const SessionPageLazy = React.lazy(() =>
 const EntitiesPageLazy = React.lazy(() =>
   import("./dm/entities/EntitiesPage.js").then((module) => ({ default: module.EntitiesPage })),
 );
+const CanvasPageLazy = React.lazy(() =>
+  import("./dm/canvas/pages/CanvasPage.js").then((module) => ({ default: module.CanvasPage })),
+);
 const GraphPageLazy = React.lazy(() =>
   import("./dm/graph/GraphPage.js").then((module) => ({ default: module.GraphPage })),
 );
 const TimelinePageLazy = React.lazy(() =>
   import("./dm/sessions/TimelinePage.js").then((module) => ({ default: module.TimelinePage })),
+);
+const SearchPageLazy = React.lazy(() =>
+  import("./dm/pages/SearchPage.js").then((module) => ({ default: module.SearchPage })),
 );
 const BoardsPageLazy = React.lazy(() =>
   import("./dm/pages/BoardsPage.js").then((module) => ({ default: module.BoardsPage })),
@@ -63,32 +74,14 @@ const BoardsPageLazy = React.lazy(() =>
 const PlayersPageLazy = React.lazy(() =>
   import("./dm/pages/PlayersPage.js").then((module) => ({ default: module.PlayersPage })),
 );
-const SearchPageLazy = React.lazy(() =>
-  import("./dm/pages/SearchPage.js").then((module) => ({ default: module.SearchPage })),
-);
 const RulesPageLazy = React.lazy(() =>
   import("./dm/pages/RulesPage.js").then((module) => ({ default: module.RulesPage })),
 );
-const SettingsPageLazy = React.lazy(() =>
-  import("./dm/pages/SettingsPage.js").then((module) => ({ default: module.SettingsPage })),
-);
-const PlayerPortalPageLazy = React.lazy(() =>
-  import("./player/pages/PlayerPortalPage.js").then((module) => ({ default: module.PlayerPortalPage })),
-);
-const WebPlayerPortalPageLazy = React.lazy(() =>
-  import("./player/pages/WebPlayerPortalPage.js").then((module) => ({ default: module.WebPlayerPortalPage })),
-);
-const PlayerConstellationPageLazy = React.lazy(() =>
-  import("./player/pages/PlayerConstellationPage.js").then((module) => ({ default: module.PlayerConstellationPage })),
-);
-const RegisterPageLazy = React.lazy(() =>
-  import("./player/pages/RegisterPage.js").then((module) => ({ default: module.RegisterPage })),
-);
-const CanvasPageLazy = React.lazy(() =>
-  import("./dm/canvas/pages/CanvasPage.js").then((module) => ({ default: module.CanvasPage })),
-);
 const PlayerKnowledgePageLazy = React.lazy(() =>
   import("./dm/pages/PlayerKnowledgePage.js").then((module) => ({ default: module.PlayerKnowledgePage })),
+);
+const SettingsPageLazy = React.lazy(() =>
+  import("./dm/pages/SettingsPage.js").then((module) => ({ default: module.SettingsPage })),
 );
 const OnboardingPageLazy = React.lazy(() =>
   import("./dm/pages/OnboardingPage.js").then((module) => ({ default: module.OnboardingPage })),
@@ -268,69 +261,6 @@ const registerRoute = createRoute({
   component: withSuspense(RegisterPageLazy),
 });
 
-const playerPortalRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/campaigns/$campaignId/player-portal",
-  component: withSuspense(PlayerPortalPageLazy),
-});
-
-const playerPortalWebRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/player/campaigns/$campaignId",
-  beforeLoad: ({ params }) => {
-    throw redirect({ to: "/player/campaigns/$campaignId/home", params });
-  },
-  component: () => null,
-});
-
-const playerPortalHomeRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/player/campaigns/$campaignId/home",
-  component: withSuspense(WebPlayerPortalPageLazy),
-});
-
-const playerPortalRecapRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/player/campaigns/$campaignId/recap",
-  component: withSuspense(WebPlayerPortalPageLazy),
-});
-
-const playerPortalCharacterRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/player/campaigns/$campaignId/character",
-  component: withSuspense(WebPlayerPortalPageLazy),
-});
-
-const playerPortalMemoryRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/player/campaigns/$campaignId/memory",
-  component: withSuspense(WebPlayerPortalPageLazy),
-});
-
-const playerPortalConstellationRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/player/campaigns/$campaignId/constellation",
-  component: withSuspense(PlayerConstellationPageLazy),
-});
-
-const playerPortalObjectivesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/player/campaigns/$campaignId/objectives",
-  component: withSuspense(WebPlayerPortalPageLazy),
-});
-
-const playerPortalNotesRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/player/campaigns/$campaignId/notes",
-  component: withSuspense(WebPlayerPortalPageLazy),
-});
-
-const playerPortalProposalsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/player/campaigns/$campaignId/proposals",
-  component: withSuspense(WebPlayerPortalPageLazy),
-});
-
 const campaignRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/campaigns/$campaignId",
@@ -463,16 +393,6 @@ const routeTree = rootRoute.addChildren([
   playerJoinRoute,
   joinRoute,
   registerRoute,
-  playerPortalRoute,
-  playerPortalWebRoute,
-  playerPortalHomeRoute,
-  playerPortalRecapRoute,
-  playerPortalCharacterRoute,
-  playerPortalMemoryRoute,
-  playerPortalConstellationRoute,
-  playerPortalObjectivesRoute,
-  playerPortalNotesRoute,
-  playerPortalProposalsRoute,
   campaignRoute.addChildren([
     campaignIndexRoute,
     commandCenterRoute,
