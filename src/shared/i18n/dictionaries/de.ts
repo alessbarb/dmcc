@@ -715,6 +715,15 @@ export const de: TranslationDictionary = {
   },
 
   searchPage: {
+    resultTypes: {
+      entity: "Entität",
+      fact: "Fakt",
+      relation: "Beziehung",
+      clue: "Hinweis",
+      objective: "Ziel",
+      note: "Notiz",
+      rule: "Regel",
+    },
     title: "Suche",
     placeholder: "Entitäten und Fakten suchen...",
     allTypes: "Alle Typen",

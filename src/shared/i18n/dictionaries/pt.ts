@@ -700,6 +700,15 @@ export const pt = {
     },
   },
   searchPage: {
+    resultTypes: {
+      entity: "Entidade",
+      fact: "Fato",
+      relation: "Relação",
+      clue: "Pista",
+      objective: "Objetivo",
+      note: "Nota",
+      rule: "Regra",
+    },
     title: "Busca",
     placeholder: "Buscar entidades e fatos...",
     allTypes: "Todos os tipos",

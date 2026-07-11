@@ -954,6 +954,15 @@ export const en = {
     },
   },
   searchPage: {
+    resultTypes: {
+      entity: "Entity",
+      fact: "Fact",
+      relation: "Relationship",
+      clue: "Clue",
+      objective: "Objective",
+      note: "Note",
+      rule: "Rule",
+    },
     title: "Search",
     placeholder: "Search entities and facts...",
     allTypes: "All types",

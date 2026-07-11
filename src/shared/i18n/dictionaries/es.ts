@@ -965,6 +965,15 @@ export const es: TranslationDictionary = {
     },
   },
   searchPage: {
+    resultTypes: {
+      entity: "Entidad",
+      fact: "Hecho",
+      relation: "Relación",
+      clue: "Pista",
+      objective: "Objetivo",
+      note: "Nota",
+      rule: "Regla",
+    },
     title: "Búsqueda",
     placeholder: "Buscar en entidades y hechos...",
     allTypes: "Todos los tipos",
