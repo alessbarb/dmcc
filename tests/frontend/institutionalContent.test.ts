@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   getInstitutionalPage,
   getInstitutionalPages,
-  institutionalContact,
   type InstitutionalPageKey,
 } from "../../src/shared/i18n/institutional/index.js";
+import { institutionalContact } from "../../src/shared/institutional/contact.js";
 import { SUPPORTED_LOCALE_CODES } from "../../src/shared/i18n/locales.js";
 import { t } from "../../src/shared/i18n/translate.js";
 
@@ -28,7 +28,7 @@ describe("institutionalContent", () => {
 
   it("does not expose known corrupted text fragments in institutional content", () => {
     const corruptedFragments = ["regunetwork", "networkguage", "Wweb sharing"];
-    const visibleContent = ["en", "es", "fr", "de", "it", "pt"].flatMap((locale) =>
+    const visibleContent = SUPPORTED_LOCALE_CODES.flatMap((locale) =>
       getInstitutionalPages(locale).flatMap((page) => [
         page.navLabel,
         page.eyebrow,

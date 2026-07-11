@@ -1,4 +1,4 @@
-import { institutionalContact } from "./contact.js";
+import { institutionalContact } from "../../institutional/contact.js";
 import type { InstitutionalLocaleContent } from "./types.js";
 
 const legalLastUpdated = "July 10, 2026";

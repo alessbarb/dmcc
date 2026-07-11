@@ -1,4 +1,4 @@
-import { institutionalContact } from "@shared/i18n/institutional/index.js";
+import { institutionalContact } from "@shared/institutional/contact.js";
 import type { TranslationKey } from "@shared/i18n/index.js";
 
 type InternalInstitutionalLink = {

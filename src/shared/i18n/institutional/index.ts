@@ -3,7 +3,6 @@ import { institutionalContentEN } from "./en.js";
 import { institutionalContentES } from "./es.js";
 import type { InstitutionalPageContent, InstitutionalPageKey } from "./types.js";
 
-export { institutionalContact } from "./contact.js";
 export type { InstitutionalLocaleContent, InstitutionalPageBody, InstitutionalPageContent, InstitutionalPageKey, InstitutionalSection } from "./types.js";
 
 const fallbackContentLocaleCodes = ["fr", "de", "it", "pt"] as const satisfies readonly SupportedLocale[];
