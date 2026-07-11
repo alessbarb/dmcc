@@ -525,8 +525,8 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     <div className="form-group">
                       <label className="form-label">Idiomas conocidos (ej. Común, Élfico)</label>
                       <input type="text" className="form-input" placeholder="Separados por comas"
-                        value={Array.isArray(entityForm.metadata.networkguages) ? entityForm.metadata.networkguages.join(", ") : ""}
-                        onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, networkguages: e.target.value.split(",").map(s => s.trim()).filter(Boolean) } })} />
+                        value={Array.isArray(entityForm.metadata.languages) ? entityForm.metadata.languages.join(", ") : ""}
+                        onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, languages: e.target.value.split(",").map(s => s.trim()).filter(Boolean) } })} />
                     </div>
                     <div className="form-group">
                       <label className="form-label">Dotes (ej. Alerta, Iniciación Mágica)</label>

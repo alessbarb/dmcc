@@ -3,7 +3,7 @@ import { detectBrowserLocale } from "@shared/i18n/index.js";
 
 export function getPremadeLocale(): string {
   try {
-    const saved = localStorage.getItem("dmcc_networkguage");
+    const saved = localStorage.getItem("dmcc_language");
     return detectBrowserLocale(saved);
   } catch {
     return "en";

@@ -15,6 +15,12 @@ export type InstitutionalPageBody = {
 
 export type InstitutionalLocaleContent = Record<InstitutionalPageKey, InstitutionalPageBody>;
 
+export type InstitutionalDictionaryContent = {
+  readonly navAriaLabel: string;
+  readonly translationNotice?: string;
+  readonly pages?: InstitutionalLocaleContent;
+};
+
 export type InstitutionalPageContent = InstitutionalPageBody & {
   readonly key: InstitutionalPageKey;
   readonly path: `/${InstitutionalPageKey}`;

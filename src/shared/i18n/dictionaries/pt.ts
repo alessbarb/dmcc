@@ -20,6 +20,7 @@ export const pt = {
   },
   institutional: {
     navAriaLabel: "Páginas institucionais",
+    translationNotice: "Esta página está disponível em inglês enquanto concluímos a tradução.",
   },
   contact: {
     cardTitle: "Perguntas ou feedback?",
@@ -75,10 +76,10 @@ export const pt = {
   settings: {
     title: "Configurações e sistema",
     subtitle: "Gerencie armazenamento, rede local, idiomas e backups",
-    networkguageSectionTitle: "Idioma da aplicação",
-    networkguageSectionSubtitle: "Selecione o idioma preferido para a interface e as exportações",
-    networkguageEs: "Espanhol (ES)",
-    networkguageEn: "Inglês (EN)",
+    languageSectionTitle: "Idioma da aplicação",
+    languageSectionSubtitle: "Selecione o idioma preferido para a interface e as exportações",
+    languageEs: "Espanhol (ES)",
+    languageEn: "Inglês (EN)",
     backupSectionTitle: "Backups e exportação",
     createBackup: "Criar backup completo",
     exportJson: "Exportar JSON",

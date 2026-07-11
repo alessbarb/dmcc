@@ -548,7 +548,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const characterContent = (myCharacter as any)?.content ?? linkedCharacter?.content ?? characterMetadata.note ?? "";
   const savingThrows = asList(characterMetadata.savingThrows);
   const skills = asList(characterMetadata.skills);
-  const networkguages = asList(characterMetadata.networkguages);
+  const languages = asList(characterMetadata.languages);
   const feats = asList(characterMetadata.feats);
   const keyTraits = asList(characterMetadata.keyTraits);
   const personalGoals = asList(characterMetadata.personalGoals);
@@ -1649,7 +1649,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
                       </div>
                       <div>
                         <div className="form-label">Idiomas</div>
-                        <PillList items={networkguages} />
+                        <PillList items={languages} />
                       </div>
                       <div>
                         <div className="form-label">Dotes / rasgos</div>

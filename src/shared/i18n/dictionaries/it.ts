@@ -22,6 +22,7 @@ export const it: TranslationDictionary = {
   },
   institutional: {
     navAriaLabel: "Pagine istituzionali",
+    translationNotice: "Questa pagina è disponibile in inglese mentre completiamo la traduzione.",
   },
   contact: {
     cardTitle: "Domande o feedback?",
@@ -77,10 +78,10 @@ export const it: TranslationDictionary = {
   settings: {
     title: "Impostazioni e sistema",
     subtitle: "Gestisci archiviazione, rete locale, lingue e backup",
-    networkguageSectionTitle: "Lingua dell'applicazione",
-    networkguageSectionSubtitle: "Seleziona la lingua preferita per interfaccia ed esportazioni",
-    networkguageEs: "Spagnolo (ES)",
-    networkguageEn: "Inglese (EN)",
+    languageSectionTitle: "Lingua dell'applicazione",
+    languageSectionSubtitle: "Seleziona la lingua preferita per interfaccia ed esportazioni",
+    languageEs: "Spagnolo (ES)",
+    languageEn: "Inglese (EN)",
     backupSectionTitle: "Backup ed export",
     createBackup: "Crea backup completo",
     exportJson: "Esporta JSON",

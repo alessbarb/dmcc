@@ -1,7 +1,10 @@
+import type { InstitutionalDictionaryContent } from "./institutional/types.js";
 import type { en } from "./dictionaries/en.js";
 export type { SupportedLocale } from "./locales.js";
 
-export type TranslationDictionary = DeepStringRecord<typeof en>;
+export type TranslationDictionary = DeepStringRecord<Omit<typeof en, "institutional">> & {
+  readonly institutional: InstitutionalDictionaryContent;
+};
 
 export type TranslationKey = DotPath<typeof en>;
 

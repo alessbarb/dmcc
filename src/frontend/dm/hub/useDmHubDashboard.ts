@@ -16,7 +16,7 @@ const DEFAULT_CAMPAIGN_COVER = "/assets/campaigns/default-campaign-cover.jpg";
 
 function getPremadeLocale(): string {
   try {
-    const saved = localStorage.getItem("dmcc_networkguage");
+    const saved = localStorage.getItem("dmcc_language");
     return detectBrowserLocale(saved);
   } catch {}
   return "en";

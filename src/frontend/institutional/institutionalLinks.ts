@@ -1,4 +1,4 @@
-import { institutionalContact } from "@shared/institutional/contact.js";
+import { publicInstitutionalContact } from "@shared/institutional/contact.js";
 import type { TranslationKey } from "@shared/i18n/index.js";
 
 type InternalInstitutionalLink = {
@@ -22,8 +22,8 @@ export const institutionalLinks = {
   contact: { labelKey: "footer.contact", to: "/contact" },
   privacy: { labelKey: "footer.privacy", to: "/privacy" },
   terms: { labelKey: "footer.terms", to: "/terms" },
-  github: { labelKey: "footer.github", href: institutionalContact.github },
-  email: { labelKey: "footer.email", email: institutionalContact.email },
+  github: { labelKey: "footer.github", href: publicInstitutionalContact.github },
+  email: { labelKey: "footer.email", email: publicInstitutionalContact.email },
 } as const satisfies {
   readonly about: InternalInstitutionalLink;
   readonly contact: InternalInstitutionalLink;
