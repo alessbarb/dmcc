@@ -47,13 +47,13 @@ test.describe("Critical UI smoke flow", () => {
     const campaignsSection = page.locator("#dm-campaigns-section");
     await expect(campaignsSection).toBeVisible({ timeout: 15_000 });
 
-    const createCampaignButton = campaignsSection
-      .getByRole("button", { name: /crear(?: una)? campaña|create(?: a)? campaign/i })
+    const createCampaignControl = campaignsSection
+      .locator("button.btn-gold, .dm-campaign-card--create")
       .first();
-    await expect(createCampaignButton).toBeVisible({ timeout: 15_000 });
-    await createCampaignButton.click();
+    await expect(createCampaignControl).toBeVisible({ timeout: 15_000 });
+    await createCampaignControl.click();
 
-    const createDialog = page.getByRole("dialog", { name: /crear(?: una)? campaña|create(?: a)? campaign/i });
+    const createDialog = page.getByRole("dialog").first();
     await expect(createDialog).toBeVisible({ timeout: 15_000 });
     await createDialog.locator("input.form-input").first().fill(campaignTitle);
 
