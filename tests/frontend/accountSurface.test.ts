@@ -22,14 +22,15 @@ describe("shared account surface", () => {
     expect(read("src/frontend/account/AccountNav.tsx")).toContain("<nav");
   });
 
-  it("links every role surface to the same account route", () => {
-    for (const file of [
-      "src/frontend/App.tsx",
-      "src/frontend/dm/layouts/CampaignShell.tsx",
-      "src/frontend/player/components/PlayerPortalView.tsx",
-    ]) {
-      expect(read(file)).toContain('to: "/account"');
-    }
+  it("uses one account route across the application", () => {
+    const router = read("src/frontend/router.tsx");
+    const campaignShell = read("src/frontend/dm/layouts/CampaignShell.tsx");
+    const app = read("src/frontend/App.tsx");
+
+    expect(router).toMatch(/path:\s*"\/account"/);
+    expect(campaignShell).toContain('to: "/account"');
+    expect(app).toContain('to: "/account"');
+    expect(router.match(/path:\s*"\/account"/g)).toHaveLength(1);
   });
 
   it("edits the private identity and loads privacy previews from the account API", () => {
