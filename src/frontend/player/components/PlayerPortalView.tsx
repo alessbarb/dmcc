@@ -30,6 +30,10 @@ type PlayerPortalMode = "family" | "advanced";
 type QuickActionKind = "question" | "note" | "objective";
 
 
+function getMetadataLanguages(metadata: Record<string, any>): unknown {
+  return Array.isArray(metadata.languages) ? metadata.languages : metadata.networkguages;
+}
+
 const PLAYER_PORTAL_COPY = {
   en: {
     modes: { family: "Family mode", advanced: "Advanced mode" },
@@ -548,7 +552,7 @@ export function PlayerPortalView({ campaignId }: { campaignId: string }) {
   const characterContent = (myCharacter as any)?.content ?? linkedCharacter?.content ?? characterMetadata.note ?? "";
   const savingThrows = asList(characterMetadata.savingThrows);
   const skills = asList(characterMetadata.skills);
-  const languages = asList(characterMetadata.languages);
+  const languages = asList(getMetadataLanguages(characterMetadata));
   const feats = asList(characterMetadata.feats);
   const keyTraits = asList(characterMetadata.keyTraits);
   const personalGoals = asList(characterMetadata.personalGoals);

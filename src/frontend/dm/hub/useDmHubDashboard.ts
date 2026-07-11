@@ -11,15 +11,12 @@ import type {
 } from "./dmHubTypes.js";
 import { detectBrowserLocale } from "@shared/i18n/index.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { readStoredLocale } from "../../shared/i18n/localeStorage.js";
 
 const DEFAULT_CAMPAIGN_COVER = "/assets/campaigns/default-campaign-cover.jpg";
 
 function getPremadeLocale(): string {
-  try {
-    const saved = localStorage.getItem("dmcc_language");
-    return detectBrowserLocale(saved);
-  } catch {}
-  return "en";
+  return detectBrowserLocale(readStoredLocale());
 }
 
 function withPremadeLocale(path: string): string {
