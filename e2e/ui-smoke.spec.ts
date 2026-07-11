@@ -46,6 +46,7 @@ test.describe("Critical UI smoke flow", () => {
 
     const campaignsSection = page.locator("#dm-campaigns-section");
     await expect(campaignsSection).toBeVisible({ timeout: 15_000 });
+    await expect(campaignsSection.locator(".dm-empty-state--error")).toHaveCount(0);
 
     const createCampaignControl = campaignsSection
       .locator("button.btn-gold, .dm-campaign-card--create")
