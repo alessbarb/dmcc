@@ -122,7 +122,7 @@ test.describe("Minimum release web API flow", () => {
     expect(graph.relations.map((relation: JsonObject) => relation.relationId)).toContain(relationId);
 
     await expectStatus(await request.post(`/api/campaigns/${campaignId}/canvases`, {
-      data: { canvasId, title: "E2E Canvas", kind: "freeform" },
+      data: { canvasId, title: "E2E Canvas", kind: "custom" },
     }), 200);
     const canvasResponse = await expectStatus(await request.get(`/api/campaigns/${campaignId}/canvases`), 200);
     expect(canvasResponse.canvases.map((canvas: JsonObject) => canvas.canvasId)).toContain(canvasId);
