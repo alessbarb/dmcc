@@ -1,13 +1,9 @@
 import { apiFetch } from "./apiClient.js";
 import { detectBrowserLocale } from "@shared/i18n/index.js";
+import { readStoredLocale } from "../i18n/localeStorage.js";
 
 export function getPremadeLocale(): string {
-  try {
-    const saved = localStorage.getItem("dmcc_networkguage");
-    return detectBrowserLocale(saved);
-  } catch {
-    return "en";
-  }
+  return detectBrowserLocale(readStoredLocale());
 }
 
 function withPremadeLocale(path: string, locale = getPremadeLocale()): string {

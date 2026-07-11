@@ -416,7 +416,7 @@ function ResumenTab({
 
                       <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "8px" }}>
                         <Field label="Dotes" value={Array.isArray(m.feats) ? m.feats.join(", ") : m.feats} />
-                        <Field label="Idiomas" value={Array.isArray(m.networkguages) ? m.networkguages.join(", ") : m.networkguages} />
+                        <Field label="Idiomas" value={getMetadataLanguages(m)} />
                       </div>
 
                       {(m.spellSaveDC != null || m.spellAttackBonus != null) && (
@@ -1012,6 +1012,11 @@ function TrazabilidadTab({
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
+
+function getMetadataLanguages(metadata: any): string | undefined {
+  const languages = Array.isArray(metadata.languages) ? metadata.languages : metadata.networkguages;
+  return Array.isArray(languages) ? languages.join(", ") : languages;
+}
 
 export function EntityDetailModal({
   selectedEntity,

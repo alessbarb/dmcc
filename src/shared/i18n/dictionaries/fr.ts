@@ -22,6 +22,7 @@ export const fr: TranslationDictionary = {
   },
   institutional: {
     navAriaLabel: "Pages institutionnelles",
+    translationNotice: "Cette page est disponible en anglais pendant que nous terminons sa traduction.",
   },
   contact: {
     cardTitle: "Questions ou retours ?",
@@ -76,11 +77,11 @@ export const fr: TranslationDictionary = {
   },
   settings: {
     title: "Paramètres et système",
-    subtitle: "Gérez le stockage, le réseau local, les networkgues et les sauvegardes",
-    networkguageSectionTitle: "Langue de l'application",
-    networkguageSectionSubtitle: "Sélectionnez votre networkgue préférée pour l'interface et les exports",
-    networkguageEs: "Espagnol (ES)",
-    networkguageEn: "Anglais (EN)",
+    subtitle: "Gérez le stockage, le réseau local, les langues et les sauvegardes",
+    languageSectionTitle: "Langue de l'application",
+    languageSectionSubtitle: "Sélectionnez votre langue préférée pour l'interface et les exports",
+    languageEs: "Espagnol (ES)",
+    languageEn: "Anglais (EN)",
     backupSectionTitle: "Sauvegardes et export",
     createBackup: "Créer une sauvegarde complète",
     exportJson: "Exporter en JSON",
@@ -1723,7 +1724,7 @@ export const fr: TranslationDictionary = {
       },
       settings: {
         title: "Réglages, sauvegardes et exports",
-        body: "Les réglages gèrent l'administration de la campagne : networkgue, sauvegardes, export JSON, export Markdown et autres options système.",
+        body: "Les réglages gèrent l'administration de la campagne : langue, sauvegardes, export JSON, export Markdown et autres options système.",
         detail: "Les sauvegardes et exports font partie du flux normal. Utilisez-les avant de gros changements, avant un test risqué ou quand vous voulez une archive lisible hors de l'application.",
         tip: "Bonne habitude : exportez en Markdown après les sessions importantes et créez une sauvegarde avant les grandes modifications ou imports de modèle.",
       },

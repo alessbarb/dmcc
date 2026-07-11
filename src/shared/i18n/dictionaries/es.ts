@@ -1,4 +1,8 @@
+import { institutionalContact } from "../../institutional/contact.js";
+
 import type { TranslationDictionary } from "../types.js";
+
+const legalLastUpdated = "10 de julio de 2026";
 
 export const es: TranslationDictionary = {
   footer: {
@@ -22,10 +26,219 @@ export const es: TranslationDictionary = {
   },
   institutional: {
     navAriaLabel: "Páginas institucionales",
+    translationNotice: "",
+    pages: {
+      about: {
+        eyebrow: "Resumen del proyecto",
+        title: "Memoria de campaña para grupos de rol de mesa.",
+        summary:
+          "DMCC ayuda a directores de juego a organizar hechos, secretos, cronologías, jugadores y contexto listo para la mesa sin perder la magia de improvisar.",
+        sections: [
+          {
+            title: "Qué es DMCC",
+            paragraphs: [
+              "Dungeon Master Campaign Companion es un espacio de trabajo para campañas de rol de mesa. Mantiene la memoria narrativa, las relaciones del mundo, el contexto de sesión y los portales para jugadores cerca de la mesa.",
+              "El proyecto se centra en preparación práctica: recordar qué ocurrió, decidir qué importa después y revelar la información adecuada a la audiencia correcta.",
+            ],
+          },
+          {
+            title: "Principios de diseño",
+            paragraphs: [
+              "DMCC prioriza claridad, notas conscientes de la privacidad y herramientas que apoyan al director de juego sin sustituirlo. Secretos, rumores y hechos canónicos son material de campaña de primera clase.",
+            ],
+          },
+        ],
+      },
+      contact: {
+        eyebrow: "Soporte y feedback",
+        title: "Contacta con el proyecto DMCC.",
+        summary:
+          "Preguntas, errores, comentarios e ideas de colaboración son bienvenidas por email o en el repositorio público de GitHub.",
+        sections: [
+          {
+            title: "Email",
+            paragraphs: [
+              `Para contacto directo, escribe a ${institutionalContact.email}. Incluye contexto suficiente para reproducir errores o entender tu necesidad de flujo de campaña.`,
+            ],
+          },
+          {
+            title: "GitHub",
+            paragraphs: [
+              "Usa GitHub para código fuente, incidencias y conversaciones del proyecto. Los reportes públicos son más útiles cuando incluyen pasos de reproducción, comportamiento esperado y capturas si procede.",
+            ],
+          },
+        ],
+      },
+      privacy: {
+        eyebrow: "Política de privacidad",
+        title: "Política de privacidad",
+        summary:
+          "Esta política explica cómo DMCC trata los datos asociados al uso de dmcc.onrender.com y del proyecto publicado en github.com/alessbarb/DMCC.",
+        lastUpdated: legalLastUpdated,
+        sections: [
+          {
+            title: "Responsable del proyecto",
+            paragraphs: [
+              `El responsable de contacto del proyecto es DMCC. Para consultas de privacidad, solicitudes de derechos o comunicaciones sobre esta política, escribe a ${institutionalContact.email}.`,
+              "La aplicación está disponible en dmcc.onrender.com y el repositorio público del proyecto se encuentra en github.com/alessbarb/DMCC.",
+            ],
+          },
+          {
+            title: "Datos que podemos tratar",
+            paragraphs: [
+              "DMCC puede tratar datos que introduces voluntariamente, incluyendo cuenta, correo electrónico, perfiles, campañas, personajes, jugadores, sesiones, notas, entidades, relaciones, hechos, secretos, cronologías, tableros, propuestas, contenido visible para jugadores y preferencias.",
+              "También pueden tratarse datos técnicos necesarios para operar el servicio, como identificadores de sesión, autenticación, IP, agente de usuario, registros de seguridad, eventos de error y metadatos de uso razonablemente necesarios.",
+              "No introduzcas categorías especiales de datos personales ni información sensible de jugadores u otras personas salvo que exista base legítima y las personas afectadas hayan sido informadas y hayan prestado el consentimiento necesario.",
+            ],
+          },
+          {
+            title: "Para qué usamos los datos",
+            paragraphs: [
+              "Los datos se tratan para crear y gestionar cuentas, autenticar sesiones, permitir acceso seguro a campañas, almacenar y sincronizar información de juego, mostrar portales para jugadores, conservar preferencias, prestar soporte, diagnosticar errores, prevenir abusos, proteger el servicio y cumplir obligaciones legales.",
+              "El contenido de campaña se usa para proporcionar funciones de organización, preparación, consulta, visibilidad y colaboración propias de DMCC. No se utiliza para vender perfiles publicitarios ni publicidad comportamental.",
+            ],
+          },
+          {
+            title: "Base legal",
+            paragraphs: [
+              "La base legal principal es la ejecución de la relación solicitada por el usuario al crear una cuenta o usar la aplicación. Algunos tratamientos técnicos y de seguridad se basan en el interés legítimo de mantener un servicio estable, seguro y funcional.",
+              "Cuando el tratamiento dependa del consentimiento, incluidas cookies o tecnologías similares no necesarias cuando corresponda, puedes retirarlo en cualquier momento sin afectar al tratamiento ya realizado lícitamente.",
+            ],
+          },
+          {
+            title: "Conservación de los datos",
+            paragraphs: [
+              "Los datos se conservarán mientras la cuenta esté activa, mientras sean necesarios para prestar la aplicación o mientras exista una razón legal, técnica o de seguridad.",
+              "Copias de seguridad y registros técnicos pueden permanecer durante un periodo limitado hasta su rotación o eliminación segura.",
+            ],
+          },
+          {
+            title: "Cookies y almacenamiento local",
+            paragraphs: [
+              "DMCC puede usar cookies, almacenamiento local del navegador y tecnologías similares para mantener sesiones, recordar preferencias, proteger formularios, habilitar funciones y mejorar la estabilidad.",
+              "Las cookies técnicas necesarias para seguridad, autenticación, preferencias o funciones solicitadas de la aplicación pueden utilizarse sin consentimiento cuando la ley lo permita porque son necesarias para el servicio.",
+              "Las cookies analíticas, publicitarias o de seguimiento, o tecnologías similares, solo se usarán con información clara y consentimiento previo y revocable cuando corresponda.",
+            ],
+          },
+          {
+            title: "Servicios de terceros",
+            paragraphs: [
+              "La aplicación puede depender de proveedores de infraestructura, alojamiento, base de datos, correo, repositorio de código y herramientas técnicas necesarias para operar, desplegar, mantener y proteger el servicio.",
+              "Estos proveedores deberían acceder a datos solo en la medida necesaria para prestar sus servicios y pueden estar sujetos a sus propios términos y políticas de privacidad.",
+            ],
+          },
+          {
+            title: "Tus derechos",
+            paragraphs: [
+              `Puedes solicitar acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a ${institutionalContact.email}. La solicitud debe incluir información suficiente para verificar identidad y localizar datos afectados.`,
+              "También puedes retirar el consentimiento cuando el tratamiento se base en el consentimiento, sin afectar a la licitud del tratamiento realizado antes de retirarlo.",
+            ],
+          },
+          {
+            title: "Seguridad",
+            paragraphs: [
+              "DMCC aplica medidas técnicas y organizativas para proteger datos frente a acceso no autorizado, pérdida, alteración o divulgación indebida.",
+              "Ningún sistema es infalible: protege credenciales, revisa vistas compartidas, evita secretos innecesarios y mantén copias propias.",
+            ],
+          },
+          {
+            title: "Cambios en esta política",
+            paragraphs: [
+              "DMCC puede actualizar esta política para reflejar cambios legales, técnicos u operativos. Los cambios relevantes actualizarán la fecha de última actualización y podrán comunicarse mediante la aplicación o canales disponibles.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        eyebrow: "Términos de uso",
+        title: "Términos de uso",
+        summary:
+          "Estos términos regulan el acceso y uso de DMCC, la aplicación publicada en dmcc.onrender.com y el proyecto disponible en github.com/alessbarb/DMCC.",
+        lastUpdated: legalLastUpdated,
+        sections: [
+          {
+            title: "Qué es DMCC",
+            paragraphs: [
+              "DMCC, Dungeon Master Campaign Companion, es una herramienta de apoyo para directores de juego, jugadores y grupos de rol de mesa. Permite organizar campañas, sesiones, personajes, entidades, hechos, secretos, relaciones, cronologías, tableros, propuestas, contenido visible para jugadores y otra información útil.",
+              "DMCC no sustituye el criterio del director de juego ni las reglas acordadas por cada mesa. Cada grupo conserva la responsabilidad de decidir cómo utiliza la información en su campaña.",
+            ],
+          },
+          {
+            title: "Uso permitido",
+            paragraphs: [
+              "Puedes usar DMCC para crear, guardar, editar, consultar y compartir información de campañas, coordinar sesiones, gestionar contenido de personajes y jugadores, preparar material narrativo, registrar decisiones de mesa y colaborar razonablemente conforme a la ley.",
+              "Solo debes usar DMCC de forma respetuosa con la ley aplicable, otros usuarios, la privacidad de los jugadores, la seguridad del servicio y las instrucciones del repositorio.",
+            ],
+          },
+          {
+            title: "Tu cuenta",
+            paragraphs: [
+              "Eres responsable de mantener la confidencialidad de tus credenciales, controlar el acceso a tus dispositivos y revisar la actividad realizada desde tu cuenta.",
+              "No intentes acceder a campañas, cuentas, sistemas, repositorios o datos ajenos, y avisa al proyecto si crees que la seguridad de tu cuenta se ha visto comprometida.",
+            ],
+          },
+          {
+            title: "Tu contenido",
+            paragraphs: [
+              "Conservas la titularidad de textos, notas, campañas, personajes, mundos, imágenes, ideas y demás contenido que introduzcas en DMCC, siempre que sea tuyo o tengas permiso para usarlo.",
+              "Al guardar o compartir contenido concedes a DMCC una autorización limitada para alojarlo, procesarlo, mostrarlo, sincronizarlo y ponerlo a disposición solo en la medida necesaria para prestar el servicio. No subas, publiques ni compartas datos personales, secretos, credenciales, contenido sensible de terceros, material protegido por derechos de autor o información privada de jugadores sin autorización suficiente.",
+            ],
+          },
+          {
+            title: "Contenido de terceros",
+            paragraphs: [
+              "DMCC puede permitir introducir, enlazar, importar, mencionar o consultar contenido de terceros como reglas, material editorial, recursos comunitarios, imágenes, enlaces externos, integraciones o repositorios públicos.",
+              "Ese contenido pertenece a sus titulares y puede tener condiciones adicionales. Eres responsable de confirmar que tu uso del contenido de terceros está permitido.",
+            ],
+          },
+          {
+            title: "Disponibilidad del servicio",
+            paragraphs: [
+              "DMCC se proporciona como proyecto y aplicación en evolución. Pueden producirse interrupciones, errores, mantenimiento, pérdida de conectividad, cambios de infraestructura o límites técnicos.",
+              "Conserva copias propias de la información importante de tus campañas y evita depender de DMCC como único registro de material crítico.",
+            ],
+          },
+          {
+            title: "Cambios en la aplicación",
+            paragraphs: [
+              "DMCC puede modificar, añadir, reorganizar o retirar funciones, pantallas, modelos de datos, flujos de colaboración, integraciones, documentación y configuraciones para mejorar el producto, corregir errores, reforzar la seguridad o adaptar el proyecto.",
+              "Los cambios pueden afectar a cómo se muestra, organiza, comparte, importa o exporta la información de campaña.",
+            ],
+          },
+          {
+            title: "Limitación de responsabilidad",
+            paragraphs: [
+              "En la máxima medida permitida por la ley, DMCC no será responsable por daños indirectos, pérdida de datos, lucro cesante, interrupciones de partidas, conflictos entre participantes, uso indebido de contenido, decisiones de usuarios o consecuencias de materiales externos o configuraciones incorrectas.",
+              "Nada en estos términos limita responsabilidades cuando la ley aplicable no permita dicha limitación.",
+            ],
+          },
+          {
+            title: "Proyecto, colaboración y GitHub",
+            paragraphs: [
+              "El repositorio público del proyecto está disponible en github.com/alessbarb/DMCC. Puedes usarlo para revisar código, proponer mejoras, reportar errores, abrir incidencias, participar en discusiones técnicas y colaborar conforme a las reglas de GitHub, la licencia aplicable y las instrucciones del repositorio.",
+              "No publiques en GitHub datos personales privados, secretos de campañas, credenciales, tokens, claves de API ni información que no deba ser pública.",
+            ],
+          },
+          {
+            title: "Contacto",
+            paragraphs: [
+              `Para consultas sobre estos términos, soporte razonable, reportes de errores, solicitudes de cuenta o propuestas de colaboración, escribe a ${institutionalContact.email}.`,
+            ],
+          },
+          {
+            title: "Cambios en estos términos",
+            paragraphs: [
+              "DMCC puede actualizar estos términos para reflejar cambios legales, técnicos u operativos. Los cambios relevantes actualizarán la fecha de última actualización y podrán comunicarse mediante la aplicación o canales disponibles.",
+            ],
+          },
+        ],
+      },
+    },
   },
   contact: {
     cardTitle: "¿Preguntas o comentarios?",
-    cardDescription: "Contacta con el proyecto o revisa el repositorio público.",
+    cardDescription:
+      "Contacta con el proyecto o revisa el repositorio público.",
   },
   common: {
     save: "Guardar",
@@ -76,11 +289,13 @@ export const es: TranslationDictionary = {
   },
   settings: {
     title: "Configuración y Sistema",
-    subtitle: "Gestión de almacenamiento, red local, idiomas y copias de seguridad",
-    networkguageSectionTitle: "Idioma de la Aplicación",
-    networkguageSectionSubtitle: "Selecciona el idioma preferido para la interfaz y exportaciones",
-    networkguageEs: "Español (ES)",
-    networkguageEn: "English (EN)",
+    subtitle:
+      "Gestión de almacenamiento, red local, idiomas y copias de seguridad",
+    languageSectionTitle: "Idioma de la Aplicación",
+    languageSectionSubtitle:
+      "Selecciona el idioma preferido para la interfaz y exportaciones",
+    languageEs: "Español (ES)",
+    languageEn: "English (EN)",
     backupSectionTitle: "Copias de Seguridad y Exportación",
     createBackup: "Crear Backup Completo",
     exportJson: "Exportar JSON",
@@ -88,9 +303,11 @@ export const es: TranslationDictionary = {
     pageTitle: "Ajustes y exportación",
     pageSubtitle: "Manage campaign backups and export your narrative data.",
     backupsTitle: "Copias de seguridad de la campaña",
-    backupsDescription: "Guarda capturas JSON locales. Estas copias contienen los registros históricos de eventos y metadatos de restauración.",
+    backupsDescription:
+      "Guarda capturas JSON locales. Estas copias contienen los registros históricos de eventos y metadatos de restauración.",
     exportsTitle: "Exportaciones",
-    exportsDescription: "Exporta los registros de la campaña a archivos estructurados en tu sistema de archivos local.",
+    exportsDescription:
+      "Exporta los registros de la campaña a archivos estructurados en tu sistema de archivos local.",
     copyCodeSuccess: "Código de acceso copiado al portapapeles.",
     copyJoinLinkSuccess: "Enlace de unión copiado al portapapeles.",
     copyExportPathSuccess: "Ruta de exportación copiada al portapapeles.",
@@ -101,14 +318,16 @@ export const es: TranslationDictionary = {
     exportJsonSuccess: "Exportación JSON creada.",
     exportJsonError: "Error al exportar JSON.",
     exportCampaignJson: "Exportar campaña a JSON",
-    exportMarkdownSuccess: "Exportación Markdown completa creada ({count} archivos).",
+    exportMarkdownSuccess:
+      "Exportación Markdown completa creada ({count} archivos).",
     exportMarkdownError: "Error al exportar Markdown.",
     exportCampaignMarkdown: "Exportar campaña completa a Markdown",
     lastMarkdownExport: "Última exportación Markdown",
     copyLocalPath: "Copiar ruta local",
     downloadFile: "Descargar {file}",
     networkMultiplayerTitle: "Multijugador en Red Local",
-    networkShareHint: "Comparte esta dirección con los jugadores de tu red. Necesitan su enlace de invitación personal para unirse.",
+    networkShareHint:
+      "Comparte esta dirección con los jugadores de tu red. Necesitan su enlace de invitación personal para unirse.",
     networkLoadingNetwork: "Detectando dirección de red…",
     uniqueAccessCode: "Código de Acceso (Único)",
     copyCode: "Copiar código",
@@ -125,7 +344,8 @@ export const es: TranslationDictionary = {
 
       selectMode: "Seleccionar / Mover nodos (V)",
       panMode: "Mover cámara (H)",
-      multiSelectMode: "Selección múltiple — arrastra para seleccionar varios nodos (M)",
+      multiSelectMode:
+        "Selección múltiple — arrastra para seleccionar varios nodos (M)",
       quickNote: "Añadir nota rápida (N)",
       visualGroup: "Añadir grupo visual (G)",
       fitView: "Ajustar vista / Ver todo (F)",
@@ -140,7 +360,8 @@ export const es: TranslationDictionary = {
       unlockPositions: "Desbloquear posiciones de nodos",
       lockPositions: "Bloquear posiciones (modo presentación)",
       deactivateDirection: "Desactivar modo dirección en vivo",
-      activateDirection: "Activar modo dirección en vivo para controlar la sesión",
+      activateDirection:
+        "Activar modo dirección en vivo para controlar la sesión",
       exitPresentation: "Salir de presentación",
       activatePlayerView: "Activar vista de jugadores (Modo presentación)",
       playerViewLabel: "👁 Vista Jugadores",
@@ -148,15 +369,20 @@ export const es: TranslationDictionary = {
       showingAll: "Mostrando todo (público y secretos)",
       publicOnly: "Solo público",
       tablePrivacy: "Privacidad de mesa",
-      tablePrivacyHint: "Ocultar temporalmente el contenido exclusivo del DM en una mesa compartida",
+      tablePrivacyHint:
+        "Ocultar temporalmente el contenido exclusivo del DM en una mesa compartida",
       revealPrivateTemporarily: "Revelar contenido privado temporalmente",
       privateContent: "Contenido privado",
-      activateMysteryFlow: "Activar Mystery Flow para ver conexiones de investigación",
+      activateMysteryFlow:
+        "Activar Mystery Flow para ver conexiones de investigación",
       filterConnections: "Filtrar las líneas de conexión",
       prepareSession: "Preparar sesión con los elementos seleccionados",
-      revealSelectedConfirm: "¿Revelar a los jugadores las {count} entidades seleccionadas?",
-      hideSelectedConfirm: "¿Hacer secretas (solo DM) las {count} entidades seleccionadas?",
-      removeSelectedConfirm: "¿Quitar los {count} nodos seleccionados de este canvas? (Las entidades seguirán existiendo)",
+      revealSelectedConfirm:
+        "¿Revelar a los jugadores las {count} entidades seleccionadas?",
+      hideSelectedConfirm:
+        "¿Hacer secretas (solo DM) las {count} entidades seleccionadas?",
+      removeSelectedConfirm:
+        "¿Quitar los {count} nodos seleccionados de este canvas? (Las entidades seguirán existiendo)",
       bulkReveal: "👁 Revelar",
       bulkHide: "🔒 Hacer Secreto",
       bulkRemove: "🗑 Quitar",
@@ -179,7 +405,8 @@ export const es: TranslationDictionary = {
       typeLabelFaction: "Facción / Organización",
       typeLabelScene: "Escena de Sesión",
       typeLabelHandout: "Documento / Pista para Jugadores",
-      searchEntityExampleHint: "Ej. Mara, Taberna El Jabalí Rojo, Rumor de las luces...",
+      searchEntityExampleHint:
+        "Ej. Mara, Taberna El Jabalí Rojo, Rumor de las luces...",
     },
     navigator: {
       title: "Navegador del canvas",
@@ -212,7 +439,8 @@ export const es: TranslationDictionary = {
       visibilityRevealed: "Revelado (Visible para todos los jugadores)",
       visibilityPartial: "Parcialmente descubierto",
       addSessionNotePrompt: "Añadir nota de sesión para: {title}",
-      noActiveSessionNote: "No hay ninguna sesión activa en curso para añadir notas.",
+      noActiveSessionNote:
+        "No hay ninguna sesión activa en curso para añadir notas.",
       addSessionNoteLabel: "Añadir Nota de Sesión",
       statusPrompt: "Estado de {title}: {status}",
       changeStatus: "Cambiar/Resolver Estado",
@@ -220,23 +448,34 @@ export const es: TranslationDictionary = {
       addConsequence: "Añadir Consecuencia Conectada",
       typeLocation: "Ubicación",
       typeSession: "Sesión",
-      secretAnchorRevealPrompt: "¡El elemento \"{anchor}\" descubierto/completado sirve de ancla para el secreto: \"{secret}\"!\n¿Deseas revelar este secreto ahora a los jugadores?",
-      archiveEntityConfirm: "¿Estás seguro de que quieres archivar la entidad \"{title}\" de toda la campaña?",
-      removeFromCanvasConfirm: "¿Quitar esta tarjeta del canvas? (La entidad seguirá existiendo en el lore de la campaña)",
-      entityNotOnBoard: "\"{title}\" existe en el lore pero no está en ningún tablero visual.",
-      removeRelationFromCanvasConfirm: "¿Quitar esta conexión del canvas? (La relación seguirá existiendo en el lore de la campaña)",
-      relationNotOnBoard: "La relación \"{title}\" existe en el lore pero no está en ningún tablero visual.",
-      archiveRelationConfirm: "¿Archivar esta relación del lore de la campaña permanentemente?",
+      secretAnchorRevealPrompt:
+        '¡El elemento "{anchor}" descubierto/completado sirve de ancla para el secreto: "{secret}"!\n¿Deseas revelar este secreto ahora a los jugadores?',
+      archiveEntityConfirm:
+        '¿Estás seguro de que quieres archivar la entidad "{title}" de toda la campaña?',
+      removeFromCanvasConfirm:
+        "¿Quitar esta tarjeta del canvas? (La entidad seguirá existiendo en el lore de la campaña)",
+      entityNotOnBoard:
+        '"{title}" existe en el lore pero no está en ningún tablero visual.',
+      removeRelationFromCanvasConfirm:
+        "¿Quitar esta conexión del canvas? (La relación seguirá existiendo en el lore de la campaña)",
+      relationNotOnBoard:
+        'La relación "{title}" existe en el lore pero no está en ningún tablero visual.',
+      archiveRelationConfirm:
+        "¿Archivar esta relación del lore de la campaña permanentemente?",
       quickTitlePlaceholder: "Título rápido...",
       rolePlaceholder: "Ej. Líder tribal, Cueva inundada...",
       notesPlaceholder: "Añade secretos, mecánicas de combate, recompensas...",
       consequencePlaceholder: "Ej. Alerta general, pérdida de reputación...",
-      removeFromCanvasTooltip: "Quita la tarjeta del canvas sin borrar la entidad de la campaña",
-      archiveEntityTooltip: "Archiva la entidad de forma permanente en la campaña",
+      removeFromCanvasTooltip:
+        "Quita la tarjeta del canvas sin borrar la entidad de la campaña",
+      archiveEntityTooltip:
+        "Archiva la entidad de forma permanente en la campaña",
       relationLore: "Relación Lore",
       connectionVisual: "Conexión Visual",
-      relationDetailPlaceholder: "Detalles sobre esta relación social o lógica...",
-      archiveRelationTooltip: "Elimina esta relación del lore de la campaña permanentemente",
+      relationDetailPlaceholder:
+        "Detalles sobre esta relación social o lógica...",
+      archiveRelationTooltip:
+        "Elimina esta relación del lore de la campaña permanentemente",
       untitledElement: "Elemento sin título",
       generalNotesPlaceholder: "Notas generales que describen la entidad...",
       statusCritical: "🚨 Crítico",
@@ -291,9 +530,11 @@ export const es: TranslationDictionary = {
       customPlaceholder: "Ej. odia, apoya a, custodia...",
       relationLevel: "Nivel de relación",
       realRelation: "Relación real de campaña",
-      realRelationDesc: "Registra esta conexión en el lore de la campaña. visible en búsquedas, grafos, etc.",
+      realRelationDesc:
+        "Registra esta conexión en el lore de la campaña. visible en búsquedas, grafos, etc.",
       visualDraft: "Borrador visual",
-      visualDraftDesc: "Solo dibuja una línea visual en este canvas. Útil para ideas y bocetos rápidos.",
+      visualDraftDesc:
+        "Solo dibuja una línea visual en este canvas. Útil para ideas y bocetos rápidos.",
       lineStyle: "Estilo de línea",
       lineSolid: "Línea sólida (normal)",
       lineDashed: "Línea discontinua (débil/borrador)",
@@ -313,28 +554,34 @@ export const es: TranslationDictionary = {
       selectSource: "-- Selecciona nodo origen --",
       selectTarget: "-- Selecciona nodo destino --",
       relationType: "Tipo de relación",
-      duplicateWarning: "Ya existe una relación idéntica. ¿Crear de todos modos?",
+      duplicateWarning:
+        "Ya existe una relación idéntica. ¿Crear de todos modos?",
       createAnyway: "Crear igualmente",
       registerRelation: "Registrar relación",
       cancel: "Cancelar",
     },
     flow: {
-      warningOrphanClue: "La pista 🔎 \"{title}\" está huérfana: no conduce a ningún secreto, misión o personaje.",
-      warningStuckQuest: "La misión ⚔️ \"{title}\" no tiene conexiones de escena o consecuencias que la resuelvan.",
-      warningEmptyLocation: "El lugar 🗺️ \"{title}\" está vacío: no contiene personajes ni pistas en el canvas.",
-      warningSecretRelation: "La relación secreta entre \"{source}\" y \"{target}\" une dos entidades públicas.",
+      warningOrphanClue:
+        'La pista 🔎 "{title}" está huérfana: no conduce a ningún secreto, misión o personaje.',
+      warningStuckQuest:
+        'La misión ⚔️ "{title}" no tiene conexiones de escena o consecuencias que la resuelvan.',
+      warningEmptyLocation:
+        'El lugar 🗺️ "{title}" está vacío: no contiene personajes ni pistas en el canvas.',
+      warningSecretRelation:
+        'La relación secreta entre "{source}" y "{target}" une dos entidades públicas.',
     },
     page: {
       initializingTemplate: "Inicializando pnetworktilla de campaña: {name}...",
       templateInitialized: "Campaña inicializada con pnetworktilla de {name}",
       relationCount: "{count} relación{suffix}",
       notOnBoard: "{count} del lore no están en ningún tablero visual.",
-      boardInitialized: "Tablero inicializado con pnetworktilla \"{name}\"",
+      boardInitialized: 'Tablero inicializado con pnetworktilla "{name}"',
       templateConspiration: "Conspiración",
       templateRelations: "Relaciones",
       createNewBoard: "Crear nuevo tablero",
       importExamplePlaceholder: "Ej. Bosque Sombrío, Conspiración del Culto...",
-      importExampleContent: "# Conspiración del Culto\n[NPC] Veradis el Inquisidor\n[Lugar] Sala del Oráculo\n[Pista] Profecía Rota\n[Secreto] El Oráculo es un Fraude\n\nVeradis el Inquisidor -> controla -> Sala del Oráculo\nProfecía Rota -> revela -> El Oráculo es un Fraude",
+      importExampleContent:
+        "# Conspiración del Culto\n[NPC] Veradis el Inquisidor\n[Lugar] Sala del Oráculo\n[Pista] Profecía Rota\n[Secreto] El Oráculo es un Fraude\n\nVeradis el Inquisidor -> controla -> Sala del Oráculo\nProfecía Rota -> revela -> El Oráculo es un Fraude",
       importSuccess: "Importación completada con éxito.",
       sessionNamePlaceholder: "Ej. Sesión 4: El reencuentro",
       loadIntoSession: "Cargar en Sesión",
@@ -468,7 +715,7 @@ export const es: TranslationDictionary = {
     motivation: "Motivación",
     hitPointsMax: "PG máximos",
     passivePerception: "Percepción pasiva",
-    archivedToast: "\"{title}\" archivada.",
+    archivedToast: '"{title}" archivada.',
     revealToGroup: "Revelar al grupo",
     dmOnly: "Solo DM",
   },
@@ -549,7 +796,8 @@ export const es: TranslationDictionary = {
     nextPreparedSessionTitle: "Próximo: {title}",
     runningSessionTitle: "En mesa: {title}",
     noPreparedSessionTitle: "Todavía no hay sesión preparada",
-    commandCenterDescription: "Prepara la próxima escena, dirige la mesa, cierra la sesión y publica solo lo que los jugadores deben saber.",
+    commandCenterDescription:
+      "Prepara la próxima escena, dirige la mesa, cierra la sesión y publica solo lo que los jugadores deben saber.",
     metricAttention: "Atención",
     metricAttentionDetail: "puntos a revisar",
     metricQuests: "Misiones",
@@ -563,9 +811,11 @@ export const es: TranslationDictionary = {
     reviewWhatNow: "Revisar qué toca",
     reviewPlayerKnowledge: "Revisar conocimiento jugador",
     flowPrepareTitle: "Preparar",
-    flowPrepareDescription: "Escenas, pistas, PNJs y ganchos antes de abrir mesa.",
+    flowPrepareDescription:
+      "Escenas, pistas, PNJs y ganchos antes de abrir mesa.",
     flowRunTitle: "Dirigir",
-    flowRunDescription: "Captura notas, revela pistas y registra decisiones sin frenar.",
+    flowRunDescription:
+      "Captura notas, revela pistas y registra decisiones sin frenar.",
     flowCloseTitle: "Cerrar",
     flowCloseDescription: "Resume qué cambió y deja lista la próxima sesión.",
     flowShareTitle: "Compartir",
@@ -574,7 +824,8 @@ export const es: TranslationDictionary = {
     openPlayerPortal: "Abrir portal jugador",
     exportMarkdown: "Exportar Markdown",
     exportingMarkdown: "Exportando…",
-    markdownExportedWithPath: "Exportación Markdown creada. Ruta local copiada al portapapeles.",
+    markdownExportedWithPath:
+      "Exportación Markdown creada. Ruta local copiada al portapapeles.",
     markdownExported: "Exportación Markdown creada.",
     markdownExportError: "No se pudo exportar Markdown: {error}",
     importanceNormal: "normal",
@@ -614,7 +865,8 @@ export const es: TranslationDictionary = {
       verbal: "🗣️ Verbal",
       physical: "🏺 Físico",
     },
-    revealSecretWarning: "⚠️ ADVERTENCIA: Estás a punto de revelar un Secreto a los jugadores. ¿Estás seguro de que deseas continuar?",
+    revealSecretWarning:
+      "⚠️ ADVERTENCIA: Estás a punto de revelar un Secreto a los jugadores. ¿Estás seguro de que deseas continuar?",
     visiblePlayers: "Visible para Jugadores",
     pinned: "Fijado",
     removeSessionPin: "Quitar Sesión",
@@ -623,7 +875,8 @@ export const es: TranslationDictionary = {
   campaignShell: {
     defaultTitle: "Campaña",
     defaultEyebrow: "Archivo de campaña",
-    defaultDescription: "Gestiona la memoria narrativa y el estado actual de la campaña.",
+    defaultDescription:
+      "Gestiona la memoria narrativa y el estado actual de la campaña.",
     expandMenu: "Expandir menú",
     collapseMenu: "Colapsar menú",
     campaignMenuLabel: "Menú de campaña",
@@ -634,7 +887,7 @@ export const es: TranslationDictionary = {
     currentContext: "Contexto actual de campaña",
     currentLocation: "Ubicación: {title}",
     currentQuest: "Misión: {title}",
-    activeSession: "Sesión #{number} activa: \"{title}\"",
+    activeSession: 'Sesión #{number} activa: "{title}"',
     newSessionTitle: "Sesión {number}",
     prepareOrStartSession: "Preparar / empezar sesión",
     startNewSession: "Iniciar nueva sesión",
@@ -642,7 +895,8 @@ export const es: TranslationDictionary = {
     loading: {
       loadingTitle: "Cargando campaña...",
       errorTitle: "Campaña no encontrada",
-      errorDesc: "No se pudo cargar esta campaña. Puede que haya sido eliminada o el ID no sea válido.",
+      errorDesc:
+        "No se pudo cargar esta campaña. Puede que haya sido eliminada o el ID no sea válido.",
       backToCampaigns: "Volver a campañas",
       retry: "Reintentar",
     },
@@ -663,37 +917,48 @@ export const es: TranslationDictionary = {
     meta: {
       canvasTitle: "Campaign Canvas",
       canvasEyebrow: "Mesa visual de trabajo",
-      canvasDescription: "Dibuja tu aventura: coloca NPCs, lugares y pistas, y arrastra conexiones para tejer la trama.",
+      canvasDescription:
+        "Dibuja tu aventura: coloca NPCs, lugares y pistas, y arrastra conexiones para tejer la trama.",
       dashboardTitle: "Panel del DM",
       dashboardEyebrow: "Centro de mando",
-      dashboardDescription: "Resumen operativo de la campaña, alertas y preparación de la próxima sesión.",
+      dashboardDescription:
+        "Resumen operativo de la campaña, alertas y preparación de la próxima sesión.",
       whatNowTitle: "¿Qué toca?",
       whatNowEyebrow: "Siguiente mejor acción",
-      whatNowDescription: "Prioriza escenas, pistas, consecuencias y decisiones que necesitan atención.",
+      whatNowDescription:
+        "Prioriza escenas, pistas, consecuencias y decisiones que necesitan atención.",
       sessionTitle: "Sesión",
       sessionEyebrow: "Mesa en curso",
-      sessionDescription: "Inicia, registra, revela pistas y cierra la sesión con trazabilidad.",
+      sessionDescription:
+        "Inicia, registra, revela pistas y cierra la sesión con trazabilidad.",
       entitiesTitle: "Entidades narrativas",
       entitiesEyebrow: "Archivo vivo",
-      entitiesDescription: "Personajes, lugares, pistas, secretos, misiones y piezas de campaña.",
+      entitiesDescription:
+        "Personajes, lugares, pistas, secretos, misiones y piezas de campaña.",
       graphTitle: "Grafo narrativo",
       graphEyebrow: "Relaciones y secretos",
-      graphDescription: "Explora conexiones, visibilidad y cadenas narrativas entre nodos clave.",
+      graphDescription:
+        "Explora conexiones, visibilidad y cadenas narrativas entre nodos clave.",
       timelineTitle: "Línea temporal",
       timelineEyebrow: "Historial de campaña",
-      timelineDescription: "Audita eventos, sesiones, cambios y revelaciones en orden cronológico.",
+      timelineDescription:
+        "Audita eventos, sesiones, cambios y revelaciones en orden cronológico.",
       boardsTitle: "Tableros",
       boardsEyebrow: "Seguimiento visual",
-      boardsDescription: "Organiza misiones, pistas, PNJs y frentes por estado narrativo.",
+      boardsDescription:
+        "Organiza misiones, pistas, PNJs y frentes por estado narrativo.",
       playersTitle: "Jugadores y personajes",
       playersEyebrow: "Mesa y reparto",
-      playersDescription: "Gestiona jugadores, personajes y acceso visible para la mesa.",
+      playersDescription:
+        "Gestiona jugadores, personajes y acceso visible para la mesa.",
       searchTitle: "Búsqueda",
       searchEyebrow: "Consulta rápida",
-      searchDescription: "Encuentra entidades, hechos y notas de campaña sin romper el ritmo.",
+      searchDescription:
+        "Encuentra entidades, hechos y notas de campaña sin romper el ritmo.",
       settingsTitle: "Ajustes y exportación",
       settingsEyebrow: "Administración",
-      settingsDescription: "Configura campaña, exportaciones, copias y opciones de acceso local.",
+      settingsDescription:
+        "Configura campaña, exportaciones, copias y opciones de acceso local.",
       knowledgeTitle: "Conocimiento",
       knowledgeEyebrow: "DM",
       knowledgeDescription: "Visibilidad por jugador",
@@ -705,20 +970,24 @@ export const es: TranslationDictionary = {
     allTypes: "Todos los tipos",
     entities: "Entidades",
     facts: "Hechos",
-    resultsFor: "{count} resultados para \"{query}\"",
+    resultsFor: '{count} resultados para "{query}"',
     resultsFirst: "{count} resultados (mostrando los primeros 50)",
-    noResults: "Sin resultados. Intenta con un término diferente o elimina filtros.",
+    noResults:
+      "Sin resultados. Intenta con un término diferente o elimina filtros.",
     factBadge: "hecho",
   },
   whatNowPage: {
     title: "¿Qué toca ahora?",
-    subtitle: "Resumen rápido y preparación mínima recomendada para tu partida de hoy.",
+    subtitle:
+      "Resumen rápido y preparación mínima recomendada para tu partida de hoy.",
     currentLocation: "Ubicación actual",
     noSummary: "Sin resumen disponible.",
-    noActiveLocation: "No hay ninguna ubicación activa seleccionada en los ajustes.",
+    noActiveLocation:
+      "No hay ninguna ubicación activa seleccionada en los ajustes.",
     currentQuest: "Misión activa principal",
     noQuestDescription: "Sin descripción de misión.",
-    noActiveQuest: "No hay misión principal activa seleccionada en los ajustes.",
+    noActiveQuest:
+      "No hay misión principal activa seleccionada en los ajustes.",
     lastSession: "Última sesión",
     sessionTitle: "Sesión #{number}: {title}",
     noSessionSummary: "Sin resumen registrado.",
@@ -728,7 +997,8 @@ export const es: TranslationDictionary = {
     priorityNormal: "normal",
     priorityLow: "baja",
     confusionRisks: "Riesgos de confusión (Alertas)",
-    noConfusionRisks: "¡Excelente! Toda la información revelada es de conocimiento común para el grupo.",
+    noConfusionRisks:
+      "¡Excelente! Toda la información revelada es de conocimiento común para el grupo.",
     partialKnowledge: "Conocimiento parcial",
     criticalClues: "Pistas críticas y secretos ocultos",
     noCriticalClues: "No hay secretos críticos ni pistas pendientes.",
@@ -756,32 +1026,44 @@ export const es: TranslationDictionary = {
     questsLabel: "Misiones",
     secretsLabel: "Pistas",
     badge: "Motor de Memoria de Campaña · v1.0",
-    heroSubtitle: "Motor de memoria cognitiva y tableros visuales para directores de juego",
-    mainHeroSubtitle: "Dirige campañas de rol sin perder personajes, pistas, secretos ni consecuencias. DMCC convierte tu campaña en una memoria viva.",
+    heroSubtitle:
+      "Motor de memoria cognitiva y tableros visuales para directores de juego",
+    mainHeroSubtitle:
+      "Dirige campañas de rol sin perder personajes, pistas, secretos ni consecuencias. DMCC convierte tu campaña en una memoria viva.",
     ctaStart: "Empezar gratis",
     ctaSignIn: "Iniciar sesión",
     ctaLogin: "Ya tengo cuenta",
     painHeading: "Dirigir una campaña no falla por falta de imaginación",
-    painBody: "Falla cuando olvidas quién prometió qué, qué pista encontró el grupo, qué PNJ mentía, qué facción movía los hilos o qué secreto todavía no debía revelarse.",
-    painAnswer: "DMCC guarda esa memoria por ti, para que puedas centrarte en dirigir.",
+    painBody:
+      "Falla cuando olvidas quién prometió qué, qué pista encontró el grupo, qué PNJ mentía, qué facción movía los hilos o qué secreto todavía no debía revelarse.",
+    painAnswer:
+      "DMCC guarda esa memoria por ti, para que puedas centrarte en dirigir.",
     showcaseEyebrow: "Cómo funciona",
     showcaseHeading: "Todo lo que necesitas para dirigir, recordar y revelar",
-    showcaseLead: "DMCC organiza la información de tu campaña como un mundo conectado. No es una libreta. No es una wiki. Es un centro de mando para Directores de Juego.",
+    showcaseLead:
+      "DMCC organiza la información de tu campaña como un mundo conectado. No es una libreta. No es una wiki. Es un centro de mando para Directores de Juego.",
     block1Title: "Ve tu campaña como una red viva",
-    block1Desc: "Conecta personajes, facciones, lugares, secretos y pistas en un mapa visual que evoluciona con cada sesión. Descubre relaciones ocultas, prepara escenas con contexto y mantén claro quién sabe qué y qué consecuencias siguen pendientes.",
+    block1Desc:
+      "Conecta personajes, facciones, lugares, secretos y pistas en un mapa visual que evoluciona con cada sesión. Descubre relaciones ocultas, prepara escenas con contexto y mantén claro quién sabe qué y qué consecuencias siguen pendientes.",
     block2Title: "Nunca pierdas la memoria de tu mundo",
-    block2Desc: "Cada hecho importante queda registrado: lo que es canon, lo que solo sabe el DM, lo que los jugadores creen, los rumores, las mentiras y las teorías. Cuando la campaña crece, DMCC te ayuda a recordar sin rebuscar entre notas dispersas.",
+    block2Desc:
+      "Cada hecho importante queda registrado: lo que es canon, lo que solo sabe el DM, lo que los jugadores creen, los rumores, las mentiras y las teorías. Cuando la campaña crece, DMCC te ayuda a recordar sin rebuscar entre notas dispersas.",
     block3Title: "Comparte solo lo que deben saber",
-    block3Desc: "Tú decides qué información ve cada jugador. Invita a tu mesa con un enlace personal y controla en tiempo real qué entidades, hechos y secretos son visibles para cada personaje.",
+    block3Desc:
+      "Tú decides qué información ve cada jugador. Invita a tu mesa con un enlace personal y controla en tiempo real qué entidades, hechos y secretos son visibles para cada personaje.",
     finalCtaHeading: "Empieza tu primera campaña",
-    finalCtaSub: "Crea tu mundo, importa una aventura preparada o empieza desde cero.",
+    finalCtaSub:
+      "Crea tu mundo, importa una aventura preparada o empieza desde cero.",
     footerBrand: "DMCC — Campaign Memory Engine",
     featureCanvasTitle: "Canvas Creativo",
-    featureCanvasDesc: "Estructura tramas, conecta PNJs y diseña flujos de misterio mediante grafos de nodos visuales.",
+    featureCanvasDesc:
+      "Estructura tramas, conecta PNJs y diseña flujos de misterio mediante grafos de nodos visuales.",
     featureLanTitle: "Portal de Jugadores",
-    featureLanDesc: "Invita a tus jugadores con un enlace personal y controla qué información ve cada uno en tiempo real.",
+    featureLanDesc:
+      "Invita a tus jugadores con un enlace personal y controla qué información ve cada uno en tiempo real.",
     featureMemoryTitle: "Memoria Inmutable",
-    featureMemoryDesc: "Historial inmutable de campaña. Canon, secretos, rumores y teorías — todo registrado y exportable en cualquier momento.",
+    featureMemoryDesc:
+      "Historial inmutable de campaña. Canon, secretos, rumores y teorías — todo registrado y exportable en cualquier momento.",
     archiveTitle: "Archivo de Campañas",
     searchPlaceholder: "Buscar por título o ID...",
     searchClearAriaLabel: "Limpiar búsqueda",
@@ -789,9 +1071,10 @@ export const es: TranslationDictionary = {
     errorTitle: "No se pudieron cargar tus campañas",
     retryButton: "Reintentar lectura",
     searchEmptyTitle: "No se encontraron campañas",
-    searchEmptyDesc: "No hay tomos que coincidan con la búsqueda \"{query}\".",
+    searchEmptyDesc: 'No hay tomos que coincidan con la búsqueda "{query}".',
     emptyTitle: "Tu tomo de campañas está en bnetworkco",
-    emptyDesc: "Crea una nueva campaña en el panel lateral para iniciar tu registro narrativo.",
+    emptyDesc:
+      "Crea una nueva campaña en el panel lateral para iniciar tu registro narrativo.",
     createTitle: "Nueva Campaña",
     campaignTitleLabel: "Título de la Campaña",
     campaignTitlePlaceholder: "Ej: Las Sombras sobre Phandalin",
@@ -811,12 +1094,14 @@ export const es: TranslationDictionary = {
     restoreTitle: "Restaurar copia de seguridad",
     backupNameLabel: "Nombre del backup",
     backupNamePlaceholder: "backup_xxx.json",
-    backupHelp: "Introduce el nombre del archivo JSON guardado en la carpeta de backups.",
+    backupHelp:
+      "Introduce el nombre del archivo JSON guardado en la carpeta de backups.",
     restoreButton: "Restaurar Estado",
     restoring: "Restaurando…",
     restoreSuccess: "Copia de seguridad restaurada correctamente.",
     premadeTitle: "Campañas de ejemplo",
-    premadeDescription: "Explora campañas preparadas que vienen con DMCC. Al crear una copia, pasan a ser tuyas y solo las ve tu DM.",
+    premadeDescription:
+      "Explora campañas preparadas que vienen con DMCC. Al crear una copia, pasan a ser tuyas y solo las ve tu DM.",
     premadeEmpty: "No hay campañas de ejemplo disponibles en esta versión.",
     premadeDifficulty: "Dificultad: {difficulty}",
     premadeStats: "{entities} entidades · {sessions} sesiones",
@@ -828,11 +1113,12 @@ export const es: TranslationDictionary = {
     campaignActions: "Acciones de la campaña {title}",
     renameCampaign: "Renombrar campaña {title}",
     editCampaignTitle: "Editar campaña",
-    editCampaignDesc: "Cambia el nombre, resumen y sistema visible de esta campaña.",
+    editCampaignDesc:
+      "Cambia el nombre, resumen y sistema visible de esta campaña.",
     enteringCampaign: "Entrando en la campaña...",
     topBarUnknownLocation: "Ubicación desconocida",
     topBarActiveQuest: "Misión activa:",
-    topBarActiveSession: "Sesión #{number} activa: \"{title}\"",
+    topBarActiveSession: 'Sesión #{number} activa: "{title}"',
     topBarStartSession: "Iniciar nueva sesión",
     topBarNewEntity: "Nueva entidad",
     title1: "DM Campaign",
@@ -850,24 +1136,28 @@ export const es: TranslationDictionary = {
     playerCta: "Unirse a una campaña",
     deleteCampaign: "Eliminar campaña {title}",
     deleteStep1Title: "¿Eliminar campaña?",
-    deleteStep1Desc: "Estás a punto de eliminar permanentemente \"{title}\". Esta acción no se puede deshacer.",
+    deleteStep1Desc:
+      'Estás a punto de eliminar permanentemente "{title}". Esta acción no se puede deshacer.',
     deleteStep1Btn: "Sí, eliminarla",
     deleteStep2Title: "Confirmar eliminación",
-    deleteStep2Desc: "Escribe el nombre exacto de la campaña para confirmar: \"{title}\"",
+    deleteStep2Desc:
+      'Escribe el nombre exacto de la campaña para confirmar: "{title}"',
     deleteTypeLabel: "Nombre de la campaña",
     deleteStep2Btn: "Eliminar para siempre",
     deleteCancel: "Cancelar",
     deleteConfirmMismatch: "El nombre no coincide. Inténtalo de nuevo.",
     recentCampaign: "Campaña Destacada",
     noCampaignsTitle: "Sin Campañas Archivadas",
-    noCampaignsDesc: "Crea tu primera campaña para iniciar tu registro cognitivo.",
+    noCampaignsDesc:
+      "Crea tu primera campaña para iniciar tu registro cognitivo.",
     createCampaignBtn: "+ Crear Campaña",
     continueCampaign: "Abrir Reino",
     yourCharacters: "Tus Personajes Activos",
     joinAnother: "Vincular otro personaje",
     enterPortal: "Entrar al Portal",
     charactersEmptyTitle: "Sin Portales Activos",
-    charactersEmptyDesc: "Únete introduciendo un código proporcionado por tu Director de Juego.",
+    charactersEmptyDesc:
+      "Únete introduciendo un código proporcionado por tu Director de Juego.",
     joinWithCodeBtn: "Conectarse con Código",
     otherCampaigns: "Otros tomos del archivo",
     serverConfig: "Configurar Servidor",
@@ -884,7 +1174,8 @@ export const es: TranslationDictionary = {
     managePlayers: "Gestionar Jugadores",
     campaignSettings: "Configuración",
     recentMemory: "Memoria Reciente de la Crónica",
-    recentMemoryEmpty: "Aún no hay memoria reciente. Empieza creando escenas, NPCs o pistas para que DMCC pueda ayudarte a recordar la campaña.",
+    recentMemoryEmpty:
+      "Aún no hay memoria reciente. Empieza creando escenas, NPCs o pistas para que DMCC pueda ayudarte a recordar la campaña.",
     recentEntities: "Entidades modificadas recientemente",
     recentSessions: "Sesiones registradas recientemente",
     narrativeMetrics: "Densidad Narrativa",
@@ -904,7 +1195,8 @@ export const es: TranslationDictionary = {
     quickActionOpenPortal: "Abrir portal de jugadores",
     activeWorldSide: "Tu Mundo Activo",
     noActiveCampaignTitle: "Sin Campaña Activa",
-    noActiveCampaignDesc: "Selecciona una campaña del archivo o crea una nueva para comenzar.",
+    noActiveCampaignDesc:
+      "Selecciona una campaña del archivo o crea una nueva para comenzar.",
     lastUpdated: "Última actualización: {time}",
     manageCampaign: "Gestionar campaña",
     footer: "DMCC · Campaign Memory Engine",
@@ -931,12 +1223,14 @@ export const es: TranslationDictionary = {
     loading: "Cargando campaña de ejemplo…",
     eyebrow: "Vista previa solo lectura",
     readOnlyTitle: "Estás explorando una campaña de ejemplo",
-    readOnlyDesc: "Nada se guarda aquí. Para dirigir, editar o revelar contenido, crea una copia editable para tu DM.",
+    readOnlyDesc:
+      "Nada se guarda aquí. Para dirigir, editar o revelar contenido, crea una copia editable para tu DM.",
     createCopy: "Crear copia editable",
     importing: "Creando copia…",
     backToCampaigns: "Volver a campañas",
     notFoundTitle: "No encuentro esta campaña de ejemplo",
-    notFoundDesc: "Puede que el template no exista o que el catálogo de premades no esté disponible.",
+    notFoundDesc:
+      "Puede que el template no exista o que el catálogo de premades no esté disponible.",
     statsLabel: "Resumen de campaña de ejemplo",
     entities: "Entidades",
     relations: "Relaciones",
@@ -968,7 +1262,8 @@ export const es: TranslationDictionary = {
     relationBetween: "{source} → {target}",
     relationFallback: "{source} se conecta con {target}",
     bottomCtaTitle: "¿Quieres dirigirla o modificarla?",
-    bottomCtaDesc: "Crea una copia editable. La campaña de ejemplo original seguirá intacta.",
+    bottomCtaDesc:
+      "Crea una copia editable. La campaña de ejemplo original seguirá intacta.",
     entityType: {
       playerCharacter: "Personaje jugador",
       npc: "PNJ",
@@ -1040,10 +1335,12 @@ export const es: TranslationDictionary = {
     title: "Crear copia editable",
     description: "Se creará una copia privada de {title} para tu DM.",
     existingTitle: "Ya tienes {count} copia(s) de este ejemplo",
-    existingDesc: "Puedes abrir una copia existente o crear otra versión independiente.",
+    existingDesc:
+      "Puedes abrir una copia existente o crear otra versión independiente.",
     openExisting: "Abrir {title}",
     nameLabel: "Nombre de tu campaña",
-    nameConflictHint: "Ya existe una campaña con ese nombre. DMCC añadirá un número si hace falta.",
+    nameConflictHint:
+      "Ya existe una campaña con ese nombre. DMCC añadirá un número si hace falta.",
     summaryLabel: "Resumen inicial",
     summaryPlaceholder: "Describe cómo vas a usar esta copia en tu mesa.",
     modeLabel: "Qué quieres importar",
@@ -1062,7 +1359,8 @@ export const es: TranslationDictionary = {
       },
     },
     privateCopy: "La copia será privada para el DM actual.",
-    secretsRemainPrivate: "Los secretos y contenido Solo DM no se publican al portal jugador.",
+    secretsRemainPrivate:
+      "Los secretos y contenido Solo DM no se publican al portal jugador.",
     originalUntouched: "El ejemplo original seguirá intacto y disponible.",
     openAfterCreate: "Abrir la campaña al terminar",
     createAndOpen: "Crear y abrir",
@@ -1074,10 +1372,14 @@ export const es: TranslationDictionary = {
     title: "Crear cuenta de Director de Juego",
     subtitle: "Tu email identifica qué campañas son tuyas en este equipo",
     addExistingTitle: "Añadir otro DM",
-    addExistingSubtitle: "Crea un acceso separado para otro director en este equipo",
-    addExistingOpenHint: "Cada DM puede crear su propio acceso. Este nuevo DM empezará con sus propias campañas y no verá campañas de otros directores salvo que se compartan más adenetworkte.",
-    addExistingBlockedSubtitle: "Inicia sesión con un DM existente antes de crear otro acceso",
-    addExistingBlockedHint: "Por seguridad, solo un DM autenticado puede añadir más cuentas de DM a este workspace.",
+    addExistingSubtitle:
+      "Crea un acceso separado para otro director en este equipo",
+    addExistingOpenHint:
+      "Cada DM puede crear su propio acceso. Este nuevo DM empezará con sus propias campañas y no verá campañas de otros directores salvo que se compartan más adenetworkte.",
+    addExistingBlockedSubtitle:
+      "Inicia sesión con un DM existente antes de crear otro acceso",
+    addExistingBlockedHint:
+      "Por seguridad, solo un DM autenticado puede añadir más cuentas de DM a este workspace.",
     signInToAddBtn: "Iniciar sesión para añadir otro DM",
     addExistingSubmitBtn: "Crear acceso de DM y cambiar",
     displayNameLabel: "Nombre visible",
@@ -1091,7 +1393,8 @@ export const es: TranslationDictionary = {
     submitBtn: "Crear cuenta y entrar",
     settingUpBtn: "Configurando...",
     skipBtn: "Omitir por ahora (solo local)",
-    skipWarning: "Sin cuenta de DM, no se pueden separar campañas entre directores.",
+    skipWarning:
+      "Sin cuenta de DM, no se pueden separar campañas entre directores.",
     continueNoPin: "Continuar",
     back: "Volver",
     backHome: "Volver al inicio",
@@ -1125,18 +1428,21 @@ export const es: TranslationDictionary = {
   },
   forgotPassword: {
     title: "Recuperar contraseña",
-    subtitle: "Introduce el email de tu cuenta. Te enviaremos un enlace para restablecer tu contraseña.",
+    subtitle:
+      "Introduce el email de tu cuenta. Te enviaremos un enlace para restablecer tu contraseña.",
     emailLabel: "Email",
     emailPlaceholder: "tu@email.com",
     submitBtn: "Enviar email de recuperación",
     sendingBtn: "Enviando...",
-    successMessage: "Si existe una cuenta con ese email, recibirás instrucciones para restablecer tu contraseña.",
+    successMessage:
+      "Si existe una cuenta con ese email, recibirás instrucciones para restablecer tu contraseña.",
     backToLogin: "Volver al inicio de sesión",
     errorGeneric: "No se pudo solicitar el restablecimiento de contraseña.",
   },
   resetPassword: {
     title: "Nueva contraseña",
-    subtitle: "Introduce el token de recuperación y elige una nueva contraseña.",
+    subtitle:
+      "Introduce el token de recuperación y elige una nueva contraseña.",
     tokenLabel: "Token de recuperación",
     tokenPlaceholder: "Pega el token de tu email",
     passwordLabel: "Nueva contraseña",
@@ -1150,7 +1456,6 @@ export const es: TranslationDictionary = {
     errorGeneric: "No se pudo restablecer la contraseña.",
   },
   playerJoin: {
-
     title: "Unirse a una campaña",
     codeTab: "Código de campaña",
     linkTab: "Enlace de invitación",
@@ -1172,8 +1477,10 @@ export const es: TranslationDictionary = {
     backHome: "Volver al inicio",
     errorInvalidUrl: "Eso no parece una URL válida",
     errorInvalidFormat: "No se ha podido leer el formato de invitación",
-    errorEmailRequiredForRenewal: "Busca tu email para renovar el acceso a esta campaña.",
-    errorRememberedWithoutEmail: "Este dispositivo recuerda la campaña, pero no el email. Escríbelo para renovar el acceso.",
+    errorEmailRequiredForRenewal:
+      "Busca tu email para renovar el acceso a esta campaña.",
+    errorRememberedWithoutEmail:
+      "Este dispositivo recuerda la campaña, pero no el email. Escríbelo para renovar el acceso.",
     lookupError: "No se pudieron buscar campañas para este email.",
     lookupConnectionError: "Error de conexión al buscar campañas.",
     rejoinError: "No se pudo entrar en la campaña.",
@@ -1181,7 +1488,8 @@ export const es: TranslationDictionary = {
     searchingBtn: "Buscando...",
     searchCampaignsBtn: "Buscar mis campañas",
     accountTitle: "Acceso a campañas",
-    accountHint: "Tu cuenta identifica quién eres. Los códigos solo conceden acceso a una campaña.",
+    accountHint:
+      "Tu cuenta identifica quién eres. Los códigos solo conceden acceso a una campaña.",
     displayNameRegisterLabel: "Nombre visible (solo para registro)",
     passwordLabel: "Contraseña",
     signInBtn: "Entrar",
@@ -1203,7 +1511,8 @@ export const es: TranslationDictionary = {
     loadingRules: "Cargando reglas...",
     noMatches: "No se encontraron coincidencias.",
     entriesInCategory: "{count} entradas en esta categoría",
-    selectRule: "Selecciona una regla en el panel izquierdo para ver sus detalles",
+    selectRule:
+      "Selecciona una regla en el panel izquierdo para ver sus detalles",
   },
   timeline: {
     loading: "Cargando línea temporal…",
@@ -1211,14 +1520,16 @@ export const es: TranslationDictionary = {
     hideTechnical: "Ocultar registro técnico",
     showTechnical: "Ver registro técnico",
     noEventsTitle: "No se encontraron eventos",
-    noEventsDescription: "No hay registros en la categoría seleccionada para esta campaña.",
+    noEventsDescription:
+      "No hay registros en la categoría seleccionada para esta campaña.",
     showAllEvents: "Mostrar todos los eventos",
     actor: "Actor:",
     sequence: "Secuencia:",
     hideJson: "Ocultar JSON",
     showJson: "Ver JSON",
     heroTitle: "Registro de eventos",
-    heroSubtitle: "Registro cronológico e inmutable de los cambios de estado en tu campaña de rol. Cada acción del director y los jugadores se almacena con hashes criptográficos garantizando la integridad narrativa.",
+    heroSubtitle:
+      "Registro cronológico e inmutable de los cambios de estado en tu campaña de rol. Cada acción del director y los jugadores se almacena con hashes criptográficos garantizando la integridad narrativa.",
     statsNarrative: "Eventos Narrativos",
     statsSessions: "Sesiones Cerradas",
     statsFacts: "Hechos Registrados",
@@ -1273,7 +1584,7 @@ export const es: TranslationDictionary = {
       entityArchived: "Entidad archivada: {title}.",
       relationArchived: "Relación archivada.",
       visibilityChanged: "Visibilidad de {title}",
-      sessionStarted: "Sesión \"{title}\" iniciada.",
+      sessionStarted: 'Sesión "{title}" iniciada.',
       sessionClosed: "Sesión cerrada.",
       settingsUpdated: "Ajustes actualizados.",
       importCompleted: "{count} registros importados ({format}).",
@@ -1285,13 +1596,15 @@ export const es: TranslationDictionary = {
     decisionMade: "Decisión tomada: {decision}{suffix}",
     decisionConsequence: "Consecuencia de la decisión",
     decisionCausesConsequence: "La decisión causa esta consecuencia",
-    pendingConsequence: "Consecuencia pendiente originada por la decisión: {decision}",
+    pendingConsequence:
+      "Consecuencia pendiente originada por la decisión: {decision}",
     exampleConsequence: "Los bandidos reclamarán un favor más adenetworkte…",
     recordDecision: "Registrar decisión",
     exampleNote: "El rey convoca al grupo en 3 días…",
     createConsequence: "Crear consecuencia",
     createNpc: "Crear PNJ",
-    exampleSummary: "El grupo exploró las ruinas, encontró a Elara prisionera y decidió negociar con el jefe de la guardia…",
+    exampleSummary:
+      "El grupo exploró las ruinas, encontró a Elara prisionera y decidió negociar con el jefe de la guardia…",
     closeAndSave: "Cerrar sesión y guardar",
     sessionNumber: "Sesión {number}",
     quickNote: "Nota rápida",
@@ -1299,9 +1612,11 @@ export const es: TranslationDictionary = {
     closeSession: "Cerrar sesión",
     archiveNoteConfirm: "¿Archivar esta nota?",
     summary: "Resumen",
-    quickCapturePlaceholder: "Captura rápida — +nota, +pnj nombre | rol, +decision texto, +consecuencia texto",
+    quickCapturePlaceholder:
+      "Captura rápida — +nota, +pnj nombre | rol, +decision texto, +consecuencia texto",
     quickCaptureLabel: "Captura rápida",
-    quickCaptureLongPlaceholder: "Escribe cualquier cosa que ocurra en mesa. Elige si será nota, PNJ, lugar, misión, pista u objeto. Ctrl+Enter guarda.",
+    quickCaptureLongPlaceholder:
+      "Escribe cualquier cosa que ocurra en mesa. Elige si será nota, PNJ, lugar, misión, pista u objeto. Ctrl+Enter guarda.",
     openActiveSession: "Abrir sesión activa",
     eventFeedTitle: "Registro de sesión",
     noEventsYet: "Sin eventos registrados aún.",
@@ -1321,7 +1636,6 @@ export const es: TranslationDictionary = {
     createInvitationLink: "Generar enlace de invitación",
     creatingInvitation: "Generando...",
     invitationFallback: "Invitación {id}",
-
   },
   entityModal: {
     playerCharacters: "Personajes",
@@ -1338,13 +1652,19 @@ export const es: TranslationDictionary = {
   toasts: {
     success: "Operación realizada con éxito",
     error: "Ha ocurrido un error",
-    entityRevealedCanvas: "El DM reveló la entidad \"{title}\" desde el canvas de dirección.",
-    statusUpdatedCanvas: "Se actualizó el estado de \"{title}\" a \"{status}\" desde el canvas.",
-    secretAutoRevealed: "Secreto \"{secret}\" revelado automáticamente al activarse su ancla \"{anchor}\".",
-    secretRevealed: "Secreto \"{title}\" revelado.",
-    entityRevealedInspector: "El DM reveló la entidad \"{title}\" desde el panel de dirección.",
-    statusUpdatedInspector: "Se actualizó el estado de \"{title}\" a \"{status}\" desde el panel de dirección.",
-    sessionStartedWithPrep: "Sesión \"{title}\" iniciada con la preparación del canvas.",
+    entityRevealedCanvas:
+      'El DM reveló la entidad "{title}" desde el canvas de dirección.',
+    statusUpdatedCanvas:
+      'Se actualizó el estado de "{title}" a "{status}" desde el canvas.',
+    secretAutoRevealed:
+      'Secreto "{secret}" revelado automáticamente al activarse su ancla "{anchor}".',
+    secretRevealed: 'Secreto "{title}" revelado.',
+    entityRevealedInspector:
+      'El DM reveló la entidad "{title}" desde el panel de dirección.',
+    statusUpdatedInspector:
+      'Se actualizó el estado de "{title}" a "{status}" desde el panel de dirección.',
+    sessionStartedWithPrep:
+      'Sesión "{title}" iniciada con la preparación del canvas.',
     elementsAddedToSession: "Elementos agregados a la sesión activa.",
     decisionRecorded: "Decisión registrada.",
     decisionError: "Error al guardar decisión: {error}",
@@ -1352,25 +1672,27 @@ export const es: TranslationDictionary = {
     noteRecorded: "Nota registrada.",
     noteSaveError: "Error al guardar nota: {error}",
     clueRevealed: "Pista revelada.",
-    npcCreated: "PNJ \"{name}\" creado.",
+    npcCreated: 'PNJ "{name}" creado.',
     consequenceCreated: "Consecuencia creada.",
-    unknownCommand: "Comando no reconocido. Usa +nota, +pnj, +decision, +consecuencia o escribe directamente.",
+    unknownCommand:
+      "Comando no reconocido. Usa +nota, +pnj, +decision, +consecuencia o escribe directamente.",
     npcNameRequired: "Nombre de PNJ requerido.",
     decisionTextRequired: "Texto de decisión requerido.",
     consequenceTextRequired: "Texto de consecuencia requerido.",
     captureError: "Error: {error}",
-    sessionPrepared: "Sesión \"{title}\" preparada.",
+    sessionPrepared: 'Sesión "{title}" preparada.',
     sessionPrepareError: "No se pudo preparar la sesión: {error}",
-    sessionStarted: "Sesión \"{title}\" iniciada.",
+    sessionStarted: 'Sesión "{title}" iniciada.',
     sessionStartError: "No se pudo iniciar la sesión: {error}",
-    sessionActivated: "Sesión \"{title}\" activada.",
-    sessionPrepUpdated: "Preparación de \"{title}\" actualizada.",
+    sessionActivated: 'Sesión "{title}" activada.',
+    sessionPrepUpdated: 'Preparación de "{title}" actualizada.',
     sessionPrepUpdateError: "No se pudo actualizar la preparación: {error}",
-    sessionCancelled: "Preparación \"{title}\" cancelada.",
+    sessionCancelled: 'Preparación "{title}" cancelada.',
     sessionCancelError: "No se pudo cancelar la sesión: {error}",
-    sessionArchived: "Sesión \"{title}\" archivada.",
+    sessionArchived: 'Sesión "{title}" archivada.',
     sessionArchiveError: "No se pudo archivar la sesión: {error}",
-    elementsAddedToPreparation: "Elementos añadidos a la preparación \"{title}\".",
+    elementsAddedToPreparation:
+      'Elementos añadidos a la preparación "{title}".',
     sessionActivateError: "No se pudo activar la sesión: {error}",
   },
   dialogs: {
@@ -1396,9 +1718,11 @@ export const es: TranslationDictionary = {
     revealing: "Revenetworkdo…",
     noUnrevealedClues: "No hay pistas preparadas sin revelar.",
     whatDidTheyDecide: "¿Qué decidieron?",
-    decidePlaceholder: "Los jugadores decidieron aliarse con los bandidos en lugar de combatirlos…",
+    decidePlaceholder:
+      "Los jugadores decidieron aliarse con los bandidos en lugar de combatirlos…",
     immediateConsequence: "Consecuencia inmediata (opcional)",
-    immConsequencePlaceholder: "El jefe de los bandidos les da un salvoconducto…",
+    immConsequencePlaceholder:
+      "El jefe de los bandidos les da un salvoconducto…",
     affectedEntities: "Entidades afectadas (opcional)",
     createPendingConsequence: "Crear consecuencia pendiente",
     pendingConsequenceTitle: "Título de la consecuencia pendiente",
@@ -1414,12 +1738,16 @@ export const es: TranslationDictionary = {
     closingOpenThreadsSection: "Hilos abiertos",
     closingNextPrepSection: "Próxima preparación",
     closingDecisionsLabel: "Decisiones importantes",
-    closingDecisionsPlaceholder: "¿Qué eligieron los jugadores y a quién afecta?",
+    closingDecisionsPlaceholder:
+      "¿Qué eligieron los jugadores y a quién afecta?",
     closingOpenThreadsLabel: "Hilos abiertos",
-    closingOpenThreadsPlaceholder: "Cabos sueltos, consecuencias, promesas, pistas pendientes…",
+    closingOpenThreadsPlaceholder:
+      "Cabos sueltos, consecuencias, promesas, pistas pendientes…",
     closingNextPrepLabel: "¿Qué conviene preparar después?",
-    closingNextPrepPlaceholder: "Escenas, PNJs, pistas o peligros que preparar antes de la próxima sesión…",
-    closingWarning: "Esta acción cierra la sesión activa. Asegúrate de haber registrado todo lo importante.",
+    closingNextPrepPlaceholder:
+      "Escenas, PNJs, pistas o peligros que preparar antes de la próxima sesión…",
+    closingWarning:
+      "Esta acción cierra la sesión activa. Asegúrate de haber registrado todo lo importante.",
     sessionActiveSince: "Iniciada a las {time}",
     activeSessionLabel: "Sesión {sessionNumber}",
     npcNameLabel: "Nombre",
@@ -1435,7 +1763,8 @@ export const es: TranslationDictionary = {
     startButton: "Iniciar sesión #{number}",
     closingButton: "Cerrando…",
     prepareNextSessionTitle: "Preparar próxima sesión",
-    prepareSessionDescription: "Crea una sesión pnetworkificada sin abrir todavía la mesa. Podrás activarla cuando vayas a jugar.",
+    prepareSessionDescription:
+      "Crea una sesión pnetworkificada sin abrir todavía la mesa. Podrás activarla cuando vayas a jugar.",
     prepareSessionButton: "Preparar sesión #{number}",
     startAdHocButton: "Empezar improvisada",
     preparedSessions: "Sesiones preparadas",
@@ -1447,12 +1776,16 @@ export const es: TranslationDictionary = {
     savingPreparation: "Guardando...",
     preparedFromCanvasSummary: "Preparada desde Canvas con {count} elementos.",
     preparedFromCanvasNotes: "Elementos preparados desde el Canvas: {names}",
-    createPreparedSessionWithElements: "Crear sesión preparada con estos elementos",
-    createPreparedSessionHelp: "Crea una preparación lista para activar más tarde. No abre una sesión en mesa.",
-    addToActiveSessionHelp: "Registra un evento en la sesión en curso vincunetworkdo estas entidades.",
+    createPreparedSessionWithElements:
+      "Crear sesión preparada con estos elementos",
+    createPreparedSessionHelp:
+      "Crea una preparación lista para activar más tarde. No abre una sesión en mesa.",
+    addToActiveSessionHelp:
+      "Registra un evento en la sesión en curso vincunetworkdo estas entidades.",
     preparedSessionTitleLabel: "Título de la sesión preparada",
     activatePreparedSessionButton: "Activar",
-    selectedElementsIntro: "Vas a preparar una sesión utilizando {count} elementos seleccionados:",
+    selectedElementsIntro:
+      "Vas a preparar una sesión utilizando {count} elementos seleccionados:",
     addToActiveSessionLabel: "Añadir a la sesión activa actual ({title})",
     loadedFromCanvasTitle: "Elementos cargados desde Canvas",
     loadedFromCanvasDescription: "Elementos incorporados a la partida: {names}",
@@ -1470,25 +1803,30 @@ export const es: TranslationDictionary = {
     prepSecretsLabel: "Secretos en riesgo",
     prepConsequencesLabel: "Consecuencias previstas",
     prepInvolvedLabel: "Entidades implicadas",
-    prepInvolvedHelp: "PNJs, lugares, facciones u objetos que podrían aparecer.",
+    prepInvolvedHelp:
+      "PNJs, lugares, facciones u objetos que podrían aparecer.",
     privatePrepNotesLabel: "Notas privadas de preparación",
-    privatePrepNotesPlaceholder: "Recordatorios, improvisaciones previstas, límites, ideas…",
+    privatePrepNotesPlaceholder:
+      "Recordatorios, improvisaciones previstas, límites, ideas…",
     activePrepPanelTitle: "Preparación de esta sesión",
     editPreparationButton: "Editar",
     cancelPreparedSessionButton: "Cancelar preparación",
     archivePreparedSessionButton: "Archivar preparación",
-    cancelPreparedConfirm: "¿Cancelar la preparación \"{title}\"?",
-    archivePreparedConfirm: "¿Archivar la preparación \"{title}\"?",
+    cancelPreparedConfirm: '¿Cancelar la preparación "{title}"?',
+    archivePreparedConfirm: '¿Archivar la preparación "{title}"?',
     relativeNow: "ahora",
     relativeMinutes: "hace {count}m",
     relativeHours: "hace {count}h",
     addToPreparedSessionLabel: "Añadir a una sesión preparada",
-    addToPreparedSessionHelp: "Incorpora estos elementos a una preparación existente sin abrir la mesa.",
+    addToPreparedSessionHelp:
+      "Incorpora estos elementos a una preparación existente sin abrir la mesa.",
     addToPreparationButton: "Añadir a preparación",
     exitCloseTitle: "Cerrar sesión activa antes de salir",
-    exitCloseDescription: "Hay una sesión activa: Session #{number} {title}. Para salir de la campaña, confirma el cierre de la sesión con un resumen.",
+    exitCloseDescription:
+      "Hay una sesión activa: Session #{number} {title}. Para salir de la campaña, confirma el cierre de la sesión con un resumen.",
     closingSummaryLabel: "Resumen de cierre",
-    closingSummaryPlaceholder: "Qué ocurrió en la sesión, decisiones importantes, próximos pasos…",
+    closingSummaryPlaceholder:
+      "Qué ocurrió en la sesión, decisiones importantes, próximos pasos…",
     closeAndExitButton: "Cerrar sesión y salir",
     prepareSessionSelectionButton: "Preparar sesión",
   },
@@ -1502,7 +1840,8 @@ export const es: TranslationDictionary = {
     resolveStatus: "Resolver Estado",
     quickConsequence: "Consecuencia",
     removeFromCanvas: "Quitar del Canvas",
-    selectNodeForActions: "Selecciona un nodo en el canvas para ver las acciones de partida.",
+    selectNodeForActions:
+      "Selecciona un nodo en el canvas para ver las acciones de partida.",
     addIdeas: "Agregar ideas",
     stickyNote: "Nota adhesiva",
     frameGroup: "Marco / Grupo",
@@ -1561,7 +1900,8 @@ export const es: TranslationDictionary = {
     templateStarter: "Campaña inicial",
     templateStarterDesc: "Con PJs, localizaciones y misiones de ejemplo",
     step3Title: "Confirma tu campaña",
-    step3Summary: "Campaña: {title} · Sistema: {system} · Pnetworktilla: {template}",
+    step3Summary:
+      "Campaña: {title} · Sistema: {system} · Pnetworktilla: {template}",
     createBtn: "Crear campaña",
     createError: "No se pudo crear la campaña.",
     back: "Atrás",
@@ -1570,16 +1910,21 @@ export const es: TranslationDictionary = {
   guidedStart: {
     eyebrow: "Arranque guiado",
     title: "Prepara el primer núcleo jugable",
-    description: "No necesitas construir toda la campaña ahora. Empieza con una premisa, un lugar, un pequeño reparto, una tensión, una primera sesión, algunas relaciones y visibilidad segura para jugadores.",
+    description:
+      "No necesitas construir toda la campaña ahora. Empieza con una premisa, un lugar, un pequeño reparto, una tensión, una primera sesión, algunas relaciones y visibilidad segura para jugadores.",
     readyTitle: "Lista para una primera sesión",
-    readyDescription: "Ya tienes estructura suficiente para jugar. A partir de aquí, DMCC te ayudará a mantener continuidad con sesiones, relaciones, consecuencias y conocimiento de jugadores.",
+    readyDescription:
+      "Ya tienes estructura suficiente para jugar. A partir de aquí, DMCC te ayudará a mantener continuidad con sesiones, relaciones, consecuencias y conocimiento de jugadores.",
     compactTitle: "Preparación inicial",
-    compactDescription: "La guía está plegada. Úsala cuando quieras un siguiente paso amable.",
+    compactDescription:
+      "La guía está plegada. Úsala cuando quieras un siguiente paso amable.",
     normalTitle: "Siguiente paso útil",
-    normalDescription: "El modo Normal mantiene el arranque compacto y muestra solo la acción más útil. Expándelo cuando quieras revisar la lista completa.",
+    normalDescription:
+      "El modo Normal mantiene el arranque compacto y muestra solo la acción más útil. Expándelo cuando quieras revisar la lista completa.",
     progress: "{completed} de {total} piezas útiles listas",
     recommended: "Siguiente paso recomendado: {step}",
-    allDone: "El núcleo inicial está completo. Sigue preparando solo lo que ayude a la próxima mesa.",
+    allDone:
+      "El núcleo inicial está completo. Sigue preparando solo lo que ayude a la próxima mesa.",
     needHelp: "No sé por dónde empezar",
     showAll: "Ver todos los pasos",
     showLess: "Ver menos",
@@ -1594,62 +1939,140 @@ export const es: TranslationDictionary = {
       minimal: "Mínimo",
     },
     helpLevelDescriptions: {
-      guided: "Muestra lista completa, explicaciones detalladas, recetas y sugerencias proactivas.",
-      normal: "Muestra una tarjeta compacta con el siguiente paso y deja la ayuda extra a un clic.",
-      minimal: "Oculta la ayuda proactiva. Puedes recuperarla desde este botón cuando la necesites.",
+      guided:
+        "Muestra lista completa, explicaciones detalladas, recetas y sugerencias proactivas.",
+      normal:
+        "Muestra una tarjeta compacta con el siguiente paso y deja la ayuda extra a un clic.",
+      minimal:
+        "Oculta la ayuda proactiva. Puedes recuperarla desde este botón cuando la necesites.",
     },
     steps: {
-      premise: { title: "Premisa de campaña", description: "Una frase breve sobre de qué va la campaña y qué tono tiene.", action: "Editar premisa" },
-      place: { title: "Lugar inicial", description: "Una aldea, campamento, distrito, taberna, frontera, nave, ruina o punto claro de entrada.", action: "Crear lugar" },
-      cast: { title: "Personajes importantes", description: "Al menos dos personas, grupos o poderes con deseos, miedos o secretos.", action: "Crear PNJ" },
-      tension: { title: "Tensión inicial", description: "Una amenaza, misterio, presión, misión, rumor o consecuencia que pueda mover la partida.", action: "Crear amenaza" },
-      session: { title: "Primera sesión", description: "Un pnetwork ligero para la próxima mesa: apertura, escenas, pistas, decisiones y cierre.", action: "Preparar sesión" },
-      relations: { title: "Primeras relaciones", description: "Conecta dos piezas para que la campaña deje de ser notas sueltas y empiece a tener memoria.", action: "Conectar entidades" },
-      visibility: { title: "Visibilidad de jugadores", description: "Revisa qué puede ver la mesa antes de compartir el portal o revelar conocimiento.", action: "Revisar conocimiento" },
+      premise: {
+        title: "Premisa de campaña",
+        description:
+          "Una frase breve sobre de qué va la campaña y qué tono tiene.",
+        action: "Editar premisa",
+      },
+      place: {
+        title: "Lugar inicial",
+        description:
+          "Una aldea, campamento, distrito, taberna, frontera, nave, ruina o punto claro de entrada.",
+        action: "Crear lugar",
+      },
+      cast: {
+        title: "Personajes importantes",
+        description:
+          "Al menos dos personas, grupos o poderes con deseos, miedos o secretos.",
+        action: "Crear PNJ",
+      },
+      tension: {
+        title: "Tensión inicial",
+        description:
+          "Una amenaza, misterio, presión, misión, rumor o consecuencia que pueda mover la partida.",
+        action: "Crear amenaza",
+      },
+      session: {
+        title: "Primera sesión",
+        description:
+          "Un pnetwork ligero para la próxima mesa: apertura, escenas, pistas, decisiones y cierre.",
+        action: "Preparar sesión",
+      },
+      relations: {
+        title: "Primeras relaciones",
+        description:
+          "Conecta dos piezas para que la campaña deje de ser notas sueltas y empiece a tener memoria.",
+        action: "Conectar entidades",
+      },
+      visibility: {
+        title: "Visibilidad de jugadores",
+        description:
+          "Revisa qué puede ver la mesa antes de compartir el portal o revelar conocimiento.",
+        action: "Revisar conocimiento",
+      },
     },
     premiseModal: {
       eyebrow: "Núcleo de campaña",
       title: "Editar premisa de campaña",
-      description: "Escribe la frase corta que leerías antes de preparar la mesa. Puede describir la situación, el tono, la promesa o el conflicto. Podrás cambiarla más adenetworkte.",
+      description:
+        "Escribe la frase corta que leerías antes de preparar la mesa. Puede describir la situación, el tono, la promesa o el conflicto. Podrás cambiarla más adenetworkte.",
       label: "Premisa o resumen breve de campaña",
-      placeholder: "Ejemplo: Un pueblo fronterizo cubierto de bruma está perdiendo vecinos en la vieja mina, y cada facción local sabe más de lo que admite.",
+      placeholder:
+        "Ejemplo: Un pueblo fronterizo cubierto de bruma está perdiendo vecinos en la vieja mina, y cada facción local sabe más de lo que admite.",
       save: "Guardar premisa",
-      emptyHint: "Puedes dejarla vacía, pero el arranque seguirá recomendándola hasta que la campaña tenga un resumen breve.",
+      emptyHint:
+        "Puedes dejarla vacía, pero el arranque seguirá recomendándola hasta que la campaña tenga un resumen breve.",
     },
     helpModal: {
       eyebrow: "Elige un comienzo práctico",
       title: "¿Qué necesitas ahora?",
-      description: "Escoge una acción pequeña. DMCC abrirá la pnetworktilla adecuada o creará una preparación de sesión limpia que podrás editar antes de usarla en mesa.",
+      description:
+        "Escoge una acción pequeña. DMCC abrirá la pnetworktilla adecuada o creará una preparación de sesión limpia que podrás editar antes de usarla en mesa.",
     },
     recipes: {
       openTemplate: "Abrir pnetworktilla",
       createScaffold: "Crear estructura",
       openRelation: "Abrir relaciones",
-      place: { title: "Crear un lugar inicial", description: "Una localización jugable con primera impresión, problema actual, descubrimientos y presión." },
-      npc: { title: "Crear un PNJ importante", description: "Una persona con rol, deseo, miedo y algo que quizá oculte." },
-      threat: { title: "Crear una amenaza inicial", description: "Una presión que empeora si los personajes la ignoran." },
-      quest: { title: "Crear una primera misión", description: "Un gancho claro con riesgos, posibles pistas y consecuencias esperadas." },
+      place: {
+        title: "Crear un lugar inicial",
+        description:
+          "Una localización jugable con primera impresión, problema actual, descubrimientos y presión.",
+      },
+      npc: {
+        title: "Crear un PNJ importante",
+        description:
+          "Una persona con rol, deseo, miedo y algo que quizá oculte.",
+      },
+      threat: {
+        title: "Crear una amenaza inicial",
+        description: "Una presión que empeora si los personajes la ignoran.",
+      },
+      quest: {
+        title: "Crear una primera misión",
+        description:
+          "Un gancho claro con riesgos, posibles pistas y consecuencias esperadas.",
+      },
       session: {
         title: "Preparar la primera sesión",
-        description: "Crea un borrador de sesión con objetivos, checklist y notas listas para editar.",
+        description:
+          "Crea un borrador de sesión con objetivos, checklist y notas listas para editar.",
         defaultTitle: "Sesión {number}: sesión inicial",
-        summary: "Primera sesión jugable. Sustituye este texto por la apertura real cuando decidas dónde empieza la mesa.",
+        summary:
+          "Primera sesión jugable. Sustituye este texto por la apertura real cuando decidas dónde empieza la mesa.",
         goal1: "Presentar con claridad la situación inicial.",
-        goal2: "Poner al menos una decisión significativa denetworkte de los jugadores.",
-        goal3: "Cerrar con un cambio, una pista, una consecuencia o una nueva pregunta.",
+        goal2:
+          "Poner al menos una decisión significativa denetworkte de los jugadores.",
+        goal3:
+          "Cerrar con un cambio, una pista, una consecuencia o una nueva pregunta.",
         checklistOpening: "Escena inicial o punto de llegada",
         checklistClue: "Una pista o dirección concreta",
         checklistDecision: "Una decisión que importe",
         checklistConsequence: "Una consecuencia para revisar después",
-        notes: "Mantén esta preparación ligera. El objetivo no es guionizar la sesión, sino recordar qué debería importar.",
+        notes:
+          "Mantén esta preparación ligera. El objetivo no es guionizar la sesión, sino recordar qué debería importar.",
       },
-      relations: { title: "Conectar dos piezas de campaña", description: "Usa una relación simple: vive en, protege, oculta, causa, pertenece a o apunta a." },
+      relations: {
+        title: "Conectar dos piezas de campaña",
+        description:
+          "Usa una relación simple: vive en, protege, oculta, causa, pertenece a o apunta a.",
+      },
     },
     templates: {
-      location: { content: "Primera impresión:\n\nQué está ocurriendo aquí ahora:\n\nQuién controla o influye en este lugar:\n\nQué pueden descubrir aquí los jugadores:\n\nPresión, peligro o tensión pendiente:" },
-      npc: { content: "Rol en la campaña:\n\nQué quiere:\n\nQué teme:\n\nQué oculta:\n\nCómo puede ayudar o complicar al grupo:" },
-      threat: { content: "Qué está empeorando:\n\nQuién o qué está detrás:\n\nSeñales visibles:\n\nQué pasa si nadie interviene:\n\nCómo puede escalar:" },
-      quest: { content: "Gancho:\n\nRiesgos:\n\nQuién pide ayuda o crea presión:\n\nPosibles pistas:\n\nQué puede cambiar al resolverse:" },
+      location: {
+        content:
+          "Primera impresión:\n\nQué está ocurriendo aquí ahora:\n\nQuién controla o influye en este lugar:\n\nQué pueden descubrir aquí los jugadores:\n\nPresión, peligro o tensión pendiente:",
+      },
+      npc: {
+        content:
+          "Rol en la campaña:\n\nQué quiere:\n\nQué teme:\n\nQué oculta:\n\nCómo puede ayudar o complicar al grupo:",
+      },
+      threat: {
+        content:
+          "Qué está empeorando:\n\nQuién o qué está detrás:\n\nSeñales visibles:\n\nQué pasa si nadie interviene:\n\nCómo puede escalar:",
+      },
+      quest: {
+        content:
+          "Gancho:\n\nRiesgos:\n\nQuién pide ayuda o crea presión:\n\nPosibles pistas:\n\nQué puede cambiar al resolverse:",
+      },
     },
     toasts: {
       sessionScaffoldCreated: "Estructura de primera sesión creada.",
@@ -1658,9 +2081,34 @@ export const es: TranslationDictionary = {
       premiseError: "No se pudo guardar la premisa de campaña: {error}",
     },
     empty: {
-      entities: { title: "Empieza con tres piezas útiles", description: "Una campaña es más fácil de dirigir cuando tiene un lugar, alguien que quiere algo y una presión que pueda mover la próxima sesión.", createPlace: "Crear lugar", createNpc: "Crear PNJ", createThreat: "Crear amenaza", openGraph: "Ver guía" },
-      graph: { title: "El grafo necesita piezas de campaña", description: "Crea algunas entidades primero y luego conéctalas con relaciones simples: una deuda, una alianza, un secreto, una pista o una amenaza.", createEntity: "Crear entidad", resetFilter: "Reiniciar filtro", noRelationsTitle: "Tu grafo tiene nodos, pero aún no tiene relaciones", noRelationsDescription: "Conecta dos entidades para que DMCC muestre la memoria de campaña como una red y no como notas aisladas.", createRelation: "Crear relación" },
-      session: { title: "Prepara solo lo que necesita la próxima mesa", description: "Una primera sesión puede ser ligera: situación inicial, personas clave, una pista, una decisión y una consecuencia para revisar después.", createPlace: "Crear lugar primero", createNpc: "Crear PNJ", prepare: "Enfocar título de sesión" },
+      entities: {
+        title: "Empieza con tres piezas útiles",
+        description:
+          "Una campaña es más fácil de dirigir cuando tiene un lugar, alguien que quiere algo y una presión que pueda mover la próxima sesión.",
+        createPlace: "Crear lugar",
+        createNpc: "Crear PNJ",
+        createThreat: "Crear amenaza",
+        openGraph: "Ver guía",
+      },
+      graph: {
+        title: "El grafo necesita piezas de campaña",
+        description:
+          "Crea algunas entidades primero y luego conéctalas con relaciones simples: una deuda, una alianza, un secreto, una pista o una amenaza.",
+        createEntity: "Crear entidad",
+        resetFilter: "Reiniciar filtro",
+        noRelationsTitle: "Tu grafo tiene nodos, pero aún no tiene relaciones",
+        noRelationsDescription:
+          "Conecta dos entidades para que DMCC muestre la memoria de campaña como una red y no como notas aisladas.",
+        createRelation: "Crear relación",
+      },
+      session: {
+        title: "Prepara solo lo que necesita la próxima mesa",
+        description:
+          "Una primera sesión puede ser ligera: situación inicial, personas clave, una pista, una decisión y una consecuencia para revisar después.",
+        createPlace: "Crear lugar primero",
+        createNpc: "Crear PNJ",
+        prepare: "Enfocar título de sesión",
+      },
     },
   },
   campaignTour: {
@@ -1677,55 +2125,64 @@ export const es: TranslationDictionary = {
       overview: {
         title: "Tu espacio de campaña",
         body: "Esta es el área de trabajo de esta campaña concreta. Todo lo que crees desde aquí pertenece a esta campaña: sesiones, entidades, relaciones, conocimiento visible para jugadores, tableros y exportaciones.",
-        detail: "La guía no rellena la campaña por ti. Te enseña el orden que suele funcionar mejor: definir un punto de partida claro, añadir las piezas importantes, conectarlas, preparar la partida y mantener viva la memoria después de cada sesión.",
+        detail:
+          "La guía no rellena la campaña por ti. Te enseña el orden que suele funcionar mejor: definir un punto de partida claro, añadir las piezas importantes, conectarlas, preparar la partida y mantener viva la memoria después de cada sesión.",
         tip: "Consejo: empieza pequeño. Un lugar, un problema, un PNJ importante y una próxima sesión bastan para que DMCC empiece a ser útil.",
       },
       dashboard: {
         title: "Dashboard del DM",
         body: "El dashboard es tu centro de mando antes de abrir la mesa. Resume el estado actual, la sesión activa, cambios recientes, alertas, consecuencias pendientes y acciones rápidas.",
-        detail: "Úsalo cuando vuelvas a una campaña después de unos días. Te ayuda a recordar qué importa ahora sin releer todas tus notas. Si algo necesita atención, debería aparecer aquí primero.",
+        detail:
+          "Úsalo cuando vuelvas a una campaña después de unos días. Te ayuda a recordar qué importa ahora sin releer todas tus notas. Si algo necesita atención, debería aparecer aquí primero.",
         tip: "Siguiente paso: cuando ya tengas algunas entidades y sesiones, vuelve aquí para comprobar si la campaña está lista para jugar.",
       },
       canvas: {
         title: "Canvas visual",
         body: "El canvas es un tablero visual flexible. Coloca PNJ, lugares, pistas, frentes, escenas o notas sueltas y ordénalas como tú ves la aventura en tu cabeza.",
-        detail: "Una tarjeta del canvas no es la única copia de esa información. Quitar una tarjeta del canvas solo limpia el tablero; archivar la entidad real es lo que la elimina de la memoria de campaña.",
+        detail:
+          "Una tarjeta del canvas no es la única copia de esa información. Quitar una tarjeta del canvas solo limpia el tablero; archivar la entidad real es lo que la elimina de la memoria de campaña.",
         tip: "Úsalo para preparar y para orientarte en mesa: mapa de pueblo, muro de investigación, tablero de facciones o piezas de la próxima sesión.",
       },
       entities: {
         title: "Entidades narrativas",
         body: "Las entidades son el corazón de DMCC. Úsalas para personajes, lugares, facciones, misiones, secretos, pistas, objetos, escenas, amenazas o cualquier elemento que merezca recordarse.",
-        detail: "Dales un título claro y un resumen útil. Después podrás añadir estado, importancia, visibilidad, hechos, relaciones y trazabilidad para que cada elemento conserve su historia entre sesiones.",
+        detail:
+          "Dales un título claro y un resumen útil. Después podrás añadir estado, importancia, visibilidad, hechos, relaciones y trazabilidad para que cada elemento conserve su historia entre sesiones.",
         tip: "Buen primer bloque: un lugar inicial, dos PNJ, una facción o amenaza, una misión activa y un secreto que los jugadores todavía no conocen.",
       },
       session: {
         title: "Sesiones",
         body: "La zona de sesiones te permite preparar la próxima partida, llevar una sesión activa, registrar eventos de mesa, revelar pistas y cerrar la sesión con un resumen de lo que cambió.",
-        detail: "La preparación no es un guion. Añade objetivos, escenas, entidades implicadas, pistas disponibles, secretos en riesgo, consecuencias esperadas y notas rápidas. Durante la partida, captura solo lo importante y conéctalo con la memoria existente.",
+        detail:
+          "La preparación no es un guion. Añade objetivos, escenas, entidades implicadas, pistas disponibles, secretos en riesgo, consecuencias esperadas y notas rápidas. Durante la partida, captura solo lo importante y conéctalo con la memoria existente.",
         tip: "Después de cada partida, cierra la sesión con decisiones, consecuencias y preguntas abiertas. Ese cierre es lo que hace que preparar la siguiente sea mucho más fácil.",
       },
       whatNow: {
         title: "Qué necesita atención",
         body: "Qué toca ahora convierte la memoria de campaña en una lista de acción. Te ayuda a ver cabos sueltos, consecuencias, pistas listas para revelar, PNJ olvidados, misiones bloqueadas y huecos de preparación.",
-        detail: "Úsalo cuando no sepas por dónde continuar. La página está pensada para responder a la pregunta práctica del DM: ¿qué debería preparar, resolver, revelar o traer de vuelta a juego?",
+        detail:
+          "Úsalo cuando no sepas por dónde continuar. La página está pensada para responder a la pregunta práctica del DM: ¿qué debería preparar, resolver, revelar o traer de vuelta a juego?",
         tip: "Si la lista parece vacía, añade más relaciones, consecuencias, hechos y notas de sesión. DMCC solo puede sugerir a partir de la memoria que le das.",
       },
       graph: {
         title: "Grafo de relaciones",
         body: "El grafo muestra cómo se conectan las piezas de la campaña: quién quiere qué, quién oculta algo, quién pertenece a una facción, a dónde apunta una pista o qué consecuencia amenaza un lugar.",
-        detail: "Las relaciones hacen que la campaña se lea como una red, no como un montón de notas. También te ayudan a encontrar enlaces perdidos, cadenas sospechosas y secretos que deberían afectar a varias entidades.",
+        detail:
+          "Las relaciones hacen que la campaña se lea como una red, no como un montón de notas. También te ayudan a encontrar enlaces perdidos, cadenas sospechosas y secretos que deberían afectar a varias entidades.",
         tip: "Crea relaciones simples al principio. Un 'debe un favor', 'protege', 'odia', 'controla' o 'está oculto en' suele ser más útil que un párrafo largo.",
       },
       players: {
         title: "Jugadores y conocimiento visible",
         body: "Las herramientas de jugador separan lo que sabe el DM de lo que puede ver la mesa. Añade jugadores, vincula personajes, revisa conocimiento y decide qué aparece en el portal del jugador.",
-        detail: "La visibilidad importa. Una entidad, pista, hecho o recurso puede seguir siendo solo del DM, estar parcialmente descubierto o revelarse. Así compartes continuidad sin filtrar secretos.",
+        detail:
+          "La visibilidad importa. Una entidad, pista, hecho o recurso puede seguir siendo solo del DM, estar parcialmente descubierto o revelarse. Así compartes continuidad sin filtrar secretos.",
         tip: "Antes de invitar jugadores, revisa la página de conocimiento y comprueba que secretos, pistas no reveladas y notas privadas del DM no estén visibles por accidente.",
       },
       settings: {
         title: "Ajustes, copias y exportación",
         body: "En ajustes gestionas la administración de la campaña: idioma, copias de seguridad, exportación JSON, exportación Markdown y otras opciones del sistema.",
-        detail: "Las copias y exportaciones forman parte del flujo normal. Úsalas antes de cambios grandes, antes de probar algo arriesgado o cuando quieras un archivo legible fuera de la app.",
+        detail:
+          "Las copias y exportaciones forman parte del flujo normal. Úsalas antes de cambios grandes, antes de probar algo arriesgado o cuando quieras un archivo legible fuera de la app.",
         tip: "Hábito recomendado: exporta Markdown después de sesiones importantes y crea una copia antes de grandes ediciones o importaciones de pnetworktilla.",
       },
     },
@@ -1746,7 +2203,8 @@ export const es: TranslationDictionary = {
     },
     identity: {
       title: "Identidad privada",
-      subtitle: "Tu correo electrónico y contraseña nunca forman parte de un perfil público o de campaña.",
+      subtitle:
+        "Tu correo electrónico y contraseña nunca forman parte de un perfil público o de campaña.",
       displayName: "Nombre para mostrar",
       avatarUrl: "URL del avatar",
       email: "Correo electrónico",
@@ -1818,7 +2276,8 @@ export const es: TranslationDictionary = {
     notifications: {
       title: "Notificaciones internas",
       exceptions: "Excepciones por campaña",
-      exceptionsDesc: "Las excepciones específicas de campaña aparecerán aquí a medida que se configuren las membresías.",
+      exceptionsDesc:
+        "Las excepciones específicas de campaña aparecerán aquí a medida que se configuren las membresías.",
       keys: {
         membership: "Actualizaciones de membresía",
         campaignActivity: "Actividad relevante de campaña",
@@ -1828,7 +2287,8 @@ export const es: TranslationDictionary = {
     },
     security: {
       title: "Seguridad y sesiones",
-      subtitle: "Las contraseñas y códigos de recuperación se gestionan de forma segura para este workspace.",
+      subtitle:
+        "Las contraseñas y códigos de recuperación se gestionan de forma segura para este workspace.",
       changePasswordTitle: "Cambiar contraseña",
       currentPassword: "Contraseña actual",
       newPassword: "Nueva contraseña",
@@ -1843,16 +2303,20 @@ export const es: TranslationDictionary = {
       sessionLabel: "Sesión",
       lastUsed: "último uso",
       revokeBtn: "Revocar",
-      confirmSignOutAll: "¿Cerrar sesión en todas las sesiones, incluido este dispositivo?",
-      passwordChangedMsg: "Contraseña cambiada. Inicia sesión de nuevo en cada dispositivo.",
-      codesGeneratedMsg: "Nuevos códigos de recuperación generados. Los códigos anteriores ya no funcionan.",
+      confirmSignOutAll:
+        "¿Cerrar sesión en todas las sesiones, incluido este dispositivo?",
+      passwordChangedMsg:
+        "Contraseña cambiada. Inicia sesión de nuevo en cada dispositivo.",
+      codesGeneratedMsg:
+        "Nuevos códigos de recuperación generados. Los códigos anteriores ya no funcionan.",
       otherSessionsRevokedMsg: "Otras sesiones revocadas",
     },
     data: {
       title: "Tus datos",
       downloadBtn: "Descargar datos personales",
       deleteTitle: "Eliminar cuenta",
-      transferDmWarning: "Transfiere la responsabilidad de DM para la campaña {campaignId} primero.",
+      transferDmWarning:
+        "Transfiere la responsabilidad de DM para la campaña {campaignId} primero.",
       currentPassword: "Contraseña actual",
       confirmPlaceholder: "Escribe {confirmationLabel} para confirmar",
       deleteBtn: "Eliminar cuenta permanentemente",

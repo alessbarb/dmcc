@@ -12,8 +12,8 @@ export function LanguageSelector() {
         <Languages size={18} />
       </div>
       <div className="networkg-selector__label">
-        <span className="networkg-selector__title">{t("settings.networkguageSectionTitle")}</span>
-        <span className="networkg-selector__subtitle">{t("settings.networkguageSectionSubtitle")}</span>
+        <span className="networkg-selector__title">{t("settings.languageSectionTitle")}</span>
+        <span className="networkg-selector__subtitle">{t("settings.languageSectionSubtitle")}</span>
       </div>
       <div className="networkg-selector__toggle">
         {SUPPORTED_LOCALES.map((item) => (

@@ -1,6 +1,12 @@
 import React from "react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
+function getMetadataLanguages(metadata: any): readonly string[] {
+  if (Array.isArray(metadata.languages)) return metadata.languages;
+  if (Array.isArray(metadata.networkguages)) return metadata.networkguages;
+  return [];
+}
+
 interface Props {
   entityType: string;
   metadata: any;
@@ -377,8 +383,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
             <div className="form-group">
               <label className="form-label">Idiomas conocidos (ej. Común, Élfico)</label>
               <input type="text" className="form-input" placeholder="Separados por comas"
-                value={Array.isArray(metadata.networkguages) ? metadata.networkguages.join(", ") : ""}
-                onChange={e => onChange("networkguages", e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean))} />
+                value={getMetadataLanguages(metadata).join(", ")}
+                onChange={e => onChange("languages", e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean))} />
             </div>
             <div className="form-group">
               <label className="form-label">Dotes (ej. Alerta, Duro)</label>

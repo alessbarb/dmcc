@@ -7,6 +7,12 @@ import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
 
 
+function getMetadataLanguages(metadata: any): readonly string[] {
+  if (Array.isArray(metadata.languages)) return metadata.languages;
+  if (Array.isArray(metadata.networkguages)) return metadata.networkguages;
+  return [];
+}
+
 interface EntityCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -525,8 +531,8 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     <div className="form-group">
                       <label className="form-label">Idiomas conocidos (ej. Común, Élfico)</label>
                       <input type="text" className="form-input" placeholder="Separados por comas"
-                        value={Array.isArray(entityForm.metadata.networkguages) ? entityForm.metadata.networkguages.join(", ") : ""}
-                        onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, networkguages: e.target.value.split(",").map(s => s.trim()).filter(Boolean) } })} />
+                        value={getMetadataLanguages(entityForm.metadata).join(", ")}
+                        onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, languages: e.target.value.split(",").map(s => s.trim()).filter(Boolean) } })} />
                     </div>
                     <div className="form-group">
                       <label className="form-label">Dotes (ej. Alerta, Iniciación Mágica)</label>

@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import { GitBranch, Mail, Sparkles } from "lucide-react";
+import { getInstitutionalPages, type InstitutionalPageContent } from "@shared/i18n/institutional/index.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
-import { getInstitutionalPages, type InstitutionalPageContent } from "./institutionalContent.js";
 import { institutionalLinks } from "./institutionalLinks.js";
 import { SiteFooter } from "./SiteFooter.js";
 import "./institutional.css";
@@ -24,7 +24,7 @@ export function InstitutionalLayout({ page }: InstitutionalLayoutProps) {
         <div className="institutional-hero__mark"><Sparkles size={20} aria-hidden="true" /></div>
         <p className="institutional-hero__kicker">DMCC</p>
         <h1 id="institutional-title">Dungeon Master Campaign Companion</h1>
-        <p>{page.key === "privacy" ? t("privacy.subtitle") : page.key === "terms" ? t("terms.subtitle") : page.summary}</p>
+        <p>{page.summary}</p>
       </section>
 
       <div className="institutional-frame">
@@ -43,7 +43,7 @@ export function InstitutionalLayout({ page }: InstitutionalLayoutProps) {
 
         <article className="institutional-panel" aria-labelledby="institutional-page-title">
           <p className="institutional-panel__eyebrow">{page.eyebrow}</p>
-          <h2 id="institutional-page-title">{page.key === "privacy" ? t("privacy.title") : page.key === "terms" ? t("terms.title") : page.title}</h2>
+          <h2 id="institutional-page-title">{page.title}</h2>
           {page.lastUpdated ? <p className="institutional-panel__eyebrow">{t("legal.lastUpdated", { date: page.lastUpdated })}</p> : null}
           {page.translationNotice ? <p className="institutional-panel__notice">{page.translationNotice}</p> : null}
           <p className="institutional-panel__summary">{page.summary}</p>

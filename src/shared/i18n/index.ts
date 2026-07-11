@@ -9,3 +9,4 @@ export { es } from "./dictionaries/es.js";
 export { fr } from "./dictionaries/fr.js";
 export { it } from "./dictionaries/it.js";
 export { pt } from "./dictionaries/pt.js";
+export * from "./institutional/index.js";

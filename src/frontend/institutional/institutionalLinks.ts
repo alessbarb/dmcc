@@ -1,3 +1,4 @@
+import { institutionalContact } from "@shared/institutional/contact.js";
 import type { TranslationKey } from "@shared/i18n/index.js";
 
 type InternalInstitutionalLink = {
@@ -21,8 +22,8 @@ export const institutionalLinks = {
   contact: { labelKey: "footer.contact", to: "/contact" },
   privacy: { labelKey: "footer.privacy", to: "/privacy" },
   terms: { labelKey: "footer.terms", to: "/terms" },
-  github: { labelKey: "footer.github", href: "https://github.com/alessbarb/DMCC" },
-  email: { labelKey: "footer.email", email: "dmcampaigncompanion@gmail.com" },
+  github: { labelKey: "footer.github", href: institutionalContact.github },
+  email: { labelKey: "footer.email", email: institutionalContact.email },
 } as const satisfies {
   readonly about: InternalInstitutionalLink;
   readonly contact: InternalInstitutionalLink;
