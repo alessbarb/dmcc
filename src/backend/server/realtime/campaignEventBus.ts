@@ -2,6 +2,7 @@ export type CampaignRealtimeEvent = {
   campaignId: string;
   type: "campaign.updated" | "projection.updated" | "player.portal.updated" | "invitation.accepted";
   sequence?: number;
+  playerId?: string;
 };
 
 type Listener = (event: CampaignRealtimeEvent) => void;
