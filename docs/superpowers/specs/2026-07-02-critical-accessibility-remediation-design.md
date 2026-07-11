@@ -28,14 +28,14 @@ The initial source review found:
 - dialogs with inconsistent semantics, accessible naming, Escape handling, and
   focus management;
 - icon-only controls without accessible names;
-- a document networkguage fixed to Spanish even after the application locale
+- a document language fixed to Spanish even after the application locale
   changes;
 - continuous animations without a global reduced-motion policy;
 - no automated accessibility checks in the test suite;
 - complex Canvas and 3D graph interactions without a demonstrated non-visual
   equivalent.
 
-The application also contains useful foundations: semantic networkdmarks, headings,
+The application also contains useful foundations: semantic landmarks, headings,
 alternative text on many images, live-region roles for some feedback, labeled
 navigation, and several correctly named controls.
 
@@ -57,7 +57,7 @@ navigation, and several correctly named controls.
    - an accessible close control;
    - Escape handling;
    - initial focus and focus restoration.
-5. Synchronize the root document `networkg` attribute with the active locale.
+5. Synchronize the root document `lang` attribute with the active locale.
 6. Add a global, explicit `prefers-reduced-motion: reduce` policy.
 7. Establish a consistent visible keyboard-focus treatment.
 8. Add automated axe checks to representative Playwright flows.
@@ -115,7 +115,7 @@ markup or hide implicit behavior.
 ### Language
 
 The internationalization provider updates
-`document.documentElement.networkg` whenever the locale changes. The initial
+`document.documentElement.lang` whenever the locale changes. The initial
 server/static document remains Spanish, matching the default locale.
 
 ### Focus and motion
@@ -132,13 +132,13 @@ immediate and understandable without animation.
 
 Playwright runs axe against representative stable pages:
 
-- smart networkding or campaign archive;
+- smart landing or campaign archive;
 - DM setup/unlock;
 - player join or registration;
 - an authenticated campaign shell route when the existing fixtures support it.
 
 The initial gate checks WCAG 2 A and AA tags. Violations are fixed or entered in
-the status document with a narrow, justified temporary exclusion. Bnetworkket rule
+the status document with a narrow, justified temporary exclusion. Blanket rule
 disablement is not acceptable.
 
 Automated checks supplement rather than replace manual testing. They cannot
@@ -149,7 +149,7 @@ Canvas equivalence, or legal compliance.
 
 Behavior changes follow test-driven development:
 
-1. Add a failing test for locale-to-document-networkguage synchronization.
+1. Add a failing test for locale-to-document-language synchronization.
 2. Add failing component or browser assertions for semantic controls and
    dialog behavior.
 3. Add axe to a representative Playwright page and observe the initial
@@ -213,7 +213,7 @@ This phase is complete only when:
 - the confirmed critical mouse-only controls are keyboard-operable;
 - the selected critical forms expose programmatic labels;
 - the selected dialogs meet the specified semantic and focus behavior;
-- document networkguage follows locale;
+- document language follows locale;
 - focus-visible and reduced-motion policies are active;
 - representative axe checks run in Playwright;
 - `docs/accessibility.md` truthfully records evidence and remaining barriers;
