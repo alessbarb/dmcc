@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { getInstitutionalPage, getInstitutionalPages, type InstitutionalPageKey } from "../../src/frontend/institutional/institutionalContent.js";
-import { institutionalContact } from "../../src/frontend/institutional/institutionalContact.js";
+import {
+  getInstitutionalPage,
+  getInstitutionalPages,
+  institutionalContact,
+  type InstitutionalPageKey,
+} from "../../src/shared/i18n/institutional/index.js";
 import { SUPPORTED_LOCALE_CODES } from "../../src/shared/i18n/locales.js";
 import { t } from "../../src/shared/i18n/translate.js";
 
@@ -19,6 +23,26 @@ describe("institutionalContent", () => {
       email: "dmcampaigncompanion@gmail.com",
       github: "https://github.com/alessbarb/DMCC",
     });
+  });
+
+
+  it("does not expose known corrupted text fragments in institutional content", () => {
+    const corruptedFragments = ["regunetwork", "networkguage", "Wweb sharing"];
+    const visibleContent = ["en", "es", "fr", "de", "it", "pt"].flatMap((locale) =>
+      getInstitutionalPages(locale).flatMap((page) => [
+        page.navLabel,
+        page.eyebrow,
+        page.title,
+        page.summary,
+        page.lastUpdated ?? "",
+        page.translationNotice ?? "",
+        ...page.sections.flatMap((section) => [section.title, ...section.paragraphs]),
+      ]),
+    );
+
+    for (const fragment of corruptedFragments) {
+      expect(visibleContent.join("\n")).not.toContain(fragment);
+    }
   });
 
   it("resolves known page content by key", () => {

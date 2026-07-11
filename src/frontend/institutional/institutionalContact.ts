@@ -1,6 +1,1 @@
-import { institutionalLinks } from "./institutionalLinks.js";
-
-export const institutionalContact = {
-  email: institutionalLinks.email.email,
-  github: institutionalLinks.github.href,
-} as const;
+export { institutionalContact } from "@shared/i18n/institutional/index.js";

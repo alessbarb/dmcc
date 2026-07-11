@@ -1,5 +1,5 @@
-import type { InstitutionalLocaleContent } from "../institutionalTypes.js";
-import { institutionalContact } from "../institutionalContact.js";
+import { institutionalContact } from "./contact.js";
+import type { InstitutionalLocaleContent } from "./types.js";
 
 const legalLastUpdated = "July 10, 2026";
 
