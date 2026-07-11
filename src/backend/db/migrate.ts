@@ -6,18 +6,25 @@ import { dirname, join } from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-async function ensureRuntimeSchema() {
+/**
+ * Keeps pre-0.7 databases bootable after the web-first schema rename.
+ *
+ * This is intentionally isolated from normal app startup: it only runs as part of
+ * db:migrate, where it can safely finish the one-time workspace/app-role rename
+ * for databases that were deployed between migration cuts.
+ */
+async function ensurePostLegacySchemaCompatibility() {
   await pool.query(`
 DO $$
 BEGIN
   IF EXISTS (
     SELECT 1 FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'va' || 'ult_id'
+    WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'vault_id'
   ) AND NOT EXISTS (
     SELECT 1 FROM information_schema.columns
     WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'workspace_partition_id'
   ) THEN
-    EXECUTE 'ALTER TABLE "users" RENAME COLUMN "va' || 'ult_id" TO "workspace_partition_id"';
+    ALTER TABLE "users" RENAME COLUMN "vault_id" TO "workspace_partition_id";
   END IF;
 
   IF NOT EXISTS (
@@ -29,12 +36,12 @@ BEGIN
 
   IF EXISTS (
     SELECT 1 FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'va' || 'ult_role'
+    WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'vault_role'
   ) AND NOT EXISTS (
     SELECT 1 FROM information_schema.columns
     WHERE table_schema = 'public' AND table_name = 'users' AND column_name = 'app_role'
   ) THEN
-    EXECUTE 'ALTER TABLE "users" RENAME COLUMN "va' || 'ult_role" TO "app_role"';
+    ALTER TABLE "users" RENAME COLUMN "vault_role" TO "app_role";
   END IF;
 
   IF NOT EXISTS (
@@ -46,12 +53,12 @@ BEGIN
 
   IF EXISTS (
     SELECT 1 FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'workspaces' AND column_name = 'va' || 'ult_id'
+    WHERE table_schema = 'public' AND table_name = 'workspaces' AND column_name = 'vault_id'
   ) AND NOT EXISTS (
     SELECT 1 FROM information_schema.columns
     WHERE table_schema = 'public' AND table_name = 'workspaces' AND column_name = 'workspace_partition_id'
   ) THEN
-    EXECUTE 'ALTER TABLE "workspaces" RENAME COLUMN "va' || 'ult_id" TO "workspace_partition_id"';
+    ALTER TABLE "workspaces" RENAME COLUMN "vault_id" TO "workspace_partition_id";
   END IF;
 
   IF NOT EXISTS (
@@ -63,9 +70,9 @@ BEGIN
 
   IF EXISTS (
     SELECT 1 FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'campaigns' AND column_name = 'va' || 'ult_id'
+    WHERE table_schema = 'public' AND table_name = 'campaigns' AND column_name = 'vault_id'
   ) THEN
-    EXECUTE 'ALTER TABLE "campaigns" DROP COLUMN "va' || 'ult_id"';
+    ALTER TABLE "campaigns" DROP COLUMN "vault_id";
   END IF;
 END $$;
 `);
@@ -76,7 +83,7 @@ export async function runMigrations() {
   await migrate(db, {
     migrationsFolder: join(__dirname, "migrations"),
   });
-  await ensureRuntimeSchema();
+  await ensurePostLegacySchemaCompatibility();
   console.log("Migrations ran successfully!");
 }
 
