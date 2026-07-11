@@ -1,16 +1,14 @@
 import { describe, expect, it } from "vitest";
-import {
-  getInstitutionalPage,
-  institutionalContact,
-  institutionalPages,
-  type InstitutionalPageKey,
-} from "../../src/frontend/institutional/institutionalContent.js";
+import { getInstitutionalPage, getInstitutionalPages, type InstitutionalPageKey } from "../../src/frontend/institutional/institutionalContent.js";
+import { institutionalContact } from "../../src/frontend/institutional/institutionalContact.js";
 import { SUPPORTED_LOCALE_CODES } from "../../src/shared/i18n/locales.js";
 import { t } from "../../src/shared/i18n/translate.js";
 
 describe("institutionalContent", () => {
   it("defines one page for every public institutional route", () => {
     const expectedKeys: InstitutionalPageKey[] = ["about", "contact", "privacy", "terms"];
+
+    const institutionalPages = getInstitutionalPages("en");
 
     expect(institutionalPages.map((page) => page.key)).toEqual(expectedKeys);
     expect(institutionalPages.map((page) => page.path)).toEqual(expectedKeys.map((key) => `/${key}`));
