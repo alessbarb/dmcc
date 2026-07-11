@@ -1475,6 +1475,25 @@ export const fr: TranslationDictionary = {
     creatingInvitation: "Génération...",
     invitationFallback: "Invitation {id}",
 
+    title: "Joueurs et personnages",
+    invitePlayer: "Inviter un joueur",
+    playerInvitations: "Invitations de joueur",
+    localNetworkActive: "Réseau local actif :",
+    shareInvitationLink: "Partagez ce lien avec le joueur (valable 72 h) :",
+    linkCopied: "Lien copié",
+    activeInvitations: "Invitations actives :",
+    invitationStatusActive: "Active",
+    invitationStatusExhausted: "Épuisée",
+    invitationStatusExpired: "Expirée",
+    invitationStatusRevoked: "Révoquée",
+    invitationListError: "Impossible de charger les invitations.",
+    invitationCreateError: "Impossible de créer l’invitation.",
+    invitationRevokeError: "Impossible de révoquer l’invitation.",
+    copyInvitationError: "Impossible de copier le lien d’invitation.",
+    closeInvitationsPanel: "Fermer le panneau des invitations",
+    copyInvitationLink: "Copier le lien d’invitation",
+    revokeInvitation: "Révoquer l’invitation",
+
   },
 
   entityModal: {

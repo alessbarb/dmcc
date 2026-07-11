@@ -100,3 +100,53 @@ test.describe("Critical UI smoke flow", () => {
     await expect(page).toHaveURL(new RegExp(`/campaigns/${campaignId}/command-center$`));
   });
 });
+
+test.describe("Player invitation UI flow", () => {
+  test("creates, lists, and revokes invitations without page errors", async ({ page }) => {
+    test.setTimeout(90_000);
+    const pageErrors: string[] = [];
+    page.on("pageerror", (error) => pageErrors.push(error.message));
+    page.on("console", (message) => {
+      if (message.type() === "error") pageErrors.push(message.text());
+    });
+
+    const suffix = randomUUID().replace(/-/g, "").slice(0, 12);
+    const email = `ui-invite-${suffix}@example.com`;
+    const password = `ui-invite-password-${suffix}`;
+
+    await page.goto("/dm/setup");
+    await expect(page.locator("#email")).toBeVisible({ timeout: 15_000 });
+    await page.locator("#displayName").fill("UI Invite DM");
+    await page.locator("#email").fill(email);
+    await page.locator("#secret").fill(password);
+    await page.locator("#confirmSecret").fill(password);
+    await Promise.all([
+      page.waitForURL(/\/portal$/, { timeout: 15_000 }),
+      page.locator('form button[type="submit"]').click(),
+    ]);
+    await expectAuthenticated(page);
+
+    const campaignResponse = await page.request.post("/api/campaigns", {
+      data: { title: `UI Invitation ${suffix}`, system: "generic_fantasy_d20" },
+    });
+    expect(campaignResponse.ok()).toBe(true);
+    const campaign = await campaignResponse.json();
+    const campaignId = campaign.campaignId as string;
+
+    await page.goto(`/campaigns/${campaignId}/players`);
+    await expect(page.getByRole("heading", { name: /players and characters|jugadores y personajes/i })).toBeVisible({ timeout: 15_000 });
+    await page.getByRole("button", { name: /invite player|invitar jugador/i }).click();
+    await expect(page.getByRole("heading", { name: /player invitations|invitaciones de jugador/i })).toBeVisible();
+
+    await page.getByRole("button", { name: /generate invitation link|generar enlace de invitación/i }).click();
+    await expect(page.getByText(/\/join\//)).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText(/something went wrong/i)).toHaveCount(0);
+    await expect(page.getByText(/cannot read properties of undefined \(reading 'slice'\)/i)).toHaveCount(0);
+    await expect(page.getByText(/active|activa/i)).toBeVisible({ timeout: 15_000 });
+
+    await page.getByRole("button", { name: /revoke invitation|revocar invitación/i }).click();
+    await expect(page.getByText(/revoked|revocada/i)).toBeVisible({ timeout: 15_000 });
+
+    expect(pageErrors.filter((message) => message.includes("Cannot read properties of undefined (reading 'slice')"))).toEqual([]);
+  });
+});

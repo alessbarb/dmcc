@@ -150,7 +150,33 @@ test.describe("Minimum release web API flow", () => {
     const invitationResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/invitations`, {
       data: { role: "player", maxUses: 1, expiresInHours: 1 },
     }), 201);
+    expect(invitationResult.invitation.invitationId).toMatch(/^inv_/);
+    expect(invitationResult.invitation.url).toContain("/join/");
     expect(invitationResult.invitation.token).toEqual(expect.any(String));
+
+    const listedInvitations = await expectStatus(await request.get(`/api/campaigns/${campaignId}/invitations`), 200);
+    expect(listedInvitations.invitations).toContainEqual(
+      expect.objectContaining({
+        invitationId: invitationResult.invitation.invitationId,
+        status: "active",
+      }),
+    );
+
+    await expectStatus(
+      await request.post(`/api/campaigns/${campaignId}/invitations/${invitationResult.invitation.invitationId}/revoke`),
+      200,
+    );
+    const revokedInvitations = await expectStatus(await request.get(`/api/campaigns/${campaignId}/invitations`), 200);
+    expect(revokedInvitations.invitations).toContainEqual(
+      expect.objectContaining({
+        invitationId: invitationResult.invitation.invitationId,
+        status: "revoked",
+      }),
+    );
+
+    const playerInvitationResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/invitations`, {
+      data: { role: "player", maxUses: 1, expiresInHours: 1 },
+    }), 201);
 
     const liveTableResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/live-tables`, {
       data: { durationHours: 1 },
@@ -162,13 +188,13 @@ test.describe("Minimum release web API flow", () => {
       await registerAndLogin(playerRequest, playerAccount);
 
       const invitation = await expectStatus(
-        await playerRequest.get(`/api/invitations/${invitationResult.invitation.token}`),
+        await playerRequest.get(`/api/invitations/${playerInvitationResult.invitation.token}`),
         200,
       );
       expect(invitation.campaign.campaignId).toBe(campaignId);
 
       const acceptance = await expectStatus(
-        await playerRequest.post(`/api/invitations/${invitationResult.invitation.token}/accept`),
+        await playerRequest.post(`/api/invitations/${playerInvitationResult.invitation.token}/accept`),
         200,
       );
       expect(acceptance.campaignId).toBe(campaignId);
