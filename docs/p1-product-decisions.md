@@ -17,17 +17,13 @@ The P1 branch covers:
 9. Consolidating the player portal experience.
 10. Enforcing CI checks for `main`.
 
-## Decisions pending product-owner confirmation
+## Approved decisions
 
 ### D1 — Campaign home hierarchy
 
-Current overlap: `command-center`, `dashboard`, and `what-now` each act as a campaign starting surface.
-
-Recommended direction: make `command-center` the single campaign home, fold the operational dashboard and next-action summary into it, preserve old URLs as redirects, and remove duplicate primary navigation entries.
+`command-center` is the single campaign home. The operational dashboard and next-action summary are folded into it. Existing `/dashboard` and `/what-now` URLs remain as compatibility redirects, and their duplicate primary navigation entries are removed.
 
 ### D2 — Campaign navigation model
-
-Recommended direction:
 
 - Desktop primary navigation: Home, Session, Entities, Canvas, Graph, Timeline.
 - Desktop secondary navigation: Search, Boards, Players, Rules, Knowledge, Settings.
@@ -36,24 +32,22 @@ Recommended direction:
 
 ### D3 — Search result behavior
 
-Recommended direction: every result opens its canonical destination. Entity results open the entity detail view; facts open the owning entity and focus the fact; rules results open Rules with the corresponding entry selected. Search should not contain non-interactive result cards.
+Every result opens its canonical destination. Entity results open the entity detail view; facts open the owning entity and focus the fact; rules results open Rules with the corresponding entry selected. Search does not contain non-interactive result cards.
 
 ### D4 — Boards interaction model
 
-Current implementation is a grouped status view rather than a real Kanban board.
-
-Recommended direction: implement a real accessible Kanban interaction with drag and drop on pointer devices and explicit Move actions for keyboard and mobile users. Status changes must persist immediately.
+Boards becomes a real accessible Kanban interaction with drag and drop on pointer devices and explicit Move actions for keyboard and mobile users. Status changes persist immediately.
 
 ### D5 — Player portal consolidation
 
-Recommended direction: use one player-facing shell and one canonical portal route. Campaign membership, character selection, visible knowledge, and session information should live in that shell rather than separate overlapping entry points.
+`/portal` is the canonical player entry. One player-facing shell contains campaign membership, character selection, visible knowledge, session information, and invitations. Legacy player routes redirect to their corresponding destination in that shell.
 
 ## Decision log
 
 | Decision | Status | Outcome |
 | --- | --- | --- |
-| D1 Campaign home hierarchy | Pending | — |
-| D2 Navigation model | Pending | — |
-| D3 Search result behavior | Pending | — |
-| D4 Boards interaction model | Pending | — |
-| D5 Player portal consolidation | Pending | — |
+| D1 Campaign home hierarchy | Approved | `command-center` becomes the single campaign home; legacy routes redirect. |
+| D2 Navigation model | Approved | Six primary desktop destinations; five-item mobile bar with full-height More sheet. |
+| D3 Search result behavior | Approved | Results navigate to canonical destinations with context and focus. |
+| D4 Boards interaction model | Approved | Accessible Kanban with drag/drop and explicit move controls. |
+| D5 Player portal consolidation | Approved | `/portal` is canonical and legacy routes redirect into one player shell. |
