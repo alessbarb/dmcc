@@ -28,6 +28,9 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          cp .github/workflows/ci.yml /tmp/p1-ci.yml
+          cp src/backend/server/web/registerWebRoutes.ts /tmp/p1-registerWebRoutes.ts
           git fetch origin main
 
           set +e
@@ -36,11 +39,27 @@ jobs:
           set -e
 
           if [ "$merge_status" -ne 0 ]; then
-            git checkout --ours .github/workflows/ci.yml
-            git checkout --ours src/backend/server/web/registerWebRoutes.ts
             git rm -f src/backend/server/web/routes/dmDashboardWebRoutes.ts
-            git add .github/workflows/ci.yml src/backend/server/web/registerWebRoutes.ts
           fi
+
+          cp /tmp/p1-registerWebRoutes.ts src/backend/server/web/registerWebRoutes.ts
+          cp /tmp/p1-ci.yml .github/workflows/ci.yml
+
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/ci.yml')
+          source = path.read_text()
+          start_marker = '  # BEGIN ONE-SHOT MAIN SYNC\n'
+          end_marker = '  # END ONE-SHOT MAIN SYNC\n'
+          if start_marker in source and end_marker in source:
+              start = source.index(start_marker)
+              end = source.index(end_marker) + len(end_marker)
+              source = source[:start] + source[end:]
+          path.write_text(source)
+          PY
+
+          git add src/backend/server/web/registerWebRoutes.ts
+          git add -f .github/workflows/ci.yml
 
           unresolved="$(git diff --name-only --diff-filter=U)"
           if [ -n "$unresolved" ]; then
@@ -48,7 +67,7 @@ jobs:
             exit 1
           fi
 
-          git rm .github/workflows/sync-main.yml
+          git rm -f .github/workflows/sync-main.yml
           git add -A
           git commit -m "Merge main into P1 branch"
           git push origin HEAD:agent/p1-complete
