@@ -6,6 +6,7 @@ import {
   Outlet,
   redirect,
 } from "@tanstack/react-router";
+import { PlayerPortalRealtimeSync } from "./player/components/PlayerPortalRealtimeSync.js";
 import { fetchAuthStatus } from "./shared/auth/authClient.js";
 
 async function requireAccountSession() {
@@ -118,7 +119,16 @@ function withSuspense(Component: React.ComponentType) {
   };
 }
 
-const rootRoute = createRootRoute({ component: () => <Outlet /> });
+function RootRouteComponent() {
+  return (
+    <>
+      <PlayerPortalRealtimeSync />
+      <Outlet />
+    </>
+  );
+}
+
+const rootRoute = createRootRoute({ component: RootRouteComponent });
 
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -200,7 +210,7 @@ const playerJoinRoute = createRoute({
   component: withSuspense(PlayerJoinPageLazy),
 });
 
-const joinRoute = createRoute({
+const playerJoinTokenRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/join/$inviteToken",
   component: withSuspense(PlayerJoinPageLazy),
@@ -208,8 +218,15 @@ const joinRoute = createRoute({
 
 const registerRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/register/$campaignId/$inviteToken",
+  path: "/register",
   component: withSuspense(RegisterPageLazy),
+});
+
+const accountRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/account",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AccountPageLazy),
 });
 
 const campaignRoute = createRoute({
@@ -217,15 +234,6 @@ const campaignRoute = createRoute({
   path: "/campaigns/$campaignId",
   beforeLoad: requireAccountSession,
   component: withSuspense(CampaignShellPage),
-});
-
-const campaignIndexRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/",
-  beforeLoad: ({ params }) => {
-    throw redirect({ to: "/campaigns/$campaignId/command-center", params });
-  },
-  component: () => null,
 });
 
 const commandCenterRoute = createRoute({
@@ -236,7 +244,7 @@ const commandCenterRoute = createRoute({
 
 const sessionRoute = createRoute({
   getParentRoute: () => campaignRoute,
-  path: "/session",
+  path: "/sessions/$sessionId",
   component: withSuspense(SessionPageLazy),
 });
 
@@ -288,9 +296,9 @@ const rulesRoute = createRoute({
   component: withSuspense(RulesPageLazy),
 });
 
-const knowledgeRoute = createRoute({
+const playerKnowledgeRoute = createRoute({
   getParentRoute: () => campaignRoute,
-  path: "/knowledge",
+  path: "/player-knowledge",
   component: withSuspense(PlayerKnowledgePageLazy),
 });
 
@@ -301,7 +309,7 @@ const settingsRoute = createRoute({
 });
 
 const onboardingRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => campaignRoute,
   path: "/onboarding",
   component: withSuspense(OnboardingPageLazy),
 });
@@ -309,14 +317,8 @@ const onboardingRoute = createRoute({
 const premadePreviewRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/premades/$templateId",
-  component: withSuspense(PremadeCampaignPreviewPageLazy),
-});
-
-const accountRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/account",
   beforeLoad: requireAccountSession,
-  component: withSuspense(AccountPageLazy),
+  component: withSuspense(PremadeCampaignPreviewPageLazy),
 });
 
 const routeTree = rootRoute.addChildren([
@@ -333,13 +335,10 @@ const routeTree = rootRoute.addChildren([
   dmSetupRoute,
   dmLoginRoute,
   playerJoinRoute,
-  joinRoute,
+  playerJoinTokenRoute,
   registerRoute,
   accountRoute,
-  onboardingRoute,
-  premadePreviewRoute,
   campaignRoute.addChildren([
-    campaignIndexRoute,
     commandCenterRoute,
     sessionRoute,
     entitiesRoute,
@@ -350,9 +349,11 @@ const routeTree = rootRoute.addChildren([
     boardsRoute,
     playersRoute,
     rulesRoute,
-    knowledgeRoute,
+    playerKnowledgeRoute,
     settingsRoute,
+    onboardingRoute,
   ]),
+  premadePreviewRoute,
 ]);
 
 export const router = createRouter({ routeTree });
