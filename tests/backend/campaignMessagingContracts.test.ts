@@ -20,16 +20,17 @@ const smartLandingSource = readFileSync(join(ROOT, "src/frontend/SmartLanding.ts
 
 describe("campaign messaging architecture", () => {
   it("treats dm and co_dm through the same role predicate", () => {
-    expect(routeSource).toContain("isDmRole(membership.role)");
+    expect(routeSource).toContain("isDmRole(viewer.role)");
     expect(routeSource).not.toContain('membership.role === "dm"');
+    expect(routeSource).not.toContain('viewer.role === "dm"');
   });
 
   it("uses party visibility by default and preserves private channels", () => {
     expect(routeSource).toContain('request.body?.audience ?? "party"');
     expect(routeSource).toContain('message.audience === "party"');
     expect(routeSource).toContain('message.audience === "player"');
-    expect(routeSource).toContain('message.senderUserId === user.userId');
-    expect(routeSource).toContain('message.recipientPlayerId === membership.playerId');
+    expect(routeSource).toContain('message.senderUserId === viewer.userId');
+    expect(routeSource).toContain('message.recipientPlayerId === viewer.playerId');
   });
 
   it("keeps generic messages out of player proposals", () => {
