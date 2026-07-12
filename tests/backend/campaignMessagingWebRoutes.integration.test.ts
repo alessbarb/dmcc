@@ -59,6 +59,27 @@ describe("campaign messaging web routes", () => {
     expect((await server.inject({ method: "POST", url: `/api/campaigns/${CAMPAIGN_ID}/messages`, headers, payload: { content: "Private", audience: "player", recipientPlayerId: "ply_unknown", clientMessageId: "unknown-recipient" } })).statusCode).toBe(404);
   });
 
+  it("keeps player-private messages hidden from direction and other players", async () => {
+    await seedCampaignFixture();
+    const send = await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${CAMPAIGN_ID}/messages`,
+      headers: await authenticatedHeaders(users.playerA),
+      payload: { content: "Only A and B", audience: "player", recipientPlayerId: players.b, clientMessageId: "private-a-b" },
+    });
+    expect(send.statusCode).toBe(201);
+
+    const dmMessages = (await server.inject({ method: "GET", url: `/api/campaigns/${CAMPAIGN_ID}/messages`, headers: await authenticatedHeaders(users.dm) })).json().messages;
+    const recipientMessages = (await server.inject({ method: "GET", url: `/api/campaigns/${CAMPAIGN_ID}/messages`, headers: await authenticatedHeaders(users.playerB) })).json().messages;
+    const senderMessages = (await server.inject({ method: "GET", url: `/api/campaigns/${CAMPAIGN_ID}/messages`, headers: await authenticatedHeaders(users.playerA) })).json().messages;
+
+    expect(dmMessages).toHaveLength(0);
+    expect(recipientMessages).toHaveLength(1);
+    expect(senderMessages).toHaveLength(1);
+    expect(recipientMessages[0].senderName).toBe("Player A");
+    expect(recipientMessages[0].senderColorIndex).toBe(senderMessages[0].senderColorIndex);
+  });
+
   it("replays the same client message without creating a duplicate", async () => {
     await seedCampaignFixture(); const headers = await authenticatedHeaders(users.playerA);
     const payload = { content: "Exactly once", audience: "party", clientMessageId: "client-once" };
@@ -86,7 +107,7 @@ describe("campaign messaging web routes", () => {
   it("rejects invisible and cross-campaign cursors", async () => {
     await seedCampaignFixture();
     await db.insert(campaignMessages).values([
-      { messageId: "msg_private_b", campaignId: CAMPAIGN_ID, senderUserId: users.dm, senderDisplayName: "DM", audience: "player", recipientPlayerId: players.b, content: "Only player B" },
+      { messageId: "msg_private_b", campaignId: CAMPAIGN_ID, senderUserId: users.playerB, senderPlayerId: players.b, senderDisplayName: "Player B", audience: "player", recipientPlayerId: players.b, content: "Only player B" },
       { messageId: "msg_other_campaign", campaignId: OTHER_CAMPAIGN_ID, senderUserId: users.dm, senderDisplayName: "DM", audience: "party", content: "Other campaign" },
     ]);
     const headers = await authenticatedHeaders(users.playerA);
@@ -97,14 +118,14 @@ describe("campaign messaging web routes", () => {
     await seedCampaignFixture();
     await db.insert(campaignMessages).values([
       { messageId: "msg_party_visible", campaignId: CAMPAIGN_ID, senderUserId: users.dm, senderDisplayName: "DM", audience: "party", content: "Visible party message" },
-      { messageId: "msg_private_visible", campaignId: CAMPAIGN_ID, senderUserId: users.dm, senderDisplayName: "DM", audience: "player", recipientPlayerId: players.a, content: "Visible private message" },
-      { messageId: "msg_private_hidden", campaignId: CAMPAIGN_ID, senderUserId: users.dm, senderDisplayName: "DM", audience: "player", recipientPlayerId: players.b, content: "Hidden private message" },
+      { messageId: "msg_private_visible", campaignId: CAMPAIGN_ID, senderUserId: users.playerB, senderPlayerId: players.b, senderDisplayName: "Player B", audience: "player", recipientPlayerId: players.a, content: "Visible private message" },
+      { messageId: "msg_private_hidden", campaignId: CAMPAIGN_ID, senderUserId: users.playerA, senderPlayerId: players.a, senderDisplayName: "Player A", audience: "player", recipientPlayerId: players.b, content: "Hidden private message" },
     ]);
     const headers = await authenticatedHeaders(users.playerA); const payload = { messageIds: ["msg_party_visible", "msg_private_visible", "msg_private_hidden"] };
     expect((await server.inject({ method: "POST", url: `/api/campaigns/${CAMPAIGN_ID}/messages/read`, headers, payload })).statusCode).toBe(204);
     expect((await server.inject({ method: "POST", url: `/api/campaigns/${CAMPAIGN_ID}/messages/read`, headers, payload })).statusCode).toBe(204);
     const reads = await db.select().from(campaignMessageReads).where(and(eq(campaignMessageReads.userId, users.playerA), inArray(campaignMessageReads.messageId, payload.messageIds)));
-    expect(reads.map((read) => read.messageId).sort()).toEqual(["msg_party_visible", "msg_private_visible"]);
+    expect(reads.map((read) => read.messageId).sort()).toEqual(["msg_party_visible", "msg_private_hidden", "msg_private_visible"]);
   });
 
   it("keeps campaign access isolated", async () => {
