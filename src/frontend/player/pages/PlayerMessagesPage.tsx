@@ -15,7 +15,7 @@ export function PlayerMessagesPage() {
   const dockItems = [
     { id: "home", label: t("playerPortal.tabs.home"), Icon: Home, onSelect: () => openPortalTab("home") },
     { id: "character", label: t("playerPortal.tabs.character"), Icon: User, onSelect: () => openPortalTab("character") },
-    { id: "messages", label: t("playerPortal.messaging.title"), Icon: MessageCircle, onSelect: () => undefined },
+    { id: "messages", label: t("playerPortal.messaging.heading"), Icon: MessageCircle, onSelect: () => undefined },
     { id: "recap", label: t("playerPortal.tabs.recap"), Icon: BookOpen, onSelect: () => openPortalTab("recap") },
     { id: "memory", label: t("playerPortal.tabs.memory"), Icon: Shield, onSelect: () => openPortalTab("memory") },
     { id: "constellation", label: t("playerPortal.tabs.constellation"), Icon: Network, onSelect: () => openPortalTab("constellation") },
