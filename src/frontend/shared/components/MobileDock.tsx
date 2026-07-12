@@ -14,6 +14,7 @@ interface MobileDockProps {
   ariaLabel: string;
   moreLabel: string;
   sheetLabel: string;
+  closeLabel: string;
 }
 
 export function MobileDock({
@@ -22,6 +23,7 @@ export function MobileDock({
   ariaLabel,
   moreLabel,
   sheetLabel,
+  closeLabel,
 }: MobileDockProps) {
   const [open, setOpen] = useState(false);
   const directItems = items.slice(0, 3);
@@ -49,32 +51,32 @@ export function MobileDock({
   return (
     <>
       {open && (
-        <div className="campaign-mobile-nav-overlay" role="presentation" onClick={() => setOpen(false)}>
+        <div className="mobile-dock-overlay" role="presentation" onClick={() => setOpen(false)}>
           <section
-            className="campaign-mobile-nav-sheet"
+            className="mobile-dock-sheet"
             role="dialog"
             aria-modal="true"
             aria-label={sheetLabel}
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="campaign-mobile-nav-sheet__header">
+            <div className="mobile-dock-sheet__header">
               <strong>{sheetLabel}</strong>
               <button
                 type="button"
-                className="campaign-mobile-icon-btn"
+                className="mobile-dock-icon-btn"
                 onClick={() => setOpen(false)}
-                aria-label="Cerrar"
+                aria-label={closeLabel}
               >
                 <X size={18} />
               </button>
             </div>
-            <div className="campaign-mobile-nav-sheet__body">
-              <div className="campaign-mobile-nav-sheet__grid">
+            <div className="mobile-dock-sheet__body">
+              <div className="mobile-dock-sheet__grid">
                 {overflowItems.map((item) => (
                   <button
                     key={item.id}
                     type="button"
-                    className={`campaign-mobile-nav-sheet__item ${activeId === item.id ? "active" : ""}`}
+                    className={`mobile-dock-sheet__item ${activeId === item.id ? "active" : ""}`}
                     onClick={() => select(item)}
                     aria-current={activeId === item.id ? "page" : undefined}
                   >
@@ -88,12 +90,12 @@ export function MobileDock({
         </div>
       )}
 
-      <nav className="campaign-mobile-bottom-nav" aria-label={ariaLabel}>
+      <nav className="mobile-dock" aria-label={ariaLabel}>
         {directItems.map((item) => (
           <button
             key={item.id}
             type="button"
-            className={`campaign-mobile-bottom-nav__item ${activeId === item.id ? "active" : ""}`}
+            className={`mobile-dock__item ${activeId === item.id ? "active" : ""}`}
             onClick={() => select(item)}
             aria-current={activeId === item.id ? "page" : undefined}
           >
@@ -103,7 +105,7 @@ export function MobileDock({
         ))}
         <button
           type="button"
-          className={`campaign-mobile-bottom-nav__item ${open ? "active" : ""}`}
+          className={`mobile-dock__item ${open ? "active" : ""}`}
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-haspopup="dialog"
