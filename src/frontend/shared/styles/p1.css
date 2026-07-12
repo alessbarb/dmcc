@@ -99,6 +99,14 @@
   }
 
   .player-portal-nav {
+    display: none;
+  }
+
+  .player-portal-header__messages {
+    display: none;
+  }
+
+  .player-portal-nav--legacy-hidden {
     position: fixed;
     right: 0;
     bottom: 0;

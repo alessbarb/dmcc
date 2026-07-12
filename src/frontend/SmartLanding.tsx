@@ -32,6 +32,7 @@ import { fetchAuthStatus, logout } from "./shared/auth/authClient.js";
 import type { AuthStatus } from "./shared/auth/authTypes.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "./shared/components/PortalTopBar.js";
+import { MobileDock } from "./shared/components/MobileDock.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
 import { apiFetch } from "./shared/api/apiClient.js";
 import {
@@ -456,6 +457,17 @@ function PlayerWorkspace({
     window.setTimeout(() => tabRefs.current[nextTab]?.focus(), 0);
   };
 
+  const playerDockItems = [
+    { id: "home", label: t("playerPortal.tabs.home"), Icon: Home, onSelect: () => onTabChange("home") },
+    { id: "character", label: t("playerPortal.tabs.character"), Icon: User, onSelect: () => onTabChange("character") },
+    { id: "messages", label: t("playerPortal.messaging.title"), Icon: MessageCircle, onSelect: () => navigate({ to: "/portal/messages/$campaignId", params: { campaignId } }) },
+    { id: "recap", label: t("playerPortal.tabs.recap"), Icon: BookOpen, onSelect: () => onTabChange("recap") },
+    { id: "memory", label: t("playerPortal.tabs.memory"), Icon: Shield, onSelect: () => onTabChange("memory") },
+    { id: "constellation", label: t("playerPortal.tabs.constellation"), Icon: Network, onSelect: () => onTabChange("constellation") },
+    { id: "objectives", label: t("playerPortal.tabs.objectives"), Icon: Flag, onSelect: () => onTabChange("objectives") },
+    { id: "notes", label: t("playerPortal.tabs.notes"), Icon: FileText, onSelect: () => onTabChange("notes") },
+  ];
+
   const content = useMemo(() => {
     if (tab === "constellation") return <PlayerConstellation campaignId={campaignId} t={t} />;
     if (!payload) return null;
@@ -531,7 +543,7 @@ function PlayerWorkspace({
         )}
         <button
           type="button"
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary btn-sm player-portal-header__messages"
           onClick={() => navigate({ to: "/portal/messages/$campaignId", params: { campaignId } })}
         >
           <MessageCircle size={15} /> Mensajes
@@ -574,6 +586,13 @@ function PlayerWorkspace({
           {tab !== "constellation" && loading ? <Card><p aria-live="polite"><RefreshCw size={16} /> {t("playerPortal.loading.generic")}</p></Card> : content}
         </section>
       </main>
+      <MobileDock
+        items={playerDockItems}
+        activeId={tab}
+        ariaLabel={t("playerPortal.tabs.ariaLabel")}
+        moreLabel={t("campaignShell.mobileMore")}
+        sheetLabel={t("playerPortal.title")}
+      />
     </div>
   );
 }
