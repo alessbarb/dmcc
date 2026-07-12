@@ -10,6 +10,7 @@ export type CampaignRealtimeEvent = {
   sequence?: number;
   playerId?: string;
   messageId?: string;
+  messageIds?: string[];
 };
 
 type Listener = (event: CampaignRealtimeEvent) => void;
