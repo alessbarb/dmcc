@@ -11,6 +11,7 @@ import {
   Flag,
   Home,
   LogOut,
+  MessageCircle,
   Network,
   Plus,
   RefreshCw,
@@ -528,6 +529,13 @@ function PlayerWorkspace({
             </select>
           </label>
         )}
+        <button
+          type="button"
+          className="btn btn-primary btn-sm"
+          onClick={() => navigate({ to: "/portal/messages/$campaignId", params: { campaignId } })}
+        >
+          <MessageCircle size={15} /> Mensajes
+        </button>
         <button type="button" className="btn btn-secondary btn-sm" onClick={() => navigate({ to: "/player/join" })}>
           <Plus size={15} /> {t("playerPortal.actions.join")}
         </button>

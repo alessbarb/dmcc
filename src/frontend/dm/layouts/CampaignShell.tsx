@@ -12,6 +12,7 @@ import {
   List,
   LogOut,
   MapPin,
+  MessageCircle,
   MoreHorizontal,
   Play,
   Plus,
@@ -94,6 +95,11 @@ const PAGE_META: Record<string, PageMeta> = {
     descriptionKey: "campaignShell.meta.boardsDescription",
   },
   players: {
+    titleKey: "campaignShell.meta.playersTitle",
+    eyebrowKey: "campaignShell.meta.playersEyebrow",
+    descriptionKey: "campaignShell.meta.playersDescription",
+  },
+  messages: {
     titleKey: "campaignShell.meta.playersTitle",
     eyebrowKey: "campaignShell.meta.playersEyebrow",
     descriptionKey: "campaignShell.meta.playersDescription",
@@ -260,6 +266,13 @@ export function CampaignShell() {
       label: t("campaignShell.nav.players"),
       Icon: User,
       group: "secondary",
+    },
+    {
+      path: "messages",
+      label: "Mensajes",
+      Icon: MessageCircle,
+      group: "secondary",
+      mobilePrimary: true,
     },
     {
       path: "rules",
