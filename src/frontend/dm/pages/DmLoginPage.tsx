@@ -72,12 +72,8 @@ export function DmLoginPage() {
               <Shield className="join-portal-icon" size={32} />
               <div className="join-portal-icon-glow" />
             </div>
-            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("dmLogin.title")}</h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", margin: "4px 0 0" }}>
-              {t("dmLogin.subtitle")}
-            </p>
+            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("dmLogin.loginBtn")}</h1>
           </div>
-
 
           <form onSubmit={handleSubmit} className="join-portal-form">
             <div className="form-group">
@@ -138,10 +134,10 @@ export function DmLoginPage() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "12px" }}>
             <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/dm/setup" })}>
-              <Plus size={14} /> {t("dmLogin.setupBtn")}
+              <Plus size={14} /> {t("common.create")}
             </button>
             <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/" })}>
-              <ArrowLeft size={14} /> {t("common.backToLanding")}
+              <ArrowLeft size={14} /> {t("common.back")}
             </button>
           </div>
         </div>

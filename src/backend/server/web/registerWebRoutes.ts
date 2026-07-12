@@ -12,8 +12,10 @@ import { registerLiveTableWebRoutes } from "./routes/liveTableWebRoutes.js";
 import { registerPlayerCharacterLinkWebRoutes } from "./routes/playerCharacterLinkWebRoutes.js";
 import { registerPlayerCharacterProposalWebRoutes } from "./routes/playerCharacterProposalWebRoutes.js";
 import { registerPlayerCharacterSelectionWebRoutes } from "./routes/playerCharacterSelectionWebRoutes.js";
+import { registerPlayerKnowledgeWebRoutes } from "./routes/playerKnowledgeWebRoutes.js";
 import { registerPlayerPortalWebRoutes } from "./routes/playerPortalWebRoutes.js";
 import { registerPremadeCampaignWebRoutes } from "./routes/premadeCampaignWebRoutes.js";
+import { registerRoleScopedCampaignListWebRoutes } from "./routes/roleScopedCampaignListWebRoutes.js";
 import { registerRulesWebRoutes } from "./routes/rulesWebRoutes.js";
 import { registerSearchWebRoutes } from "./routes/searchWebRoutes.js";
 
@@ -27,12 +29,14 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerAuthWebRoutes(server);
   void registerAccountWebRoutes(server);
   void registerHealthWebRoutes(server);
+  void registerRoleScopedCampaignListWebRoutes(server);
   void registerCampaignWebRoutes(server);
   void registerCanvasWebRoutes(server);
   void registerDmHubWebRoutes(server);
   void registerCommandCenterWebRoutes(server);
   void registerInvitationWebRoutes(server);
   void registerLiveTableWebRoutes(server);
+  void registerPlayerKnowledgeWebRoutes(server);
   void registerPlayerPortalWebRoutes(server);
   void registerPlayerCharacterLinkWebRoutes(server);
   void registerPlayerCharacterProposalWebRoutes(server);
