@@ -140,7 +140,7 @@ export async function registerLiveTableWebRoutes(server: FastifyInstance): Promi
       const listenerId = randomUUID();
       const listener = (event: CampaignRealtimeEvent) => {
         reply.raw.write(`event: ${event.type}\n`);
-        reply.raw.write(`data: ${JSON.stringify({ type: event.type, sequence: event.sequence })}\n\n`);
+        reply.raw.write(`data: ${JSON.stringify({ type: event.type, sequence: event.sequence, playerId: event.playerId })}\n\n`);
       };
       campaignEventBus.subscribe(request.params.campaignId, listenerId, listener);
       request.raw.on("close", () => campaignEventBus.unsubscribe(request.params.campaignId, listenerId));

@@ -6,6 +6,7 @@ import {
   Outlet,
   redirect,
 } from "@tanstack/react-router";
+import { PlayerPortalRealtimeSync } from "./player/components/PlayerPortalRealtimeSync.js";
 import { fetchAuthStatus } from "./shared/auth/authClient.js";
 
 async function requireAccountSession() {
@@ -118,7 +119,16 @@ function withSuspense(Component: React.ComponentType) {
   };
 }
 
-const rootRoute = createRootRoute({ component: () => <Outlet /> });
+function RootRouteComponent() {
+  return (
+    <>
+      <PlayerPortalRealtimeSync />
+      <Outlet />
+    </>
+  );
+}
+
+const rootRoute = createRootRoute({ component: RootRouteComponent });
 
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
