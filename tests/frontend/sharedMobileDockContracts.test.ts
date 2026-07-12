@@ -28,19 +28,29 @@ describe("shared mobile dock", () => {
     expect(playerStyles).toContain(".player-portal-nav,\n  .player-portal-header__messages");
   });
 
+  it("centralizes the player options instead of duplicating dock definitions", () => {
+    expect(playerSource).toContain("buildPlayerMobileDockItems");
+    expect(playerMessagesSource).toContain("buildPlayerMobileDockItems");
+    expect(playerDockOptions).toContain('{ id: "messages"');
+    expect(playerSource).not.toContain('const playerDockItems = [');
+    expect(playerMessagesSource).not.toContain('const dockItems = [');
+  });
+
   it("keeps Messages in the three direct player and DM destinations", () => {
     expect(dmSource).toContain('const dockPriority = ["command-center", "session", "messages"]');
     expect(playerDockOptions).toContain('{ id: "messages"');
-    expect(playerSource).toContain("buildPlayerMobileDockItems");
     expect(playerMessagesSource).toContain('activeId="messages"');
   });
 
-  it("contains no campaign-specific legacy classes in the shared dock", () => {
+  it("contains no campaign-specific legacy classes or hardcoded labels", () => {
     expect(dockSource).not.toContain("campaign-mobile-");
     expect(sharedStyles).not.toContain("campaign-mobile-nav-");
     expect(sharedStyles).not.toContain("campaign-mobile-bottom-nav");
     expect(dockSource).toContain("closeLabel");
     expect(dockSource).not.toContain('aria-label="Cerrar"');
+    expect(playerSource).toContain('closeLabel={t("common.close")}');
+    expect(playerMessagesSource).toContain('closeLabel={t("common.close")}');
+    expect(dmSource).toContain('closeLabel={t("common.close")}');
   });
 
   it("does not expose the removed generic proposals workflow", () => {
