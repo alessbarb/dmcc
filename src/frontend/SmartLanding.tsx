@@ -28,10 +28,12 @@ import { CampaignCanvasFlow } from "./dm/canvas/components/CampaignCanvasFlow.js
 import type { InteractionMode } from "./dm/canvas/components/CanvasToolbar.js";
 import { isDmOnlyCanvasVisibility } from "./dm/canvas/services/canvasVisibility.js";
 import { PlayerCharacterSelectionCard } from "./player/components/PlayerCharacterSelectionCard.js";
+import { buildPlayerMobileDockItems } from "./player/navigation/playerMobileDockItems.js";
 import { fetchAuthStatus, logout } from "./shared/auth/authClient.js";
 import type { AuthStatus } from "./shared/auth/authTypes.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "./shared/components/PortalTopBar.js";
+import { MobileDock } from "./shared/components/MobileDock.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
 import { apiFetch } from "./shared/api/apiClient.js";
 import {
@@ -456,6 +458,12 @@ function PlayerWorkspace({
     window.setTimeout(() => tabRefs.current[nextTab]?.focus(), 0);
   };
 
+  const playerDockItems = buildPlayerMobileDockItems({
+    t,
+    openTab: onTabChange,
+    openMessages: () => navigate({ to: "/portal/messages/$campaignId", params: { campaignId } }),
+  });
+
   const content = useMemo(() => {
     if (tab === "constellation") return <PlayerConstellation campaignId={campaignId} t={t} />;
     if (!payload) return null;
@@ -531,7 +539,7 @@ function PlayerWorkspace({
         )}
         <button
           type="button"
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary btn-sm player-portal-header__messages"
           onClick={() => navigate({ to: "/portal/messages/$campaignId", params: { campaignId } })}
         >
           <MessageCircle size={15} /> Mensajes
@@ -574,6 +582,14 @@ function PlayerWorkspace({
           {tab !== "constellation" && loading ? <Card><p aria-live="polite"><RefreshCw size={16} /> {t("playerPortal.loading.generic")}</p></Card> : content}
         </section>
       </main>
+      <MobileDock
+        items={playerDockItems}
+        activeId={tab}
+        ariaLabel={t("playerPortal.tabs.ariaLabel")}
+        moreLabel={t("campaignShell.mobileMore")}
+        sheetLabel={t("playerPortal.title")}
+        closeLabel={t("common.close")}
+      />
     </div>
   );
 }

@@ -17,7 +17,9 @@ describe("campaign messaging navigation", () => {
   it("exposes messaging in DM and co-DM campaign navigation", () => {
     expect(campaignShell).toContain('path: "messages"');
     expect(campaignShell).toContain('label: "Mensajes"');
-    expect(campaignShell).toContain("mobilePrimary: true");
+    expect(campaignShell).toContain('const dockPriority = ["command-center", "session", "messages"]');
+    expect(campaignShell).toContain("<MobileDock");
+    expect(campaignShell).not.toContain("mobilePrimary");
   });
 
   it("removes the location-dependent floating shortcut", () => {

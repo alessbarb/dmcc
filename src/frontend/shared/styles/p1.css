@@ -98,26 +98,9 @@
     width: min(100%, 14rem);
   }
 
-  .player-portal-nav {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 45;
-    justify-content: flex-start;
-    padding: 0.5rem max(0.5rem, env(safe-area-inset-right)) calc(0.5rem + env(safe-area-inset-bottom)) max(0.5rem, env(safe-area-inset-left));
-    border-top: 1px solid var(--border-color);
-    border-bottom: 0;
-    box-shadow: 0 -12px 30px rgb(0 0 0 / 0.28);
-  }
-
-  .player-portal-nav__item {
-    min-width: 5.25rem;
-    min-height: 3.4rem;
-    flex-direction: column;
-    gap: 0.15rem;
-    border-radius: var(--radius-md);
-    font-size: 0.7rem;
+  .player-portal-nav,
+  .player-portal-header__messages {
+    display: none;
   }
 
   .player-portal-main {
@@ -166,9 +149,5 @@
 @media (max-width: 390px) {
   .player-portal-header {
     gap: var(--space-2);
-  }
-
-  .player-portal-nav__item {
-    min-width: 4.75rem;
   }
 }

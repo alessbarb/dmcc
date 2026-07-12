@@ -13,7 +13,6 @@ import {
   LogOut,
   MapPin,
   MessageCircle,
-  MoreHorizontal,
   Play,
   Plus,
   Search,
@@ -21,7 +20,6 @@ import {
   Shield,
   User,
   Users,
-  X,
 } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { ToastContainer } from "../../shared/components/ToastContainer.js";
@@ -36,6 +34,7 @@ import { CampaignGuidedTour } from "../onboarding/CampaignGuidedTour.js";
 import { LiveTableModal } from "../components/LiveTableModal.js";
 import { AccountModal } from "../../account/AccountModal.js";
 import { useKeyboardShortcuts } from "../../shared/hooks/useKeyboardShortcuts.js";
+import { MobileDock } from "../../shared/components/MobileDock.js";
 
 type CampaignNavGroup = "primary" | "secondary";
 
@@ -44,7 +43,6 @@ type CampaignNavItem = {
   label: string;
   Icon: React.ComponentType<{ size?: number }>;
   group: CampaignNavGroup;
-  mobilePrimary?: boolean;
 };
 
 type PageMeta = {
@@ -143,7 +141,6 @@ export function CampaignShell() {
   } = useCampaignStore();
 
   const [showEnterTransition, setShowEnterTransition] = useState(true);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
   const [accountModalOpen, setAccountModalOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
@@ -194,41 +191,24 @@ export function CampaignShell() {
     }
   }, [activeCampaignId, campaignId, selectCampaign]);
 
-  useEffect(() => {
-    if (!mobileNavOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMobileNavOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [mobileNavOpen]);
-
   const navItems: CampaignNavItem[] = [
     {
       path: "command-center",
       label: t("campaignShell.nav.dashboard"),
       Icon: Shield,
       group: "primary",
-      mobilePrimary: true,
     },
     {
       path: "session",
       label: t("campaignShell.nav.session"),
       Icon: Play,
       group: "primary",
-      mobilePrimary: true,
     },
     {
       path: "entities",
       label: t("campaignShell.nav.entities"),
       Icon: Layers,
       group: "primary",
-      mobilePrimary: true,
     },
     {
       path: "canvas",
@@ -253,7 +233,6 @@ export function CampaignShell() {
       label: t("campaignShell.nav.search"),
       Icon: Search,
       group: "secondary",
-      mobilePrimary: true,
     },
     {
       path: "boards",
@@ -272,7 +251,6 @@ export function CampaignShell() {
       label: "Mensajes",
       Icon: MessageCircle,
       group: "secondary",
-      mobilePrimary: true,
     },
     {
       path: "rules",
@@ -296,8 +274,6 @@ export function CampaignShell() {
 
   const primaryNav = navItems.filter((item) => item.group === "primary");
   const secondaryNav = navItems.filter((item) => item.group === "secondary");
-  const mobilePrimaryNav = navItems.filter((item) => item.mobilePrimary);
-  const mobileMoreNav = navItems.filter((item) => !item.mobilePrimary);
 
   const toggleSidebar = () => {
     setSidebarCollapsed((current) => {
@@ -325,9 +301,20 @@ export function CampaignShell() {
     : null;
 
   const handleNavClick = (path: string) => {
-    setMobileNavOpen(false);
     navigate({ to: `/campaigns/${campaignId}/${path}` });
   };
+
+  const dockPriority = ["command-center", "session", "messages"];
+  const dockNavItems = [
+    ...dockPriority.map((path) => navItems.find((item) => item.path === path)).filter(Boolean),
+    ...navItems.filter((item) => !dockPriority.includes(item.path)),
+  ] as CampaignNavItem[];
+  const dockItems = dockNavItems.map(({ path, label, Icon }) => ({
+    id: path,
+    label,
+    Icon,
+    onSelect: () => handleNavClick(path),
+  }));
 
   const renderSidebarItems = (items: CampaignNavItem[]) =>
     items.map(({ path, label, Icon }) => (
@@ -501,106 +488,15 @@ export function CampaignShell() {
         </div>
       </header>
 
-      {mobileNavOpen && (
-        <div
-          className="campaign-mobile-nav-overlay"
-          role="presentation"
-          onClick={() => setMobileNavOpen(false)}
-        >
-          <section
-            className="campaign-mobile-nav-sheet"
-            role="dialog"
-            aria-modal="true"
-            aria-label={t("campaignShell.campaignMenuLabel")}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="campaign-mobile-nav-sheet__header">
-              <div>
-                <strong>{campaignState?.campaign?.title ?? t("campaignShell.defaultTitle")}</strong>
-                <span>{campaignState?.campaign?.system ?? ""}</span>
-              </div>
-              <button
-                type="button"
-                className="campaign-mobile-icon-btn"
-                onClick={() => setMobileNavOpen(false)}
-                aria-label={t("campaignShell.closeCampaignMenuLabel")}
-              >
-                <X size={18} />
-              </button>
-            </div>
+      <MobileDock
+        items={dockItems}
+        activeId={currentSegment}
+        ariaLabel={t("campaignShell.mainNavigationLabel")}
+        moreLabel={t("campaignShell.mobileMore")}
+        sheetLabel={t("campaignShell.campaignMenuLabel")}
+        closeLabel={t("common.close")}
+      />
 
-            <div className="campaign-mobile-nav-sheet__body">
-              <p className="campaign-mobile-nav-sheet__eyebrow">{t("campaignShell.mobileTools")}</p>
-              <div className="campaign-mobile-nav-sheet__grid">
-                {mobileMoreNav.map(({ path, label, Icon }) => (
-                  <button
-                    key={path}
-                    type="button"
-                    className={`campaign-mobile-nav-sheet__item ${
-                      currentSegment === path ? "active" : ""
-                    }`}
-                    data-tour-id={`campaign-mobile-nav-${path}`}
-                    onClick={() => handleNavClick(path)}
-                    aria-current={currentSegment === path ? "page" : undefined}
-                  >
-                    <Icon size={18} />
-                    <span>{label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="campaign-mobile-nav-sheet__footer">
-              <button type="button" className="btn btn-secondary btn-sm" onClick={exitCampaign}>
-                <ArrowLeft size={14} /> {t("nav.backToHub")}
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => setAccountModalOpen(true)}
-              >
-                <User size={14} /> {t("account.title")}
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => void handleSignOutDm()}
-              >
-                <LogOut size={14} /> {t("nav.signOut")}
-              </button>
-            </div>
-          </section>
-        </div>
-      )}
-
-      <nav className="campaign-mobile-bottom-nav" aria-label={t("campaignShell.mainNavigationLabel")}>
-        {mobilePrimaryNav.map(({ path, label, Icon }) => (
-          <button
-            key={path}
-            type="button"
-            className={`campaign-mobile-bottom-nav__item ${
-              currentSegment === path ? "active" : ""
-            }`}
-            data-tour-id={`campaign-mobile-nav-${path}`}
-            onClick={() => handleNavClick(path)}
-            aria-current={currentSegment === path ? "page" : undefined}
-          >
-            <Icon size={19} />
-            <span>{label}</span>
-          </button>
-        ))}
-        <button
-          type="button"
-          className="campaign-mobile-bottom-nav__item"
-          data-tour-id="campaign-mobile-nav-more"
-          onClick={() => setMobileNavOpen(true)}
-          aria-expanded={mobileNavOpen}
-          aria-haspopup="dialog"
-        >
-          <MoreHorizontal size={19} />
-          <span>{t("campaignShell.mobileMore")}</span>
-        </button>
-      </nav>
 
       <main
         className={`main-content ${currentSegment === "canvas" ? "main-content--canvas" : ""}`}
