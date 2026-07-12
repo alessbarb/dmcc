@@ -11,7 +11,6 @@ import { registerInvitationWebRoutes } from "./routes/invitationWebRoutes.js";
 import { registerLiveTableWebRoutes } from "./routes/liveTableWebRoutes.js";
 import { registerPlayerCharacterLinkWebRoutes } from "./routes/playerCharacterLinkWebRoutes.js";
 import { registerPlayerCharacterProposalWebRoutes } from "./routes/playerCharacterProposalWebRoutes.js";
-import { registerPlayerCharacterSelectionWebRoutes } from "./routes/playerCharacterSelectionWebRoutes.js";
 import { registerPlayerKnowledgeWebRoutes } from "./routes/playerKnowledgeWebRoutes.js";
 import { registerPlayerPortalWebRoutes } from "./routes/playerPortalWebRoutes.js";
 import { registerPremadeCampaignWebRoutes } from "./routes/premadeCampaignWebRoutes.js";
@@ -40,7 +39,6 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerPlayerPortalWebRoutes(server);
   void registerPlayerCharacterLinkWebRoutes(server);
   void registerPlayerCharacterProposalWebRoutes(server);
-  void registerPlayerCharacterSelectionWebRoutes(server);
   void registerPremadeCampaignWebRoutes(server);
   void registerRulesWebRoutes(server);
   void registerSearchWebRoutes(server);
