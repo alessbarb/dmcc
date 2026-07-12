@@ -4,6 +4,7 @@ import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
+import { requireCampaignMembership } from "../webAccess.js";
 import { getRequiredWebUser } from "../webSession.js";
 
 function pathOf(url: string): string {
@@ -127,6 +128,16 @@ async function unreadNotifications(userId: string, campaignId: string) {
   });
 }
 
+async function requireActivePlayerMembership(request: Parameters<typeof requireCampaignMembership>[0], campaignId: string) {
+  const context = await requireCampaignMembership(request, campaignId);
+  if (context.membership.role !== "player" || !context.membership.playerId) {
+    const error = new Error("Active player membership required");
+    (error as { statusCode?: number }).statusCode = 403;
+    throw error;
+  }
+  return context;
+}
+
 export async function registerPlayerPortalSynchronizationWebRoutes(server: FastifyInstance): Promise<void> {
   server.addHook("preHandler", async (request) => {
     const path = pathOf(request.url);
@@ -134,7 +145,7 @@ export async function registerPlayerPortalSynchronizationWebRoutes(server: Fasti
     if (!campaignId) return;
 
     if (request.method === "POST" && path.endsWith("/player-portal/resources")) {
-      const user = getRequiredWebUser(request);
+      const { user } = await requireActivePlayerMembership(request, campaignId);
       const resourceId = createId("res");
       await db.insert(schema.activityFeed).values({
         campaignId,
@@ -147,7 +158,7 @@ export async function registerPlayerPortalSynchronizationWebRoutes(server: Fasti
     }
 
     if (request.method === "PUT" && resourceIdFromPath(path)) {
-      const user = getRequiredWebUser(request);
+      const { user } = await requireActivePlayerMembership(request, campaignId);
       const resourceId = resourceIdFromPath(path)!;
       await db.insert(schema.activityFeed).values({
         campaignId,
