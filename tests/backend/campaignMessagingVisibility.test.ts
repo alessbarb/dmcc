@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { canReadCampaignMessage } from "../../src/backend/server/web/routes/campaignMessagingWebRoutes.js";
+import {
+  canReadCampaignMessage,
+  canSendCampaignMessage,
+  MAX_CAMPAIGN_MESSAGE_LENGTH,
+} from "../../src/backend/server/web/routes/campaignMessagingWebRoutes.js";
 
 const partyMessage = {
   audience: "party",
@@ -41,5 +45,23 @@ describe("campaign messaging visibility", () => {
     expect(canReadCampaignMessage(privatePlayerMessage, { role: "player", userId: "usr_a", playerId: "ply_a" })).toBe(true);
     expect(canReadCampaignMessage(privatePlayerMessage, { role: "player", userId: "usr_b", playerId: "ply_b" })).toBe(true);
     expect(canReadCampaignMessage(privatePlayerMessage, { role: "player", userId: "usr_c", playerId: "ply_c" })).toBe(false);
+  });
+});
+
+describe("campaign messaging write permissions", () => {
+  it("allows direction and players to send messages", () => {
+    expect(canSendCampaignMessage("dm")).toBe(true);
+    expect(canSendCampaignMessage("co_dm")).toBe(true);
+    expect(canSendCampaignMessage("player")).toBe(true);
+  });
+
+  it("keeps read-only and unknown roles from sending messages", () => {
+    expect(canSendCampaignMessage("viewer")).toBe(false);
+    expect(canSendCampaignMessage("guest")).toBe(false);
+    expect(canSendCampaignMessage("")).toBe(false);
+  });
+
+  it("defines a bounded message size", () => {
+    expect(MAX_CAMPAIGN_MESSAGE_LENGTH).toBe(4_000);
   });
 });
