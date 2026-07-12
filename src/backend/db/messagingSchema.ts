@@ -1,4 +1,4 @@
-import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { index, pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 
 export const campaignMessages = pgTable("campaign_messages", {
   messageId: text("message_id").primaryKey(),
@@ -9,7 +9,10 @@ export const campaignMessages = pgTable("campaign_messages", {
   recipientPlayerId: text("recipient_player_id"),
   content: text("content").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+}, (table) => ({
+  campaignTimelineIdx: index("idx_campaign_messages_campaign_created_message")
+    .on(table.campaignId, table.createdAt.desc(), table.messageId.desc()),
+}));
 
 export const campaignMessageReads = pgTable("campaign_message_reads", {
   messageId: text("message_id").notNull(),
