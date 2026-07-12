@@ -317,8 +317,7 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
       <Card style={{ display: "grid", gap: 12 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           <div>
-            <h2 style={{ margin: 0 }}>{t("playerPortal.constellation.heading")}</h2>
-            <p style={{ margin: "4px 0 0", color: "var(--text-muted)" }}>{t("playerPortal.constellation.description")}</p>
+            <h2 style={{ margin: 0 }}>{t("playerPortal.tabs.constellation")}</h2>
           </div>
           {canvases.length > 1 && (
             <select className="form-select" value={activeCanvas?.id ?? ""} onChange={(event) => setActiveCanvasId(event.target.value)}>
@@ -327,24 +326,28 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
           )}
         </div>
       </Card>
-      {loading ? <Card><p>{t("playerPortal.loading.constellation")}</p></Card> : error ? <Card><p role="alert" style={{ color: "var(--color-danger)" }}>{error}</p></Card> : !activeCanvas ? <Card><p>{t("playerPortal.empty.noSharedConstellation")}</p></Card> : (
+      {loading ? <Card><p>{t("playerPortal.loading.constellation")}</p></Card> : error ? <Card><p role="alert" style={{ color: "var(--color-danger)" }}>{error}</p></Card> : !activeCanvas ? <Card><p>{t("playerPortal.empty.noVisibleContent")}</p></Card> : (
         <div style={{ height: "min(70vh, 760px)", minHeight: 440, borderRadius: 16, overflow: "hidden", border: "1px solid var(--border-color)", background: "var(--bg-main)" }}>
           <ReactFlowProvider>
             <CampaignCanvasFlow
+              canvasId={activeCanvas.id}
               canvas={activeCanvas}
-              onCanvasChange={() => undefined}
-              onSelectNode={setSelectedNodeId}
-              onSelectEdge={setSelectedEdgeId}
               selectedNodeId={selectedNodeId}
               selectedEdgeId={selectedEdgeId}
+              onSelectNode={setSelectedNodeId}
+              onSelectEdge={setSelectedEdgeId}
+              onClearSelection={() => {
+                setSelectedNodeId(null);
+                setSelectedEdgeId(null);
+              }}
               interactionMode={interactionMode}
-              onInteractionModeChange={setInteractionMode}
-              locked={locked}
-              onLockedChange={setLocked}
+              isLocked={locked}
               showMinimap={showMinimap}
-              onShowMinimapChange={setShowMinimap}
-              readOnly
-              hideDmOnly
+              onModeChange={setInteractionMode}
+              onLockChange={setLocked}
+              onMinimapToggle={() => setShowMinimap((visible) => !visible)}
+              publicOnly
+              isPlayerView
             />
           </ReactFlowProvider>
         </div>
@@ -607,7 +610,7 @@ export function SmartLanding() {
           setPlayerCampaigns(playerResponse.campaigns ?? []);
         }
       } catch {
-        setStatus({ sessionValid: false, role: null } as AuthStatus);
+        setStatus({ accountConfigured: false, sessionValid: false, user: null });
       } finally {
         setLoading(false);
       }
@@ -616,18 +619,18 @@ export function SmartLanding() {
 
   if (loading || !status) {
     return (
-      <RpgPortalBackground>
-        <div style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>
-          <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.loading.access")}</p>
-        </div>
-      </RpgPortalBackground>
+      <div style={{ minHeight: "100vh", position: "relative", display: "grid", placeItems: "center" }}>
+        <RpgPortalBackground />
+        <p style={{ position: "relative", zIndex: 1, color: "var(--text-muted)" }}>{t("playerPortal.loading.access")}</p>
+      </div>
     );
   }
 
   if (!status.sessionValid) {
     return (
-      <RpgPortalBackground>
-        <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 20 }}>
+      <div style={{ minHeight: "100vh", position: "relative", display: "grid", placeItems: "center", padding: 20 }}>
+        <RpgPortalBackground />
+        <div style={{ position: "relative", zIndex: 1 }}>
           <Card style={{ maxWidth: 560 }}>
             <ShieldAlert size={30} />
             <h1>{t("playerPortal.signInRequired.title")}</h1>
@@ -635,7 +638,7 @@ export function SmartLanding() {
             <button className="btn btn-primary" type="button" onClick={() => navigate({ to: "/" })}>{t("playerPortal.signInRequired.goHome")}</button>
           </Card>
         </div>
-      </RpgPortalBackground>
+      </div>
     );
   }
 
@@ -653,7 +656,9 @@ export function SmartLanding() {
   }
 
   return (
-    <RpgPortalBackground>
+    <div style={{ minHeight: "100vh", position: "relative" }}>
+      <RpgPortalBackground />
+      <div style={{ position: "relative", zIndex: 1 }}>
       <PortalTopBar actions={(
         <button className="btn btn-secondary btn-sm" type="button" onClick={async () => {
           await logout();
@@ -701,6 +706,7 @@ export function SmartLanding() {
           </Card>
         )}
       </main>
-    </RpgPortalBackground>
+      </div>
+    </div>
   );
 }
