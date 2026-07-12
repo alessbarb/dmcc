@@ -25,6 +25,12 @@ describe("campaign messaging pagination contract", () => {
     expect(migrationSource).toContain('"campaign_id", "created_at" DESC, "message_id" DESC');
   });
 
+  it("applies message visibility before pagination", () => {
+    expect(routeSource).toContain("messageVisibilityCondition(viewer)");
+    expect(routeSource).toContain("baseConditions.push(visibilityCondition)");
+    expect(routeSource).not.toContain("const visible = messages.filter");
+  });
+
   it("loads older pages without replacing already loaded messages", () => {
     expect(panelSource).toContain("loadOlder");
     expect(panelSource).toContain("mergeMessages(olderPayload.messages, current.messages)");
