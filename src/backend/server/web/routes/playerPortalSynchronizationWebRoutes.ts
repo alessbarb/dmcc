@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
@@ -15,6 +15,11 @@ function campaignIdFromPath(path: string): string | null {
   if (playerMatch) return decodeURIComponent(playerMatch[1]);
   const portalMatch = path.match(/^\/api\/campaigns\/([^/]+)\/player-portal(?:\/|$)/);
   return portalMatch ? decodeURIComponent(portalMatch[1]) : null;
+}
+
+function isPlayerPortalReadPath(path: string): boolean {
+  return /^\/api\/player\/campaigns\/[^/]+(?:\/|$)/.test(path) ||
+    /^\/api\/campaigns\/[^/]+\/player-portal(?:\/state)?$/.test(path);
 }
 
 function resourceIdFromPath(path: string): string | null {
@@ -111,7 +116,7 @@ async function unreadNotifications(userId: string, campaignId: string) {
     .from(schema.notifications)
     .where(and(
       eq(schema.notifications.userId, userId),
-      eq(schema.notifications.readAt, null as never),
+      isNull(schema.notifications.readAt),
     ))
     .orderBy(desc(schema.notifications.createdAt));
   return notifications.filter((notification) => {
@@ -159,15 +164,14 @@ export async function registerPlayerPortalSynchronizationWebRoutes(server: Fasti
     const path = pathOf(request.url);
     const campaignId = campaignIdFromPath(path);
     if (!campaignId || !payload || typeof payload !== "object") return payload;
-    const user = getRequiredWebUser(request);
 
     if (request.method === "POST" && path.endsWith("/player-portal/resources")) {
       const resourceId = (request as typeof request & { portalResourceId?: string }).portalResourceId;
       return { ...(payload as Record<string, unknown>), resourceId };
     }
 
-    if (request.method !== "GET") return payload;
-
+    if (request.method !== "GET" || !isPlayerPortalReadPath(path)) return payload;
+    const user = getRequiredWebUser(request);
     const [status, resources, recapData, liveTable, notifications, playerId] = await Promise.all([
       latestPlayerStatus(campaignId, user.userId),
       playerResources(campaignId, user.userId),
@@ -189,11 +193,11 @@ export async function registerPlayerPortalSynchronizationWebRoutes(server: Fasti
       ...response,
       playerId: response.playerId ?? playerId,
       recap: response.recap ?? recapData.recap,
-      history: response.history ?? recapData.history,
+      history: path.endsWith("/recap") ? recapData.history : (response.history ?? recapData.history),
       liveTable,
       notifications,
       sheet: { ...sheet, status, resources },
-      memory: { ...memory, history: memory.history ?? recapData.history },
+      memory: { ...memory, history: recapData.history },
     };
   });
 
