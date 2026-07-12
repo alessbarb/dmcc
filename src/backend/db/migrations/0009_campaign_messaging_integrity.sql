@@ -4,20 +4,12 @@ ALTER TABLE "campaign_messages"
 
 UPDATE "campaign_messages" AS message
 SET "sender_display_name" = COALESCE(
-  player."display_name",
-  app_user."display_name",
-  app_user."email_normalized",
+  (SELECT player."display_name" FROM "player_profiles" AS player WHERE player."profile_id" = message."sender_player_id"),
+  (SELECT app_user."display_name" FROM "users" AS app_user WHERE app_user."user_id" = message."sender_user_id"),
+  (SELECT app_user."email_normalized" FROM "users" AS app_user WHERE app_user."user_id" = message."sender_user_id"),
   'Unknown sender'
 )
-FROM "users" AS app_user
-LEFT JOIN "player_profiles" AS player
-  ON player."profile_id" = message."sender_player_id"
-WHERE app_user."user_id" = message."sender_user_id"
-  AND message."sender_display_name" IS NULL;
-
-UPDATE "campaign_messages"
-SET "sender_display_name" = 'Unknown sender'
-WHERE "sender_display_name" IS NULL;
+WHERE message."sender_display_name" IS NULL;
 
 ALTER TABLE "campaign_messages"
   ALTER COLUMN "sender_display_name" SET NOT NULL,
@@ -44,7 +36,7 @@ ALTER TABLE "campaign_messages"
   ADD CONSTRAINT "fk_campaign_messages_sender_player"
     FOREIGN KEY ("sender_player_id") REFERENCES "player_profiles"("profile_id") ON DELETE SET NULL,
   ADD CONSTRAINT "fk_campaign_messages_recipient_player"
-    FOREIGN KEY ("recipient_player_id") REFERENCES "player_profiles"("profile_id") ON DELETE SET NULL;
+    FOREIGN KEY ("recipient_player_id") REFERENCES "player_profiles"("profile_id") ON DELETE RESTRICT;
 
 ALTER TABLE "campaign_message_reads"
   ADD CONSTRAINT "fk_campaign_message_reads_message"
