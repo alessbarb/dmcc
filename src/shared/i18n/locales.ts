@@ -4,6 +4,7 @@ import { es } from "./dictionaries/es.js";
 import { fr } from "./dictionaries/fr.js";
 import { it } from "./dictionaries/it.js";
 import { pt } from "./dictionaries/pt.js";
+import { withCampaignMessagingTranslations } from "./campaignMessaging.js";
 import type { TranslationDictionary } from "./types.js";
 
 export const FALLBACK_LOCALE = "en" as const;
@@ -20,37 +21,37 @@ export const LOCALES = {
     code: "en",
     label: "English",
     nativeLabel: "English",
-    dictionary: en,
+    dictionary: withCampaignMessagingTranslations(en, "en"),
   },
   es: {
     code: "es",
     label: "Spanish",
     nativeLabel: "Español",
-    dictionary: es,
+    dictionary: withCampaignMessagingTranslations(es, "es"),
   },
   fr: {
     code: "fr",
     label: "French",
     nativeLabel: "Français",
-    dictionary: fr,
+    dictionary: withCampaignMessagingTranslations(fr, "fr"),
   },
   de: {
     code: "de",
     label: "German",
     nativeLabel: "Deutsch",
-    dictionary: de,
+    dictionary: withCampaignMessagingTranslations(de, "de"),
   },
   it: {
     code: "it",
     label: "Italian",
     nativeLabel: "Italiano",
-    dictionary: it,
+    dictionary: withCampaignMessagingTranslations(it, "it"),
   },
   pt: {
     code: "pt",
     label: "Portuguese",
     nativeLabel: "Português",
-    dictionary: pt,
+    dictionary: withCampaignMessagingTranslations(pt, "pt"),
   },
 } satisfies Record<string, LocaleDefinition>;
 
