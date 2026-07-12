@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { CheckCircle2, Send, User } from "lucide-react";
 import type { TranslationKey } from "@shared/i18n/types.js";
-import { createPlayerProposal } from "../../shared/api/webProductClient.js";
+import { requestPlayerCharacterLink } from "../../shared/api/webProductClient.js";
 
 interface PortalCharacter {
   entityId: string;
@@ -94,7 +94,7 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
           {error && <p role="alert" style={{ color: "var(--color-danger)", margin: 0 }}>{error}</p>}
           {submittedCharacterId && (
             <p role="status" aria-live="polite" style={{ margin: 0 }}>
-              <CheckCircle2 size={16} aria-hidden="true" /> {t("playerPortal.proposals.heading")}
+              <CheckCircle2 size={16} aria-hidden="true" /> Solicitud de personaje enviada
             </p>
           )}
 
@@ -108,10 +108,7 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
               setSubmitting(true);
               setError(null);
               try {
-                await createPlayerProposal(campaignId, {
-                  kind: "link_request",
-                  type: "link_request",
-                  targetCharacterEntityId: selectedCharacter.entityId,
+                await requestPlayerCharacterLink(campaignId, {
                   characterEntityId: selectedCharacter.entityId,
                   characterTitle: selectedCharacter.title,
                 });
@@ -124,7 +121,7 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
               }
             }}
           >
-            <Send size={16} aria-hidden="true" /> {t("playerPortal.proposals.send")}
+            <Send size={16} aria-hidden="true" /> Solicitar personaje
           </button>
         </div>
       )}
