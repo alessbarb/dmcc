@@ -131,7 +131,7 @@ export async function registerLiveTableWebRoutes(server: FastifyInstance): Promi
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/events/stream",
     async (request, reply) => {
-      await requireCampaignMembership(request, request.params.campaignId);
+      const { user } = await requireCampaignMembership(request, request.params.campaignId);
       reply.raw.writeHead(200, {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache, no-transform",
@@ -139,6 +139,7 @@ export async function registerLiveTableWebRoutes(server: FastifyInstance): Promi
       });
       const listenerId = randomUUID();
       const listener = (event: CampaignRealtimeEvent) => {
+        if (event.targetUserIds && !event.targetUserIds.includes(user.userId)) return;
         reply.raw.write(`event: ${event.type}\n`);
         reply.raw.write(`data: ${JSON.stringify({
           type: event.type,
