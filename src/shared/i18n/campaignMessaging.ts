@@ -6,6 +6,7 @@ const campaignMessagingTranslations = {
     retry: "Retry",
     newMessages: "new messages",
     jumpToLatest: "Jump to latest messages",
+    playerDescription: "Visible only to you and the selected player.",
   },
   es: {
     loadOlder: "Cargar mensajes anteriores",
@@ -14,6 +15,7 @@ const campaignMessagingTranslations = {
     retry: "Reintentar",
     newMessages: "mensajes nuevos",
     jumpToLatest: "Ir a los mensajes más recientes",
+    playerDescription: "Visible solo para ti y el jugador seleccionado.",
   },
   fr: {
     loadOlder: "Charger les messages précédents",
@@ -22,6 +24,7 @@ const campaignMessagingTranslations = {
     retry: "Réessayer",
     newMessages: "nouveaux messages",
     jumpToLatest: "Aller aux messages les plus récents",
+    playerDescription: "Visible uniquement par vous et le joueur sélectionné.",
   },
   de: {
     loadOlder: "Frühere Nachrichten laden",
@@ -30,6 +33,7 @@ const campaignMessagingTranslations = {
     retry: "Erneut versuchen",
     newMessages: "neue Nachrichten",
     jumpToLatest: "Zu den neuesten Nachrichten springen",
+    playerDescription: "Nur für dich und den ausgewählten Spieler sichtbar.",
   },
   it: {
     loadOlder: "Carica messaggi precedenti",
@@ -38,6 +42,7 @@ const campaignMessagingTranslations = {
     retry: "Riprova",
     newMessages: "nuovi messaggi",
     jumpToLatest: "Vai ai messaggi più recenti",
+    playerDescription: "Visibile solo a te e al giocatore selezionato.",
   },
   pt: {
     loadOlder: "Carregar mensagens anteriores",
@@ -46,6 +51,7 @@ const campaignMessagingTranslations = {
     retry: "Tentar novamente",
     newMessages: "novas mensagens",
     jumpToLatest: "Ir para as mensagens mais recentes",
+    playerDescription: "Visível apenas para ti e para o jogador selecionado.",
   },
 } as const;
 
