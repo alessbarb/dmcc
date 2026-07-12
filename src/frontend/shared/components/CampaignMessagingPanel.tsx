@@ -141,7 +141,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
     setPayload({ participants: [], messages: [], pageInfo: { hasMore: false, nextCursor: null } });
     setLoading(true);
     void loadLatest().catch((cause) => setError(cause.message)).finally(() => setLoading(false));
-  }, [campaignId, loadLatest]);
+  }, [loadLatest]);
 
   useEffect(() => {
     const source = new EventSource(`/api/campaigns/${encodeURIComponent(campaignId)}/events/stream`);
