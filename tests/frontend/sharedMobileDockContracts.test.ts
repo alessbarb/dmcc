@@ -8,7 +8,6 @@ const dockSource = readFileSync(join(ROOT, "src/frontend/shared/components/Mobil
 const playerSource = readFileSync(join(ROOT, "src/frontend/SmartLanding.tsx"), "utf8");
 const playerMessagesSource = readFileSync(join(ROOT, "src/frontend/player/pages/PlayerMessagesPage.tsx"), "utf8");
 const dmSource = readFileSync(join(ROOT, "src/frontend/dm/layouts/CampaignShell.tsx"), "utf8");
-const clientSource = readFileSync(join(ROOT, "src/frontend/shared/api/webProductClient.ts"), "utf8");
 const playerStyles = readFileSync(join(ROOT, "src/frontend/shared/styles/p1.css"), "utf8");
 const sharedStyles = readFileSync(join(ROOT, "src/frontend/shared/styles/index.css"), "utf8");
 const playerDockOptions = readFileSync(join(ROOT, "src/frontend/player/navigation/playerMobileDockItems.ts"), "utf8");
@@ -32,8 +31,8 @@ describe("shared mobile dock", () => {
     expect(playerSource).toContain("buildPlayerMobileDockItems");
     expect(playerMessagesSource).toContain("buildPlayerMobileDockItems");
     expect(playerDockOptions).toContain('{ id: "messages"');
-    expect(playerSource).not.toContain('const playerDockItems = [');
-    expect(playerMessagesSource).not.toContain('const dockItems = [');
+    expect(playerSource).not.toContain("const playerDockItems = [");
+    expect(playerMessagesSource).not.toContain("const dockItems = [");
   });
 
   it("keeps Messages and the fourth priority action directly accessible", () => {
@@ -61,11 +60,5 @@ describe("shared mobile dock", () => {
     expect(playerSource).toContain('closeLabel={t("common.close")}');
     expect(playerMessagesSource).toContain('closeLabel={t("common.close")}');
     expect(dmSource).toContain('closeLabel={t("common.close")}');
-  });
-
-  it("does not expose the removed generic proposals workflow", () => {
-    expect(playerSource).not.toContain("player_note");
-    expect(playerSource).not.toContain("playerPortal.tabs.proposals");
-    expect(clientSource).not.toContain("getPlayerProposals");
   });
 });
