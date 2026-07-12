@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { registerAssetRoutes } from "../routes/assetRoutes.js";
 import { registerAccountWebRoutes } from "./routes/accountWebRoutes.js";
 import { registerAuthWebRoutes } from "./routes/authWebRoutes.js";
+import { registerCampaignMessagingWebRoutes } from "./routes/campaignMessagingWebRoutes.js";
 import { registerCampaignWebRoutes } from "./routes/campaignWebRoutes.js";
 import { registerCanvasWebRoutes } from "./routes/canvasWebRoutes.js";
 import { registerCommandCenterWebRoutes } from "./routes/commandCenterWebRoutes.js";
@@ -30,6 +31,7 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerHealthWebRoutes(server);
   void registerRoleScopedCampaignListWebRoutes(server);
   void registerCampaignWebRoutes(server);
+  void registerCampaignMessagingWebRoutes(server);
   void registerCanvasWebRoutes(server);
   void registerDmHubWebRoutes(server);
   void registerCommandCenterWebRoutes(server);
