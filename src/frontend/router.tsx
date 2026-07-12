@@ -7,7 +7,6 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { PlayerPortalRealtimeSync } from "./player/components/PlayerPortalRealtimeSync.js";
-import { CampaignMessagingShortcut } from "./shared/components/CampaignMessagingShortcut.js";
 import { fetchAuthStatus } from "./shared/auth/authClient.js";
 
 async function requireAccountSession() {
@@ -130,7 +129,6 @@ function RootRouteComponent() {
   return (
     <>
       <PlayerPortalRealtimeSync />
-      <CampaignMessagingShortcut />
       <Outlet />
     </>
   );
