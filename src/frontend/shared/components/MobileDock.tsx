@@ -26,8 +26,8 @@ export function MobileDock({
   closeLabel,
 }: MobileDockProps) {
   const [open, setOpen] = useState(false);
-  const directItems = items.slice(0, 3);
-  const overflowItems = items.slice(3);
+  const directItems = items.slice(0, 4);
+  const overflowItems = items.slice(4);
 
   useEffect(() => {
     if (!open) return;
