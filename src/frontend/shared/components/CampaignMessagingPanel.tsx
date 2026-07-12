@@ -3,6 +3,8 @@ import { Lock, MessageCircle, Send, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 import { useTranslation } from "../i18n/useTranslation.js";
 
+const MAX_MESSAGE_LENGTH = 4_000;
+
 interface Participant {
   playerId: string;
   displayName: string;
@@ -17,6 +19,7 @@ interface CampaignMessage {
   senderName: string;
   sentByMe: boolean;
   createdAt: string;
+  readByMe: boolean;
   readByCount: number;
 }
 
@@ -41,12 +44,31 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
   const [error, setError] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
 
+  const markMessagesRead = useCallback(async (messages: CampaignMessage[]) => {
+    if (document.visibilityState !== "visible") return;
+    const messageIds = messages
+      .filter((message) => !message.sentByMe && !message.readByMe)
+      .map((message) => message.messageId);
+    if (messageIds.length === 0) return;
+
+    const response = await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/messages/read`, {
+      init: {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messageIds }),
+      },
+    });
+    if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.loading")));
+  }, [campaignId, t]);
+
   const load = useCallback(async () => {
     setError(null);
     const response = await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/messages`);
     if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.loading")));
-    setPayload(await response.json());
-  }, [campaignId, t]);
+    const nextPayload = await response.json() as MessagingPayload;
+    setPayload(nextPayload);
+    await markMessagesRead(nextPayload.messages);
+  }, [campaignId, markMessagesRead, t]);
 
   useEffect(() => {
     setLoading(true);
@@ -63,12 +85,12 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
         void load().catch((cause) => setError(cause.message));
       }, 120);
     };
-    source.addEventListener("player.portal.updated", refresh);
-    source.addEventListener("campaign.updated", refresh);
+    source.addEventListener("campaign.message.created", refresh);
+    source.addEventListener("campaign.message.read", refresh);
     return () => {
       if (refreshTimer !== null) window.clearTimeout(refreshTimer);
-      source.removeEventListener("player.portal.updated", refresh);
-      source.removeEventListener("campaign.updated", refresh);
+      source.removeEventListener("campaign.message.created", refresh);
+      source.removeEventListener("campaign.message.read", refresh);
       source.close();
     };
   }, [campaignId, load]);
@@ -96,7 +118,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
 
   const sendMessage = async () => {
     const text = content.trim();
-    if (!text || sending || (audience === "player" && !recipientPlayerId)) return;
+    if (!text || text.length > MAX_MESSAGE_LENGTH || sending || (audience === "player" && !recipientPlayerId)) return;
     setSending(true);
     setError(null);
     try {
@@ -135,7 +157,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
         </div>
       </header>
 
-      <div aria-live="polite" style={{ overflowY: "auto", padding: "18px 4px", display: "flex", flexDirection: "column", gap: 12 }}>
+      <div role="log" aria-live="polite" style={{ overflowY: "auto", padding: "18px 4px", display: "flex", flexDirection: "column", gap: 12 }}>
         {loading && <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.messaging.loading")}</p>}
         {!loading && payload.messages.length === 0 && (
           <div style={{ margin: "auto", textAlign: "center", color: "var(--text-muted)", maxWidth: 360 }}>
@@ -155,7 +177,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
             <div style={{ display: "flex", alignItems: "center", gap: 5, margin: "4px 6px 0", fontSize: 10, color: "var(--text-muted)" }}>
               {message.audience === "party" ? <Users size={11} /> : <Lock size={11} />}
               <span>{audienceLabel(message)}</span>
-              {message.sentByMe && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}
+              {message.sentByMe && message.readByCount > 0 && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}
             </div>
           </article>
         ))}
@@ -179,13 +201,13 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
         </div>
         <small style={{ color: "var(--text-muted)" }}>{selectedAudienceDescription}</small>
         <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 10, alignItems: "end" }}>
-          <textarea className="form-textarea" rows={3} value={content} onChange={(event) => setContent(event.target.value)} placeholder={t("playerPortal.messaging.placeholder")} onKeyDown={(event) => {
+          <textarea className="form-textarea" rows={3} value={content} maxLength={MAX_MESSAGE_LENGTH} aria-label={t("playerPortal.messaging.placeholder")} onChange={(event) => setContent(event.target.value)} placeholder={t("playerPortal.messaging.placeholder")} onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
               void sendMessage();
             }
           }} />
-          <button className="btn btn-primary" type="button" disabled={!content.trim() || sending || (audience === "player" && !recipientPlayerId)} onClick={() => void sendMessage()}>
+          <button className="btn btn-primary" type="button" disabled={!content.trim() || content.trim().length > MAX_MESSAGE_LENGTH || sending || (audience === "player" && !recipientPlayerId)} onClick={() => void sendMessage()}>
             <Send size={16} /> {t("playerPortal.messaging.send")}
           </button>
         </div>
