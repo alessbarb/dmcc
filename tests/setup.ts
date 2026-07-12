@@ -1,9 +1,12 @@
 import { beforeEach } from "vitest";
 import { db } from "../src/backend/db/client.js";
+import { campaignMessageReads, campaignMessages } from "../src/backend/db/messagingSchema.js";
 import * as schema from "../src/backend/db/schema.js";
 
 async function cleanDatabase() {
   try {
+    await db.delete(campaignMessageReads);
+    await db.delete(campaignMessages);
     await db.delete(schema.activityFeed);
     await db.delete(schema.attachments);
     await db.delete(schema.campaignInvitationAcceptances);
@@ -23,8 +26,9 @@ async function cleanDatabase() {
     await db.delete(schema.playerProfiles);
     await db.delete(schema.dmProfiles);
     await db.delete(schema.campaignMemberships);
-    await db.delete(schema.workspaces);
+    await db.delete(schema.campaigns);
     await db.delete(schema.workspaceMemberships);
+    await db.delete(schema.workspaces);
     await db.delete(schema.authSessions);
     await db.delete(schema.userPreferences);
     await db.delete(schema.recoveryCodes);
