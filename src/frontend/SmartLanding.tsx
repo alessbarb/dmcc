@@ -28,6 +28,7 @@ import { CampaignCanvasFlow } from "./dm/canvas/components/CampaignCanvasFlow.js
 import type { InteractionMode } from "./dm/canvas/components/CanvasToolbar.js";
 import { isDmOnlyCanvasVisibility } from "./dm/canvas/services/canvasVisibility.js";
 import { PlayerCharacterSelectionCard } from "./player/components/PlayerCharacterSelectionCard.js";
+import { buildPlayerMobileDockItems } from "./player/navigation/playerMobileDockItems.js";
 import { fetchAuthStatus, logout } from "./shared/auth/authClient.js";
 import type { AuthStatus } from "./shared/auth/authTypes.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
@@ -457,16 +458,11 @@ function PlayerWorkspace({
     window.setTimeout(() => tabRefs.current[nextTab]?.focus(), 0);
   };
 
-  const playerDockItems = [
-    { id: "home", label: t("playerPortal.tabs.home"), Icon: Home, onSelect: () => onTabChange("home") },
-    { id: "character", label: t("playerPortal.tabs.character"), Icon: User, onSelect: () => onTabChange("character") },
-    { id: "messages", label: t("playerPortal.messaging.heading"), Icon: MessageCircle, onSelect: () => navigate({ to: "/portal/messages/$campaignId", params: { campaignId } }) },
-    { id: "recap", label: t("playerPortal.tabs.recap"), Icon: BookOpen, onSelect: () => onTabChange("recap") },
-    { id: "memory", label: t("playerPortal.tabs.memory"), Icon: Shield, onSelect: () => onTabChange("memory") },
-    { id: "constellation", label: t("playerPortal.tabs.constellation"), Icon: Network, onSelect: () => onTabChange("constellation") },
-    { id: "objectives", label: t("playerPortal.tabs.objectives"), Icon: Flag, onSelect: () => onTabChange("objectives") },
-    { id: "notes", label: t("playerPortal.tabs.notes"), Icon: FileText, onSelect: () => onTabChange("notes") },
-  ];
+  const playerDockItems = buildPlayerMobileDockItems({
+    t,
+    openTab: onTabChange,
+    openMessages: () => navigate({ to: "/portal/messages/$campaignId", params: { campaignId } }),
+  });
 
   const content = useMemo(() => {
     if (tab === "constellation") return <PlayerConstellation campaignId={campaignId} t={t} />;
@@ -592,6 +588,7 @@ function PlayerWorkspace({
         ariaLabel={t("playerPortal.tabs.ariaLabel")}
         moreLabel={t("campaignShell.mobileMore")}
         sheetLabel={t("playerPortal.title")}
+        closeLabel={t("common.close")}
       />
     </div>
   );

@@ -494,6 +494,7 @@ export function CampaignShell() {
         ariaLabel={t("campaignShell.mainNavigationLabel")}
         moreLabel={t("campaignShell.mobileMore")}
         sheetLabel={t("campaignShell.campaignMenuLabel")}
+        closeLabel={t("common.close")}
       />
 
 
