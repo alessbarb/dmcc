@@ -212,19 +212,25 @@ export async function createPlayerNote(
   );
 }
 
-export async function createPlayerProposal(campaignId: string, input: any): Promise<any> {
-  if (input?.kind !== "link_request" && input?.type !== "link_request") {
-    throw new Error("Las propuestas genéricas se han sustituido por la mensajería de campaña");
-  }
+export async function requestPlayerCharacterLink(
+  campaignId: string,
+  input: { characterEntityId: string; characterTitle?: string },
+): Promise<any> {
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/player-portal/proposals`, {
       init: {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
+        body: JSON.stringify({
+          kind: "link_request",
+          type: "link_request",
+          targetCharacterEntityId: input.characterEntityId,
+          characterEntityId: input.characterEntityId,
+          characterTitle: input.characterTitle,
+        }),
       },
     }),
-    "No se pudo enviar la propuesta",
+    "No se pudo solicitar la vinculación del personaje",
   );
 }
 
