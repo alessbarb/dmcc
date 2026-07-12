@@ -247,9 +247,9 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  server.post<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/notes", async (request, reply) => {
+  server.post<{ Params: { campaignId: string }; Body: Record<string, any> }>("/api/campaigns/:campaignId/player-portal/notes", async (request, reply) => {
     const { user, membership } = await requirePlayerPortal(request);
-    const body = request.body ?? {};
+    const body = (request.body ?? {}) as Record<string, any>;
     const content = [body.title, body.content ?? body.details].filter(Boolean).join("\n\n").trim();
     if (!content) { reply.code(400); return { error: "Note content is required" }; }
     const noteId = createId("note");
@@ -258,9 +258,9 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
     return { ok: true, noteId };
   });
 
-  server.put<{ Params: { campaignId: string; noteId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/notes/:noteId", async (request, reply) => {
+  server.put<{ Params: { campaignId: string; noteId: string }; Body: Record<string, any> }>("/api/campaigns/:campaignId/player-portal/notes/:noteId", async (request, reply) => {
     const { user, membership } = await requirePlayerPortal(request);
-    const body = request.body ?? {};
+    const body = (request.body ?? {}) as Record<string, any>;
     const content = [body.title, body.content ?? body.details].filter(Boolean).join("\n\n").trim();
     if (!content) { reply.code(400); return { error: "Note content is required" }; }
     const updated = await db.update(schema.campaignNotes).set({ content, visibilityScope: body.visibility ?? "private", updatedAt: new Date() }).where(and(eq(schema.campaignNotes.campaignId, request.params.campaignId), eq(schema.campaignNotes.noteId, request.params.noteId), eq(schema.campaignNotes.authorUserId, user.userId))).returning({ noteId: schema.campaignNotes.noteId });
@@ -269,9 +269,9 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  server.post<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/objectives", async (request) => {
+  server.post<{ Params: { campaignId: string }; Body: Record<string, any> }>("/api/campaigns/:campaignId/player-portal/objectives", async (request) => {
     const { user, membership } = await requirePlayerPortal(request);
-    const body = request.body ?? {};
+    const body = (request.body ?? {}) as Record<string, any>;
     const objectiveId = createId("obj");
     await db.insert(schema.campaignObjectives).values({ campaignId: request.params.campaignId, objectiveId, playerId: membership.playerId, title: String(body.title ?? body.label ?? "Objetivo personal").slice(0, 180), description: body.description ?? body.details ?? null, kind: body.kind ?? "player", status: body.status ?? "open", visibilityScope: body.visibility ?? "specific_player", linkedEntityIds: body.linkedEntityIds ?? [], sourceType: "player" });
     await db.insert(schema.activityFeed).values({ campaignId: request.params.campaignId, activityId: createId("act"), type: "player.objective.created", actorUserId: user.userId, content: { objectiveId, title: body.title ?? body.label ?? "Objetivo personal" } });
@@ -279,20 +279,21 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
     return { ok: true, objectiveId };
   });
 
-  server.put<{ Params: { campaignId: string; objectiveId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/objectives/:objectiveId", async (request, reply) => {
+  server.put<{ Params: { campaignId: string; objectiveId: string }; Body: Record<string, any> }>("/api/campaigns/:campaignId/player-portal/objectives/:objectiveId", async (request, reply) => {
     const { membership } = await requirePlayerPortal(request);
-    const body = request.body ?? {};
+    const body = (request.body ?? {}) as Record<string, any>;
     const updated = await db.update(schema.campaignObjectives).set({ title: body.title, description: body.description ?? body.details, status: body.status, updatedAt: new Date() }).where(and(eq(schema.campaignObjectives.campaignId, request.params.campaignId), eq(schema.campaignObjectives.objectiveId, request.params.objectiveId), eq(schema.campaignObjectives.playerId, membership.playerId!))).returning({ objectiveId: schema.campaignObjectives.objectiveId });
     if (updated.length === 0) { reply.code(404); return { error: "Objective not found" }; }
     campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated", playerId: membership.playerId! });
     return { ok: true };
   });
 
-  server.post<{ Params: { campaignId: string }; Body: any }>("/api/campaigns/:campaignId/player-portal/proposals", async (request) => {
+  server.post<{ Params: { campaignId: string }; Body: Record<string, any> }>("/api/campaigns/:campaignId/player-portal/proposals", async (request) => {
     const { user, membership } = await requirePlayerPortal(request);
+    const body = (request.body ?? {}) as Record<string, any>;
     const proposalId = createId("prop");
-    const type = request.body?.kind ?? request.body?.type ?? "note";
-    await db.insert(schema.playerProposals).values({ campaignId: request.params.campaignId, proposalId, userId: user.userId, playerId: membership.playerId!, type, content: request.body ?? {}, status: "submitted" });
+    const type = body.kind ?? body.type ?? "note";
+    await db.insert(schema.playerProposals).values({ campaignId: request.params.campaignId, proposalId, userId: user.userId, playerId: membership.playerId!, type, content: body, status: "submitted" });
     await db.insert(schema.activityFeed).values({ campaignId: request.params.campaignId, activityId: createId("act"), type: "player.proposal.submitted", actorUserId: user.userId, content: { proposalId, type } });
     campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated", playerId: membership.playerId! });
     return { ok: true, proposalId };
