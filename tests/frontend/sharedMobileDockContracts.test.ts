@@ -14,9 +14,9 @@ const sharedStyles = readFileSync(join(ROOT, "src/frontend/shared/styles/index.c
 const playerDockOptions = readFileSync(join(ROOT, "src/frontend/player/navigation/playerMobileDockItems.ts"), "utf8");
 
 describe("shared mobile dock", () => {
-  it("always exposes exactly three direct destinations plus More", () => {
-    expect(dockSource).toContain("items.slice(0, 3)");
-    expect(dockSource).toContain("items.slice(3)");
+  it("always exposes exactly four direct destinations plus More", () => {
+    expect(dockSource).toContain("items.slice(0, 4)");
+    expect(dockSource).toContain("items.slice(4)");
     expect(dockSource).toContain("<MoreHorizontal size={19} />");
   });
 
@@ -36,16 +36,26 @@ describe("shared mobile dock", () => {
     expect(playerMessagesSource).not.toContain('const dockItems = [');
   });
 
-  it("keeps Messages in the three direct player and DM destinations", () => {
+  it("keeps Messages and the fourth priority action directly accessible", () => {
     expect(dmSource).toContain('const dockPriority = ["command-center", "session", "messages"]');
+    expect(dmSource).toContain('path: "entities"');
     expect(playerDockOptions).toContain('{ id: "messages"');
+    expect(playerDockOptions).toContain('{ id: "recap"');
     expect(playerMessagesSource).toContain('activeId="messages"');
   });
 
-  it("contains no campaign-specific legacy classes or hardcoded labels", () => {
+  it("uses workspace-neutral CSS and removes previous player navigation", () => {
     expect(dockSource).not.toContain("campaign-mobile-");
     expect(sharedStyles).not.toContain("campaign-mobile-nav-");
     expect(sharedStyles).not.toContain("campaign-mobile-bottom-nav");
+    expect(sharedStyles).not.toContain("player-portal-bottom-nav");
+    expect(sharedStyles).not.toContain(".app-container--campaign-shell .mobile-dock");
+    expect(sharedStyles).toContain(".mobile-dock,\n.mobile-dock-overlay {\n  display: none;");
+    expect(sharedStyles).toContain("  .mobile-dock {\n    position: fixed;");
+    expect(sharedStyles).toContain("grid-template-columns: repeat(5, minmax(0, 1fr));");
+  });
+
+  it("keeps labels internationalized", () => {
     expect(dockSource).toContain("closeLabel");
     expect(dockSource).not.toContain('aria-label="Cerrar"');
     expect(playerSource).toContain('closeLabel={t("common.close")}');
