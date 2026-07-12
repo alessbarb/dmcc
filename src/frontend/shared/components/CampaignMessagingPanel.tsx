@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Lock, MessageCircle, Send, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 
@@ -46,17 +46,37 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
   const [error, setError] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setError(null);
     const response = await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/messages`);
     if (!response.ok) throw new Error(await readApiError(response, "No se pudieron cargar los mensajes"));
     setPayload(await response.json());
-  };
+  }, [campaignId]);
 
   useEffect(() => {
     setLoading(true);
     void load().catch((cause) => setError(cause.message)).finally(() => setLoading(false));
-  }, [campaignId]);
+  }, [load]);
+
+  useEffect(() => {
+    const source = new EventSource(`/api/campaigns/${encodeURIComponent(campaignId)}/events/stream`);
+    let refreshTimer: number | null = null;
+    const refresh = () => {
+      if (refreshTimer !== null) return;
+      refreshTimer = window.setTimeout(() => {
+        refreshTimer = null;
+        void load().catch((cause) => setError(cause.message));
+      }, 120);
+    };
+    source.addEventListener("player.portal.updated", refresh);
+    source.addEventListener("campaign.updated", refresh);
+    return () => {
+      if (refreshTimer !== null) window.clearTimeout(refreshTimer);
+      source.removeEventListener("player.portal.updated", refresh);
+      source.removeEventListener("campaign.updated", refresh);
+      source.close();
+    };
+  }, [campaignId, load]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
