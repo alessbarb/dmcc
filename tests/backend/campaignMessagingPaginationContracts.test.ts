@@ -10,7 +10,7 @@ const routeSource = read("src/backend/server/web/routes/campaignMessagingWebRout
 const panelSource = read("src/frontend/shared/components/CampaignMessagingPanel.tsx");
 const migrationSource = read("src/backend/db/migrations/0008_campaign_message_pagination.sql");
 
- describe("campaign messaging pagination contract", () => {
+describe("campaign messaging pagination contract", () => {
   it("bounds the initial and historical message queries", () => {
     expect(routeSource).toContain("CAMPAIGN_MESSAGE_PAGE_SIZE = 50");
     expect(routeSource).toContain(".limit(CAMPAIGN_MESSAGE_PAGE_SIZE + 1)");
