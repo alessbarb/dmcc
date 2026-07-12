@@ -146,17 +146,23 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
 
     if (!initialLoadCompleteRef.current) {
       initialLoadCompleteRef.current = true;
-      window.requestAnimationFrame(() => scrollToLatest("auto"));
+      await markMessagesRead(nextPayload.messages);
+      window.requestAnimationFrame(() => {
+        endRef.current?.scrollIntoView({ block: "end" });
+        nearBottomRef.current = true;
+        setUnseenCount(0);
+      });
       return;
     }
 
     const incomingCount = newMessages.filter((message) => !message.sentByMe).length;
-    if (nearBottomRef.current) {
-      window.requestAnimationFrame(() => scrollToLatest("smooth"));
+    if (newMessages.length > 0 && nearBottomRef.current) {
+      await markMessagesRead(nextPayload.messages);
+      window.requestAnimationFrame(() => endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }));
     } else if (incomingCount > 0) {
       setUnseenCount((current) => current + incomingCount);
     }
-  }, [fetchPage, scrollToLatest]);
+  }, [fetchPage, markMessagesRead]);
 
   const loadOlder = useCallback(async () => {
     if (loadingOlder || !payload.pageInfo.hasMore || !payload.pageInfo.nextCursor) return;
@@ -340,8 +346,8 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
           {pendingMessage && (
             <article key={pendingMessage.localId} aria-busy={pendingMessage.status === "sending"} style={{ alignSelf: "flex-end", width: "min(82%, 620px)", opacity: pendingMessage.status === "sending" ? .72 : 1 }}>
               <div style={{ display: "flex", justifyContent: "space-between", gap: 12, margin: "0 6px 4px", fontSize: 11, color: "var(--text-muted)" }}>
-                <span>{t("playerPortal.messaging.directionName")}</span>
-                <span>{new Date(pendingMessage.createdAt).toLocaleString()}</span>
+                {dmMode && <span>{t("playerPortal.messaging.directionName")}</span>}
+                <span style={{ marginLeft: "auto" }}>{new Date(pendingMessage.createdAt).toLocaleString()}</span>
               </div>
               <div style={{ padding: "11px 14px", borderRadius: "16px 16px 4px 16px", background: "var(--accent-soft)", border: `1px solid ${pendingMessage.status === "failed" ? "var(--danger)" : "var(--border-color)"}`, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>
                 {pendingMessage.content}
