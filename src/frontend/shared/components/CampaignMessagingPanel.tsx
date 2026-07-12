@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Lock, MessageCircle, Send, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../api/apiClient.js";
+import { useTranslation } from "../i18n/useTranslation.js";
 
 interface Participant {
   playerId: string;
@@ -29,14 +30,8 @@ interface CampaignMessagingPanelProps {
   dmMode?: boolean;
 }
 
-function audienceLabel(message: CampaignMessage, participants: Participant[]): string {
-  if (message.audience === "party") return "Canal de campaña";
-  if (message.audience === "dm") return "Privado con Dirección de juego";
-  const recipient = participants.find((candidate) => candidate.playerId === message.recipientPlayerId);
-  return recipient ? `Privado con ${recipient.displayName}` : "Mensaje privado";
-}
-
 export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignMessagingPanelProps) {
+  const { t } = useTranslation();
   const [payload, setPayload] = useState<MessagingPayload>({ participants: [], messages: [] });
   const [content, setContent] = useState("");
   const [audience, setAudience] = useState<"party" | "dm" | "player">("party");
@@ -49,9 +44,9 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
   const load = useCallback(async () => {
     setError(null);
     const response = await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/messages`);
-    if (!response.ok) throw new Error(await readApiError(response, "No se pudieron cargar los mensajes"));
+    if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.loading")));
     setPayload(await response.json());
-  }, [campaignId]);
+  }, [campaignId, t]);
 
   useEffect(() => {
     setLoading(true);
@@ -83,11 +78,21 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
   }, [payload.messages.length]);
 
   const selectedAudienceDescription = useMemo(() => {
-    if (audience === "party") return "Visible para Dirección de juego y todos los jugadores.";
-    if (audience === "dm") return "Solo visible para ti y Dirección de juego.";
-    const recipient = payload.participants.find((candidate) => candidate.playerId === recipientPlayerId);
-    return recipient ? `Solo visible para Dirección de juego, tú y ${recipient.displayName}.` : "Selecciona un jugador.";
-  }, [audience, payload.participants, recipientPlayerId]);
+    if (audience === "party") return t("playerPortal.messaging.partyDescription");
+    if (audience === "dm") return t("playerPortal.messaging.dmDescription");
+    return recipientPlayerId
+      ? t("playerPortal.messaging.playerDescription")
+      : t("playerPortal.messaging.selectPlayer");
+  }, [audience, recipientPlayerId, t]);
+
+  const audienceLabel = (message: CampaignMessage): string => {
+    if (message.audience === "party") return t("playerPortal.messaging.channelParty");
+    if (message.audience === "dm") return t("playerPortal.messaging.channelDm");
+    const recipient = payload.participants.find((candidate) => candidate.playerId === message.recipientPlayerId);
+    return recipient
+      ? `${t("playerPortal.messaging.privateWith")} ${recipient.displayName}`
+      : t("playerPortal.messaging.privateMessage");
+  };
 
   const sendMessage = async () => {
     const text = content.trim();
@@ -106,7 +111,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
           }),
         },
       });
-      if (!response.ok) throw new Error(await readApiError(response, "No se pudo enviar el mensaje"));
+      if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.send")));
       setContent("");
       await load();
     } catch (cause: any) {
@@ -123,25 +128,25 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
           <MessageCircle size={21} />
         </div>
         <div>
-          <h2 style={{ margin: 0 }}>Mensajes de campaña</h2>
+          <h2 style={{ margin: 0 }}>{t("playerPortal.messaging.heading")}</h2>
           <p style={{ margin: "3px 0 0", color: "var(--text-muted)", fontSize: 13 }}>
-            {dmMode ? "Canal compartido de Dirección de juego y jugadores." : "Habla con Dirección de juego y el resto del grupo."}
+            {t(dmMode ? "playerPortal.messaging.dmSubtitle" : "playerPortal.messaging.playerSubtitle")}
           </p>
         </div>
       </header>
 
       <div aria-live="polite" style={{ overflowY: "auto", padding: "18px 4px", display: "flex", flexDirection: "column", gap: 12 }}>
-        {loading && <p style={{ color: "var(--text-muted)" }}>Cargando mensajes…</p>}
+        {loading && <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.messaging.loading")}</p>}
         {!loading && payload.messages.length === 0 && (
           <div style={{ margin: "auto", textAlign: "center", color: "var(--text-muted)", maxWidth: 360 }}>
             <MessageCircle size={34} style={{ opacity: .5 }} />
-            <p>Todavía no hay mensajes. Abre la conversación con el grupo.</p>
+            <p>{t("playerPortal.messaging.empty")}</p>
           </div>
         )}
         {payload.messages.map((message) => (
           <article key={message.messageId} style={{ alignSelf: message.sentByMe ? "flex-end" : "flex-start", width: "min(82%, 620px)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, margin: "0 6px 4px", fontSize: 11, color: "var(--text-muted)" }}>
-              <span>{message.senderName}</span>
+              <span>{message.senderPlayerId ? message.senderName : t("playerPortal.messaging.directionName")}</span>
               <span>{new Date(message.createdAt).toLocaleString()}</span>
             </div>
             <div style={{ padding: "11px 14px", borderRadius: message.sentByMe ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: message.sentByMe ? "var(--accent-soft)" : "var(--surface-raised)", border: "1px solid var(--border-color)", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>
@@ -149,8 +154,8 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 5, margin: "4px 6px 0", fontSize: 10, color: "var(--text-muted)" }}>
               {message.audience === "party" ? <Users size={11} /> : <Lock size={11} />}
-              <span>{audienceLabel(message, payload.participants)}</span>
-              {message.sentByMe && <span>· leído por {message.readByCount}</span>}
+              <span>{audienceLabel(message)}</span>
+              {message.sentByMe && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}
             </div>
           </article>
         ))}
@@ -160,28 +165,28 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       <footer style={{ borderTop: "1px solid var(--border-color)", paddingTop: 14, display: "grid", gap: 10 }}>
         {error && <p role="alert" style={{ margin: 0, color: "var(--danger)" }}>{error}</p>}
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <select className="form-select" value={audience} onChange={(event) => setAudience(event.target.value as typeof audience)} aria-label="Privacidad del mensaje">
-            <option value="party">Canal de campaña</option>
-            {!dmMode && <option value="dm">Privado con Dirección de juego</option>}
-            <option value="player">Privado con un jugador</option>
+          <select className="form-select" value={audience} onChange={(event) => setAudience(event.target.value as typeof audience)} aria-label={t("playerPortal.messaging.channelParty")}>
+            <option value="party">{t("playerPortal.messaging.channelParty")}</option>
+            {!dmMode && <option value="dm">{t("playerPortal.messaging.channelDm")}</option>}
+            <option value="player">{t("playerPortal.messaging.channelPlayer")}</option>
           </select>
           {audience === "player" && (
-            <select className="form-select" value={recipientPlayerId} onChange={(event) => setRecipientPlayerId(event.target.value)} aria-label="Jugador destinatario">
-              <option value="">Seleccionar jugador…</option>
+            <select className="form-select" value={recipientPlayerId} onChange={(event) => setRecipientPlayerId(event.target.value)} aria-label={t("playerPortal.messaging.selectPlayer")}>
+              <option value="">{t("playerPortal.messaging.selectPlayer")}</option>
               {payload.participants.map((participant) => <option key={participant.playerId} value={participant.playerId}>{participant.displayName}</option>)}
             </select>
           )}
         </div>
         <small style={{ color: "var(--text-muted)" }}>{selectedAudienceDescription}</small>
         <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 10, alignItems: "end" }}>
-          <textarea className="form-textarea" rows={3} value={content} onChange={(event) => setContent(event.target.value)} placeholder="Escribe un mensaje…" onKeyDown={(event) => {
+          <textarea className="form-textarea" rows={3} value={content} onChange={(event) => setContent(event.target.value)} placeholder={t("playerPortal.messaging.placeholder")} onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
               void sendMessage();
             }
           }} />
           <button className="btn btn-primary" type="button" disabled={!content.trim() || sending || (audience === "player" && !recipientPlayerId)} onClick={() => void sendMessage()}>
-            <Send size={16} /> Enviar
+            <Send size={16} /> {t("playerPortal.messaging.send")}
           </button>
         </div>
       </footer>
