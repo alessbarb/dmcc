@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Lock, MessageCircle, Send, Users } from "lucide-react";
+import { ArrowDown, Lock, MessageCircle, RefreshCw, Send, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 import { useTranslation } from "../i18n/useTranslation.js";
 
 const MAX_MESSAGE_LENGTH = 4_000;
+const NEAR_BOTTOM_THRESHOLD_PX = 96;
 
 interface Participant {
   playerId: string;
@@ -34,6 +35,15 @@ interface MessagingPayload {
   pageInfo: MessagingPageInfo;
 }
 
+interface PendingMessage {
+  localId: string;
+  content: string;
+  audience: "party" | "dm" | "player";
+  recipientPlayerId: string | null;
+  createdAt: string;
+  status: "sending" | "failed";
+}
+
 interface CampaignMessagingPanelProps {
   campaignId: string;
   dmMode?: boolean;
@@ -50,6 +60,11 @@ function mergeMessages(...collections: CampaignMessage[][]): CampaignMessage[] {
   });
 }
 
+function isNearBottom(element: HTMLDivElement | null): boolean {
+  if (!element) return true;
+  return element.scrollHeight - element.scrollTop - element.clientHeight <= NEAR_BOTTOM_THRESHOLD_PX;
+}
+
 export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignMessagingPanelProps) {
   const { t } = useTranslation();
   const [payload, setPayload] = useState<MessagingPayload>({
@@ -62,11 +77,19 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
   const [recipientPlayerId, setRecipientPlayerId] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadingOlder, setLoadingOlder] = useState(false);
-  const [sending, setSending] = useState(false);
+  const [pendingMessage, setPendingMessage] = useState<PendingMessage | null>(null);
+  const [unseenCount, setUnseenCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
   const initialLoadCompleteRef = useRef(false);
+  const nearBottomRef = useRef(true);
+  const loadedMessageIdsRef = useRef(new Set<string>());
+  const payloadRef = useRef(payload);
+
+  useEffect(() => {
+    payloadRef.current = payload;
+  }, [payload]);
 
   const markMessagesRead = useCallback(async (messages: CampaignMessage[]) => {
     if (document.visibilityState !== "visible") return;
@@ -83,7 +106,20 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       },
     });
     if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.loading")));
+    setPayload((current) => ({
+      ...current,
+      messages: current.messages.map((message) => messageIds.includes(message.messageId)
+        ? { ...message, readByMe: true }
+        : message),
+    }));
   }, [campaignId, t]);
+
+  const scrollToLatest = useCallback((behavior: ScrollBehavior = "smooth") => {
+    endRef.current?.scrollIntoView({ behavior, block: "end" });
+    nearBottomRef.current = true;
+    setUnseenCount(0);
+    void markMessagesRead(payloadRef.current.messages).catch((cause) => setError(cause.message));
+  }, [markMessagesRead]);
 
   const fetchPage = useCallback(async (before?: string): Promise<MessagingPayload> => {
     const query = before ? `?before=${encodeURIComponent(before)}` : "";
@@ -95,6 +131,9 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
   const loadLatest = useCallback(async () => {
     setError(null);
     const nextPayload = await fetchPage();
+    const newMessages = nextPayload.messages.filter((message) => !loadedMessageIdsRef.current.has(message.messageId));
+    for (const message of nextPayload.messages) loadedMessageIdsRef.current.add(message.messageId);
+
     setPayload((current) => ({
       participants: nextPayload.participants,
       messages: initialLoadCompleteRef.current
@@ -104,12 +143,20 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
         ? current.pageInfo
         : nextPayload.pageInfo,
     }));
-    await markMessagesRead(nextPayload.messages);
+
     if (!initialLoadCompleteRef.current) {
       initialLoadCompleteRef.current = true;
-      window.requestAnimationFrame(() => endRef.current?.scrollIntoView({ block: "end" }));
+      window.requestAnimationFrame(() => scrollToLatest("auto"));
+      return;
     }
-  }, [fetchPage, markMessagesRead]);
+
+    const incomingCount = newMessages.filter((message) => !message.sentByMe).length;
+    if (nearBottomRef.current) {
+      window.requestAnimationFrame(() => scrollToLatest("smooth"));
+    } else if (incomingCount > 0) {
+      setUnseenCount((current) => current + incomingCount);
+    }
+  }, [fetchPage, scrollToLatest]);
 
   const loadOlder = useCallback(async () => {
     if (loadingOlder || !payload.pageInfo.hasMore || !payload.pageInfo.nextCursor) return;
@@ -119,12 +166,12 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
     const previousScrollHeight = list?.scrollHeight ?? 0;
     try {
       const olderPayload = await fetchPage(payload.pageInfo.nextCursor);
+      for (const message of olderPayload.messages) loadedMessageIdsRef.current.add(message.messageId);
       setPayload((current) => ({
         participants: olderPayload.participants,
         messages: mergeMessages(olderPayload.messages, current.messages),
         pageInfo: olderPayload.pageInfo,
       }));
-      await markMessagesRead(olderPayload.messages);
       window.requestAnimationFrame(() => {
         if (!list) return;
         list.scrollTop += list.scrollHeight - previousScrollHeight;
@@ -134,10 +181,14 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
     } finally {
       setLoadingOlder(false);
     }
-  }, [fetchPage, loadingOlder, markMessagesRead, payload.pageInfo]);
+  }, [fetchPage, loadingOlder, payload.pageInfo]);
 
   useEffect(() => {
     initialLoadCompleteRef.current = false;
+    nearBottomRef.current = true;
+    loadedMessageIdsRef.current = new Set();
+    setUnseenCount(0);
+    setPendingMessage(null);
     setPayload({ participants: [], messages: [], pageInfo: { hasMore: false, nextCursor: null } });
     setLoading(true);
     void loadLatest().catch((cause) => setError(cause.message)).finally(() => setLoading(false));
@@ -163,6 +214,16 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
     };
   }, [campaignId, loadLatest]);
 
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible" && nearBottomRef.current) {
+        void markMessagesRead(payloadRef.current.messages).catch((cause) => setError(cause.message));
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", onVisibilityChange);
+  }, [markMessagesRead]);
+
   const selectedAudienceDescription = useMemo(() => {
     if (audience === "party") return t("playerPortal.messaging.partyDescription");
     if (audience === "dm") return t("playerPortal.messaging.dmDescription");
@@ -171,7 +232,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       : t("playerPortal.messaging.selectPlayer");
   }, [audience, recipientPlayerId, t]);
 
-  const audienceLabel = (message: CampaignMessage): string => {
+  const audienceLabel = (message: Pick<CampaignMessage, "audience" | "recipientPlayerId">): string => {
     if (message.audience === "party") return t("playerPortal.messaging.channelParty");
     if (message.audience === "dm") return t("playerPortal.messaging.channelDm");
     const recipient = payload.participants.find((candidate) => candidate.playerId === message.recipientPlayerId);
@@ -180,10 +241,8 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       : t("playerPortal.messaging.privateMessage");
   };
 
-  const sendMessage = async () => {
-    const text = content.trim();
-    if (!text || text.length > MAX_MESSAGE_LENGTH || sending || (audience === "player" && !recipientPlayerId)) return;
-    setSending(true);
+  const submitMessage = async (message: PendingMessage) => {
+    setPendingMessage({ ...message, status: "sending" });
     setError(null);
     try {
       const response = await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/messages`, {
@@ -191,20 +250,46 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            content: text,
-            audience,
-            recipientPlayerId: audience === "player" ? recipientPlayerId : null,
+            content: message.content,
+            audience: message.audience,
+            recipientPlayerId: message.recipientPlayerId,
           }),
         },
       });
       if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.send")));
-      setContent("");
+      setPendingMessage(null);
       await loadLatest();
-      window.requestAnimationFrame(() => endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }));
+      window.requestAnimationFrame(() => scrollToLatest("smooth"));
     } catch (cause: any) {
+      setPendingMessage({ ...message, status: "failed" });
       setError(cause.message);
-    } finally {
-      setSending(false);
+    }
+  };
+
+  const sendMessage = async () => {
+    const text = content.trim();
+    if (!text || text.length > MAX_MESSAGE_LENGTH || pendingMessage?.status === "sending" || (audience === "player" && !recipientPlayerId)) return;
+    const message: PendingMessage = {
+      localId: `pending_${crypto.randomUUID()}`,
+      content: text,
+      audience,
+      recipientPlayerId: audience === "player" ? recipientPlayerId : null,
+      createdAt: new Date().toISOString(),
+      status: "sending",
+    };
+    setContent("");
+    nearBottomRef.current = true;
+    setUnseenCount(0);
+    window.requestAnimationFrame(() => endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }));
+    await submitMessage(message);
+  };
+
+  const handleScroll = () => {
+    const nearBottom = isNearBottom(listRef.current);
+    nearBottomRef.current = nearBottom;
+    if (nearBottom) {
+      setUnseenCount(0);
+      void markMessagesRead(payloadRef.current.messages).catch((cause) => setError(cause.message));
     }
   };
 
@@ -222,36 +307,65 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
         </div>
       </header>
 
-      <div ref={listRef} role="log" aria-live="polite" style={{ overflowY: "auto", padding: "18px 4px", display: "flex", flexDirection: "column", gap: 12 }}>
-        {loading && <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.messaging.loading")}</p>}
-        {!loading && payload.pageInfo.hasMore && (
-          <button className="btn btn-secondary btn-sm" type="button" disabled={loadingOlder} onClick={() => void loadOlder()} style={{ alignSelf: "center" }}>
-            {loadingOlder ? t("playerPortal.messaging.loading") : "Cargar mensajes anteriores"}
+      <div style={{ position: "relative", minHeight: 0 }}>
+        <div ref={listRef} role="log" aria-live="polite" aria-relevant="additions text" onScroll={handleScroll} style={{ height: "100%", overflowY: "auto", padding: "18px 4px", display: "flex", flexDirection: "column", gap: 12 }}>
+          {loading && <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.messaging.loading")}</p>}
+          {!loading && payload.pageInfo.hasMore && (
+            <button className="btn btn-secondary btn-sm" type="button" disabled={loadingOlder} onClick={() => void loadOlder()} style={{ alignSelf: "center" }}>
+              {loadingOlder ? t("playerPortal.messaging.loading") : "Cargar mensajes anteriores"}
+            </button>
+          )}
+          {!loading && payload.messages.length === 0 && !pendingMessage && (
+            <div style={{ margin: "auto", textAlign: "center", color: "var(--text-muted)", maxWidth: 360 }}>
+              <MessageCircle size={34} style={{ opacity: .5 }} />
+              <p>{t("playerPortal.messaging.empty")}</p>
+            </div>
+          )}
+          {payload.messages.map((message) => (
+            <article key={message.messageId} style={{ alignSelf: message.sentByMe ? "flex-end" : "flex-start", width: "min(82%, 620px)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, margin: "0 6px 4px", fontSize: 11, color: "var(--text-muted)" }}>
+                <span>{message.senderPlayerId ? message.senderName : t("playerPortal.messaging.directionName")}</span>
+                <span>{new Date(message.createdAt).toLocaleString()}</span>
+              </div>
+              <div style={{ padding: "11px 14px", borderRadius: message.sentByMe ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: message.sentByMe ? "var(--accent-soft)" : "var(--surface-raised)", border: "1px solid var(--border-color)", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>
+                {message.content}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 5, margin: "4px 6px 0", fontSize: 10, color: "var(--text-muted)" }}>
+                {message.audience === "party" ? <Users size={11} /> : <Lock size={11} />}
+                <span>{audienceLabel(message)}</span>
+                {message.sentByMe && message.readByCount > 0 && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}
+              </div>
+            </article>
+          ))}
+          {pendingMessage && (
+            <article key={pendingMessage.localId} aria-busy={pendingMessage.status === "sending"} style={{ alignSelf: "flex-end", width: "min(82%, 620px)", opacity: pendingMessage.status === "sending" ? .72 : 1 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, margin: "0 6px 4px", fontSize: 11, color: "var(--text-muted)" }}>
+                <span>{t("playerPortal.messaging.directionName")}</span>
+                <span>{new Date(pendingMessage.createdAt).toLocaleString()}</span>
+              </div>
+              <div style={{ padding: "11px 14px", borderRadius: "16px 16px 4px 16px", background: "var(--accent-soft)", border: `1px solid ${pendingMessage.status === "failed" ? "var(--danger)" : "var(--border-color)"}`, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>
+                {pendingMessage.content}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, margin: "4px 6px 0", fontSize: 10, color: pendingMessage.status === "failed" ? "var(--danger)" : "var(--text-muted)" }}>
+                <span>{audienceLabel(pendingMessage)}</span>
+                {pendingMessage.status === "sending" ? (
+                  <span aria-live="polite">{t("playerPortal.messaging.loading")}</span>
+                ) : (
+                  <button className="btn btn-secondary btn-sm" type="button" onClick={() => void submitMessage(pendingMessage)} aria-label={t("playerPortal.messaging.send")}>
+                    <RefreshCw size={12} /> {t("playerPortal.messaging.send")}
+                  </button>
+                )}
+              </div>
+            </article>
+          )}
+          <div ref={endRef} />
+        </div>
+
+        {unseenCount > 0 && (
+          <button className="btn btn-primary btn-sm" type="button" onClick={() => scrollToLatest("smooth")} aria-label={`${t("playerPortal.messaging.heading")}: ${unseenCount}`} style={{ position: "absolute", right: 12, bottom: 12, borderRadius: 999, boxShadow: "var(--shadow-md)" }}>
+            <ArrowDown size={15} /> {unseenCount}
           </button>
         )}
-        {!loading && payload.messages.length === 0 && (
-          <div style={{ margin: "auto", textAlign: "center", color: "var(--text-muted)", maxWidth: 360 }}>
-            <MessageCircle size={34} style={{ opacity: .5 }} />
-            <p>{t("playerPortal.messaging.empty")}</p>
-          </div>
-        )}
-        {payload.messages.map((message) => (
-          <article key={message.messageId} style={{ alignSelf: message.sentByMe ? "flex-end" : "flex-start", width: "min(82%, 620px)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, margin: "0 6px 4px", fontSize: 11, color: "var(--text-muted)" }}>
-              <span>{message.senderPlayerId ? message.senderName : t("playerPortal.messaging.directionName")}</span>
-              <span>{new Date(message.createdAt).toLocaleString()}</span>
-            </div>
-            <div style={{ padding: "11px 14px", borderRadius: message.sentByMe ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: message.sentByMe ? "var(--accent-soft)" : "var(--surface-raised)", border: "1px solid var(--border-color)", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>
-              {message.content}
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 5, margin: "4px 6px 0", fontSize: 10, color: "var(--text-muted)" }}>
-              {message.audience === "party" ? <Users size={11} /> : <Lock size={11} />}
-              <span>{audienceLabel(message)}</span>
-              {message.sentByMe && message.readByCount > 0 && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}
-            </div>
-          </article>
-        ))}
-        <div ref={endRef} />
       </div>
 
       <footer style={{ borderTop: "1px solid var(--border-color)", paddingTop: 14, display: "grid", gap: 10 }}>
@@ -270,14 +384,14 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
           )}
         </div>
         <small style={{ color: "var(--text-muted)" }}>{selectedAudienceDescription}</small>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 10, alignItems: "end" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) auto", gap: 10, alignItems: "end" }}>
           <textarea className="form-textarea" rows={3} value={content} maxLength={MAX_MESSAGE_LENGTH} aria-label={t("playerPortal.messaging.placeholder")} onChange={(event) => setContent(event.target.value)} placeholder={t("playerPortal.messaging.placeholder")} onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
               void sendMessage();
             }
           }} />
-          <button className="btn btn-primary" type="button" disabled={!content.trim() || content.trim().length > MAX_MESSAGE_LENGTH || sending || (audience === "player" && !recipientPlayerId)} onClick={() => void sendMessage()}>
+          <button className="btn btn-primary" type="button" disabled={!content.trim() || content.trim().length > MAX_MESSAGE_LENGTH || pendingMessage?.status === "sending" || (audience === "player" && !recipientPlayerId)} onClick={() => void sendMessage()}>
             <Send size={16} /> {t("playerPortal.messaging.send")}
           </button>
         </div>
