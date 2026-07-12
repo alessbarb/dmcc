@@ -196,13 +196,6 @@ export async function getPlayerNotes(campaignId: string): Promise<{ notes: any[]
   );
 }
 
-export async function getPlayerProposals(campaignId: string): Promise<{ proposals: any[] }> {
-  return readJson(
-    await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/proposals`),
-    "No se pudieron cargar las propuestas",
-  );
-}
-
 export async function createPlayerNote(
   campaignId: string,
   input: { content: string; visibility?: string },
@@ -220,6 +213,9 @@ export async function createPlayerNote(
 }
 
 export async function createPlayerProposal(campaignId: string, input: any): Promise<any> {
+  if (input?.kind !== "link_request" && input?.type !== "link_request") {
+    throw new Error("Las propuestas genéricas se han sustituido por la mensajería de campaña");
+  }
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/player-portal/proposals`, {
       init: {
