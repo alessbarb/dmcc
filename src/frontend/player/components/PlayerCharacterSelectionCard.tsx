@@ -94,7 +94,7 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
           {error && <p role="alert" style={{ color: "var(--color-danger)", margin: 0 }}>{error}</p>}
           {submittedCharacterId && (
             <p role="status" aria-live="polite" style={{ margin: 0 }}>
-              <CheckCircle2 size={16} aria-hidden="true" /> Solicitud de personaje enviada
+              <CheckCircle2 size={16} aria-hidden="true" /> {t("playerPortal.character.requestSent")}
             </p>
           )}
 
@@ -121,7 +121,7 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
               }
             }}
           >
-            <Send size={16} aria-hidden="true" /> Solicitar personaje
+            <Send size={16} aria-hidden="true" /> {t("playerPortal.character.requestAction")}
           </button>
         </div>
       )}
