@@ -69,5 +69,5 @@ export function withCampaignMessagingTranslations<T extends {
         ...campaignMessagingTranslations[locale],
       },
     },
-  };
+  } as T;
 }
