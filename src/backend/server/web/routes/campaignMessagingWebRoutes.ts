@@ -9,12 +9,34 @@ import { isDmRole, requireCampaignMembership } from "../webAccess.js";
 
 const AUDIENCES = new Set(["party", "dm", "player"]);
 
+export interface CampaignMessageVisibilityInput {
+  audience: string;
+  senderUserId: string;
+  recipientPlayerId?: string | null;
+}
+
+export interface CampaignMessageViewer {
+  role: string;
+  userId: string;
+  playerId?: string | null;
+}
+
+export function canReadCampaignMessage(
+  message: CampaignMessageVisibilityInput,
+  viewer: CampaignMessageViewer,
+): boolean {
+  if (isDmRole(viewer.role)) return true;
+  if (message.audience === "party") return true;
+  if (message.senderUserId === viewer.userId) return true;
+  return message.audience === "player" && message.recipientPlayerId === viewer.playerId;
+}
+
 export async function registerCampaignMessagingWebRoutes(server: FastifyInstance): Promise<void> {
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/messages",
     async (request) => {
       const { user, membership } = await requireCampaignMembership(request, request.params.campaignId);
-      const [messages, profiles, users] = await Promise.all([
+      const [messages, profiles] = await Promise.all([
         db.select().from(campaignMessages)
           .where(eq(campaignMessages.campaignId, request.params.campaignId))
           .orderBy(asc(campaignMessages.createdAt)),
@@ -22,17 +44,13 @@ export async function registerCampaignMessagingWebRoutes(server: FastifyInstance
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.status, "active"),
         )),
-        db.select({ userId: schema.users.userId, displayName: schema.users.displayName })
-          .from(schema.users),
       ]);
 
-      const dm = isDmRole(membership.role);
-      const visible = messages.filter((message) => {
-        if (dm) return true;
-        if (message.audience === "party") return true;
-        if (message.senderUserId === user.userId) return true;
-        return message.audience === "player" && message.recipientPlayerId === membership.playerId;
-      });
+      const visible = messages.filter((message) => canReadCampaignMessage(message, {
+        role: membership.role,
+        userId: user.userId,
+        playerId: membership.playerId,
+      }));
 
       if (visible.length > 0) {
         await db.insert(campaignMessageReads).values(
@@ -41,7 +59,6 @@ export async function registerCampaignMessagingWebRoutes(server: FastifyInstance
       }
 
       const profileById = new Map(profiles.map((profile) => [profile.profileId, profile]));
-      const userById = new Map(users.map((candidate) => [candidate.userId, candidate]));
       const readRows = visible.length > 0
         ? await db.select().from(campaignMessageReads).where(inArray(
             campaignMessageReads.messageId,
@@ -68,7 +85,7 @@ export async function registerCampaignMessagingWebRoutes(server: FastifyInstance
           senderPlayerId: message.senderPlayerId,
           senderName: message.senderPlayerId
             ? profileById.get(message.senderPlayerId)?.displayName ?? "Jugador"
-            : userById.get(message.senderUserId)?.displayName ?? "Director de juego",
+            : "Dirección de juego",
           sentByMe: message.senderUserId === user.userId,
           createdAt: message.createdAt,
           readByCount: readersByMessage.get(message.messageId)?.length ?? 0,
