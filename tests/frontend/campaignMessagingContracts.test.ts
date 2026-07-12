@@ -52,11 +52,11 @@ describe("campaign messaging contracts", () => {
     expect(panel).not.toContain("await markMessagesRead(olderPayload.messages)");
   });
 
-  it("shows optimistic sending, failure and retry states", () => {
+  it("shows optimistic sending, failure and manual retry states", () => {
     const panel = read("src/frontend/shared/components/CampaignMessagingPanel.tsx");
 
     expect(panel).toContain('status: "sending" | "failed"');
-    expect(panel).toContain("setPendingMessage({ ...message, status: \"failed\" })");
+    expect(panel).toContain('setPendingMessage({ ...message, status: "failed" })');
     expect(panel).toContain("submitMessage(pendingMessage)");
     expect(panel).toContain('aria-busy={pendingMessage.status === "sending"}');
   });
