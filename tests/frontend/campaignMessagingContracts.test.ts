@@ -34,4 +34,30 @@ describe("campaign messaging contracts", () => {
     expect(migration).toContain("player_note");
     expect(migration).toContain('DELETE FROM "player_proposals"');
   });
+
+  it("does not force scroll while the user is reading history", () => {
+    const panel = read("src/frontend/shared/components/CampaignMessagingPanel.tsx");
+
+    expect(panel).toContain("NEAR_BOTTOM_THRESHOLD_PX");
+    expect(panel).toContain("nearBottomRef.current");
+    expect(panel).toContain("setUnseenCount((current) => current + incomingCount)");
+    expect(panel).toContain("newMessages.length > 0 && nearBottomRef.current");
+  });
+
+  it("marks messages read only at the conversation end", () => {
+    const panel = read("src/frontend/shared/components/CampaignMessagingPanel.tsx");
+
+    expect(panel).toContain("if (nearBottom)");
+    expect(panel).toContain("markMessagesRead(payloadRef.current.messages)");
+    expect(panel).not.toContain("await markMessagesRead(olderPayload.messages)");
+  });
+
+  it("shows optimistic sending, failure and retry states", () => {
+    const panel = read("src/frontend/shared/components/CampaignMessagingPanel.tsx");
+
+    expect(panel).toContain('status: "sending" | "failed"');
+    expect(panel).toContain("setPendingMessage({ ...message, status: \"failed\" })");
+    expect(panel).toContain("submitMessage(pendingMessage)");
+    expect(panel).toContain('aria-busy={pendingMessage.status === "sending"}');
+  });
 });
