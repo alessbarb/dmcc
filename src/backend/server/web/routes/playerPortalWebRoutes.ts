@@ -112,7 +112,7 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
     db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId)),
     db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId)),
     db.select().from(schema.campaignNotes).where(and(eq(schema.campaignNotes.campaignId, campaignId), eq(schema.campaignNotes.authorUserId, user.userId))),
-    db.select().from(schema.playerProposals).where(and(eq(schema.playerProposals.campaignId, campaignId), eq(schema.playerProposals.userId, user.userId))),
+    db.select().from(schema.playerProposals).where(and(eq(schema.playerProposals.campaignId, campaignId), eq(schema.playerProposals.userId, user.userId), eq(schema.playerProposals.type, "link_request"))),
     db.select().from(schema.campaignObjectives).where(eq(schema.campaignObjectives.campaignId, campaignId)),
     db.select().from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, campaignId)),
     db.select().from(playerPortalStates).where(and(eq(playerPortalStates.campaignId, campaignId), eq(playerPortalStates.playerId, profile.profileId))).limit(1),
@@ -208,11 +208,11 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/constellation", async (request) => {
     const portal = await readPlayerPortalForRequest(request);
     const state = await repo.getCampaignState(request.params.campaignId);
-    return { campaign: portal.campaign, entities: portal.entities ?? [], facts: portal.facts ?? [], relations: portal.relations ?? [], objectives: portal.objectives ?? [], clues: portal.clues ?? [], proposals: portal.proposals ?? [], canvases: buildPublicConstellationCanvases(portal, state) };
+    return { campaign: portal.campaign, entities: portal.entities ?? [], facts: portal.facts ?? [], relations: portal.relations ?? [], objectives: portal.objectives ?? [], clues: portal.clues ?? [], canvases: buildPublicConstellationCanvases(portal, state) };
   });
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/character", async (request) => {
     const portal = await readPlayerPortalForRequest(request);
-    return { player: portal.player, linkedCharacter: portal.linkedCharacter, sheet: portal.sheet, availableCharacters: portal.availableCharacters };
+    return { player: portal.player, linkedCharacter: portal.linkedCharacter, sheet: portal.sheet, availableCharacters: portal.availableCharacters, proposals: portal.proposals ?? [] };
   });
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/objectives", async (request) => ({ objectives: (await readPlayerPortalForRequest(request)).objectives ?? [] }));
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/recap", async (request) => {
@@ -220,7 +220,6 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
     return { recap: portal.recap, history: portal.history ?? [] };
   });
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/notes", async (request) => ({ notes: (await readPlayerPortalForRequest(request)).notes ?? [] }));
-  server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/proposals", async (request) => ({ proposals: (await readPlayerPortalForRequest(request)).proposals ?? [] }));
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/player-portal/state", readPlayerPortalForRequest);
 
   server.put<{ Params: { campaignId: string }; Body: Record<string, unknown> }>("/api/campaigns/:campaignId/player-portal/status", async (request) => {
@@ -288,13 +287,19 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  server.post<{ Params: { campaignId: string }; Body: Record<string, any> }>("/api/campaigns/:campaignId/player-portal/proposals", async (request) => {
+  server.post<{ Params: { campaignId: string }; Body: Record<string, any> }>("/api/campaigns/:campaignId/player-portal/proposals", async (request, reply) => {
     const { user, membership } = await requirePlayerPortal(request);
     const body = (request.body ?? {}) as Record<string, any>;
+    const type = body.kind ?? body.type;
+    const characterEntityId = body.targetCharacterEntityId ?? body.characterEntityId;
+    if (type !== "link_request" || typeof characterEntityId !== "string" || !characterEntityId) {
+      reply.code(400);
+      return { error: "Only structured character link requests are accepted as proposals" };
+    }
     const proposalId = createId("prop");
-    const type = body.kind ?? body.type ?? "note";
-    await db.insert(schema.playerProposals).values({ campaignId: request.params.campaignId, proposalId, userId: user.userId, playerId: membership.playerId!, type, content: body, status: "submitted" });
-    await db.insert(schema.activityFeed).values({ campaignId: request.params.campaignId, activityId: createId("act"), type: "player.proposal.submitted", actorUserId: user.userId, content: { proposalId, type } });
+    const content = { ...body, kind: "link_request", type: "link_request", targetCharacterEntityId: characterEntityId, characterEntityId };
+    await db.insert(schema.playerProposals).values({ campaignId: request.params.campaignId, proposalId, userId: user.userId, playerId: membership.playerId!, type: "link_request", content, status: "submitted" });
+    await db.insert(schema.activityFeed).values({ campaignId: request.params.campaignId, activityId: createId("act"), type: "player.character.link.requested", actorUserId: user.userId, content: { proposalId, characterEntityId } });
     campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated", playerId: membership.playerId! });
     return { ok: true, proposalId };
   });
