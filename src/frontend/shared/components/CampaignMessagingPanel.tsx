@@ -23,9 +23,15 @@ interface CampaignMessage {
   readByCount: number;
 }
 
+interface MessagingPageInfo {
+  hasMore: boolean;
+  nextCursor: string | null;
+}
+
 interface MessagingPayload {
   participants: Participant[];
   messages: CampaignMessage[];
+  pageInfo: MessagingPageInfo;
 }
 
 interface CampaignMessagingPanelProps {
@@ -33,16 +39,34 @@ interface CampaignMessagingPanelProps {
   dmMode?: boolean;
 }
 
+function mergeMessages(...collections: CampaignMessage[][]): CampaignMessage[] {
+  const byId = new Map<string, CampaignMessage>();
+  for (const messages of collections) {
+    for (const message of messages) byId.set(message.messageId, message);
+  }
+  return [...byId.values()].sort((left, right) => {
+    const dateDifference = new Date(left.createdAt).getTime() - new Date(right.createdAt).getTime();
+    return dateDifference || left.messageId.localeCompare(right.messageId);
+  });
+}
+
 export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignMessagingPanelProps) {
   const { t } = useTranslation();
-  const [payload, setPayload] = useState<MessagingPayload>({ participants: [], messages: [] });
+  const [payload, setPayload] = useState<MessagingPayload>({
+    participants: [],
+    messages: [],
+    pageInfo: { hasMore: false, nextCursor: null },
+  });
   const [content, setContent] = useState("");
   const [audience, setAudience] = useState<"party" | "dm" | "player">("party");
   const [recipientPlayerId, setRecipientPlayerId] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingOlder, setLoadingOlder] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const initialLoadCompleteRef = useRef(false);
 
   const markMessagesRead = useCallback(async (messages: CampaignMessage[]) => {
     if (document.visibilityState !== "visible") return;
@@ -61,19 +85,63 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
     if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.loading")));
   }, [campaignId, t]);
 
-  const load = useCallback(async () => {
-    setError(null);
-    const response = await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/messages`);
+  const fetchPage = useCallback(async (before?: string): Promise<MessagingPayload> => {
+    const query = before ? `?before=${encodeURIComponent(before)}` : "";
+    const response = await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/messages${query}`);
     if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.loading")));
-    const nextPayload = await response.json() as MessagingPayload;
-    setPayload(nextPayload);
+    return response.json() as Promise<MessagingPayload>;
+  }, [campaignId, t]);
+
+  const loadLatest = useCallback(async () => {
+    setError(null);
+    const nextPayload = await fetchPage();
+    setPayload((current) => ({
+      participants: nextPayload.participants,
+      messages: initialLoadCompleteRef.current
+        ? mergeMessages(current.messages, nextPayload.messages)
+        : nextPayload.messages,
+      pageInfo: initialLoadCompleteRef.current && current.messages.length > nextPayload.messages.length
+        ? current.pageInfo
+        : nextPayload.pageInfo,
+    }));
     await markMessagesRead(nextPayload.messages);
-  }, [campaignId, markMessagesRead, t]);
+    if (!initialLoadCompleteRef.current) {
+      initialLoadCompleteRef.current = true;
+      window.requestAnimationFrame(() => endRef.current?.scrollIntoView({ block: "end" }));
+    }
+  }, [fetchPage, markMessagesRead]);
+
+  const loadOlder = useCallback(async () => {
+    if (loadingOlder || !payload.pageInfo.hasMore || !payload.pageInfo.nextCursor) return;
+    setLoadingOlder(true);
+    setError(null);
+    const list = listRef.current;
+    const previousScrollHeight = list?.scrollHeight ?? 0;
+    try {
+      const olderPayload = await fetchPage(payload.pageInfo.nextCursor);
+      setPayload((current) => ({
+        participants: olderPayload.participants,
+        messages: mergeMessages(olderPayload.messages, current.messages),
+        pageInfo: olderPayload.pageInfo,
+      }));
+      await markMessagesRead(olderPayload.messages);
+      window.requestAnimationFrame(() => {
+        if (!list) return;
+        list.scrollTop += list.scrollHeight - previousScrollHeight;
+      });
+    } catch (cause: any) {
+      setError(cause.message);
+    } finally {
+      setLoadingOlder(false);
+    }
+  }, [fetchPage, loadingOlder, markMessagesRead, payload.pageInfo]);
 
   useEffect(() => {
+    initialLoadCompleteRef.current = false;
+    setPayload({ participants: [], messages: [], pageInfo: { hasMore: false, nextCursor: null } });
     setLoading(true);
-    void load().catch((cause) => setError(cause.message)).finally(() => setLoading(false));
-  }, [load]);
+    void loadLatest().catch((cause) => setError(cause.message)).finally(() => setLoading(false));
+  }, [campaignId, loadLatest]);
 
   useEffect(() => {
     const source = new EventSource(`/api/campaigns/${encodeURIComponent(campaignId)}/events/stream`);
@@ -82,7 +150,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       if (refreshTimer !== null) return;
       refreshTimer = window.setTimeout(() => {
         refreshTimer = null;
-        void load().catch((cause) => setError(cause.message));
+        void loadLatest().catch((cause) => setError(cause.message));
       }, 120);
     };
     source.addEventListener("campaign.message.created", refresh);
@@ -93,11 +161,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       source.removeEventListener("campaign.message.read", refresh);
       source.close();
     };
-  }, [campaignId, load]);
-
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [payload.messages.length]);
+  }, [campaignId, loadLatest]);
 
   const selectedAudienceDescription = useMemo(() => {
     if (audience === "party") return t("playerPortal.messaging.partyDescription");
@@ -135,7 +199,8 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       });
       if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.send")));
       setContent("");
-      await load();
+      await loadLatest();
+      window.requestAnimationFrame(() => endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" }));
     } catch (cause: any) {
       setError(cause.message);
     } finally {
@@ -157,8 +222,13 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
         </div>
       </header>
 
-      <div role="log" aria-live="polite" style={{ overflowY: "auto", padding: "18px 4px", display: "flex", flexDirection: "column", gap: 12 }}>
+      <div ref={listRef} role="log" aria-live="polite" style={{ overflowY: "auto", padding: "18px 4px", display: "flex", flexDirection: "column", gap: 12 }}>
         {loading && <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.messaging.loading")}</p>}
+        {!loading && payload.pageInfo.hasMore && (
+          <button className="btn btn-secondary btn-sm" type="button" disabled={loadingOlder} onClick={() => void loadOlder()} style={{ alignSelf: "center" }}>
+            {loadingOlder ? t("playerPortal.messaging.loading") : "Cargar mensajes anteriores"}
+          </button>
+        )}
         {!loading && payload.messages.length === 0 && (
           <div style={{ margin: "auto", textAlign: "center", color: "var(--text-muted)", maxWidth: 360 }}>
             <MessageCircle size={34} style={{ opacity: .5 }} />
