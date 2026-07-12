@@ -10,7 +10,7 @@ export const campaignMessages = pgTable("campaign_messages", {
   senderDisplayName: text("sender_display_name").notNull(),
   clientMessageId: text("client_message_id"),
   audience: text("audience").notNull().default("party"),
-  recipientPlayerId: text("recipient_player_id").references(() => schema.playerProfiles.profileId, { onDelete: "set null" }),
+  recipientPlayerId: text("recipient_player_id").references(() => schema.playerProfiles.profileId, { onDelete: "restrict" }),
   content: text("content").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }, (table) => ({
