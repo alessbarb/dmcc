@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, lt, or } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import { campaignMessageReads, campaignMessages } from "../../../db/messagingSchema.js";
@@ -10,6 +10,7 @@ import { isDmRole, requireCampaignMembership } from "../webAccess.js";
 const AUDIENCES = new Set(["party", "dm", "player"]);
 const MESSAGE_WRITER_ROLES = new Set(["dm", "co_dm", "player"]);
 export const MAX_CAMPAIGN_MESSAGE_LENGTH = 4_000;
+export const CAMPAIGN_MESSAGE_PAGE_SIZE = 50;
 const MAX_READ_RECEIPTS_PER_REQUEST = 100;
 
 export interface CampaignMessageVisibilityInput {
@@ -38,32 +39,79 @@ export function canSendCampaignMessage(role: string): boolean {
   return MESSAGE_WRITER_ROLES.has(role);
 }
 
+function messageVisibilityCondition(viewer: CampaignMessageViewer) {
+  if (isDmRole(viewer.role)) return undefined;
+  const privateRecipientCondition = viewer.playerId
+    ? and(
+        eq(campaignMessages.audience, "player"),
+        eq(campaignMessages.recipientPlayerId, viewer.playerId),
+      )
+    : undefined;
+  return or(
+    eq(campaignMessages.audience, "party"),
+    eq(campaignMessages.senderUserId, viewer.userId),
+    privateRecipientCondition,
+  );
+}
+
 export async function registerCampaignMessagingWebRoutes(server: FastifyInstance): Promise<void> {
-  server.get<{ Params: { campaignId: string } }>(
+  server.get<{
+    Params: { campaignId: string };
+    Querystring: { before?: string };
+  }>(
     "/api/campaigns/:campaignId/messages",
-    async (request) => {
+    async (request, reply) => {
       const { user, membership } = await requireCampaignMembership(request, request.params.campaignId);
-      const [messages, profiles] = await Promise.all([
+      const viewer = {
+        role: membership.role,
+        userId: user.userId,
+        playerId: membership.playerId,
+      };
+      const visibilityCondition = messageVisibilityCondition(viewer);
+      const baseConditions = [eq(campaignMessages.campaignId, request.params.campaignId)];
+      if (visibilityCondition) baseConditions.push(visibilityCondition);
+
+      if (request.query.before) {
+        const [cursorMessage] = await db.select({
+          messageId: campaignMessages.messageId,
+          createdAt: campaignMessages.createdAt,
+        }).from(campaignMessages).where(and(
+          ...baseConditions,
+          eq(campaignMessages.messageId, request.query.before),
+        )).limit(1);
+
+        if (!cursorMessage) {
+          reply.code(400);
+          return { error: "Invalid message cursor" };
+        }
+
+        baseConditions.push(or(
+          lt(campaignMessages.createdAt, cursorMessage.createdAt),
+          and(
+            eq(campaignMessages.createdAt, cursorMessage.createdAt),
+            lt(campaignMessages.messageId, cursorMessage.messageId),
+          ),
+        )!);
+      }
+
+      const [messageRows, profiles] = await Promise.all([
         db.select().from(campaignMessages)
-          .where(eq(campaignMessages.campaignId, request.params.campaignId))
-          .orderBy(asc(campaignMessages.createdAt)),
+          .where(and(...baseConditions))
+          .orderBy(desc(campaignMessages.createdAt), desc(campaignMessages.messageId))
+          .limit(CAMPAIGN_MESSAGE_PAGE_SIZE + 1),
         db.select().from(schema.playerProfiles).where(and(
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.status, "active"),
         )),
       ]);
 
-      const visible = messages.filter((message) => canReadCampaignMessage(message, {
-        role: membership.role,
-        userId: user.userId,
-        playerId: membership.playerId,
-      }));
-
+      const hasMore = messageRows.length > CAMPAIGN_MESSAGE_PAGE_SIZE;
+      const pageMessages = messageRows.slice(0, CAMPAIGN_MESSAGE_PAGE_SIZE).reverse();
       const profileById = new Map(profiles.map((profile) => [profile.profileId, profile]));
-      const readRows = visible.length > 0
+      const readRows = pageMessages.length > 0
         ? await db.select().from(campaignMessageReads).where(inArray(
             campaignMessageReads.messageId,
-            visible.map((message) => message.messageId),
+            pageMessages.map((message) => message.messageId),
           ))
         : [];
       const readersByMessage = new Map<string, string[]>();
@@ -78,7 +126,7 @@ export async function registerCampaignMessagingWebRoutes(server: FastifyInstance
           playerId: profile.profileId,
           displayName: profile.displayName,
         })),
-        messages: visible.map((message) => {
+        messages: pageMessages.map((message) => {
           const readers = readersByMessage.get(message.messageId) ?? [];
           return {
             messageId: message.messageId,
@@ -95,6 +143,10 @@ export async function registerCampaignMessagingWebRoutes(server: FastifyInstance
             readByCount: readers.filter((readerUserId) => readerUserId !== message.senderUserId).length,
           };
         }),
+        pageInfo: {
+          hasMore,
+          nextCursor: hasMore ? pageMessages[0]?.messageId ?? null : null,
+        },
       };
     },
   );
