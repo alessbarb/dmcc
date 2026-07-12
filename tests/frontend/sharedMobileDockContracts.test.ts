@@ -14,9 +14,9 @@ const sharedStyles = readFileSync(join(ROOT, "src/frontend/shared/styles/index.c
 const playerDockOptions = readFileSync(join(ROOT, "src/frontend/player/navigation/playerMobileDockItems.ts"), "utf8");
 
 describe("shared mobile dock", () => {
-  it("always exposes exactly three direct destinations plus More", () => {
-    expect(dockSource).toContain("items.slice(0, 3)");
-    expect(dockSource).toContain("items.slice(3)");
+  it("always exposes exactly four direct destinations plus More", () => {
+    expect(dockSource).toContain("items.slice(0, 4)");
+    expect(dockSource).toContain("items.slice(4)");
     expect(dockSource).toContain("<MoreHorizontal size={19} />");
   });
 
@@ -46,6 +46,10 @@ describe("shared mobile dock", () => {
     expect(dockSource).not.toContain("campaign-mobile-");
     expect(sharedStyles).not.toContain("campaign-mobile-nav-");
     expect(sharedStyles).not.toContain("campaign-mobile-bottom-nav");
+    expect(sharedStyles).not.toContain("player-portal-bottom-nav");
+    expect(sharedStyles).not.toContain(".app-container--campaign-shell .mobile-dock");
+    expect(sharedStyles).toContain(".mobile-dock {
+    position: fixed;");
     expect(dockSource).toContain("closeLabel");
     expect(dockSource).not.toContain('aria-label="Cerrar"');
     expect(playerSource).toContain('closeLabel={t("common.close")}');
