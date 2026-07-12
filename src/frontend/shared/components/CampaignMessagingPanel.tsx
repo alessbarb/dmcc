@@ -2,10 +2,13 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ArrowDown, Lock, MessageCircle, RefreshCw, Send, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 import { useTranslation } from "../i18n/useTranslation.js";
-import { getCampaignMessagingUiCopy } from "./campaignMessagingUiCopy.js";
 
 const MAX_MESSAGE_LENGTH = 4_000;
 const NEAR_BOTTOM_THRESHOLD_PX = 96;
+const SENDER_COLORS = [
+  "#2563eb", "#7c3aed", "#db2777", "#dc2626", "#ea580c",
+  "#ca8a04", "#16a34a", "#0d9488", "#0891b2", "#4f46e5",
+] as const;
 
 type Audience = "party" | "dm" | "player";
 
@@ -17,6 +20,7 @@ interface CampaignMessage {
   recipientPlayerId?: string | null;
   senderPlayerId?: string | null;
   senderName: string;
+  senderColorIndex: number;
   sentByMe: boolean;
   createdAt: string;
   readByMe: boolean;
@@ -49,9 +53,12 @@ function isNearBottom(element: HTMLDivElement | null): boolean {
   return element.scrollHeight - element.scrollTop - element.clientHeight <= NEAR_BOTTOM_THRESHOLD_PX;
 }
 
+function senderColor(index: number): string {
+  return SENDER_COLORS[Math.abs(index) % SENDER_COLORS.length] ?? SENDER_COLORS[0];
+}
+
 export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignMessagingPanelProps) {
   const { t } = useTranslation();
-  const uiCopy = useMemo(() => getCampaignMessagingUiCopy(), []);
   const [payload, setPayload] = useState<MessagingPayload>({ participants: [], messages: [], pageInfo: { hasMore: false, nextCursor: null } });
   const [content, setContent] = useState("");
   const [audience, setAudience] = useState<Audience>("party");
@@ -162,13 +169,8 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       }, 120);
     };
     const refreshReads = (event: MessageEvent<string>) => {
-      try {
-        const ids = (JSON.parse(event.data) as { messageIds?: string[] }).messageIds ?? [];
-        if (!payloadRef.current.messages.some((message) => message.sentByMe && ids.includes(message.messageId))) return;
-      } catch {
-        // Fall back to refresh for malformed legacy events.
-      }
-      refresh();
+      const ids = (JSON.parse(event.data) as { messageIds?: string[] }).messageIds ?? [];
+      if (payloadRef.current.messages.some((message) => message.sentByMe && ids.includes(message.messageId))) refresh();
     };
     source.addEventListener("campaign.message.created", refresh);
     source.addEventListener("campaign.message.read", refreshReads as EventListener);
@@ -263,28 +265,31 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       <div style={{ position: "relative", minHeight: 0 }}>
         <div ref={listRef} role="log" aria-live="polite" aria-relevant="additions text" onScroll={handleScroll} style={{ height: "100%", overflowY: "auto", padding: "18px 4px", display: "flex", flexDirection: "column", gap: 12 }}>
           {loading && <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.messaging.loading")}</p>}
-          {!loading && payload.pageInfo.hasMore && <button className="btn btn-secondary btn-sm" type="button" disabled={loadingOlder} onClick={() => void loadOlder()} style={{ alignSelf: "center" }}>{loadingOlder ? t("playerPortal.messaging.loading") : uiCopy.loadOlder}</button>}
+          {!loading && payload.pageInfo.hasMore && <button className="btn btn-secondary btn-sm" type="button" disabled={loadingOlder} onClick={() => void loadOlder()} style={{ alignSelf: "center" }}>{loadingOlder ? t("playerPortal.messaging.loading") : t("playerPortal.messaging.loadOlder")}</button>}
           {!loading && payload.messages.length === 0 && !pendingMessage && <div style={{ margin: "auto", textAlign: "center", color: "var(--text-muted)", maxWidth: 360 }}><MessageCircle size={34} style={{ opacity: .5 }} /><p>{t("playerPortal.messaging.empty")}</p></div>}
-          {payload.messages.map((message) => (
-            <article key={message.messageId} style={{ alignSelf: message.sentByMe ? "flex-end" : "flex-start", width: "min(88%, 620px)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, margin: "0 6px 4px", fontSize: 11, color: "var(--text-muted)" }}><span>{message.senderName}</span><span>{new Date(message.createdAt).toLocaleString()}</span></div>
-              <div style={{ padding: "11px 14px", borderRadius: message.sentByMe ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: message.sentByMe ? "var(--accent-soft)" : "var(--surface-raised)", border: "1px solid var(--border-color)", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{message.content}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 5, margin: "4px 6px 0", fontSize: 10, color: "var(--text-muted)" }}>{message.audience === "party" ? <Users size={11} /> : <Lock size={11} />}<span>{audienceLabel(message)}</span>{message.sentByMe && message.readByCount > 0 && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}</div>
-            </article>
-          ))}
+          {payload.messages.map((message) => {
+            const color = senderColor(message.senderColorIndex);
+            return (
+              <article key={message.messageId} style={{ alignSelf: message.sentByMe ? "flex-end" : "flex-start", width: "min(88%, 620px)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, margin: "0 6px 4px", fontSize: 11 }}><strong style={{ color }}>{message.senderName}</strong><span style={{ color: "var(--text-muted)" }}>{new Date(message.createdAt).toLocaleString()}</span></div>
+                <div style={{ padding: "11px 14px", borderRadius: message.sentByMe ? "16px 16px 4px 16px" : "16px 16px 16px 4px", background: `color-mix(in srgb, ${color} 14%, var(--surface-raised))`, border: `1px solid color-mix(in srgb, ${color} 55%, var(--border-color))`, borderInlineStartWidth: 4, borderInlineStartColor: color, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{message.content}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 5, margin: "4px 6px 0", fontSize: 10, color: "var(--text-muted)" }}>{message.audience === "party" ? <Users size={11} /> : <Lock size={11} />}<span>{audienceLabel(message)}</span>{message.sentByMe && message.readByCount > 0 && <span>· {t("playerPortal.messaging.readBy")} {message.readByCount}</span>}</div>
+              </article>
+            );
+          })}
           {pendingMessage && (
             <article key={pendingMessage.localId} aria-busy={pendingMessage.status === "sending"} style={{ alignSelf: "flex-end", width: "min(88%, 620px)", opacity: pendingMessage.status === "sending" ? .72 : 1 }}>
               <div style={{ display: "flex", justifyContent: "flex-end", margin: "0 6px 4px", fontSize: 11, color: "var(--text-muted)" }}>{new Date(pendingMessage.createdAt).toLocaleString()}</div>
               <div style={{ padding: "11px 14px", borderRadius: "16px 16px 4px 16px", background: "var(--accent-soft)", border: `1px solid ${pendingMessage.status === "failed" ? "var(--danger)" : "var(--border-color)"}`, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{pendingMessage.content}</div>
               <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 8, margin: "4px 6px 0", fontSize: 10, color: pendingMessage.status === "failed" ? "var(--danger)" : "var(--text-muted)" }}>
-                <span>{audienceLabel(pendingMessage)} · {pendingMessage.status === "sending" ? uiCopy.sending : uiCopy.failed}</span>
-                {pendingMessage.status === "failed" && <button className="btn btn-secondary btn-sm" type="button" onClick={() => void submitMessage(pendingMessage)} aria-label={uiCopy.retry}><RefreshCw size={12} /> {uiCopy.retry}</button>}
+                <span>{audienceLabel(pendingMessage)} · {pendingMessage.status === "sending" ? t("playerPortal.messaging.sending") : t("playerPortal.messaging.failed")}</span>
+                {pendingMessage.status === "failed" && <button className="btn btn-secondary btn-sm" type="button" onClick={() => void submitMessage(pendingMessage)} aria-label={t("playerPortal.messaging.retry")}><RefreshCw size={12} /> {t("playerPortal.messaging.retry")}</button>}
               </div>
             </article>
           )}
           <div ref={endRef} />
         </div>
-        {unseenCount > 0 && <button className="btn btn-primary btn-sm" type="button" onClick={() => scrollToLatest("smooth")} aria-label={`${uiCopy.jumpToLatest}: ${unseenCount} ${uiCopy.newMessages}`} style={{ position: "absolute", right: 12, bottom: 12, maxWidth: "calc(100% - 24px)", borderRadius: 999, boxShadow: "var(--shadow-md)" }}><ArrowDown size={15} /> {unseenCount} {uiCopy.newMessages}</button>}
+        {unseenCount > 0 && <button className="btn btn-primary btn-sm" type="button" onClick={() => scrollToLatest("smooth")} aria-label={`${t("playerPortal.messaging.jumpToLatest")}: ${unseenCount} ${t("playerPortal.messaging.newMessages")}`} style={{ position: "absolute", right: 12, bottom: 12, maxWidth: "calc(100% - 24px)", borderRadius: 999, boxShadow: "var(--shadow-md)" }}><ArrowDown size={15} /> {unseenCount} {t("playerPortal.messaging.newMessages")}</button>}
       </div>
 
       <footer style={{ borderTop: "1px solid var(--border-color)", paddingTop: 14, display: "grid", gap: 10 }}>

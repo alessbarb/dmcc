@@ -1,13 +1,4 @@
-export interface CampaignMessagingUiCopy {
-  loadOlder: string;
-  sending: string;
-  failed: string;
-  retry: string;
-  newMessages: string;
-  jumpToLatest: string;
-}
-
-const COPY: Record<string, CampaignMessagingUiCopy> = {
+const campaignMessagingTranslations = {
   en: {
     loadOlder: "Load earlier messages",
     sending: "Sending…",
@@ -15,6 +6,7 @@ const COPY: Record<string, CampaignMessagingUiCopy> = {
     retry: "Retry",
     newMessages: "new messages",
     jumpToLatest: "Jump to latest messages",
+    playerDescription: "Visible only to you and the selected player.",
   },
   es: {
     loadOlder: "Cargar mensajes anteriores",
@@ -23,6 +15,7 @@ const COPY: Record<string, CampaignMessagingUiCopy> = {
     retry: "Reintentar",
     newMessages: "mensajes nuevos",
     jumpToLatest: "Ir a los mensajes más recientes",
+    playerDescription: "Visible solo para ti y el jugador seleccionado.",
   },
   fr: {
     loadOlder: "Charger les messages précédents",
@@ -31,6 +24,7 @@ const COPY: Record<string, CampaignMessagingUiCopy> = {
     retry: "Réessayer",
     newMessages: "nouveaux messages",
     jumpToLatest: "Aller aux messages les plus récents",
+    playerDescription: "Visible uniquement par vous et le joueur sélectionné.",
   },
   de: {
     loadOlder: "Frühere Nachrichten laden",
@@ -39,6 +33,7 @@ const COPY: Record<string, CampaignMessagingUiCopy> = {
     retry: "Erneut versuchen",
     newMessages: "neue Nachrichten",
     jumpToLatest: "Zu den neuesten Nachrichten springen",
+    playerDescription: "Nur für dich und den ausgewählten Spieler sichtbar.",
   },
   it: {
     loadOlder: "Carica messaggi precedenti",
@@ -47,6 +42,7 @@ const COPY: Record<string, CampaignMessagingUiCopy> = {
     retry: "Riprova",
     newMessages: "nuovi messaggi",
     jumpToLatest: "Vai ai messaggi più recenti",
+    playerDescription: "Visibile solo a te e al giocatore selezionato.",
   },
   pt: {
     loadOlder: "Carregar mensagens anteriores",
@@ -55,12 +51,23 @@ const COPY: Record<string, CampaignMessagingUiCopy> = {
     retry: "Tentar novamente",
     newMessages: "novas mensagens",
     jumpToLatest: "Ir para as mensagens mais recentes",
+    playerDescription: "Visível apenas para ti e para o jogador selecionado.",
   },
-};
+} as const;
 
-export function getCampaignMessagingUiCopy(language?: string): CampaignMessagingUiCopy {
-  const locale = (language ?? document.documentElement.lang ?? navigator.language ?? "en")
-    .toLowerCase()
-    .split("-")[0];
-  return COPY[locale] ?? COPY.en;
+export type CampaignMessagingLocale = keyof typeof campaignMessagingTranslations;
+
+export function withCampaignMessagingTranslations<T extends {
+  playerPortal: { messaging: Record<string, unknown> };
+}>(dictionary: T, locale: CampaignMessagingLocale): T {
+  return {
+    ...dictionary,
+    playerPortal: {
+      ...dictionary.playerPortal,
+      messaging: {
+        ...dictionary.playerPortal.messaging,
+        ...campaignMessagingTranslations[locale],
+      },
+    },
+  } as T;
 }

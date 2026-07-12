@@ -11,6 +11,7 @@ export type CampaignRealtimeEvent = {
   playerId?: string;
   messageId?: string;
   messageIds?: string[];
+  targetUserIds?: string[];
 };
 
 type Listener = (event: CampaignRealtimeEvent) => void;
