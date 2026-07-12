@@ -9,6 +9,7 @@ const playerSource = readFileSync(join(ROOT, "src/frontend/SmartLanding.tsx"), "
 const playerMessagesSource = readFileSync(join(ROOT, "src/frontend/player/pages/PlayerMessagesPage.tsx"), "utf8");
 const dmSource = readFileSync(join(ROOT, "src/frontend/dm/layouts/CampaignShell.tsx"), "utf8");
 const clientSource = readFileSync(join(ROOT, "src/frontend/shared/api/webProductClient.ts"), "utf8");
+const playerStyles = readFileSync(join(ROOT, "src/frontend/shared/styles/p1.css"), "utf8");
 
 describe("shared mobile dock", () => {
   it("always exposes exactly three direct destinations plus More", () => {
@@ -17,12 +18,12 @@ describe("shared mobile dock", () => {
     expect(dockSource).toContain("<MoreHorizontal size={19} />");
   });
 
-  it("is the single dock implementation for DM, player portal and player messaging", () => {
+  it("is the single mobile dock implementation for DM, player portal and player messaging", () => {
     expect(dmSource).toContain("<MobileDock");
     expect(playerSource).toContain("<MobileDock");
     expect(playerMessagesSource).toContain("<MobileDock");
     expect(dmSource).not.toContain("campaign-mobile-bottom-nav__item");
-    expect(playerSource).not.toContain("player-portal-nav__item ${tab === id ?");
+    expect(playerStyles).toContain(".player-portal-nav,\n  .player-portal-header__messages");
   });
 
   it("keeps Messages in the three direct player and DM destinations", () => {
