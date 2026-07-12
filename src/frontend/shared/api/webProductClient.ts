@@ -196,13 +196,6 @@ export async function getPlayerNotes(campaignId: string): Promise<{ notes: any[]
   );
 }
 
-export async function getPlayerProposals(campaignId: string): Promise<{ proposals: any[] }> {
-  return readJson(
-    await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/proposals`),
-    "No se pudieron cargar las propuestas",
-  );
-}
-
 export async function createPlayerNote(
   campaignId: string,
   input: { content: string; visibility?: string },
@@ -219,16 +212,25 @@ export async function createPlayerNote(
   );
 }
 
-export async function createPlayerProposal(campaignId: string, input: any): Promise<any> {
+export async function requestPlayerCharacterLink(
+  campaignId: string,
+  input: { characterEntityId: string; characterTitle?: string },
+): Promise<any> {
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/player-portal/proposals`, {
       init: {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
+        body: JSON.stringify({
+          kind: "link_request",
+          type: "link_request",
+          targetCharacterEntityId: input.characterEntityId,
+          characterEntityId: input.characterEntityId,
+          characterTitle: input.characterTitle,
+        }),
       },
     }),
-    "No se pudo enviar la propuesta",
+    "No se pudo solicitar la vinculación del personaje",
   );
 }
 

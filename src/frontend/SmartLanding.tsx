@@ -11,12 +11,10 @@ import {
   Flag,
   Home,
   LogOut,
-  MessageSquare,
   Network,
   Plus,
   RefreshCw,
   Search,
-  Send,
   Shield,
   ShieldAlert,
   Sparkles,
@@ -37,7 +35,6 @@ import { useTranslation } from "./shared/i18n/useTranslation.js";
 import { apiFetch } from "./shared/api/apiClient.js";
 import {
   createPlayerNote,
-  createPlayerProposal,
   getPlayerCampaigns,
   getPlayerCharacter,
   getPlayerConstellation,
@@ -45,7 +42,6 @@ import {
   getPlayerMemory,
   getPlayerNotes,
   getPlayerObjectives,
-  getPlayerProposals,
   getPlayerRecap,
   searchPlayerCampaign,
   type CampaignSearchResult,
@@ -60,8 +56,7 @@ type PortalTab =
   | "memory"
   | "constellation"
   | "objectives"
-  | "notes"
-  | "proposals";
+  | "notes";
 
 const PORTAL_TABS: Array<{
   id: PortalTab;
@@ -75,7 +70,6 @@ const PORTAL_TABS: Array<{
   { id: "constellation", labelKey: "playerPortal.tabs.constellation", Icon: Network },
   { id: "objectives", labelKey: "playerPortal.tabs.objectives", Icon: Flag },
   { id: "notes", labelKey: "playerPortal.tabs.notes", Icon: FileText },
-  { id: "proposals", labelKey: "playerPortal.tabs.proposals", Icon: Send },
 ];
 
 function readPortalLocation(): { campaignId: string | null; tab: PortalTab } {
@@ -392,14 +386,13 @@ function PlayerWorkspace({
   const navigate = useNavigate();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const tabRefs = useRef<Record<PortalTab, HTMLButtonElement | null>>({
-    home: null, recap: null, character: null, memory: null, constellation: null, objectives: null, notes: null, proposals: null,
+    home: null, recap: null, character: null, memory: null, constellation: null, objectives: null, notes: null,
   });
   const [home, setHome] = useState<any | null>(null);
   const [payload, setPayload] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [draftNote, setDraftNote] = useState("");
-  const [draftProposal, setDraftProposal] = useState("");
 
   const load = async () => {
     if (tab === "constellation") return;
@@ -413,7 +406,6 @@ function PlayerWorkspace({
       if (tab === "objectives") body = await getPlayerObjectives(campaignId);
       if (tab === "recap") body = await getPlayerRecap(campaignId);
       if (tab === "notes") body = await getPlayerNotes(campaignId);
-      if (tab === "proposals") body = await getPlayerProposals(campaignId);
       setHome(homeData);
       setPayload(body);
     } catch (loadError: any) {
@@ -515,26 +507,8 @@ function PlayerWorkspace({
         <Card>{payload.notes?.length ? payload.notes.map((note: any) => <p key={note.noteId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>{note.content}</p>) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noNotesYet")}</p>}</Card>
       </div>
     );
-    if (tab === "proposals") return (
-      <div style={{ display: "grid", gap: 14 }}>
-        <Card>
-          <h2 style={{ marginTop: 0 }}>{t("playerPortal.proposals.heading")}</h2>
-          <label htmlFor="player-proposal-draft" className="player-portal-field">
-            <span>{t("playerPortal.proposals.label")}</span>
-            <span id="player-proposal-help" className="player-portal-help">{t("playerPortal.proposals.instructions")}</span>
-            <textarea id="player-proposal-draft" aria-describedby="player-proposal-help" className="form-textarea" rows={4} value={draftProposal} onChange={(event) => setDraftProposal(event.target.value)} placeholder={t("playerPortal.proposals.placeholder")} />
-          </label>
-          <button className="btn btn-primary" type="button" style={{ marginTop: 10 }} disabled={!draftProposal.trim()} onClick={async () => {
-            await createPlayerProposal(campaignId, { type: "player_note", text: draftProposal });
-            setDraftProposal("");
-            await load();
-          }}><MessageSquare size={16} /> {t("playerPortal.proposals.send")}</button>
-        </Card>
-        <Card>{payload.proposals?.length ? payload.proposals.map((proposal: any) => <article key={proposal.proposalId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}><strong>{proposal.type}</strong><p style={{ color: "var(--text-muted)" }}>{typeof proposal.content === "string" ? proposal.content : JSON.stringify(proposal.content)}</p><span style={{ fontSize: 12 }}>{proposal.status}</span></article>) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noProposalsYet")}</p>}</Card>
-      </div>
-    );
     return null;
-  }, [campaignId, counts.facts, counts.visibleEntities, draftNote, draftProposal, payload, tab, t]);
+  }, [campaignId, counts.facts, counts.visibleEntities, draftNote, payload, tab, t]);
 
   return (
     <div className="player-portal-shell">

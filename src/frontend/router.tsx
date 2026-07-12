@@ -7,6 +7,7 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { PlayerPortalRealtimeSync } from "./player/components/PlayerPortalRealtimeSync.js";
+import { CampaignMessagingShortcut } from "./shared/components/CampaignMessagingShortcut.js";
 import { fetchAuthStatus } from "./shared/auth/authClient.js";
 
 async function requireAccountSession() {
@@ -42,6 +43,9 @@ const DmLoginPageLazy = React.lazy(() =>
 const PlayerJoinPageLazy = React.lazy(() =>
   import("./player/pages/PlayerJoinPage.js").then((module) => ({ default: module.PlayerJoinPage })),
 );
+const PlayerMessagesPageLazy = React.lazy(() =>
+  import("./player/pages/PlayerMessagesPage.js").then((module) => ({ default: module.PlayerMessagesPage })),
+);
 const RegisterPageLazy = React.lazy(() =>
   import("./player/pages/RegisterPage.js").then((module) => ({ default: module.RegisterPage })),
 );
@@ -71,6 +75,9 @@ const BoardsPageLazy = React.lazy(() =>
 );
 const PlayersPageLazy = React.lazy(() =>
   import("./dm/pages/PlayersPage.js").then((module) => ({ default: module.PlayersPage })),
+);
+const CampaignMessagesPageLazy = React.lazy(() =>
+  import("./dm/pages/CampaignMessagesPage.js").then((module) => ({ default: module.CampaignMessagesPage })),
 );
 const RulesPageLazy = React.lazy(() =>
   import("./dm/pages/RulesPage.js").then((module) => ({ default: module.RulesPage })),
@@ -123,6 +130,7 @@ function RootRouteComponent() {
   return (
     <>
       <PlayerPortalRealtimeSync />
+      <CampaignMessagingShortcut />
       <Outlet />
     </>
   );
@@ -141,6 +149,13 @@ const portalRoute = createRoute({
   path: "/portal",
   beforeLoad: requireAccountSession,
   component: withSuspense(SmartLandingLazy),
+});
+
+const playerMessagesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/portal/messages/$campaignId",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(PlayerMessagesPageLazy),
 });
 
 const aboutRoute = createRoute({
@@ -292,6 +307,12 @@ const playersRoute = createRoute({
   component: withSuspense(PlayersPageLazy),
 });
 
+const messagesRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/messages",
+  component: withSuspense(CampaignMessagesPageLazy),
+});
+
 const rulesRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/rules",
@@ -332,6 +353,7 @@ const accountRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   portalRoute,
+  playerMessagesRoute,
   aboutRoute,
   contactRoute,
   privacyRoute,
@@ -359,6 +381,7 @@ const routeTree = rootRoute.addChildren([
     searchRoute,
     boardsRoute,
     playersRoute,
+    messagesRoute,
     rulesRoute,
     knowledgeRoute,
     settingsRoute,

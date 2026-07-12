@@ -4,6 +4,7 @@ export default defineConfig({
   schema: [
     "./src/backend/db/schema.ts",
     "./src/backend/db/playerPortalSchema.ts",
+    "./src/backend/db/messagingSchema.ts",
   ],
   out: "./src/backend/db/migrations",
   dialect: "postgresql",
