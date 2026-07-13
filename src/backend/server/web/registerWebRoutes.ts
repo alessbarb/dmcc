@@ -44,7 +44,7 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
     return payload;
   });
 
-  void registerAuthWebRoutes(server);
+  registerAuthWebRoutes(server);
   void registerAccountWebRoutes(server);
   void registerHealthWebRoutes(server);
   void registerRoleScopedCampaignListWebRoutes(server);
