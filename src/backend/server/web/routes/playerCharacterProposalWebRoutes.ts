@@ -128,17 +128,9 @@ export async function registerPlayerCharacterProposalWebRoutes(server: FastifyIn
             targetId: characterEntityId,
             scope: "specific_user",
             userId: profile.userId,
-            playerId: profile.profileId,
+            playerId: null,
           })
-          .onConflictDoUpdate({
-            target: [
-              schema.visibilityGrants.campaignId,
-              schema.visibilityGrants.targetType,
-              schema.visibilityGrants.targetId,
-              schema.visibilityGrants.scope,
-            ],
-            set: { userId: profile.userId, playerId: profile.profileId, grantedAt: new Date() },
-          });
+          .onConflictDoNothing();
       }
       await db.insert(schema.activityFeed).values({
         campaignId: request.params.campaignId,
