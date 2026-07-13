@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { check, foreignKey, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import type { UserPreferences, SocialVisibility } from "../server/account/accountTypes.js";
 
 export const users = pgTable("users", {
   userId: text("user_id").primaryKey(),
@@ -31,7 +32,7 @@ export const authSessions = pgTable("auth_sessions", {
 
 export const userPreferences = pgTable("user_preferences", {
   userId: text("user_id").primaryKey().references(() => users.userId, { onDelete: "cascade" }),
-  preferences: jsonb("preferences").notNull(),
+  preferences: jsonb("preferences").$type<UserPreferences>().notNull(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
@@ -60,7 +61,7 @@ export const campaigns = pgTable("campaigns", {
   workspaceId: text("workspace_id").notNull().references(() => workspaces.workspaceId, { onDelete: "cascade" }),
   ownerId: text("owner_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   status: text("status").notNull().default("active"),
-  metadata: jsonb("metadata").notNull().default({}),
+  metadata: jsonb("metadata").$type<Record<string, any>>().notNull().default({}),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -77,7 +78,7 @@ export const playerProfiles = pgTable("player_profiles", {
   linkedCharacterId: text("linked_character_id"),
   publicHandle: text("public_handle"),
   publicationState: text("publication_state").notNull().default("private"),
-  visibility: jsonb("visibility").notNull().default({}),
+  visibility: jsonb("visibility").$type<SocialVisibility>().notNull().default({} as any),
   version: integer("version").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -111,7 +112,7 @@ export const dmProfiles = pgTable("dm_profiles", {
   contact: text("contact"),
   publicHandle: text("public_handle"),
   publicationState: text("publication_state").notNull().default("private"),
-  visibility: jsonb("visibility").notNull().default({}),
+  visibility: jsonb("visibility").$type<SocialVisibility>().notNull().default({} as any),
   version: integer("version").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -141,7 +142,7 @@ export const domainEvents = pgTable("domain_events", {
   sequence: integer("sequence").notNull(),
   eventId: text("event_id").notNull(),
   type: text("type").notNull(),
-  payload: jsonb("payload").notNull(),
+  payload: jsonb("payload").$type<any>().notNull(),
   occurredAt: text("occurred_at").notNull(),
   actorUserId: text("actor_user_id").references(() => users.userId, { onDelete: "set null" }),
   actorId: text("actor_id").notNull(),
@@ -160,7 +161,7 @@ export const commandIndex = pgTable("command_index", {
   commandHash: text("command_hash").notNull(),
   firstSequence: integer("first_sequence").notNull(),
   lastSequence: integer("last_sequence").notNull(),
-  resultJson: jsonb("result_json"),
+  resultJson: jsonb("result_json").$type<any>(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (table) => ({
   pk: primaryKey({ columns: [table.campaignId, table.commandId] }),
@@ -169,7 +170,7 @@ export const commandIndex = pgTable("command_index", {
 export const campaignSnapshots = pgTable("campaign_snapshots", {
   campaignId: text("campaign_id").primaryKey().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   sequence: integer("sequence").notNull(),
-  snapshot: jsonb("snapshot").notNull(),
+  snapshot: jsonb("snapshot").$type<any>().notNull(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
@@ -182,7 +183,7 @@ export const campaignEntities = pgTable("campaign_entities", {
   dmSummary: text("dm_summary"),
   status: text("status").notNull().default("active"),
   importance: text("importance").notNull().default("normal"),
-  tags: jsonb("tags").notNull().default([]),
+  tags: jsonb("tags").$type<string[]>().notNull().default([]),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => ({
   pk: primaryKey({ columns: [table.campaignId, table.entityId] }),
@@ -286,7 +287,7 @@ export const campaignObjectives = pgTable("campaign_objectives", {
   kind: text("kind").notNull().default("session"),
   status: text("status").notNull().default("open"),
   visibilityScope: text("visibility_scope").notNull().default("all_players"),
-  linkedEntityIds: jsonb("linked_entity_ids").notNull().default([]),
+  linkedEntityIds: jsonb("linked_entity_ids").$type<string[]>().notNull().default([]),
   sourceType: text("source_type").notNull().default("dm"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -378,7 +379,7 @@ export const playerProposals = pgTable("player_proposals", {
   userId: text("user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   playerId: text("player_id").notNull(),
   type: text("type").notNull(),
-  content: jsonb("content").notNull(),
+  content: jsonb("content").$type<any>().notNull(),
   status: text("status").notNull().default("submitted"),
   processedBy: text("processed_by").references(() => users.userId, { onDelete: "set null" }),
   processedAt: timestamp("processed_at"),
@@ -396,7 +397,7 @@ export const activityFeed = pgTable("activity_feed", {
   campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   activityId: text("activity_id").notNull(),
   type: text("type").notNull(),
-  content: jsonb("content").notNull(),
+  content: jsonb("content").$type<any>().notNull(),
   actorUserId: text("actor_user_id").references(() => users.userId, { onDelete: "set null" }),
   occurredAt: timestamp("occurred_at").notNull().defaultNow(),
 }, (table) => ({
@@ -407,7 +408,7 @@ export const notifications = pgTable("notifications", {
   notificationId: text("notification_id").primaryKey(),
   userId: text("user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   type: text("type").notNull(),
-  content: jsonb("content").notNull(),
+  content: jsonb("content").$type<any>().notNull(),
   readAt: timestamp("read_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });

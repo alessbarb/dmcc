@@ -796,7 +796,7 @@ async function upsertObjectiveReadModel(tx: DbTransaction, input: {
   kind: string;
   status: string;
   visibilityScope: string;
-  linkedEntityIds: unknown[];
+  linkedEntityIds: string[];
   sourceType: string;
   createdAt: Date;
   updatedAt: Date;

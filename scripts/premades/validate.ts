@@ -1,13 +1,10 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { resolve, sep } from "node:path";
-import { z } from "zod";
 import {
-  premadeLocaleSchema,
   premadeManifestSchema,
   premadeTemplateFileSchema,
   premadeLocaleOverlaySchema,
-  type PremadeManifest,
   type PremadeTemplateFile,
   type PremadeLocaleOverlay,
 } from "../../src/core/domain/premade/schemas.js";

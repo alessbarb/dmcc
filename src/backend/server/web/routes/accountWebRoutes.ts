@@ -10,8 +10,8 @@ import {
   verifySecret,
   WEB_SESSION_COOKIE,
 } from "../webSession.js";
+import type { UserPreferences, SocialVisibility, ProfileAudience as DbProfileAudience } from "../../account/accountTypes.js";
 
-type SocialVisibility = Record<string, "private" | "dm" | "table" | "global">;
 type ProfileAudience = "owner" | "dm" | "table" | "global";
 
 type EditableSocialProfile = {
@@ -41,7 +41,7 @@ function defaultVisibility(): SocialVisibility {
   };
 }
 
-function defaultPreferences(userId: string) {
+function defaultPreferences(userId: string): UserPreferences {
   return {
     userId,
     locale: "en",
@@ -65,10 +65,10 @@ function defaultPreferences(userId: string) {
   };
 }
 
-function normalizePreferences(userId: string, value: unknown) {
+function normalizePreferences(userId: string, value: unknown): UserPreferences {
   const base = defaultPreferences(userId);
   if (!value || typeof value !== "object") return base;
-  return { ...base, ...(value as Record<string, unknown>), userId };
+  return { ...base, ...(value as Record<string, any>), userId } as UserPreferences;
 }
 
 function toDmProfile(row: typeof schema.dmProfiles.$inferSelect | undefined): EditableSocialProfile | undefined {
@@ -105,7 +105,7 @@ function toPlayerProfile(row: typeof schema.playerProfiles.$inferSelect): Editab
   };
 }
 
-function canSeeProfileField(audience: ProfileAudience, visibility: SocialVisibility[string] | undefined): boolean {
+function canSeeProfileField(audience: ProfileAudience, visibility: DbProfileAudience | undefined): boolean {
   const resolved = visibility ?? "private";
   if (audience === "owner") return true;
   if (audience === "dm") return resolved === "dm" || resolved === "table" || resolved === "global";

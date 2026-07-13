@@ -18,8 +18,6 @@ export function validatePremadeReferences(template: PremadeTemplateFile, label: 
   const entityIds = new Set(template.entities.map((e) => e.entityId));
   const relationIds = new Set(template.relations.map((r) => r.relationId));
   const factIds = new Set(template.facts.map((f) => f.factId));
-  const sessionIds = new Set(template.sessions.map((s) => s.sessionId));
-  const canvasIds = new Set(template.canvases.map((c) => c.canvasId));
 
   // Duplicados a nivel superior
   getDuplicates(template.entities.map((e) => e.entityId)).forEach((id) => {
