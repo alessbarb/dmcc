@@ -1,4 +1,6 @@
-import type { CanvasEdgeStatus } from "../services/connectCanvasNodes.js";
+import type { CanvasEdgeStatus, CanvasEdgePayload } from "../services/connectCanvasNodes.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
+import type { CanvasNode } from "@core/domain/canvas/types.js";
 
 type TranslationFn = (key: string, params?: Record<string, string | number>) => string;
 
@@ -21,7 +23,7 @@ export interface CanvasTemplateEntity {
   title: string;
   subtitle?: string;
   summary?: string;
-  visibility?: { kind: "dm_only" | "public" };
+  visibility?: VisibilityRule;
 }
 
 export interface CanvasTemplateNode {
@@ -34,7 +36,7 @@ export interface CanvasTemplateNode {
 export interface CanvasTemplateGroup {
   key: string;
   title: string;
-  color: string;
+  color: CanvasNode["color"];
   x: number;
   y: number;
   width: number;
@@ -49,8 +51,8 @@ export interface CanvasTemplateRelation {
   status?: CanvasEdgeStatus;
   relationType?: string;
   description?: string;
-  visibility?: "dm" | "public" | string;
-  style?: "solid" | "dashed" | "dotted" | string;
+  visibility?: CanvasEdgePayload["visibility"];
+  style?: CanvasEdgePayload["style"];
 }
 
 export interface CanvasTemplateFact {
@@ -59,7 +61,7 @@ export interface CanvasTemplateFact {
   confidence?: string;
   relatedEntityIndexes?: number[];
   relatedRelationIndexes?: number[];
-  visibility?: { kind: "dm_only" | "public" };
+  visibility?: VisibilityRule;
 }
 
 export interface CanvasTemplate {

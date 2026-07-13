@@ -54,7 +54,7 @@ const fact = (overrides: Partial<Fact> = {}): Fact => ({
   confidence: "confirmed",
   visibility: { kind: "public" },
   relatedEntityIds: [],
-  source: {},
+  source: { kind: "manual" },
   archived: false,
   ...overrides,
 });

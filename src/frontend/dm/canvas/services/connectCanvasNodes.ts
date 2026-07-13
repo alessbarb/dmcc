@@ -1,3 +1,6 @@
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
+import type { CanvasEdge } from "@core/domain/canvas/types.js";
+
 export type CanvasEdgeStatus = "draft" | "domain";
 
 export interface CanvasNodeRef {
@@ -10,7 +13,7 @@ export interface CreateRelationPayload {
   targetEntityId: string;
   relationType: string;
   description?: string;
-  visibility?: unknown;
+  visibility?: VisibilityRule;
   force?: boolean;
 }
 
@@ -20,8 +23,8 @@ export interface CanvasEdgePayload {
   label?: string;
   status: CanvasEdgeStatus;
   relationshipId?: string;
-  visibility?: "dm" | "public" | string;
-  style?: "solid" | "dashed" | "dotted" | string;
+  visibility?: CanvasEdge["visibility"];
+  style?: CanvasEdge["style"];
   description?: string;
 }
 

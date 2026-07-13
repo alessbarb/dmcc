@@ -48,8 +48,19 @@ import {
   searchPlayerCampaign,
   type CampaignSearchResult,
   type PlayerCampaignSummary,
+  type PlayerConstellationResponse,
+  type PlayerPortalTabPayload,
+  type PortalCanvas,
 } from "./shared/api/webProductClient.js";
-import { useCampaignStore } from "./shared/stores/campaignStore.js";
+import { useCampaignStore, type Campaign, type CampaignStateStore } from "./shared/stores/campaignStore.js";
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function errorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
+}
 
 type PortalTab =
   | "home"
@@ -74,12 +85,16 @@ const PORTAL_TABS: Array<{
   { id: "notes", labelKey: "playerPortal.tabs.notes", Icon: FileText },
 ];
 
+function isPortalTab(value: string | null): value is PortalTab {
+  return PORTAL_TABS.some((tab) => tab.id === value);
+}
+
 function readPortalLocation(): { campaignId: string | null; tab: PortalTab } {
   const parameters = new URLSearchParams(window.location.search);
-  const requestedTab = parameters.get("tab") as PortalTab | null;
+  const requestedTab = parameters.get("tab");
   return {
     campaignId: parameters.get("campaignId"),
-    tab: PORTAL_TABS.some((tab) => tab.id === requestedTab) ? requestedTab! : "home",
+    tab: isPortalTab(requestedTab) ? requestedTab : "home",
   };
 }
 
@@ -120,18 +135,29 @@ function hasDmOnlyVisibility(value: unknown): boolean {
   return Boolean(value && typeof value === "object" && (value as { kind?: unknown }).kind === "dm_only");
 }
 
-function hasSecretLeak(payload: any): boolean {
-  const entities = Array.isArray(payload?.entities) ? payload.entities : [];
-  const relations = Array.isArray(payload?.relations) ? payload.relations : [];
-  const canvases = Array.isArray(payload?.canvases) ? payload.canvases : [];
-  return entities.some((entity: any) => hasDmOnlyVisibility(entity?.visibility)) ||
-    relations.some((relation: any) => hasDmOnlyVisibility(relation?.visibility)) ||
-    canvases.some((canvas: any) =>
-      (canvas?.nodes ?? []).some((node: any) => isDmOnlyCanvasVisibility(node?.visibility)) ||
-      (canvas?.edges ?? []).some(
-        (edge: any) => edge?.style === "secret" || isDmOnlyCanvasVisibility(edge?.visibility),
-      ),
-    );
+function visibilityOf(item: unknown): unknown {
+  return isRecord(item) ? item.visibility : undefined;
+}
+
+// Defense-in-depth: verifies the server's sanitizeObject() actually stripped dm_only
+// data before it reaches the player-facing constellation view. Checks the raw wire
+// shape defensively rather than trusting a specific response interface.
+function hasSecretLeak(payload: unknown): boolean {
+  if (!isRecord(payload)) return false;
+  const entities = Array.isArray(payload.entities) ? payload.entities : [];
+  const relations = Array.isArray(payload.relations) ? payload.relations : [];
+  const canvases = Array.isArray(payload.canvases) ? payload.canvases : [];
+  return entities.some((entity) => hasDmOnlyVisibility(visibilityOf(entity))) ||
+    relations.some((relation) => hasDmOnlyVisibility(visibilityOf(relation))) ||
+    canvases.some((canvas) => {
+      if (!isRecord(canvas)) return false;
+      const nodes = Array.isArray(canvas.nodes) ? canvas.nodes : [];
+      const edges = Array.isArray(canvas.edges) ? canvas.edges : [];
+      return nodes.some((node) => isDmOnlyCanvasVisibility(visibilityOf(node))) ||
+        edges.some(
+          (edge) => isRecord(edge) && (edge.style === "secret" || isDmOnlyCanvasVisibility(edge.visibility)),
+        );
+    });
 }
 
 function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: TranslationKey) => string }) {
@@ -157,9 +183,10 @@ function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: Translat
             setError(null);
           }
         })
-        .catch((searchError: any) => {
-          if (!controller.signal.aborted && searchError?.name !== "AbortError") {
-            setError(searchError?.message ?? String(searchError));
+        .catch((searchError: unknown) => {
+          const isAbort = searchError instanceof DOMException && searchError.name === "AbortError";
+          if (!controller.signal.aborted && !isAbort) {
+            setError(errorMessage(searchError));
           }
         });
     }, 220);
@@ -215,10 +242,10 @@ function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: Translat
   );
 }
 
-function renderMemory(memory: any, t: (key: TranslationKey) => string) {
-  const groups = memory?.entities ?? {};
-  const facts = memory?.facts ?? [];
-  const relations = memory?.relations ?? [];
+function renderMemory(memory: PlayerPortalTabPayload, t: (key: TranslationKey) => string) {
+  const groups = memory.entities ?? {};
+  const facts = memory.facts ?? [];
+  const relations = memory.relations ?? [];
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <Card>
@@ -231,7 +258,7 @@ function renderMemory(memory: any, t: (key: TranslationKey) => string) {
         <Card key={group}>
           <h3 style={{ marginTop: 0, textTransform: "capitalize" }}>{group}</h3>
           <div style={{ display: "grid", gap: 8 }}>
-            {(items as any[]).length > 0 ? (items as any[]).map((item) => (
+            {items.length > 0 ? items.map((item) => (
               <article key={item.entityId} style={{ border: "1px solid var(--border-color)", borderRadius: 12, padding: 12 }}>
                 <strong>{item.title}</strong>
                 <p style={{ margin: "5px 0 0", color: "var(--text-muted)" }}>
@@ -244,7 +271,7 @@ function renderMemory(memory: any, t: (key: TranslationKey) => string) {
       ))}
       <Card>
         <h3 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownFacts")}</h3>
-        {facts.length > 0 ? facts.map((fact: any) => (
+        {facts.length > 0 ? facts.map((fact) => (
           <p key={fact.factId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>
             {fact.statement}
           </p>
@@ -252,7 +279,7 @@ function renderMemory(memory: any, t: (key: TranslationKey) => string) {
       </Card>
       <Card>
         <h3 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownRelations")}</h3>
-        {relations.length > 0 ? relations.map((relation: any) => (
+        {relations.length > 0 ? relations.map((relation) => (
           <p key={relation.relationId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>
             <strong>{relation.label}</strong>: {relation.description ?? t("playerPortal.memory.knownRelation")}
           </p>
@@ -263,7 +290,7 @@ function renderMemory(memory: any, t: (key: TranslationKey) => string) {
 }
 
 function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: TranslationKey) => string }) {
-  const [payload, setPayload] = useState<any | null>(null);
+  const [payload, setPayload] = useState<PlayerConstellationResponse | null>(null);
   const [activeCanvasId, setActiveCanvasId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -279,6 +306,9 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
     try {
       const data = await getPlayerConstellation(campaignId);
       if (hasSecretLeak(data)) throw new Error("SECURITY_PLAYER_CONSTELLATION_CONTAINS_SECRET_DATA");
+      // Read-only public portal projection (Portal* types) reused against the DM-editing
+      // store shape (Entity/Relation/Fact/Canvas); pre-existing mismatch, not fixed here.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       useCampaignStore.setState({
         campaignState: {
           campaign: data.campaign,
@@ -288,15 +318,15 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
           canvases: data.canvases ?? [],
         },
         canvasesById: Object.fromEntries(
-          (data.canvases ?? []).map((canvas: Canvas) => [canvas.id, canvas]),
+          (data.canvases ?? []).map((canvas: PortalCanvas) => [canvas.canvasId, canvas]),
         ),
         activeCampaignId: campaignId,
         activeCampaignRole: "player",
-      } as any);
+      } as unknown as Partial<CampaignStateStore>);
       setPayload(data);
-      setActiveCanvasId((data.canvases ?? [])[0]?.id ?? null);
-    } catch (loadError: any) {
-      setError(loadError?.message ?? String(loadError));
+      setActiveCanvasId((data.canvases ?? [])[0]?.canvasId ?? null);
+    } catch (loadError) {
+      setError(errorMessage(loadError));
     } finally {
       setLoading(false);
     }
@@ -306,9 +336,9 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
     void load();
   }, [campaignId]);
 
-  const canvases: Canvas[] = payload?.canvases ?? [];
+  const canvases: PortalCanvas[] = payload?.canvases ?? [];
   const activeCanvas = useMemo(
-    () => canvases.find((canvas) => canvas.id === activeCanvasId) ?? canvases[0] ?? null,
+    () => canvases.find((canvas) => canvas.canvasId === activeCanvasId) ?? canvases[0] ?? null,
     [activeCanvasId, canvases],
   );
 
@@ -327,21 +357,24 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
           <div style={{ display: "flex", gap: 8, padding: 12, borderBottom: "1px solid var(--border-color)", overflowX: "auto" }}>
             {canvases.map((canvas) => (
               <button
-                key={canvas.id}
+                key={canvas.canvasId}
                 type="button"
-                className={`btn btn-sm ${canvas.id === activeCanvas.id ? "btn-primary" : "btn-secondary"}`}
-                onClick={() => setActiveCanvasId(canvas.id)}
-                aria-pressed={canvas.id === activeCanvas.id}
+                className={`btn btn-sm ${canvas.canvasId === activeCanvas.canvasId ? "btn-primary" : "btn-secondary"}`}
+                onClick={() => setActiveCanvasId(canvas.canvasId)}
+                aria-pressed={canvas.canvasId === activeCanvas.canvasId}
               >
                 {canvas.title}
               </button>
             ))}
           </div>
           <div style={{ height: "70dvh" }}>
-            <ReactFlowProvider key={`${campaignId}:${activeCanvas.id}`}>
+            <ReactFlowProvider key={`${campaignId}:${activeCanvas.canvasId}`}>
               <CampaignCanvasFlow
-                canvasId={activeCanvas.id}
-                canvas={activeCanvas}
+                canvasId={activeCanvas.canvasId}
+                // Read-only public portal projection: a stripped-down canvas shape reused
+                // against the editable domain Canvas prop; pre-existing mismatch, not fixed here.
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+                canvas={activeCanvas as unknown as Canvas}
                 selectedNodeId={selectedNodeId}
                 selectedEdgeId={selectedEdgeId}
                 onSelectNode={setSelectedNodeId}
@@ -390,8 +423,8 @@ function PlayerWorkspace({
   const tabRefs = useRef<Record<PortalTab, HTMLButtonElement | null>>({
     home: null, recap: null, character: null, memory: null, constellation: null, objectives: null, notes: null,
   });
-  const [home, setHome] = useState<any | null>(null);
-  const [payload, setPayload] = useState<any | null>(null);
+  const [home, setHome] = useState<PlayerPortalTabPayload | null>(null);
+  const [payload, setPayload] = useState<PlayerPortalTabPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [draftNote, setDraftNote] = useState("");
@@ -406,7 +439,7 @@ function PlayerWorkspace({
     setError(null);
     try {
       const homeData = await getPlayerHome(campaignId);
-      let body: any = homeData;
+      let body: PlayerPortalTabPayload = homeData;
       if (tab === "memory") body = await getPlayerMemory(campaignId);
       if (tab === "character") body = await getPlayerCharacter(campaignId);
       if (tab === "objectives") body = await getPlayerObjectives(campaignId);
@@ -414,8 +447,8 @@ function PlayerWorkspace({
       if (tab === "notes") body = await getPlayerNotes(campaignId);
       setHome(homeData);
       setPayload(body);
-    } catch (loadError: any) {
-      setError(loadError?.message ?? String(loadError));
+    } catch (loadError) {
+      setError(errorMessage(loadError));
     } finally {
       setLoading(false);
     }
@@ -499,7 +532,7 @@ function PlayerWorkspace({
     if (tab === "objectives") return (
       <Card>
         <h2 style={{ marginTop: 0 }}>{t("playerPortal.objectivesHeading")}</h2>
-        {payload.objectives?.length ? payload.objectives.map((objective: any) => (
+        {payload.objectives?.length ? payload.objectives.map((objective) => (
           <article key={objective.objectiveId} style={{ borderTop: "1px solid var(--border-color)", padding: "10px 0" }}>
             <strong>{objective.title}</strong>
             <p style={{ color: "var(--text-muted)", margin: "4px 0" }}>{objective.description ?? objective.kind}</p>
@@ -528,7 +561,7 @@ function PlayerWorkspace({
             });
           }}><CheckCircle2 size={16} /> {t("playerPortal.notes.save")}</button>
         </Card>
-        <Card>{payload.notes?.length ? payload.notes.map((note: any) => <p key={note.noteId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>{note.content}</p>) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noNotesYet")}</p>}</Card>
+        <Card>{payload.notes?.length ? payload.notes.map((note) => <p key={note.noteId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>{note.content}</p>) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noNotesYet")}</p>}</Card>
       </div>
     );
     return null;
@@ -620,7 +653,7 @@ export function SmartLanding() {
   const { t } = useTranslation();
   const portalLocation = usePortalLocation();
   const [loading, setLoading] = useState(true);
-  const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [playerCampaigns, setPlayerCampaigns] = useState<PlayerCampaignSummary[]>([]);
 
   useEffect(() => {

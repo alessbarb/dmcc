@@ -4,7 +4,7 @@ import type { CanvasTemplate } from "../../src/frontend/dm/canvas/templates/type
 
 const buildStore = () => {
   const nodesByCanvas = new Map<string, CreatedCanvasNodeRef[]>();
-  const edges: Array<{ status: string; relationshipId?: string }> = [];
+  const edges: Array<{ status?: string; relationshipId?: string }> = [];
   const relations: Array<{ sourceEntityId: string; targetEntityId: string; relationType: string }> = [];
   let entityCount = 0;
   let nodeCount = 0;

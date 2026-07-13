@@ -258,7 +258,7 @@ const runNarrativeLint = (campaignState: { entities: Entity[]; relations: Relati
   // 1. Secretos sin pistas
   const secrets = entities.filter((e: Entity) => e.entityType === "secret");
   for (const secret of secrets) {
-    const anchors = secret.metadata?.revelationAnchors || [];
+    const anchors = Array.isArray(secret.metadata?.revelationAnchors) ? secret.metadata.revelationAnchors : [];
     const hasAnchors = anchors.length > 0;
     const pointingClues = relations.filter(
       (r: Relation) => r.targetEntityId === secret.entityId &&
@@ -279,7 +279,7 @@ const runNarrativeLint = (campaignState: { entities: Entity[]; relations: Relati
   // 2. Pistas huérfanas
   const clues = entities.filter((e: Entity) => e.entityType === "clue");
   for (const clue of clues) {
-    const isAnchor = secrets.some((s: Entity) => s.metadata?.revelationAnchors?.includes(clue.entityId));
+    const isAnchor = secrets.some((s: Entity) => Array.isArray(s.metadata?.revelationAnchors) && s.metadata.revelationAnchors.includes(clue.entityId));
     const hasOutgoing = relations.some((r: Relation) => r.sourceEntityId === clue.entityId);
     if (!isAnchor && !hasOutgoing) {
       issues.push({
@@ -754,7 +754,7 @@ export function CanvasPage() {
   const getMobileActionPosition = () => canvasFlowRef.current?.getViewportCenter() ?? { x: 200, y: 200 };
 
   const handleImportText = () => {
-    if (!importText.trim()) return;
+    if (!importText.trim() || !activeCanvas) return;
     addToast("Importando elementos y relaciones...", "info");
     runCanvasPageAction((async () => {
       try {

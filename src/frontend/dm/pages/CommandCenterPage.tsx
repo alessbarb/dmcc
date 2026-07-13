@@ -20,7 +20,7 @@ import {
   Share2,
   Users,
 } from "lucide-react";
-import { getCommandCenter, getLiveTable } from "../../shared/api/webProductClient.js";
+import { getCommandCenter, getLiveTable, type CommandCenterResponse, type LiveTableSummary } from "../../shared/api/webProductClient.js";
 import { useCampaignStore, type Entity } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
@@ -34,6 +34,10 @@ function Card({ children, style }: { children: React.ReactNode; style?: React.CS
       {children}
     </section>
   );
+}
+
+function toErrorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
 }
 
 function runCommandCenterAction(operation: Promise<unknown>, errorMessage: string): void {
@@ -148,8 +152,8 @@ export function CommandCenterPage() {
     setIsEntityModalOpen,
   } = useCampaignStore();
 
-  const [commandCenter, setCommandCenter] = useState<any | null>(null);
-  const [liveTable, setLiveTable] = useState<any | null>(null);
+  const [commandCenter, setCommandCenter] = useState<CommandCenterResponse | null>(null);
+  const [liveTable, setLiveTable] = useState<LiveTableSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null);
@@ -173,8 +177,8 @@ export function CommandCenterPage() {
       ]);
       setCommandCenter(center);
       setLiveTable(live.liveTable ?? null);
-    } catch (loadError: any) {
-      setError(loadError?.message ?? String(loadError));
+    } catch (loadError) {
+      setError(toErrorMessage(loadError));
     } finally {
       setLoading(false);
     }
@@ -206,18 +210,22 @@ export function CommandCenterPage() {
       ? entities.find((entity) => entity.entityId === campaign.currentQuestId) ?? null
       : dashboard?.activeQuests?.[0] ?? null);
 
-  const npcWarnings: Entity[] = dashboard?.importantNpcWarnings ?? [];
+  // CampaignHealthWarning shape differs from Entity; this dashboard field is currently always empty (route unwired).
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+  const npcWarnings: Entity[] = (dashboard?.importantNpcWarnings as unknown as Entity[] | undefined) ?? [];
   const blockedQuests: Entity[] = dashboard?.blockedQuests ?? [];
   const criticalHiddenClues: Entity[] =
     whatNow?.hiddenCriticalSecrets ?? dashboard?.criticalHiddenClues ?? [];
   const preparedClues: Entity[] = whatNow?.pendingClues ?? dashboard?.preparedClues ?? [];
   const pendingConsequences: Entity[] =
     whatNow?.unresolvedConsequences ?? dashboard?.pendingConsequences ?? [];
-  const partialKnowledgeAlerts: any[] = whatNow?.partialKnowledgeAlerts ?? [];
+  const partialKnowledgeAlerts = whatNow?.partialKnowledgeAlerts ?? [];
   const preparationChecklist: Array<{ task: string; priority?: string; done?: boolean }> =
     whatNow?.preparationChecklist ?? [];
+  // PUT /api/campaigns/:id/settings has no backend route; this field is currently always empty (route unwired).
   const completedTasks: string[] =
-    (campaign as any)?.settings?.completedChecklistTasks ?? [];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    (campaign as unknown as { settings?: { completedChecklistTasks?: string[] } })?.settings?.completedChecklistTasks ?? [];
 
   const attentionCount =
     npcWarnings.length +
@@ -249,10 +257,10 @@ export function CommandCenterPage() {
           : t("dashboard.markdownExported"),
         "success",
       );
-    } catch (exportError: any) {
+    } catch (exportError) {
       addToast(
         t("dashboard.markdownExportError", {
-          error: exportError?.message ?? String(exportError),
+          error: toErrorMessage(exportError),
         }),
         "error",
       );
@@ -556,7 +564,7 @@ export function CommandCenterPage() {
               <div style={{ display: "grid", gap: 10 }}>
                 {partialKnowledgeAlerts.map((alert, index) => (
                   <div
-                    key={alert.id ?? alert.message ?? index}
+                    key={alert.clueId ?? alert.message ?? index}
                     style={{
                       border: "1px solid var(--border-color)",
                       borderRadius: "var(--radius-md)",
@@ -652,7 +660,7 @@ export function CommandCenterPage() {
               <Activity size={18} /> {t("dashboard.recentlyUpdated")}
             </h2>
             <div style={{ display: "grid", gap: 8 }}>
-              {(commandCenter?.recentActivity ?? []).slice(0, 6).map((item: any) => (
+              {(commandCenter?.recentActivity ?? []).slice(0, 6).map((item) => (
                 <div
                   key={item.activityId}
                   style={{

@@ -1,6 +1,7 @@
 import type { CanvasTemplate } from "../templates/types.js";
-import { connectCanvasNodes, type CanvasEdgePayload, type CreateRelationPayload } from "./connectCanvasNodes.js";
+import { connectCanvasNodes } from "./connectCanvasNodes.js";
 import { canvasVisibilityToVisibilityRule } from "./canvasVisibility.js";
+import type { CampaignStateStore, CanvasNodeUpdate } from "../../../shared/stores/campaignStore.js";
 
 export interface CreatedCanvasNodeRef {
   id: string;
@@ -11,30 +12,13 @@ export interface CreatedCanvasNodeRef {
   y?: number;
 }
 
-export interface ApplyCanvasTemplateStore {
-  createEntity: (payload: {
-    entityType: string;
-    title: string;
-    subtitle?: string;
-    summary?: string;
-    status: string;
-    importance: string;
-    visibility: { kind: "dm_only" | "public" };
-  }) => Promise<{ entityId?: string } | undefined>;
-  createRelation: (payload: CreateRelationPayload) => Promise<string | undefined>;
-  addEdgeToCanvas: (canvasId: string, edge: CanvasEdgePayload) => Promise<void>;
-  placeNodeOnCanvas: (canvasId: string, node: Record<string, unknown>) => Promise<void>;
-  updateCanvasNode: (canvasId: string, nodeId: string, updates: Record<string, unknown>) => Promise<void>;
-  getCanvasNodes: (canvasId: string) => CreatedCanvasNodeRef[];
-  createFact?: (payload: {
-    statement: string;
-    kind: string;
-    confidence: string;
-    visibility?: { kind: "dm_only" | "public" };
-    relatedEntityIds: string[];
-    source: { kind: string };
-  }) => Promise<unknown>;
-}
+export type ApplyCanvasTemplateStore = Pick<
+  CampaignStateStore,
+  "createEntity" | "createRelation" | "addEdgeToCanvas" | "placeNodeOnCanvas" | "updateCanvasNode"
+> &
+  Partial<Pick<CampaignStateStore, "createFact">> & {
+    getCanvasNodes: (canvasId: string) => CreatedCanvasNodeRef[];
+  };
 
 const requireEntityId = (entityId: string | undefined, templateId: string, entityIndex: number): string => {
   if (!entityId) {
@@ -86,7 +70,8 @@ export const applyCanvasTemplate = async (
     if (groupNodeId) {
       groupIds.set(group.key, groupNodeId);
       if (group.groupType) {
-        await store.updateCanvasNode(canvasId, groupNodeId, { groupType: group.groupType });
+        // groupType is a frontend-only convention not in the canvasNodeSchema; pre-existing quirk, not fixed here.
+        await store.updateCanvasNode(canvasId, groupNodeId, { groupType: group.groupType } as unknown as CanvasNodeUpdate);
       }
     }
   }
@@ -139,7 +124,7 @@ export const applyCanvasTemplate = async (
         confidence: fact.confidence ?? "medium",
         visibility: fact.visibility ?? { kind: "dm_only" },
         relatedEntityIds: fact.relatedEntityIndexes?.map((index) => entityIds[index]) ?? [],
-        source: { kind: "canvas_template" },
+        source: { kind: "manual" as const, note: `canvas_template:${template.id}` },
       });
     }
   }

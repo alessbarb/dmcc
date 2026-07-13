@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { X, Trash2, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
@@ -6,7 +6,7 @@ import { ImagePickerButton } from "../../../shared/components/ImagePickerButton.
 import type { Canvas, CanvasEdge, CanvasNode } from "@core/domain/canvas/types.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 import { canvasVisibilityToVisibilityRule, visibilityRuleToCanvasVisibility } from "../services/canvasVisibility.js";
-import type { Entity, Relation, Fact } from "../../../shared/stores/campaignStore.js";
+import type { Entity, Relation, Fact, CanvasEdgeUpdate, CanvasNodeUpdate } from "../../../shared/stores/campaignStore.js";
 
 
 export interface CanvasInspectorProps {
@@ -120,7 +120,7 @@ export function CanvasInspector({
   useEffect(() => {
     if (selectedEdge) {
       setEdgeLabel(selectedEdge.label || "");
-      setEdgeDesc(relation?.description || selectedEdge.description || "");
+      setEdgeDesc(relation?.description || "");
     }
   }, [selectedEdgeId, selectedEdge, relation]);
 
@@ -204,7 +204,8 @@ export function CanvasInspector({
                 e.entityType === "secret" &&
                 !e.archived &&
                 isDmOnlyVisibility(e.visibility) &&
-                e.metadata?.revelationAnchors?.includes(entity.entityId)
+                Array.isArray(e.metadata?.revelationAnchors) &&
+                e.metadata.revelationAnchors.includes(entity.entityId)
             );
             for (const secret of secrets) {
               const confirmReveal = window.confirm(
@@ -245,7 +246,8 @@ export function CanvasInspector({
       if (relation) {
         await updateRelation(relation.relationId, { description: edgeDesc });
       } else {
-        await updateCanvasEdge(canvasId, selectedEdge.id, { description: edgeDesc });
+        // Non-domain edges have no schema field for freeform description; pre-existing quirk, not fixed here.
+        await updateCanvasEdge(canvasId, selectedEdge.id, { description: edgeDesc } as unknown as CanvasEdgeUpdate);
       }
     }
   };
@@ -434,10 +436,11 @@ export function CanvasInspector({
                 <div className="form-group">
                   <label>Tipo de Grupo Inteligente</label>
                   <select
-                    value={selectedNode.groupType || "custom"}
+                    // groupType is a frontend-only convention not in the canvasNodeSchema; pre-existing quirk, not fixed here.
+                    value={(selectedNode as unknown as { groupType?: string }).groupType || "custom"}
                     onChange={(e) => {
                       runCanvasAction(
-                        updateCanvasNode(canvasId, selectedNode.id, { groupType: e.target.value }),
+                        updateCanvasNode(canvasId, selectedNode.id, { groupType: e.target.value } as unknown as CanvasNodeUpdate),
                         "No se pudo actualizar el tipo de grupo."
                       );
                     }}
@@ -858,7 +861,9 @@ export function CanvasInspector({
                       {campaignState.entities
                         .filter((e: Entity) => !e.archived && e.entityId !== entity.entityId && ["clue", "location", "npc"].includes(e.entityType))
                         .map((e: Entity) => {
-                          const currentAnchors = entity.metadata?.revelationAnchors || [];
+                          const currentAnchors = Array.isArray(entity.metadata?.revelationAnchors)
+                            ? entity.metadata.revelationAnchors
+                            : [];
                           const isChecked = currentAnchors.includes(e.entityId);
                           return (
                             <label key={e.entityId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--text-main)" }}>

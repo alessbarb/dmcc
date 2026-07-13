@@ -1,14 +1,18 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Clock, Copy, Play, Power, Radio, RefreshCw, Users, X } from "lucide-react";
-import { closeLiveTable, getLiveTable, openLiveTable } from "../../shared/api/webProductClient.js";
+import { closeLiveTable, getLiveTable, openLiveTable, type LiveTableSummary } from "../../shared/api/webProductClient.js";
+
+function errorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
+}
 
 type LiveTableModalProps = {
   campaignId: string;
   isOpen: boolean;
   onClose: () => void;
   activeSessionId?: string | null;
-  initialLiveTable?: any | null;
-  onLiveTableChange?: (liveTable: any | null) => void;
+  initialLiveTable?: LiveTableSummary | null;
+  onLiveTableChange?: (liveTable: LiveTableSummary | null) => void;
 };
 
 function formatDateTime(value?: string | null) {
@@ -25,7 +29,7 @@ export function LiveTableModal({
   initialLiveTable = null,
   onLiveTableChange,
 }: LiveTableModalProps) {
-  const [liveTable, setLiveTable] = useState<any | null>(initialLiveTable);
+  const [liveTable, setLiveTable] = useState<LiveTableSummary | null>(initialLiveTable);
   const [durationHours, setDurationHours] = useState(4);
   const [loading, setLoading] = useState(false);
   const [working, setWorking] = useState(false);
@@ -35,7 +39,7 @@ export function LiveTableModal({
   const title = liveTable ? "Mesa en vivo activa" : "Abrir modo mesa";
   const expiresLabel = useMemo(() => formatDateTime(liveTable?.expiresAt), [liveTable?.expiresAt]);
 
-  const setLiveTableAndNotify = (next: any | null) => {
+  const setLiveTableAndNotify = (next: LiveTableSummary | null) => {
     setLiveTable(next);
     onLiveTableChange?.(next);
   };
@@ -47,8 +51,8 @@ export function LiveTableModal({
     try {
       const result = await getLiveTable(campaignId);
       setLiveTableAndNotify(result.liveTable ?? null);
-    } catch (err: any) {
-      setError(err?.message ?? String(err));
+    } catch (err) {
+      setError(errorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -79,8 +83,8 @@ export function LiveTableModal({
     try {
       const result = await openLiveTable(campaignId, { activeSessionId, durationHours });
       setLiveTableAndNotify(result.liveTable);
-    } catch (err: any) {
-      setError(err?.message ?? String(err));
+    } catch (err) {
+      setError(errorMessage(err));
     } finally {
       setWorking(false);
     }
@@ -93,8 +97,8 @@ export function LiveTableModal({
     try {
       await closeLiveTable(campaignId, liveTable.liveTableId);
       setLiveTableAndNotify(null);
-    } catch (err: any) {
-      setError(err?.message ?? String(err));
+    } catch (err) {
+      setError(errorMessage(err));
     } finally {
       setWorking(false);
     }

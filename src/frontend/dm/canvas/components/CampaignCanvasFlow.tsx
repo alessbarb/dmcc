@@ -494,7 +494,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
       for (const secretNode of secretNodes) {
         const secretEntity = campaignState.entities.find((e: Entity) => e.entityId === secretNode.entityId);
-        const anchors = secretEntity?.metadata?.revelationAnchors || [];
+        const anchors = Array.isArray(secretEntity?.metadata?.revelationAnchors) ? secretEntity.metadata.revelationAnchors : [];
         for (const anchorId of anchors) {
           const anchorNode = canvas.nodes?.find((n: CanvasNode) => n.entityId === anchorId);
           if (anchorNode && visibleNodeIds.has(anchorNode.id)) {

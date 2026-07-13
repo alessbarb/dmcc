@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowDown, Lock, MessageCircle, RefreshCw, Send, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 import { useTranslation } from "../i18n/useTranslation.js";
@@ -55,6 +55,18 @@ function isNearBottom(element: HTMLDivElement | null): boolean {
 
 function senderColor(index: number): string {
   return SENDER_COLORS[Math.abs(index) % SENDER_COLORS.length] ?? SENDER_COLORS[0];
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isAudience(value: string): value is Audience {
+  return value === "party" || value === "dm" || value === "player";
+}
+
+function errorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
 }
 
 export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignMessagingPanelProps) {
@@ -140,8 +152,8 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       for (const message of olderPayload.messages) loadedMessageIdsRef.current.add(message.messageId);
       setPayload((current) => ({ participants: olderPayload.participants, messages: mergeMessages(olderPayload.messages, current.messages), pageInfo: olderPayload.pageInfo }));
       window.requestAnimationFrame(() => { if (list) list.scrollTop += list.scrollHeight - previousScrollHeight; });
-    } catch (cause: any) {
-      setError(cause.message);
+    } catch (cause) {
+      setError(errorMessage(cause));
     } finally {
       setLoadingOlder(false);
     }
@@ -169,7 +181,10 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       }, 120);
     };
     const refreshReads = (event: MessageEvent<string>) => {
-      const ids = (JSON.parse(event.data) as { messageIds?: string[] }).messageIds ?? [];
+      const parsed: unknown = JSON.parse(event.data);
+      const ids = isRecord(parsed) && Array.isArray(parsed.messageIds)
+        ? parsed.messageIds.filter((id): id is string => typeof id === "string")
+        : [];
       if (payloadRef.current.messages.some((message) => message.sentByMe && ids.includes(message.messageId))) refresh();
     };
     source.addEventListener("campaign.message.created", refresh);
@@ -220,9 +235,9 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       setPendingMessage(null);
       await loadLatest();
       window.requestAnimationFrame(() => scrollToLatest("smooth"));
-    } catch (cause: any) {
+    } catch (cause) {
       setPendingMessage({ ...message, status: "failed" });
-      setError(cause.message);
+      setError(errorMessage(cause));
     }
   };
 
@@ -295,7 +310,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       <footer style={{ borderTop: "1px solid var(--border-color)", paddingTop: 14, display: "grid", gap: 10 }}>
         {error && <p role="alert" style={{ margin: 0, color: "var(--danger)" }}>{error}</p>}
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <select className="form-select" value={audience} onChange={(event) => setAudience(event.target.value as Audience)} aria-label={t("playerPortal.messaging.channelParty")}><option value="party">{t("playerPortal.messaging.channelParty")}</option>{!dmMode && <option value="dm">{t("playerPortal.messaging.channelDm")}</option>}<option value="player">{t("playerPortal.messaging.channelPlayer")}</option></select>
+          <select className="form-select" value={audience} onChange={(event) => { if (isAudience(event.target.value)) setAudience(event.target.value); }} aria-label={t("playerPortal.messaging.channelParty")}><option value="party">{t("playerPortal.messaging.channelParty")}</option>{!dmMode && <option value="dm">{t("playerPortal.messaging.channelDm")}</option>}<option value="player">{t("playerPortal.messaging.channelPlayer")}</option></select>
           {audience === "player" && <select className="form-select" value={recipientPlayerId} onChange={(event) => setRecipientPlayerId(event.target.value)} aria-label={t("playerPortal.messaging.selectPlayer")}><option value="">{t("playerPortal.messaging.selectPlayer")}</option>{payload.participants.map((participant) => <option key={participant.playerId} value={participant.playerId}>{participant.displayName}</option>)}</select>}
         </div>
         <small style={{ color: "var(--text-muted)" }}>{selectedAudienceDescription}</small>
