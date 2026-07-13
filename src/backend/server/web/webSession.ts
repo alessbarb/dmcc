@@ -7,6 +7,7 @@ import * as schema from "../../db/schema.js";
 
 export const WEB_SESSION_COOKIE = "dmcc_session";
 const SESSION_DAYS = 30;
+const SESSION_LAST_SEEN_REFRESH_MS = 10 * 60 * 1000;
 const scryptAsync = promisify(scrypt);
 
 type CookieSameSite = "lax" | "strict" | "none" | boolean;
@@ -23,7 +24,6 @@ export type WebUser = {
   appRole: "user" | "admin";
   workspacePartitionId: string;
 };
-
 
 export async function hashSecret(secret: string): Promise<{ hash: string; salt: string }> {
   const salt = randomBytes(16).toString("hex");
@@ -135,6 +135,10 @@ export function publicWebUser(user: typeof schema.users.$inferSelect): WebUser {
   };
 }
 
+export function shouldRefreshSessionLastSeen(lastSeenAt: Date, now = new Date()): boolean {
+  return now.getTime() - lastSeenAt.getTime() >= SESSION_LAST_SEEN_REFRESH_MS;
+}
+
 export async function resolveWebUser(request: FastifyRequest): Promise<WebUser | null> {
   const token = request.cookies?.[WEB_SESSION_COOKIE];
   if (!token) return null;
@@ -156,7 +160,11 @@ export async function resolveWebUser(request: FastifyRequest): Promise<WebUser |
 
   const row = rows[0];
   if (!row) return null;
-  await db.update(schema.authSessions).set({ lastSeenAt: now }).where(eq(schema.authSessions.sessionIdHash, tokenHash));
+
+  if (shouldRefreshSessionLastSeen(row.session.lastSeenAt, now)) {
+    await db.update(schema.authSessions).set({ lastSeenAt: now }).where(eq(schema.authSessions.sessionIdHash, tokenHash));
+  }
+
   return publicWebUser(row.user);
 }
 

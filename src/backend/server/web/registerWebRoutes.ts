@@ -26,7 +26,7 @@ export interface WebRoutesOptions {
 
 /** Registers the PostgreSQL-backed multi-user web API surface. */
 export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOptions): void {
-  void registerAuthWebRoutes(server);
+  registerAuthWebRoutes(server);
   void registerAccountWebRoutes(server);
   void registerHealthWebRoutes(server);
   void registerRoleScopedCampaignListWebRoutes(server);
@@ -37,10 +37,10 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerCommandCenterWebRoutes(server);
   void registerInvitationWebRoutes(server);
   void registerLiveTableWebRoutes(server);
-  void registerPlayerKnowledgeWebRoutes(server);
+  registerPlayerKnowledgeWebRoutes(server);
   void registerPlayerPortalWebRoutes(server);
-  void registerPlayerCharacterLinkWebRoutes(server);
-  void registerPlayerCharacterProposalWebRoutes(server);
+  registerPlayerCharacterLinkWebRoutes(server);
+  registerPlayerCharacterProposalWebRoutes(server);
   void registerPremadeCampaignWebRoutes(server);
   void registerRulesWebRoutes(server);
   void registerSearchWebRoutes(server);

@@ -90,6 +90,14 @@ export const pool = new pg.Pool({
   ssl,
 });
 
+let poolClosePromise: Promise<void> | undefined;
+
+/** Closes the shared PostgreSQL pool once, even when multiple shutdown signals race. */
+export function closeDatabasePool(): Promise<void> {
+  poolClosePromise ??= pool.end();
+  return poolClosePromise;
+}
+
 export const db = drizzle(pool, { schema });
 export type DbClient = typeof db;
 export type DbTransaction = Parameters<Parameters<DbClient["transaction"]>[0]>[0];

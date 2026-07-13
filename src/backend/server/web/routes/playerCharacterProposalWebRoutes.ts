@@ -64,7 +64,7 @@ async function validateLinkRequest(campaignId: string, playerId: string, charact
   return profile;
 }
 
-export async function registerPlayerCharacterProposalWebRoutes(server: FastifyInstance): Promise<void> {
+export function registerPlayerCharacterProposalWebRoutes(server: FastifyInstance): void {
   server.put<{
     Params: { campaignId: string; proposalId: string };
     Body: { status?: string; dmNote?: string; dmResolutionNote?: string };
@@ -111,7 +111,7 @@ export async function registerPlayerCharacterProposalWebRoutes(server: FastifyIn
         reply.code(400);
         return { error: "Character link request is missing characterEntityId" };
       }
-      const profile = await validateLinkRequest(request.params.campaignId, proposal.playerId, characterEntityId);
+      await validateLinkRequest(request.params.campaignId, proposal.playerId, characterEntityId);
       await db
         .update(schema.playerProfiles)
         .set({ linkedCharacterId: characterEntityId, updatedAt: new Date() })
@@ -119,27 +119,6 @@ export async function registerPlayerCharacterProposalWebRoutes(server: FastifyIn
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.profileId, proposal.playerId),
         ));
-      if (profile.userId) {
-        await db
-          .insert(schema.visibilityGrants)
-          .values({
-            campaignId: request.params.campaignId,
-            targetType: "entity",
-            targetId: characterEntityId,
-            scope: "specific_user",
-            userId: profile.userId,
-            playerId: profile.profileId,
-          })
-          .onConflictDoUpdate({
-            target: [
-              schema.visibilityGrants.campaignId,
-              schema.visibilityGrants.targetType,
-              schema.visibilityGrants.targetId,
-              schema.visibilityGrants.scope,
-            ],
-            set: { userId: profile.userId, playerId: profile.profileId, grantedAt: new Date() },
-          });
-      }
       await db.insert(schema.activityFeed).values({
         campaignId: request.params.campaignId,
         activityId: createId("act"),

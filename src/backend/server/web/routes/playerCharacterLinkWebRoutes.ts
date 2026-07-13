@@ -49,66 +49,6 @@ async function readCampaignCharacters(campaignId: string): Promise<any[]> {
   return valuesOf<any>(state?.entities).filter((entity) => isPlayerCharacter(entity) && !isArchived(entity));
 }
 
-async function ensureCharacterGrant(
-  campaignId: string,
-  characterEntityId: string,
-  profile: typeof schema.playerProfiles.$inferSelect,
-): Promise<void> {
-  if (!profile.userId) return;
-  await db
-    .insert(schema.visibilityGrants)
-    .values({
-      campaignId,
-      targetType: "entity",
-      targetId: characterEntityId,
-      scope: "specific_user",
-      userId: profile.userId,
-      playerId: profile.profileId,
-    })
-    .onConflictDoUpdate({
-      target: [
-        schema.visibilityGrants.campaignId,
-        schema.visibilityGrants.targetType,
-        schema.visibilityGrants.targetId,
-        schema.visibilityGrants.scope,
-      ],
-      set: { userId: profile.userId, playerId: profile.profileId, grantedAt: new Date() },
-    });
-}
-
-async function migrateLegacyLinks(campaignId: string, profiles: Array<typeof schema.playerProfiles.$inferSelect>, characters: any[]) {
-  const claimed = new Set(profiles.map((profile) => profile.linkedCharacterId).filter((id): id is string => Boolean(id)));
-  let migrated = false;
-
-  for (const profile of profiles) {
-    if (profile.linkedCharacterId) {
-      await ensureCharacterGrant(campaignId, profile.linkedCharacterId, profile);
-      continue;
-    }
-    const legacyCharacter = characters.find((character) => {
-      const legacyPlayerId = character?.metadata?.playerId;
-      return legacyPlayerId === profile.profileId && !claimed.has(character.entityId);
-    });
-    if (!legacyCharacter?.entityId) continue;
-
-    await db
-      .update(schema.playerProfiles)
-      .set({ linkedCharacterId: legacyCharacter.entityId, updatedAt: new Date() })
-      .where(and(
-        eq(schema.playerProfiles.campaignId, campaignId),
-        eq(schema.playerProfiles.profileId, profile.profileId),
-      ));
-    profile.linkedCharacterId = legacyCharacter.entityId;
-    await ensureCharacterGrant(campaignId, legacyCharacter.entityId, profile);
-    claimed.add(legacyCharacter.entityId);
-    migrated = true;
-  }
-
-  if (migrated) {
-    campaignEventBus.publish(campaignId, { type: "player.portal.updated" });
-  }
-}
-
 async function validateCharacterAssignment(campaignId: string, playerId: string, characterEntityId: string) {
   const [profile] = await db
     .select()
@@ -149,10 +89,10 @@ async function validateCharacterAssignment(campaignId: string, playerId: string,
     throw error;
   }
 
-  return { profile, character };
+  return profile;
 }
 
-export async function registerPlayerCharacterLinkWebRoutes(server: FastifyInstance): Promise<void> {
+export function registerPlayerCharacterLinkWebRoutes(server: FastifyInstance): void {
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/player-portal/dm-character-summary",
     async (request) => {
@@ -166,7 +106,6 @@ export async function registerPlayerCharacterLinkWebRoutes(server: FastifyInstan
           eq(schema.playerProfiles.status, "active"),
         ));
       const characters = await readCampaignCharacters(campaignId);
-      await migrateLegacyLinks(campaignId, profiles, characters);
 
       const [proposals, objectives, notes] = await Promise.all([
         db.select().from(schema.playerProposals).where(eq(schema.playerProposals.campaignId, campaignId)),
@@ -234,7 +173,7 @@ export async function registerPlayerCharacterLinkWebRoutes(server: FastifyInstan
       return { error: "playerId and characterEntityId are required" };
     }
 
-    const { profile } = await validateCharacterAssignment(request.params.campaignId, playerId, characterEntityId);
+    const profile = await validateCharacterAssignment(request.params.campaignId, playerId, characterEntityId);
     if (profile.linkedCharacterId !== characterEntityId) {
       await db
         .update(schema.playerProfiles)
@@ -251,7 +190,6 @@ export async function registerPlayerCharacterLinkWebRoutes(server: FastifyInstan
         content: { playerId, characterEntityId, ownership: request.body?.ownership, syncMode: request.body?.syncMode },
       });
     }
-    await ensureCharacterGrant(request.params.campaignId, characterEntityId, profile);
     campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated", playerId });
     return { ok: true, playerId, characterEntityId };
   });
@@ -281,16 +219,6 @@ export async function registerPlayerCharacterLinkWebRoutes(server: FastifyInstan
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.profileId, request.params.playerId),
         ));
-      if (profile.linkedCharacterId) {
-        await db
-          .delete(schema.visibilityGrants)
-          .where(and(
-            eq(schema.visibilityGrants.campaignId, request.params.campaignId),
-            eq(schema.visibilityGrants.targetType, "entity"),
-            eq(schema.visibilityGrants.targetId, profile.linkedCharacterId),
-            eq(schema.visibilityGrants.scope, "specific_user"),
-          ));
-      }
       await db.insert(schema.activityFeed).values({
         campaignId: request.params.campaignId,
         activityId: createId("act"),

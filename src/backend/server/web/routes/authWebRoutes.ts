@@ -37,8 +37,30 @@ const LOGIN_LOCKOUT_WINDOW_MS = 15 * 60_000;
 const LOGIN_LOCKOUT_THRESHOLD = 5;
 const LOGIN_LOCKOUT_BASE_MS = 60_000;
 const LOGIN_LOCKOUT_MAX_MS = 15 * 60_000;
+const AUTH_STATE_MAX_ENTRIES = 10_000;
+const fallbackPasswordHashPromise = argon2.hash(randomBytes(32));
 
-function getRegisterRateLimitRetryAfter(registerRateLimits: Map<string, RegisterRateLimitEntry>, key: string, limit: number, now = Date.now()): number | null {
+function pruneExpiringMap<T>(entries: Map<string, T>, isExpired: (entry: T) => boolean): void {
+  for (const [key, entry] of entries) {
+    if (isExpired(entry)) {
+      entries.delete(key);
+    }
+  }
+
+  while (entries.size >= AUTH_STATE_MAX_ENTRIES) {
+    const oldestKey = entries.keys().next().value as string | undefined;
+    if (!oldestKey) break;
+    entries.delete(oldestKey);
+  }
+}
+
+function getRegisterRateLimitRetryAfter(
+  registerRateLimits: Map<string, RegisterRateLimitEntry>,
+  key: string,
+  limit: number,
+  now = Date.now(),
+): number | null {
+  pruneExpiringMap(registerRateLimits, (entry) => entry.resetAt <= now);
   const current = registerRateLimits.get(key);
   if (!current || current.resetAt <= now) {
     registerRateLimits.set(key, { count: 1, resetAt: now + REGISTER_RATE_LIMIT_WINDOW_MS });
@@ -52,7 +74,13 @@ function getRegisterRateLimitRetryAfter(registerRateLimits: Map<string, Register
   return null;
 }
 
-function getLoginRateLimitRetryAfter(loginRateLimits: Map<string, LoginRateLimitEntry>, key: string, limit: number, now = Date.now()): number | null {
+function getLoginRateLimitRetryAfter(
+  loginRateLimits: Map<string, LoginRateLimitEntry>,
+  key: string,
+  limit: number,
+  now = Date.now(),
+): number | null {
+  pruneExpiringMap(loginRateLimits, (entry) => entry.resetAt <= now);
   const current = loginRateLimits.get(key);
   if (!current || current.resetAt <= now) {
     loginRateLimits.set(key, { count: 1, resetAt: now + LOGIN_RATE_LIMIT_WINDOW_MS });
@@ -66,17 +94,35 @@ function getLoginRateLimitRetryAfter(loginRateLimits: Map<string, LoginRateLimit
   return null;
 }
 
-function enforceLoginRateLimit(loginRateLimits: Map<string, LoginRateLimitEntry>, request: FastifyRequest, normalizedEmail: string): number | null {
-  const ipRetryAfter = getLoginRateLimitRetryAfter(loginRateLimits, `login:ip:${request.ip}`, LOGIN_RATE_LIMIT_MAX_BY_IP);
-  const emailRetryAfter = getLoginRateLimitRetryAfter(loginRateLimits, `login:email:${hashOpaque(normalizedEmail)}`, LOGIN_RATE_LIMIT_MAX_BY_EMAIL);
+function enforceLoginRateLimit(
+  loginRateLimits: Map<string, LoginRateLimitEntry>,
+  request: FastifyRequest,
+  normalizedEmail: string,
+): number | null {
+  const ipRetryAfter = getLoginRateLimitRetryAfter(
+    loginRateLimits,
+    `login:ip:${request.ip}`,
+    LOGIN_RATE_LIMIT_MAX_BY_IP,
+  );
+  const emailRetryAfter = getLoginRateLimitRetryAfter(
+    loginRateLimits,
+    `login:email:${hashOpaque(normalizedEmail)}`,
+    LOGIN_RATE_LIMIT_MAX_BY_EMAIL,
+  );
   return Math.max(ipRetryAfter ?? 0, emailRetryAfter ?? 0) || null;
 }
 
-function getLoginLockoutRetryAfter(loginLockouts: Map<string, LoginLockoutEntry>, normalizedEmail: string, now = Date.now()): number | null {
-  const current = loginLockouts.get(hashOpaque(normalizedEmail));
+function getLoginLockoutRetryAfter(
+  loginLockouts: Map<string, LoginLockoutEntry>,
+  normalizedEmail: string,
+  now = Date.now(),
+): number | null {
+  pruneExpiringMap(loginLockouts, (entry) => entry.windowResetAt <= now && entry.lockedUntil <= now);
+  const key = hashOpaque(normalizedEmail);
+  const current = loginLockouts.get(key);
   if (!current) return null;
   if (current.windowResetAt <= now && current.lockedUntil <= now) {
-    loginLockouts.delete(hashOpaque(normalizedEmail));
+    loginLockouts.delete(key);
     return null;
   }
   if (current.lockedUntil > now) {
@@ -85,7 +131,12 @@ function getLoginLockoutRetryAfter(loginLockouts: Map<string, LoginLockoutEntry>
   return null;
 }
 
-function recordFailedLogin(loginLockouts: Map<string, LoginLockoutEntry>, normalizedEmail: string, now = Date.now()): void {
+function recordFailedLogin(
+  loginLockouts: Map<string, LoginLockoutEntry>,
+  normalizedEmail: string,
+  now = Date.now(),
+): void {
+  pruneExpiringMap(loginLockouts, (entry) => entry.windowResetAt <= now && entry.lockedUntil <= now);
   const key = hashOpaque(normalizedEmail);
   const current = loginLockouts.get(key);
   const entry = !current || current.windowResetAt <= now
@@ -104,9 +155,21 @@ function clearLoginLockout(loginLockouts: Map<string, LoginLockoutEntry>, normal
   loginLockouts.delete(hashOpaque(normalizedEmail));
 }
 
-function enforceRegisterRateLimit(registerRateLimits: Map<string, RegisterRateLimitEntry>, request: FastifyRequest, normalizedEmail: string): number | null {
-  const ipRetryAfter = getRegisterRateLimitRetryAfter(registerRateLimits, `register:ip:${request.ip}`, REGISTER_RATE_LIMIT_MAX_BY_IP);
-  const emailRetryAfter = getRegisterRateLimitRetryAfter(registerRateLimits, `register:email:${hashOpaque(normalizedEmail)}`, REGISTER_RATE_LIMIT_MAX_BY_EMAIL);
+function enforceRegisterRateLimit(
+  registerRateLimits: Map<string, RegisterRateLimitEntry>,
+  request: FastifyRequest,
+  normalizedEmail: string,
+): number | null {
+  const ipRetryAfter = getRegisterRateLimitRetryAfter(
+    registerRateLimits,
+    `register:ip:${request.ip}`,
+    REGISTER_RATE_LIMIT_MAX_BY_IP,
+  );
+  const emailRetryAfter = getRegisterRateLimitRetryAfter(
+    registerRateLimits,
+    `register:email:${hashOpaque(normalizedEmail)}`,
+    REGISTER_RATE_LIMIT_MAX_BY_EMAIL,
+  );
   return Math.max(ipRetryAfter ?? 0, emailRetryAfter ?? 0) || null;
 }
 
@@ -119,7 +182,7 @@ function requireBodyString(value: unknown, field: string): string {
   return value.trim();
 }
 
-export async function registerAuthWebRoutes(server: FastifyInstance): Promise<void> {
+export function registerAuthWebRoutes(server: FastifyInstance): void {
   const registerRateLimits = new Map<string, RegisterRateLimitEntry>();
   const loginRateLimits = new Map<string, LoginRateLimitEntry>();
   const loginLockouts = new Map<string, LoginLockoutEntry>();
@@ -218,12 +281,13 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
         user.passwordAlgorithm = "argon2id";
         user.lastLoginAt = new Date();
       }
+    } else {
+      const fallbackPasswordHash = await fallbackPasswordHashPromise;
+      await argon2.verify(fallbackPasswordHash, password).catch(() => false);
     }
 
     if (!user || !passwordValid) {
-      if (user) {
-        recordFailedLogin(loginLockouts, email);
-      }
+      recordFailedLogin(loginLockouts, email);
       reply.code(401);
       return LOGIN_FAILURE_RESPONSE;
     }
