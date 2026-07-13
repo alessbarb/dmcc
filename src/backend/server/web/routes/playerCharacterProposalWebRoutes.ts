@@ -111,7 +111,7 @@ export function registerPlayerCharacterProposalWebRoutes(server: FastifyInstance
         reply.code(400);
         return { error: "Character link request is missing characterEntityId" };
       }
-      const profile = await validateLinkRequest(request.params.campaignId, proposal.playerId, characterEntityId);
+      await validateLinkRequest(request.params.campaignId, proposal.playerId, characterEntityId);
       await db
         .update(schema.playerProfiles)
         .set({ linkedCharacterId: characterEntityId, updatedAt: new Date() })
@@ -119,20 +119,6 @@ export function registerPlayerCharacterProposalWebRoutes(server: FastifyInstance
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.profileId, proposal.playerId),
         ));
-      if (profile.userId) {
-        await db
-          .insert(schema.visibilityGrants)
-          .values({
-            campaignId: request.params.campaignId,
-            targetType: "entity",
-            targetId: characterEntityId,
-            scope: "specific_user",
-            source: "character_link",
-            userId: profile.userId,
-            playerId: null,
-          })
-          .onConflictDoNothing();
-      }
       await db.insert(schema.activityFeed).values({
         campaignId: request.params.campaignId,
         activityId: createId("act"),
