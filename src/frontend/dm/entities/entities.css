@@ -119,14 +119,32 @@
   border-width: 3px;
 }
 
-/* DM-only override */
+/* DM-only override: Soft indigo/violet instead of alarms-red */
 .entity-card--dm-only {
-  border-color: hsla(350, 70%, 50%, 0.4);
-  box-shadow: 0 0 10px hsla(350, 70%, 50%, 0.1);
+  border-color: hsla(255, 60%, 55%, 0.35);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 10px hsla(255, 60%, 55%, 0.08);
 }
 .entity-card--dm-only:hover {
-  border-color: hsla(350, 80%, 55%, 0.7);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.65), 0 0 0 1px hsla(350, 80%, 55%, 0.4);
+  border-color: hsla(255, 70%, 65%, 0.65);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.65), 0 0 10px hsla(255, 70%, 65%, 0.25);
+}
+
+.entity-card__dm-only-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background-color: hsla(255, 50%, 35%, 0.85);
+  border: 1px solid hsla(255, 50%, 55%, 0.3);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 4px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
 /* Shape: veiled (used for secrets/rumors) */
@@ -165,7 +183,7 @@
   justify-content: center;
   border-bottom: 1px solid var(--border-color);
   background: hsl(230, 25%, 12%);
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, height 0.2s;
 }
 
 .entity-card__hero-img {
@@ -175,10 +193,13 @@
   transition: filter 0.2s;
 }
 
-/* Fallback graphic styles based on shapes */
+/* Fallback graphic styles based on shapes & typography */
 .entity-card__hero--no-img {
-  background: radial-gradient(circle at center, var(--entity-accent-soft) 0%, transparent 70%),
-              linear-gradient(180deg, hsl(230, 25%, 12%) 0%, hsl(230, 25%, 8%) 100%);
+  background: 
+    radial-gradient(circle at 50% 50%, var(--entity-accent-soft) 0%, transparent 80%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 6px),
+    linear-gradient(180deg, hsl(230, 25%, 13%) 0%, hsl(230, 25%, 8%) 100%);
+  box-shadow: inset 0 -15px 30px rgba(0,0,0,0.35);
 }
 
 .entity-card__hero-icon {
@@ -198,13 +219,50 @@
   justify-content: center;
 }
 
-.entity-card__hero--shape-portrait .entity-card__hero-icon-wrapper {
+/* Portrait Shape (Characters, NPCs) Medallion */
+.entity-card__hero--style-portrait .entity-card__hero-icon-wrapper {
   box-sizing: content-box;
-  padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--entity-accent) 50%, transparent);
+  padding: 16px;
+  border: 2px solid var(--entity-accent);
   border-radius: 50%;
-  background: var(--entity-accent-soft);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, var(--entity-accent-soft), rgba(255,255,255,0.02));
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+/* Faction Emblem Medallion */
+.entity-card__hero--type-faction .entity-card__hero-icon-wrapper {
+  border-radius: 8px 8px 16px 16px; /* Shield shape! */
+  padding: 16px;
+  border: 2px solid var(--entity-accent);
+  background: linear-gradient(180deg, var(--entity-accent-soft) 0%, rgba(0,0,0,0.2) 100%);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Panorama Style (Locations, Scenes) */
+.entity-card__hero--style-panorama {
+  height: 120px;
+}
+.entity-card__hero--style-panorama .entity-card__hero-icon-wrapper {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+.entity-card__hero--style-panorama .entity-card__hero-icon {
+  transform: scale(1.2);
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 8px var(--entity-accent));
+}
+
+/* Compact Style (Clues, Secrets, Clocks) */
+.entity-card__hero--style-compact {
+  height: 90px;
+}
+.entity-card__hero--style-compact .entity-card__hero-icon-wrapper {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 12px;
 }
 
 .entity-card__hero--shape-hex-header {

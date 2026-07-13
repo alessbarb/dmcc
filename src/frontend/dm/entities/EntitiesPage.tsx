@@ -53,6 +53,9 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
   const [visibilityFilter, setVisibilityFilter] = useState("all");
   const setIsEntityModalOpen = props.setIsEntityModalOpen ?? store.setIsEntityModalOpen;
 
+  const [groupBy, setGroupBy] = useState<"none" | "type" | "importance" | "status" | "visibility">("none");
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
   const [sortBy, setSortBy] = useState<"relevant" | "recent" | "alphabetical">(() => {
     try {
@@ -174,6 +177,44 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
     return list;
   }, [filteredEntities, sortBy, locale]);
 
+  const relevantNowEntities = useMemo(() => {
+    // Select 4 to 6 relevant entities: Critical/High importance + recently updated
+    const criticalOrHigh = activeEntities.filter(
+      (e) => e.importance === "critical" || e.importance === "high"
+    );
+    let result = [...criticalOrHigh];
+    if (result.length < 6) {
+      const remaining = activeEntities.filter((e) => !result.some((r) => r.entityId === e.entityId));
+      remaining.sort((a, b) => {
+        const timeA = new Date(a.updatedAt || a.createdAt).getTime();
+        const timeB = new Date(b.updatedAt || b.createdAt).getTime();
+        return timeB - timeA;
+      });
+      result = [...result, ...remaining.slice(0, 6 - result.length)];
+    }
+    return result.slice(0, 6);
+  }, [activeEntities]);
+
+  const groupedEntities = useMemo(() => {
+    if (groupBy === "none") return null;
+    const groups: Record<string, Entity[]> = {};
+    for (const entity of sortedEntities) {
+      let key = "";
+      if (groupBy === "type") {
+        key = entity.entityType;
+      } else if (groupBy === "importance") {
+        key = entity.importance || "normal";
+      } else if (groupBy === "status") {
+        key = entity.status || "no_status";
+      } else if (groupBy === "visibility") {
+        key = visibilityKind(entity);
+      }
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(entity);
+    }
+    return groups;
+  }, [sortedEntities, groupBy]);
+
   const hasFilters =
     entitySearchQuery.trim().length > 0 ||
     entityTypeFilter !== "all" ||
@@ -199,13 +240,154 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
     window.history.replaceState(null, "", window.location.pathname);
   }, [activeEntities]);
 
+  const toggleSection = (sectionKey: string) => {
+    setCollapsedSections((prev) => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey],
+    }));
+  };
+
+  const renderEntityItem = (entity: Entity) => {
+    const visibility = visibilityKind(entity);
+    const isDmOnly = visibility === "dm_only";
+    const customImageUrl = resolveEntityImageUrl(entity);
+    const hasRealImage = customImageUrl && !customImageUrl.includes("/assets/entities/default_") && !customImageUrl.startsWith("/assets/entities/default_");
+    const cfg = getEntityVisual(entity.entityType);
+    const IconComponent = cfg.icon;
+    const isCritical = entity.importance === "critical";
+    const isHigh = entity.importance === "high";
+
+    if (viewMode === "compact") {
+      const formattedDate = new Date(entity.updatedAt || entity.createdAt).toLocaleDateString(locale, { month: "short", day: "numeric" });
+      return (
+        <button
+          key={entity.entityId}
+          type="button"
+          className={`entity-compact-row ${isDmOnly ? "entity-compact-row--dm-only" : ""} ${isCritical ? "entity-compact-row--critical" : ""}`}
+          onClick={() => setSelectedEntity(entity)}
+          style={{
+            "--entity-accent": cfg.accent,
+            "--entity-accent-soft": cfg.accentSoft,
+          } as React.CSSProperties}
+        >
+          <div className="entity-compact-row__left">
+            <div className="entity-compact-row__icon">
+              <IconComponent size={16} />
+            </div>
+            <div className="entity-compact-row__info">
+              <div className="entity-compact-row__title-group">
+                <span className="entity-compact-row__title">{entity.title}</span>
+                {entity.subtitle && <span className="entity-compact-row__subtitle">({entity.subtitle})</span>}
+              </div>
+              {entity.summary && <span className="entity-compact-row__summary">{entity.summary}</span>}
+            </div>
+          </div>
+
+          <div className="entity-compact-row__right">
+            <span className="entity-type-badge">
+              {formatEntityType(entity.entityType, locale)}
+            </span>
+            {entity.status && <span className="badge badge-default">{entity.status}</span>}
+            {entity.importance && entity.importance !== "normal" && (
+              <span className={`badge ${isCritical ? "badge-critical" : "badge-warning"}`}>
+                {entity.importance}
+              </span>
+            )}
+            <span className="entity-compact-row__date" style={{ color: "var(--text-muted)", fontSize: "0.75rem", marginRight: "4px" }}>
+              {formattedDate}
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4, color: isDmOnly ? "var(--entity-npc)" : "var(--text-muted)", fontSize: "0.8rem" }}>
+              {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
+            </span>
+          </div>
+        </button>
+      );
+    }
+
+    // Card view
+    const cardClasses = [
+      "entity-card",
+      `entity-card--shape-${cfg.shape}`,
+      `entity-card--border-${cfg.borderPattern}`,
+      isDmOnly ? "entity-card--dm-only" : "",
+      isCritical ? "entity-card--critical" : "",
+      isHigh ? "entity-card--high" : "",
+    ].filter(Boolean).join(" ");
+
+    return (
+      <button
+        key={entity.entityId}
+        type="button"
+        className={cardClasses}
+        onClick={() => setSelectedEntity(entity)}
+        style={{
+          "--entity-accent": cfg.accent,
+          "--entity-accent-soft": cfg.accentSoft,
+        } as React.CSSProperties}
+        aria-label={`${entity.title}. ${formatEntityType(entity.entityType, locale)}. ${formatVisibility(visibility, locale)}`}
+      >
+        <div
+          className={[
+            "entity-card__hero",
+            `entity-card__hero--shape-${cfg.shape}`,
+            `entity-card__hero--style-${cfg.heroStyle}`,
+            `entity-card__hero--type-${entity.entityType}`,
+            hasRealImage ? "entity-card__hero--img" : "entity-card__hero--no-img"
+          ].filter(Boolean).join(" ")}
+        >
+          {hasRealImage ? (
+            <img
+              src={customImageUrl}
+              alt=""
+              className="entity-card__hero-img"
+              style={{
+                filter: isDmOnly ? "grayscale(20%) brightness(85%)" : "none",
+              }}
+            />
+          ) : (
+            <div className="entity-card__hero-icon-wrapper">
+              <IconComponent className="entity-card__hero-icon" size={cfg.heroStyle === "portrait" ? 36 : 28} />
+            </div>
+          )}
+          {isDmOnly && (
+            <span className="entity-card__dm-only-badge">
+              <EyeOff size={11} /> {formatVisibility("dm_only", locale)}
+            </span>
+          )}
+        </div>
+
+        <div className="entity-card__body">
+          <div className="entity-card__header">
+            <span className="entity-type-badge">
+              {formatEntityType(entity.entityType, locale)}
+            </span>
+            {entity.status && <span className="badge badge-default">{entity.status}</span>}
+          </div>
+          <strong className="entity-card__title">{entity.title}</strong>
+          {entity.subtitle && <span className="entity-card__subtitle">{entity.subtitle}</span>}
+          <span className="entity-card__summary">
+            {entity.summary || t("entitiesPage.noSummary")}
+          </span>
+          <div className="entity-card__footer">
+            <span>{t("entitiesPage.importanceLabel")}: {entity.importance}</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4, color: isDmOnly ? "var(--entity-npc)" : "inherit" }}>
+              {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
+              {formatVisibility(visibility, locale)}
+            </span>
+          </div>
+        </div>
+      </button>
+    );
+  };
+
   return (
     <>
       <div className="entities-page">
+        {/* Compact & Single-line Toolbar */}
         <div className="entities-toolbar">
           <div className="entities-header-bar">
             <div className="entities-header-bar__left">
-              <span className="search-input-wrapper" style={{ position: "relative", flex: 1, maxWidth: 360 }}>
+              <span className="search-input-wrapper" style={{ position: "relative", flex: 1, maxWidth: 320 }}>
                 <Search
                   size={16}
                   aria-hidden="true"
@@ -226,6 +408,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
                   onChange={(event) => setEntitySearchQuery(event.target.value)}
                 />
               </span>
+              
               <button
                 type="button"
                 className={`btn ${activeFiltersCount > 0 ? "btn-primary" : "btn-secondary"}`}
@@ -253,14 +436,42 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
                   </span>
                 )}
               </button>
+
+              <span className="entities-count-badge" style={{
+                fontSize: "13px",
+                color: "var(--text-muted)",
+                backgroundColor: "rgba(255,255,255,0.04)",
+                padding: "4px 10px",
+                borderRadius: "12px",
+                border: "1px solid var(--border-color)",
+                whiteSpace: "nowrap"
+              }}>
+                {t("entitiesPage.resultCount", { count: sortedEntities.length })}
+              </span>
             </div>
 
             <div className="entities-header-bar__right">
               <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-muted)", marginBottom: 0 }}>
-                <span>{t("entitiesPage.sortBy")}</span>
+                <span>{t("entitiesPage.groupBy") || "Agrupar por"}</span>
                 <select
                   className="form-select"
                   style={{ height: 38, paddingTop: 4, paddingBottom: 4, width: 140 }}
+                  value={groupBy}
+                  onChange={(event) => setGroupBy(event.target.value as any)}
+                >
+                  <option value="none">{t("entitiesPage.groupByNone") || "Sin agrupar"}</option>
+                  <option value="type">{t("entitiesPage.groupByType") || "Por tipo"}</option>
+                  <option value="importance">{t("entitiesPage.groupByImportance") || "Por importancia"}</option>
+                  <option value="status">{t("entitiesPage.groupByStatus") || "Por estado"}</option>
+                  <option value="visibility">{t("entitiesPage.groupByVisibility") || "Por visibilidad"}</option>
+                </select>
+              </label>
+
+              <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-muted)", marginBottom: 0 }}>
+                <span>{t("entitiesPage.sortBy")}</span>
+                <select
+                  className="form-select"
+                  style={{ height: 38, paddingTop: 4, paddingBottom: 4, width: 130 }}
                   value={sortBy}
                   onChange={(event) => changeSortBy(event.target.value as any)}
                 >
@@ -385,12 +596,6 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
               </div>
             </div>
           )}
-
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px" }}>
-            <span style={{ color: "var(--text-muted)", fontSize: 13 }}>
-              {t("entitiesPage.resultCount", { count: sortedEntities.length })}
-            </span>
-          </div>
         </div>
 
         {sortedEntities.length === 0 ? (
@@ -452,157 +657,103 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
               </button>
             </div>
           )
-        ) : viewMode === "compact" ? (
-          <div className="entity-compact-list">
-            {sortedEntities.map((entity) => {
-              const visibility = visibilityKind(entity);
-              const isDmOnly = visibility === "dm_only";
-              const cfg = getEntityVisual(entity.entityType);
-              const IconComponent = cfg.icon;
-              const isCritical = entity.importance === "critical";
-
-              return (
-                <button
-                  key={entity.entityId}
-                  type="button"
-                  className={`entity-compact-row ${isDmOnly ? "entity-compact-row--dm-only" : ""} ${isCritical ? "entity-compact-row--critical" : ""}`}
-                  onClick={() => setSelectedEntity(entity)}
-                  style={{
-                    "--entity-accent": cfg.accent,
-                    "--entity-accent-soft": cfg.accentSoft,
-                  } as React.CSSProperties}
-                >
-                  <div className="entity-compact-row__left">
-                    <div className="entity-compact-row__icon">
-                      <IconComponent size={16} />
-                    </div>
-                    <div className="entity-compact-row__info">
-                      <div className="entity-compact-row__title-group">
-                        <span className="entity-compact-row__title">{entity.title}</span>
-                        {entity.subtitle && <span className="entity-compact-row__subtitle">({entity.subtitle})</span>}
-                      </div>
-                      {entity.summary && <span className="entity-compact-row__summary">{entity.summary}</span>}
-                    </div>
-                  </div>
-
-                  <div className="entity-compact-row__right">
-                    <span className="entity-type-badge">
-                      {formatEntityType(entity.entityType, locale)}
-                    </span>
-                    {entity.status && <span className="badge badge-default">{entity.status}</span>}
-                    {entity.importance && entity.importance !== "normal" && (
-                      <span className={`badge ${isCritical ? "badge-critical" : "badge-warning"}`}>
-                        {entity.importance}
-                      </span>
-                    )}
-                    <span style={{ display: "flex", alignItems: "center", gap: 4, color: "var(--text-muted)", fontSize: "0.8rem" }}>
-                      {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
         ) : (
-          <div className="entity-card-grid">
-            {sortedEntities.map((entity) => {
-              const visibility = visibilityKind(entity);
-              const isDmOnly = visibility === "dm_only";
-              const customImageUrl = resolveEntityImageUrl(entity);
-              const cfg = getEntityVisual(entity.entityType);
-              const IconComponent = cfg.icon;
-              const isCritical = entity.importance === "critical";
-              const isHigh = entity.importance === "high";
+          <>
+            {/* Context Section: "Relevantes ahora" */}
+            {relevantNowEntities.length > 0 && !hasFilters && (
+              <div className="entities-context-section" style={{ marginBottom: "32px" }}>
+                <h2 className="entities-section-title" style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "16px", color: "var(--text-color, #fff)" }}>
+                  {t("entitiesPage.relevantNow") || "Relevantes ahora"}
+                </h2>
+                <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
+                  {relevantNowEntities.map(entity => renderEntityItem(entity))}
+                </div>
+                <div className="entities-section-divider" style={{ borderBottom: "1px solid var(--border-color)", margin: "32px 0 24px 0" }} />
+              </div>
+            )}
 
-              const cardClasses = [
-                "entity-card",
-                `entity-card--shape-${cfg.shape}`,
-                `entity-card--border-${cfg.borderPattern}`,
-                isDmOnly ? "entity-card--dm-only" : "",
-                isCritical ? "entity-card--critical" : "",
-                isHigh ? "entity-card--high" : "",
-              ].filter(Boolean).join(" ");
+            {/* Main Section Header */}
+            {!hasFilters && (
+              <h2 className="entities-section-title" style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "20px", color: "var(--text-color, #fff)" }}>
+                {t("entitiesPage.allEntities") || "Todas las entidades"}
+              </h2>
+            )}
 
-              return (
-                <button
-                  key={entity.entityId}
-                  type="button"
-                  className={cardClasses}
-                  onClick={() => setSelectedEntity(entity)}
-                  style={{
-                    "--entity-accent": cfg.accent,
-                    "--entity-accent-soft": cfg.accentSoft,
-                  } as React.CSSProperties}
-                  aria-label={`${entity.title}. ${formatEntityType(entity.entityType, locale)}. ${formatVisibility(visibility, locale)}`}
-                >
-                  <div
-                    className={[
-                      "entity-card__hero",
-                      `entity-card__hero--shape-${cfg.shape}`,
-                      customImageUrl ? "entity-card__hero--img" : "entity-card__hero--no-img"
-                    ].filter(Boolean).join(" ")}
-                  >
-                    {customImageUrl ? (
-                      <img
-                        src={customImageUrl}
-                        alt=""
-                        className="entity-card__hero-img"
+            {groupBy === "none" ? (
+              <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
+                {sortedEntities.map((entity) => renderEntityItem(entity))}
+              </div>
+            ) : (
+              <div className="entities-grouped-sections" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                {Object.entries(groupedEntities || {}).map(([sectionKey, entities]) => {
+                  const isCollapsed = !!collapsedSections[sectionKey];
+                  
+                  let label = sectionKey;
+                  if (groupBy === "type") {
+                    label = formatEntityType(sectionKey, locale);
+                  } else if (groupBy === "importance") {
+                    const importanceLabels: Record<string, string> = {
+                      critical: "Crítica",
+                      high: "Alta",
+                      normal: "Normal",
+                      low: "Baja"
+                    };
+                    label = importanceLabels[sectionKey] || sectionKey;
+                  } else if (groupBy === "visibility") {
+                    label = formatVisibility(sectionKey, locale);
+                  } else if (groupBy === "status") {
+                    label = sectionKey === "no_status" ? "Sin estado" : sectionKey;
+                  }
+
+                  return (
+                    <div key={sectionKey} className="entities-group-section" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                      <button
+                        type="button"
+                        onClick={() => toggleSection(sectionKey)}
+                        className="entities-group-section__header"
                         style={{
-                          filter: isDmOnly ? "grayscale(50%) brightness(45%)" : "none",
-                        }}
-                      />
-                    ) : (
-                      <div className="entity-card__hero-icon-wrapper">
-                        <IconComponent className="entity-card__hero-icon" size={28} />
-                      </div>
-                    )}
-                    {isDmOnly && (
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: 10,
-                          left: 10,
                           display: "flex",
                           alignItems: "center",
-                          gap: 4,
-                          padding: "3px 8px",
-                          backgroundColor: "hsla(350, 75%, 45%, 0.9)",
-                          color: "#fff",
-                          fontSize: "0.7rem",
-                          fontWeight: 700,
-                          borderRadius: 4,
-                          zIndex: 2,
+                          justifyContent: "space-between",
+                          width: "100%",
+                          padding: "10px 16px",
+                          background: "var(--card-bg, hsl(230, 20%, 15%))",
+                          border: "1px solid var(--border-color)",
+                          borderRadius: "6px",
+                          cursor: "pointer",
+                          color: "var(--text-color, #fff)",
+                          fontWeight: 600,
+                          fontSize: "1.05rem",
+                          textAlign: "left"
                         }}
                       >
-                        <EyeOff size={11} /> {formatVisibility("dm_only", locale)}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="entity-card__body">
-                    <div className="entity-card__header">
-                      <span className="entity-type-badge">
-                        {formatEntityType(entity.entityType, locale)}
-                      </span>
-                      {entity.status && <span className="badge badge-default">{entity.status}</span>}
+                        <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <span style={{ transform: isCollapsed ? "rotate(-90deg)" : "rotate(0deg)", transition: "transform 0.15s", display: "inline-block" }}>▼</span>
+                          <span>{label}</span>
+                          <span style={{
+                            fontSize: "0.75rem",
+                            color: "var(--text-muted)",
+                            backgroundColor: "rgba(255,255,255,0.06)",
+                            padding: "2px 8px",
+                            borderRadius: "10px",
+                            marginLeft: "4px"
+                          }}>
+                            {entities.length}
+                          </span>
+                        </span>
+                      </button>
+                      
+                      {!isCollapsed && (
+                        <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
+                          {entities.map((entity) => renderEntityItem(entity))}
+                        </div>
+                      )}
                     </div>
-                    <strong className="entity-card__title">{entity.title}</strong>
-                    {entity.subtitle && <span className="entity-card__subtitle">{entity.subtitle}</span>}
-                    <span className="entity-card__summary">
-                      {entity.summary || t("entitiesPage.noSummary")}
-                    </span>
-                    <div className="entity-card__footer">
-                      <span>{t("entitiesPage.importanceLabel")}: {entity.importance}</span>
-                      <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                        {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
-                        {formatVisibility(visibility, locale)}
-                      </span>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </div>
 

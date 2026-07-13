@@ -610,6 +610,14 @@ export const de: TranslationDictionary = {
     sortAlphabetical: "Name",
     viewCard: "Kartenansicht",
     viewCompact: "Kompaktansicht",
+    relevantNow: "Gerade relevant",
+    allEntities: "Alle Entitäten",
+    groupBy: "Gruppieren nach",
+    groupByNone: "Keine Gruppierung",
+    groupByType: "Nach Typ",
+    groupByImportance: "Nach Wichtigkeit",
+    groupByStatus: "Nach Status",
+    groupByVisibility: "Nach Sichtbarkeit",
   },
 
   appFooter: {
