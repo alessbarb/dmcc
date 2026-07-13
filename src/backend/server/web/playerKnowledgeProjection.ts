@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
 import { PostgresCampaignRepository } from "./postgresCampaignRepository.js";
@@ -15,6 +15,9 @@ export interface PlayerKnowledgeTarget {
 }
 
 type VisibilityGrantInsert = typeof schema.visibilityGrants.$inferInsert;
+type VisibilityGrant = typeof schema.visibilityGrants.$inferSelect;
+
+const visibilityRefreshes = new Map<string, Promise<void>>();
 
 function valuesOf<T>(value: unknown): T[] {
   if (!value) return [];
@@ -61,8 +64,24 @@ function addVisibilityGrant(
   });
 }
 
+function grantIdentity(grant: Pick<VisibilityGrant, "targetType" | "targetId" | "scope" | "playerId" | "userId">): string {
+  return [grant.targetType, grant.targetId, grant.scope, grant.playerId ?? "", grant.userId ?? ""].join("\u0000");
+}
+
+function sameGrantSet(existing: VisibilityGrant[], desired: VisibilityGrantInsert[]): boolean {
+  if (existing.length !== desired.length) return false;
+  const existingKeys = new Set(existing.map(grantIdentity));
+  return desired.every((grant) => existingKeys.has(grantIdentity({
+    targetType: grant.targetType,
+    targetId: grant.targetId,
+    scope: grant.scope,
+    playerId: grant.playerId ?? null,
+    userId: grant.userId ?? null,
+  })));
+}
+
 export function grantAllowsPlayer(
-  grant: typeof schema.visibilityGrants.$inferSelect,
+  grant: VisibilityGrant,
   userId: string,
   playerId?: string | null,
 ): boolean {
@@ -71,7 +90,7 @@ export function grantAllowsPlayer(
   return Boolean(playerId && grant.scope === "specific_player" && grant.playerId === playerId);
 }
 
-export async function refreshKnowledgeVisibilityGrants(campaignId: string): Promise<void> {
+async function buildDerivedVisibilityGrants(campaignId: string): Promise<VisibilityGrantInsert[]> {
   const repository = new PostgresCampaignRepository();
   const [state, facts, relations, clues, objectives] = await Promise.all([
     repository.getCampaignState(campaignId),
@@ -126,16 +145,41 @@ export async function refreshKnowledgeVisibilityGrants(campaignId: string): Prom
     if (visibility.commonScope) addVisibilityGrant(desiredGrants, campaignId, "objective", objective.objectiveId, visibility.commonScope);
   }
 
+  return desiredGrants;
+}
+
+async function performVisibilityRefresh(campaignId: string): Promise<void> {
+  const desiredGrants = await buildDerivedVisibilityGrants(campaignId);
+  const existingDerivedGrants = await db.select().from(schema.visibilityGrants).where(and(
+    eq(schema.visibilityGrants.campaignId, campaignId),
+    ne(schema.visibilityGrants.scope, "specific_user"),
+  ));
+
+  if (sameGrantSet(existingDerivedGrants, desiredGrants)) return;
+
   await db.transaction(async (tx) => {
-    await tx.delete(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, campaignId));
+    await tx.delete(schema.visibilityGrants).where(and(
+      eq(schema.visibilityGrants.campaignId, campaignId),
+      ne(schema.visibilityGrants.scope, "specific_user"),
+    ));
     if (desiredGrants.length > 0) {
       await tx.insert(schema.visibilityGrants).values(desiredGrants).onConflictDoNothing();
     }
   });
 }
 
+export function refreshKnowledgeVisibilityGrants(campaignId: string): Promise<void> {
+  const currentRefresh = visibilityRefreshes.get(campaignId);
+  if (currentRefresh) return currentRefresh;
+
+  const refresh = performVisibilityRefresh(campaignId).finally(() => {
+    visibilityRefreshes.delete(campaignId);
+  });
+  visibilityRefreshes.set(campaignId, refresh);
+  return refresh;
+}
+
 export async function buildDmPlayerKnowledgeProjection(campaignId: string) {
-  await refreshKnowledgeVisibilityGrants(campaignId);
   const [players, entities, facts, relations, clues, objectives, grants] = await Promise.all([
     db.select().from(schema.playerProfiles).where(and(eq(schema.playerProfiles.campaignId, campaignId), eq(schema.playerProfiles.status, "active"))),
     db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, campaignId)),
