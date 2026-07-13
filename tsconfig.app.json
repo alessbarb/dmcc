@@ -28,7 +28,6 @@
         "./src/shared/*"
       ]
     },
-    "baseUrl": ".",
     "ignoreDeprecations": "6.0"
   },
   "include": [
