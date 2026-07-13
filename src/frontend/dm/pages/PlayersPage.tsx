@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Plus, X, User, Pencil, Archive, Eye, EyeOff, ShieldCheck, Link2, Copy, Trash2, Clock, Wifi, MessageSquare, Target } from "lucide-react";
-import type { Entity, PlayerProfile } from "../../shared/stores/campaignStore.js";
+import type { Entity, PlayerProfile, Campaign, StoreCampaignState } from "../../shared/stores/campaignStore.js";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
@@ -8,6 +8,10 @@ import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { apiFetch } from "../../shared/api/apiClient.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
 
 type CampaignInvitationStatus = "active" | "exhausted" | "expired" | "revoked";
 
@@ -50,8 +54,8 @@ function isInvitationStatus(value: unknown): value is CampaignInvitationStatus {
 }
 
 function normalizeInvitation(value: unknown): CampaignInvitation | null {
-  if (!value || typeof value !== "object") return null;
-  const record = value as Record<string, unknown>;
+  if (!isRecord(value)) return null;
+  const record = value;
   if (
     typeof record.invitationId !== "string" ||
     typeof record.role !== "string" ||
@@ -77,21 +81,25 @@ function normalizeInvitation(value: unknown): CampaignInvitation | null {
 }
 
 function normalizeListCampaignInvitationsResponse(value: unknown): ListCampaignInvitationsResponse {
-  if (!value || typeof value !== "object" || !("invitations" in value) || !Array.isArray((value as { invitations: unknown }).invitations)) {
+  if (!isRecord(value) || !Array.isArray(value.invitations)) {
     throw new Error("Invalid invitations response");
   }
-  const invitations = (value as { invitations: unknown[] }).invitations.map(normalizeInvitation);
-  if (invitations.some((invitation) => invitation === null)) {
-    throw new Error("Invalid invitation in response");
+  const invitations: CampaignInvitation[] = [];
+  for (const raw of value.invitations) {
+    const invitation = normalizeInvitation(raw);
+    if (!invitation) {
+      throw new Error("Invalid invitation in response");
+    }
+    invitations.push(invitation);
   }
-  return { invitations: invitations as CampaignInvitation[] };
+  return { invitations };
 }
 
 function normalizeCreateCampaignInvitationResponse(value: unknown): CreateCampaignInvitationResponse {
-  if (!value || typeof value !== "object") throw new Error("Invalid invitation response");
-  const invitation = (value as { invitation?: unknown }).invitation;
-  if (!invitation || typeof invitation !== "object") throw new Error("Invalid invitation response");
-  const record = invitation as Record<string, unknown>;
+  if (!isRecord(value)) throw new Error("Invalid invitation response");
+  const invitation = value.invitation;
+  if (!isRecord(invitation)) throw new Error("Invalid invitation response");
+  const record = invitation;
   if (
     typeof record.invitationId !== "string" ||
     typeof record.url !== "string" ||
@@ -103,21 +111,102 @@ function normalizeCreateCampaignInvitationResponse(value: unknown): CreateCampai
   return { invitation: { invitationId: record.invitationId, url: record.url, token: record.token, expiresAt: record.expiresAt } };
 }
 
+// Response shape for GET /api/campaigns/:id/player-portal/dm-character-summary — modeled from
+// the handler in src/backend/server/web/routes/playerCharacterLinkWebRoutes.ts. `proposals[]` is
+// a spread of the raw DB row plus its freeform JSON `content` blob, so only the fields this page
+// actually reads are declared here.
+interface DmPortalCharacterSummary {
+  entityId: string;
+  entityType: string;
+  title: string;
+  summary?: string;
+  status?: string;
+  importance?: string;
+}
+
+interface DmPortalProposal {
+  proposalId: string;
+  kind?: string;
+  status?: string;
+  targetCharacterEntityId?: string;
+  proposedChanges?: {
+    title?: string;
+    name?: string;
+    className?: string;
+    species?: string;
+    race?: string;
+    background?: string;
+  };
+}
+
+interface DmPortalObjective {
+  objectiveId: string;
+  title: string;
+  description?: string;
+  status?: string;
+  kind?: string;
+}
+
+interface DmPortalNote {
+  noteId: string;
+  title: string;
+  content?: string;
+}
+
+interface DmPortalPlayerSheetStatus {
+  hitPointsCurrent?: number;
+  hitPointsMax?: number;
+  armorClass?: number;
+  inspiration?: boolean;
+  conditions?: string[];
+}
+
+interface DmPortalPlayer {
+  playerId: string;
+  displayName: string;
+  link: { characterEntityId: string } | null;
+  linkedCharacter?: DmPortalCharacterSummary | null;
+  sheet?: { status?: DmPortalPlayerSheetStatus };
+  proposals?: DmPortalProposal[];
+  objectives?: DmPortalObjective[];
+  notes?: DmPortalNote[];
+}
+
+interface DmPlayerPortalSummary {
+  players: DmPortalPlayer[];
+  availableCharacters?: DmPortalCharacterSummary[];
+}
+
+// The `/api/campaigns/:id/visibility` endpoint currently only returns `{ grants }` (see
+// campaignWebRoutes.ts); it does not yet produce the `{ summary, partyKnows }` shape this page
+// reads below. That's a pre-existing gap (the party-knowledge summary always renders empty), out
+// of scope for this pass — this type documents what the UI expects if/when that projection ships.
+interface PartyKnowledgeEntitySummary {
+  entityId: string;
+  entityType: string;
+  title: string;
+}
+
+interface PartyKnowledgeSummary {
+  summary?: { partyKnowsCount?: number; total?: number };
+  partyKnows?: PartyKnowledgeEntitySummary[];
+}
+
 export interface PlayersPageProps {
-  campaignState?: any;
-  campaigns?: any[];
+  campaignState?: StoreCampaignState;
+  campaigns?: Campaign[];
   activeCampaignId?: string | null;
-  visibility?: any;
-  createPlayer?: (name: string, displayName: string, email?: string, imageUrl?: string, avatarUrl?: string) => Promise<any>;
-  updatePlayer?: (playerId: string, data: any) => Promise<any>;
-  archivePlayer?: (playerId: string) => Promise<any>;
+  visibility?: PartyKnowledgeSummary;
+  createPlayer?: (name: string, displayName?: string, email?: string, imageUrl?: string, avatarUrl?: string) => Promise<void>;
+  updatePlayer?: (playerId: string, data: Partial<PlayerProfile>) => Promise<void>;
+  archivePlayer?: (playerId: string) => Promise<void>;
   isPlayerModalOpen?: boolean;
   setIsPlayerModalOpen?: (open: boolean) => void;
   editingPlayerId?: string | null;
   setEditingPlayerId?: (id: string | null) => void;
   playerForm?: { name: string; displayName: string; email: string; imageUrl: string; avatarUrl?: string };
   setPlayerForm?: (form: { name: string; displayName: string; email: string; imageUrl: string; avatarUrl?: string }) => void;
-  setSelectedEntity?: (entity: any) => void;
+  setSelectedEntity?: (entity: Entity | null) => void;
   addToast?: (msg: string, kind?: ToastKind) => void;
 }
 
@@ -128,11 +217,12 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const [isPlayerModalOpenLocal, setIsPlayerModalOpenLocal] = useState(false);
   const [editingPlayerIdLocal, setEditingPlayerIdLocal] = useState<string | null>(null);
   const [playerFormLocal, setPlayerFormLocal] = useState<{ name: string; displayName: string; email: string; imageUrl: string; avatarUrl?: string }>({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" });
-  const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
+  const [selectedEntityLocal, setSelectedEntityLocal] = useState<Entity | null>(null);
 
   const { loadDmPlayerPortalSummary, resolvePlayerCharacterProposal } = store;
-  // Backend response shape isn't modeled yet; treat defensively like the rest of this file already does.
-  const dmPlayerPortalSummary = store.dmPlayerPortalSummary as any;
+  // Cast at the store boundary: the store types this field as `unknown` since it comes straight
+  // from a JSON network response. Shape modeled in DmPlayerPortalSummary above.
+  const dmPlayerPortalSummary = store.dmPlayerPortalSummary as DmPlayerPortalSummary | null;
   const { linkPlayerCharacter, unlinkPlayerCharacter } = store;
   const [assignSelections, setAssignSelections] = useState<Record<string, string>>({});
 
@@ -235,15 +325,17 @@ export function PlayersPage(props: PlayersPageProps = {}) {
 
   const campaignState = props.campaignState ?? store.campaignState;
   const linkedCharacterIds = new Set(
-    ((dmPlayerPortalSummary?.players ?? []) as any[])
-      .map((p: any) => p.link?.characterEntityId)
-      .filter(Boolean)
+    (dmPlayerPortalSummary?.players ?? [])
+      .map((p) => p.link?.characterEntityId)
+      .filter((id): id is string => Boolean(id))
   );
-  const playerCharacters: Entity[] = ((dmPlayerPortalSummary?.availableCharacters as Entity[] | undefined) ??
+  const playerCharacters: DmPortalCharacterSummary[] = dmPlayerPortalSummary?.availableCharacters ??
     (campaignState?.entities ?? []).filter(
-      (e: any) => e.entityType === "player_character" && !e.archived && !linkedCharacterIds.has(e.entityId)
-    ));
-  const visibility = props.visibility ?? store.visibility;
+      (e) => e.entityType === "player_character" && !e.archived && !linkedCharacterIds.has(e.entityId)
+    );
+  // Cast at the store boundary; see the PartyKnowledgeSummary comment above for the known
+  // mismatch with the current backend response shape.
+  const visibility = (props.visibility ?? store.visibility) as PartyKnowledgeSummary | null;
   const createPlayer = props.createPlayer ?? store.createPlayer;
   const updatePlayer = props.updatePlayer ?? store.updatePlayer;
   const archivePlayer = props.archivePlayer ?? store.archivePlayer;
@@ -256,19 +348,19 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const setPlayerForm = props.setPlayerForm ?? setPlayerFormLocal;
   const setSelectedEntity = props.setSelectedEntity ?? setSelectedEntityLocal;
 
-  const portalPlayers = (dmPlayerPortalSummary?.players ?? []) as any[];
-  const pendingProposalItems = portalPlayers.flatMap((portalPlayer: any) =>
+  const portalPlayers = dmPlayerPortalSummary?.players ?? [];
+  const pendingProposalItems = portalPlayers.flatMap((portalPlayer) =>
     (portalPlayer.proposals ?? [])
-      .filter((proposal: any) => proposal.status === "pending")
-      .map((proposal: any) => ({ portalPlayer, proposal }))
+      .filter((proposal) => proposal.status === "pending")
+      .map((proposal) => ({ portalPlayer, proposal }))
   );
-  const dmQuestionItems = portalPlayers.flatMap((portalPlayer: any) =>
+  const dmQuestionItems = portalPlayers.flatMap((portalPlayer) =>
     (portalPlayer.objectives ?? [])
-      .filter((objective: any) => objective.status === "open" && objective.kind === "question_for_dm")
-      .map((objective: any) => ({ portalPlayer, objective }))
+      .filter((objective) => objective.status === "open" && objective.kind === "question_for_dm")
+      .map((objective) => ({ portalPlayer, objective }))
   );
-  const dmVisibleNotes = portalPlayers.flatMap((portalPlayer: any) =>
-    (portalPlayer.notes ?? []).map((note: any) => ({ portalPlayer, note }))
+  const dmVisibleNotes = portalPlayers.flatMap((portalPlayer) =>
+    (portalPlayer.notes ?? []).map((note) => ({ portalPlayer, note }))
   );
   const dmInboxCount = pendingProposalItems.length + dmQuestionItems.length + dmVisibleNotes.length;
 
@@ -409,7 +501,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "12px" }}>
-            {pendingProposalItems.slice(0, 4).map(({ portalPlayer, proposal }: any) => (
+            {pendingProposalItems.slice(0, 4).map(({ portalPlayer, proposal }) => (
               <div key={proposal.proposalId} className="dm-player-inbox-item">
                 <Target size={15} />
                 <div>
@@ -418,7 +510,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                 </div>
               </div>
             ))}
-            {dmQuestionItems.slice(0, 6).map(({ portalPlayer, objective }: any) => (
+            {dmQuestionItems.slice(0, 6).map(({ portalPlayer, objective }) => (
               <div key={objective.objectiveId} className="dm-player-inbox-item">
                 <MessageSquare size={15} />
                 <div>
@@ -427,7 +519,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                 </div>
               </div>
             ))}
-            {dmVisibleNotes.slice(0, 4).map(({ portalPlayer, note }: any) => (
+            {dmVisibleNotes.slice(0, 4).map(({ portalPlayer, note }) => (
               <div key={note.noteId} className="dm-player-inbox-item">
                 <Eye size={15} />
                 <div>
@@ -617,8 +709,8 @@ export function PlayersPage(props: PlayersPageProps = {}) {
             <ShieldCheck size={18} style={{ color: "var(--primary)" }} /> Portal de jugadores (vista del DM)
           </h3>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
-            {(dmPlayerPortalSummary.players as any[]).map((portalPlayer: any) => {
-              const pendingProposals = (portalPlayer.proposals ?? []).filter((p: any) => p.status === "pending");
+            {(dmPlayerPortalSummary?.players ?? []).map((portalPlayer) => {
+              const pendingProposals = (portalPlayer.proposals ?? []).filter((p) => p.status === "pending");
               return (
                 <div key={portalPlayer.playerId ?? portalPlayer.displayName} className="card" style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "14px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -650,7 +742,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                             Inspiración
                           </span>
                         )}
-                        {(portalPlayer.sheet.status?.conditions ?? []).length > 0 && (portalPlayer.sheet.status?.conditions as string[]).map((cond: string) => (
+                        {(portalPlayer.sheet.status?.conditions ?? []).map((cond) => (
                           <span key={cond} style={{ fontSize: "0.8rem", padding: "2px 8px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)", color: "var(--danger, #e05252)" }}>
                             {cond}
                           </span>
@@ -663,7 +755,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                     <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px" }}>
                       <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "6px" }}>Notas visibles (DM)</p>
                       <ul style={{ margin: 0, paddingLeft: "16px" }}>
-                        {(portalPlayer.notes as any[]).map((note: any) => (
+                        {(portalPlayer.notes ?? []).map((note) => (
                           <li key={note.noteId} style={{ fontSize: "0.8rem", color: "var(--text-main)" }}>{note.title}</li>
                         ))}
                       </ul>
@@ -674,7 +766,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                     <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px" }}>
                       <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "6px" }}>Objetivos visibles (DM)</p>
                       <ul style={{ margin: 0, paddingLeft: "16px" }}>
-                        {(portalPlayer.objectives as any[]).map((obj: any) => (
+                        {(portalPlayer.objectives ?? []).map((obj) => (
                           <li key={obj.objectiveId} style={{ fontSize: "0.8rem", color: "var(--text-main)" }}>{obj.title}</li>
                         ))}
                       </ul>
@@ -685,7 +777,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                     <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px" }}>
                       <p style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-muted)", marginBottom: "8px" }}>Propuestas pendientes</p>
                       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                        {pendingProposals.map((proposal: any) => (
+                        {pendingProposals.map((proposal) => (
                           <div key={proposal.proposalId} style={{ padding: "10px", backgroundColor: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
                             <p style={{ fontSize: "0.8rem", color: "var(--text-main)", marginBottom: "6px", fontWeight: 700 }}>
                               {proposal.kind === "link_request" ? "Solicitud de personaje" : proposal.kind === "create_character" ? "Nuevo personaje" : proposal.kind === "update_character_core" ? "Cambio de personaje" : "Propuesta"}
@@ -825,7 +917,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
             </div>
           ) : (
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {(visibility.partyKnows ?? []).map((e: any) => (
+              {(visibility.partyKnows ?? []).map((e) => (
                 <div
                   key={e.entityId}
                   style={{
