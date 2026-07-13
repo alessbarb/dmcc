@@ -12,6 +12,7 @@
     "jsx": "react-jsx",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["node", "vitest/globals"],
+    "typeRoots": ["./node_modules/@types", "./node_modules"],
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
     "paths": {
