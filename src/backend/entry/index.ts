@@ -14,39 +14,45 @@ if (host === "0.0.0.0") {
 let shutdownPromise: Promise<void> | undefined;
 
 async function closeRuntimeResources(): Promise<void> {
-  const results = await Promise.allSettled([
-    server.close(),
-    closeDatabasePool(),
-  ]);
+  const failures: unknown[] = [];
 
-  const failures = results.filter((result): result is PromiseRejectedResult => result.status === "rejected");
-  if (failures.length === 0) return;
-
-  for (const failure of failures) {
-    console.error("[shutdown] Resource close failed:", failure.reason);
+  try {
+    await server.close();
+  } catch (error) {
+    failures.push(error);
+    console.error("[shutdown] HTTP server close failed:", error);
   }
-  throw new AggregateError(failures.map((failure) => failure.reason), "Runtime resources did not close cleanly");
+
+  try {
+    await closeDatabasePool();
+  } catch (error) {
+    failures.push(error);
+    console.error("[shutdown] Database pool close failed:", error);
+  }
+
+  if (failures.length > 0) {
+    throw new AggregateError(failures, "Runtime resources did not close cleanly");
+  }
 }
 
 async function shutdown(signal: NodeJS.Signals): Promise<void> {
   shutdownPromise ??= (async () => {
-    console.info(`[shutdown] ${signal} received; closing HTTP server and database pool.`);
+    console.info(`[shutdown] ${signal} received; draining HTTP requests before closing PostgreSQL.`);
 
-    let timeout: NodeJS.Timeout | undefined;
+    const forceExitTimer = setTimeout(() => {
+      console.error(`[shutdown] Shutdown exceeded ${SHUTDOWN_TIMEOUT_MS} ms; forcing process exit.`);
+      process.exit(1);
+    }, SHUTDOWN_TIMEOUT_MS);
+    forceExitTimer.unref();
+
     try {
-      await Promise.race([
-        closeRuntimeResources(),
-        new Promise<never>((_, reject) => {
-          timeout = setTimeout(() => reject(new Error(`Shutdown exceeded ${SHUTDOWN_TIMEOUT_MS} ms`)), SHUTDOWN_TIMEOUT_MS);
-          timeout.unref();
-        }),
-      ]);
+      await closeRuntimeResources();
       console.info("[shutdown] Graceful shutdown completed.");
     } catch (error) {
       console.error("[shutdown] Graceful shutdown failed:", error);
       process.exitCode = 1;
     } finally {
-      if (timeout) clearTimeout(timeout);
+      clearTimeout(forceExitTimer);
     }
   })();
 
