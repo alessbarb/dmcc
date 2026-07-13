@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { buildDmPlayerKnowledgeProjection, synchronizeLegacyKnowledgeVisibility } from "../playerKnowledgeProjection.js";
+import { buildDmPlayerKnowledgeProjection, refreshKnowledgeVisibilityGrants } from "../playerKnowledgeProjection.js";
 import { requireCampaignRole } from "../webAccess.js";
 
 function campaignIdFromPortalPath(pathname: string): string | null {
@@ -13,7 +13,7 @@ export async function registerPlayerKnowledgeWebRoutes(server: FastifyInstance):
   server.addHook("preHandler", async (request) => {
     const pathname = request.url.split("?", 1)[0];
     const campaignId = campaignIdFromPortalPath(pathname);
-    if (campaignId) await synchronizeLegacyKnowledgeVisibility(campaignId);
+    if (campaignId) await refreshKnowledgeVisibilityGrants(campaignId);
   });
 
   server.get<{ Params: { campaignId: string } }>(
