@@ -64,14 +64,10 @@ export function grantAllowsPlayer(
 ): boolean {
   if (grant.scope === "public" || grant.scope === "all_players") return true;
   if (grant.scope === "specific_user" && grant.userId === userId) return true;
-  if (!playerId) return false;
-  if (grant.scope === "specific_player" && grant.playerId === playerId) return true;
-
-  // Temporary read compatibility for databases that have not run migration 0008 yet.
-  return grant.scope === `specific_player:${playerId}` && (!grant.playerId || grant.playerId === playerId);
+  return Boolean(playerId && grant.scope === "specific_player" && grant.playerId === playerId);
 }
 
-export async function synchronizeLegacyKnowledgeVisibility(campaignId: string): Promise<void> {
+export async function refreshKnowledgeVisibilityGrants(campaignId: string): Promise<void> {
   const repository = new PostgresCampaignRepository();
   const [state, facts, relations, clues, objectives] = await Promise.all([
     repository.getCampaignState(campaignId),
@@ -127,7 +123,7 @@ export async function synchronizeLegacyKnowledgeVisibility(campaignId: string): 
 }
 
 export async function buildDmPlayerKnowledgeProjection(campaignId: string) {
-  await synchronizeLegacyKnowledgeVisibility(campaignId);
+  await refreshKnowledgeVisibilityGrants(campaignId);
   const [players, entities, facts, relations, clues, objectives, grants] = await Promise.all([
     db.select().from(schema.playerProfiles).where(and(eq(schema.playerProfiles.campaignId, campaignId), eq(schema.playerProfiles.status, "active"))),
     db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, campaignId)),
