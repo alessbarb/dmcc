@@ -37,10 +37,10 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerCommandCenterWebRoutes(server);
   void registerInvitationWebRoutes(server);
   void registerLiveTableWebRoutes(server);
-  void registerPlayerKnowledgeWebRoutes(server);
+  registerPlayerKnowledgeWebRoutes(server);
   void registerPlayerPortalWebRoutes(server);
-  void registerPlayerCharacterLinkWebRoutes(server);
-  void registerPlayerCharacterProposalWebRoutes(server);
+  registerPlayerCharacterLinkWebRoutes(server);
+  registerPlayerCharacterProposalWebRoutes(server);
   void registerPremadeCampaignWebRoutes(server);
   void registerRulesWebRoutes(server);
   void registerSearchWebRoutes(server);
