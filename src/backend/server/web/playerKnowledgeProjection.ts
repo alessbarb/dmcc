@@ -21,6 +21,16 @@ interface KnowledgeAccessRule {
   userIds: Set<string>;
 }
 
+export interface KnowledgeSnapshot {
+  state: Awaited<ReturnType<PostgresCampaignRepository["getCampaignState"]>>;
+  entities: Array<typeof schema.campaignEntities.$inferSelect>;
+  facts: Array<typeof schema.campaignFacts.$inferSelect>;
+  relations: Array<typeof schema.campaignRelations.$inferSelect>;
+  clues: Array<typeof schema.campaignClues.$inferSelect>;
+  objectives: Array<typeof schema.campaignObjectives.$inferSelect>;
+  grants: Array<typeof schema.visibilityGrants.$inferSelect>;
+}
+
 export type KnowledgeAccessIndex = Map<string, KnowledgeAccessRule>;
 type VisibilityGrant = typeof schema.visibilityGrants.$inferSelect;
 
@@ -51,7 +61,7 @@ function applyVisibility(index: KnowledgeAccessIndex, targetType: KnowledgeTarge
   const rule = ruleFor(index, targetType, targetId);
   if (typeof value === "string") {
     if (value === "public") rule.commonScope = "public";
-    else if (value === "party" || value === "all_players") rule.commonScope = "all_players";
+    else if (value === "party" || value === "players" || value === "all_players") rule.commonScope = "all_players";
     return;
   }
   if (!value || typeof value !== "object") return;
@@ -59,7 +69,7 @@ function applyVisibility(index: KnowledgeAccessIndex, targetType: KnowledgeTarge
   const visibility = value as Record<string, unknown>;
   const kind = String(visibility.kind ?? visibility.mode ?? visibility.scope ?? "dm_only");
   if (kind === "public") rule.commonScope = "public";
-  else if (kind === "party" || kind === "all_players") rule.commonScope = "all_players";
+  else if (kind === "party" || kind === "players" || kind === "all_players") rule.commonScope = "all_players";
 
   const rawPlayerIds = visibility.playerIds ?? visibility.players ?? visibility.specificPlayerIds;
   if (Array.isArray(rawPlayerIds)) {
@@ -76,33 +86,34 @@ function isKnowledgeTargetType(value: string): value is KnowledgeTargetType {
 function applyExplicitGrant(index: KnowledgeAccessIndex, grant: VisibilityGrant): void {
   if (!isKnowledgeTargetType(grant.targetType)) return;
   const rule = ruleFor(index, grant.targetType, grant.targetId);
-  if (grant.scope === "public") rule.commonScope = "public";
-  else if (grant.scope === "all_players" && rule.commonScope !== "public") rule.commonScope = "all_players";
-  else if (grant.scope === "specific_player" && grant.playerId) rule.playerIds.add(grant.playerId);
+  if (grant.scope === "specific_player" && grant.playerId) rule.playerIds.add(grant.playerId);
   else if (grant.scope === "specific_user" && grant.userId) rule.userIds.add(grant.userId);
 }
 
 export function grantAllowsPlayer(grant: VisibilityGrant, userId: string, playerId?: string | null): boolean {
-  if (grant.scope === "public" || grant.scope === "all_players") return true;
   if (grant.scope === "specific_user" && grant.userId === userId) return true;
   return Boolean(playerId && grant.scope === "specific_player" && grant.playerId === playerId);
 }
 
-export async function buildKnowledgeAccessIndex(campaignId: string): Promise<KnowledgeAccessIndex> {
+export async function loadKnowledgeSnapshot(campaignId: string): Promise<KnowledgeSnapshot> {
   const repository = new PostgresCampaignRepository();
-  const [state, facts, relations, clues, objectives, grants] = await Promise.all([
+  const [state, entities, facts, relations, clues, objectives, grants] = await Promise.all([
     repository.getCampaignState(campaignId),
+    db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, campaignId)),
     db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId)),
     db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId)),
     db.select().from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, campaignId)),
     db.select().from(schema.campaignObjectives).where(eq(schema.campaignObjectives.campaignId, campaignId)),
     db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, campaignId)),
   ]);
+  return { state, entities, facts, relations, clues, objectives, grants };
+}
 
+export function buildKnowledgeAccessIndex(snapshot: KnowledgeSnapshot): KnowledgeAccessIndex {
   const index: KnowledgeAccessIndex = new Map();
-  const projectedEntities = valuesOf<any>((state as any)?.entities);
-  const projectedFacts = valuesOf<any>((state as any)?.facts);
-  const projectedRelations = valuesOf<any>((state as any)?.relations);
+  const projectedEntities = valuesOf<any>((snapshot.state as any)?.entities);
+  const projectedFacts = valuesOf<any>((snapshot.state as any)?.facts);
+  const projectedRelations = valuesOf<any>((snapshot.state as any)?.relations);
 
   for (const entity of projectedEntities) {
     const targetId = String(entity?.entityId ?? entity?.id ?? "");
@@ -111,28 +122,28 @@ export async function buildKnowledgeAccessIndex(campaignId: string): Promise<Kno
   }
 
   const projectedFactById = new Map(projectedFacts.map((fact) => [String(fact?.factId ?? fact?.id ?? ""), fact]));
-  for (const fact of facts) {
+  for (const fact of snapshot.facts) {
     if (fact.status === "archived" || fact.kind === "dm_secret") continue;
-    applyVisibility(index, "fact", fact.factId, projectedFactById.get(fact.factId)?.visibility ?? { kind: "party" });
+    applyVisibility(index, "fact", fact.factId, projectedFactById.get(fact.factId)?.visibility ?? { kind: "dm_only" });
   }
 
   const projectedRelationById = new Map(projectedRelations.map((relation) => [String(relation?.relationId ?? relation?.id ?? ""), relation]));
-  for (const relation of relations) {
+  for (const relation of snapshot.relations) {
     applyVisibility(index, "relation", relation.relationId, projectedRelationById.get(relation.relationId)?.visibility ?? relation.visibility);
   }
 
-  for (const clue of clues) {
+  for (const clue of snapshot.clues) {
     if (clue.status === "archived") continue;
     applyVisibility(index, "clue", clue.clueId, clue.visibilityScope);
   }
 
-  for (const objective of objectives) {
+  for (const objective of snapshot.objectives) {
     if (objective.status === "archived") continue;
     if (objective.playerId) ruleFor(index, "objective", objective.objectiveId).playerIds.add(objective.playerId);
     else applyVisibility(index, "objective", objective.objectiveId, objective.visibilityScope);
   }
 
-  for (const grant of grants) applyExplicitGrant(index, grant);
+  for (const grant of snapshot.grants) applyExplicitGrant(index, grant);
   return index;
 }
 
@@ -166,22 +177,18 @@ export function playerCanAccessKnowledge(
 }
 
 export async function buildDmPlayerKnowledgeProjection(campaignId: string) {
-  const [accessIndex, players, entities, facts, relations, clues, objectives] = await Promise.all([
-    buildKnowledgeAccessIndex(campaignId),
+  const [snapshot, players] = await Promise.all([
+    loadKnowledgeSnapshot(campaignId),
     db.select().from(schema.playerProfiles).where(and(eq(schema.playerProfiles.campaignId, campaignId), eq(schema.playerProfiles.status, "active"))),
-    db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, campaignId)),
-    db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId)),
-    db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId)),
-    db.select().from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, campaignId)),
-    db.select().from(schema.campaignObjectives).where(eq(schema.campaignObjectives.campaignId, campaignId)),
   ]);
+  const accessIndex = buildKnowledgeAccessIndex(snapshot);
 
   const targets = [
-    ...entities.filter((entity) => entity.status !== "archived").map((entity) => ({ targetType: "entity" as const, targetId: entity.entityId, title: entity.name, subtitle: entity.type })),
-    ...facts.filter((fact) => fact.status !== "archived" && fact.kind !== "dm_secret").map((fact) => ({ targetType: "fact" as const, targetId: fact.factId, title: fact.contentPublic ?? fact.contentDm ?? fact.factId, subtitle: fact.kind })),
-    ...relations.map((relation) => ({ targetType: "relation" as const, targetId: relation.relationId, title: relation.publicSummary ?? relation.type, subtitle: relation.type })),
-    ...clues.filter((clue) => clue.status !== "archived").map((clue) => ({ targetType: "clue" as const, targetId: clue.clueId, title: clue.title, subtitle: "clue" })),
-    ...objectives.filter((objective) => objective.status !== "archived").map((objective) => ({ targetType: "objective" as const, targetId: objective.objectiveId, title: objective.title, subtitle: objective.kind })),
+    ...snapshot.entities.filter((entity) => entity.status !== "archived").map((entity) => ({ targetType: "entity" as const, targetId: entity.entityId, title: entity.name, subtitle: entity.type })),
+    ...snapshot.facts.filter((fact) => fact.status !== "archived" && fact.kind !== "dm_secret").map((fact) => ({ targetType: "fact" as const, targetId: fact.factId, title: fact.contentPublic ?? fact.contentDm ?? fact.factId, subtitle: fact.kind })),
+    ...snapshot.relations.map((relation) => ({ targetType: "relation" as const, targetId: relation.relationId, title: relation.publicSummary ?? relation.type, subtitle: relation.type })),
+    ...snapshot.clues.filter((clue) => clue.status !== "archived").map((clue) => ({ targetType: "clue" as const, targetId: clue.clueId, title: clue.title, subtitle: "clue" })),
+    ...snapshot.objectives.filter((objective) => objective.status !== "archived").map((objective) => ({ targetType: "objective" as const, targetId: objective.objectiveId, title: objective.title, subtitle: objective.kind })),
   ];
 
   return {
@@ -191,14 +198,7 @@ export async function buildDmPlayerKnowledgeProjection(campaignId: string) {
       displayName: player.displayName,
       linkedCharacterId: player.linkedCharacterId,
       knowledge: targets.map((target): PlayerKnowledgeTarget => {
-        const reason = knowledgeAccessReason(
-          accessIndex,
-          target.targetType,
-          target.targetId,
-          player.userId ?? "",
-          player.profileId,
-          player.linkedCharacterId,
-        );
+        const reason = knowledgeAccessReason(accessIndex, target.targetType, target.targetId, player.userId ?? "", player.profileId, player.linkedCharacterId);
         return { ...target, visible: reason !== "hidden", reason };
       }),
     })),
