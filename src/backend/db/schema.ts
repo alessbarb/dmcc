@@ -1,4 +1,5 @@
-import { pgTable, text, timestamp, integer, jsonb, primaryKey, uniqueIndex } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { check, foreignKey, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   userId: text("user_id").primaryKey(),
@@ -69,7 +70,7 @@ export const campaigns = pgTable("campaigns", {
 });
 
 export const campaignMemberships = pgTable("campaign_memberships", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   userId: text("user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   role: text("role").notNull(), // 'dm' | 'co_dm' | 'player' | 'viewer'
   playerId: text("player_id"), // optional, for linking player character profile
@@ -83,7 +84,7 @@ export const campaignMemberships = pgTable("campaign_memberships", {
 
 export const playerProfiles = pgTable("player_profiles", {
   profileId: text("profile_id").primaryKey(), // ply_...
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   userId: text("user_id").references(() => users.userId, { onDelete: "set null" }),
   displayName: text("display_name").notNull(),
   pronouns: text("pronouns"),
@@ -97,7 +98,9 @@ export const playerProfiles = pgTable("player_profiles", {
   version: integer("version").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+}, (table) => ({
+  campaignProfileUq: uniqueIndex("uq_player_profiles_campaign_profile").on(table.campaignId, table.profileId),
+}));
 
 export const dmProfiles = pgTable("dm_profiles", {
   userId: text("user_id").primaryKey().references(() => users.userId, { onDelete: "cascade" }),
@@ -233,18 +236,35 @@ export const campaignRelations = pgTable("campaign_relations", {
 });
 
 export const visibilityGrants = pgTable("visibility_grants", {
-  campaignId: text("campaign_id").notNull(),
-  targetType: text("target_type").notNull(), // 'entity' | 'relation' | 'fact'
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
+  targetType: text("target_type").notNull(), // 'entity' | 'relation' | 'fact' | 'clue' | 'objective'
   targetId: text("target_id").notNull(),
   scope: text("scope").notNull(), // 'public' | 'all_players' | 'specific_user' | 'specific_player' | 'dm_only'
-  userId: text("user_id"),
+  userId: text("user_id").references(() => users.userId, { onDelete: "cascade" }),
   playerId: text("player_id"),
   grantedAt: timestamp("granted_at").notNull().defaultNow(),
-}, (table) => {
-  return {
-    pk: primaryKey({ columns: [table.campaignId, table.targetType, table.targetId, table.scope] }),
-  };
-});
+}, (table) => ({
+  commonGrantUq: uniqueIndex("uq_visibility_grants_common")
+    .on(table.campaignId, table.targetType, table.targetId, table.scope)
+    .where(sql`${table.scope} not in ('specific_player', 'specific_user')`),
+  playerGrantUq: uniqueIndex("uq_visibility_grants_specific_player")
+    .on(table.campaignId, table.targetType, table.targetId, table.scope, table.playerId)
+    .where(sql`${table.scope} = 'specific_player'`),
+  userGrantUq: uniqueIndex("uq_visibility_grants_specific_user")
+    .on(table.campaignId, table.targetType, table.targetId, table.scope, table.userId)
+    .where(sql`${table.scope} = 'specific_user'`),
+  campaignTargetIdx: index("idx_visibility_grants_campaign_target").on(table.campaignId, table.targetType, table.targetId),
+  principalCheck: check("chk_visibility_grants_principal", sql`
+    (${table.scope} = 'specific_player' and ${table.playerId} is not null and ${table.userId} is null)
+    or (${table.scope} = 'specific_user' and ${table.userId} is not null and ${table.playerId} is null)
+    or (${table.scope} not in ('specific_player', 'specific_user') and ${table.userId} is null and ${table.playerId} is null)
+  `),
+  playerFk: foreignKey({
+    name: "fk_visibility_grants_player",
+    columns: [table.campaignId, table.playerId],
+    foreignColumns: [playerProfiles.campaignId, playerProfiles.profileId],
+  }).onDelete("cascade"),
+}));
 
 export const campaignSessions = pgTable("campaign_sessions", {
   campaignId: text("campaign_id").notNull(),
@@ -382,7 +402,7 @@ export const campaignNotes = pgTable("campaign_notes", {
 });
 
 export const playerProposals = pgTable("player_proposals", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   proposalId: text("proposal_id").notNull(),
   userId: text("user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   playerId: text("player_id").notNull(),
@@ -392,11 +412,14 @@ export const playerProposals = pgTable("player_proposals", {
   processedBy: text("processed_by").references(() => users.userId, { onDelete: "set null" }),
   processedAt: timestamp("processed_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => {
-  return {
-    pk: primaryKey({ columns: [table.campaignId, table.proposalId] }),
-  };
-});
+}, (table) => ({
+  pk: primaryKey({ columns: [table.campaignId, table.proposalId] }),
+  playerFk: foreignKey({
+    name: "fk_player_proposals_player",
+    columns: [table.campaignId, table.playerId],
+    foreignColumns: [playerProfiles.campaignId, playerProfiles.profileId],
+  }).onDelete("cascade"),
+}));
 
 export const activityFeed = pgTable("activity_feed", {
   campaignId: text("campaign_id").notNull(),
