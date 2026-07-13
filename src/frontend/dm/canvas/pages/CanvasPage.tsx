@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { ReactFlowProvider } from "@xyflow/react";
 import type { Edge } from "@xyflow/react";
@@ -391,9 +391,12 @@ export function CanvasPage() {
 
   useEffect(() => {
     if (campaignId && campaignId !== activeCampaignId) {
-      selectCampaign(campaignId);
+      void selectCampaign(campaignId).catch((error: unknown) => {
+        console.error("No se pudo cargar la campaña para el canvas.", error);
+        addToast("No se pudo cargar la campaña para el canvas.", "error");
+      });
     }
-  }, [campaignId, activeCampaignId, selectCampaign]);
+  }, [campaignId, activeCampaignId, selectCampaign, addToast]);
 
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
@@ -490,6 +493,48 @@ export function CanvasPage() {
   const [bulkGroupId, setBulkGroupId] = useState<string>("");
   const [bulkConfirm, setBulkConfirm] = useState<"reveal" | "hide" | "remove" | null>(null);
 
+  const runCanvasPageAction = useCallback((operation: Promise<unknown>, errorMessage: string) => {
+    void operation.catch((error: unknown) => {
+      console.error(errorMessage, error);
+      addToast(errorMessage, "error");
+    });
+  }, [addToast]);
+
+  const startFullscreenPresentation = () => {
+    const elem = document.querySelector<HTMLElement>(".canvas-page-container");
+    if (elem?.requestFullscreen) {
+      runCanvasPageAction(
+        elem.requestFullscreen(),
+        "No se pudo activar el modo presentación en pantalla completa.",
+      );
+    }
+    setIsFullscreenPresentation(true);
+    setIsPlayerView(true);
+    setIsDirectionMode(false);
+    setSelectedNodeId(null);
+    setSelectedEdgeId(null);
+    setSelectedNodes([]);
+    setSelectedEdges([]);
+  };
+
+  const stopFullscreenPresentation = () => {
+    if (document.fullscreenElement) {
+      runCanvasPageAction(
+        document.exitFullscreen(),
+        "No se pudo salir del modo presentación en pantalla completa.",
+      );
+    }
+    setIsFullscreenPresentation(false);
+  };
+
+  const toggleFullscreenPresentation = () => {
+    if (isFullscreenPresentation) {
+      stopFullscreenPresentation();
+      return;
+    }
+    startFullscreenPresentation();
+  };
+
   useEffect(() => {
     setSelectedNodeId(null);
     setSelectedEdgeId(null);
@@ -544,14 +589,18 @@ export function CanvasPage() {
       const pendingTemplate = sessionStorage.getItem("dmcc_pending_seed_template");
       if (pendingTemplate && pendingTemplate !== "custom" && pendingTemplate !== "empty") {
         sessionStorage.removeItem("dmcc_pending_seed_template");
-        setTimeout(async () => {
+        window.setTimeout(() => {
           addToast(t("canvas.page.initializingTemplate", { name: pendingTemplate }), "info");
-          await seedCanvasTemplate(activeCanvasId, pendingTemplate, t);
-          addToast(t("canvas.page.templateInitialized", { name: pendingTemplate === "mystery" ? "Misterio" : "Facciones" }), "success");
+          runCanvasPageAction(
+            seedCanvasTemplate(activeCanvasId, pendingTemplate, t).then(() => {
+              addToast(t("canvas.page.templateInitialized", { name: pendingTemplate === "mystery" ? "Misterio" : "Facciones" }), "success");
+            }),
+            "No se pudo inicializar la plantilla del canvas.",
+          );
         }, 300);
       }
     }
-  }, [activeCanvasId, campaignId, addToast]);
+  }, [activeCanvasId, campaignId, addToast, runCanvasPageAction, t]);
 
   // Fullscreen escape monitor
   useEffect(() => {
@@ -594,24 +643,26 @@ export function CanvasPage() {
     );
   }, [activeCampaignId]);
 
-  const handleCreateBoard = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleCreateBoard = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newBoardTitle.trim()) return;
-    
-    await createCanvas(newBoardTitle, newBoardKind);
-    
-    const createdCanvasId = useCampaignStore.getState().activeCanvasId;
-    const campaignId = useCampaignStore.getState().activeCampaignId;
-    
-    if (createdCanvasId && campaignId && newBoardTemplate !== "custom") {
-      addToast(`Inicializando plantilla: ${newBoardTemplate}...`, "info");
-      await seedCanvasTemplate(createdCanvasId, newBoardTemplate, t);
-      addToast(t("canvas.page.boardInitialized", { name: newBoardTemplate }), "success");
-    }
 
-    setNewBoardTitle("");
-    setNewBoardTemplate("custom");
-    setIsCreateBoardOpen(false);
+    runCanvasPageAction((async () => {
+      await createCanvas(newBoardTitle, newBoardKind);
+
+      const createdCanvasId = useCampaignStore.getState().activeCanvasId;
+      const campaignId = useCampaignStore.getState().activeCampaignId;
+
+      if (createdCanvasId && campaignId && newBoardTemplate !== "custom") {
+        addToast(`Inicializando plantilla: ${newBoardTemplate}...`, "info");
+        await seedCanvasTemplate(createdCanvasId, newBoardTemplate, t);
+        addToast(t("canvas.page.boardInitialized", { name: newBoardTemplate }), "success");
+      }
+
+      setNewBoardTitle("");
+      setNewBoardTemplate("custom");
+      setIsCreateBoardOpen(false);
+    })(), "No se pudo crear el tablero visual.");
   };
 
   const handleExport = async (format: "svg" | "png", viewMode: "dm" | "player") => {
@@ -702,23 +753,40 @@ export function CanvasPage() {
 
   const getMobileActionPosition = () => canvasFlowRef.current?.getViewportCenter() ?? { x: 200, y: 200 };
 
-  const handleMobileAddNote = async () => {
+  const handleImportText = () => {
+    if (!importText.trim()) return;
+    addToast("Importando elementos y relaciones...", "info");
+    runCanvasPageAction((async () => {
+      try {
+        await parseAndImportText(importText, activeCanvas.id, activeCampaignId!);
+        addToast(t("canvas.page.importSuccess"), "success");
+        setIsImportOpen(false);
+        setImportText("");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        addToast(`Error al importar: ${message}`, "error");
+      }
+    })(), "No se pudo completar la importación al lienzo.");
+  };
+
+  const handleMobileAddNote = () => {
     if (!activeCanvas) return;
     const position = getMobileActionPosition();
-    await placeNodeOnCanvas(activeCanvas.id, {
+    runCanvasPageAction(placeNodeOnCanvas(activeCanvas.id, {
       kind: "note",
       text: "",
       color: "yellow",
       x: position.x,
       y: position.y,
-    });
-    setMobilePanel(null);
+    }).then(() => {
+      setMobilePanel(null);
+    }), "No se pudo añadir la nota rápida al canvas.");
   };
 
-  const handleMobileAddGroup = async () => {
+  const handleMobileAddGroup = () => {
     if (!activeCanvas) return;
     const position = getMobileActionPosition();
-    await placeNodeOnCanvas(activeCanvas.id, {
+    runCanvasPageAction(placeNodeOnCanvas(activeCanvas.id, {
       kind: "group",
       title: t("canvas.toolbar.newGroup"),
       color: "purple",
@@ -726,8 +794,9 @@ export function CanvasPage() {
       y: position.y,
       width: 340,
       height: 220,
-    });
-    setMobilePanel(null);
+    }).then(() => {
+      setMobilePanel(null);
+    }), "No se pudo añadir el grupo visual al canvas.");
   };
 
   const isViewLocked = isPlayerView || isLocked;
@@ -794,26 +863,7 @@ export function CanvasPage() {
             <button
               type="button"
               className={`btn btn-sm ${isFullscreenPresentation ? "btn-primary" : "btn-secondary"}`}
-              onClick={() => {
-                if (isFullscreenPresentation) {
-                  if (document.fullscreenElement) {
-                    document.exitFullscreen();
-                  }
-                  setIsFullscreenPresentation(false);
-                } else {
-                  const elem = document.querySelector(".canvas-page-container");
-                  if (elem?.requestFullscreen) {
-                    elem.requestFullscreen();
-                  }
-                  setIsFullscreenPresentation(true);
-                  setIsPlayerView(true);
-                  setIsDirectionMode(false);
-                  setSelectedNodeId(null);
-                  setSelectedEdgeId(null);
-                  setSelectedNodes([]);
-                  setSelectedEdges([]);
-                }
-              }}
+              onClick={toggleFullscreenPresentation}
               title={isFullscreenPresentation ? t("canvas.toolbar.exitPresentation") : "Presentar en pantalla completa (Vista Jugador segura)"}
               style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
             >
@@ -972,10 +1022,10 @@ export function CanvasPage() {
                   </>
                 )}
                 <div style={{ fontSize: "9px", padding: "4px 12px", color: "var(--text-muted)", fontWeight: "bold" }}>EXPORTACIONES</div>
-                <button className="dropdown-item" onClick={() => { handleExport("svg", "dm"); setIsActionsDropdownOpen(false); }}>Vector SVG - Vista DM</button>
-                <button className="dropdown-item" onClick={() => { handleExport("svg", "player"); setIsActionsDropdownOpen(false); }}>Vector SVG - Vista Jugador</button>
-                <button className="dropdown-item" onClick={() => { handleExport("png", "dm"); setIsActionsDropdownOpen(false); }}>Imagen PNG - Vista DM</button>
-                <button className="dropdown-item" onClick={() => { handleExport("png", "player"); setIsActionsDropdownOpen(false); }}>Imagen PNG - Vista Jugador</button>
+                <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("svg", "dm"), "No se pudo exportar el canvas en SVG para DM."); setIsActionsDropdownOpen(false); }}>Vector SVG - Vista DM</button>
+                <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("svg", "player"), "No se pudo exportar el canvas en SVG para jugadores."); setIsActionsDropdownOpen(false); }}>Vector SVG - Vista Jugador</button>
+                <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("png", "dm"), "No se pudo exportar el canvas en PNG para DM."); setIsActionsDropdownOpen(false); }}>Imagen PNG - Vista DM</button>
+                <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("png", "player"), "No se pudo exportar el canvas en PNG para jugadores."); setIsActionsDropdownOpen(false); }}>Imagen PNG - Vista Jugador</button>
               </div>
             )}
           </div>
@@ -1093,19 +1143,7 @@ export function CanvasPage() {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={async () => {
-                  if (!importText.trim()) return;
-                  addToast("Importando elementos y relaciones...", "info");
-                  try {
-                    await parseAndImportText(importText, activeCanvas.id, activeCampaignId!);
-                    addToast(t("canvas.page.importSuccess"), "success");
-                    setIsImportOpen(false);
-                    setImportText("");
-                  } catch (err: unknown) {
-                    const message = err instanceof Error ? err.message : String(err);
-                    addToast(`Error al importar: ${message}`, "error");
-                  }
-                }}
+                onClick={handleImportText}
               >
                 Importar al lienzo
               </button>
@@ -1169,10 +1207,7 @@ export function CanvasPage() {
       {isFullscreenPresentation && (
         <button
           onClick={() => {
-            if (document.fullscreenElement) {
-              document.exitFullscreen();
-            }
-            setIsFullscreenPresentation(false);
+            stopFullscreenPresentation();
           }}
           className="btn btn-primary"
           style={{
@@ -1382,7 +1417,7 @@ export function CanvasPage() {
                   <button type="button" className={`btn btn-sm ${tablePrivacy ? "btn-primary" : "btn-secondary"}`} onClick={() => setTablePrivacy(value => !value)}><Shield size={14} /> Privacidad de mesa</button>
                   <label className="canvas-mobile-more-field"><SlidersHorizontal size={14} /> Filtros<select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="canvas-select"><option value="all">Todos los tipos</option><option value="npc">PNJs</option><option value="location">Lugares</option><option value="quest">Misiones</option><option value="clue">Pistas</option><option value="secret">Secretos</option><option value="scene">Escenas</option><option value="other">Otros</option></select></label>
                   <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsSessionPrepOpen(true); setMobilePanel(null); }}><CalendarDays size={14} /> Preparar sesión</button>
-                  <button type="button" className={`btn btn-sm ${isFullscreenPresentation ? "btn-primary" : "btn-secondary"}`} onClick={() => { if (isFullscreenPresentation) { if (document.fullscreenElement) document.exitFullscreen(); setIsFullscreenPresentation(false); } else { const elem = document.querySelector(".canvas-page-container"); if (elem?.requestFullscreen) elem.requestFullscreen(); setIsFullscreenPresentation(true); setIsPlayerView(true); setIsDirectionMode(false); setSelectedNodeId(null); setSelectedEdgeId(null); setSelectedNodes([]); setSelectedEdges([]); } setMobilePanel(null); }}><Play size={14} /> Modo presentación</button>
+                  <button type="button" className={`btn btn-sm ${isFullscreenPresentation ? "btn-primary" : "btn-secondary"}`} onClick={() => { toggleFullscreenPresentation(); setMobilePanel(null); }}><Play size={14} /> Modo presentación</button>
                   <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsCreateBoardOpen(true); setMobilePanel(null); }}>Nuevo tablero</button>
                   <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsImportOpen(true); setMobilePanel(null); }}>Importar texto</button>
                   <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsLegendOpen(true); setMobilePanel(null); }}>Leyenda</button>
@@ -1414,7 +1449,7 @@ export function CanvasPage() {
                       className="form-select"
                       style={{ fontSize: "12px", padding: "3px 6px", height: "28px" }}
                       value={bulkGroupId}
-                      onChange={async (e) => {
+                      onChange={(e) => {
                         const gid = (e.target.value && e.target.value !== "__none__") ? e.target.value : null;
                         setBulkGroupId(e.target.value);
                         const updates = selectedNodes.map((n) => ({
@@ -1424,9 +1459,10 @@ export function CanvasPage() {
                           groupId: gid,
                           parentId: null,
                         }));
-                        await updateCanvasNodesLayout(activeCanvas.id, updates);
-                        addToast(`${selectedNodes.length} nodos asignados al grupo.`, "success");
-                        setBulkGroupId("");
+                        runCanvasPageAction(updateCanvasNodesLayout(activeCanvas.id, updates).then(() => {
+                          addToast(`${selectedNodes.length} nodos asignados al grupo.`, "success");
+                          setBulkGroupId("");
+                        }), "No se pudo asignar el grupo a los nodos seleccionados.");
                       }}
                     >
                       <option value="">📁 Asignar grupo...</option>
@@ -1445,17 +1481,19 @@ export function CanvasPage() {
                   {t("sessionPage.prepareSessionSelectionButton")}
                 </button>
                 <button
-                  onClick={async () => {
+                  onClick={() => {
                     const entities = selectedNodes.filter(n => n.type === 'entity');
                     if (entities.length === 0) return;
                     if (bulkConfirm !== "reveal") { setBulkConfirm("reveal"); return; }
                     setBulkConfirm(null);
-                    for (const node of entities) {
-                      if (node.data.entityId) {
-                        await updateEntity(node.data.entityId, { visibility: { kind: 'public' } });
+                    runCanvasPageAction((async () => {
+                      for (const node of entities) {
+                        if (node.data.entityId) {
+                          await updateEntity(node.data.entityId, { visibility: { kind: 'public' } });
+                        }
                       }
-                    }
-                    addToast(`Se han revelado ${entities.length} entidades.`, "success");
+                      addToast(`Se han revelado ${entities.length} entidades.`, "success");
+                    })(), "No se pudieron revelar las entidades seleccionadas.");
                   }}
                   onBlur={() => setBulkConfirm(prev => prev === "reveal" ? null : prev)}
                   className={`btn btn-sm ${bulkConfirm === "reveal" ? "btn-warning" : "btn-secondary"}`}
@@ -1464,17 +1502,19 @@ export function CanvasPage() {
                   {bulkConfirm === "reveal" ? t("canvas.toolbar.bulkConfirm") : t("canvas.toolbar.bulkReveal")}
                 </button>
                 <button
-                  onClick={async () => {
+                  onClick={() => {
                     const entities = selectedNodes.filter(n => n.type === 'entity');
                     if (entities.length === 0) return;
                     if (bulkConfirm !== "hide") { setBulkConfirm("hide"); return; }
                     setBulkConfirm(null);
-                    for (const node of entities) {
-                      if (node.data.entityId) {
-                        await updateEntity(node.data.entityId, { visibility: { kind: 'dm_only' } });
+                    runCanvasPageAction((async () => {
+                      for (const node of entities) {
+                        if (node.data.entityId) {
+                          await updateEntity(node.data.entityId, { visibility: { kind: 'dm_only' } });
+                        }
                       }
-                    }
-                    addToast(`Se han marcado como secretas ${entities.length} entidades.`, "success");
+                      addToast(`Se han marcado como secretas ${entities.length} entidades.`, "success");
+                    })(), "No se pudieron ocultar las entidades seleccionadas.");
                   }}
                   onBlur={() => setBulkConfirm(prev => prev === "hide" ? null : prev)}
                   className={`btn btn-sm ${bulkConfirm === "hide" ? "btn-warning" : "btn-secondary"}`}
@@ -1483,15 +1523,17 @@ export function CanvasPage() {
                   {bulkConfirm === "hide" ? t("canvas.toolbar.bulkConfirm") : t("canvas.toolbar.bulkHide")}
                 </button>
                 <button
-                  onClick={async () => {
+                  onClick={() => {
                     if (bulkConfirm !== "remove") { setBulkConfirm("remove"); return; }
                     setBulkConfirm(null);
-                    for (const node of selectedNodes) {
-                      await removeNodeFromCanvas(activeCanvas.id, node.id);
-                    }
-                    setSelectedNodes([]);
-                    setSelectedEdges([]);
-                    addToast(`Se han quitado ${selectedNodes.length} nodos del canvas.`, "info");
+                    runCanvasPageAction((async () => {
+                      for (const node of selectedNodes) {
+                        await removeNodeFromCanvas(activeCanvas.id, node.id);
+                      }
+                      setSelectedNodes([]);
+                      setSelectedEdges([]);
+                      addToast(`Se han quitado ${selectedNodes.length} nodos del canvas.`, "info");
+                    })(), "No se pudieron quitar los nodos seleccionados del canvas.");
                   }}
                   onBlur={() => setBulkConfirm(prev => prev === "remove" ? null : prev)}
                   className={`btn btn-sm ${bulkConfirm === "remove" ? "btn-danger" : "btn-secondary text-warning"}`}
@@ -1647,14 +1689,18 @@ function SessionPrepForm({
   const [targetSessionId, setTargetSessionId] = useState(() => preparedSessions[0]?.sessionId ?? "");
   const [busy, setBusy] = useState(false);
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setBusy(true);
-    try {
-      await onSubmit(sessionTitle, targetMode, targetMode === "prepared" ? targetSessionId : undefined);
-    } finally {
-      setBusy(false);
-    }
+    void onSubmit(sessionTitle, targetMode, targetMode === "prepared" ? targetSessionId : undefined).then(
+      () => {
+        setBusy(false);
+      },
+      (error: unknown) => {
+        console.error("No se pudo preparar la sesión desde el canvas.", error);
+        setBusy(false);
+      },
+    );
   };
 
   return (
