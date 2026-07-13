@@ -10,7 +10,7 @@ export const users = pgTable("users", {
   passwordHash: text("password_hash").notNull(),
   passwordSalt: text("password_salt").notNull(),
   passwordAlgorithm: text("password_algorithm").notNull().default("scrypt"),
-  appRole: text("app_role").notNull().default("user"),
+  appRole: text("app_role").notNull().default("user"), // 'admin' | 'user'
   createdAt: timestamp("created_at").notNull().defaultNow(),
   lastLoginAt: timestamp("last_login_at"),
   disabledAt: timestamp("disabled_at"),
@@ -48,7 +48,7 @@ export const workspaces = pgTable("workspaces", {
 export const workspaceMemberships = pgTable("workspace_memberships", {
   workspaceId: text("workspace_id").notNull().references(() => workspaces.workspaceId, { onDelete: "cascade" }),
   userId: text("user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
-  role: text("role").notNull().default("member"),
+  role: text("role").notNull().default("member"), // 'owner' | 'member'
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (table) => {
   return {
@@ -62,7 +62,7 @@ export const campaigns = pgTable("campaigns", {
   summary: text("summary"),
   workspaceId: text("workspace_id").notNull().references(() => workspaces.workspaceId, { onDelete: "cascade" }),
   ownerId: text("owner_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
-  status: text("status").notNull().default("active"),
+  status: text("status").notNull().default("active"), // 'active' | 'archived' | 'deleted'
   metadata: jsonb("metadata").notNull().default({}),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -71,8 +71,8 @@ export const campaigns = pgTable("campaigns", {
 export const campaignMemberships = pgTable("campaign_memberships", {
   campaignId: text("campaign_id").notNull(),
   userId: text("user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
-  role: text("role").notNull(),
-  playerId: text("player_id"),
+  role: text("role").notNull(), // 'dm' | 'co_dm' | 'player' | 'viewer'
+  playerId: text("player_id"), // optional, for linking player character profile
   createdAt: timestamp("created_at").notNull().defaultNow(),
   revokedAt: timestamp("revoked_at"),
 }, (table) => {
@@ -82,17 +82,17 @@ export const campaignMemberships = pgTable("campaign_memberships", {
 });
 
 export const playerProfiles = pgTable("player_profiles", {
-  profileId: text("profile_id").primaryKey(),
+  profileId: text("profile_id").primaryKey(), // ply_...
   campaignId: text("campaign_id").notNull(),
   userId: text("user_id").references(() => users.userId, { onDelete: "set null" }),
   displayName: text("display_name").notNull(),
   pronouns: text("pronouns"),
   biography: text("biography"),
   contact: text("contact"),
-  status: text("status").notNull().default("active"),
+  status: text("status").notNull().default("active"), // 'active' | 'retired' | 'archived'
   linkedCharacterId: text("linked_character_id"),
   publicHandle: text("public_handle"),
-  publicationState: text("publication_state").notNull().default("private"),
+  publicationState: text("publication_state").notNull().default("private"), // 'private' | 'unlisted' | 'published'
   visibility: jsonb("visibility").notNull().default({}),
   version: integer("version").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -138,15 +138,16 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
   };
 });
 
+// EVENT SOURCING TABLES
 export const domainEvents = pgTable("domain_events", {
   campaignId: text("campaign_id").notNull(),
   sequence: integer("sequence").notNull(),
   eventId: text("event_id").notNull(),
   type: text("type").notNull(),
   payload: jsonb("payload").notNull(),
-  occurredAt: text("occurred_at").notNull(),
+  occurredAt: text("occurred_at").notNull(), // ISO String
   actorUserId: text("actor_user_id").references(() => users.userId, { onDelete: "set null" }),
-  actorId: text("actor_id").notNull(),
+  actorId: text("actor_id").notNull(), // textual id (e.g. dmId, playerId)
   commandId: text("command_id"),
   commandHash: text("command_hash"),
   previousHash: text("previous_hash"),
@@ -179,6 +180,7 @@ export const campaignSnapshots = pgTable("campaign_snapshots", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+// READ MODELS
 export const campaignEntities = pgTable("campaign_entities", {
   campaignId: text("campaign_id").notNull(),
   entityId: text("entity_id").notNull(),
@@ -188,7 +190,7 @@ export const campaignEntities = pgTable("campaign_entities", {
   dmSummary: text("dm_summary"),
   status: text("status").notNull().default("active"),
   importance: text("importance").notNull().default("normal"),
-  tags: jsonb("tags").notNull().default([]),
+  tags: jsonb("tags").notNull().default([]), // array of strings
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => {
   return {
@@ -200,7 +202,7 @@ export const campaignFacts = pgTable("campaign_facts", {
   campaignId: text("campaign_id").notNull(),
   factId: text("fact_id").notNull(),
   subjectEntityId: text("subject_entity_id").notNull(),
-  kind: text("kind").notNull(),
+  kind: text("kind").notNull(), // 'canon' | 'dm_secret' | 'rumor' etc.
   contentPublic: text("content_public"),
   contentDm: text("content_dm"),
   confidence: text("confidence").notNull().default("confirmed"),
@@ -232,9 +234,9 @@ export const campaignRelations = pgTable("campaign_relations", {
 
 export const visibilityGrants = pgTable("visibility_grants", {
   campaignId: text("campaign_id").notNull(),
-  targetType: text("target_type").notNull(),
+  targetType: text("target_type").notNull(), // 'entity' | 'relation' | 'fact'
   targetId: text("target_id").notNull(),
-  scope: text("scope").notNull(),
+  scope: text("scope").notNull(), // 'public' | 'all_players' | 'specific_user' | 'specific_player' | 'dm_only'
   userId: text("user_id"),
   playerId: text("player_id"),
   grantedAt: timestamp("granted_at").notNull().defaultNow(),
@@ -251,7 +253,7 @@ export const campaignSessions = pgTable("campaign_sessions", {
   title: text("title").notNull(),
   recapDm: text("recap_dm"),
   recapPublic: text("recap_public"),
-  status: text("status").notNull().default("planned"),
+  status: text("status").notNull().default("planned"), // 'planned' | 'live' | 'completed' | 'cancelled'
   plannedDate: text("planned_date"),
   playedDate: text("played_date"),
   notes: text("notes"),
@@ -346,7 +348,7 @@ export const campaignInvitations = pgTable("campaign_invitations", {
   campaignId: text("campaign_id").notNull(),
   tokenHash: text("token_hash").notNull(),
   shortCodeHash: text("short_code_hash"),
-  role: text("role").notNull().default("player"),
+  role: text("role").notNull().default("player"), // 'dm' | 'co_dm' | 'player' | 'viewer'
   maxUses: integer("max_uses").notNull().default(1),
   usesCount: integer("uses_count").notNull().default(0),
   expiresAt: timestamp("expires_at").notNull(),
@@ -368,7 +370,7 @@ export const campaignNotes = pgTable("campaign_notes", {
   authorUserId: text("author_user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   authorPlayerId: text("author_player_id"),
   content: text("content").notNull(),
-  visibilityScope: text("visibility_scope").notNull().default("dm_only"),
+  visibilityScope: text("visibility_scope").notNull().default("dm_only"), // 'dm_only' | 'all_players' | 'private'
   targetEntityId: text("target_entity_id"),
   targetSessionId: text("target_session_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -386,7 +388,7 @@ export const playerProposals = pgTable("player_proposals", {
   playerId: text("player_id").notNull(),
   type: text("type").notNull(),
   content: jsonb("content").notNull(),
-  status: text("status").notNull().default("submitted"),
+  status: text("status").notNull().default("submitted"), // 'draft' | 'submitted' | 'approved' | 'rejected'
   processedBy: text("processed_by").references(() => users.userId, { onDelete: "set null" }),
   processedAt: timestamp("processed_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
