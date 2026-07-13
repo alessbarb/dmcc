@@ -18,12 +18,6 @@ type InvitationPreview = {
   role: string;
 };
 
-function campaignPath(membership: Pick<Membership, "campaignId" | "role">): string {
-  return membership.role === "player"
-    ? `/portal?campaignId=${encodeURIComponent(membership.campaignId)}&tab=home`
-    : `/campaigns/${membership.campaignId}/command-center`;
-}
-
 export function PlayerJoinPage() {
   const navigate = useNavigate();
   const params = useParams({ strict: false }) as { inviteToken?: string; campaignId?: string };
@@ -102,7 +96,17 @@ export function PlayerJoinPage() {
   }, [inviteToken]);
 
   const enterCampaign = (membership: Membership) => {
-    navigate({ to: campaignPath(membership) as any });
+    if (membership.role === "player") {
+      void navigate({
+        to: "/portal",
+        search: { campaignId: membership.campaignId, tab: "home" },
+      });
+    } else {
+      void navigate({
+        to: "/campaigns/$campaignId/command-center",
+        params: { campaignId: membership.campaignId },
+      });
+    }
   };
 
   const acceptInvite = async () => {
@@ -117,9 +121,13 @@ export function PlayerJoinPage() {
       const body = await response.json();
       const campaignId = body.campaignId ?? invitation?.campaign.campaignId;
       if (!campaignId) throw new Error("La invitación no devolvió campaña");
-      navigate({ to: `/portal?campaignId=${encodeURIComponent(campaignId)}&tab=home` as any });
-    } catch (cause: any) {
-      setError(cause.message || "No se pudo aceptar la invitación");
+      void navigate({
+        to: "/portal",
+        search: { campaignId, tab: "home" },
+      });
+    } catch (cause: unknown) {
+      const errMsg = cause instanceof Error ? cause.message : String(cause);
+      setError(errMsg || "No se pudo aceptar la invitación");
     } finally {
       setLoading(false);
     }
@@ -134,8 +142,9 @@ export function PlayerJoinPage() {
       setAuthenticated(true);
       await loadMemberships();
       if (inviteToken) await acceptInvite();
-    } catch (cause: any) {
-      setError(cause.message || "No se pudo autenticar la cuenta");
+    } catch (cause: unknown) {
+      const errMsg = cause instanceof Error ? cause.message : String(cause);
+      setError(errMsg || "No se pudo autenticar la cuenta");
     } finally {
       setLoading(false);
     }

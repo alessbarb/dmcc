@@ -20,8 +20,8 @@ export function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const submit = async (event: React.FormEvent, register: boolean) => {
-    event.preventDefault();
+  const submit = async (event: React.SubmitEvent<HTMLFormElement> | null, register: boolean) => {
+    if (event) event.preventDefault();
     setLoading(true);
     setError(null);
     try {
@@ -35,11 +35,13 @@ export function RegisterPage() {
       }
       const body = await response.json().catch(() => ({}));
       const nextCampaignId = body.campaignId ?? campaignId;
-      navigate({
-        to: `/portal?campaignId=${encodeURIComponent(nextCampaignId)}&tab=home` as any,
+      void navigate({
+        to: "/portal",
+        search: { campaignId: nextCampaignId, tab: "home" },
       });
-    } catch (cause: any) {
-      setError(cause.message || t("playerJoin.rejoinConnectionError"));
+    } catch (cause: unknown) {
+      const errMsg = cause instanceof Error ? cause.message : String(cause);
+      setError(errMsg || t("playerJoin.rejoinConnectionError"));
     } finally {
       setLoading(false);
     }
@@ -95,7 +97,7 @@ export function RegisterPage() {
             type="button"
             className="btn btn-secondary"
             disabled={loading}
-            onClick={(event) => void submit(event as unknown as React.FormEvent, true)}
+            onClick={() => void submit(null, true)}
           >
             {t("playerJoin.createClaimBtn")}
           </button>
