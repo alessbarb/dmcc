@@ -38,6 +38,12 @@ const TABS: { id: TabId; labelKey: string; icon: React.ReactNode }[] = [
   { id: "trazabilidad", labelKey: "entityDetail.tabsTrace", icon: <Clock size={13} /> },
 ];
 
+function runEntityDetailAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 // Safely get values from Maps or plain objects/arrays
 function getRelationsArray(relations: any): Relation[] {
   if (!relations) return [];
@@ -174,7 +180,7 @@ function ResumenTab({
   isEditingEntity: boolean;
   editEntityForm: Partial<Entity>;
   setEditEntityForm: (v: Partial<Entity>) => void;
-  onVisibilityChange: (entityId: string, visibility: any) => Promise<void>;
+  onVisibilityChange: (entityId: string, visibility: any) => void;
 }) {
   const { t, locale } = useTranslation();
   const visKind = entity.visibility?.kind ?? "dm_only";
@@ -1041,21 +1047,23 @@ export function EntityDetailModal({
     !selectedEntity.visibility?.kind ||
     selectedEntity.visibility.kind === "dm_only";
 
-  const handleVisibilityChange = async (entityId: string, visibility: any) => {
-    await onVisibilityChange(entityId, visibility);
+  const handleVisibilityChange = (entityId: string, visibility: any) => {
+    runEntityDetailAction(onVisibilityChange(entityId, visibility), "No se pudo cambiar la visibilidad de la entidad.");
   };
 
-  const handleArchive = async () => {
+  const handleArchive = () => {
     if (!isConfirmingArchive) {
       setIsConfirmingArchive(true);
       return;
     }
-    setIsConfirmingArchive(false);
-    await onArchive(selectedEntity.entityId);
-    addToast(t("entityDetail.archivedToast", { title: selectedEntity.title }), "info");
-    onClose();
-    setIsEditingEntity(false);
-    setEditEntityForm({});
+    runEntityDetailAction((async () => {
+      setIsConfirmingArchive(false);
+      await onArchive(selectedEntity.entityId);
+      addToast(t("entityDetail.archivedToast", { title: selectedEntity.title }), "info");
+      onClose();
+      setIsEditingEntity(false);
+      setEditEntityForm({});
+    })(), "No se pudo archivar la entidad.");
   };
 
   const handleToggleEdit = () => {
@@ -1076,10 +1084,12 @@ export function EntityDetailModal({
     setIsEditingEntity(!isEditingEntity);
   };
 
-  const handleSaveEdit = async () => {
-    await onEdit(selectedEntity.entityId, editEntityForm);
-    setIsEditingEntity(false);
-    setEditEntityForm({});
+  const handleSaveEdit = () => {
+    runEntityDetailAction((async () => {
+      await onEdit(selectedEntity.entityId, editEntityForm);
+      setIsEditingEntity(false);
+      setEditEntityForm({});
+    })(), "No se pudieron guardar los cambios de la entidad.");
   };
 
   return (
