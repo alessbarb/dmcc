@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useImperativeHandle, useMemo, useRef } from "react";
+import React, { useState, useEffect, useCallback, useImperativeHandle, useMemo, useRef, ReactNode } from "react";
 import { ReactFlow,
   useNodesState,
   useEdgesState,
@@ -35,6 +35,10 @@ import type { Entity, Relation, Fact } from "../../../shared/stores/campaignStor
 import { getRelationVisual } from "../../entities/entityVisuals.js";
 import { isPublicCanvasEdge, isPublicCanvasNode } from "../services/canvasVisibility.js";
 import { viewportContainsCanvasNode } from "../services/canvasViewport.js";
+import { computeCanvasLayout } from "../services/computeCanvasLayout.js";
+import type { CanvasLayoutPreset } from "../services/computeCanvasLayout.js";
+import { useCanvasHistoryStore } from "../../../shared/stores/canvasHistoryStore.js";
+import type { CanvasNodeLayout } from "../../../shared/stores/canvasHistoryStore.js";
 
 // Register custom node types — group nodes are no longer rendered as boxes
 const nodeTypes = {
@@ -95,6 +99,13 @@ export interface CampaignCanvasFlowHandle {
   fitView: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
+  applyLayout: (
+    preset: CanvasLayoutPreset,
+    options?: {
+      selectedOnly?: boolean;
+      rootNodeId?: string | null;
+    },
+  ) => Promise<void>;
 }
 
 export type CanvasDeviceMode = "wide-screen" | "tablet" | "mobile";
@@ -130,6 +141,7 @@ export interface CampaignCanvasFlowProps {
   maxGraphDepth?: number;
   showOnlyNeighborhood?: boolean;
   onNodeContextRequest?: (nodeId: string) => void;
+  addToast?: (message: ReactNode, kind?: "success" | "error" | "info" | "warning") => void;
 }
 
 export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, CampaignCanvasFlowProps>(function CampaignCanvasFlow({
@@ -162,6 +174,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   maxGraphDepth: _maxGraphDepth,
   showOnlyNeighborhood: _showOnlyNeighborhood = false,
   onNodeContextRequest,
+  addToast,
 }: CampaignCanvasFlowProps, ref) {
   const { t } = useTranslation();
   const {
@@ -175,6 +188,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   } = useCampaignStore();
 
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const dragStartPositionsRef = useRef<Map<string, { x: number; y: number; width?: number; height?: number; groupId?: string | null; parentId?: string | null }>>(new Map());
 
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance<CanvasFlowNode, Edge> | null>(null);
   const [viewport, setViewport] = useState<Viewport>({ x: 0, y: 0, zoom: 1 });
@@ -642,6 +656,239 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     runCanvasFlowAction(rfInstance?.zoomOut({ duration: 200 }), "Failed to zoom canvas out");
   }, [rfInstance]);
 
+  const applyLayout = useCallback(async (
+    preset: CanvasLayoutPreset,
+    options?: {
+      selectedOnly?: boolean;
+      rootNodeId?: string | null;
+    }
+  ) => {
+    if (!rfInstance) return;
+
+    const rawNodes = canvas.nodes || [];
+    const rfNodes = rfInstance.getNodes();
+    const rfNodesMap = new Map(rfNodes.map(rn => [rn.id, rn]));
+
+    let nodesToLayout = rawNodes;
+    let edgesToLayout = edges;
+
+    if (options?.selectedOnly) {
+      const selectedNodeIds = new Set<string>();
+      for (const n of rawNodes) {
+        const rfNode = rfNodesMap.get(n.id);
+        if (rfNode?.selected) {
+          selectedNodeIds.add(n.id);
+          if (n.kind === "group") {
+            rawNodes.forEach(child => {
+              if (child.groupId === n.id || child.parentId === n.id) {
+                selectedNodeIds.add(child.id);
+              }
+            });
+          }
+        }
+      }
+
+      nodesToLayout = rawNodes.filter(n => selectedNodeIds.has(n.id));
+      edgesToLayout = edges.filter(e => selectedNodeIds.has(e.source) && selectedNodeIds.has(e.target));
+    }
+
+    if (nodesToLayout.length === 0) return;
+
+    // Capture the current layout as previousLayout to support Undo
+    const previousLayout = nodesToLayout.map((n) => {
+      const rfNode = rfNodesMap.get(n.id);
+      return {
+        nodeId: n.id,
+        x: rfNode ? rfNode.position.x : (n.x ?? 0),
+        y: rfNode ? rfNode.position.y : (n.y ?? 0),
+        ...(n.kind === "group" && {
+          width: n.width,
+          height: n.height,
+        }),
+      };
+    });
+
+    // Calculate original center of the nodes being laid out
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    let hasCoords = false;
+    for (const n of nodesToLayout) {
+      const rfNode = rfNodesMap.get(n.id);
+      const x = rfNode ? rfNode.position.x : (n.x ?? 0);
+      const y = rfNode ? rfNode.position.y : (n.y ?? 0);
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x + (n.width ?? 220));
+      maxY = Math.max(maxY, y + (n.height ?? 140));
+      hasCoords = true;
+    }
+    const origCenterX = hasCoords ? (minX + maxX) / 2 : 0;
+    const origCenterY = hasCoords ? (minY + maxY) / 2 : 0;
+
+    const layoutInputNodes = nodesToLayout.map((n) => {
+      const rfNode = rfNodesMap.get(n.id);
+      const width = rfNode?.measured?.width ?? rfNode?.width ?? n.width ?? (n.kind === "group" ? 340 : 220);
+      const height = rfNode?.measured?.height ?? rfNode?.height ?? n.height ?? (n.kind === "group" ? 220 : 140);
+      
+      const parentId = n.groupId ?? n.parentId;
+      const hasParentInLayout = parentId ? nodesToLayout.some(p => p.id === parentId) : false;
+
+      return {
+        id: n.id,
+        width,
+        height,
+        x: rfNode ? rfNode.position.x : (n.x ?? 0),
+        y: rfNode ? rfNode.position.y : (n.y ?? 0),
+        groupId: hasParentInLayout ? parentId : null,
+        kind: n.kind,
+      };
+    });
+
+    const groupsInput = nodesToLayout
+      .filter((n) => n.kind === "group")
+      .map((n) => ({
+        id: n.id,
+        title: n.title || "Grupo",
+        x: n.x ?? 0,
+        y: n.y ?? 0,
+        width: n.width ?? 340,
+        height: n.height ?? 220,
+        color: n.color
+      }));
+
+    const result = await computeCanvasLayout({
+      nodes: layoutInputNodes,
+      edges: edgesToLayout.map((e) => ({
+        id: e.id,
+        sourceNodeId: e.source,
+        targetNodeId: e.target,
+      })),
+      groups: groupsInput,
+      preset,
+      rootNodeId: options?.rootNodeId,
+      viewportWidth: wrapperRef.current?.getBoundingClientRect().width ?? 1200,
+      viewportHeight: wrapperRef.current?.getBoundingClientRect().height ?? 800,
+    });
+
+    // Calculate layout result center
+    let resMinX = Infinity, resMinY = Infinity, resMaxX = -Infinity, resMaxY = -Infinity;
+    let hasResCoords = false;
+    for (const update of result.nodeUpdates) {
+      const origNode = rawNodes.find(n => n.id === update.nodeId);
+      const w = update.width ?? origNode?.width ?? 220;
+      const h = update.height ?? origNode?.height ?? 140;
+      resMinX = Math.min(resMinX, update.x);
+      resMinY = Math.min(resMinY, update.y);
+      resMaxX = Math.max(resMaxX, update.x + w);
+      resMaxY = Math.max(resMaxY, update.y + h);
+      hasResCoords = true;
+    }
+    const resCenterX = hasResCoords ? (resMinX + resMaxX) / 2 : 0;
+    const resCenterY = hasResCoords ? (resMinY + resMaxY) / 2 : 0;
+
+    const offsetX = origCenterX - resCenterX;
+    const offsetY = origCenterY - resCenterY;
+
+    const finalNodeUpdates = result.nodeUpdates.map((update) => ({
+      nodeId: update.nodeId,
+      x: update.x + offsetX,
+      y: update.y + offsetY,
+      ...(update.width !== undefined && { width: update.width }),
+      ...(update.height !== undefined && { height: update.height }),
+    }));
+
+    const beforeLayout: CanvasNodeLayout[] = nodesToLayout.map((n) => {
+      const rfNode = rfNodesMap.get(n.id);
+      return {
+        nodeId: n.id,
+        x: rfNode ? rfNode.position.x : (n.x ?? 0),
+        y: rfNode ? rfNode.position.y : (n.y ?? 0),
+        width: rfNode?.measured?.width ?? rfNode?.width ?? n.width,
+        height: rfNode?.measured?.height ?? rfNode?.height ?? n.height,
+        groupId: n.groupId ?? n.parentId ?? null,
+        parentId: n.parentId ?? null,
+      };
+    });
+
+    const afterLayout: CanvasNodeLayout[] = finalNodeUpdates.map((update) => {
+      const originalNode = nodesToLayout.find((n) => n.id === update.nodeId)!;
+      return {
+        nodeId: update.nodeId,
+        x: update.x,
+        y: update.y,
+        width: update.width ?? originalNode.width,
+        height: update.height ?? originalNode.height,
+        groupId: originalNode.groupId ?? originalNode.parentId ?? null,
+        parentId: originalNode.parentId ?? null,
+      };
+    });
+
+    const labelMap: Record<CanvasLayoutPreset, string> = {
+      compact: "ordenación compacta",
+      horizontal: "flujo horizontal",
+      vertical: "flujo vertical",
+      organic: "constelación",
+      radial: "radial desde la selección",
+      "remove-overlaps": "separar solapamientos",
+    };
+    const label = labelMap[preset] || "ordenación";
+
+    useCanvasHistoryStore.getState().pushEntry(canvasId, {
+      kind: "layout",
+      label,
+      before: beforeLayout,
+      after: afterLayout,
+    });
+
+    await updateCanvasNodesLayout(canvasId, finalNodeUpdates);
+
+    // Show Undo toast if addToast is available
+    if (addToast) {
+      addToast(
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: "16px" }}>
+          <span>Canvas ordenado con «{label}»</span>
+          <button
+            type="button"
+            onClick={async (e) => {
+              e.stopPropagation();
+              const res = await useCanvasHistoryStore.getState().undo(canvasId);
+              if (!res.success && res.error === "conflict" && addToast) {
+                addToast("No se puede deshacer esta acción porque algunas tarjetas cambiaron después.", "error");
+              }
+            }}
+            className="btn btn-secondary btn-xs"
+            style={{
+              marginLeft: "auto",
+              background: "rgba(255,255,255,0.08)",
+              color: "var(--text-main)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              padding: "3px 8px",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "11px",
+              fontWeight: 600,
+            }}
+          >
+            Deshacer
+          </button>
+        </div>,
+        "success"
+      );
+    }
+
+    // Run fitView
+    requestAnimationFrame(() => {
+      if (options?.selectedOnly) {
+        const selectedNodes = rfInstance.getNodes().filter(n => n.selected);
+        if (selectedNodes.length > 0) {
+          void rfInstance.fitView({ nodes: selectedNodes, padding: 0.3, duration: 500 });
+          return;
+        }
+      }
+      void rfInstance.fitView({ padding: 0.2, duration: 500 });
+    });
+
+  }, [canvasId, canvas.nodes, edges, rfInstance, updateCanvasNodesLayout, addToast]);
+
   useImperativeHandle(ref, () => ({
     focusNode,
     focusEntity,
@@ -650,7 +897,46 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     fitView: fitCanvasView,
     zoomIn: zoomCanvasIn,
     zoomOut: zoomCanvasOut,
-  }), [fitCanvasView, focusEntity, focusFact, focusNode, getViewportCenter, zoomCanvasIn, zoomCanvasOut]);
+    applyLayout,
+  }), [fitCanvasView, focusEntity, focusFact, focusNode, getViewportCenter, zoomCanvasIn, zoomCanvasOut, applyLayout]);
+
+  const onNodeDragStart: OnNodeDrag<CanvasFlowNode> = useCallback((_event, _node, draggedNodes) => {
+    const storeNodes = useCampaignStore.getState().canvasesById[canvasId]?.nodes ?? [];
+    const startPositions = new Map();
+    for (const n of draggedNodes) {
+      const sn = storeNodes.find(s => s.id === n.id);
+      if (sn) {
+        startPositions.set(sn.id, {
+          x: sn.x ?? 0,
+          y: sn.y ?? 0,
+          width: sn.width,
+          height: sn.height,
+          groupId: sn.groupId ?? null,
+          parentId: sn.parentId ?? null
+        });
+      }
+    }
+    dragStartPositionsRef.current = startPositions;
+  }, [canvasId]);
+
+  const onSelectionDragStart: SelectionDragHandler<CanvasFlowNode> = useCallback((_event, draggedNodes) => {
+    const storeNodes = useCampaignStore.getState().canvasesById[canvasId]?.nodes ?? [];
+    const startPositions = new Map();
+    for (const n of draggedNodes) {
+      const sn = storeNodes.find(s => s.id === n.id);
+      if (sn) {
+        startPositions.set(sn.id, {
+          x: sn.x ?? 0,
+          y: sn.y ?? 0,
+          width: sn.width,
+          height: sn.height,
+          groupId: sn.groupId ?? null,
+          parentId: sn.parentId ?? null
+        });
+      }
+    }
+    dragStartPositionsRef.current = startPositions;
+  }, [canvasId]);
 
   // Handle node drag stop: commit absolute positions.
   // Migrates old parentId-based relative positioning to groupId on first drag.
@@ -666,6 +952,51 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
       }
       return update;
     });
+
+    const beforeLayout: CanvasNodeLayout[] = [];
+    const afterLayout: CanvasNodeLayout[] = [];
+
+    for (const update of updates) {
+      const startPos = dragStartPositionsRef.current.get(update.nodeId);
+      const sn = storeNodes.find(s => s.id === update.nodeId);
+      if (startPos && sn) {
+        const hasMoved = Math.round(startPos.x) !== Math.round(update.x) || Math.round(startPos.y) !== Math.round(update.y);
+        if (hasMoved) {
+          beforeLayout.push({
+            nodeId: update.nodeId,
+            x: startPos.x,
+            y: startPos.y,
+            width: startPos.width,
+            height: startPos.height,
+            groupId: startPos.groupId,
+            parentId: startPos.parentId
+          });
+          afterLayout.push({
+            nodeId: update.nodeId,
+            x: update.x,
+            y: update.y,
+            width: sn.width,
+            height: sn.height,
+            groupId: update.groupId !== undefined ? update.groupId : (sn.groupId ?? null),
+            parentId: update.parentId !== undefined ? update.parentId : (sn.parentId ?? null)
+          });
+        }
+      }
+    }
+
+    if (beforeLayout.length > 0) {
+      const dragLabel = beforeLayout.length === 1 
+        ? `Mover "${storeNodes.find(n => n.id === beforeLayout[0].nodeId)?.title || "tarjeta"}"`
+        : `Mover ${beforeLayout.length} tarjetas`;
+
+      useCanvasHistoryStore.getState().pushEntry(canvasId, {
+        kind: "move",
+        label: dragLabel,
+        before: beforeLayout,
+        after: afterLayout
+      });
+    }
+
     runCanvasFlowAction(
       updateCanvasNodesLayout(canvasId, updates),
       "Failed to save dragged canvas node positions",
@@ -673,11 +1004,57 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   }, [canvasId, updateCanvasNodesLayout]);
 
   const onSelectionDragStop: SelectionDragHandler<CanvasFlowNode> = useCallback((_event, draggedNodes) => {
+    const storeNodes: CanvasNode[] = useCampaignStore.getState().canvasesById[canvasId]?.nodes ?? [];
     const updates = draggedNodes.map((n) => ({
       nodeId: n.id,
       x: Math.round(n.position.x),
       y: Math.round(n.position.y),
     }));
+
+    const beforeLayout: CanvasNodeLayout[] = [];
+    const afterLayout: CanvasNodeLayout[] = [];
+
+    for (const update of updates) {
+      const startPos = dragStartPositionsRef.current.get(update.nodeId);
+      const sn = storeNodes.find(s => s.id === update.nodeId);
+      if (startPos && sn) {
+        const hasMoved = Math.round(startPos.x) !== Math.round(update.x) || Math.round(startPos.y) !== Math.round(update.y);
+        if (hasMoved) {
+          beforeLayout.push({
+            nodeId: update.nodeId,
+            x: startPos.x,
+            y: startPos.y,
+            width: startPos.width,
+            height: startPos.height,
+            groupId: startPos.groupId,
+            parentId: startPos.parentId
+          });
+          afterLayout.push({
+            nodeId: update.nodeId,
+            x: update.x,
+            y: update.y,
+            width: sn.width,
+            height: sn.height,
+            groupId: sn.groupId ?? null,
+            parentId: sn.parentId ?? null
+          });
+        }
+      }
+    }
+
+    if (beforeLayout.length > 0) {
+      const dragLabel = beforeLayout.length === 1 
+        ? `Mover "${storeNodes.find(n => n.id === beforeLayout[0].nodeId)?.title || "tarjeta"}"`
+        : `Mover selección`;
+
+      useCanvasHistoryStore.getState().pushEntry(canvasId, {
+        kind: "move",
+        label: dragLabel,
+        before: beforeLayout,
+        after: afterLayout
+      });
+    }
+
     runCanvasFlowAction(
       updateCanvasNodesLayout(canvasId, updates),
       "Failed to save selected canvas node positions",
@@ -878,7 +1255,9 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
         proOptions={reactFlowProOptions}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeDragStart={onNodeDragStart}
         onNodeDragStop={onNodeDragStop}
+        onSelectionDragStart={onSelectionDragStart}
         onSelectionDragStop={onSelectionDragStop}
         onNodeClick={(event, node) => {
           if (isMobileExplore) {
@@ -916,6 +1295,9 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
           onModeChange={onModeChange}
           onLockChange={onLockChange}
           onMinimapToggle={onMinimapToggle}
+          selectedNodeId={selectedNodeId}
+          applyLayout={applyLayout}
+          addToast={addToast}
         />
 
         {showMinimap && (

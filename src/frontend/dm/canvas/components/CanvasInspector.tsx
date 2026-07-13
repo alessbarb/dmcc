@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
+import { useCanvasHistoryStore } from "../../../shared/stores/canvasHistoryStore.js";
 import { X, Trash2, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../../shared/components/ImagePickerButton.js";
@@ -926,6 +927,32 @@ export function CanvasInspector({
                         value={currentGroupId}
                         onChange={(e) => {
                           const newGroupId = e.target.value || null;
+                          const originalNode = canvas.nodes.find(sn => sn.id === selectedNode!.id)!;
+                          const beforeLayout = [{
+                            nodeId: selectedNode!.id,
+                            x: selectedNode!.x ?? 0,
+                            y: selectedNode!.y ?? 0,
+                            width: originalNode.width,
+                            height: originalNode.height,
+                            groupId: originalNode.groupId ?? originalNode.parentId ?? null,
+                            parentId: originalNode.parentId ?? null,
+                          }];
+                          const afterLayout = [{
+                            nodeId: selectedNode!.id,
+                            x: selectedNode!.x ?? 0,
+                            y: selectedNode!.y ?? 0,
+                            width: originalNode.width,
+                            height: originalNode.height,
+                            groupId: newGroupId,
+                            parentId: null,
+                          }];
+                          useCanvasHistoryStore.getState().pushEntry(canvasId, {
+                            kind: "group-assignment",
+                            label: newGroupId ? `Asignar a grupo` : "Quitar del grupo",
+                            before: beforeLayout,
+                            after: afterLayout,
+                          });
+
                           runCanvasAction(
                             updateCanvasNodesLayout(canvasId, [{
                               nodeId: selectedNode!.id,

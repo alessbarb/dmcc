@@ -12,6 +12,8 @@ import { Plus, Layout, Folder, Eye, EyeOff, Zap, Play, X, User, UserCheck, MapPi
 import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
+import { ToastContainer } from "../../../shared/components/ToastContainer.js";
+import { useCanvasHistoryStore } from "../../../shared/stores/canvasHistoryStore.js";
 import { useParams } from "@tanstack/react-router";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
@@ -410,16 +412,74 @@ export function CanvasPage() {
     placeNodeOnCanvas,
   } = useCampaignStore();
 
-  const { addToast } = useToast();
+  const { toasts, addToast, removeToast } = useToast();
 
   useEffect(() => {
     if (campaignId && campaignId !== activeCampaignId) {
+      useCanvasHistoryStore.getState().clearAllHistories();
       void selectCampaign(campaignId).catch((error: unknown) => {
         console.error("No se pudo cargar la campaña para el canvas.", error);
         addToast("No se pudo cargar la campaña para el canvas.", "error");
       });
     }
   }, [campaignId, activeCampaignId, selectCampaign, addToast]);
+
+  const handleUndo = useCallback(async () => {
+    if (!activeCanvasId) return;
+    const res = await useCanvasHistoryStore.getState().undo(activeCanvasId);
+    if (res.success && res.entry) {
+      addToast(`Deshecho: ${res.entry.label}`, "info");
+    } else if (res.error === "conflict") {
+      addToast("No se puede deshacer esta acción porque algunas tarjetas cambiaron después.", "error");
+    }
+  }, [activeCanvasId, addToast]);
+
+  const handleRedo = useCallback(async () => {
+    if (!activeCanvasId) return;
+    const res = await useCanvasHistoryStore.getState().redo(activeCanvasId);
+    if (res.success && res.entry) {
+      addToast(`Rehecho: ${res.entry.label}`, "info");
+    } else if (res.error === "conflict") {
+      addToast("No se puede rehacer esta acción porque algunas tarjetas cambiaron después.", "error");
+    }
+  }, [activeCanvasId, addToast]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      if (
+        activeEl &&
+        (activeEl.tagName === "INPUT" ||
+          activeEl.tagName === "TEXTAREA" ||
+          activeEl.getAttribute("contenteditable") === "true")
+      ) {
+        return;
+      }
+
+      const isMod = e.metaKey || e.ctrlKey;
+      const isShift = e.shiftKey;
+
+      if (isMod && !e.altKey) {
+        const key = e.key.toLowerCase();
+        if (key === "z") {
+          e.preventDefault();
+          if (isShift) {
+            void handleRedo();
+          } else {
+            void handleUndo();
+          }
+        } else if (key === "y") {
+          e.preventDefault();
+          void handleRedo();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleUndo, handleRedo]);
 
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
@@ -1314,6 +1374,7 @@ export function CanvasPage() {
             <ReactFlowProvider key={`${campaignId}:${activeCanvas.id}`}>
               <CampaignCanvasFlow
                 ref={canvasFlowRef}
+                addToast={addToast}
                 key={`${campaignId}:${activeCanvas.id}`}
                 canvasId={activeCanvas.id}
                 canvas={activeCanvas}
@@ -1519,6 +1580,39 @@ export function CanvasPage() {
                           groupId: gid,
                           parentId: null,
                         }));
+
+                        // Push history entry for group assignment
+                        const beforeLayout = selectedNodes.map((n) => {
+                          const originalNode = activeCanvas.nodes.find(sn => sn.id === n.id)!;
+                          return {
+                            nodeId: n.id,
+                            x: Math.round(n.position?.x ?? 0),
+                            y: Math.round(n.position?.y ?? 0),
+                            width: originalNode.width,
+                            height: originalNode.height,
+                            groupId: originalNode.groupId ?? originalNode.parentId ?? null,
+                            parentId: originalNode.parentId ?? null,
+                          };
+                        });
+                        const afterLayout = updates.map((u) => {
+                          const originalNode = activeCanvas.nodes.find(sn => sn.id === u.nodeId)!;
+                          return {
+                            nodeId: u.nodeId,
+                            x: u.x,
+                            y: u.y,
+                            width: originalNode.width,
+                            height: originalNode.height,
+                            groupId: u.groupId,
+                            parentId: u.parentId,
+                          };
+                        });
+                        useCanvasHistoryStore.getState().pushEntry(activeCanvas.id, {
+                          kind: "group-assignment",
+                          label: gid ? `Asignar a grupo` : "Quitar del grupo",
+                          before: beforeLayout,
+                          after: afterLayout,
+                        });
+
                         runCanvasPageAction(updateCanvasNodesLayout(activeCanvas.id, updates).then(() => {
                           addToast(`${selectedNodes.length} nodos asignados al grupo.`, "success");
                           setBulkGroupId("");
@@ -1732,6 +1826,7 @@ export function CanvasPage() {
           addToast={addToast}
         />
       )}
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
 }

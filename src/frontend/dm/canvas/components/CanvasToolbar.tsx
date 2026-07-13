@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ReactNode } from "react";
 import { Panel, useReactFlow } from "@xyflow/react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
+import { useCanvasHistoryStore } from "../../../shared/stores/canvasHistoryStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import {
   MousePointer2, Hand, BoxSelect, StickyNote, Frame, Maximize2,
-  ZoomIn, ZoomOut, Map, Lock, Unlock, Target, Wrench, X, Link2
+  ZoomIn, ZoomOut, Map, Lock, Unlock, Target, Wrench, X, Link2,
+  Sparkles, ArrowRight, ArrowDown, Compass, Orbit, Milestone, Layout,
+  Undo2, Redo2
 } from "lucide-react";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
+import type { CanvasLayoutPreset } from "../services/computeCanvasLayout.js";
 import "./canvas-mobile-toolbar.css";
 
 export type InteractionMode = "select" | "pan" | "multiselect";
@@ -20,6 +24,15 @@ export interface CanvasToolbarProps {
   onModeChange: (mode: InteractionMode) => void;
   onLockChange: (locked: boolean) => void;
   onMinimapToggle: () => void;
+  selectedNodeId?: string | null;
+  applyLayout?: (
+    preset: CanvasLayoutPreset,
+    options?: {
+      selectedOnly?: boolean;
+      rootNodeId?: string | null;
+    }
+  ) => Promise<void>;
+  addToast?: (message: ReactNode, kind?: "success" | "error" | "info" | "warning") => void;
 }
 
 function toDesktopInteractionMode(touchMode: CanvasTouchMode): InteractionMode {
@@ -59,13 +72,86 @@ export function CanvasToolbar({
   onModeChange,
   onLockChange,
   onMinimapToggle,
+  selectedNodeId,
+  applyLayout,
+  addToast,
 }: CanvasToolbarProps) {
+  const history = useCanvasHistoryStore((s) => s.histories[canvasId]) || { past: [], future: [] };
+  const canUndo = history.past.length > 0;
+  const canRedo = history.future.length > 0;
+  const lastPastEntry = history.past[history.past.length - 1];
+  const lastFutureEntry = history.future[history.future.length - 1];
+
+  const undoTooltip = canUndo 
+    ? `Deshacer: ${lastPastEntry.label}` 
+    : "Deshacer (Ctrl+Z)";
+  const redoTooltip = canRedo 
+    ? `Rehacer: ${lastFutureEntry.label}` 
+    : "Rehacer (Ctrl+Y)";
+
+  const handleUndoClick = () => {
+    runToolbarAction(
+      useCanvasHistoryStore.getState().undo(canvasId).then((res) => {
+        if (res.success && res.entry) {
+          addToast?.(`Deshecho: ${res.entry.label}`, "info");
+        } else if (res.error === "conflict") {
+          addToast?.("No se puede deshacer esta acción porque algunas tarjetas cambiaron después.", "error");
+        }
+      }),
+      "No se pudo deshacer la acción."
+    );
+    closeMobileTools();
+  };
+
+  const handleRedoClick = () => {
+    runToolbarAction(
+      useCanvasHistoryStore.getState().redo(canvasId).then((res) => {
+        if (res.success && res.entry) {
+          addToast?.(`Rehecho: ${res.entry.label}`, "info");
+        } else if (res.error === "conflict") {
+          addToast?.("No se puede rehacer esta acción porque algunas tarjetas cambiaron después.", "error");
+        }
+      }),
+      "No se pudo rehacer la acción."
+    );
+    closeMobileTools();
+  };
   const { fitView, zoomIn, zoomOut, getNodes } = useReactFlow();
   const { placeNodeOnCanvas, createRelation, addEdgeToCanvas } = useCampaignStore();
   const { t } = useTranslation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [mobileTouchMode, setMobileTouchMode] = useState<CanvasTouchMode | null>(null);
   const [connectSourceNodeId, setConnectSourceNodeId] = useState<string | null>(null);
+  
+  const [isLayoutMenuOpen, setIsLayoutMenuOpen] = useState(false);
+  const [applyToSelectionOnly, setApplyToSelectionOnly] = useState(false);
+
+  const selectedNodes = getNodes().filter((n) => n.selected);
+  const selectedCount = selectedNodes.length;
+
+  useEffect(() => {
+    if (selectedCount <= 1) {
+      setApplyToSelectionOnly(false);
+    }
+  }, [selectedCount]);
+
+  const handleLayoutClick = (preset: CanvasLayoutPreset) => {
+    setIsLayoutMenuOpen(false);
+    if (!applyLayout) return;
+
+    const opt: { selectedOnly?: boolean; rootNodeId?: string | null } = {};
+    if (applyToSelectionOnly && selectedCount > 1) {
+      opt.selectedOnly = true;
+    }
+    if (preset === "radial" && selectedCount === 1) {
+      opt.rootNodeId = selectedNodeId;
+    }
+
+    runToolbarAction(
+      applyLayout(preset, opt),
+      "No se pudo aplicar la ordenación del canvas."
+    );
+  };
   const touchMode = mobileTouchMode ?? toTouchMode(interactionMode, isLocked);
 
   const closeMobileTools = () => setIsMobileOpen(false);
@@ -248,6 +334,25 @@ export function CanvasToolbar({
   const desktopToolbarContent = (
     <div className="canvas-toolbar">
       <div className="canvas-toolbar__group">
+        <button
+          className="canvas-toolbar__btn"
+          disabled={!canUndo}
+          onClick={handleUndoClick}
+          title={undoTooltip}
+        >
+          <Undo2 size={15} />
+        </button>
+        <button
+          className="canvas-toolbar__btn"
+          disabled={!canRedo}
+          onClick={handleRedoClick}
+          title={redoTooltip}
+        >
+          <Redo2 size={15} />
+        </button>
+      </div>
+      <div className="canvas-toolbar__divider" />
+      <div className="canvas-toolbar__group">
         <button className={`canvas-toolbar__btn ${interactionMode === "select" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("select")} title={t("canvas.toolbar.selectMode")}><MousePointer2 size={15} /></button>
         <button className={`canvas-toolbar__btn ${interactionMode === "pan" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("pan")} title={t("canvas.toolbar.panMode")}><Hand size={15} /></button>
         <button className={`canvas-toolbar__btn ${interactionMode === "multiselect" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleModeChange("multiselect")} title={t("canvas.toolbar.multiSelectMode")}><BoxSelect size={15} /></button>
@@ -267,6 +372,109 @@ export function CanvasToolbar({
         {groupFocusSelect}
       </div>
       <div className="canvas-toolbar__divider" />
+      <div className="canvas-toolbar__group" style={{ position: "relative" }}>
+        <button
+          className={`canvas-toolbar__btn ${isLayoutMenuOpen ? "canvas-toolbar__btn--active" : ""}`}
+          onClick={() => setIsLayoutMenuOpen((prev) => !prev)}
+          title="Ordenar Canvas"
+        >
+          <Layout size={15} />
+        </button>
+
+        {isLayoutMenuOpen && (
+          <>
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 999,
+                background: "transparent",
+              }}
+              onClick={() => setIsLayoutMenuOpen(false)}
+            />
+            <div className="canvas-layout-popover">
+              <div className="canvas-layout-popover__title">Ordenación Automática</div>
+              <button
+                className="canvas-layout-popover__btn"
+                type="button"
+                onClick={() => handleLayoutClick("compact")}
+              >
+                <Sparkles size={14} /> Compacta recomendada
+              </button>
+              <button
+                className="canvas-layout-popover__btn"
+                type="button"
+                onClick={() => handleLayoutClick("horizontal")}
+              >
+                <ArrowRight size={14} /> Flujo horizontal
+              </button>
+              <button
+                className="canvas-layout-popover__btn"
+                type="button"
+                onClick={() => handleLayoutClick("vertical")}
+              >
+                <ArrowDown size={14} /> Flujo vertical
+              </button>
+              <button
+                className="canvas-layout-popover__btn"
+                type="button"
+                onClick={() => handleLayoutClick("organic")}
+              >
+                <Compass size={14} /> Constelación
+              </button>
+              <button
+                className="canvas-layout-popover__btn"
+                type="button"
+                disabled={selectedCount !== 1}
+                onClick={() => handleLayoutClick("radial")}
+                title={selectedCount !== 1 ? "Selecciona exactamente una tarjeta para usar como centro" : "Ordenar en círculos concéntricos desde la selección"}
+              >
+                <Orbit size={14} /> Radial desde la selección
+              </button>
+
+              <div className="canvas-layout-popover__divider" />
+              <div className="canvas-layout-popover__title">Ajuste</div>
+              <button
+                className="canvas-layout-popover__btn"
+                type="button"
+                onClick={() => handleLayoutClick("remove-overlaps")}
+              >
+                <Milestone size={14} /> Separar solapamientos
+              </button>
+
+              {selectedCount > 1 && (
+                <div className="canvas-layout-popover__apply-to">
+                  <div className="canvas-layout-popover__apply-title">Aplicar a:</div>
+                  <div className="canvas-layout-popover__radio-group">
+                    <label className="canvas-layout-popover__radio-label">
+                      <input
+                        type="radio"
+                        name="layoutApplyTo"
+                        checked={!applyToSelectionOnly}
+                        onChange={() => setApplyToSelectionOnly(false)}
+                      />
+                      Todo el Canvas
+                    </label>
+                    <label className="canvas-layout-popover__radio-label">
+                      <input
+                        type="radio"
+                        name="layoutApplyTo"
+                        checked={applyToSelectionOnly}
+                        onChange={() => setApplyToSelectionOnly(true)}
+                      />
+                      Solo la selección
+                    </label>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+      <div className="canvas-toolbar__divider" />
       <div className="canvas-toolbar__group">
         <button className={`canvas-toolbar__btn ${isLocked ? "canvas-toolbar__btn--active canvas-toolbar__btn--warning" : ""}`} onClick={handleLockToggle} title={isLocked ? t("canvas.toolbar.unlockPositions") : t("canvas.toolbar.lockPositions")}>
           {isLocked ? <Lock size={15} /> : <Unlock size={15} />}
@@ -283,6 +491,26 @@ export function CanvasToolbar({
         <button className={`canvas-toolbar__btn ${touchMode === "edit" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("edit")} title="Editar: arrastra tarjetas y toca para seleccionarlas"><MousePointer2 size={15} /></button>
         <button className={`canvas-toolbar__btn ${touchMode === "connect" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("connect")} title="Conectar: toca origen y destino"><Link2 size={15} /></button>
         <button className={`canvas-toolbar__btn ${touchMode === "multi" ? "canvas-toolbar__btn--active" : ""}`} onClick={() => handleTouchModeChange("multi")} title="Seleccionar varias tarjetas"><BoxSelect size={15} /></button>
+      </div>
+      <div className="canvas-toolbar__divider" />
+      <span className="canvas-mobile-tools-section">Historial</span>
+      <div className="canvas-toolbar__group">
+        <button
+          className="canvas-toolbar__btn"
+          disabled={!canUndo}
+          onClick={handleUndoClick}
+          title={undoTooltip}
+        >
+          <Undo2 size={15} />
+        </button>
+        <button
+          className="canvas-toolbar__btn"
+          disabled={!canRedo}
+          onClick={handleRedoClick}
+          title={redoTooltip}
+        >
+          <Redo2 size={15} />
+        </button>
       </div>
       <div className="canvas-toolbar__divider" />
       <span className="canvas-mobile-tools-section">Crear</span>
