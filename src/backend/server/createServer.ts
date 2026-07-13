@@ -307,12 +307,12 @@ export function createServer(config?: ServerConfig): FastifyInstance {
           fileName.startsWith("workbox-");
 
         if (fileName === "index.html" || isServiceWorkerAsset) {
-          response.setHeader("Cache-Control", "no-store, max-age=0, must-revalidate");
+          response.header("Cache-Control", "no-store, max-age=0, must-revalidate");
           return;
         }
 
         if (isBuildAsset) {
-          response.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+          response.header("Cache-Control", "public, max-age=31536000, immutable");
         }
       },
     });
