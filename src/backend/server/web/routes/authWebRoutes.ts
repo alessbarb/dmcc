@@ -41,8 +41,11 @@ const AUTH_STATE_MAX_ENTRIES = 10_000;
 
 function pruneExpiringMap<T>(entries: Map<string, T>, isExpired: (entry: T) => boolean): void {
   for (const [key, entry] of entries) {
-    if (isExpired(entry)) entries.delete(key);
+    if (isExpired(entry)) {
+      entries.delete(key);
+    }
   }
+
   while (entries.size >= AUTH_STATE_MAX_ENTRIES) {
     const oldestKey = entries.keys().next().value as string | undefined;
     if (!oldestKey) break;
@@ -50,39 +53,69 @@ function pruneExpiringMap<T>(entries: Map<string, T>, isExpired: (entry: T) => b
   }
 }
 
-function getRegisterRateLimitRetryAfter(registerRateLimits: Map<string, RegisterRateLimitEntry>, key: string, limit: number, now = Date.now()): number | null {
+function getRegisterRateLimitRetryAfter(
+  registerRateLimits: Map<string, RegisterRateLimitEntry>,
+  key: string,
+  limit: number,
+  now = Date.now(),
+): number | null {
   pruneExpiringMap(registerRateLimits, (entry) => entry.resetAt <= now);
   const current = registerRateLimits.get(key);
   if (!current || current.resetAt <= now) {
     registerRateLimits.set(key, { count: 1, resetAt: now + REGISTER_RATE_LIMIT_WINDOW_MS });
     return null;
   }
-  if (current.count >= limit) return Math.max(1, Math.ceil((current.resetAt - now) / 1000));
+  if (current.count >= limit) {
+    return Math.max(1, Math.ceil((current.resetAt - now) / 1000));
+  }
   current.count += 1;
   registerRateLimits.set(key, current);
   return null;
 }
 
-function getLoginRateLimitRetryAfter(loginRateLimits: Map<string, LoginRateLimitEntry>, key: string, limit: number, now = Date.now()): number | null {
+function getLoginRateLimitRetryAfter(
+  loginRateLimits: Map<string, LoginRateLimitEntry>,
+  key: string,
+  limit: number,
+  now = Date.now(),
+): number | null {
   pruneExpiringMap(loginRateLimits, (entry) => entry.resetAt <= now);
   const current = loginRateLimits.get(key);
   if (!current || current.resetAt <= now) {
     loginRateLimits.set(key, { count: 1, resetAt: now + LOGIN_RATE_LIMIT_WINDOW_MS });
     return null;
   }
-  if (current.count >= limit) return Math.max(1, Math.ceil((current.resetAt - now) / 1000));
+  if (current.count >= limit) {
+    return Math.max(1, Math.ceil((current.resetAt - now) / 1000));
+  }
   current.count += 1;
   loginRateLimits.set(key, current);
   return null;
 }
 
-function enforceLoginRateLimit(loginRateLimits: Map<string, LoginRateLimitEntry>, request: FastifyRequest, normalizedEmail: string): number | null {
-  const ipRetryAfter = getLoginRateLimitRetryAfter(loginRateLimits, `login:ip:${request.ip}`, LOGIN_RATE_LIMIT_MAX_BY_IP);
-  const emailRetryAfter = getLoginRateLimitRetryAfter(loginRateLimits, `login:email:${hashOpaque(normalizedEmail)}`, LOGIN_RATE_LIMIT_MAX_BY_EMAIL);
+function enforceLoginRateLimit(
+  loginRateLimits: Map<string, LoginRateLimitEntry>,
+  request: FastifyRequest,
+  normalizedEmail: string,
+): number | null {
+  const ipRetryAfter = getLoginRateLimitRetryAfter(
+    loginRateLimits,
+    `login:ip:${request.ip}`,
+    LOGIN_RATE_LIMIT_MAX_BY_IP,
+  );
+  const emailRetryAfter = getLoginRateLimitRetryAfter(
+    loginRateLimits,
+    `login:email:${hashOpaque(normalizedEmail)}`,
+    LOGIN_RATE_LIMIT_MAX_BY_EMAIL,
+  );
   return Math.max(ipRetryAfter ?? 0, emailRetryAfter ?? 0) || null;
 }
 
-function getLoginLockoutRetryAfter(loginLockouts: Map<string, LoginLockoutEntry>, normalizedEmail: string, now = Date.now()): number | null {
+function getLoginLockoutRetryAfter(
+  loginLockouts: Map<string, LoginLockoutEntry>,
+  normalizedEmail: string,
+  now = Date.now(),
+): number | null {
   pruneExpiringMap(loginLockouts, (entry) => entry.windowResetAt <= now && entry.lockedUntil <= now);
   const key = hashOpaque(normalizedEmail);
   const current = loginLockouts.get(key);
@@ -91,11 +124,17 @@ function getLoginLockoutRetryAfter(loginLockouts: Map<string, LoginLockoutEntry>
     loginLockouts.delete(key);
     return null;
   }
-  if (current.lockedUntil > now) return Math.max(1, Math.ceil((current.lockedUntil - now) / 1000));
+  if (current.lockedUntil > now) {
+    return Math.max(1, Math.ceil((current.lockedUntil - now) / 1000));
+  }
   return null;
 }
 
-function recordFailedLogin(loginLockouts: Map<string, LoginLockoutEntry>, normalizedEmail: string, now = Date.now()): void {
+function recordFailedLogin(
+  loginLockouts: Map<string, LoginLockoutEntry>,
+  normalizedEmail: string,
+  now = Date.now(),
+): void {
   pruneExpiringMap(loginLockouts, (entry) => entry.windowResetAt <= now && entry.lockedUntil <= now);
   const key = hashOpaque(normalizedEmail);
   const current = loginLockouts.get(key);
@@ -115,9 +154,21 @@ function clearLoginLockout(loginLockouts: Map<string, LoginLockoutEntry>, normal
   loginLockouts.delete(hashOpaque(normalizedEmail));
 }
 
-function enforceRegisterRateLimit(registerRateLimits: Map<string, RegisterRateLimitEntry>, request: FastifyRequest, normalizedEmail: string): number | null {
-  const ipRetryAfter = getRegisterRateLimitRetryAfter(registerRateLimits, `register:ip:${request.ip}`, REGISTER_RATE_LIMIT_MAX_BY_IP);
-  const emailRetryAfter = getRegisterRateLimitRetryAfter(registerRateLimits, `register:email:${hashOpaque(normalizedEmail)}`, REGISTER_RATE_LIMIT_MAX_BY_EMAIL);
+function enforceRegisterRateLimit(
+  registerRateLimits: Map<string, RegisterRateLimitEntry>,
+  request: FastifyRequest,
+  normalizedEmail: string,
+): number | null {
+  const ipRetryAfter = getRegisterRateLimitRetryAfter(
+    registerRateLimits,
+    `register:ip:${request.ip}`,
+    REGISTER_RATE_LIMIT_MAX_BY_IP,
+  );
+  const emailRetryAfter = getRegisterRateLimitRetryAfter(
+    registerRateLimits,
+    `register:email:${hashOpaque(normalizedEmail)}`,
+    REGISTER_RATE_LIMIT_MAX_BY_EMAIL,
+  );
   return Math.max(ipRetryAfter ?? 0, emailRetryAfter ?? 0) || null;
 }
 
@@ -130,11 +181,11 @@ function requireBodyString(value: unknown, field: string): string {
   return value.trim();
 }
 
-export async function registerAuthWebRoutes(server: FastifyInstance): Promise<void> {
+export function registerAuthWebRoutes(server: FastifyInstance): void {
   const registerRateLimits = new Map<string, RegisterRateLimitEntry>();
   const loginRateLimits = new Map<string, LoginRateLimitEntry>();
   const loginLockouts = new Map<string, LoginLockoutEntry>();
-  const dummyArgonHashPromise = argon2.hash(randomBytes(32));
+  const fallbackPasswordHashPromise = argon2.hash(randomBytes(32));
 
   server.post<{ Body: { email?: string; password?: string; displayName?: string } }>("/api/auth/register", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
@@ -197,17 +248,23 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
     }
 
     const password = requireBodyString(request.body?.password, "password");
+
     const [user] = await db
       .select()
       .from(schema.users)
-      .where(and(eq(schema.users.emailNormalized, email), isNull(schema.users.disabledAt)))
+      .where(and(
+        eq(schema.users.emailNormalized, email),
+        isNull(schema.users.disabledAt),
+      ))
       .limit(1);
 
     let passwordValid = false;
+
     if (user?.passwordAlgorithm === "argon2id") {
       passwordValid = await argon2.verify(user.passwordHash, password).catch(() => false);
     } else if (user?.passwordAlgorithm === "scrypt") {
       passwordValid = await verifySecret(password, user.passwordSalt, user.passwordHash);
+
       if (passwordValid) {
         await db
           .update(schema.users)
@@ -218,14 +275,15 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
             lastLoginAt: new Date(),
           })
           .where(eq(schema.users.userId, user.userId));
+
         user.passwordHash = "";
         user.passwordSalt = "argon2id";
         user.passwordAlgorithm = "argon2id";
         user.lastLoginAt = new Date();
       }
     } else {
-      const dummyArgonHash = await dummyArgonHashPromise;
-      await argon2.verify(dummyArgonHash, password).catch(() => false);
+      const fallbackPasswordHash = await fallbackPasswordHashPromise;
+      await argon2.verify(fallbackPasswordHash, password).catch(() => false);
     }
 
     if (!user || !passwordValid) {
@@ -235,8 +293,12 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
     }
 
     clearLoginLockout(loginLockouts, email);
+
     if (user.passwordAlgorithm === "argon2id") {
-      await db.update(schema.users).set({ lastLoginAt: new Date() }).where(eq(schema.users.userId, user.userId));
+      await db
+        .update(schema.users)
+        .set({ lastLoginAt: new Date() })
+        .where(eq(schema.users.userId, user.userId));
     }
 
     const session = await createWebSession(user.userId);
@@ -252,15 +314,29 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
 
   server.post<{ Body: { email?: string } }>(
     "/api/auth/forgot-password",
-    { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } },
+    {
+      config: {
+        rateLimit: {
+          max: 5,
+          timeWindow: "1 minute",
+        },
+      },
+    },
     async (request) => {
       const email = normalizeEmail(request.body?.email || "");
-      if (!email) return { ok: true };
+      if (!email) {
+        return { ok: true };
+      }
 
       const [user] = await db
         .select()
         .from(schema.users)
-        .where(and(eq(schema.users.emailNormalized, email), isNull(schema.users.disabledAt)))
+        .where(
+          and(
+            eq(schema.users.emailNormalized, email),
+            isNull(schema.users.disabledAt),
+          ),
+        )
         .limit(1);
 
       let token: string | null = null;
@@ -270,24 +346,45 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
         const expiresAt = new Date(now.getTime() + 30 * 60 * 1000);
         const tokenHash = hashOpaque(token);
 
-        await db.insert(schema.passwordResetTokens).values({ userId: user.userId, tokenHash, createdAt: now, expiresAt });
+        await db.insert(schema.passwordResetTokens).values({
+          userId: user.userId,
+          tokenHash,
+          createdAt: now,
+          expiresAt,
+        });
+
         const publicOrigin = process.env.DMCC_PUBLIC_ORIGIN?.replace(/\/$/, "");
         if (publicOrigin) {
           const resetUrl = `${publicOrigin}/reset-password/${encodeURIComponent(token)}`;
-          await sendPasswordResetEmail({ to: email, resetUrl, expiresInMinutes: 30 });
+          await sendPasswordResetEmail({
+            to: email,
+            resetUrl,
+            expiresInMinutes: 30,
+          });
         } else if (process.env.NODE_ENV !== "production") {
           console.warn("[forgot-password] DMCC_PUBLIC_ORIGIN not set; skipping email dispatch.");
         }
       }
 
-      const allowDevToken = process.env.NODE_ENV !== "production" && process.env.DMCC_DEV_PASSWORD_RESET_TOKEN_RESPONSE === "true";
-      return allowDevToken && token ? { ok: true, resetToken: token, expiresInSeconds: 1800 } : { ok: true };
+      const allowDevToken =
+        process.env.NODE_ENV !== "production" &&
+        process.env.DMCC_DEV_PASSWORD_RESET_TOKEN_RESPONSE === "true";
+      return allowDevToken && token
+        ? { ok: true, resetToken: token, expiresInSeconds: 1800 }
+        : { ok: true };
     },
   );
 
   server.post<{ Body: { token?: string; resetToken?: string; newPassword?: string } }>(
     "/api/auth/reset-password",
-    { config: { rateLimit: { max: 8, timeWindow: "1 minute" } } },
+    {
+      config: {
+        rateLimit: {
+          max: 8,
+          timeWindow: "1 minute",
+        },
+      },
+    },
     async (request, reply) => {
       const resetToken = request.body?.token ?? request.body?.resetToken;
       const newPassword = request.body?.newPassword;
@@ -305,7 +402,12 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
       const [tokenRecord] = await db
         .select()
         .from(schema.passwordResetTokens)
-        .where(and(eq(schema.passwordResetTokens.tokenHash, tokenHash), isNull(schema.passwordResetTokens.usedAt)))
+        .where(
+          and(
+            eq(schema.passwordResetTokens.tokenHash, tokenHash),
+            isNull(schema.passwordResetTokens.usedAt),
+          ),
+        )
         .limit(1);
 
       if (!tokenRecord || tokenRecord.expiresAt <= now) {
@@ -314,19 +416,31 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
       }
 
       const passwordHash = await argon2.hash(newPassword);
+
       await db.transaction(async (tx) => {
         await tx
           .update(schema.users)
-          .set({ passwordHash, passwordSalt: "argon2id", passwordAlgorithm: "argon2id" })
+          .set({
+            passwordHash,
+            passwordSalt: "argon2id",
+            passwordAlgorithm: "argon2id",
+          })
           .where(eq(schema.users.userId, tokenRecord.userId));
+
         await tx
           .update(schema.passwordResetTokens)
           .set({ usedAt: now })
           .where(eq(schema.passwordResetTokens.tokenHash, tokenHash));
+
         await tx
           .update(schema.authSessions)
           .set({ revokedAt: now })
-          .where(and(eq(schema.authSessions.userId, tokenRecord.userId), isNull(schema.authSessions.revokedAt)));
+          .where(
+            and(
+              eq(schema.authSessions.userId, tokenRecord.userId),
+              isNull(schema.authSessions.revokedAt),
+            ),
+          );
       });
 
       clearWebSessionCookie(reply);
@@ -355,7 +469,12 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
         }))
       : [];
 
-    return { accountConfigured: count > 0, sessionValid: Boolean(user), user: user ?? null, memberships };
+    return {
+      accountConfigured: count > 0,
+      sessionValid: Boolean(user),
+      user: user ?? null,
+      memberships,
+    };
   });
 
   server.get("/api/me", async (request, reply) => {
