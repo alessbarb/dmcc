@@ -14,6 +14,12 @@ const args = process.argv.slice(2);
 const dirArgIndex = args.indexOf("--dir");
 const premadeDir = resolve(dirArgIndex >= 0 && args[dirArgIndex + 1] ? args[dirArgIndex + 1] : "public/premades");
 
+type PremadeLocaleSessionOverlay = NonNullable<NonNullable<PremadeLocaleOverlay["sessions"]>[string]>;
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : "unknown error";
+}
+
 function safePremadePath(file: string, label: string, errors: string[]): string | null {
   const resolvedDir = resolve(premadeDir);
   const resolvedFile = resolve(resolvedDir, file);
@@ -28,8 +34,8 @@ function safePremadePath(file: string, label: string, errors: string[]): string 
 async function readJson(filePath: string, errors: string[], label: string): Promise<unknown | null> {
   try {
     return JSON.parse(await readFile(filePath, "utf8"));
-  } catch (err: any) {
-    errors.push(`${label} cannot be read as JSON: ${err?.message ?? "unknown error"}`);
+  } catch (err: unknown) {
+    errors.push(`${label} cannot be read as JSON: ${getErrorMessage(err)}`);
     return null;
   }
 }
@@ -62,7 +68,7 @@ function compareStats(
 }
 
 function validateLocaleSessionChecklist(
-  overlaySession: any,
+  overlaySession: PremadeLocaleSessionOverlay & { readonly checklist?: unknown },
   templateChecklistIds: Set<string>,
   label: string,
   errors: string[]
@@ -305,6 +311,6 @@ async function main() {
 }
 
 await main().catch((err) => {
-  console.error(`❌ Premade validation failed: ${err?.message ?? "unknown error"}`);
+  console.error(`❌ Premade validation failed: ${getErrorMessage(err)}`);
   process.exit(1);
 });

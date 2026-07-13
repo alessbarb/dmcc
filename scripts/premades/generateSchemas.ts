@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { toJSONSchema } from "zod";
 import {
   premadeManifestSchema,
   premadeTemplateFileSchema,
@@ -14,12 +15,17 @@ const manifestSchemaPath = resolve(process.cwd(), "public/schemas/premade/manife
 const templateSchemaPath = resolve(process.cwd(), "public/schemas/premade/template/v1.json");
 const localeSchemaPath = resolve(process.cwd(), "public/schemas/premade/locale/v1.json");
 
-function formatSchema(schemaObj: any) {
+interface JsonSchemaDocument extends Record<string, unknown> {
+  $schema?: string;
+  $id?: string;
+}
+
+function formatSchema(schemaObj: JsonSchemaDocument) {
   // Asegurar que el id de schema sea correcto o extender si es necesario
   return `${JSON.stringify(schemaObj, null, 2)}\n`;
 }
 
-async function verifyOrWrite(filePath: string, schemaObj: any, touched: string[]) {
+async function verifyOrWrite(filePath: string, schemaObj: JsonSchemaDocument, touched: string[]) {
   const next = formatSchema(schemaObj);
   const current = existsSync(filePath) ? await readFile(filePath, "utf8") : "";
 
@@ -35,15 +41,15 @@ async function main() {
   const touched: string[] = [];
 
   // Zod 4 native toJSONSchema()
-  const manifestJsonSchema = (premadeManifestSchema as any).toJSONSchema();
+  const manifestJsonSchema = toJSONSchema(premadeManifestSchema);
   manifestJsonSchema.$schema = "https://json-schema.org/draft/2020-12/schema";
   manifestJsonSchema.$id = "https://dmcc.local/schemas/premade/manifest/v1.json";
 
-  const templateJsonSchema = (premadeTemplateFileSchema as any).toJSONSchema();
+  const templateJsonSchema = toJSONSchema(premadeTemplateFileSchema);
   templateJsonSchema.$schema = "https://json-schema.org/draft/2020-12/schema";
   templateJsonSchema.$id = "https://dmcc.local/schemas/premade/template/v1.json";
 
-  const localeJsonSchema = (premadeLocaleOverlaySchema as any).toJSONSchema();
+  const localeJsonSchema = toJSONSchema(premadeLocaleOverlaySchema);
   localeJsonSchema.$schema = "https://json-schema.org/draft/2020-12/schema";
   localeJsonSchema.$id = "https://dmcc.local/schemas/premade/locale/v1.json";
 

@@ -4,6 +4,7 @@ import { resolve, sep } from "node:path";
 import {
   premadeManifestSchema,
   premadeTemplateFileSchema,
+  premadeLocaleSchema,
   type PremadeTemplateFile,
   type PremadeManifestEntry,
 } from "../../src/core/domain/premade/schemas.js";
@@ -22,7 +23,7 @@ function computeStats(template: PremadeTemplateFile) {
   };
 }
 
-function formatJson(value: any) {
+function formatJson(value: unknown) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
@@ -40,7 +41,7 @@ async function readJson(filePath: string) {
   return JSON.parse(await readFile(filePath, "utf8"));
 }
 
-async function writeJsonIfChanged(filePath: string, value: any, touchedFiles: string[]) {
+async function writeJsonIfChanged(filePath: string, value: unknown, touchedFiles: string[]) {
   const next = formatJson(value);
   const current = existsSync(filePath) ? await readFile(filePath, "utf8") : "";
   if (current === next) return;
@@ -90,7 +91,7 @@ async function main() {
       defaultLocale: entry.defaultLocale ?? nextManifest.defaultLocale,
       availableLocales: entry.availableLocales
         ? entry.availableLocales
-        : (Object.keys(entry.locales) as any[]),
+        : premadeLocaleSchema.array().parse(Object.keys(entry.locales)),
       stats,
     };
 
