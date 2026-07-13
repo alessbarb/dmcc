@@ -250,7 +250,7 @@ export const visibilityGrants = pgTable("visibility_grants", {
 }));
 
 export const campaignSessions = pgTable("campaign_sessions", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   sessionId: text("session_id").notNull(),
   number: integer("number").notNull(),
   title: text("title").notNull(),
@@ -266,7 +266,7 @@ export const campaignSessions = pgTable("campaign_sessions", {
 }));
 
 export const campaignScenes = pgTable("campaign_scenes", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   sceneId: text("scene_id").notNull(),
   sessionId: text("session_id").notNull(),
   title: text("title").notNull(),
@@ -278,7 +278,7 @@ export const campaignScenes = pgTable("campaign_scenes", {
 }));
 
 export const campaignObjectives = pgTable("campaign_objectives", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   objectiveId: text("objective_id").notNull(),
   playerId: text("player_id"),
   title: text("title").notNull(),
@@ -295,7 +295,7 @@ export const campaignObjectives = pgTable("campaign_objectives", {
 }));
 
 export const campaignClues = pgTable("campaign_clues", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   clueId: text("clue_id").notNull(),
   entityId: text("entity_id"),
   title: text("title").notNull(),
@@ -311,7 +311,7 @@ export const campaignClues = pgTable("campaign_clues", {
 }));
 
 export const characters = pgTable("characters", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   characterId: text("character_id").notNull(),
   playerProfileId: text("player_profile_id"),
   entityId: text("entity_id"),
