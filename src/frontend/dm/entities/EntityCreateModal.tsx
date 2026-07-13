@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
+import type { PlayerProfile } from "../../shared/stores/campaignStore.js";
 import { getRuleSystem } from "@core/domain/rules/index.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 
+function getErrorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
+}
 
 function runEntityCreateAction(operation: Promise<unknown>, errorMessage: string): void {
   void operation.catch((error: unknown) => {
@@ -14,10 +18,27 @@ function runEntityCreateAction(operation: Promise<unknown>, errorMessage: string
   });
 }
 
-function getMetadataLanguages(metadata: any): readonly string[] {
-  if (Array.isArray(metadata.languages)) return metadata.languages;
-  if (Array.isArray(metadata.languages)) return metadata.languages;
+function getMetadataLanguages(metadata: Record<string, unknown>): readonly string[] {
+  if (Array.isArray(metadata.languages)) {
+    return metadata.languages.filter((value): value is string => typeof value === "string");
+  }
+  // NOTE: duplicated condition pre-existing (likely meant a different field); out of scope for this pass.
+  if (Array.isArray(metadata.languages)) {
+    return metadata.languages.filter((value): value is string => typeof value === "string");
+  }
   return [];
+}
+
+interface EntityTemplateEventDetail {
+  entityType?: string;
+  title?: string;
+  subtitle?: string;
+  summary?: string;
+  content?: string;
+  status?: string;
+  importance?: string;
+  visibility?: VisibilityRule;
+  metadata?: Record<string, unknown>;
 }
 
 interface EntityCreateModalProps {
@@ -41,15 +62,19 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
     status: "known",
     importance: "normal",
     visibility: { kind: "dm_only" } as VisibilityRule,
+    // metadata shape varies per entityType (free-form, user-authored fields); kept as `any` deliberately.
     metadata: { role: "", attitudeToParty: "neutral", goal: "", imageUrl: "" } as any
   });
 
   useEffect(() => {
+    // DOM CustomEvent boundary: detail shape is contractually defined by dispatchers
+    // elsewhere (EntitiesPage, GraphPage, SessionPage, CampaignStarterHub) but not
+    // enforced at runtime.
     const listener = (event: Event) => {
-      const detail = (event as CustomEvent<Partial<typeof entityForm>>).detail ?? {};
+      const detail = (event as CustomEvent<EntityTemplateEventDetail>).detail ?? {};
       const nextType = typeof detail.entityType === "string" ? detail.entityType : "npc";
       let defaultStatus = "active";
-      let defaultMetadata: Record<string, any> = {};
+      let defaultMetadata: Record<string, unknown> = {};
 
       if (nextType === "npc") {
         defaultStatus = "known";
@@ -189,8 +214,8 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
         visibility: { kind: "dm_only" },
         metadata: { role: "", attitudeToParty: "neutral", goal: "", imageUrl: "" }
       });
-    } catch (err: any) {
-      setSubmitError(err.message || "Error al crear la entidad");
+    } catch (err) {
+      setSubmitError(getErrorMessage(err) || "Error al crear la entidad");
     } finally {
       setIsSubmitting(false);
     }
@@ -387,7 +412,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                         <select className="form-select" value={entityForm.metadata.playerId || ""}
                           onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, playerId: e.target.value } })}>
                           <option value="">-- Seleccionar jugador --</option>
-                          {(campaignState?.players || []).map((p: any) => (
+                          {(campaignState?.players || []).map((p: PlayerProfile) => (
                             <option key={p.playerId} value={p.playerId}>{p.displayName || p.name}</option>
                           ))}
                         </select>
@@ -575,7 +600,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     <select className="form-select" value={entityForm.metadata.playerId || ""}
                       onChange={(e) => setEntityForm({ ...entityForm, metadata: { ...entityForm.metadata, playerId: e.target.value } })}>
                       <option value="">-- Select Player --</option>
-                      {(campaignState?.players || []).map((p: any) => (
+                      {(campaignState?.players || []).map((p: PlayerProfile) => (
                         <option key={p.playerId} value={p.playerId}>{p.displayName || p.name}</option>
                       ))}
                     </select>

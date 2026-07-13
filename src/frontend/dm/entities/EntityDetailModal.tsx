@@ -13,20 +13,23 @@ import {
 import { getEntityDefaultImage } from "./entityVisuals.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
-import type { Entity, Relation, Fact, Session } from "../../shared/stores/campaignStore.js";
+import type { Entity, Relation, Fact, Session, PlayerProfile, CampaignStateStore } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatRelationType, formatVisibility } from "@shared/i18n/index.js";
 import type { SupportedLocale } from "@shared/i18n/types.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
+import type { ToastKind } from "../../shared/hooks/useToast.js";
 
+type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
 
 interface EntityDetailModalProps {
-  selectedEntity: any;
-  campaignState: any;
+  selectedEntity: Entity;
+  campaignState: CampaignState;
   onClose: () => void;
   onEdit: (entityId: string, updates: Partial<Entity>) => Promise<void>;
   onArchive: (entityId: string) => Promise<void>;
-  onVisibilityChange: (entityId: string, visibility: any) => Promise<void>;
-  addToast: (msg: string, kind?: any) => void;
+  onVisibilityChange: (entityId: string, visibility: VisibilityRule) => Promise<void>;
+  addToast: (msg: string, kind?: ToastKind) => void;
 }
 
 type TabId = "resumen" | "relaciones" | "hechos" | "trazabilidad";
@@ -45,7 +48,7 @@ function runEntityDetailAction(operation: Promise<unknown>, errorMessage: string
 }
 
 // Safely get values from Maps or plain objects/arrays
-function getRelationsArray(relations: any): Relation[] {
+function getRelationsArray(relations: unknown): Relation[] {
   if (!relations) return [];
   if (Array.isArray(relations)) return relations;
   if (relations instanceof Map) return Array.from(relations.values());
@@ -53,7 +56,7 @@ function getRelationsArray(relations: any): Relation[] {
   return [];
 }
 
-function getFactsArray(facts: any): Fact[] {
+function getFactsArray(facts: unknown): Fact[] {
   if (!facts) return [];
   if (Array.isArray(facts)) return facts;
   if (facts instanceof Map) return Array.from(facts.values());
@@ -61,7 +64,7 @@ function getFactsArray(facts: any): Fact[] {
   return [];
 }
 
-function getSessionsArray(sessions: any): Session[] {
+function getSessionsArray(sessions: unknown): Session[] {
   if (!sessions) return [];
   if (Array.isArray(sessions)) return sessions;
   if (sessions instanceof Map) return Array.from(sessions.values());
@@ -94,7 +97,7 @@ interface TraceEntry {
 }
 
 function buildTrazabilidad(
-  entity: any,
+  entity: Entity,
   relations: Relation[],
   facts: Fact[],
   sessions: Session[],
@@ -133,7 +136,7 @@ function buildTrazabilidad(
     const isSource = r.sourceEntityId === entity.entityId;
     const otherId = isSource ? r.targetEntityId : r.sourceEntityId;
     entries.push({
-      at: (r as any).createdAt ?? entity.createdAt ?? new Date(0).toISOString(),
+      at: r.createdAt ?? entity.createdAt ?? new Date(0).toISOString(),
       kind: "relacion",
       label: isSource
         ? t("entityDetail.outgoingRelation", { type: formatRelationType(r.relationType, locale), target: otherId })
@@ -152,7 +155,7 @@ function buildTrazabilidad(
 
   for (const f of entityFacts) {
     entries.push({
-      at: (f as any).createdAt ?? entity.createdAt ?? new Date(0).toISOString(),
+      at: f.createdAt ?? entity.createdAt ?? new Date(0).toISOString(),
       kind: "hecho",
       label: `Hecho (${f.kind}): ${f.statement.length > 60 ? f.statement.slice(0, 60) + "…" : f.statement}`,
       detail: f.confidence !== "confirmed" ? `Confianza: ${f.confidence}` : undefined,
@@ -175,12 +178,12 @@ function ResumenTab({
   setEditEntityForm,
   onVisibilityChange,
 }: {
-  entity: any;
-  campaignState: any;
+  entity: Entity;
+  campaignState: CampaignState;
   isEditingEntity: boolean;
   editEntityForm: Partial<Entity>;
   setEditEntityForm: (v: Partial<Entity>) => void;
-  onVisibilityChange: (entityId: string, visibility: any) => void;
+  onVisibilityChange: (entityId: string, visibility: VisibilityRule) => void;
 }) {
   const { t, locale } = useTranslation();
   const visKind = entity.visibility?.kind ?? "dm_only";
@@ -276,7 +279,11 @@ function ResumenTab({
           {(() => {
             const m = entity.metadata;
             const entityType = entity.entityType;
-            const Field = ({ label, value }: { label: string; value: any }) =>
+            const metaNum = (value: unknown): number | undefined =>
+              typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : undefined;
+            const metaStr = (value: unknown, fallback: string): string =>
+              value === null || value === undefined || value === "" ? fallback : String(value);
+            const Field = ({ label, value }: { label: string; value: unknown }) =>
               value != null && String(value).trim() !== "" ? (
                 <div style={{ fontSize: "0.85rem", display: "flex", gap: "8px" }}>
                   <span style={{ color: "var(--text-muted)", minWidth: "100px" }}>{label}</span>
@@ -308,7 +315,7 @@ function ResumenTab({
                         <Field label="Trasfondo" value={m.background} />
                         <Field label="Jugador" value={(() => {
                           if (!m.playerId) return null;
-                          const p = campaignState?.players?.find((pl: any) => pl.playerId === m.playerId);
+                          const p = campaignState?.players?.find((pl: PlayerProfile) => pl.playerId === m.playerId);
                           return p ? (p.displayName || p.name) : m.playerId;
                         })()} />
                       </div>
@@ -324,15 +331,14 @@ function ResumenTab({
                             { label: "SABIDURIA", key: "wisdom", short: "WIS" },
                             { label: "CARISMA", key: "charisma", short: "CHA" }
                           ].map(attr => {
-                            const val = m[attr.key];
-                            const numVal = parseInt(val);
-                            const mod = !isNaN(numVal) ? Math.floor((numVal - 10) / 2) : null;
+                            const numVal = metaNum(m[attr.key]);
+                            const mod = numVal !== undefined ? Math.floor((numVal - 10) / 2) : null;
                             const modStr = mod !== null ? (mod >= 0 ? `+${mod}` : `${mod}`) : "--";
                             return (
                               <div key={attr.key} style={{ backgroundColor: "#06070e", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "6px 4px", textAlign: "center" }}>
                                 <div style={{ fontSize: "0.6rem", fontWeight: "700", color: "var(--text-muted)" }}>{attr.short}</div>
                                 <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--secondary)", margin: "2px 0" }}>{modStr}</div>
-                                <div style={{ fontSize: "0.7rem", color: "var(--text-main)" }}>{val ?? "--"}</div>
+                                <div style={{ fontSize: "0.7rem", color: "var(--text-main)" }}>{metaStr(m[attr.key], "--")}</div>
                               </div>
                             );
                           })}
@@ -342,41 +348,41 @@ function ResumenTab({
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)" }}>
                         <div style={{ textAlign: "center" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>CLASE ARMADURA</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>🛡️ {m.armorClass ?? 10}</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>🛡️ {metaStr(m.armorClass, "10")}</div>
                         </div>
                         <div style={{ textAlign: "center" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>INICIATIVA</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>⚡ {m.initiative >= 0 ? `+${m.initiative}` : m.initiative ?? 0}</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>⚡ {(() => { const v = metaNum(m.initiative); return v !== undefined && v >= 0 ? `+${v}` : String(v ?? 0); })()}</div>
                         </div>
                         <div style={{ textAlign: "center" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>VELOCIDAD</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>🏃‍♂️ {m.speed ?? 30} ft</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>🏃‍♂️ {metaStr(m.speed, "30")} ft</div>
                         </div>
                         <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--border-color)", paddingTop: "8px", marginTop: "4px" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>PUNTOS DE GOLPE (HP)</div>
                           <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--color-critical)", marginTop: "4px" }}>
-                            ❤️ {m.hitPointsCurrent ?? 10} / {m.hitPointsMax ?? 10}
-                            {m.hitPointsTemp > 0 && <span style={{ color: "var(--color-warning)", fontSize: "0.85rem", marginLeft: "6px" }}>+{m.hitPointsTemp} Temp</span>}
+                            ❤️ {metaStr(m.hitPointsCurrent, "10")} / {metaStr(m.hitPointsMax, "10")}
+                            {(metaNum(m.hitPointsTemp) ?? 0) > 0 && <span style={{ color: "var(--color-warning)", fontSize: "0.85rem", marginLeft: "6px" }}>+{metaStr(m.hitPointsTemp, "0")} Temp</span>}
                           </div>
                         </div>
                         <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--border-color)", paddingTop: "8px" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>DADOS DE GOLPE</div>
-                          <div style={{ fontSize: "0.95rem", fontWeight: "700", color: "var(--text-main)", marginTop: "4px" }}>🎲 {m.hitDice ?? "--"}</div>
+                          <div style={{ fontSize: "0.95rem", fontWeight: "700", color: "var(--text-main)", marginTop: "4px" }}>🎲 {metaStr(m.hitDice, "--")}</div>
                         </div>
                       </div>
 
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px", backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--radius-md)", textAlign: "center" }}>
                         <div>
                           <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontWeight: "600" }}>PERCEPCION PASIVA</div>
-                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>👁️ {m.passivePerception ?? 10}</div>
+                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>👁️ {metaStr(m.passivePerception, "10")}</div>
                         </div>
                         <div>
                           <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontWeight: "600" }}>PERSPIACACIA PASIVA</div>
-                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🧠 {m.passiveInsight ?? 10}</div>
+                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🧠 {metaStr(m.passiveInsight, "10")}</div>
                         </div>
                         <div>
                           <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontWeight: "600" }}>INVESTIGACION PASIVA</div>
-                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🔍 {m.passiveInvestigation ?? 10}</div>
+                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🔍 {metaStr(m.passiveInvestigation, "10")}</div>
                         </div>
                       </div>
 
@@ -435,10 +441,10 @@ function ResumenTab({
                         </div>
                       )}
 
-                      {m.note && (
+                      {Boolean(m.note) && (
                         <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "6px" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "700", textTransform: "uppercase" }}>Notas adicionales</div>
-                          <div style={{ fontSize: "0.75rem", color: "var(--text-main)", whiteSpace: "pre-line" }}>{m.note}</div>
+                          <div style={{ fontSize: "0.75rem", color: "var(--text-main)", whiteSpace: "pre-line" }}>{metaStr(m.note, "")}</div>
                         </div>
                       )}
                     </div>
@@ -453,7 +459,7 @@ function ResumenTab({
                         <>
                           <Field label="Jugador" value={(() => {
                             if (!m.playerId) return null;
-                            const p = campaignState?.players?.find((pl: any) => pl.playerId === m.playerId);
+                            const p = campaignState?.players?.find((pl: PlayerProfile) => pl.playerId === m.playerId);
                             return p ? (p.displayName || p.name) : m.playerId;
                           })()} />
                           <Field label="Clase" value={m.className} />
@@ -546,7 +552,7 @@ function ResumenTab({
                   "item",
                   "encounter",
                 ].includes(entityType) &&
-                  Object.entries(m).map(([key, val]: any) => (
+                  Object.entries(m).map(([key, val]) => (
                     <Field key={key} label={key} value={val} />
                   ))}
               </div>
@@ -606,7 +612,13 @@ function ResumenTab({
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Imagen</label>
             <ImagePickerButton
-              value={editEntityForm.metadata?.imageUrl ?? entity.metadata?.imageUrl ?? ""}
+              value={
+                typeof editEntityForm.metadata?.imageUrl === "string"
+                  ? editEntityForm.metadata.imageUrl
+                  : typeof entity.metadata?.imageUrl === "string"
+                    ? entity.metadata.imageUrl
+                    : ""
+              }
               onChange={(path) =>
                 setEditEntityForm({
                   ...editEntityForm,
@@ -684,8 +696,8 @@ function RelacionesTab({
   entity,
   campaignState,
 }: {
-  entity: any;
-  campaignState: any;
+  entity: Entity;
+  campaignState: CampaignState;
 }) {
   const relations = getRelationsArray(campaignState?.relations).filter(
     (r) =>
@@ -798,8 +810,8 @@ function HechosTab({
   entity,
   campaignState,
 }: {
-  entity: any;
-  campaignState: any;
+  entity: Entity;
+  campaignState: CampaignState;
 }) {
   const { t } = useTranslation();
   const kindColors: Record<string, { bg: string; fg: string }> = {
@@ -868,10 +880,10 @@ function HechosTab({
             <p style={{ margin: 0, fontSize: "0.88rem", lineHeight: "1.5" }}>
               {f.statement}
             </p>
-            {(f as any).source && formatFactSource((f as any).source, getSessionsArray(campaignState?.sessions), t) && (
+            {f.source && formatFactSource(f.source, getSessionsArray(campaignState?.sessions), t) && (
               <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "3px", display: "flex", alignItems: "center", gap: "4px" }}>
                 <span style={{ opacity: 0.5 }}>↳</span>
-                {formatFactSource((f as any).source, getSessionsArray(campaignState?.sessions), t)}
+                {formatFactSource(f.source, getSessionsArray(campaignState?.sessions), t)}
               </div>
             )}
           </div>
@@ -885,8 +897,8 @@ function TrazabilidadTab({
   entity,
   campaignState,
 }: {
-  entity: any;
-  campaignState: any;
+  entity: Entity;
+  campaignState: CampaignState;
 }) {
   const relations = getRelationsArray(campaignState?.relations);
   const facts = getFactsArray(campaignState?.facts);
@@ -1019,8 +1031,8 @@ function TrazabilidadTab({
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-function getMetadataLanguages(metadata: any): string | undefined {
-  const languages = Array.isArray(metadata.languages) ? metadata.languages : metadata.languages;
+function getMetadataLanguages(metadata: Record<string, unknown>): unknown {
+  const languages = metadata.languages;
   return Array.isArray(languages) ? languages.join(", ") : languages;
 }
 
@@ -1040,8 +1052,9 @@ export function EntityDetailModal({
   const [isConfirmingArchive, setIsConfirmingArchive] = useState(false);
 
   const imgUrl =
-    selectedEntity.metadata?.imageUrl ||
-    getEntityDefaultImage(selectedEntity.entityType);
+    typeof selectedEntity.metadata?.imageUrl === "string" && selectedEntity.metadata.imageUrl
+      ? selectedEntity.metadata.imageUrl
+      : getEntityDefaultImage(selectedEntity.entityType);
 
   const isDmOnly =
     !selectedEntity.visibility?.kind ||

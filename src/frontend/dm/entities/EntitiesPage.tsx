@@ -1,7 +1,7 @@
 import "./entities.css";
 import { useEffect, useMemo, useState } from "react";
 import { Eye, EyeOff, Filter, MapPin, Network, Plus, Search, Users, X, Zap, LayoutGrid, List } from "lucide-react";
-import { getEntityDefaultImage, getEntityVisual } from "./entityVisuals.js";
+import { getEntityVisual } from "./entityVisuals.js";
 import { useCampaignStore, type Entity } from "../../shared/stores/campaignStore.js";
 import { EntityDetailModal } from "./EntityDetailModal.js";
 import { useToast } from "../../shared/hooks/useToast.js";
