@@ -24,8 +24,8 @@ export interface WebRoutesOptions {
   assetsDir?: string;
 }
 
-export function sanitizeProductionContentSecurityPolicy(value: unknown): unknown {
-  if (process.env.NODE_ENV !== "production" || typeof value !== "string") return value;
+export function sanitizeProductionContentSecurityPolicy(value: unknown, nodeEnv = process.env.NODE_ENV): unknown {
+  if (nodeEnv !== "production" || typeof value !== "string") return value;
 
   return value
     .replace(/\s+(?:ws:|wss:|http:\/\/localhost:\*|http:\/\/127\.0\.0\.1:\*)/g, "")
@@ -38,7 +38,7 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   server.addHook("onSend", async (_request, reply, payload) => {
     const currentPolicy = reply.getHeader("content-security-policy");
     const sanitizedPolicy = sanitizeProductionContentSecurityPolicy(currentPolicy);
-    if (sanitizedPolicy !== currentPolicy && sanitizedPolicy) {
+    if (typeof sanitizedPolicy === "string" && sanitizedPolicy !== currentPolicy) {
       reply.header("content-security-policy", sanitizedPolicy);
     }
     return payload;
