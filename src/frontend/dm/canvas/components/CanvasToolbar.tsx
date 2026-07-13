@@ -69,6 +69,12 @@ export function CanvasToolbar({
   const touchMode = mobileTouchMode ?? toTouchMode(interactionMode, isLocked);
 
   const closeMobileTools = () => setIsMobileOpen(false);
+  const reportToolbarActionError = (message: string) => (error: unknown) => {
+    console.error(message, error);
+  };
+  const runToolbarAction = (operation: Promise<unknown>, errorMessage: string) => {
+    void operation.catch(reportToolbarActionError(errorMessage));
+  };
 
   useEffect(() => {
     if (touchMode !== "connect") {
@@ -76,7 +82,7 @@ export function CanvasToolbar({
       return;
     }
 
-    const handleNodeClick = async (event: MouseEvent) => {
+    const handleNodeClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
       const nodeElement = target?.closest?.(".react-flow__node") as HTMLElement | null;
       const nodeId = nodeElement?.dataset?.id ?? nodeElement?.getAttribute("data-id");
@@ -105,45 +111,54 @@ export function CanvasToolbar({
       const sourceEntityId = typeof sourceNode?.data?.entityId === "string" ? sourceNode.data.entityId : undefined;
       const targetEntityId = typeof targetNode.data?.entityId === "string" ? targetNode.data.entityId : undefined;
 
-      if (sourceEntityId && targetEntityId) {
-        await connectCanvasNodes({
-          canvasId,
-          sourceNode: { id: connectSourceNodeId, entityId: sourceEntityId },
-          targetNode: { id: nodeId, entityId: targetEntityId },
-          edge: { label, status: "draft", visibility: "dm", style: "solid" },
-          relation: { relationType: relationTypeFromLabel(label), visibility: { kind: "dm_only" } },
-          createRelation,
-          addEdgeToCanvas,
-        });
-      } else {
-        await addEdgeToCanvas(canvasId, {
-          sourceNodeId: connectSourceNodeId,
-          targetNodeId: nodeId,
-          label,
-          status: "draft",
-          visibility: "dm",
-          style: "solid",
-        });
-      }
+      runToolbarAction(
+        (async () => {
+          if (sourceEntityId && targetEntityId) {
+            await connectCanvasNodes({
+              canvasId,
+              sourceNode: { id: connectSourceNodeId, entityId: sourceEntityId },
+              targetNode: { id: nodeId, entityId: targetEntityId },
+              edge: { label, status: "draft", visibility: "dm", style: "solid" },
+              relation: { relationType: relationTypeFromLabel(label), visibility: { kind: "dm_only" } },
+              createRelation,
+              addEdgeToCanvas,
+            });
+          } else {
+            await addEdgeToCanvas(canvasId, {
+              sourceNodeId: connectSourceNodeId,
+              targetNodeId: nodeId,
+              label,
+              status: "draft",
+              visibility: "dm",
+              style: "solid",
+            });
+          }
 
-      setConnectSourceNodeId(null);
-      setMobileTouchMode("explore");
-      onModeChange("pan");
-      onLockChange(true);
+          setConnectSourceNodeId(null);
+          setMobileTouchMode("explore");
+          onModeChange("pan");
+          onLockChange(true);
+        })(),
+        "No se pudo conectar los nodos del canvas."
+      );
     };
 
     document.addEventListener("click", handleNodeClick, true);
     return () => document.removeEventListener("click", handleNodeClick, true);
   }, [addEdgeToCanvas, canvasId, connectSourceNodeId, createRelation, getNodes, onLockChange, onModeChange, touchMode]);
 
-  const handleAddNote = async () => {
-    await placeNodeOnCanvas(canvasId, { kind: "note", text: "", color: "yellow", x: 200, y: 200 });
-    closeMobileTools();
+  const handleAddNote = () => {
+    runToolbarAction(
+      placeNodeOnCanvas(canvasId, { kind: "note", text: "", color: "yellow", x: 200, y: 200 }).then(closeMobileTools),
+      "No se pudo crear la nota en el canvas."
+    );
   };
 
-  const handleAddGroup = async () => {
-    await placeNodeOnCanvas(canvasId, { kind: "group", title: t("canvas.toolbar.newGroup"), color: "purple", x: 200, y: 200, width: 340, height: 220 });
-    closeMobileTools();
+  const handleAddGroup = () => {
+    runToolbarAction(
+      placeNodeOnCanvas(canvasId, { kind: "group", title: t("canvas.toolbar.newGroup"), color: "purple", x: 200, y: 200, width: 340, height: 220 }).then(closeMobileTools),
+      "No se pudo crear el grupo en el canvas."
+    );
   };
 
   const handleModeChange = (mode: InteractionMode) => {
@@ -162,27 +177,27 @@ export function CanvasToolbar({
   };
 
   const handleFitView = () => {
-    fitView({ padding: 0.25, duration: 400 });
+    runToolbarAction(fitView({ padding: 0.25, duration: 400 }), "No se pudo ajustar la vista del canvas.");
     closeMobileTools();
   };
 
   const handleFocusSelection = () => {
     const selectedNodes = getNodes().filter(n => n.selected);
     if (selectedNodes.length > 0) {
-      fitView({ nodes: selectedNodes, padding: 0.3, duration: 400 });
+      runToolbarAction(fitView({ nodes: selectedNodes, padding: 0.3, duration: 400 }), "No se pudo enfocar la selección.");
     } else {
-      fitView({ padding: 0.25, duration: 400 });
+      runToolbarAction(fitView({ padding: 0.25, duration: 400 }), "No se pudo ajustar la vista del canvas.");
     }
     closeMobileTools();
   };
 
   const handleZoomIn = () => {
-    zoomIn({ duration: 200 });
+    runToolbarAction(zoomIn({ duration: 200 }), "No se pudo acercar el canvas.");
     closeMobileTools();
   };
 
   const handleZoomOut = () => {
-    zoomOut({ duration: 200 });
+    runToolbarAction(zoomOut({ duration: 200 }), "No se pudo alejar el canvas.");
     closeMobileTools();
   };
 
@@ -209,7 +224,9 @@ export function CanvasToolbar({
             const groupId = e.target.value;
             if (groupId) {
               const gNode = getNodes().find(n => n.id === groupId);
-              if (gNode) fitView({ nodes: [gNode], padding: 0.25, duration: 400 });
+              if (gNode) {
+                runToolbarAction(fitView({ nodes: [gNode], padding: 0.25, duration: 400 }), "No se pudo enfocar el grupo.");
+              }
             }
             e.target.value = "";
             closeMobileTools();
