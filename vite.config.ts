@@ -83,6 +83,11 @@ export default defineConfig({
         assetFileNames: "assets/[hash][extname]",
       },
     },
+    rolldownOptions: {
+      // elkjs's Node fallback path require()s "web-worker"; browsers use the
+      // native Worker global instead, so this import never actually runs.
+      external: ["web-worker"],
+    },
   },
   server: {
     host: devServerHost,
