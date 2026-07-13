@@ -6,6 +6,7 @@ import {
   buildDmPlayerKnowledgeProjection,
   buildKnowledgeAccessIndex,
   grantAllowsPlayer,
+  loadKnowledgeSnapshot,
   playerCanAccessKnowledge,
 } from "../../src/backend/server/web/playerKnowledgeProjection.js";
 
@@ -73,7 +74,6 @@ describe("visibility grants", () => {
 
   it("rejects grants whose scope and principal columns disagree", async () => {
     await seedVisibilityFixture();
-
     await expect(db.insert(schema.visibilityGrants).values({
       campaignId: ids.campaign,
       targetType: "entity",
@@ -84,7 +84,7 @@ describe("visibility grants", () => {
     })).rejects.toThrow();
   });
 
-  it("combines canonical objective and clue visibility with explicit grants", async () => {
+  it("combines canonical objective and clue visibility with personal grants", async () => {
     await seedVisibilityFixture();
     await db.insert(schema.campaignObjectives).values({
       campaignId: ids.campaign,
@@ -108,8 +108,7 @@ describe("visibility grants", () => {
       playerId: null,
     });
 
-    const access = await buildKnowledgeAccessIndex(ids.campaign);
-
+    const access = buildKnowledgeAccessIndex(await loadKnowledgeSnapshot(ids.campaign));
     expect(playerCanAccessKnowledge(access, "objective", "obj_player_a", ids.userA, ids.playerA)).toBe(true);
     expect(playerCanAccessKnowledge(access, "objective", "obj_player_a", ids.userB, ids.playerB)).toBe(false);
     expect(playerCanAccessKnowledge(access, "clue", "clue_public", ids.userB, ids.playerB)).toBe(true);
@@ -125,11 +124,9 @@ describe("visibility grants", () => {
       type: "player_character",
       name: "Linked character",
     });
-    await db.update(schema.playerProfiles)
-      .set({ linkedCharacterId: "ent_linked" })
-      .where(eq(schema.playerProfiles.profileId, ids.playerA));
+    await db.update(schema.playerProfiles).set({ linkedCharacterId: "ent_linked" }).where(eq(schema.playerProfiles.profileId, ids.playerA));
 
-    const access = await buildKnowledgeAccessIndex(ids.campaign);
+    const access = buildKnowledgeAccessIndex(await loadKnowledgeSnapshot(ids.campaign));
     expect(playerCanAccessKnowledge(access, "entity", "ent_linked", ids.userA, ids.playerA, "ent_linked")).toBe(true);
     expect(playerCanAccessKnowledge(access, "entity", "ent_linked", ids.userB, ids.playerB, null)).toBe(false);
 
