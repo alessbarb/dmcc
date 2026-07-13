@@ -1,35 +1,42 @@
+import Fastify from "fastify";
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { registerAuthWebRoutes } from "../../src/backend/server/web/routes/authWebRoutes.js";
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-const authRoutesPath = join(ROOT, "src/backend/server/web/routes/authWebRoutes.ts");
+async function createAuthServer() {
+  const server = Fastify();
+  registerAuthWebRoutes(server);
+  await server.ready();
+  return server;
+}
 
 describe("authentication hardening", () => {
-  it("bounds and prunes in-memory authentication state", () => {
-    const source = readFileSync(authRoutesPath, "utf8");
+  it("registers authentication routes before the server becomes ready", async () => {
+    const server = await createAuthServer();
 
-    expect(source).toContain("AUTH_STATE_MAX_ENTRIES");
-    expect(source).toContain("pruneExpiringMap");
-    expect(source).toContain("while (entries.size >= AUTH_STATE_MAX_ENTRIES)");
+    expect(server.hasRoute({ method: "POST", url: "/api/auth/login" })).toBe(true);
+    expect(server.hasRoute({ method: "POST", url: "/api/auth/register" })).toBe(true);
+
+    await server.close();
   });
 
-  it("performs an Argon2 verification for nonexistent accounts", () => {
-    const source = readFileSync(authRoutesPath, "utf8");
+  it("tracks failed attempts for accounts that do not exist", async () => {
+    const server = await createAuthServer();
+    const request = {
+      method: "POST" as const,
+      url: "/api/auth/login",
+      payload: { email: "missing@example.test", password: "wrong-password" },
+    };
 
-    expect(source).toContain("fallbackPasswordHashPromise");
-    expect(source).toContain("const fallbackPasswordHash = await fallbackPasswordHashPromise");
-    expect(source).toContain("await argon2.verify(fallbackPasswordHash, password)");
-    expect(source).toContain("recordFailedLogin(loginLockouts, email)");
-  });
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const response = await server.inject(request);
+      expect(response.statusCode).toBe(401);
+      expect(response.json()).toEqual({ error: "Invalid email or password" });
+    }
 
-  it("registers Fastify routes synchronously", () => {
-    const source = readFileSync(authRoutesPath, "utf8");
-    const firstRoute = source.indexOf("server.post<");
-    const setup = source.slice(source.indexOf("export function registerAuthWebRoutes"), firstRoute);
+    const lockedResponse = await server.inject(request);
+    expect(lockedResponse.statusCode).toBe(401);
+    expect(Number(lockedResponse.headers["retry-after"])).toBeGreaterThan(0);
 
-    expect(setup).toContain("fallbackPasswordHashPromise = argon2.hash");
-    expect(setup).not.toContain("await argon2.hash");
+    await server.close();
   });
 });
