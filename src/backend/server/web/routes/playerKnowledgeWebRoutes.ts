@@ -9,7 +9,7 @@ function campaignIdFromPortalPath(pathname: string): string | null {
   return portalMatch ? decodeURIComponent(portalMatch[1]) : null;
 }
 
-export async function registerPlayerKnowledgeWebRoutes(server: FastifyInstance): Promise<void> {
+export function registerPlayerKnowledgeWebRoutes(server: FastifyInstance): void {
   server.addHook("preHandler", async (request) => {
     const pathname = request.url.split("?", 1)[0];
     const campaignId = campaignIdFromPortalPath(pathname);
