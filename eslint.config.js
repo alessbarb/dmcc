@@ -1,21 +1,70 @@
+import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config(
-  {
-    ignores: ["dist/**", "node_modules/**", "coverage/**", "playwright-report/**", ".remember/**"],
-  },
-  ...tseslint.configs.recommended,
+export default defineConfig(
+  globalIgnores([
+    "dist/**",
+    "node_modules/**",
+    "coverage/**",
+    "playwright-report/**",
+    ".remember/**",
+    "release/**",
+  ]),
+
   {
     files: ["**/*.{ts,tsx}"],
+
+    extends: [tseslint.configs.recommended],
+
     languageOptions: {
       parserOptions: {
-        ecmaFeatures: { jsx: true },
+        projectService: {
+          allowDefaultProject: [
+            "vite.config.ts",
+            "vitest.config.ts",
+            "vitest.integration.config.ts",
+            "vitest.benchmark.config.ts",
+            "drizzle.config.ts",
+            "playwright.config.ts",
+          ],
+        },
+        tsconfigRootDir: import.meta.dirname,
       },
     },
-    rules: {
-      "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+
+    linterOptions: {
+      reportUnusedDisableDirectives: "error",
     },
-  }
+
+    rules: {
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
+        },
+      ],
+
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-floating-promises": "warn",
+      "@typescript-eslint/no-misused-promises": "warn",
+
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
+
+  {
+    files: ["tests/**/*.{ts,tsx}", "e2e/**/*.{ts,tsx}"],
+
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 );
