@@ -18,6 +18,7 @@
     "start": "node dist/src/backend/entry/index.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "lint:report": "eslint . --format json --output-file .artifacts/eslint-report.json",
     "audit:unused": "knip --no-config-hints",
     "audit:unused:prod": "knip --production --strict --no-config-hints",
     "audit:orphans": "knip --files --no-config-hints",
