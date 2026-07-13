@@ -141,6 +141,12 @@ export function DmHubPage() {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const runDmHubAction = (operation: Promise<unknown>, errorMessage: string) => {
+    void operation.catch((error: unknown) => {
+      console.error(errorMessage, error);
+    });
+  };
+
   // ── Auth + data init ───────────────────────────────────────────────────────
   useEffect(() => {
     const initAuth = async () => {
@@ -162,13 +168,15 @@ export function DmHubPage() {
       ]);
       setCampaignsFetched(true);
     };
-    void initAuth();
+    void initAuth().catch((error: unknown) => {
+      console.error("No se pudo inicializar el hub de DM.", error);
+    });
   }, [fetchCampaigns, fetchPremadeCampaigns, navigate]);
 
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (dropdownRef.current && e.target instanceof Node && !dropdownRef.current.contains(e.target)) {
         setIsUserDropdownOpen(false);
       }
     };
@@ -180,21 +188,55 @@ export function DmHubPage() {
 
   const triggerMysticalTransition = (campaignId: string) => {
     setMysticalTransitionId(campaignId);
-    setTimeout(async () => {
-      try {
-        await selectCampaign(campaignId);
-        setMysticalTransitionId(null);
-        navigate({ to: `/campaigns/${campaignId}/command-center` });
-      } catch (e) {
-        console.error(e);
-        setMysticalTransitionId(null);
-      }
+    window.setTimeout(() => {
+      runDmHubAction((async () => {
+        try {
+          await selectCampaign(campaignId);
+          setMysticalTransitionId(null);
+          await navigate({ to: `/campaigns/${campaignId}/command-center` });
+        } catch (e) {
+          console.error(e);
+          setMysticalTransitionId(null);
+        }
+      })(), "No se pudo abrir la campaña desde el hub de DM.");
     }, 850);
   };
 
-  const handleSignOutDm = async () => {
-    await logout();
-    await navigate({ to: "/" });
+  const handleSwitchDm = () => {
+    runDmHubAction((async () => {
+      await logout();
+      await navigate({ to: "/dm/login" });
+    })(), "No se pudo cambiar de DM.");
+  };
+
+  const handleSignOutDm = () => {
+    runDmHubAction((async () => {
+      await logout();
+      await navigate({ to: "/" });
+    })(), "No se pudo cerrar la sesión de DM.");
+  };
+
+  const refreshCampaigns = () => {
+    runDmHubAction(fetchCampaigns(), "No se pudieron recargar las campañas.");
+  };
+
+  const navigateToDmSetup = () => {
+    runDmHubAction(navigate({ to: "/dm/setup" }), "No se pudo abrir la configuración de DM.");
+  };
+
+  const navigateToPremade = (templateId: string) => {
+    runDmHubAction(navigate({ to: `/premades/${templateId}` }), "No se pudo abrir la aventura preparada.");
+  };
+
+  const navigateToActiveSession = (campaignId: string) => {
+    runDmHubAction(navigate({ to: `/campaigns/${campaignId}/session` }), "No se pudo abrir la sesión activa.");
+  };
+
+  const navigateToCampaignSection = (
+    campaignId: string,
+    section: "canvas" | "entities" | "rules" | "graph" | "timeline" | "settings",
+  ) => {
+    runDmHubAction(navigate({ to: `/campaigns/${campaignId}/${section}` }), "No se pudo abrir la sección de campaña.");
   };
 
   const handleCreateCampaignSubmit = async (e: React.SyntheticEvent) => {
@@ -211,7 +253,7 @@ export function DmHubPage() {
       setNewCampaignTitle("");
       setNewCampaignCoverUrl("");
       setIsCreateModalOpen(false);
-      if (campaignId) navigate({ to: `/campaigns/${campaignId}/command-center` });
+      if (campaignId) await navigate({ to: `/campaigns/${campaignId}/command-center` });
     } catch (err: any) {
       setCreateCampaignError(err.message || t("landing.createCampaignError"));
     } finally {
@@ -316,7 +358,7 @@ export function DmHubPage() {
       });
       setPremadeDialogTemplateId(null);
       if (campaignId && options.openAfterCreate) {
-        navigate({ to: `/campaigns/${campaignId}/command-center` });
+        await navigate({ to: `/campaigns/${campaignId}/command-center` });
       } else {
         await fetchCampaigns();
       }
@@ -348,15 +390,15 @@ export function DmHubPage() {
     }
   };
 
-  const handleQuickCanvas = () => requireCampaign((cid) => navigate({ to: `/campaigns/${cid}/canvas` }));
-  const handleQuickNpcs = () => requireCampaign((cid) => navigate({ to: `/campaigns/${cid}/entities` }));
+  const handleQuickCanvas = () => requireCampaign((cid) => navigateToCampaignSection(cid, "canvas"));
+  const handleQuickNpcs = () => requireCampaign((cid) => navigateToCampaignSection(cid, "entities"));
   const handleQuickLibrary = () => document.getElementById("premade-library-section")?.scrollIntoView({ behavior: "smooth" });
-  const handleQuickRules = () => requireCampaign((cid) => navigate({ to: `/campaigns/${cid}/rules` }));
-  const handleQuickMap = () => requireCampaign((cid) => navigate({ to: `/campaigns/${cid}/graph` }));
-  const handleQuickTimeline = () => requireCampaign((cid) => navigate({ to: `/campaigns/${cid}/timeline` }));
+  const handleQuickRules = () => requireCampaign((cid) => navigateToCampaignSection(cid, "rules"));
+  const handleQuickMap = () => requireCampaign((cid) => navigateToCampaignSection(cid, "graph"));
+  const handleQuickTimeline = () => requireCampaign((cid) => navigateToCampaignSection(cid, "timeline"));
   const handleQuickTemplates = () => document.getElementById("premade-library-section")?.scrollIntoView({ behavior: "smooth" });
   const handleQuickSettings = () => campaigns.length > 0
-    ? requireCampaign((cid) => navigate({ to: `/campaigns/${cid}/settings` }))
+    ? requireCampaign((cid) => navigateToCampaignSection(cid, "settings"))
     : setIsAccountModalOpen(true);
 
   // ── Filtered campaigns ─────────────────────────────────────────────────────
@@ -385,7 +427,7 @@ export function DmHubPage() {
           <button
             type="button"
             className="dm-topbar-ghost-btn"
-            onClick={() => navigate({ to: "/dm/setup" })}
+            onClick={navigateToDmSetup}
           >
             <UserPlus size={13} />
             {t("nav.addDm")}
@@ -393,7 +435,7 @@ export function DmHubPage() {
           <button
             type="button"
             className="dm-topbar-ghost-btn"
-            onClick={() => { void (async () => { await logout(); navigate({ to: "/dm/login" }); })(); }}
+            onClick={handleSwitchDm}
           >
             <UserRound size={13} />
             {t("nav.switchDm")}
@@ -421,7 +463,7 @@ export function DmHubPage() {
                   Gestionar cuenta
                 </button>
                 <div className="dm-user-dropdown__divider" />
-                <button className="dm-user-dropdown__item dm-user-dropdown__item--danger" onClick={() => { setIsUserDropdownOpen(false); void handleSignOutDm(); }}>
+                <button className="dm-user-dropdown__item dm-user-dropdown__item--danger" onClick={() => { setIsUserDropdownOpen(false); handleSignOutDm(); }}>
                   <LogOut size={13} />
                   {t("nav.signOut")}
                 </button>
@@ -551,7 +593,7 @@ export function DmHubPage() {
                   <AlertTriangle size={22} className="icon-critical" />
                   <p>{t("landing.errorTitle")}</p>
                   <span>{error}</span>
-                  <button className="btn btn-secondary btn-sm" type="button" onClick={() => fetchCampaigns()}>
+                  <button className="btn btn-secondary btn-sm" type="button" onClick={refreshCampaigns}>
                     {t("landing.retryButton")}
                   </button>
                 </div>
@@ -768,7 +810,7 @@ export function DmHubPage() {
                           <button
                             type="button"
                             className="btn btn-secondary btn-sm"
-                            onClick={() => navigate({ to: `/premades/${template.templateId}` })}
+                            onClick={() => navigateToPremade(template.templateId)}
                             style={{ flex: 1 }}
                           >
                             <Eye size={12} />
@@ -840,7 +882,7 @@ export function DmHubPage() {
                 disabled={dashboard.activeTables.length === 0}
                 onClick={() => {
                   const firstTable = dashboard.activeTables[0];
-                  if (firstTable) navigate({ to: `/campaigns/${firstTable.campaignId}/session` });
+                  if (firstTable) navigateToActiveSession(firstTable.campaignId);
                 }}
               >
                 Gestionar mesas
@@ -925,7 +967,9 @@ export function DmHubPage() {
             <p className="dm-muted-text" style={{ marginTop: 0, marginBottom: "20px" }}>
               Crea una nueva campaña desde cero und empieza a construir tu mundo.
             </p>
-            <form onSubmit={(e) => void handleCreateCampaignSubmit(e)}>
+            <form onSubmit={(e) => {
+              runDmHubAction(handleCreateCampaignSubmit(e), "No se pudo crear la campaña.");
+            }}>
               <div className="form-group">
                 <label className="form-label">{t("landing.campaignTitleLabel")} *</label>
                 <input
@@ -1005,7 +1049,9 @@ export function DmHubPage() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={(e) => void handleRestoreBackupSubmit(e)}>
+              <form onSubmit={(e) => {
+                runDmHubAction(handleRestoreBackupSubmit(e), "No se pudo restaurar la copia de seguridad.");
+              }}>
                 <div className="form-group">
                   <label className="form-label">Ruta del archivo de backup</label>
                   <input
@@ -1072,7 +1118,10 @@ export function DmHubPage() {
                   onChange={(e) => { setDeleteConfirmInput(e.target.value); setDeleteError(null); }}
                   placeholder={deleteTarget.title}
                   autoFocus
-                  onKeyDown={(e) => { if (e.key === "Enter") void handleDeleteConfirm(); if (e.key === "Escape") closeDeleteModal(); }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") runDmHubAction(handleDeleteConfirm(), "No se pudo eliminar la campaña.");
+                    if (e.key === "Escape") closeDeleteModal();
+                  }}
                 />
               </div>
             )}
@@ -1085,7 +1134,9 @@ export function DmHubPage() {
                 type="button"
                 className="btn btn-sm"
                 style={{ background: "var(--color-danger, #c33)", color: "#fff", border: "none" }}
-                onClick={() => void handleDeleteConfirm()}
+                onClick={() => {
+                  runDmHubAction(handleDeleteConfirm(), "No se pudo eliminar la campaña.");
+                }}
                 disabled={deleteLoading || (deleteConfirmStep === 2 && deleteConfirmInput.trim() !== deleteTarget.title)}
               >
                 {deleteLoading ? "…" : deleteConfirmStep === 1 ? t("landing.deleteStep1Btn") : t("landing.deleteStep2Btn")}
@@ -1139,7 +1190,14 @@ export function DmHubPage() {
               <button type="button" className="btn btn-secondary" onClick={closeEditModal} disabled={editLoading}>
                 Cancelar
               </button>
-              <button type="button" className="btn btn-gold" onClick={() => void handleEditConfirm()} disabled={editLoading || !editTitle.trim()}>
+              <button
+                type="button"
+                className="btn btn-gold"
+                onClick={() => {
+                  runDmHubAction(handleEditConfirm(), "No se pudo guardar la campaña.");
+                }}
+                disabled={editLoading || !editTitle.trim()}
+              >
                 {editLoading ? t("common.saving") : t("common.saveChanges")}
               </button>
             </div>
