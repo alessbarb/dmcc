@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { Shield, Ticket, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../../shared/api/apiClient.js";

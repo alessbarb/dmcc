@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "@tanstack/react-router";
 import { Shield } from "lucide-react";
 import { useTranslation } from "../shared/i18n/useTranslation.js";

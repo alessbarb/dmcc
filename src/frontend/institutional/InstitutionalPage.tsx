@@ -1,4 +1,3 @@
-import React from "react";
 import { getInstitutionalPage, type InstitutionalPageKey } from "@shared/i18n/institutional/index.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
 import { InstitutionalLayout } from "./InstitutionalLayout.js";

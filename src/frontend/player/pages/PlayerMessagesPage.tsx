@@ -1,4 +1,3 @@
-import React from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { CampaignMessagingPanel } from "../../shared/components/CampaignMessagingPanel.js";

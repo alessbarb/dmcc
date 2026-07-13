@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "@tanstack/react-router";
 import { GitBranch, Mail, Sparkles } from "lucide-react";
 import { getInstitutionalPages, type InstitutionalPageContent } from "@shared/i18n/institutional/index.js";

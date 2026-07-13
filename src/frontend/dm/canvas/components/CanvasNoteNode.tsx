@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Handle, Position } from "@xyflow/react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { Wand2, Trash2 } from "lucide-react";

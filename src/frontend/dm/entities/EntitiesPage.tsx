@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Eye, EyeOff, Filter, MapPin, Network, Plus, Search, Users, X, Zap } from "lucide-react";
 import { getEntityDefaultImage } from "./entityVisuals.js";
 import { useCampaignStore, type Entity } from "../../shared/stores/campaignStore.js";

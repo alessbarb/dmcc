@@ -1273,7 +1273,8 @@ export function DmHubPage() {
       {/* ── PREMADE IMPORT DIALOG ── */}
       <PremadeImportDialog
         template={selectedPremadeTemplate}
-        campaigns={campaigns}
+        // DmHubCampaign.stats uses a different shape than Campaign.stats; PremadeImportDialog never reads stats.
+        campaigns={campaigns as unknown as React.ComponentProps<typeof PremadeImportDialog>["campaigns"]}
         importing={Boolean(importingTemplateId)}
         error={premadeImportError}
         onClose={() => { if (!importingTemplateId) setPremadeDialogTemplateId(null); }}

@@ -11,7 +11,7 @@ export type DmHubCampaignStats = {
   activeSession: string | null;
 };
 
-export type DmHubCampaign = Campaign & {
+export type DmHubCampaign = Omit<Campaign, "stats"> & {
   system: string;
   coverUrl: string;
   stats: DmHubCampaignStats;

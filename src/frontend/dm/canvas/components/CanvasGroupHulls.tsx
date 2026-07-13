@@ -1,5 +1,3 @@
-import React from "react";
-
 export interface Viewport { x: number; y: number; zoom: number; }
 
 interface Pt { x: number; y: number; }

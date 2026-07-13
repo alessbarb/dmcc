@@ -1,4 +1,3 @@
-import React from "react";
 import type { Toast } from "../hooks/useToast.js";
 
 const kindStyles: Record<string, string> = {

@@ -1,4 +1,3 @@
-import React from "react";
 import { SUPPORTED_LOCALES } from "@shared/i18n/index.js";
 import { useTranslation } from "./useTranslation.js";
 import { Languages } from "lucide-react";

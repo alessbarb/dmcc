@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 function getMetadataLanguages(metadata: any): readonly string[] {

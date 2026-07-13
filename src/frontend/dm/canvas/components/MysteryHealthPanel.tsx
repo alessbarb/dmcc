@@ -1,4 +1,3 @@
-import React from "react";
 import { X } from "lucide-react";
 import type { Canvas } from "@core/domain/canvas/types.js";
 import type { Entity, Fact, Relation } from "../../../shared/stores/campaignStore.js";

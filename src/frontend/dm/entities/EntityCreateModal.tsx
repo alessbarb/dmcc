@@ -5,6 +5,7 @@ import { getRuleSystem } from "@core/domain/rules/index.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 
 
 function runEntityCreateAction(operation: Promise<unknown>, errorMessage: string): void {
@@ -39,7 +40,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
     content: "",
     status: "known",
     importance: "normal",
-    visibility: { kind: "dm_only" },
+    visibility: { kind: "dm_only" } as VisibilityRule,
     metadata: { role: "", attitudeToParty: "neutral", goal: "", imageUrl: "" } as any
   });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Plus, X, User, Pencil, Archive, Eye, EyeOff, ShieldCheck, Link2, Copy, Trash2, Clock, Wifi, MessageSquare, Target } from "lucide-react";
 import type { Entity, PlayerProfile } from "../../shared/stores/campaignStore.js";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
@@ -130,7 +130,9 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   const [playerFormLocal, setPlayerFormLocal] = useState<{ name: string; displayName: string; email: string; imageUrl: string; avatarUrl?: string }>({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" });
   const [selectedEntityLocal, setSelectedEntityLocal] = useState<any>(null);
 
-  const { dmPlayerPortalSummary, loadDmPlayerPortalSummary, resolvePlayerCharacterProposal } = store;
+  const { loadDmPlayerPortalSummary, resolvePlayerCharacterProposal } = store;
+  // Backend response shape isn't modeled yet; treat defensively like the rest of this file already does.
+  const dmPlayerPortalSummary = store.dmPlayerPortalSummary as any;
   const { linkPlayerCharacter, unlinkPlayerCharacter } = store;
   const [assignSelections, setAssignSelections] = useState<Record<string, string>>({});
 

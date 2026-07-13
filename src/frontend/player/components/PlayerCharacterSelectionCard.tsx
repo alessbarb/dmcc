@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CheckCircle2, Send, User } from "lucide-react";
 import type { TranslationKey } from "@shared/i18n/types.js";
 import { requestPlayerCharacterLink } from "../../shared/api/webProductClient.js";
