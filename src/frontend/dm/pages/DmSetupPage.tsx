@@ -21,7 +21,7 @@ export function DmSetupPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchAuthStatus()
+    void fetchAuthStatus()
       .then(setAuthStatus)
       .catch(() => setAuthStatus(null))
       .finally(() => setStatusLoading(false));
@@ -32,29 +32,33 @@ export function DmSetupPage() {
 
   const handleBack = () => {
     if (authStatus?.sessionValid) {
-      navigate({ to: "/portal" });
+      void navigate({ to: "/portal" });
     } else if (hasExistingDm) {
-      navigate({ to: "/dm/login" });
+      void navigate({ to: "/dm/login" });
     } else {
-      navigate({ to: "/" });
+      void navigate({ to: "/" });
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email.includes("@")) { setError(t("dmSetup.errorInvalidEmail")); return; }
-    if (secret !== confirmSecret) { setError(t("dmSetup.errorMismatch")); return; }
-    if (secret.length < 12) { setError("Password must be at least 12 characters."); return; }
-    setLoading(true);
-    setError(null);
-    try {
-      await setupDmAccount({ email, secret, displayName });
-      navigate({ to: "/portal" });
-    } catch (err: any) {
-      setError(err.message || t("dmSetup.errorCreateAccount"));
-    } finally {
-      setLoading(false);
-    }
+    const run = async () => {
+      if (!email.includes("@")) { setError(t("dmSetup.errorInvalidEmail")); return; }
+      if (secret !== confirmSecret) { setError(t("dmSetup.errorMismatch")); return; }
+      if (secret.length < 12) { setError("Password must be at least 12 characters."); return; }
+      setLoading(true);
+      setError(null);
+      try {
+        await setupDmAccount({ email, secret, displayName });
+        void navigate({ to: "/portal" });
+      } catch (err: unknown) {
+        const errMessage = err instanceof Error ? err.message : String(err);
+        setError(errMessage || t("dmSetup.errorCreateAccount"));
+      } finally {
+        setLoading(false);
+      }
+    };
+    void run();
   };
 
   if (statusLoading) {

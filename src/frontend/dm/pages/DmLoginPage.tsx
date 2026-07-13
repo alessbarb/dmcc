@@ -16,8 +16,8 @@ export function DmLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [retryAfterMs, setRetryAfterMs] = useState<number>(0);
   useEffect(() => {
-    fetchAuthStatus().then((status) => {
-      if (!status.accountConfigured) navigate({ to: "/dm/setup" });
+    void fetchAuthStatus().then((status) => {
+      if (!status.accountConfigured) void navigate({ to: "/dm/setup" });
     }).catch(() => {});
   }, [navigate]);
 
@@ -33,25 +33,29 @@ export function DmLoginPage() {
     return () => clearInterval(interval);
   }, [retryAfterMs]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email || !secret || retryAfterMs > 0) return;
-    setLoading(true);
-    setError(null);
-    try {
-      await login(email, secret);
-      navigate({ to: "/portal" });
-    } catch (err: any) {
-      if (err.message?.toLowerCase().includes("too many")) {
-        const match = err.message.match(/\((\d+)s\)/);
-        setRetryAfterMs(match ? Number(match[1]) * 1000 : 30_000);
-        setError(t("dmLogin.errorTooMany"));
-      } else {
-        setError(t("dmLogin.errorWrongSecret"));
+    const run = async () => {
+      if (!email || !secret || retryAfterMs > 0) return;
+      setLoading(true);
+      setError(null);
+      try {
+        await login(email, secret);
+        void navigate({ to: "/portal" });
+      } catch (err: unknown) {
+        const errMessage = err instanceof Error ? err.message : String(err);
+        if (errMessage.toLowerCase().includes("too many")) {
+          const match = errMessage.match(/\((\d+)s\)/);
+          setRetryAfterMs(match ? Number(match[1]) * 1000 : 30_000);
+          setError(t("dmLogin.errorTooMany"));
+        } else {
+          setError(t("dmLogin.errorWrongSecret"));
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
+    };
+    void run();
   };
 
   const isBlocked = retryAfterMs > 0;
@@ -133,10 +137,10 @@ export function DmLoginPage() {
           </form>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "12px" }}>
-            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/dm/setup" })}>
+            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => { void navigate({ to: "/dm/setup" }); }}>
               <Plus size={14} /> {t("common.create")}
             </button>
-            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => navigate({ to: "/" })}>
+            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => { void navigate({ to: "/" }); }}>
               <ArrowLeft size={14} /> {t("common.back")}
             </button>
           </div>
