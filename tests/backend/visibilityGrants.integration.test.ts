@@ -96,7 +96,7 @@ describe("visibility grants", () => {
     expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userB, ids.playerB))).toBe(true);
   });
 
-  it("revokes grants that are no longer present in current visibility state", async () => {
+  it("revokes derived grants that are no longer present in current visibility state", async () => {
     await seedVisibilityFixture();
     await db.insert(schema.visibilityGrants).values({
       campaignId: ids.campaign,
@@ -111,6 +111,28 @@ describe("visibility grants", () => {
 
     const grants = await db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, ids.campaign));
     expect(grants).toHaveLength(0);
+  });
+
+  it("preserves explicit user grants while rebuilding derived visibility", async () => {
+    await seedVisibilityFixture();
+    await db.insert(schema.visibilityGrants).values([
+      { campaignId: ids.campaign, targetType: "entity", targetId: "ent_explicit", scope: "specific_user", userId: ids.userA, playerId: null },
+      { campaignId: ids.campaign, targetType: "entity", targetId: "ent_stale", scope: "all_players", userId: null, playerId: null },
+    ]);
+
+    await Promise.all([
+      refreshKnowledgeVisibilityGrants(ids.campaign),
+      refreshKnowledgeVisibilityGrants(ids.campaign),
+    ]);
+
+    const grants = await db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, ids.campaign));
+    expect(grants).toHaveLength(1);
+    expect(grants[0]).toMatchObject({
+      targetId: "ent_explicit",
+      scope: "specific_user",
+      userId: ids.userA,
+      playerId: null,
+    });
   });
 
   it("derives linked character access directly from the player profile", async () => {
