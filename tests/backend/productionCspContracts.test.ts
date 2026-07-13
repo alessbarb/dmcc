@@ -1,18 +1,26 @@
 import { describe, expect, it } from "vitest";
-import { sanitizeProductionContentSecurityPolicy } from "../../src/backend/server/web/registerWebRoutes.js";
+import { buildHelmetConfig } from "../../src/backend/server/createServer.js";
 
-describe("production content security policy", () => {
-  it("removes local development and unrestricted websocket sources in production", () => {
-    const policy = "default-src 'self'; connect-src 'self' ws: wss: http://localhost:* http://127.0.0.1:*; object-src 'none'";
+function connectSources(nodeEnv: string): string[] {
+  const config = buildHelmetConfig(nodeEnv);
+  const directives = config?.contentSecurityPolicy && typeof config.contentSecurityPolicy === "object"
+    ? config.contentSecurityPolicy.directives
+    : undefined;
+  return (directives?.["connect-src"] ?? []) as string[];
+}
 
-    expect(sanitizeProductionContentSecurityPolicy(policy, "production")).toBe(
-      "default-src 'self'; connect-src 'self'; object-src 'none'",
-    );
+describe("content security policy", () => {
+  it("allows only same-origin connections in production", () => {
+    expect(connectSources("production")).toEqual(["'self'"]);
   });
 
-  it("keeps development policy unchanged", () => {
-    const policy = "connect-src 'self' ws: http://localhost:*";
-
-    expect(sanitizeProductionContentSecurityPolicy(policy, "test")).toBe(policy);
+  it("allows local development connections outside production", () => {
+    expect(connectSources("test")).toEqual([
+      "'self'",
+      "ws:",
+      "wss:",
+      "http://localhost:*",
+      "http://127.0.0.1:*",
+    ]);
   });
 });
