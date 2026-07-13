@@ -18,8 +18,18 @@ describe("authentication hardening", () => {
   it("performs an Argon2 verification for nonexistent accounts", () => {
     const source = readFileSync(authRoutesPath, "utf8");
 
-    expect(source).toContain("dummyArgonHash");
+    expect(source).toContain("dummyArgonHashPromise");
+    expect(source).toContain("const dummyArgonHash = await dummyArgonHashPromise");
     expect(source).toContain("await argon2.verify(dummyArgonHash, password)");
     expect(source).toContain("recordFailedLogin(loginLockouts, email)");
+  });
+
+  it("does not await slow work before registering Fastify routes", () => {
+    const source = readFileSync(authRoutesPath, "utf8");
+    const firstRoute = source.indexOf("server.post<");
+    const setup = source.slice(source.indexOf("export async function registerAuthWebRoutes"), firstRoute);
+
+    expect(setup).toContain("dummyArgonHashPromise = argon2.hash");
+    expect(setup).not.toContain("await argon2.hash");
   });
 });
