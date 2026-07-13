@@ -25,6 +25,12 @@ export interface GraphPageProps {
   setIsRelationModalOpen?: (open: boolean) => void;
 }
 
+function runGraphAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 const ENTITY_TYPE_COLORS: Record<string, string> = {
   player_character: "#6366f1",
   npc: "#3b82f6",
@@ -117,7 +123,10 @@ export function GraphPage(props: GraphPageProps = {}) {
   // Refresh data on mount so the graph always shows current server state.
   // Shows cached store data immediately, updates in background.
   useEffect(() => {
-    store.reloadCampaign?.();
+    const reloadCampaign = store.reloadCampaign;
+    if (reloadCampaign) {
+      runGraphAction(reloadCampaign(), "No se pudo recargar la campaña para el grafo.");
+    }
   }, []);
 
   useEffect(() => {
@@ -884,7 +893,9 @@ export function GraphPage(props: GraphPageProps = {}) {
                 </p>
                 <div style={{ display: "flex", gap: "8px" }}>
                   <button
-                    onClick={handleToggleNextSession}
+                    onClick={() => {
+                      runGraphAction(handleToggleNextSession(), "No se pudo actualizar la preparación de la entidad.");
+                    }}
                     style={{
                       flex: 1,
                       display: "flex",
@@ -908,7 +919,9 @@ export function GraphPage(props: GraphPageProps = {}) {
                   </button>
 
                   <button
-                    onClick={handleToggleVisibility}
+                    onClick={() => {
+                      runGraphAction(handleToggleVisibility(), "No se pudo cambiar la visibilidad de la entidad.");
+                    }}
                     style={{
                       flex: 1,
                       display: "flex",
