@@ -46,4 +46,10 @@ describe("campaign referential integrity migration", () => {
     expect(migration).toContain('ON DELETE SET NULL ("active_session_id")');
     expect(migration).toContain('ON DELETE SET NULL ("entity_id")');
   });
+
+  it("creates the supporting player-profile composite key safely", () => {
+    const migration = readFileSync(migrationPath, "utf8");
+
+    expect(migration).toContain('CREATE UNIQUE INDEX IF NOT EXISTS "uq_player_profiles_campaign_profile"');
+  });
 });
