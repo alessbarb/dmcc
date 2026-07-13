@@ -19,6 +19,18 @@ SET
   "scope" = 'specific_user'
 WHERE "scope" LIKE 'specific_user:%';
 --> statement-breakpoint
+UPDATE "visibility_grants"
+SET "player_id" = NULL
+WHERE "scope" = 'specific_user';
+--> statement-breakpoint
+UPDATE "visibility_grants"
+SET "user_id" = NULL
+WHERE "scope" = 'specific_player';
+--> statement-breakpoint
+UPDATE "visibility_grants"
+SET "user_id" = NULL, "player_id" = NULL
+WHERE "scope" NOT IN ('specific_player', 'specific_user');
+--> statement-breakpoint
 DELETE FROM "visibility_grants" AS duplicate
 USING "visibility_grants" AS keeper
 WHERE duplicate.ctid > keeper.ctid
