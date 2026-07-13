@@ -44,7 +44,6 @@ DELETE FROM "player_portal_states" child WHERE NOT EXISTS (SELECT 1 FROM "campai
 DELETE FROM "player_portal_resources" child WHERE NOT EXISTS (SELECT 1 FROM "campaigns" parent WHERE parent."campaign_id" = child."campaign_id");
 --> statement-breakpoint
 
--- Repair or remove invalid intra-campaign references.
 DELETE FROM "campaign_facts" fact
 WHERE NOT EXISTS (
   SELECT 1 FROM "campaign_entities" entity
@@ -104,8 +103,7 @@ WHERE "entity_id" IS NOT NULL AND NOT EXISTS (
 --> statement-breakpoint
 UPDATE "characters" character SET "player_profile_id" = NULL
 WHERE "player_profile_id" IS NOT NULL AND NOT EXISTS (
-  SELECT 1 FROM "player_profiles" player
-  WHERE player."profile_id" = character."player_profile_id"
+  SELECT 1 FROM "player_profiles" player WHERE player."profile_id" = character."player_profile_id"
 );
 --> statement-breakpoint
 UPDATE "campaign_memberships" membership SET "player_id" = NULL
@@ -151,11 +149,10 @@ WHERE grant_row."scope" = 'specific_player' AND NOT EXISTS (
 );
 --> statement-breakpoint
 
-CREATE UNIQUE INDEX "uq_player_profiles_campaign_profile"
+CREATE UNIQUE INDEX IF NOT EXISTS "uq_player_profiles_campaign_profile"
 ON "player_profiles" ("campaign_id", "profile_id");
 --> statement-breakpoint
 
--- Campaign ownership: all dependent rows disappear with their campaign.
 ALTER TABLE "activity_feed" ADD CONSTRAINT "fk_activity_feed_campaign" FOREIGN KEY ("campaign_id") REFERENCES "campaigns"("campaign_id") ON DELETE CASCADE;
 --> statement-breakpoint
 ALTER TABLE "attachments" ADD CONSTRAINT "fk_attachments_campaign" FOREIGN KEY ("campaign_id") REFERENCES "campaigns"("campaign_id") ON DELETE CASCADE;
@@ -201,7 +198,6 @@ ALTER TABLE "player_portal_states" ADD CONSTRAINT "fk_player_portal_states_campa
 ALTER TABLE "player_portal_resources" ADD CONSTRAINT "fk_player_portal_resources_campaign" FOREIGN KEY ("campaign_id") REFERENCES "campaigns"("campaign_id") ON DELETE CASCADE;
 --> statement-breakpoint
 
--- Same-campaign entity and session relationships.
 ALTER TABLE "campaign_facts" ADD CONSTRAINT "fk_campaign_facts_subject_entity" FOREIGN KEY ("campaign_id", "subject_entity_id") REFERENCES "campaign_entities"("campaign_id", "entity_id") ON DELETE CASCADE;
 --> statement-breakpoint
 ALTER TABLE "campaign_relations" ADD CONSTRAINT "fk_campaign_relations_source_entity" FOREIGN KEY ("campaign_id", "source_entity_id") REFERENCES "campaign_entities"("campaign_id", "entity_id") ON DELETE CASCADE;
@@ -223,7 +219,6 @@ ALTER TABLE "live_tables" ADD CONSTRAINT "fk_live_tables_active_session" FOREIGN
 ALTER TABLE "characters" ADD CONSTRAINT "fk_characters_entity" FOREIGN KEY ("campaign_id", "entity_id") REFERENCES "campaign_entities"("campaign_id", "entity_id") ON DELETE SET NULL ("entity_id");
 --> statement-breakpoint
 
--- Player-owned records remain isolated to the same campaign.
 ALTER TABLE "player_proposals" ADD CONSTRAINT "fk_player_proposals_player" FOREIGN KEY ("campaign_id", "player_id") REFERENCES "player_profiles"("campaign_id", "profile_id") ON DELETE CASCADE;
 --> statement-breakpoint
 ALTER TABLE "player_portal_states" ADD CONSTRAINT "fk_player_portal_states_player" FOREIGN KEY ("campaign_id", "player_id") REFERENCES "player_profiles"("campaign_id", "profile_id") ON DELETE CASCADE;
