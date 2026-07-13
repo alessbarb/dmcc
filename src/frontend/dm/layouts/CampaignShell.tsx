@@ -123,6 +123,9 @@ const PAGE_META: Record<string, PageMeta> = {
 export function CampaignShell() {
   const { campaignId } = useParams({ from: "/campaigns/$campaignId" });
   const navigate = useNavigate();
+  const handleNavigationError = (error: unknown) => {
+    console.error("Campaign navigation failed", error);
+  };
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
   const { t } = useTranslation();
@@ -153,7 +156,7 @@ export function CampaignShell() {
 
   const exitCampaign = () => {
     clearCampaign();
-    navigate({ to: "/dm" });
+    void navigate({ to: "/dm" }).catch(handleNavigationError);
   };
 
   const handleSignOutDm = async () => {
@@ -164,12 +167,12 @@ export function CampaignShell() {
 
   useKeyboardShortcuts(
     {
-      "g d": () => navigate({ to: `/campaigns/${campaignId}/command-center` }),
-      "g s": () => navigate({ to: `/campaigns/${campaignId}/session` }),
-      "g e": () => navigate({ to: `/campaigns/${campaignId}/entities` }),
-      "g c": () => navigate({ to: `/campaigns/${campaignId}/canvas` }),
-      "g b": () => navigate({ to: `/campaigns/${campaignId}/boards` }),
-      "/": () => navigate({ to: `/campaigns/${campaignId}/search` }),
+      "g d": () => { void navigate({ to: `/campaigns/${campaignId}/command-center` }).catch(handleNavigationError); },
+      "g s": () => { void navigate({ to: `/campaigns/${campaignId}/session` }).catch(handleNavigationError); },
+      "g e": () => { void navigate({ to: `/campaigns/${campaignId}/entities` }).catch(handleNavigationError); },
+      "g c": () => { void navigate({ to: `/campaigns/${campaignId}/canvas` }).catch(handleNavigationError); },
+      "g b": () => { void navigate({ to: `/campaigns/${campaignId}/boards` }).catch(handleNavigationError); },
+      "/": () => { void navigate({ to: `/campaigns/${campaignId}/search` }).catch(handleNavigationError); },
       n: () => setIsEntityModalOpen(true),
     },
     isDM,
@@ -183,7 +186,7 @@ export function CampaignShell() {
 
   useEffect(() => {
     if (activeCampaignRole === "player") {
-      navigate({ to: "/portal" });
+      void navigate({ to: "/portal" }).catch(handleNavigationError);
     }
   }, [activeCampaignRole, navigate]);
 
@@ -303,7 +306,7 @@ export function CampaignShell() {
     : null;
 
   const handleNavClick = (path: string) => {
-    navigate({ to: `/campaigns/${campaignId}/${path}` });
+    void navigate({ to: `/campaigns/${campaignId}/${path}` }).catch(handleNavigationError);
   };
 
   const dockNavItems = orderCampaignMobileDockItems(navItems);
@@ -543,7 +546,7 @@ export function CampaignShell() {
                   className="btn btn-primary btn-sm"
                   type="button"
                   data-tour-id="campaign-action-session"
-                  onClick={() => navigate({ to: `/campaigns/${campaignId}/session` })}
+                  onClick={() => { void navigate({ to: `/campaigns/${campaignId}/session` }).catch(handleNavigationError); }}
                 >
                   <Play size={14} /> {t("campaignShell.prepareOrStartSession")}
                 </button>

@@ -191,6 +191,9 @@ const NetworkDING_COPY = {
 
 export function MainLanding() {
   const navigate = useNavigate();
+  const handleNavigationError = (error: unknown) => {
+    console.error("Landing navigation failed", error);
+  };
   const { t } = useTranslation();
   const [ready, setReady] = useState(false);
 
@@ -209,7 +212,7 @@ export function MainLanding() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const delay = Number((entry.target as HTMLElement).dataset.delay ?? 0);
+            const delay = entry.target instanceof HTMLElement ? Number(entry.target.dataset.delay ?? 0) : 0;
             const activate = () => entry.target.classList.add("rl-animate--visible");
             if (delay > 0) setTimeout(activate, delay);
             else activate();
@@ -241,10 +244,10 @@ export function MainLanding() {
           <span>DMCC</span>
         </div>
         <div className="rl-nav__actions">
-          <button className="rl-nav__login" onClick={() => navigate({ to: "/dm/login" })}>
+          <button className="rl-nav__login" onClick={() => { void navigate({ to: "/dm/login" }).catch(handleNavigationError); }}>
             Iniciar sesión
           </button>
-          <button className="btn btn-gold btn-sm" onClick={() => navigate({ to: "/dm/setup" })}>
+          <button className="btn btn-gold btn-sm" onClick={() => { void navigate({ to: "/dm/setup" }).catch(handleNavigationError); }}>
             Empezar
           </button>
         </div>
@@ -271,17 +274,17 @@ export function MainLanding() {
           <div className="rl-hero__ctas">
             <button
               className="rl-cta-primary"
-              onClick={() =>
-                navigate({
+              onClick={() => {
+                void navigate({
                   to: "/premades/$templateId",
                   params: { templateId: "oracle-triple-eclipse" },
-                })
-              }
+                }).catch(handleNavigationError);
+              }}
             >
               <span className="rl-cta-primary__shimmer" />
               <span className="rl-cta-primary__text">{NetworkDING_COPY.heroPrimaryCta}</span>
             </button>
-            <button className="rl-cta-secondary" onClick={() => navigate({ to: "/dm/setup" })}>
+            <button className="rl-cta-secondary" onClick={() => { void navigate({ to: "/dm/setup" }).catch(handleNavigationError); }}>
               {NetworkDING_COPY.heroSecondaryCta}
             </button>
           </div>
@@ -430,11 +433,11 @@ export function MainLanding() {
             Crea tu mundo, importa una aventura preparada o empieza desde cero.
           </p>
           <div className="rl-final-cta__buttons rl-animate rl-animate--pop" data-delay="280">
-            <button className="rl-cta-primary" onClick={() => navigate({ to: "/dm/setup" })}>
+            <button className="rl-cta-primary" onClick={() => { void navigate({ to: "/dm/setup" }).catch(handleNavigationError); }}>
               <span className="rl-cta-primary__shimmer" />
               <span className="rl-cta-primary__text">Crear primera campaña</span>
             </button>
-            <button className="rl-cta-secondary" onClick={() => navigate({ to: "/dm/login" })}>
+            <button className="rl-cta-secondary" onClick={() => { void navigate({ to: "/dm/login" }).catch(handleNavigationError); }}>
               Iniciar sesión
             </button>
           </div>

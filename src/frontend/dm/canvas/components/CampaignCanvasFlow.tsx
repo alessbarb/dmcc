@@ -895,8 +895,8 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
           canvasId={canvasId}
           sourceNodeId={connectPopover.sourceNodeId}
           targetNodeId={connectPopover.targetNodeId}
-          sourceEntity={connectPopover.sourceEntity}
-          targetEntity={connectPopover.targetEntity}
+          sourceEntity={connectPopover.sourceEntity ?? undefined}
+          targetEntity={connectPopover.targetEntity ?? undefined}
           onSubmit={handlePopoverSubmit}
           onCancel={() => setConnectPopover(null)}
         />

@@ -984,7 +984,7 @@ function QuickCaptureBar({
   const [busy, setBusy] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!value.trim() || busy) return;
     const parsed = parseCapture(value);
@@ -1438,7 +1438,7 @@ function SessionPrepEditor({
   const [expectedConsequenceIds, setExpectedConsequenceIds] = useState<string[]>(prep.expectedConsequenceIds ?? []);
   const [busy, setBusy] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!title.trim()) return;
     setBusy(true);

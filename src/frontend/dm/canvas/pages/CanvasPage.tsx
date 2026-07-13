@@ -594,7 +594,7 @@ export function CanvasPage() {
     );
   }, [activeCampaignId]);
 
-  const handleCreateBoard = async (e: React.FormEvent) => {
+  const handleCreateBoard = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newBoardTitle.trim()) return;
     
@@ -1647,7 +1647,7 @@ function SessionPrepForm({
   const [targetSessionId, setTargetSessionId] = useState(() => preparedSessions[0]?.sessionId ?? "");
   const [busy, setBusy] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setBusy(true);
     try {

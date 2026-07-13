@@ -70,7 +70,7 @@ export function PremadeImportDialog({
     { value: "sessions", title: t("premadeImport.mode.sessions.title"), desc: t("premadeImport.mode.sessions.desc") },
   ];
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     const cleanTitle = title.trim();
     if (!cleanTitle || importing) return;
