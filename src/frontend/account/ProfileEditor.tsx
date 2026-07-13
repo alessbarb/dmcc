@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type {
   EditableSocialProfile,
   ProfileAudience,
+  PublicationState,
   SocialField,
 } from "./accountTypes.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
@@ -10,6 +11,22 @@ import { isDirty } from "./accountState.js";
 const FIELDS: SocialField[] = [
   "displayName", "avatarUrl", "pronouns", "timeZone", "biography", "contact",
 ];
+
+const PROFILE_AUDIENCES: readonly ProfileAudience[] = ["private", "dm", "table", "global"];
+function isProfileAudience(value: string): value is ProfileAudience {
+  return (PROFILE_AUDIENCES as readonly string[]).includes(value);
+}
+
+const PUBLICATION_STATES: readonly PublicationState[] = ["private", "unlisted", "published"];
+function isPublicationState(value: string): value is PublicationState {
+  return (PUBLICATION_STATES as readonly string[]).includes(value);
+}
+
+declare global {
+  interface Window {
+    __accountCenterDirty?: boolean;
+  }
+}
 
 export function ProfileEditor({
   profile,
@@ -33,9 +50,9 @@ export function ProfileEditor({
   const isFormDirty = isDirty(profile, draft);
 
   useEffect(() => {
-    (window as any).__accountCenterDirty = isFormDirty;
+    window.__accountCenterDirty = isFormDirty;
     return () => {
-      (window as any).__accountCenterDirty = false;
+      window.__accountCenterDirty = false;
     };
   }, [isFormDirty]);
 
@@ -80,7 +97,7 @@ export function ProfileEditor({
           {FIELDS.map((field) => (
             <div className="account-profile-field" key={field}>
               <label>
-                {t(`account.profile.${field}` as any)}
+                {t(`account.profile.${field}`)}
                 {field === "biography" ? (
                   <textarea
                     value={draft[field] ?? ""}
@@ -97,17 +114,21 @@ export function ProfileEditor({
                 {t("account.profile.visibleTo")}
                 <select
                   value={draft.visibility[field]}
-                  onChange={(event) => setDraft({
-                    ...draft,
-                    visibility: {
-                      ...draft.visibility,
-                      [field]: event.target.value as ProfileAudience,
-                    },
-                  })}
+                  onChange={(event) => {
+                    const { value } = event.target;
+                    if (!isProfileAudience(value)) return;
+                    setDraft({
+                      ...draft,
+                      visibility: {
+                        ...draft.visibility,
+                        [field]: value,
+                      },
+                    });
+                  }}
                 >
                   {allowedAudiences[field].map((audience) => (
                     <option value={audience} key={audience}>
-                      {t(`account.profile.audiences.${audience}` as any)}
+                      {t(`account.profile.audiences.${audience}`)}
                     </option>
                   ))}
                 </select>
@@ -128,10 +149,11 @@ export function ProfileEditor({
             {t("account.profile.publication")}
             <select
               value={draft.publicationState}
-              onChange={(event) => setDraft({
-                ...draft,
-                publicationState: event.target.value as EditableSocialProfile["publicationState"],
-              })}
+              onChange={(event) => {
+                const { value } = event.target;
+                if (!isPublicationState(value)) return;
+                setDraft({ ...draft, publicationState: value });
+              }}
             >
               <option value="private">{t("account.profile.publicationOptions.private")}</option>
               <option value="unlisted">{t("account.profile.publicationOptions.unlisted")}</option>

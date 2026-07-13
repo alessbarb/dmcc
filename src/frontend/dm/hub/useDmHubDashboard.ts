@@ -15,6 +15,14 @@ import { readStoredLocale } from "../../shared/i18n/localeStorage.js";
 
 const DEFAULT_CAMPAIGN_COVER = "/assets/campaigns/default-campaign-cover.jpg";
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return isRecord(value) ? value : {};
+}
+
 function getPremadeLocale(): string {
   return detectBrowserLocale(readStoredLocale());
 }
@@ -37,47 +45,49 @@ function getOptionalNumber(value: unknown): number | undefined {
 }
 
 function getProgressPercent(campaign: Campaign): number | null {
-  const metadata = campaign.metadata ?? {};
+  const metadata = asRecord(campaign.metadata);
+  const stats = asRecord(campaign.stats);
   const raw =
-    getNumber((campaign.stats as any)?.progressPercent) ||
-    getNumber((campaign.stats as any)?.progress) ||
-    getNumber((metadata as any).progressPercent) ||
-    getNumber((metadata as any).progress) ||
-    getNumber((campaign as any).progressPercent);
+    getNumber(stats.progressPercent) ||
+    getNumber(stats.progress) ||
+    getNumber(metadata.progressPercent) ||
+    getNumber(metadata.progress) ||
+    getNumber((campaign as unknown as Record<string, unknown>).progressPercent);
 
   if (raw <= 0) return null;
   return Math.max(0, Math.min(100, Math.round(raw)));
 }
 
-function normalizeStats(rawStats: any): DmHubCampaignStats {
-  const activeSession = getString(rawStats?.activeSession) ?? null;
+function normalizeStats(rawStats: unknown): DmHubCampaignStats {
+  const stats = isRecord(rawStats) ? rawStats : {};
+  const activeSession = getString(stats.activeSession) ?? null;
 
   return {
-    playersCount: getNumber(rawStats?.playersCount),
-    npcsCount: getNumber(rawStats?.npcsCount),
-    locationsCount: getNumber(rawStats?.locationsCount),
-    questsCount: getNumber(rawStats?.questsCount),
-    secretsCount: getNumber(rawStats?.secretsCount),
-    cluesCount: getNumber(rawStats?.cluesCount),
-    sessionsCount: getNumber(rawStats?.sessionsCount),
+    playersCount: getNumber(stats.playersCount),
+    npcsCount: getNumber(stats.npcsCount),
+    locationsCount: getNumber(stats.locationsCount),
+    questsCount: getNumber(stats.questsCount),
+    secretsCount: getNumber(stats.secretsCount),
+    cluesCount: getNumber(stats.cluesCount),
+    sessionsCount: getNumber(stats.sessionsCount),
     activeSession,
   };
 }
 
 function normalizeCampaign(campaign: Campaign): DmHubCampaign {
-  const metadata = campaign.metadata ?? {};
+  const metadata = isRecord(campaign.metadata) ? campaign.metadata : {};
   const system =
     getString(campaign.system) ??
-    getString((metadata as any).system) ??
-    getString((metadata as any).ruleset) ??
-    getString((metadata as any).ruleSystem) ??
+    getString(metadata.system) ??
+    getString(metadata.ruleset) ??
+    getString(metadata.ruleSystem) ??
     "custom";
 
   const coverUrl =
     getString(campaign.coverUrl) ??
-    getString((metadata as any).coverUrl) ??
-    getString((metadata as any).coverImage) ??
-    getString((metadata as any).coverImagePath) ??
+    getString(metadata.coverUrl) ??
+    getString(metadata.coverImage) ??
+    getString(metadata.coverImagePath) ??
     DEFAULT_CAMPAIGN_COVER;
 
   return {
@@ -89,7 +99,8 @@ function normalizeCampaign(campaign: Campaign): DmHubCampaign {
   };
 }
 
-function normalizeTotals(raw: any, campaigns: DmHubCampaign[], activeTables: DmHubActiveTable[]) {
+function normalizeTotals(raw: unknown, campaigns: DmHubCampaign[], activeTables: DmHubActiveTable[]): DmHubDashboard["totals"] {
+  const totals = isRecord(raw) ? raw : {};
   const fallback = campaigns.reduce(
     (acc, campaign) => {
       acc.players += campaign.stats.playersCount;
@@ -117,14 +128,14 @@ function normalizeTotals(raw: any, campaigns: DmHubCampaign[], activeTables: DmH
   );
 
   return {
-    campaigns: getOptionalNumber(raw?.campaigns) ?? fallback.campaigns,
-    activeTables: getOptionalNumber(raw?.activeTables) ?? fallback.activeTables,
-    players: getOptionalNumber(raw?.players) ?? fallback.players,
-    sessions: getOptionalNumber(raw?.sessions) ?? fallback.sessions,
-    npcs: getOptionalNumber(raw?.npcs) ?? fallback.npcs,
-    entities: getOptionalNumber(raw?.entities) ?? fallback.entities,
-    completedCampaigns: getOptionalNumber(raw?.completedCampaigns) ?? fallback.completedCampaigns,
-    playtimeLast30DaysLabel: getString(raw?.playtimeLast30DaysLabel) ?? fallback.playtimeLast30DaysLabel,
+    campaigns: getOptionalNumber(totals.campaigns) ?? fallback.campaigns,
+    activeTables: getOptionalNumber(totals.activeTables) ?? fallback.activeTables,
+    players: getOptionalNumber(totals.players) ?? fallback.players,
+    sessions: getOptionalNumber(totals.sessions) ?? fallback.sessions,
+    npcs: getOptionalNumber(totals.npcs) ?? fallback.npcs,
+    entities: getOptionalNumber(totals.entities) ?? fallback.entities,
+    completedCampaigns: getOptionalNumber(totals.completedCampaigns) ?? fallback.completedCampaigns,
+    playtimeLast30DaysLabel: getString(totals.playtimeLast30DaysLabel) ?? fallback.playtimeLast30DaysLabel,
   };
 }
 
@@ -146,17 +157,17 @@ function buildActiveTables(campaigns: DmHubCampaign[], t: (key: string) => strin
   return campaigns
     .filter((campaign) => Boolean(campaign.stats.activeSession))
     .map((campaign) => {
-      const metadata = campaign.metadata ?? {};
+      const metadata = isRecord(campaign.metadata) ? campaign.metadata : {};
       const playersTotal = campaign.stats.playersCount;
 
       return {
         id: campaign.campaignId,
         campaignId: campaign.campaignId,
-        tableName: getString((metadata as any).tableName) ?? campaign.title,
+        tableName: getString(metadata.tableName) ?? campaign.title,
         campaignTitle: campaign.title,
         sessionTitle: campaign.stats.activeSession ?? t("landing.activeSessionLabel"),
-        status: "running",
-        elapsed: formatElapsedFromStart((metadata as any).activeSessionStartedAt),
+        status: "running" as const,
+        elapsed: formatElapsedFromStart(metadata.activeSessionStartedAt),
         playersPresent: playersTotal,
         playersTotal,
       };
@@ -182,74 +193,82 @@ function buildFallbackDashboard(
   };
 }
 
-function normalizeActiveTable(raw: any, t: (key: string) => string): DmHubActiveTable | null {
-  const id = getString(raw?.id);
-  const campaignId = getString(raw?.campaignId);
+function normalizeActiveTable(raw: unknown, t: (key: string) => string): DmHubActiveTable | null {
+  const record = isRecord(raw) ? raw : {};
+  const id = getString(record.id);
+  const campaignId = getString(record.campaignId);
   if (!id || !campaignId) return null;
-  const status = raw?.status === "paused" || raw?.status === "planned" ? raw.status : "running";
+  const status = record.status === "paused" || record.status === "planned" ? record.status : "running";
   return {
     id,
     campaignId,
-    tableName: getString(raw?.tableName) ?? getString(raw?.campaignTitle) ?? t("landing.activeTableLabel"),
-    campaignTitle: getString(raw?.campaignTitle) ?? t("landing.campaignSingleLabel"),
-    sessionTitle: getString(raw?.sessionTitle) ?? t("landing.activeSessionLabel"),
+    tableName: getString(record.tableName) ?? getString(record.campaignTitle) ?? t("landing.activeTableLabel"),
+    campaignTitle: getString(record.campaignTitle) ?? t("landing.campaignSingleLabel"),
+    sessionTitle: getString(record.sessionTitle) ?? t("landing.activeSessionLabel"),
     status,
-    elapsed: getString(raw?.elapsed) ?? "",
-    playersPresent: getNumber(raw?.playersPresent),
-    playersTotal: getNumber(raw?.playersTotal),
-    href: getString(raw?.href),
+    elapsed: getString(record.elapsed) ?? "",
+    playersPresent: getNumber(record.playersPresent),
+    playersTotal: getNumber(record.playersTotal),
+    href: getString(record.href),
   };
 }
 
-function normalizeAlert(raw: any): DmHubAlert | null {
-  const id = getString(raw?.id);
+function normalizeAlert(raw: unknown): DmHubAlert | null {
+  const record = isRecord(raw) ? raw : {};
+  const id = getString(record.id);
   if (!id) return null;
-  const severity = raw?.severity === "critical" || raw?.severity === "warning" ? raw.severity : "info";
+  const severity = record.severity === "critical" || record.severity === "warning" ? record.severity : "info";
   return {
     id,
-    label: getString(raw?.label) ?? id,
-    count: getNumber(raw?.count),
+    label: getString(record.label) ?? id,
+    count: getNumber(record.count),
     severity,
-    href: getString(raw?.href),
+    href: getString(record.href),
   };
 }
 
-function normalizeActivityItem(raw: any): DmHubActivityItem | null {
-  const id = getString(raw?.id);
+function normalizeActivityItem(raw: unknown): DmHubActivityItem | null {
+  const record = isRecord(raw) ? raw : {};
+  const id = getString(record.id);
   if (!id) return null;
-  const icon = ["session", "npc", "note", "entity", "campaign"].includes(raw?.icon) ? raw.icon : "campaign";
+  const icon =
+    typeof record.icon === "string" && ["session", "npc", "note", "entity", "campaign"].includes(record.icon)
+      ? (record.icon as DmHubActivityItem["icon"])
+      : "campaign";
   return {
     id,
     icon,
-    text: getString(raw?.text) ?? "Actividad reciente",
-    time: getString(raw?.time) ?? "Ahora",
-    href: getString(raw?.href),
+    text: getString(record.text) ?? "Actividad reciente",
+    time: getString(record.time) ?? "Ahora",
+    href: getString(record.href),
   };
 }
 
 function normalizeRemoteDashboard(
-  data: any,
+  data: unknown,
   fallbackPremadeTemplates: PremadeCampaignTemplateSummary[],
   t: (key: string) => string
 ): DmHubDashboard | null {
-  if (!data || typeof data !== "object") return null;
-  const campaigns = Array.isArray(data.campaigns) ? data.campaigns.map(normalizeCampaign) : [];
+  if (!isRecord(data)) return null;
+  const campaigns = Array.isArray(data.campaigns) ? (data.campaigns as Campaign[]).map(normalizeCampaign) : [];
   const activeTables = Array.isArray(data.activeTables)
-    ? (data.activeTables.map((x: any) => normalizeActiveTable(x, t)).filter(Boolean) as DmHubActiveTable[])
+    ? (data.activeTables.map((x: unknown) => normalizeActiveTable(x, t)).filter((x): x is DmHubActiveTable => x !== null))
     : buildActiveTables(campaigns, t);
   const premadeTemplates = Array.isArray(data.premadeTemplates)
-    ? data.premadeTemplates
+    ? (data.premadeTemplates as PremadeCampaignTemplateSummary[])
     : Array.isArray(data.premades)
-      ? data.premades
+      ? (data.premades as PremadeCampaignTemplateSummary[])
       : fallbackPremadeTemplates;
 
   return {
     campaigns,
     premadeTemplates,
     activeTables,
-    alerts: Array.isArray(data.alerts) ? data.alerts.map(normalizeAlert).filter(Boolean) as DmHubAlert[] : [],
+    alerts: Array.isArray(data.alerts)
+      ? data.alerts.map(normalizeAlert).filter((x): x is DmHubAlert => x !== null)
+      : [],
     recentActivity: Array.isArray(data.recentActivity)
-      ? data.recentActivity.map(normalizeActivityItem).filter(Boolean) as DmHubActivityItem[]
+      ? data.recentActivity.map(normalizeActivityItem).filter((x): x is DmHubActivityItem => x !== null)
       : [],
     totals: normalizeTotals(data.totals, campaigns, activeTables),
   };
@@ -274,7 +293,7 @@ export function useDmHubDashboard(
       try {
         const res = await apiFetch(withPremadeLocale("/api/dm/dashboard"));
         if (!res.ok) throw new Error(`DM dashboard unavailable (${res.status})`);
-        const data = await res.json();
+        const data: unknown = await res.json();
         const normalized = normalizeRemoteDashboard(data, premadeTemplates, t);
         if (!cancelled) setRemoteDashboard(normalized);
       } catch {

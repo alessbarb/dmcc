@@ -12,6 +12,7 @@ import {
   Sparkles,
   Wand2,
 } from "lucide-react";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import { fetchAuthStatus } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
@@ -23,7 +24,9 @@ function runPremadePreviewAction(operation: Promise<unknown>, errorMessage: stri
   });
 }
 
-const ENTITY_TYPE_LABEL_KEYS: Record<string, any> = {
+type TranslateFn = (key: string, vars?: Record<string, string>) => string;
+
+const ENTITY_TYPE_LABEL_KEYS: Record<string, string> = {
   player_character: "premadePreview.entityType.playerCharacter",
   npc: "premadePreview.entityType.npc",
   location: "premadePreview.entityType.location",
@@ -45,7 +48,7 @@ const ENTITY_TYPE_LABEL_KEYS: Record<string, any> = {
   note: "premadePreview.entityType.note",
 };
 
-const RELATION_LABEL_KEYS: Record<string, any> = {
+const RELATION_LABEL_KEYS: Record<string, string> = {
   ally_of: "premadePreview.relationType.allyOf",
   blocks: "premadePreview.relationType.blocks",
   causes: "premadePreview.relationType.causes",
@@ -63,7 +66,7 @@ const RELATION_LABEL_KEYS: Record<string, any> = {
   unlocks: "premadePreview.relationType.unlocks",
 };
 
-const FACT_KIND_LABEL_KEYS: Record<string, any> = {
+const FACT_KIND_LABEL_KEYS: Record<string, string> = {
   canon: "premadePreview.factKind.canon",
   dm_secret: "premadePreview.factKind.dmSecret",
   rumor: "premadePreview.factKind.rumor",
@@ -74,7 +77,7 @@ const FACT_KIND_LABEL_KEYS: Record<string, any> = {
   unknown: "premadePreview.factKind.unknown",
 };
 
-const CONFIDENCE_LABEL_KEYS: Record<string, any> = {
+const CONFIDENCE_LABEL_KEYS: Record<string, string> = {
   unconfirmed: "premadePreview.confidence.unconfirmed",
   suspected: "premadePreview.confidence.suspected",
   likely: "premadePreview.confidence.likely",
@@ -82,13 +85,13 @@ const CONFIDENCE_LABEL_KEYS: Record<string, any> = {
   false: "premadePreview.confidence.false",
 };
 
-const SYSTEM_LABEL_KEYS: Record<string, any> = {
+const SYSTEM_LABEL_KEYS: Record<string, string> = {
   generic_fantasy_d20: "premadePreview.system.genericFantasyD20",
   dnd_srd_5_2_1: "premadePreview.system.dndSrd521",
   custom: "premadePreview.system.custom",
 };
 
-const DIFFICULTY_LABEL_KEYS: Record<string, any> = {
+const DIFFICULTY_LABEL_KEYS: Record<string, string> = {
   starter: "premadePreview.difficulty.starter",
   medium: "premadePreview.difficulty.medium",
   advanced: "premadePreview.difficulty.advanced",
@@ -106,14 +109,14 @@ function tokenFallback(value: string): string {
     .join(" ");
 }
 
-function labelFor(value: string | undefined, labels: Record<string, any>, t: (key: any, vars?: Record<string, string>) => string): string {
+function labelFor(value: string | undefined, labels: Record<string, string>, t: TranslateFn): string {
   if (!value) return "";
   const key = labels[value];
   return key ? t(key) : tokenFallback(value);
 }
 
-function visibilityLabel(visibility: any, t: (key: any, vars?: Record<string, string>) => string): string {
-  const kind = typeof visibility?.kind === "string" ? visibility.kind : "dm_only";
+function visibilityLabel(visibility: VisibilityRule | undefined, t: TranslateFn): string {
+  const kind = visibility?.kind ?? "dm_only";
   switch (kind) {
     case "public":
       return t("premadePreview.visibilityPublic");

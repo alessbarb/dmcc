@@ -22,16 +22,27 @@ import { SecurityPanel } from "./SecurityPanel.js";
 import { IdentityEditor } from "./IdentityEditor.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
 
+declare global {
+  interface Window {
+    __accountCenterDirty?: boolean;
+  }
+}
+
 const MODULE_IDS: AccountModuleId[] = [
   "account", "dm-profile", "player-profiles", "privacy",
   "appearance", "notifications", "security", "data",
 ];
 
-const audiences = Object.fromEntries(
-  ["displayName", "avatarUrl", "pronouns", "timeZone", "biography", "contact"].map(
-    (field) => [field, ["private", "dm", "table", "global"] as ProfileAudience[]]
-  )
-) as Record<SocialField, ProfileAudience[]>;
+const ALL_AUDIENCES: ProfileAudience[] = ["private", "dm", "table", "global"];
+
+const audiences: Record<SocialField, ProfileAudience[]> = {
+  displayName: ALL_AUDIENCES,
+  avatarUrl: ALL_AUDIENCES,
+  pronouns: ALL_AUDIENCES,
+  timeZone: ALL_AUDIENCES,
+  biography: ALL_AUDIENCES,
+  contact: ALL_AUDIENCES,
+};
 
 const MODULE_DESCRIPTIONS: Record<AccountModuleId, string> = {
   account: "Private identity, sign-in email and your base account details.",
@@ -71,9 +82,9 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
   useBlocker({
     shouldBlockFn: () => {
       if (surface === "modal") return false;
-      const isDirty = Boolean((window as any).__accountCenterDirty);
+      const isDirty = Boolean(window.__accountCenterDirty);
       if (isDirty) {
-        return !window.confirm(t("account.confirmDiscard" as any));
+        return !window.confirm(t("account.confirmDiscard"));
       }
       return false;
     },
@@ -147,14 +158,14 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
 
   const moduleTitle = useMemo(() => {
     const labels: Record<AccountModuleId, string> = {
-      account: t("account.nav.account" as any),
-      "dm-profile": t("account.nav.dmProfile" as any),
-      "player-profiles": t("account.nav.playerProfiles" as any),
-      privacy: t("account.nav.privacy" as any),
-      appearance: t("account.nav.appearance" as any),
-      notifications: t("account.nav.notifications" as any),
-      security: t("account.nav.security" as any),
-      data: t("account.nav.data" as any),
+      account: t("account.nav.account"),
+      "dm-profile": t("account.nav.dmProfile"),
+      "player-profiles": t("account.nav.playerProfiles"),
+      privacy: t("account.nav.privacy"),
+      appearance: t("account.nav.appearance"),
+      notifications: t("account.nav.notifications"),
+      security: t("account.nav.security"),
+      data: t("account.nav.data"),
     };
     return labels[active];
   }, [active, t]);
@@ -229,8 +240,8 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
           <AccountNav
             active={active}
             onSelect={(id) => {
-              if ((window as any).__accountCenterDirty) {
-                if (!window.confirm(t("account.confirmDiscard" as any))) {
+              if (window.__accountCenterDirty) {
+                if (!window.confirm(t("account.confirmDiscard"))) {
                   return;
                 }
               }
@@ -411,7 +422,7 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
                         const profile = aggregate.playerProfiles.find(p => p.campaignId === membership.campaignId);
                         const statusLabel = membership.revokedAt
                           ? t("account.profile.revoked")
-                          : t("account.profile.archived" as any);
+                          : t("account.profile.archived");
                         return (
                           <li key={membership.campaignId} className="account-card archived">
                             <div className="account-card-info">
