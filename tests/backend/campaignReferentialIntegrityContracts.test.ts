@@ -81,6 +81,7 @@ describe("player visibility referential integrity", () => {
       targetType: "entity",
       targetId: "entity_integrity_a",
       scope: "specific_player",
+      source: "visibility",
       userId: null,
       playerId: ids.playerA,
     });
@@ -115,6 +116,17 @@ describe("player visibility referential integrity", () => {
     expect(resources).toHaveLength(0);
   });
 
+  it("rejects a membership linked to a player from another campaign", async () => {
+    await seedCampaigns();
+
+    await expect(db.insert(schema.campaignMemberships).values({
+      campaignId: ids.campaignB,
+      userId: ids.viewer,
+      role: "player",
+      playerId: ids.playerA,
+    })).rejects.toThrow();
+  });
+
   it("rejects a player grant from another campaign", async () => {
     await seedCampaigns();
 
@@ -123,6 +135,7 @@ describe("player visibility referential integrity", () => {
       targetType: "entity",
       targetId: "entity_other_campaign",
       scope: "specific_player",
+      source: "visibility",
       userId: null,
       playerId: ids.playerA,
     })).rejects.toThrow();
@@ -145,6 +158,7 @@ describe("player visibility referential integrity", () => {
       targetType: "entity",
       targetId: "entity_for_viewer",
       scope: "specific_user",
+      source: "manual",
       userId: ids.viewer,
       playerId: null,
     });
