@@ -35,6 +35,7 @@ import { LiveTableModal } from "../components/LiveTableModal.js";
 import { AccountModal } from "../../account/AccountModal.js";
 import { useKeyboardShortcuts } from "../../shared/hooks/useKeyboardShortcuts.js";
 import { MobileDock } from "../../shared/components/MobileDock.js";
+import { orderCampaignMobileDockItems } from "../navigation/campaignNavigation.js";
 
 type CampaignNavGroup = "primary" | "secondary";
 
@@ -305,11 +306,7 @@ export function CampaignShell() {
     navigate({ to: `/campaigns/${campaignId}/${path}` });
   };
 
-  const dockPriority = ["command-center", "session", "canvas", "entities"];
-  const dockNavItems = [
-    ...dockPriority.map((path) => navItems.find((item) => item.path === path)).filter(Boolean),
-    ...navItems.filter((item) => !dockPriority.includes(item.path)),
-  ] as CampaignNavItem[];
+  const dockNavItems = orderCampaignMobileDockItems(navItems);
   const dockItems = dockNavItems.map(({ path, label, Icon }) => ({
     id: path,
     label,
