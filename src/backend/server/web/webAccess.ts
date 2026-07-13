@@ -83,6 +83,7 @@ export async function getMembership(campaignId: string, userId: string): Promise
       eq(schema.campaigns.campaignId, campaignId),
       eq(schema.campaigns.ownerId, userId),
       sql`${schema.campaigns.status} <> 'deleted'`,
+      sql`${schema.campaigns.status} <> 'importing'`,
     ))
     .limit(1);
 
@@ -142,6 +143,7 @@ export async function listAccessibleCampaigns(userId: string): Promise<Accessibl
     )
     .where(and(
       sql`${schema.campaigns.status} <> 'deleted'`,
+      sql`${schema.campaigns.status} <> 'importing'`,
       or(
         eq(schema.campaigns.ownerId, userId),
         eq(schema.campaignMemberships.userId, userId),
