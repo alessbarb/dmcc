@@ -1,9 +1,10 @@
-import { and, eq, ne } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
 import { PostgresCampaignRepository } from "./postgresCampaignRepository.js";
 
 export type KnowledgeTargetType = "entity" | "fact" | "relation" | "clue" | "objective";
+export type KnowledgeAccessReason = "public" | "all_players" | "specific_player" | "specific_user" | "linked_character" | "hidden";
 
 export interface PlayerKnowledgeTarget {
   targetType: KnowledgeTargetType;
@@ -11,13 +12,17 @@ export interface PlayerKnowledgeTarget {
   title: string;
   subtitle?: string;
   visible: boolean;
-  reason: "public" | "all_players" | "specific_player" | "specific_user" | "linked_character" | "hidden";
+  reason: KnowledgeAccessReason;
 }
 
-type VisibilityGrantInsert = typeof schema.visibilityGrants.$inferInsert;
-type VisibilityGrant = typeof schema.visibilityGrants.$inferSelect;
+interface KnowledgeAccessRule {
+  commonScope?: "public" | "all_players";
+  playerIds: Set<string>;
+  userIds: Set<string>;
+}
 
-const visibilityRefreshes = new Map<string, Promise<void>>();
+export type KnowledgeAccessIndex = Map<string, KnowledgeAccessRule>;
+type VisibilityGrant = typeof schema.visibilityGrants.$inferSelect;
 
 function valuesOf<T>(value: unknown): T[] {
   if (!value) return [];
@@ -27,167 +32,142 @@ function valuesOf<T>(value: unknown): T[] {
   return [];
 }
 
-function normalizeVisibility(value: unknown): { commonScope?: "public" | "all_players"; playerIds: string[] } {
+function targetKey(targetType: KnowledgeTargetType, targetId: string): string {
+  return `${targetType}\u0000${targetId}`;
+}
+
+function ruleFor(index: KnowledgeAccessIndex, targetType: KnowledgeTargetType, targetId: string): KnowledgeAccessRule {
+  const key = targetKey(targetType, targetId);
+  const existing = index.get(key);
+  if (existing) return existing;
+  const created: KnowledgeAccessRule = { playerIds: new Set(), userIds: new Set() };
+  index.set(key, created);
+  return created;
+}
+
+function applyVisibility(index: KnowledgeAccessIndex, targetType: KnowledgeTargetType, targetId: string, value: unknown): void {
+  const rule = ruleFor(index, targetType, targetId);
   if (typeof value === "string") {
-    if (value === "public") return { commonScope: "public", playerIds: [] };
-    if (value === "party" || value === "all_players") return { commonScope: "all_players", playerIds: [] };
-    return { playerIds: [] };
+    if (value === "public") rule.commonScope = "public";
+    else if (value === "party" || value === "all_players") rule.commonScope = "all_players";
+    return;
   }
-  if (!value || typeof value !== "object") return { playerIds: [] };
+  if (!value || typeof value !== "object") return;
+
   const visibility = value as Record<string, unknown>;
   const kind = String(visibility.kind ?? visibility.mode ?? visibility.scope ?? "dm_only");
-  if (kind === "public") return { commonScope: "public", playerIds: [] };
-  if (kind === "party" || kind === "all_players") return { commonScope: "all_players", playerIds: [] };
+  if (kind === "public") rule.commonScope = "public";
+  else if (kind === "party" || kind === "all_players") rule.commonScope = "all_players";
+
   const rawPlayerIds = visibility.playerIds ?? visibility.players ?? visibility.specificPlayerIds;
-  return {
-    playerIds: Array.isArray(rawPlayerIds)
-      ? rawPlayerIds.filter((playerId): playerId is string => typeof playerId === "string" && playerId.length > 0)
-      : [],
-  };
+  if (Array.isArray(rawPlayerIds)) {
+    for (const playerId of rawPlayerIds) {
+      if (typeof playerId === "string" && playerId.length > 0) rule.playerIds.add(playerId);
+    }
+  }
 }
 
-function addVisibilityGrant(
-  grants: VisibilityGrantInsert[],
-  campaignId: string,
-  targetType: KnowledgeTargetType,
-  targetId: string,
-  scope: "public" | "all_players" | "specific_player",
-  playerId?: string,
-): void {
-  grants.push({
-    campaignId,
-    targetType,
-    targetId,
-    scope,
-    playerId: playerId ?? null,
-    userId: null,
-  });
+function applyExplicitGrant(index: KnowledgeAccessIndex, grant: VisibilityGrant): void {
+  const targetType = grant.targetType as KnowledgeTargetType;
+  const rule = ruleFor(index, targetType, grant.targetId);
+  if (grant.scope === "public") rule.commonScope = "public";
+  else if (grant.scope === "all_players" && rule.commonScope !== "public") rule.commonScope = "all_players";
+  else if (grant.scope === "specific_player" && grant.playerId) rule.playerIds.add(grant.playerId);
+  else if (grant.scope === "specific_user" && grant.userId) rule.userIds.add(grant.userId);
 }
 
-function grantIdentity(grant: Pick<VisibilityGrant, "targetType" | "targetId" | "scope" | "playerId" | "userId">): string {
-  return [grant.targetType, grant.targetId, grant.scope, grant.playerId ?? "", grant.userId ?? ""].join("\u0000");
-}
-
-function sameGrantSet(existing: VisibilityGrant[], desired: VisibilityGrantInsert[]): boolean {
-  if (existing.length !== desired.length) return false;
-  const existingKeys = new Set(existing.map(grantIdentity));
-  return desired.every((grant) => existingKeys.has(grantIdentity({
-    targetType: grant.targetType,
-    targetId: grant.targetId,
-    scope: grant.scope,
-    playerId: grant.playerId ?? null,
-    userId: grant.userId ?? null,
-  })));
-}
-
-export function grantAllowsPlayer(
-  grant: VisibilityGrant,
-  userId: string,
-  playerId?: string | null,
-): boolean {
+export function grantAllowsPlayer(grant: VisibilityGrant, userId: string, playerId?: string | null): boolean {
   if (grant.scope === "public" || grant.scope === "all_players") return true;
   if (grant.scope === "specific_user" && grant.userId === userId) return true;
   return Boolean(playerId && grant.scope === "specific_player" && grant.playerId === playerId);
 }
 
-async function buildDerivedVisibilityGrants(campaignId: string): Promise<VisibilityGrantInsert[]> {
+export async function buildKnowledgeAccessIndex(campaignId: string): Promise<KnowledgeAccessIndex> {
   const repository = new PostgresCampaignRepository();
-  const [state, facts, relations, clues, objectives] = await Promise.all([
+  const [state, facts, relations, clues, objectives, grants] = await Promise.all([
     repository.getCampaignState(campaignId),
     db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId)),
     db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId)),
     db.select().from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, campaignId)),
     db.select().from(schema.campaignObjectives).where(eq(schema.campaignObjectives.campaignId, campaignId)),
+    db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, campaignId)),
   ]);
 
+  const index: KnowledgeAccessIndex = new Map();
   const projectedEntities = valuesOf<any>((state as any)?.entities);
   const projectedFacts = valuesOf<any>((state as any)?.facts);
   const projectedRelations = valuesOf<any>((state as any)?.relations);
-  const desiredGrants: VisibilityGrantInsert[] = [];
 
   for (const entity of projectedEntities) {
     const targetId = String(entity?.entityId ?? entity?.id ?? "");
     if (!targetId || entity?.archived || entity?.status === "archived") continue;
-    const visibility = normalizeVisibility(entity?.visibility);
-    if (visibility.commonScope) addVisibilityGrant(desiredGrants, campaignId, "entity", targetId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) addVisibilityGrant(desiredGrants, campaignId, "entity", targetId, "specific_player", playerId);
+    applyVisibility(index, "entity", targetId, entity?.visibility);
   }
 
   const projectedFactById = new Map(projectedFacts.map((fact) => [String(fact?.factId ?? fact?.id ?? ""), fact]));
   for (const fact of facts) {
     if (fact.status === "archived" || fact.kind === "dm_secret") continue;
-    const visibility = normalizeVisibility(projectedFactById.get(fact.factId)?.visibility ?? { kind: "party" });
-    if (visibility.commonScope) addVisibilityGrant(desiredGrants, campaignId, "fact", fact.factId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) addVisibilityGrant(desiredGrants, campaignId, "fact", fact.factId, "specific_player", playerId);
+    applyVisibility(index, "fact", fact.factId, projectedFactById.get(fact.factId)?.visibility ?? { kind: "party" });
   }
 
   const projectedRelationById = new Map(projectedRelations.map((relation) => [String(relation?.relationId ?? relation?.id ?? ""), relation]));
   for (const relation of relations) {
-    const visibility = normalizeVisibility(projectedRelationById.get(relation.relationId)?.visibility ?? relation.visibility);
-    if (visibility.commonScope) addVisibilityGrant(desiredGrants, campaignId, "relation", relation.relationId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) addVisibilityGrant(desiredGrants, campaignId, "relation", relation.relationId, "specific_player", playerId);
+    applyVisibility(index, "relation", relation.relationId, projectedRelationById.get(relation.relationId)?.visibility ?? relation.visibility);
   }
 
   for (const clue of clues) {
     if (clue.status === "archived") continue;
-    const visibility = normalizeVisibility(clue.visibilityScope);
-    if (visibility.commonScope) addVisibilityGrant(desiredGrants, campaignId, "clue", clue.clueId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) addVisibilityGrant(desiredGrants, campaignId, "clue", clue.clueId, "specific_player", playerId);
+    applyVisibility(index, "clue", clue.clueId, clue.visibilityScope);
   }
 
   for (const objective of objectives) {
     if (objective.status === "archived") continue;
-    if (objective.playerId) {
-      addVisibilityGrant(desiredGrants, campaignId, "objective", objective.objectiveId, "specific_player", objective.playerId);
-      continue;
-    }
-    const visibility = normalizeVisibility(objective.visibilityScope);
-    if (visibility.commonScope) addVisibilityGrant(desiredGrants, campaignId, "objective", objective.objectiveId, visibility.commonScope);
+    if (objective.playerId) ruleFor(index, "objective", objective.objectiveId).playerIds.add(objective.playerId);
+    else applyVisibility(index, "objective", objective.objectiveId, objective.visibilityScope);
   }
 
-  return desiredGrants;
+  for (const grant of grants) applyExplicitGrant(index, grant);
+  return index;
 }
 
-async function performVisibilityRefresh(campaignId: string): Promise<void> {
-  const desiredGrants = await buildDerivedVisibilityGrants(campaignId);
-  const existingDerivedGrants = await db.select().from(schema.visibilityGrants).where(and(
-    eq(schema.visibilityGrants.campaignId, campaignId),
-    ne(schema.visibilityGrants.scope, "specific_user"),
-  ));
-
-  if (sameGrantSet(existingDerivedGrants, desiredGrants)) return;
-
-  await db.transaction(async (tx) => {
-    await tx.delete(schema.visibilityGrants).where(and(
-      eq(schema.visibilityGrants.campaignId, campaignId),
-      ne(schema.visibilityGrants.scope, "specific_user"),
-    ));
-    if (desiredGrants.length > 0) {
-      await tx.insert(schema.visibilityGrants).values(desiredGrants).onConflictDoNothing();
-    }
-  });
+export function knowledgeAccessReason(
+  index: KnowledgeAccessIndex,
+  targetType: KnowledgeTargetType,
+  targetId: string,
+  userId: string,
+  playerId?: string | null,
+  linkedCharacterId?: string | null,
+): KnowledgeAccessReason {
+  if (targetType === "entity" && linkedCharacterId === targetId) return "linked_character";
+  const rule = index.get(targetKey(targetType, targetId));
+  if (!rule) return "hidden";
+  if (rule.commonScope === "public") return "public";
+  if (rule.commonScope === "all_players") return "all_players";
+  if (userId && rule.userIds.has(userId)) return "specific_user";
+  if (playerId && rule.playerIds.has(playerId)) return "specific_player";
+  return "hidden";
 }
 
-export function refreshKnowledgeVisibilityGrants(campaignId: string): Promise<void> {
-  const currentRefresh = visibilityRefreshes.get(campaignId);
-  if (currentRefresh) return currentRefresh;
-
-  const refresh = performVisibilityRefresh(campaignId).finally(() => {
-    visibilityRefreshes.delete(campaignId);
-  });
-  visibilityRefreshes.set(campaignId, refresh);
-  return refresh;
+export function playerCanAccessKnowledge(
+  index: KnowledgeAccessIndex,
+  targetType: KnowledgeTargetType,
+  targetId: string,
+  userId: string,
+  playerId?: string | null,
+  linkedCharacterId?: string | null,
+): boolean {
+  return knowledgeAccessReason(index, targetType, targetId, userId, playerId, linkedCharacterId) !== "hidden";
 }
 
 export async function buildDmPlayerKnowledgeProjection(campaignId: string) {
-  const [players, entities, facts, relations, clues, objectives, grants] = await Promise.all([
+  const [accessIndex, players, entities, facts, relations, clues, objectives] = await Promise.all([
+    buildKnowledgeAccessIndex(campaignId),
     db.select().from(schema.playerProfiles).where(and(eq(schema.playerProfiles.campaignId, campaignId), eq(schema.playerProfiles.status, "active"))),
     db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, campaignId)),
     db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId)),
     db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId)),
     db.select().from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, campaignId)),
     db.select().from(schema.campaignObjectives).where(eq(schema.campaignObjectives.campaignId, campaignId)),
-    db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, campaignId)),
   ]);
 
   const targets = [
@@ -205,16 +185,15 @@ export async function buildDmPlayerKnowledgeProjection(campaignId: string) {
       displayName: player.displayName,
       linkedCharacterId: player.linkedCharacterId,
       knowledge: targets.map((target): PlayerKnowledgeTarget => {
-        if (target.targetType === "entity" && target.targetId === player.linkedCharacterId) return { ...target, visible: true, reason: "linked_character" };
-        const allowedGrant = grants
-          .filter((grant) => grant.targetType === target.targetType && grant.targetId === target.targetId)
-          .find((grant) => grantAllowsPlayer(grant, player.userId ?? "", player.profileId));
-        let reason: PlayerKnowledgeTarget["reason"] = "hidden";
-        if (allowedGrant?.scope === "public") reason = "public";
-        else if (allowedGrant?.scope === "all_players") reason = "all_players";
-        else if (allowedGrant?.scope === "specific_user") reason = "specific_user";
-        else if (allowedGrant) reason = "specific_player";
-        return { ...target, visible: Boolean(allowedGrant), reason };
+        const reason = knowledgeAccessReason(
+          accessIndex,
+          target.targetType,
+          target.targetId,
+          player.userId ?? "",
+          player.profileId,
+          player.linkedCharacterId,
+        );
+        return { ...target, visible: reason !== "hidden", reason };
       }),
     })),
     targets,
