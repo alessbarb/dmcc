@@ -165,7 +165,7 @@ describe("frontend contracts", () => {
       ["src/frontend/dm/canvas/pages/CanvasPage.tsx", /session\.status === "planned"/],
       ["src/frontend/dm/pages/CommandCenterPage.tsx", /session\.status === "planned"/],
       ["src/frontend/dm/sessions/SessionPage.tsx", /session\.status === "planned"/],
-      ["src/frontend/dm/hub/useDmHubDashboard.ts", /raw\?\.status === "planned"/],
+      ["src/frontend/dm/hub/useDmHubDashboard.ts", /record\.status === "planned"/],
       ["src/frontend/dm/hub/dmHubTypes.ts", /"running" \| "paused" \| "planned"/],
     ];
 

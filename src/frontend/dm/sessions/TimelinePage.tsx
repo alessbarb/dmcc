@@ -19,6 +19,7 @@ import {
   renderEventDescription,
 } from "../entities/eventVisuals.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
+import type { Entity, Session } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 const NARRATIVE_EVENT_TYPES = new Set([
@@ -34,9 +35,23 @@ const NARRATIVE_EVENT_TYPES = new Set([
   "RelationCreated",
 ]);
 
+export interface TimelineEvent {
+  eventId: string;
+  type: string;
+  occurredAt: string;
+  sequence: number;
+  actorId: string;
+  payload?: Record<string, unknown>;
+}
+
+export interface TimelinePageCampaignState {
+  entities?: Entity[];
+  sessions?: Session[];
+}
+
 export interface TimelinePageProps {
-  timeline?: any;
-  campaignState?: any;
+  timeline?: { events: TimelineEvent[] } | null;
+  campaignState?: TimelinePageCampaignState | null;
   timelineFilter?: string;
   setTimelineFilter?: (f: string) => void;
   expandedEvents?: Record<string, boolean>;
@@ -50,11 +65,17 @@ interface EventGroup {
   sublabel?: string;
   isClosed: boolean;
   isActive: boolean;
-  events: any[];
+  events: TimelineEvent[];
 }
 
-function getEventText(evt: any): string {
-  const p = evt.payload ?? {};
+function asString(value: unknown, fallback = ""): string {
+  if (typeof value === "string") return value;
+  if (typeof value === "number") return String(value);
+  return fallback;
+}
+
+function getEventText(evt: TimelineEvent): string {
+  const p: Record<string, unknown> = evt.payload ?? {};
   return [
     p.title, p.name, p.displayName, p.statement, p.summary,
     p.description, p.relationType, p.type, evt.type,
@@ -64,19 +85,19 @@ function getEventText(evt: any): string {
     .toLowerCase();
 }
 
-function eventMatchesEntity(evt: any, entityId: string): boolean {
+function eventMatchesEntity(evt: TimelineEvent, entityId: string): boolean {
   if (entityId === "all") return true;
-  const p = evt.payload ?? {};
-  return [
-    p.entityId, p.id, p.sourceEntityId, p.targetEntityId,
-    p.targetId, ...(p.relatedEntityIds ?? []),
-  ].includes(entityId);
+  const p: Record<string, unknown> = evt.payload ?? {};
+  const related = Array.isArray(p.relatedEntityIds) ? p.relatedEntityIds : [];
+  return [p.entityId, p.id, p.sourceEntityId, p.targetEntityId, p.targetId, ...related].includes(entityId);
 }
 
 export function TimelinePage(props: TimelinePageProps = {}) {
   const store = useCampaignStore();
   const { locale, t } = useTranslation();
-  const timeline = props.timeline ?? store.timeline;
+  // Store's timeline field is untyped (backend /timeline route always returns events: []); this page defines the real event contract.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+  const timeline = props.timeline ?? (store.timeline as { events: TimelineEvent[] } | null);
   const campaignState = props.campaignState ?? store.campaignState;
   const onEntityClick = props.onEntityClick;
   const [timelineFilterLocal, setTimelineFilterLocal] = useState("narrative");
@@ -100,10 +121,10 @@ export function TimelinePage(props: TimelinePageProps = {}) {
     setCollapsedGroups(prev => ({ ...prev, [key]: !prev[key] }));
   }
 
-  function isLiveEvent(evt: any): boolean {
-    const sessions: any[] = campaignState?.sessions ?? [];
+  function isLiveEvent(evt: TimelineEvent): boolean {
+    const sessions: Session[] = campaignState?.sessions ?? [];
     const ts = new Date(evt.occurredAt).getTime();
-    return sessions.some((s: any) => {
+    return sessions.some((s) => {
       if (!s.startedAt) return false;
       const start = new Date(s.startedAt).getTime();
       const end = s.endedAt ? new Date(s.endedAt).getTime() : Infinity;
@@ -111,10 +132,10 @@ export function TimelinePage(props: TimelinePageProps = {}) {
     });
   }
 
-  function buildGroups(events: any[]): EventGroup[] {
+  function buildGroups(events: TimelineEvent[]): EventGroup[] {
     const groups: EventGroup[] = [];
     let currentGroup: EventGroup | null = null;
-    let prepEvents: any[] = [];
+    let prepEvents: TimelineEvent[] = [];
 
     // events arrive newest-first; re-sort oldest-first for grouping
     const sorted = [...events].reverse();
@@ -135,8 +156,8 @@ export function TimelinePage(props: TimelinePageProps = {}) {
         currentGroup = {
           key: evt.eventId,
           label: t("timeline.sessionGroupTitle", {
-            number: evt.payload?.number ?? "",
-            title: evt.payload?.title ?? "",
+            number: asString(evt.payload?.number),
+            title: asString(evt.payload?.title),
           }),
           sublabel: "",
           isClosed: false,
@@ -147,7 +168,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
         currentGroup.events.push(evt);
         currentGroup.isClosed = true;
         currentGroup.isActive = false;
-        currentGroup.sublabel = evt.payload?.summary ?? "";
+        currentGroup.sublabel = asString(evt.payload?.summary);
         groups.push({ ...currentGroup });
         currentGroup = null;
       } else if (currentGroup) {
@@ -182,20 +203,20 @@ export function TimelinePage(props: TimelinePageProps = {}) {
       </div>
     );
 
-  const narrativeEvents = timeline.events.filter((e: any) =>
+  const narrativeEvents = timeline.events.filter((e) =>
     NARRATIVE_EVENT_TYPES.has(e.type),
   );
   const visibleEvents = showTechnical ? timeline.events : narrativeEvents;
 
   const stats = {
     total: narrativeEvents.length,
-    sessions: timeline.events.filter((e: any) => e.type === "SessionClosed").length,
-    facts: timeline.events.filter((e: any) => e.type === "FactCreated").length,
-    revelaciones: timeline.events.filter((e: any) => e.type === "VisibilityChanged" || e.type === "ClueRevealed").length,
+    sessions: timeline.events.filter((e) => e.type === "SessionClosed").length,
+    facts: timeline.events.filter((e) => e.type === "FactCreated").length,
+    revelaciones: timeline.events.filter((e) => e.type === "VisibilityChanged" || e.type === "ClueRevealed").length,
     unrevealedSecrets: (() => {
-      const entities: any[] = campaignState?.entities ?? [];
+      const entities: Entity[] = campaignState?.entities ?? [];
       return entities.filter(
-        (e: any) =>
+        (e) =>
           !e.archived &&
           (e.entityType === "secret" || e.entityType === "clue") &&
           e.visibility?.kind === "dm_only",
@@ -203,8 +224,8 @@ export function TimelinePage(props: TimelinePageProps = {}) {
     })(),
     daysSinceLastSession: (() => {
       const closed = timeline.events
-        .filter((e: any) => e.type === "SessionClosed")
-        .sort((a: any, b: any) => new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime());
+        .filter((e) => e.type === "SessionClosed")
+        .sort((a, b) => new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime());
       if (closed.length === 0) return null;
       const ms = Date.now() - new Date(closed[0].occurredAt).getTime();
       return Math.floor(ms / 86_400_000);
@@ -217,21 +238,21 @@ export function TimelinePage(props: TimelinePageProps = {}) {
       key: "sessions",
       label: t("timeline.labels.sessions"),
       count: visibleEvents.filter(
-        (e: any) => getEventVisualConfig(e.type, locale).category === "sessions",
+        (e) => getEventVisualConfig(e.type, locale).category === "sessions",
       ).length,
     },
     {
       key: "facts",
       label: t("timeline.labels.facts"),
       count: visibleEvents.filter(
-        (e: any) => getEventVisualConfig(e.type, locale).category === "facts",
+        (e) => getEventVisualConfig(e.type, locale).category === "facts",
       ).length,
     },
     {
       key: "players",
       label: t("timeline.labels.players"),
       count: visibleEvents.filter(
-        (e: any) => getEventVisualConfig(e.type, locale).category === "players",
+        (e) => getEventVisualConfig(e.type, locale).category === "players",
       ).length,
     },
     ...(showTechnical
@@ -240,28 +261,28 @@ export function TimelinePage(props: TimelinePageProps = {}) {
             key: "entities",
             label: t("timeline.labels.entities"),
             count: visibleEvents.filter(
-              (e: any) => getEventVisualConfig(e.type, locale).category === "entities",
+              (e) => getEventVisualConfig(e.type, locale).category === "entities",
             ).length,
           },
           {
             key: "relations",
             label: t("timeline.labels.relations"),
             count: visibleEvents.filter(
-              (e: any) => getEventVisualConfig(e.type, locale).category === "relations",
+              (e) => getEventVisualConfig(e.type, locale).category === "relations",
             ).length,
           },
           {
             key: "campaigns",
             label: t("timeline.labels.campaigns"),
             count: visibleEvents.filter(
-              (e: any) => getEventVisualConfig(e.type, locale).category === "campaigns",
+              (e) => getEventVisualConfig(e.type, locale).category === "campaigns",
             ).length,
           },
           {
             key: "other",
             label: t("timeline.labels.system"),
             count: visibleEvents.filter(
-              (e: any) => getEventVisualConfig(e.type, locale).category === "other",
+              (e) => getEventVisualConfig(e.type, locale).category === "other",
             ).length,
           },
         ]
@@ -271,30 +292,31 @@ export function TimelinePage(props: TimelinePageProps = {}) {
   const filteredEvents = visibleEvents
     .slice()
     .reverse()
-    .filter((evt: any) => {
+    .filter((evt) => {
       if (timelineFilter === "narrative") return NARRATIVE_EVENT_TYPES.has(evt.type);
       return getEventVisualConfig(evt.type).category === timelineFilter;
     })
-    .filter((evt: any) => {
+    .filter((evt) => {
       if (searchQuery.trim() === "") return true;
       return getEventText(evt).includes(searchQuery.trim().toLowerCase());
     })
-    .filter((evt: any) => eventMatchesEntity(evt, entityFilterId));
+    .filter((evt) => eventMatchesEntity(evt, entityFilterId));
 
   // ── shared event item renderer ───────────────────────────────────────────────
-  const renderEventItem = (evt: any) => {
+  const renderEventItem = (evt: TimelineEvent) => {
     const visual = getEventVisualConfig(evt.type, locale);
     const IconComp = visual.IconComponent;
     const live = isLiveEvent(evt);
+    const itemStyle: React.CSSProperties & Record<string, string> = {
+      "--timeline-event-color": visual.color,
+      "--timeline-event-bg": visual.bgColor,
+    };
 
     return (
       <article
         key={evt.eventId}
         className="timeline-item"
-        style={{
-          "--timeline-event-color": visual.color,
-          "--timeline-event-bg": visual.bgColor,
-        } as React.CSSProperties}
+        style={itemStyle}
       >
         <div
           className="timeline-marker"
@@ -492,7 +514,7 @@ export function TimelinePage(props: TimelinePageProps = {}) {
               }}
             />
           </div>
-          {campaignState?.entities?.length > 0 && (
+          {campaignState?.entities && campaignState.entities.length > 0 && (
             <select
               value={entityFilterId}
               onChange={e => setEntityFilterId(e.target.value)}
@@ -503,11 +525,11 @@ export function TimelinePage(props: TimelinePageProps = {}) {
               }}
             >
               <option value="all">{t("timeline.filterEntityAll")}</option>
-              {[...(campaignState.entities as any[])]
+              {[...campaignState.entities]
                 .filter(e => !e.archived)
                 .sort((a, b) => (a.title ?? "").localeCompare(b.title ?? ""))
                 .map(e => (
-                  <option key={e.entityId ?? e.id} value={e.entityId ?? e.id}>{e.title}</option>
+                  <option key={e.entityId} value={e.entityId}>{e.title}</option>
                 ))
               }
             </select>

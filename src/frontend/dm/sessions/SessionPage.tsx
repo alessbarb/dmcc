@@ -21,15 +21,29 @@ import {
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { createId } from "@shared/ids.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
+import type { CampaignStateStore, Entity, Session } from "../../shared/stores/campaignStore.js";
+import type { SessionEvent } from "@core/domain/session/types.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { GuidedEmptyState } from "../onboarding/CampaignStarterHub.js";
 
+// ── shared local types ───────────────────────────────────────────────────────
+
+type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
+// The top-level campaignState can be null before the store finishes loading; sub-panels
+// receive it as-is and guard with optional chaining.
+type MaybeCampaignState = CampaignState | null;
+type SessionPrep = NonNullable<Session["prep"]>;
+type ChecklistItem = NonNullable<SessionPrep["checklist"]>[number];
+
+function errorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
+}
 
 export interface SessionPageProps {
-  campaignState?: any;
-  activeSession?: any;
+  campaignState?: CampaignState;
+  activeSession?: Session;
   quickCaptureType?: string;
   setQuickCaptureType?: (t: string) => void;
   quickCaptureText?: string;
@@ -37,17 +51,17 @@ export interface SessionPageProps {
   sessionSummary?: string;
   setSessionSummary?: (s: string) => void;
   handleQuickCaptureSubmit?: (e: React.SyntheticEvent) => Promise<void>;
-  createPreparedSession?: (title: string, prep?: any, scheduledAt?: string) => Promise<any>;
-  updateSessionPrep?: (sessionId: string, updates: { title?: string; scheduledAt?: string; prep: any }) => Promise<void>;
+  createPreparedSession?: (title: string, prep?: SessionPrep, scheduledAt?: string) => Promise<string | undefined>;
+  updateSessionPrep?: (sessionId: string, updates: { title?: string; scheduledAt?: string; prep: SessionPrep }) => Promise<void>;
   cancelSession?: (sessionId: string) => Promise<void>;
   archiveSession?: (sessionId: string) => Promise<void>;
-  activateSession?: (sessionId: string) => Promise<any>;
-  startSession?: (title: string) => Promise<any>;
-  closeSession?: (sessionId: string, summary: string) => Promise<any>;
-  createEntity?: (...args: any[]) => Promise<any>;
-  createRelation?: (...args: any[]) => Promise<any>;
-  revealClue?: (...args: any[]) => Promise<any>;
-  recordSessionEvent?: (...args: any[]) => Promise<any>;
+  activateSession?: (sessionId: string) => Promise<void>;
+  startSession?: (title: string) => Promise<void>;
+  closeSession?: (sessionId: string, summary: string) => Promise<void>;
+  createEntity?: CampaignStateStore["createEntity"];
+  createRelation?: CampaignStateStore["createRelation"];
+  revealClue?: CampaignStateStore["revealClue"];
+  recordSessionEvent?: CampaignStateStore["recordSessionEvent"];
   addToast?: (msg: string, kind?: ToastKind) => void;
   setCurrentPage?: (page: string) => void;
   setIsEntityModalOpen?: (open: boolean) => void;
@@ -98,9 +112,9 @@ function PanelNotaRapida({
   addToast,
   onClose,
 }: {
-  createEntity: (...args: any[]) => Promise<any>;
-  recordSessionEvent: (...args: any[]) => Promise<any>;
-  activeSession: any;
+  createEntity: CampaignStateStore["createEntity"];
+  recordSessionEvent: CampaignStateStore["recordSessionEvent"];
+  activeSession: Session;
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
@@ -134,8 +148,8 @@ function PanelNotaRapida({
 
       addToast(t("toasts.noteRecorded"), "success");
       setText("");
-    } catch (err: any) {
-      addToast(t("toasts.noteSaveError", { error: err.message }), "error");
+    } catch (err) {
+      addToast(t("toasts.noteSaveError", { error: errorMessage(err) }), "error");
     } finally {
       setBusy(false);
       onClose();
@@ -180,15 +194,15 @@ function PanelRevelarPista({
   addToast,
   onClose,
 }: {
-  campaignState: any;
-  activeSession: any;
-  revealClue: (...args: any[]) => Promise<any>;
+  campaignState: MaybeCampaignState;
+  activeSession: Session;
+  revealClue: CampaignStateStore["revealClue"];
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
   const { t } = useTranslation();
   const clues = (campaignState?.entities ?? []).filter(
-    (e: any) =>
+    (e: Entity) =>
       e.entityType === "clue" &&
       !e.archived &&
       (e.status === "prepared" || e.status === "hidden")
@@ -201,7 +215,7 @@ function PanelRevelarPista({
   const [busy, setBusy] = useState(false);
 
   const characters = (campaignState?.entities ?? []).filter(
-    (e: any) => e.entityType === "player_character" && !e.archived
+    (e: Entity) => e.entityType === "player_character" && !e.archived
   );
 
   const handleSubmit = async (e: React.SubmitEvent) => {
@@ -255,7 +269,7 @@ function PanelRevelarPista({
           required
         >
           <option value="">{t("sessionPage.selectClue")}</option>
-          {clues.map((c: any) => (
+          {clues.map((c: Entity) => (
             <option key={c.entityId} value={c.entityId}>
               {c.title}
             </option>
@@ -296,7 +310,7 @@ function PanelRevelarPista({
             required
           >
             <option value="">{t("sessionPage.selectCharacter")}</option>
-            {characters.map((c: any) => (
+            {characters.map((c: Entity) => (
               <option key={c.entityId} value={c.entityId}>
                 {c.title}
               </option>
@@ -340,11 +354,11 @@ function PanelDecision({
   addToast,
   onClose,
 }: {
-  campaignState: any;
-  createEntity: (...args: any[]) => Promise<any>;
-  createRelation: (...args: any[]) => Promise<any>;
-  recordSessionEvent: (...args: any[]) => Promise<any>;
-  activeSession: any;
+  campaignState: MaybeCampaignState;
+  createEntity: CampaignStateStore["createEntity"];
+  createRelation: CampaignStateStore["createRelation"];
+  recordSessionEvent: CampaignStateStore["recordSessionEvent"];
+  activeSession: Session;
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
@@ -357,7 +371,7 @@ function PanelDecision({
   const [busy, setBusy] = useState(false);
 
   const entities = (campaignState?.entities ?? []).filter(
-    (e: any) => !e.archived
+    (e: Entity) => !e.archived
   );
 
   const toggleAffected = (id: string) => {
@@ -420,7 +434,7 @@ function PanelDecision({
           sourceEntityId: decisionEntityId,
           targetEntityId: consequenceEntityId,
           relationType: "causes",
-          status: "active",
+          // status defaults to "active" server-side (same value this used to pass explicitly)
           description: t("session.decisionCausesConsequence"),
           visibility: { kind: "dm_only" },
         });
@@ -435,8 +449,8 @@ function PanelDecision({
       }
 
       addToast(t("toasts.decisionRecorded"), "success");
-    } catch (err: any) {
-      addToast(t("toasts.decisionError", { error: err.message }), "error");
+    } catch (err) {
+      addToast(t("toasts.decisionError", { error: errorMessage(err) }), "error");
     } finally {
       setBusy(false);
       onClose();
@@ -490,7 +504,7 @@ function PanelDecision({
               padding: "4px",
             }}
           >
-            {entities.slice(0, 30).map((e: any) => (
+            {entities.slice(0, 30).map((e: Entity) => (
               <button
                 key={e.entityId}
                 type="button"
@@ -568,10 +582,10 @@ function PanelConsecuencia({
   addToast,
   onClose,
 }: {
-  campaignState: any;
-  createEntity: (...args: any[]) => Promise<any>;
-  recordSessionEvent: (...args: any[]) => Promise<any>;
-  activeSession: any;
+  campaignState: MaybeCampaignState;
+  createEntity: CampaignStateStore["createEntity"];
+  recordSessionEvent: CampaignStateStore["recordSessionEvent"];
+  activeSession: Session;
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
@@ -582,7 +596,7 @@ function PanelConsecuencia({
   const [busy, setBusy] = useState(false);
 
   const quests = (campaignState?.entities ?? []).filter(
-    (e: any) => e.entityType === "quest" && !e.archived
+    (e: Entity) => e.entityType === "quest" && !e.archived
   );
 
   const handleSubmit = async (e: React.SubmitEvent) => {
@@ -614,8 +628,8 @@ function PanelConsecuencia({
       });
 
       addToast(t("toasts.consequenceCreated"), "success");
-    } catch (err: any) {
-      addToast(t("toasts.captureError", { error: err.message }), "error");
+    } catch (err) {
+      addToast(t("toasts.captureError", { error: errorMessage(err) }), "error");
     } finally {
       setBusy(false);
       onClose();
@@ -670,7 +684,7 @@ function PanelConsecuencia({
             onChange={(e) => setQuestId(e.target.value)}
           >
             <option value="">{t("sessionPage.noSpecificQuest")}</option>
-            {quests.map((q: any) => (
+            {quests.map((q: Entity) => (
               <option key={q.entityId} value={q.entityId}>
                 {q.title}
               </option>
@@ -697,8 +711,8 @@ function PanelPNJRapido({
   addToast,
   onClose,
 }: {
-  createEntity: (...args: any[]) => Promise<any>;
-  activeSession: any;
+  createEntity: CampaignStateStore["createEntity"];
+  activeSession: Session;
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
@@ -805,8 +819,8 @@ function PanelCerrarSesion({
   addToast,
   onClose,
 }: {
-  activeSession: any;
-  closeSession: (id: string, summary: string) => Promise<any>;
+  activeSession: Session;
+  closeSession: (id: string, summary: string) => Promise<void>;
   sessionSummary: string;
   setSessionSummary: (s: string) => void;
   setCurrentPage: (p: string) => void;
@@ -988,12 +1002,12 @@ function QuickCaptureBar({
   addToast,
   onOpenCluePanel,
 }: {
-  campaignState: any;
-  activeSession: any;
-  createEntity: (...args: any[]) => Promise<any>;
-  createRelation: (...args: any[]) => Promise<any>;
-  recordSessionEvent: (...args: any[]) => Promise<any>;
-  revealClue: (...args: any[]) => Promise<any>;
+  campaignState: MaybeCampaignState;
+  activeSession: Session;
+  createEntity: CampaignStateStore["createEntity"];
+  createRelation: CampaignStateStore["createRelation"];
+  recordSessionEvent: CampaignStateStore["recordSessionEvent"];
+  revealClue: CampaignStateStore["revealClue"];
   addToast: (msg: string, kind?: ToastKind) => void;
   onOpenCluePanel: () => void;
 }) {
@@ -1092,8 +1106,8 @@ function QuickCaptureBar({
       }
       setValue("");
       inputRef.current?.focus();
-    } catch (err: any) {
-      addToast(t("toasts.captureError", { error: err.message }), "error");
+    } catch (err) {
+      addToast(t("toasts.captureError", { error: errorMessage(err) }), "error");
     } finally {
       setBusy(false);
     }
@@ -1209,15 +1223,15 @@ function SessionEventFeed({
   sessionEvents,
   sessionId,
 }: {
-  sessionEvents: any[];
+  sessionEvents: SessionEvent[];
   sessionId: string;
 }) {
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
 
   const events = sessionEvents
-    .filter((ev: any) => ev.sessionId === sessionId)
-    .sort((a: any, b: any) => new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime())
+    .filter((ev) => ev.sessionId === sessionId)
+    .sort((a, b) => new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime())
     .slice(0, 20);
 
   return (
@@ -1284,7 +1298,7 @@ function SessionEventFeed({
             </p>
           ) : (
             <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-              {events.map((ev: any, i: number) => {
+              {events.map((ev, i: number) => {
                 const color = EVENT_TYPE_COLORS[ev.type] ?? EVENT_TYPE_COLORS.custom;
                 const icon = EVENT_TYPE_ICONS[ev.type] ?? EVENT_TYPE_ICONS.custom;
                 return (
@@ -1355,7 +1369,7 @@ function splitLines(value: string): string[] {
     .filter(Boolean);
 }
 
-function joinLines(value: any[] | undefined): string {
+function joinLines(value: string[] | undefined): string {
   return Array.isArray(value) ? value.filter(Boolean).join("\n") : "";
 }
 
@@ -1363,13 +1377,17 @@ function uniqueIds(ids: string[]): string[] {
   return Array.from(new Set(ids.filter(Boolean)));
 }
 
-function findEntityTitle(campaignState: any, entityId: string): string {
-  return campaignState?.entities?.find((entity: any) => entity.entityId === entityId)?.title ?? entityId;
+function isPrepState(value: string): value is "draft" | "ready" {
+  return value === "draft" || value === "ready";
 }
 
-function mergeChecklist(existing: any[] | undefined, labels: string[]) {
+function findEntityTitle(campaignState: MaybeCampaignState | undefined, entityId: string): string {
+  return campaignState?.entities?.find((entity) => entity.entityId === entityId)?.title ?? entityId;
+}
+
+function mergeChecklist(existing: ChecklistItem[] | undefined, labels: string[]): ChecklistItem[] {
   return labels.map((label) => {
-    const current = existing?.find((item: any) => item.label === label);
+    const current = existing?.find((item) => item.label === label);
     return {
       id: current?.id ?? createId("chk"),
       label,
@@ -1389,12 +1407,12 @@ function EntityMultiPicker({
 }: {
   label: string;
   help?: string;
-  campaignState: any;
+  campaignState: MaybeCampaignState;
   ids: string[];
   onChange: (ids: string[]) => void;
   typeFilter?: string | string[];
 }) {
-  const entities = (campaignState?.entities ?? []).filter((entity: any) => {
+  const entities = (campaignState?.entities ?? []).filter((entity: Entity) => {
     if (entity.archived) return false;
     if (!typeFilter) return true;
     const allowed = Array.isArray(typeFilter) ? typeFilter : [typeFilter];
@@ -1413,7 +1431,7 @@ function EntityMultiPicker({
         <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", padding: "10px 0" }}>—</p>
       ) : (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", maxHeight: "120px", overflowY: "auto", padding: "4px" }}>
-          {entities.map((entity: any) => (
+          {entities.map((entity: Entity) => (
             <button
               key={entity.entityId}
               type="button"
@@ -1436,21 +1454,21 @@ function SessionPrepEditor({
   onSave,
   onCancel,
 }: {
-  session: any;
-  campaignState: any;
-  onSave: (title: string, prep: any, scheduledAt?: string) => Promise<void>;
+  session: Session;
+  campaignState: MaybeCampaignState;
+  onSave: (title: string, prep: SessionPrep, scheduledAt?: string) => Promise<void>;
   onCancel: () => void;
 }) {
   const { t } = useTranslation();
-  const prep = session.prep ?? { state: "draft" };
+  const prep: SessionPrep = session.prep ?? { state: "draft" };
   const [title, setTitle] = useState(session.title ?? "");
   const [scheduledAt, setScheduledAt] = useState(session.scheduledAt ? String(session.scheduledAt).slice(0, 16) : "");
-  const [state, setState] = useState<"draft" | "ready">((prep.state ?? "draft") as "draft" | "ready");
+  const [state, setState] = useState<"draft" | "ready">(prep.state ?? "draft");
   const [summary, setSummary] = useState(prep.summary ?? "");
   const [openingPrompt, setOpeningPrompt] = useState(prep.openingPrompt ?? "");
   const [goalsText, setGoalsText] = useState(joinLines(prep.goals));
   const [notes, setNotes] = useState(prep.notes ?? "");
-  const [checklistText, setChecklistText] = useState(joinLines((prep.checklist ?? []).map((item: any) => item.label)));
+  const [checklistText, setChecklistText] = useState(joinLines((prep.checklist ?? []).map((item) => item.label)));
   const [sceneIds, setSceneIds] = useState<string[]>(prep.sceneIds ?? []);
   const [involvedEntityIds, setInvolvedEntityIds] = useState<string[]>(prep.involvedEntityIds ?? []);
   const [availableClueIds, setAvailableClueIds] = useState<string[]>(prep.availableClueIds ?? []);
@@ -1500,7 +1518,7 @@ function SessionPrepEditor({
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor={`prep-state-${session.sessionId}`}>{t("sessionPage.prepStateLabel")}</label>
-          <select id={`prep-state-${session.sessionId}`} className="form-select" value={state} onChange={(e) => setState(e.target.value as "draft" | "ready")}>
+          <select id={`prep-state-${session.sessionId}`} className="form-select" value={state} onChange={(e) => { if (isPrepState(e.target.value)) setState(e.target.value); }}>
             <option value="draft">{t("sessionPage.prepDraft")}</option>
             <option value="ready">{t("sessionPage.readyToPlay")}</option>
           </select>
@@ -1557,7 +1575,7 @@ function PrepLinkedList({
 }: {
   title: string;
   ids: string[] | undefined;
-  campaignState: any;
+  campaignState: MaybeCampaignState;
 }) {
   const safeIds = ids ?? [];
   if (safeIds.length === 0) return null;
@@ -1575,7 +1593,7 @@ function PrepLinkedList({
   );
 }
 
-function ActiveSessionPrepPanel({ session, campaignState }: { session: any; campaignState: any }) {
+function ActiveSessionPrepPanel({ session, campaignState }: { session: Session; campaignState: MaybeCampaignState }) {
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const prep = session.prep;
@@ -1632,7 +1650,7 @@ function ActiveSessionPrepPanel({ session, campaignState }: { session: any; camp
             <div>
               <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.goalsLabel")}</div>
               <ul style={{ margin: 0, paddingLeft: "20px", color: "var(--text-main)", fontSize: "0.9rem", lineHeight: 1.5 }}>
-                {prep.goals.map((goal: string, index: number) => <li key={`${goal}-${index}`}>{goal}</li>)}
+                {(prep.goals ?? []).map((goal: string, index: number) => <li key={`${goal}-${index}`}>{goal}</li>)}
               </ul>
             </div>
           )}
@@ -1640,7 +1658,7 @@ function ActiveSessionPrepPanel({ session, campaignState }: { session: any; camp
             <div>
               <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.checklistLabel")}</div>
               <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
-                {prep.checklist.map((item: any) => (
+                {(prep.checklist ?? []).map((item) => (
                   <li key={item.id ?? item.label} style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "0.9rem" }}>
                     <span aria-hidden="true">{item.done ? "☑" : "☐"}</span>
                     <span>{item.label}</span>
@@ -1672,15 +1690,18 @@ function ActiveSessionPrepPanel({ session, campaignState }: { session: any; camp
 
 export function SessionPage(props: SessionPageProps = {}) {
   const { t, locale } = useTranslation();
-  const { campaignId } = useParams({ strict: false }) as any;
+  // useParams({ strict: false }) is untyped (any) outside a registered route branch;
+  // this narrowing cast matches the established pattern used across other pages (e.g. CommandCenterPage.tsx).
+  const { campaignId } = useParams({ strict: false }) as { campaignId?: string };
   const navigate = useNavigate();
   const store = useCampaignStore();
   const { addToast: toastAdd } = useToast();
   const [sessionSummaryLocal, setSessionSummaryLocal] = useState("");
 
   const campaignState = props.campaignState ?? store.campaignState;
-  const sessionEvents: any[] = (campaignState as any)?.sessionEvents ?? [];
-  const activeSession = props.activeSession ?? (campaignState?.sessions ?? []).find((s: any) => s.status === "active");
+  // The store types sessionEvents as unknown[]; the server always serializes well-formed SessionEvent records here.
+  const sessionEvents = (campaignState?.sessionEvents ?? []) as SessionEvent[];
+  const activeSession = props.activeSession ?? (campaignState?.sessions ?? []).find((s) => s.status === "active");
   const sessionSummary = props.sessionSummary ?? sessionSummaryLocal;
   const setSessionSummary = props.setSessionSummary ?? setSessionSummaryLocal;
   const createPreparedSession = props.createPreparedSession ?? store.createPreparedSession;
@@ -1708,18 +1729,18 @@ export function SessionPage(props: SessionPageProps = {}) {
   if (!activeSession) {
     const sessions = campaignState?.sessions ?? [];
     const preparedSessions = [...sessions]
-      .filter((session: any) => session.status === "planned")
+      .filter((session) => session.status === "planned")
       .sort(
-        (a: any, b: any) =>
-          new Date(a.scheduledAt ?? a.createdAt ?? 0).getTime() -
-          new Date(b.scheduledAt ?? b.createdAt ?? 0).getTime()
+        (a, b) =>
+          new Date(a.scheduledAt ?? 0).getTime() -
+          new Date(b.scheduledAt ?? 0).getTime()
       );
     const recentSessions = [...sessions]
-      .filter((s: any) => s.status === "closed" || s.status === "archived")
+      .filter((s) => s.status === "closed" || s.status === "archived")
       .sort(
-        (a: any, b: any) =>
-          new Date(b.endedAt ?? b.updatedAt ?? 0).getTime() -
-          new Date(a.endedAt ?? a.updatedAt ?? 0).getTime()
+        (a, b) =>
+          new Date(b.endedAt ?? 0).getTime() -
+          new Date(a.endedAt ?? 0).getTime()
       )
       .slice(0, 5);
 
@@ -1743,8 +1764,8 @@ export function SessionPage(props: SessionPageProps = {}) {
         });
         addToast(t("toasts.sessionPrepared", { title }), "success");
         setNewTitle("");
-      } catch (err: any) {
-        addToast(t("toasts.sessionPrepareError", { error: err.message }), "error");
+      } catch (err) {
+        addToast(t("toasts.sessionPrepareError", { error: errorMessage(err) }), "error");
       }
     };
 
@@ -1754,8 +1775,8 @@ export function SessionPage(props: SessionPageProps = {}) {
         await startSession(title);
         addToast(t("toasts.sessionStarted", { title }), "success");
         setNewTitle("");
-      } catch (err: any) {
-        addToast(t("toasts.sessionStartError", { error: err.message }), "error");
+      } catch (err) {
+        addToast(t("toasts.sessionStartError", { error: errorMessage(err) }), "error");
       }
     };
 
@@ -1763,18 +1784,18 @@ export function SessionPage(props: SessionPageProps = {}) {
       try {
         await activateSession(sessionId);
         addToast(t("toasts.sessionActivated", { title }), "success");
-      } catch (err: any) {
-        addToast(t("toasts.sessionActivateError", { error: err.message }), "error");
+      } catch (err) {
+        addToast(t("toasts.sessionActivateError", { error: errorMessage(err) }), "error");
       }
     };
 
-    const handleSavePrep = async (sessionId: string, title: string, prep: any, scheduledAt?: string) => {
+    const handleSavePrep = async (sessionId: string, title: string, prep: SessionPrep, scheduledAt?: string) => {
       try {
         await updateSessionPrep(sessionId, { title, scheduledAt, prep });
         addToast(t("toasts.sessionPrepUpdated", { title }), "success");
         setEditingPrepSessionId(null);
-      } catch (err: any) {
-        addToast(t("toasts.sessionPrepUpdateError", { error: err.message }), "error");
+      } catch (err) {
+        addToast(t("toasts.sessionPrepUpdateError", { error: errorMessage(err) }), "error");
       }
     };
 
@@ -1784,8 +1805,8 @@ export function SessionPage(props: SessionPageProps = {}) {
         await cancelSession(sessionId);
         addToast(t("toasts.sessionCancelled", { title }), "info");
         if (editingPrepSessionId === sessionId) setEditingPrepSessionId(null);
-      } catch (err: any) {
-        addToast(t("toasts.sessionCancelError", { error: err.message }), "error");
+      } catch (err) {
+        addToast(t("toasts.sessionCancelError", { error: errorMessage(err) }), "error");
       }
     };
 
@@ -1795,8 +1816,8 @@ export function SessionPage(props: SessionPageProps = {}) {
         await archiveSession(sessionId);
         addToast(t("toasts.sessionArchived", { title }), "info");
         if (editingPrepSessionId === sessionId) setEditingPrepSessionId(null);
-      } catch (err: any) {
-        addToast(t("toasts.sessionArchiveError", { error: err.message }), "error");
+      } catch (err) {
+        addToast(t("toasts.sessionArchiveError", { error: errorMessage(err) }), "error");
       }
     };
 
@@ -1907,6 +1928,7 @@ export function SessionPage(props: SessionPageProps = {}) {
                   icon: <StickyNote size={14} />,
                   primary: true,
                   onClick: () => {
+                    // DOM lookup boundary cast: getElementById only returns Element | null.
                     const input = document.getElementById("session-title-input") as HTMLInputElement | null;
                     input?.focus();
                   },
@@ -1931,8 +1953,8 @@ export function SessionPage(props: SessionPageProps = {}) {
               {t("sessionPage.preparedSessions")}
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {preparedSessions.map((session: any) => {
-                const prep = session.prep ?? {};
+              {preparedSessions.map((session) => {
+                const prep: SessionPrep = session.prep ?? {};
                 const linkedCount = new Set([
                   ...(prep.sceneIds ?? []),
                   ...(prep.involvedEntityIds ?? []),
@@ -1961,7 +1983,7 @@ export function SessionPage(props: SessionPageProps = {}) {
                       <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
                         {prep.state === "ready" ? t("sessionPage.readyToPlay") : t("sessionPage.prepDraft")}
                         {linkedCount > 0 ? ` · ${t("sessionPage.linkedElementsCount", { count: linkedCount })}` : ""}
-                        {(prep.goals?.length ?? 0) > 0 ? ` · ${t("sessionPage.goalsCount", { count: prep.goals.length })}` : ""}
+                        {(prep.goals?.length ?? 0) > 0 ? ` · ${t("sessionPage.goalsCount", { count: prep.goals?.length ?? 0 })}` : ""}
                       </div>
                       {prep.summary && (
                         <p style={{ marginTop: "6px", fontSize: "0.84rem", color: "var(--text-muted)", lineHeight: 1.35 }}>
@@ -2038,7 +2060,7 @@ export function SessionPage(props: SessionPageProps = {}) {
               {t("sessionPage.previousSessions")}
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              {recentSessions.map((s: any) => (
+              {recentSessions.map((s) => (
                 <div
                   key={s.sessionId}
                   style={{
