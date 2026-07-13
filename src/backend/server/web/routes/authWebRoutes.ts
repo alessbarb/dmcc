@@ -38,6 +38,7 @@ const LOGIN_LOCKOUT_THRESHOLD = 5;
 const LOGIN_LOCKOUT_BASE_MS = 60_000;
 const LOGIN_LOCKOUT_MAX_MS = 15 * 60_000;
 const AUTH_STATE_MAX_ENTRIES = 10_000;
+const fallbackPasswordHashPromise = argon2.hash(randomBytes(32));
 
 function pruneExpiringMap<T>(entries: Map<string, T>, isExpired: (entry: T) => boolean): void {
   for (const [key, entry] of entries) {
@@ -185,7 +186,6 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
   const registerRateLimits = new Map<string, RegisterRateLimitEntry>();
   const loginRateLimits = new Map<string, LoginRateLimitEntry>();
   const loginLockouts = new Map<string, LoginLockoutEntry>();
-  const fallbackPasswordHashPromise = argon2.hash(randomBytes(32));
 
   server.post<{ Body: { email?: string; password?: string; displayName?: string } }>("/api/auth/register", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
