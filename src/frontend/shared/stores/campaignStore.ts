@@ -246,6 +246,7 @@ export interface Relation {
   description?: string;
   visibility: VisibilityRule;
   archived: boolean;
+  createdAt?: string;
 }
 
 export interface Fact {
@@ -258,6 +259,7 @@ export interface Fact {
   relatedEntityIds: string[];
   source: FactSource;
   archived: boolean;
+  createdAt?: string;
 }
 
 export interface Session {
@@ -465,7 +467,7 @@ export interface CampaignStateStore {
   saveViewport: (canvasId: string, viewport: { x: number; y: number; zoom: number }) => Promise<void>;
 }
 
-type StoreCampaignState = NonNullable<CampaignStateStore["campaignState"]>;
+export type StoreCampaignState = NonNullable<CampaignStateStore["campaignState"]>;
 
 const tabId = API_CLIENT_TAB_ID;
 
