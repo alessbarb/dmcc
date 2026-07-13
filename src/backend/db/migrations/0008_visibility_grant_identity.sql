@@ -1,4 +1,11 @@
-DELETE FROM "visibility_grants";
+-- Drop only rows the new constraints below would reject; keep existing
+-- public/all_players/specific_player/specific_user grants intact.
+DELETE FROM "visibility_grants"
+WHERE NOT (
+  ("scope" = 'specific_player' AND "player_id" IS NOT NULL AND "user_id" IS NULL)
+  OR ("scope" = 'specific_user' AND "user_id" IS NOT NULL AND "player_id" IS NULL)
+  OR ("scope" IN ('public', 'all_players') AND "user_id" IS NULL AND "player_id" IS NULL)
+);
 --> statement-breakpoint
 ALTER TABLE "visibility_grants"
 DROP CONSTRAINT IF EXISTS "visibility_grants_campaign_id_target_type_target_id_scope_pk";

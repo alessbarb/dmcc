@@ -5,7 +5,6 @@ import * as schema from "../../src/backend/db/schema.js";
 import {
   buildDmPlayerKnowledgeProjection,
   buildKnowledgeAccessIndex,
-  grantAllowsPlayer,
   loadKnowledgeSnapshot,
   playerCanAccessKnowledge,
 } from "../../src/backend/server/web/playerKnowledgeProjection.js";
@@ -48,8 +47,8 @@ describe("visibility grants", () => {
     ));
 
     expect(grants).toHaveLength(2);
-    expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userA, ids.playerA))).toBe(true);
-    expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userB, ids.playerB))).toBe(true);
+    expect(grants.some((grant) => grant.scope === "specific_user" && grant.userId === ids.userA)).toBe(true);
+    expect(grants.some((grant) => grant.scope === "specific_user" && grant.userId === ids.userB)).toBe(true);
   });
 
   it("removes one user's grant without affecting another user", async () => {

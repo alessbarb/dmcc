@@ -700,7 +700,12 @@ async function upsertVisibilityGrant(tx: DbTransaction, campaignId: string, targ
     }
   }
 
-  await tx.insert(schema.visibilityGrants).values({ campaignId, targetType, targetId, scope });
+  if (scope === "public" || scope === "all_players") {
+    await tx.insert(schema.visibilityGrants).values({ campaignId, targetType, targetId, scope });
+  }
+
+  // "dm_only" (and specific_player/specific_user with no resolved id) has no
+  // row to store: absence of a grant means hidden by default.
 }
 
 function sessionReadStatus(status: string | undefined): string {

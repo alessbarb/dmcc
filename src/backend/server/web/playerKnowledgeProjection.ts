@@ -90,11 +90,6 @@ function applyExplicitGrant(index: KnowledgeAccessIndex, grant: VisibilityGrant)
   else if (grant.scope === "specific_user" && grant.userId) rule.userIds.add(grant.userId);
 }
 
-export function grantAllowsPlayer(grant: VisibilityGrant, userId: string, playerId?: string | null): boolean {
-  if (grant.scope === "specific_user" && grant.userId === userId) return true;
-  return Boolean(playerId && grant.scope === "specific_player" && grant.playerId === playerId);
-}
-
 export async function loadKnowledgeSnapshot(campaignId: string): Promise<KnowledgeSnapshot> {
   const repository = new PostgresCampaignRepository();
   const [state, entities, facts, relations, clues, objectives, grants] = await Promise.all([

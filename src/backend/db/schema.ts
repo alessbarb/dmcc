@@ -229,7 +229,7 @@ export const visibilityGrants = pgTable("visibility_grants", {
 }, (table) => ({
   commonGrantUq: uniqueIndex("uq_visibility_grants_common")
     .on(table.campaignId, table.targetType, table.targetId, table.scope)
-    .where(sql`${table.scope} not in ('specific_player', 'specific_user')`),
+    .where(sql`${table.scope} in ('public', 'all_players')`),
   playerGrantUq: uniqueIndex("uq_visibility_grants_specific_player")
     .on(table.campaignId, table.targetType, table.targetId, table.scope, table.playerId)
     .where(sql`${table.scope} = 'specific_player'`),
