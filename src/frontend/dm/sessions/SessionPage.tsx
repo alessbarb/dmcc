@@ -83,6 +83,12 @@ function formatElapsed(startedAt: string | undefined): string {
   return `${minutes}m`;
 }
 
+function runSessionAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 // ── sub-panels ───────────────────────────────────────────────────────────────
 
 function PanelNotaRapida({
@@ -137,7 +143,9 @@ function PanelNotaRapida({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(event) => {
+      runSessionAction(handleSubmit(event), "No se pudo guardar la nota rápida.");
+    }}>
       <div className="form-group">
         <label className="form-label" htmlFor="nota-text">
           {t("sessionPage.noteLabel")}
@@ -232,7 +240,9 @@ function PanelRevelarPista({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(event) => {
+      runSessionAction(handleSubmit(event), "No se pudo revelar la pista.");
+    }}>
       <div className="form-group">
         <label className="form-label" htmlFor="pista-select">
           {t("sessionPage.clueToReveal")}
@@ -434,7 +444,9 @@ function PanelDecision({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(event) => {
+      runSessionAction(handleSubmit(event), "No se pudo registrar la decisión.");
+    }}>
       <div className="form-group">
         <label className="form-label" htmlFor="decision-text">
           {t("sessionPage.whatDidTheyDecide")}
@@ -611,7 +623,9 @@ function PanelConsecuencia({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(event) => {
+      runSessionAction(handleSubmit(event), "No se pudo crear la consecuencia.");
+    }}>
       <div className="form-group">
         <label className="form-label" htmlFor="cons-title">
           {t("sessionPage.pendingConsequenceTitle")}
@@ -716,7 +730,9 @@ function PanelPNJRapido({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(event) => {
+      runSessionAction(handleSubmit(event), "No se pudo crear el PNJ rápido.");
+    }}>
       <div
         style={{
           display: "grid",
@@ -831,7 +847,9 @@ function PanelCerrarSesion({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(event) => {
+      runSessionAction(handleSubmit(event), "No se pudo cerrar la sesión.");
+    }}>
       <div
         style={{
           display: "flex",
@@ -1082,7 +1100,9 @@ function QuickCaptureBar({
   };
 
   return (
-    <form onSubmit={handleSubmit} aria-label={t("session.quickCaptureLabel")}>
+    <form onSubmit={(event) => {
+      runSessionAction(handleSubmit(event), "No se pudo procesar la captura rápida.");
+    }} aria-label={t("session.quickCaptureLabel")}>
       <div
         style={{
           display: "flex",
@@ -1462,7 +1482,13 @@ function SessionPrepEditor({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card" style={{ marginTop: "10px", padding: "18px", borderLeft: "3px solid var(--primary)" }}>
+    <form
+      onSubmit={(event) => {
+        runSessionAction(handleSubmit(event), "No se pudo guardar la preparación de sesión.");
+      }}
+      className="card"
+      style={{ marginTop: "10px", padding: "18px", borderLeft: "3px solid var(--primary)" }}
+    >
       <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "12px" }}>
         <div className="form-group">
           <label className="form-label" htmlFor={`prep-title-${session.sessionId}`}>{t("sessionPage.sessionTitleLabel")}</label>
@@ -1670,7 +1696,7 @@ export function SessionPage(props: SessionPageProps = {}) {
   const recordSessionEvent = props.recordSessionEvent ?? store.recordSessionEvent;
   const addToast = props.addToast ?? toastAdd;
   const setCurrentPage = props.setCurrentPage ?? ((page: string) => {
-    if (campaignId) navigate({ to: `/campaigns/${campaignId}/${page}` });
+    if (campaignId) runSessionAction(navigate({ to: `/campaigns/${campaignId}/${page}` }), "No se pudo cambiar de sección de sesión.");
   });
 
   const [newTitle, setNewTitle] = useState("");
@@ -1820,7 +1846,9 @@ export function SessionPage(props: SessionPageProps = {}) {
           >
             {t("sessionPage.prepareSessionDescription")}
           </p>
-          <form onSubmit={handlePrepare}>
+          <form onSubmit={(event) => {
+            runSessionAction(handlePrepare(event), "No se pudo preparar la sesión.");
+          }}>
             <div className="form-group" style={{ textAlign: "left" }}>
               <label className="form-label" htmlFor="session-title-input">
                 {t("sessionPage.sessionTitleLabel")}
@@ -1846,7 +1874,9 @@ export function SessionPage(props: SessionPageProps = {}) {
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={handleStartAdHoc}
+                onClick={() => {
+                  runSessionAction(handleStartAdHoc(), "No se pudo iniciar una sesión ad hoc.");
+                }}
                 style={{ padding: "14px", fontSize: "1rem" }}
               >
                 <Play size={16} /> {t("sessionPage.startAdHocButton")}
@@ -1950,14 +1980,18 @@ export function SessionPage(props: SessionPageProps = {}) {
                       <button
                         type="button"
                         className="btn btn-primary btn-sm"
-                        onClick={() => handleActivate(session.sessionId, session.title)}
+                        onClick={() => {
+                          runSessionAction(handleActivate(session.sessionId, session.title), "No se pudo activar la sesión preparada.");
+                        }}
                       >
                         <Play size={14} /> {t("sessionPage.activatePreparedSessionButton")}
                       </button>
                       <button
                         type="button"
                         className="btn btn-secondary btn-sm"
-                        onClick={() => handleCancelPrepared(session.sessionId, session.title)}
+                        onClick={() => {
+                          runSessionAction(handleCancelPrepared(session.sessionId, session.title), "No se pudo cancelar la sesión preparada.");
+                        }}
                         title={t("sessionPage.cancelPreparedSessionButton")}
                       >
                         <X size={14} />
@@ -1965,7 +1999,9 @@ export function SessionPage(props: SessionPageProps = {}) {
                       <button
                         type="button"
                         className="btn btn-secondary btn-sm"
-                        onClick={() => handleArchivePrepared(session.sessionId, session.title)}
+                        onClick={() => {
+                          runSessionAction(handleArchivePrepared(session.sessionId, session.title), "No se pudo archivar la sesión preparada.");
+                        }}
                         title={t("sessionPage.archivePreparedSessionButton")}
                       >
                         <Archive size={14} />
