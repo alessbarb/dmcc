@@ -1,3 +1,4 @@
+import "./entities.css";
 import { useEffect, useMemo, useState } from "react";
 import { Eye, EyeOff, Filter, MapPin, Network, Plus, Search, Users, X, Zap } from "lucide-react";
 import { getEntityDefaultImage } from "./entityVisuals.js";
@@ -111,7 +112,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
 
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <div className="entities-page">
         <section className="card" aria-label={t("entitiesPage.filters")} style={{ padding: 16 }}>
           <div className="entity-filter-grid">
             <label className="entity-filter-grid__search">

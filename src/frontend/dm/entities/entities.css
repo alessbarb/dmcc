@@ -1,0 +1,96 @@
+.entities-page {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Filters */
+
+.entity-filter-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(240px, 2fr)
+    repeat(4, minmax(140px, 1fr))
+    max-content;
+  gap: 12px;
+  align-items: end;
+}
+
+.entity-filter-grid > label {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.entity-filter-grid .form-label {
+  margin-bottom: 0;
+}
+
+.entity-filter-grid > .btn {
+  align-self: end;
+}
+
+/* Entity collection */
+
+.entity-card-grid {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.entity-card-grid > .card {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+/*
+ * With one or two cards, auto-fill preserves a sensible card width
+ * instead of stretching each card across the entire page.
+ */
+
+/* Medium layouts: laptop with sidebar, tablet landscape */
+
+@media (max-width: 1280px) {
+  .entity-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .entity-filter-grid__search {
+    grid-column: 1 / -1;
+  }
+
+  .entity-filter-grid > .btn {
+    justify-self: start;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 720px) {
+  .entities-page {
+    gap: 16px;
+  }
+
+  .entity-filter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .entity-filter-grid__search {
+    grid-column: auto;
+  }
+
+  .entity-filter-grid > .btn {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .entity-card-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}

@@ -296,13 +296,13 @@ export function CampaignShell() {
   };
   const currentLocation = campaignState?.campaign?.currentLocationId
     ? campaignState.entities.find(
-        (entity) => entity.entityId === campaignState.campaign?.currentLocationId,
-      )
+      (entity) => entity.entityId === campaignState.campaign?.currentLocationId,
+    )
     : null;
   const currentQuest = campaignState?.campaign?.currentQuestId
     ? campaignState.entities.find(
-        (entity) => entity.entityId === campaignState.campaign?.currentQuestId,
-      )
+      (entity) => entity.entityId === campaignState.campaign?.currentQuestId,
+    )
     : null;
 
   const handleNavClick = (path: string) => {
@@ -383,9 +383,8 @@ export function CampaignShell() {
 
   return (
     <div
-      className={`app-container app-container--campaign-shell ${
-        currentSegment === "canvas" ? "app-container--canvas" : ""
-      }`}
+      className={`app-container app-container--campaign-shell ${currentSegment === "canvas" ? "app-container--canvas" : ""
+        }`}
     >
       <aside className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}>
         <div
@@ -552,14 +551,16 @@ export function CampaignShell() {
                 </button>
               )}
 
-              <button
-                className="btn btn-secondary btn-sm"
-                type="button"
-                data-tour-id="campaign-action-new-entity"
-                onClick={() => setIsEntityModalOpen(true)}
-              >
-                <Plus size={14} /> {t("campaignShell.newEntity")}
-              </button>
+              {currentSegment !== "entities" && (
+                <button
+                  className="btn btn-secondary btn-sm"
+                  type="button"
+                  data-tour-id="campaign-action-new-entity"
+                  onClick={() => setIsEntityModalOpen(true)}
+                >
+                  <Plus size={14} /> {t("campaignShell.newEntity")}
+                </button>
+              )}
 
               <button
                 className="btn btn-secondary btn-sm"
