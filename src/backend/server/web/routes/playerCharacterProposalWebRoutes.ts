@@ -64,7 +64,7 @@ async function validateLinkRequest(campaignId: string, playerId: string, charact
   return profile;
 }
 
-export async function registerPlayerCharacterProposalWebRoutes(server: FastifyInstance): Promise<void> {
+export function registerPlayerCharacterProposalWebRoutes(server: FastifyInstance): void {
   server.put<{
     Params: { campaignId: string; proposalId: string };
     Body: { status?: string; dmNote?: string; dmResolutionNote?: string };
@@ -127,6 +127,7 @@ export async function registerPlayerCharacterProposalWebRoutes(server: FastifyIn
             targetType: "entity",
             targetId: characterEntityId,
             scope: "specific_user",
+            source: "character_link",
             userId: profile.userId,
             playerId: null,
           })
