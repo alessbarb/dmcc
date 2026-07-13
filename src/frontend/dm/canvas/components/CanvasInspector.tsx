@@ -47,6 +47,15 @@ export function CanvasInspector({
 
   const canvas = canvasesById[canvasId];
 
+  const reportCanvasActionError = (message: string) => (error: unknown) => {
+    console.error(message, error);
+    addToast?.(message, "error");
+  };
+
+  const runCanvasAction = (operation: Promise<unknown>, errorMessage: string) => {
+    void operation.catch(reportCanvasActionError(errorMessage));
+  };
+
   // Selected Node data
   const selectedNode = selectedNodeId ? canvas?.nodes?.find((n: CanvasNode) => n.id === selectedNodeId) : null;
   const entity = selectedNode?.entityId ? campaignState?.entities?.find((e: Entity) => e.entityId === selectedNode.entityId) : null;
@@ -349,7 +358,9 @@ export function CanvasInspector({
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    onBlur={handleNodeTitleBlur}
+                    onBlur={() => {
+                      runCanvasAction(handleNodeTitleBlur(), "No se pudo guardar el título del nodo.");
+                    }}
                     placeholder={t("canvas.node.quickTitlePlaceholder")}
                     className="form-input"
                   />
@@ -360,7 +371,9 @@ export function CanvasInspector({
                   <textarea
                     value={noteText}
                     onChange={(e) => setNoteText(e.target.value)}
-                    onBlur={handleNoteTextBlur}
+                    onBlur={() => {
+                      runCanvasAction(handleNoteTextBlur(), "No se pudo guardar la nota.");
+                    }}
                     rows={8}
                     className="form-textarea font-mono note-inspector-textarea"
                     placeholder="Escribe tu nota adhesiva..."
@@ -371,7 +384,9 @@ export function CanvasInspector({
                   <label>Color de fondo</label>
                   <select
                     value={selectedNode.color || "yellow"}
-                    onChange={(e) => handleNodeSelectChange("color", e.target.value)}
+                    onChange={(e) => {
+                      runCanvasAction(handleNodeSelectChange("color", e.target.value), "No se pudo actualizar el color.");
+                    }}
                     className="form-select"
                   >
                     <option value="yellow">Amarillo cálido</option>
@@ -384,7 +399,9 @@ export function CanvasInspector({
 
                 <div className="inspector-actions">
                   <button
-                    onClick={handleRemoveNode}
+                    onClick={() => {
+                      runCanvasAction(handleRemoveNode(), "No se pudo quitar el nodo del canvas.");
+                    }}
                     className="btn btn-secondary btn-sm text-critical btn-block"
                   >
                     <Trash2 size={14} /> Eliminar nota
@@ -406,7 +423,9 @@ export function CanvasInspector({
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    onBlur={handleNodeTitleBlur}
+                    onBlur={() => {
+                      runCanvasAction(handleNodeTitleBlur(), "No se pudo guardar el título del nodo.");
+                    }}
                     placeholder={t("canvas.groupNode.titlePlaceholder")}
                     className="form-input"
                   />
@@ -416,7 +435,12 @@ export function CanvasInspector({
                   <label>Tipo de Grupo Inteligente</label>
                   <select
                     value={selectedNode.groupType || "custom"}
-                    onChange={(e) => updateCanvasNode(canvasId, selectedNode.id, { groupType: e.target.value })}
+                    onChange={(e) => {
+                      runCanvasAction(
+                        updateCanvasNode(canvasId, selectedNode.id, { groupType: e.target.value }),
+                        "No se pudo actualizar el tipo de grupo."
+                      );
+                    }}
                     className="form-select"
                   >
                     <option value="custom">Personalizado (Sólo visual)</option>
@@ -432,7 +456,9 @@ export function CanvasInspector({
                   <label>Color del marco</label>
                   <select
                     value={selectedNode.color || "purple"}
-                    onChange={(e) => handleNodeSelectChange("color", e.target.value)}
+                    onChange={(e) => {
+                      runCanvasAction(handleNodeSelectChange("color", e.target.value), "No se pudo actualizar el color.");
+                    }}
                     className="form-select"
                   >
                     <option value="purple">Lila</option>
@@ -445,7 +471,9 @@ export function CanvasInspector({
 
                 <div className="inspector-actions">
                   <button
-                    onClick={handleRemoveNode}
+                    onClick={() => {
+                      runCanvasAction(handleRemoveNode(), "No se pudo quitar el nodo del canvas.");
+                    }}
                     className="btn btn-secondary btn-sm text-critical btn-block"
                   >
                     <Trash2 size={14} /> Eliminar grupo
@@ -467,11 +495,16 @@ export function CanvasInspector({
                   <textarea
                     value={factStatement}
                     onChange={(e) => setFactStatement(e.target.value)}
-                    onBlur={async () => {
-                      if (fact && factStatement !== fact.statement) {
-                        await updateFact(fact.factId, { statement: factStatement });
-                        if (addToast) addToast("Hecho actualizado.", "success");
-                      }
+                    onBlur={() => {
+                      runCanvasAction(
+                        (async () => {
+                          if (fact && factStatement !== fact.statement) {
+                            await updateFact(fact.factId, { statement: factStatement });
+                            if (addToast) addToast("Hecho actualizado.", "success");
+                          }
+                        })(),
+                        "No se pudo actualizar el hecho."
+                      );
                     }}
                     rows={4}
                     className="form-textarea"
@@ -483,9 +516,11 @@ export function CanvasInspector({
                   <label>Tipo epistémico</label>
                   <select
                     value={factKind}
-                    onChange={async (e) => {
+                    onChange={(e) => {
                       setFactKind(e.target.value);
-                      if (fact) await updateFact(fact.factId, { kind: e.target.value });
+                      if (fact) {
+                        runCanvasAction(updateFact(fact.factId, { kind: e.target.value }), "No se pudo actualizar el tipo del hecho.");
+                      }
                     }}
                     className="form-select"
                   >
@@ -504,9 +539,11 @@ export function CanvasInspector({
                   <label>Confianza</label>
                   <select
                     value={factConfidence}
-                    onChange={async (e) => {
+                    onChange={(e) => {
                       setFactConfidence(e.target.value);
-                      if (fact) await updateFact(fact.factId, { confidence: e.target.value });
+                      if (fact) {
+                        runCanvasAction(updateFact(fact.factId, { confidence: e.target.value }), "No se pudo actualizar la confianza del hecho.");
+                      }
                     }}
                     className="form-select"
                   >
@@ -520,7 +557,13 @@ export function CanvasInspector({
 
                 <div className="inspector-actions">
                   <button
-                    onClick={() => removeNodeFromCanvas(canvasId, selectedNodeId!).then(onClose)}
+                    onClick={() => {
+                      if (!selectedNodeId) return;
+                      runCanvasAction(
+                        removeNodeFromCanvas(canvasId, selectedNodeId).then(onClose),
+                        "No se pudo quitar el hecho del canvas."
+                      );
+                    }}
                     className="btn btn-secondary btn-sm text-critical btn-block"
                   >
                     <Trash2 size={14} /> Quitar del canvas
@@ -545,7 +588,9 @@ export function CanvasInspector({
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    onBlur={handleNodeTitleBlur}
+                    onBlur={() => {
+                      runCanvasAction(handleNodeTitleBlur(), "No se pudo guardar el título del nodo.");
+                    }}
                     className="form-input font-bold"
                   />
                 </div>
@@ -556,7 +601,9 @@ export function CanvasInspector({
                     type="text"
                     value={subtitle}
                     onChange={(e) => setSubtitle(e.target.value)}
-                    onBlur={handleNodeSubtitleBlur}
+                    onBlur={() => {
+                      runCanvasAction(handleNodeSubtitleBlur(), "No se pudo guardar el subtítulo.");
+                    }}
                     className="form-input"
                     placeholder={t("canvas.node.rolePlaceholder")}
                   />
@@ -571,9 +618,12 @@ export function CanvasInspector({
                       // save immediately on picker selection
                       const current = (entity.metadata?.imageUrl as string) || "";
                       if (path !== current) {
-                        void updateEntity(entity.entityId, {
-                          metadata: { ...entity.metadata, imageUrl: path || undefined },
-                        });
+                        runCanvasAction(
+                          updateEntity(entity.entityId, {
+                            metadata: { ...entity.metadata, imageUrl: path || undefined },
+                          }),
+                          "No se pudo guardar la imagen de la entidad."
+                        );
                       }
                     }}
                     catalog="entities"
@@ -586,7 +636,9 @@ export function CanvasInspector({
                   <textarea
                     value={summary}
                     onChange={(e) => setSummary(e.target.value)}
-                    onBlur={handleNodeSummaryBlur}
+                    onBlur={() => {
+                      runCanvasAction(handleNodeSummaryBlur(), "No se pudo guardar el resumen.");
+                    }}
                     rows={4}
                     className="form-textarea"
                     placeholder="Lore general conocido..."
@@ -598,7 +650,9 @@ export function CanvasInspector({
                   <textarea
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    onBlur={handleNodeContentBlur}
+                    onBlur={() => {
+                      runCanvasAction(handleNodeContentBlur(), "No se pudo guardar las notas del DM.");
+                    }}
                     rows={6}
                     className="form-textarea inspector-dm-notes"
                     placeholder={t("canvas.node.notesPlaceholder")}
@@ -615,9 +669,15 @@ export function CanvasInspector({
                         if (val === "players") {
                           const firstPlayerId = campaignState?.players?.[0]?.playerId;
                           const playerIds = firstPlayerId ? [firstPlayerId] : [];
-                          handleNodeSelectChange("visibility_full", { kind: "players", playerIds });
+                          runCanvasAction(
+                            handleNodeSelectChange("visibility_full", { kind: "players", playerIds }),
+                            "No se pudo actualizar la visibilidad."
+                          );
                         } else {
-                          handleNodeSelectChange("visibility_full", { kind: val });
+                          runCanvasAction(
+                            handleNodeSelectChange("visibility_full", { kind: val }),
+                            "No se pudo actualizar la visibilidad."
+                          );
                         }
                       }}
                       className="form-select"
@@ -631,7 +691,9 @@ export function CanvasInspector({
                     <label>Importancia</label>
                     <select
                       value={entity.importance || "normal"}
-                      onChange={(e) => handleNodeSelectChange("importance", e.target.value)}
+                      onChange={(e) => {
+                        runCanvasAction(handleNodeSelectChange("importance", e.target.value), "No se pudo actualizar la importancia.");
+                      }}
                       className="form-select"
                     >
                       <option value="low">Baja</option>
@@ -656,18 +718,23 @@ export function CanvasInspector({
                             <input
                               type="checkbox"
                               checked={isChecked}
-                              onChange={async (e) => {
-                                let newIds = [...currentIds];
-                                if (e.target.checked) {
-                                  if (!newIds.includes(p.playerId)) {
-                                    newIds.push(p.playerId);
-                                  }
-                                } else {
-                                  newIds = newIds.filter((id: string) => id !== p.playerId);
-                                }
-                                await updateEntity(entity.entityId, {
-                                  visibility: { kind: "players", playerIds: newIds }
-                                });
+                              onChange={(e) => {
+                                runCanvasAction(
+                                  (async () => {
+                                    let newIds = [...currentIds];
+                                    if (e.target.checked) {
+                                      if (!newIds.includes(p.playerId)) {
+                                        newIds.push(p.playerId);
+                                      }
+                                    } else {
+                                      newIds = newIds.filter((id: string) => id !== p.playerId);
+                                    }
+                                    await updateEntity(entity.entityId, {
+                                      visibility: { kind: "players", playerIds: newIds }
+                                    });
+                                  })(),
+                                  "No se pudo actualizar la visibilidad del jugador."
+                                );
                               }}
                             />
                             {p.displayName || p.name}
@@ -682,7 +749,9 @@ export function CanvasInspector({
                   <label>Estado Narrativo</label>
                   <select
                     value={entity.status || "ready"}
-                    onChange={(e) => handleNodeSelectChange("status", e.target.value)}
+                    onChange={(e) => {
+                      runCanvasAction(handleNodeSelectChange("status", e.target.value), "No se pudo actualizar el estado narrativo.");
+                    }}
                     className="form-select"
                   >
                     {entity.entityType === "npc" && (
@@ -741,7 +810,9 @@ export function CanvasInspector({
                         type="text"
                         value={dramaticObjective}
                         onChange={(e) => setDramaticObjective(e.target.value)}
-                        onBlur={handleDramaticObjectiveBlur}
+                        onBlur={() => {
+                          runCanvasAction(handleDramaticObjectiveBlur(), "No se pudo guardar el objetivo dramático.");
+                        }}
                         className="form-input"
                         placeholder="Ej. Descubrir la entrada secreta..."
                       />
@@ -751,7 +822,9 @@ export function CanvasInspector({
                       <textarea
                         value={complications}
                         onChange={(e) => setComplications(e.target.value)}
-                        onBlur={handleComplicationsBlur}
+                        onBlur={() => {
+                          runCanvasAction(handleComplicationsBlur(), "No se pudo guardar las complicaciones.");
+                        }}
                         rows={2}
                         className="form-textarea"
                         placeholder="Ej. El nivel del agua sube, los guardias patrullan..."
@@ -762,7 +835,9 @@ export function CanvasInspector({
                       <textarea
                         value={consequences}
                         onChange={(e) => setConsequences(e.target.value)}
-                        onBlur={handleConsequencesBlur}
+                        onBlur={() => {
+                          runCanvasAction(handleConsequencesBlur(), "No se pudo guardar las consecuencias.");
+                        }}
                         rows={2}
                         className="form-textarea"
                         placeholder={t("canvas.node.consequencePlaceholder")}
@@ -790,17 +865,22 @@ export function CanvasInspector({
                               <input
                                 type="checkbox"
                                 checked={isChecked}
-                                onChange={async (event) => {
-                                  let newAnchors = [...currentAnchors];
-                                  if (event.target.checked) {
-                                    if (!newAnchors.includes(e.entityId)) {
-                                      newAnchors.push(e.entityId);
-                                    }
-                                  } else {
-                                    newAnchors = newAnchors.filter((id: string) => id !== e.entityId);
-                                  }
-                                  const metadata = { ...entity.metadata, revelationAnchors: newAnchors };
-                                  await updateEntity(entity.entityId, { metadata });
+                                onChange={(event) => {
+                                  runCanvasAction(
+                                    (async () => {
+                                      let newAnchors = [...currentAnchors];
+                                      if (event.target.checked) {
+                                        if (!newAnchors.includes(e.entityId)) {
+                                          newAnchors.push(e.entityId);
+                                        }
+                                      } else {
+                                        newAnchors = newAnchors.filter((id: string) => id !== e.entityId);
+                                      }
+                                      const metadata = { ...entity.metadata, revelationAnchors: newAnchors };
+                                      await updateEntity(entity.entityId, { metadata });
+                                    })(),
+                                    "No se pudo actualizar el ancla de revelación."
+                                  );
                                 }}
                               />
                               <span style={{ opacity: 0.65, fontSize: "10px" }}>
@@ -825,15 +905,18 @@ export function CanvasInspector({
                       <select
                         className="form-select"
                         value={currentGroupId}
-                        onChange={async (e) => {
+                        onChange={(e) => {
                           const newGroupId = e.target.value || null;
-                          await updateCanvasNodesLayout(canvasId, [{
-                            nodeId: selectedNode!.id,
-                            x: selectedNode!.x ?? 0,
-                            y: selectedNode!.y ?? 0,
-                            groupId: newGroupId,
-                            parentId: null,
-                          }]);
+                          runCanvasAction(
+                            updateCanvasNodesLayout(canvasId, [{
+                              nodeId: selectedNode!.id,
+                              x: selectedNode!.x ?? 0,
+                              y: selectedNode!.y ?? 0,
+                              groupId: newGroupId,
+                              parentId: null,
+                            }]),
+                            "No se pudo actualizar el grupo del nodo."
+                          );
                         }}
                       >
                         <option value="">Sin grupo</option>
@@ -858,7 +941,9 @@ export function CanvasInspector({
 
                   <div style={{ display: "flex", gap: "8px" }}>
                     <button
-                      onClick={handleRemoveNode}
+                      onClick={() => {
+                        runCanvasAction(handleRemoveNode(), "No se pudo quitar el nodo del canvas.");
+                      }}
                       className="btn btn-secondary btn-sm text-warning"
                       style={{ flex: 1 }}
                       title={t("canvas.node.removeFromCanvasTooltip")}
@@ -866,7 +951,9 @@ export function CanvasInspector({
                       Quitar del canvas
                     </button>
                     <button
-                      onClick={handleArchiveEntity}
+                      onClick={() => {
+                        runCanvasAction(handleArchiveEntity(), "No se pudo archivar la entidad.");
+                      }}
                       className="btn btn-secondary btn-sm text-critical"
                       style={{ flex: 1 }}
                       title={t("canvas.node.archiveEntityTooltip")}
@@ -894,7 +981,9 @@ export function CanvasInspector({
                 type="text"
                 value={edgeLabel}
                 onChange={(e) => setEdgeLabel(e.target.value)}
-                onBlur={handleEdgeLabelBlur}
+                onBlur={() => {
+                  runCanvasAction(handleEdgeLabelBlur(), "No se pudo guardar la etiqueta de la relación.");
+                }}
                 className="form-input font-bold"
                 placeholder="Ej. vive en, odia a, apunta a..."
               />
@@ -904,7 +993,9 @@ export function CanvasInspector({
               <label>Estilo de línea</label>
               <select
                 value={selectedEdge.style || "solid"}
-                onChange={(e) => handleEdgeSelectChange("style", e.target.value)}
+                onChange={(e) => {
+                  runCanvasAction(handleEdgeSelectChange("style", e.target.value), "No se pudo actualizar el estilo de línea.");
+                }}
                 className="form-select"
               >
                 <option value="solid">Línea sólida (normal)</option>
@@ -923,7 +1014,9 @@ export function CanvasInspector({
                     type="text"
                     value={edgeDesc}
                     onChange={(e) => setEdgeDesc(e.target.value)}
-                    onBlur={handleEdgeDescBlur}
+                    onBlur={() => {
+                      runCanvasAction(handleEdgeDescBlur(), "No se pudo guardar la descripción de la relación.");
+                    }}
                     className="form-input"
                     placeholder={t("canvas.node.relationDetailPlaceholder")}
                   />
@@ -933,7 +1026,9 @@ export function CanvasInspector({
                   <label>Visibilidad de la relación</label>
                   <select
                     value={visibilityRuleToCanvasVisibility(relation.visibility ?? { kind: "dm_only" })}
-                    onChange={(e) => handleEdgeSelectChange("visibility", e.target.value)}
+                    onChange={(e) => {
+                      runCanvasAction(handleEdgeSelectChange("visibility", e.target.value), "No se pudo actualizar la visibilidad de la relación.");
+                    }}
                     className="form-select"
                   >
                     <option value="dm">Solo DM (Oculto)</option>
@@ -945,14 +1040,18 @@ export function CanvasInspector({
 
             <div className="inspector-actions">
               <button
-                onClick={handleRemoveEdge}
+                onClick={() => {
+                  runCanvasAction(handleRemoveEdge(), "No se pudo quitar la relación del canvas.");
+                }}
                 className="btn btn-secondary btn-sm text-warning btn-block"
               >
                 <Trash2 size={14} /> Quitar del canvas
               </button>
               {selectedEdge?.relationshipId && (
                 <button
-                  onClick={handleArchiveRelation}
+                  onClick={() => {
+                    runCanvasAction(handleArchiveRelation(), "No se pudo archivar la relación.");
+                  }}
                   className="btn btn-secondary btn-sm text-critical btn-block"
                   title={t("canvas.node.archiveRelationTooltip")}
                 >
