@@ -41,15 +41,11 @@ function normalizeVisibility(value: unknown): { commonScope?: "public" | "all_pl
   };
 }
 
-function specificPlayerScope(playerId: string): string {
-  return `specific_player:${playerId}`;
-}
-
 async function insertGrant(
   campaignId: string,
   targetType: KnowledgeTargetType,
   targetId: string,
-  scope: string,
+  scope: "public" | "all_players" | "specific_player",
   playerId?: string,
 ): Promise<void> {
   await db.insert(schema.visibilityGrants).values({
@@ -70,7 +66,9 @@ export function grantAllowsPlayer(
   if (grant.scope === "specific_user" && grant.userId === userId) return true;
   if (!playerId) return false;
   if (grant.scope === "specific_player" && grant.playerId === playerId) return true;
-  return grant.scope === specificPlayerScope(playerId) && (!grant.playerId || grant.playerId === playerId);
+
+  // Temporary read compatibility for databases that have not run migration 0008 yet.
+  return grant.scope === `specific_player:${playerId}` && (!grant.playerId || grant.playerId === playerId);
 }
 
 export async function synchronizeLegacyKnowledgeVisibility(campaignId: string): Promise<void> {
@@ -92,7 +90,7 @@ export async function synchronizeLegacyKnowledgeVisibility(campaignId: string): 
     if (!targetId || entity?.archived) continue;
     const visibility = normalizeVisibility(entity?.visibility);
     if (visibility.commonScope) await insertGrant(campaignId, "entity", targetId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "entity", targetId, specificPlayerScope(playerId), playerId);
+    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "entity", targetId, "specific_player", playerId);
   }
 
   const projectedFactById = new Map(projectedFacts.map((fact) => [String(fact?.factId ?? fact?.id ?? ""), fact]));
@@ -100,27 +98,27 @@ export async function synchronizeLegacyKnowledgeVisibility(campaignId: string): 
     if (fact.status === "archived" || fact.kind === "dm_secret") continue;
     const visibility = normalizeVisibility(projectedFactById.get(fact.factId)?.visibility ?? { kind: "party" });
     if (visibility.commonScope) await insertGrant(campaignId, "fact", fact.factId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "fact", fact.factId, specificPlayerScope(playerId), playerId);
+    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "fact", fact.factId, "specific_player", playerId);
   }
 
   const projectedRelationById = new Map(projectedRelations.map((relation) => [String(relation?.relationId ?? relation?.id ?? ""), relation]));
   for (const relation of relations) {
     const visibility = normalizeVisibility(projectedRelationById.get(relation.relationId)?.visibility ?? relation.visibility);
     if (visibility.commonScope) await insertGrant(campaignId, "relation", relation.relationId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "relation", relation.relationId, specificPlayerScope(playerId), playerId);
+    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "relation", relation.relationId, "specific_player", playerId);
   }
 
   for (const clue of clues) {
     if (clue.status === "archived") continue;
     const visibility = normalizeVisibility(clue.visibilityScope);
     if (visibility.commonScope) await insertGrant(campaignId, "clue", clue.clueId, visibility.commonScope);
-    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "clue", clue.clueId, specificPlayerScope(playerId), playerId);
+    for (const playerId of visibility.playerIds) await insertGrant(campaignId, "clue", clue.clueId, "specific_player", playerId);
   }
 
   for (const objective of objectives) {
     if (objective.status === "archived") continue;
     if (objective.playerId) {
-      await insertGrant(campaignId, "objective", objective.objectiveId, specificPlayerScope(objective.playerId), objective.playerId);
+      await insertGrant(campaignId, "objective", objective.objectiveId, "specific_player", objective.playerId);
       continue;
     }
     const visibility = normalizeVisibility(objective.visibilityScope);
