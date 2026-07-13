@@ -34,6 +34,14 @@ export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFoc
   const [visibility, setVisibility] = useState<CanvasNavigatorVisibilityFilter>("all");
   const [status, setStatus] = useState<CanvasNavigatorStatusFilter>("active");
 
+  const reportNavigatorActionError = (message: string) => (error: unknown) => {
+    console.error(message, error);
+  };
+
+  const runNavigatorAction = (operation: Promise<unknown>, errorMessage: string) => {
+    void operation.catch(reportNavigatorActionError(errorMessage));
+  };
+
   const placed = useMemo(() => getPlacedNodesByType(canvas, campaignState), [canvas, campaignState]);
   const filters = useMemo(() => ({ query, type, visibility, status }), [query, type, visibility, status]);
 
@@ -114,7 +122,9 @@ export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFoc
       <NavigatorSection title={t("canvas.navigator.inCanvas")} emptyText={t("canvas.navigator.emptyCanvasResults")}>
         {placedEntities.map((entity) => {
           const node = nodeByEntityId.get(entity.entityId);
-          return node ? <ResultButton key={entity.entityId} label={entity.title} meta={entity.entityType} icon={<Crosshair size={13} />} onClick={() => focusEntity(entity.entityId)} fallback={focusFallback?.kind === "addEntity" && focusFallback.id === entity.entityId ? { label: t("canvas.navigator.addToCanvas"), onClick: () => void handlePlaceEntity(entity.entityId) } : undefined} /> : null;
+          return node ? <ResultButton key={entity.entityId} label={entity.title} meta={entity.entityType} icon={<Crosshair size={13} />} onClick={() => focusEntity(entity.entityId)} fallback={focusFallback?.kind === "addEntity" && focusFallback.id === entity.entityId ? { label: t("canvas.navigator.addToCanvas"), onClick: () => {
+            runNavigatorAction(handlePlaceEntity(entity.entityId), "No se pudo colocar la entidad en el canvas.");
+          } } : undefined} /> : null;
         })}
         {placedFacts.map((fact) => {
           const node = nodeByFactId.get(fact.factId);
@@ -124,7 +134,9 @@ export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFoc
       </NavigatorSection>
 
       <NavigatorSection title={t("canvas.navigator.campaignArchive")} emptyText={t("canvas.navigator.emptyArchiveResults")}>
-        {unplacedEntities.map((entity) => <ResultButton key={entity.entityId} label={entity.title} meta={entity.entityType} icon={<PlusCircle size={13} />} onClick={() => handlePlaceEntity(entity.entityId)} />)}
+        {unplacedEntities.map((entity) => <ResultButton key={entity.entityId} label={entity.title} meta={entity.entityType} icon={<PlusCircle size={13} />} onClick={() => {
+          runNavigatorAction(handlePlaceEntity(entity.entityId), "No se pudo colocar la entidad en el canvas.");
+        }} />)}
       </NavigatorSection>
     </aside>
   );

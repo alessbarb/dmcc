@@ -31,6 +31,14 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
   const [isConvertOpen, setIsConvertOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const reportNoteActionError = (message: string) => (error: unknown) => {
+    console.error(message, error);
+  };
+
+  const runNoteAction = (operation: Promise<unknown>, errorMessage: string) => {
+    void operation.catch(reportNoteActionError(errorMessage));
+  };
+
   // Autofocus when note is newly created (empty text)
   useEffect(() => {
     if (textareaRef.current && (data.text === undefined || data.text === "")) {
@@ -78,7 +86,9 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
           {(["yellow", "blue", "green", "pink", "purple"] as const).map((c) => (
             <button
               key={c}
-              onClick={() => handleColorChange(c)}
+              onClick={() => {
+                runNoteAction(handleColorChange(c), "No se pudo actualizar el color de la nota.");
+              }}
               className={`note-color-dot color-${c} ${data.color === c || (!data.color && c === "yellow") ? "active" : ""}`}
               title={`Color ${c}`}
             />
@@ -95,7 +105,9 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
             <Wand2 size={12} />
           </button>
           <button
-            onClick={() => removeNodeFromCanvas(data.canvasId, id)}
+            onClick={() => {
+              runNoteAction(removeNodeFromCanvas(data.canvasId, id), "No se pudo eliminar la nota.");
+            }}
             className="note-action-btn btn-delete text-critical"
             title={t("canvas.noteNode.deleteNote")}
           >
@@ -109,7 +121,9 @@ export function CanvasNoteNode({ id, data, selected }: CanvasNoteNodeProps) {
           ref={textareaRef}
           value={localText}
           onChange={(e) => setLocalText(e.target.value)}
-          onBlur={handleBlur}
+          onBlur={() => {
+            runNoteAction(handleBlur(), "No se pudo guardar la nota.");
+          }}
           className="note-textarea"
           placeholder={t("canvas.noteNode.contentPlaceholder")}
         />

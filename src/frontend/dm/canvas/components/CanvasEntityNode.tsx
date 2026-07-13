@@ -50,6 +50,14 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
     recordSessionEvent
   } = useCampaignStore();
 
+  const reportCanvasNodeError = (message: string) => (error: unknown) => {
+    console.error(message, error);
+  };
+
+  const runCanvasNodeAction = (operation: Promise<unknown>, errorMessage: string) => {
+    void operation.catch(reportCanvasNodeError(errorMessage));
+  };
+
   const entity = campaignState?.entities?.find((e: Entity) => e.entityId === data.entityId);
 
   if (!entity || entity.archived) {
@@ -195,18 +203,23 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
       {hasDirectionToolbar && (
         <div className="node-direction-toolbar">
           <button
-            onClick={async (e) => {
+            onClick={(e) => {
               e.stopPropagation();
-              await updateEntity(entity.entityId, { visibility: { kind: "public" } });
-              const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
-              if (activeSession) {
-                await recordSessionEvent(activeSession.sessionId, {
-                  type: "reveal",
-                  title: `Revelado: ${entity.title}`,
-                  description: t("toasts.entityRevealedCanvas", { title: entity.title }),
-                  relatedEntityIds: [entity.entityId],
-                });
-              }
+              runCanvasNodeAction(
+                (async () => {
+                  await updateEntity(entity.entityId, { visibility: { kind: "public" } });
+                  const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
+                  if (activeSession) {
+                    await recordSessionEvent(activeSession.sessionId, {
+                      type: "reveal",
+                      title: `Revelado: ${entity.title}`,
+                      description: t("toasts.entityRevealedCanvas", { title: entity.title }),
+                      relatedEntityIds: [entity.entityId],
+                    });
+                  }
+                })(),
+                "No se pudo revelar la entidad desde el canvas."
+              );
             }}
             disabled={entity.visibility?.kind === "public"}
             title="Revelar a los jugadores"
@@ -215,22 +228,27 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
             <Eye size={12} />
           </button>
           <button
-            onClick={async (e) => {
+            onClick={(e) => {
               e.stopPropagation();
               const text = window.prompt(t("canvas.node.addSessionNotePrompt", { title: entity.title }));
-              if (text && text.trim()) {
-                const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
-                if (activeSession) {
-                  await recordSessionEvent(activeSession.sessionId, {
-                    type: "note_recorded",
-                    title: `Nota sobre ${entity.title}`,
-                    description: text.trim(),
-                    relatedEntityIds: [entity.entityId],
-                  });
-                } else {
-                  alert(t("canvas.node.noActiveSessionNote"));
-                }
-              }
+              runCanvasNodeAction(
+                (async () => {
+                  if (text && text.trim()) {
+                    const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
+                    if (activeSession) {
+                      await recordSessionEvent(activeSession.sessionId, {
+                        type: "note_recorded",
+                        title: `Nota sobre ${entity.title}`,
+                        description: text.trim(),
+                        relatedEntityIds: [entity.entityId],
+                      });
+                    } else {
+                      alert(t("canvas.node.noActiveSessionNote"));
+                    }
+                  }
+                })(),
+                "No se pudo añadir la nota de sesión desde el canvas."
+              );
             }}
             title={t("canvas.node.addSessionNoteLabel")}
             className="node-direction-btn"
@@ -238,20 +256,25 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
             <StickyNote size={12} />
           </button>
           <button
-            onClick={async (e) => {
+            onClick={(e) => {
               e.stopPropagation();
-              const currentStatus = entity.status || "ready";
-              let newStatus = "resolved";
+              runCanvasNodeAction(
+                (async () => {
+                  const currentStatus = entity.status || "ready";
+                  let newStatus = "resolved";
 
-              if (entity.entityType === "npc") {
-                newStatus = currentStatus === "alive" ? "dead" : "alive";
-              } else if (entity.entityType === "location") {
-                newStatus = currentStatus === "available" ? "visited" : "available";
-              } else if (entity.entityType === "quest") {
-                newStatus = currentStatus === "active" ? "completed" : "active";
-              }
+                  if (entity.entityType === "npc") {
+                    newStatus = currentStatus === "alive" ? "dead" : "alive";
+                  } else if (entity.entityType === "location") {
+                    newStatus = currentStatus === "available" ? "visited" : "available";
+                  } else if (entity.entityType === "quest") {
+                    newStatus = currentStatus === "active" ? "completed" : "active";
+                  }
 
-              await updateEntity(entity.entityId, { status: newStatus });
+                  await updateEntity(entity.entityId, { status: newStatus });
+                })(),
+                "No se pudo actualizar el estado de la entidad desde el canvas."
+              );
             }}
             title={t("canvas.node.cycleStatusLabel")}
             className="node-direction-btn"
