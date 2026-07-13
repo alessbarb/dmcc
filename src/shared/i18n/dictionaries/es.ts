@@ -841,6 +841,13 @@ export const es: TranslationDictionary = {
     noEntities: "Aún no hay entidades. Crea la primera.",
     noResults: "Ninguna entidad coincide con la búsqueda o el filtro actual.",
     updateError: "Error al actualizar la entidad. Comprueba la conexión.",
+    toggleFilters: "Filtros",
+    sortBy: "Ordenar por",
+    sortRelevant: "Relevantes",
+    sortRecent: "Recientes",
+    sortAlphabetical: "Nombre",
+    viewCard: "Vista de tarjetas",
+    viewCompact: "Vista compacta",
   },
   appFooter: {
     tagline: "Memoria narrativa local para dirigir campañas con continuidad.",

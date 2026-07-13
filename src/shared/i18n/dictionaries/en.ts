@@ -829,6 +829,13 @@ export const en = {
     noEntities: "No entities yet. Create your first one.",
     noResults: "No entities match the current search or filter.",
     updateError: "Failed to update entity. Check your connection.",
+    toggleFilters: "Filters",
+    sortBy: "Sort by",
+    sortRelevant: "Relevant",
+    sortRecent: "Recent",
+    sortAlphabetical: "Name",
+    viewCard: "Card view",
+    viewCompact: "Compact view",
   },
   appFooter: {
     tagline: "Local narrative memory for running campaigns with continuity.",

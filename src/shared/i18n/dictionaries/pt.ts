@@ -594,6 +594,13 @@ export const pt = {
     noEntities: "Nenhuma entidade ainda. Crie a primeira.",
     noResults: "Nenhuma entidade corresponde à pesquisa ou filtro atual.",
     updateError: "Falha ao atualizar a entidade. Verifique sua conexão.",
+    toggleFilters: "Filtros",
+    sortBy: "Ordenar por",
+    sortRelevant: "Relevantes",
+    sortRecent: "Recentes",
+    sortAlphabetical: "Nome",
+    viewCard: "Visualização em cartões",
+    viewCompact: "Visualização compacta",
   },
   appFooter: {
     tagline: "Memória narrativa local para conduzir campanhas com continuidade.",

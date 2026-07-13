@@ -603,6 +603,13 @@ export const it: TranslationDictionary = {
     noEntities: "Nessuna entità ancora. Crea la prima.",
     noResults: "Nessuna entità corrisponde alla ricerca o al filtro attuale.",
     updateError: "Impossibile aggiornare l'entità. Controlla la connessione.",
+    toggleFilters: "Filtri",
+    sortBy: "Ordina per",
+    sortRelevant: "Rilevanti",
+    sortRecent: "Recenti",
+    sortAlphabetical: "Nome",
+    viewCard: "Vista schede",
+    viewCompact: "Vista compatta",
   },
 
   appFooter: {
