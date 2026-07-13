@@ -46,8 +46,8 @@ export default defineConfig(
       ],
 
       "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-floating-promises": "warn",
-      "@typescript-eslint/no-misused-promises": "warn",
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-misused-promises": "error",
 
       "@typescript-eslint/no-unused-vars": [
         "error",
