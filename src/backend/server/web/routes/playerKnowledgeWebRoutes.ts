@@ -13,7 +13,10 @@ export function registerPlayerKnowledgeWebRoutes(server: FastifyInstance): void 
   server.addHook("preHandler", async (request) => {
     const pathname = request.url.split("?", 1)[0];
     const campaignId = campaignIdFromPortalPath(pathname);
-    if (campaignId) await refreshKnowledgeVisibilityGrants(campaignId);
+    if (!campaignId) return;
+
+    await requireCampaignRole(request, campaignId, ["dm", "co_dm", "player", "viewer"]);
+    await refreshKnowledgeVisibilityGrants(campaignId);
   });
 
   server.get<{ Params: { campaignId: string } }>(
