@@ -31,6 +31,12 @@ interface CreateCampaignInvitationResponse {
   };
 }
 
+function runPlayersAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 interface ListCampaignInvitationsResponse {
   invitations: CampaignInvitation[];
 }
@@ -156,7 +162,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   }, [addToast, store.activeCampaignId, t]);
 
   useEffect(() => {
-    void fetchInvitations();
+    runPlayersAction(fetchInvitations(), "No se pudieron cargar las invitaciones.");
   }, [fetchInvitations]);
 
   useEffect(() => {
@@ -222,7 +228,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
   };
 
   useEffect(() => {
-    void loadDmPlayerPortalSummary();
+    runPlayersAction(loadDmPlayerPortalSummary(), "No se pudo cargar el resumen del portal de jugadores.");
   }, [loadDmPlayerPortalSummary]);
 
   const campaignState = props.campaignState ?? store.campaignState;
@@ -300,7 +306,9 @@ export function PlayersPage(props: PlayersPageProps = {}) {
 
           <button
             className="btn btn-primary btn-sm"
-            onClick={handleCreateInvite}
+            onClick={() => {
+              runPlayersAction(handleCreateInvite(), "No se pudo crear la invitación.");
+            }}
             disabled={inviteLoading}
             aria-busy={inviteLoading}
             aria-live="polite"
@@ -369,7 +377,9 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                         className="btn btn-danger btn-icon"
                         style={{ padding: "3px" }}
                         aria-label={t("players.revokeInvitation")}
-                        onClick={() => void handleRevokeInvite(inv.invitationId)}
+                        onClick={() => {
+                          runPlayersAction(handleRevokeInvite(inv.invitationId), "No se pudo revocar la invitación.");
+                        }}
                       >
                         <Trash2 size={10} />
                       </button>
@@ -488,8 +498,10 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                       className="btn btn-danger btn-icon"
                       style={{ padding: "6px" }}
                       onClick={() => {
-                        archivePlayer(player.playerId);
-                        addToast(`Jugador "${player.displayName ?? player.name}" archivado.`, "info");
+                        runPlayersAction((async () => {
+                          await archivePlayer(player.playerId);
+                          addToast(`Jugador "${player.displayName ?? player.name}" archivado.`, "info");
+                        })(), "No se pudo archivar el jugador.");
                       }}
                     >
                       <Archive size={12} />
@@ -532,34 +544,36 @@ export function PlayersPage(props: PlayersPageProps = {}) {
               <h3 style={{ fontWeight: "700" }}>{editingPlayerId ? t("players.editProfile") : t("players.addPlayer")}</h3>
               <button className="btn btn-icon btn-secondary" onClick={() => { setIsPlayerModalOpen(false); setEditingPlayerId(null); setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" }); }}><X size={16} /></button>
             </div>
-            <form onSubmit={async (e) => {
+            <form onSubmit={(e) => {
               e.preventDefault();
               if (!playerForm.name.trim()) return;
-              const displayNameVal = playerForm.displayName.trim() || playerForm.name.trim();
-              const emailVal = playerForm.email.trim() || null;
-              const imageUrlVal = playerForm.imageUrl.trim() || "";
-              const avatarUrlVal = playerForm.avatarUrl?.trim() || "";
+              runPlayersAction((async () => {
+                const displayNameVal = playerForm.displayName.trim() || playerForm.name.trim();
+                const emailVal = playerForm.email.trim() || null;
+                const imageUrlVal = playerForm.imageUrl.trim() || "";
+                const avatarUrlVal = playerForm.avatarUrl?.trim() || "";
 
-              if (editingPlayerId) {
-                await updatePlayer(editingPlayerId, {
-                  name: playerForm.name.trim(),
-                  displayName: displayNameVal,
-                  email: emailVal,
-                  imageUrl: imageUrlVal,
-                  avatarUrl: avatarUrlVal
-                });
-              } else {
-                await createPlayer(
-                  playerForm.name.trim(),
-                  displayNameVal,
-                  emailVal || undefined,
-                  imageUrlVal,
-                  avatarUrlVal
-                );
-              }
-              setIsPlayerModalOpen(false);
-              setEditingPlayerId(null);
-              setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" });
+                if (editingPlayerId) {
+                  await updatePlayer(editingPlayerId, {
+                    name: playerForm.name.trim(),
+                    displayName: displayNameVal,
+                    email: emailVal,
+                    imageUrl: imageUrlVal,
+                    avatarUrl: avatarUrlVal
+                  });
+                } else {
+                  await createPlayer(
+                    playerForm.name.trim(),
+                    displayNameVal,
+                    emailVal || undefined,
+                    imageUrlVal,
+                    avatarUrlVal
+                  );
+                }
+                setIsPlayerModalOpen(false);
+                setEditingPlayerId(null);
+                setPlayerForm({ name: "", displayName: "", email: "", imageUrl: "", avatarUrl: "" });
+              })(), "No se pudo guardar el jugador.");
             }}>
               <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div className="form-group" style={{ marginBottom: 0 }}>
@@ -688,10 +702,26 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                               </div>
                             )}
                             <div style={{ display: "flex", gap: "6px" }}>
-                              <button className="btn btn-primary btn-sm" onClick={() => resolvePlayerCharacterProposal(proposal.proposalId, { status: "approved", dmResolutionNote: "Aprobado" })}>
+                              <button
+                                className="btn btn-primary btn-sm"
+                                onClick={() => {
+                                  runPlayersAction(
+                                    resolvePlayerCharacterProposal(proposal.proposalId, { status: "approved", dmResolutionNote: "Aprobado" }),
+                                    "No se pudo aprobar la propuesta de personaje.",
+                                  );
+                                }}
+                              >
                                 Aprobar
                               </button>
-                              <button className="btn btn-secondary btn-sm" onClick={() => resolvePlayerCharacterProposal(proposal.proposalId, { status: "rejected", dmResolutionNote: "Rechazado por el DM" })}>
+                              <button
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => {
+                                  runPlayersAction(
+                                    resolvePlayerCharacterProposal(proposal.proposalId, { status: "rejected", dmResolutionNote: "Rechazado por el DM" }),
+                                    "No se pudo rechazar la propuesta de personaje.",
+                                  );
+                                }}
+                              >
                                 Rechazar
                               </button>
                             </div>
@@ -715,7 +745,7 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                           className="btn btn-secondary btn-sm"
                           onClick={() => {
                             if (confirm(t("players.unlinkCharacterConfirm"))) {
-                              void unlinkPlayerCharacter(portalPlayer.playerId);
+                              runPlayersAction(unlinkPlayerCharacter(portalPlayer.playerId), "No se pudo desvincular el personaje.");
                             }
                           }}
                         >
@@ -752,15 +782,17 @@ export function PlayersPage(props: PlayersPageProps = {}) {
                         <button
                           className="btn btn-primary btn-sm"
                           disabled={!assignSelections[portalPlayer.playerId]}
-                          onClick={async () => {
+                          onClick={() => {
                             const characterEntityId = assignSelections[portalPlayer.playerId];
                             if (!characterEntityId) return;
-                            await linkPlayerCharacter(portalPlayer.playerId, characterEntityId);
-                            setAssignSelections((prev) => {
-                              const next = { ...prev };
-                              delete next[portalPlayer.playerId];
-                              return next;
-                            });
+                            runPlayersAction((async () => {
+                              await linkPlayerCharacter(portalPlayer.playerId, characterEntityId);
+                              setAssignSelections((prev) => {
+                                const next = { ...prev };
+                                delete next[portalPlayer.playerId];
+                                return next;
+                              });
+                            })(), "No se pudo asignar el personaje.");
                           }}
                         >
                           Asignar
