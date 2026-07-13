@@ -1,6 +1,14 @@
 import { basename, dirname, join } from "path";
 import * as fs from "fs/promises";
 import { assertWithinDir, slugifyTitle } from "../helpers.js";
+import type { CampaignProjection } from "@core/projections/campaignProjection.js";
+import type { Entity, EntityType } from "@core/domain/entity/types.js";
+import type { Relation } from "@core/domain/relation/types.js";
+import type { Fact } from "@core/domain/fact/fact.js";
+import type { Session } from "@core/domain/session/types.js";
+import type { Canvas, CanvasNode } from "@core/domain/canvas/types.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
+import type { StoredEvent } from "@core/domain/shared/events.js";
 
 export interface MarkdownCampaignExportResult {
   campaignId: string;
@@ -11,6 +19,15 @@ export interface MarkdownCampaignExportResult {
   downloadUrl: string;
   fileCount: number;
 }
+
+interface EntityReferences {
+  relations: Relation[];
+  facts: Fact[];
+  sessions: Session[];
+  canvases: Canvas[];
+}
+
+type ArchivableStatus = { archived: boolean; status?: string };
 
 const PRIMARY_FILE = "Campaña completa.md";
 
@@ -165,12 +182,16 @@ const DM_FACT_KINDS = new Set([
   "unknown",
 ]);
 
-function values<T = any>(map: Map<string, T> | undefined): T[] {
+function readString(value: unknown, fallback = ""): string {
+  return typeof value === "string" && value.length > 0 ? value : fallback;
+}
+
+function values<T>(map: Map<string, T> | undefined): T[] {
   return Array.from(map?.values() ?? []);
 }
 
 function titleOf(
-  entity: any | undefined,
+  entity: Entity | undefined,
   fallback = "Entidad desconocida",
 ): string {
   return entity?.title || entity?.entityId || fallback;
@@ -187,16 +208,16 @@ function relationLabel(type: string | undefined): string {
   return RELATION_LABELS[type] || type.replace(/[_-]+/g, " ");
 }
 
-function visibilityLabel(visibility: any): string {
+function visibilityLabel(visibility: VisibilityRule | undefined): string {
   if (!visibility) return "dm_only";
-  return visibility.kind || visibility.mode || JSON.stringify(visibility);
+  return visibility.kind;
 }
 
-function archiveLabel(item: any): string {
-  return item?.archived ? "archivado" : item?.status || "activo";
+function archiveLabel(item: ArchivableStatus): string {
+  return item.archived ? "archivado" : item.status || "activo";
 }
 
-function visibilityNarrativeLabel(visibility: any): string {
+function visibilityNarrativeLabel(visibility: VisibilityRule | undefined): string {
   const raw = visibilityLabel(visibility);
   return VISIBILITY_LABELS[raw] || raw.replace(/[_-]+/g, " ");
 }
@@ -211,23 +232,23 @@ function factSectionLabel(kind: string | undefined): string {
   return FACT_SECTION_LABELS[kind] || kind.replace(/[_-]+/g, " ");
 }
 
-function rawVisibility(visibility: any): string {
+function rawVisibility(visibility: VisibilityRule | undefined): string {
   return visibilityLabel(visibility);
 }
 
-function isDmOnlyVisibility(visibility: any): boolean {
+function isDmOnlyVisibility(visibility: VisibilityRule | undefined): boolean {
   return rawVisibility(visibility) === "dm_only";
 }
 
-function isDmOnlyFact(fact: any): boolean {
+function isDmOnlyFact(fact: Fact): boolean {
   return isDmOnlyVisibility(fact.visibility) || fact.kind === "dm_secret";
 }
 
-function isPublicBookletFact(fact: any): boolean {
+function isPublicBookletFact(fact: Fact): boolean {
   return !isDmOnlyFact(fact) && PUBLIC_FACT_KINDS.has(fact.kind || "unknown");
 }
 
-function isDmBookletFact(fact: any): boolean {
+function isDmBookletFact(fact: Fact): boolean {
   return isDmOnlyFact(fact) || DM_FACT_KINDS.has(fact.kind || "unknown");
 }
 
@@ -251,7 +272,7 @@ function normalizeForComparison(text: string): string {
   return text
     .toLocaleLowerCase("es")
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[̀-ͯ]/g, "")
     .replace(/[*_`.,;:¡!¿?()[\]{}«»"']/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -272,10 +293,10 @@ function relationDescriptionAddsValue(
 }
 
 function relationCounterpart(
-  entity: any,
-  relation: any,
-  state: any,
-): any | undefined {
+  entity: Entity | undefined,
+  relation: Relation,
+  state: CampaignProjection,
+): Entity | undefined {
   if (!entity) return undefined;
   const otherId =
     relation.sourceEntityId === entity.entityId
@@ -284,9 +305,9 @@ function relationCounterpart(
   return state.entities.get(otherId);
 }
 
-function relationSectionTitle(entity: any): string {
+function relationSectionTitle(entity: Entity): string {
   return (
-    BOOKLET_SECTION_RELATION_TITLES[entity?.entityType || ""] ||
+    BOOKLET_SECTION_RELATION_TITLES[entity.entityType || ""] ||
     "Conexiones narrativas"
   );
 }
@@ -298,37 +319,35 @@ function firstNonEmpty(...valuesToCheck: unknown[]): string | undefined {
   return undefined;
 }
 
-function isPlaceholderEntity(entity: any): boolean {
-  const title = (entity?.title || "").trim();
+function isPlaceholderEntity(entity: Entity): boolean {
+  const title = (entity.title || "").trim();
   return !title || /^Nuevo\b/i.test(title) || /^New\b/i.test(title);
 }
 
-function activeEntities(state: any): any[] {
-  return values(state.entities).filter((entity: any) => !entity.archived);
+function activeEntities(state: CampaignProjection): Entity[] {
+  return values(state.entities).filter((entity) => !entity.archived);
 }
 
-function bookletEntities(state: any): any[] {
+function bookletEntities(state: CampaignProjection): Entity[] {
   return activeEntities(state).filter(
-    (entity: any) => !isPlaceholderEntity(entity),
+    (entity) => !isPlaceholderEntity(entity),
   );
 }
 
-function pendingEntities(state: any): any[] {
-  return activeEntities(state).filter((entity: any) =>
-    isPlaceholderEntity(entity),
-  );
+function pendingEntities(state: CampaignProjection): Entity[] {
+  return activeEntities(state).filter((entity) => isPlaceholderEntity(entity));
 }
 
-function relationCount(entity: any, state: any): number {
+function relationCount(entity: Entity, state: CampaignProjection): number {
   return values(state.relations).filter(
-    (relation: any) =>
+    (relation) =>
       !relation.archived &&
       (relation.sourceEntityId === entity.entityId ||
         relation.targetEntityId === entity.entityId),
   ).length;
 }
 
-function narrativeScore(entity: any, state: any): number {
+function narrativeScore(entity: Entity, state: CampaignProjection): number {
   const importanceScore: Record<string, number> = {
     critical: 100,
     high: 60,
@@ -352,7 +371,7 @@ function narrativeScore(entity: any, state: any): number {
   );
 }
 
-function sortNarrative(entities: any[], state: any): any[] {
+function sortNarrative(entities: Entity[], state: CampaignProjection): Entity[] {
   return [...entities].sort((a, b) => {
     const byScore = narrativeScore(b, state) - narrativeScore(a, state);
     if (byScore !== 0) return byScore;
@@ -360,14 +379,14 @@ function sortNarrative(entities: any[], state: any): any[] {
   });
 }
 
-function entitiesOfType(state: any, type: string): any[] {
+function entitiesOfType(state: CampaignProjection, type: EntityType): Entity[] {
   return sortNarrative(
-    bookletEntities(state).filter((entity: any) => entity.entityType === type),
+    bookletEntities(state).filter((entity) => entity.entityType === type),
     state,
   );
 }
 
-function entityDescription(entity: any): string {
+function entityDescription(entity: Entity): string {
   return (
     firstNonEmpty(
       entity.summary,
@@ -384,7 +403,7 @@ function entityDescription(entity: any): string {
   );
 }
 
-function entityDmNote(entity: any): string | undefined {
+function entityDmNote(entity: Entity): string | undefined {
   return firstNonEmpty(
     entity.metadata?.dmNotes,
     entity.metadata?.privateNotes,
@@ -395,7 +414,7 @@ function entityDmNote(entity: any): string | undefined {
   );
 }
 
-function entityPlayerFacingText(entity: any): string | undefined {
+function entityPlayerFacingText(entity: Entity): string | undefined {
   return firstNonEmpty(
     entity.metadata?.playerIntro,
     entity.metadata?.publicDescription,
@@ -404,7 +423,7 @@ function entityPlayerFacingText(entity: any): string | undefined {
   );
 }
 
-function entityReadAloud(entity: any): string | undefined {
+function entityReadAloud(entity: Entity): string | undefined {
   return firstNonEmpty(
     entity.metadata?.readAloud,
     entity.metadata?.read_aloud,
@@ -434,9 +453,9 @@ function uniqueFileName(title: string, used: Set<string>): string {
   return candidate;
 }
 
-function plainState(state: any) {
+function plainState(state: CampaignProjection) {
   return {
-    campaignId: state.campaignId,
+    campaignId: state.campaign?.campaignId,
     campaign: state.campaign,
     players: values(state.players),
     entities: values(state.entities),
@@ -450,15 +469,15 @@ function plainState(state: any) {
   };
 }
 
-function buildGraph(state: any) {
+function buildGraph(state: CampaignProjection) {
   return {
-    nodes: values(state.entities).map((entity: any) => ({
+    nodes: values(state.entities).map((entity) => ({
       id: entity.entityId,
       title: entity.title,
       type: entity.entityType,
       archived: Boolean(entity.archived),
     })),
-    edges: values(state.relations).map((relation: any) => ({
+    edges: values(state.relations).map((relation) => ({
       id: relation.relationId,
       source: relation.sourceEntityId,
       target: relation.targetEntityId,
@@ -468,7 +487,7 @@ function buildGraph(state: any) {
   };
 }
 
-function technicalRelationSentence(relation: any, state: any): string {
+function technicalRelationSentence(relation: Relation, state: CampaignProjection): string {
   const source = state.entities.get(relation.sourceEntityId);
   const target = state.entities.get(relation.targetEntityId);
   const sentence = `**${titleOf(source)}** ${relationLabel(relation.relationType)} **${titleOf(target)}**`;
@@ -483,20 +502,20 @@ function technicalRelationSentence(relation: any, state: any): string {
   return `${sentence}${suffix ? ` — ${suffix}` : ""}`;
 }
 
-function relationSentence(relation: any, state: any): string {
+function relationSentence(relation: Relation, state: CampaignProjection): string {
   const source = state.entities.get(relation.sourceEntityId);
   const target = state.entities.get(relation.targetEntityId);
   const base = `**${titleOf(source)}** ${relationBookletLabel(relation.relationType)} **${titleOf(target)}**`;
   if (relationDescriptionAddsValue(base, relation.description)) {
-    return `${withFinalDot(base)} ${withFinalDot(relation.description)}`;
+    return `${withFinalDot(base)} ${withFinalDot(relation.description ?? "")}`;
   }
   return withFinalDot(base);
 }
 
 function relationBulletForEntity(
-  entity: any,
-  relation: any,
-  state: any,
+  entity: Entity,
+  relation: Relation,
+  state: CampaignProjection,
 ): string {
   const source = state.entities.get(relation.sourceEntityId);
   const target = state.entities.get(relation.targetEntityId);
@@ -517,7 +536,7 @@ function relationBulletForEntity(
   return withFinalDot(base);
 }
 
-function relationBookletBlock(relation: any, state: any): string {
+function relationBookletBlock(relation: Relation, state: CampaignProjection): string {
   const source = state.entities.get(relation.sourceEntityId);
   const target = state.entities.get(relation.targetEntityId);
   const note = isDmOnlyVisibility(relation.visibility)
@@ -531,9 +550,9 @@ function relationBookletBlock(relation: any, state: any): string {
   ].join("\n");
 }
 
-function factBookletLine(fact: any, state: any): string {
-  const entities = (fact.relatedEntityIds || [])
-    .map((id: string) => titleOf(state.entities.get(id), id))
+function factBookletLine(fact: Fact, state: CampaignProjection): string {
+  const entities = fact.relatedEntityIds
+    .map((id) => titleOf(state.entities.get(id), id))
     .join(", ");
   const confidence = confidenceNarrativeLabel(fact.confidence);
   const suffix = entities ? ` _Relacionado con: ${entities}._` : "";
@@ -543,37 +562,31 @@ function factBookletLine(fact: any, state: any): string {
   return `- ${fact.statement}${confidence && confidence !== "verdad establecida" ? ` _${confidence}._` : ""}${suffix}`;
 }
 
-function entityReferences(entityId: string, state: any) {
+function entityReferences(entityId: string, state: CampaignProjection): EntityReferences {
   const relations = values(state.relations).filter(
-    (relation: any) =>
+    (relation) =>
       relation.sourceEntityId === entityId ||
       relation.targetEntityId === entityId,
   );
-  const facts = values(state.facts).filter(
-    (fact: any) =>
-      Array.isArray(fact.relatedEntityIds) &&
-      fact.relatedEntityIds.includes(entityId),
+  const facts = values(state.facts).filter((fact) =>
+    fact.relatedEntityIds.includes(entityId),
   );
-  const sessions = values(state.sessions).filter(
-    (session: any) =>
-      session.entityIds?.includes?.(entityId) ||
-      session.relatedEntityIds?.includes?.(entityId),
+  const sessions = values(state.sessions).filter((session) =>
+    session.prep?.involvedEntityIds.includes(entityId),
   );
-  const canvases = values(state.canvases).filter(
-    (canvas: any) =>
-      Array.isArray(canvas.nodes) &&
-      canvas.nodes.some((node: any) => node.entityId === entityId),
+  const canvases = values(state.canvases).filter((canvas) =>
+    canvas.nodes.some((node) => node.entityId === entityId),
   );
   return { relations, facts, sessions, canvases };
 }
 
-function entityMarkdown(entity: any, state: any): string {
+function entityMarkdown(entity: Entity, state: CampaignProjection): string {
   const refs = entityReferences(entity.entityId, state);
   const outgoing = refs.relations.filter(
-    (relation: any) => relation.sourceEntityId === entity.entityId,
+    (relation) => relation.sourceEntityId === entity.entityId,
   );
   const incoming = refs.relations.filter(
-    (relation: any) => relation.targetEntityId === entity.entityId,
+    (relation) => relation.targetEntityId === entity.entityId,
   );
 
   return [
@@ -600,44 +613,41 @@ function entityMarkdown(entity: any, state: any): string {
     md(entity.metadata),
     "",
     "## Relaciones salientes",
-    bullet(outgoing.map((relation: any) => relationSentence(relation, state))),
+    bullet(outgoing.map((relation) => relationSentence(relation, state))),
     "",
     "## Relaciones entrantes",
-    bullet(incoming.map((relation: any) => relationSentence(relation, state))),
+    bullet(incoming.map((relation) => relationSentence(relation, state))),
     "",
     "## Hechos asociados",
     refs.facts.length
-      ? refs.facts.map((fact: any) => factBookletLine(fact, state)).join("\n")
+      ? refs.facts.map((fact) => factBookletLine(fact, state)).join("\n")
       : "- —",
     "",
     "## Aparece en sesiones",
     bullet(
       refs.sessions.map(
-        (session: any) =>
-          `${session.title} (${session.status || "sin estado"})`,
+        (session) => `${session.title} (${session.status || "sin estado"})`,
       ),
     ),
     "",
     "## Aparece en canvas",
-    bullet(
-      refs.canvases.map((canvas: any) => `${canvas.title} (${canvas.kind})`),
-    ),
+    bullet(refs.canvases.map((canvas) => `${canvas.title} (${canvas.kind})`)),
     "",
   ].join("\n");
 }
 
-function dashboardMarkdown(state: any): string {
+function dashboardMarkdown(state: CampaignProjection): string {
   const activeQuests = values(state.entities).filter(
-    (entity: any) =>
+    (entity) =>
       entity.entityType === "quest" &&
       !entity.archived &&
       entity.status === "active",
   );
   const critical = values(state.entities).filter(
-    (entity: any) => !entity.archived && entity.importance === "critical",
+    (entity) => !entity.archived && entity.importance === "critical",
   );
   const unresolvedFacts = values(state.facts).filter(
-    (fact: any) => !fact.archived && fact.confidence !== "confirmed",
+    (fact) => !fact.archived && fact.confidence !== "confirmed",
   );
   return [
     "# Dashboard narrativo",
@@ -645,31 +655,28 @@ function dashboardMarkdown(state: any): string {
     "## Misiones activas",
     bullet(
       activeQuests.map(
-        (quest: any) =>
-          `${quest.title}${quest.summary ? ` — ${quest.summary}` : ""}`,
+        (quest) => `${quest.title}${quest.summary ? ` — ${quest.summary}` : ""}`,
       ),
     ),
     "",
     "## Elementos críticos",
     bullet(
-      critical.map(
-        (entity: any) => `${entity.title} (${typeLabel(entity.entityType)})`,
-      ),
+      critical.map((entity) => `${entity.title} (${typeLabel(entity.entityType)})`),
     ),
     "",
     "## Hechos no confirmados",
     bullet(
       unresolvedFacts.map(
-        (fact: any) => `${fact.statement} (${fact.kind}, ${fact.confidence})`,
+        (fact) => `${fact.statement} (${fact.kind}, ${fact.confidence})`,
       ),
     ),
     "",
   ].join("\n");
 }
 
-function timelineMarkdown(state: any, events: any[]): string {
+function timelineMarkdown(state: CampaignProjection, events: StoredEvent[]): string {
   const sessions = values(state.sessions).sort(
-    (a: any, b: any) => (a.number ?? 0) - (b.number ?? 0),
+    (a, b) => (a.number ?? 0) - (b.number ?? 0),
   );
   return [
     "# Línea de tiempo",
@@ -677,37 +684,37 @@ function timelineMarkdown(state: any, events: any[]): string {
     "## Sesiones",
     bullet(
       sessions.map(
-        (session: any) =>
+        (session) =>
           `Sesión ${session.number ?? "?"}: ${session.title} — ${session.status || "sin estado"}`,
       ),
     ),
     "",
     "## Eventos registrados",
     bullet(
-      events.map((event: any) => `${event.occurredAt || "—"} — ${event.type}`),
+      events.map((event) => `${event.occurredAt || "—"} — ${event.type}`),
     ),
     "",
   ].join("\n");
 }
 
-function relationsMarkdown(state: any): string {
+function relationsMarkdown(state: CampaignProjection): string {
   const relations = values(state.relations).filter(
-    (relation: any) => !relation.archived,
+    (relation) => !relation.archived,
   );
   return [
     "# Relaciones narrativas",
     "",
     relations.length
       ? relations
-          .map((relation: any) => relationBookletBlock(relation, state))
+          .map((relation) => relationBookletBlock(relation, state))
           .join("\n")
       : "No hay relaciones registradas.\n",
   ].join("\n");
 }
 
-function factsMarkdown(state: any): string {
-  const facts = values(state.facts).filter((fact: any) => !fact.archived);
-  const groups = new Map<string, any[]>();
+function factsMarkdown(state: CampaignProjection): string {
+  const facts = values(state.facts).filter((fact) => !fact.archived);
+  const groups = new Map<string, Fact[]>();
   for (const fact of facts) {
     const key = fact.kind || "unknown";
     groups.set(key, [...(groups.get(key) ?? []), fact]);
@@ -719,7 +726,7 @@ function factsMarkdown(state: any): string {
       [
         `## ${factSectionLabel(key)}`,
         "",
-        group.map((fact: any) => factBookletLine(fact, state)).join("\n"),
+        group.map((fact) => factBookletLine(fact, state)).join("\n"),
         "",
       ].join("\n"),
     ),
@@ -727,12 +734,12 @@ function factsMarkdown(state: any): string {
   ].join("\n");
 }
 
-function sessionsMarkdown(state: any): string {
+function sessionsMarkdown(state: CampaignProjection): string {
   const sessions = values(state.sessions);
   return [
     "# Sesiones",
     "",
-    ...sessions.map((session: any) =>
+    ...sessions.map((session) =>
       [
         `## Sesión ${session.number ?? "?"}: ${session.title}`,
         "",
@@ -752,27 +759,27 @@ function sessionsMarkdown(state: any): string {
   ].join("\n");
 }
 
-function canvasMarkdown(state: any): string {
+function canvasMarkdown(state: CampaignProjection): string {
   const canvases = values(state.canvases);
   return [
     "# Canvas y grafo",
     "",
     "Las posiciones y layouts exactos se preservan en `Datos/campaign-state.json`.",
     "",
-    ...canvases.map((canvas: any) =>
+    ...canvases.map((canvas) =>
       [
         `## ${canvas.title}`,
         "",
         bullet([
           `Tipo: ${canvas.kind}`,
           `Estado: ${canvas.archived ? "archivado" : "activo"}`,
-          `Nodos: ${canvas.nodes?.length ?? 0}`,
-          `Edges: ${canvas.edges?.length ?? 0}`,
+          `Nodos: ${canvas.nodes.length}`,
+          `Edges: ${canvas.edges.length}`,
         ]),
         "",
         "### Nodos",
         bullet(
-          (canvas.nodes || []).map((node: any) => {
+          canvas.nodes.map((node) => {
             const entity = node.entityId
               ? state.entities.get(node.entityId)
               : undefined;
@@ -782,8 +789,8 @@ function canvasMarkdown(state: any): string {
         "",
         "### Conexiones",
         bullet(
-          (canvas.edges || []).map(
-            (edge: any) =>
+          canvas.edges.map(
+            (edge) =>
               `${edge.label || edge.relationshipId || "línea visual"}: ${edge.sourceNodeId} → ${edge.targetNodeId}`,
           ),
         ),
@@ -793,16 +800,16 @@ function canvasMarkdown(state: any): string {
   ].join("\n");
 }
 
-function entityBookletBlock(entity: any, state: any): string {
+function entityBookletBlock(entity: Entity, state: CampaignProjection): string {
   const refs = entityReferences(entity.entityId, state);
   const relations = refs.relations
-    .filter((relation: any) => !relation.archived)
-    .sort((a: any, b: any) => {
-      const aOther = relationCounterpart(entity, a, state);
-      const bOther = relationCounterpart(entity, b, state);
+    .filter((relation) => !relation.archived)
+    .sort((a, b) => {
+      const scoreOf = (other: Entity | undefined) =>
+        other ? narrativeScore(other, state) : 0;
       return (
-        narrativeScore(bOther || {}, state) -
-        narrativeScore(aOther || {}, state)
+        scoreOf(relationCounterpart(entity, b, state)) -
+        scoreOf(relationCounterpart(entity, a, state))
       );
     })
     .slice(0, 5);
@@ -824,7 +831,7 @@ function entityBookletBlock(entity: any, state: any): string {
       `**${relationSectionTitle(entity)}:**`,
       "",
       bullet(
-        relations.map((relation: any) =>
+        relations.map((relation) =>
           relationBulletForEntity(entity, relation, state),
         ),
       ),
@@ -837,52 +844,48 @@ function entityBookletBlock(entity: any, state: any): string {
 
 function entityBookletSection(
   title: string,
-  entities: any[],
-  state: any,
+  entities: Entity[],
+  state: CampaignProjection,
 ): string {
   return [
     `## ${title}`,
     "",
     entities.length
-      ? entities
-          .map((entity: any) => entityBookletBlock(entity, state))
-          .join("\n")
+      ? entities.map((entity) => entityBookletBlock(entity, state)).join("\n")
       : "Sin entradas destacadas todavía.",
     "",
   ].join("\n");
 }
 
 function factsBookletSubset(
-  state: any,
-  predicate: (fact: any) => boolean,
+  state: CampaignProjection,
+  predicate: (fact: Fact) => boolean,
   title: string,
 ): string {
   const facts = values(state.facts).filter(
-    (fact: any) => !fact.archived && predicate(fact),
+    (fact) => !fact.archived && predicate(fact),
   );
   return [
     `## ${title}`,
     "",
     facts.length
-      ? facts.map((fact: any) => factBookletLine(fact, state)).join("\n")
+      ? facts.map((fact) => factBookletLine(fact, state)).join("\n")
       : "Sin entradas registradas.",
     "",
   ].join("\n");
 }
 
-function bookletSynopsis(state: any): string {
+function bookletSynopsis(state: CampaignProjection): string {
   const title = state.campaign?.title || "La campaña";
   const mainLocation = entitiesOfType(state, "location")[0];
   const topFaction = entitiesOfType(state, "faction")[0];
   const mainQuest = entitiesOfType(state, "quest")[0];
   const factions = entitiesOfType(state, "faction")
     .slice(0, 3)
-    .map((entity: any) => entity.title);
+    .map((entity) => entity.title);
   const centralSecret = values(state.entities)
-    .filter((entity: any) => entity.entityType === "secret" && !entity.archived)
-    .sort(
-      (a: any, b: any) => narrativeScore(b, state) - narrativeScore(a, state),
-    )[0];
+    .filter((entity) => entity.entityType === "secret" && !entity.archived)
+    .sort((a, b) => narrativeScore(b, state) - narrativeScore(a, state))[0];
 
   const parts = [
     `${title} transcurre en ${titleOf(mainLocation, "un territorio marcado por el conflicto")}, donde ${titleOf(topFaction, "una fuerza dominante")} condiciona la vida pública y privada.`,
@@ -909,17 +912,17 @@ function bookletSynopsis(state: any): string {
   return parts.join("\n\n");
 }
 
-function playerKnowledgeMarkdown(state: any): string {
+function playerKnowledgeMarkdown(state: CampaignProjection): string {
   const facts = values(state.facts).filter(
-    (fact: any) => !fact.archived && isPublicBookletFact(fact),
+    (fact) => !fact.archived && isPublicBookletFact(fact),
   );
   const publicEntities = sortNarrative(
     bookletEntities(state).filter(
-      (entity: any) => !isDmOnlyVisibility(entity.visibility),
+      (entity) => !isDmOnlyVisibility(entity.visibility),
     ),
     state,
   ).slice(0, 8);
-  const entityLines = publicEntities.map((entity: any) => {
+  const entityLines = publicEntities.map((entity) => {
     const text = entityPlayerFacingText(entity);
     return text
       ? `**${entity.title}.** ${sentenceWithoutFinalDot(text)}.`
@@ -927,7 +930,7 @@ function playerKnowledgeMarkdown(state: any): string {
   });
   const factLines = facts
     .slice(0, 8)
-    .map((fact: any) => factBookletLine(fact, state).replace(/^- /, ""));
+    .map((fact) => factBookletLine(fact, state).replace(/^- /, ""));
   return [
     "## 2. Lo que saben los jugadores",
     "",
@@ -938,22 +941,22 @@ function playerKnowledgeMarkdown(state: any): string {
   ].join("\n");
 }
 
-function dmTruthMarkdown(state: any): string {
+function dmTruthMarkdown(state: CampaignProjection): string {
   const secrets = sortNarrative(
     bookletEntities(state).filter(
-      (entity: any) =>
+      (entity) =>
         entity.entityType === "secret" || isDmOnlyVisibility(entity.visibility),
     ),
     state,
   ).slice(0, 8);
   const secretFacts = values(state.facts)
-    .filter((fact: any) => !fact.archived && isDmBookletFact(fact))
+    .filter((fact) => !fact.archived && isDmBookletFact(fact))
     .slice(0, 8);
-  const entityLines = secrets.map((entity: any) => {
+  const entityLines = secrets.map((entity) => {
     const truth = entityDmNote(entity) || entityDescription(entity);
     return `**${entity.title}.** ${sentenceWithoutFinalDot(truth)}.`;
   });
-  const factLines = secretFacts.map((fact: any) =>
+  const factLines = secretFacts.map((fact) =>
     factBookletLine(fact, state).replace(/^> \*\*Secreto del DM\.\*\* /, ""),
   );
   return [
@@ -966,7 +969,7 @@ function dmTruthMarkdown(state: any): string {
   ].join("\n");
 }
 
-function appendixEntityIndex(state: any): string {
+function appendixEntityIndex(state: CampaignProjection): string {
   const entities = sortNarrative(bookletEntities(state), state);
   const pending = pendingEntities(state);
   return [
@@ -974,7 +977,7 @@ function appendixEntityIndex(state: any): string {
     "",
     bullet(
       entities.map(
-        (entity: any) =>
+        (entity) =>
           `${entity.title} — ${typeLabel(entity.entityType)} · ${visibilityNarrativeLabel(entity.visibility)}`,
       ),
     ),
@@ -985,7 +988,7 @@ function appendixEntityIndex(state: any): string {
           "",
           bullet(
             pending.map(
-              (entity: any) =>
+              (entity) =>
                 `${entity.title || entity.entityId} — ${typeLabel(entity.entityType)}`,
             ),
           ),
@@ -995,8 +998,38 @@ function appendixEntityIndex(state: any): string {
   ].join("\n");
 }
 
-function canvasOrderedBookletSection(state: any): string {
-  const canvases = values(state.canvases).filter((c: any) => !c.archived);
+function sceneDetailsMarkdown(entity: Entity): string {
+  const dramaticObjective = readString(entity.metadata?.dramaticObjective);
+  const complications = readString(entity.metadata?.complications);
+  const consequences = readString(entity.metadata?.consequences);
+
+  let sceneDetails = "";
+  if (dramaticObjective) sceneDetails += `\n   - **Objetivo Dramático:** ${dramaticObjective}`;
+  if (complications) sceneDetails += `\n   - **Complicaciones:** ${complications}`;
+  if (consequences) sceneDetails += `\n   - **Consecuencias:** ${consequences}`;
+  return sceneDetails;
+}
+
+function canvasOrderedItemMarkdown(
+  entity: Entity,
+  itemIndex: number,
+  sections: string[],
+): void {
+  const label = ENTITY_TYPE_LABELS[entity.entityType] || entity.entityType;
+  sections.push(`${itemIndex}. **${entity.title}** (${label})`);
+
+  if (entity.entityType === "scene") {
+    sections.push(
+      `   ${entity.summary || entity.content || "_Sin descripción de escena._"}${sceneDetailsMarkdown(entity)}`,
+    );
+  } else {
+    sections.push(`   ${entity.summary || entity.content || "_Sin descripción._"}`);
+  }
+  sections.push("");
+}
+
+function canvasOrderedBookletSection(state: CampaignProjection): string {
+  const canvases = values(state.canvases).filter((c) => !c.archived);
   if (canvases.length === 0) return "";
 
   const sections: string[] = ["## 3. Estructura Narrativa (según Canvas)", ""];
@@ -1018,11 +1051,17 @@ function canvasOrderedBookletSection(state: any): string {
       sections.push("");
     }
 
-    const nodes = canvas.nodes || [];
-    const groups = nodes.filter((n: any) => n.kind === "group").sort((a: any, b: any) => (a.y - b.y) || (a.x - b.x));
-    const nonGroupNodes = nodes.filter((n: any) => n.kind !== "group");
-    const rootNodes = nonGroupNodes.filter((n: any) => !n.parentId).sort((a: any, b: any) => (a.y - b.y) || (a.x - b.x));
-    const orderedItems = [...rootNodes, ...groups].sort((a: any, b: any) => (a.y - b.y) || (a.x - b.x));
+    const nodes = canvas.nodes;
+    const groups = nodes
+      .filter((n) => n.kind === "group")
+      .sort((a, b) => a.y - b.y || a.x - b.x);
+    const nonGroupNodes = nodes.filter((n) => n.kind !== "group");
+    const rootNodes = nonGroupNodes
+      .filter((n) => !n.parentId)
+      .sort((a, b) => a.y - b.y || a.x - b.x);
+    const orderedItems: CanvasNode[] = [...rootNodes, ...groups].sort(
+      (a, b) => a.y - b.y || a.x - b.x,
+    );
 
     if (orderedItems.length === 0) {
       sections.push("_Este tablero no tiene elementos._");
@@ -1033,35 +1072,25 @@ function canvasOrderedBookletSection(state: any): string {
     let itemIndex = 1;
     for (const item of orderedItems) {
       if (item.kind === "group") {
-        const groupLabel = GROUP_TYPE_LABELS[item.groupType || "custom"] || "📁 Grupo";
+        // groupType is a frontend-only convention stored in node metadata;
+        // canvasNodeSchema has no dedicated top-level field for it.
+        const groupType = readString(item.metadata?.groupType, "custom");
+        const groupLabel = GROUP_TYPE_LABELS[groupType] || "📁 Grupo";
         sections.push(`#### ${groupLabel}: ${item.title || "Sin título"}`);
         sections.push("");
-        const children = nonGroupNodes.filter((n: any) => n.parentId === item.id).sort((a: any, b: any) => (a.y - b.y) || (a.x - b.x));
+        const children = nonGroupNodes
+          .filter((n) => n.parentId === item.id)
+          .sort((a, b) => a.y - b.y || a.x - b.x);
         if (children.length === 0) {
           sections.push("_Grupo vacío._");
           sections.push("");
         } else {
           for (const child of children) {
-            const entity = child.entityId ? state.entities.get(child.entityId) : null;
+            const entity = child.entityId
+              ? state.entities.get(child.entityId)
+              : undefined;
             if (entity) {
-              const label = ENTITY_TYPE_LABELS[entity.entityType] || entity.entityType;
-              sections.push(`${itemIndex}. **${entity.title}** (${label})`);
-              
-              if (entity.entityType === "scene") {
-                const dramaticObjective = entity.metadata?.dramaticObjective || "";
-                const complications = entity.metadata?.complications || "";
-                const consequences = entity.metadata?.consequences || "";
-                
-                let sceneDetails = "";
-                if (dramaticObjective) sceneDetails += `\n   - **Objetivo Dramático:** ${dramaticObjective}`;
-                if (complications) sceneDetails += `\n   - **Complicaciones:** ${complications}`;
-                if (consequences) sceneDetails += `\n   - **Consecuencias:** ${consequences}`;
-                
-                sections.push(`   ${entity.summary || entity.content || "_Sin descripción de escena._"}${sceneDetails}`);
-              } else {
-                sections.push(`   ${entity.summary || entity.content || "_Sin descripción._"}`);
-              }
-              sections.push("");
+              canvasOrderedItemMarkdown(entity, itemIndex, sections);
               itemIndex++;
             } else if (child.kind === "note" && child.text) {
               sections.push(`${itemIndex}. *Nota:* ${child.text}`);
@@ -1071,26 +1100,11 @@ function canvasOrderedBookletSection(state: any): string {
           }
         }
       } else {
-        const entity = item.entityId ? state.entities.get(item.entityId) : null;
+        const entity = item.entityId
+          ? state.entities.get(item.entityId)
+          : undefined;
         if (entity) {
-          const label = ENTITY_TYPE_LABELS[entity.entityType] || entity.entityType;
-          sections.push(`${itemIndex}. **${entity.title}** (${label})`);
-          
-          if (entity.entityType === "scene") {
-            const dramaticObjective = entity.metadata?.dramaticObjective || "";
-            const complications = entity.metadata?.complications || "";
-            const consequences = entity.metadata?.consequences || "";
-            
-            let sceneDetails = "";
-            if (dramaticObjective) sceneDetails += `\n   - **Objetivo Dramático:** ${dramaticObjective}`;
-            if (complications) sceneDetails += `\n   - **Complicaciones:** ${complications}`;
-            if (consequences) sceneDetails += `\n   - **Consecuencias:** ${consequences}`;
-            
-            sections.push(`   ${entity.summary || entity.content || "_Sin descripción de escena._"}${sceneDetails}`);
-          } else {
-            sections.push(`   ${entity.summary || entity.content || "_Sin descripción._"}`);
-          }
-          sections.push("");
+          canvasOrderedItemMarkdown(entity, itemIndex, sections);
           itemIndex++;
         } else if (item.kind === "note" && item.text) {
           sections.push(`${itemIndex}. *Nota:* ${item.text}`);
@@ -1105,16 +1119,16 @@ function canvasOrderedBookletSection(state: any): string {
   return sections.join("\n");
 }
 
-function bookletMarkdown(state: any): string {
+function bookletMarkdown(state: CampaignProjection): string {
   const campaignTitle = state.campaign?.title || "Campaña";
   const mainQuests = entitiesOfType(state, "quest");
   const clues = entitiesOfType(state, "clue");
   const secrets = entitiesOfType(state, "secret");
   const relations = values(state.relations)
-    .filter((relation: any) => !relation.archived)
+    .filter((relation) => !relation.archived)
     .slice(0, 12);
   const sessions = values(state.sessions).sort(
-    (a: any, b: any) => (a.number ?? 0) - (b.number ?? 0),
+    (a, b) => (a.number ?? 0) - (b.number ?? 0),
   );
 
   return [
@@ -1167,7 +1181,7 @@ function bookletMarkdown(state: any): string {
     "",
     relations.length
       ? relations
-          .map((relation: any) => relationBookletBlock(relation, state))
+          .map((relation) => relationBookletBlock(relation, state))
           .join("\n")
       : "Sin relaciones registradas.",
     "",
@@ -1176,7 +1190,7 @@ function bookletMarkdown(state: any): string {
     sessions.length
       ? bullet(
           sessions.map(
-            (session: any) =>
+            (session) =>
               `Sesión ${session.number ?? "?"}: ${session.title} — ${session.summary || session.status || "sin preparar"}`,
           ),
         )
@@ -1191,7 +1205,7 @@ function bookletMarkdown(state: any): string {
   ].join("\n");
 }
 
-function technicalMarkdown(state: any): string {
+function technicalMarkdown(state: CampaignProjection): string {
   const campaignTitle = state.campaign?.title || "Campaña";
   const entities = values(state.entities);
   return [
@@ -1216,14 +1230,14 @@ function technicalMarkdown(state: any): string {
     "## Entidades",
     bullet(
       entities.map(
-        (entity: any) =>
+        (entity) =>
           `${entity.title} — ${typeLabel(entity.entityType)} (${visibilityLabel(entity.visibility)})`,
       ),
     ),
     "",
     "## Relaciones principales",
     bullet(
-      values(state.relations).map((relation: any) =>
+      values(state.relations).map((relation) =>
         technicalRelationSentence(relation, state),
       ),
     ),
@@ -1231,14 +1245,14 @@ function technicalMarkdown(state: any): string {
     "## Hechos",
     bullet(
       values(state.facts).map(
-        (fact: any) => `${fact.statement} (${fact.kind}, ${fact.confidence})`,
+        (fact) => `${fact.statement} (${fact.kind}, ${fact.confidence})`,
       ),
     ),
     "",
   ].join("\n");
 }
 
-function completeMarkdown(state: any): string {
+function completeMarkdown(state: CampaignProjection): string {
   return bookletMarkdown(state);
 }
 
@@ -1254,8 +1268,8 @@ async function writeText(
 }
 
 export async function writeMarkdownCampaignExport(input: {
-  state: any;
-  events: any[];
+  state: CampaignProjection;
+  events: StoredEvent[];
   exportDir: string;
   campaignId: string;
   exportId: string;
@@ -1292,20 +1306,17 @@ export async function writeMarkdownCampaignExport(input: {
 
   const usedByFolder = new Map<string, Set<string>>();
   for (const entity of values(state.entities)) {
-    const folderName = ENTITY_FOLDERS[(entity as any).entityType] || "Otros";
+    const folderName = ENTITY_FOLDERS[entity.entityType] || "Otros";
     const used = usedByFolder.get(folderName) ?? new Set<string>();
     usedByFolder.set(folderName, used);
-    const fileName = uniqueFileName(
-      (entity as any).title || (entity as any).entityId,
-      used,
-    );
+    const fileName = uniqueFileName(entity.title || entity.entityId, used);
     await write(
       join("Entidades", folderName, fileName),
       entityMarkdown(entity, state),
     );
 
     // Compatibility with the initial export layout used by older tests/users.
-    if ((entity as any).entityType === "npc") {
+    if (entity.entityType === "npc") {
       await fs.mkdir(join(exportDir, "NPCs"), { recursive: true });
       await write(join("NPCs", fileName), entityMarkdown(entity, state));
     }
