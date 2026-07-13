@@ -1236,6 +1236,20 @@ export const it: TranslationDictionary = {
     createOnly: "Crear sin abrir",
     creating: "Creando tu copia…",
     genericError: "No se pudo crear la copia editable.",
+    error: {
+      failed: "Failed to create editable copy.",
+      interrupted: "Campaign import was interrupted.",
+    },
+    progress: {
+      preparing: "Preparing import...",
+      campaign: "Initializing campaign...",
+      entities: "Importing entities ({current} of {total})...",
+      relations: "Establishing relations ({current} of {total})...",
+      facts: "Recording secrets and facts ({current} of {total})...",
+      sessions: "Configuring sessions ({current} of {total})...",
+      canvases: "Drawing maps and canvases ({current} of {total})...",
+      finalizing: "Finalizing import...",
+    },
   },
   dmSetup: {
     title: "Crea account DM",

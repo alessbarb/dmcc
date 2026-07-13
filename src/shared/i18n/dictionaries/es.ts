@@ -1517,6 +1517,20 @@ export const es: TranslationDictionary = {
     createOnly: "Crear sin abrir",
     creating: "Creando tu copia…",
     genericError: "No se pudo crear la copia editable.",
+    error: {
+      failed: "No se pudo crear la copia editable.",
+      interrupted: "La importación de la campaña se interrumpió.",
+    },
+    progress: {
+      preparing: "Preparando importación...",
+      campaign: "Inicializando campaña...",
+      entities: "Importando entidades ({current} de {total})...",
+      relations: "Estableciendo relaciones ({current} de {total})...",
+      facts: "Grabando secretos y hechos ({current} de {total})...",
+      sessions: "Configurando sesiones ({current} de {total})...",
+      canvases: "Trazando mapas y canvas ({current} de {total})...",
+      finalizing: "Finalizando importación...",
+    },
   },
   dmSetup: {
     title: "Crear cuenta de Director de Juego",
