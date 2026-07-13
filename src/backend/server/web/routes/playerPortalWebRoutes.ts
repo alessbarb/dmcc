@@ -1,13 +1,15 @@
 import type { FastifyInstance, FastifyRequest } from "fastify";
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
-import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
 import { playerPortalResources, playerPortalStates } from "../../../db/playerPortalSchema.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
-import { buildKnowledgeAccessIndex, playerCanAccessKnowledge } from "../playerKnowledgeProjection.js";
-import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
+import {
+  buildKnowledgeAccessIndex,
+  loadKnowledgeSnapshot,
+  playerCanAccessKnowledge,
+} from "../playerKnowledgeProjection.js";
 import { requireCampaignMembership } from "../webAccess.js";
 import type { WebUser } from "../webSession.js";
 
@@ -76,53 +78,63 @@ function groupPortalEntities(entities: Array<typeof schema.campaignEntities.$inf
   return groups;
 }
 
-function isPublicPortalCanvasVisibility(value: unknown): boolean {
-  return value !== "dm" && value !== "dm_only" && !isDmOnlyVisibility(value);
-}
-
-function buildPublicConstellationCanvases(portal: any, state: any) {
-  const publicEntityIds = new Set((portal.entities ?? []).map((entity: any) => entity.entityId));
-  const publicFactIds = new Set((portal.facts ?? []).map((fact: any) => fact.factId));
-  const publicRelationIds = new Set((portal.relations ?? []).map((relation: any) => relation.relationId));
-  const canvases = Array.from(state.canvases?.values?.() ?? []).filter((canvas: any) => !canvas.archived);
+function projectPlayerCanvases(state: any, visibleEntityIds: Set<string>, visibleFactIds: Set<string>, visibleRelationIds: Set<string>) {
+  const canvases = Array.from(state?.canvases?.values?.() ?? []).filter((canvas: any) => !canvas?.archived);
   return canvases.map((canvas: any) => {
-    const nodes = (canvas.nodes ?? []).filter((node: any) => {
-      if (!isPublicPortalCanvasVisibility(node.visibility)) return false;
-      if (node.entityId) return publicEntityIds.has(node.entityId);
-      if (node.factId) return publicFactIds.has(node.factId);
-      return node.kind === "note" && isPublicPortalCanvasVisibility(node.visibility);
+    const nodes = (canvas.nodes ?? []).flatMap((node: any) => {
+      if (node.entityId && !visibleEntityIds.has(node.entityId)) return [];
+      if (node.factId && !visibleFactIds.has(node.factId)) return [];
+      if (!node.entityId && !node.factId) return [];
+      return [{
+        id: node.id,
+        kind: node.kind,
+        entityId: node.entityId ?? undefined,
+        factId: node.factId ?? undefined,
+        title: node.title ?? node.label ?? undefined,
+        x: node.x,
+        y: node.y,
+        width: node.width,
+        height: node.height,
+      }];
     });
-    const visibleNodeIds = new Set(nodes.map((node: any) => node.id));
-    const edges = (canvas.edges ?? []).filter((edge: any) => {
-      if (edge.style === "secret" || !isPublicPortalCanvasVisibility(edge.visibility)) return false;
-      if (!visibleNodeIds.has(edge.sourceNodeId) || !visibleNodeIds.has(edge.targetNodeId)) return false;
-      return !edge.relationshipId || publicRelationIds.has(edge.relationshipId);
+    const nodeIds = new Set(nodes.map((node: any) => node.id));
+    const edges = (canvas.edges ?? []).flatMap((edge: any) => {
+      if (!nodeIds.has(edge.sourceNodeId) || !nodeIds.has(edge.targetNodeId)) return [];
+      if (edge.relationshipId && !visibleRelationIds.has(edge.relationshipId)) return [];
+      return [{
+        id: edge.id,
+        sourceNodeId: edge.sourceNodeId,
+        targetNodeId: edge.targetNodeId,
+        relationshipId: edge.relationshipId ?? undefined,
+        label: edge.label ?? undefined,
+      }];
     });
-    return { ...canvas, nodes, edges };
-  }).filter((canvas: any) => canvas.nodes.length > 0);
+    if (nodes.length === 0) return null;
+    return {
+      canvasId: canvas.canvasId ?? canvas.id,
+      title: canvas.title ?? canvas.name ?? "Canvas",
+      nodes,
+      edges,
+    };
+  }).filter(Boolean);
 }
 
 async function buildPlayerPortal(campaignId: string, user: WebUser) {
   const profile = await playerProfileFor(user.userId, campaignId);
   if (!profile) throw Object.assign(new Error("Active player profile required"), { statusCode: 403 });
 
-  const [accessIndex, campaign, allEntities, allFacts, allRelations, notes, proposals, allObjectives, allClues, stateRow, resources, sessions, liveTables, notifications] = await Promise.all([
-    buildKnowledgeAccessIndex(campaignId),
+  const [snapshot, campaign, notes, proposals, stateRow, resources, sessions, liveTables, notifications] = await Promise.all([
+    loadKnowledgeSnapshot(campaignId),
     db.select().from(schema.campaigns).where(eq(schema.campaigns.campaignId, campaignId)).limit(1),
-    db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, campaignId)),
-    db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId)),
-    db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId)),
     db.select().from(schema.campaignNotes).where(and(eq(schema.campaignNotes.campaignId, campaignId), eq(schema.campaignNotes.authorUserId, user.userId))),
     db.select().from(schema.playerProposals).where(and(eq(schema.playerProposals.campaignId, campaignId), eq(schema.playerProposals.userId, user.userId), eq(schema.playerProposals.type, "link_request"))),
-    db.select().from(schema.campaignObjectives).where(eq(schema.campaignObjectives.campaignId, campaignId)),
-    db.select().from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, campaignId)),
     db.select().from(playerPortalStates).where(and(eq(playerPortalStates.campaignId, campaignId), eq(playerPortalStates.playerId, profile.profileId))).limit(1),
     db.select().from(playerPortalResources).where(and(eq(playerPortalResources.campaignId, campaignId), eq(playerPortalResources.playerId, profile.profileId))),
     db.select().from(schema.campaignSessions).where(eq(schema.campaignSessions.campaignId, campaignId)).orderBy(desc(schema.campaignSessions.createdAt)),
     db.select().from(schema.liveTables).where(and(eq(schema.liveTables.campaignId, campaignId), eq(schema.liveTables.status, "active"))).orderBy(desc(schema.liveTables.createdAt)).limit(1),
     db.select().from(schema.notifications).where(and(eq(schema.notifications.userId, user.userId), isNull(schema.notifications.readAt))).orderBy(desc(schema.notifications.createdAt)),
   ]);
-
+  const accessIndex = buildKnowledgeAccessIndex(snapshot);
   const allowed = (targetType: "entity" | "fact" | "relation" | "clue" | "objective", targetId: string) => playerCanAccessKnowledge(
     accessIndex,
     targetType,
@@ -132,11 +144,11 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
     profile.linkedCharacterId,
   );
 
-  const entities = allEntities.filter((entity) => entity.status !== "archived" && allowed("entity", entity.entityId));
-  const facts = allFacts.filter((fact) => fact.status !== "archived" && fact.kind !== "dm_secret" && allowed("fact", fact.factId));
-  const relations = allRelations.filter((relation) => allowed("relation", relation.relationId));
-  const objectives = allObjectives.filter((objective) => objective.status !== "archived" && allowed("objective", objective.objectiveId));
-  const clues = allClues.filter((clue) => clue.status !== "archived" && allowed("clue", clue.clueId));
+  const entities = snapshot.entities.filter((entity) => entity.status !== "archived" && allowed("entity", entity.entityId));
+  const facts = snapshot.facts.filter((fact) => fact.status !== "archived" && fact.kind !== "dm_secret" && allowed("fact", fact.factId));
+  const relations = snapshot.relations.filter((relation) => allowed("relation", relation.relationId));
+  const objectives = snapshot.objectives.filter((objective) => objective.status !== "archived" && allowed("objective", objective.objectiveId));
+  const clues = snapshot.clues.filter((clue) => clue.status !== "archived" && allowed("clue", clue.clueId));
   const history = sessions.filter((session) => Boolean(session.recapPublic)).map((session) => ({
     sessionId: session.sessionId,
     number: session.number,
@@ -154,8 +166,14 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
   const safeFacts = facts.map((fact) => ({ factId: fact.factId, statement: fact.contentPublic ?? "", kind: fact.kind, confidence: fact.confidence })).filter((fact) => fact.statement.length > 0);
   const safeRelations = relations.map((relation) => ({ relationId: relation.relationId, label: relation.type, description: relation.publicSummary ?? undefined, sourceEntityId: relation.sourceEntityId, targetEntityId: relation.targetEntityId }));
   const linkedCharacter = profile.linkedCharacterId ? safeEntities.find((entity) => entity.entityId === profile.linkedCharacterId) ?? null : null;
+  const canvases = projectPlayerCanvases(
+    snapshot.state,
+    new Set(safeEntities.map((entity) => entity.entityId)),
+    new Set(safeFacts.map((fact) => fact.factId)),
+    new Set(safeRelations.map((relation) => relation.relationId)),
+  );
 
-  return sanitizeObject({
+  const portal = sanitizeObject({
     campaign: campaign[0] ? { campaignId: campaign[0].campaignId, title: campaign[0].title, summary: campaign[0].summary, status: campaign[0].status } : { campaignId },
     playerId: profile.profileId,
     player: { playerId: profile.profileId, displayName: profile.displayName },
@@ -189,12 +207,12 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
     facts: safeFacts,
     relations: safeRelations,
     clues: clues.map((clue) => ({ clueId: clue.clueId, entityId: clue.entityId, title: clue.title, summary: clue.publicSummary ?? undefined, status: clue.status })),
+    canvases,
   });
+  return portal;
 }
 
 export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
-  const repo = new PostgresCampaignRepository();
-
   async function readPlayerPortalForRequest(request: FastifyRequest<{ Params: { campaignId: string } }>) {
     const { user } = await requirePlayerPortal(request);
     return buildPlayerPortal(request.params.campaignId, user) as Promise<any>;
@@ -208,8 +226,7 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/memory", async (request) => (await readPlayerPortalForRequest(request)).memory);
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/constellation", async (request) => {
     const portal = await readPlayerPortalForRequest(request);
-    const state = await repo.getCampaignState(request.params.campaignId);
-    return { campaign: portal.campaign, entities: portal.entities ?? [], facts: portal.facts ?? [], relations: portal.relations ?? [], objectives: portal.objectives ?? [], clues: portal.clues ?? [], canvases: buildPublicConstellationCanvases(portal, state) };
+    return { campaign: portal.campaign, entities: portal.entities ?? [], facts: portal.facts ?? [], relations: portal.relations ?? [], objectives: portal.objectives ?? [], clues: portal.clues ?? [], canvases: portal.canvases ?? [] };
   });
   server.get<{ Params: { campaignId: string } }>("/api/player/campaigns/:campaignId/character", async (request) => {
     const portal = await readPlayerPortalForRequest(request);
