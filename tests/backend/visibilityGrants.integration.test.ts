@@ -4,8 +4,9 @@ import { db } from "../../src/backend/db/client.js";
 import * as schema from "../../src/backend/db/schema.js";
 import {
   buildDmPlayerKnowledgeProjection,
+  buildKnowledgeAccessIndex,
   grantAllowsPlayer,
-  refreshKnowledgeVisibilityGrants,
+  playerCanAccessKnowledge,
 } from "../../src/backend/server/web/playerKnowledgeProjection.js";
 
 const ids = {
@@ -83,59 +84,40 @@ describe("visibility grants", () => {
     })).rejects.toThrow();
   });
 
-  it("keeps player grants independent on the same target", async () => {
+  it("combines canonical objective and clue visibility with explicit grants", async () => {
     await seedVisibilityFixture();
-    await db.insert(schema.visibilityGrants).values([
-      { campaignId: ids.campaign, targetType: "fact", targetId: "fact_shared", scope: "specific_player", userId: null, playerId: ids.playerA },
-      { campaignId: ids.campaign, targetType: "fact", targetId: "fact_shared", scope: "specific_player", userId: null, playerId: ids.playerB },
-    ]);
-
-    const grants = await db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.targetId, "fact_shared"));
-    expect(grants).toHaveLength(2);
-    expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userA, ids.playerA))).toBe(true);
-    expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userB, ids.playerB))).toBe(true);
-  });
-
-  it("revokes derived grants that are no longer present in current visibility state", async () => {
-    await seedVisibilityFixture();
+    await db.insert(schema.campaignObjectives).values({
+      campaignId: ids.campaign,
+      objectiveId: "obj_player_a",
+      playerId: ids.playerA,
+      title: "Private objective",
+    });
+    await db.insert(schema.campaignClues).values({
+      campaignId: ids.campaign,
+      clueId: "clue_public",
+      title: "Public clue",
+      status: "revealed",
+      visibilityScope: "public",
+    });
     await db.insert(schema.visibilityGrants).values({
       campaignId: ids.campaign,
-      targetType: "entity",
-      targetId: "ent_stale",
-      scope: "all_players",
-      userId: null,
-      playerId: null,
-    });
-
-    await refreshKnowledgeVisibilityGrants(ids.campaign);
-
-    const grants = await db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, ids.campaign));
-    expect(grants).toHaveLength(0);
-  });
-
-  it("preserves explicit user grants while rebuilding derived visibility", async () => {
-    await seedVisibilityFixture();
-    await db.insert(schema.visibilityGrants).values([
-      { campaignId: ids.campaign, targetType: "entity", targetId: "ent_explicit", scope: "specific_user", userId: ids.userA, playerId: null },
-      { campaignId: ids.campaign, targetType: "entity", targetId: "ent_stale", scope: "all_players", userId: null, playerId: null },
-    ]);
-
-    await Promise.all([
-      refreshKnowledgeVisibilityGrants(ids.campaign),
-      refreshKnowledgeVisibilityGrants(ids.campaign),
-    ]);
-
-    const grants = await db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, ids.campaign));
-    expect(grants).toHaveLength(1);
-    expect(grants[0]).toMatchObject({
-      targetId: "ent_explicit",
+      targetType: "clue",
+      targetId: "clue_private",
       scope: "specific_user",
       userId: ids.userA,
       playerId: null,
     });
+
+    const access = await buildKnowledgeAccessIndex(ids.campaign);
+
+    expect(playerCanAccessKnowledge(access, "objective", "obj_player_a", ids.userA, ids.playerA)).toBe(true);
+    expect(playerCanAccessKnowledge(access, "objective", "obj_player_a", ids.userB, ids.playerB)).toBe(false);
+    expect(playerCanAccessKnowledge(access, "clue", "clue_public", ids.userB, ids.playerB)).toBe(true);
+    expect(playerCanAccessKnowledge(access, "clue", "clue_private", ids.userA, ids.playerA)).toBe(true);
+    expect(playerCanAccessKnowledge(access, "clue", "clue_private", ids.userB, ids.playerB)).toBe(false);
   });
 
-  it("derives linked character access directly from the player profile", async () => {
+  it("derives linked character access without storing a duplicate grant", async () => {
     await seedVisibilityFixture();
     await db.insert(schema.campaignEntities).values({
       campaignId: ids.campaign,
@@ -147,10 +129,13 @@ describe("visibility grants", () => {
       .set({ linkedCharacterId: "ent_linked" })
       .where(eq(schema.playerProfiles.profileId, ids.playerA));
 
+    const access = await buildKnowledgeAccessIndex(ids.campaign);
+    expect(playerCanAccessKnowledge(access, "entity", "ent_linked", ids.userA, ids.playerA, "ent_linked")).toBe(true);
+    expect(playerCanAccessKnowledge(access, "entity", "ent_linked", ids.userB, ids.playerB, null)).toBe(false);
+
     const projection = await buildDmPlayerKnowledgeProjection(ids.campaign);
     const player = projection.players.find((entry) => entry.playerId === ids.playerA);
     const character = player?.knowledge.find((entry) => entry.targetId === "ent_linked");
-
     expect(character).toMatchObject({ visible: true, reason: "linked_character" });
   });
 });
