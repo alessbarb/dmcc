@@ -13,6 +13,17 @@ function withPremadeLocale(path: string, locale = getPremadeLocale()): string {
 
 export const listPremades = (locale = getPremadeLocale()) => apiFetch(withPremadeLocale("/api/premade-campaigns", locale));
 export const getPremade = (templateId: string, locale = getPremadeLocale()) => apiFetch(withPremadeLocale(`/api/premade-campaigns/${encodeURIComponent(templateId)}`, locale));
-export const importPremade = (templateId: string, options?: { locale?: string; [key: string]: unknown }) => apiFetch(`/api/premade-campaigns/${encodeURIComponent(templateId)}/import`, {
-  init: { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...(options ?? {}), locale: options?.locale ?? getPremadeLocale() }) },
+export const importPremade = (
+  templateId: string,
+  options?: { locale?: string; [key: string]: unknown },
+  headers?: Record<string, string>
+) => apiFetch(`/api/premade-campaigns/${encodeURIComponent(templateId)}/import`, {
+  init: {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(headers ?? {}),
+    },
+    body: JSON.stringify({ ...(options ?? {}), locale: options?.locale ?? getPremadeLocale() }),
+  },
 });

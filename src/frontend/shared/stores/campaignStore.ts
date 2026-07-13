@@ -19,8 +19,22 @@ import {
   playerPortalApi,
   readApiError,
 } from "../api.js";
+import { readNdjsonStream } from "../api/readNdjsonStream.js";
+import type { ImportStage, PremadeImportEvent } from "@shared/premadeImportTypes.js";
 
 type ActiveCampaignRole = "dm" | "player";
+
+export interface PremadeImportState {
+  status: "idle" | "running" | "failed";
+  templateId: string | null;
+  operationId: string | null;
+  campaignId: string | null;
+  completedSteps: number;
+  totalSteps: number;
+  percent: number;
+  stage: ImportStage | null;
+  error: string | null;
+}
 
 export type CanvasNodeDraft = Pick<CanvasNode, "kind" | "x" | "y"> &
   Partial<Omit<CanvasNode, "id" | "campaignId" | "canvasId" | "kind" | "x" | "y" | "createdAt" | "updatedAt">>;
@@ -319,6 +333,9 @@ export interface CampaignStateStore {
   loading: boolean;
   error: string | null;
 
+  premadeImportState: PremadeImportState;
+  clearPremadeImportState: () => void;
+
   isEntityModalOpen: boolean;
   setIsEntityModalOpen: (open: boolean) => void;
   isRelationModalOpen: boolean;
@@ -478,6 +495,31 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   loading: false,
   error: null,
 
+  premadeImportState: {
+    status: "idle",
+    templateId: null,
+    operationId: null,
+    campaignId: null,
+    completedSteps: 0,
+    totalSteps: 0,
+    percent: 0,
+    stage: null,
+    error: null,
+  },
+  clearPremadeImportState: () => set({
+    premadeImportState: {
+      status: "idle",
+      templateId: null,
+      operationId: null,
+      campaignId: null,
+      completedSteps: 0,
+      totalSteps: 0,
+      percent: 0,
+      stage: null,
+      error: null,
+    }
+  }),
+
   isEntityModalOpen: false,
   setIsEntityModalOpen: (open) => set({ isEntityModalOpen: open }),
   isRelationModalOpen: false,
@@ -533,20 +575,84 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   importPremadeCampaign: async (templateId, options) => {
-    set({ loading: true, error: null });
+    const operationId = `imp_${createId("cmd")}`;
+    set({
+      premadeImportState: {
+        status: "running",
+        templateId,
+        operationId,
+        campaignId: null,
+        completedSteps: 0,
+        totalSteps: 0,
+        percent: 0,
+        stage: "preparing",
+        error: null,
+      },
+    });
     try {
-      const res = await importPremade(templateId, options);
+      const res = await importPremade(templateId, options, {
+        "Idempotency-Key": operationId,
+      });
       if (!res.ok) {
         const message = await readApiError(res, "Failed to import premade campaign");
         throw new Error(message);
       }
-      const data = await res.json();
+
+      let campaignId: string | null = null;
+      let successEventReceived = false;
+
+      await readNdjsonStream<PremadeImportEvent>(res, (event) => {
+        if (event.type === "started") {
+          campaignId = event.campaignId;
+          set((s) => ({
+            premadeImportState: {
+              ...s.premadeImportState,
+              campaignId: event.campaignId,
+              totalSteps: event.totalSteps,
+            },
+          }));
+        } else if (event.type === "progress") {
+          set((s) => ({
+            premadeImportState: {
+              ...s.premadeImportState,
+              completedSteps: event.completedSteps,
+              totalSteps: event.totalSteps,
+              percent: event.percent,
+              stage: event.stage,
+            },
+          }));
+        } else if (event.type === "success") {
+          successEventReceived = true;
+          campaignId = event.campaignId;
+          set((s) => ({
+            premadeImportState: {
+              ...s.premadeImportState,
+              status: "idle",
+              percent: 100,
+              campaignId: event.campaignId,
+            },
+          }));
+        } else if (event.type === "error") {
+          throw new Error(event.messageKey || "Failed to import premade campaign");
+        }
+      });
+
+      if (!successEventReceived || !campaignId) {
+        throw new Error("premadeImport.error.interrupted");
+      }
+
       await get().fetchCampaigns();
-      markCampaignGuidedTourPending(data.campaignId);
-      set({ loading: false });
-      return data.campaignId as string;
-    } catch (err) {
-      set({ error: errorMessage(err), loading: false });
+      markCampaignGuidedTourPending(campaignId);
+      return campaignId;
+    } catch (err: any) {
+      const errorMsg = err.message || "premadeImport.error.failed";
+      set((s) => ({
+        premadeImportState: {
+          ...s.premadeImportState,
+          status: "failed",
+          error: errorMsg,
+        },
+      }));
       throw err;
     }
   },
