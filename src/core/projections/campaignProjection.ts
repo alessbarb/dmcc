@@ -1,18 +1,41 @@
 import type { StoredEvent } from "../domain/shared/events.js";
 import { normalizeEventPayload } from "../domain/shared/normalizeEventPayload.js";
+import type { Campaign } from "../domain/campaign/types.js";
+import type { Entity } from "../domain/entity/types.js";
+import type { Relation } from "../domain/relation/types.js";
+import type { Fact } from "../domain/fact/fact.js";
+import type { Session, SessionEvent } from "../domain/session/types.js";
+import type {
+  CampaignAttachmentRecord,
+  CampaignInvitationRecord,
+  CampaignPlayerRecord,
+  CampaignTagRecord,
+} from "../domain/state.js";
+import type { Canvas } from "../domain/canvas/types.js";
+
+export type ProjectedCampaign = Campaign & { campaignId: string };
+type CanvasNodeLayoutUpdate = {
+  nodeId: string;
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  parentId?: string | null;
+  groupId?: string | null;
+};
 
 export interface CampaignProjection {
-  campaign: any | null;
-  players: Map<string, any>;
-  invitations: Map<string, any>;
-  entities: Map<string, any>;
-  relations: Map<string, any>;
-  facts: Map<string, any>;
-  sessions: Map<string, any>;
-  sessionEvents: Map<string, any>;
-  tags: Map<string, any>;
-  attachments: Map<string, any>;
-  canvases: Map<string, any>;
+  campaign: ProjectedCampaign | null;
+  players: Map<string, CampaignPlayerRecord>;
+  invitations: Map<string, CampaignInvitationRecord>;
+  entities: Map<string, Entity>;
+  relations: Map<string, Relation>;
+  facts: Map<string, Fact>;
+  sessions: Map<string, Session>;
+  sessionEvents: Map<string, SessionEvent & { sessionEventId?: string; actorId?: string }>;
+  tags: Map<string, CampaignTagRecord>;
+  attachments: Map<string, CampaignAttachmentRecord>;
+  canvases: Map<string, Canvas>;
   lastSequence: number;
 }
 
@@ -317,10 +340,13 @@ export function applyEvent(
         next.sessions.set(id, {
           sessionId: id,
           id,
+          campaignId: payload.campaignId ?? event.campaignId ?? "",
+          number: payload.number ?? next.sessions.size + 1,
           status: "active",
           startedAt: payload.startedAt,
           title: payload.title || "Session",
-          archived: false,
+          presentPlayerIds: [],
+          presentCharacterIds: [],
           createdAt: occurredAt,
           updatedAt: occurredAt,
         });
@@ -463,7 +489,7 @@ export function applyEvent(
       const { canvasId, nodeId, updates } = payload;
       const existing = next.canvases.get(canvasId);
       if (existing) {
-        const nodes = existing.nodes.map((n: any) =>
+        const nodes = existing.nodes.map((n) =>
           n.id === nodeId ? { ...n, ...updates, updatedAt: occurredAt } : n
         );
         next.canvases.set(canvasId, {
@@ -475,11 +501,12 @@ export function applyEvent(
       break;
     }
     case "CanvasNodesLayoutUpdated": {
-      const { canvasId, nodeUpdates } = payload;
+      const { canvasId } = payload;
+      const nodeUpdates: CanvasNodeLayoutUpdate[] = payload.nodeUpdates;
       const existing = next.canvases.get(canvasId);
       if (existing) {
-        const nodes = existing.nodes.map((n: any) => {
-          const update = nodeUpdates.find((up: any) => up.nodeId === n.id);
+        const nodes = existing.nodes.map((n) => {
+          const update = nodeUpdates.find((up) => up.nodeId === n.id);
           if (update) {
             return {
               ...n,
@@ -506,9 +533,9 @@ export function applyEvent(
       const { canvasId, nodeId } = payload;
       const existing = next.canvases.get(canvasId);
       if (existing) {
-        const nodes = existing.nodes.filter((n: any) => n.id !== nodeId);
+        const nodes = existing.nodes.filter((n) => n.id !== nodeId);
         const edges = existing.edges.filter(
-          (e: any) => e.sourceNodeId !== nodeId && e.targetNodeId !== nodeId
+          (e) => e.sourceNodeId !== nodeId && e.targetNodeId !== nodeId
         );
         next.canvases.set(canvasId, {
           ...existing,
@@ -535,7 +562,7 @@ export function applyEvent(
       const { canvasId, edgeId, updates } = payload;
       const existing = next.canvases.get(canvasId);
       if (existing) {
-        const edges = existing.edges.map((e: any) =>
+        const edges = existing.edges.map((e) =>
           e.id === edgeId ? { ...e, ...updates, updatedAt: occurredAt } : e
         );
         next.canvases.set(canvasId, {
@@ -550,7 +577,7 @@ export function applyEvent(
       const { canvasId, edgeId } = payload;
       const existing = next.canvases.get(canvasId);
       if (existing) {
-        const edges = existing.edges.filter((e: any) => e.id !== edgeId);
+        const edges = existing.edges.filter((e) => e.id !== edgeId);
         next.canvases.set(canvasId, {
           ...existing,
           edges,
@@ -564,11 +591,11 @@ export function applyEvent(
       const entityId = payload.entityId;
       const existing = next.canvases.get(canvasId);
       if (existing) {
-        const nodes = existing.nodes.map((n: any) =>
+        const nodes = existing.nodes.map((n) =>
           n.id === nodeId
             ? {
                 ...n,
-                kind: "entity",
+                kind: "entity" as const,
                 entityId,
                 text: undefined,
                 title: undefined,

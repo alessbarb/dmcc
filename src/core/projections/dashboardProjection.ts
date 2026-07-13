@@ -5,6 +5,18 @@ import type { Entity } from "../domain/entity/types.js";
 import type { CampaignHealthWarning} from "../domain/shared/alerts.js";
 import { evaluateCampaignHealth } from "../domain/shared/alerts.js";
 
+function readNumber(value: unknown, fallback: number): number {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+}
+
+function readString(value: unknown, fallback: string): string {
+  return typeof value === "string" && value.length > 0 ? value : fallback;
+}
+
+function readStringArray(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+}
+
 export interface OpenLoop {
   title: string;
   description: string;
@@ -100,12 +112,11 @@ export function buildDashboardProjection(campaignState: CampaignProjection): Das
     (e) => e.entityType === "clock" && e.status === "active" && !e.archived
   );
   for (const clock of activeClocks) {
-    const meta = clock.metadata as any;
-    const current = meta.currentSegments || 0;
-    const max = meta.maxSegments || 4;
+    const current = readNumber(clock.metadata.currentSegments, 0);
+    const max = readNumber(clock.metadata.maxSegments, 4);
     openLoops.push({
       title: `Active Clock: ${clock.title} (${current}/${max})`,
-      description: `Meaning: ${meta.meaning || "Narrative pressure clock ticking."}`,
+      description: `Meaning: ${readString(clock.metadata.meaning, "Narrative pressure clock ticking.")}`,
       sourceId: clock.entityId,
       sourceType: "clock",
     });
@@ -131,11 +142,11 @@ export function buildDashboardProjection(campaignState: CampaignProjection): Das
     (e) => e.entityType === "secret" && (e.visibility?.kind ?? "dm_only") === "dm_only" && !e.archived
   );
   for (const sec of hiddenSecrets) {
-    const meta = sec.metadata as any;
-    if (meta.revealConditions && meta.revealConditions.length > 0) {
+    const revealConditions = readStringArray(sec.metadata.revealConditions);
+    if (revealConditions.length > 0) {
       nextPreparationItems.push({
         title: `Plan Secret Reveal: ${sec.title}`,
-        description: `Conditions: ${meta.revealConditions.join(", ")}`,
+        description: `Conditions: ${revealConditions.join(", ")}`,
         priority: sec.importance === "critical" ? "high" : "normal",
       });
     }
@@ -155,9 +166,9 @@ export function buildDashboardProjection(campaignState: CampaignProjection): Das
   // Last closed session
   const sessions = Array.from(campaignState.sessions.values());
   const closedSessions = sessions
-    .filter((s: any) => s.status === "closed" || s.status === "archived")
-    .sort((a: any, b: any) => Date.parse(b.endedAt ?? b.updatedAt ?? 0) - Date.parse(a.endedAt ?? a.updatedAt ?? 0));
-  const lastClosedSession = closedSessions[0] as any | undefined;
+    .filter((s) => s.status === "closed" || s.status === "archived")
+    .sort((a, b) => Date.parse(b.endedAt ?? b.updatedAt ?? "0") - Date.parse(a.endedAt ?? a.updatedAt ?? "0"));
+  const lastClosedSession = closedSessions[0];
   const lastSession: LastSessionSummary | null = lastClosedSession
     ? {
         sessionId: lastClosedSession.sessionId,
@@ -175,7 +186,7 @@ export function buildDashboardProjection(campaignState: CampaignProjection): Das
       .map((e) => e.entityId)
   );
   const blockedQuests = activeQuests.filter((q) => {
-    const relations = Array.from(campaignState.relations.values()) as any[];
+    const relations = Array.from(campaignState.relations.values());
     const clueRelations = relations.filter((r) => {
       if (r.archived) return false;
       if (r.targetEntityId === q.entityId) {

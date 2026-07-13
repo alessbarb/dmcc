@@ -4,6 +4,12 @@ import type { Entity } from "../domain/entity/types.js";
 import type { Session } from "../domain/session/types.js";
 import { evaluateCampaignHealth } from "../domain/shared/alerts.js";
 
+function readStringArrayProperty(value: unknown, property: string): string[] {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return [];
+  const raw = Object.entries(value).find(([key]) => key === property)?.[1];
+  return Array.isArray(raw) ? raw.filter((item): item is string => typeof item === "string") : [];
+}
+
 export interface FocusItem {
   type: "quest" | "consequence" | "clock" | "npc" | "clue" | "secret" | "scene";
   title: string;
@@ -177,13 +183,13 @@ export function buildWhatNowProjection(campaignState: CampaignProjection): WhatN
 
   for (const clue of cluesWithPartialKnowledge) {
     const knownBy: string[] = [];
-    if (clue.visibility.playerIds) {
+    if (clue.visibility.kind === "players") {
       for (const pId of clue.visibility.playerIds) {
         const player = campaignState.players.get(pId);
         if (player) knownBy.push(player.displayName);
       }
     }
-    if (clue.visibility.characterEntityIds) {
+    if (clue.visibility.kind === "characters") {
       for (const cId of clue.visibility.characterEntityIds) {
         const char = campaignState.entities.get(cId);
         if (char) knownBy.push(char.title);
@@ -200,7 +206,7 @@ export function buildWhatNowProjection(campaignState: CampaignProjection): WhatN
 
   // Preparation Checklist
   const preparationChecklist: PreparationChecklistItem[] = [];
-  const completedTasks: string[] = (campaignState.campaign?.settings as any)?.completedChecklistTasks || [];
+  const completedTasks = readStringArrayProperty(campaignState.campaign?.settings, "completedChecklistTasks");
   const isDone = (task: string) => completedTasks.includes(task);
 
   // Checklist item for blocked quests

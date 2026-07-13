@@ -1,5 +1,7 @@
-import type { StoredEvent } from "../domain/shared/events.js";
+import { eventPayloadSchemas, type StoredEvent } from "../domain/shared/events.js";
 import type { CampaignProjection } from "./campaignProjection.js";
+import type { CampaignPlayerRecord } from "../domain/state.js";
+import type { Entity } from "../domain/entity/types.js";
 import type {
   PlayerCharacterLink,
   PlayerCharacterProposal,
@@ -9,6 +11,22 @@ import type {
   PlayerResource,
   PlayerTokenRecord,
 } from "../domain/playerPortal/types.js";
+
+type PlayerTokenIssuedPayload = ReturnType<typeof eventPayloadSchemas.PlayerTokenIssued.parse>;
+type PlayerTokenRevokedPayload = ReturnType<typeof eventPayloadSchemas.PlayerTokenRevoked.parse>;
+type PlayerCharacterLinkedPayload = ReturnType<typeof eventPayloadSchemas.PlayerCharacterLinked.parse>;
+type PlayerCharacterUnlinkedPayload = ReturnType<typeof eventPayloadSchemas.PlayerCharacterUnlinked.parse>;
+type PlayerCharacterLiveStateUpdatedPayload = ReturnType<typeof eventPayloadSchemas.PlayerCharacterLiveStateUpdated.parse>;
+type PlayerResourceUpsertedPayload = ReturnType<typeof eventPayloadSchemas.PlayerResourceUpserted.parse>;
+type PlayerResourceRemovedPayload = ReturnType<typeof eventPayloadSchemas.PlayerResourceRemoved.parse>;
+type PlayerPortalNoteCreatedPayload = ReturnType<typeof eventPayloadSchemas.PlayerPortalNoteCreated.parse>;
+type PlayerPortalNoteUpdatedPayload = ReturnType<typeof eventPayloadSchemas.PlayerPortalNoteUpdated.parse>;
+type PlayerPortalNoteArchivedPayload = ReturnType<typeof eventPayloadSchemas.PlayerPortalNoteArchived.parse>;
+type PlayerPortalObjectiveCreatedPayload = ReturnType<typeof eventPayloadSchemas.PlayerPortalObjectiveCreated.parse>;
+type PlayerPortalObjectiveUpdatedPayload = ReturnType<typeof eventPayloadSchemas.PlayerPortalObjectiveUpdated.parse>;
+type PlayerPortalObjectiveArchivedPayload = ReturnType<typeof eventPayloadSchemas.PlayerPortalObjectiveArchived.parse>;
+type PlayerCharacterProposalCreatedPayload = ReturnType<typeof eventPayloadSchemas.PlayerCharacterProposalCreated.parse>;
+type PlayerCharacterProposalResolvedPayload = ReturnType<typeof eventPayloadSchemas.PlayerCharacterProposalResolved.parse>;
 
 export interface PlayerPortalDmSummary {
   playerId: string;
@@ -52,9 +70,9 @@ export function buildPlayerPortalProjection(
   const proposalsById = new Map<string, PlayerCharacterProposal>();
 
   // Synthesize previous soft links from player_character entities with metadata.playerId
-  for (const item of toValues<any>(campaign.entities as any)) {
+  for (const item of toValues<Entity>(campaign.entities)) {
     if (item.entityType !== "player_character" || item.archived) continue;
-    const playerId = item.metadata?.playerId;
+    const playerId = typeof item.metadata.playerId === "string" ? item.metadata.playerId : undefined;
     if (!playerId) continue;
     linksByPlayerId.set(playerId, {
       campaignId: item.campaignId,
@@ -69,15 +87,16 @@ export function buildPlayerPortalProjection(
 
   // Process events in sequence order
   for (const ev of [...events].sort((a, b) => a.sequence - b.sequence)) {
-    const payload: any = ev.payload;
     switch (ev.type) {
       case "PlayerTokenIssued": {
+        const payload: PlayerTokenIssuedPayload = eventPayloadSchemas.PlayerTokenIssued.parse(ev.payload);
         const record: PlayerTokenRecord = { ...payload };
         tokensByHash.set(record.tokenHash, record);
         tokensById.set(record.tokenId, record);
         break;
       }
       case "PlayerTokenRevoked": {
+        const payload: PlayerTokenRevokedPayload = eventPayloadSchemas.PlayerTokenRevoked.parse(ev.payload);
         const existing = tokensById.get(payload.tokenId);
         if (existing) {
           const revoked = { ...existing, revokedAt: payload.revokedAt };
@@ -87,17 +106,20 @@ export function buildPlayerPortalProjection(
         break;
       }
       case "PlayerCharacterLinked": {
+        const payload: PlayerCharacterLinkedPayload = eventPayloadSchemas.PlayerCharacterLinked.parse(ev.payload);
         explicitLinkedPlayers.add(payload.playerId);
         linksByPlayerId.set(payload.playerId, { ...payload });
         break;
       }
       case "PlayerCharacterUnlinked": {
+        const payload: PlayerCharacterUnlinkedPayload = eventPayloadSchemas.PlayerCharacterUnlinked.parse(ev.payload);
         explicitLinkedPlayers.add(payload.playerId);
         linksByPlayerId.delete(payload.playerId);
         sheetsByPlayerId.delete(payload.playerId);
         break;
       }
       case "PlayerCharacterLiveStateUpdated": {
+        const payload: PlayerCharacterLiveStateUpdatedPayload = eventPayloadSchemas.PlayerCharacterLiveStateUpdated.parse(ev.payload);
         const previous = sheetsByPlayerId.get(payload.playerId);
         const previousStatus = previous?.status ?? { conditions: [] as string[] };
         const incomingStatus = payload.status ?? {};
@@ -118,6 +140,7 @@ export function buildPlayerPortalProjection(
         break;
       }
       case "PlayerResourceUpserted": {
+        const payload: PlayerResourceUpsertedPayload = eventPayloadSchemas.PlayerResourceUpserted.parse(ev.payload);
         const previous = sheetsByPlayerId.get(payload.playerId);
         const resources = upsertResource(previous?.resources ?? [], payload.resource);
         sheetsByPlayerId.set(payload.playerId, {
@@ -126,41 +149,58 @@ export function buildPlayerPortalProjection(
           characterEntityId: payload.characterEntityId,
           status: previous?.status ?? { conditions: [] },
           resources,
-          updatedBy: payload.updatedBy,
+          updatedBy: payload.updatedBy ?? "dm",
           updatedAt: payload.updatedAt,
         });
         break;
       }
       case "PlayerResourceRemoved": {
+        const payload: PlayerResourceRemovedPayload = eventPayloadSchemas.PlayerResourceRemoved.parse(ev.payload);
         const previous = sheetsByPlayerId.get(payload.playerId);
         if (!previous) break;
         sheetsByPlayerId.set(payload.playerId, {
           ...previous,
           resources: previous.resources.filter((r) => r.resourceId !== payload.resourceId),
-          updatedBy: payload.updatedBy,
-          updatedAt: payload.updatedAt,
+          updatedBy: "dm",
+          updatedAt: payload.removedAt,
         });
         break;
       }
-      case "PlayerPortalNoteCreated":
+      case "PlayerPortalNoteCreated": {
+        const payload: PlayerPortalNoteCreatedPayload = eventPayloadSchemas.PlayerPortalNoteCreated.parse(ev.payload);
+        notesById.set(payload.noteId, { ...payload, archived: false });
+        break;
+      }
       case "PlayerPortalNoteUpdated": {
-        notesById.set(payload.noteId, { ...(notesById.get(payload.noteId) as any), ...payload });
+        const payload: PlayerPortalNoteUpdatedPayload = eventPayloadSchemas.PlayerPortalNoteUpdated.parse(ev.payload);
+        const existing = notesById.get(payload.noteId);
+        if (existing) notesById.set(payload.noteId, { ...existing, ...payload });
         break;
       }
       case "PlayerPortalNoteArchived": {
+        const payload: PlayerPortalNoteArchivedPayload = eventPayloadSchemas.PlayerPortalNoteArchived.parse(ev.payload);
         const note = notesById.get(payload.noteId);
         if (note) notesById.set(payload.noteId, { ...note, archived: true, updatedAt: payload.archivedAt });
         break;
       }
-      case "PlayerPortalObjectiveCreated":
+      case "PlayerPortalObjectiveCreated": {
+        const payload: PlayerPortalObjectiveCreatedPayload = eventPayloadSchemas.PlayerPortalObjectiveCreated.parse(ev.payload);
+        objectivesById.set(payload.objectiveId, payload);
+        break;
+      }
       case "PlayerPortalObjectiveUpdated": {
-        objectivesById.set(payload.objectiveId, {
-          ...(objectivesById.get(payload.objectiveId) as any),
-          ...payload,
-        });
+        const payload: PlayerPortalObjectiveUpdatedPayload = eventPayloadSchemas.PlayerPortalObjectiveUpdated.parse(ev.payload);
+        const existing = objectivesById.get(payload.objectiveId);
+        if (existing) {
+          objectivesById.set(payload.objectiveId, {
+            ...existing,
+            ...payload,
+          });
+        }
         break;
       }
       case "PlayerPortalObjectiveArchived": {
+        const payload: PlayerPortalObjectiveArchivedPayload = eventPayloadSchemas.PlayerPortalObjectiveArchived.parse(ev.payload);
         const objective = objectivesById.get(payload.objectiveId);
         if (objective) {
           objectivesById.set(payload.objectiveId, {
@@ -172,10 +212,12 @@ export function buildPlayerPortalProjection(
         break;
       }
       case "PlayerCharacterProposalCreated": {
+        const payload: PlayerCharacterProposalCreatedPayload = eventPayloadSchemas.PlayerCharacterProposalCreated.parse(ev.payload);
         proposalsById.set(payload.proposalId, { ...payload, status: "pending" as const });
         break;
       }
       case "PlayerCharacterProposalResolved": {
+        const payload: PlayerCharacterProposalResolvedPayload = eventPayloadSchemas.PlayerCharacterProposalResolved.parse(ev.payload);
         const proposal = proposalsById.get(payload.proposalId);
         if (proposal) {
           proposalsById.set(payload.proposalId, {
@@ -195,7 +237,9 @@ export function buildPlayerPortalProjection(
   // this ensures that players with only Unlinked events don't retain a soft link.
   for (const playerId of explicitLinkedPlayers) {
     const hasLinkedEvent = events.some(
-      (ev) => ev.type === "PlayerCharacterLinked" && (ev.payload as any).playerId === playerId
+      (ev) =>
+        ev.type === "PlayerCharacterLinked" &&
+        eventPayloadSchemas.PlayerCharacterLinked.safeParse(ev.payload).data?.playerId === playerId
     );
     if (!hasLinkedEvent) {
       // Only Unlinked events fired — no active explicit link; soft link already deleted
@@ -209,12 +253,12 @@ export function buildPlayerPortalProjection(
   );
   const proposalsByPlayerId = groupByPlayer([...proposalsById.values()]);
 
-  const players = toValues<any>(campaign.players as any);
+  const players = toValues<CampaignPlayerRecord>(campaign.players);
   const dmSummaries: PlayerPortalDmSummary[] = players
-    .filter((p: any) => !p.archived)
-    .map((p: any) => ({
+    .filter((p) => !p.archived)
+    .map((p) => ({
       playerId: p.playerId,
-      displayName: p.displayName ?? p.name ?? p.playerId,
+      displayName: p.displayName ?? p.playerId,
       link: linksByPlayerId.get(p.playerId),
       sheet: sheetsByPlayerId.get(p.playerId),
       notes: (notesByPlayerId.get(p.playerId) ?? []).filter((n) => n.visibility === "dm_visible"),

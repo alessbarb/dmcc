@@ -1,7 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function normalizeEventPayload(type: string, payload: any, occurredAt: string): any {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+export function normalizeEventPayload<TPayload>(type: string, payload: TPayload, occurredAt: string): TPayload | Record<string, unknown> {
   if (!payload || typeof payload !== "object") return payload;
-  const normalized = { ...payload } as Record<string, unknown>;
+  if (!isRecord(payload)) return payload;
+  const normalized: Record<string, unknown> = { ...payload };
   if (["EntityCreated", "EntityUpdated", "EntityArchived"].includes(type)) {
     normalized.entityId = normalized.entityId || normalized.id;
     normalized.id = normalized.entityId;
@@ -24,8 +28,8 @@ export function normalizeEventPayload(type: string, payload: any, occurredAt: st
     normalized.createdAt = normalized.createdAt || occurredAt;
     normalized.updatedAt = normalized.updatedAt || occurredAt;
   }
-  if (normalized.visibility && typeof normalized.visibility === "object") {
-    const vis = normalized.visibility as Record<string, unknown>;
+  if (isRecord(normalized.visibility)) {
+    const vis = normalized.visibility;
     const kind = vis.kind || vis.mode || "dm_only";
     const { mode: _mode, ...rest } = vis;
     normalized.visibility = { ...rest, kind };

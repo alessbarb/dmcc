@@ -8,14 +8,18 @@ export const revelationAnchorSchema = z.object({
 
 export type RevelationAnchor = z.infer<typeof revelationAnchorSchema>;
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 export function normalizeRevelationAnchors(anchors: unknown): RevelationAnchor[] {
   if (!Array.isArray(anchors)) return [];
   const result: RevelationAnchor[] = [];
   const seenKeys = new Set<string>();
 
   for (const item of anchors) {
-    if (typeof item !== "object" || item === null) continue;
-    const raw = item as Record<string, unknown>;
+    if (!isRecord(item)) continue;
+    const raw = item;
 
     const nodeId = typeof raw.nodeId === "string" ? raw.nodeId.trim() : "";
     const entityId = typeof raw.entityId === "string" ? raw.entityId.trim() : "";
