@@ -138,16 +138,15 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
   };
 });
 
-// EVENT SOURCING TABLES
 export const domainEvents = pgTable("domain_events", {
   campaignId: text("campaign_id").notNull(),
   sequence: integer("sequence").notNull(),
   eventId: text("event_id").notNull(),
   type: text("type").notNull(),
   payload: jsonb("payload").notNull(),
-  occurredAt: text("occurred_at").notNull(), // ISO String
+  occurredAt: text("occurred_at").notNull(),
   actorUserId: text("actor_user_id").references(() => users.userId, { onDelete: "set null" }),
-  actorId: text("actor_id").notNull(), // textual id (e.g. dmId, playerId)
+  actorId: text("actor_id").notNull(),
   commandId: text("command_id"),
   commandHash: text("command_hash"),
   previousHash: text("previous_hash"),
@@ -180,7 +179,6 @@ export const campaignSnapshots = pgTable("campaign_snapshots", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-// READ MODELS
 export const campaignEntities = pgTable("campaign_entities", {
   campaignId: text("campaign_id").notNull(),
   entityId: text("entity_id").notNull(),
@@ -190,7 +188,7 @@ export const campaignEntities = pgTable("campaign_entities", {
   dmSummary: text("dm_summary"),
   status: text("status").notNull().default("active"),
   importance: text("importance").notNull().default("normal"),
-  tags: jsonb("tags").notNull().default([]), // array of strings
+  tags: jsonb("tags").notNull().default([]),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => {
   return {
@@ -202,7 +200,7 @@ export const campaignFacts = pgTable("campaign_facts", {
   campaignId: text("campaign_id").notNull(),
   factId: text("fact_id").notNull(),
   subjectEntityId: text("subject_entity_id").notNull(),
-  kind: text("kind").notNull(), // 'canon' | 'dm_secret' | 'rumor' etc.
+  kind: text("kind").notNull(),
   contentPublic: text("content_public"),
   contentDm: text("content_dm"),
   confidence: text("confidence").notNull().default("confirmed"),
@@ -234,15 +232,17 @@ export const campaignRelations = pgTable("campaign_relations", {
 
 export const visibilityGrants = pgTable("visibility_grants", {
   campaignId: text("campaign_id").notNull(),
-  targetType: text("target_type").notNull(), // 'entity' | 'relation' | 'fact'
+  targetType: text("target_type").notNull(),
   targetId: text("target_id").notNull(),
-  scope: text("scope").notNull(), // 'public' | 'all_players' | 'specific_user' | 'specific_player' | 'dm_only'
+  scope: text("scope").notNull(),
   userId: text("user_id"),
   playerId: text("player_id"),
   grantedAt: timestamp("granted_at").notNull().defaultNow(),
 }, (table) => {
   return {
-    pk: primaryKey({ columns: [table.campaignId, table.targetType, table.targetId, table.scope] }),
+    commonGrantUq: uniqueIndex("uq_visibility_grants_common").on(table.campaignId, table.targetType, table.targetId, table.scope),
+    specificPlayerGrantUq: uniqueIndex("uq_visibility_grants_specific_player").on(table.campaignId, table.targetType, table.targetId, table.scope, table.playerId),
+    specificUserGrantUq: uniqueIndex("uq_visibility_grants_specific_user").on(table.campaignId, table.targetType, table.targetId, table.scope, table.userId),
   };
 });
 
@@ -253,7 +253,7 @@ export const campaignSessions = pgTable("campaign_sessions", {
   title: text("title").notNull(),
   recapDm: text("recap_dm"),
   recapPublic: text("recap_public"),
-  status: text("status").notNull().default("planned"), // 'planned' | 'live' | 'completed' | 'cancelled'
+  status: text("status").notNull().default("planned"),
   plannedDate: text("planned_date"),
   playedDate: text("played_date"),
   notes: text("notes"),
@@ -348,7 +348,7 @@ export const campaignInvitations = pgTable("campaign_invitations", {
   campaignId: text("campaign_id").notNull(),
   tokenHash: text("token_hash").notNull(),
   shortCodeHash: text("short_code_hash"),
-  role: text("role").notNull().default("player"), // 'dm' | 'co_dm' | 'player' | 'viewer'
+  role: text("role").notNull().default("player"),
   maxUses: integer("max_uses").notNull().default(1),
   usesCount: integer("uses_count").notNull().default(0),
   expiresAt: timestamp("expires_at").notNull(),
@@ -370,7 +370,7 @@ export const campaignNotes = pgTable("campaign_notes", {
   authorUserId: text("author_user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   authorPlayerId: text("author_player_id"),
   content: text("content").notNull(),
-  visibilityScope: text("visibility_scope").notNull().default("dm_only"), // 'dm_only' | 'all_players' | 'private'
+  visibilityScope: text("visibility_scope").notNull().default("dm_only"),
   targetEntityId: text("target_entity_id"),
   targetSessionId: text("target_session_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -388,7 +388,7 @@ export const playerProposals = pgTable("player_proposals", {
   playerId: text("player_id").notNull(),
   type: text("type").notNull(),
   content: jsonb("content").notNull(),
-  status: text("status").notNull().default("submitted"), // 'draft' | 'submitted' | 'approved' | 'rejected'
+  status: text("status").notNull().default("submitted"),
   processedBy: text("processed_by").references(() => users.userId, { onDelete: "set null" }),
   processedAt: timestamp("processed_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
