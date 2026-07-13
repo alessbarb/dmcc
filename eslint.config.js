@@ -61,6 +61,13 @@ export default defineConfig(
   },
 
   {
+    files: ["src/**/*.{ts,tsx}", "scripts/**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-unsafe-type-assertion": "warn",
+    },
+  },
+
+  {
     files: ["tests/**/*.{ts,tsx}", "e2e/**/*.{ts,tsx}"],
 
     rules: {
