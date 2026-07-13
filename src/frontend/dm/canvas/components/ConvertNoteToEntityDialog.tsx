@@ -27,19 +27,22 @@ export function ConvertNoteToEntityDialog({
   const [summary, setSummary] = useState(initialSummary);
   const [visibilityKind, setVisibilityKind] = useState<"dm_only" | "public">("dm_only");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title.trim()) return;
 
-    await convertNoteToEntity(canvasId, nodeId, {
-      entityType,
-      title,
-      subtitle: subtitle || undefined,
-      summary: summary || undefined,
-      visibility: { kind: visibilityKind }
-    });
+    const run = async () => {
+      await convertNoteToEntity(canvasId, nodeId, {
+        entityType,
+        title,
+        subtitle: subtitle || undefined,
+        summary: summary || undefined,
+        visibility: { kind: visibilityKind }
+      });
 
-    onClose();
+      onClose();
+    };
+    void run();
   };
 
   const ENTITY_OPTIONS = [

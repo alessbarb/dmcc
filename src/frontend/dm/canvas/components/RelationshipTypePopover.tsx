@@ -5,12 +5,17 @@ import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { canvasVisibilityToVisibilityRule, type CanvasVisibility } from "../services/canvasVisibility.js";
 
 
+export interface RelationshipEntity {
+  entityId: string;
+  entityType: string;
+}
+
 export interface RelationshipTypePopoverProps {
   canvasId: string;
   sourceNodeId: string;
   targetNodeId: string;
-  sourceEntity?: any;
-  targetEntity?: any;
+  sourceEntity?: RelationshipEntity;
+  targetEntity?: RelationshipEntity;
   onSubmit: (data: {
     relationshipId?: string;
     label: string;
@@ -158,38 +163,41 @@ export function RelationshipTypePopover({
     }
   }, [options]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const selectedLabel = relationType === "custom" ? customType : (options.find(o => o.value === relationType)?.label || relationType);
-    if (!selectedLabel.trim()) return;
+    const run = async () => {
+      const selectedLabel = relationType === "custom" ? customType : (options.find(o => o.value === relationType)?.label || relationType);
+      if (!selectedLabel.trim()) return;
 
-    let relationshipId: string | undefined;
+      let relationshipId: string | undefined;
 
-    if (status === "domain" && sourceEntity && targetEntity) {
-      try {
-        const relTypeVal = relationType === "custom" ? `custom:${customType}` : relationType;
-        relationshipId = await createRelation({
-          sourceEntityId: sourceEntity.entityId,
-          targetEntityId: targetEntity.entityId,
-          relationType: relTypeVal,
-          description: description || undefined,
-          visibility: canvasVisibilityToVisibilityRule(canvasVisibility)
-        } as any);
-      } catch (err) {
-        console.error("Failed to create domain relation", err);
-        return;
+      if (status === "domain" && sourceEntity && targetEntity) {
+        try {
+          const relTypeVal = relationType === "custom" ? `custom:${customType}` : relationType;
+          relationshipId = await createRelation({
+            sourceEntityId: sourceEntity.entityId,
+            targetEntityId: targetEntity.entityId,
+            relationType: relTypeVal,
+            description: description || undefined,
+            visibility: canvasVisibilityToVisibilityRule(canvasVisibility)
+          });
+        } catch (err) {
+          console.error("Failed to create domain relation", err);
+          return;
+        }
       }
-    }
 
-    onSubmit({
-      relationshipId,
-      label: selectedLabel,
-      status,
-      visibility: canvasVisibility,
-      style: edgeStyle,
-      description: description || undefined,
-    });
+      onSubmit({
+        relationshipId,
+        label: selectedLabel,
+        status,
+        visibility: canvasVisibility,
+        style: edgeStyle,
+        description: description || undefined,
+      });
+    };
+    void run();
   };
 
   return (
@@ -279,7 +287,12 @@ export function RelationshipTypePopover({
               <label>{t("canvas.relationPopover.lineStyle")}</label>
               <select
                 value={edgeStyle}
-                onChange={(e) => setEdgeStyle(e.target.value as any)}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === "solid" || val === "dashed" || val === "secret" || val === "strong" || val === "weak") {
+                    setEdgeStyle(val);
+                  }
+                }}
                 className="form-select"
               >
                 <option value="solid">{t("canvas.relationPopover.lineSolid")}</option>
