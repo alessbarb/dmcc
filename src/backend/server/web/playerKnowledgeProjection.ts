@@ -24,6 +24,8 @@ interface KnowledgeAccessRule {
 export type KnowledgeAccessIndex = Map<string, KnowledgeAccessRule>;
 type VisibilityGrant = typeof schema.visibilityGrants.$inferSelect;
 
+const KNOWLEDGE_TARGET_TYPES = new Set<KnowledgeTargetType>(["entity", "fact", "relation", "clue", "objective"]);
+
 function valuesOf<T>(value: unknown): T[] {
   if (!value) return [];
   if (Array.isArray(value)) return value as T[];
@@ -67,9 +69,13 @@ function applyVisibility(index: KnowledgeAccessIndex, targetType: KnowledgeTarge
   }
 }
 
+function isKnowledgeTargetType(value: string): value is KnowledgeTargetType {
+  return KNOWLEDGE_TARGET_TYPES.has(value as KnowledgeTargetType);
+}
+
 function applyExplicitGrant(index: KnowledgeAccessIndex, grant: VisibilityGrant): void {
-  const targetType = grant.targetType as KnowledgeTargetType;
-  const rule = ruleFor(index, targetType, grant.targetId);
+  if (!isKnowledgeTargetType(grant.targetType)) return;
+  const rule = ruleFor(index, grant.targetType, grant.targetId);
   if (grant.scope === "public") rule.commonScope = "public";
   else if (grant.scope === "all_players" && rule.commonScope !== "public") rule.commonScope = "all_players";
   else if (grant.scope === "specific_player" && grant.playerId) rule.playerIds.add(grant.playerId);
