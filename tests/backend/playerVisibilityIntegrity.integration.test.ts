@@ -36,7 +36,7 @@ describe("player visibility referential integrity", () => {
     await seedCampaigns();
     await db.insert(schema.campaignMemberships).values({ campaignId: ids.campaignA, userId: ids.viewer, role: "player", playerId: ids.playerA });
     await db.insert(schema.playerProposals).values({ campaignId: ids.campaignA, proposalId: "proposal_integrity_a", userId: ids.viewer, playerId: ids.playerA, type: "character_link", content: {} });
-    await db.insert(schema.visibilityGrants).values({ campaignId: ids.campaignA, targetType: "entity", targetId: "entity_integrity_a", scope: "specific_player", source: "visibility", userId: null, playerId: ids.playerA });
+    await db.insert(schema.visibilityGrants).values({ campaignId: ids.campaignA, targetType: "entity", targetId: "entity_integrity_a", scope: "specific_player", userId: null, playerId: ids.playerA });
     await db.insert(playerPortalStates).values({ campaignId: ids.campaignA, playerId: ids.playerA, status: {} });
     await db.insert(playerPortalResources).values({ campaignId: ids.campaignA, resourceId: "resource_integrity_a", playerId: ids.playerA, data: {} });
 
@@ -71,7 +71,6 @@ describe("player visibility referential integrity", () => {
       targetType: "entity",
       targetId: "entity_other_campaign",
       scope: "specific_player",
-      source: "visibility",
       userId: null,
       playerId: ids.playerA,
     })).rejects.toThrow();
@@ -89,7 +88,6 @@ describe("player visibility referential integrity", () => {
       targetType: "entity",
       targetId: "entity_for_viewer",
       scope: "specific_user",
-      source: "manual",
       userId: ids.viewer,
       playerId: null,
     });
