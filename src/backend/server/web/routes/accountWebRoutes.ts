@@ -1,6 +1,6 @@
 import argon2 from "argon2";
 import type { FastifyInstance } from "fastify";
-import { and, eq, inArray, isNull } from "drizzle-orm";
+import { and, eq, inArray, isNull, ne } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
@@ -194,6 +194,16 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       : [];
     const campaignById = new Map(campaignRows.map((campaign) => [campaign.campaignId, campaign]));
 
+    const activeMemberships = membershipRows.filter((membership) => {
+      const campaign = campaignById.get(membership.campaignId);
+      return campaign && campaign.status !== "deleted";
+    });
+
+    const activePlayerProfiles = playerProfileRows.filter((profile) => {
+      const campaign = campaignById.get(profile.campaignId);
+      return campaign && campaign.status !== "deleted";
+    });
+
     return {
       account: {
         userId: user.userId,
@@ -203,8 +213,8 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       },
       preferences: normalizePreferences(webUser.userId, storedPreferences?.preferences),
       dmProfile: toDmProfile(dmProfileRow),
-      playerProfiles: playerProfileRows.map(toPlayerProfile),
-      memberships: membershipRows.map((membership) => ({
+      playerProfiles: activePlayerProfiles.map(toPlayerProfile),
+      memberships: activeMemberships.map((membership) => ({
         campaignId: membership.campaignId,
         role: membership.role === "viewer" ? "observer" : membership.role,
         playerId: membership.playerId ?? undefined,
@@ -463,7 +473,12 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
 
   server.get("/api/account/deletion-impact", async (request) => {
     const webUser = getRequiredWebUser(request);
-    const ownedCampaigns = await db.select().from(schema.campaigns).where(eq(schema.campaigns.ownerId, webUser.userId));
+    const ownedCampaigns = await db.select().from(schema.campaigns).where(
+      and(
+        eq(schema.campaigns.ownerId, webUser.userId),
+        ne(schema.campaigns.status, "deleted")
+      )
+    );
     return { blockers: ownedCampaigns.map((campaign) => ({ campaignId: campaign.campaignId, reason: "sole_responsible_dm" })) };
   });
 
@@ -478,7 +493,12 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       reply.code(403);
       return { error: "Current password is invalid", field: "currentPassword" };
     }
-    const ownedCampaigns = await db.select().from(schema.campaigns).where(eq(schema.campaigns.ownerId, webUser.userId));
+    const ownedCampaigns = await db.select().from(schema.campaigns).where(
+      and(
+        eq(schema.campaigns.ownerId, webUser.userId),
+        ne(schema.campaigns.status, "deleted")
+      )
+    );
     if (ownedCampaigns.length > 0) {
       reply.code(409);
       return { error: "Transfer or delete owned campaigns before deleting this account", blockers: ownedCampaigns.map((campaign) => ({ campaignId: campaign.campaignId, reason: "sole_responsible_dm" })) };
