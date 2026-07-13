@@ -37,6 +37,14 @@ WHERE NOT EXISTS (
 --> statement-breakpoint
 
 -- Remove invalid player-owned rows before adding same-campaign foreign keys.
+DELETE FROM "campaign_memberships" membership
+WHERE membership."player_id" IS NOT NULL
+  AND NOT EXISTS (
+    SELECT 1 FROM "player_profiles" profile
+    WHERE profile."campaign_id" = membership."campaign_id"
+      AND profile."profile_id" = membership."player_id"
+  );
+--> statement-breakpoint
 DELETE FROM "player_proposals" proposal
 WHERE NOT EXISTS (
   SELECT 1 FROM "player_profiles" profile
@@ -103,6 +111,11 @@ ADD CONSTRAINT "fk_player_portal_resources_campaign"
 FOREIGN KEY ("campaign_id") REFERENCES "campaigns"("campaign_id") ON DELETE CASCADE;
 --> statement-breakpoint
 
+ALTER TABLE "campaign_memberships"
+ADD CONSTRAINT "fk_campaign_memberships_player"
+FOREIGN KEY ("campaign_id", "player_id")
+REFERENCES "player_profiles"("campaign_id", "profile_id") ON DELETE CASCADE;
+--> statement-breakpoint
 ALTER TABLE "player_proposals"
 ADD CONSTRAINT "fk_player_proposals_player"
 FOREIGN KEY ("campaign_id", "player_id")
