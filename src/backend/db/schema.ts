@@ -223,19 +223,18 @@ export const visibilityGrants = pgTable("visibility_grants", {
   targetType: text("target_type").notNull(),
   targetId: text("target_id").notNull(),
   scope: text("scope").notNull(),
-  source: text("source").notNull().default("visibility"),
   userId: text("user_id").references(() => users.userId, { onDelete: "cascade" }),
   playerId: text("player_id"),
   grantedAt: timestamp("granted_at").notNull().defaultNow(),
 }, (table) => ({
   commonGrantUq: uniqueIndex("uq_visibility_grants_common")
-    .on(table.campaignId, table.targetType, table.targetId, table.scope, table.source)
+    .on(table.campaignId, table.targetType, table.targetId, table.scope)
     .where(sql`${table.scope} not in ('specific_player', 'specific_user')`),
   playerGrantUq: uniqueIndex("uq_visibility_grants_specific_player")
-    .on(table.campaignId, table.targetType, table.targetId, table.scope, table.playerId, table.source)
+    .on(table.campaignId, table.targetType, table.targetId, table.scope, table.playerId)
     .where(sql`${table.scope} = 'specific_player'`),
   userGrantUq: uniqueIndex("uq_visibility_grants_specific_user")
-    .on(table.campaignId, table.targetType, table.targetId, table.scope, table.userId, table.source)
+    .on(table.campaignId, table.targetType, table.targetId, table.scope, table.userId)
     .where(sql`${table.scope} = 'specific_user'`),
   campaignTargetIdx: index("idx_visibility_grants_campaign_target").on(table.campaignId, table.targetType, table.targetId),
   principalCheck: check("chk_visibility_grants_principal", sql`
@@ -243,7 +242,6 @@ export const visibilityGrants = pgTable("visibility_grants", {
     or (${table.scope} = 'specific_user' and ${table.userId} is not null and ${table.playerId} is null)
     or (${table.scope} not in ('specific_player', 'specific_user') and ${table.userId} is null and ${table.playerId} is null)
   `),
-  sourceCheck: check("chk_visibility_grants_source", sql`${table.source} in ('visibility', 'character_link', 'manual')`),
   playerFk: foreignKey({
     name: "fk_visibility_grants_player",
     columns: [table.campaignId, table.playerId],
