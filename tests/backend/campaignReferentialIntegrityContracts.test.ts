@@ -1,55 +1,150 @@
+import { and, eq } from "drizzle-orm";
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { db } from "../../src/backend/db/client.js";
+import * as schema from "../../src/backend/db/schema.js";
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-const migrationPath = join(ROOT, "src/backend/db/migrations/0009_campaign_referential_integrity.sql");
+const ids = {
+  owner: "usr_integrity_owner",
+  workspace: "wks_integrity",
+  campaignA: "cmp_integrity_a",
+  campaignB: "cmp_integrity_b",
+  playerA: "ply_integrity_a",
+  entityA: "ent_integrity_a",
+};
 
-describe("campaign referential integrity migration", () => {
-  it("cleans orphaned campaign rows before adding constraints", () => {
-    const migration = readFileSync(migrationPath, "utf8");
-    const cleanupPosition = migration.indexOf('DELETE FROM "campaign_entities"');
-    const constraintPosition = migration.indexOf('ADD CONSTRAINT "fk_campaign_entities_campaign"');
+async function seedCampaigns(): Promise<void> {
+  await db.insert(schema.users).values({
+    userId: ids.owner,
+    emailNormalized: "integrity-owner@example.test",
+    emailHash: "integrity-owner",
+    displayName: "Owner",
+    passwordHash: "hash",
+    passwordSalt: "salt",
+  });
+  await db.insert(schema.workspaces).values({
+    workspaceId: ids.workspace,
+    name: "Integrity workspace",
+    ownerId: ids.owner,
+  });
+  await db.insert(schema.campaigns).values([
+    {
+      campaignId: ids.campaignA,
+      title: "Campaign A",
+      workspaceId: ids.workspace,
+      ownerId: ids.owner,
+    },
+    {
+      campaignId: ids.campaignB,
+      title: "Campaign B",
+      workspaceId: ids.workspace,
+      ownerId: ids.owner,
+    },
+  ]);
+}
 
-    expect(cleanupPosition).toBeGreaterThanOrEqual(0);
-    expect(constraintPosition).toBeGreaterThan(cleanupPosition);
+async function seedCampaignAContent(): Promise<void> {
+  await db.insert(schema.playerProfiles).values({
+    profileId: ids.playerA,
+    campaignId: ids.campaignA,
+    displayName: "Player A",
+  });
+  await db.insert(schema.campaignEntities).values({
+    campaignId: ids.campaignA,
+    entityId: ids.entityA,
+    type: "character",
+    name: "Entity A",
+  });
+}
+
+describe("campaign referential integrity", () => {
+  it("deletes campaign-owned records with their campaign", async () => {
+    await seedCampaigns();
+    await seedCampaignAContent();
+    await db.insert(schema.visibilityGrants).values({
+      campaignId: ids.campaignA,
+      targetType: "entity",
+      targetId: ids.entityA,
+      scope: "specific_player",
+      userId: null,
+      playerId: ids.playerA,
+    });
+    await db.insert(schema.domainEvents).values({
+      campaignId: ids.campaignA,
+      sequence: 1,
+      eventId: "evt_integrity_a",
+      type: "CampaignCreated",
+      payload: {},
+      occurredAt: "2026-07-13T00:00:00.000Z",
+      actorId: ids.owner,
+      hash: "hash_integrity_a",
+      schemaVersion: 1,
+    });
+
+    await db.delete(schema.campaigns).where(eq(schema.campaigns.campaignId, ids.campaignA));
+
+    const [profiles, entities, grants, events] = await Promise.all([
+      db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, ids.campaignA)),
+      db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, ids.campaignA)),
+      db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, ids.campaignA)),
+      db.select().from(schema.domainEvents).where(eq(schema.domainEvents.campaignId, ids.campaignA)),
+    ]);
+
+    expect(profiles).toHaveLength(0);
+    expect(entities).toHaveLength(0);
+    expect(grants).toHaveLength(0);
+    expect(events).toHaveLength(0);
   });
 
-  it("cascades campaign deletion across core projections and portal state", () => {
-    const migration = readFileSync(migrationPath, "utf8");
+  it("rejects a player reference from another campaign", async () => {
+    await seedCampaigns();
+    await seedCampaignAContent();
 
-    for (const constraint of [
-      "fk_campaign_entities_campaign",
-      "fk_domain_events_campaign",
-      "fk_visibility_grants_campaign",
-      "fk_player_profiles_campaign",
-      "fk_player_portal_states_campaign",
-      "fk_player_portal_resources_campaign",
-    ]) {
-      expect(migration).toContain(`ADD CONSTRAINT "${constraint}"`);
-    }
+    await expect(db.insert(schema.visibilityGrants).values({
+      campaignId: ids.campaignB,
+      targetType: "entity",
+      targetId: "ent_other_campaign",
+      scope: "specific_player",
+      userId: null,
+      playerId: ids.playerA,
+    })).rejects.toThrow();
   });
 
-  it("enforces same-campaign entity, session and player references", () => {
-    const migration = readFileSync(migrationPath, "utf8");
+  it("rejects an entity relationship that crosses campaign boundaries", async () => {
+    await seedCampaigns();
+    await seedCampaignAContent();
 
-    expect(migration).toContain('FOREIGN KEY ("campaign_id", "subject_entity_id")');
-    expect(migration).toContain('FOREIGN KEY ("campaign_id", "session_id")');
-    expect(migration).toContain('FOREIGN KEY ("campaign_id", "player_id") REFERENCES "player_profiles"');
+    await expect(db.insert(schema.campaignFacts).values({
+      campaignId: ids.campaignB,
+      factId: "fact_cross_campaign",
+      subjectEntityId: ids.entityA,
+      kind: "canon",
+      contentPublic: "Cross-campaign fact",
+    })).rejects.toThrow();
   });
 
-  it("preserves campaign ownership when optional references are deleted", () => {
-    const migration = readFileSync(migrationPath, "utf8");
+  it("clears optional entity references when the entity is deleted", async () => {
+    await seedCampaigns();
+    await seedCampaignAContent();
+    await db.insert(schema.campaignClues).values({
+      campaignId: ids.campaignA,
+      clueId: "clue_integrity_a",
+      entityId: ids.entityA,
+      title: "Clue A",
+    });
 
-    expect(migration).toContain('ON DELETE SET NULL ("target_entity_id")');
-    expect(migration).toContain('ON DELETE SET NULL ("active_session_id")');
-    expect(migration).toContain('ON DELETE SET NULL ("entity_id")');
-  });
+    await db.delete(schema.campaignEntities).where(and(
+      eq(schema.campaignEntities.campaignId, ids.campaignA),
+      eq(schema.campaignEntities.entityId, ids.entityA),
+    ));
 
-  it("creates the supporting player-profile composite key safely", () => {
-    const migration = readFileSync(migrationPath, "utf8");
+    const [clue] = await db
+      .select()
+      .from(schema.campaignClues)
+      .where(and(
+        eq(schema.campaignClues.campaignId, ids.campaignA),
+        eq(schema.campaignClues.clueId, "clue_integrity_a"),
+      ));
 
-    expect(migration).toContain('CREATE UNIQUE INDEX IF NOT EXISTS "uq_player_profiles_campaign_profile"');
+    expect(clue?.entityId).toBeNull();
   });
 });
