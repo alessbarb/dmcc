@@ -34,53 +34,71 @@ function computeEventHash(eventWithoutHash: Omit<StoredEvent, "hash">): string {
   })).digest("hex");
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 function canonicalCommandPayload(command: Command): string {
-  const canonicalStringify = (value: any): string => {
-    if (value === null || typeof value !== "object") return JSON.stringify(value);
+  const canonicalStringify = (value: unknown): string => {
     if (Array.isArray(value)) return `[${value.map(canonicalStringify).join(",")}]`;
-    const keys = Object.keys(value).filter((key) => key !== "actorId").sort();
-    return `{${keys.map((key) => `${JSON.stringify(key)}:${canonicalStringify(value[key])}`).join(",")}}`;
+    if (isRecord(value)) {
+      const keys = Object.keys(value).filter((key) => key !== "actorId").sort();
+      return `{${keys.map((key) => `${JSON.stringify(key)}:${canonicalStringify(value[key])}`).join(",")}}`;
+    }
+    return JSON.stringify(value);
   };
   return canonicalStringify(command);
 }
 
+// Picks the record's identifying field (used only when a snapshot's Maps were
+// serialized as arrays instead of plain objects by an older snapshot format).
+function pickSerializedRecordId(item: unknown): string {
+  if (!isRecord(item)) return "";
+  const candidate = item.id ?? item.entityId ?? item.relationId ?? item.factId ?? item.sessionId ?? item.playerId;
+  return typeof candidate === "string" ? candidate : "";
+}
+
+function mapFromSerialized(value: unknown): Map<string, unknown> {
+  if (value instanceof Map) return value;
+  if (!value) return new Map();
+  if (Array.isArray(value)) {
+    return new Map(value.map((item: unknown): [string, unknown] => [pickSerializedRecordId(item), item]));
+  }
+  if (isRecord(value)) return new Map(Object.entries(value));
+  return new Map();
+}
+
 function snapshotToProjection(row: typeof schema.campaignSnapshots.$inferSelect | undefined): CampaignProjection | null {
   if (!row) return null;
-  const raw = row.snapshot as any;
-  const projection = raw?.projection ?? raw;
+  const raw = row.snapshot;
+  const rawRecord = isRecord(raw) ? raw : undefined;
+  const projection = (isRecord(rawRecord?.projection) ? rawRecord.projection : rawRecord) ?? undefined;
   if (!projection) return null;
 
-  const mapFrom = (value: any) => {
-    if (value instanceof Map) return value;
-    if (!value) return new Map();
-    if (Array.isArray(value)) {
-      return new Map(value.map((item: any) => [item.id ?? item.entityId ?? item.relationId ?? item.factId ?? item.sessionId ?? item.playerId, item]));
-    }
-    return new Map(Object.entries(value));
-  };
-
   return {
-    campaign: projection.campaign ?? raw.campaign,
-    players: mapFrom(projection.players),
-    invitations: mapFrom(projection.invitations),
-    entities: mapFrom(projection.entities),
-    relations: mapFrom(projection.relations),
-    facts: mapFrom(projection.facts),
-    sessions: mapFrom(projection.sessions),
-    sessionEvents: mapFrom(projection.sessionEvents),
-    tags: mapFrom(projection.tags),
-    attachments: mapFrom(projection.attachments),
-    canvases: mapFrom(projection.canvases),
+    campaign: projection.campaign ?? rawRecord?.campaign ?? null,
+    players: mapFromSerialized(projection.players),
+    invitations: mapFromSerialized(projection.invitations),
+    entities: mapFromSerialized(projection.entities),
+    relations: mapFromSerialized(projection.relations),
+    facts: mapFromSerialized(projection.facts),
+    sessions: mapFromSerialized(projection.sessions),
+    sessionEvents: mapFromSerialized(projection.sessionEvents),
+    tags: mapFromSerialized(projection.tags),
+    attachments: mapFromSerialized(projection.attachments),
+    canvases: mapFromSerialized(projection.canvases),
     lastSequence: Number(projection.lastSequence ?? row.sequence ?? 0),
   } as CampaignProjection;
 }
 
 function serializeProjection(projection: CampaignProjection) {
-  const toPlain = (value: any) => value instanceof Map ? Object.fromEntries(value) : (value ?? {});
+  function toPlain<V>(value: Map<string, V>): Record<string, V> {
+    return Object.fromEntries(value);
+  }
   return {
     campaign: projection.campaign,
     players: toPlain(projection.players),
-    invitations: toPlain((projection as any).invitations),
+    invitations: toPlain(projection.invitations),
     entities: toPlain(projection.entities),
     relations: toPlain(projection.relations),
     facts: toPlain(projection.facts),
@@ -98,7 +116,7 @@ function projectionToCampaignState(campaignId: string, projection: CampaignProje
     campaignId,
     campaign: projection.campaign,
     players: projection.players,
-    invitations: (projection as any).invitations ?? new Map(),
+    invitations: projection.invitations,
     entities: projection.entities,
     relations: projection.relations,
     facts: projection.facts,
@@ -194,7 +212,10 @@ function buildStoredEvent(input: {
     commandHash: input.commandHash,
   };
   const event = { ...eventWithoutHash, hash: computeEventHash(eventWithoutHash) } as StoredEvent;
-  const payloadSchema = (eventPayloadSchemas as Record<string, any>)[event.type];
+  // event.type (DomainEventType) is a superset of eventPayloadSchemas' keys by design (not
+  // every event type has a payload schema yet); the `if (payloadSchema)` below covers a
+  // runtime miss safely. Narrowing to `keyof typeof eventPayloadSchemas` here is intentional.
+  const payloadSchema = eventPayloadSchemas[event.type as keyof typeof eventPayloadSchemas];
   if (payloadSchema) {
     const parsed = payloadSchema.safeParse(event.payload);
     if (!parsed.success) {
@@ -207,7 +228,9 @@ function buildStoredEvent(input: {
 
 async function projectReadModelsTx(tx: DbTransaction, events: StoredEvent[]): Promise<void> {
   for (const event of events) {
-    const payload: any = event.payload;
+    // event.payload is `any` via StoredEvent's deliberately untyped generic default (see
+    // events.ts); each switch case below duck-types the specific event payload it expects.
+    const payload = event.payload;
     switch (event.type) {
       case "CampaignCreated": {
         const metadata = {
@@ -671,8 +694,8 @@ async function projectReadModelsTx(tx: DbTransaction, events: StoredEvent[]): Pr
 }
 
 function visibilityScopeOf(rawVisibility: unknown, fallback = "dm_only"): string {
-  const raw = rawVisibility as any;
-  const kind = typeof raw === "string" ? raw : raw?.kind ?? raw?.mode ?? fallback;
+  const raw = isRecord(rawVisibility) ? rawVisibility : undefined;
+  const kind = typeof rawVisibility === "string" ? rawVisibility : raw?.kind ?? raw?.mode ?? fallback;
   if (kind === "public") return "public";
   if (kind === "players" || kind === "all_players") return "all_players";
   if (kind === "specific_user" || kind === "specific_player") return kind;
@@ -680,7 +703,7 @@ function visibilityScopeOf(rawVisibility: unknown, fallback = "dm_only"): string
 }
 
 async function upsertVisibilityGrant(tx: DbTransaction, campaignId: string, targetType: string, targetId: string, rawVisibility: unknown, fallback = "dm_only") {
-  const raw = rawVisibility as any;
+  const raw = isRecord(rawVisibility) ? rawVisibility : undefined;
   const scope = visibilityScopeOf(rawVisibility, fallback);
   await tx.delete(schema.visibilityGrants).where(and(
     eq(schema.visibilityGrants.campaignId, campaignId),
@@ -694,7 +717,9 @@ async function upsertVisibilityGrant(tx: DbTransaction, campaignId: string, targ
   }
 
   if (scope === "specific_player") {
-    const playerIds = Array.isArray(raw?.playerIds) ? raw.playerIds : (typeof raw?.playerId === "string" ? [raw.playerId] : []);
+    const playerIds = Array.isArray(raw?.playerIds)
+      ? raw.playerIds.filter((id): id is string => typeof id === "string")
+      : (typeof raw?.playerId === "string" ? [raw.playerId] : []);
     if (playerIds.length > 0) {
       await tx.insert(schema.visibilityGrants).values(playerIds.map((playerId: string) => ({ campaignId, targetType, targetId, scope, playerId })));
       return;
@@ -822,7 +847,7 @@ export class PostgresCampaignRepository {
     return db.transaction((tx) => loadProjectionTx(tx, campaignId));
   }
 
-  async getSerializedCampaignState(campaignId: string): Promise<Record<string, any>> {
+  async getSerializedCampaignState(campaignId: string): Promise<ReturnType<typeof serializeProjection>> {
     const projection = await db.transaction((tx) => loadProjectionTx(tx, campaignId));
     return serializeProjection(projection);
   }
@@ -837,6 +862,10 @@ export class PostgresCampaignRepository {
       throw new HttpError("Missing Idempotency-Key header", 400);
     }
 
+    // Not every Command variant declares a top-level `campaignId` (e.g. DuplicateCampaign
+    // uses sourceCampaignId/newCampaignId instead), so spreading it in is structurally wider
+    // than any single variant; the assertion re-narrows back to the union. Downstream
+    // handlers only read the fields their own variant declares, so this is behavior-preserving.
     const normalizedCommand = { ...command, campaignId } as Command;
     const commandHash = createHash("sha256").update(canonicalCommandPayload(normalizedCommand)).digest("hex") || calculateCommandHash(normalizedCommand);
 
