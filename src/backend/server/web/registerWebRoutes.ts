@@ -24,26 +24,8 @@ export interface WebRoutesOptions {
   assetsDir?: string;
 }
 
-export function sanitizeProductionContentSecurityPolicy(value: unknown, nodeEnv = process.env.NODE_ENV): unknown {
-  if (nodeEnv !== "production" || typeof value !== "string") return value;
-
-  return value
-    .replace(/\s+(?:ws:|wss:|http:\/\/localhost:\*|http:\/\/127\.0\.0\.1:\*)/g, "")
-    .replace(/\s{2,}/g, " ")
-    .trim();
-}
-
 /** Registers the PostgreSQL-backed multi-user web API surface. */
 export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOptions): void {
-  server.addHook("onSend", async (_request, reply, payload) => {
-    const currentPolicy = reply.getHeader("content-security-policy");
-    const sanitizedPolicy = sanitizeProductionContentSecurityPolicy(currentPolicy);
-    if (typeof sanitizedPolicy === "string" && sanitizedPolicy !== currentPolicy) {
-      reply.header("content-security-policy", sanitizedPolicy);
-    }
-    return payload;
-  });
-
   registerAuthWebRoutes(server);
   void registerAccountWebRoutes(server);
   void registerHealthWebRoutes(server);
