@@ -396,6 +396,10 @@ function PlayerWorkspace({
   const [error, setError] = useState<string | null>(null);
   const [draftNote, setDraftNote] = useState("");
 
+  const handleNavigationError = (navigationError: unknown) => {
+    console.error("Player portal navigation failed", navigationError);
+  };
+
   const load = async () => {
     if (tab === "constellation") return;
     setLoading(true);
@@ -418,12 +422,18 @@ function PlayerWorkspace({
   };
 
   useEffect(() => {
-    void load();
+    void load().catch((loadError: unknown) => {
+      setError(loadError instanceof Error ? loadError.message : String(loadError));
+    });
   }, [campaignId, tab]);
 
   useEffect(() => {
     const refreshWhenVisible = () => {
-      if (document.visibilityState === "visible" && tab === "character") void load();
+      if (document.visibilityState === "visible" && tab === "character") {
+        void load().catch((loadError: unknown) => {
+          setError(loadError instanceof Error ? loadError.message : String(loadError));
+        });
+      }
     };
     window.addEventListener("focus", refreshWhenVisible);
     document.addEventListener("visibilitychange", refreshWhenVisible);
@@ -460,7 +470,9 @@ function PlayerWorkspace({
   const playerDockItems = buildPlayerMobileDockItems({
     t,
     openTab: onTabChange,
-    openMessages: () => navigate({ to: "/portal/messages/$campaignId", params: { campaignId } }),
+    openMessages: () => {
+      void navigate({ to: "/portal/messages/$campaignId", params: { campaignId } }).catch(handleNavigationError);
+    },
   });
 
   const content = useMemo(() => {
@@ -506,10 +518,14 @@ function PlayerWorkspace({
             <span id="player-note-help" className="player-portal-help">{t("playerPortal.notes.instructions")}</span>
             <textarea id="player-note-draft" aria-describedby="player-note-help" className="form-textarea" rows={4} value={draftNote} onChange={(event) => setDraftNote(event.target.value)} placeholder={t("playerPortal.notes.placeholder")} />
           </label>
-          <button className="btn btn-primary" type="button" style={{ marginTop: 10 }} disabled={!draftNote.trim()} onClick={async () => {
-            await createPlayerNote(campaignId, { content: draftNote, visibility: "private" });
-            setDraftNote("");
-            await load();
+          <button className="btn btn-primary" type="button" style={{ marginTop: 10 }} disabled={!draftNote.trim()} onClick={() => {
+            void (async () => {
+              await createPlayerNote(campaignId, { content: draftNote, visibility: "private" });
+              setDraftNote("");
+              await load();
+            })().catch((saveError: unknown) => {
+              setError(saveError instanceof Error ? saveError.message : String(saveError));
+            });
           }}><CheckCircle2 size={16} /> {t("playerPortal.notes.save")}</button>
         </Card>
         <Card>{payload.notes?.length ? payload.notes.map((note: any) => <p key={note.noteId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>{note.content}</p>) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noNotesYet")}</p>}</Card>
@@ -539,16 +555,19 @@ function PlayerWorkspace({
         <button
           type="button"
           className="btn btn-primary btn-sm player-portal-header__messages"
-          onClick={() => navigate({ to: "/portal/messages/$campaignId", params: { campaignId } })}
+          onClick={() => { void navigate({ to: "/portal/messages/$campaignId", params: { campaignId } }).catch(handleNavigationError); }}
         >
           <MessageCircle size={15} /> Mensajes
         </button>
-        <button type="button" className="btn btn-secondary btn-sm" onClick={() => navigate({ to: "/player/join" })}>
+        <button type="button" className="btn btn-secondary btn-sm" onClick={() => { void navigate({ to: "/player/join" }).catch(handleNavigationError); }}>
           <Plus size={15} /> {t("playerPortal.actions.join")}
         </button>
-        <button type="button" className="btn btn-secondary btn-sm" onClick={async () => {
-          await logout();
-          window.location.assign("/");
+        <button type="button" className="btn btn-secondary btn-sm" onClick={() => {
+          void logout()
+            .then(() => window.location.assign("/"))
+            .catch((logoutError: unknown) => {
+              setError(logoutError instanceof Error ? logoutError.message : String(logoutError));
+            });
         }}>
           <LogOut size={15} /> {t("playerPortal.actions.signOut")}
         </button>
@@ -595,6 +614,9 @@ function PlayerWorkspace({
 
 export function SmartLanding() {
   const navigate = useNavigate();
+  const handleNavigationError = (navigationError: unknown) => {
+    console.error("Smart landing navigation failed", navigationError);
+  };
   const { t } = useTranslation();
   const portalLocation = usePortalLocation();
   const [loading, setLoading] = useState(true);
@@ -619,7 +641,9 @@ export function SmartLanding() {
       } finally {
         setLoading(false);
       }
-    })();
+    })().catch((landingError: unknown) => {
+      console.error("Smart landing bootstrap failed", landingError);
+    });
   }, []);
 
   useEffect(() => {
@@ -666,11 +690,11 @@ export function SmartLanding() {
               <div className="column-header"><Shield className="column-icon gold-glow" size={20} /><h2 id="portal-dm-title">{t("landing.dmTitle")}</h2></div>
               <div className="dm-archive-stack">
                 {sortedCampaigns.length === 0 ? (
-                  <div className="glass-card empty-campaigns-card"><div className="card-body centered"><Compass size={36} /><h3>{t("landing.noCampaignsTitle")}</h3><p>{t("landing.noCampaignsDesc")}</p><button type="button" className="btn btn-gold" onClick={() => navigate({ to: "/dm" })}>{t("landing.createCampaignBtn")}</button></div></div>
+                  <div className="glass-card empty-campaigns-card"><div className="card-body centered"><Compass size={36} /><h3>{t("landing.noCampaignsTitle")}</h3><p>{t("landing.noCampaignsDesc")}</p><button type="button" className="btn btn-gold" onClick={() => { void navigate({ to: "/dm" }).catch(handleNavigationError); }}>{t("landing.createCampaignBtn")}</button></div></div>
                 ) : (
                   <div className="player-profiles-list">
                     {sortedCampaigns.map((campaign) => (
-                      <button key={campaign.campaignId} type="button" className="glass-card player-profile-row-card" onClick={() => navigate({ to: `/campaigns/${campaign.campaignId}/command-center` })}>
+                      <button key={campaign.campaignId} type="button" className="glass-card player-profile-row-card" onClick={() => { void navigate({ to: `/campaigns/${campaign.campaignId}/command-center` }).catch(handleNavigationError); }}>
                         <span className="card-body row-layout">
                           <span className="avatar-frame"><img src={campaign.coverUrl || "/assets/campaigns/default-campaign-cover.jpg"} alt="" /></span>
                           <span className="profile-details"><strong className="profile-name">{campaign.title}</strong><span className="campaign-link-name">{formatCampaignSystem(campaign.system)}</span></span>
@@ -680,14 +704,14 @@ export function SmartLanding() {
                     ))}
                   </div>
                 )}
-                <button type="button" className="btn btn-gold btn-full" onClick={() => navigate({ to: "/dm" })}>{t("landing.viewAllCampaigns")}</button>
+                <button type="button" className="btn btn-gold btn-full" onClick={() => { void navigate({ to: "/dm" }).catch(handleNavigationError); }}>{t("landing.viewAllCampaigns")}</button>
               </div>
             </section>
 
             <section className="smart-column-wrapper player-theme" aria-labelledby="portal-player-title">
               <div className="column-header"><Sword className="column-icon amethyst-glow" size={20} /><h2 id="portal-player-title">{t("landing.playerTitle")}</h2></div>
               {playerCampaigns.length === 0 ? (
-                <div className="glass-card player-join-card"><div className="card-body"><p className="card-desc">{t("landing.playerDesc")}</p><div className="join-cta-box"><Compass size={24} /><p>{t("landing.charactersEmptyDesc")}</p></div><button type="button" className="btn btn-amethyst btn-full" onClick={() => navigate({ to: "/player/join" })}>{t("landing.joinWithCodeBtn")}<ArrowRight size={16} /></button></div></div>
+                <div className="glass-card player-join-card"><div className="card-body"><p className="card-desc">{t("landing.playerDesc")}</p><div className="join-cta-box"><Compass size={24} /><p>{t("landing.charactersEmptyDesc")}</p></div><button type="button" className="btn btn-amethyst btn-full" onClick={() => { void navigate({ to: "/player/join" }).catch(handleNavigationError); }}>{t("landing.joinWithCodeBtn")}<ArrowRight size={16} /></button></div></div>
               ) : (
                 <div className="player-portal-stack">
                   <span className="section-label-amethyst">{t("landing.yourCharacters")}</span>
@@ -702,7 +726,7 @@ export function SmartLanding() {
                       </button>
                     ))}
                   </div>
-                  <button type="button" className="btn btn-amethyst-outline btn-full" onClick={() => navigate({ to: "/player/join" })}><Plus size={16} />{t("landing.joinAnother")}</button>
+                  <button type="button" className="btn btn-amethyst-outline btn-full" onClick={() => { void navigate({ to: "/player/join" }).catch(handleNavigationError); }}><Plus size={16} />{t("landing.joinAnother")}</button>
                 </div>
               )}
             </section>
