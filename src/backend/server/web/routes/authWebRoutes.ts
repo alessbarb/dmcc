@@ -134,7 +134,7 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
   const registerRateLimits = new Map<string, RegisterRateLimitEntry>();
   const loginRateLimits = new Map<string, LoginRateLimitEntry>();
   const loginLockouts = new Map<string, LoginLockoutEntry>();
-  const dummyArgonHash = await argon2.hash(randomBytes(32));
+  const dummyArgonHashPromise = argon2.hash(randomBytes(32));
 
   server.post<{ Body: { email?: string; password?: string; displayName?: string } }>("/api/auth/register", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
@@ -224,6 +224,7 @@ export async function registerAuthWebRoutes(server: FastifyInstance): Promise<vo
         user.lastLoginAt = new Date();
       }
     } else {
+      const dummyArgonHash = await dummyArgonHashPromise;
       await argon2.verify(dummyArgonHash, password).catch(() => false);
     }
 
