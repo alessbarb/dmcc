@@ -8,6 +8,12 @@ interface RelationCreateModalProps {
   onClose: () => void;
 }
 
+function runRelationModalAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 const BUILT_IN_RELATION_TYPES = [
   "located_in",
   "lives_in",
@@ -100,7 +106,9 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
             <X size={18} />
           </button>
         </div>
-        <form onSubmit={handleCreateRelationSubmit}>
+        <form onSubmit={(event) => {
+          runRelationModalAction(handleCreateRelationSubmit(event), "No se pudo crear la relación.");
+        }}>
           <div className="modal-body">
             <div className="form-group">
               <label className="form-label">{t("relationModal.sourceEntity")}</label>
@@ -168,17 +176,19 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
                 type="button"
                 className="btn btn-secondary btn-sm"
                 style={{ marginLeft: "auto", flexShrink: 0 }}
-                onClick={async () => {
+                onClick={() => {
                   useCampaignStore.setState({ error: null });
                   const finalRelationType = relationType === "custom" ? `custom:${customType}` : relationType;
-                  await createRelation({
-                    sourceEntityId,
-                    targetEntityId,
-                    relationType: finalRelationType,
-                    force: true
-                  } as any);
-                  onClose();
-                  resetForm();
+                  runRelationModalAction((async () => {
+                    await createRelation({
+                      sourceEntityId,
+                      targetEntityId,
+                      relationType: finalRelationType,
+                      force: true
+                    } as any);
+                    onClose();
+                    resetForm();
+                  })(), "No se pudo crear la relación duplicada.");
                 }}
               >
                 {t("relationModal.createAnyway")}

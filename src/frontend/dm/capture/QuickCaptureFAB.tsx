@@ -18,6 +18,12 @@ const QUICK_TYPES: { type: QuickEntityType; emoji: string }[] = [
 
 type Props = { campaignId: string };
 
+function runQuickCaptureAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
@@ -157,7 +163,7 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
                   className="btn btn-secondary btn-sm"
                   onClick={() => {
                     setOpen(false);
-                    void navigate({ to: `/campaigns/${_campaignId}/session` });
+                    runQuickCaptureAction(navigate({ to: `/campaigns/${_campaignId}/session` }), "No se pudo abrir la sesión activa.");
                   }}
                 >
                   <Play size={14} /> {t("session.openActiveSession")}
@@ -173,7 +179,9 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={handleSave}
+                onClick={() => {
+                  runQuickCaptureAction(handleSave(), "No se pudo crear la captura rápida.");
+                }}
                 disabled={!name.trim() || saving}
               >
                 {saving ? t("common.saving") : t("common.create")}

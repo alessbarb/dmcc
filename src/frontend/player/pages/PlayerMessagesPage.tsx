@@ -7,12 +7,23 @@ import { MobileDock } from "../../shared/components/MobileDock.js";
 import { buildPlayerMobileDockItems } from "../navigation/playerMobileDockItems.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
+function runPlayerMessagesAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 export function PlayerMessagesPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
 
-  const openPortalTab = (tab: string) => navigate({ to: `/portal?campaignId=${encodeURIComponent(campaignId)}&tab=${tab}` as any });
+  const openPortalTab = (tab: string) => {
+    runPlayerMessagesAction(
+      navigate({ to: `/portal?campaignId=${encodeURIComponent(campaignId)}&tab=${tab}` as any }),
+      "No se pudo abrir la pestaña del portal.",
+    );
+  };
   const dockItems = buildPlayerMobileDockItems({
     t,
     openTab: openPortalTab,
@@ -25,7 +36,7 @@ export function PlayerMessagesPage() {
         <button
           type="button"
           className="btn btn-secondary btn-sm"
-          onClick={() => navigate({ to: `/portal?campaignId=${encodeURIComponent(campaignId)}&tab=home` as any })}
+          onClick={() => openPortalTab("home")}
         >
           <ArrowLeft size={15} /> {t("playerPortal.messaging.backToPortal")}
         </button>

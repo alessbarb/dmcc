@@ -7,6 +7,12 @@ import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
 
 
+function runEntityCreateAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 function getMetadataLanguages(metadata: any): readonly string[] {
   if (Array.isArray(metadata.languages)) return metadata.languages;
   if (Array.isArray(metadata.languages)) return metadata.languages;
@@ -200,7 +206,9 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
             <X size={18} />
           </button>
         </div>
-        <form onSubmit={handleCreateEntitySubmit}>
+        <form onSubmit={(event) => {
+          runEntityCreateAction(handleCreateEntitySubmit(event), "No se pudo crear la entidad.");
+        }}>
           <div className="modal-body">
             <div className="form-group">
               <label className="form-label">Tipo de entidad</label>

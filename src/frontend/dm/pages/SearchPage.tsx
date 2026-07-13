@@ -21,6 +21,12 @@ export interface SearchPageProps {
   setSearchQuery?: (query: string) => void;
 }
 
+function runSearchAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 function iconFor(type: CampaignSearchResult["type"]) {
   if (type === "fact") return <BookOpen size={17} />;
   if (type === "relation") return <GitFork size={17} />;
@@ -202,7 +208,12 @@ export function SearchPage(props: SearchPageProps = {}) {
                   key={`${result.type}-${item.id}`}
                   type="button"
                   className="card"
-                  onClick={() => navigate({ to: resultDestination(campaignId, result) as any })}
+                  onClick={() => {
+                    runSearchAction(
+                      navigate({ to: resultDestination(campaignId, result) as any }),
+                      "No se pudo abrir el resultado de búsqueda.",
+                    );
+                  }}
                   style={{
                     width: "100%",
                     padding: 16,

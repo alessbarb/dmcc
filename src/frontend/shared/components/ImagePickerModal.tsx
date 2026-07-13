@@ -23,6 +23,12 @@ interface CatalogGroupSection {
   groups: Array<{ key: string; label: string; count: number }>;
 }
 
+function runImagePickerAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 const CATALOG_PRIORITY = ["entities", "avatars", "locations", "items", "monsters", "scenes", "factions", "campaigns"];
 const MOBILE_PICKER_QUERY = "(max-width: 760px), (hover: none) and (pointer: coarse)";
 
@@ -220,9 +226,12 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
 
     let cancelled = false;
     setLoadingImages(true);
-    preloadImagePaths(thumbnailPathsKey.split("\n").filter(Boolean)).finally(() => {
-      if (!cancelled) setLoadingImages(false);
-    });
+    runImagePickerAction(
+      preloadImagePaths(thumbnailPathsKey.split("\n").filter(Boolean)).finally(() => {
+        if (!cancelled) setLoadingImages(false);
+      }),
+      "No se pudieron precargar las imágenes.",
+    );
 
     return () => {
       cancelled = true;

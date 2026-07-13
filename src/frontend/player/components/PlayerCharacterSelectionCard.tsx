@@ -3,6 +3,12 @@ import { CheckCircle2, Send, User } from "lucide-react";
 import type { TranslationKey } from "@shared/i18n/types.js";
 import { requestPlayerCharacterLink } from "../../shared/api/webProductClient.js";
 
+function runCharacterSelectionAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 interface PortalCharacter {
   entityId: string;
   title: string;
@@ -103,22 +109,24 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
             className="btn btn-primary"
             disabled={!selectedCharacter || submitting || submittedCharacterId === selectedCharacter?.entityId}
             aria-busy={submitting}
-            onClick={async () => {
+            onClick={() => {
               if (!selectedCharacter) return;
-              setSubmitting(true);
-              setError(null);
-              try {
-                await requestPlayerCharacterLink(campaignId, {
-                  characterEntityId: selectedCharacter.entityId,
-                  characterTitle: selectedCharacter.title,
-                });
-                setSubmittedCharacterId(selectedCharacter.entityId);
-                await reload();
-              } catch (requestError) {
-                setError(requestError instanceof Error ? requestError.message : String(requestError));
-              } finally {
-                setSubmitting(false);
-              }
+              runCharacterSelectionAction((async () => {
+                setSubmitting(true);
+                setError(null);
+                try {
+                  await requestPlayerCharacterLink(campaignId, {
+                    characterEntityId: selectedCharacter.entityId,
+                    characterTitle: selectedCharacter.title,
+                  });
+                  setSubmittedCharacterId(selectedCharacter.entityId);
+                  await reload();
+                } catch (requestError) {
+                  setError(requestError instanceof Error ? requestError.message : String(requestError));
+                } finally {
+                  setSubmitting(false);
+                }
+              })(), "No se pudo solicitar el personaje.");
             }}
           >
             <Send size={16} aria-hidden="true" /> {t("playerPortal.character.requestAction")}
