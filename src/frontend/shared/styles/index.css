@@ -81,6 +81,10 @@ canvas {
   transform-origin: center;
 }
 
+body:has(.canvas-page-container) .watermark {
+  opacity: 0.018;
+}
+
 @media (max-width: 720px) {
   .watermark {
     background-size: min(92vw, 520px);

@@ -364,6 +364,23 @@ const runNarrativeLint = (campaignState: { entities: Entity[]; relations: Relati
   return issues;
 };
 
+const getCanvasKindLabel = (kind: string, t: (key: string) => string) => {
+  switch (kind) {
+    case "world":
+      return "Mundo";
+    case "session":
+      return t("canvas.node.typeSession");
+    case "mystery":
+      return t("canvas.page.templateConspiration");
+    case "location":
+      return t("canvas.node.typeLocation") || "Ubicación";
+    case "characters":
+      return t("canvas.page.templateRelations");
+    default:
+      return kind.charAt(0).toUpperCase() + kind.slice(1);
+  }
+};
+
 export function CanvasPage() {
   const canvasFlowRef = useRef<CampaignCanvasFlowHandle>(null);
   const { t } = useTranslation();
@@ -486,6 +503,7 @@ export function CanvasPage() {
   };
   const [isLegendOpen, setIsLegendOpen] = useState(false);
   const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
+  const [isViewPopoverOpen, setIsViewPopoverOpen] = useState(false);
 
   // Multi-selection
   const [selectedNodes, setSelectedNodes] = useState<CanvasFlowNode[]>([]);
@@ -823,7 +841,7 @@ export function CanvasPage() {
           >
             {canvases.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.title} ({c.kind === "world" ? "Mundo" : c.kind === "session" ? t("canvas.node.typeSession") : c.kind === "mystery" ? t("canvas.page.templateConspiration") : c.kind === "location" ? "Ubicaciones" : c.kind === "characters" ? t("canvas.page.templateRelations") : "Personalizado"})
+                {c.title} ({getCanvasKindLabel(c.kind, t)})
               </option>
             ))}
           </select>
@@ -838,167 +856,202 @@ export function CanvasPage() {
             </button>
           )}
         </div>
-
-        {/* View toggles & Filters */}
-        <div className="canvas-header-filters" style={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "16px", borderLeft: "1px solid var(--border-color)", paddingLeft: "16px", flex: 1, width: "100%" }}>
-          {/* Grupo 1: Modos principales */}
-          <div className="canvas-toolbar-group">
-            {/* Live Direction Toggle */}
-            {activeSession && (
-              <button
-                type="button"
-                className={`btn btn-sm ${isDirectionMode ? "btn-primary" : "btn-secondary"}`}
-                onClick={() => {
-                  setIsDirectionMode(v => !v);
-                }}
-                title={isDirectionMode ? t("canvas.toolbar.deactivateDirection") : t("canvas.toolbar.activateDirection")}
-                style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
-              >
-                <Zap size={12} />
-                <span>{isDirectionMode ? "⚡ Dirigiendo" : "Dirigir partida"}</span>
-              </button>
-            )}
-
-            {/* Fullscreen Presentation View Toggle */}
+                 {/* View toggles & Filters */}
+        <div className="canvas-header-filters" style={{ display: "flex", alignItems: "center", gap: "12px", marginLeft: "auto" }}>
+          {/* Live Direction Toggle */}
+          {activeSession && (
             <button
               type="button"
-              className={`btn btn-sm ${isFullscreenPresentation ? "btn-primary" : "btn-secondary"}`}
-              onClick={toggleFullscreenPresentation}
-              title={isFullscreenPresentation ? t("canvas.toolbar.exitPresentation") : "Presentar en pantalla completa (Vista Jugador segura)"}
-              style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
-            >
-              <Play size={12} />
-              <span>{isFullscreenPresentation ? "Detener" : "Presentar"}</span>
-            </button>
-          </div>
-
-          <div className="canvas-toolbar-divider" />
-
-          {/* Grupo 2: Configuración de Vista */}
-          <div className="canvas-toolbar-group">
-            {/* Player/DM View Toggle (Only if not in Fullscreen) */}
-            {!isFullscreenPresentation && (
-              <button
-                type="button"
-                className={`btn btn-sm ${isPlayerView ? "btn-primary" : "btn-secondary"}`}
-                onClick={() => {
-                  const nextView = !isPlayerView;
-                  setIsPlayerView(nextView);
-                  if (nextView) {
-                    setIsDirectionMode(false);
-                    setSelectedNodeId(null);
-                    setSelectedEdgeId(null);
-                    setSelectedNodes([]);
-                    setSelectedEdges([]);
-                  }
-                }}
-                title={isPlayerView ? "Volver a vista de DM" : t("canvas.toolbar.activatePlayerView")}
-                style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
-              >
-                {isPlayerView ? <Eye size={12} /> : <EyeOff size={12} />}
-                <span>{isPlayerView ? t("canvas.toolbar.playerViewLabel") : "👁 Vista DM"}</span>
-              </button>
-            )}
-
-            {/* Public / Private toggle (Only if not in Player View) */}
-            {!isPlayerView && (
-              <button
-                type="button"
-                className={`btn btn-sm ${publicOnly ? "btn-primary" : "btn-secondary"}`}
-                onClick={() => setPublicOnly(v => !v)}
-                title={publicOnly ? t("canvas.toolbar.showingPublicOnly") : t("canvas.toolbar.showingAll")}
-                style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
-              >
-                {publicOnly ? <Eye size={12} /> : <EyeOff size={12} />}
-                <span>{publicOnly ? t("canvas.toolbar.publicOnly") : "Mostrar secretos"}</span>
-              </button>
-            )}
-
-            {!isPlayerView && (
-              <button
-                type="button"
-                className={`btn btn-sm ${tablePrivacy ? "btn-primary" : "btn-secondary"}`}
-                onClick={() => setTablePrivacy(value => !value)}
-                aria-pressed={tablePrivacy}
-                title={t("canvas.toolbar.tablePrivacyHint")}
-              >
-                <Shield size={12} aria-hidden="true" />
-                <span>{t("canvas.toolbar.tablePrivacy")}</span>
-              </button>
-            )}
-
-            {/* Mystery Flow Toggle */}
-            {!isPlayerView && (
-              <button
-                type="button"
-                className={`btn btn-sm ${mysteryFlowMode ? "btn-primary" : "btn-secondary"}`}
-                onClick={() => setMysteryFlowMode(v => !v)}
-                title={mysteryFlowMode ? "Desactivar Mystery Flow" : t("canvas.toolbar.activateMysteryFlow")}
-                style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
-              >
-                <span>{mysteryFlowMode ? "🔍 Mystery Flow" : "Ver Misterio"}</span>
-              </button>
-            )}
-          </div>
-
-          <div className="canvas-toolbar-divider" />
-
-          {/* Grupo 3: Filtros, Densidad y Relaciones */}
-          <div className="canvas-toolbar-group">
-            {/* Densidad Selector */}
-            <select
-              value={density}
-              onChange={(e) => {
-                const nextDensity = e.target.value;
-                if (isCanvasDensity(nextDensity)) {
-                  setDensity(nextDensity);
-                }
+              className={`btn btn-sm ${isDirectionMode ? "btn-primary" : "btn-secondary"}`}
+              onClick={() => {
+                setIsDirectionMode(v => !v);
               }}
-              className="canvas-select"
-              style={{ fontSize: "11px", padding: "2px 6px", height: "26px", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)" }}
+              title={isDirectionMode ? t("canvas.toolbar.deactivateDirection") : t("canvas.toolbar.activateDirection")}
             >
-              <option value="compact">🗜️ Densidad: Compacta</option>
-              <option value="normal">📱 Densidad: Normal</option>
-              <option value="detailed">📋 Densidad: Detallada</option>
-            </select>
+              <Zap size={12} />
+              <span>{isDirectionMode ? "⚡ Dirigiendo" : "Dirigir partida"}</span>
+            </button>
+          )}
 
-            {/* Relaciones Filter */}
-            {!isPlayerView && (
-              <select
-                value={relationsFilter}
-                onChange={(e) => setRelationsFilter(e.target.value as typeof relationsFilter)}
-                className="canvas-select"
-                style={{ fontSize: "11px", padding: "2px 6px", height: "26px", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)" }}
-                title={t("canvas.toolbar.filterConnections")}
-              >
-                <option value="all">🔗 Relaciones: Todas</option>
-                <option value="public">🌐 Relaciones: Públicas</option>
-                <option value="secret">🔴 Relaciones: Secretas</option>
-                <option value="selection">🎯 Relaciones: Selección</option>
-              </select>
-            )}
+          {/* Fullscreen Presentation View Toggle */}
+          <button
+            type="button"
+            className={`btn btn-sm ${isFullscreenPresentation ? "btn-primary" : "btn-secondary"}`}
+            onClick={toggleFullscreenPresentation}
+            title={isFullscreenPresentation ? t("canvas.toolbar.exitPresentation") : "Presentar en pantalla completa (Vista Jugador segura)"}
+          >
+            <Play size={12} />
+            <span>{isFullscreenPresentation ? "Detener" : "Presentar"}</span>
+          </button>
 
-            {/* Type Filter Select */}
-            {!isPlayerView && (
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className="canvas-select"
-                style={{ fontSize: "11px", padding: "2px 6px", height: "26px", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)" }}
+          {/* Vista Popover Container */}
+          <div className="canvas-toolbar-group" style={{ position: "relative" }}>
+            <button
+              type="button"
+              className={`btn btn-sm ${isViewPopoverOpen ? "btn-primary" : "btn-secondary"}`}
+              onClick={() => setIsViewPopoverOpen(v => !v)}
+              title="Ajustes de Vista del Canvas"
+              style={{ gap: "6px" }}
+            >
+              <SlidersHorizontal size={12} />
+              <span>Vista</span>
+            </button>
+            {isViewPopoverOpen && (
+              <div
+                className="dropdown-menu"
+                style={{
+                  position: "absolute",
+                  top: "34px",
+                  right: 0,
+                  backgroundColor: "var(--bg-card)",
+                  border: "1px solid var(--border-color)",
+                  borderRadius: "var(--radius-md)",
+                  display: "flex",
+                  flexDirection: "column",
+                  zIndex: 1000,
+                  minWidth: "220px",
+                  boxShadow: "var(--shadow-lg)",
+                  padding: "12px",
+                  gap: "10px",
+                }}
               >
-                <option value="all">Todos los tipos</option>
-                <option value="npc">PNJs</option>
-                <option value="location">Lugares</option>
-                <option value="quest">Misiones</option>
-                <option value="clue">Pistas</option>
-                <option value="secret">Secretos</option>
-                <option value="scene">Escenas</option>
-                <option value="other">Otros</option>
-              </select>
+                {/* Section 1: Modos (Buttons) */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <div style={{ fontSize: "10px", color: "var(--text-muted)", fontWeight: "bold", letterSpacing: "0.05em" }}>MODOS DE VISTA</div>
+                  
+                  {!isFullscreenPresentation && (
+                    <button
+                      type="button"
+                      className={`btn btn-sm ${isPlayerView ? "btn-primary" : "btn-secondary"}`}
+                      onClick={() => {
+                        const nextView = !isPlayerView;
+                        setIsPlayerView(nextView);
+                        if (nextView) {
+                          setIsDirectionMode(false);
+                          setSelectedNodeId(null);
+                          setSelectedEdgeId(null);
+                          setSelectedNodes([]);
+                          setSelectedEdges([]);
+                        }
+                      }}
+                      title={isPlayerView ? "Volver a vista de DM" : t("canvas.toolbar.activatePlayerView")}
+                      style={{ width: "100%", justifyContent: "flex-start", gap: "8px" }}
+                    >
+                      {isPlayerView ? <Eye size={12} /> : <EyeOff size={12} />}
+                      <span>{isPlayerView ? t("canvas.toolbar.playerViewLabel") : "👁 Vista DM"}</span>
+                    </button>
+                  )}
+
+                  {!isPlayerView && (
+                    <button
+                      type="button"
+                      className={`btn btn-sm ${publicOnly ? "btn-primary" : "btn-secondary"}`}
+                      onClick={() => setPublicOnly(v => !v)}
+                      title={publicOnly ? t("canvas.toolbar.showingPublicOnly") : t("canvas.toolbar.showingAll")}
+                      style={{ width: "100%", justifyContent: "flex-start", gap: "8px" }}
+                    >
+                      {publicOnly ? <Eye size={12} /> : <EyeOff size={12} />}
+                      <span>{publicOnly ? t("canvas.toolbar.publicOnly") : "Mostrar secretos"}</span>
+                    </button>
+                  )}
+
+                  {!isPlayerView && (
+                    <button
+                      type="button"
+                      className={`btn btn-sm ${tablePrivacy ? "btn-primary" : "btn-secondary"}`}
+                      onClick={() => setTablePrivacy(value => !value)}
+                      title={t("canvas.toolbar.tablePrivacyHint")}
+                      style={{ width: "100%", justifyContent: "flex-start", gap: "8px" }}
+                    >
+                      <Shield size={12} />
+                      <span>{t("canvas.toolbar.tablePrivacy")}</span>
+                    </button>
+                  )}
+
+                  {!isPlayerView && (
+                    <button
+                      type="button"
+                      className={`btn btn-sm ${mysteryFlowMode ? "btn-primary" : "btn-secondary"}`}
+                      onClick={() => setMysteryFlowMode(v => !v)}
+                      title={mysteryFlowMode ? "Desactivar Mystery Flow" : t("canvas.toolbar.activateMysteryFlow")}
+                      style={{ width: "100%", justifyContent: "flex-start", gap: "8px" }}
+                    >
+                      <SlidersHorizontal size={12} />
+                      <span>{mysteryFlowMode ? "🔍 Mystery Flow" : "Ver Misterio"}</span>
+                    </button>
+                  )}
+                </div>
+
+                <div style={{ height: "1px", backgroundColor: "var(--border-color)", margin: "4px 0" }} />
+
+                {/* Section 2: Configurations / Filtros */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <div style={{ fontSize: "10px", color: "var(--text-muted)", fontWeight: "bold", letterSpacing: "0.05em" }}>FILTROS Y DENSIDAD</div>
+
+                  {/* Densidad Selector */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                    <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Densidad</span>
+                    <select
+                      value={density}
+                      onChange={(e) => {
+                        const nextDensity = e.target.value;
+                        if (isCanvasDensity(nextDensity)) {
+                          setDensity(nextDensity);
+                        }
+                      }}
+                      className="canvas-select"
+                      style={{ width: "100%", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
+                    >
+                      <option value="compact">🗜️ Compacta</option>
+                      <option value="normal">📱 Normal</option>
+                      <option value="detailed">📋 Detallada</option>
+                    </select>
+                  </div>
+
+                  {/* Relaciones Filter */}
+                  {!isPlayerView && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                      <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Relaciones</span>
+                      <select
+                        value={relationsFilter}
+                        onChange={(e) => setRelationsFilter(e.target.value as typeof relationsFilter)}
+                        className="canvas-select"
+                        style={{ width: "100%", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
+                        title={t("canvas.toolbar.filterConnections")}
+                      >
+                        <option value="all">🔗 Todas</option>
+                        <option value="public">🌐 Públicas</option>
+                        <option value="secret">🔴 Secretas</option>
+                        <option value="selection">🎯 Selección</option>
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Type Filter Select */}
+                  {!isPlayerView && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                      <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Tipos de entidad</span>
+                      <select
+                        value={typeFilter}
+                        onChange={(e) => setTypeFilter(e.target.value)}
+                        className="canvas-select"
+                        style={{ width: "100%", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
+                      >
+                        <option value="all">Todos los tipos</option>
+                        <option value="npc">PNJs</option>
+                        <option value="location">Lugares</option>
+                        <option value="quest">Misiones</option>
+                        <option value="clue">Pistas</option>
+                        <option value="secret">Secretos</option>
+                        <option value="scene">Escenas</option>
+                        <option value="other">Otros</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
           </div>
-
-          <div className="canvas-toolbar-divider" />
 
           {/* Grupo 4: Acciones Dropdown */}
           <div className="canvas-toolbar-group" style={{ position: "relative" }}>
@@ -1007,12 +1060,13 @@ export function CanvasPage() {
               className="btn btn-sm btn-secondary"
               onClick={() => setIsActionsDropdownOpen(v => !v)}
               title="Acciones y exportaciones de Canvas"
-              style={{ fontSize: "11px", padding: "4px 8px", height: "26px" }}
+              style={{ gap: "6px" }}
             >
-              <span>⚙️ Acciones ▼</span>
+              <MoreHorizontal size={12} />
+              <span>Más</span>
             </button>
             {isActionsDropdownOpen && (
-              <div className="dropdown-menu" style={{ position: "absolute", top: "30px", right: 0, backgroundColor: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", zIndex: 1000, minWidth: "180px", boxShadow: "var(--shadow-lg)", padding: "4px" }}>
+              <div className="dropdown-menu" style={{ position: "absolute", top: "34px", right: 0, backgroundColor: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", zIndex: 1000, minWidth: "180px", boxShadow: "var(--shadow-lg)", padding: "4px" }}>
                 {!isPlayerView && (
                   <>
                     <button className="dropdown-item" onClick={() => { setIsImportOpen(true); setIsActionsDropdownOpen(false); }}>✏️ Importar por Texto</button>
@@ -1032,13 +1086,13 @@ export function CanvasPage() {
         </div>
 
         {activeCanvas && (
-          <div className="canvas-board-info" style={{ marginLeft: "auto" }}>
+          <div className="canvas-board-info" style={{ marginLeft: "12px", borderLeft: "1px solid var(--border-color)", paddingLeft: "12px" }}>
             <span
               className="badge badge-primary"
               title={activeCanvas.description || undefined}
               style={{ cursor: activeCanvas.description ? "help" : undefined }}
             >
-              {activeCanvas.kind}
+              {getCanvasKindLabel(activeCanvas.kind, t)}
             </span>
           </div>
         )}
@@ -1399,7 +1453,7 @@ export function CanvasPage() {
           )}
 
 
-          {!isPlayerView && (
+          {!isPlayerView && deviceMode === "mobile" && (
             <>
               <div className={`canvas-mobile-more-panel ${mobilePanel === "more" ? "is-open" : ""}`} aria-label="Acciones secundarias del canvas">
                 <div className="canvas-mobile-sheet-header">

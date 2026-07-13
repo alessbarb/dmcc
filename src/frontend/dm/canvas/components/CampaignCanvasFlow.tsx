@@ -712,6 +712,20 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     }
   }, [canvasId, rfInstance]); // execute once per canvas switch
 
+  // Reinforce adjustment when changing board to prevent empty screen
+  useEffect(() => {
+    if (!rfInstance || flowNodes.length === 0) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      void rfInstance.fitView({
+        padding: 0.25,
+        duration: 400,
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [canvasId, rfInstance]);
+
   // Click handler
   const onNodeClick = useCallback((event: React.MouseEvent, node: CanvasFlowNode) => {
     onSelectNode(node.id);
