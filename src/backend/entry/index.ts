@@ -16,19 +16,14 @@ async function shutdown(signal: NodeJS.Signals): Promise<void> {
   shutdownPromise ??= (async () => {
     console.info(`[shutdown] ${signal} received; closing HTTP server and database pool.`);
 
-    const results = await Promise.allSettled([
-      server.close(),
-      closeDatabasePool(),
-    ]);
-    const failure = results.find((result): result is PromiseRejectedResult => result.status === "rejected");
-
-    if (failure) {
-      console.error("[shutdown] Graceful shutdown failed:", failure.reason);
+    try {
+      await server.close();
+      await closeDatabasePool();
+      console.info("[shutdown] Graceful shutdown completed.");
+    } catch (error) {
+      console.error("[shutdown] Graceful shutdown failed:", error);
       process.exitCode = 1;
-      return;
     }
-
-    console.info("[shutdown] Graceful shutdown completed.");
   })();
 
   await shutdownPromise;
