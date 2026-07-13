@@ -10,11 +10,9 @@ function jsonInit(method: string, body?: unknown): RequestInit {
 
 export const listCampaigns = () => apiFetch("/api/campaigns");
 export const getCampaign = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}`);
-export const loadCampaignState = getCampaign;
 export const createCampaign = (payload: unknown) => apiFetch("/api/campaigns", { init: jsonInit("POST", payload) });
 export const updateCampaign = (campaignId: string, updates: unknown) => apiFetch(`/api/campaigns/${campaignId}`, { init: jsonInit("PATCH", updates) });
 export const deleteCampaign = (campaignId: string, confirmTitle: string) => apiFetch(`/api/campaigns/${campaignId}`, { init: jsonInit("DELETE", { confirmTitle }) });
-export const sendCampaignCommand = (campaignId: string, path: string, init?: RequestInit) => apiFetch(`/api/campaigns/${campaignId}${path}`, { init });
 
 export const getCampaignGraph = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/graph`);
 export const getCampaignTimeline = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/timeline`);

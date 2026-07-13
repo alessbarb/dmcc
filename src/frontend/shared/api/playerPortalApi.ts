@@ -1,15 +1,6 @@
 import { apiFetch } from "./apiClient.js";
 const jsonInit = (method: string, body?: unknown): RequestInit => ({ method, headers: { "Content-Type": "application/json" }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
-export const getPlayerCampaign = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/player-portal/state`);
-export const getPlayerHome = getPlayerCampaign;
-export const getPlayerMemory = getPlayerCampaign;
-export const getPlayerConstellation = getPlayerCampaign;
-export const getPlayerCharacter = getPlayerCampaign;
-export const getPlayerObjectives = getPlayerCampaign;
-export const getPlayerRecap = getPlayerCampaign;
-export const getPlayerNotes = getPlayerCampaign;
-export const getPlayerProposals = getPlayerCampaign;
-export const getPlayerPortalState = getPlayerCampaign;
+export const getPlayerPortalState = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/player-portal/state`);
 export const updatePlayerPortalStatus = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/status`, { init: jsonInit("PUT", payload) });
 export const createPlayerPortalResource = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/resources`, { init: jsonInit("POST", payload) });
 export const updatePlayerPortalResource = (campaignId: string, resourceId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/resources/${resourceId}`, { init: jsonInit("PUT", payload) });

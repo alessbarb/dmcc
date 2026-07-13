@@ -16,4 +16,3 @@ export const getPremade = (templateId: string, locale = getPremadeLocale()) => a
 export const importPremade = (templateId: string, options?: { locale?: string; [key: string]: unknown }) => apiFetch(`/api/premade-campaigns/${encodeURIComponent(templateId)}/import`, {
   init: { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...(options ?? {}), locale: options?.locale ?? getPremadeLocale() }) },
 });
-export const applyPremade = importPremade;
