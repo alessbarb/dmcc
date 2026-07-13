@@ -36,6 +36,12 @@ function Card({ children, style }: { children: React.ReactNode; style?: React.CS
   );
 }
 
+function runCommandCenterAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 function Pill({
   children,
   tone = "neutral",
@@ -150,6 +156,13 @@ export function CommandCenterPage() {
   const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
   const [exportingMarkdown, setExportingMarkdown] = useState(false);
 
+  const navigateToCampaignPage = (page: string) => {
+    runCommandCenterAction(
+      navigate({ to: `/campaigns/${campaignId}/${page}` }),
+      "No se pudo abrir la sección de campaña.",
+    );
+  };
+
   const load = async () => {
     setLoading(true);
     setError(null);
@@ -168,7 +181,7 @@ export function CommandCenterPage() {
   };
 
   useEffect(() => {
-    void load();
+    runCommandCenterAction(load(), "No se pudo cargar el centro de mando.");
   }, [campaignId]);
 
   const campaign = campaignState?.campaign ?? commandCenter?.campaign ?? null;
@@ -256,7 +269,13 @@ export function CommandCenterPage() {
     return (
       <div className="card" style={{ padding: 32, display: "grid", gap: 16 }}>
         <p style={{ margin: 0, color: "var(--color-danger)" }}>{error}</p>
-        <button className="btn btn-secondary" type="button" onClick={() => void load()}>
+        <button
+          className="btn btn-secondary"
+          type="button"
+          onClick={() => {
+            runCommandCenterAction(load(), "No se pudo recargar el centro de mando.");
+          }}
+        >
           <RefreshCw size={16} /> {t("campaignShell.loading.retry")}
         </button>
       </div>
@@ -296,13 +315,19 @@ export function CommandCenterPage() {
           </div>
 
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <button className="btn btn-secondary" type="button" onClick={() => void load()}>
+            <button
+              className="btn btn-secondary"
+              type="button"
+              onClick={() => {
+                runCommandCenterAction(load(), "No se pudo recargar el centro de mando.");
+              }}
+            >
               <RefreshCw size={16} /> {t("campaignShell.loading.retry")}
             </button>
             <button
               className="btn btn-secondary"
               type="button"
-              onClick={() => navigate({ to: `/campaigns/${campaignId}/search` })}
+              onClick={() => navigateToCampaignPage("search")}
             >
               <Search size={16} /> {t("campaignShell.nav.search")}
             </button>
@@ -320,7 +345,7 @@ export function CommandCenterPage() {
           <CampaignStarterHub
             campaignId={campaignId}
             campaignState={campaignState}
-            setCurrentPage={(page) => navigate({ to: `/campaigns/${campaignId}/${page}` })}
+            setCurrentPage={navigateToCampaignPage}
           />
         )}
 
@@ -500,7 +525,9 @@ export function CommandCenterPage() {
                       <input
                         type="checkbox"
                         checked={checked}
-                        onChange={() => void toggleChecklistTask(item.task)}
+                        onChange={() => {
+                          runCommandCenterAction(toggleChecklistTask(item.task), "No se pudo actualizar la tarea de preparación.");
+                        }}
                       />
                       <span
                         style={{
@@ -656,7 +683,7 @@ export function CommandCenterPage() {
             <button
               className="btn btn-primary dashboard-quick-action dashboard-quick-action--primary"
               type="button"
-              onClick={() => navigate({ to: `/campaigns/${campaignId}/session` })}
+              onClick={() => navigateToCampaignPage("session")}
             >
               <Play size={20} /> <span>{t("dashboard.startSession")}</span>
             </button>
@@ -670,28 +697,32 @@ export function CommandCenterPage() {
             <button
               className="btn btn-secondary dashboard-quick-action"
               type="button"
-              onClick={() => navigate({ to: `/campaigns/${campaignId}/graph` })}
+              onClick={() => navigateToCampaignPage("graph")}
             >
               <GitFork size={20} /> <span>{t("dashboard.viewGraph")}</span>
             </button>
             <button
               className="btn btn-secondary dashboard-quick-action"
               type="button"
-              onClick={() => navigate({ to: `/campaigns/${campaignId}/search` })}
+              onClick={() => navigateToCampaignPage("search")}
             >
               <Search size={20} /> <span>{t("dashboard.globalSearch")}</span>
             </button>
             <button
               className="btn btn-secondary dashboard-quick-action"
               type="button"
-              onClick={() => navigate({ to: "/portal" })}
+              onClick={() => {
+                runCommandCenterAction(navigate({ to: "/portal" }), "No se pudo abrir el portal de jugadores.");
+              }}
             >
               <Share2 size={20} /> <span>{t("dashboard.openPlayerPortal")}</span>
             </button>
             <button
               className="btn btn-secondary dashboard-quick-action"
               type="button"
-              onClick={() => void handleMarkdownExport()}
+              onClick={() => {
+                runCommandCenterAction(handleMarkdownExport(), "No se pudo exportar la campaña en Markdown.");
+              }}
               disabled={exportingMarkdown}
             >
               <Download size={20} />
