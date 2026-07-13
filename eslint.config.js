@@ -9,6 +9,14 @@ export default defineConfig(
     "playwright-report/**",
     ".remember/**",
     "release/**",
+    ".claude/**",
+    ".agents/**",
+    ".codex/**",
+    ".worktrees/**",
+    ".playwright-mcp/**",
+    ".tmp/**",
+    ".artifacts/**",
+    "scratch/**",
   ]),
 
   {
