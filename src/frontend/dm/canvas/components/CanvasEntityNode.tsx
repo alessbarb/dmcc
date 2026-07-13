@@ -8,6 +8,11 @@ import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 
 
+/** CSSProperties plus arbitrary CSS custom properties (`--foo`) used for theming hooks. */
+type CanvasCardStyle = CSSProperties & Record<`--${string}`, string>;
+
+const archivedCardStyle: CanvasCardStyle = { "--rg-accent": "#475569" };
+
 export interface CanvasEntityNodeProps {
   id: string;
   data: {
@@ -23,16 +28,12 @@ export interface CanvasEntityNodeProps {
 }
 
 function resolveEntityImageUrl(entity: Entity): string | undefined {
-  const metadata = entity.metadata && typeof entity.metadata === "object" ? entity.metadata as Record<string, unknown> : {};
+  const metadata = entity.metadata && typeof entity.metadata === "object" ? entity.metadata : {};
   const candidates = [
     metadata.imageUrl,
     metadata.avatarUrl,
     metadata.portraitUrl,
     metadata.coverUrl,
-    (entity as any).imageUrl,
-    (entity as any).avatarUrl,
-    (entity as any).portraitUrl,
-    (entity as any).coverUrl,
   ];
   return candidates.find((value): value is string => typeof value === "string" && value.trim().length > 0)?.trim();
 }
@@ -63,7 +64,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
   if (!entity || entity.archived) {
     return (
       <div className={`rg-card rg-card--compact ${selected ? "rg-card--selected" : ""}`}
-           style={{ "--rg-accent": "#475569" } as CSSProperties}>
+           style={archivedCardStyle}>
         <Handle type="target" position={Position.Top} className="canvas-handle target-handle" />
         <div className="rg-card__hero rg-card__hero--icon">
           <FileText size={24} style={{ color: "#475569", opacity: 0.5 }} />
@@ -111,14 +112,16 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
     ? (density === "detailed" ? entity.summary : (entity.summary.length > 48 ? entity.summary.slice(0, 48) + "…" : entity.summary))
     : undefined);
 
+  const cardStyle: CanvasCardStyle = {
+    "--rg-accent": cfg.accent,
+    "--entity-accent": cfg.accent,
+    "--entity-accent-soft": cfg.accentSoft,
+  };
+
   return (
     <div
       className={cardClasses}
-      style={{
-        "--rg-accent": cfg.accent,
-        "--entity-accent": cfg.accent,
-        "--entity-accent-soft": cfg.accentSoft,
-      } as CSSProperties}
+      style={cardStyle}
     >
       <Handle type="target" position={Position.Top} className="canvas-handle target-handle" />
 

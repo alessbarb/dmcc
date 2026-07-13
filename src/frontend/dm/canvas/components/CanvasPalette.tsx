@@ -11,6 +11,8 @@ import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
 import { placeEntityOnCanvas } from "../services/placeEntityOnCanvas.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
+import type { Canvas, CanvasNode } from "@core/domain/canvas/types.js";
+import type { Entity, Fact, Session, CampaignStateStore } from "../../../shared/stores/campaignStore.js";
 
 
 export interface CanvasPaletteProps {
@@ -70,19 +72,19 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
   };
 
   const entities = campaignState?.entities || [];
-  const canvas = campaignState?.canvases?.find((c: any) => c.id === canvasId);
+  const canvas = campaignState?.canvases?.find((c: Canvas) => c.id === canvasId);
   const existingEntityIds = new Set(
-    canvas?.nodes?.filter((n: any) => n.kind === "entity").map((n: any) => n.entityId) || []
+    canvas?.nodes?.filter((n: CanvasNode) => n.kind === "entity").map((n: CanvasNode) => n.entityId) || []
   );
 
   const filteredEntities = entities.filter(
-    (e: any) =>
+    (e: Entity) =>
       !e.archived &&
       !existingEntityIds.has(e.entityId) &&
       e.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handlePlaceExisting = (entity: any) => {
+  const handlePlaceExisting = (entity: Entity) => {
     runCanvasPaletteAction(placeEntityOnCanvas({
       canvasId,
       entityId: entity.entityId,
@@ -109,8 +111,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
         const campaignId = campaignState?.campaign?.campaignId;
         if (!campaignId) return;
         try {
-          const payload: any = { entityType, title, status: "ready", importance: "normal", visibility: { kind: "dm_only" } };
-          await createEntity(payload);
+          await createEntity({ entityType, title, status: "ready", importance: "normal", visibility: { kind: "dm_only" } });
           const currentStore = useCampaignStore.getState();
           const createdEntity = currentStore.campaignState?.entities?.slice(-1)[0];
           if (createdEntity) {
@@ -129,8 +130,8 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
     })(), "Failed to create new canvas node from palette");
   };
 
-  const selectedNode = canvas?.nodes?.find((n: any) => n.id === selectedNodeId);
-  const selectedEntity = selectedNode?.entityId ? campaignState?.entities?.find((e: any) => e.entityId === selectedNode.entityId) : null;
+  const selectedNode = canvas?.nodes?.find((n: CanvasNode) => n.id === selectedNodeId);
+  const selectedEntity = selectedNode?.entityId ? campaignState?.entities?.find((e: Entity) => e.entityId === selectedNode.entityId) : null;
 
   const handleCreateQuickScene = () => {
     handleCreateNewNode("entity", "scene", t("domain.entityTypes.scene"));
@@ -139,7 +140,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
   const handleQuickSessionNote = () => {
     const text = window.prompt(t("canvas.noteNode.addQuickSessionNote"));
     if (text && text.trim()) {
-      const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+      const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
       if (activeSession) {
         runCanvasPaletteAction(recordSessionEvent(activeSession.sessionId, {
           type: "note_recorded",
@@ -157,7 +158,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
     if (!selectedEntity) return;
     runCanvasPaletteAction((async () => {
       await updateEntity(selectedEntity.entityId, { visibility: { kind: "public" } });
-      const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+      const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
       if (activeSession) {
         await recordSessionEvent(activeSession.sessionId, {
           type: "reveal",
@@ -181,7 +182,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
 
     runCanvasPaletteAction((async () => {
       await updateEntity(selectedEntity.entityId, { status: newStatus });
-      const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+      const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
       if (activeSession) {
         await recordSessionEvent(activeSession.sessionId, {
           type: "status_changed",
@@ -220,7 +221,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
             });
             const finalStore = useCampaignStore.getState();
             const finalCanvas = finalStore.canvasesById[canvasId];
-            const newNode = finalCanvas?.nodes?.find((n: any) => n.entityId === created.entityId);
+            const newNode = finalCanvas?.nodes?.find((n: CanvasNode) => n.entityId === created.entityId);
             if (newNode) {
               await connectCanvasNodes({
                 canvasId,
@@ -279,7 +280,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
             <button
               onClick={handleCreateQuickScene}
               className="palette-list-item-btn"
-              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-input)", color: "var(--text-main)" } as any}
+              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-input)", color: "var(--text-main)" }}
             >
               <Film size={14} style={{ color: "#64748b" }} />
               <span>🎬 {t("canvasPalette.createQuickScene")}</span>
@@ -287,7 +288,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
             <button
               onClick={handleQuickSessionNote}
               className="palette-list-item-btn"
-              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-input)", color: "var(--text-main)" } as any}
+              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-input)", color: "var(--text-main)" }}
             >
               <StickyNote size={14} style={{ color: "#eab308" }} />
               <span>📝 {t("canvasPalette.quickSessionNote")}</span>
@@ -544,7 +545,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
                 <div className="palette-results-empty">{t("canvasPalette.noAvailableEntities")}</div>
               ) : (
                 <div className="palette-results-list">
-                  {filteredEntities.map((entity: any) => (
+                  {filteredEntities.map((entity: Entity) => (
                     <button
                       key={entity.entityId}
                       onClick={() => handlePlaceExisting(entity)}
@@ -600,9 +601,9 @@ function makeFactDragGhost(kind: string, color: string, factKindConfig: FactKind
 
 function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }: {
   canvasId: string;
-  createFact: any;
-  placeNodeOnCanvas: any;
-  campaignState: any;
+  createFact: CampaignStateStore["createFact"];
+  placeNodeOnCanvas: CampaignStateStore["placeNodeOnCanvas"];
+  campaignState: CampaignStateStore["campaignState"];
 }) {
   const { t } = useTranslation();
   const FACT_KIND_CONFIG = getFactKindConfig(t);
@@ -612,19 +613,19 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
   // Select stable reference — the nodes array itself, not a derived array
   const canvasNodes = useCampaignStore(s => s.canvasesById[canvasId]?.nodes);
   const placedFactIds = new Set(
-    (canvasNodes ?? []).filter((n: any) => n.kind === "fact").map((n: any) => n.factId)
+    (canvasNodes ?? []).filter((n: CanvasNode) => n.kind === "fact").map((n: CanvasNode) => n.factId)
   );
 
-  const allFacts: any[] = campaignState?.facts instanceof Map
+  const allFacts: Fact[] = campaignState?.facts instanceof Map
     ? Array.from(campaignState.facts.values())
     : Array.isArray(campaignState?.facts) ? campaignState.facts : [];
 
-  const availableFacts = allFacts.filter(f =>
+  const availableFacts = allFacts.filter((f: Fact) =>
     !f.archived && !placedFactIds.has(f.factId) &&
     f.statement?.toLowerCase().includes(factSearch.toLowerCase())
   );
 
-  const handlePlaceExistingFact = (fact: any) => {
+  const handlePlaceExistingFact = (fact: Fact) => {
     const x = 150 + Math.random() * 100;
     const y = 150 + Math.random() * 100;
     runCanvasPaletteAction(placeNodeOnCanvas(canvasId, { kind: "fact", factId: fact.factId, x, y }).then(() => {
@@ -713,7 +714,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
                 {allFacts.length === 0 ? t("canvasPalette.noFactsCreated") : t("canvas.palette.allFactsOnCanvas")}
               </div>
             ) : (
-              availableFacts.slice(0, 12).map((f: any) => {
+              availableFacts.slice(0, 12).map((f: Fact) => {
                 const cfg = FACT_KIND_CONFIG[f.kind] ?? FACT_KIND_CONFIG.rumor;
                 return (
                   <div

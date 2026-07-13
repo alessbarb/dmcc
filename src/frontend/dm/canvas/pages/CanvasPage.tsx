@@ -27,11 +27,17 @@ type CanvasMobilePanel = "search" | "add" | "detail" | "more" | null;
 
 const CANVAS_DENSITY_STORAGE_KEY = "dmcc.canvas.density";
 const DEFAULT_CANVAS_DENSITY: CanvasDensity = "normal";
-const CANVAS_DENSITY_OPTIONS = new Set<CanvasDensity>(["compact", "normal", "detailed"]);
 
-const isCanvasDensity = (value: string | null): value is CanvasDensity => (
-  value !== null && CANVAS_DENSITY_OPTIONS.has(value as CanvasDensity)
-);
+const isCanvasDensity = (value: string | null): value is CanvasDensity =>
+  value === "compact" || value === "normal" || value === "detailed";
+
+type RelationsFilter = "all" | "public" | "secret" | "selection";
+const isRelationsFilter = (value: string): value is RelationsFilter =>
+  value === "all" || value === "public" || value === "secret" || value === "selection";
+
+const isCanvasKind = (value: string): value is Canvas["kind"] =>
+  value === "world" || value === "session" || value === "mystery" ||
+  value === "location" || value === "characters" || value === "custom";
 
 const getStoredCanvasDensity = (): CanvasDensity => {
   if (typeof window === "undefined") return DEFAULT_CANVAS_DENSITY;
@@ -442,7 +448,7 @@ export function CanvasPage() {
   const [importText, setImportText] = useState("");
   const [isLintOpen, setIsLintOpen] = useState(false);
   const [density, setDensity] = useState<CanvasDensity>(getStoredCanvasDensity);
-  const [relationsFilter, setRelationsFilter] = useState<"all" | "public" | "secret" | "selection">("all");
+  const [relationsFilter, setRelationsFilter] = useState<RelationsFilter>("all");
   const [mobilePanel, setMobilePanel] = useState<CanvasMobilePanel>(null);
   const [deviceMode, setDeviceMode] = useState<CanvasDeviceMode>(getCanvasDeviceMode);
 
@@ -1014,7 +1020,7 @@ export function CanvasPage() {
                       <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Relaciones</span>
                       <select
                         value={relationsFilter}
-                        onChange={(e) => setRelationsFilter(e.target.value as typeof relationsFilter)}
+                        onChange={(e) => { if (isRelationsFilter(e.target.value)) setRelationsFilter(e.target.value); }}
                         className="canvas-select"
                         style={{ width: "100%", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
                         title={t("canvas.toolbar.filterConnections")}
@@ -1124,7 +1130,7 @@ export function CanvasPage() {
                   <label>Tipo de Tablero</label>
                   <select
                     value={newBoardKind}
-                    onChange={(e) => setNewBoardKind(e.target.value as Canvas["kind"])}
+                    onChange={(e) => { if (isCanvasKind(e.target.value)) setNewBoardKind(e.target.value); }}
                     className="form-select"
                   >
                     <option value="world">Mapa del Mundo / Estructura General</option>
@@ -1628,19 +1634,27 @@ export function CanvasPage() {
                   selectedCount={selectedNodes.length}
                   elementNames={entNames}
                   onSubmit={async (sessionTitle, targetMode, targetSessionId) => {
-                    const entIds = selectedNodes.filter((n) => n.type === "entity" && n.data.entityId).map((n) => n.data.entityId as string);
+                    const isStringId = (id: string | undefined): id is string => id !== undefined;
+                    const entIds = selectedNodes
+                      .filter((n) => n.type === "entity" && n.data.entityId)
+                      .map((n) => n.data.entityId)
+                      .filter(isStringId);
                     const sceneIds = selectedNodes
                       .filter((n) => n.type === "entity" && n.data.entityType === "scene" && n.data.entityId)
-                      .map((n) => n.data.entityId as string);
+                      .map((n) => n.data.entityId)
+                      .filter(isStringId);
                     const clueIds = selectedNodes
                       .filter((n) => n.type === "entity" && n.data.entityType === "clue" && n.data.entityId)
-                      .map((n) => n.data.entityId as string);
+                      .map((n) => n.data.entityId)
+                      .filter(isStringId);
                     const secretIds = selectedNodes
                       .filter((n) => n.type === "entity" && n.data.entityType === "secret" && n.data.entityId)
-                      .map((n) => n.data.entityId as string);
+                      .map((n) => n.data.entityId)
+                      .filter(isStringId);
                     const consequenceIds = selectedNodes
                       .filter((n) => n.type === "entity" && n.data.entityType === "consequence" && n.data.entityId)
-                      .map((n) => n.data.entityId as string);
+                      .map((n) => n.data.entityId)
+                      .filter(isStringId);
                     
                     if (targetMode === "new") {
                       await createPreparedSession(sessionTitle, {

@@ -1,9 +1,11 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import ForceGraph3D from "react-force-graph-3d";
+import type { ForceGraphMethods } from "react-force-graph-3d";
 import * as THREE from "three";
 import SpriteText from "three-spritetext";
 import { Plus, Eye, EyeOff, AlertTriangle, X, Maximize, ExternalLink, Lock, Network, Layers } from "lucide-react";
-import type { Entity } from "../../shared/stores/campaignStore.js";
+import type { CampaignStateStore, Entity, Fact, Relation } from "../../shared/stores/campaignStore.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { findNarrativeAnchor, findUndirectedShortestPath } from "./findNarrativePath.js";
 import { GraphNodeSearch } from "./GraphNodeSearch.js";
@@ -15,11 +17,13 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatEntityType, formatRelationType } from "@shared/i18n/index.js";
 import { GuidedEmptyState } from "../onboarding/CampaignStarterHub.js";
 
+type GraphCampaignState = CampaignStateStore["campaignState"];
+
 export interface GraphPageProps {
-  graph?: any;
-  campaignState?: any;
-  selectedEntity?: any;
-  setSelectedEntity?: (e: any) => void;
+  graph?: { nodes?: unknown[] } | null;
+  campaignState?: GraphCampaignState;
+  selectedEntity?: Entity | null;
+  setSelectedEntity?: (e: Entity | null) => void;
   graphTypeFilter?: string[];
   setGraphTypeFilter?: (filter: string[] | ((prev: string[]) => string[])) => void;
   setIsRelationModalOpen?: (open: boolean) => void;
@@ -29,6 +33,38 @@ function runGraphAction(operation: Promise<unknown>, errorMessage: string): void
   void operation.catch((error: unknown) => {
     console.error(errorMessage, error);
   });
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+// Minimal duck-typed shape for the three.js materials we cache on each node;
+// avoids depending on the exact three.js material class hierarchy here.
+interface OpacityMaterial {
+  opacity: number;
+}
+
+interface GraphVisNode {
+  id: string;
+  title: string;
+  entityType: string;
+  entityData: Entity;
+  importance: string;
+  val: number;
+  x?: number;
+  y?: number;
+  z?: number;
+  _coreMat?: OpacityMaterial;
+  _glowMat?: OpacityMaterial;
+  _sprite?: SpriteText;
+}
+
+interface GraphVisLink {
+  source: string | GraphVisNode;
+  target: string | GraphVisNode;
+  relationType: string;
+  label: string;
 }
 
 const ENTITY_TYPE_COLORS: Record<string, string> = {
@@ -99,22 +135,22 @@ export function GraphPage(props: GraphPageProps = {}) {
   const campaignState = props.campaignState ?? store.campaignState;
   const graph = props.graph ?? store.graph ?? { nodes: [], links: [] };
   const setIsRelationModalOpen = props.setIsRelationModalOpen ?? store.setIsRelationModalOpen;
-  const setSelectedEntity = props.setSelectedEntity ?? ((_e: any) => { });
+  const setSelectedEntity = props.setSelectedEntity ?? ((_e: Entity | null) => { });
 
   const { addToast } = useToast();
   const { locale, t } = useTranslation();
   const [preset, setPreset] = useState<FilterPreset>("nextSession");
   const [viewMode, setViewMode] = useState<ViewMode>("all");
   const [labelsMode, setLabelsMode] = useState<LabelsMode>("auto");
-  const [localPanelEntity, setPanelEntity] = useState<any>(null);
+  const [localPanelEntity, setPanelEntity] = useState<Entity | null>(null);
   const [detailEntityOpen, setDetailEntityOpen] = useState(false);
   const selectedEntity = props.selectedEntity ?? localPanelEntity;
   const panelEntity = localPanelEntity ?? props.selectedEntity ?? null;
   const [containerSize, setContainerSize] = useState({ w: 900, h: 600 });
   const containerRef = useRef<HTMLDivElement>(null);
-  const fgRef = useRef<any>(null);
-  const hoveredNodeRef = useRef<any>(null);
-  const panelEntityRef = useRef<any>(null);
+  const fgRef = useRef<ForceGraphMethods<GraphVisNode, GraphVisLink> | undefined>(undefined);
+  const hoveredNodeRef = useRef<GraphVisNode | null>(null);
+  const panelEntityRef = useRef<Entity | null>(null);
   const [hasZoomed, setHasZoomed] = useState(false);
   const [pendingFocusNodeId, setPendingFocusNodeId] = useState<string | null>(null);
 
@@ -158,28 +194,31 @@ export function GraphPage(props: GraphPageProps = {}) {
   });
 
   const entitiesArr: Entity[] = Array.from(
-    (campaignState?.entities instanceof Map
+    campaignState?.entities instanceof Map
       ? campaignState.entities.values()
-      : Object.values(campaignState?.entities ?? {})) as Iterable<Entity>
+      : Object.values(campaignState?.entities ?? {})
   );
 
-  const relationsArr: any[] = Array.from(
-    (campaignState?.relations instanceof Map
+  const relationsArr: Relation[] = Array.from(
+    campaignState?.relations instanceof Map
       ? campaignState.relations.values()
-      : Object.values(campaignState?.relations ?? {})) as Iterable<any>
+      : Object.values(campaignState?.relations ?? {})
   );
 
   const graphSearchItems = useMemo<GraphSearchItem[]>(() => {
     const nodes = Array.isArray(graph?.nodes) ? graph.nodes : [];
 
-    return nodes.map((node: any) => {
+    return nodes.map((rawNode: unknown) => {
+      const node = isRecord(rawNode) ? rawNode : {};
       const nodeId = String(node.id ?? "");
       const entity = entitiesArr.find((e) => e.entityId === nodeId);
-      const rawType = entity?.entityType ?? node.type ?? "unknown";
+      const nodeType = typeof node.type === "string" ? node.type : "unknown";
+      const rawType = entity?.entityType ?? nodeType;
+      const nodeName = typeof node.name === "string" ? node.name : nodeId;
 
       return {
         nodeId,
-        title: entity?.title ?? node.name ?? nodeId,
+        title: entity?.title ?? nodeName,
         type: formatEntityType(rawType, locale),
         summary: entity?.summary ?? "",
         content: entity?.content ?? "",
@@ -229,9 +268,9 @@ export function GraphPage(props: GraphPageProps = {}) {
   const nextSessionIds = preset === "nextSession" ? getNextSessionEntityIds() : new Set<string>();
 
   const visibleEntities = entitiesArr.filter((e: Entity) => {
-    if ((e as any).archived) return false;
-    if (viewMode === "dm_only" && (e as any).visibility?.kind !== "dm_only") return false;
-    if (viewMode === "players" && (e as any).visibility?.kind === "dm_only") return false;
+    if (e.archived) return false;
+    if (viewMode === "dm_only" && e.visibility?.kind !== "dm_only") return false;
+    if (viewMode === "players" && e.visibility?.kind === "dm_only") return false;
 
     if (preset === "todos") return true;
     if (preset === "nextSession") return nextSessionIds.has(e.entityId);
@@ -245,7 +284,7 @@ export function GraphPage(props: GraphPageProps = {}) {
 
   const visibleIds = new Set(visibleEntities.map((e: Entity) => e.entityId));
 
-  const graphData = {
+  const graphData: { nodes: GraphVisNode[]; links: GraphVisLink[] } = {
     nodes: visibleEntities.map((e: Entity) => ({
       id: e.entityId,
       title: e.title,
@@ -255,8 +294,8 @@ export function GraphPage(props: GraphPageProps = {}) {
       val: getNodeRadius(e.importance),
     })),
     links: relationsArr
-      .filter((r: any) => !r.archived && visibleIds.has(r.sourceEntityId) && visibleIds.has(r.targetEntityId))
-      .map((r: any) => ({
+      .filter((r: Relation) => !r.archived && visibleIds.has(r.sourceEntityId) && visibleIds.has(r.targetEntityId))
+      .map((r: Relation) => ({
         source: r.sourceEntityId,
         target: r.targetEntityId,
         relationType: r.relationType,
@@ -270,7 +309,7 @@ export function GraphPage(props: GraphPageProps = {}) {
   }, [setSelectedEntity]);
 
   const focusVisibleNode = useCallback((nodeId: string) => {
-    const visibleNode = graphData.nodes.find((node: any) => node.id === nodeId) as any | undefined;
+    const visibleNode = graphData.nodes.find((node) => node.id === nodeId);
     const entity = entitiesArr.find((e) => e.entityId === nodeId);
 
     if (!visibleNode || !entity) {
@@ -291,7 +330,7 @@ export function GraphPage(props: GraphPageProps = {}) {
   }, [entitiesArr, graphData.nodes, selectGraphEntity]);
 
   const focusGraphNode = useCallback((nodeId: string) => {
-    const isVisible = graphData.nodes.some((node: any) => node.id === nodeId);
+    const isVisible = graphData.nodes.some((node) => node.id === nodeId);
 
     if (!isVisible) {
       setPreset("todos");
@@ -306,7 +345,7 @@ export function GraphPage(props: GraphPageProps = {}) {
   useEffect(() => {
     if (!pendingFocusNodeId) return;
 
-    const isNowVisible = graphData.nodes.some((node: any) => node.id === pendingFocusNodeId);
+    const isNowVisible = graphData.nodes.some((node) => node.id === pendingFocusNodeId);
     if (!isNowVisible) return;
 
     const nodeId = pendingFocusNodeId;
@@ -317,13 +356,13 @@ export function GraphPage(props: GraphPageProps = {}) {
   }, [focusVisibleNode, graphData.nodes, pendingFocusNodeId]);
 
   const panelRelations = panelEntity
-    ? relationsArr.filter((r: any) =>
+    ? relationsArr.filter((r: Relation) =>
       !r.archived && (r.sourceEntityId === panelEntity.entityId || r.targetEntityId === panelEntity.entityId)
     )
     : [];
 
   const relatedFacts = panelEntity
-    ? (campaignState?.facts ?? []).filter((f: any) =>
+    ? (campaignState?.facts ?? []).filter((f: Fact) =>
       !f.archived && f.relatedEntityIds?.includes(panelEntity.entityId)
     )
     : [];
@@ -334,14 +373,14 @@ export function GraphPage(props: GraphPageProps = {}) {
     ? findUndirectedShortestPath(graphData.nodes, graphData.links, selectedEntity.entityId, narrativeAnchorId)
     : null;
 
-  const getLinkId = (nodeVal: any): string => {
+  const getLinkId = (nodeVal: string | GraphVisNode | undefined): string => {
     if (typeof nodeVal === "object" && nodeVal !== null) {
       return nodeVal.id ?? "";
     }
-    return String(nodeVal);
+    return String(nodeVal ?? "");
   };
 
-  const isLinkOnPath = useCallback((link: any): boolean => {
+  const isLinkOnPath = useCallback((link: GraphVisLink): boolean => {
     if (!narrativePath) return false;
     const u = getLinkId(link.source);
     const v = getLinkId(link.target);
@@ -350,21 +389,21 @@ export function GraphPage(props: GraphPageProps = {}) {
     return uIdx !== -1 && vIdx !== -1 && Math.abs(uIdx - vIdx) === 1;
   }, [narrativePath]);
 
-  const getLinkColor = useCallback((link: any) => {
+  const getLinkColor = useCallback((link: GraphVisLink) => {
     if (narrativePath) {
       return isLinkOnPath(link) ? "#10b981" : "rgba(148,163,184,0.15)";
     }
     return "rgba(148,163,184,0.55)";
   }, [narrativePath, isLinkOnPath]);
 
-  const getLinkWidth = useCallback((link: any) => {
+  const getLinkWidth = useCallback((link: GraphVisLink) => {
     if (narrativePath) {
       return isLinkOnPath(link) ? 3.5 : 1.0;
     }
     return 1.5;
   }, [narrativePath, isLinkOnPath]);
 
-  const getLinkDirectionalArrowColor = useCallback((link: any) => {
+  const getLinkDirectionalArrowColor = useCallback((link: GraphVisLink) => {
     if (narrativePath) {
       return isLinkOnPath(link) ? "#10b981" : "rgba(148,163,184,0.15)";
     }
@@ -372,7 +411,7 @@ export function GraphPage(props: GraphPageProps = {}) {
   }, [narrativePath, isLinkOnPath]);
 
   // STABLE nodeThreeObject
-  const nodeThreeObject = useCallback((node: any) => {
+  const nodeThreeObject = useCallback((node: GraphVisNode) => {
     const isDmOnly = node.entityData?.visibility?.kind === "dm_only";
     const isPending = node.entityData?.status === "pending" || node.entityData?.status === "suspected";
     const isResolved = node.entityData?.status === "resolved" || node.entityData?.status === "revealed";
@@ -405,7 +444,7 @@ export function GraphPage(props: GraphPageProps = {}) {
     const glow = new THREE.Mesh(new THREE.SphereGeometry(r * 1.9, 10, 10), glowMat);
     group.add(glow);
 
-    const sprite = new SpriteText(node.title) as SpriteText & { position: { y: number } };
+    const sprite = new SpriteText(node.title);
     sprite.color = "rgba(203,213,225,0.75)";
     sprite.textHeight = Math.max(2.5, r * 0.6);
     sprite.fontWeight = "600";
@@ -423,13 +462,13 @@ export function GraphPage(props: GraphPageProps = {}) {
 
   // Highlighting and visibility sync effect
   useEffect(() => {
-    graphData.nodes.forEach((node: any) => {
+    graphData.nodes.forEach((node: GraphVisNode) => {
       if (!node._sprite || !node._coreMat) return;
 
       const isPlayerChar = node.entityType === "player_character";
-      const isSelected = selectedEntity && selectedEntity.entityId === node.id;
-      const isHovered = hoveredNodeRef.current && hoveredNodeRef.current.id === node.id;
-      const isOnPath = narrativePath && narrativePath.includes(node.id);
+      const isSelected = !!(selectedEntity && selectedEntity.entityId === node.id);
+      const isHovered = !!(hoveredNodeRef.current && hoveredNodeRef.current.id === node.id);
+      const isOnPath = !!(narrativePath && narrativePath.includes(node.id));
 
       // Label visibility
       let isLabelVisible = false;
@@ -476,12 +515,12 @@ export function GraphPage(props: GraphPageProps = {}) {
     });
   }, [labelsMode, selectedEntity, narrativePath, graphData.nodes]);
 
-  const applyHighlight = useCallback((node: any, active: boolean) => {
+  const applyHighlight = useCallback((node: GraphVisNode | null, active: boolean) => {
     if (!node) return;
 
     const isPlayerChar = node.entityType === "player_character";
-    const isSelected = selectedEntity && selectedEntity.entityId === node.id;
-    const isOnPath = narrativePath && narrativePath.includes(node.id);
+    const isSelected = !!(selectedEntity && selectedEntity.entityId === node.id);
+    const isOnPath = !!(narrativePath && narrativePath.includes(node.id));
 
     let isLabelVisible = false;
     if (labelsMode === "all") {
@@ -522,7 +561,7 @@ export function GraphPage(props: GraphPageProps = {}) {
     }
   }, [labelsMode, selectedEntity, narrativePath]);
 
-  const handleNodeHover = useCallback((node: any) => {
+  const handleNodeHover = useCallback((node: GraphVisNode | null) => {
     if (hoveredNodeRef.current === node) return;
     applyHighlight(hoveredNodeRef.current, false);
     hoveredNodeRef.current = node;
@@ -530,7 +569,7 @@ export function GraphPage(props: GraphPageProps = {}) {
     document.body.style.cursor = node ? "pointer" : "default";
   }, [applyHighlight]);
 
-  const handleNodeClick = useCallback((node: any) => {
+  const handleNodeClick = useCallback((node: GraphVisNode) => {
     focusVisibleNode(node.id);
   }, [focusVisibleNode]);
 
@@ -542,9 +581,10 @@ export function GraphPage(props: GraphPageProps = {}) {
 
   // Initial fit zoom on campaign load
   useEffect(() => {
-    if (fgRef.current && graphData.nodes.length > 0 && !hasZoomed) {
+    const fg = fgRef.current;
+    if (fg && graphData.nodes.length > 0 && !hasZoomed) {
       const timer = setTimeout(() => {
-        fgRef.current.zoomToFit(1000, 50);
+        fg.zoomToFit(1000, 50);
         setHasZoomed(true);
       }, 600);
       return () => clearTimeout(timer);
@@ -574,8 +614,8 @@ export function GraphPage(props: GraphPageProps = {}) {
       if (!confirmed) return;
     }
 
-    const nextKind = isDmOnly ? "party" : "dm_only";
-    const updatedVisibility = { ...panelEntity.visibility, kind: nextKind };
+    const nextKind: "party" | "dm_only" = isDmOnly ? "party" : "dm_only";
+    const updatedVisibility: VisibilityRule = { kind: nextKind };
 
     await store.updateEntity(panelEntity.entityId, { visibility: updatedVisibility });
 
@@ -687,7 +727,7 @@ export function GraphPage(props: GraphPageProps = {}) {
             </div>
           ) : (
             <>
-              <ForceGraph3D
+              <ForceGraph3D<GraphVisNode, GraphVisLink>
                 ref={fgRef}
                 graphData={graphData}
                 width={graphWidth}
@@ -699,7 +739,7 @@ export function GraphPage(props: GraphPageProps = {}) {
                 linkColor={getLinkColor}
                 linkWidth={getLinkWidth}
                 linkOpacity={1}
-                linkDirectionalArrowLength={(link: any) => isLinkOnPath(link) ? 7 : 5}
+                linkDirectionalArrowLength={(link) => isLinkOnPath(link) ? 7 : 5}
                 linkDirectionalArrowRelPos={1}
                 linkDirectionalArrowColor={getLinkDirectionalArrowColor}
                 linkCurvature={0.1}
@@ -784,7 +824,9 @@ export function GraphPage(props: GraphPageProps = {}) {
           }}>
             {/* Entity image */}
             {(() => {
-              const imgUrl = panelEntity.metadata?.imageUrl || getEntityDefaultImage(panelEntity.entityType);
+              const imgUrl = typeof panelEntity.metadata?.imageUrl === "string" && panelEntity.metadata.imageUrl
+                ? panelEntity.metadata.imageUrl
+                : getEntityDefaultImage(panelEntity.entityType);
               const isDmOnly = panelEntity.visibility?.kind === "dm_only" || panelEntity.entityType === "secret";
               return (
                 <div style={{ position: "relative", width: "100%", height: "160px", overflow: "hidden", flexShrink: 0 }}>
@@ -951,13 +993,13 @@ export function GraphPage(props: GraphPageProps = {}) {
             {/* Entity-specific Narrative Details */}
             {panelEntity.entityType === "npc" && (
               <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
-                {panelEntity.metadata?.role && (
+                {Boolean(panelEntity.metadata?.role) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Rol</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.role}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.role)}</p>
                   </div>
                 )}
-                {panelEntity.metadata?.attitudeToParty && (
+                {Boolean(panelEntity.metadata?.attitudeToParty) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Actitud hacia el grupo</span>
                     <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>
@@ -965,32 +1007,32 @@ export function GraphPage(props: GraphPageProps = {}) {
                         panelEntity.metadata.attitudeToParty === "hostile" ? t("graph.attitudes.hostile") :
                           panelEntity.metadata.attitudeToParty === "deceptive" ? t("graph.attitudes.deceptive") :
                             panelEntity.metadata.attitudeToParty === "neutral" ? t("graph.attitudes.neutral") :
-                              panelEntity.metadata.attitudeToParty}
+                              String(panelEntity.metadata.attitudeToParty)}
                     </p>
                   </div>
                 )}
-                {panelEntity.metadata?.goal && (
+                {Boolean(panelEntity.metadata?.goal) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Objetivo</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.goal}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.goal)}</p>
                   </div>
                 )}
-                {viewMode !== "players" && panelEntity.metadata?.fear && (
+                {viewMode !== "players" && Boolean(panelEntity.metadata?.fear) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#a855f7" }}>Temor (DM)</span>
-                    <p style={{ fontSize: "0.74rem", color: "#e9d5ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.fear}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#e9d5ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.fear)}</p>
                   </div>
                 )}
-                {viewMode !== "players" && panelEntity.metadata?.secret && (
+                {viewMode !== "players" && Boolean(panelEntity.metadata?.secret) && (
                   <div style={{ background: "rgba(168,85,247,0.06)", border: "1px dashed rgba(168,85,247,0.3)", borderRadius: "6px", padding: "8px" }}>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#c084fc" }}>Secreto Oculto (DM)</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.secret}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.secret)}</p>
                   </div>
                 )}
-                {panelEntity.metadata?.voice && (
+                {Boolean(panelEntity.metadata?.voice) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Pauta de voz/interpretación</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4, fontStyle: "italic" }}>"{panelEntity.metadata.voice}"</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4, fontStyle: "italic" }}>"{String(panelEntity.metadata.voice)}"</p>
                   </div>
                 )}
               </div>
@@ -998,16 +1040,16 @@ export function GraphPage(props: GraphPageProps = {}) {
 
             {panelEntity.entityType === "secret" && (
               <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
-                {viewMode !== "players" && panelEntity.metadata?.truth && (
+                {viewMode !== "players" && Boolean(panelEntity.metadata?.truth) && (
                   <div style={{ background: "rgba(168,85,247,0.06)", border: "1px dashed rgba(168,85,247,0.3)", borderRadius: "6px", padding: "8px" }}>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#c084fc" }}>La Verdad (DM)</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.truth}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.truth)}</p>
                   </div>
                 )}
-                {panelEntity.metadata?.impact && (
+                {Boolean(panelEntity.metadata?.impact) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Impacto narrativo</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.impact}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.impact)}</p>
                   </div>
                 )}
               </div>
@@ -1015,27 +1057,27 @@ export function GraphPage(props: GraphPageProps = {}) {
 
             {panelEntity.entityType === "clue" && (
               <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
-                {panelEntity.metadata?.content && (
+                {Boolean(panelEntity.metadata?.content) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Contenido/Revelación</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.content}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.content)}</p>
                   </div>
                 )}
-                {panelEntity.metadata?.clueType && (
+                {Boolean(panelEntity.metadata?.clueType) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Tipo de pista</span>
                     <span style={{ fontSize: "0.65rem", padding: "1px 6px", borderRadius: "4px", background: "rgba(255,255,255,0.08)", color: "#e2e8f0", display: "inline-block", marginTop: "3px", width: "fit-content" }}>
                       {panelEntity.metadata.clueType === "document" ? t("graph.clueTypes.document") :
                         panelEntity.metadata.clueType === "verbal" ? t("graph.clueTypes.verbal") :
                           panelEntity.metadata.clueType === "physical" ? t("graph.clueTypes.physical") :
-                            panelEntity.metadata.clueType}
+                            String(panelEntity.metadata.clueType)}
                     </span>
                   </div>
                 )}
-                {panelEntity.metadata?.atmosphere && (
+                {Boolean(panelEntity.metadata?.atmosphere) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Atmósfera</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4, fontStyle: "italic" }}>{panelEntity.metadata.atmosphere}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4, fontStyle: "italic" }}>{String(panelEntity.metadata.atmosphere)}</p>
                   </div>
                 )}
               </div>
@@ -1043,33 +1085,33 @@ export function GraphPage(props: GraphPageProps = {}) {
 
             {panelEntity.entityType === "location" && (
               <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
-                {panelEntity.metadata?.publicDescription && (
+                {Boolean(panelEntity.metadata?.publicDescription) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Descripción Pública</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.publicDescription}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.publicDescription)}</p>
                   </div>
                 )}
-                {viewMode !== "players" && panelEntity.metadata?.privateDescription && (
+                {viewMode !== "players" && Boolean(panelEntity.metadata?.privateDescription) && (
                   <div style={{ background: "rgba(168,85,247,0.06)", border: "1px dashed rgba(168,85,247,0.3)", borderRadius: "6px", padding: "8px" }}>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#c084fc" }}>Descripción Privada (DM)</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.privateDescription}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.privateDescription)}</p>
                   </div>
                 )}
-                {panelEntity.metadata?.atmosphere && (
+                {Boolean(panelEntity.metadata?.atmosphere) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Atmósfera</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4, fontStyle: "italic" }}>{panelEntity.metadata.atmosphere}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4, fontStyle: "italic" }}>{String(panelEntity.metadata.atmosphere)}</p>
                   </div>
                 )}
-                {panelEntity.metadata?.dangers && (
+                {Boolean(panelEntity.metadata?.dangers) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#ef4444" }}>Peligros</span>
                     {Array.isArray(panelEntity.metadata.dangers) ? (
                       <ul style={{ margin: "3px 0 0 0", paddingLeft: "14px", fontSize: "0.74rem", color: "#fecaca", lineHeight: 1.4 }}>
-                        {panelEntity.metadata.dangers.map((d: string, idx: number) => <li key={idx}>{d}</li>)}
+                        {panelEntity.metadata.dangers.map((d: unknown, idx: number) => <li key={idx}>{String(d)}</li>)}
                       </ul>
                     ) : (
-                      <p style={{ fontSize: "0.74rem", color: "#fecaca", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.dangers}</p>
+                      <p style={{ fontSize: "0.74rem", color: "#fecaca", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.dangers)}</p>
                     )}
                   </div>
                 )}
@@ -1078,22 +1120,22 @@ export function GraphPage(props: GraphPageProps = {}) {
 
             {panelEntity.entityType === "quest" && (
               <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: "10px" }}>
-                {panelEntity.metadata?.publicObjective && (
+                {Boolean(panelEntity.metadata?.publicObjective) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(148,163,184,0.5)" }}>Objetivo público</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.publicObjective}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f1f5f9", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.publicObjective)}</p>
                   </div>
                 )}
-                {viewMode !== "players" && panelEntity.metadata?.hiddenObjective && (
+                {viewMode !== "players" && Boolean(panelEntity.metadata?.hiddenObjective) && (
                   <div style={{ background: "rgba(168,85,247,0.06)", border: "1px dashed rgba(168,85,247,0.3)", borderRadius: "6px", padding: "8px" }}>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#c084fc" }}>Objetivo Oculto (DM)</span>
-                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.hiddenObjective}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#f3e8ff", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.hiddenObjective)}</p>
                   </div>
                 )}
-                {panelEntity.metadata?.failureConsequence && (
+                {Boolean(panelEntity.metadata?.failureConsequence) && (
                   <div>
                     <span style={{ fontSize: "0.62rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#ef4444" }}>Consecuencia del Fracaso</span>
-                    <p style={{ fontSize: "0.74rem", color: "#fecaca", margin: "2px 0 0 0", lineHeight: 1.4 }}>{panelEntity.metadata.failureConsequence}</p>
+                    <p style={{ fontSize: "0.74rem", color: "#fecaca", margin: "2px 0 0 0", lineHeight: 1.4 }}>{String(panelEntity.metadata.failureConsequence)}</p>
                   </div>
                 )}
               </div>
@@ -1106,7 +1148,7 @@ export function GraphPage(props: GraphPageProps = {}) {
                   Hechos Relacionados ({relatedFacts.length})
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  {relatedFacts.map((fact: any) => (
+                  {relatedFacts.map((fact: Fact) => (
                     <div key={fact.factId} style={{ fontSize: "0.72rem", padding: "6px 8px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: "5px", color: "rgba(203,213,225,0.8)", lineHeight: 1.4 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.58rem", color: "rgba(148,163,184,0.4)", marginBottom: "3px" }}>
                         <span>{fact.kind?.toUpperCase()}</span>
@@ -1125,7 +1167,7 @@ export function GraphPage(props: GraphPageProps = {}) {
                 Relaciones ({panelRelations.length})
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                {panelRelations.slice(0, 15).map((r: any) => {
+                {panelRelations.slice(0, 15).map((r: Relation) => {
                   const isSource = r.sourceEntityId === panelEntity.entityId;
                   const otherId = isSource ? r.targetEntityId : r.sourceEntityId;
                   const other = entitiesArr.find((e: Entity) => e.entityId === otherId);
@@ -1164,7 +1206,7 @@ export function GraphPage(props: GraphPageProps = {}) {
       </div>
 
       {/* Entity detail modal */}
-      {detailEntityOpen && panelEntity && (
+      {detailEntityOpen && panelEntity && campaignState && (
         <EntityDetailModal
           selectedEntity={panelEntity}
           campaignState={campaignState}

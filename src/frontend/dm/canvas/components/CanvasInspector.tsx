@@ -4,9 +4,25 @@ import { X, Trash2, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { ImagePickerButton } from "../../../shared/components/ImagePickerButton.js";
 import type { Canvas, CanvasEdge, CanvasNode } from "@core/domain/canvas/types.js";
-import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
-import { canvasVisibilityToVisibilityRule, visibilityRuleToCanvasVisibility } from "../services/canvasVisibility.js";
-import type { Entity, Relation, Fact, CanvasEdgeUpdate, CanvasNodeUpdate } from "../../../shared/stores/campaignStore.js";
+import { isDmOnlyVisibility, type VisibilityRule } from "@core/domain/visibility/visibility.js";
+import { canvasVisibilityToVisibilityRule, visibilityRuleToCanvasVisibility, type CanvasVisibility } from "../services/canvasVisibility.js";
+import type { Entity, Relation, Fact, PlayerProfile, CanvasEdgeUpdate, CanvasNodeUpdate } from "../../../shared/stores/campaignStore.js";
+
+/** Reads a metadata string field, falling back when missing/empty; avoids unsafe `as string` casts on `unknown`. */
+function metaStr(value: unknown, fallback: string): string {
+  return value === null || value === undefined || value === "" ? fallback : String(value);
+}
+
+const isCanvasNodeColor = (value: string): value is NonNullable<CanvasNode["color"]> =>
+  value === "yellow" || value === "blue" || value === "green" || value === "pink" || value === "purple";
+
+const isCanvasEdgeStyle = (value: string): value is NonNullable<CanvasEdge["style"]> =>
+  value === "solid" || value === "dashed" || value === "secret" || value === "weak" || value === "strong";
+
+const isCanvasVisibility = (value: string): value is CanvasVisibility => value === "dm" || value === "public";
+
+/** Only "dm_only"/"public" are offered by the entity visibility select's non-"players" options. */
+const asSimpleVisibilityKind = (value: string): "dm_only" | "public" => (value === "public" ? "public" : "dm_only");
 
 
 export interface CanvasInspectorProps {
@@ -99,10 +115,10 @@ export function CanvasInspector({
         setSubtitle(entity.subtitle || "");
         setSummary(entity.summary || "");
         setContent(entity.content || "");
-        setImageUrl((entity.metadata?.imageUrl as string) || "");
-        setDramaticObjective((entity.metadata?.dramaticObjective as string) || "");
-        setComplications((entity.metadata?.complications as string) || "");
-        setConsequences((entity.metadata?.consequences as string) || "");
+        setImageUrl(metaStr(entity.metadata?.imageUrl, ""));
+        setDramaticObjective(metaStr(entity.metadata?.dramaticObjective, ""));
+        setComplications(metaStr(entity.metadata?.complications, ""));
+        setConsequences(metaStr(entity.metadata?.consequences, ""));
       } else if (selectedNode.kind === "note") {
         setNoteText(selectedNode.text || "");
         setTitle(selectedNode.title || "");
@@ -183,15 +199,13 @@ export function CanvasInspector({
     }
   };
 
-  const handleNodeSelectChange = async (field: string, value: any) => {
+  const handleNodeSelectChange = async (field: string, value: string | VisibilityRule) => {
     if (selectedNode?.kind === "entity" && entity) {
-      if (field === "visibility") {
-        await updateEntity(entity.entityId, { visibility: { kind: value } });
-      } else if (field === "visibility_full") {
+      if (field === "visibility_full" && typeof value !== "string") {
         await updateEntity(entity.entityId, { visibility: value });
-      } else if (field === "importance") {
+      } else if (field === "importance" && typeof value === "string") {
         await updateEntity(entity.entityId, { importance: value });
-      } else if (field === "status") {
+      } else if (field === "status" && typeof value === "string") {
         await updateEntity(entity.entityId, { status: value });
 
         // --- Revelation Anchors Trigger Check ---
@@ -228,7 +242,7 @@ export function CanvasInspector({
         }
       }
     } else if (selectedNode?.kind === "note" || selectedNode?.kind === "group") {
-      if (field === "color") {
+      if (field === "color" && typeof value === "string" && isCanvasNodeColor(value)) {
         await updateCanvasNode(canvasId, selectedNode.id, { color: value });
       }
     }
@@ -252,11 +266,11 @@ export function CanvasInspector({
     }
   };
 
-  const handleEdgeSelectChange = async (field: string, value: any) => {
+  const handleEdgeSelectChange = async (field: string, value: string) => {
     if (selectedEdge) {
-      if (field === "style") {
+      if (field === "style" && isCanvasEdgeStyle(value)) {
         await updateCanvasEdge(canvasId, selectedEdge.id, { style: value });
-      } else if (field === "visibility" && relation) {
+      } else if (field === "visibility" && relation && isCanvasVisibility(value)) {
         await updateRelation(relation.relationId, { visibility: canvasVisibilityToVisibilityRule(value) });
       }
     }
@@ -619,7 +633,7 @@ export function CanvasInspector({
                     onChange={(path) => {
                       setImageUrl(path);
                       // save immediately on picker selection
-                      const current = (entity.metadata?.imageUrl as string) || "";
+                      const current = metaStr(entity.metadata?.imageUrl, "");
                       if (path !== current) {
                         runCanvasAction(
                           updateEntity(entity.entityId, {
@@ -678,7 +692,7 @@ export function CanvasInspector({
                           );
                         } else {
                           runCanvasAction(
-                            handleNodeSelectChange("visibility_full", { kind: val }),
+                            handleNodeSelectChange("visibility_full", { kind: asSimpleVisibilityKind(val) }),
                             "No se pudo actualizar la visibilidad."
                           );
                         }
@@ -713,8 +727,8 @@ export function CanvasInspector({
                       Revelado a los jugadores:
                     </label>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "140px", overflowY: "auto" }}>
-                      {campaignState.players.map((p: any) => {
-                        const currentIds = (entity.visibility as any).playerIds || [];
+                      {campaignState.players.map((p: PlayerProfile) => {
+                        const currentIds = entity.visibility.kind === "players" ? entity.visibility.playerIds : [];
                         const isChecked = currentIds.includes(p.playerId);
                         return (
                           <label key={p.playerId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--text-main)" }}>
@@ -901,7 +915,7 @@ export function CanvasInspector({
 
                 {/* Group assignment */}
                 {(() => {
-                  const groups = canvas?.nodes?.filter((n: any) => n.kind === "group") ?? [];
+                  const groups = canvas?.nodes?.filter((n: CanvasNode) => n.kind === "group") ?? [];
                   if (groups.length === 0) return null;
                   const currentGroupId = selectedNode?.groupId ?? selectedNode?.parentId ?? "";
                   return (
@@ -925,7 +939,7 @@ export function CanvasInspector({
                         }}
                       >
                         <option value="">Sin grupo</option>
-                        {groups.map((g: any) => (
+                        {groups.map((g: CanvasNode) => (
                           <option key={g.id} value={g.id}>{g.title || "Grupo"}</option>
                         ))}
                       </select>
