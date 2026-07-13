@@ -25,12 +25,229 @@ export interface CampaignSearchResult {
   };
 }
 
-async function readJson<T>(response: Response, fallback: string): Promise<T> {
-  if (!response.ok) throw new Error(await readApiError(response, fallback));
-  return response.json() as Promise<T>;
+export interface PortalCampaignSummary {
+  campaignId: string;
+  title?: string;
+  summary?: string | null;
+  status?: string;
 }
 
-export async function getCommandCenter(campaignId: string): Promise<any> {
+export interface PortalPlayerSummary {
+  playerId: string;
+  displayName: string;
+}
+
+export interface PortalEntity {
+  entityId: string;
+  entityType: string;
+  typeLabel?: string;
+  title: string;
+  summary?: string;
+  status: string;
+  importance: string;
+}
+
+export interface PortalFact {
+  factId: string;
+  statement: string;
+  kind: string;
+  confidence: string;
+}
+
+export interface PortalRelation {
+  relationId: string;
+  label: string;
+  description?: string;
+  sourceEntityId: string;
+  targetEntityId: string;
+}
+
+export interface PortalObjective {
+  objectiveId: string;
+  title: string;
+  description?: string;
+  kind: string;
+  status: string;
+  visibility: string;
+  linkedEntityIds: string[];
+  playerId: string | null;
+}
+
+export interface PortalClue {
+  clueId: string;
+  entityId: string;
+  title: string;
+  summary?: string;
+  status: string;
+}
+
+export interface PortalCanvasNode {
+  id: string;
+  kind: string;
+  entityId?: string;
+  factId?: string;
+  title?: string;
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+}
+
+export interface PortalCanvasEdge {
+  id: string;
+  sourceNodeId: string;
+  targetNodeId: string;
+  relationshipId?: string;
+  label?: string;
+}
+
+export interface PortalCanvas {
+  canvasId: string;
+  title: string;
+  nodes: PortalCanvasNode[];
+  edges: PortalCanvasEdge[];
+}
+
+export interface PortalHistoryEntry {
+  sessionId: string;
+  number: number;
+  title: string;
+  recap: string | null;
+  playedDate: string | null;
+}
+
+export interface PortalNote {
+  noteId: string;
+  title: string;
+  content: string;
+  visibility: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LiveTableSummary {
+  liveTableId: string;
+  campaignId?: string;
+  activeSessionId?: string | null;
+  shortCode: string;
+  status: string;
+  expiresAt: string;
+  createdAt?: string;
+  closedAt?: string | null;
+}
+
+export interface CommandCenterAttentionItem {
+  type: string;
+  count: number;
+  label: string;
+}
+
+export interface CommandCenterActivityItem {
+  campaignId: string;
+  activityId: string;
+  type: string;
+  content: unknown;
+  actorUserId?: string | null;
+  occurredAt: string;
+}
+
+export interface CommandCenterCampaignSummary {
+  campaignId: string;
+  title: string;
+  summary?: string | null;
+  status: string;
+  metadata?: Record<string, unknown>;
+  currentLocationId?: string;
+  currentQuestId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CommandCenterResponse {
+  campaign?: CommandCenterCampaignSummary;
+  recap: string | null;
+  lastSession: Record<string, unknown> | null;
+  nextSession: Record<string, unknown> | null;
+  attention: CommandCenterAttentionItem[];
+  counts: {
+    entities: number;
+    facts: number;
+    relations: number;
+    sessions: number;
+    clues: number;
+    objectives: number;
+    proposals: number;
+    hiddenSecrets: number;
+  };
+  openObjectives: Record<string, unknown>[];
+  unresolvedClues: Record<string, unknown>[];
+  pendingProposals: Record<string, unknown>[];
+  recentActivity: CommandCenterActivityItem[];
+}
+
+/**
+ * Merged, all-optional shape covering every /api/player/campaigns/:id/<tab> response.
+ * Each endpoint returns a different subset of these fields; consumers read them
+ * defensively per active tab rather than narrowing a discriminated union.
+ */
+export interface PlayerPortalTabPayload {
+  campaign?: PortalCampaignSummary;
+  player?: PortalPlayerSummary;
+  recap?: string | null;
+  objectives?: PortalObjective[];
+  memoryCounts?: Record<string, number>;
+  notifications?: unknown[];
+  liveTable?: LiveTableSummary | null;
+  entities?: Record<string, PortalEntity[]>;
+  facts?: PortalFact[];
+  relations?: PortalRelation[];
+  history?: PortalHistoryEntry[];
+  activeThreads?: { quests: PortalEntity[]; cluesAndRumors: PortalEntity[] };
+  counts?: Record<string, number>;
+  linkedCharacter?: PortalEntity | null;
+  sheet?: { status: Record<string, unknown>; resources: Array<Record<string, unknown>> };
+  availableCharacters?: PortalEntity[];
+  proposals?: unknown[];
+  notes?: PortalNote[];
+}
+
+export interface PlayerConstellationResponse {
+  campaign?: PortalCampaignSummary;
+  entities: PortalEntity[];
+  facts: PortalFact[];
+  relations: PortalRelation[];
+  objectives: PortalObjective[];
+  clues: PortalClue[];
+  canvases: PortalCanvas[];
+}
+
+export interface InvitationSummary {
+  invitationId: string;
+  role: string;
+  maxUses: number;
+  usesCount: number;
+  expiresAt: string;
+  revokedAt: string | null;
+  createdAt: string;
+  status: "active" | "revoked" | "expired" | "exhausted";
+}
+
+export interface CreatedInvitation {
+  invitationId: string;
+  url: string;
+  token: string;
+  expiresAt: string;
+}
+
+async function readJson<T>(response: Response, fallback: string): Promise<T> {
+  if (!response.ok) throw new Error(await readApiError(response, fallback));
+  const data: unknown = await response.json();
+  // Trusted API boundary: caller-declared response shape, not runtime-validated here.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+  return data as T;
+}
+
+export async function getCommandCenter(campaignId: string): Promise<CommandCenterResponse> {
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/command-center`),
     "No se pudo cargar el Command Center",
@@ -63,21 +280,21 @@ export async function searchRules(
     "No se pudo buscar en las reglas",
   );
   return {
-    results: (response.results ?? []).map((rule: any) => ({
+    results: (response.results ?? []).map((rule) => ({
       type: "rule" as const,
       item: {
         id: String(rule.id),
-        title: rule.title,
-        subtitle: rule.subtitle,
-        summary: rule.content,
-        content: rule.content,
-        category: rule.category,
+        title: typeof rule.title === "string" ? rule.title : undefined,
+        subtitle: typeof rule.subtitle === "string" ? rule.subtitle : undefined,
+        summary: typeof rule.content === "string" ? rule.content : undefined,
+        content: typeof rule.content === "string" ? rule.content : undefined,
+        category: typeof rule.category === "string" ? rule.category : undefined,
       },
     })),
   };
 }
 
-export async function getLiveTable(campaignId: string): Promise<{ liveTable: any | null }> {
+export async function getLiveTable(campaignId: string): Promise<{ liveTable: LiveTableSummary | null }> {
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/live-tables/current`),
     "No se pudo cargar el modo mesa",
@@ -87,7 +304,7 @@ export async function getLiveTable(campaignId: string): Promise<{ liveTable: any
 export async function openLiveTable(
   campaignId: string,
   input: { activeSessionId?: string | null; durationHours?: number } = {},
-): Promise<{ liveTable: any }> {
+): Promise<{ liveTable: LiveTableSummary }> {
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/live-tables`, {
       init: {
@@ -110,7 +327,7 @@ export async function closeLiveTable(campaignId: string, liveTableId: string): P
   );
 }
 
-export async function listInvitations(campaignId: string): Promise<{ invitations: any[] }> {
+export async function listInvitations(campaignId: string): Promise<{ invitations: InvitationSummary[] }> {
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/invitations`),
     "No se pudieron cargar las invitaciones",
@@ -120,7 +337,7 @@ export async function listInvitations(campaignId: string): Promise<{ invitations
 export async function createInvitation(
   campaignId: string,
   input: { role?: string; maxUses?: number; expiresInHours?: number; label?: string } = {},
-): Promise<{ invitation: any }> {
+): Promise<{ invitation: CreatedInvitation }> {
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/invitations`, {
       init: {
@@ -147,49 +364,49 @@ export async function getPlayerCampaigns(): Promise<{ campaigns: PlayerCampaignS
   return readJson(await apiFetch("/api/player/campaigns"), "No se pudieron cargar las campañas del jugador");
 }
 
-export async function getPlayerHome(campaignId: string): Promise<any> {
+export async function getPlayerHome(campaignId: string): Promise<PlayerPortalTabPayload> {
   return readJson(
     await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/home`),
     "No se pudo cargar el portal",
   );
 }
 
-export async function getPlayerMemory(campaignId: string): Promise<any> {
+export async function getPlayerMemory(campaignId: string): Promise<PlayerPortalTabPayload> {
   return readJson(
     await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/memory`),
     "No se pudo cargar la memoria del jugador",
   );
 }
 
-export async function getPlayerConstellation(campaignId: string): Promise<any> {
+export async function getPlayerConstellation(campaignId: string): Promise<PlayerConstellationResponse> {
   return readJson(
     await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/constellation`),
     "No se pudo cargar la constelación del jugador",
   );
 }
 
-export async function getPlayerCharacter(campaignId: string): Promise<any> {
+export async function getPlayerCharacter(campaignId: string): Promise<PlayerPortalTabPayload> {
   return readJson(
     await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/character`),
     "No se pudo cargar el personaje",
   );
 }
 
-export async function getPlayerObjectives(campaignId: string): Promise<{ objectives: any[] }> {
+export async function getPlayerObjectives(campaignId: string): Promise<PlayerPortalTabPayload> {
   return readJson(
     await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/objectives`),
     "No se pudieron cargar los objetivos",
   );
 }
 
-export async function getPlayerRecap(campaignId: string): Promise<any> {
+export async function getPlayerRecap(campaignId: string): Promise<PlayerPortalTabPayload> {
   return readJson(
     await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/recap`),
     "No se pudo cargar el recap",
   );
 }
 
-export async function getPlayerNotes(campaignId: string): Promise<{ notes: any[] }> {
+export async function getPlayerNotes(campaignId: string): Promise<PlayerPortalTabPayload> {
   return readJson(
     await apiFetch(`/api/player/campaigns/${encodeURIComponent(campaignId)}/notes`),
     "No se pudieron cargar las notas",
@@ -199,7 +416,7 @@ export async function getPlayerNotes(campaignId: string): Promise<{ notes: any[]
 export async function createPlayerNote(
   campaignId: string,
   input: { content: string; visibility?: string },
-): Promise<any> {
+): Promise<{ ok: true; noteId: string }> {
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/player-portal/notes`, {
       init: {
@@ -215,7 +432,7 @@ export async function createPlayerNote(
 export async function requestPlayerCharacterLink(
   campaignId: string,
   input: { characterEntityId: string; characterTitle?: string },
-): Promise<any> {
+): Promise<{ ok: true; proposalId: string }> {
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/player-portal/proposals`, {
       init: {
