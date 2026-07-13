@@ -4,12 +4,12 @@ import { FALLBACK_LOCALE, dictionaries, isSupportedLocale } from "./locales.js";
 import type { InterpolationParams } from "./interpolation.js";
 import { interpolate } from "./interpolation.js";
 
-function getRawString(dict: any, path: string): string | undefined {
+function getRawString(dict: unknown, path: string): string | undefined {
   const parts = path.split(".");
-  let curr = dict;
+  let curr: unknown = dict;
   for (const p of parts) {
     if (curr && typeof curr === "object" && p in curr) {
-      curr = curr[p];
+      curr = (curr as Record<string, unknown>)[p];
     } else {
       return undefined;
     }

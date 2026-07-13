@@ -5,7 +5,7 @@ import { dirname } from "path";
  * Writes JSON data atomically to the specified file path by writing to a temporary file,
  * syncing it to disk, renaming it to the final destination, and syncing the parent directory.
  */
-export async function atomicWriteJson(filePath: string, data: any): Promise<void> {
+export async function atomicWriteJson(filePath: string, data: unknown): Promise<void> {
   const tempPath = `${filePath}.tmp`;
   const dirPath = dirname(filePath);
   const content = JSON.stringify(data, null, 2);

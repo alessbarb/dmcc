@@ -9,9 +9,9 @@ export type TranslationDictionary = DeepStringRecord<Omit<typeof en, "institutio
 export type TranslationKey = DotPath<typeof en>;
 
 type DeepStringRecord<T> = {
-  [K in keyof T]: T[K] extends Record<string, any> ? DeepStringRecord<T[K]> : string;
+  [K in keyof T]: T[K] extends Record<string, unknown> ? DeepStringRecord<T[K]> : string;
 };
 
 type DotPath<T> = {
-  [K in keyof T & string]: T[K] extends Record<string, any> ? `${K}.${DotPath<T[K]>}` : K;
+  [K in keyof T & string]: T[K] extends Record<string, unknown> ? `${K}.${DotPath<T[K]>}` : K;
 }[keyof T & string];
