@@ -1,113 +1,59 @@
-# Graph Mobile Refactor Plan
+# Graph Mobile Refactor Status
 
-This note captures the safe migration path for `src/frontend/dm/graph/GraphPage.tsx` after the Canvas mobile UX work.
+**Last reviewed:** 2026-07-13
 
-## Current problem
+This note tracks the safe migration path for `src/frontend/dm/graph/GraphPage.tsx`. It replaces the older “all steps pending” plan with the current state observed in the checkout.
 
-`GraphPage.tsx` is functional but too large and mostly inline-styled. On mobile this creates the same issues previously found in Canvas:
+## Current state
 
-- too much permanent UI competing with the graph;
-- desktop help text on touch devices;
-- filters occupying the screen before the graph;
-- legend permanently covering graph content;
-- selected entity details behaving like a side panel instead of a bottom sheet;
-- floating creation action competing with the bottom navigation.
+`GraphPage.tsx` is still large and remains the main integration point for graph data, force-graph configuration, selection, filtering, and actions.
 
-## Lessons carried over from Canvas
+Current file sizes observed during this review:
 
-1. **Mobile starts in exploration mode.**
-   The primary gesture should be navigating/inspecting, not editing.
+- `src/frontend/dm/graph/GraphPage.tsx` — about 1175 lines;
+- `src/frontend/dm/graph/GraphMobilePatterns.tsx` — small reusable mobile primitives;
+- `src/frontend/dm/graph/graph-mobile.css` — mobile compatibility and sheet/FAB styles.
 
-2. **Secondary UI must be on demand.**
-   Filters, legend and details should appear as sheets or compact overlays.
+Already extracted files:
 
-3. **Desktop instructions must not appear on touch.**
-   `clic`, `scroll`, `clic derecho` instructions are misleading on mobile.
+- `GraphHeader.tsx`
+- `GraphFilters.tsx`
+- `GraphLegend.tsx`
+- `GraphNodeSearch.tsx`
+- `GraphMobilePatterns.tsx`
+- `findNarrativePath.ts`
 
-4. **FABs must respect the campaign bottom navigation.**
-   Use `--campaign-mobile-bottom-nav-height` and `env(safe-area-inset-bottom)`.
+## Problem to solve
 
-5. **Graph interaction should be explicit.**
-   A small touch hint is preferable to permanent desktop controls.
+The graph works, but the page is still hard to evolve safely because integration logic, desktop layout, mobile behavior, graph viewport wiring, and selected-entity details remain concentrated in one large component.
 
-## Components already prepared
+The mobile UX risks are still the same class of issues previously seen in Canvas:
 
-`src/frontend/dm/graph/GraphMobilePatterns.tsx` introduces:
+- too much permanent UI competing with graph exploration;
+- desktop help text or affordances appearing on touch devices;
+- filters taking too much screen before the graph;
+- legend and selected details competing with graph content;
+- creation actions competing with campaign mobile navigation.
 
-- `GraphMobileFab`
-- `GraphMobileSheet`
-- `GraphMobileTouchHint`
-- `GraphMobilePanel`
+## Design principles
 
-These are deliberately small and dependency-light. They can be connected to `GraphPage.tsx` without changing graph physics or data derivation.
+1. **Mobile starts in exploration mode.** The primary gesture is navigating and inspecting, not editing.
+2. **Secondary UI is on demand.** Filters, legend, and details should live in sheets or compact overlays on mobile.
+3. **Desktop and touch instructions differ.** Avoid desktop-only copy on mobile.
+4. **FABs respect bottom navigation.** Use `--campaign-mobile-bottom-nav-height` and safe-area insets.
+5. **Data derivation stays stable.** Refactors should not change graph filtering, relation rules, or force settings unless explicitly scoped.
 
-## CSS already prepared
+## Remaining extraction order
 
-`src/frontend/dm/graph/graph-mobile.css` currently provides a compatibility mobile layer for the inline layout and styles for the reusable mobile components.
+### Step 1 — Confirm current extracted components
 
-## Safe extraction order
+Before further refactor work, verify that `GraphHeader`, `GraphFilters`, `GraphLegend`, and `GraphNodeSearch` are fully used by `GraphPage.tsx` and do not duplicate logic.
 
-### Step 1 — GraphHeader
+### Step 2 — Extract `GraphViewport`
 
-Extract the header block:
+Extract only the frame around `ForceGraph3D`, not graph data derivation.
 
-- title: `Grafo narrativo`
-- counts: visible nodes and relations
-- new relation action
-
-Target component:
-
-```tsx
-function GraphHeader({ visibleCount, linkCount, onCreateRelation }) {}
-```
-
-No graph logic should move here.
-
-### Step 2 — GraphFilters
-
-Extract:
-
-- `GraphNodeSearch`
-- preset buttons
-- view mode buttons
-- label mode buttons
-
-Target component:
-
-```tsx
-function GraphFilters({
-  graphSearchItems,
-  focusGraphNode,
-  preset,
-  setPreset,
-  viewMode,
-  setViewMode,
-  labelsMode,
-  setLabelsMode,
-  t,
-}) {}
-```
-
-This component should render normally on desktop and be moved into `GraphMobileSheet` on mobile later.
-
-### Step 3 — GraphLegend
-
-Extract the inline legend from the graph viewport.
-
-Target component:
-
-```tsx
-function GraphLegend({ colors, locale }) {}
-```
-
-Desktop: render inside graph viewport.
-Mobile: render inside `GraphMobileSheet`.
-
-### Step 4 — GraphViewport
-
-Extract only the frame around `ForceGraph3D`, not the graph data logic.
-
-Target component:
+Target responsibility:
 
 ```tsx
 function GraphViewport({
@@ -123,16 +69,13 @@ function GraphViewport({
 }) {}
 ```
 
-Do not move force configuration until after this step is stable.
+Do not move force configuration in this step unless it is passed through unchanged.
 
-### Step 5 — GraphEntityPanel
+### Step 3 — Extract `GraphEntityPanel`
 
-Extract selected-entity side panel.
+Extract selected-entity details into a component that can render as a side panel on desktop and inside a mobile sheet on small screens.
 
-Desktop: side panel.
-Mobile: `GraphMobileSheet` / bottom sheet.
-
-Target component:
+Target responsibility:
 
 ```tsx
 function GraphEntityPanel({
@@ -149,32 +92,34 @@ function GraphEntityPanel({
 }) {}
 ```
 
-### Step 6 — Connect mobile patterns
+### Step 4 — Wire mobile sheets deliberately
 
-After extraction, wire:
+Use the existing `GraphMobilePatterns.tsx` primitives for:
 
-- `GraphMobileFab` to:
-  - create relation;
-  - open filters sheet;
-  - open legend sheet;
-  - fit graph;
-- `GraphMobileSheet` for filters/legend/details;
-- `GraphMobileTouchHint` inside graph viewport.
+- filters sheet;
+- legend sheet;
+- selected-entity details sheet;
+- fit-graph action;
+- relation-creation action.
 
-## Non-goals for this refactor
+### Step 5 — Only then consider force/config extraction
 
-Do not change:
+After viewport and panel extraction are stable, consider whether force settings and imperative graph controls deserve a small hook. Do not combine this with UI extraction.
+
+## Non-goals
+
+Do not change in this refactor unless a separate task explicitly requires it:
 
 - graph data derivation;
-- force settings;
 - relation filtering rules;
 - shortest-path logic;
 - entity update logic;
-- `ForceGraph3D` package usage.
+- `ForceGraph3D` package usage;
+- access-control or player-visibility semantics.
 
 ## Validation checklist
 
-After each step:
+After each structural step:
 
 ```bash
 npm run typecheck:all
@@ -190,13 +135,11 @@ Manual checks:
 5. View mode toggles between all / DM / players.
 6. Label mode changes visible labels.
 7. Selecting a node opens details.
-8. Toggle next session works.
+8. Toggle next-session state works.
 9. Toggle visibility works.
 10. New relation modal still opens.
 11. Fit graph still works.
 
-## Recommended implementation style
+## Implementation style
 
-Prefer extracting local components at the bottom of `GraphPage.tsx` first. Once stable, move them into separate files.
-
-This avoids large import churn and keeps the first structural PR reviewable.
+Prefer one extraction at a time. Keep each PR/review focused, and use the current tests plus the manual checklist before further decomposition.

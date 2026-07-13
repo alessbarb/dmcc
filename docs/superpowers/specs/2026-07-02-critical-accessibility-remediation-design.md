@@ -173,7 +173,7 @@ Unavailable platform checks are reported as missing evidence, not as passes.
 
 ## Documentation and Claims
 
-`docs/accessibility.md` will be the maintained accessibility status page. It
+`docs/engineering/accessibility-status.md` is the maintained accessibility status page. It
 will contain:
 
 - target standards and legal-context caveat;
@@ -216,6 +216,6 @@ This phase is complete only when:
 - document language follows locale;
 - focus-visible and reduced-motion policies are active;
 - representative axe checks run in Playwright;
-- `docs/accessibility.md` truthfully records evidence and remaining barriers;
+- `docs/engineering/accessibility-status.md` truthfully records evidence and remaining barriers;
 - applicable project verification gates pass, with any unavailable external
   checks explicitly reported.

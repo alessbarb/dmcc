@@ -175,7 +175,7 @@ DMCC currently supports:
 - Markdown export,
 - and web-based campaign records backed by PostgreSQL.
 
-Markdown export is especially useful for offline reading, long-term storage or reviewing the campaign outside the app.
+Markdown export is especially useful for offline reading, long-term storage, and reviewing the campaign as a narrative dossier outside the app.
 
 ### Multiple languages
 
@@ -216,6 +216,10 @@ DMCC works best for campaigns with continuity and moving parts:
 - and DMs who improvise but still want the world to remember.
 
 It is less about replacing your creativity and more about making sure your campaign can grow without collapsing under its own notes.
+
+## Documentation
+
+Current product and engineering references live under [`docs/`](docs/README.md). Historical PR reviews, dated implementation plans, and SDD task reports are archived under `docs/archive/` and should not be treated as current implementation contracts without checking the live source.
 
 ## Getting started
 

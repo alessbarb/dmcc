@@ -1,6 +1,7 @@
 # Unified Account Profile Center Design
 
 **Date:** 2026-07-02
+**Last reviewed:** 2026-07-13
 
 **Status:** Approved design
 

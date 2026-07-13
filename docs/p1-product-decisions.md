@@ -1,10 +1,12 @@
 # P1 product decisions
 
-This document records the product decisions that affect the P1 implementation. The P1 branch targets the finished product architecture: obsolete routes, components, copy, storage keys, and compatibility paths are removed rather than preserved.
+**Last reviewed:** 2026-07-13
+
+This document records active product decisions that define the P1 product contract. It is a current decision reference, not a historical implementation plan. The target architecture removes obsolete routes, components, copy, storage keys, and compatibility paths rather than preserving them.
 
 ## Scope
 
-The P1 branch covers:
+P1 covers:
 
 1. Consolidating overlapping campaign home surfaces.
 2. Simplifying desktop and mobile navigation.
@@ -61,3 +63,8 @@ All product copy lives in the six primary locale dictionaries. New campaign, Boa
 | D5 Player portal consolidation | Approved | `/portal` is the sole entry and duplicate portal architecture is removed. |
 | D6 Compatibility policy | Approved | No legacy aliases, redirects, wrappers, fallback keys, or duplicate modules. |
 | D7 Translation architecture | Approved | The primary locale dictionaries remain the only translation source. |
+
+
+## Evidence boundary
+
+This document defines intended product behavior and compatibility policy. Source files and tests remain the implementation truth. Before changing routes, navigation, storage keys, or portal behavior, verify the current checkout rather than relying on older archived plans.
