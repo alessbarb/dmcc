@@ -142,11 +142,13 @@ export function PremadeCampaignPreviewPage() {
     fetchCampaigns,
     fetchPremadeCampaignTemplate,
     importPremadeCampaign,
+    premadeImportState,
+    clearPremadeImportState,
   } = useCampaignStore();
-  const [importing, setImporting] = useState(false);
   const [importDialogOpen, setImportDialogOpen] = useState(false);
-  const [importError, setImportError] = useState<string | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
+  const importing = premadeImportState.status === "running";
+  const importError = premadeImportState.error ? t(premadeImportState.error) : null;
 
   useEffect(() => {
     const init = async () => {
@@ -213,24 +215,21 @@ export function PremadeCampaignPreviewPage() {
 
   const handleCreateCopy = async (options: { title: string; summary?: string; importMode: PremadeImportMode; openAfterCreate: boolean }) => {
     if (!template) return;
-    setImporting(true);
-    setImportError(null);
     try {
       const campaignId = await importPremadeCampaign(template.templateId, {
         title: options.title,
         summary: options.summary,
         importMode: options.importMode,
       });
-      setImportDialogOpen(false);
-      if (campaignId && options.openAfterCreate) {
-        await navigate({ to: `/campaigns/${campaignId}/command-center` });
-      } else {
-        await fetchCampaigns();
+      if (campaignId) {
+        setImportDialogOpen(false);
+        clearPremadeImportState();
+        if (options.openAfterCreate) {
+          await navigate({ to: `/campaigns/${campaignId}/command-center` });
+        }
       }
-    } catch (err: any) {
-      setImportError(err.message || t("premadeImport.genericError"));
-    } finally {
-      setImporting(false);
+    } catch (err) {
+      console.error("Import failed:", err);
     }
   };
 
@@ -511,10 +510,12 @@ export function PremadeCampaignPreviewPage() {
         template={importDialogOpen ? template : null}
         campaigns={campaigns}
         importing={importing}
+        importProgress={premadeImportState}
         error={importError}
-        onClose={() => { if (!importing) setImportDialogOpen(false); }}
+        onClose={() => { if (!importing) { setImportDialogOpen(false); clearPremadeImportState(); } }}
         onOpenExisting={(campaignId) => {
           setImportDialogOpen(false);
+          clearPremadeImportState();
           runPremadePreviewAction(
             navigate({ to: `/campaigns/${campaignId}/command-center` }),
             "No se pudo abrir la campaña existente.",

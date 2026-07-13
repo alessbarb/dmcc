@@ -74,6 +74,8 @@ export function DmHubPage() {
     createCampaign,
     deleteCampaign,
     restoreBackup,
+    premadeImportState,
+    clearPremadeImportState,
   } = useCampaignStore();
 
   const navigate = useNavigate();
@@ -135,9 +137,9 @@ export function DmHubPage() {
   const [editError, setEditError] = useState<string | null>(null);
 
   // Premade import
-  const [importingTemplateId, setImportingTemplateId] = useState<string | null>(null);
   const [premadeDialogTemplateId, setPremadeDialogTemplateId] = useState<string | null>(null);
-  const [premadeImportError, setPremadeImportError] = useState<string | null>(null);
+  const importingTemplateId = premadeImportState.status === "running" ? premadeImportState.templateId : null;
+  const premadeImportError = premadeImportState.error ? t(premadeImportState.error) : null;
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -340,7 +342,7 @@ export function DmHubPage() {
   };
 
   const openPremadeImportDialog = (templateId: string) => {
-    setPremadeImportError(null);
+    clearPremadeImportState();
     setPremadeDialogTemplateId(templateId);
   };
 
@@ -348,24 +350,21 @@ export function DmHubPage() {
     templateId: string,
     options: { title: string; summary?: string; importMode: PremadeImportMode; openAfterCreate: boolean }
   ) => {
-    setImportingTemplateId(templateId);
-    setPremadeImportError(null);
     try {
       const campaignId = await importPremadeCampaign(templateId, {
         title: options.title,
         summary: options.summary,
         importMode: options.importMode,
       });
-      setPremadeDialogTemplateId(null);
-      if (campaignId && options.openAfterCreate) {
-        await navigate({ to: `/campaigns/${campaignId}/command-center` });
-      } else {
-        await fetchCampaigns();
+      if (campaignId) {
+        setPremadeDialogTemplateId(null);
+        clearPremadeImportState();
+        if (options.openAfterCreate) {
+          await navigate({ to: `/campaigns/${campaignId}/command-center` });
+        }
       }
-    } catch (err: any) {
-      setPremadeImportError(err.message || t("premadeImport.genericError"));
-    } finally {
-      setImportingTemplateId(null);
+    } catch (err) {
+      console.error("Import failed:", err);
     }
   };
 
@@ -1276,9 +1275,10 @@ export function DmHubPage() {
         // DmHubCampaign.stats uses a different shape than Campaign.stats; PremadeImportDialog never reads stats.
         campaigns={campaigns as unknown as React.ComponentProps<typeof PremadeImportDialog>["campaigns"]}
         importing={Boolean(importingTemplateId)}
+        importProgress={premadeImportState}
         error={premadeImportError}
-        onClose={() => { if (!importingTemplateId) setPremadeDialogTemplateId(null); }}
-        onOpenExisting={(campaignId) => { setPremadeDialogTemplateId(null); triggerMysticalTransition(campaignId); }}
+        onClose={() => { if (!importingTemplateId) { setPremadeDialogTemplateId(null); clearPremadeImportState(); } }}
+        onOpenExisting={(campaignId) => { setPremadeDialogTemplateId(null); clearPremadeImportState(); triggerMysticalTransition(campaignId); }}
         onConfirm={(options) => selectedPremadeTemplate ? handleImportPremade(selectedPremadeTemplate.templateId, options) : undefined}
       />
 
