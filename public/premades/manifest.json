@@ -1,5 +1,6 @@
 {
   "$schema": "../schemas/premade/manifest/v1.json",
+  "schemaVersion": 2,
   "defaultLocale": "en",
   "templates": [
     {
@@ -42,6 +43,5 @@
         "preparedSessions": 8
       }
     }
-  ],
-  "schemaVersion": 2
+  ]
 }

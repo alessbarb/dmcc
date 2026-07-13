@@ -1,36 +1,32 @@
-#!/usr/bin/env node
-
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve, sep } from "node:path";
+import {
+  premadeManifestSchema,
+  premadeTemplateFileSchema,
+  type PremadeTemplateFile,
+  type PremadeManifestEntry,
+} from "../../src/core/domain/premade/schemas.js";
 
 const args = process.argv.slice(2);
 const checkOnly = args.includes("--check");
 const dirArgIndex = args.indexOf("--dir");
 const premadeDir = resolve(dirArgIndex >= 0 && args[dirArgIndex + 1] ? args[dirArgIndex + 1] : "public/premades");
 
-function isRecord(value) {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
-
-function computeStats(template) {
+function computeStats(template: PremadeTemplateFile) {
   return {
-    entities: Array.isArray(template.entities) ? template.entities.length : 0,
-    relations: Array.isArray(template.relations) ? template.relations.length : 0,
-    facts: Array.isArray(template.facts) ? template.facts.length : 0,
-    preparedSessions: Array.isArray(template.sessions) ? template.sessions.length : 0,
+    entities: template.entities.length,
+    relations: template.relations.length,
+    facts: template.facts.length,
+    preparedSessions: template.sessions.length,
   };
 }
 
-function formatJson(value) {
+function formatJson(value: any) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-function safePremadePath(file, label) {
-  if (typeof file !== "string" || file.trim().length === 0) {
-    throw new Error(`${label} must be a non-empty string`);
-  }
-
+function safePremadePath(file: string, label: string) {
   const resolvedDir = resolve(premadeDir);
   const resolvedFile = resolve(resolvedDir, file);
   const allowedPrefix = `${resolvedDir}${sep}`;
@@ -40,11 +36,11 @@ function safePremadePath(file, label) {
   return resolvedFile;
 }
 
-async function readJson(filePath) {
+async function readJson(filePath: string) {
   return JSON.parse(await readFile(filePath, "utf8"));
 }
 
-async function writeJsonIfChanged(filePath, value, touchedFiles) {
+async function writeJsonIfChanged(filePath: string, value: any, touchedFiles: string[]) {
   const next = formatJson(value);
   const current = existsSync(filePath) ? await readFile(filePath, "utf8") : "";
   if (current === next) return;
@@ -61,39 +57,40 @@ async function main() {
     throw new Error(`Premade manifest not found: ${manifestPath}`);
   }
 
-  const manifest = await readJson(manifestPath);
-  if (!isRecord(manifest) || !Array.isArray(manifest.templates)) {
-    throw new Error("Premade manifest must contain a templates array");
+  const rawManifest = await readJson(manifestPath);
+  const manifestParse = premadeManifestSchema.safeParse(rawManifest);
+  if (!manifestParse.success) {
+    throw new Error(`Premade manifest validation failed: ${manifestParse.error.message}`);
   }
 
-  const touchedFiles = [];
+  const manifest = manifestParse.data;
+  const touchedFiles: string[] = [];
   const nextManifest = {
     ...manifest,
-    schemaVersion: typeof manifest.schemaVersion === "number" ? manifest.schemaVersion : 2,
-    defaultLocale: typeof manifest.defaultLocale === "string" ? manifest.defaultLocale : "en",
-    templates: [],
+    schemaVersion: 2 as const,
+    defaultLocale: manifest.defaultLocale ?? "en",
+    templates: [] as PremadeManifestEntry[],
   };
 
   for (const entry of manifest.templates) {
-    if (!isRecord(entry)) {
-      throw new Error("Every manifest template entry must be an object");
+    const templatePath = safePremadePath(entry.templateFile, `manifest entry ${entry.templateId} templateFile`);
+    const rawTemplate = await readJson(templatePath);
+    const templateParse = premadeTemplateFileSchema.safeParse(rawTemplate);
+    if (!templateParse.success) {
+      throw new Error(`Premade template validation failed for ${entry.templateFile}: ${templateParse.error.message}`);
     }
 
-    const templatePath = safePremadePath(entry.templateFile ?? entry.file, `manifest entry ${entry.templateId ?? "?"} templateFile`);
-    const template = await readJson(templatePath);
-    if (!isRecord(template)) {
-      throw new Error(`Premade template must be an object: ${entry.templateFile ?? entry.file}`);
-    }
-
+    const template = templateParse.data;
     const stats = computeStats(template);
     const nextTemplate = { ...template, stats };
-    const nextEntry = {
+
+    const nextEntry: PremadeManifestEntry = {
       ...entry,
-      version: typeof template.version === "string" ? template.version : entry.version,
-      defaultLocale: typeof entry.defaultLocale === "string" ? entry.defaultLocale : nextManifest.defaultLocale,
-      availableLocales: Array.isArray(entry.availableLocales)
-        ? entry.availableLocales.filter((item) => typeof item === "string")
-        : (isRecord(entry.locales) ? Object.keys(entry.locales) : [nextManifest.defaultLocale]),
+      version: template.version ?? entry.version,
+      defaultLocale: entry.defaultLocale ?? nextManifest.defaultLocale,
+      availableLocales: entry.availableLocales
+        ? entry.availableLocales
+        : (Object.keys(entry.locales) as any[]),
       stats,
     };
 
@@ -105,13 +102,17 @@ async function main() {
 
   if (checkOnly && touchedFiles.length > 0) {
     console.error("❌ Premade campaign library is not normalized. Run npm run premade:build.");
-    for (const filePath of touchedFiles) console.error(` - ${filePath}`);
+    for (const filePath of touchedFiles) {
+      console.error(` - ${filePath}`);
+    }
     process.exit(1);
   }
 
   if (touchedFiles.length > 0) {
     console.log(`✓ Updated premade campaign metadata (${touchedFiles.length} files)`);
-    for (const filePath of touchedFiles) console.log(`  - ${filePath}`);
+    for (const filePath of touchedFiles) {
+      console.log(`  - ${filePath}`);
+    }
   } else {
     console.log(`✓ Premade campaign metadata already up to date — ${premadeDir}`);
   }

@@ -1,30 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://dmcc.local/schemas/premade-manifest.schema.json",
-  "title": "DMCC Premade Campaign Manifest",
   "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "defaultLocale",
-    "templates"
-  ],
   "properties": {
     "$schema": {
       "type": "string"
     },
-    "defaultLocale": {
-      "$ref": "#/$defs/locale"
+    "schemaVersion": {
+      "type": "number",
+      "const": 2
     },
-    "templates": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "$ref": "#/$defs/templateEntry"
-      }
-    }
-  },
-  "$defs": {
-    "locale": {
+    "defaultLocale": {
       "type": "string",
       "enum": [
         "en",
@@ -35,82 +20,109 @@
         "pt"
       ]
     },
-    "stats": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "entities",
-        "relations",
-        "facts",
-        "preparedSessions"
-      ],
-      "properties": {
-        "entities": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "relations": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "facts": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "preparedSessions": {
-          "type": "integer",
-          "minimum": 0
-        }
-      }
-    },
-    "templateEntry": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "templateId",
-        "version",
-        "defaultLocale",
-        "availableLocales",
-        "templateFile",
-        "locales",
-        "stats"
-      ],
-      "properties": {
-        "templateId": {
-          "type": "string",
-          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-        },
-        "version": {
-          "type": "string",
-          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
-        },
-        "defaultLocale": {
-          "$ref": "#/$defs/locale"
-        },
-        "availableLocales": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/locale"
+    "templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "templateId": {
+            "type": "string"
           },
-          "uniqueItems": true
-        },
-        "templateFile": {
-          "type": "string",
-          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*/template\\.json$"
-        },
-        "locales": {
-          "type": "object",
-          "minProperties": 1,
-          "additionalProperties": {
+          "version": {
+            "type": "string"
+          },
+          "defaultLocale": {
             "type": "string",
-            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*/locales/[a-z]{2}\\.json$"
+            "enum": [
+              "en",
+              "es",
+              "fr",
+              "de",
+              "it",
+              "pt"
+            ]
+          },
+          "availableLocales": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "en",
+                "es",
+                "fr",
+                "de",
+                "it",
+                "pt"
+              ]
+            }
+          },
+          "templateFile": {
+            "type": "string"
+          },
+          "locales": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "enum": [
+                "en",
+                "es",
+                "fr",
+                "de",
+                "it",
+                "pt"
+              ]
+            },
+            "additionalProperties": {
+              "type": "string"
+            },
+            "required": [
+              "en",
+              "es",
+              "fr",
+              "de",
+              "it",
+              "pt"
+            ]
+          },
+          "stats": {
+            "type": "object",
+            "properties": {
+              "entities": {
+                "type": "number"
+              },
+              "relations": {
+                "type": "number"
+              },
+              "facts": {
+                "type": "number"
+              },
+              "preparedSessions": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "entities",
+              "relations",
+              "facts",
+              "preparedSessions"
+            ],
+            "additionalProperties": false
           }
         },
-        "stats": {
-          "$ref": "#/$defs/stats"
-        }
+        "required": [
+          "templateId",
+          "templateFile",
+          "locales",
+          "stats"
+        ],
+        "additionalProperties": false
       }
     }
-  }
+  },
+  "required": [
+    "schemaVersion",
+    "templates"
+  ],
+  "additionalProperties": false,
+  "$id": "https://dmcc.local/schemas/premade/manifest/v1.json"
 }

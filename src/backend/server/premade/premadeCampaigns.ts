@@ -1,197 +1,53 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { z } from "zod";
+import {
+  premadeLocaleSchema,
+  premadeTemplateFileSchema,
+  premadeLocaleOverlaySchema,
+  premadeManifestSchema,
+  premadeManifestEntrySchema,
+  type PremadeLocale,
+  type PremadeTemplateFile,
+  type PremadeLocaleOverlay,
+  type PremadeManifest,
+  type PremadeManifestEntry,
+} from "@core/domain/premade/schemas.js";
+import {
+  resolvePremadeCampaign,
+  type ResolvedPremadeCampaign,
+  type ResolvedPremadeEntity,
+  type ResolvedPremadeRelation,
+  type ResolvedPremadeFact,
+  type ResolvedPremadeSession,
+  type ResolvedPremadeCanvas,
+} from "@core/domain/premade/resolvePremadeCampaign.js";
 
-export type PremadeVisibility = { kind: "dm_only" } | { kind: "party" } | { kind: "public" } | { kind: string; [key: string]: unknown };
+export type PremadeCampaignTemplate = ResolvedPremadeCampaign;
+export type PremadeEntity = ResolvedPremadeEntity;
+export type PremadeRelation = ResolvedPremadeRelation;
+export type PremadeFact = ResolvedPremadeFact;
+export type PremadeSession = ResolvedPremadeSession;
+export type PremadeCanvas = ResolvedPremadeCanvas;
 
-export type PremadeLocale = "en" | "es" | "fr" | "de" | "it" | "pt";
-
-export interface PremadeCampaignTemplateSummary {
-  templateId: string;
-  version: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  locale: string;
-  defaultLocale?: string;
-  availableLocales?: string[];
-  system: "generic_fantasy_d20" | "dnd_srd_5_2_1" | "custom";
-  difficulty: "starter" | "medium" | "advanced";
-  recommendedFor: string;
-  tags: string[];
-  pitch?: string;
-  learningGoals?: string[];
-  includedMaterial?: string[];
-  quickStart?: { title: string; steps: string[] };
-  highlightEntityIds?: string[];
-  featuredFactIds?: string[];
-  featuredRelationIds?: string[];
-  file?: string;
+export interface PremadeCampaignTemplateSummary extends Omit<ResolvedPremadeCampaign, "entities" | "relations" | "facts" | "sessions" | "canvases" | "summary" | "schemaVersion"> {
   templateFile?: string;
-  locales?: Record<string, string>;
-  stats: {
-    entities: number;
-    relations: number;
-    facts: number;
-    preparedSessions: number;
-  };
+  locales?: Record<string, string | undefined>;
 }
-
-export interface PremadeEntity {
-  entityId: string;
-  entityType:
-    | "player_character"
-    | "npc"
-    | "location"
-    | "faction"
-    | "quest"
-    | "clue"
-    | "secret"
-    | "item"
-    | "creature"
-    | "encounter"
-    | "scene"
-    | "front"
-    | "clock"
-    | "decision"
-    | "consequence"
-    | "rumor"
-    | "rule_reference"
-    | "handout"
-    | "note";
-  title: string;
-  subtitle?: string;
-  summary?: string;
-  content?: string;
-  status?: string;
-  importance?: "low" | "normal" | "high" | "critical";
-  visibility?: PremadeVisibility;
-  metadata?: Record<string, unknown>;
-}
-
-export interface PremadeRelation {
-  relationId: string;
-  sourceEntityId: string;
-  targetEntityId: string;
-  relationType: string;
-  description?: string;
-  visibility?: PremadeVisibility;
-}
-
-export interface PremadeFact {
-  factId: string;
-  statement: string;
-  kind: "canon" | "dm_secret" | "rumor" | "lie" | "player_theory" | "mistake" | "retcon" | "unknown";
-  confidence: "unconfirmed" | "suspected" | "likely" | "confirmed" | "false";
-  visibility?: PremadeVisibility;
-  relatedEntityIds?: string[];
-}
-
-export interface PremadeSession {
-  sessionId: string;
-  title: string;
-  scheduledAt?: string;
-  prep?: {
-    state?: "draft" | "ready";
-    summary?: string;
-    openingPrompt?: string;
-    goals?: string[];
-    sceneIds?: string[];
-    involvedEntityIds?: string[];
-    availableClueIds?: string[];
-    secretsAtRiskIds?: string[];
-    expectedConsequenceIds?: string[];
-    checklist?: Array<{ id: string; label: string; done?: boolean; priority?: "low" | "medium" | "high" }>;
-    notes?: string;
-  };
-}
-
-export interface PremadeCanvas {
-  canvasId: string;
-  title: string;
-  kind: "world" | "session" | "mystery" | "location" | "characters" | "custom";
-  description?: string;
-  nodes?: Array<{
-    id: string;
-    kind: "entity" | "note" | "group" | "image" | "fact";
-    entityId?: string;
-    factId?: string;
-    title?: string;
-    text?: string;
-    color?: "yellow" | "blue" | "green" | "pink" | "purple";
-    x: number;
-    y: number;
-    width?: number;
-    height?: number;
-    status?: "draft" | "ready" | "revealed" | "resolved";
-    visibility?: "dm" | "public";
-  }>;
-  edges?: Array<{
-    id: string;
-    sourceNodeId: string;
-    targetNodeId: string;
-    relationshipId?: string;
-    label?: string;
-    status: "draft" | "domain";
-    visibility?: "dm" | "public";
-    style?: "solid" | "dashed" | "secret" | "weak" | "strong";
-  }>;
-}
-
-export interface PremadeCampaignTemplate extends Omit<PremadeCampaignTemplateSummary, "file" | "templateFile" | "locales"> {
-  schemaVersion?: number;
-  summary: string;
-  entities: PremadeEntity[];
-  relations: PremadeRelation[];
-  facts: PremadeFact[];
-  sessions: PremadeSession[];
-  canvases: PremadeCanvas[];
-}
-
-interface PremadeManifestV1 {
-  schemaVersion: 1;
-  templates: PremadeCampaignTemplateSummary[];
-}
-
-interface PremadeManifestEntryV2 {
-  templateId: string;
-  version?: string;
-  defaultLocale?: string;
-  availableLocales?: string[];
-  templateFile: string;
-  locales: Record<string, string>;
-}
-
-interface PremadeManifestV2 {
-  schemaVersion: 2;
-  defaultLocale?: string;
-  templates: PremadeManifestEntryV2[];
-}
-
-type PremadeManifest = PremadeManifestV1 | PremadeManifestV2;
 
 const moduleDir = dirname(fileURLToPath(import.meta.url));
-const SUPPORTED_LOCALES = new Set(["en", "es", "fr", "de", "it", "pt"]);
+const SUPPORTED_LOCALES = new Set<string>(premadeLocaleSchema.options);
 const DEFAULT_PREMADE_LOCALE: PremadeLocale = "en";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function asString(value: unknown, fallback = ""): string {
-  return typeof value === "string" ? value : fallback;
-}
+function deepMergeRecords(fallback: Record<string, any>, overlay: Record<string, any>): Record<string, any> {
+  const merged: Record<string, any> = { ...fallback };
 
-function asStringArray(value: unknown): string[] {
-  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
-}
-
-function deepMergeRecords(fallback: unknown, overlay: unknown): Record<string, unknown> {
-  const fallbackRecord = isRecord(fallback) ? fallback : {};
-  const overlayRecord = isRecord(overlay) ? overlay : {};
-  const merged: Record<string, unknown> = { ...fallbackRecord };
-
-  for (const [key, value] of Object.entries(overlayRecord)) {
+  for (const [key, value] of Object.entries(overlay)) {
     if (isRecord(value) && isRecord(merged[key])) {
       merged[key] = deepMergeRecords(merged[key], value);
     } else {
@@ -204,20 +60,7 @@ function deepMergeRecords(fallback: unknown, overlay: unknown): Record<string, u
 
 function normalizeLocale(locale?: string | null): PremadeLocale {
   const normalized = (locale ?? "").trim().toLowerCase().split(/[._-]/)[0];
-  return SUPPORTED_LOCALES.has(normalized) ? normalized as PremadeLocale : DEFAULT_PREMADE_LOCALE;
-}
-
-function asStats(value: unknown): PremadeCampaignTemplateSummary["stats"] {
-  if (!isRecord(value)) {
-    return { entities: 0, relations: 0, facts: 0, preparedSessions: 0 };
-  }
-
-  return {
-    entities: typeof value.entities === "number" ? value.entities : 0,
-    relations: typeof value.relations === "number" ? value.relations : 0,
-    facts: typeof value.facts === "number" ? value.facts : 0,
-    preparedSessions: typeof value.preparedSessions === "number" ? value.preparedSessions : 0,
-  };
+  return SUPPORTED_LOCALES.has(normalized) ? (normalized as PremadeLocale) : DEFAULT_PREMADE_LOCALE;
 }
 
 function getPremadeDirectoryCandidates(): string[] {
@@ -239,42 +82,25 @@ function readJsonFile(filePath: string): unknown {
   return JSON.parse(readFileSync(filePath, "utf8"));
 }
 
-function readManifest(): PremadeManifest {
-  const premadeDir = getPremadeCampaignDirectory();
-  if (!premadeDir) {
-    return { schemaVersion: 2, defaultLocale: DEFAULT_PREMADE_LOCALE, templates: [] };
+function readManifest(premadeDir: string): PremadeManifest {
+  const manifestPath = join(premadeDir, "manifest.json");
+  if (!existsSync(manifestPath)) {
+    throw new Error(`Manifest file not found: ${manifestPath}`);
   }
 
-  const raw = readJsonFile(join(premadeDir, "manifest.json"));
-  if (!isRecord(raw)) {
-    return { schemaVersion: 2, defaultLocale: DEFAULT_PREMADE_LOCALE, templates: [] };
+  let raw: unknown;
+  try {
+    raw = readJsonFile(manifestPath);
+  } catch (err) {
+    throw new Error(`Failed to parse manifest JSON: ${manifestPath}`, { cause: err });
   }
 
-  if (raw.schemaVersion === 2) {
-    const templates = Array.isArray(raw.templates)
-      ? raw.templates.filter((template): template is PremadeManifestEntryV2 => (
-        isRecord(template)
-        && typeof template.templateId === "string"
-        && typeof template.templateFile === "string"
-        && isRecord(template.locales)
-      ))
-      : [];
-
-    return {
-      schemaVersion: 2,
-      defaultLocale: normalizeLocale(asString(raw.defaultLocale, DEFAULT_PREMADE_LOCALE)),
-      templates,
-    };
+  const parseResult = premadeManifestSchema.safeParse(raw);
+  if (!parseResult.success) {
+    throw new Error(`Manifest validation failed: ${manifestPath}`, { cause: parseResult.error });
   }
 
-  const templates = Array.isArray(raw.templates)
-    ? raw.templates.map(normalizeLegacySummary).filter((template): template is PremadeCampaignTemplateSummary => Boolean(template))
-    : [];
-
-  return {
-    schemaVersion: 1,
-    templates,
-  };
+  return parseResult.data;
 }
 
 function resolvePremadeFile(premadeDir: string, file: string): string | null {
@@ -289,74 +115,22 @@ function resolvePremadeFile(premadeDir: string, file: string): string | null {
   return null;
 }
 
-function readPremadeFile(premadeDir: string, file: string): Record<string, unknown> | null {
-  const filePath = resolvePremadeFile(premadeDir, file);
-  if (!filePath || !existsSync(filePath)) return null;
-  const raw = readJsonFile(filePath);
-  return isRecord(raw) ? raw : null;
-}
-
-function normalizeLegacySummary(value: unknown): PremadeCampaignTemplateSummary | null {
-  if (!isRecord(value)) return null;
-
-  const templateId = asString(value.templateId).trim();
-  const file = asString(value.file).trim();
-  const title = asString(value.title).trim();
-
-  if (!templateId || !file || !title) {
-    return null;
-  }
-
-  return {
-    templateId,
-    version: asString(value.version, "1.0.0"),
-    title,
-    subtitle: asString(value.subtitle),
-    description: asString(value.description),
-    locale: asString(value.locale, "es"),
-    defaultLocale: asString(value.locale, "es"),
-    availableLocales: [asString(value.locale, "es")],
-    system: (["generic_fantasy_d20", "dnd_srd_5_2_1", "custom"].includes(asString(value.system))
-      ? value.system
-      : "custom") as PremadeCampaignTemplateSummary["system"],
-    difficulty: (["starter", "medium", "advanced"].includes(asString(value.difficulty))
-      ? value.difficulty
-      : "medium") as PremadeCampaignTemplateSummary["difficulty"],
-    recommendedFor: asString(value.recommendedFor),
-    tags: asStringArray(value.tags),
-    pitch: asString(value.pitch) || undefined,
-    learningGoals: asStringArray(value.learningGoals),
-    includedMaterial: asStringArray(value.includedMaterial),
-    quickStart: isRecord(value.quickStart) ? {
-      title: asString(value.quickStart.title),
-      steps: asStringArray(value.quickStart.steps),
-    } : undefined,
-    highlightEntityIds: asStringArray(value.highlightEntityIds),
-    featuredFactIds: asStringArray(value.featuredFactIds),
-    featuredRelationIds: asStringArray(value.featuredRelationIds),
-    stats: asStats(value.stats),
-    file,
-  };
-}
-
-function normalizeSystem(value: unknown): PremadeCampaignTemplateSummary["system"] {
-  return (["generic_fantasy_d20", "dnd_srd_5_2_1", "custom"].includes(asString(value))
-    ? value
-    : "custom") as PremadeCampaignTemplateSummary["system"];
-}
-
-function normalizeDifficulty(value: unknown): PremadeCampaignTemplateSummary["difficulty"] {
-  return (["starter", "medium", "advanced"].includes(asString(value))
-    ? value
-    : "medium") as PremadeCampaignTemplateSummary["difficulty"];
-}
-
-function pickLocaleFile(entry: PremadeManifestEntryV2, requestedLocale: string | null | undefined, manifestDefaultLocale: string): { locale: PremadeLocale; file: string } | null {
+function pickLocaleFile(
+  entry: PremadeManifestEntry,
+  requestedLocale: string | null | undefined,
+  manifestDefaultLocale: PremadeLocale
+): { locale: PremadeLocale; file: string } | null {
   const requested = normalizeLocale(requestedLocale);
   const entryDefault = normalizeLocale(entry.defaultLocale ?? manifestDefaultLocale);
-  const locales = entry.locales ?? {};
+  const locales = entry.locales;
 
-  const candidates = [requested, entryDefault, DEFAULT_PREMADE_LOCALE, ...Object.keys(locales).map(normalizeLocale)];
+  const candidates = [
+    requested,
+    entryDefault,
+    DEFAULT_PREMADE_LOCALE,
+    ...(Object.keys(locales) as PremadeLocale[]),
+  ];
+
   for (const locale of candidates) {
     const file = locales[locale];
     if (file) return { locale, file };
@@ -365,204 +139,91 @@ function pickLocaleFile(entry: PremadeManifestEntryV2, requestedLocale: string |
   return null;
 }
 
-function mergeRecords(base: unknown, overlay: unknown): Record<string, unknown> | undefined {
-  const baseRecord = isRecord(base) ? base : {};
-  const overlayRecord = isRecord(overlay) ? overlay : {};
-  const merged = { ...baseRecord, ...overlayRecord };
-  return Object.keys(merged).length ? merged : undefined;
-}
-
-function applyText<T extends Record<string, unknown>>(base: T, overlay: unknown, keys: string[]): T {
-  if (!isRecord(overlay)) return { ...base };
-  const next: Record<string, unknown> = { ...base };
-  for (const key of keys) {
-    if (overlay[key] !== undefined) next[key] = overlay[key];
-  }
-  return next as T;
-}
-
-function mergeEntities(baseEntities: unknown, localeEntities: unknown): PremadeEntity[] {
-  const texts = isRecord(localeEntities) ? localeEntities : {};
-  return Array.isArray(baseEntities) ? baseEntities.map((entity) => {
-    const base = isRecord(entity) ? entity : {};
-    const id = asString(base.entityId);
-    const overlay = isRecord(texts[id]) ? texts[id] : {};
-    const merged = applyText(base, overlay, ["title", "subtitle", "summary", "content", "status"]);
-    if (!merged.title) {
-      const idParts = id.split("_");
-      const nameParts = idParts.length > 3 ? idParts.slice(3) : idParts;
-      merged.title = nameParts
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-    }
-    const metadata = mergeRecords(base.metadata, overlay.metadata);
-    if (metadata) merged.metadata = metadata;
-    return merged as unknown as PremadeEntity;
-  }) : [];
-}
-
-function mergeRelations(baseRelations: unknown, localeRelations: unknown): PremadeRelation[] {
-  const texts = isRecord(localeRelations) ? localeRelations : {};
-  return Array.isArray(baseRelations) ? baseRelations.map((relation) => {
-    const base = isRecord(relation) ? relation : {};
-    const id = asString(base.relationId);
-    return applyText(base, isRecord(texts[id]) ? texts[id] : {}, ["description"]) as unknown as PremadeRelation;
-  }) : [];
-}
-
-function mergeFacts(baseFacts: unknown, localeFacts: unknown): PremadeFact[] {
-  const texts = isRecord(localeFacts) ? localeFacts : {};
-  return Array.isArray(baseFacts) ? baseFacts.map((fact) => {
-    const base = isRecord(fact) ? fact : {};
-    const id = asString(base.factId);
-    return applyText(base, isRecord(texts[id]) ? texts[id] : {}, ["statement"]) as unknown as PremadeFact;
-  }) : [];
-}
-
-function mergeSessionPrep(basePrep: unknown, localePrep: unknown): Record<string, unknown> | undefined {
-  if (!isRecord(basePrep) && !isRecord(localePrep)) return undefined;
-  const merged = applyText(isRecord(basePrep) ? basePrep : {}, localePrep, ["summary", "openingPrompt", "goals", "notes"]);
-
-  if (isRecord(localePrep) && isRecord(localePrep.checklist)) {
-    const checklistTexts = localePrep.checklist;
-    const baseChecklist = Array.isArray(merged.checklist) ? merged.checklist : [];
-    merged.checklist = baseChecklist.map((item) => {
-      if (!isRecord(item)) return item;
-      const id = asString(item.id);
-      return applyText(item, isRecord(checklistTexts[id]) ? checklistTexts[id] : {}, ["label"]);
-    });
+function resolveV2Template(
+  entry: PremadeManifestEntry,
+  locale: string | null | undefined,
+  premadeDir: string,
+  manifestDefaultLocale: PremadeLocale
+): ResolvedPremadeCampaign | undefined {
+  const templatePath = resolvePremadeFile(premadeDir, entry.templateFile);
+  if (!templatePath || !existsSync(templatePath)) {
+    throw new Error(`Base template file not found: ${entry.templateFile}`);
   }
 
-  return merged;
-}
-
-function getSessionPrepOverlay(overlay: Record<string, unknown>): Record<string, unknown> | undefined {
-  const directPrepKeys = ["summary", "openingPrompt", "goals", "notes", "checklist"];
-  const directPrep: Record<string, unknown> = {};
-
-  for (const key of directPrepKeys) {
-    if (overlay[key] !== undefined) directPrep[key] = overlay[key];
+  let rawTemplate: unknown;
+  try {
+    rawTemplate = readJsonFile(templatePath);
+  } catch (err) {
+    throw new Error(`Failed to parse base template JSON: ${templatePath}`, { cause: err });
   }
 
-  if (isRecord(overlay.prep)) {
-    return deepMergeRecords(directPrep, overlay.prep);
+  const baseTemplateParse = premadeTemplateFileSchema.safeParse(rawTemplate);
+  if (!baseTemplateParse.success) {
+    throw new Error(`Base template file validation failed: ${templatePath}`, { cause: baseTemplateParse.error });
   }
-
-  return Object.keys(directPrep).length ? directPrep : undefined;
-}
-
-function mergeSessions(baseSessions: unknown, localeSessions: unknown): PremadeSession[] {
-  const texts = isRecord(localeSessions) ? localeSessions : {};
-  return Array.isArray(baseSessions) ? baseSessions.map((session) => {
-    const base = isRecord(session) ? session : {};
-    const id = asString(base.sessionId);
-    const overlay = isRecord(texts[id]) ? texts[id] : {};
-    const merged = applyText(base, overlay, ["title"]);
-    if (!merged.title) {
-      const idParts = id.split("_");
-      const nameParts = idParts.length > 3 ? idParts.slice(3) : idParts;
-      merged.title = nameParts
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-    }
-    const prep = mergeSessionPrep(base.prep, getSessionPrepOverlay(overlay));
-    if (prep) merged.prep = prep;
-    return merged as unknown as PremadeSession;
-  }) : [];
-}
-
-function mergeCanvases(baseCanvases: unknown, localeCanvases: unknown): PremadeCanvas[] {
-  const texts = isRecord(localeCanvases) ? localeCanvases : {};
-  return Array.isArray(baseCanvases) ? baseCanvases.map((canvas) => {
-    const base = isRecord(canvas) ? canvas : {};
-    const id = asString(base.canvasId);
-    const overlay = isRecord(texts[id]) ? texts[id] : {};
-    const merged = applyText(base, overlay, ["title", "description"]);
-    if (!merged.title) {
-      const idParts = id.split("_");
-      const nameParts = idParts.length > 3 ? idParts.slice(3) : idParts;
-      merged.title = nameParts
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-    }
-
-    const nodeTexts = isRecord(overlay.nodes) ? overlay.nodes : {};
-    if (Array.isArray(base.nodes)) {
-      merged.nodes = base.nodes.map((node) => {
-        if (!isRecord(node)) return node;
-        const nodeId = asString(node.id);
-        return applyText(node, isRecord(nodeTexts[nodeId]) ? nodeTexts[nodeId] : {}, ["title", "text"]);
-      });
-    }
-
-    const edgeTexts = isRecord(overlay.edges) ? overlay.edges : {};
-    if (Array.isArray(base.edges)) {
-      merged.edges = base.edges.map((edge) => {
-        if (!isRecord(edge)) return edge;
-        const edgeId = asString(edge.id);
-        const mergedEdge = applyText(edge, isRecord(edgeTexts[edgeId]) ? edgeTexts[edgeId] : {}, ["label"]);
-        if (mergedEdge.status !== "domain") {
-          mergedEdge.status = "draft";
-        }
-        return mergedEdge;
-      });
-    }
-
-    return merged as unknown as PremadeCanvas;
-  }) : [];
-}
-
-function resolveV2Template(entry: PremadeManifestEntryV2, locale: string | null | undefined, premadeDir: string, manifestDefaultLocale: string): PremadeCampaignTemplate | undefined {
-  const base = readPremadeFile(premadeDir, entry.templateFile);
-  if (!base) return undefined;
+  const base = baseTemplateParse.data;
 
   const localeSelection = pickLocaleFile(entry, locale, manifestDefaultLocale);
-  if (!localeSelection) return undefined;
-  const localeOverlay = readPremadeFile(premadeDir, localeSelection.file) ?? {};
-  const defaultSelection = pickLocaleFile(entry, entry.defaultLocale ?? manifestDefaultLocale, manifestDefaultLocale);
-  const defaultOverlay = defaultSelection ? readPremadeFile(premadeDir, defaultSelection.file) ?? {} : {};
-  const overlay = deepMergeRecords(defaultOverlay, localeOverlay);
+  if (!localeSelection) {
+    throw new Error(`No suitable locale overlay found for template ${entry.templateId} and requested locale ${locale}`);
+  }
 
-  const templateId = asString(base.templateId, entry.templateId);
-  if (templateId !== entry.templateId) return undefined;
+  const localeOverlayPath = resolvePremadeFile(premadeDir, localeSelection.file);
+  if (!localeOverlayPath || !existsSync(localeOverlayPath)) {
+    throw new Error(`Locale overlay file not found: ${localeSelection.file}`);
+  }
 
-  const template: PremadeCampaignTemplate = {
-    schemaVersion: typeof base.schemaVersion === "number" ? base.schemaVersion : 1,
-    templateId,
-    version: asString(base.version, entry.version ?? "1.0.0"),
-    title: asString(overlay.title, templateId),
-    subtitle: asString(overlay.subtitle),
-    description: asString(overlay.description),
-    summary: asString(overlay.summary, asString(overlay.description)),
-    locale: localeSelection.locale,
-    defaultLocale: normalizeLocale(entry.defaultLocale ?? manifestDefaultLocale),
-    availableLocales: asStringArray(entry.availableLocales).length ? asStringArray(entry.availableLocales) : Object.keys(entry.locales),
-    system: normalizeSystem(base.system),
-    difficulty: normalizeDifficulty(base.difficulty),
-    recommendedFor: asString(overlay.recommendedFor),
-    tags: asStringArray(overlay.tags).length ? asStringArray(overlay.tags) : asStringArray(base.tags),
-    pitch: asString(overlay.pitch) || undefined,
-    learningGoals: asStringArray(overlay.learningGoals),
-    includedMaterial: asStringArray(overlay.includedMaterial),
-    quickStart: isRecord(overlay.quickStart) ? {
-      title: asString(overlay.quickStart.title),
-      steps: asStringArray(overlay.quickStart.steps),
-    } : undefined,
-    highlightEntityIds: asStringArray(base.highlightEntityIds),
-    featuredFactIds: asStringArray(base.featuredFactIds),
-    featuredRelationIds: asStringArray(base.featuredRelationIds),
-    stats: asStats(base.stats),
-    entities: mergeEntities(base.entities, overlay.entities),
-    relations: mergeRelations(base.relations, overlay.relations),
-    facts: mergeFacts(base.facts, overlay.facts),
-    sessions: mergeSessions(base.sessions, overlay.sessions),
-    canvases: mergeCanvases(base.canvases, overlay.canvases),
-  };
+  let rawLocaleOverlay: unknown;
+  try {
+    rawLocaleOverlay = readJsonFile(localeOverlayPath);
+  } catch (err) {
+    throw new Error(`Failed to parse locale overlay JSON: ${localeOverlayPath}`, { cause: err });
+  }
 
-  return template;
+  const localeOverlayParse = premadeLocaleOverlaySchema.safeParse(rawLocaleOverlay);
+  if (!localeOverlayParse.success) {
+    throw new Error(`Locale overlay file validation failed: ${localeOverlayPath}`, { cause: localeOverlayParse.error });
+  }
+  const localeOverlay = localeOverlayParse.data;
+
+  const entryDefaultLocale = entry.defaultLocale ?? manifestDefaultLocale;
+  let overlay = localeOverlay;
+
+  if (localeSelection.locale !== entryDefaultLocale) {
+    const defaultSelection = pickLocaleFile(entry, entryDefaultLocale, manifestDefaultLocale);
+    if (defaultSelection) {
+      const defaultOverlayPath = resolvePremadeFile(premadeDir, defaultSelection.file);
+      if (defaultOverlayPath && existsSync(defaultOverlayPath)) {
+        let rawDefaultOverlay: unknown;
+        try {
+          rawDefaultOverlay = readJsonFile(defaultOverlayPath);
+        } catch (err) {
+          throw new Error(`Failed to parse default locale overlay JSON: ${defaultOverlayPath}`, { cause: err });
+        }
+        const defaultOverlayParse = premadeLocaleOverlaySchema.safeParse(rawDefaultOverlay);
+        if (defaultOverlayParse.success) {
+          const merged = deepMergeRecords(defaultOverlayParse.data, localeOverlay);
+          const mergedParse = premadeLocaleOverlaySchema.safeParse(merged);
+          if (!mergedParse.success) {
+            throw new Error(`Merged locale overlay validation failed`, { cause: mergedParse.error });
+          }
+          overlay = mergedParse.data;
+        }
+      }
+    }
+  }
+
+  const templateId = base.templateId;
+  if (templateId !== entry.templateId) {
+    throw new Error(`Template ID mismatch: manifest expects ${entry.templateId}, but base template has ${templateId}`);
+  }
+
+  const availableLocales = entry.availableLocales ?? (Object.keys(entry.locales) as PremadeLocale[]);
+
+  return resolvePremadeCampaign(base, overlay, localeSelection.locale, entryDefaultLocale, availableLocales);
 }
 
-function toSummary(template: PremadeCampaignTemplate, entry?: PremadeManifestEntryV2): PremadeCampaignTemplateSummary {
+function toSummary(template: ResolvedPremadeCampaign, entry?: PremadeManifestEntry): PremadeCampaignTemplateSummary {
   return {
     templateId: template.templateId,
     version: template.version,
@@ -589,74 +250,35 @@ function toSummary(template: PremadeCampaignTemplate, entry?: PremadeManifestEnt
   };
 }
 
-function getLegacyTemplate(summary: PremadeCampaignTemplateSummary, premadeDir: string): PremadeCampaignTemplate | undefined {
-  if (!summary.file) return undefined;
-  const raw = readPremadeFile(premadeDir, summary.file);
-  if (!raw) return undefined;
-
-  const template: PremadeCampaignTemplate = {
-    schemaVersion: typeof raw.schemaVersion === "number" ? raw.schemaVersion : 1,
-    templateId: asString(raw.templateId, summary.templateId),
-    version: asString(raw.templateVersion, asString(raw.version, summary.version)),
-    title: asString(raw.title, summary.title),
-    subtitle: asString(raw.subtitle, summary.subtitle),
-    description: asString(raw.description, summary.description),
-    summary: asString(raw.summary, summary.description),
-    locale: asString(raw.locale, summary.locale),
-    defaultLocale: summary.defaultLocale,
-    availableLocales: summary.availableLocales,
-    system: summary.system,
-    difficulty: summary.difficulty,
-    recommendedFor: asString(raw.recommendedFor, summary.recommendedFor),
-    tags: asStringArray(raw.tags).length ? asStringArray(raw.tags) : summary.tags,
-    pitch: asString(raw.pitch, summary.pitch),
-    learningGoals: asStringArray(raw.learningGoals).length ? asStringArray(raw.learningGoals) : (summary.learningGoals ?? []),
-    includedMaterial: asStringArray(raw.includedMaterial).length ? asStringArray(raw.includedMaterial) : (summary.includedMaterial ?? []),
-    quickStart: isRecord(raw.quickStart) ? {
-      title: asString(raw.quickStart.title),
-      steps: asStringArray(raw.quickStart.steps),
-    } : summary.quickStart,
-    highlightEntityIds: asStringArray(raw.highlightEntityIds).length ? asStringArray(raw.highlightEntityIds) : (summary.highlightEntityIds ?? []),
-    featuredFactIds: asStringArray(raw.featuredFactIds).length ? asStringArray(raw.featuredFactIds) : (summary.featuredFactIds ?? []),
-    featuredRelationIds: asStringArray(raw.featuredRelationIds).length ? asStringArray(raw.featuredRelationIds) : (summary.featuredRelationIds ?? []),
-    stats: asStats(raw.stats),
-    entities: Array.isArray(raw.entities) ? raw.entities as PremadeEntity[] : [],
-    relations: Array.isArray(raw.relations) ? raw.relations as PremadeRelation[] : [],
-    facts: Array.isArray(raw.facts) ? raw.facts as PremadeFact[] : [],
-    sessions: Array.isArray(raw.sessions) ? raw.sessions as PremadeSession[] : [],
-    canvases: Array.isArray(raw.canvases) ? raw.canvases as PremadeCanvas[] : [],
-  };
-
-  return template.templateId === summary.templateId ? template : undefined;
-}
-
 export function listPremadeCampaignTemplates(locale?: string | null): PremadeCampaignTemplateSummary[] {
   const premadeDir = getPremadeCampaignDirectory();
   if (!premadeDir) return [];
 
-  const manifest = readManifest();
-  if (manifest.schemaVersion === 2) {
-    return manifest.templates
-      .map((entry) => {
-        const template = resolveV2Template(entry, locale, premadeDir, manifest.defaultLocale ?? DEFAULT_PREMADE_LOCALE);
-        return template ? toSummary(template, entry) : null;
-      })
-      .filter((template): template is PremadeCampaignTemplateSummary => Boolean(template));
-  }
+  const manifest = readManifest(premadeDir);
+  const manifestDefaultLocale = manifest.defaultLocale ?? DEFAULT_PREMADE_LOCALE;
 
-  return manifest.templates;
+  return manifest.templates
+    .map((entry) => {
+      try {
+        const template = resolveV2Template(entry, locale, premadeDir, manifestDefaultLocale);
+        return template ? toSummary(template, entry) : null;
+      } catch (err) {
+        console.error(`[Premade] Error resolving template ${entry.templateId}:`, err);
+        return null;
+      }
+    })
+    .filter((template): template is PremadeCampaignTemplateSummary => Boolean(template));
 }
 
 export function getPremadeCampaignTemplate(templateId: string, locale?: string | null): PremadeCampaignTemplate | undefined {
   const premadeDir = getPremadeCampaignDirectory();
   if (!premadeDir) return undefined;
 
-  const manifest = readManifest();
-  if (manifest.schemaVersion === 2) {
-    const entry = manifest.templates.find((template) => template.templateId === templateId);
-    return entry ? resolveV2Template(entry, locale, premadeDir, manifest.defaultLocale ?? DEFAULT_PREMADE_LOCALE) : undefined;
-  }
+  const manifest = readManifest(premadeDir);
+  const manifestDefaultLocale = manifest.defaultLocale ?? DEFAULT_PREMADE_LOCALE;
 
-  const summary = manifest.templates.find((template) => template.templateId === templateId);
-  return summary ? getLegacyTemplate(summary, premadeDir) : undefined;
+  const entry = manifest.templates.find((template) => template.templateId === templateId);
+  if (!entry) return undefined;
+
+  return resolveV2Template(entry, locale, premadeDir, manifestDefaultLocale);
 }

@@ -1,12 +1,555 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://dmcc.local/schemas/premade-template.schema.json",
-  "title": "DMCC Premade Campaign Template",
-  "description": "Schema for bundled DMCC premade campaign templates stored in public/premades.",
   "type": "object",
-  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "number"
+    },
+    "templateId": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "system": {
+      "type": "string",
+      "enum": [
+        "generic_fantasy_d20",
+        "dnd_srd_5_2_1",
+        "custom"
+      ]
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "starter",
+        "medium",
+        "advanced"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "entities": {
+          "type": "number"
+        },
+        "relations": {
+          "type": "number"
+        },
+        "facts": {
+          "type": "number"
+        },
+        "preparedSessions": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "entities",
+        "relations",
+        "facts",
+        "preparedSessions"
+      ],
+      "additionalProperties": false
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "entityId": {
+            "type": "string"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "importance": {
+            "type": "string",
+            "enum": [
+              "low",
+              "normal",
+              "high",
+              "critical"
+            ]
+          },
+          "visibility": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": {}
+          },
+          "metadata": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {}
+          },
+          "title": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "entityId",
+          "entityType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "relationId": {
+            "type": "string"
+          },
+          "sourceEntityId": {
+            "type": "string"
+          },
+          "targetEntityId": {
+            "type": "string"
+          },
+          "relationType": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": {}
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "relationId",
+          "sourceEntityId",
+          "targetEntityId",
+          "relationType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "factId": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "canon",
+              "dm_secret",
+              "rumor",
+              "lie",
+              "player_theory",
+              "mistake",
+              "retcon",
+              "unknown"
+            ]
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "unconfirmed",
+              "suspected",
+              "likely",
+              "confirmed",
+              "false"
+            ]
+          },
+          "visibility": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": {}
+          },
+          "relatedEntityIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "relatedRelationIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {}
+          },
+          "statement": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "factId",
+          "kind",
+          "confidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "scheduledAt": {
+            "type": "string"
+          },
+          "prep": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": [
+                  "draft",
+                  "ready"
+                ]
+              },
+              "summary": {
+                "type": "string"
+              },
+              "openingPrompt": {
+                "type": "string"
+              },
+              "goals": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sceneIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "involvedEntityIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "availableClueIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "secretsAtRiskIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "expectedConsequenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "checklist": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "priority": {
+                      "type": "string",
+                      "enum": [
+                        "low",
+                        "medium",
+                        "high"
+                      ]
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "done": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "sessionId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "canvases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "canvasId": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "world",
+              "session",
+              "mystery",
+              "location",
+              "characters",
+              "custom"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "entity",
+                    "note",
+                    "group",
+                    "image",
+                    "fact"
+                  ]
+                },
+                "entityId": {
+                  "type": "string"
+                },
+                "factId": {
+                  "type": "string"
+                },
+                "groupId": {
+                  "type": "string"
+                },
+                "metadata": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {}
+                },
+                "title": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string",
+                  "enum": [
+                    "yellow",
+                    "blue",
+                    "green",
+                    "pink",
+                    "purple"
+                  ]
+                },
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "width": {
+                  "type": "number"
+                },
+                "height": {
+                  "type": "number"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "draft",
+                    "ready",
+                    "revealed",
+                    "resolved"
+                  ]
+                },
+                "visibility": {
+                  "type": "string",
+                  "enum": [
+                    "dm",
+                    "public"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "kind",
+                "x",
+                "y"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "sourceNodeId": {
+                  "type": "string"
+                },
+                "targetNodeId": {
+                  "type": "string"
+                },
+                "relationshipId": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string",
+                  "enum": [
+                    "dm",
+                    "public"
+                  ]
+                },
+                "style": {
+                  "type": "string",
+                  "enum": [
+                    "solid",
+                    "dashed",
+                    "secret",
+                    "weak",
+                    "strong"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "sourceNodeId",
+                "targetNodeId"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "canvasId",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "highlightEntityIds": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "featuredFactIds": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "featuredRelationIds": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "defaultLocale": {
+      "type": "string",
+      "enum": [
+        "en",
+        "es",
+        "fr",
+        "de",
+        "it",
+        "pt"
+      ]
+    }
+  },
   "required": [
-    "schema",
     "templateId",
     "version",
     "system",
@@ -22,656 +565,6 @@
     "featuredFactIds",
     "featuredRelationIds"
   ],
-  "properties": {
-    "$schema": {
-      "type": "string"
-    },
-    "templateId": {
-      "type": "string",
-      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-      "examples": ["phandalin-starter", "oracle-triple-eclipse"]
-    },
-    "version": {
-      "type": "string",
-      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
-    },
-    "title": {
-      "type": "string",
-      "minLength": 1
-    },
-    "subtitle": {
-      "type": "string"
-    },
-    "description": {
-      "type": "string",
-      "minLength": 1
-    },
-    "summary": {
-      "type": "string",
-      "minLength": 1
-    },
-    "locale": {
-      "type": "string",
-      "enum": ["es", "en", "fr", "de", "it", "pt"]
-    },
-    "system": {
-      "type": "string",
-      "minLength": 1
-    },
-    "difficulty": {
-      "type": "string",
-      "enum": ["starter", "intermediate", "advanced"]
-    },
-    "recommendedFor": {
-      "type": "string",
-      "minLength": 1
-    },
-    "tags": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "string",
-        "minLength": 1
-      },
-      "uniqueItems": true
-    },
-    "stats": {
-      "$ref": "#/$defs/stats"
-    },
-    "entities": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/entity"
-      }
-    },
-    "relations": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/relation"
-      }
-    },
-    "facts": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/fact"
-      }
-    },
-    "sessions": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/session"
-      }
-    },
-    "canvases": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/canvas"
-      }
-    },
-    "pitch": {
-      "type": "string",
-      "minLength": 1
-    },
-    "learningGoals": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "includedMaterial": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "quickStart": {
-      "$ref": "#/$defs/quickStart"
-    },
-    "highlightEntityIds": {
-      "$ref": "#/$defs/idList"
-    },
-    "featuredFactIds": {
-      "$ref": "#/$defs/idList"
-    },
-    "featuredRelationIds": {
-      "$ref": "#/$defs/idList"
-    }
-  },
-  "$defs": {
-    "stats": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["entities", "relations", "facts", "preparedSessions"],
-      "properties": {
-        "entities": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "relations": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "facts": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "preparedSessions": {
-          "type": "integer",
-          "minimum": 0
-        }
-      }
-    },
-    "quickStart": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["title", "steps"],
-      "properties": {
-        "title": {
-          "type": "string",
-          "minLength": 1
-        },
-        "steps": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      }
-    },
-    "idList": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      },
-      "uniqueItems": true
-    },
-    "visibility": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["kind"],
-      "properties": {
-        "kind": {
-          "type": "string",
-          "enum": ["dm_only", "party"]
-        }
-      }
-    },
-    "importance": {
-      "type": "string",
-      "enum": ["low", "normal", "high", "critical"]
-    },
-    "entity": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "entityId",
-        "entityType",
-        "importance",
-        "visibility"
-      ],
-      "properties": {
-        "entityId": {
-          "type": "string",
-          "pattern": "^ent_tpl_[a-z0-9_]+$"
-        },
-        "entityType": {
-          "type": "string",
-          "enum": [
-            "note",
-            "location",
-            "npc",
-            "faction",
-            "quest",
-            "clue",
-            "secret",
-            "consequence",
-            "scene",
-            "clock",
-            "item",
-            "rumor",
-            "handout",
-            "encounter",
-            "decision"
-          ]
-        },
-        "title": {
-          "type": "string",
-          "minLength": 1
-        },
-        "subtitle": {
-          "type": "string"
-        },
-        "summary": {
-          "type": "string",
-          "minLength": 1
-        },
-        "content": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "importance": {
-          "$ref": "#/$defs/importance"
-        },
-        "visibility": {
-          "$ref": "#/$defs/visibility"
-        },
-        "metadata": {
-          "type": "object",
-          "additionalProperties": true
-        }
-      }
-    },
-    "relation": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "relationId",
-        "sourceEntityId",
-        "targetEntityId",
-        "relationType",
-        "visibility"
-      ],
-      "properties": {
-        "relationId": {
-          "type": "string",
-          "pattern": "^rel_tpl_[a-z0-9_]+$"
-        },
-        "sourceEntityId": {
-          "type": "string",
-          "pattern": "^ent_tpl_[a-z0-9_]+$"
-        },
-        "targetEntityId": {
-          "type": "string",
-          "pattern": "^ent_tpl_[a-z0-9_]+$"
-        },
-        "relationType": {
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": [
-                "appears_in",
-                "located_in",
-                "contains",
-                "lives_in",
-                "works_for",
-                "member_of",
-                "leader_of",
-                "ally_of",
-                "enemy_of",
-                "family_of",
-                "owes_debt_to",
-                "protects",
-                "threatens",
-                "hates",
-                "loves",
-                "fears",
-                "trusts",
-                "suspects",
-                "knows",
-                "knows_partially",
-                "hides",
-                "lies_about",
-                "reveals",
-                "unlocks",
-                "points_to",
-                "confirms",
-                "contradicts",
-                "causes",
-                "depends_on",
-                "blocks",
-                "foreshadows",
-                "transforms_into",
-                "affected_by",
-                "created_by",
-                "relacionado_con"
-              ]
-            },
-            {
-              "type": "string",
-              "pattern": "^custom:[a-zA-Z0-9_]+$"
-            }
-          ]
-        },
-        "description": {
-          "type": "string",
-          "minLength": 1
-        },
-        "visibility": {
-          "$ref": "#/$defs/visibility"
-        }
-      }
-    },
-    "fact": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "factId",
-        "kind",
-        "confidence",
-        "visibility",
-        "relatedEntityIds"
-      ],
-      "properties": {
-        "factId": {
-          "type": "string",
-          "pattern": "^fact_tpl_[a-z0-9_]+$"
-        },
-        "statement": {
-          "type": "string",
-          "minLength": 1
-        },
-        "kind": {
-          "type": "string",
-          "enum": [
-            "canon",
-            "dm_secret",
-            "rumor",
-            "lie",
-            "player_theory",
-            "mistake",
-            "retcon",
-            "unknown"
-          ]
-        },
-        "confidence": {
-          "type": "string",
-          "enum": [
-            "unconfirmed",
-            "suspected",
-            "likely",
-            "confirmed",
-            "false"
-          ]
-        },
-        "visibility": {
-          "$ref": "#/$defs/visibility"
-        },
-        "relatedEntityIds": {
-          "$ref": "#/$defs/idList"
-        }
-      }
-    },
-    "session": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["sessionId", "prep"],
-      "properties": {
-        "sessionId": {
-          "type": "string",
-          "pattern": "^sess_tpl_[a-z0-9_]+$"
-        },
-        "title": {
-          "type": "string",
-          "minLength": 1
-        },
-        "prep": {
-          "$ref": "#/$defs/sessionPrep"
-        }
-      }
-    },
-    "sessionPrep": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "state",
-        "sceneIds",
-        "involvedEntityIds",
-        "availableClueIds",
-        "secretsAtRiskIds",
-        "expectedConsequenceIds"
-      ],
-      "properties": {
-        "state": {
-          "type": "string",
-          "enum": ["draft", "ready"]
-        },
-        "summary": {
-          "type": "string",
-          "minLength": 1
-        },
-        "openingPrompt": {
-          "type": "string"
-        },
-        "goals": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "sceneIds": {
-          "$ref": "#/$defs/idList"
-        },
-        "involvedEntityIds": {
-          "$ref": "#/$defs/idList"
-        },
-        "availableClueIds": {
-          "$ref": "#/$defs/idList"
-        },
-        "secretsAtRiskIds": {
-          "$ref": "#/$defs/idList"
-        },
-        "expectedConsequenceIds": {
-          "$ref": "#/$defs/idList"
-        },
-        "checklist": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/checklistItem"
-          }
-        },
-        "notes": {
-          "type": "string"
-        }
-      }
-    },
-    "checklistItem": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["id", "priority"],
-      "properties": {
-        "id": {
-          "type": "string",
-          "minLength": 1
-        },
-        "label": {
-          "type": "string",
-          "minLength": 1
-        },
-        "priority": {
-          "type": "string",
-          "enum": ["high", "medium", "low"]
-        }
-      }
-    },
-    "canvas": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["canvasId", "kind", "nodes", "edges"],
-      "properties": {
-        "canvasId": {
-          "type": "string",
-          "pattern": "^cvs_tpl_[a-z0-9_]+$"
-        },
-        "title": {
-          "type": "string",
-          "minLength": 1
-        },
-        "kind": {
-          "type": "string",
-          "enum": ["world", "session", "mystery", "location", "characters", "custom"]
-        },
-        "description": {
-          "type": "string"
-        },
-        "nodes": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/canvasNode"
-          }
-        },
-        "edges": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/canvasEdge"
-          }
-        }
-      }
-    },
-    "canvasNode": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["id", "kind", "x", "y"],
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^(node|note|grp)_tpl_[a-z0-9_]+$"
-        },
-        "kind": {
-          "type": "string",
-          "enum": ["entity", "note", "group", "image", "fact"]
-        },
-        "entityId": {
-          "type": "string",
-          "pattern": "^ent_tpl_[a-z0-9_]+$"
-        },
-        "factId": {
-          "type": "string",
-          "pattern": "^fact_tpl_[a-z0-9_]+$"
-        },
-        "title": {
-          "type": "string"
-        },
-        "text": {
-          "type": "string"
-        },
-        "x": {
-          "type": "number"
-        },
-        "y": {
-          "type": "number"
-        },
-        "width": {
-          "type": "number",
-          "exclusiveMinimum": 0
-        },
-        "height": {
-          "type": "number",
-          "exclusiveMinimum": 0
-        },
-        "status": {
-          "type": "string"
-        },
-        "visibility": {
-          "type": "string",
-          "enum": ["public", "dm"]
-        },
-        "color": {
-          "type": "string"
-        },
-        "groupId": {
-          "type": "string"
-        },
-        "metadata": {
-          "type": "object",
-          "additionalProperties": true
-        }
-      },
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "kind": {
-                "const": "entity"
-              }
-            },
-            "required": ["kind"]
-          },
-          "then": {
-            "required": ["entityId"]
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "kind": {
-                "const": "note"
-              }
-            },
-            "required": ["kind"]
-          },
-          "then": {
-            "anyOf": [
-              {
-                "required": ["title"]
-              },
-              {
-                "required": ["text"]
-              }
-            ]
-          }
-        }
-      ]
-    },
-    "canvasEdge": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["id", "sourceNodeId", "targetNodeId"],
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^(edge_tpl|ec|ei)_[a-z0-9_]+$"
-        },
-        "sourceNodeId": {
-          "type": "string",
-          "pattern": "^(node|note|grp)_tpl_[a-z0-9_]+$"
-        },
-        "targetNodeId": {
-          "type": "string",
-          "pattern": "^(node|note|grp)_tpl_[a-z0-9_]+$"
-        },
-        "label": {
-          "type": "string"
-        },
-        "relationshipId": {
-          "type": "string",
-          "pattern": "^rel_tpl_[a-z0-9_]+$"
-        },
-        "status": {
-          "type": "string"
-        },
-        "style": {
-          "type": "string"
-        },
-        "visibility": {
-          "type": "string",
-          "enum": ["public", "dm"]
-        }
-      },
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "status": {
-                "const": "domain"
-              }
-            },
-            "required": ["status"]
-          },
-          "then": {
-            "required": ["relationshipId"]
-          }
-        }
-      ]
-    }
-  }
+  "additionalProperties": false,
+  "$id": "https://dmcc.local/schemas/premade/template/v1.json"
 }
