@@ -217,9 +217,6 @@ DMCC works best for campaigns with continuity and moving parts:
 
 It is less about replacing your creativity and more about making sure your campaign can grow without collapsing under its own notes.
 
-## Documentation
-
-Current product and engineering references live under [`docs/`](docs/README.md). Historical PR reviews, dated implementation plans, and SDD task reports are archived under `docs/archive/` and should not be treated as current implementation contracts without checking the live source.
 
 ## Getting started
 
