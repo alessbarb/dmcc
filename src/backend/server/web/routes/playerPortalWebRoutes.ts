@@ -6,6 +6,7 @@ import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
 import { playerPortalResources, playerPortalStates } from "../../../db/playerPortalSchema.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
+import { buildKnowledgeAccessIndex, playerCanAccessKnowledge } from "../playerKnowledgeProjection.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { requireCampaignMembership } from "../webAccess.js";
 import type { WebUser } from "../webSession.js";
@@ -105,9 +106,9 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
   const profile = await playerProfileFor(user.userId, campaignId);
   if (!profile) throw Object.assign(new Error("Active player profile required"), { statusCode: 403 });
 
-  const [campaign, grants, allEntities, allFacts, allRelations, notes, proposals, allObjectives, allClues, stateRow, resources, sessions, liveTables, notifications] = await Promise.all([
+  const [accessIndex, campaign, allEntities, allFacts, allRelations, notes, proposals, allObjectives, allClues, stateRow, resources, sessions, liveTables, notifications] = await Promise.all([
+    buildKnowledgeAccessIndex(campaignId),
     db.select().from(schema.campaigns).where(eq(schema.campaigns.campaignId, campaignId)).limit(1),
-    db.select().from(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, campaignId)),
     db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, campaignId)),
     db.select().from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId)),
     db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId)),
@@ -122,20 +123,20 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
     db.select().from(schema.notifications).where(and(eq(schema.notifications.userId, user.userId), isNull(schema.notifications.readAt))).orderBy(desc(schema.notifications.createdAt)),
   ]);
 
-  const allowed = (targetType: string, targetId: string) => grants.some((grant) =>
-    grant.targetType === targetType && grant.targetId === targetId && (
-      grant.scope === "public" || grant.scope === "all_players" ||
-      (grant.scope === "specific_user" && grant.userId === user.userId) ||
-      (grant.scope === "specific_player" && grant.playerId === profile.profileId)
-    ));
+  const allowed = (targetType: "entity" | "fact" | "relation" | "clue" | "objective", targetId: string) => playerCanAccessKnowledge(
+    accessIndex,
+    targetType,
+    targetId,
+    user.userId,
+    profile.profileId,
+    profile.linkedCharacterId,
+  );
 
-  const entities = allEntities.filter((entity) => allowed("entity", entity.entityId));
-  const facts = allFacts.filter((fact) => allowed("fact", fact.factId) && fact.kind !== "dm_secret");
+  const entities = allEntities.filter((entity) => entity.status !== "archived" && allowed("entity", entity.entityId));
+  const facts = allFacts.filter((fact) => fact.status !== "archived" && fact.kind !== "dm_secret" && allowed("fact", fact.factId));
   const relations = allRelations.filter((relation) => allowed("relation", relation.relationId));
-  const objectives = allObjectives.filter((objective) => objective.status !== "archived" && (
-    objective.visibilityScope === "public" || objective.visibilityScope === "all_players" || objective.playerId === profile.profileId
-  ));
-  const clues = allClues.filter((clue) => clue.status !== "archived" && clue.visibilityScope !== "dm_only");
+  const objectives = allObjectives.filter((objective) => objective.status !== "archived" && allowed("objective", objective.objectiveId));
+  const clues = allClues.filter((clue) => clue.status !== "archived" && allowed("clue", clue.clueId));
   const history = sessions.filter((session) => Boolean(session.recapPublic)).map((session) => ({
     sessionId: session.sessionId,
     number: session.number,
