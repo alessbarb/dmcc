@@ -137,7 +137,7 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
 }));
 
 export const domainEvents = pgTable("domain_events", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   sequence: integer("sequence").notNull(),
   eventId: text("event_id").notNull(),
   type: text("type").notNull(),
@@ -155,7 +155,7 @@ export const domainEvents = pgTable("domain_events", {
 }));
 
 export const commandIndex = pgTable("command_index", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   commandId: text("command_id").notNull(),
   commandHash: text("command_hash").notNull(),
   firstSequence: integer("first_sequence").notNull(),
@@ -167,14 +167,14 @@ export const commandIndex = pgTable("command_index", {
 }));
 
 export const campaignSnapshots = pgTable("campaign_snapshots", {
-  campaignId: text("campaign_id").primaryKey(),
+  campaignId: text("campaign_id").primaryKey().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   sequence: integer("sequence").notNull(),
   snapshot: jsonb("snapshot").notNull(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export const campaignEntities = pgTable("campaign_entities", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   entityId: text("entity_id").notNull(),
   type: text("type").notNull(),
   name: text("name").notNull(),
@@ -189,7 +189,7 @@ export const campaignEntities = pgTable("campaign_entities", {
 }));
 
 export const campaignFacts = pgTable("campaign_facts", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   factId: text("fact_id").notNull(),
   subjectEntityId: text("subject_entity_id").notNull(),
   kind: text("kind").notNull(),
@@ -205,7 +205,7 @@ export const campaignFacts = pgTable("campaign_facts", {
 }));
 
 export const campaignRelations = pgTable("campaign_relations", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   relationId: text("relation_id").notNull(),
   sourceEntityId: text("source_entity_id").notNull(),
   targetEntityId: text("target_entity_id").notNull(),
