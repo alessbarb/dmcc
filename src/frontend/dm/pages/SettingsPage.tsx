@@ -18,6 +18,12 @@ export interface SettingsPageProps {
   addToast?: (msg: string, kind?: ToastKind) => void;
 }
 
+function runSettingsAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 export function SettingsPage(props: SettingsPageProps = {}) {
   const store = useCampaignStore();
   const { addToast: toastAdd } = useToast();
@@ -30,14 +36,16 @@ export function SettingsPage(props: SettingsPageProps = {}) {
   const [lastMarkdownExport, setLastMarkdownExport] = useState<any | null>(null);
 
   const handleCopyExportPath = (path: string) => {
-    navigator.clipboard.writeText(path);
-    setCopiedExportPath(true);
-    addToast(t("settings.copyExportPathSuccess"), "success");
-    setTimeout(() => setCopiedExportPath(false), 2000);
+    runSettingsAction((async () => {
+      await navigator.clipboard.writeText(path);
+      setCopiedExportPath(true);
+      addToast(t("settings.copyExportPathSuccess"), "success");
+      setTimeout(() => setCopiedExportPath(false), 2000);
+    })(), "No se pudo copiar la ruta de exportación.");
   };
 
 
-const handleDownloadMarkdown = async () => {
+  const handleDownloadMarkdown = async () => {
     if (!lastMarkdownExport?.downloadUrl) return;
     try {
       const res = await apiFetch(lastMarkdownExport.downloadUrl);
@@ -74,13 +82,15 @@ const handleDownloadMarkdown = async () => {
             Crea puntos de recuperación de la campaña con registros históricos y metadatos de restauración.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <button className="btn btn-primary" onClick={async () => {
-              try {
-                await createBackup();
-                addToast(t("settings.backupSuccess"), "success");
-              } catch {
-                addToast(t("settings.backupError"), "error");
-              }
+            <button className="btn btn-primary" onClick={() => {
+              runSettingsAction((async () => {
+                try {
+                  await createBackup();
+                  addToast(t("settings.backupSuccess"), "success");
+                } catch {
+                  addToast(t("settings.backupError"), "error");
+                }
+              })(), "No se pudo crear la copia de seguridad.");
             }}>
               <RotateCcw size={16} /> {t("settings.createBackup")}
             </button>
@@ -93,25 +103,29 @@ const handleDownloadMarkdown = async () => {
             Exporta los registros de la campaña a formatos estructurados para revisión, archivo o documentación.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <button className="btn btn-secondary" onClick={async () => {
-              try {
-                await exportJson();
-                addToast(t("settings.exportJsonSuccess"), "success");
-              } catch {
-                addToast(t("settings.exportJsonError"), "error");
-              }
+            <button className="btn btn-secondary" onClick={() => {
+              runSettingsAction((async () => {
+                try {
+                  await exportJson();
+                  addToast(t("settings.exportJsonSuccess"), "success");
+                } catch {
+                  addToast(t("settings.exportJsonError"), "error");
+                }
+              })(), "No se pudo exportar la campaña en JSON.");
             }}>
               <Download size={16} /> {t("settings.exportCampaignJson")}
             </button>
 
-            <button className="btn btn-secondary" onClick={async () => {
-              try {
-                const result = await exportMarkdown();
-                setLastMarkdownExport(result);
-                addToast(t("settings.exportMarkdownSuccess", { count: result.fileCount ?? "?" }), "success");
-              } catch {
-                addToast(t("settings.exportMarkdownError"), "error");
-              }
+            <button className="btn btn-secondary" onClick={() => {
+              runSettingsAction((async () => {
+                try {
+                  const result = await exportMarkdown();
+                  setLastMarkdownExport(result);
+                  addToast(t("settings.exportMarkdownSuccess", { count: result.fileCount ?? "?" }), "success");
+                } catch {
+                  addToast(t("settings.exportMarkdownError"), "error");
+                }
+              })(), "No se pudo exportar la campaña en Markdown.");
             }}>
               <Upload size={16} /> {t("settings.exportCampaignMarkdown")}
             </button>
@@ -131,7 +145,12 @@ const handleDownloadMarkdown = async () => {
                     Copiar ruta
                   </button>
                   {lastMarkdownExport.downloadUrl && (
-                    <button className="btn btn-primary btn-sm" onClick={handleDownloadMarkdown}>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => {
+                        runSettingsAction(handleDownloadMarkdown(), "No se pudo descargar el Markdown.");
+                      }}
+                    >
                       <Download size={14} /> {t("settings.downloadFile", { file: lastMarkdownExport.primaryFile })}
                     </button>
                   )}
