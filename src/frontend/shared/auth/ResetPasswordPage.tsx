@@ -19,27 +19,31 @@ export function ResetPasswordPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const submit = async (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (password !== confirmPassword) {
-      setError(t("resetPassword.errorMismatch"));
-      return;
-    }
-    if (password.length < 12) {
-      setError(t("resetPassword.errorTooShort"));
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    setMessage(null);
-    try {
-      await resetPassword(token.trim(), password);
-      setMessage(t("resetPassword.successMessage"));
-    } catch (err: any) {
-      setError(err.message || t("resetPassword.errorGeneric"));
-    } finally {
-      setLoading(false);
-    }
+    const run = async () => {
+      if (password !== confirmPassword) {
+        setError(t("resetPassword.errorMismatch"));
+        return;
+      }
+      if (password.length < 12) {
+        setError(t("resetPassword.errorTooShort"));
+        return;
+      }
+      setLoading(true);
+      setError(null);
+      setMessage(null);
+      try {
+        await resetPassword(token.trim(), password);
+        setMessage(t("resetPassword.successMessage"));
+      } catch (err: unknown) {
+        const errMsg = err instanceof Error ? err.message : String(err);
+        setError(errMsg || t("resetPassword.errorGeneric"));
+      } finally {
+        setLoading(false);
+      }
+    };
+    void run();
   };
 
   return (
@@ -63,7 +67,7 @@ export function ResetPasswordPage() {
             </p>
           </div>
 
-          <form onSubmit={submit} className="join-portal-form">
+          <form onSubmit={handleSubmit} className="join-portal-form">
             <div className="form-group">
               <label className="form-label" htmlFor="rp-token">{t("resetPassword.tokenLabel")}</label>
               <input
@@ -126,7 +130,7 @@ export function ResetPasswordPage() {
             </button>
           </form>
 
-          <button type="button" className="join-portal-back-btn" onClick={() => navigate({ to: "/dm/login" })}>
+          <button type="button" className="join-portal-back-btn" onClick={() => { void navigate({ to: "/dm/login" }); }}>
             <ArrowLeft size={14} style={{ marginRight: "6px" }} />
             {t("resetPassword.backToLogin")}
           </button>

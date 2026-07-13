@@ -14,25 +14,29 @@ export function ForgotPasswordPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const submit = async (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!email.trim()) return;
-    setLoading(true);
-    setError(null);
-    setMessage(null);
-    try {
-      const result = await requestPasswordReset(email.trim());
-      if (result.resetToken) {
-        // Local/dev mode: token is returned directly, skip email step.
-        await navigate({ to: "/reset-password/$token", params: { token: result.resetToken } });
-        return;
+    const run = async () => {
+      if (!email.trim()) return;
+      setLoading(true);
+      setError(null);
+      setMessage(null);
+      try {
+        const result = await requestPasswordReset(email.trim());
+        if (result.resetToken) {
+          // Local/dev mode: token is returned directly, skip email step.
+          await navigate({ to: "/reset-password/$token", params: { token: result.resetToken } });
+          return;
+        }
+        setMessage(t("forgotPassword.successMessage"));
+      } catch (err: unknown) {
+        const errMsg = err instanceof Error ? err.message : String(err);
+        setError(errMsg || t("forgotPassword.errorGeneric"));
+      } finally {
+        setLoading(false);
       }
-      setMessage(t("forgotPassword.successMessage"));
-    } catch (err: any) {
-      setError(err.message || t("forgotPassword.errorGeneric"));
-    } finally {
-      setLoading(false);
-    }
+    };
+    void run();
   };
 
   return (
@@ -56,7 +60,7 @@ export function ForgotPasswordPage() {
             </p>
           </div>
 
-          <form onSubmit={submit} className="join-portal-form">
+          <form onSubmit={handleSubmit} className="join-portal-form">
             <div className="form-group">
               <label className="form-label" htmlFor="fp-email">{t("forgotPassword.emailLabel")}</label>
               <input
@@ -84,7 +88,7 @@ export function ForgotPasswordPage() {
             </button>
           </form>
 
-          <button type="button" className="join-portal-back-btn" onClick={() => navigate({ to: "/dm/login" })}>
+          <button type="button" className="join-portal-back-btn" onClick={() => { void navigate({ to: "/dm/login" }); }}>
             <ArrowLeft size={14} style={{ marginRight: "6px" }} />
             {t("forgotPassword.backToLogin")}
           </button>
