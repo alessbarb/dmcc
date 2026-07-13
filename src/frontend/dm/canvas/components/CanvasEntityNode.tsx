@@ -5,10 +5,7 @@ import type { Entity, Session } from "../../../shared/stores/campaignStore.js";
 import { AlertTriangle, CheckCircle2, Eye, FileText, KeyRound, RefreshCcw, StickyNote, Zap } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
-import { connectCanvasNodes } from "../services/connectCanvasNodes.js";
-import { placeEntityOnCanvas } from "../services/placeEntityOnCanvas.js";
 import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
-import type { CanvasNode } from "@core/domain/canvas/types.js";
 
 
 export interface CanvasEntityNodeProps {
@@ -50,10 +47,6 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
   const {
     campaignState,
     updateEntity,
-    createEntity,
-    placeNodeOnCanvas,
-    addEdgeToCanvas,
-    createRelation,
     recordSessionEvent
   } = useCampaignStore();
 

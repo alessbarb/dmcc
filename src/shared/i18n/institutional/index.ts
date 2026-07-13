@@ -1,5 +1,5 @@
 import { FALLBACK_LOCALE, getDictionary } from "../locales.js";
-import type { SupportedLocale } from "../locales.js";
+import type { SupportedLocale } from "../localeTypes.js";
 import type { InstitutionalDictionaryContent, InstitutionalLocaleContent, InstitutionalPageContent, InstitutionalPageKey } from "./types.js";
 
 export type { InstitutionalDictionaryContent, InstitutionalLocaleContent, InstitutionalPageBody, InstitutionalPageContent, InstitutionalPageKey, InstitutionalSection } from "./types.js";

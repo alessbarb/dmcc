@@ -1,3 +1,4 @@
+import "./setupEnv.js";
 import { beforeEach } from "vitest";
 import { db } from "../src/backend/db/client.js";
 import { campaignMessageReads, campaignMessages } from "../src/backend/db/messagingSchema.js";

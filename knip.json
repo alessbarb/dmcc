@@ -1,0 +1,37 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "src/frontend/main.tsx",
+    "src/backend/entry/index.ts",
+    "scripts/**/*.{js,mjs,ts}",
+    "*.config.{js,ts}",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "vitest.benchmark.config.ts",
+    "playwright.config.ts",
+    "eslint.config.js",
+    "tests/**/*.{ts,tsx}"
+  ],
+  "project": [
+    "src/**/*.{ts,tsx}",
+    "scripts/**/*.{js,mjs,ts}",
+    "tests/**/*.{ts,tsx}",
+    "*.config.{js,ts}",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "vitest.benchmark.config.ts",
+    "playwright.config.ts",
+    "eslint.config.js"
+  ],
+  "ignore": [
+    ".remember/**",
+    ".superpowers/**",
+    "release/**",
+    "dist/**",
+    "test-results/**"
+  ],
+  "ignoreIssues": {
+    "src/core/domain/**": ["exports", "types", "nsExports", "nsTypes", "enumMembers", "namespaceMembers"],
+    "src/shared/**": ["exports", "types", "nsExports", "nsTypes", "enumMembers", "namespaceMembers"]
+  }
+}

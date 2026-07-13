@@ -6,11 +6,12 @@ import { it } from "./dictionaries/it.js";
 import { pt } from "./dictionaries/pt.js";
 import { withCampaignMessagingTranslations } from "./campaignMessaging.js";
 import type { TranslationDictionary } from "./types.js";
+import type { SupportedLocale } from "./localeTypes.js";
 
 export const FALLBACK_LOCALE = "en" as const;
 
 export interface LocaleDefinition {
-  code: string;
+  code: SupportedLocale;
   label: string;
   nativeLabel: string;
   dictionary: TranslationDictionary;
@@ -53,9 +54,7 @@ export const LOCALES = {
     nativeLabel: "Português",
     dictionary: withCampaignMessagingTranslations(pt, "pt"),
   },
-} satisfies Record<string, LocaleDefinition>;
-
-export type SupportedLocale = keyof typeof LOCALES;
+} satisfies Record<SupportedLocale, LocaleDefinition>;
 
 export type LocaleOption = Omit<LocaleDefinition, "dictionary"> & {
   code: SupportedLocale;

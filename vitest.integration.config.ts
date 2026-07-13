@@ -12,9 +12,8 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    include: ["tests/**/*.test.ts"],
-    exclude: ["**/*.integration.test.ts"],
-    setupFiles: ["tests/setupEnv.ts"],
+    include: ["tests/**/*.integration.test.ts"],
+    setupFiles: ["tests/setup.ts"],
     fileParallelism: false,
     maxWorkers: 1,
     minWorkers: 1,

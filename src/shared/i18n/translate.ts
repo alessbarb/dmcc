@@ -1,5 +1,5 @@
 import type { TranslationKey } from "./types.js";
-import type { SupportedLocale } from "./locales.js";
+import type { SupportedLocale } from "./localeTypes.js";
 import { FALLBACK_LOCALE, dictionaries, isSupportedLocale } from "./locales.js";
 import type { InterpolationParams } from "./interpolation.js";
 import { interpolate } from "./interpolation.js";

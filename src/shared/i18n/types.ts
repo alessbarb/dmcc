@@ -1,6 +1,6 @@
 import type { InstitutionalDictionaryContent } from "./institutional/types.js";
 import type { en } from "./dictionaries/en.js";
-export type { SupportedLocale } from "./locales.js";
+export type { SupportedLocale } from "./localeTypes.js";
 
 export type TranslationDictionary = DeepStringRecord<Omit<typeof en, "institutional">> & {
   readonly institutional: InstitutionalDictionaryContent;
