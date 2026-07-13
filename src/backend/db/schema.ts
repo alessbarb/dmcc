@@ -1,4 +1,3 @@
-import { sql } from "drizzle-orm";
 import { pgTable, text, timestamp, integer, jsonb, primaryKey, uniqueIndex } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -15,10 +14,12 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   lastLoginAt: timestamp("last_login_at"),
   disabledAt: timestamp("disabled_at"),
-}, (table) => ({
-  emailWorkspacePartitionUq: uniqueIndex("uq_user_email_workspace_partition").on(table.emailNormalized, table.workspacePartitionId),
-  emailHashWorkspacePartitionUq: uniqueIndex("uq_user_email_hash_workspace_partition").on(table.emailHash, table.workspacePartitionId),
-}));
+}, (table) => {
+  return {
+    emailWorkspacePartitionUq: uniqueIndex("uq_user_email_workspace_partition").on(table.emailNormalized, table.workspacePartitionId),
+    emailHashWorkspacePartitionUq: uniqueIndex("uq_user_email_hash_workspace_partition").on(table.emailHash, table.workspacePartitionId),
+  };
+});
 
 export const authSessions = pgTable("auth_sessions", {
   sessionIdHash: text("session_id_hash").primaryKey(),
@@ -49,7 +50,11 @@ export const workspaceMemberships = pgTable("workspace_memberships", {
   userId: text("user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   role: text("role").notNull().default("member"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.workspaceId, table.userId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.workspaceId, table.userId] }),
+  };
+});
 
 export const campaigns = pgTable("campaigns", {
   campaignId: text("campaign_id").primaryKey(),
@@ -70,7 +75,11 @@ export const campaignMemberships = pgTable("campaign_memberships", {
   playerId: text("player_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   revokedAt: timestamp("revoked_at"),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.userId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.userId] }),
+  };
+});
 
 export const playerProfiles = pgTable("player_profiles", {
   profileId: text("profile_id").primaryKey(),
@@ -111,7 +120,11 @@ export const recoveryCodes = pgTable("recovery_codes", {
   codeHash: text("code_hash").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   usedAt: timestamp("used_at"),
-}, (table) => ({ pk: primaryKey({ columns: [table.userId, table.codeHash] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.userId, table.codeHash] }),
+  };
+});
 
 export const passwordResetTokens = pgTable("password_reset_tokens", {
   userId: text("user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
@@ -119,7 +132,11 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   expiresAt: timestamp("expires_at").notNull(),
   usedAt: timestamp("used_at"),
-}, (table) => ({ pk: primaryKey({ columns: [table.userId, table.tokenHash] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.userId, table.tokenHash] }),
+  };
+});
 
 export const domainEvents = pgTable("domain_events", {
   campaignId: text("campaign_id").notNull(),
@@ -135,7 +152,11 @@ export const domainEvents = pgTable("domain_events", {
   previousHash: text("previous_hash"),
   hash: text("hash").notNull(),
   schemaVersion: integer("schema_version").notNull(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.sequence] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.sequence] }),
+  };
+});
 
 export const commandIndex = pgTable("command_index", {
   campaignId: text("campaign_id").notNull(),
@@ -145,7 +166,11 @@ export const commandIndex = pgTable("command_index", {
   lastSequence: integer("last_sequence").notNull(),
   resultJson: jsonb("result_json"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.commandId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.commandId] }),
+  };
+});
 
 export const campaignSnapshots = pgTable("campaign_snapshots", {
   campaignId: text("campaign_id").primaryKey(),
@@ -165,7 +190,11 @@ export const campaignEntities = pgTable("campaign_entities", {
   importance: text("importance").notNull().default("normal"),
   tags: jsonb("tags").notNull().default([]),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.entityId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.entityId] }),
+  };
+});
 
 export const campaignFacts = pgTable("campaign_facts", {
   campaignId: text("campaign_id").notNull(),
@@ -179,7 +208,11 @@ export const campaignFacts = pgTable("campaign_facts", {
   status: text("status").notNull().default("active"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.factId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.factId] }),
+  };
+});
 
 export const campaignRelations = pgTable("campaign_relations", {
   campaignId: text("campaign_id").notNull(),
@@ -191,7 +224,11 @@ export const campaignRelations = pgTable("campaign_relations", {
   dmSummary: text("dm_summary"),
   visibility: text("visibility").notNull().default("dm_only"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.relationId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.relationId] }),
+  };
+});
 
 export const visibilityGrants = pgTable("visibility_grants", {
   campaignId: text("campaign_id").notNull(),
@@ -201,17 +238,11 @@ export const visibilityGrants = pgTable("visibility_grants", {
   userId: text("user_id"),
   playerId: text("player_id"),
   grantedAt: timestamp("granted_at").notNull().defaultNow(),
-}, (table) => ({
-  commonGrantUq: uniqueIndex("uq_visibility_grants_common")
-    .on(table.campaignId, table.targetType, table.targetId, table.scope)
-    .where(sql`${table.scope} NOT IN ('specific_player', 'specific_user')`),
-  specificPlayerGrantUq: uniqueIndex("uq_visibility_grants_specific_player")
-    .on(table.campaignId, table.targetType, table.targetId, table.scope, table.playerId)
-    .where(sql`${table.scope} = 'specific_player'`),
-  specificUserGrantUq: uniqueIndex("uq_visibility_grants_specific_user")
-    .on(table.campaignId, table.targetType, table.targetId, table.scope, table.userId)
-    .where(sql`${table.scope} = 'specific_user'`),
-}));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.targetType, table.targetId, table.scope] }),
+  };
+});
 
 export const campaignSessions = pgTable("campaign_sessions", {
   campaignId: text("campaign_id").notNull(),
@@ -225,7 +256,11 @@ export const campaignSessions = pgTable("campaign_sessions", {
   playedDate: text("played_date"),
   notes: text("notes"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.sessionId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.sessionId] }),
+  };
+});
 
 export const campaignScenes = pgTable("campaign_scenes", {
   campaignId: text("campaign_id").notNull(),
@@ -235,7 +270,11 @@ export const campaignScenes = pgTable("campaign_scenes", {
   orderIndex: integer("order_index").notNull().default(0),
   status: text("status").notNull().default("active"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.sceneId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.sceneId] }),
+  };
+});
 
 export const campaignObjectives = pgTable("campaign_objectives", {
   campaignId: text("campaign_id").notNull(),
@@ -250,7 +289,11 @@ export const campaignObjectives = pgTable("campaign_objectives", {
   sourceType: text("source_type").notNull().default("dm"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.objectiveId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.objectiveId] }),
+  };
+});
 
 export const campaignClues = pgTable("campaign_clues", {
   campaignId: text("campaign_id").notNull(),
@@ -264,7 +307,11 @@ export const campaignClues = pgTable("campaign_clues", {
   revealedInSessionId: text("revealed_in_session_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.clueId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.clueId] }),
+  };
+});
 
 export const characters = pgTable("characters", {
   campaignId: text("campaign_id").notNull(),
@@ -277,7 +324,11 @@ export const characters = pgTable("characters", {
   dmSummary: text("dm_summary"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.characterId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.characterId] }),
+  };
+});
 
 export const liveTables = pgTable("live_tables", {
   liveTableId: text("live_table_id").primaryKey(),
@@ -322,7 +373,11 @@ export const campaignNotes = pgTable("campaign_notes", {
   targetSessionId: text("target_session_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.noteId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.noteId] }),
+  };
+});
 
 export const playerProposals = pgTable("player_proposals", {
   campaignId: text("campaign_id").notNull(),
@@ -335,7 +390,11 @@ export const playerProposals = pgTable("player_proposals", {
   processedBy: text("processed_by").references(() => users.userId, { onDelete: "set null" }),
   processedAt: timestamp("processed_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.proposalId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.proposalId] }),
+  };
+});
 
 export const activityFeed = pgTable("activity_feed", {
   campaignId: text("campaign_id").notNull(),
@@ -344,7 +403,11 @@ export const activityFeed = pgTable("activity_feed", {
   content: jsonb("content").notNull(),
   actorUserId: text("actor_user_id").references(() => users.userId, { onDelete: "set null" }),
   occurredAt: timestamp("occurred_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.activityId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.activityId] }),
+  };
+});
 
 export const notifications = pgTable("notifications", {
   notificationId: text("notification_id").primaryKey(),
@@ -364,4 +427,8 @@ export const attachments = pgTable("attachments", {
   size: integer("size").notNull(),
   visibilityScope: text("visibility_scope").notNull().default("dm_only"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => ({ pk: primaryKey({ columns: [table.campaignId, table.attachmentId] }) }));
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.campaignId, table.attachmentId] }),
+  };
+});
