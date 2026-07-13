@@ -17,6 +17,12 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { PremadeImportDialog, type PremadeImportMode } from "../../shared/components/PremadeImportDialog.js";
 
+function runPremadePreviewAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 const ENTITY_TYPE_LABEL_KEYS: Record<string, any> = {
   player_character: "premadePreview.entityType.playerCharacter",
   npc: "premadePreview.entityType.npc",
@@ -153,7 +159,7 @@ export function PremadeCampaignPreviewPage() {
       setAuthChecked(true);
     };
 
-    void init();
+    runPremadePreviewAction(init(), "No se pudo inicializar la vista previa de aventura preparada.");
   }, [fetchCampaigns, fetchPremadeCampaignTemplate, navigate, templateId]);
 
   const template = activePremadeTemplate?.templateId === templateId ? activePremadeTemplate : null;
@@ -243,7 +249,13 @@ export function PremadeCampaignPreviewPage() {
           <Sparkles size={28} />
           <h1>{t("premadePreview.notFoundTitle")}</h1>
           <p>{error || t("premadePreview.notFoundDesc")}</p>
-          <button type="button" className="btn btn-secondary" onClick={() => navigate({ to: "/dm" })}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => {
+              runPremadePreviewAction(navigate({ to: "/dm" }), "No se pudo volver a campañas.");
+            }}
+          >
             <ArrowLeft size={14} />
             {t("premadePreview.backToCampaigns")}
           </button>
@@ -255,7 +267,13 @@ export function PremadeCampaignPreviewPage() {
   return (
     <div className="premade-preview-page">
       <header className="premade-preview-hero">
-        <button type="button" className="btn btn-secondary btn-sm" onClick={() => navigate({ to: "/dm" })}>
+        <button
+          type="button"
+          className="btn btn-secondary btn-sm"
+          onClick={() => {
+            runPremadePreviewAction(navigate({ to: "/dm" }), "No se pudo volver a campañas.");
+          }}
+        >
           <ArrowLeft size={14} />
           {t("premadePreview.backToCampaigns")}
         </button>
@@ -495,7 +513,13 @@ export function PremadeCampaignPreviewPage() {
         importing={importing}
         error={importError}
         onClose={() => { if (!importing) setImportDialogOpen(false); }}
-        onOpenExisting={(campaignId) => { setImportDialogOpen(false); navigate({ to: `/campaigns/${campaignId}/command-center` }); }}
+        onOpenExisting={(campaignId) => {
+          setImportDialogOpen(false);
+          runPremadePreviewAction(
+            navigate({ to: `/campaigns/${campaignId}/command-center` }),
+            "No se pudo abrir la campaña existente.",
+          );
+        }}
         onConfirm={(options) => handleCreateCopy(options)}
       />
     </div>
