@@ -166,6 +166,7 @@ export function CampaignShell() {
       "g d": () => navigate({ to: `/campaigns/${campaignId}/command-center` }),
       "g s": () => navigate({ to: `/campaigns/${campaignId}/session` }),
       "g e": () => navigate({ to: `/campaigns/${campaignId}/entities` }),
+      "g c": () => navigate({ to: `/campaigns/${campaignId}/canvas` }),
       "g b": () => navigate({ to: `/campaigns/${campaignId}/boards` }),
       "/": () => navigate({ to: `/campaigns/${campaignId}/search` }),
       n: () => setIsEntityModalOpen(true),
@@ -304,7 +305,7 @@ export function CampaignShell() {
     navigate({ to: `/campaigns/${campaignId}/${path}` });
   };
 
-  const dockPriority = ["command-center", "session", "messages"];
+  const dockPriority = ["command-center", "session", "canvas", "entities"];
   const dockNavItems = [
     ...dockPriority.map((path) => navItems.find((item) => item.path === path)).filter(Boolean),
     ...navItems.filter((item) => !dockPriority.includes(item.path)),
