@@ -1,4 +1,4 @@
-import { entitySchema } from "./types.js";
+import { entitySchema, type Entity, type EntityType, type EntityImportance } from "./types.js";
 import { validatePlayerCharacterMetadata } from "./metadata.js";
 export * from "./types.js";
 
@@ -13,7 +13,7 @@ export function createEntity(props: {
   status?: string;
   importance?: string;
   visibility?: { kind: string } | { mode: string };
-  metadata?: any;
+  metadata?: Record<string, unknown>;
   tagIds?: string[];
   createdInSessionId?: string;
   firstSeenSessionId?: string;
@@ -22,16 +22,20 @@ export function createEntity(props: {
   createdAt?: string;
   updatedAt?: string;
   campaignSystem?: string;
-}): any {
+}): Entity {
   if (!props.title || props.title.trim() === "") {
     throw new Error("Entity title is required");
   }
   const now = new Date().toISOString();
-  const metadata = props.metadata ? { ...props.metadata } : {};
-  if (props.entityType === "clue" && (!metadata.content || metadata.content.trim() === "")) {
+  const metadata: Record<string, unknown> = props.metadata ? { ...props.metadata } : {};
+  
+  const content = metadata.content;
+  if (props.entityType === "clue" && (typeof content !== "string" || content.trim() === "")) {
     metadata.content = "...";
   }
-  if (props.entityType === "secret" && (!metadata.truth || metadata.truth.trim() === "")) {
+  
+  const truth = metadata.truth;
+  if (props.entityType === "secret" && (typeof truth !== "string" || truth.trim() === "")) {
     metadata.truth = "...";
   }
 
@@ -61,16 +65,17 @@ export function createEntity(props: {
     id: props.entityId,
     entityId: props.entityId,
     campaignId: props.campaignId,
-    entityType: props.entityType,
+    entityType: props.entityType as EntityType,
     title: props.title,
     subtitle: props.subtitle,
     summary: props.summary,
     content: props.content,
     status: props.status || "",
-    importance: props.importance || "normal",
-    visibility: props.visibility || { kind: "dm_only" },
+    importance: (props.importance || "normal") as EntityImportance,
+    visibility: (props.visibility || { kind: "dm_only" }) as Entity["visibility"],
     metadata: metadata,
     tagIds: props.tagIds || [],
+    tags: props.tagIds || [],
     ...(props.createdInSessionId && { createdInSessionId: props.createdInSessionId }),
     ...(props.firstSeenSessionId && { firstSeenSessionId: props.firstSeenSessionId }),
     ...(props.lastSeenSessionId && { lastSeenSessionId: props.lastSeenSessionId }),

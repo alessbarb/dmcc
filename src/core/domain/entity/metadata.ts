@@ -160,7 +160,7 @@ import { genericPlayerCharacterMetadataSchema } from "../rules/generic.js";
 export const playerCharacterMetadataSchema = genericPlayerCharacterMetadataSchema;
 export type PlayerCharacterMetadata = z.infer<typeof playerCharacterMetadataSchema>;
 
-export function validatePlayerCharacterMetadata(metadata: any, system?: string): void {
+export function validatePlayerCharacterMetadata(metadata: unknown, system?: string): void {
   const rules = getRuleSystem(system);
   rules.characterMetadataSchema.parse(metadata);
 }
