@@ -37,6 +37,12 @@ function makeDragGhost(label: string, color: string): HTMLElement {
   return el;
 }
 
+function runCanvasPaletteAction(operation: Promise<unknown>, errorMessage: string): void {
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
 export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getViewportCenter, className, onMobileClose }: CanvasPaletteProps) {
   const { t } = useTranslation();
   const {
@@ -76,89 +82,94 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
       e.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handlePlaceExisting = async (entity: any) => {
-    await placeEntityOnCanvas({
+  const handlePlaceExisting = (entity: any) => {
+    runCanvasPaletteAction(placeEntityOnCanvas({
       canvasId,
       entityId: entity.entityId,
       selectedNode,
       viewportCenter: getViewportCenter?.(),
       placeNodeOnCanvas,
-    });
-    setSearchQuery("");
-    setIsDropdownOpen(false);
+    }).then(() => {
+      setSearchQuery("");
+      setIsDropdownOpen(false);
+    }), "Failed to place existing entity on canvas");
   };
 
-  const handleCreateNewNode = async (kind: "note" | "group" | "entity", entityType?: string, label?: string) => {
+  const handleCreateNewNode = (kind: "note" | "group" | "entity", entityType?: string, label?: string) => {
     const x = 150 + Math.random() * 80;
     const y = 150 + Math.random() * 80;
 
-    if (kind === "note") {
-      await placeNodeOnCanvas(canvasId, { kind: "note", text: t("canvas.noteNode.contentPlaceholderLong"), color: "yellow", x, y });
-    } else if (kind === "group") {
-      await placeNodeOnCanvas(canvasId, { kind: "group", title: t("canvasPalette.groupDefaultName"), color: "purple", x, y, width: 300, height: 200 });
-    } else if (kind === "entity" && entityType) {
-      const title = `Nuevo ${label || "Elemento"}`;
-      const campaignId = campaignState?.campaign?.campaignId;
-      if (!campaignId) return;
-      try {
-        const payload: any = { entityType, title, status: "ready", importance: "normal", visibility: { kind: "dm_only" } };
-        await createEntity(payload);
-        const currentStore = useCampaignStore.getState();
-        const createdEntity = currentStore.campaignState?.entities?.slice(-1)[0];
-        if (createdEntity) {
-          await placeEntityOnCanvas({
-            canvasId,
-            entityId: createdEntity.entityId,
-            selectedNode,
-            viewportCenter: getViewportCenter?.() ?? { x, y },
-            placeNodeOnCanvas,
-          });
+    runCanvasPaletteAction((async () => {
+      if (kind === "note") {
+        await placeNodeOnCanvas(canvasId, { kind: "note", text: t("canvas.noteNode.contentPlaceholderLong"), color: "yellow", x, y });
+      } else if (kind === "group") {
+        await placeNodeOnCanvas(canvasId, { kind: "group", title: t("canvasPalette.groupDefaultName"), color: "purple", x, y, width: 300, height: 200 });
+      } else if (kind === "entity" && entityType) {
+        const title = `Nuevo ${label || "Elemento"}`;
+        const campaignId = campaignState?.campaign?.campaignId;
+        if (!campaignId) return;
+        try {
+          const payload: any = { entityType, title, status: "ready", importance: "normal", visibility: { kind: "dm_only" } };
+          await createEntity(payload);
+          const currentStore = useCampaignStore.getState();
+          const createdEntity = currentStore.campaignState?.entities?.slice(-1)[0];
+          if (createdEntity) {
+            await placeEntityOnCanvas({
+              canvasId,
+              entityId: createdEntity.entityId,
+              selectedNode,
+              viewportCenter: getViewportCenter?.() ?? { x, y },
+              placeNodeOnCanvas,
+            });
+          }
+        } catch (err) {
+          console.error("Failed to create new entity from canvas", err);
         }
-      } catch (err) {
-        console.error("Failed to create new entity from canvas", err);
       }
-    }
+    })(), "Failed to create new canvas node from palette");
   };
 
   const selectedNode = canvas?.nodes?.find((n: any) => n.id === selectedNodeId);
   const selectedEntity = selectedNode?.entityId ? campaignState?.entities?.find((e: any) => e.entityId === selectedNode.entityId) : null;
 
-  const handleCreateQuickScene = async () => {
-    await handleCreateNewNode("entity", "scene", t("domain.entityTypes.scene"));
+  const handleCreateQuickScene = () => {
+    handleCreateNewNode("entity", "scene", t("domain.entityTypes.scene"));
   };
 
-  const handleQuickSessionNote = async () => {
+  const handleQuickSessionNote = () => {
     const text = window.prompt(t("canvas.noteNode.addQuickSessionNote"));
     if (text && text.trim()) {
       const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
       if (activeSession) {
-        await recordSessionEvent(activeSession.sessionId, {
+        runCanvasPaletteAction(recordSessionEvent(activeSession.sessionId, {
           type: "note_recorded",
           title: t("canvas.noteNode.quickSessionNote"),
           description: text.trim(),
           relatedEntityIds: [],
-        });
+        }), "Failed to record quick session note from canvas palette");
       } else {
         alert(t("canvas.noteNode.noActiveSession"));
       }
     }
   };
 
-  const handleRevealSelected = async () => {
+  const handleRevealSelected = () => {
     if (!selectedEntity) return;
-    await updateEntity(selectedEntity.entityId, { visibility: { kind: "public" } });
-    const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
-    if (activeSession) {
-      await recordSessionEvent(activeSession.sessionId, {
-        type: "reveal",
-        title: `Revelado: ${selectedEntity.title}`,
-        description: t("toasts.entityRevealedInspector", { title: selectedEntity.title }),
-        relatedEntityIds: [selectedEntity.entityId],
-      });
-    }
+    runCanvasPaletteAction((async () => {
+      await updateEntity(selectedEntity.entityId, { visibility: { kind: "public" } });
+      const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+      if (activeSession) {
+        await recordSessionEvent(activeSession.sessionId, {
+          type: "reveal",
+          title: `Revelado: ${selectedEntity.title}`,
+          description: t("toasts.entityRevealedInspector", { title: selectedEntity.title }),
+          relatedEntityIds: [selectedEntity.entityId],
+        });
+      }
+    })(), "Failed to reveal selected entity from canvas palette");
   };
 
-  const handleResolveSelected = async () => {
+  const handleResolveSelected = () => {
     if (!selectedEntity) return;
     const currentStatus = selectedEntity.status || "ready";
     let newStatus = "resolved";
@@ -168,74 +179,81 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
     else if (selectedEntity.entityType === "quest") newStatus = currentStatus === "active" ? "completed" : "active";
     else if (selectedEntity.entityType === "secret") newStatus = currentStatus === "hidden" ? "revealed" : "hidden";
 
-    await updateEntity(selectedEntity.entityId, { status: newStatus });
-    const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
-    if (activeSession) {
-      await recordSessionEvent(activeSession.sessionId, {
-        type: "status_changed",
-        title: t("canvas.node.statusPrompt", { title: selectedEntity.title, status: newStatus }),
-        description: t("toasts.statusUpdatedInspector", { title: selectedEntity.title, status: newStatus }),
-        relatedEntityIds: [selectedEntity.entityId],
-      });
-    }
+    runCanvasPaletteAction((async () => {
+      await updateEntity(selectedEntity.entityId, { status: newStatus });
+      const activeSession = campaignState?.sessions?.find((s: any) => s.status === "active");
+      if (activeSession) {
+        await recordSessionEvent(activeSession.sessionId, {
+          type: "status_changed",
+          title: t("canvas.node.statusPrompt", { title: selectedEntity.title, status: newStatus }),
+          description: t("toasts.statusUpdatedInspector", { title: selectedEntity.title, status: newStatus }),
+          relatedEntityIds: [selectedEntity.entityId],
+        });
+      }
+    })(), "Failed to update selected entity status from canvas palette");
   };
 
-  const handleAddConsequenceSelected = async () => {
+  const handleAddConsequenceSelected = () => {
     if (!selectedEntity) return;
     const title = window.prompt(t("canvas.node.consequenceTitlePrompt", { title: selectedEntity.title }));
     if (title && title.trim()) {
       const campaignId = campaignState?.campaign?.campaignId;
       if (!campaignId) return;
-      try {
-        await createEntity({
-          entityType: "consequence",
-          title: title.trim(),
-          status: "ready",
-          importance: "normal",
-          visibility: { kind: "dm_only" }
-        });
-        const updatedStore = useCampaignStore.getState();
-        const created = updatedStore.campaignState?.entities?.slice(-1)[0];
-        if (created && selectedNode) {
-          await placeEntityOnCanvas({
-            canvasId,
-            entityId: created.entityId,
-            selectedNode,
-            viewportCenter: getViewportCenter?.(),
-            placeNodeOnCanvas,
+      runCanvasPaletteAction((async () => {
+        try {
+          await createEntity({
+            entityType: "consequence",
+            title: title.trim(),
+            status: "ready",
+            importance: "normal",
+            visibility: { kind: "dm_only" }
           });
-          const finalStore = useCampaignStore.getState();
-          const finalCanvas = finalStore.canvasesById[canvasId];
-          const newNode = finalCanvas?.nodes?.find((n: any) => n.entityId === created.entityId);
-          if (newNode) {
-            await connectCanvasNodes({
+          const updatedStore = useCampaignStore.getState();
+          const created = updatedStore.campaignState?.entities?.slice(-1)[0];
+          if (created && selectedNode) {
+            await placeEntityOnCanvas({
               canvasId,
-              sourceNode: { id: selectedNode.id, entityId: selectedEntity.entityId },
-              targetNode: { id: newNode.id, entityId: created.entityId },
-              edge: {
-                label: "consecuencia",
-                status: "domain",
-                visibility: "dm",
-                style: "solid",
-              },
-              relation: {
-                relationType: "consecuencia",
-                visibility: { kind: "dm_only" },
-              },
-              createRelation,
-              addEdgeToCanvas,
+              entityId: created.entityId,
+              selectedNode,
+              viewportCenter: getViewportCenter?.(),
+              placeNodeOnCanvas,
             });
+            const finalStore = useCampaignStore.getState();
+            const finalCanvas = finalStore.canvasesById[canvasId];
+            const newNode = finalCanvas?.nodes?.find((n: any) => n.entityId === created.entityId);
+            if (newNode) {
+              await connectCanvasNodes({
+                canvasId,
+                sourceNode: { id: selectedNode.id, entityId: selectedEntity.entityId },
+                targetNode: { id: newNode.id, entityId: created.entityId },
+                edge: {
+                  label: "consecuencia",
+                  status: "domain",
+                  visibility: "dm",
+                  style: "solid",
+                },
+                relation: {
+                  relationType: "consecuencia",
+                  visibility: { kind: "dm_only" },
+                },
+                createRelation,
+                addEdgeToCanvas,
+              });
+            }
           }
+        } catch (err) {
+          console.error("Failed to create consequence", err);
         }
-      } catch (err) {
-        console.error("Failed to create consequence", err);
-      }
+      })(), "Failed to create selected entity consequence from canvas palette");
     }
   };
 
-  const handleRemoveSelected = async () => {
+  const handleRemoveSelected = () => {
     if (selectedNodeId) {
-      await removeNodeFromCanvas(canvasId, selectedNodeId);
+      runCanvasPaletteAction(
+        removeNodeFromCanvas(canvasId, selectedNodeId),
+        "Failed to remove selected node from canvas palette",
+      );
     }
   };
 
@@ -606,33 +624,36 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
     f.statement?.toLowerCase().includes(factSearch.toLowerCase())
   );
 
-  const handlePlaceExistingFact = async (fact: any) => {
+  const handlePlaceExistingFact = (fact: any) => {
     const x = 150 + Math.random() * 100;
     const y = 150 + Math.random() * 100;
-    await placeNodeOnCanvas(canvasId, { kind: "fact", factId: fact.factId, x, y });
-    setFactSearch("");
-    setShowFactSearch(false);
+    runCanvasPaletteAction(placeNodeOnCanvas(canvasId, { kind: "fact", factId: fact.factId, x, y }).then(() => {
+      setFactSearch("");
+      setShowFactSearch(false);
+    }), "Failed to place existing fact on canvas");
   };
 
-  const handleCreateNewFact = async (kind: string) => {
+  const handleCreateNewFact = (kind: string) => {
     const statement = window.prompt(t("canvas.factNode.newFactPrompt", { kind: FACT_KIND_CONFIG[kind]?.label ?? kind }));
     if (!statement?.trim()) return;
-    try {
-      const newFactId = await createFact({
-        statement: statement.trim(),
-        kind,
-        confidence: "suspected",
-        relatedEntityIds: [],
-        source: { kind: "manual" },
-      });
-      if (newFactId) {
-        const x = 150 + Math.random() * 100;
-        const y = 150 + Math.random() * 100;
-        await placeNodeOnCanvas(canvasId, { kind: "fact", factId: newFactId, x, y });
+    runCanvasPaletteAction((async () => {
+      try {
+        const newFactId = await createFact({
+          statement: statement.trim(),
+          kind,
+          confidence: "suspected",
+          relatedEntityIds: [],
+          source: { kind: "manual" },
+        });
+        if (newFactId) {
+          const x = 150 + Math.random() * 100;
+          const y = 150 + Math.random() * 100;
+          await placeNodeOnCanvas(canvasId, { kind: "fact", factId: newFactId, x, y });
+        }
+      } catch (err) {
+        console.error("Failed to create fact", err);
       }
-    } catch (err) {
-      console.error("Failed to create fact", err);
-    }
+    })(), "Failed to create fact from canvas palette");
   };
 
   return (
