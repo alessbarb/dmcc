@@ -30,7 +30,7 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerAccountWebRoutes(server);
   void registerHealthWebRoutes(server);
   void registerRoleScopedCampaignListWebRoutes(server);
-  void registerCampaignWebRoutes(server);
+  void registerCampaignWebRoutes(server, { dataDir: options.dataDir });
   void registerCampaignMessagingWebRoutes(server);
   void registerCanvasWebRoutes(server);
   void registerDmHubWebRoutes(server);

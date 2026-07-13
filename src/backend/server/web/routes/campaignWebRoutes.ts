@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { basename, join } from "node:path";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import type { Command } from "@core/application/commands.js";
 import { desc, eq } from "drizzle-orm";
@@ -5,6 +7,7 @@ import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
+import { writeMarkdownCampaignExport } from "../../export/markdownCampaignExport.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { getRequiredWebUser } from "../webSession.js";
 import { ensureDefaultWorkspace, isDmRole, listAccessibleCampaigns, requireCampaignOwner, requireCampaignRole } from "../webAccess.js";
@@ -12,6 +15,21 @@ import { ensureDefaultWorkspace, isDmRole, listAccessibleCampaigns, requireCampa
 type RequestBody = Record<string, unknown>;
 type DmCommandInput = { type: string } & RequestBody;
 type CampaignCommandBody = { command?: DmCommandInput } & RequestBody;
+
+export interface CampaignWebRoutesOptions {
+  dataDir: string;
+}
+
+const MARKDOWN_PRIMARY_FILE = "Campaña completa.md";
+const EXPORT_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+
+function isSafeExportId(exportId: string): boolean {
+  return exportId.length > 0 && EXPORT_ID_PATTERN.test(exportId) && basename(exportId) === exportId;
+}
+
+function markdownExportDir(dataDir: string, campaignId: string, exportId: string): string {
+  return join(dataDir, "exports", campaignId, exportId);
+}
 
 function commandErrorPayload(error: unknown): { message: string; statusCode: number; isConflict: boolean } {
   if (!(error instanceof Error)) {
@@ -162,7 +180,7 @@ async function deleteCampaignShell(campaignId: string): Promise<void> {
   });
 }
 
-export async function registerCampaignWebRoutes(server: FastifyInstance): Promise<void> {
+export async function registerCampaignWebRoutes(server: FastifyInstance, options: CampaignWebRoutesOptions): Promise<void> {
   const repo = new PostgresCampaignRepository();
 
   server.get("/api/campaigns", async (request) => {
@@ -313,6 +331,48 @@ export async function registerCampaignWebRoutes(server: FastifyInstance): Promis
     return { ok: true };
   });
 
+  server.post<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/export/markdown", async (request) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+
+    const [state, events] = await Promise.all([
+      repo.getCampaignState(request.params.campaignId),
+      repo.loadEvents(request.params.campaignId),
+    ]);
+    const exportId = createId("exp");
+    const exportDir = markdownExportDir(options.dataDir, request.params.campaignId, exportId);
+
+    return writeMarkdownCampaignExport({
+      state,
+      events,
+      exportDir,
+      campaignId: request.params.campaignId,
+      exportId,
+    });
+  });
+
+  server.get<{ Params: { campaignId: string; exportId: string } }>("/api/campaigns/:campaignId/exports/:exportId/download", async (request, reply) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+
+    if (!isSafeExportId(request.params.exportId)) {
+      reply.code(400);
+      return { error: "Invalid export ID" };
+    }
+
+    try {
+      const filePath = join(markdownExportDir(options.dataDir, request.params.campaignId, request.params.exportId), MARKDOWN_PRIMARY_FILE);
+      const content = await readFile(filePath);
+      reply
+        .type("text/markdown; charset=utf-8")
+        .header("Content-Disposition", `attachment; filename*=UTF-8''${encodeURIComponent(MARKDOWN_PRIMARY_FILE)}`);
+      return content;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+        reply.code(404);
+        return { error: "Markdown export not found" };
+      }
+      throw error;
+    }
+  });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/graph", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
