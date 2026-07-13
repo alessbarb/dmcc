@@ -56,7 +56,6 @@ function addVisibilityGrant(
     targetType,
     targetId,
     scope,
-    source: "visibility",
     playerId: playerId ?? null,
     userId: null,
   });
@@ -128,10 +127,7 @@ export async function refreshKnowledgeVisibilityGrants(campaignId: string): Prom
   }
 
   await db.transaction(async (tx) => {
-    await tx.delete(schema.visibilityGrants).where(and(
-      eq(schema.visibilityGrants.campaignId, campaignId),
-      eq(schema.visibilityGrants.source, "visibility"),
-    ));
+    await tx.delete(schema.visibilityGrants).where(eq(schema.visibilityGrants.campaignId, campaignId));
     if (desiredGrants.length > 0) {
       await tx.insert(schema.visibilityGrants).values(desiredGrants).onConflictDoNothing();
     }
