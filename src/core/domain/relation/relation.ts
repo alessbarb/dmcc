@@ -1,3 +1,4 @@
+import { visibilityRuleSchema } from "@shared/schemas.js";
 import type { Entity } from "../entity/types.js";
 import type { Relation, RelationStatus } from "./types.js";
 export * from "./types.js";
@@ -30,7 +31,7 @@ export function createRelation(props: {
     relationType: props.relationType,
     description: props.description,
     status: props.status || "active",
-    visibility: (props.visibility || { kind: "dm_only" }) as Relation["visibility"],
+    visibility: visibilityRuleSchema.parse(props.visibility ?? { kind: "dm_only" }),
     sourceSessionId: props.sourceSessionId,
     sourceFactId: props.sourceFactId,
     archived: props.archived || false,

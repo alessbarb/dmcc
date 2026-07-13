@@ -4,5 +4,5 @@ export interface RuleSystem {
   systemCode: string;
   systemName: string;
   characterMetadataSchema: z.ZodSchema;
-  getInitialCharacterMetadata(): Record<string, any>;
+  getInitialCharacterMetadata(): Record<string, unknown>;
 }

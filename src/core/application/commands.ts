@@ -4,6 +4,7 @@ import type { FactConfidence, FactKind, FactSource } from "../domain/fact/fact.j
 import type { RelationType } from "../domain/relation/relation.js";
 import type { VisibilityRule } from "../domain/visibility/visibility.js";
 import type { PlayerCharacterProposal } from "../domain/playerPortal/types.js";
+import type { CampaignSettings } from "../domain/campaign/types.js";
 
 export type Command =
   | {
@@ -14,7 +15,7 @@ export type Command =
       summary?: string;
       system?: string;
       coverUrl?: string;
-      settings?: any;
+      settings?: Partial<CampaignSettings>;
       metadata?: Record<string, unknown>;
     }
   | {
@@ -381,7 +382,7 @@ export type Command =
         factId?: string;
         text?: string;
         title?: string;
-        color?: "yellow" | "blue" | "green" | "pink" | "purple" | string;
+        color?: "yellow" | "blue" | "green" | "pink" | "purple";
         groupId?: string;
         x: number;
         y: number;

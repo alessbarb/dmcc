@@ -76,6 +76,26 @@ export default defineConfig(
   },
 
   {
+    files: [
+      "src/core/application/commands.ts",
+      "src/core/application/commandBus.ts",
+      "src/core/domain/state.ts",
+      "src/core/domain/campaign/**/*.ts",
+      "src/core/domain/entity/entity.ts",
+      "src/core/domain/entity/types.ts",
+      "src/core/domain/relation/relation.ts",
+      "src/core/domain/session/session.ts",
+      "src/core/domain/session/types.ts",
+      "src/core/domain/premade/**/*.ts",
+      "src/core/domain/rules/types.ts",
+    ],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unsafe-type-assertion": "error",
+    },
+  },
+
+  {
     files: ["tests/**/*.{ts,tsx}", "e2e/**/*.{ts,tsx}"],
 
     rules: {

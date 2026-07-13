@@ -22,7 +22,7 @@ export type ResolvedPremadeEntity = {
   status?: string;
   importance?: "low" | "normal" | "high" | "critical";
   visibility?: PremadeVisibility;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 };
 
 export type ResolvedPremadeRelation = {
@@ -130,7 +130,13 @@ export type ResolvedPremadeCampaign = {
   canvases: ResolvedPremadeCanvas[];
 };
 
-function mergeEntities(base: PremadeEntityFile[], overlayEntities?: Record<string, any>): ResolvedPremadeEntity[] {
+type PremadeOverlayEntities = NonNullable<PremadeLocaleOverlay["entities"]>;
+type PremadeOverlayRelations = NonNullable<PremadeLocaleOverlay["relations"]>;
+type PremadeOverlayFacts = NonNullable<PremadeLocaleOverlay["facts"]>;
+type PremadeOverlaySessions = NonNullable<PremadeLocaleOverlay["sessions"]>;
+type PremadeOverlayCanvases = NonNullable<PremadeLocaleOverlay["canvases"]>;
+
+function mergeEntities(base: PremadeEntityFile[], overlayEntities?: PremadeOverlayEntities): ResolvedPremadeEntity[] {
   return base.map((entity) => {
     const id = entity.entityId;
     const overlay = overlayEntities?.[id];
@@ -159,7 +165,7 @@ function mergeEntities(base: PremadeEntityFile[], overlayEntities?: Record<strin
   });
 }
 
-function mergeRelations(base: PremadeRelationFile[], overlayRelations?: Record<string, any>): ResolvedPremadeRelation[] {
+function mergeRelations(base: PremadeRelationFile[], overlayRelations?: PremadeOverlayRelations): ResolvedPremadeRelation[] {
   return base.map((relation) => {
     const id = relation.relationId;
     const overlay = overlayRelations?.[id];
@@ -174,7 +180,7 @@ function mergeRelations(base: PremadeRelationFile[], overlayRelations?: Record<s
   });
 }
 
-function mergeFacts(base: PremadeFactFile[], overlayFacts?: Record<string, any>): ResolvedPremadeFact[] {
+function mergeFacts(base: PremadeFactFile[], overlayFacts?: PremadeOverlayFacts): ResolvedPremadeFact[] {
   return base.map((fact) => {
     const id = fact.factId;
     const overlay = overlayFacts?.[id];
@@ -189,7 +195,7 @@ function mergeFacts(base: PremadeFactFile[], overlayFacts?: Record<string, any>)
   });
 }
 
-function mergeSessions(base: PremadeSessionFile[], overlaySessions?: Record<string, any>): ResolvedPremadeSession[] {
+function mergeSessions(base: PremadeSessionFile[], overlaySessions?: PremadeOverlaySessions): ResolvedPremadeSession[] {
   return base.map((session) => {
     const id = session.sessionId;
     const overlay = overlaySessions?.[id];
@@ -245,7 +251,7 @@ function mergeSessions(base: PremadeSessionFile[], overlaySessions?: Record<stri
   });
 }
 
-function mergeCanvases(base: PremadeCanvasFile[], overlayCanvases?: Record<string, any>): ResolvedPremadeCanvas[] {
+function mergeCanvases(base: PremadeCanvasFile[], overlayCanvases?: PremadeOverlayCanvases): ResolvedPremadeCanvas[] {
   return base.map((canvas) => {
     const id = canvas.canvasId;
     const overlay = overlayCanvases?.[id];

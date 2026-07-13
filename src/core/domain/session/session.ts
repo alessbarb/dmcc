@@ -1,4 +1,4 @@
-import { sessionPrepSchema, sessionSchema, type Session, type SessionStatus } from "./types.js";
+import { sessionPrepSchema, sessionSchema, sessionStatusSchema, type Session } from "./types.js";
 export * from "./types.js";
 
 export function createSession(props: {
@@ -11,7 +11,7 @@ export function createSession(props: {
   existingSessions?: Session[];
   archived?: boolean;
 }): Session {
-  const status = (props.status || "active") as SessionStatus;
+  const status = sessionStatusSchema.parse(props.status ?? "active");
   if (status === "active" && props.existingSessions) {
     const activeExists = props.existingSessions.some((s) => s.status === "active");
     if (activeExists) {

@@ -101,7 +101,7 @@ export const sessionEventSchema = z.object({
   relatedFactIds: z.array(factIdSchema).default([]),
   relatedRelationIds: z.array(relationIdSchema).default([]),
   visibility: visibilityRuleSchema,
-  metadata: z.record(z.string(), z.any()).default({}),
+  metadata: z.record(z.string(), z.unknown()).default({}),
 });
 
 export type SessionEvent = z.infer<typeof sessionEventSchema>;

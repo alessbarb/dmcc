@@ -19,7 +19,7 @@ export const premadeEntityFileSchema = z.strictObject({
   entityType: z.string(),
   importance: z.enum(["low", "normal", "high", "critical"]).optional(),
   visibility: premadeVisibilitySchema.optional(),
-  metadata: z.record(z.string(), z.any()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
   // Opcionales por si se definen textos base directamente
   title: z.string().optional(),
   subtitle: z.string().optional(),
@@ -46,7 +46,7 @@ export const premadeFactFileSchema = z.strictObject({
   visibility: premadeVisibilitySchema.optional(),
   relatedEntityIds: z.array(z.string()).optional(),
   relatedRelationIds: z.array(z.string()).optional(),
-  source: z.record(z.string(), z.any()).optional(),
+  source: z.record(z.string(), z.unknown()).optional(),
   statement: z.string().optional(),
 });
 export type PremadeFactFile = z.infer<typeof premadeFactFileSchema>;
@@ -90,7 +90,7 @@ export const premadeCanvasFileSchema = z.strictObject({
       entityId: z.string().optional(),
       factId: z.string().optional(),
       groupId: z.string().optional(),
-      metadata: z.record(z.string(), z.any()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
       title: z.string().optional(),
       text: z.string().optional(),
       color: z.enum(["yellow", "blue", "green", "pink", "purple"]).optional(),
@@ -171,7 +171,7 @@ export const premadeLocaleOverlaySchema = z.strictObject({
       summary: z.string().optional(),
       content: z.string().optional(),
       status: z.string().optional(),
-      metadata: z.record(z.string(), z.any()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     })
   ).optional(),
   relations: z.record(

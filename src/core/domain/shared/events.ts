@@ -35,7 +35,7 @@ export const canvasNodeSchema = z.object({
   visibility: z.enum(["dm", "public"]).optional(),
   groupId: z.string().optional(),
   parentId: z.string().optional(),
-  metadata: z.record(z.string(), z.any()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
@@ -51,7 +51,7 @@ export const canvasEdgeSchema = z.object({
   status: z.enum(["draft", "domain"]),
   visibility: z.enum(["dm", "public"]).optional(),
   style: z.enum(["solid", "dashed", "secret", "weak", "strong"]).optional(),
-  metadata: z.record(z.string(), z.any()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
@@ -168,7 +168,7 @@ export const storedEventSchema = z.object({
   type: domainEventTypeSchema,
   occurredAt: z.string(),
   actorId: z.string(),
-  payload: z.any(),
+  payload: z.unknown(),
   previousHash: z.string().optional(),
   hash: z.string().optional(),
   schemaVersion: z.number().int().default(1),

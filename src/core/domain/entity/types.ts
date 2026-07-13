@@ -59,7 +59,7 @@ export const baseEntitySchema = z.object({
   visibility: visibilityRuleSchema,
   tags: z.array(tagIdSchema).default([]),
   tagIds: z.array(tagIdSchema).default([]),
-  metadata: z.record(z.string(), z.any()).default({}),
+  metadata: z.record(z.string(), z.unknown()).default({}),
   createdInSessionId: sessionIdSchema.optional(),
   firstSeenSessionId: sessionIdSchema.optional(),
   lastSeenSessionId: sessionIdSchema.optional(),

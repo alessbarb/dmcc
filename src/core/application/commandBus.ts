@@ -1,7 +1,8 @@
 import { createId } from "@shared/ids.js";
 import type { EntityId, FactId, RelationId, SessionId } from "@shared/ids.js";
 import { createCampaign } from "../domain/campaign/campaign.js";
-import { createEntity } from "../domain/entity/entity.js";
+import { campaignSettingsSchema } from "../domain/campaign/types.js";
+import { createEntity, entitySchema } from "../domain/entity/entity.js";
 import type { Entity } from "../domain/entity/entity.js";
 import { validatePlayerCharacterMetadata } from "../domain/entity/metadata.js";
 import { normalizeRevelationAnchors } from "../domain/entity/revelationAnchors.js";
@@ -12,6 +13,7 @@ import type { Relation } from "../domain/relation/relation.js";
 import { closeSession, createSession, sessionEventTypeSchema, sessionPrepSchema } from "../domain/session/session.js";
 import type { StoredEvent } from "../domain/events.js";
 import type { CampaignState } from "../domain/state.js";
+import type { CanvasNode } from "../domain/canvas/types.js";
 import type { Command } from "./commands.js";
 
 export interface CommandResult {
@@ -23,6 +25,10 @@ function singleEvent(state: CampaignState, event: StoredEvent): CommandResult {
   return { state, events: [event] };
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 export function handleCommand(state: CampaignState, command: Command): CommandResult {
   switch (command.type) {
     case "CreateCampaign": {
@@ -32,7 +38,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         summary: command.summary,
         system: command.system,
         coverUrl: command.coverUrl,
-        settings: command.settings,
+        settings: command.settings ? campaignSettingsSchema.parse(command.settings) : undefined,
         metadata: command.metadata,
       });
       const nextState = { ...state, campaign };
@@ -51,7 +57,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...(command.system !== undefined && { system: command.system }),
         ...(command.status !== undefined && { status: command.status }),
         ...(command.coverUrl !== undefined && { coverUrl: command.coverUrl }),
-        ...(command.metadata !== undefined && { metadata: { ...(state.campaign as any).metadata, ...command.metadata } }),
+        ...(command.metadata !== undefined && { metadata: { ...state.campaign.metadata, ...command.metadata } }),
         updatedAt: new Date().toISOString(),
       };
       return singleEvent({ ...state, campaign: nextCampaign }, makeEvent(command.actorId, command.campaignId, "CampaignUpdated", {
@@ -338,10 +344,10 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       if (!state.campaign) throw new Error("Campaign not found");
       const nextCampaign = {
         ...state.campaign,
-        settings: {
+        settings: campaignSettingsSchema.parse({
           ...state.campaign.settings,
           ...command.settings,
-        } as any,
+        }),
       };
       return singleEvent({ ...state, campaign: nextCampaign }, makeEvent(command.actorId, command.campaignId, "SettingsUpdated", command.settings));
     }
@@ -459,7 +465,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         campaignId: command.campaignId,
         type: parsedEventType,
         occurredAt: new Date().toISOString(),
-        actorId: command.actorId as any,
+        actorId: command.actorId,
         title: command.title,
         description: command.description || "",
         relatedEntityIds: command.relatedEntityIds || [],
@@ -625,7 +631,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
       if (canvas.archived) throw new Error("Cannot update node on archived canvas");
 
-      const nodeIndex = canvas.nodes.findIndex((n: any) => n.id === command.nodeId);
+      const nodeIndex = canvas.nodes.findIndex((n) => n.id === command.nodeId);
       if (nodeIndex === -1) throw new Error(`Node not found: ${command.nodeId}`);
 
       const existingNode = canvas.nodes[nodeIndex];
@@ -656,7 +662,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
       if (canvas.archived) throw new Error("Cannot update layout on archived canvas");
 
-      const nodes = canvas.nodes.map((n: any) => {
+      const nodes = canvas.nodes.map((n) => {
         const update = command.nodeUpdates.find((up) => up.nodeId === n.id);
         if (update) {
           return {
@@ -690,11 +696,11 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
       if (canvas.archived) throw new Error("Cannot remove node from archived canvas");
 
-      const nodeExists = canvas.nodes.some((n: any) => n.id === command.nodeId);
+      const nodeExists = canvas.nodes.some((n) => n.id === command.nodeId);
       if (!nodeExists) throw new Error(`Node not found: ${command.nodeId}`);
 
-      const nodes = canvas.nodes.filter((n: any) => n.id !== command.nodeId);
-      const edges = canvas.edges.filter((e: any) => e.sourceNodeId !== command.nodeId && e.targetNodeId !== command.nodeId);
+      const nodes = canvas.nodes.filter((n) => n.id !== command.nodeId);
+      const edges = canvas.edges.filter((e) => e.sourceNodeId !== command.nodeId && e.targetNodeId !== command.nodeId);
 
       const updatedCanvas = {
         ...canvas,
@@ -717,8 +723,8 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const { edge } = command;
       const edgeId = edge.id ?? createId("cve");
 
-      const sourceExists = canvas.nodes.some((n: any) => n.id === edge.sourceNodeId);
-      const targetExists = canvas.nodes.some((n: any) => n.id === edge.targetNodeId);
+      const sourceExists = canvas.nodes.some((n) => n.id === edge.sourceNodeId);
+      const targetExists = canvas.nodes.some((n) => n.id === edge.targetNodeId);
       if (!sourceExists || !targetExists) {
         throw new Error("Edge source or target node not found on canvas");
       }
@@ -762,7 +768,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
       if (canvas.archived) throw new Error("Cannot update edge on archived canvas");
 
-      const edgeIndex = canvas.edges.findIndex((e: any) => e.id === command.edgeId);
+      const edgeIndex = canvas.edges.findIndex((e) => e.id === command.edgeId);
       if (edgeIndex === -1) throw new Error(`Edge not found: ${command.edgeId}`);
 
       const existingEdge = canvas.edges[edgeIndex];
@@ -793,10 +799,10 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
       if (canvas.archived) throw new Error("Cannot remove edge from archived canvas");
 
-      const edgeExists = canvas.edges.some((e: any) => e.id === command.edgeId);
+      const edgeExists = canvas.edges.some((e) => e.id === command.edgeId);
       if (!edgeExists) throw new Error(`Edge not found: ${command.edgeId}`);
 
-      const edges = canvas.edges.filter((e: any) => e.id !== command.edgeId);
+      const edges = canvas.edges.filter((e) => e.id !== command.edgeId);
 
       const updatedCanvas = {
         ...canvas,
@@ -838,7 +844,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "IssuePlayerToken": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerTokenIssued", {
         tokenId: command.tokenId,
         tokenHash: command.tokenHash,
@@ -849,7 +855,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "RevokePlayerToken": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerTokenRevoked", {
         tokenId: command.tokenId,
         campaignId: command.campaignId,
@@ -857,7 +863,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "UpdatePlayerLiveStatus": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerCharacterLiveStateUpdated", {
         campaignId: command.campaignId,
         playerId: command.playerId,
@@ -868,7 +874,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "UpsertPlayerResource": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerResourceUpserted", {
         campaignId: command.campaignId,
         playerId: command.playerId,
@@ -879,7 +885,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "RemovePlayerResource": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerResourceRemoved", {
         campaignId: command.campaignId,
         playerId: command.playerId,
@@ -889,7 +895,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "CreatePlayerPortalNote": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerPortalNoteCreated", {
         noteId: command.noteId,
         campaignId: command.campaignId,
@@ -924,7 +930,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "CreatePlayerPortalObjective": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerPortalObjectiveCreated", {
         objectiveId: command.objectiveId,
         campaignId: command.campaignId,
@@ -962,7 +968,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "LinkPlayerCharacter": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       requireEntity(state, command.characterEntityId);
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerCharacterLinked", {
         campaignId: command.campaignId,
@@ -975,7 +981,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "UnlinkPlayerCharacter": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerCharacterUnlinked", {
         campaignId: command.campaignId,
         playerId: command.playerId,
@@ -984,7 +990,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }));
     }
     case "CreatePlayerCharacterProposal": {
-      if (!state.players.has(command.playerId as any)) throw new Error("Player not found");
+      if (!state.players.has(command.playerId)) throw new Error("Player not found");
       return singleEvent(state, makeEvent(command.actorId, command.campaignId, "PlayerCharacterProposalCreated", {
         proposalId: command.proposalId,
         campaignId: command.campaignId,
@@ -1028,17 +1034,23 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         };
       }
 
-      const entity = requireEntity(state, command.entityUpdate!.entityId);
-      const entityUpdate = command.entityUpdate!.updates as any;
-      const updatedEntity = {
+      if (!command.entityUpdate) {
+        return { state, events: [resolvedEvent] };
+      }
+
+      const entity = requireEntity(state, command.entityUpdate.entityId);
+      const metadataUpdate = isRecord(command.entityUpdate.updates.metadata)
+        ? command.entityUpdate.updates.metadata
+        : {};
+      const updatedEntity = entitySchema.parse({
         ...entity,
-        ...entityUpdate,
+        ...command.entityUpdate.updates,
         metadata: {
           ...entity.metadata,
-          ...(entityUpdate.metadata ?? {}),
+          ...metadataUpdate,
         },
         updatedAt: command.resolvedAt,
-      };
+      });
 
       return {
         state: { ...state, entities: new Map(state.entities).set(updatedEntity.entityId, updatedEntity) },
@@ -1057,7 +1069,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
       if (canvas.archived) throw new Error("Cannot convert note on archived canvas");
 
-      const nodeIndex = canvas.nodes.findIndex((n: any) => n.id === command.nodeId);
+      const nodeIndex = canvas.nodes.findIndex((n) => n.id === command.nodeId);
       if (nodeIndex === -1) throw new Error(`Node not found: ${command.nodeId}`);
       const node = canvas.nodes[nodeIndex];
       if (node.kind !== "note") throw new Error("Canvas node is not a note");
@@ -1116,7 +1128,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
   }
 }
 
-function createCanvasTemplateNodes(campaignId: string, canvasId: string, kind: string) {
+function createCanvasTemplateNodes(campaignId: string, canvasId: string, kind: string): CanvasNode[] {
   if (kind === "custom") return [];
   const now = new Date().toISOString();
   const labels: Record<string, { title: string; note: string; groups: string[] }> = {
@@ -1151,18 +1163,18 @@ function createCanvasTemplateNodes(campaignId: string, canvasId: string, kind: s
     id: createId("cvn"),
     campaignId,
     canvasId,
-    kind: "note",
+    kind: "note" as const,
     title: template.title,
     text: template.note,
-    color: "yellow",
+    color: "yellow" as const,
     x: -360,
     y: -260,
     width: 300,
     height: 160,
     collapsed: false,
     zIndex: 2,
-    status: "draft",
-    visibility: "dm",
+    status: "draft" as const,
+    visibility: "dm" as const,
     metadata: { template: true, role: "instructions" },
     createdAt: now,
     updatedAt: now,
@@ -1171,7 +1183,7 @@ function createCanvasTemplateNodes(campaignId: string, canvasId: string, kind: s
     id: createId("cvn"),
     campaignId,
     canvasId,
-    kind: "group",
+    kind: "group" as const,
     title,
     color: (["blue", "green", "purple", "pink"] as const)[index % 4],
     x: -360 + (index % 2) * 380,
@@ -1180,8 +1192,8 @@ function createCanvasTemplateNodes(campaignId: string, canvasId: string, kind: s
     height: 200,
     collapsed: false,
     zIndex: 1,
-    status: "draft",
-    visibility: "dm",
+    status: "draft" as const,
+    visibility: "dm" as const,
     metadata: { template: true, role: "suggested-space" },
     createdAt: now,
     updatedAt: now,

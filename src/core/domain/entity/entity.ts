@@ -1,4 +1,5 @@
-import { entitySchema, type Entity, type EntityType, type EntityImportance } from "./types.js";
+import { visibilityRuleSchema } from "@shared/schemas.js";
+import { entityImportanceSchema, entitySchema, entityTypeSchema, type Entity } from "./types.js";
 import { validatePlayerCharacterMetadata } from "./metadata.js";
 export * from "./types.js";
 
@@ -65,14 +66,14 @@ export function createEntity(props: {
     id: props.entityId,
     entityId: props.entityId,
     campaignId: props.campaignId,
-    entityType: props.entityType as EntityType,
+    entityType: entityTypeSchema.parse(props.entityType),
     title: props.title,
     subtitle: props.subtitle,
     summary: props.summary,
     content: props.content,
     status: props.status || "",
-    importance: (props.importance || "normal") as EntityImportance,
-    visibility: (props.visibility || { kind: "dm_only" }) as Entity["visibility"],
+    importance: entityImportanceSchema.parse(props.importance ?? "normal"),
+    visibility: visibilityRuleSchema.parse(props.visibility ?? { kind: "dm_only" }),
     metadata: metadata,
     tagIds: props.tagIds || [],
     tags: props.tagIds || [],
