@@ -1,4 +1,4 @@
-import { sessionPrepSchema, sessionSchema } from "./types.js";
+import { sessionPrepSchema, sessionSchema, type Session, type SessionStatus } from "./types.js";
 export * from "./types.js";
 
 export function createSession(props: {
@@ -7,11 +7,11 @@ export function createSession(props: {
   title: string;
   status?: string;
   scheduledAt?: string;
-  prep?: any;
-  existingSessions?: any[];
+  prep?: unknown;
+  existingSessions?: Session[];
   archived?: boolean;
-}): any {
-  const status = props.status || "active";
+}): Session {
+  const status = (props.status || "active") as SessionStatus;
   if (status === "active" && props.existingSessions) {
     const activeExists = props.existingSessions.some((s) => s.status === "active");
     if (activeExists) {
@@ -27,7 +27,7 @@ export function createSession(props: {
     title: props.title,
     status,
     ...(props.scheduledAt && { scheduledAt: props.scheduledAt }),
-    ...(props.prep && { prep: sessionPrepSchema.parse(props.prep) }),
+    ...(props.prep ? { prep: sessionPrepSchema.parse(props.prep) } : {}),
     archived: props.archived || false,
     presentPlayerIds: [],
     presentCharacterIds: [],
@@ -39,7 +39,7 @@ export function createSession(props: {
   return session;
 }
 
-export function closeSession(session: any, summary: string): any {
+export function closeSession(session: Session, summary: string): Session {
   if (session.status !== "active") {
     throw new Error("Only active sessions can be closed");
   }
