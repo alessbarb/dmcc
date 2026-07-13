@@ -4,6 +4,7 @@ import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
 import { isDmRole, requireCampaignMembership } from "../webAccess.js";
 import type { WebUser } from "../webSession.js";
+import { HttpError } from "../../errors.js";
 
 function sqlRows<T = any>(result: unknown): T[] {
   const value = result as any;
@@ -304,9 +305,7 @@ export async function registerSearchWebRoutes(server: FastifyInstance): Promise<
     async (request) => {
       const { user, membership } = await requireCampaignMembership(request, request.params.campaignId);
       if (membership.role !== "player" && !isDmRole(membership.role)) {
-        const error = new Error("Player portal requires player membership");
-        (error as { statusCode?: number }).statusCode = 403;
-        throw error;
+        throw new HttpError("Player portal requires player membership", 403);
       }
       const query = sanitizeSearchQuery(request.query.q);
       if (!query) return { results: [] };

@@ -5,6 +5,7 @@ import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { requireCampaignOwner } from "../webAccess.js";
+import { HttpError } from "../../errors.js";
 import { hashOpaque, issueOpaqueToken, type WebUser } from "../webSession.js";
 
 function makeInviteUrl(request: FastifyRequest, token: string): string {
@@ -21,9 +22,7 @@ async function acceptInvitation(token: string, user: WebUser) {
       .where(eq(schema.campaignInvitations.tokenHash, tokenHash))
       .limit(1);
     if (!invitation || invitation.revokedAt || invitation.expiresAt < new Date()) {
-      const error = new Error("Invitation is invalid or expired");
-      (error as { statusCode?: number }).statusCode = 404;
-      throw error;
+      throw new HttpError("Invitation is invalid or expired", 404);
     }
 
     const [existingMembership] = await tx
@@ -40,9 +39,7 @@ async function acceptInvitation(token: string, user: WebUser) {
     }
 
     if (invitation.usesCount >= invitation.maxUses) {
-      const error = new Error("Invitation has no remaining uses");
-      (error as { statusCode?: number }).statusCode = 409;
-      throw error;
+      throw new HttpError("Invitation has no remaining uses", 409);
     }
 
     let playerId: string | null = null;

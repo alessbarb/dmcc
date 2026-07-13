@@ -4,6 +4,7 @@ import type { DbTransaction } from "../../db/client.js";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
 import { acquireCampaignAdvisoryLock } from "../../db/advisoryLock.js";
+import { HttpError } from "../errors.js";
 import { EVENT_SCHEMA_VERSION } from "@shared/appVersion.js";
 import { nowIso } from "@shared/dateTime.js";
 import { generateEventId } from "@shared/ids.js";
@@ -833,9 +834,7 @@ export class PostgresCampaignRepository {
   async executeCommand(campaignId: string, command: Command, options?: { commandId?: string; actorUserId?: string }): Promise<CampaignProjection> {
     const commandId = options?.commandId;
     if (!commandId) {
-      const error = new Error("Missing Idempotency-Key header");
-      (error as any).statusCode = 400;
-      throw error;
+      throw new HttpError("Missing Idempotency-Key header", 400);
     }
 
     const normalizedCommand = { ...command, campaignId } as Command;

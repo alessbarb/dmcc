@@ -4,6 +4,7 @@ import { createId } from "@shared/ids.js";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
 import { getRequiredWebUser, type WebUser } from "./webSession.js";
+import { HttpError } from "../errors.js";
 
 export type AccessibleCampaignRow = typeof schema.campaigns.$inferSelect & {
   role: typeof schema.campaignMemberships.$inferSelect["role"] | "dm";
@@ -24,9 +25,14 @@ export function isDmRole(role?: string | null): boolean {
 }
 
 export function getExpectedAuthErrorStatusCode(error: unknown): 401 | 403 | null {
-  if (!(error instanceof Error)) return null;
-  const statusCode = (error as { statusCode?: unknown }).statusCode;
-  return statusCode === 401 || statusCode === 403 ? statusCode : null;
+  if (error instanceof HttpError) {
+    return error.statusCode === 401 || error.statusCode === 403 ? error.statusCode : null;
+  }
+  if (error instanceof Error && "statusCode" in error) {
+    const statusCode = (error as any).statusCode;
+    return statusCode === 401 || statusCode === 403 ? statusCode : null;
+  }
+  return null;
 }
 
 export function getSafeErrorMessage(error: unknown): string {
@@ -96,9 +102,7 @@ export async function requireCampaignMembership(request: FastifyRequest, campaig
   const user = getRequiredWebUser(request);
   const membership = await getMembership(campaignId, user.userId);
   if (!membership) {
-    const error = new Error("Campaign membership required");
-    (error as { statusCode?: number }).statusCode = 403;
-    throw error;
+    throw new HttpError("Campaign membership required", 403);
   }
   return { user, membership };
 }
@@ -106,9 +110,7 @@ export async function requireCampaignMembership(request: FastifyRequest, campaig
 export async function requireCampaignRole(request: FastifyRequest, campaignId: string, roles: string[]) {
   const context = await requireCampaignMembership(request, campaignId);
   if (!roles.includes(context.membership.role)) {
-    const error = new Error("Forbidden: insufficient campaign role");
-    (error as { statusCode?: number }).statusCode = 403;
-    throw error;
+    throw new HttpError("Forbidden: insufficient campaign role", 403);
   }
   return context;
 }
@@ -121,9 +123,7 @@ export async function requireCampaignOwner(request: FastifyRequest, campaignId: 
     .where(eq(schema.campaigns.campaignId, campaignId))
     .limit(1);
   if (!campaign || campaign.ownerId !== context.user.userId) {
-    const error = new Error("Forbidden: campaign owner required");
-    (error as { statusCode?: number }).statusCode = 403;
-    throw error;
+    throw new HttpError("Forbidden: campaign owner required", 403);
   }
   return context;
 }

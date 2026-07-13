@@ -4,6 +4,7 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import { and, eq, gt, isNull } from "drizzle-orm";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
+import { HttpError } from "../errors.js";
 
 export const WEB_SESSION_COOKIE = "dmcc_session";
 const SESSION_DAYS = 30;
@@ -178,11 +179,8 @@ export async function revokeCurrentWebSession(request: FastifyRequest): Promise<
 }
 
 export function getRequiredWebUser(request: FastifyRequest): WebUser {
-  const user = (request as any).webUser as WebUser | undefined;
-  if (!user) {
-    const error = new Error("Authentication required");
-    (error as any).statusCode = 401;
-    throw error;
+  if (!request.webUser) {
+    throw new HttpError("Authentication required", 401);
   }
-  return user;
+  return request.webUser;
 }

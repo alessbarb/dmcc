@@ -190,16 +190,9 @@ function isMutationRequest(request: FastifyRequest): boolean {
   return ["POST", "PUT", "PATCH", "DELETE"].includes(request.method);
 }
 
-type WebAuthenticatedRequest = FastifyRequest & {
-  webUser?: unknown;
-  unifiedUser?: unknown;
-};
-
 function hasWebAuthenticationSignal(request: FastifyRequest): boolean {
-  const authenticatedRequest = request as WebAuthenticatedRequest;
   return Boolean(
-    authenticatedRequest.webUser ||
-    authenticatedRequest.unifiedUser ||
+    request.webUser ||
     request.headers.authorization ||
     request.headers.cookie
   );
@@ -229,6 +222,7 @@ export interface ServerConfig {
 export function createServer(config?: ServerConfig): FastifyInstance {
   const trustProxy = resolveTrustProxyConfig();
   const server = Fastify({ logger: { level: "warn" }, trustProxy, bodyLimit: GLOBAL_JSON_BODY_LIMIT_BYTES });
+  server.decorateRequest("webUser", null);
   const dataDir = config?.dataDir ?? join(homedir(), "Documents", "DMCampaignCompanion");
 
   server.register(helmet, buildHelmetConfig());
@@ -418,13 +412,7 @@ export function createServer(config?: ServerConfig): FastifyInstance {
 
     const webUser = await resolveWebUser(request);
     if (webUser) {
-      (request as any).webUser = webUser;
-      (request as any).unifiedUser = {
-        userId: webUser.userId,
-        emailNormalized: webUser.email,
-        displayName: webUser.displayName,
-        appRole: webUser.appRole,
-      };
+      request.setDecorator("webUser", webUser);
     }
   });
 

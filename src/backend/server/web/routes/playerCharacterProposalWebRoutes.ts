@@ -6,6 +6,7 @@ import * as schema from "../../../db/schema.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { requireCampaignRole } from "../webAccess.js";
+import { HttpError } from "../../errors.js";
 
 function valuesOf<T>(value: unknown): T[] {
   if (!value) return [];
@@ -26,9 +27,7 @@ async function validateLinkRequest(campaignId: string, playerId: string, charact
     ))
     .limit(1);
   if (!profile) {
-    const error = new Error("Player profile not found");
-    (error as { statusCode?: number }).statusCode = 404;
-    throw error;
+    throw new HttpError("Player profile not found", 404);
   }
 
   const repository = new PostgresCampaignRepository();
@@ -40,9 +39,7 @@ async function validateLinkRequest(campaignId: string, playerId: string, charact
     entity?.status !== "archived"
   );
   if (!character) {
-    const error = new Error("Player character not found");
-    (error as { statusCode?: number }).statusCode = 404;
-    throw error;
+    throw new HttpError("Player character not found", 404);
   }
 
   const [existingOwner] = await db
@@ -56,9 +53,7 @@ async function validateLinkRequest(campaignId: string, playerId: string, charact
     ))
     .limit(1);
   if (existingOwner) {
-    const error = new Error("Character is already linked to another player");
-    (error as { statusCode?: number }).statusCode = 409;
-    throw error;
+    throw new HttpError("Character is already linked to another player", 409);
   }
 
   return profile;

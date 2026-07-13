@@ -6,6 +6,7 @@ import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
 import { verifySecret } from "../webSession.js";
+import { HttpError } from "../../errors.js";
 import { sendExistingAccountRegistrationEmail, sendPasswordResetEmail } from "../../emailService.js";
 import { listAccessibleCampaigns } from "../webAccess.js";
 import {
@@ -175,9 +176,7 @@ function enforceRegisterRateLimit(
 
 function requireBodyString(value: unknown, field: string): string {
   if (typeof value !== "string" || value.trim().length === 0) {
-    const error = new Error(`${field} is required`);
-    (error as { statusCode?: number }).statusCode = 400;
-    throw error;
+    throw new HttpError(`${field} is required`, 400);
   }
   return value.trim();
 }

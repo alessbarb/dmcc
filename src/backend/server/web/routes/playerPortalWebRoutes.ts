@@ -12,6 +12,7 @@ import {
 } from "../playerKnowledgeProjection.js";
 import { requireCampaignMembership } from "../webAccess.js";
 import type { WebUser } from "../webSession.js";
+import { HttpError } from "../../errors.js";
 
 async function playerProfileFor(userId: string, campaignId: string) {
   const [profile] = await db.select().from(schema.playerProfiles).where(and(
@@ -25,9 +26,7 @@ async function playerProfileFor(userId: string, campaignId: string) {
 async function requirePlayerPortal(request: FastifyRequest<{ Params: { campaignId: string } }>) {
   const context = await requireCampaignMembership(request, request.params.campaignId);
   if (context.membership.role !== "player" || !context.membership.playerId) {
-    const error = new Error("Player portal requires active player membership");
-    (error as { statusCode?: number }).statusCode = 403;
-    throw error;
+    throw new HttpError("Player portal requires active player membership", 403);
   }
   return context;
 }
@@ -121,7 +120,7 @@ function projectPlayerCanvases(state: any, visibleEntityIds: Set<string>, visibl
 
 async function buildPlayerPortal(campaignId: string, user: WebUser) {
   const profile = await playerProfileFor(user.userId, campaignId);
-  if (!profile) throw Object.assign(new Error("Active player profile required"), { statusCode: 403 });
+  if (!profile) throw new HttpError("Active player profile required", 403);
 
   const [snapshot, campaign, notes, proposals, stateRow, resources, sessions, liveTables, notifications] = await Promise.all([
     loadKnowledgeSnapshot(campaignId),
