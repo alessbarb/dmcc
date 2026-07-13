@@ -2,7 +2,7 @@ import { and, eq } from "drizzle-orm";
 import { describe, expect, it } from "vitest";
 import { db } from "../../src/backend/db/client.js";
 import * as schema from "../../src/backend/db/schema.js";
-import { grantAllowsPlayer } from "../../src/backend/server/web/playerKnowledgeProjection.js";
+import { grantAllowsPlayer, refreshKnowledgeVisibilityGrants } from "../../src/backend/server/web/playerKnowledgeProjection.js";
 
 const ids = {
   owner: "usr_visibility_owner",
@@ -58,7 +58,7 @@ async function seedVisibilityFixture(): Promise<void> {
   ]);
 }
 
-describe("visibility grant identity", () => {
+describe("visibility grants", () => {
   it("stores independent grants for different users on the same target", async () => {
     await seedVisibilityFixture();
     await db.insert(schema.visibilityGrants).values([
@@ -67,6 +67,7 @@ describe("visibility grant identity", () => {
         targetType: "entity",
         targetId: "ent_shared",
         scope: "specific_user",
+        source: "manual",
         userId: ids.userA,
         playerId: null,
       },
@@ -75,6 +76,7 @@ describe("visibility grant identity", () => {
         targetType: "entity",
         targetId: "ent_shared",
         scope: "specific_user",
+        source: "manual",
         userId: ids.userB,
         playerId: null,
       },
@@ -89,7 +91,6 @@ describe("visibility grant identity", () => {
       ));
 
     expect(grants).toHaveLength(2);
-    expect(grantAllowsPlayer(grants[0]!, ids.userA, ids.playerA)).toBe(grants[0]!.userId === ids.userA);
     expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userA, ids.playerA))).toBe(true);
     expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userB, ids.playerB))).toBe(true);
   });
@@ -102,6 +103,7 @@ describe("visibility grant identity", () => {
         targetType: "entity",
         targetId: "ent_character",
         scope: "specific_user",
+        source: "manual",
         userId: ids.userA,
         playerId: null,
       },
@@ -110,6 +112,7 @@ describe("visibility grant identity", () => {
         targetType: "entity",
         targetId: "ent_character",
         scope: "specific_user",
+        source: "manual",
         userId: ids.userB,
         playerId: null,
       },
@@ -120,6 +123,7 @@ describe("visibility grant identity", () => {
       eq(schema.visibilityGrants.targetType, "entity"),
       eq(schema.visibilityGrants.targetId, "ent_character"),
       eq(schema.visibilityGrants.scope, "specific_user"),
+      eq(schema.visibilityGrants.source, "manual"),
       eq(schema.visibilityGrants.userId, ids.userA),
     ));
 
@@ -140,6 +144,7 @@ describe("visibility grant identity", () => {
       targetType: "entity",
       targetId: "ent_invalid",
       scope: "specific_user",
+      source: "manual",
       userId: ids.userA,
       playerId: ids.playerA,
     })).rejects.toThrow();
@@ -153,6 +158,7 @@ describe("visibility grant identity", () => {
         targetType: "fact",
         targetId: "fact_shared",
         scope: "specific_player",
+        source: "manual",
         userId: null,
         playerId: ids.playerA,
       },
@@ -161,6 +167,7 @@ describe("visibility grant identity", () => {
         targetType: "fact",
         targetId: "fact_shared",
         scope: "specific_player",
+        source: "manual",
         userId: null,
         playerId: ids.playerB,
       },
@@ -174,5 +181,43 @@ describe("visibility grant identity", () => {
     expect(grants).toHaveLength(2);
     expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userA, ids.playerA))).toBe(true);
     expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userB, ids.playerB))).toBe(true);
+  });
+
+  it("revokes stale visibility grants without deleting explicit grants", async () => {
+    await seedVisibilityFixture();
+    await db.insert(schema.visibilityGrants).values([
+      {
+        campaignId: ids.campaign,
+        targetType: "entity",
+        targetId: "ent_stale",
+        scope: "all_players",
+        source: "visibility",
+        userId: null,
+        playerId: null,
+      },
+      {
+        campaignId: ids.campaign,
+        targetType: "entity",
+        targetId: "ent_linked",
+        scope: "specific_user",
+        source: "character_link",
+        userId: ids.userA,
+        playerId: null,
+      },
+    ]);
+
+    await refreshKnowledgeVisibilityGrants(ids.campaign);
+
+    const grants = await db
+      .select()
+      .from(schema.visibilityGrants)
+      .where(eq(schema.visibilityGrants.campaignId, ids.campaign));
+
+    expect(grants.some((grant) => grant.targetId === "ent_stale")).toBe(false);
+    expect(grants).toContainEqual(expect.objectContaining({
+      targetId: "ent_linked",
+      source: "character_link",
+      userId: ids.userA,
+    }));
   });
 });
