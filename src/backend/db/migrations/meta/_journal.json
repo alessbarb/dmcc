@@ -13,6 +13,7 @@
     { "idx": 8, "version": "7", "when": 1783890000000, "tag": "0008_visibility_grant_identity", "breakpoints": true },
     { "idx": 9, "version": "7", "when": 1783904400000, "tag": "0009_player_visibility_integrity", "breakpoints": true },
     { "idx": 10, "version": "7", "when": 1783918800000, "tag": "0010_campaign_ownership_core", "breakpoints": true },
-    { "idx": 11, "version": "7", "when": 1783922400000, "tag": "0011_campaign_ownership_narrative", "breakpoints": true }
+    { "idx": 11, "version": "7", "when": 1783922400000, "tag": "0011_campaign_ownership_narrative", "breakpoints": true },
+    { "idx": 12, "version": "7", "when": 1783926000000, "tag": "0012_campaign_ownership_collaboration", "breakpoints": true }
   ]
 }

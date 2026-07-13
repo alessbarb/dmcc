@@ -327,7 +327,7 @@ export const characters = pgTable("characters", {
 
 export const liveTables = pgTable("live_tables", {
   liveTableId: text("live_table_id").primaryKey(),
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   activeSessionId: text("active_session_id"),
   shortCode: text("short_code").notNull(),
   status: text("status").notNull().default("active"),
@@ -338,7 +338,7 @@ export const liveTables = pgTable("live_tables", {
 
 export const campaignInvitations = pgTable("campaign_invitations", {
   invitationId: text("invitation_id").primaryKey(),
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   tokenHash: text("token_hash").notNull(),
   shortCodeHash: text("short_code_hash"),
   role: text("role").notNull().default("player"),
@@ -358,7 +358,7 @@ export const campaignInvitationAcceptances = pgTable("campaign_invitation_accept
 });
 
 export const campaignNotes = pgTable("campaign_notes", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   noteId: text("note_id").notNull(),
   authorUserId: text("author_user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   authorPlayerId: text("author_player_id"),
@@ -393,7 +393,7 @@ export const playerProposals = pgTable("player_proposals", {
 }));
 
 export const activityFeed = pgTable("activity_feed", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   activityId: text("activity_id").notNull(),
   type: text("type").notNull(),
   content: jsonb("content").notNull(),
@@ -413,7 +413,7 @@ export const notifications = pgTable("notifications", {
 });
 
 export const attachments = pgTable("attachments", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   attachmentId: text("attachment_id").notNull(),
   name: text("name").notNull(),
   path: text("path").notNull(),
