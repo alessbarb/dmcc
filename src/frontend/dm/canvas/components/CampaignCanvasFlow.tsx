@@ -45,6 +45,15 @@ const nodeTypes = {
 
 const reactFlowProOptions: ProOptions = { hideAttribution: true };
 
+function runCanvasFlowAction(operation: Promise<unknown> | undefined, errorMessage: string): void {
+  if (!operation) return;
+  void operation.catch((error: unknown) => {
+    console.error(errorMessage, error);
+  });
+}
+
+type RelationshipPopoverSubmitData = Parameters<React.ComponentProps<typeof RelationshipTypePopover>["onSubmit"]>[0];
+
 export type CanvasFlowNodeKind = "entity" | "note" | "fact" | "group" | "image";
 
 export interface CanvasFlowNodeData extends Record<string, unknown> {
@@ -577,7 +586,10 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
     if (!canvas.viewport || !hasVisibleNode) {
       window.setTimeout(() => {
-        rfInstance.fitView({ padding: 0.25, duration: 800 });
+        runCanvasFlowAction(
+          rfInstance.fitView({ padding: 0.25, duration: 800 }),
+          "Failed to recover canvas viewport",
+        );
       }, 100);
     }
   }, [canvas.viewport, canvasId, flowNodes, rfInstance]);
@@ -589,7 +601,10 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
     const width = node.width ?? 160;
     const height = node.height ?? 120;
-    rfInstance.setCenter((node.x ?? 0) + width / 2, (node.y ?? 0) + height / 2, options);
+    runCanvasFlowAction(
+      rfInstance.setCenter((node.x ?? 0) + width / 2, (node.y ?? 0) + height / 2, options),
+      "Failed to focus canvas node",
+    );
     setNodes((currentNodes) => currentNodes.map((currentNode) => ({
       ...currentNode,
       selected: currentNode.id === node.id,
@@ -616,15 +631,15 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   }, [rfInstance]);
 
   const fitCanvasView = useCallback(() => {
-    rfInstance?.fitView({ padding: 0.25, duration: 400 });
+    runCanvasFlowAction(rfInstance?.fitView({ padding: 0.25, duration: 400 }), "Failed to fit canvas view");
   }, [rfInstance]);
 
   const zoomCanvasIn = useCallback(() => {
-    rfInstance?.zoomIn({ duration: 200 });
+    runCanvasFlowAction(rfInstance?.zoomIn({ duration: 200 }), "Failed to zoom canvas in");
   }, [rfInstance]);
 
   const zoomCanvasOut = useCallback(() => {
-    rfInstance?.zoomOut({ duration: 200 });
+    runCanvasFlowAction(rfInstance?.zoomOut({ duration: 200 }), "Failed to zoom canvas out");
   }, [rfInstance]);
 
   useImperativeHandle(ref, () => ({
@@ -651,7 +666,10 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
       }
       return update;
     });
-    updateCanvasNodesLayout(canvasId, updates);
+    runCanvasFlowAction(
+      updateCanvasNodesLayout(canvasId, updates),
+      "Failed to save dragged canvas node positions",
+    );
   }, [canvasId, updateCanvasNodesLayout]);
 
   const onSelectionDragStop: SelectionDragHandler<CanvasFlowNode> = useCallback((_event, draggedNodes) => {
@@ -660,7 +678,10 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
       x: Math.round(n.position.x),
       y: Math.round(n.position.y),
     }));
-    updateCanvasNodesLayout(canvasId, updates);
+    runCanvasFlowAction(
+      updateCanvasNodesLayout(canvasId, updates),
+      "Failed to save selected canvas node positions",
+    );
   }, [canvasId, updateCanvasNodesLayout]);
 
   // Viewport change end: save zoom/pan coords
@@ -668,7 +689,10 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     if (rfInstance) {
       const zoom = rfInstance.getZoom();
       const { x, y } = rfInstance.getViewport();
-      saveViewport(canvasId, { x: Math.round(x), y: Math.round(y), zoom });
+      runCanvasFlowAction(
+        saveViewport(canvasId, { x: Math.round(x), y: Math.round(y), zoom }),
+        "Failed to save canvas viewport",
+      );
     }
   }, [canvasId, rfInstance, saveViewport]);
 
@@ -677,11 +701,14 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     if (rfInstance && canvas.viewport) {
       const vp = { x: canvas.viewport.x, y: canvas.viewport.y, zoom: canvas.viewport.zoom };
       setViewport(vp);
-      rfInstance.setViewport({
-        x: canvas.viewport.x,
-        y: canvas.viewport.y,
-        zoom: canvas.viewport.zoom
-      });
+      runCanvasFlowAction(
+        rfInstance.setViewport({
+          x: canvas.viewport.x,
+          y: canvas.viewport.y,
+          zoom: canvas.viewport.zoom
+        }),
+        "Failed to restore canvas viewport",
+      );
     }
   }, [canvasId, rfInstance]); // execute once per canvas switch
 
@@ -717,30 +744,29 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     });
   }, [canvas.nodes, campaignState?.entities]);
 
-  const handlePopoverSubmit = async (edgeData: any) => {
+  const handlePopoverSubmit = (edgeData: RelationshipPopoverSubmitData) => {
     if (!connectPopover) return;
-    
-    await addEdgeToCanvas(canvasId, {
+
+    runCanvasFlowAction(addEdgeToCanvas(canvasId, {
       sourceNodeId: connectPopover.sourceNodeId,
       targetNodeId: connectPopover.targetNodeId,
       ...edgeData
-    });
-
-    setConnectPopover(null);
+    }).then(() => {
+      setConnectPopover(null);
+    }), "Failed to add canvas relationship edge");
   };
 
-  // Double click pane -> add note at coordinates
   const onPaneDoubleClick = useCallback((event: React.MouseEvent) => {
-    if (rfInstance && (event.target as HTMLElement).classList.contains("react-flow__pane")) {
+    if (rfInstance && event.target instanceof HTMLElement && event.target.classList.contains("react-flow__pane")) {
       const position = rfInstance.screenToFlowPosition({ x: event.clientX, y: event.clientY });
 
-      placeNodeOnCanvas(canvasId, {
+      runCanvasFlowAction(placeNodeOnCanvas(canvasId, {
         kind: "note",
         text: "",
         color: "yellow",
         x: Math.round(position.x),
         y: Math.round(position.y)
-      });
+      }), "Failed to add note from canvas double click");
     }
   }, [rfInstance, canvasId, placeNodeOnCanvas]);
 
@@ -757,12 +783,12 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
   const onDragLeave = useCallback((e: React.DragEvent) => {
     // Only clear if leaving the whole wrapper (not just child elements)
-    if (!wrapperRef.current?.contains(e.relatedTarget as any)) {
+    if (!(e.relatedTarget instanceof globalThis.Node) || !wrapperRef.current?.contains(e.relatedTarget)) {
       setIsDragOver(false);
     }
   }, []);
 
-  const onDrop = useCallback(async (e: React.DragEvent) => {
+  const onDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
 
@@ -775,40 +801,42 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
     const x = Math.round(pos.x - 81);  // center node on cursor (card ~162px wide)
     const y = Math.round(pos.y - 95);  // center node on cursor (card ~190px tall)
 
-    if (kind === "note") {
-      await placeNodeOnCanvas(canvasId, { kind: "note", text: "", color: "yellow", x, y });
-    } else if (kind === "group") {
-      await placeNodeOnCanvas(canvasId, { kind: "group", title: "Nuevo Grupo", color: "purple", x, y, width: 340, height: 220 });
-    } else if (kind === "entity" && entityType) {
-      const campaignId = campaignState?.campaign?.campaignId;
-      if (!campaignId) return;
-      try {
-        const created = await createEntity({ entityType, title: `Nuevo ${label}`, status: "ready", importance: "normal", visibility: { kind: "dm_only" } });
-        if (created?.entityId) {
-          await placeNodeOnCanvas(canvasId, { kind: "entity", entityId: created.entityId, x, y });
+    runCanvasFlowAction((async () => {
+      if (kind === "note") {
+        await placeNodeOnCanvas(canvasId, { kind: "note", text: "", color: "yellow", x, y });
+      } else if (kind === "group") {
+        await placeNodeOnCanvas(canvasId, { kind: "group", title: "Nuevo Grupo", color: "purple", x, y, width: 340, height: 220 });
+      } else if (kind === "entity" && entityType) {
+        const campaignId = campaignState?.campaign?.campaignId;
+        if (!campaignId) return;
+        try {
+          const created = await createEntity({ entityType, title: `Nuevo ${label}`, status: "ready", importance: "normal", visibility: { kind: "dm_only" } });
+          if (created?.entityId) {
+            await placeNodeOnCanvas(canvasId, { kind: "entity", entityId: created.entityId, x, y });
+          }
+        } catch (err) {
+          console.error("Drop create entity failed", err);
         }
-      } catch (err) {
-        console.error("Drop create entity failed", err);
-      }
-    } else if (kind === "fact") {
-      const factId = e.dataTransfer.getData("palette/factId");
-      if (factId) {
-        await placeNodeOnCanvas(canvasId, { kind: "fact", factId, x, y });
-      }
-    } else if (kind === "fact-create") {
-      const factKind = e.dataTransfer.getData("palette/factKind") || "rumor";
-      const statement = window.prompt(t("canvas.factNode.newFactPrompt", { kind: factKind }));
-      if (!statement?.trim()) return;
-      try {
-        const newFactId = await createFact({ statement: statement.trim(), kind: factKind, confidence: "suspected", relatedEntityIds: [], source: { kind: "manual" } });
-        if (newFactId) {
-          await placeNodeOnCanvas(canvasId, { kind: "fact", factId: newFactId, x, y });
+      } else if (kind === "fact") {
+        const factId = e.dataTransfer.getData("palette/factId");
+        if (factId) {
+          await placeNodeOnCanvas(canvasId, { kind: "fact", factId, x, y });
         }
-      } catch (err) {
-        console.error("Drop create fact failed", err);
+      } else if (kind === "fact-create") {
+        const factKind = e.dataTransfer.getData("palette/factKind") || "rumor";
+        const statement = window.prompt(t("canvas.factNode.newFactPrompt", { kind: factKind }));
+        if (!statement?.trim()) return;
+        try {
+          const newFactId = await createFact({ statement: statement.trim(), kind: factKind, confidence: "suspected", relatedEntityIds: [], source: { kind: "manual" } });
+          if (newFactId) {
+            await placeNodeOnCanvas(canvasId, { kind: "fact", factId: newFactId, x, y });
+          }
+        } catch (err) {
+          console.error("Drop create fact failed", err);
+        }
       }
-    }
-  }, [rfInstance, canvasId, campaignState, placeNodeOnCanvas, createEntity, createFact]);
+    })(), "Failed to handle canvas palette drop");
+  }, [rfInstance, canvasId, campaignState, placeNodeOnCanvas, createEntity, createFact, t]);
 
   const isMobileExplore = deviceMode === "mobile" && interactionProfile !== "edit";
   const isPanMode = interactionMode === "pan" || isMobileExplore;
