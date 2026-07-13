@@ -1,58 +1,178 @@
+import { and, eq } from "drizzle-orm";
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { db } from "../../src/backend/db/client.js";
+import * as schema from "../../src/backend/db/schema.js";
+import { grantAllowsPlayer } from "../../src/backend/server/web/playerKnowledgeProjection.js";
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-const migrationPath = join(ROOT, "src/backend/db/migrations/0008_visibility_grant_identity.sql");
-const knowledgeProjectionPath = join(ROOT, "src/backend/server/web/playerKnowledgeProjection.ts");
-const characterLinkRoutesPath = join(ROOT, "src/backend/server/web/routes/playerCharacterLinkWebRoutes.ts");
-const characterProposalRoutesPath = join(ROOT, "src/backend/server/web/routes/playerCharacterProposalWebRoutes.ts");
+const ids = {
+  owner: "usr_visibility_owner",
+  userA: "usr_visibility_a",
+  userB: "usr_visibility_b",
+  workspace: "wks_visibility",
+  campaign: "cmp_visibility",
+  playerA: "ply_visibility_a",
+  playerB: "ply_visibility_b",
+};
 
-describe("canonical visibility grant identity", () => {
-  it("supports independent common, player and user grants", () => {
-    const migration = readFileSync(migrationPath, "utf8");
+async function seedVisibilityFixture(): Promise<void> {
+  await db.insert(schema.users).values([
+    {
+      userId: ids.owner,
+      emailNormalized: "visibility-owner@example.test",
+      emailHash: "visibility-owner",
+      displayName: "Owner",
+      passwordHash: "hash",
+      passwordSalt: "salt",
+    },
+    {
+      userId: ids.userA,
+      emailNormalized: "visibility-a@example.test",
+      emailHash: "visibility-a",
+      displayName: "Player A",
+      passwordHash: "hash",
+      passwordSalt: "salt",
+    },
+    {
+      userId: ids.userB,
+      emailNormalized: "visibility-b@example.test",
+      emailHash: "visibility-b",
+      displayName: "Player B",
+      passwordHash: "hash",
+      passwordSalt: "salt",
+    },
+  ]);
+  await db.insert(schema.workspaces).values({
+    workspaceId: ids.workspace,
+    name: "Visibility workspace",
+    ownerId: ids.owner,
+  });
+  await db.insert(schema.campaigns).values({
+    campaignId: ids.campaign,
+    title: "Visibility campaign",
+    workspaceId: ids.workspace,
+    ownerId: ids.owner,
+  });
+  await db.insert(schema.playerProfiles).values([
+    { profileId: ids.playerA, campaignId: ids.campaign, userId: ids.userA, displayName: "Player A" },
+    { profileId: ids.playerB, campaignId: ids.campaign, userId: ids.userB, displayName: "Player B" },
+  ]);
+}
 
-    expect(migration).toContain('CREATE UNIQUE INDEX "uq_visibility_grants_common"');
-    expect(migration).toContain('CREATE UNIQUE INDEX "uq_visibility_grants_specific_player"');
-    expect(migration).toContain('CREATE UNIQUE INDEX "uq_visibility_grants_specific_user"');
-    expect(migration).toContain('WHERE "scope" = \'specific_player\'');
-    expect(migration).toContain('WHERE "scope" = \'specific_user\'');
+describe("visibility grant identity", () => {
+  it("stores independent grants for different users on the same target", async () => {
+    await seedVisibilityFixture();
+    await db.insert(schema.visibilityGrants).values([
+      {
+        campaignId: ids.campaign,
+        targetType: "entity",
+        targetId: "ent_shared",
+        scope: "specific_user",
+        userId: ids.userA,
+        playerId: null,
+      },
+      {
+        campaignId: ids.campaign,
+        targetType: "entity",
+        targetId: "ent_shared",
+        scope: "specific_user",
+        userId: ids.userB,
+        playerId: null,
+      },
+    ]);
+
+    const grants = await db
+      .select()
+      .from(schema.visibilityGrants)
+      .where(and(
+        eq(schema.visibilityGrants.campaignId, ids.campaign),
+        eq(schema.visibilityGrants.targetId, "ent_shared"),
+      ));
+
+    expect(grants).toHaveLength(2);
+    expect(grantAllowsPlayer(grants[0]!, ids.userA, ids.playerA)).toBe(grants[0]!.userId === ids.userA);
+    expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userA, ids.playerA))).toBe(true);
+    expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userB, ids.playerB))).toBe(true);
   });
 
-  it("normalizes legacy encoded scopes before adding constraints", () => {
-    const migration = readFileSync(migrationPath, "utf8");
+  it("removes one user's grant without affecting another user", async () => {
+    await seedVisibilityFixture();
+    await db.insert(schema.visibilityGrants).values([
+      {
+        campaignId: ids.campaign,
+        targetType: "entity",
+        targetId: "ent_character",
+        scope: "specific_user",
+        userId: ids.userA,
+        playerId: null,
+      },
+      {
+        campaignId: ids.campaign,
+        targetType: "entity",
+        targetId: "ent_character",
+        scope: "specific_user",
+        userId: ids.userB,
+        playerId: null,
+      },
+    ]);
 
-    expect(migration).toContain("WHERE \"scope\" LIKE 'specific_player:%'");
-    expect(migration).toContain("WHERE \"scope\" LIKE 'specific_user:%'");
-    expect(migration).toContain('SET "player_id" = NULL\nWHERE "scope" = \'specific_user\'');
-    expect(migration).toContain('SET "user_id" = NULL\nWHERE "scope" = \'specific_player\'');
-    expect(migration).toContain('ADD CONSTRAINT "chk_visibility_grants_principal"');
+    await db.delete(schema.visibilityGrants).where(and(
+      eq(schema.visibilityGrants.campaignId, ids.campaign),
+      eq(schema.visibilityGrants.targetType, "entity"),
+      eq(schema.visibilityGrants.targetId, "ent_character"),
+      eq(schema.visibilityGrants.scope, "specific_user"),
+      eq(schema.visibilityGrants.userId, ids.userA),
+    ));
+
+    const remaining = await db
+      .select()
+      .from(schema.visibilityGrants)
+      .where(eq(schema.visibilityGrants.targetId, "ent_character"));
+
+    expect(remaining).toHaveLength(1);
+    expect(remaining[0]?.userId).toBe(ids.userB);
   });
 
-  it("writes canonical specific-player grants without encoding the principal in scope", () => {
-    const projection = readFileSync(knowledgeProjectionPath, "utf8");
+  it("rejects grants whose scope and principal columns disagree", async () => {
+    await seedVisibilityFixture();
 
-    expect(projection).toContain('"specific_player", playerId');
-    expect(projection).not.toContain("function specificPlayerScope");
-    expect(projection).not.toContain("await insertGrant(campaignId, \"entity\", targetId, specificPlayerScope");
+    await expect(db.insert(schema.visibilityGrants).values({
+      campaignId: ids.campaign,
+      targetType: "entity",
+      targetId: "ent_invalid",
+      scope: "specific_user",
+      userId: ids.userA,
+      playerId: ids.playerA,
+    })).rejects.toThrow();
   });
 
-  it("does not upsert character grants against the removed four-column key", () => {
-    const linkRoutes = readFileSync(characterLinkRoutesPath, "utf8");
-    const proposalRoutes = readFileSync(characterProposalRoutesPath, "utf8");
+  it("keeps player grants independent on the same target", async () => {
+    await seedVisibilityFixture();
+    await db.insert(schema.visibilityGrants).values([
+      {
+        campaignId: ids.campaign,
+        targetType: "fact",
+        targetId: "fact_shared",
+        scope: "specific_player",
+        userId: null,
+        playerId: ids.playerA,
+      },
+      {
+        campaignId: ids.campaign,
+        targetType: "fact",
+        targetId: "fact_shared",
+        scope: "specific_player",
+        userId: null,
+        playerId: ids.playerB,
+      },
+    ]);
 
-    for (const source of [linkRoutes, proposalRoutes]) {
-      expect(source).toContain('scope: "specific_user"');
-      expect(source).toContain("playerId: null");
-      expect(source).toContain(".onConflictDoNothing()");
-      expect(source).not.toContain("schema.visibilityGrants.scope,\n      ],");
-    }
-  });
+    const grants = await db
+      .select()
+      .from(schema.visibilityGrants)
+      .where(eq(schema.visibilityGrants.targetId, "fact_shared"));
 
-  it("removes only the linked user's character grant", () => {
-    const linkRoutes = readFileSync(characterLinkRoutesPath, "utf8");
-
-    expect(linkRoutes).toContain("eq(schema.visibilityGrants.userId, profile.userId)");
+    expect(grants).toHaveLength(2);
+    expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userA, ids.playerA))).toBe(true);
+    expect(grants.some((grant) => grantAllowsPlayer(grant, ids.userB, ids.playerB))).toBe(true);
   });
 });
