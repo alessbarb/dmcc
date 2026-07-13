@@ -132,9 +132,11 @@ export function getRequiredSessionSecret(): string {
   return secret;
 }
 
-function buildHelmetConfig(): Parameters<typeof helmet>[1] {
-  const isProduction = process.env.NODE_ENV === "production";
-  const connectSrc = ["'self'", "ws:", "wss:", "http://localhost:*", "http://127.0.0.1:*"];
+export function buildHelmetConfig(nodeEnv = process.env.NODE_ENV): Parameters<typeof helmet>[1] {
+  const isProduction = nodeEnv === "production";
+  const connectSrc = isProduction
+    ? ["'self'"]
+    : ["'self'", "ws:", "wss:", "http://localhost:*", "http://127.0.0.1:*"];
 
   return {
     enableCSPNonces: true,
