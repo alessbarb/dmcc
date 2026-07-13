@@ -88,6 +88,22 @@ export default defineConfig(
       "src/core/domain/session/types.ts",
       "src/core/domain/premade/**/*.ts",
       "src/core/domain/rules/types.ts",
+      "src/core/domain/entity/revelationAnchors.ts",
+      "src/core/persistence/repositories/campaignRepository.ts",
+      "src/core/projections/**/*.ts",
+    ],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unsafe-type-assertion": "error",
+    },
+  },
+
+  {
+    files: [
+      "src/frontend/shared/api/webProductClient.ts",
+      "src/frontend/SmartLanding.tsx",
+      "src/frontend/dm/pages/CommandCenterPage.tsx",
+      "src/frontend/dm/components/LiveTableModal.tsx",
     ],
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
