@@ -63,17 +63,9 @@ async function ensureCharacterGrant(
       targetId: characterEntityId,
       scope: "specific_user",
       userId: profile.userId,
-      playerId: profile.profileId,
+      playerId: null,
     })
-    .onConflictDoUpdate({
-      target: [
-        schema.visibilityGrants.campaignId,
-        schema.visibilityGrants.targetType,
-        schema.visibilityGrants.targetId,
-        schema.visibilityGrants.scope,
-      ],
-      set: { userId: profile.userId, playerId: profile.profileId, grantedAt: new Date() },
-    });
+    .onConflictDoNothing();
 }
 
 async function migrateLegacyLinks(campaignId: string, profiles: Array<typeof schema.playerProfiles.$inferSelect>, characters: any[]) {
@@ -281,7 +273,7 @@ export async function registerPlayerCharacterLinkWebRoutes(server: FastifyInstan
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.profileId, request.params.playerId),
         ));
-      if (profile.linkedCharacterId) {
+      if (profile.linkedCharacterId && profile.userId) {
         await db
           .delete(schema.visibilityGrants)
           .where(and(
@@ -289,6 +281,7 @@ export async function registerPlayerCharacterLinkWebRoutes(server: FastifyInstan
             eq(schema.visibilityGrants.targetType, "entity"),
             eq(schema.visibilityGrants.targetId, profile.linkedCharacterId),
             eq(schema.visibilityGrants.scope, "specific_user"),
+            eq(schema.visibilityGrants.userId, profile.userId),
           ));
       }
       await db.insert(schema.activityFeed).values({
