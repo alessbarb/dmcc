@@ -1,4 +1,4 @@
-import type { FastifyInstance, FastifyReply } from "fastify";
+import type { FastifyInstance } from "fastify";
 import type { Command } from "@core/application/commands.js";
 import { eq, and, sql } from "drizzle-orm";
 import type { ImportStage, PremadeImportEvent } from "@shared/premadeImportTypes.js";
@@ -84,12 +84,6 @@ async function removeFailedImport(campaignId: string): Promise<void> {
     await tx.delete(schema.campaignMemberships).where(eq(schema.campaignMemberships.campaignId, campaignId));
     await tx.delete(schema.campaigns).where(eq(schema.campaigns.campaignId, campaignId));
   });
-}
-
-function sendImportFailure(reply: FastifyReply, error: unknown) {
-  const message = error instanceof Error ? error.message : "Unknown import error";
-  reply.code(500);
-  return { error: `Failed to import premade campaign: ${message}` };
 }
 
 interface PremadeImportStep {

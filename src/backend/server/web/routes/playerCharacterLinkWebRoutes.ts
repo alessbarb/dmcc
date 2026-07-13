@@ -1,5 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { and, eq, ne } from "drizzle-orm";
+import type { Entity } from "@core/domain/entity/types.js";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
@@ -17,37 +18,40 @@ interface PortalCharacter {
   importance?: string;
 }
 
-function valuesOf<T>(value: unknown): T[] {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function valuesOf<T>(value: Map<string, T> | T[] | Record<string, T> | null | undefined): T[] {
   if (!value) return [];
-  if (Array.isArray(value)) return value as T[];
-  if (value instanceof Map) return Array.from(value.values()) as T[];
-  if (typeof value === "object") return Object.values(value as Record<string, T>);
-  return [];
+  if (Array.isArray(value)) return value;
+  if (value instanceof Map) return Array.from(value.values());
+  return Object.values(value);
 }
 
-function isPlayerCharacter(entity: any): boolean {
-  return entity?.entityType === "player_character" || entity?.type === "player_character";
+function isPlayerCharacter(entity: Entity): boolean {
+  return entity.entityType === "player_character";
 }
 
-function isArchived(entity: any): boolean {
-  return entity?.archived === true || entity?.status === "archived";
+function isArchived(entity: Entity): boolean {
+  return entity.archived === true || entity.status === "archived";
 }
 
-function toPortalCharacter(entity: any): PortalCharacter {
+function toPortalCharacter(entity: Entity): PortalCharacter {
   return {
     entityId: String(entity.entityId),
     entityType: "player_character",
-    title: String(entity.title ?? entity.name ?? entity.entityId),
-    summary: entity.summary ?? entity.publicSummary ?? undefined,
+    title: String(entity.title ?? entity.entityId),
+    summary: entity.summary,
     status: entity.status ?? undefined,
     importance: entity.importance ?? undefined,
   };
 }
 
-async function readCampaignCharacters(campaignId: string): Promise<any[]> {
+async function readCampaignCharacters(campaignId: string): Promise<Entity[]> {
   const repository = new PostgresCampaignRepository();
   const state = await repository.getCampaignState(campaignId);
-  return valuesOf<any>(state?.entities).filter((entity) => isPlayerCharacter(entity) && !isArchived(entity));
+  return valuesOf(state.entities).filter((entity) => isPlayerCharacter(entity) && !isArchived(entity));
 }
 
 async function validateCharacterAssignment(campaignId: string, playerId: string, characterEntityId: string) {
@@ -125,9 +129,7 @@ export function registerPlayerCharacterLinkWebRoutes(server: FastifyInstance): v
           proposals: proposals
             .filter((proposal) => proposal.playerId === profile.profileId)
             .map((proposal) => {
-              const content = proposal.content && typeof proposal.content === "object"
-                ? proposal.content as Record<string, unknown>
-                : {};
+              const content: Record<string, unknown> = isRecord(proposal.content) ? proposal.content : {};
               return {
                 ...proposal,
                 ...content,

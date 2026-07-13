@@ -1,4 +1,7 @@
 import { and, eq } from "drizzle-orm";
+import type { Entity } from "@core/domain/entity/types.js";
+import type { Fact } from "@core/domain/fact/fact.js";
+import type { Relation } from "@core/domain/relation/relation.js";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
 import { PostgresCampaignRepository } from "./postgresCampaignRepository.js";
@@ -34,14 +37,17 @@ export interface KnowledgeSnapshot {
 export type KnowledgeAccessIndex = Map<string, KnowledgeAccessRule>;
 type VisibilityGrant = typeof schema.visibilityGrants.$inferSelect;
 
-const KNOWLEDGE_TARGET_TYPES = new Set<KnowledgeTargetType>(["entity", "fact", "relation", "clue", "objective"]);
+const KNOWLEDGE_TARGET_TYPES: ReadonlySet<string> = new Set(["entity", "fact", "relation", "clue", "objective"]);
 
-function valuesOf<T>(value: unknown): T[] {
+function valuesOf<T>(value: Map<string, T> | T[] | Record<string, T> | null | undefined): T[] {
   if (!value) return [];
-  if (Array.isArray(value)) return value as T[];
-  if (value instanceof Map) return Array.from(value.values()) as T[];
-  if (typeof value === "object") return Object.values(value as Record<string, T>);
-  return [];
+  if (Array.isArray(value)) return value;
+  if (value instanceof Map) return Array.from(value.values());
+  return Object.values(value);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
 
 function targetKey(targetType: KnowledgeTargetType, targetId: string): string {
@@ -64,9 +70,9 @@ function applyVisibility(index: KnowledgeAccessIndex, targetType: KnowledgeTarge
     else if (value === "party" || value === "players" || value === "all_players") rule.commonScope = "all_players";
     return;
   }
-  if (!value || typeof value !== "object") return;
+  if (!isRecord(value)) return;
 
-  const visibility = value as Record<string, unknown>;
+  const visibility = value;
   const kind = String(visibility.kind ?? visibility.mode ?? visibility.scope ?? "dm_only");
   if (kind === "public") rule.commonScope = "public";
   else if (kind === "party" || kind === "players" || kind === "all_players") rule.commonScope = "all_players";
@@ -80,7 +86,7 @@ function applyVisibility(index: KnowledgeAccessIndex, targetType: KnowledgeTarge
 }
 
 function isKnowledgeTargetType(value: string): value is KnowledgeTargetType {
-  return KNOWLEDGE_TARGET_TYPES.has(value as KnowledgeTargetType);
+  return KNOWLEDGE_TARGET_TYPES.has(value);
 }
 
 function applyExplicitGrant(index: KnowledgeAccessIndex, grant: VisibilityGrant): void {
@@ -106,23 +112,23 @@ export async function loadKnowledgeSnapshot(campaignId: string): Promise<Knowled
 
 export function buildKnowledgeAccessIndex(snapshot: KnowledgeSnapshot): KnowledgeAccessIndex {
   const index: KnowledgeAccessIndex = new Map();
-  const projectedEntities = valuesOf<any>((snapshot.state as any)?.entities);
-  const projectedFacts = valuesOf<any>((snapshot.state as any)?.facts);
-  const projectedRelations = valuesOf<any>((snapshot.state as any)?.relations);
+  const projectedEntities = valuesOf<Entity>(snapshot.state.entities);
+  const projectedFacts = valuesOf<Fact>(snapshot.state.facts);
+  const projectedRelations = valuesOf<Relation>(snapshot.state.relations);
 
   for (const entity of projectedEntities) {
-    const targetId = String(entity?.entityId ?? entity?.id ?? "");
-    if (!targetId || entity?.archived || entity?.status === "archived") continue;
-    applyVisibility(index, "entity", targetId, entity?.visibility);
+    const targetId = String(entity.entityId ?? entity.id ?? "");
+    if (!targetId || entity.archived || entity.status === "archived") continue;
+    applyVisibility(index, "entity", targetId, entity.visibility);
   }
 
-  const projectedFactById = new Map(projectedFacts.map((fact) => [String(fact?.factId ?? fact?.id ?? ""), fact]));
+  const projectedFactById = new Map(projectedFacts.map((fact) => [String(fact.factId ?? fact.id ?? ""), fact]));
   for (const fact of snapshot.facts) {
     if (fact.status === "archived" || fact.kind === "dm_secret") continue;
     applyVisibility(index, "fact", fact.factId, projectedFactById.get(fact.factId)?.visibility ?? { kind: "dm_only" });
   }
 
-  const projectedRelationById = new Map(projectedRelations.map((relation) => [String(relation?.relationId ?? relation?.id ?? ""), relation]));
+  const projectedRelationById = new Map(projectedRelations.map((relation) => [String(relation.relationId ?? relation.id ?? ""), relation]));
   for (const relation of snapshot.relations) {
     applyVisibility(index, "relation", relation.relationId, projectedRelationById.get(relation.relationId)?.visibility ?? relation.visibility);
   }

@@ -1,5 +1,7 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import type { Command } from "@core/application/commands.js";
+import type { Canvas } from "@core/domain/canvas/types.js";
+import type { CampaignProjection } from "@core/projections/campaignProjection.js";
 import { createId } from "@shared/ids.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
@@ -10,41 +12,40 @@ type NodeParams = CanvasParams & { nodeId: string };
 type EdgeParams = CanvasParams & { edgeId: string };
 type RequestBody = Record<string, unknown>;
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 function commandErrorPayload(error: unknown): { message: string; statusCode: number; isConflict: boolean } {
   if (!(error instanceof Error)) {
     return { message: "Command failed", statusCode: 500, isConflict: false };
   }
-  const statusCode = (error as { statusCode?: unknown }).statusCode;
+  const statusCode = isRecord(error) && typeof error.statusCode === "number" ? error.statusCode : 500;
   return {
     message: error.message || "Command failed",
-    statusCode: typeof statusCode === "number" ? statusCode : 500,
+    statusCode,
     isConflict: error.name === "CommandConflictError" || /Conflict/.test(error.message),
   };
 }
 
-function serializeCanvas(canvas: any) {
-  if (!canvas) return null;
+function serializeCanvas(canvas: Canvas) {
   return {
     ...canvas,
-    canvasId: canvas.canvasId ?? canvas.id,
-    id: canvas.id ?? canvas.canvasId,
+    canvasId: canvas.id,
     nodes: Array.isArray(canvas.nodes) ? canvas.nodes : [],
     edges: Array.isArray(canvas.edges) ? canvas.edges : [],
   };
 }
 
-function canvasesFromProjection(projection: any): any[] {
-  const raw = projection?.canvases;
-  if (!raw) return [];
-  const values = raw instanceof Map ? Array.from(raw.values()) : Array.isArray(raw) ? raw : Object.values(raw);
-  return values.map(serializeCanvas).filter((canvas) => canvas && !canvas.archived);
+function canvasesFromProjection(projection: CampaignProjection): Array<ReturnType<typeof serializeCanvas>> {
+  return Array.from(projection.canvases.values())
+    .filter((canvas) => !canvas.archived)
+    .map(serializeCanvas);
 }
 
-function getCanvasFromProjection(projection: any, canvasId: string): any | null {
-  const raw = projection?.canvases;
-  if (!raw) return null;
-  const canvas = raw instanceof Map ? raw.get(canvasId) : Array.isArray(raw) ? raw.find((item: any) => item?.id === canvasId || item?.canvasId === canvasId) : (raw as Record<string, any>)[canvasId];
-  return serializeCanvas(canvas);
+function getCanvasFromProjection(projection: CampaignProjection, canvasId: string): ReturnType<typeof serializeCanvas> | null {
+  const canvas = projection.canvases.get(canvasId);
+  return canvas ? serializeCanvas(canvas) : null;
 }
 
 async function executeCanvasCommand(
@@ -58,6 +59,8 @@ async function executeCanvasCommand(
   const commandIdHeader = request.headers["idempotency-key"];
   const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
   try {
+    // HTTP boundary: command is assembled from DM-supplied fields; handleCommand validates
+    // the concrete shape for `type` before producing any event.
     const projection = await repo.executeCommand(campaignId, {
       ...command,
       campaignId,
@@ -183,7 +186,7 @@ export async function registerCanvasWebRoutes(server: FastifyInstance): Promise<
   server.post<{ Params: NodeParams; Body: RequestBody }>("/api/campaigns/:campaignId/canvases/:canvasId/nodes/:nodeId/convert", async (request, reply) => {
     const body = request.body ?? {};
     const entityId = typeof body.entityId === "string" ? body.entityId : createId("ent");
-    const createResult: any = await executeCanvasCommand(request, reply, request.params.campaignId, {
+    const createResult = await executeCanvasCommand(request, reply, request.params.campaignId, {
       type: "CreateEntity",
       entityId,
       entityType: body.entityType ?? "note",

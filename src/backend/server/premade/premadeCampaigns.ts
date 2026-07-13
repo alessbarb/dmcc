@@ -33,19 +33,24 @@ export interface PremadeCampaignTemplateSummary extends Omit<ResolvedPremadeCamp
 }
 
 const moduleDir = dirname(fileURLToPath(import.meta.url));
-const SUPPORTED_LOCALES = new Set<string>(premadeLocaleSchema.options);
+const SUPPORTED_LOCALES: ReadonlySet<string> = new Set(premadeLocaleSchema.options);
 const DEFAULT_PREMADE_LOCALE: PremadeLocale = "en";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function deepMergeRecords(fallback: Record<string, any>, overlay: Record<string, any>): Record<string, any> {
-  const merged: Record<string, any> = { ...fallback };
+function isPremadeLocale(value: string): value is PremadeLocale {
+  return SUPPORTED_LOCALES.has(value);
+}
+
+function deepMergeRecords(fallback: Record<string, unknown>, overlay: Record<string, unknown>): Record<string, unknown> {
+  const merged: Record<string, unknown> = { ...fallback };
 
   for (const [key, value] of Object.entries(overlay)) {
-    if (isRecord(value) && isRecord(merged[key])) {
-      merged[key] = deepMergeRecords(merged[key], value);
+    const existing = merged[key];
+    if (isRecord(value) && isRecord(existing)) {
+      merged[key] = deepMergeRecords(existing, value);
     } else {
       merged[key] = value;
     }
@@ -56,7 +61,7 @@ function deepMergeRecords(fallback: Record<string, any>, overlay: Record<string,
 
 function normalizeLocale(locale?: string | null): PremadeLocale {
   const normalized = (locale ?? "").trim().toLowerCase().split(/[._-]/)[0];
-  return SUPPORTED_LOCALES.has(normalized) ? (normalized as PremadeLocale) : DEFAULT_PREMADE_LOCALE;
+  return isPremadeLocale(normalized) ? normalized : DEFAULT_PREMADE_LOCALE;
 }
 
 function getPremadeDirectoryCandidates(): string[] {
@@ -124,7 +129,7 @@ function pickLocaleFile(
     requested,
     entryDefault,
     DEFAULT_PREMADE_LOCALE,
-    ...(Object.keys(locales) as PremadeLocale[]),
+    ...Object.keys(locales).filter(isPremadeLocale),
   ];
 
   for (const locale of candidates) {
@@ -214,7 +219,7 @@ function resolveV2Template(
     throw new Error(`Template ID mismatch: manifest expects ${entry.templateId}, but base template has ${templateId}`);
   }
 
-  const availableLocales = entry.availableLocales ?? (Object.keys(entry.locales) as PremadeLocale[]);
+  const availableLocales = entry.availableLocales ?? Object.keys(entry.locales).filter(isPremadeLocale);
 
   return resolvePremadeCampaign(base, overlay, localeSelection.locale, entryDefaultLocale, availableLocales);
 }

@@ -2,6 +2,8 @@ import { readFile } from "node:fs/promises";
 import { basename, join } from "node:path";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import type { Command } from "@core/application/commands.js";
+import type { Entity } from "@core/domain/entity/types.js";
+import type { Canvas } from "@core/domain/canvas/types.js";
 import { desc, eq } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
@@ -15,6 +17,23 @@ import { ensureDefaultWorkspace, isDmRole, listAccessibleCampaigns, requireCampa
 type RequestBody = Record<string, unknown>;
 type DmCommandInput = { type: string } & RequestBody;
 type CampaignCommandBody = { command?: DmCommandInput } & RequestBody;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+// Entities/canvases in the projection are Entity/Canvas domain objects, but some optional
+// display-only fields (imageUrl/avatarUrl/etc.) are populated ad hoc via metadata and are not
+// part of the strict domain schema. Model them as optional passthrough fields rather than `any`.
+type ProjectedEntity = Entity & {
+  id?: string;
+  name?: string;
+  type?: string;
+  imageUrl?: unknown;
+  avatarUrl?: unknown;
+  portraitUrl?: unknown;
+  coverUrl?: unknown;
+};
 
 export interface CampaignWebRoutesOptions {
   dataDir: string;
@@ -36,18 +55,16 @@ function commandErrorPayload(error: unknown): { message: string; statusCode: num
     return { message: "Command failed", statusCode: 500, isConflict: false };
   }
 
-  const statusCode = (error as { statusCode?: unknown }).statusCode;
+  const statusCode = isRecord(error) && typeof error.statusCode === "number" ? error.statusCode : 500;
   return {
     message: error.message || "Command failed",
-    statusCode: typeof statusCode === "number" ? statusCode : 500,
+    statusCode,
     isConflict: error.name === "CommandConflictError" || /Conflict/.test(error.message),
   };
 }
 
 function campaignSummary(row: typeof schema.campaigns.$inferSelect & { role?: string; playerId?: string | null }) {
-  const metadata = row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
-    ? row.metadata as Record<string, unknown>
-    : {};
+  const metadata: Record<string, unknown> = isRecord(row.metadata) ? row.metadata : {};
   return {
     campaignId: row.campaignId,
     title: row.title,
@@ -63,29 +80,25 @@ function campaignSummary(row: typeof schema.campaigns.$inferSelect & { role?: st
   };
 }
 
-function projectionMapValues(value: unknown): any[] {
+function projectionMapValues<T>(value: Map<string, T> | T[] | Record<string, T> | null | undefined): T[] {
   if (!value) return [];
   if (value instanceof Map) return Array.from(value.values());
   if (Array.isArray(value)) return value;
-  if (typeof value === "object") return Object.values(value as Record<string, unknown>);
-  return [];
+  return Object.values(value);
 }
 
-function serializeCanvas(canvas: any) {
-  if (!canvas || canvas.archived) return null;
+function serializeCanvas(canvas: Canvas) {
+  if (canvas.archived) return null;
   return {
     ...canvas,
-    id: canvas.id ?? canvas.canvasId,
-    canvasId: canvas.canvasId ?? canvas.id,
+    canvasId: canvas.id,
     nodes: Array.isArray(canvas.nodes) ? canvas.nodes : [],
     edges: Array.isArray(canvas.edges) ? canvas.edges : [],
   };
 }
 
-function entityDto(row: typeof schema.campaignEntities.$inferSelect, projected?: any) {
-  const metadata = projected?.metadata && typeof projected.metadata === "object" && !Array.isArray(projected.metadata)
-    ? projected.metadata
-    : {};
+function entityDto(row: typeof schema.campaignEntities.$inferSelect, projected?: ProjectedEntity) {
+  const metadata: Record<string, unknown> = isRecord(projected?.metadata) ? projected.metadata : {};
   return {
     campaignId: row.campaignId,
     entityId: row.entityId,
@@ -108,8 +121,8 @@ function entityDto(row: typeof schema.campaignEntities.$inferSelect, projected?:
   };
 }
 
-function projectedEntityDto(entity: any, campaignId: string) {
-  const metadata = entity?.metadata && typeof entity.metadata === "object" && !Array.isArray(entity.metadata) ? entity.metadata : {};
+function projectedEntityDto(entity: ProjectedEntity, campaignId: string) {
+  const metadata: Record<string, unknown> = isRecord(entity.metadata) ? entity.metadata : {};
   return {
     ...entity,
     campaignId: entity.campaignId ?? campaignId,
@@ -249,18 +262,19 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
       db.select().from(schema.campaignSessions).where(eq(schema.campaignSessions.campaignId, request.params.campaignId)),
       db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, request.params.campaignId)),
     ]);
-    const projectedEntities = new Map(projectionMapValues((projection as any).entities).map((entity) => [entity.entityId ?? entity.id, entity]));
+    const projectedEntityList = projectionMapValues<ProjectedEntity>(projection.entities);
+    const projectedEntities = new Map(projectedEntityList.map((entity) => [entity.entityId ?? entity.id, entity]));
     const readModelEntityIds = new Set(entities.map((entity) => entity.entityId));
     const mergedEntities = [
       ...entities.map((entity) => entityDto(entity, projectedEntities.get(entity.entityId))),
-      ...projectionMapValues((projection as any).entities)
+      ...projectedEntityList
         .filter((entity) => !readModelEntityIds.has(entity.entityId ?? entity.id))
         .map((entity) => projectedEntityDto(entity, request.params.campaignId)),
     ];
-    const canvases = projectionMapValues((projection as any).canvases).map(serializeCanvas).filter(Boolean);
-    const tags = projectionMapValues((projection as any).tags);
-    const attachments = projectionMapValues((projection as any).attachments);
-    const sessionEvents = projectionMapValues((projection as any).sessionEvents);
+    const canvases = projectionMapValues(projection.canvases).map(serializeCanvas).filter(Boolean);
+    const tags = projectionMapValues(projection.tags);
+    const attachments = projectionMapValues(projection.attachments);
+    const sessionEvents = projectionMapValues(projection.sessionEvents);
     return {
       campaign: campaign ? campaignSummary(campaign) : null,
       entities: mergedEntities,
@@ -296,7 +310,9 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
       reply.code(400);
       return { error: "Idempotency-Key header is required" };
     }
-    const command = request.body.command ?? request.body as DmCommandInput;
+    // HTTP boundary: raw request body, not yet validated against the Command union.
+    // The command bus (handleCommand) validates shape/type before any event is produced.
+    const command = request.body.command ?? (request.body as DmCommandInput);
     try {
       const projection = await repo.executeCommand(request.params.campaignId, { ...command, campaignId: request.params.campaignId, actorId: user.userId } as Command, { commandId, actorUserId: user.userId });
       campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
@@ -313,6 +329,8 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
     const commandIdHeader = request.headers["idempotency-key"];
     const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
     try {
+      // HTTP boundary: command is assembled from DM-supplied fields; handleCommand validates
+      // the concrete shape for `type` before producing any event.
       const projection = await repo.executeCommand(request.params.campaignId, { ...command, campaignId: request.params.campaignId, actorId: user.userId } as Command, { commandId, actorUserId: user.userId });
       campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
       return { ok: true, sequence: projection.lastSequence, projection };
@@ -366,7 +384,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
         .header("Content-Disposition", `attachment; filename*=UTF-8''${encodeURIComponent(MARKDOWN_PRIMARY_FILE)}`);
       return content;
     } catch (error) {
-      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      if (isRecord(error) && error.code === "ENOENT") {
         reply.code(404);
         return { error: "Markdown export not found" };
       }

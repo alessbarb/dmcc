@@ -2,6 +2,61 @@ import * as path from "node:path";
 
 type PathLike = Pick<typeof path, "isAbsolute" | "relative" | "resolve">;
 
+// These generic visibility-filtering helpers are not currently wired into any route (superseded
+// by server-side filtering in the web routes); they accept a loosely-shaped structural type
+// rather than a strict domain type since callers may pass either raw domain objects or DTOs
+// that only share these fields.
+interface VisibilityLike {
+  kind?: string;
+  playerIds?: string[];
+  characterEntityIds?: string[];
+}
+
+interface EntityLike {
+  entityId?: string;
+  entityType?: string;
+  archived?: boolean;
+  visibility?: VisibilityLike;
+  metadata?: Record<string, unknown>;
+}
+
+interface RelationLike {
+  archived?: boolean;
+  visibility?: VisibilityLike;
+  sourceEntityId?: string;
+  targetEntityId?: string;
+}
+
+interface FactLike {
+  archived?: boolean;
+  visibility?: VisibilityLike;
+}
+
+interface SessionLike {
+  sessionId?: string;
+  id?: string;
+  number?: number;
+  title?: string;
+  status?: string;
+  scheduledAt?: string;
+  startedAt?: string;
+  endedAt?: string;
+  playerSummary?: string;
+}
+
+interface CampaignLike {
+  campaignId?: string;
+  title?: string;
+  summary?: string;
+  system?: string;
+  status?: string;
+  archived?: boolean;
+}
+
+interface StateLike {
+  campaign?: { settings?: { localAccessCode?: string | null } };
+}
+
 export function slugifyTitle(title: string): string {
   return title
     .replace(/[/\\]/g, "-")
@@ -33,27 +88,27 @@ export function assertWithinDir(filePath: string, allowedDir: string): void {
   }
 }
 
-export function getStoredAccessCode(state: any, _campaignId: string): string | null {
+export function getStoredAccessCode(state: StateLike | null | undefined, _campaignId: string): string | null {
   // Only return explicitly persisted previous cleartext codes.
   // New campaigns persist only localAccessCodeHash, so the cleartext code is available
   // exclusively during the web toggle response and the current process lifetime.
   return state?.campaign?.settings?.localAccessCode ?? null;
 }
 
-export function getCharacterEntityIdForPlayer(entities: any[], playerId: string): string | undefined {
+export function getCharacterEntityIdForPlayer(entities: EntityLike[], playerId: string): string | undefined {
   const character = entities.find(
-    (e: any) => e.entityType === "player_character" && e.metadata?.playerId === playerId
+    (e) => e.entityType === "player_character" && e.metadata?.playerId === playerId
   );
   return character?.entityId;
 }
 
 export function getVisibleEntities(
-  entities: any[],
+  entities: EntityLike[],
   role: string,
   playerId?: string,
   characterEntityId?: string
 ) {
-  return entities.filter((e: any) => {
+  return entities.filter((e) => {
     if (e.archived) return false;
     if (role === "dm") return true;
 
@@ -71,13 +126,13 @@ export function getVisibleEntities(
 }
 
 export function getVisibleRelations(
-  relations: any[],
+  relations: RelationLike[],
   visibleEntityIds: Set<string>,
   role: string,
   playerId?: string,
   characterEntityId?: string
 ) {
-  return relations.filter((r: any) => {
+  return relations.filter((r) => {
     if (r.archived) return false;
     if (role === "dm") return true;
     const kind = r.visibility?.kind || "dm_only";
@@ -88,17 +143,17 @@ export function getVisibleRelations(
     if (kind === "characters") {
       if (!characterEntityId || !r.visibility?.characterEntityIds?.includes(characterEntityId)) return false;
     }
-    return visibleEntityIds.has(r.sourceEntityId) && visibleEntityIds.has(r.targetEntityId);
+    return Boolean(r.sourceEntityId && r.targetEntityId && visibleEntityIds.has(r.sourceEntityId) && visibleEntityIds.has(r.targetEntityId));
   });
 }
 
 export function getVisibleFacts(
-  facts: any[],
+  facts: FactLike[],
   role: string,
   playerId?: string,
   characterEntityId?: string
 ) {
-  return facts.filter((f: any) => {
+  return facts.filter((f) => {
     if (f.archived) return false;
     if (role === "dm") return true;
     const kind = f.visibility?.kind || "dm_only";
@@ -112,7 +167,7 @@ export function getVisibleFacts(
   });
 }
 
-export function getVisibleSessions(sessions: any[], role: string) {
+export function getVisibleSessions(sessions: SessionLike[], role: string) {
   if (role === "dm") return sessions;
 
   return sessions
@@ -129,7 +184,7 @@ export function getVisibleSessions(sessions: any[], role: string) {
     }));
 }
 
-export function toPublicCampaign(campaign: any) {
+export function toPublicCampaign(campaign: CampaignLike | null | undefined) {
   if (!campaign) return null;
   return {
     campaignId: campaign.campaignId,
