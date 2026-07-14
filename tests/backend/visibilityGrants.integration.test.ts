@@ -21,9 +21,9 @@ const ids = {
 
 async function seedVisibilityFixture(): Promise<void> {
   await db.insert(schema.users).values([
-    { userId: ids.owner, emailNormalized: "visibility-owner@example.test", emailHash: "visibility-owner", displayName: "Owner", passwordHash: "hash", passwordSalt: "salt" },
-    { userId: ids.userA, emailNormalized: "visibility-a@example.test", emailHash: "visibility-a", displayName: "Player A", passwordHash: "hash", passwordSalt: "salt" },
-    { userId: ids.userB, emailNormalized: "visibility-b@example.test", emailHash: "visibility-b", displayName: "Player B", passwordHash: "hash", passwordSalt: "salt" },
+    { userId: ids.owner, emailNormalized: "visibility-owner@example.test", emailHash: "visibility-owner", displayName: "Owner", passwordHash: "hash" },
+    { userId: ids.userA, emailNormalized: "visibility-a@example.test", emailHash: "visibility-a", displayName: "Player A", passwordHash: "hash" },
+    { userId: ids.userB, emailNormalized: "visibility-b@example.test", emailHash: "visibility-b", displayName: "Player B", passwordHash: "hash" },
   ]);
   await db.insert(schema.workspaces).values({ workspaceId: ids.workspace, name: "Visibility workspace", ownerId: ids.owner });
   await db.insert(schema.campaigns).values({ campaignId: ids.campaign, title: "Visibility campaign", workspaceId: ids.workspace, ownerId: ids.owner });

@@ -53,9 +53,7 @@ interface CampaignLike {
   archived?: boolean;
 }
 
-interface StateLike {
-  campaign?: { settings?: { localAccessCode?: string | null } };
-}
+
 
 export function slugifyTitle(title: string): string {
   return title
@@ -88,12 +86,7 @@ export function assertWithinDir(filePath: string, allowedDir: string): void {
   }
 }
 
-export function getStoredAccessCode(state: StateLike | null | undefined, _campaignId: string): string | null {
-  // Only return explicitly persisted previous cleartext codes.
-  // New campaigns persist only localAccessCodeHash, so the cleartext code is available
-  // exclusively during the web toggle response and the current process lifetime.
-  return state?.campaign?.settings?.localAccessCode ?? null;
-}
+
 
 export function getCharacterEntityIdForPlayer(entities: EntityLike[], playerId: string): string | undefined {
   const character = entities.find(

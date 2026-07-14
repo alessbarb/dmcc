@@ -1,11 +1,10 @@
 import { randomBytes } from "node:crypto";
 import argon2 from "argon2";
 import type { FastifyInstance, FastifyRequest } from "fastify";
-import { and, eq, isNull, sql } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
-import { verifySecret } from "../webSession.js";
 import { HttpError } from "../../errors.js";
 import { sendExistingAccountRegistrationEmail, sendPasswordResetEmail } from "../../emailService.js";
 import { listAccessibleCampaigns } from "../webAccess.js";
@@ -217,9 +216,7 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
         emailHash: hashOpaque(email),
         displayName,
         passwordHash: await argon2.hash(password),
-        passwordSalt: "argon2id",
-        passwordAlgorithm: "argon2id",
-        appRole: "user",
+        isPlatformAdmin: false,
       });
       const workspaceId = createId("wks");
       await tx.insert(schema.workspaces).values({ workspaceId, name: `${displayName}'s workspace`, ownerId: userId });
@@ -247,6 +244,7 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
     }
 
     const password = requireBodyString(request.body?.password, "password");
+    let passwordValid = false;
 
     const [user] = await db
       .select()
@@ -257,29 +255,8 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
       ))
       .limit(1);
 
-    let passwordValid = false;
-
-    if (user?.passwordAlgorithm === "argon2id") {
+    if (user) {
       passwordValid = await argon2.verify(user.passwordHash, password).catch(() => false);
-    } else if (user?.passwordAlgorithm === "scrypt") {
-      passwordValid = await verifySecret(password, user.passwordSalt, user.passwordHash);
-
-      if (passwordValid) {
-        await db
-          .update(schema.users)
-          .set({
-            passwordHash: await argon2.hash(password),
-            passwordSalt: "argon2id",
-            passwordAlgorithm: "argon2id",
-            lastLoginAt: new Date(),
-          })
-          .where(eq(schema.users.userId, user.userId));
-
-        user.passwordHash = "";
-        user.passwordSalt = "argon2id";
-        user.passwordAlgorithm = "argon2id";
-        user.lastLoginAt = new Date();
-      }
     } else {
       const fallbackPasswordHash = await fallbackPasswordHashPromise;
       await argon2.verify(fallbackPasswordHash, password).catch(() => false);
@@ -293,12 +270,10 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
 
     clearLoginLockout(loginLockouts, email);
 
-    if (user.passwordAlgorithm === "argon2id") {
-      await db
-        .update(schema.users)
-        .set({ lastLoginAt: new Date() })
-        .where(eq(schema.users.userId, user.userId));
-    }
+    await db
+      .update(schema.users)
+      .set({ lastLoginAt: new Date() })
+      .where(eq(schema.users.userId, user.userId));
 
     const session = await createWebSession(user.userId);
     setWebSessionCookie(reply, session.token, session.expiresAt);
@@ -421,8 +396,6 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
           .update(schema.users)
           .set({
             passwordHash,
-            passwordSalt: "argon2id",
-            passwordAlgorithm: "argon2id",
           })
           .where(eq(schema.users.userId, tokenRecord.userId));
 
@@ -458,7 +431,6 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
 
   server.get("/api/auth/status", async (request) => {
     const user = (request as { webUser?: WebUser }).webUser;
-    const [{ count }] = await db.select({ count: sql<number>`count(*)::int` }).from(schema.users);
     const memberships = user
       ? (await listAccessibleCampaigns(user.userId)).map((campaign) => ({
           campaignId: campaign.campaignId,
@@ -469,7 +441,6 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
       : [];
 
     return {
-      accountConfigured: count > 0,
       sessionValid: Boolean(user),
       user: user ?? null,
       memberships,

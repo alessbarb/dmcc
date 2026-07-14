@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-router";
 import { PlayerPortalRealtimeSync } from "./player/components/PlayerPortalRealtimeSync.js";
 import { fetchAuthStatus } from "./shared/auth/authClient.js";
+import { SystemAnnouncements } from "./shared/components/SystemAnnouncements.js";
 
 async function requireAccountSession() {
   try {
@@ -33,11 +34,11 @@ const DmHubPageLazy = React.lazy(() =>
 const CampaignShellPage = React.lazy(() =>
   import("./dm/layouts/CampaignShell.js").then((module) => ({ default: module.CampaignShell })),
 );
-const DmSetupPageLazy = React.lazy(() =>
-  import("./dm/pages/DmSetupPage.js").then((module) => ({ default: module.DmSetupPage })),
+const LoginPageLazy = React.lazy(() =>
+  import("./auth/LoginPage.js").then((module) => ({ default: module.LoginPage })),
 );
-const DmLoginPageLazy = React.lazy(() =>
-  import("./dm/pages/DmLoginPage.js").then((module) => ({ default: module.DmLoginPage })),
+const RegisterPageLazyCommon = React.lazy(() =>
+  import("./auth/RegisterPage.js").then((module) => ({ default: module.RegisterPage })),
 );
 const PlayerJoinPageLazy = React.lazy(() =>
   import("./player/pages/PlayerJoinPage.js").then((module) => ({ default: module.PlayerJoinPage })),
@@ -114,6 +115,33 @@ const ForgotPasswordPageLazy = React.lazy(() =>
 const ResetPasswordPageLazy = React.lazy(() =>
   import("./shared/auth/ResetPasswordPage.js").then((module) => ({ default: module.ResetPasswordPage })),
 );
+const AdminOverviewPageLazy = React.lazy(() =>
+  import("./admin/overview/OperationsOverviewPage.js").then((module) => ({ default: module.OperationsOverviewPage })),
+);
+const AdminCampaignListPageLazy = React.lazy(() =>
+  import("./admin/campaigns/CampaignListPage.js").then((module) => ({ default: module.CampaignListPage })),
+);
+const AdminUserListPageLazy = React.lazy(() =>
+  import("./admin/users/UserListPage.js").then((module) => ({ default: module.UserListPage })),
+);
+const AdminPurgeJobsPageLazy = React.lazy(() =>
+  import("./admin/purge/CampaignPurgeJobsPage.js").then((module) => ({ default: module.CampaignPurgeJobsPage })),
+);
+const AdminAuditLogPageLazy = React.lazy(() =>
+  import("./admin/audit/AuditLogPage.js").then((module) => ({ default: module.AuditLogPage })),
+);
+const AdminInvitationListPageLazy = React.lazy(() =>
+  import("./admin/invitations/InvitationListPage.js").then((module) => ({ default: module.InvitationListPage })),
+);
+const AdminAnnouncementListPageLazy = React.lazy(() =>
+  import("./admin/announcements/AnnouncementListPage.js").then((module) => ({ default: module.AnnouncementListPage })),
+);
+const AdminCampaignTemplateSettingsPageLazy = React.lazy(() =>
+  import("./admin/campaignTemplates/CampaignTemplateSettingsPage.js").then((module) => ({ default: module.CampaignTemplateSettingsPage })),
+);
+const AdminGameSystemSettingsPageLazy = React.lazy(() =>
+  import("./admin/gameSystems/GameSystemSettingsPage.js").then((module) => ({ default: module.GameSystemSettingsPage })),
+);
 
 function withSuspense(Component: React.ComponentType) {
   return function SuspenseRoute() {
@@ -128,6 +156,7 @@ function withSuspense(Component: React.ComponentType) {
 function RootRouteComponent() {
   return (
     <>
+      <SystemAnnouncements />
       <PlayerPortalRealtimeSync />
       <Outlet />
     </>
@@ -205,16 +234,16 @@ const dmRoute = createRoute({
   component: withSuspense(DmHubPageLazy),
 });
 
-const dmSetupRoute = createRoute({
+const authRegisterRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/dm/setup",
-  component: withSuspense(DmSetupPageLazy),
+  path: "/auth/register",
+  component: withSuspense(RegisterPageLazyCommon),
 });
 
-const dmLoginRoute = createRoute({
+const authLoginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/dm/login",
-  component: withSuspense(DmLoginPageLazy),
+  path: "/auth/login",
+  component: withSuspense(LoginPageLazy),
 });
 
 const playerJoinRoute = createRoute({
@@ -348,6 +377,69 @@ const accountRoute = createRoute({
   component: withSuspense(AccountPageLazy),
 });
 
+const adminOverviewRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AdminOverviewPageLazy),
+});
+
+const adminCampaignsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/campaigns",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AdminCampaignListPageLazy),
+});
+
+const adminUsersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/users",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AdminUserListPageLazy),
+});
+
+const adminPurgeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/purge",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AdminPurgeJobsPageLazy),
+});
+
+const adminAuditRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/audit",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AdminAuditLogPageLazy),
+});
+
+const adminInvitationsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/invitations",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AdminInvitationListPageLazy),
+});
+
+const adminAnnouncementsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/announcements",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AdminAnnouncementListPageLazy),
+});
+
+const adminCampaignTemplatesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/campaign-templates",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AdminCampaignTemplateSettingsPageLazy),
+});
+
+const adminGameSystemsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/game-systems",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AdminGameSystemSettingsPageLazy),
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   portalRoute,
@@ -360,14 +452,23 @@ const routeTree = rootRoute.addChildren([
   resetPasswordRoute,
   resetPasswordManualRoute,
   dmRoute,
-  dmSetupRoute,
-  dmLoginRoute,
+  authRegisterRoute,
+  authLoginRoute,
   playerJoinRoute,
   joinRoute,
   registerRoute,
   accountRoute,
   onboardingRoute,
   premadePreviewRoute,
+  adminOverviewRoute,
+  adminCampaignsRoute,
+  adminUsersRoute,
+  adminPurgeRoute,
+  adminAuditRoute,
+  adminInvitationsRoute,
+  adminAnnouncementsRoute,
+  adminCampaignTemplatesRoute,
+  adminGameSystemsRoute,
   campaignRoute.addChildren([
     campaignIndexRoute,
     commandCenterRoute,

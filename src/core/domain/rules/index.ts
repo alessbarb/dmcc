@@ -8,7 +8,7 @@ export { dnd521Rules } from "./dnd521.js";
 
 export function getRuleSystem(systemCode?: string): RuleSystem {
   switch (systemCode) {
-    case "dnd_srd_5_2_1":
+    case "dnd_5e":
       return dnd521Rules;
     default:
       return genericRules;

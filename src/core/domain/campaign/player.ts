@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { playerIdSchema, campaignIdSchema, attachmentIdSchema, safeImageUrlSchema } from "@shared/schemas.js";
 
-export type CampaignRole = "dm" | "player" | "observer";
-export const campaignRoleSchema = z.enum(["dm", "player", "observer"]);
+export type CampaignRole = "dm" | "co_dm" | "player";
+export const campaignRoleSchema = z.enum(["dm", "co_dm", "player"]);
 
 export const playerProfileSchema = z.object({
   id: playerIdSchema,
@@ -12,7 +12,6 @@ export const playerProfileSchema = z.object({
   color: z.string().optional(),
   avatarAttachmentId: attachmentIdSchema.optional(),
   avatarUrl: safeImageUrlSchema.optional(),
-  localAccessCodeHash: z.string().optional(),
   isActive: z.boolean().default(true),
   createdAt: z.string(),
   updatedAt: z.string(),

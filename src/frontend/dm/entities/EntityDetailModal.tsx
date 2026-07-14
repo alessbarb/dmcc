@@ -304,7 +304,7 @@ function ResumenTab({
                 }}
               >
                 {(entityType === "npc" || entityType === "player_character" || entityType === "creature") && (
-                  entityType === "player_character" && campaignState?.campaign?.system === "dnd_srd_5_2_1" ? (
+                  entityType === "player_character" && campaignState?.campaign?.system === "dnd_5e" ? (
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)" }}>
                         <Field label="Clase" value={m.className} />

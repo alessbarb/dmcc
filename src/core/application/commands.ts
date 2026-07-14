@@ -4,7 +4,7 @@ import type { FactConfidence, FactKind, FactSource } from "../domain/fact/fact.j
 import type { RelationType } from "../domain/relation/relation.js";
 import type { VisibilityRule } from "../domain/visibility/visibility.js";
 import type { PlayerCharacterProposal } from "../domain/playerPortal/types.js";
-import type { CampaignSettings } from "../domain/campaign/types.js";
+import type { CampaignSettings, CampaignSystem, CampaignStatus } from "../domain/campaign/types.js";
 
 export type Command =
   | {
@@ -13,7 +13,7 @@ export type Command =
       actorId: string;
       title: string;
       summary?: string;
-      system?: string;
+      system?: CampaignSystem;
       coverUrl?: string;
       settings?: Partial<CampaignSettings>;
       metadata?: Record<string, unknown>;
@@ -24,8 +24,8 @@ export type Command =
       actorId: string;
       title?: string;
       summary?: string;
-      system?: string;
-      status?: string;
+      system?: CampaignSystem;
+      status?: CampaignStatus;
       coverUrl?: string;
       metadata?: Record<string, unknown>;
     }
@@ -223,11 +223,7 @@ export type Command =
       campaignId: CampaignId;
       actorId: string;
       settings: Partial<{
-        backupOnClose: boolean;
-        lanModeEnabled: boolean;
         activeQuestsLimit: number;
-        localAccessCodeHash?: string;
-        localAccessCode?: string;
       }>;
     }
   | {

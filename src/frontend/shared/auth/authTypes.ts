@@ -3,16 +3,16 @@ export interface AuthUser {
   email?: string;
   displayName?: string;
   avatarUrl?: string;
+  isPlatformAdmin?: boolean;
 }
 
 export interface AuthStatus {
-  accountConfigured: boolean;
   sessionValid: boolean;
   user: AuthUser | null;
   memberships?: Array<{
     campaignId: string;
     userId: string;
-    role: "dm" | "co_dm" | "player" | "observer";
+    role: "dm" | "co_dm" | "player";
     playerId?: string | null;
   }>;
 }

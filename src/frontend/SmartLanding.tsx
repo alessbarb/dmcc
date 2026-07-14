@@ -122,8 +122,9 @@ function usePortalLocation() {
 }
 
 function formatCampaignSystem(system?: string) {
-  if (system === "dnd_srd_5_2_1") return "D&D 5e";
-  if (system === "generic_fantasy_d20") return "d20 Fantasy";
+  if (system === "dnd_5e") return "D&D 5e";
+  if (system === "pathfinder_2e") return "Pathfinder 2e";
+  if (system === "shadowdark") return "Shadowdark";
   return "Custom";
 }
 

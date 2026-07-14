@@ -2,14 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { Shield, Ticket, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
-import { fetchAuthStatus, login, setupDmAccount } from "../../shared/auth/authClient.js";
+import { fetchAuthStatus, login, registerAccount } from "../../shared/auth/authClient.js";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 
  type Membership = {
   campaignId: string;
   title: string;
-  role: "dm" | "co_dm" | "player" | "viewer" | "observer";
+  role: "dm" | "co_dm" | "player";
   playerId?: string | null;
 };
 
@@ -137,7 +137,7 @@ export function PlayerJoinPage() {
     setLoading(true);
     setError(null);
     try {
-      if (register) await setupDmAccount({ email, secret: password, displayName });
+      if (register) await registerAccount({ email, password, displayName });
       else await login(email, password);
       setAuthenticated(true);
       await loadMemberships();

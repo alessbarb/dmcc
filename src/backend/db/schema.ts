@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { check, foreignKey, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { boolean, check, foreignKey, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 import type { UserPreferences, SocialVisibility } from "../server/account/accountTypes.js";
 
 // Mirrors accountWebRoutes.ts's defaultVisibility(); duplicated here (rather than imported)
@@ -15,22 +15,16 @@ const defaultSocialVisibility: SocialVisibility = {
 
 export const users = pgTable("users", {
   userId: text("user_id").primaryKey(),
-  workspacePartitionId: text("workspace_partition_id").notNull().default("default"),
-  emailNormalized: text("email_normalized").notNull(),
-  emailHash: text("email_hash").notNull(),
+  emailNormalized: text("email_normalized").notNull().unique(),
+  emailHash: text("email_hash").notNull().unique(),
   displayName: text("display_name"),
   avatarUrl: text("avatar_url"),
   passwordHash: text("password_hash").notNull(),
-  passwordSalt: text("password_salt").notNull(),
-  passwordAlgorithm: text("password_algorithm").notNull().default("scrypt"),
-  appRole: text("app_role").notNull().default("user"),
+  isPlatformAdmin: boolean("is_platform_admin").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   lastLoginAt: timestamp("last_login_at"),
   disabledAt: timestamp("disabled_at"),
-}, (table) => ({
-  emailWorkspacePartitionUq: uniqueIndex("uq_user_email_workspace_partition").on(table.emailNormalized, table.workspacePartitionId),
-  emailHashWorkspacePartitionUq: uniqueIndex("uq_user_email_hash_workspace_partition").on(table.emailHash, table.workspacePartitionId),
-}));
+});
 
 export const authSessions = pgTable("auth_sessions", {
   sessionIdHash: text("session_id_hash").primaryKey(),
@@ -49,7 +43,6 @@ export const userPreferences = pgTable("user_preferences", {
 
 export const workspaces = pgTable("workspaces", {
   workspaceId: text("workspace_id").primaryKey(),
-  workspacePartitionId: text("workspace_partition_id").notNull().default("default"),
   name: text("name").notNull(),
   ownerId: text("owner_id").notNull().references(() => users.userId, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -75,7 +68,17 @@ export const campaigns = pgTable("campaigns", {
   metadata: jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+  trashedAt: timestamp("trashed_at"),
+  trashedByUserId: text("trashed_by_user_id").references(() => users.userId, { onDelete: "set null" }),
+  purgeEligibleAt: timestamp("purge_eligible_at"),
+}, (table) => ({
+  statusCheck: check("chk_campaign_status", sql`${table.status} IN ('importing', 'active', 'trashed')`),
+  trashCoherenceCheck: check("chk_campaign_trash_coherence", sql`
+    (status = 'trashed' AND trashed_at IS NOT NULL AND purge_eligible_at IS NOT NULL)
+    OR
+    (status IN ('active', 'importing') AND trashed_at IS NULL AND trashed_by_user_id IS NULL AND purge_eligible_at IS NULL)
+  `),
+}));
 
 export const playerProfiles = pgTable("player_profiles", {
   profileId: text("profile_id").primaryKey(),

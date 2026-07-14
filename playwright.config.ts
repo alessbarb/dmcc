@@ -1,4 +1,7 @@
 import { defineConfig } from "@playwright/test";
+import { assertLocalTestDatabase } from "./tests/assertLocalTestDatabase.js";
+
+assertLocalTestDatabase("Playwright end-to-end tests");
 
 export default defineConfig({
   testDir: "./e2e",

@@ -402,7 +402,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
               </div>
             )}
             {entityForm.entityType === "player_character" && (
-              campaignState?.campaign?.system === "dnd_srd_5_2_1" ? (
+              campaignState?.campaign?.system === "dnd_5e" ? (
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                   <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
                     <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Información Básica</h4>

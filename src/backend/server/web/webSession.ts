@@ -1,5 +1,4 @@
-import { createHash, randomBytes, scrypt, timingSafeEqual } from "node:crypto";
-import { promisify } from "node:util";
+import { createHash, randomBytes } from "node:crypto";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { and, eq, gt, isNull } from "drizzle-orm";
 import { db } from "../../db/client.js";
@@ -9,39 +8,12 @@ import { HttpError } from "../errors.js";
 export const WEB_SESSION_COOKIE = "dmcc_session";
 const SESSION_DAYS = 30;
 const SESSION_LAST_SEEN_REFRESH_MS = 10 * 60 * 1000;
-const scryptAsync = promisify(scrypt);
-
-type CookieSameSite = "lax" | "strict" | "none" | boolean;
-
-type WebSessionCookieOptions = {
-  sameSite: CookieSameSite;
-  secure: boolean;
-};
-
 export type WebUser = {
   userId: string;
   email: string;
   displayName: string;
-  appRole: "user" | "admin";
-  workspacePartitionId: string;
+  isPlatformAdmin: boolean;
 };
-
-export async function hashSecret(secret: string): Promise<{ hash: string; salt: string }> {
-  const salt = randomBytes(16).toString("hex");
-  const derived = (await scryptAsync(secret, salt, 64)) as Buffer;
-  return { hash: derived.toString("hex"), salt };
-}
-
-export async function verifySecret(secret: string, salt: string, expectedHash: string): Promise<boolean> {
-  try {
-    const derived = (await scryptAsync(secret, salt, 64)) as Buffer;
-    const expected = Buffer.from(expectedHash, "hex");
-    if (derived.length !== expected.length) return false;
-    return timingSafeEqual(derived, expected);
-  } catch {
-    return false;
-  }
-}
 
 export function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
@@ -54,6 +26,13 @@ export function hashOpaque(value: string): string {
 export function issueOpaqueToken(prefix: string): string {
   return `${prefix}_${randomBytes(32).toString("base64url")}`;
 }
+
+type CookieSameSite = "lax" | "strict" | "none" | boolean;
+
+type WebSessionCookieOptions = {
+  sameSite: CookieSameSite;
+  secure: boolean;
+};
 
 function getCookieSameSite(): CookieSameSite {
   const value = (process.env.DMCC_COOKIE_SAMESITE ?? process.env.COOKIE_SAMESITE)?.toLowerCase();
@@ -125,14 +104,11 @@ export async function createWebSession(userId: string): Promise<{ token: string;
 }
 
 export function publicWebUser(user: typeof schema.users.$inferSelect): WebUser {
-  const appRole = String(user.appRole);
-  const workspacePartitionId = String(user.workspacePartitionId);
   return {
     userId: user.userId,
     email: user.emailNormalized,
     displayName: user.displayName ?? user.emailNormalized,
-    appRole: (appRole === "admin" ? "admin" : "user"),
-    workspacePartitionId,
+    isPlatformAdmin: user.isPlatformAdmin,
   };
 }
 
@@ -155,6 +131,7 @@ export async function resolveWebUser(request: FastifyRequest): Promise<WebUser |
         eq(schema.authSessions.sessionIdHash, tokenHash),
         isNull(schema.authSessions.revokedAt),
         gt(schema.authSessions.expiresAt, now),
+        isNull(schema.users.disabledAt),
       ),
     )
     .limit(1);

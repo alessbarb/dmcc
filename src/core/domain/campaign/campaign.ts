@@ -1,28 +1,12 @@
+import type { Campaign, CampaignSettings, CampaignStatus, CampaignSystem } from "./types.js";
 import type { CampaignId } from "@shared/ids.js";
-import type { CampaignSettings } from "./types.js";
-
-export interface Campaign {
-  campaignId: CampaignId;
-  title: string;
-  summary?: string;
-  system?: string;
-  status?: string;
-  coverUrl?: string;
-  currentLocationId?: string;
-  currentQuestId?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  settings?: CampaignSettings;
-  metadata?: Record<string, unknown>;
-  archived: boolean;
-}
 
 export function createCampaign(input: {
   campaignId: CampaignId;
   title: string;
   summary?: string;
-  system?: string;
-  status?: string;
+  system?: CampaignSystem;
+  status?: CampaignStatus;
   coverUrl?: string;
   settings?: CampaignSettings;
   metadata?: Record<string, unknown>;
@@ -34,11 +18,10 @@ export function createCampaign(input: {
     campaignId: input.campaignId,
     title: input.title,
     summary: input.summary,
-    system: input.system || "generic_fantasy_d20",
-    status: input.status || "active",
+    system: input.system ?? "custom",
+    status: input.status ?? "active",
     coverUrl: input.coverUrl,
-    settings: input.settings || { backupOnClose: true, lanModeEnabled: false, activeQuestsLimit: 10 },
+    settings: input.settings || { activeQuestsLimit: 10 },
     metadata: input.metadata ?? {},
-    archived: false,
   };
 }

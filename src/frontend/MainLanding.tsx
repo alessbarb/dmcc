@@ -244,10 +244,10 @@ export function MainLanding() {
           <span>DMCC</span>
         </div>
         <div className="rl-nav__actions">
-          <button className="rl-nav__login" onClick={() => { void navigate({ to: "/dm/login" }).catch(handleNavigationError); }}>
+          <button className="rl-nav__login" onClick={() => { void navigate({ to: "/auth/login" }).catch(handleNavigationError); }}>
             Iniciar sesión
           </button>
-          <button className="btn btn-gold btn-sm" onClick={() => { void navigate({ to: "/dm/setup" }).catch(handleNavigationError); }}>
+          <button className="btn btn-gold btn-sm" onClick={() => { void navigate({ to: "/auth/register" }).catch(handleNavigationError); }}>
             Empezar
           </button>
         </div>
@@ -284,7 +284,7 @@ export function MainLanding() {
               <span className="rl-cta-primary__shimmer" />
               <span className="rl-cta-primary__text">{NetworkDING_COPY.heroPrimaryCta}</span>
             </button>
-            <button className="rl-cta-secondary" onClick={() => { void navigate({ to: "/dm/setup" }).catch(handleNavigationError); }}>
+            <button className="rl-cta-secondary" onClick={() => { void navigate({ to: "/auth/register" }).catch(handleNavigationError); }}>
               {NetworkDING_COPY.heroSecondaryCta}
             </button>
           </div>
@@ -433,11 +433,11 @@ export function MainLanding() {
             Crea tu mundo, importa una aventura preparada o empieza desde cero.
           </p>
           <div className="rl-final-cta__buttons rl-animate rl-animate--pop" data-delay="280">
-            <button className="rl-cta-primary" onClick={() => { void navigate({ to: "/dm/setup" }).catch(handleNavigationError); }}>
+            <button className="rl-cta-primary" onClick={() => { void navigate({ to: "/auth/register" }).catch(handleNavigationError); }}>
               <span className="rl-cta-primary__shimmer" />
               <span className="rl-cta-primary__text">Crear primera campaña</span>
             </button>
-            <button className="rl-cta-secondary" onClick={() => { void navigate({ to: "/dm/login" }).catch(handleNavigationError); }}>
+            <button className="rl-cta-secondary" onClick={() => { void navigate({ to: "/auth/login" }).catch(handleNavigationError); }}>
               Iniciar sesión
             </button>
           </div>

@@ -1,4 +1,4 @@
-import { useState, useCallback, ReactNode } from "react";
+import { useState, useCallback, type ReactNode } from "react";
 
 export type ToastKind = "success" | "error" | "info" | "warning";
 

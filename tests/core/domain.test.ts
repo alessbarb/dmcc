@@ -132,7 +132,7 @@ describe("Domain Aggregates", () => {
       expect(() => createEntity(pcProps)).toThrow(/playerId/i);
     });
 
-    it("rejects Player Character for dnd_srd_5_2_1 campaign when missing required fields like strength or className", () => {
+    it("rejects Player Character for dnd_5e campaign when missing required fields like strength or className", () => {
       const pcProps = {
         entityId: generateEntityId(),
         campaignId,
@@ -145,12 +145,12 @@ describe("Domain Aggregates", () => {
           background: "Acólito"
           // Missing strength, dexterity, constitution, intelligence, wisdom, charisma, speed, initiative, passivePerception, passiveInsight, passiveInvestigation, hitDice, etc.
         },
-        campaignSystem: "dnd_srd_5_2_1"
+        campaignSystem: "dnd_5e"
       };
       expect(() => createEntity(pcProps)).toThrow();
     });
 
-    it("allows Player Character for dnd_srd_5_2_1 campaign when all required fields are provided", () => {
+    it("allows Player Character for dnd_5e campaign when all required fields are provided", () => {
       const pcProps = {
         entityId: generateEntityId(),
         campaignId,
@@ -178,12 +178,12 @@ describe("Domain Aggregates", () => {
           wisdom: 14,
           charisma: 10
         },
-        campaignSystem: "dnd_srd_5_2_1"
+        campaignSystem: "dnd_5e"
       };
       expect(() => createEntity(pcProps)).not.toThrow();
     });
 
-    it("allows Player Character without playerId (pre-made template) for dnd_srd_5_2_1 campaign when all other required fields are provided", () => {
+    it("allows Player Character without playerId (pre-made template) for dnd_5e campaign when all other required fields are provided", () => {
       const pcProps = {
         entityId: generateEntityId(),
         campaignId,
@@ -211,12 +211,12 @@ describe("Domain Aggregates", () => {
           wisdom: 14,
           charisma: 10
         },
-        campaignSystem: "dnd_srd_5_2_1"
+        campaignSystem: "dnd_5e"
       };
       expect(() => createEntity(pcProps)).not.toThrow();
     });
 
-    it("rejects Player Character for dnd_srd_5_2_1 campaign at level 3 if subclass is missing", () => {
+    it("rejects Player Character for dnd_5e campaign at level 3 if subclass is missing", () => {
       const pcProps = {
         entityId: generateEntityId(),
         campaignId,
@@ -245,7 +245,7 @@ describe("Domain Aggregates", () => {
           charisma: 10
           // Missing subclass for level 3
         },
-        campaignSystem: "dnd_srd_5_2_1"
+        campaignSystem: "dnd_5e"
       };
       expect(() => createEntity(pcProps)).toThrow(/subclass/i);
     });

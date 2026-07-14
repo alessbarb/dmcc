@@ -2234,16 +2234,22 @@ body:has(.rl-root) .watermark {
   text-transform: uppercase;
 }
 
-.system-tag.system-dnd_srd_5_2_1 {
+.system-tag.system-dnd_5e {
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(239, 68, 68, 0.25);
   color: #ef4444;
 }
 
-.system-tag.system-generic_fantasy_d20 {
+.system-tag.system-pathfinder_2e {
   background: rgba(59, 130, 246, 0.12);
   border: 1px solid rgba(59, 130, 246, 0.25);
   color: #3b82f6;
+}
+
+.system-tag.system-shadowdark {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #22c55e;
 }
 
 .system-tag.system-custom {

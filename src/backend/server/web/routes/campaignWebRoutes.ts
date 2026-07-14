@@ -186,13 +186,6 @@ function sessionDto(row: typeof schema.campaignSessions.$inferSelect) {
   };
 }
 
-async function deleteCampaignShell(campaignId: string): Promise<void> {
-  await db.transaction(async (tx) => {
-    await tx.delete(schema.campaignMemberships).where(eq(schema.campaignMemberships.campaignId, campaignId));
-    await tx.delete(schema.campaigns).where(eq(schema.campaigns.campaignId, campaignId));
-  });
-}
-
 export async function registerCampaignWebRoutes(server: FastifyInstance, options: CampaignWebRoutesOptions): Promise<void> {
   const repo = new PostgresCampaignRepository();
 
@@ -224,9 +217,6 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
       await db.transaction(async (tx) => {
         await tx.insert(schema.campaigns).values({ campaignId, title, summary: request.body?.summary ?? null, workspaceId, ownerId: user.userId, status: "active", metadata });
         await tx.insert(schema.campaignMemberships).values({ campaignId, userId: user.userId, role: "dm", playerId: null }).onConflictDoNothing();
-      });
-
-      try {
         await repo.executeCommand(campaignId, {
           type: "CreateCampaign",
           campaignId,
@@ -236,11 +226,8 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
           coverUrl: request.body?.coverUrl,
           metadata,
           actorId: user.userId,
-        } as Command, { commandId, actorUserId: user.userId });
-      } catch (error) {
-        await deleteCampaignShell(campaignId).catch(() => undefined);
-        throw error;
-      }
+        } as Command, { commandId, actorUserId: user.userId, tx });
+      });
 
       reply.code(201);
       return { campaignId };

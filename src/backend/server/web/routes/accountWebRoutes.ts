@@ -7,7 +7,6 @@ import * as schema from "../../../db/schema.js";
 import {
   getRequiredWebUser,
   hashOpaque,
-  verifySecret,
   WEB_SESSION_COOKIE,
 } from "../webSession.js";
 import type { UserPreferences, SocialVisibility, ProfileAudience as DbProfileAudience } from "../../account/accountTypes.js";
@@ -156,13 +155,7 @@ function bodyString(value: unknown): string | undefined {
 
 async function verifyCurrentPassword(user: typeof schema.users.$inferSelect, currentPassword: unknown): Promise<boolean> {
   if (typeof currentPassword !== "string" || currentPassword.length === 0) return false;
-  if (user.passwordAlgorithm === "argon2id") {
-    return argon2.verify(user.passwordHash, currentPassword).catch(() => false);
-  }
-  if (user.passwordAlgorithm === "scrypt") {
-    return verifySecret(currentPassword, user.passwordSalt, user.passwordHash);
-  }
-  return false;
+  return argon2.verify(user.passwordHash, currentPassword).catch(() => false);
 }
 
 async function getCurrentUserRecord(userId: string) {

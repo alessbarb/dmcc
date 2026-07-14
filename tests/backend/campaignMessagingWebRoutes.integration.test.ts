@@ -15,7 +15,7 @@ const players = { a: "ply_messaging_a", b: "ply_messaging_b" };
 const server = createServer();
 
 async function seedUser(userId: string, suffix: string) {
-  await db.insert(schema.users).values({ userId, workspacePartitionId: "default", emailNormalized: `${suffix}@example.test`, emailHash: `hash_${suffix}`, displayName: suffix, passwordHash: "test-password-hash", passwordSalt: "test-password-salt", passwordAlgorithm: "scrypt" });
+  await db.insert(schema.users).values({ userId, emailNormalized: `${suffix}@example.test`, emailHash: `hash_${suffix}`, displayName: suffix, passwordHash: "test-password-hash" });
 }
 async function authenticatedHeaders(userId: string) {
   const { token } = await createWebSession(userId);
@@ -23,7 +23,7 @@ async function authenticatedHeaders(userId: string) {
 }
 async function seedCampaignFixture() {
   await seedUser(users.dm, "dm"); await seedUser(users.playerA, "player-a"); await seedUser(users.playerB, "player-b"); await seedUser(users.viewer, "viewer");
-  await db.insert(schema.workspaces).values({ workspaceId: WORKSPACE_ID, workspacePartitionId: "default", name: "Messaging integration workspace", ownerId: users.dm });
+  await db.insert(schema.workspaces).values({ workspaceId: WORKSPACE_ID, name: "Messaging integration workspace", ownerId: users.dm });
   await db.insert(schema.workspaceMemberships).values({ workspaceId: WORKSPACE_ID, userId: users.dm, role: "owner" });
   await db.insert(schema.campaigns).values([
     { campaignId: CAMPAIGN_ID, title: "Messaging integration campaign", workspaceId: WORKSPACE_ID, ownerId: users.dm },

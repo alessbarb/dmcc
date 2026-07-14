@@ -86,8 +86,9 @@ const CONFIDENCE_LABEL_KEYS: Record<string, string> = {
 };
 
 const SYSTEM_LABEL_KEYS: Record<string, string> = {
-  generic_fantasy_d20: "premadePreview.system.genericFantasyD20",
-  dnd_srd_5_2_1: "premadePreview.system.dndSrd521",
+  dnd_5e: "premadePreview.system.dndSrd521",
+  pathfinder_2e: "premadePreview.system.custom",
+  shadowdark: "premadePreview.system.custom",
   custom: "premadePreview.system.custom",
 };
 
@@ -157,7 +158,7 @@ export function PremadeCampaignPreviewPage() {
     const init = async () => {
       const status = await fetchAuthStatus().catch(() => null);
       if (!status?.sessionValid) {
-        await navigate({ to: status?.accountConfigured ? "/dm/login" : "/dm/setup" });
+        await navigate({ to: "/auth/login" });
         return;
       }
       await Promise.all([fetchPremadeCampaignTemplate(templateId), fetchCampaigns().catch(() => {})]);

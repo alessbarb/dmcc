@@ -51,7 +51,6 @@ export async function ensureDefaultWorkspace(user: WebUser): Promise<string> {
   await db.transaction(async (tx) => {
     await tx.insert(schema.workspaces).values({
       workspaceId,
-      workspacePartitionId: user.workspacePartitionId,
       name: `${user.displayName}'s workspace`,
       ownerId: user.userId,
     });
@@ -142,7 +141,7 @@ export async function listAccessibleCampaigns(userId: string): Promise<Accessibl
       ),
     )
     .where(and(
-      sql`${schema.campaigns.status} <> 'deleted'`,
+      sql`${schema.campaigns.status} <> 'trashed'`,
       sql`${schema.campaigns.status} <> 'importing'`,
       or(
         eq(schema.campaigns.ownerId, userId),
@@ -155,4 +154,12 @@ export async function listAccessibleCampaigns(userId: string): Promise<Accessibl
     role: row.membership?.role ?? "dm",
     playerId: row.membership?.playerId ?? null,
   }));
+}
+
+export function getRequiredPlatformAdmin(request: FastifyRequest): WebUser {
+  const user = getRequiredWebUser(request);
+  if (!user.isPlatformAdmin) {
+    throw new HttpError("Platform administrator access required", 403);
+  }
+  return user;
 }

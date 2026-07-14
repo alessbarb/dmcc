@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../schemas/premade/locale/v1.json",
+  "$schema": "../../../schemas/campaign-template/locale/v1.json",
   "locale": "en",
   "templateId": "phandalin-starter",
   "templateVersion": "1.1.0",

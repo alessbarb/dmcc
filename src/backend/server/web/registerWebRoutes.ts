@@ -14,10 +14,13 @@ import { registerPlayerCharacterLinkWebRoutes } from "./routes/playerCharacterLi
 import { registerPlayerCharacterProposalWebRoutes } from "./routes/playerCharacterProposalWebRoutes.js";
 import { registerPlayerKnowledgeWebRoutes } from "./routes/playerKnowledgeWebRoutes.js";
 import { registerPlayerPortalWebRoutes } from "./routes/playerPortalWebRoutes.js";
-import { registerPremadeCampaignWebRoutes } from "./routes/premadeCampaignWebRoutes.js";
+import { registerCampaignTemplateWebRoutes } from "./routes/campaignTemplateWebRoutes.js";
 import { registerRoleScopedCampaignListWebRoutes } from "./routes/roleScopedCampaignListWebRoutes.js";
 import { registerRulesWebRoutes } from "./routes/rulesWebRoutes.js";
 import { registerSearchWebRoutes } from "./routes/searchWebRoutes.js";
+import { registerAdminWebRoutes } from "./routes/adminWebRoutes.js";
+import { registerAnnouncementsWebRoutes } from "./routes/announcementsWebRoutes.js";
+import { registerGameSystemsWebRoutes } from "./routes/gameSystemsWebRoutes.js";
 
 export interface WebRoutesOptions {
   dataDir: string;
@@ -41,8 +44,11 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerPlayerPortalWebRoutes(server);
   registerPlayerCharacterLinkWebRoutes(server);
   registerPlayerCharacterProposalWebRoutes(server);
-  void registerPremadeCampaignWebRoutes(server);
+  void registerCampaignTemplateWebRoutes(server);
   void registerRulesWebRoutes(server);
   void registerSearchWebRoutes(server);
+  void registerAdminWebRoutes(server);
+  void registerAnnouncementsWebRoutes(server);
+  void registerGameSystemsWebRoutes(server);
   server.register(registerAssetRoutes, { assetsDir: options.assetsDir });
 }

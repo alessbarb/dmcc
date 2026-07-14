@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from "react";
+import React, { useEffect, useState, type ReactNode } from "react";
 import { Panel, useReactFlow } from "@xyflow/react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useCanvasHistoryStore } from "../../../shared/stores/canvasHistoryStore.js";
