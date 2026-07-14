@@ -163,7 +163,6 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
         emailHash: hashOpaque(email),
         displayName,
         passwordHash,
-        isPlatformAdmin: false,
       });
       const workspaceId = createId("wks");
       await tx.insert(schema.workspaces).values({ workspaceId, name: `${displayName}'s workspace`, ownerId: userId });
