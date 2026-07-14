@@ -95,6 +95,9 @@ const EntityListViewLazy = React.lazy(() =>
 const EntityBoardsViewLazy = React.lazy(() =>
   import("./dm/library/boards/EntityBoardsView.js").then((module) => ({ default: module.EntityBoardsView })),
 );
+const LibraryNotebooksViewLazy = React.lazy(() =>
+  import("./dm/library/notebooks/NotebooksView.js").then((module) => ({ default: module.NotebooksView })),
+);
 const CampaignMapWorkspacePageLazy = React.lazy(() =>
   import("./dm/map/CampaignMapWorkspacePage.js").then((module) => ({ default: module.CampaignMapWorkspacePage })),
 );
@@ -106,6 +109,9 @@ const NetworkViewLazy = React.lazy(() =>
 );
 const StoryWorkspacePageLazy = React.lazy(() =>
   import("./dm/story/StoryWorkspacePage.js").then((module) => ({ default: module.StoryWorkspacePage })),
+);
+const StoryPlanViewLazy = React.lazy(() =>
+  import("./dm/story/plan/StoryPlanView.js").then((module) => ({ default: module.StoryPlanView })),
 );
 const CampaignHistoryViewLazy = React.lazy(() =>
   import("./dm/story/history/CampaignHistoryView.js").then((module) => ({ default: module.CampaignHistoryView })),
@@ -382,6 +388,11 @@ const libraryBoardsRoute = createRoute({
   path: "/boards",
   component: withSuspense(EntityBoardsViewLazy),
 });
+const libraryNotebooksRoute = createRoute({
+  getParentRoute: () => libraryRoute,
+  path: "/notebooks",
+  component: withSuspense(LibraryNotebooksViewLazy),
+});
 
 // Map Workspace
 const mapRoute = createRoute({
@@ -426,6 +437,11 @@ const storyHistoryRoute = createRoute({
   getParentRoute: () => storyRoute,
   path: "/history",
   component: withSuspense(CampaignHistoryViewLazy),
+});
+const storyPlanRoute = createRoute({
+  getParentRoute: () => storyRoute,
+  path: "/plan",
+  component: withSuspense(StoryPlanViewLazy),
 });
 
 // People Workspace
@@ -584,6 +600,7 @@ const routeTree = rootRoute.addChildren([
       libraryIndexRoute,
       libraryListRoute,
       libraryBoardsRoute,
+      libraryNotebooksRoute,
     ]),
     mapRoute.addChildren([
       mapIndexRoute,
@@ -593,6 +610,7 @@ const routeTree = rootRoute.addChildren([
     storyRoute.addChildren([
       storyIndexRoute,
       storyHistoryRoute,
+      storyPlanRoute,
     ]),
     peopleRoute.addChildren([
       peopleIndexRoute,

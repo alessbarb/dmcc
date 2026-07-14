@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Bookmark, FileText, Layers, User, X } from "lucide-react";
+import { Bookmark, FileText, Layers, User, X, BookOpen, GitBranch, Milestone } from "lucide-react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { campaignResourceLocation } from "../../shared/resources/resourceNavigation.js";
 import { useCampaignShortcuts } from "./useCampaignShortcuts.js";
@@ -10,6 +10,9 @@ const TARGET_ICON: Record<ShortcutTargetType, React.ComponentType<{ size?: numbe
   entity: User,
   session: FileText,
   canvas: Layers,
+  notebook: BookOpen,
+  story_thread: GitBranch,
+  story_step: Milestone,
 };
 
 export interface ShortcutsPanelProps {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, useParams } from "@tanstack/react-router";
 import { CampaignWorkspace } from "../workspaces/CampaignWorkspace.js";
-import { List, LayoutGrid } from "lucide-react";
+import { List, LayoutGrid, BookOpen } from "lucide-react";
 
 export function LibraryWorkspacePage() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
@@ -18,6 +18,12 @@ export function LibraryWorkspacePage() {
       labelKey: "campaignShell.nav.boards",
       path: `/campaigns/${campaignId}/library/boards`,
       icon: LayoutGrid,
+    },
+    {
+      id: "notebooks",
+      labelKey: "campaignShell.nav.notebooks",
+      path: `/campaigns/${campaignId}/library/notebooks`,
+      icon: BookOpen,
     },
   ];
 
