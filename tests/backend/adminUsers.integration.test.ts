@@ -25,7 +25,11 @@ async function seedUsers() {
     { userId: users.regular, emailNormalized: "plat-regular@example.test", emailHash: "hash_plat_regular", displayName: "Regular", passwordHash },
     { userId: users.bystander, emailNormalized: "plat-bystander@example.test", emailHash: "hash_plat_bystander", displayName: "Bystander", passwordHash },
   ]);
-  await db.insert(userRoles).values({ userId: users.admin, role: "admin", source: "administration" });
+  await db.insert(userRoles).values([
+    { userId: users.admin, role: "admin", source: "administration" },
+    { userId: users.admin, role: "dm", source: "registration" },
+    { userId: users.regular, role: "dm", source: "registration" },
+  ]);
 }
 
 async function authenticatedHeaders(userId: string) {
