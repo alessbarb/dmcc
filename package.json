@@ -61,7 +61,8 @@
     "db:studio": "dotenv -e .env.development -v NODE_ENV=development -- drizzle-kit studio",
     "db:migrate": "tsx src/backend/db/migrate.ts",
     "db:migrate:development": "dotenv -e .env.development -v NODE_ENV=development -- npm run db:migrate",
-    "db:migrate:test": "dotenv -e .env.test -v NODE_ENV=test -- npm run db:migrate"
+    "db:migrate:test": "dotenv -e .env.test -v NODE_ENV=test -- npm run db:migrate",
+    "db:migrate:prod": "npm run db:migrate"
   },
   "dependencies": {
     "@fastify/cookie": "^11.1.1",
