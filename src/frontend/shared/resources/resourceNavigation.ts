@@ -32,6 +32,27 @@ const RESOURCE_NAVIGATION: Record<ShortcutTargetType, ResourceNavigationDefiniti
       search: { canvasId: resourceId },
     }),
   },
+  notebook: {
+    type: "notebook",
+    location: (campaignId, resourceId) => ({
+      pathname: `/campaigns/${campaignId}/library/notebooks`,
+      search: { notebookId: resourceId },
+    }),
+  },
+  story_thread: {
+    type: "story_thread",
+    location: (campaignId, resourceId) => ({
+      pathname: `/campaigns/${campaignId}/story/plan`,
+      search: { threadId: resourceId },
+    }),
+  },
+  story_step: {
+    type: "story_step",
+    location: (campaignId, resourceId) => ({
+      pathname: `/campaigns/${campaignId}/story/plan`,
+      search: { stepId: resourceId },
+    }),
+  },
 };
 
 /**

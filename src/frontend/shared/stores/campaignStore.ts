@@ -5,6 +5,8 @@ import { markCampaignGuidedTourPending } from "../../dm/onboarding/campaignGuide
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import type { Canvas, CanvasNode, CanvasEdge } from "@core/domain/canvas/types.js";
 import type { FactSource } from "@core/domain/fact/types.js";
+import type { CampaignNotebook, CampaignNotebookItem } from "@core/domain/notebook/types.js";
+import type { StoryThread, StoryStep } from "@core/domain/story/types.js";
 
 import {
   API_CLIENT_TAB_ID,
@@ -107,6 +109,10 @@ function normalizeCampaignState(raw: unknown): StoreCampaignState | null {
     tags: toArray(raw.tags),
     attachments: toArray(raw.attachments),
     sessionEvents: toArray(raw.sessionEvents),
+    notebooks: toArray(raw.notebooks),
+    notebookItems: toArray(raw.notebookItems),
+    storyThreads: toArray(raw.storyThreads),
+    storySteps: toArray(raw.storySteps),
   };
   // Trusted API boundary: the server serializes a well-formed CampaignProjection here.
   return normalized as unknown as StoreCampaignState;
@@ -312,6 +318,10 @@ export interface CampaignStateStore {
     sessionEvents?: unknown[];
     players: PlayerProfile[];
     canvases: Canvas[];
+    notebooks: CampaignNotebook[];
+    notebookItems: CampaignNotebookItem[];
+    storyThreads: StoryThread[];
+    storySteps: StoryStep[];
   } | null;
 
   canvasesById: Record<string, Canvas>;
