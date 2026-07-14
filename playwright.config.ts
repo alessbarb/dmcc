@@ -16,9 +16,16 @@ export default defineConfig({
     video: "off",
   },
   webServer: {
-    command: "rm -rf .tmp/e2e-data && npm run build && SESSION_SECRET=e2e-session-secret-at-least-32-characters DMCC_DATA_DIR=.tmp/e2e-data DMCC_PUBLIC_DIR=dist/public PORT=4877 node dist/src/backend/entry/index.js",
+    command:
+      "rm -rf .tmp/e2e-data" +
+      " && npm run build" +
+      " && NODE_ENV=test" + 
+      " DMCC_DATA_DIR=.tmp/e2e-data" +
+      " DMCC_PUBLIC_DIR=dist/public" + 
+      " PORT=4877" +
+      " node dist/src/backend/entry/index.js",
     port: 4877,
     reuseExistingServer: false,
-    timeout: 60000,
+    timeout: 60_000,
   },
 });
