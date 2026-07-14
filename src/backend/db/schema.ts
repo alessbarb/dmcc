@@ -496,7 +496,7 @@ export const campaignNotebooks = pgTable("campaign_notebooks", {
 }));
 
 export const campaignNotebookItems = pgTable("campaign_notebook_items", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   notebookItemId: text("notebook_item_id").notNull(),
   notebookId: text("notebook_id").notNull(),
   targetType: text("target_type").notNull(),
@@ -532,7 +532,7 @@ export const campaignStoryThreads = pgTable("campaign_story_threads", {
 }));
 
 export const campaignStorySteps = pgTable("campaign_story_steps", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   stepId: text("step_id").notNull(),
   threadId: text("thread_id").notNull(),
   title: text("title").notNull(),
@@ -588,7 +588,7 @@ export const campaignStorySteps = pgTable("campaign_story_steps", {
 }));
 
 export const campaignStoryThreadEntities = pgTable("campaign_story_thread_entities", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   threadId: text("thread_id").notNull(),
   entityId: text("entity_id").notNull(),
 }, (table) => ({
@@ -606,7 +606,7 @@ export const campaignStoryThreadEntities = pgTable("campaign_story_thread_entiti
 }));
 
 export const campaignStoryStepEntities = pgTable("campaign_story_step_entities", {
-  campaignId: text("campaign_id").notNull(),
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   stepId: text("step_id").notNull(),
   entityId: text("entity_id").notNull(),
 }, (table) => ({

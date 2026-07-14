@@ -115,3 +115,12 @@ ALTER TABLE "campaign_story_thread_entities" ADD CONSTRAINT "fk_campaign_story_t
 ALTER TABLE "campaign_story_step_entities" ADD CONSTRAINT "fk_campaign_story_step_entities_step" FOREIGN KEY ("campaign_id", "step_id") REFERENCES "public"."campaign_story_steps"("campaign_id", "step_id") ON DELETE cascade ON UPDATE no action;
 --> statement-breakpoint
 ALTER TABLE "campaign_story_step_entities" ADD CONSTRAINT "fk_campaign_story_step_entities_entity" FOREIGN KEY ("campaign_id", "entity_id") REFERENCES "public"."campaign_entities"("campaign_id", "entity_id") ON DELETE cascade ON UPDATE no action;
+--> statement-breakpoint
+ALTER TABLE "campaign_notebook_items" ADD CONSTRAINT "campaign_notebook_items_campaign_id_campaigns_campaign_id_fk" FOREIGN KEY ("campaign_id") REFERENCES "public"."campaigns"("campaign_id") ON DELETE cascade ON UPDATE no action;
+--> statement-breakpoint
+ALTER TABLE "campaign_story_steps" ADD CONSTRAINT "campaign_story_steps_campaign_id_campaigns_campaign_id_fk" FOREIGN KEY ("campaign_id") REFERENCES "public"."campaigns"("campaign_id") ON DELETE cascade ON UPDATE no action;
+--> statement-breakpoint
+ALTER TABLE "campaign_story_thread_entities" ADD CONSTRAINT "campaign_story_thread_entities_campaign_id_campaigns_campaign_id_fk" FOREIGN KEY ("campaign_id") REFERENCES "public"."campaigns"("campaign_id") ON DELETE cascade ON UPDATE no action;
+--> statement-breakpoint
+ALTER TABLE "campaign_story_step_entities" ADD CONSTRAINT "campaign_story_step_entities_campaign_id_campaigns_campaign_id_fk" FOREIGN KEY ("campaign_id") REFERENCES "public"."campaigns"("campaign_id") ON DELETE cascade ON UPDATE no action;
+

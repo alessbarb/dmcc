@@ -152,6 +152,12 @@ const CAMPAIGN_OWNED_DRIZZLE_TABLES = [
   playerPortalStates,
   playerPortalResources,
   campaignMessages,
+  schema.campaignNotebooks,
+  schema.campaignNotebookItems,
+  schema.campaignStoryThreads,
+  schema.campaignStorySteps,
+  schema.campaignStoryThreadEntities,
+  schema.campaignStoryStepEntities,
 ] as const;
 
 // Deliberately loose: finds every FK that *involves* campaign_id -> campaigns
