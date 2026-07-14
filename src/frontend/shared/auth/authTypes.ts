@@ -1,3 +1,5 @@
+export type PlatformRole = "dm" | "player" | "admin";
+
 export interface AuthUser {
   userId: string;
   email?: string;
