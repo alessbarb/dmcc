@@ -3,6 +3,7 @@ import { and, eq, isNull, sql } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
+import { userRoles } from "../../db/authSchema.js";
 import { getRequiredWebUser, type WebUser } from "./webSession.js";
 import { HttpError } from "../errors.js";
 
@@ -72,9 +73,7 @@ export async function getMembership(campaignId: string, userId: string): Promise
 export async function requireCampaignMembership(request: FastifyRequest, campaignId: string) {
   const user = getRequiredWebUser(request);
   const membership = await getMembership(campaignId, user.userId);
-  if (!membership) {
-    throw new HttpError("Campaign membership required", 403);
-  }
+  if (!membership) throw new HttpError("Campaign membership required", 403);
   return { user, membership };
 }
 
@@ -88,8 +87,7 @@ export async function requireCampaignRole(request: FastifyRequest, campaignId: s
 
 export async function requireCampaignOwner(request: FastifyRequest, campaignId: string) {
   const context = await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
-  const [campaign] = await db
-    .select({ ownerId: schema.campaigns.ownerId })
+  const [campaign] = await db.select({ ownerId: schema.campaigns.ownerId })
     .from(schema.campaigns)
     .where(eq(schema.campaigns.campaignId, campaignId))
     .limit(1);
@@ -118,10 +116,13 @@ export async function listAccessibleCampaigns(userId: string): Promise<Accessibl
   }));
 }
 
-export function getRequiredPlatformAdmin(request: FastifyRequest): WebUser {
+export async function getRequiredPlatformAdmin(request: FastifyRequest): Promise<WebUser> {
   const user = getRequiredWebUser(request);
-  if (!user.isPlatformAdmin) {
-    throw new HttpError("Platform administrator access required", 403);
-  }
+  const [role] = await db
+    .select({ role: userRoles.role })
+    .from(userRoles)
+    .where(and(eq(userRoles.userId, user.userId), eq(userRoles.role, "admin")))
+    .limit(1);
+  if (!role) throw new HttpError("Platform administrator access required", 403);
   return user;
 }
