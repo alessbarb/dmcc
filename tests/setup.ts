@@ -1,4 +1,5 @@
 import "./setupEnv.js";
+import { assertLocalTestDatabase } from "./assertLocalTestDatabase.js";
 import { beforeEach } from "vitest";
 import { db } from "../src/backend/db/client.js";
 import { campaignMessageReads, campaignMessages } from "../src/backend/db/messagingSchema.js";
@@ -6,6 +7,8 @@ import { playerPortalResources, playerPortalStates } from "../src/backend/db/pla
 import * as schema from "../src/backend/db/schema.js";
 import { systemAnnouncements } from "../src/backend/db/announcementsSchema.js";
 import { campaignTemplateSettings, gameSystemSettings } from "../src/backend/db/catalogSettingsSchema.js";
+
+assertLocalTestDatabase("Vitest integration tests");
 
 async function cleanDatabase() {
   await db.delete(campaignMessageReads);
