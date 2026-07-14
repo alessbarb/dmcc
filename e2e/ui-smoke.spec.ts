@@ -27,7 +27,7 @@ test.describe("Critical UI smoke flow", () => {
     const password = `ui-smoke-password-${suffix}`;
     const campaignTitle = `UI Smoke ${suffix}`;
 
-    await page.goto("/dm/setup");
+    await page.goto("/auth/register");
     await expect(page.locator("#email")).toBeVisible({ timeout: 15_000 });
     await page.locator("#displayName").fill("UI Smoke DM");
     await page.locator("#email").fill(email);
@@ -79,7 +79,7 @@ test.describe("Critical UI smoke flow", () => {
     const logoutResponse = await page.request.post("/api/auth/logout");
     expect(logoutResponse.ok()).toBe(true);
 
-    await page.goto("/dm/login");
+    await page.goto("/auth/login");
     await expect(page.locator("#email")).toBeVisible({ timeout: 15_000 });
     await page.locator("#email").fill(email);
     await page.locator("#secret").fill(password);
@@ -114,7 +114,7 @@ test.describe("Player invitation UI flow", () => {
     const email = `ui-invite-${suffix}@example.com`;
     const password = `ui-invite-password-${suffix}`;
 
-    await page.goto("/dm/setup");
+    await page.goto("/auth/register");
     await expect(page.locator("#email")).toBeVisible({ timeout: 15_000 });
     await page.locator("#displayName").fill("UI Invite DM");
     await page.locator("#email").fill(email);

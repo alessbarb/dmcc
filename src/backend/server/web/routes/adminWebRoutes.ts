@@ -963,4 +963,3 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
     }
   );
 }
-
