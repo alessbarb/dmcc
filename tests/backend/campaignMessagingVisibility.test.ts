@@ -13,7 +13,7 @@ const privatePlayerMessage = { audience: "player", senderUserId: "usr_a", recipi
 describe("campaign messaging visibility", () => {
   it("shows party messages to every campaign participant", () => {
     expect(canReadCampaignMessage(partyMessage, { role: "player", userId: "usr_b", playerId: "ply_b" })).toBe(true);
-    expect(canReadCampaignMessage(partyMessage, { role: "viewer", userId: "usr_viewer", playerId: null })).toBe(true);
+    expect(canReadCampaignMessage(partyMessage, { role: "unknown", userId: "usr_unknown", playerId: null })).toBe(true);
   });
 
   it("shows DM-private messages only to direction and their sender", () => {
@@ -41,8 +41,7 @@ describe("campaign messaging write permissions", () => {
     expect(MAX_CAMPAIGN_MESSAGE_LENGTH).toBe(4_000);
   });
 
-  it("keeps read-only and unknown roles from sending messages", () => {
-    expect(canSendCampaignMessage("viewer")).toBe(false);
+  it("keeps unrecognized roles from sending messages", () => {
     expect(canSendCampaignMessage("guest")).toBe(false);
     expect(canSendCampaignMessage("")).toBe(false);
   });

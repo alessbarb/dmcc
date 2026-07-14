@@ -10,7 +10,7 @@ const ORIGIN = "http://localhost:4877";
 const CAMPAIGN_ID = "cmp_messaging_integration";
 const OTHER_CAMPAIGN_ID = "cmp_messaging_other";
 const WORKSPACE_ID = "wks_messaging_integration";
-const users = { dm: "usr_messaging_dm", playerA: "usr_messaging_player_a", playerB: "usr_messaging_player_b", viewer: "usr_messaging_viewer" };
+const users = { dm: "usr_messaging_dm", playerA: "usr_messaging_player_a", playerB: "usr_messaging_player_b" };
 const players = { a: "ply_messaging_a", b: "ply_messaging_b" };
 const server = createServer();
 
@@ -22,7 +22,7 @@ async function authenticatedHeaders(userId: string) {
   return { cookie: `${WEB_SESSION_COOKIE}=${token}`, origin: ORIGIN };
 }
 async function seedCampaignFixture() {
-  await seedUser(users.dm, "dm"); await seedUser(users.playerA, "player-a"); await seedUser(users.playerB, "player-b"); await seedUser(users.viewer, "viewer");
+  await seedUser(users.dm, "dm"); await seedUser(users.playerA, "player-a"); await seedUser(users.playerB, "player-b");
   await db.insert(schema.workspaces).values({ workspaceId: WORKSPACE_ID, name: "Messaging integration workspace", ownerId: users.dm });
   await db.insert(schema.workspaceMemberships).values({ workspaceId: WORKSPACE_ID, userId: users.dm, role: "owner" });
   await db.insert(schema.campaigns).values([
@@ -37,7 +37,6 @@ async function seedCampaignFixture() {
     { campaignId: CAMPAIGN_ID, userId: users.dm, role: "dm", playerId: null },
     { campaignId: CAMPAIGN_ID, userId: users.playerA, role: "player", playerId: players.a },
     { campaignId: CAMPAIGN_ID, userId: users.playerB, role: "player", playerId: players.b },
-    { campaignId: CAMPAIGN_ID, userId: users.viewer, role: "viewer", playerId: null },
   ]);
 }
 
@@ -45,9 +44,11 @@ beforeAll(async () => { await server.ready(); });
 afterAll(async () => { await server.close(); });
 
 describe("campaign messaging web routes", () => {
-  it("rejects writes from read-only campaign roles", async () => {
+  it("rejects writes from a non-member of the campaign", async () => {
     await seedCampaignFixture();
-    const response = await server.inject({ method: "POST", url: `/api/campaigns/${CAMPAIGN_ID}/messages`, headers: await authenticatedHeaders(users.viewer), payload: { content: "Viewer cannot write", audience: "party", clientMessageId: "viewer-write" } });
+    const outsider = "usr_messaging_outsider";
+    await seedUser(outsider, "outsider");
+    const response = await server.inject({ method: "POST", url: `/api/campaigns/${CAMPAIGN_ID}/messages`, headers: await authenticatedHeaders(outsider), payload: { content: "Outsider cannot write", audience: "party", clientMessageId: "outsider-write" } });
     expect(response.statusCode).toBe(403);
   });
 

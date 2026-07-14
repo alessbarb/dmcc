@@ -239,7 +239,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
   });
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm", "player", "viewer"]);
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm", "player"]);
     const [campaign] = await db.select().from(schema.campaigns).where(eq(schema.campaigns.campaignId, request.params.campaignId)).limit(1);
     const [projection, entities, facts, relations, sessions, players] = await Promise.all([
       repo.getCampaignState(request.params.campaignId),
