@@ -465,3 +465,50 @@ export async function searchPlayerCampaign(
     "No se pudo buscar en el portal",
   );
 }
+
+export interface CampaignHistoryResponse {
+  entries: {
+    activityId: string;
+    campaignId: string;
+    sourceKind: "domain_event" | "operation";
+    sourceId: string;
+    type: string;
+    category: "session" | "content" | "knowledge" | "story" | "people" | "collaboration" | "operation";
+    data: Record<string, any>;
+    actorUserId?: string | null;
+    sessionId?: string | null;
+    targetType?: string | null;
+    targetId?: string | null;
+    occurredAt: string;
+  }[];
+  nextCursor?: string;
+}
+
+export async function getCampaignHistory(
+  campaignId: string,
+  filters: {
+    category?: string;
+    actorUserId?: string;
+    sessionId?: string;
+    targetType?: string;
+    targetId?: string;
+    cursor?: string;
+    limit?: number;
+  } = {},
+  signal?: AbortSignal,
+): Promise<CampaignHistoryResponse> {
+  const params = new URLSearchParams();
+  if (filters.category) params.append("category", filters.category);
+  if (filters.actorUserId) params.append("actorUserId", filters.actorUserId);
+  if (filters.sessionId) params.append("sessionId", filters.sessionId);
+  if (filters.targetType) params.append("targetType", filters.targetType);
+  if (filters.targetId) params.append("targetId", filters.targetId);
+  if (filters.cursor) params.append("cursor", filters.cursor);
+  if (filters.limit !== undefined) params.append("limit", String(filters.limit));
+
+  const queryStr = params.toString() ? `?${params.toString()}` : "";
+  return readJson(
+    await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/history${queryStr}`, { init: { signal } }),
+    "No se pudo cargar el historial de la campaña",
+  );
+}
