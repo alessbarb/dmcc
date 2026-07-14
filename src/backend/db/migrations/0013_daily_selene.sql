@@ -1,12 +1,25 @@
 -- Argon2 precondition check
 DO $$
+DECLARE
+  has_non_argon2_accounts boolean := false;
 BEGIN
   IF EXISTS (
     SELECT 1
-    FROM users
-    WHERE password_algorithm <> 'argon2id'
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'users'
+      AND column_name = 'password_algorithm'
   ) THEN
-    RAISE EXCEPTION 'Non-Argon2 accounts remain. Reset or recreate them before applying this migration.';
+    EXECUTE 'SELECT EXISTS (
+      SELECT 1
+      FROM users
+      WHERE password_algorithm IS DISTINCT FROM ''argon2id''
+    )'
+    INTO has_non_argon2_accounts;
+
+    IF has_non_argon2_accounts THEN
+      RAISE EXCEPTION 'Non-Argon2 accounts remain. Reset or recreate them before applying this migration.';
+    END IF;
   END IF;
 END $$;
 --> statement-breakpoint
@@ -123,11 +136,72 @@ CREATE TABLE "game_system_settings" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-ALTER TABLE "users" RENAME COLUMN "app_role" TO "is_platform_admin";--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "is_platform_admin" DROP DEFAULT;--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "is_platform_admin" TYPE boolean USING (is_platform_admin = 'admin');--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "is_platform_admin" SET DEFAULT false;--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "is_platform_admin" SET NOT NULL;--> statement-breakpoint
+-- Normalize the platform administrator column across deployed schema states.
+DO $$
+DECLARE
+  platform_admin_type text;
+BEGIN
+  SELECT data_type
+  INTO platform_admin_type
+  FROM information_schema.columns
+  WHERE table_schema = 'public'
+    AND table_name = 'users'
+    AND column_name = 'is_platform_admin';
+
+  IF platform_admin_type IS NULL THEN
+    IF EXISTS (
+      SELECT 1
+      FROM information_schema.columns
+      WHERE table_schema = 'public'
+        AND table_name = 'users'
+        AND column_name = 'app_role'
+    ) THEN
+      ALTER TABLE "users"
+        RENAME COLUMN "app_role" TO "is_platform_admin";
+
+      platform_admin_type := 'text';
+    ELSE
+      ALTER TABLE "users"
+        ADD COLUMN "is_platform_admin" boolean DEFAULT false;
+
+      platform_admin_type := 'boolean';
+    END IF;
+  END IF;
+
+  IF platform_admin_type <> 'boolean' THEN
+    ALTER TABLE "users"
+      ALTER COLUMN "is_platform_admin" DROP DEFAULT;
+
+    ALTER TABLE "users"
+      ALTER COLUMN "is_platform_admin"
+      TYPE boolean
+      USING ("is_platform_admin" = 'admin');
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'users'
+      AND column_name = 'app_role'
+  ) THEN
+    EXECUTE 'UPDATE "users"
+      SET "is_platform_admin" = true
+      WHERE "app_role" = ''admin''';
+
+    ALTER TABLE "users" DROP COLUMN "app_role";
+  END IF;
+
+  UPDATE "users"
+  SET "is_platform_admin" = false
+  WHERE "is_platform_admin" IS NULL;
+
+  ALTER TABLE "users"
+    ALTER COLUMN "is_platform_admin" SET DEFAULT false;
+
+  ALTER TABLE "users"
+    ALTER COLUMN "is_platform_admin" SET NOT NULL;
+END $$;--> statement-breakpoint
 DROP INDEX IF EXISTS "uq_user_email_workspace_partition";--> statement-breakpoint
 DROP INDEX IF EXISTS "uq_user_email_hash_workspace_partition";--> statement-breakpoint
 ALTER TABLE "campaigns" ADD COLUMN IF NOT EXISTS "trashed_at" timestamp;--> statement-breakpoint
