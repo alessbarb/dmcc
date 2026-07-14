@@ -189,8 +189,9 @@ test.describe("Player invitation acceptance and routed workspace", () => {
     await page.request.post("/api/auth/logout");
 
     await page.goto(`/invitations/${inviteToken}`);
-    await expect(page.getByRole("button", { name: /iniciar sesión para continuar/i })).toBeVisible({ timeout: 15_000 });
-    await page.getByRole("button", { name: /iniciar sesión para continuar/i }).click();
+    const loginToContinueButton = page.getByRole("button", { name: /sign in to continue|iniciar sesión para continuar/i });
+    await expect(loginToContinueButton).toBeVisible({ timeout: 15_000 });
+    await loginToContinueButton.click();
     await expect(page).toHaveURL(/\/auth\/login$/, { timeout: 15_000 });
 
     await page.locator("#email").fill(playerEmail);
@@ -200,7 +201,7 @@ test.describe("Player invitation acceptance and routed workspace", () => {
       page.locator('form button[type="submit"]').click(),
     ]);
 
-    await page.getByRole("button", { name: /aceptar invitación/i }).click();
+    await page.getByRole("button", { name: /accept invitation|aceptar invitación/i }).click();
     await page.waitForURL(/\/player$/, { timeout: 15_000 });
 
     await page.goto(`/player/campaigns/${campaignId}/character`);
