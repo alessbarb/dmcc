@@ -45,6 +45,7 @@ export type AdminUserSummary = {
   displayName: string | null;
   avatarUrl: string | null;
   isPlatformAdmin: boolean;
+  roles?: Array<"dm" | "player" | "admin">;
   createdAt: string;
   lastLoginAt: string | null;
   disabledAt: string | null;
@@ -147,18 +148,12 @@ export async function fetchAdminOverview(): Promise<AdminOverview> {
   return res.json();
 }
 
-export async function fetchAdminCampaigns(params: {
-  status?: string;
-  query?: string;
-  limit?: number;
-  cursor?: string;
-}): Promise<{ campaigns: AdminCampaignSummary[]; nextCursor: string | null }> {
+export async function fetchAdminCampaigns(params: { status?: string; query?: string; limit?: number; cursor?: string }): Promise<{ campaigns: AdminCampaignSummary[]; nextCursor: string | null }> {
   const q = new URLSearchParams();
   if (params.status) q.set("status", params.status);
   if (params.query) q.set("query", params.query);
   if (params.limit) q.set("limit", String(params.limit));
   if (params.cursor) q.set("cursor", params.cursor);
-
   const res = await apiFetch(`/api/admin/campaigns?${q.toString()}`);
   if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch admin campaigns"));
   return res.json();
@@ -182,11 +177,7 @@ export async function restoreCampaign(campaignId: string): Promise<void> {
 
 export async function purgeCampaign(campaignId: string, currentPassword: string): Promise<{ success: boolean; outcome: string }> {
   const res = await apiFetch(`/api/admin/campaigns/${campaignId}/purge`, {
-    init: {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentPassword }),
-    },
+    init: { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ currentPassword }) },
   });
   if (!res.ok) throw new Error(await readApiError(res, "Failed to purge campaign"));
   return res.json();
@@ -198,16 +189,11 @@ export async function purgeIncompleteImport(campaignId: string): Promise<{ succe
   return res.json();
 }
 
-export async function fetchPurgeJobs(params: {
-  status?: string;
-  cursor?: string;
-  limit?: number;
-}): Promise<{ jobs: PurgeJobSummary[]; nextCursor: string | null }> {
+export async function fetchPurgeJobs(params: { status?: string; cursor?: string; limit?: number }): Promise<{ jobs: PurgeJobSummary[]; nextCursor: string | null }> {
   const q = new URLSearchParams();
   if (params.status) q.set("status", params.status);
   if (params.limit) q.set("limit", String(params.limit));
   if (params.cursor) q.set("cursor", params.cursor);
-
   const res = await apiFetch(`/api/admin/purge-jobs?${q.toString()}`);
   if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch purge jobs"));
   return res.json();
@@ -224,18 +210,12 @@ export async function retryPurgeJob(jobId: string): Promise<void> {
   if (!res.ok) throw new Error(await readApiError(res, "Failed to retry purge job"));
 }
 
-export async function fetchAdminUsers(params: {
-  query?: string;
-  status?: string;
-  cursor?: string;
-  limit?: number;
-}): Promise<{ users: AdminUserSummary[]; nextCursor: string | null }> {
+export async function fetchAdminUsers(params: { query?: string; status?: string; cursor?: string; limit?: number }): Promise<{ users: AdminUserSummary[]; nextCursor: string | null }> {
   const q = new URLSearchParams();
   if (params.query) q.set("query", params.query);
   if (params.status) q.set("status", params.status);
   if (params.limit) q.set("limit", String(params.limit));
   if (params.cursor) q.set("cursor", params.cursor);
-
   const res = await apiFetch(`/api/admin/users?${q.toString()}`);
   if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch admin users"));
   return res.json();
@@ -249,11 +229,7 @@ export async function fetchAdminUserDetails(userId: string): Promise<AdminUserSu
 
 export async function disableUser(userId: string, currentPassword: string): Promise<void> {
   const res = await apiFetch(`/api/admin/users/${userId}/disable`, {
-    init: {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentPassword }),
-    },
+    init: { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ currentPassword }) },
   });
   if (!res.ok) throw new Error(await readApiError(res, "Failed to disable user"));
 }
@@ -265,151 +241,21 @@ export async function enableUser(userId: string): Promise<void> {
 
 export async function revokeUserSessions(userId: string, currentPassword: string): Promise<void> {
   const res = await apiFetch(`/api/admin/users/${userId}/revoke-sessions`, {
-    init: {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentPassword }),
-    },
+    init: { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ currentPassword }) },
   });
   if (!res.ok) throw new Error(await readApiError(res, "Failed to revoke user sessions"));
 }
 
 export async function grantPlatformAdmin(userId: string, currentPassword: string): Promise<void> {
   const res = await apiFetch(`/api/admin/users/${userId}/grant-platform-admin`, {
-    init: {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentPassword }),
-    },
+    init: { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ currentPassword }) },
   });
   if (!res.ok) throw new Error(await readApiError(res, "Failed to grant platform admin"));
 }
 
 export async function revokePlatformAdmin(userId: string, currentPassword: string): Promise<void> {
   const res = await apiFetch(`/api/admin/users/${userId}/revoke-platform-admin`, {
-    init: {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentPassword }),
-    },
+    init: { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ currentPassword }) },
   });
   if (!res.ok) throw new Error(await readApiError(res, "Failed to revoke platform admin"));
-}
-
-export async function fetchInvitations(params: {
-  activeOnly?: boolean;
-  cursor?: string;
-  limit?: number;
-}): Promise<{ invitations: InvitationSummary[]; nextCursor: string | null }> {
-  const q = new URLSearchParams();
-  if (params.activeOnly) q.set("activeOnly", "true");
-  if (params.limit) q.set("limit", String(params.limit));
-  if (params.cursor) q.set("cursor", params.cursor);
-
-  const res = await apiFetch(`/api/admin/invitations?${q.toString()}`);
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch invitations"));
-  return res.json();
-}
-
-export async function revokeInvitation(invitationId: string): Promise<void> {
-  const res = await apiFetch(`/api/admin/invitations/${invitationId}/revoke`, { init: { method: "POST" } });
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to revoke invitation"));
-}
-
-export async function fetchAuditLog(params: {
-  action?: string;
-  actorUserId?: string;
-  cursor?: string;
-  limit?: number;
-}): Promise<{ auditLog: AuditLogSummary[]; nextCursor: string | null }> {
-  const q = new URLSearchParams();
-  if (params.action) q.set("action", params.action);
-  if (params.actorUserId) q.set("actorUserId", params.actorUserId);
-  if (params.limit) q.set("limit", String(params.limit));
-  if (params.cursor) q.set("cursor", params.cursor);
-
-  const res = await apiFetch(`/api/admin/audit-log?${q.toString()}`);
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch audit log"));
-  return res.json();
-}
-
-export async function fetchAdminAnnouncements(params: {
-  cursor?: string;
-  limit?: number;
-}): Promise<{ announcements: AnnouncementSummary[]; nextCursor: string | null }> {
-  const q = new URLSearchParams();
-  if (params.limit) q.set("limit", String(params.limit));
-  if (params.cursor) q.set("cursor", params.cursor);
-
-  const res = await apiFetch(`/api/admin/announcements?${q.toString()}`);
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch announcements"));
-  return res.json();
-}
-
-export async function createAnnouncement(input: AnnouncementInput): Promise<{ announcementId: string }> {
-  const res = await apiFetch("/api/admin/announcements", {
-    init: {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
-    },
-  });
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to create announcement"));
-  return res.json();
-}
-
-export async function updateAnnouncement(announcementId: string, input: Partial<AnnouncementInput>): Promise<void> {
-  const res = await apiFetch(`/api/admin/announcements/${announcementId}`, {
-    init: {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
-    },
-  });
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to update announcement"));
-}
-
-export async function archiveAnnouncement(announcementId: string): Promise<void> {
-  const res = await apiFetch(`/api/admin/announcements/${announcementId}`, { init: { method: "DELETE" } });
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to archive announcement"));
-}
-
-export async function fetchCampaignTemplateSettings(): Promise<{ templates: CampaignTemplateSetting[] }> {
-  const res = await apiFetch("/api/admin/campaign-templates");
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch campaign template settings"));
-  return res.json();
-}
-
-export async function updateCampaignTemplateSettings(
-  templateId: string,
-  input: { isVisible?: boolean; sortOrder?: number; isFeatured?: boolean }
-): Promise<void> {
-  const res = await apiFetch(`/api/admin/campaign-templates/${templateId}`, {
-    init: {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
-    },
-  });
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to update campaign template settings"));
-}
-
-export async function fetchGameSystemSettings(): Promise<{ systems: GameSystemSetting[] }> {
-  const res = await apiFetch("/api/admin/game-systems");
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch game system settings"));
-  return res.json();
-}
-
-export async function updateGameSystemSettings(
-  systemId: string,
-  input: { isEnabledForNewCampaigns?: boolean; sortOrder?: number }
-): Promise<void> {
-  const res = await apiFetch(`/api/admin/game-systems/${systemId}`, {
-    init: {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
-    },
-  });
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to update game system settings"));
 }
