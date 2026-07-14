@@ -83,61 +83,250 @@ function RootRouteComponent() {
 }
 
 const rootRoute = createRootRoute({ component: RootRouteComponent });
-const indexRoute = createRoute({ getParentRoute: () => rootRoute, path: "/", component: withSuspense(PromoLandingLazy) });
-const homeRoute = createRoute({ getParentRoute: () => rootRoute, path: "/home", beforeLoad: requireAccountSession, component: withSuspense(AccountHomePageLazy) });
-const portalRoute = createRoute({ getParentRoute: () => rootRoute, path: "/portal", beforeLoad: requirePlatformRole("player"), component: withSuspense(SmartLandingLazy) });
-const playerRoute = createRoute({ getParentRoute: () => rootRoute, path: "/player", beforeLoad: requirePlatformRole("player"), component: withSuspense(PlayerCampaignsPageLazy) });
-const playerMessagesRoute = createRoute({ getParentRoute: () => rootRoute, path: "/portal/messages/$campaignId", beforeLoad: requirePlatformRole("player"), component: withSuspense(PlayerMessagesPageLazy) });
-const invitationRoute = createRoute({ getParentRoute: () => rootRoute, path: "/invitations/$inviteToken", component: withSuspense(InvitationPageLazy) });
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/",
+  component: withSuspense(PromoLandingLazy),
+});
+const homeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/home",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AccountHomePageLazy),
+});
+const portalRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/portal",
+  beforeLoad: requirePlatformRole("player"),
+  component: withSuspense(SmartLandingLazy),
+});
+const playerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player",
+  beforeLoad: requirePlatformRole("player"),
+  component: withSuspense(PlayerCampaignsPageLazy),
+});
+const playerMessagesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/portal/messages/$campaignId",
+  beforeLoad: requirePlatformRole("player"),
+  component: withSuspense(PlayerMessagesPageLazy),
+});
+const invitationRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/invitations/$inviteToken",
+  component: withSuspense(InvitationPageLazy),
+});
 
-const aboutRoute = createRoute({ getParentRoute: () => rootRoute, path: "/about", component: withSuspense(AboutPageLazy) });
-const contactRoute = createRoute({ getParentRoute: () => rootRoute, path: "/contact", component: withSuspense(ContactPageLazy) });
-const privacyRoute = createRoute({ getParentRoute: () => rootRoute, path: "/privacy", component: withSuspense(PrivacyPageLazy) });
-const termsRoute = createRoute({ getParentRoute: () => rootRoute, path: "/terms", component: withSuspense(TermsPageLazy) });
-const forgotPasswordRoute = createRoute({ getParentRoute: () => rootRoute, path: "/forgot-password", component: withSuspense(ForgotPasswordPageLazy) });
-const resetPasswordRoute = createRoute({ getParentRoute: () => rootRoute, path: "/reset-password/$token", component: withSuspense(ResetPasswordPageLazy) });
-const resetPasswordManualRoute = createRoute({ getParentRoute: () => rootRoute, path: "/reset-password", component: withSuspense(ResetPasswordPageLazy) });
+const aboutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/about",
+  component: withSuspense(AboutPageLazy),
+});
+const contactRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/contact",
+  component: withSuspense(ContactPageLazy),
+});
+const privacyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/privacy",
+  component: withSuspense(PrivacyPageLazy),
+});
+const termsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/terms",
+  component: withSuspense(TermsPageLazy),
+});
+const forgotPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/forgot-password",
+  component: withSuspense(ForgotPasswordPageLazy),
+});
+const resetPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/reset-password/$token",
+  component: withSuspense(ResetPasswordPageLazy),
+});
+const resetPasswordManualRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/reset-password",
+  component: withSuspense(ResetPasswordPageLazy),
+});
 
-const dmRoute = createRoute({ getParentRoute: () => rootRoute, path: "/dm", beforeLoad: requirePlatformRole("dm"), component: withSuspense(DmHubPageLazy) });
-const authRegisterRoute = createRoute({ getParentRoute: () => rootRoute, path: "/auth/register", component: withSuspense(RegisterPageLazy) });
-const authLoginRoute = createRoute({ getParentRoute: () => rootRoute, path: "/auth/login", component: withSuspense(LoginPageLazy) });
-const playerJoinRoute = createRoute({ getParentRoute: () => rootRoute, path: "/player/join", component: withSuspense(PlayerJoinPageLazy) });
+const dmRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/dm",
+  beforeLoad: requirePlatformRole("dm"),
+  component: withSuspense(DmHubPageLazy),
+});
+const authRegisterRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/auth/register",
+  component: withSuspense(RegisterPageLazy),
+});
+const authLoginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/auth/login",
+  component: withSuspense(LoginPageLazy),
+});
+const playerJoinRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/player/join",
+  component: withSuspense(PlayerJoinPageLazy),
+});
 
-const campaignRoute = createRoute({ getParentRoute: () => rootRoute, path: "/campaigns/$campaignId", beforeLoad: requirePlatformRole("dm"), component: withSuspense(CampaignShellPage) });
+const campaignRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/campaigns/$campaignId",
+  beforeLoad: requirePlatformRole("dm"),
+  component: withSuspense(CampaignShellPage),
+});
 const campaignIndexRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/",
   beforeLoad: ({ params }) => { throw redirect({ to: "/campaigns/$campaignId/command-center", params }); },
   component: () => null,
 });
-const commandCenterRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/command-center", component: withSuspense(CommandCenterPageLazy) });
-const sessionRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/session", component: withSuspense(SessionPageLazy) });
-const entitiesRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/entities", component: withSuspense(EntitiesPageLazy) });
-const canvasRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/canvas", component: withSuspense(CanvasPageLazy) });
-const graphRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/graph", component: withSuspense(GraphPageLazy) });
-const timelineRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/timeline", component: withSuspense(TimelinePageLazy) });
-const searchRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/search", component: withSuspense(SearchPageLazy) });
-const boardsRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/boards", component: withSuspense(BoardsPageLazy) });
-const playersRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/players", component: withSuspense(PlayersPageLazy) });
-const messagesRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/messages", component: withSuspense(CampaignMessagesPageLazy) });
-const rulesRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/rules", component: withSuspense(RulesPageLazy) });
-const knowledgeRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/knowledge", component: withSuspense(PlayerKnowledgePageLazy) });
-const settingsRoute = createRoute({ getParentRoute: () => campaignRoute, path: "/settings", component: withSuspense(SettingsPageLazy) });
+const commandCenterRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/command-center",
+  component: withSuspense(CommandCenterPageLazy),
+});
+const sessionRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/session",
+  component: withSuspense(SessionPageLazy),
+});
+const entitiesRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/entities",
+  component: withSuspense(EntitiesPageLazy),
+});
+const canvasRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/canvas",
+  component: withSuspense(CanvasPageLazy),
+});
+const graphRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/graph",
+  component: withSuspense(GraphPageLazy),
+});
+const timelineRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/timeline",
+  component: withSuspense(TimelinePageLazy),
+});
+const searchRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/search",
+  component: withSuspense(SearchPageLazy),
+});
+const boardsRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/boards",
+  component: withSuspense(BoardsPageLazy),
+});
+const playersRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/players",
+  component: withSuspense(PlayersPageLazy),
+});
+const messagesRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/messages",
+  component: withSuspense(CampaignMessagesPageLazy),
+});
+const rulesRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/rules",
+  component: withSuspense(RulesPageLazy),
+});
+const knowledgeRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/knowledge",
+  component: withSuspense(PlayerKnowledgePageLazy),
+});
+const settingsRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/settings",
+  component: withSuspense(SettingsPageLazy),
+});
 
-const onboardingRoute = createRoute({ getParentRoute: () => rootRoute, path: "/onboarding", beforeLoad: requirePlatformRole("dm"), component: withSuspense(OnboardingPageLazy) });
-const premadePreviewRoute = createRoute({ getParentRoute: () => rootRoute, path: "/premades/$templateId", component: withSuspense(PremadeCampaignPreviewPageLazy) });
-const accountRoute = createRoute({ getParentRoute: () => rootRoute, path: "/account", beforeLoad: requireAccountSession, component: withSuspense(AccountPageLazy) });
+const onboardingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/onboarding",
+  beforeLoad: requirePlatformRole("dm"),
+  component: withSuspense(OnboardingPageLazy),
+});
+const premadePreviewRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/premades/$templateId",
+  component: withSuspense(PremadeCampaignPreviewPageLazy),
+});
+const accountRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/account",
+  beforeLoad: requireAccountSession,
+  component: withSuspense(AccountPageLazy),
+});
 
 const adminGuard = requirePlatformRole("admin");
-const adminOverviewRoute = createRoute({ getParentRoute: () => rootRoute, path: "/admin", beforeLoad: adminGuard, component: withSuspense(AdminOverviewPageLazy) });
-const adminCampaignsRoute = createRoute({ getParentRoute: () => rootRoute, path: "/admin/campaigns", beforeLoad: adminGuard, component: withSuspense(AdminCampaignListPageLazy) });
-const adminUsersRoute = createRoute({ getParentRoute: () => rootRoute, path: "/admin/users", beforeLoad: adminGuard, component: withSuspense(AdminUserListPageLazy) });
-const adminPurgeRoute = createRoute({ getParentRoute: () => rootRoute, path: "/admin/purge", beforeLoad: adminGuard, component: withSuspense(AdminPurgeJobsPageLazy) });
-const adminAuditRoute = createRoute({ getParentRoute: () => rootRoute, path: "/admin/audit", beforeLoad: adminGuard, component: withSuspense(AdminAuditLogPageLazy) });
-const adminInvitationsRoute = createRoute({ getParentRoute: () => rootRoute, path: "/admin/invitations", beforeLoad: adminGuard, component: withSuspense(AdminInvitationListPageLazy) });
-const adminAnnouncementsRoute = createRoute({ getParentRoute: () => rootRoute, path: "/admin/announcements", beforeLoad: adminGuard, component: withSuspense(AdminAnnouncementListPageLazy) });
-const adminCampaignTemplatesRoute = createRoute({ getParentRoute: () => rootRoute, path: "/admin/campaign-templates", beforeLoad: adminGuard, component: withSuspense(AdminCampaignTemplateSettingsPageLazy) });
-const adminGameSystemsRoute = createRoute({ getParentRoute: () => rootRoute, path: "/admin/game-systems", beforeLoad: adminGuard, component: withSuspense(AdminGameSystemSettingsPageLazy) });
+const adminOverviewRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin",
+  beforeLoad: adminGuard,
+  component: withSuspense(AdminOverviewPageLazy),
+});
+const adminCampaignsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/campaigns",
+  beforeLoad: adminGuard,
+  component: withSuspense(AdminCampaignListPageLazy),
+});
+const adminUsersRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/users",
+  beforeLoad: adminGuard,
+  component: withSuspense(AdminUserListPageLazy),
+});
+const adminPurgeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/purge",
+  beforeLoad: adminGuard,
+  component: withSuspense(AdminPurgeJobsPageLazy),
+});
+const adminAuditRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/audit",
+  beforeLoad: adminGuard,
+  component: withSuspense(AdminAuditLogPageLazy),
+});
+const adminInvitationsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/invitations",
+  beforeLoad: adminGuard,
+  component: withSuspense(AdminInvitationListPageLazy),
+});
+const adminAnnouncementsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/announcements",
+  beforeLoad: adminGuard,
+  component: withSuspense(AdminAnnouncementListPageLazy),
+});
+const adminCampaignTemplatesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/campaign-templates",
+  beforeLoad: adminGuard,
+  component: withSuspense(AdminCampaignTemplateSettingsPageLazy),
+});
+const adminGameSystemsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/game-systems",
+  beforeLoad: adminGuard,
+  component: withSuspense(AdminGameSystemSettingsPageLazy),
+});
 
 const routeTree = rootRoute.addChildren([
   indexRoute,

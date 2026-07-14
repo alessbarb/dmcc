@@ -52,14 +52,14 @@ ON CONFLICT ("campaign_id", "user_id") DO NOTHING;
 
 ALTER TABLE "campaign_memberships"
   ADD CONSTRAINT "campaign_memberships_role_check"
-  CHECK ("role" IN ('dm', 'co_dm', 'player'));
+  CHECK ("role" IN ('dm', 'co_dm', 'player', 'viewer'));
 
 ALTER TABLE "campaign_memberships"
   ADD CONSTRAINT "campaign_memberships_player_coherence_check"
   CHECK (
     ("role" = 'player' AND "player_id" IS NOT NULL)
     OR
-    ("role" IN ('dm', 'co_dm') AND "player_id" IS NULL)
+    ("role" IN ('dm', 'co_dm', 'viewer') AND "player_id" IS NULL)
   );
 
 CREATE OR REPLACE FUNCTION "assign_default_dm_role"()

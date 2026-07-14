@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { eq } from "drizzle-orm";
 import { db } from "../../src/backend/db/client.js";
 import * as schema from "../../src/backend/db/schema.js";
+import { userRoles } from "../../src/backend/db/authSchema.js";
 import { operationsAuditLog } from "../../src/backend/db/operationsSchema.js";
 import { createServer } from "../../src/backend/server/createServer.js";
 import { createWebSession, WEB_SESSION_COOKIE } from "../../src/backend/server/web/webSession.js";
@@ -22,7 +23,6 @@ async function seedUsers() {
       emailHash: "hash_ann_admin",
       displayName: "Admin",
       passwordHash: "hash",
-      isPlatformAdmin: true,
     },
     {
       userId: users.regular,
@@ -30,9 +30,13 @@ async function seedUsers() {
       emailHash: "hash_ann_regular",
       displayName: "Regular",
       passwordHash: "hash",
-      isPlatformAdmin: false,
     },
   ]);
+  await db.insert(userRoles).values({
+    userId: users.admin,
+    role: "admin",
+    source: "administration",
+  }).onConflictDoNothing();
 }
 
 async function authenticatedHeaders(userId: string) {
