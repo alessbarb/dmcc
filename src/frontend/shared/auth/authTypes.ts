@@ -8,13 +8,7 @@ export interface AuthUser {
   roles?: PlatformRole[];
 }
 
-export interface AuthStatus {
+export interface Session {
   sessionValid: boolean;
   user: AuthUser | null;
-  memberships?: Array<{
-    campaignId: string;
-    userId: string;
-    role: "dm" | "co_dm" | "player";
-    playerId?: string | null;
-  }>;
 }

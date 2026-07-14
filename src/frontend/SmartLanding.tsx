@@ -29,7 +29,7 @@ import type { InteractionMode } from "./dm/canvas/components/CanvasToolbar.js";
 import { isDmOnlyCanvasVisibility } from "./dm/canvas/services/canvasVisibility.js";
 import { PlayerCharacterSelectionCard } from "./player/components/PlayerCharacterSelectionCard.js";
 import { buildPlayerMobileDockItems } from "./player/navigation/playerMobileDockItems.js";
-import { fetchAuthStatus, logout } from "./shared/auth/authClient.js";
+import { fetchSession, logout } from "./shared/auth/authClient.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "./shared/components/PortalTopBar.js";
 import { MobileDock } from "./shared/components/MobileDock.js";
@@ -660,8 +660,8 @@ export function SmartLanding() {
   useEffect(() => {
     void (async () => {
       try {
-        const authStatus = await fetchAuthStatus();
-        if (authStatus.sessionValid) {
+        const session = await fetchSession();
+        if (session.sessionValid) {
           const [campaignResponse, playerResponse] = await Promise.all([
             apiFetch("/api/campaigns"),
             getPlayerCampaigns().catch(() => ({ campaigns: [] })),

@@ -7,14 +7,14 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { PlayerPortalRealtimeSync } from "./player/components/PlayerPortalRealtimeSync.js";
-import { fetchAccountContext, type PlatformRole } from "./shared/auth/accountContextClient.js";
-import { fetchAuthStatus } from "./shared/auth/authClient.js";
+import { fetchSession } from "./shared/auth/authClient.js";
+import type { PlatformRole } from "./shared/auth/authTypes.js";
 import { SystemAnnouncements } from "./shared/components/SystemAnnouncements.js";
 
 async function requireAccountSession() {
   try {
-    const status = await fetchAuthStatus();
-    if (!status.sessionValid) throw redirect({ to: "/auth/login" });
+    const session = await fetchSession();
+    if (!session.sessionValid) throw redirect({ to: "/auth/login" });
   } catch (error: unknown) {
     if (error && typeof error === "object" && "isRedirect" in error) throw error;
     throw redirect({ to: "/auth/login" });
@@ -23,9 +23,9 @@ async function requireAccountSession() {
 
 function requirePlatformRole(role: PlatformRole) {
   return async () => {
-    await requireAccountSession();
-    const context = await fetchAccountContext();
-    if (!context.roles.includes(role)) throw redirect({ to: "/home" });
+    const session = await fetchSession();
+    if (!session.sessionValid) throw redirect({ to: "/auth/login" });
+    if (!session.user?.roles?.includes(role)) throw redirect({ to: "/home" });
   };
 }
 

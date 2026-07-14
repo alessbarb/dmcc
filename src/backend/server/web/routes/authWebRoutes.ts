@@ -11,6 +11,7 @@ import { listAccessibleCampaigns } from "../webAccess.js";
 import {
   clearWebSessionCookie,
   createWebSession,
+  getPlatformRoles,
   getRequiredWebUser,
   hashOpaque,
   normalizeEmail,
@@ -170,11 +171,12 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
 
     const [createdUser] = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);
     if (!createdUser) throw new Error("Registered account could not be loaded");
+    const roles = await getPlatformRoles(userId);
     const session = await createWebSession(userId);
     setWebSessionCookie(reply, session.token, session.expiresAt);
     console.info("[auth-register] Account registered", { userId, emailHash: hashOpaque(email), ip: request.ip });
     reply.code(201);
-    return { ok: true, user: publicWebUser(createdUser) };
+    return { ok: true, user: publicWebUser(createdUser, roles) };
   });
 
   server.post<{ Body: { email?: string; password?: string } }>("/api/auth/login", async (request, reply) => {
@@ -205,9 +207,10 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
 
     loginLockouts.delete(hashOpaque(email));
     await db.update(schema.users).set({ lastLoginAt: new Date() }).where(eq(schema.users.userId, user.userId));
+    const roles = await getPlatformRoles(user.userId);
     const session = await createWebSession(user.userId);
     setWebSessionCookie(reply, session.token, session.expiresAt);
-    return { user: publicWebUser(user) };
+    return { user: publicWebUser(user, roles) };
   });
 
   server.post("/api/auth/logout", async (request, reply) => {
@@ -278,11 +281,6 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
       return { error: "Authentication required" };
     }
     return { user };
-  });
-
-  server.get("/api/auth/status", async (request) => {
-    const user = (request as { webUser?: WebUser }).webUser;
-    return { sessionValid: Boolean(user), user: user ?? null, memberships: [] };
   });
 
   server.get("/api/me", async (request, reply) => {

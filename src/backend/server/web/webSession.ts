@@ -118,6 +118,14 @@ export function shouldRefreshSessionLastSeen(lastSeenAt: Date, now = new Date())
   return now.getTime() - lastSeenAt.getTime() >= SESSION_LAST_SEEN_REFRESH_MS;
 }
 
+export async function getPlatformRoles(userId: string): Promise<PlatformRole[]> {
+  const roleRows = await db
+    .select({ role: userRoles.role })
+    .from(userRoles)
+    .where(eq(userRoles.userId, userId));
+  return roleRows.map((entry) => entry.role).filter(isPlatformRole).sort();
+}
+
 export async function resolveWebUser(request: FastifyRequest): Promise<WebUser | null> {
   const token = request.cookies?.[WEB_SESSION_COOKIE];
   if (!token) return null;
@@ -141,11 +149,7 @@ export async function resolveWebUser(request: FastifyRequest): Promise<WebUser |
     await db.update(schema.authSessions).set({ lastSeenAt: now }).where(eq(schema.authSessions.sessionIdHash, tokenHash));
   }
 
-  const roleRows = await db
-    .select({ role: userRoles.role })
-    .from(userRoles)
-    .where(eq(userRoles.userId, row.user.userId));
-  const roles = roleRows.map((entry) => entry.role).filter(isPlatformRole).sort();
+  const roles = await getPlatformRoles(row.user.userId);
   return publicWebUser(row.user, roles);
 }
 

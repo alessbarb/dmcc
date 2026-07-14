@@ -154,13 +154,13 @@ export function DmHubPage() {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const { fetchAuthStatus } = await import("../../shared/auth/authClient.js");
-        const status = await fetchAuthStatus();
-        if (!status.sessionValid) {
+        const { fetchSession } = await import("../../shared/auth/authClient.js");
+        const session = await fetchSession();
+        if (!session.sessionValid) {
           await navigate({ to: "/auth/login" });
           return;
         }
-        setDmProfile(status.user || null);
+        setDmProfile(session.user || null);
       } catch {
         await navigate({ to: "/" });
         return;

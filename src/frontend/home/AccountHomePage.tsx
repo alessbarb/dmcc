@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, LogOut, Shield, Sword, Wrench } from "lucide-react";
-import { fetchAccountContext, type AccountContext, type PortalKind } from "../shared/auth/accountContextClient.js";
-import { logout } from "../shared/auth/authClient.js";
+import { fetchSession, logout } from "../shared/auth/authClient.js";
+import type { AuthUser, PlatformRole } from "../shared/auth/authTypes.js";
 import { PortalTopBar } from "../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../shared/components/RpgPortalBackground.js";
 
 type PortalDefinition = {
-  id: PortalKind;
+  id: PlatformRole;
   title: string;
   description: string;
   destination: "/dm" | "/player" | "/admin";
@@ -40,17 +40,18 @@ const PORTALS: PortalDefinition[] = [
 
 export function AccountHomePage() {
   const navigate = useNavigate();
-  const [context, setContext] = useState<AccountContext | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    void fetchAccountContext()
-      .then(setContext)
+    void fetchSession()
+      .then((session) => setUser(session.user))
       .catch((cause: unknown) => setError(cause instanceof Error ? cause.message : String(cause)));
   }, []);
 
-  const availablePortals = PORTALS.filter((portal) => context?.portals.includes(portal.id));
-  const playerUnavailable = context && !context.roles.includes("player");
+  const roles = user?.roles ?? [];
+  const availablePortals = PORTALS.filter((portal) => roles.includes(portal.id));
+  const playerUnavailable = user !== null && !roles.includes("player");
 
   return (
     <div className="smart-landing" style={{ minHeight: "100vh" }}>
@@ -61,16 +62,16 @@ export function AccountHomePage() {
         <section className="smart-landing__hero" aria-labelledby="account-home-title">
           <span className="landing-badge smart-landing__badge">Cuenta DMCC</span>
           <h1 id="account-home-title" className="landing-hero__title smart-landing__title gold-gradient-text">
-            {context ? `Hola, ${context.user.displayName ?? context.user.email ?? "aventurero"}` : "Tus portales"}
+            {user ? `Hola, ${user.displayName ?? user.email ?? "aventurero"}` : "Tus portales"}
           </h1>
           <p className="landing-hero__subtitle smart-landing__subtitle">
             Elige el contexto en el que quieres trabajar. Tu cuenta y tu sesión son siempre las mismas.
           </p>
 
           {error && <div className="join-portal-error"><p role="alert">{error}</p></div>}
-          {!context && !error && <div className="smart-landing-loading"><div className="loading-spinner-glow" /><span>Cargando cuenta…</span></div>}
+          {!user && !error && <div className="smart-landing-loading"><div className="loading-spinner-glow" /><span>Cargando cuenta…</span></div>}
 
-          {context && (
+          {user && (
             <div className="smart-landing__grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
               {availablePortals.map((portal) => {
                 const Icon = portal.icon;

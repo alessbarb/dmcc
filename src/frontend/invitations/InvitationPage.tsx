@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ArrowLeft, LogIn, Ticket, UserPlus } from "lucide-react";
 import { apiFetch, readApiError } from "../shared/api/apiClient.js";
-import { fetchAuthStatus } from "../shared/auth/authClient.js";
+import { fetchSession } from "../shared/auth/authClient.js";
 import { rememberAuthReturnTo } from "../shared/auth/authReturnTo.js";
 import { PortalTopBar } from "../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../shared/components/RpgPortalBackground.js";
@@ -25,11 +25,11 @@ export function InvitationPage() {
   useEffect(() => {
     void Promise.all([
       apiFetch(`/api/invitations/${encodeURIComponent(inviteToken)}`),
-      fetchAuthStatus(),
-    ]).then(async ([previewResponse, status]) => {
+      fetchSession(),
+    ]).then(async ([previewResponse, session]) => {
       if (!previewResponse.ok) throw new Error(await readApiError(previewResponse, "Invitación no válida o caducada"));
       setPreview(await previewResponse.json());
-      setAuthenticated(status.sessionValid);
+      setAuthenticated(session.sessionValid);
     }).catch((cause: unknown) => {
       setError(cause instanceof Error ? cause.message : String(cause));
     }).finally(() => setLoading(false));

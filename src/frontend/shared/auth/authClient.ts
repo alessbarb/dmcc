@@ -1,28 +1,18 @@
-import type { AuthStatus, AuthUser } from "./authTypes.js";
+import type { Session } from "./authTypes.js";
 import { apiFetch, readApiError } from "../api/apiClient.js";
 
-function unauthenticatedStatus(): AuthStatus {
-  return {
-    sessionValid: false,
-    user: null,
-    memberships: [],
-  };
+function unauthenticatedSession(): Session {
+  return { sessionValid: false, user: null };
 }
 
-export async function fetchAuthStatus(): Promise<AuthStatus> {
-  const response = await apiFetch("/api/auth/status");
+export async function fetchSession(): Promise<Session> {
+  const response = await apiFetch("/api/auth/session");
   if (!response.ok) {
-    if (response.status === 401 || response.status === 404) return unauthenticatedStatus();
-    throw new Error(await readApiError(response, "Failed to fetch auth status"));
+    if (response.status === 401 || response.status === 404) return unauthenticatedSession();
+    throw new Error(await readApiError(response, "Failed to fetch session"));
   }
-  const status = await response.json();
-  const user: AuthUser | null = status.user ?? null;
-  const sessionValid = Boolean(status.sessionValid ?? user);
-  return {
-    sessionValid,
-    user,
-    memberships: status.memberships ?? [],
-  };
+  const body = await response.json();
+  return { sessionValid: Boolean(body.user), user: body.user ?? null };
 }
 
 export async function registerAccount(payload: { email: string; password: string; displayName?: string }): Promise<void> {
@@ -34,9 +24,8 @@ export async function registerAccount(payload: { email: string; password: string
     },
   });
   if (!response.ok) throw new Error(await readApiError(response, "Failed to create account"));
-  await response.json().catch(() => null);
-  const status = await fetchAuthStatus();
-  if (!status.sessionValid) {
+  const body = await response.json().catch(() => null);
+  if (!body?.user) {
     throw new Error("La cuenta ya existe. Inicia sesión para continuar.");
   }
 }

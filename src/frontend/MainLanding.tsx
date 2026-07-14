@@ -16,7 +16,7 @@ import {
   Scroll,
   Wifi,
 } from "lucide-react";
-import { fetchAuthStatus } from "./shared/auth/authClient.js";
+import { fetchSession } from "./shared/auth/authClient.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { SiteFooter } from "./institutional/SiteFooter.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
@@ -198,9 +198,9 @@ export function MainLanding() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    fetchAuthStatus()
-      .then((status) => {
-        if (status.sessionValid) void navigate({ to: "/portal" });
+    fetchSession()
+      .then((session) => {
+        if (session.sessionValid) void navigate({ to: "/home" });
         else setReady(true);
       })
       .catch(() => setReady(true));
