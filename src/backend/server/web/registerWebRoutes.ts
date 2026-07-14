@@ -22,6 +22,7 @@ import { registerAdminWebRoutes } from "./routes/adminWebRoutes.js";
 import { registerAnnouncementsWebRoutes } from "./routes/announcementsWebRoutes.js";
 import { registerGameSystemsWebRoutes } from "./routes/gameSystemsWebRoutes.js";
 import { registerHistoryWebRoutes } from "./routes/historyWebRoutes.js";
+import { registerShortcutsWebRoutes } from "./routes/shortcutsWebRoutes.js";
 
 export interface WebRoutesOptions {
   dataDir: string;
@@ -52,5 +53,6 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerAnnouncementsWebRoutes(server);
   void registerGameSystemsWebRoutes(server);
   void registerHistoryWebRoutes(server);
+  void registerShortcutsWebRoutes(server);
   server.register(registerAssetRoutes, { assetsDir: options.assetsDir });
 }

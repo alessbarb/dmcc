@@ -9,10 +9,13 @@ import {
   GitBranch,
   FileText,
   AlignLeft,
+  Bookmark,
+  BookmarkCheck,
 } from "lucide-react";
 import { getEntityDefaultImage } from "./entityVisuals.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
+import { useCampaignShortcuts } from "../shortcuts/useCampaignShortcuts.js";
 import type { Entity, Relation, Fact, Session, PlayerProfile, CampaignStateStore } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatRelationType, formatVisibility } from "@shared/i18n/index.js";
@@ -1050,6 +1053,17 @@ export function EntityDetailModal({
   const [isEditingEntity, setIsEditingEntity] = useState(false);
   const [editEntityForm, setEditEntityForm] = useState<Partial<Entity>>({});
   const [isConfirmingArchive, setIsConfirmingArchive] = useState(false);
+  const { shortcuts, addShortcut, removeShortcut } = useCampaignShortcuts(campaignState.campaign?.campaignId);
+  const existingShortcut = shortcuts.find(
+    (shortcut) => shortcut.targetType === "entity" && shortcut.targetId === selectedEntity.entityId,
+  );
+  const handleToggleShortcut = () => {
+    if (existingShortcut) {
+      void removeShortcut(existingShortcut.shortcutId);
+    } else {
+      void addShortcut("entity", selectedEntity.entityId);
+    }
+  };
 
   const imgUrl =
     typeof selectedEntity.metadata?.imageUrl === "string" && selectedEntity.metadata.imageUrl
@@ -1259,14 +1273,26 @@ export function EntityDetailModal({
 
         {/* Footer */}
         <div className="modal-footer" style={{ justifyContent: "space-between" }}>
-          <button
-            type="button"
-            className={`btn btn-sm ${isConfirmingArchive ? "btn-danger" : "btn-secondary"}`}
-            onClick={handleArchive}
-            onBlur={() => setIsConfirmingArchive(false)}
-          >
-            <Archive size={14} /> {isConfirmingArchive ? t("entityModal.confirmArchive") : t("entityModal.archive")}
-          </button>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <button
+              type="button"
+              className={`btn btn-sm ${isConfirmingArchive ? "btn-danger" : "btn-secondary"}`}
+              onClick={handleArchive}
+              onBlur={() => setIsConfirmingArchive(false)}
+            >
+              <Archive size={14} /> {isConfirmingArchive ? t("entityModal.confirmArchive") : t("entityModal.archive")}
+            </button>
+            <button
+              type="button"
+              className="btn btn-sm btn-secondary"
+              onClick={handleToggleShortcut}
+              title={existingShortcut ? t("shortcuts.remove") : t("shortcuts.add")}
+            >
+              {existingShortcut ? <BookmarkCheck size={14} /> : <Bookmark size={14} />}
+              {" "}
+              {existingShortcut ? t("shortcuts.remove") : t("shortcuts.add")}
+            </button>
+          </div>
           <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
             <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
               Actualizado: {new Date(selectedEntity.updatedAt).toLocaleString()}

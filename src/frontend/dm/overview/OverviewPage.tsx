@@ -27,6 +27,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { CampaignStarterHub } from "../onboarding/CampaignStarterHub.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
 import { LiveTableModal } from "../components/LiveTableModal.js";
+import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 
 function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
@@ -143,8 +144,6 @@ export function OverviewPage() {
   const { t, locale } = useTranslation();
   const {
     campaignState,
-    dashboard,
-    whatNow,
     updateCampaignSettings,
     updateEntity,
     archiveEntity,
@@ -189,7 +188,7 @@ export function OverviewPage() {
   }, [campaignId]);
 
   const campaign = campaignState?.campaign ?? commandCenter?.campaign ?? null;
-  const entities = campaignState?.entities ?? [];
+  const entities: Entity[] = campaignState?.entities ?? [];
   const sessions = campaignState?.sessions ?? [];
   const activeSession = sessions.find((session) => session.status === "active") ?? null;
   const nextPreparedSession = sessions
@@ -199,29 +198,35 @@ export function OverviewPage() {
         new Date(left.scheduledAt ?? 0).getTime() - new Date(right.scheduledAt ?? 0).getTime(),
     )[0] ?? null;
 
-  const currentLocation =
-    whatNow?.currentLocation ??
-    (campaign?.currentLocationId
-      ? entities.find((entity) => entity.entityId === campaign.currentLocationId) ?? null
-      : null);
-  const currentQuest =
-    whatNow?.currentQuest ??
-    (campaign?.currentQuestId
-      ? entities.find((entity) => entity.entityId === campaign.currentQuestId) ?? null
-      : dashboard?.activeQuests?.[0] ?? null);
+  const currentLocation = campaign?.currentLocationId
+    ? entities.find((entity) => entity.entityId === campaign.currentLocationId) ?? null
+    : null;
+  const currentQuest = campaign?.currentQuestId
+    ? entities.find((entity) => entity.entityId === campaign.currentQuestId) ?? null
+    : (entities.find((e) => e.entityType === "quest" && e.status === "active" && !e.archived) ?? null);
 
-  const npcWarnings: Entity[] = (dashboard?.importantNpcWarnings as unknown as Entity[] | undefined) ?? [];
-  const blockedQuests: Entity[] = dashboard?.blockedQuests ?? [];
-  const criticalHiddenClues: Entity[] =
-    whatNow?.hiddenCriticalSecrets ?? dashboard?.criticalHiddenClues ?? [];
-  const preparedClues: Entity[] = whatNow?.pendingClues ?? dashboard?.preparedClues ?? [];
-  const pendingConsequences: Entity[] =
-    whatNow?.unresolvedConsequences ?? dashboard?.pendingConsequences ?? [];
-  const partialKnowledgeAlerts = whatNow?.partialKnowledgeAlerts ?? [];
-  const preparationChecklist: Array<{ task: string; priority?: string; done?: boolean }> =
-    whatNow?.preparationChecklist ?? [];
+  const npcWarnings: Entity[] = [];
+  const blockedQuests: Entity[] = entities.filter(
+    (e) => e.entityType === "quest" && e.status === "active" && !e.archived,
+  );
+  const criticalHiddenClues: Entity[] = entities.filter(
+    (e) => e.entityType === "secret" && e.importance === "critical" && !e.archived,
+  );
+  const preparedClues: Entity[] = entities.filter(
+    (e) => e.entityType === "clue" && (e.status === "prepared" || e.status === "hidden") && !e.archived,
+  );
+  const pendingConsequences: Entity[] = entities.filter(
+    (e) => e.entityType === "consequence" && e.status === "pending" && !e.archived,
+  );
+  const partialKnowledgeAlerts: Array<{ clueId?: string; message: string }> = [];
+  const preparationChecklist: Array<{ task: string; priority?: string; done?: boolean }> = [];
   const completedTasks: string[] =
     (campaign as unknown as { settings?: { completedChecklistTasks?: string[] } })?.settings?.completedChecklistTasks ?? [];
+
+  // last session summary for the session prep card
+  const lastClosedSession = [...sessions]
+    .filter((s) => s.status === "closed" || s.status === "archived")
+    .sort((a, b) => new Date(b.endedAt ?? "0").getTime() - new Date(a.endedAt ?? "0").getTime())[0] ?? null;
 
   const attentionCount =
     npcWarnings.length +
@@ -345,6 +350,10 @@ export function OverviewPage() {
           </div>
         </header>
 
+        <div className="card" style={{ padding: 16 }}>
+          <ShortcutsPanel campaignId={campaignId} />
+        </div>
+
         {campaignState && (
           <CampaignStarterHub
             campaignId={campaignId}
@@ -384,7 +393,7 @@ export function OverviewPage() {
             <MetricCard
               icon={<Flag size={18} />}
               label={t("dashboard.metricQuests")}
-              value={dashboard?.activeQuests?.length ?? commandCenter?.openObjectives?.length ?? 0}
+              value={commandCenter?.openObjectives?.length ?? entities.filter((e) => e.entityType === "quest" && e.status === "active" && !e.archived).length}
             />
           </div>
 
@@ -434,20 +443,20 @@ export function OverviewPage() {
               <h3 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
                 <CalendarDays size={18} /> {t("dashboard.lastSession")}
               </h3>
-              {dashboard?.lastSession ? (
+              {lastClosedSession ? (
                 <div style={{ display: "grid", gap: 4 }}>
-                  <strong>{dashboard.lastSession.title}</strong>
-                  {dashboard.lastSession.date && (
+                  <strong>{lastClosedSession.title}</strong>
+                  {lastClosedSession.endedAt && (
                     <span style={{ color: "var(--text-muted)", fontSize: 13 }}>
-                      {new Date(dashboard.lastSession.date).toLocaleString(locale, {
+                      {new Date(lastClosedSession.endedAt).toLocaleString(locale, {
                         dateStyle: "medium",
                         timeStyle: "short",
                       })}
                     </span>
                   )}
-                  {dashboard.lastSession.summary && (
+                  {lastClosedSession.summary && (
                     <span style={{ color: "var(--text-muted)", fontSize: 13 }}>
-                      {dashboard.lastSession.summary}
+                      {lastClosedSession.summary}
                     </span>
                   )}
                 </div>
@@ -639,7 +648,7 @@ export function OverviewPage() {
               <CalendarDays size={18} /> {t("dashboard.nextSessionPrep")}
             </h2>
             <p style={{ color: "var(--text-muted)", lineHeight: 1.6 }}>
-              {commandCenter?.recap ?? dashboard?.lastSession?.summary ?? t("dashboard.noPreviousSessions")}
+              {commandCenter?.recap ?? lastClosedSession?.summary ?? t("dashboard.noPreviousSessions")}
             </p>
             {activeSession ? (
               <Pill tone="good">{t("dashboard.runningSessionTitle", { title: activeSession.title })}</Pill>

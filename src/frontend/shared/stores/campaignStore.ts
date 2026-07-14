@@ -5,13 +5,11 @@ import { markCampaignGuidedTourPending } from "../../dm/onboarding/campaignGuide
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import type { Canvas, CanvasNode, CanvasEdge } from "@core/domain/canvas/types.js";
 import type { FactSource } from "@core/domain/fact/types.js";
-import type { DashboardProjection } from "@core/projections/dashboardProjection.js";
-import type { WhatNowProjection } from "@core/projections/whatNowProjection.js";
+
 import {
   API_CLIENT_TAB_ID,
   campaignApi,
   canvasApi,
-  dmDashboardApi,
   getPremade,
   getPremadeLocale,
   importPremade,
@@ -65,8 +63,6 @@ const campaignScopedReset = () => ({
   campaignState: null,
   canvasesById: {},
   activeCanvasId: null,
-  dashboard: null,
-  whatNow: null,
   timeline: null,
   visibility: null,
   dmPlayerPortalSummary: null,
@@ -322,8 +318,7 @@ export interface CampaignStateStore {
   activeCanvasId: string | null;
   activeCanvasIdByCampaignId: Record<string, string | null>;
 
-  dashboard: DashboardProjection | null;
-  whatNow: WhatNowProjection | null;
+
   timeline: { events: unknown[] } | null;
   visibility: unknown;
 
@@ -485,8 +480,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   canvasesById: {},
   activeCanvasId: null,
   activeCanvasIdByCampaignId: {},
-  dashboard: null,
-  whatNow: null,
+
   timeline: null,
   visibility: null,
   playerPortalState: null,
@@ -712,21 +706,15 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       const rawCampaignState = await resDetails.json();
       const campaignState = normalizeCampaignState(rawCampaignState);
 
-      let dashboard: DashboardProjection | null = null;
-      let whatNow: WhatNowProjection | null = null;
       let timeline: { events: unknown[] } | null = null;
       let visibility: unknown = null;
 
       if (role === "dm") {
-        const [resDashboard, resWhatNow, resTimeline, resVisibility] = await Promise.all([
-          dmDashboardApi.getDmDashboard(campaignId),
-          dmDashboardApi.getWhatNow(campaignId),
+        const [resTimeline, resVisibility] = await Promise.all([
           campaignApi.getCampaignTimeline(campaignId),
           campaignApi.getCampaignVisibility(campaignId),
         ]);
 
-        dashboard = resDashboard.ok ? await resDashboard.json() : null;
-        whatNow = resWhatNow.ok ? await resWhatNow.json() : null;
         timeline = resTimeline.ok ? await resTimeline.json() : null;
         visibility = resVisibility.ok ? await resVisibility.json() : null;
       }
@@ -759,8 +747,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
           ...get().activeCanvasIdByCampaignId,
           [campaignId]: nextActiveCanvasId,
         },
-        dashboard,
-        whatNow,
         timeline,
         visibility,
         loading: false,
@@ -790,21 +776,15 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       if (!resDetails.ok) throw new Error("Failed to load campaign state");
       const campaignState = normalizeCampaignState(await resDetails.json());
 
-      let dashboard: DashboardProjection | null = null;
-      let whatNow: WhatNowProjection | null = null;
       let timeline: { events: unknown[] } | null = null;
       let visibility: unknown = null;
 
       if (role === "dm") {
-        const [resDashboard, resWhatNow, resTimeline, resVisibility] = await Promise.all([
-          dmDashboardApi.getDmDashboard(campaignId),
-          dmDashboardApi.getWhatNow(campaignId),
+        const [resTimeline, resVisibility] = await Promise.all([
           campaignApi.getCampaignTimeline(campaignId),
           campaignApi.getCampaignVisibility(campaignId),
         ]);
 
-        dashboard = resDashboard.ok ? await resDashboard.json() : null;
-        whatNow = resWhatNow.ok ? await resWhatNow.json() : null;
         timeline = resTimeline.ok ? await resTimeline.json() : null;
         visibility = resVisibility.ok ? await resVisibility.json() : null;
       }
@@ -837,8 +817,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
           ...get().activeCanvasIdByCampaignId,
           [campaignId]: nextActiveCanvasId,
         },
-        dashboard,
-        whatNow,
         timeline,
         visibility,
         loading: false,

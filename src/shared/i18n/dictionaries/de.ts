@@ -774,6 +774,16 @@ export const de: TranslationDictionary = {
     emptyDescription: "Erstelle Entitäten und Beziehungen, um das Erzählnetzwerk zu sehen.",
     openDetail: "Details anzeigen",
   },
+  shortcuts: {
+    title: "Verknüpfungen",
+    empty: "Noch keine Verknüpfungen. Füge Entitäten, Sitzungen oder Canvases für schnellen Zugriff hinzu.",
+    remove: "Aus Verknüpfungen entfernen",
+    add: "Zu Verknüpfungen hinzufügen",
+    addedToast: "Zu Verknüpfungen hinzugefügt.",
+    removedToast: "Aus Verknüpfungen entfernt.",
+    archivedHint: "Dieses Ziel ist archiviert",
+    archivedBadge: "archiviert",
+  },
 
   campaignShell: {
     defaultTitle: "Kampagne",

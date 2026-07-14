@@ -31,7 +31,6 @@ const edgeTypes = {
 function NetworkFlowInner() {
   const store = useCampaignStore();
   const campaignState = store.campaignState;
-  const whatNow = store.whatNow;
   const { t } = useTranslation();
   const { fitView } = useReactFlow();
 
@@ -80,9 +79,12 @@ function NetworkFlowInner() {
       selectedEntityId,
       currentQuestId: campaignState?.campaign?.currentQuestId ?? null,
       currentLocationId: campaignState?.campaign?.currentLocationId ?? null,
-      nextSessionCriticalEntityId: whatNow?.recommendedFocus?.[0]?.entityId ?? null,
+      nextSessionCriticalEntityId:
+        (campaignState?.entities ?? []).find(
+          (e) => e.entityType === "quest" && e.status === "active" && !e.archived,
+        )?.entityId ?? null,
     });
-  }, [showFullOverride, filteredEntityIds, relations, selectedEntityId, campaignState, whatNow]);
+  }, [showFullOverride, filteredEntityIds, relations, selectedEntityId, campaignState]);
 
   const includedEntityIds = useMemo(() => {
     if (focus.mode === "neighborhood") return new Set(focus.entityIds);

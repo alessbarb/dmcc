@@ -424,6 +424,17 @@ export function CanvasPage() {
     }
   }, [campaignId, activeCampaignId, selectCampaign, addToast]);
 
+  // Deep link support (e.g. from Atajos): /map/canvas?canvasId=... selects
+  // that canvas instead of leaving the generic section on whatever was active.
+  useEffect(() => {
+    if (Object.keys(canvasesById).length === 0) return;
+    const parameters = new URLSearchParams(window.location.search);
+    const canvasId = parameters.get("canvasId");
+    if (!canvasId || !canvasesById[canvasId]) return;
+    setActiveCanvasId(canvasId);
+    window.history.replaceState(null, "", window.location.pathname);
+  }, [canvasesById, setActiveCanvasId]);
+
   const handleUndo = useCallback(async () => {
     if (!activeCanvasId) return;
     const res = await useCanvasHistoryStore.getState().undo(activeCanvasId);

@@ -761,6 +761,16 @@ export const pt = {
     emptyDescription: "Crie entidades e relações para ver a rede narrativa.",
     openDetail: "Ver detalhe",
   },
+  shortcuts: {
+    title: "Atalhos",
+    empty: "Ainda sem atalhos. Adicione entidades, sessões ou canvases para acesso rápido.",
+    remove: "Remover dos atalhos",
+    add: "Adicionar aos atalhos",
+    addedToast: "Adicionado aos atalhos.",
+    removedToast: "Removido dos atalhos.",
+    archivedHint: "Este destino está arquivado",
+    archivedBadge: "arquivado",
+  },
   campaignShell: {
     defaultTitle: "Campanha",
     defaultEyebrow: "Arquivo da campanha",

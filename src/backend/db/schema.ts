@@ -115,6 +115,25 @@ export const campaignMemberships = pgTable("campaign_memberships", {
   }).onDelete("cascade"),
 }));
 
+export const campaignShortcuts = pgTable("campaign_shortcuts", {
+  shortcutId: text("shortcut_id").primaryKey(),
+  campaignId: text("campaign_id").notNull(),
+  userId: text("user_id").notNull(),
+  targetType: text("target_type").notNull(),
+  targetId: text("target_id").notNull(),
+  sortOrder: integer("sort_order").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (table) => ({
+  membershipFk: foreignKey({
+    name: "fk_campaign_shortcuts_membership",
+    columns: [table.campaignId, table.userId],
+    foreignColumns: [campaignMemberships.campaignId, campaignMemberships.userId],
+  }).onDelete("cascade"),
+  uniqueTarget: uniqueIndex("uq_campaign_shortcuts_target").on(table.campaignId, table.userId, table.targetType, table.targetId),
+  targetTypeCheck: check("chk_campaign_shortcuts_target_type", sql`${table.targetType} IN ('entity', 'session', 'canvas')`),
+  sortOrderCheck: check("chk_campaign_shortcuts_sort_order", sql`${table.sortOrder} >= 0`),
+}));
+
 export const dmProfiles = pgTable("dm_profiles", {
   userId: text("user_id").primaryKey().references(() => users.userId, { onDelete: "cascade" }),
   displayName: text("display_name").notNull(),

@@ -774,6 +774,16 @@ export const it: TranslationDictionary = {
     emptyDescription: "Crea entità e relazioni per vedere la rete narrativa.",
     openDetail: "Vedi dettagli",
   },
+  shortcuts: {
+    title: "Scorciatoie",
+    empty: "Ancora nessuna scorciatoia. Aggiungi entità, sessioni o canvas per un accesso rapido.",
+    remove: "Rimuovi dalle scorciatoie",
+    add: "Aggiungi alle scorciatoie",
+    addedToast: "Aggiunto alle scorciatoie.",
+    removedToast: "Rimosso dalle scorciatoie.",
+    archivedHint: "Questo obiettivo è archiviato",
+    archivedBadge: "archiviato",
+  },
 
   campaignShell: {
     defaultTitle: "Campagna",
