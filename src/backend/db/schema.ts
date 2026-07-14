@@ -130,7 +130,7 @@ export const campaignShortcuts = pgTable("campaign_shortcuts", {
     foreignColumns: [campaignMemberships.campaignId, campaignMemberships.userId],
   }).onDelete("cascade"),
   uniqueTarget: uniqueIndex("uq_campaign_shortcuts_target").on(table.campaignId, table.userId, table.targetType, table.targetId),
-  targetTypeCheck: check("chk_campaign_shortcuts_target_type", sql`${table.targetType} IN ('entity', 'session', 'canvas')`),
+  targetTypeCheck: check("chk_campaign_shortcuts_target_type", sql`${table.targetType} IN ('entity', 'session', 'canvas', 'notebook', 'story_thread', 'story_step')`),
   sortOrderCheck: check("chk_campaign_shortcuts_sort_order", sql`${table.sortOrder} >= 0`),
 }));
 
@@ -469,4 +469,156 @@ export const attachments = pgTable("attachments", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (table) => ({
   pk: primaryKey({ columns: [table.campaignId, table.attachmentId] }),
+}));
+
+export const campaignNotebooks = pgTable("campaign_notebooks", {
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
+  notebookId: text("notebook_id").notNull(),
+  parentNotebookId: text("parent_notebook_id"),
+  title: text("title").notNull(),
+  description: text("description"),
+  icon: text("icon"),
+  sortOrder: integer("sort_order").notNull(),
+  archivedAt: timestamp("archived_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+  pk: primaryKey({ columns: [table.campaignId, table.notebookId] }),
+  parentFk: foreignKey({
+    name: "fk_campaign_notebooks_parent",
+    columns: [table.campaignId, table.parentNotebookId],
+    foreignColumns: [table.campaignId, table.notebookId],
+  }).onDelete("restrict"),
+  selfReferenceCheck: check("chk_campaign_notebooks_self_reference", sql`${table.parentNotebookId} IS NULL OR ${table.parentNotebookId} <> ${table.notebookId}`),
+  sortOrderCheck: check("chk_campaign_notebooks_sort_order", sql`${table.sortOrder} >= 0`),
+  parentSortIdx: index("idx_campaign_notebooks_parent_sort").on(table.campaignId, table.parentNotebookId, table.sortOrder),
+  archivedIdx: index("idx_campaign_notebooks_archived").on(table.campaignId, table.archivedAt),
+}));
+
+export const campaignNotebookItems = pgTable("campaign_notebook_items", {
+  campaignId: text("campaign_id").notNull(),
+  notebookItemId: text("notebook_item_id").notNull(),
+  notebookId: text("notebook_id").notNull(),
+  targetType: text("target_type").notNull(),
+  targetId: text("target_id").notNull(),
+  sortOrder: integer("sort_order").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (table) => ({
+  pk: primaryKey({ columns: [table.campaignId, table.notebookItemId] }),
+  notebookFk: foreignKey({
+    name: "fk_campaign_notebook_items_notebook",
+    columns: [table.campaignId, table.notebookId],
+    foreignColumns: [campaignNotebooks.campaignId, campaignNotebooks.notebookId],
+  }).onDelete("cascade"),
+  uniqueTarget: uniqueIndex("uq_campaign_notebook_items_target").on(table.campaignId, table.notebookId, table.targetType, table.targetId),
+  targetTypeCheck: check("chk_campaign_notebook_items_target_type", sql`${table.targetType} IN ('entity', 'fact', 'relation', 'session', 'session_event', 'canvas', 'attachment')`),
+  sortOrderCheck: check("chk_campaign_notebook_items_sort_order", sql`${table.sortOrder} >= 0`),
+}));
+
+export const campaignStoryThreads = pgTable("campaign_story_threads", {
+  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
+  threadId: text("thread_id").notNull(),
+  title: text("title").notNull(),
+  summary: text("summary"),
+  status: text("status").notNull(),
+  sortOrder: integer("sort_order").notNull(),
+  archivedAt: timestamp("archived_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+  pk: primaryKey({ columns: [table.campaignId, table.threadId] }),
+  statusCheck: check("chk_campaign_story_threads_status", sql`${table.status} IN ('planned', 'active', 'resolved', 'discarded')`),
+  sortOrderCheck: check("chk_campaign_story_threads_sort_order", sql`${table.sortOrder} >= 0`),
+}));
+
+export const campaignStorySteps = pgTable("campaign_story_steps", {
+  campaignId: text("campaign_id").notNull(),
+  stepId: text("step_id").notNull(),
+  threadId: text("thread_id").notNull(),
+  title: text("title").notNull(),
+  intent: text("intent"),
+  expectedOutcome: text("expected_outcome"),
+  actualOutcome: text("actual_outcome"),
+  status: text("status").notNull(),
+  resolutionKind: text("resolution_kind"),
+  sceneEntityId: text("scene_entity_id"),
+  plannedSessionId: text("planned_session_id"),
+  plannedSessionOrder: integer("planned_session_order"),
+  resolvedSessionId: text("resolved_session_id"),
+  sortOrder: integer("sort_order").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+  pk: primaryKey({ columns: [table.campaignId, table.stepId] }),
+  threadFk: foreignKey({
+    name: "fk_campaign_story_steps_thread",
+    columns: [table.campaignId, table.threadId],
+    foreignColumns: [campaignStoryThreads.campaignId, campaignStoryThreads.threadId],
+  }).onDelete("cascade"),
+  sceneFk: foreignKey({
+    name: "fk_campaign_story_steps_scene",
+    columns: [table.campaignId, table.sceneEntityId],
+    foreignColumns: [campaignEntities.campaignId, campaignEntities.entityId],
+  }).onDelete("restrict"),
+  plannedSessionFk: foreignKey({
+    name: "fk_campaign_story_steps_planned_session",
+    columns: [table.campaignId, table.plannedSessionId],
+    foreignColumns: [campaignSessions.campaignId, campaignSessions.sessionId],
+  }).onDelete("restrict"),
+  resolvedSessionFk: foreignKey({
+    name: "fk_campaign_story_steps_resolved_session",
+    columns: [table.campaignId, table.resolvedSessionId],
+    foreignColumns: [campaignSessions.campaignId, campaignSessions.sessionId],
+  }).onDelete("restrict"),
+  statusCheck: check("chk_campaign_story_steps_status", sql`${table.status} IN ('planned', 'ready', 'active', 'resolved', 'discarded')`),
+  resolutionKindCheck: check("chk_campaign_story_steps_resolution_kind", sql`${table.resolutionKind} IN ('as_planned', 'changed', 'discarded') OR ${table.resolutionKind} IS NULL`),
+  statusResolutionCoherence: check("chk_campaign_story_steps_status_resolution_coherence", sql`
+    (${table.status} IN ('planned', 'ready', 'active') AND ${table.resolutionKind} IS NULL) OR
+    (${table.status} = 'resolved' AND ${table.resolutionKind} IN ('as_planned', 'changed')) OR
+    (${table.status} = 'discarded' AND ${table.resolutionKind} = 'discarded')
+  `),
+  actualOutcomeCheck: check("chk_campaign_story_steps_actual_outcome", sql`
+    ${table.resolutionKind} <> 'changed' OR (NULLIF(TRIM(${table.actualOutcome}), '') IS NOT NULL)
+  `),
+  plannedSessionCoherence: check("chk_campaign_story_steps_planned_session_coherence", sql`
+    (${table.plannedSessionId} IS NULL AND ${table.plannedSessionOrder} IS NULL) OR
+    (${table.plannedSessionId} IS NOT NULL AND ${table.plannedSessionOrder} IS NOT NULL AND ${table.plannedSessionOrder} >= 0)
+  `),
+  sortOrderCheck: check("chk_campaign_story_steps_sort_order", sql`${table.sortOrder} >= 0`),
+}));
+
+export const campaignStoryThreadEntities = pgTable("campaign_story_thread_entities", {
+  campaignId: text("campaign_id").notNull(),
+  threadId: text("thread_id").notNull(),
+  entityId: text("entity_id").notNull(),
+}, (table) => ({
+  pk: primaryKey({ columns: [table.campaignId, table.threadId, table.entityId] }),
+  threadFk: foreignKey({
+    name: "fk_campaign_story_thread_entities_thread",
+    columns: [table.campaignId, table.threadId],
+    foreignColumns: [campaignStoryThreads.campaignId, campaignStoryThreads.threadId],
+  }).onDelete("cascade"),
+  entityFk: foreignKey({
+    name: "fk_campaign_story_thread_entities_entity",
+    columns: [table.campaignId, table.entityId],
+    foreignColumns: [campaignEntities.campaignId, campaignEntities.entityId],
+  }).onDelete("cascade"),
+}));
+
+export const campaignStoryStepEntities = pgTable("campaign_story_step_entities", {
+  campaignId: text("campaign_id").notNull(),
+  stepId: text("step_id").notNull(),
+  entityId: text("entity_id").notNull(),
+}, (table) => ({
+  pk: primaryKey({ columns: [table.campaignId, table.stepId, table.entityId] }),
+  stepFk: foreignKey({
+    name: "fk_campaign_story_step_entities_step",
+    columns: [table.campaignId, table.stepId],
+    foreignColumns: [campaignStorySteps.campaignId, campaignStorySteps.stepId],
+  }).onDelete("cascade"),
+  entityFk: foreignKey({
+    name: "fk_campaign_story_step_entities_entity",
+    columns: [table.campaignId, table.entityId],
+    foreignColumns: [campaignEntities.campaignId, campaignEntities.entityId],
+  }).onDelete("cascade"),
 }));
