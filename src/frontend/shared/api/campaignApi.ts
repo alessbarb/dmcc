@@ -14,7 +14,6 @@ export const createCampaign = (payload: unknown) => apiFetch("/api/campaigns", {
 export const updateCampaign = (campaignId: string, updates: unknown) => apiFetch(`/api/campaigns/${campaignId}`, { init: jsonInit("PATCH", updates) });
 export const deleteCampaign = (campaignId: string, confirmTitle: string) => apiFetch(`/api/campaigns/${campaignId}`, { init: jsonInit("DELETE", { confirmTitle }) });
 
-export const getCampaignGraph = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/graph`);
 export const getCampaignTimeline = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/timeline`);
 export const getCampaignVisibility = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/visibility`);
 export const listPlayers = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/players`);

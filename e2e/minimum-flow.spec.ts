@@ -130,11 +130,12 @@ test.describe("Minimum release web API flow", () => {
       },
     }), 200);
 
-    const graph = await expectStatus(await request.get(`/api/campaigns/${campaignId}/graph`), 200);
-    expect(graph.entities.map((entity: JsonObject) => entity.entityId)).toEqual(
+    const entitiesResponse = await expectStatus(await request.get(`/api/campaigns/${campaignId}/entities`), 200);
+    expect(entitiesResponse.entities.map((entity: JsonObject) => entity.entityId)).toEqual(
       expect.arrayContaining([npcId, clueId, secretId]),
     );
-    expect(graph.relations.map((relation: JsonObject) => relation.relationId)).toContain(relationId);
+    const relationsResponse = await expectStatus(await request.get(`/api/campaigns/${campaignId}/relations`), 200);
+    expect(relationsResponse.relations.map((relation: JsonObject) => relation.relationId)).toContain(relationId);
 
     await expectStatus(await request.post(`/api/campaigns/${campaignId}/canvases`, {
       data: { canvasId, title: "E2E Canvas", kind: "custom" },

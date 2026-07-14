@@ -1,6 +1,6 @@
 import React from "react";
-import { GraphPage } from "../../graph/GraphPage.js";
+import { NetworkFlow } from "./NetworkFlow.js";
 
 export function NetworkView() {
-  return <GraphPage />;
+  return <NetworkFlow />;
 }

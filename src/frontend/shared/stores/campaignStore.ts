@@ -67,7 +67,6 @@ const campaignScopedReset = () => ({
   activeCanvasId: null,
   dashboard: null,
   whatNow: null,
-  graph: null,
   timeline: null,
   visibility: null,
   dmPlayerPortalSummary: null,
@@ -325,7 +324,6 @@ export interface CampaignStateStore {
 
   dashboard: DashboardProjection | null;
   whatNow: WhatNowProjection | null;
-  graph: { nodes: unknown[]; edges: unknown[] } | null;
   timeline: { events: unknown[] } | null;
   visibility: unknown;
 
@@ -489,7 +487,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   activeCanvasIdByCampaignId: {},
   dashboard: null,
   whatNow: null,
-  graph: null,
   timeline: null,
   visibility: null,
   playerPortalState: null,
@@ -717,27 +714,21 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
 
       let dashboard: DashboardProjection | null = null;
       let whatNow: WhatNowProjection | null = null;
-      let graph: { nodes: unknown[]; edges: unknown[] } | null = null;
       let timeline: { events: unknown[] } | null = null;
       let visibility: unknown = null;
 
       if (role === "dm") {
-        const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility] = await Promise.all([
+        const [resDashboard, resWhatNow, resTimeline, resVisibility] = await Promise.all([
           dmDashboardApi.getDmDashboard(campaignId),
           dmDashboardApi.getWhatNow(campaignId),
-          campaignApi.getCampaignGraph(campaignId),
           campaignApi.getCampaignTimeline(campaignId),
           campaignApi.getCampaignVisibility(campaignId),
         ]);
 
         dashboard = resDashboard.ok ? await resDashboard.json() : null;
         whatNow = resWhatNow.ok ? await resWhatNow.json() : null;
-        graph = resGraph.ok ? await resGraph.json() : null;
         timeline = resTimeline.ok ? await resTimeline.json() : null;
         visibility = resVisibility.ok ? await resVisibility.json() : null;
-      } else {
-        const resGraph = await campaignApi.getCampaignGraph(campaignId);
-        graph = resGraph.ok ? await resGraph.json() : null;
       }
 
       if (campaignState) {
@@ -770,7 +761,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         },
         dashboard,
         whatNow,
-        graph,
         timeline,
         visibility,
         loading: false,
@@ -802,27 +792,21 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
 
       let dashboard: DashboardProjection | null = null;
       let whatNow: WhatNowProjection | null = null;
-      let graph: { nodes: unknown[]; edges: unknown[] } | null = null;
       let timeline: { events: unknown[] } | null = null;
       let visibility: unknown = null;
 
       if (role === "dm") {
-        const [resDashboard, resWhatNow, resGraph, resTimeline, resVisibility] = await Promise.all([
+        const [resDashboard, resWhatNow, resTimeline, resVisibility] = await Promise.all([
           dmDashboardApi.getDmDashboard(campaignId),
           dmDashboardApi.getWhatNow(campaignId),
-          campaignApi.getCampaignGraph(campaignId),
           campaignApi.getCampaignTimeline(campaignId),
           campaignApi.getCampaignVisibility(campaignId),
         ]);
 
         dashboard = resDashboard.ok ? await resDashboard.json() : null;
         whatNow = resWhatNow.ok ? await resWhatNow.json() : null;
-        graph = resGraph.ok ? await resGraph.json() : null;
         timeline = resTimeline.ok ? await resTimeline.json() : null;
         visibility = resVisibility.ok ? await resVisibility.json() : null;
-      } else {
-        const resGraph = await campaignApi.getCampaignGraph(campaignId);
-        graph = resGraph.ok ? await resGraph.json() : null;
       }
 
       if (campaignState) {
@@ -855,7 +839,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         },
         dashboard,
         whatNow,
-        graph,
         timeline,
         visibility,
         loading: false,

@@ -379,13 +379,6 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
     }
   });
 
-  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/graph", async (request) => {
-    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const entities = await db.select().from(schema.campaignEntities).where(eq(schema.campaignEntities.campaignId, request.params.campaignId));
-    const relations = await db.select().from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, request.params.campaignId));
-    return { entities, relations };
-  });
-
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/timeline", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
     const sessions = await db.select().from(schema.campaignSessions).where(eq(schema.campaignSessions.campaignId, request.params.campaignId));
