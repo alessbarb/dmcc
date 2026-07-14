@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useImperativeHandle, useMemo, useRef, ReactNode } from "react";
+import React, { useState, useEffect, useCallback, useImperativeHandle, useMemo, useRef, type ReactNode } from "react";
 import { ReactFlow,
   useNodesState,
   useEdgesState,
@@ -694,20 +694,6 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
     if (nodesToLayout.length === 0) return;
 
-    // Capture the current layout as previousLayout to support Undo
-    const previousLayout = nodesToLayout.map((n) => {
-      const rfNode = rfNodesMap.get(n.id);
-      return {
-        nodeId: n.id,
-        x: rfNode ? rfNode.position.x : (n.x ?? 0),
-        y: rfNode ? rfNode.position.y : (n.y ?? 0),
-        ...(n.kind === "group" && {
-          width: n.width,
-          height: n.height,
-        }),
-      };
-    });
-
     // Calculate original center of the nodes being laid out
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     let hasCoords = false;
@@ -848,12 +834,14 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
           <span>Canvas ordenado con «{label}»</span>
           <button
             type="button"
-            onClick={async (e) => {
+            onClick={(e) => {
               e.stopPropagation();
-              const res = await useCanvasHistoryStore.getState().undo(canvasId);
-              if (!res.success && res.error === "conflict" && addToast) {
-                addToast("No se puede deshacer esta acción porque algunas tarjetas cambiaron después.", "error");
-              }
+              void (async () => {
+                const res = await useCanvasHistoryStore.getState().undo(canvasId);
+                if (!res.success && res.error === "conflict" && addToast) {
+                  addToast("No se puede deshacer esta acción porque algunas tarjetas cambiaron después.", "error");
+                }
+              })();
             }}
             className="btn btn-secondary btn-xs"
             style={{
