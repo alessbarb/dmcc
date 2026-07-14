@@ -56,8 +56,8 @@ export function PlayerCampaignsPage() {
                   type="button"
                   className="glass-card player-profile-row-card"
                   onClick={() => void navigate({
-                    to: "/portal",
-                    search: { campaignId: campaign.campaignId, tab: "home" },
+                    to: "/player/campaigns/$campaignId/overview",
+                    params: { campaignId: campaign.campaignId },
                   })}
                 >
                   <span className="card-body row-layout">

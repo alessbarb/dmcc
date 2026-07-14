@@ -1,43 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
 import { ReactFlowProvider } from "@xyflow/react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  BookOpen,
-  CheckCircle2,
-  Compass,
-  FileText,
-  Flag,
-  Home,
-  LogOut,
-  MessageCircle,
-  Network,
-  Plus,
-  RefreshCw,
-  Search,
-  Shield,
-  ShieldAlert,
-  Sparkles,
-  Sword,
-  User,
-} from "lucide-react";
+import { CheckCircle2, RefreshCw, Search, ShieldAlert } from "lucide-react";
 import type { Canvas } from "@core/domain/canvas/types.js";
 import type { TranslationKey } from "@shared/i18n/types.js";
-import { CampaignCanvasFlow } from "./dm/canvas/components/CampaignCanvasFlow.js";
-import type { InteractionMode } from "./dm/canvas/components/CanvasToolbar.js";
-import { isDmOnlyCanvasVisibility } from "./dm/canvas/services/canvasVisibility.js";
-import { PlayerCharacterSelectionCard } from "./player/components/PlayerCharacterSelectionCard.js";
-import { buildPlayerMobileDockItems } from "./player/navigation/playerMobileDockItems.js";
-import { fetchSession, logout } from "./shared/auth/authClient.js";
-import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
-import { PortalTopBar } from "./shared/components/PortalTopBar.js";
-import { MobileDock } from "./shared/components/MobileDock.js";
-import { useTranslation } from "./shared/i18n/useTranslation.js";
-import { apiFetch } from "./shared/api/apiClient.js";
+import { CampaignCanvasFlow } from "../../dm/canvas/components/CampaignCanvasFlow.js";
+import type { InteractionMode } from "../../dm/canvas/components/CanvasToolbar.js";
+import { isDmOnlyCanvasVisibility } from "../../dm/canvas/services/canvasVisibility.js";
+import { PlayerCharacterSelectionCard } from "../components/PlayerCharacterSelectionCard.js";
+import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import {
   createPlayerNote,
-  getPlayerCampaigns,
   getPlayerCharacter,
   getPlayerConstellation,
   getPlayerHome,
@@ -47,12 +19,13 @@ import {
   getPlayerRecap,
   searchPlayerCampaign,
   type CampaignSearchResult,
-  type PlayerCampaignSummary,
   type PlayerConstellationResponse,
   type PlayerPortalTabPayload,
   type PortalCanvas,
-} from "./shared/api/webProductClient.js";
-import { useCampaignStore, type Campaign, type CampaignStateStore } from "./shared/stores/campaignStore.js";
+} from "../../shared/api/webProductClient.js";
+import { useCampaignStore, type CampaignStateStore } from "../../shared/stores/campaignStore.js";
+
+export type PlayerCampaignTab = "overview" | "recap" | "character" | "memory" | "constellation" | "objectives" | "notes";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -60,72 +33,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function errorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
-}
-
-type PortalTab =
-  | "home"
-  | "recap"
-  | "character"
-  | "memory"
-  | "constellation"
-  | "objectives"
-  | "notes";
-
-const PORTAL_TABS: Array<{
-  id: PortalTab;
-  labelKey: TranslationKey;
-  Icon: React.ComponentType<{ size?: number }>;
-}> = [
-  { id: "home", labelKey: "playerPortal.tabs.home", Icon: Home },
-  { id: "recap", labelKey: "playerPortal.tabs.recap", Icon: BookOpen },
-  { id: "character", labelKey: "playerPortal.tabs.character", Icon: User },
-  { id: "memory", labelKey: "playerPortal.tabs.memory", Icon: Shield },
-  { id: "constellation", labelKey: "playerPortal.tabs.constellation", Icon: Network },
-  { id: "objectives", labelKey: "playerPortal.tabs.objectives", Icon: Flag },
-  { id: "notes", labelKey: "playerPortal.tabs.notes", Icon: FileText },
-];
-
-function isPortalTab(value: string | null): value is PortalTab {
-  return PORTAL_TABS.some((tab) => tab.id === value);
-}
-
-function readPortalLocation(): { campaignId: string | null; tab: PortalTab } {
-  const parameters = new URLSearchParams(window.location.search);
-  const requestedTab = parameters.get("tab");
-  return {
-    campaignId: parameters.get("campaignId"),
-    tab: isPortalTab(requestedTab) ? requestedTab : "home",
-  };
-}
-
-function usePortalLocation() {
-  const [location, setLocation] = useState(readPortalLocation);
-
-  useEffect(() => {
-    const onPopState = () => setLocation(readPortalLocation());
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, []);
-
-  const update = (campaignId: string | null, tab: PortalTab = "home", replace = false) => {
-    const parameters = new URLSearchParams();
-    if (campaignId) {
-      parameters.set("campaignId", campaignId);
-      parameters.set("tab", tab);
-    }
-    const url = parameters.size > 0 ? `/portal?${parameters.toString()}` : "/portal";
-    window.history[replace ? "replaceState" : "pushState"](null, "", url);
-    setLocation({ campaignId, tab });
-  };
-
-  return { ...location, update };
-}
-
-function formatCampaignSystem(system?: string) {
-  if (system === "dnd_5e") return "D&D 5e";
-  if (system === "pathfinder_2e") return "Pathfinder 2e";
-  if (system === "shadowdark") return "Shadowdark";
-  return "Custom";
 }
 
 function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
@@ -402,37 +309,37 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
   );
 }
 
-function PlayerWorkspace({
-  campaignId,
-  tab,
-  campaigns,
-  onTabChange,
-  onCampaignChange,
-  onBack,
-  t,
-}: {
-  campaignId: string;
-  tab: PortalTab;
-  campaigns: PlayerCampaignSummary[];
-  onTabChange: (tab: PortalTab) => void;
-  onCampaignChange: (campaignId: string) => void;
-  onBack: () => void;
-  t: (key: TranslationKey) => string;
-}) {
-  const navigate = useNavigate();
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const tabRefs = useRef<Record<PortalTab, HTMLButtonElement | null>>({
-    home: null, recap: null, character: null, memory: null, constellation: null, objectives: null, notes: null,
-  });
+export function usePlayerCampaignHome(campaignId: string) {
+  const [home, setHome] = useState<PlayerPortalTabPayload | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      setHome(await getPlayerHome(campaignId));
+    } catch (loadError) {
+      setError(errorMessage(loadError));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void load();
+  }, [campaignId]);
+
+  return { home, loading, error, reload: load };
+}
+
+export function PlayerCampaignTabContent({ campaignId, tab }: { campaignId: string; tab: PlayerCampaignTab }) {
+  const { t } = useTranslation();
   const [home, setHome] = useState<PlayerPortalTabPayload | null>(null);
   const [payload, setPayload] = useState<PlayerPortalTabPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [draftNote, setDraftNote] = useState("");
-
-  const handleNavigationError = (navigationError: unknown) => {
-    console.error("Player portal navigation failed", navigationError);
-  };
 
   const load = async () => {
     if (tab === "constellation") return;
@@ -477,42 +384,12 @@ function PlayerWorkspace({
     };
   }, [campaignId, tab]);
 
-  const title = home?.campaign?.title ?? campaigns.find((campaign) => campaign.campaignId === campaignId)?.title ?? t("playerPortal.campaignFallback");
   const counts = home?.memoryCounts ?? {};
-  const activeTab = PORTAL_TABS.find((item) => item.id === tab) ?? PORTAL_TABS[0];
-  const panelId = `player-portal-panel-${tab}`;
-  const tabId = `player-portal-tab-${tab}`;
-
-  useEffect(() => {
-    headingRef.current?.focus();
-  }, [campaignId]);
-
-  const changeTabFromKeyboard = (event: React.KeyboardEvent<HTMLButtonElement>, currentTab: PortalTab) => {
-    const currentIndex = PORTAL_TABS.findIndex((item) => item.id === currentTab);
-    let nextIndex = currentIndex;
-    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % PORTAL_TABS.length;
-    else if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + PORTAL_TABS.length) % PORTAL_TABS.length;
-    else if (event.key === "Home") nextIndex = 0;
-    else if (event.key === "End") nextIndex = PORTAL_TABS.length - 1;
-    else return;
-    event.preventDefault();
-    const nextTab = PORTAL_TABS[nextIndex].id;
-    onTabChange(nextTab);
-    window.setTimeout(() => tabRefs.current[nextTab]?.focus(), 0);
-  };
-
-  const playerDockItems = buildPlayerMobileDockItems({
-    t,
-    openTab: onTabChange,
-    openMessages: () => {
-      void navigate({ to: "/portal/messages/$campaignId", params: { campaignId } }).catch(handleNavigationError);
-    },
-  });
 
   const content = useMemo(() => {
     if (tab === "constellation") return <PlayerConstellation campaignId={campaignId} t={t} />;
     if (!payload) return null;
-    if (tab === "home") return (
+    if (tab === "overview") return (
       <div style={{ display: "grid", gap: 14 }}>
         <Card>
           <h2 style={{ marginTop: 0 }}>{t("playerPortal.home.beforePlay")}</h2>
@@ -569,205 +446,9 @@ function PlayerWorkspace({
   }, [campaignId, counts.facts, counts.visibleEntities, draftNote, payload, tab, t]);
 
   return (
-    <div className="player-portal-shell">
-      <header className="player-portal-header">
-        <button type="button" className="btn btn-secondary btn-sm" onClick={onBack}>
-          <ArrowLeft size={15} /> {t("playerPortal.actions.portal")}
-        </button>
-        <div style={{ minWidth: 0, flex: 1 }}>
-          <p style={{ margin: "0 0 3px", color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: ".12em" }}>{t("playerPortal.title")}</p>
-          <h1 ref={headingRef} tabIndex={-1} style={{ margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</h1>
-        </div>
-        {campaigns.length > 1 && (
-          <label>
-            <span className="sr-only">{t("playerPortal.actions.changeCampaign")}</span>
-            <select className="form-select" value={campaignId} onChange={(event) => onCampaignChange(event.target.value)}>
-              {campaigns.map((campaign) => <option key={campaign.campaignId} value={campaign.campaignId}>{campaign.title}</option>)}
-            </select>
-          </label>
-        )}
-        <button
-          type="button"
-          className="btn btn-primary btn-sm player-portal-header__messages"
-          onClick={() => { void navigate({ to: "/portal/messages/$campaignId", params: { campaignId } }).catch(handleNavigationError); }}
-        >
-          <MessageCircle size={15} /> Mensajes
-        </button>
-        <button type="button" className="btn btn-secondary btn-sm" onClick={() => { void navigate({ to: "/player/join" }).catch(handleNavigationError); }}>
-          <Plus size={15} /> {t("playerPortal.actions.join")}
-        </button>
-        <button type="button" className="btn btn-secondary btn-sm" onClick={() => {
-          void logout()
-            .then(() => window.location.assign("/"))
-            .catch((logoutError: unknown) => {
-              setError(logoutError instanceof Error ? logoutError.message : String(logoutError));
-            });
-        }}>
-          <LogOut size={15} /> {t("playerPortal.actions.signOut")}
-        </button>
-      </header>
-
-      <div className="player-portal-nav" role="tablist" aria-label={t("playerPortal.tabs.ariaLabel")}>
-        {PORTAL_TABS.map(({ id, labelKey, Icon }) => (
-          <button
-            key={id}
-            ref={(element) => { tabRefs.current[id] = element; }}
-            type="button"
-            className={`player-portal-nav__item ${tab === id ? "active" : ""}`}
-            role="tab"
-            aria-selected={tab === id}
-            aria-controls={`player-portal-panel-${id}`}
-            id={`player-portal-tab-${id}`}
-            tabIndex={tab === id ? 0 : -1}
-            onKeyDown={(event) => changeTabFromKeyboard(event, id)}
-            onClick={() => onTabChange(id)}
-          >
-            <Icon size={16} /> {t(labelKey)}
-          </button>
-        ))}
-      </div>
-
-      <main className="player-portal-main" aria-labelledby={tabId}>
-        <section role="tabpanel" id={panelId} aria-labelledby={tabId} tabIndex={0}>
-          <h2 className="sr-only">{t(activeTab.labelKey)}</h2>
-          {error && <Card style={{ color: "var(--color-danger)" }}><p role="alert">{error}</p></Card>}
-          {tab !== "constellation" && loading ? <Card><p aria-live="polite"><RefreshCw size={16} /> {t("playerPortal.loading.generic")}</p></Card> : content}
-        </section>
-      </main>
-      <MobileDock
-        items={playerDockItems}
-        activeId={tab}
-        ariaLabel={t("playerPortal.tabs.ariaLabel")}
-        moreLabel={t("campaignShell.mobileMore")}
-        sheetLabel={t("playerPortal.title")}
-        closeLabel={t("common.close")}
-      />
-    </div>
-  );
-}
-
-export function SmartLanding() {
-  const navigate = useNavigate();
-  const handleNavigationError = (navigationError: unknown) => {
-    console.error("Smart landing navigation failed", navigationError);
-  };
-  const { t } = useTranslation();
-  const portalLocation = usePortalLocation();
-  const [loading, setLoading] = useState(true);
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [playerCampaigns, setPlayerCampaigns] = useState<PlayerCampaignSummary[]>([]);
-
-  useEffect(() => {
-    void (async () => {
-      try {
-        const session = await fetchSession();
-        if (session.sessionValid) {
-          const [campaignResponse, playerResponse] = await Promise.all([
-            apiFetch("/api/campaigns"),
-            getPlayerCampaigns().catch(() => ({ campaigns: [] })),
-          ]);
-          if (campaignResponse.ok) {
-            const data = await campaignResponse.json();
-            setCampaigns(Array.isArray(data) ? data : []);
-          }
-          setPlayerCampaigns(playerResponse.campaigns);
-        }
-      } finally {
-        setLoading(false);
-      }
-    })().catch((landingError: unknown) => {
-      console.error("Smart landing bootstrap failed", landingError);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!loading && portalLocation.campaignId && !playerCampaigns.some((campaign) => campaign.campaignId === portalLocation.campaignId)) {
-      portalLocation.update(null, "home", true);
-    }
-  }, [loading, playerCampaigns, portalLocation.campaignId]);
-
-  if (loading) {
-    return <div className="smart-landing-loading"><div className="loading-spinner-glow" /><span>{t("common.loading")}</span></div>;
-  }
-
-  if (portalLocation.campaignId) {
-    return (
-      <PlayerWorkspace
-        campaignId={portalLocation.campaignId}
-        tab={portalLocation.tab}
-        campaigns={playerCampaigns}
-        onTabChange={(tab) => portalLocation.update(portalLocation.campaignId, tab)}
-        onCampaignChange={(campaignId) => portalLocation.update(campaignId, "home")}
-        onBack={() => portalLocation.update(null)}
-        t={t}
-      />
-    );
-  }
-
-  const sortedCampaigns = [...campaigns].sort((left, right) =>
-    String(right.updatedAt || right.createdAt || "").localeCompare(String(left.updatedAt || left.createdAt || "")),
-  );
-
-  return (
-    <div className="smart-landing">
-      <div className="smart-landing__background" aria-hidden="true"><RpgPortalBackground /></div>
-      <div className="smart-landing__glow" aria-hidden="true" />
-      <PortalTopBar />
-      <main className="smart-landing__main">
-        <section className="smart-landing__hero" aria-labelledby="portal-title">
-          <span className="landing-badge smart-landing__badge"><Sparkles size={12} /> {t("landing.badge")}</span>
-          <h1 id="portal-title" className="landing-hero__title smart-landing__title gold-gradient-text">{t("landing.narrativeHeading")}</h1>
-          <p className="landing-hero__subtitle smart-landing__subtitle">{t("landing.subtitle")}</p>
-
-          <div className="smart-landing__grid">
-            <section className="smart-column-wrapper dm-theme" aria-labelledby="portal-dm-title">
-              <div className="column-header"><Shield className="column-icon gold-glow" size={20} /><h2 id="portal-dm-title">{t("landing.dmTitle")}</h2></div>
-              <div className="dm-archive-stack">
-                {sortedCampaigns.length === 0 ? (
-                  <div className="glass-card empty-campaigns-card"><div className="card-body centered"><Compass size={36} /><h3>{t("landing.noCampaignsTitle")}</h3><p>{t("landing.noCampaignsDesc")}</p><button type="button" className="btn btn-gold" onClick={() => { void navigate({ to: "/dm" }).catch(handleNavigationError); }}>{t("landing.createCampaignBtn")}</button></div></div>
-                ) : (
-                  <div className="player-profiles-list">
-                    {sortedCampaigns.map((campaign) => (
-                      <button key={campaign.campaignId} type="button" className="glass-card player-profile-row-card" onClick={() => { void navigate({ to: `/campaigns/${campaign.campaignId}/command-center` }).catch(handleNavigationError); }}>
-                        <span className="card-body row-layout">
-                          <span className="avatar-frame"><img src={campaign.coverUrl || "/assets/campaigns/default-campaign-cover.jpg"} alt="" /></span>
-                          <span className="profile-details"><strong className="profile-name">{campaign.title}</strong><span className="campaign-link-name">{formatCampaignSystem(campaign.system)}</span></span>
-                          <ArrowRight size={18} />
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-                <button type="button" className="btn btn-gold btn-full" onClick={() => { void navigate({ to: "/dm" }).catch(handleNavigationError); }}>{t("landing.viewAllCampaigns")}</button>
-              </div>
-            </section>
-
-            <section className="smart-column-wrapper player-theme" aria-labelledby="portal-player-title">
-              <div className="column-header"><Sword className="column-icon amethyst-glow" size={20} /><h2 id="portal-player-title">{t("landing.playerTitle")}</h2></div>
-              {playerCampaigns.length === 0 ? (
-                <div className="glass-card player-join-card"><div className="card-body"><p className="card-desc">{t("landing.playerDesc")}</p><div className="join-cta-box"><Compass size={24} /><p>{t("landing.charactersEmptyDesc")}</p></div><button type="button" className="btn btn-amethyst btn-full" onClick={() => { void navigate({ to: "/player/join" }).catch(handleNavigationError); }}>{t("landing.joinWithCodeBtn")}<ArrowRight size={16} /></button></div></div>
-              ) : (
-                <div className="player-portal-stack">
-                  <span className="section-label-amethyst">{t("landing.yourCharacters")}</span>
-                  <div className="player-profiles-list">
-                    {playerCampaigns.map((campaign) => (
-                      <button key={`${campaign.campaignId}-${campaign.playerId ?? "player"}`} type="button" className="glass-card player-profile-row-card" onClick={() => portalLocation.update(campaign.campaignId, "home")}>
-                        <span className="card-body row-layout">
-                          <span className="avatar-frame"><img src={campaign.coverUrl || "/assets/avatars/default-avatar.png"} alt="" /></span>
-                          <span className="profile-details"><strong className="profile-name">{campaign.title}</strong><span className="campaign-link-name">{t("landing.campaignLabel")}: {campaign.title}</span></span>
-                          <ArrowRight size={18} className="amethyst-arrow" />
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                  <button type="button" className="btn btn-amethyst-outline btn-full" onClick={() => { void navigate({ to: "/player/join" }).catch(handleNavigationError); }}><Plus size={16} />{t("landing.joinAnother")}</button>
-                </div>
-              )}
-            </section>
-          </div>
-        </section>
-        <footer className="smart-landing__footer">{t("landing.footer")}</footer>
-      </main>
-    </div>
+    <>
+      {error && <Card style={{ color: "var(--color-danger)" }}><p role="alert">{error}</p></Card>}
+      {tab !== "constellation" && loading ? <Card><p aria-live="polite"><RefreshCw size={16} /> {t("playerPortal.loading.generic")}</p></Card> : content}
+    </>
   );
 }

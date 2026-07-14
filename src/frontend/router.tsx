@@ -31,8 +31,15 @@ function requirePlatformRole(role: PlatformRole) {
 
 const PromoLandingLazy = React.lazy(() => import("./MainLanding.js").then((module) => ({ default: module.MainLanding })));
 const AccountHomePageLazy = React.lazy(() => import("./home/AccountHomePage.js").then((module) => ({ default: module.AccountHomePage })));
-const SmartLandingLazy = React.lazy(() => import("./SmartLanding.js").then((module) => ({ default: module.SmartLanding })));
 const PlayerCampaignsPageLazy = React.lazy(() => import("./player/pages/PlayerCampaignsPage.js").then((module) => ({ default: module.PlayerCampaignsPage })));
+const PlayerCampaignShellLazy = React.lazy(() => import("./player/pages/PlayerCampaignShell.js").then((module) => ({ default: module.PlayerCampaignShell })));
+const PlayerCampaignOverviewLazy = React.lazy(() => import("./player/pages/PlayerCampaignTabRoutes.js").then((module) => ({ default: module.PlayerCampaignOverviewRoute })));
+const PlayerCampaignRecapLazy = React.lazy(() => import("./player/pages/PlayerCampaignTabRoutes.js").then((module) => ({ default: module.PlayerCampaignRecapRoute })));
+const PlayerCampaignCharacterLazy = React.lazy(() => import("./player/pages/PlayerCampaignTabRoutes.js").then((module) => ({ default: module.PlayerCampaignCharacterRoute })));
+const PlayerCampaignMemoryLazy = React.lazy(() => import("./player/pages/PlayerCampaignTabRoutes.js").then((module) => ({ default: module.PlayerCampaignMemoryRoute })));
+const PlayerCampaignConstellationLazy = React.lazy(() => import("./player/pages/PlayerCampaignTabRoutes.js").then((module) => ({ default: module.PlayerCampaignConstellationRoute })));
+const PlayerCampaignObjectivesLazy = React.lazy(() => import("./player/pages/PlayerCampaignTabRoutes.js").then((module) => ({ default: module.PlayerCampaignObjectivesRoute })));
+const PlayerCampaignNotesLazy = React.lazy(() => import("./player/pages/PlayerCampaignTabRoutes.js").then((module) => ({ default: module.PlayerCampaignNotesRoute })));
 const DmHubPageLazy = React.lazy(() => import("./dm/hub/DmHubPage.js").then((module) => ({ default: module.DmHubPage })));
 const CampaignShellPage = React.lazy(() => import("./dm/layouts/CampaignShell.js").then((module) => ({ default: module.CampaignShell })));
 const LoginPageLazy = React.lazy(() => import("./auth/LoginPage.js").then((module) => ({ default: module.LoginPage })));
@@ -94,22 +101,62 @@ const homeRoute = createRoute({
   beforeLoad: requireAccountSession,
   component: withSuspense(AccountHomePageLazy),
 });
-const portalRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/portal",
-  beforeLoad: requirePlatformRole("player"),
-  component: withSuspense(SmartLandingLazy),
-});
 const playerRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/player",
   beforeLoad: requirePlatformRole("player"),
   component: withSuspense(PlayerCampaignsPageLazy),
 });
-const playerMessagesRoute = createRoute({
+const playerCampaignRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/portal/messages/$campaignId",
+  path: "/player/campaigns/$campaignId",
   beforeLoad: requirePlatformRole("player"),
+  component: withSuspense(PlayerCampaignShellLazy),
+});
+const playerCampaignIndexRoute = createRoute({
+  getParentRoute: () => playerCampaignRoute,
+  path: "/",
+  beforeLoad: ({ params }) => { throw redirect({ to: "/player/campaigns/$campaignId/overview", params }); },
+  component: () => null,
+});
+const playerCampaignOverviewRoute = createRoute({
+  getParentRoute: () => playerCampaignRoute,
+  path: "/overview",
+  component: withSuspense(PlayerCampaignOverviewLazy),
+});
+const playerCampaignRecapRoute = createRoute({
+  getParentRoute: () => playerCampaignRoute,
+  path: "/recap",
+  component: withSuspense(PlayerCampaignRecapLazy),
+});
+const playerCampaignCharacterRoute = createRoute({
+  getParentRoute: () => playerCampaignRoute,
+  path: "/character",
+  component: withSuspense(PlayerCampaignCharacterLazy),
+});
+const playerCampaignMemoryRoute = createRoute({
+  getParentRoute: () => playerCampaignRoute,
+  path: "/memory",
+  component: withSuspense(PlayerCampaignMemoryLazy),
+});
+const playerCampaignConstellationRoute = createRoute({
+  getParentRoute: () => playerCampaignRoute,
+  path: "/constellation",
+  component: withSuspense(PlayerCampaignConstellationLazy),
+});
+const playerCampaignObjectivesRoute = createRoute({
+  getParentRoute: () => playerCampaignRoute,
+  path: "/objectives",
+  component: withSuspense(PlayerCampaignObjectivesLazy),
+});
+const playerCampaignNotesRoute = createRoute({
+  getParentRoute: () => playerCampaignRoute,
+  path: "/notes",
+  component: withSuspense(PlayerCampaignNotesLazy),
+});
+const playerCampaignMessagesRoute = createRoute({
+  getParentRoute: () => playerCampaignRoute,
+  path: "/messages",
   component: withSuspense(PlayerMessagesPageLazy),
 });
 const invitationRoute = createRoute({
@@ -331,9 +378,7 @@ const adminGameSystemsRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   indexRoute,
   homeRoute,
-  portalRoute,
   playerRoute,
-  playerMessagesRoute,
   invitationRoute,
   aboutRoute,
   contactRoute,
@@ -373,6 +418,17 @@ const routeTree = rootRoute.addChildren([
     rulesRoute,
     knowledgeRoute,
     settingsRoute,
+  ]),
+  playerCampaignRoute.addChildren([
+    playerCampaignIndexRoute,
+    playerCampaignOverviewRoute,
+    playerCampaignRecapRoute,
+    playerCampaignCharacterRoute,
+    playerCampaignMemoryRoute,
+    playerCampaignConstellationRoute,
+    playerCampaignObjectivesRoute,
+    playerCampaignNotesRoute,
+    playerCampaignMessagesRoute,
   ]),
 ]);
 

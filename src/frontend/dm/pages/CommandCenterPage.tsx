@@ -720,7 +720,10 @@ export function CommandCenterPage() {
               className="btn btn-secondary dashboard-quick-action"
               type="button"
               onClick={() => {
-                runCommandCenterAction(navigate({ to: "/portal" }), "No se pudo abrir el portal de jugadores.");
+                runCommandCenterAction(
+                  navigate({ to: "/player/campaigns/$campaignId/overview", params: { campaignId } }),
+                  "No se pudo abrir el portal de jugadores.",
+                );
               }}
             >
               <Share2 size={20} /> <span>{t("dashboard.openPlayerPortal")}</span>
