@@ -5,6 +5,7 @@ import { and, eq, isNull } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
+import { userRoles } from "../../../db/authSchema.js";
 import { HttpError } from "../../errors.js";
 import { sendExistingAccountRegistrationEmail, sendPasswordResetEmail } from "../../emailService.js";
 import { listAccessibleCampaigns } from "../webAccess.js";
@@ -162,11 +163,11 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
         emailHash: hashOpaque(email),
         displayName,
         passwordHash,
-        isPlatformAdmin: false,
       });
       const workspaceId = createId("wks");
       await tx.insert(schema.workspaces).values({ workspaceId, name: `${displayName}'s workspace`, ownerId: userId });
       await tx.insert(schema.workspaceMemberships).values({ workspaceId, userId, role: "owner" });
+      await tx.insert(userRoles).values({ userId, role: "dm", source: "registration" });
     });
 
     const [createdUser] = await db.select().from(schema.users).where(eq(schema.users.userId, userId)).limit(1);

@@ -97,7 +97,7 @@ export function AdminShell({ children }: AdminShellProps) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "auto", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
           <button
-            onClick={() => void navigate({ to: "/portal" })}
+            onClick={() => void navigate({ to: "/home" })}
             style={{
               display: "flex",
               alignItems: "center",

@@ -2,7 +2,7 @@ import { BookOpen, FileText, Flag, Home, MessageCircle, Network, Shield, User } 
 import type { TranslationKey } from "@shared/i18n/types.js";
 import type { MobileDockItem } from "../../shared/components/MobileDock.js";
 
-export type PlayerDockTab = "home" | "character" | "recap" | "memory" | "constellation" | "objectives" | "notes";
+export type PlayerDockTab = "overview" | "character" | "recap" | "memory" | "constellation" | "objectives" | "notes";
 
 interface BuildPlayerMobileDockItemsOptions {
   t: (key: TranslationKey) => string;
@@ -16,7 +16,7 @@ export function buildPlayerMobileDockItems({
   openMessages,
 }: BuildPlayerMobileDockItemsOptions): MobileDockItem[] {
   return [
-    { id: "home", label: t("playerPortal.tabs.home"), Icon: Home, onSelect: () => openTab("home") },
+    { id: "overview", label: t("playerPortal.tabs.home"), Icon: Home, onSelect: () => openTab("overview") },
     { id: "character", label: t("playerPortal.tabs.character"), Icon: User, onSelect: () => openTab("character") },
     { id: "messages", label: t("playerPortal.messaging.heading"), Icon: MessageCircle, onSelect: openMessages },
     { id: "recap", label: t("playerPortal.tabs.recap"), Icon: BookOpen, onSelect: () => openTab("recap") },

@@ -209,7 +209,7 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       playerProfiles: activePlayerProfiles.map(toPlayerProfile),
       memberships: activeMemberships.map((membership) => ({
         campaignId: membership.campaignId,
-        role: membership.role === "viewer" ? "observer" : membership.role,
+        role: membership.role,
         playerId: membership.playerId ?? undefined,
         campaignTitle: campaignById.get(membership.campaignId)?.title,
         campaignStatus: campaignById.get(membership.campaignId)?.status,

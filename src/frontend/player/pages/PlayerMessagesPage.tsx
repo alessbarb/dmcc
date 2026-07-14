@@ -17,15 +17,15 @@ export function PlayerMessagesPage() {
   const { t } = useTranslation();
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
 
-  const openPortalTab = (tab: string) => {
+  const openTab = (tab: string) => {
     runPlayerMessagesAction(
-      navigate({ to: `/portal?campaignId=${encodeURIComponent(campaignId)}&tab=${tab}` as any }),
-      "No se pudo abrir la pestaña del portal.",
+      navigate({ to: `/player/campaigns/$campaignId/${tab}`, params: { campaignId } }),
+      "No se pudo abrir la pestaña de la campaña.",
     );
   };
   const dockItems = buildPlayerMobileDockItems({
     t,
-    openTab: openPortalTab,
+    openTab,
     openMessages: () => undefined,
   });
 
@@ -35,7 +35,7 @@ export function PlayerMessagesPage() {
         <button
           type="button"
           className="btn btn-secondary btn-sm"
-          onClick={() => openPortalTab("home")}
+          onClick={() => openTab("overview")}
         >
           <ArrowLeft size={15} /> {t("playerPortal.messaging.backToPortal")}
         </button>

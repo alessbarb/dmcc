@@ -8,7 +8,8 @@ import { dictionaries, SUPPORTED_LOCALE_CODES } from "../../src/shared/i18n/loca
 const REPOSITORY_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const FRONTEND_ROOT = join(REPOSITORY_ROOT, "src/frontend");
 const ROUTER_PATH = join(FRONTEND_ROOT, "router.tsx");
-const SMART_LANDING_PATH = join(FRONTEND_ROOT, "SmartLanding.tsx");
+const PLAYER_CAMPAIGN_SHELL_PATH = join(FRONTEND_ROOT, "player/pages/PlayerCampaignShell.tsx");
+const PLAYER_CAMPAIGN_TAB_CONTENT_PATH = join(FRONTEND_ROOT, "player/pages/PlayerCampaignTabContent.tsx");
 
 function listSourceFiles(root: string): string[] {
   return readdirSync(root, { withFileTypes: true }).flatMap((entry) => {
@@ -47,7 +48,10 @@ function registeredCampaignDestinations(routerSource: string): Set<string> {
 
 describe("frontend contracts", () => {
   it("keeps unified player portal copy in the six official dictionaries", () => {
-    const source = readFileSync(SMART_LANDING_PATH, "utf8");
+    const source = [
+      readFileSync(PLAYER_CAMPAIGN_SHELL_PATH, "utf8"),
+      readFileSync(PLAYER_CAMPAIGN_TAB_CONTENT_PATH, "utf8"),
+    ].join("\n");
     const keys = [...source.matchAll(/playerPortal\.[A-Za-z0-9_.]+/g)].map((match) => match[0]);
     expect(keys.length).toBeGreaterThan(20);
 
@@ -83,7 +87,7 @@ describe("frontend contracts", () => {
   });
 
   it("keeps the unified player portal tabs structurally accessible", () => {
-    const source = readFileSync(SMART_LANDING_PATH, "utf8");
+    const source = readFileSync(PLAYER_CAMPAIGN_SHELL_PATH, "utf8");
     expect(source).toContain('role="tablist"');
     expect(source).toContain('role="tab"');
     expect(source).toContain('role="tabpanel"');
@@ -132,16 +136,17 @@ describe("frontend contracts", () => {
     expect(routerSource).not.toMatch(/path:\s*"\/(?:dashboard|what-now|live)"/);
   });
 
-  it("keeps /portal as the only player workspace", () => {
+  it("routes the player campaign workspace under /player/campaigns/:campaignId and retires /portal", () => {
     const routerSource = readFileSync(ROUTER_PATH, "utf8");
-    expect(routerSource).toMatch(/path:\s*"\/portal"/);
-    expect(routerSource).not.toContain("PlayerPortalPage");
-    expect(routerSource).not.toContain("WebPlayerPortalPage");
-    expect(routerSource).not.toContain("PlayerConstellationPage");
-    expect(routerSource).not.toMatch(/path:\s*"\/player\/campaigns\//);
-    expect(routerSource).not.toMatch(/path:\s*"\/campaigns\/\$campaignId\/player-portal"/);
+    expect(routerSource).not.toMatch(/path:\s*"\/portal"/);
+    expect(routerSource).not.toContain("SmartLanding");
+    expect(routerSource).toMatch(/path:\s*"\/player\/campaigns\/\$campaignId"/);
+    for (const tab of ["overview", "recap", "character", "memory", "constellation", "objectives", "notes", "messages"]) {
+      expect(routerSource).toMatch(new RegExp(`path:\\s*"/${tab}"`));
+    }
 
     for (const path of [
+      "SmartLanding.tsx",
       "player/pages/PlayerPortalPage.tsx",
       "player/pages/WebPlayerPortalPage.tsx",
       "player/pages/PlayerConstellationPage.tsx",

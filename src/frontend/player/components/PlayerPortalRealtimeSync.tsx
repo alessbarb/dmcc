@@ -9,8 +9,7 @@ const REFRESH_EVENTS = [
 
 export function PlayerPortalRealtimeSync() {
   useEffect(() => {
-    if (window.location.pathname !== "/portal") return;
-    const campaignId = new URLSearchParams(window.location.search).get("campaignId");
+    const campaignId = window.location.pathname.match(/^\/player\/campaigns\/([^/]+)/)?.[1];
     if (!campaignId) return;
 
     const source = new EventSource(`/api/campaigns/${encodeURIComponent(campaignId)}/events/stream`);

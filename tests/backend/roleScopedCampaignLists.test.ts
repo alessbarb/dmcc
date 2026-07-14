@@ -9,7 +9,7 @@ const campaigns = [
   { campaignId: "cmp_co_dm", role: "co_dm", playerId: null },
   { campaignId: "cmp_player", role: "player", playerId: "ply_1" },
   { campaignId: "cmp_player_without_profile", role: "player", playerId: null },
-  { campaignId: "cmp_viewer", role: "viewer", playerId: null },
+  { campaignId: "cmp_unknown", role: "unknown", playerId: null },
 ];
 
 describe("role-scoped campaign lists", () => {

@@ -52,52 +52,12 @@ ON CONFLICT ("campaign_id", "user_id") DO NOTHING;
 
 ALTER TABLE "campaign_memberships"
   ADD CONSTRAINT "campaign_memberships_role_check"
-  CHECK ("role" IN ('dm', 'co_dm', 'player', 'viewer'));
+  CHECK ("role" IN ('dm', 'co_dm', 'player'));
 
 ALTER TABLE "campaign_memberships"
   ADD CONSTRAINT "campaign_memberships_player_coherence_check"
   CHECK (
     ("role" = 'player' AND "player_id" IS NOT NULL)
     OR
-    ("role" IN ('dm', 'co_dm', 'viewer') AND "player_id" IS NULL)
+    ("role" IN ('dm', 'co_dm') AND "player_id" IS NULL)
   );
-
-CREATE OR REPLACE FUNCTION "assign_default_dm_role"()
-RETURNS trigger
-LANGUAGE plpgsql
-AS $$
-BEGIN
-  INSERT INTO "user_roles" ("user_id", "role", "source")
-  VALUES (NEW."user_id", 'dm', 'registration')
-  ON CONFLICT ("user_id", "role") DO NOTHING;
-  RETURN NEW;
-END;
-$$;
-
-CREATE TRIGGER "users_assign_default_dm_role"
-AFTER INSERT ON "users"
-FOR EACH ROW
-EXECUTE FUNCTION "assign_default_dm_role"();
-
-CREATE OR REPLACE FUNCTION "synchronize_platform_role_from_campaign_membership"()
-RETURNS trigger
-LANGUAGE plpgsql
-AS $$
-BEGIN
-  IF NEW."revoked_at" IS NULL AND NEW."role" = 'player' THEN
-    INSERT INTO "user_roles" ("user_id", "role", "source")
-    VALUES (NEW."user_id", 'player', 'invitation')
-    ON CONFLICT ("user_id", "role") DO NOTHING;
-  ELSIF NEW."revoked_at" IS NULL AND NEW."role" IN ('dm', 'co_dm') THEN
-    INSERT INTO "user_roles" ("user_id", "role", "source")
-    VALUES (NEW."user_id", 'dm', 'invitation')
-    ON CONFLICT ("user_id", "role") DO NOTHING;
-  END IF;
-  RETURN NEW;
-END;
-$$;
-
-CREATE TRIGGER "campaign_memberships_synchronize_platform_role"
-AFTER INSERT OR UPDATE OF "role", "revoked_at" ON "campaign_memberships"
-FOR EACH ROW
-EXECUTE FUNCTION "synchronize_platform_role_from_campaign_membership"();

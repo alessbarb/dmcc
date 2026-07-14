@@ -3,6 +3,7 @@ import { and, desc, eq, isNull } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
 import * as schema from "../../../db/schema.js";
+import { userRoles } from "../../../db/authSchema.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { requireCampaignOwner } from "../webAccess.js";
 import { HttpError } from "../../errors.js";
@@ -67,6 +68,11 @@ async function acceptInvitation(token: string, user: WebUser) {
       createdAt: new Date(),
     };
     await tx.insert(schema.campaignMemberships).values(membership);
+    await tx.insert(userRoles).values({
+      userId: user.userId,
+      role: invitation.role === "player" ? "player" : "dm",
+      source: "invitation",
+    }).onConflictDoNothing();
     await tx.update(schema.campaignInvitations)
       .set({ usesCount: invitation.usesCount + 1 })
       .where(eq(schema.campaignInvitations.invitationId, invitation.invitationId));

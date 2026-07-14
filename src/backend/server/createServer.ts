@@ -350,20 +350,6 @@ export function createServer(config?: ServerConfig): FastifyInstance {
       return { error: "API route not found" };
     }
 
-    if (!hasBuiltSpa && pathname.startsWith("/join/")) {
-      const hostHeader = request.headers.host ?? "127.0.0.1:4877";
-      let hostname = "127.0.0.1";
-
-      try {
-        hostname = new URL(`http://${hostHeader}`).hostname;
-      } catch {
-        hostname = "127.0.0.1";
-      }
-
-      const devUiPort = Number(process.env.DMCC_DEV_UI_PORT ?? "5173");
-      return reply.redirect(`http://${hostname}:${devUiPort}${rawUrl ?? pathname}`);
-    }
-
     if (hasBuiltSpa && shouldServeSpaFallback(rawUrl)) {
       try {
         return await sendSpaIndex(reply);

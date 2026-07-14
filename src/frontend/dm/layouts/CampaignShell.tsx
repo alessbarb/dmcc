@@ -186,9 +186,9 @@ export function CampaignShell() {
 
   useEffect(() => {
     if (activeCampaignRole === "player") {
-      void navigate({ to: "/portal" }).catch(handleNavigationError);
+      void navigate({ to: "/player/campaigns/$campaignId/overview", params: { campaignId } }).catch(handleNavigationError);
     }
-  }, [activeCampaignRole, navigate]);
+  }, [activeCampaignRole, campaignId, navigate]);
 
   useEffect(() => {
     if (campaignId && campaignId !== activeCampaignId) {

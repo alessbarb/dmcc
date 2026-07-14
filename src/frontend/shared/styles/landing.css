@@ -1390,7 +1390,7 @@ body:has(.rl-root) .watermark {
   }
 }
 
-/* Additional shared public landing flows (SmartLanding and previous portal). */
+/* Shared portal chrome reused by AccountHomePage, PlayerCampaignsPage, and PlayerCampaignShell. */
 
 /* Smart Landing / Main Portal */
 
