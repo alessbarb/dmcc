@@ -229,7 +229,7 @@ export function PremadeCampaignPreviewPage() {
         setImportDialogOpen(false);
         clearPremadeImportState();
         if (options.openAfterCreate) {
-          await navigate({ to: `/campaigns/${campaignId}/command-center` });
+          await navigate({ to: `/campaigns/${campaignId}/overview` });
         }
       }
     } catch (err) {
@@ -521,7 +521,7 @@ export function PremadeCampaignPreviewPage() {
           setImportDialogOpen(false);
           clearPremadeImportState();
           runPremadePreviewAction(
-            navigate({ to: `/campaigns/${campaignId}/command-center` }),
+            navigate({ to: `/campaigns/${campaignId}/overview` }),
             "No se pudo abrir la campaña existente.",
           );
         }}

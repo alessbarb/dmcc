@@ -392,7 +392,7 @@ const getCanvasKindLabel = (kind: string, t: (key: string) => string) => {
 export function CanvasPage() {
   const canvasFlowRef = useRef<CampaignCanvasFlowHandle>(null);
   const { t } = useTranslation();
-  const { campaignId } = useParams({ from: "/campaigns/$campaignId/canvas" });
+  const { campaignId } = useParams({ from: "/campaigns/$campaignId/map/canvas" });
   const {
     campaignState,
     canvasesById,

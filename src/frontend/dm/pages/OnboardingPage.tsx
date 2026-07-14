@@ -32,7 +32,7 @@ export function OnboardingPage() {
       }
       const campaignId = await createCampaign(title.trim(), system);
       if (campaignId) {
-        await navigate({ to: `/campaigns/${campaignId}/command-center` });
+        await navigate({ to: `/campaigns/${campaignId}/overview` });
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : t("onboarding.createError"));
