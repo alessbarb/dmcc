@@ -83,41 +83,53 @@ const PlayerJoinPageLazy = React.lazy(() =>
 const PlayerMessagesPageLazy = React.lazy(() =>
   import("./player/pages/PlayerMessagesPage.js").then((module) => ({ default: module.PlayerMessagesPage })),
 );
-const CommandCenterPageLazy = React.lazy(() =>
-  import("./dm/pages/CommandCenterPage.js").then((module) => ({ default: module.CommandCenterPage })),
+const OverviewPageLazy = React.lazy(() =>
+  import("./dm/overview/OverviewPage.js").then((module) => ({ default: module.OverviewPage })),
+);
+const LibraryWorkspacePageLazy = React.lazy(() =>
+  import("./dm/library/LibraryWorkspacePage.js").then((module) => ({ default: module.LibraryWorkspacePage })),
+);
+const EntityListViewLazy = React.lazy(() =>
+  import("./dm/library/list/EntityListView.js").then((module) => ({ default: module.EntityListView })),
+);
+const EntityBoardsViewLazy = React.lazy(() =>
+  import("./dm/library/boards/EntityBoardsView.js").then((module) => ({ default: module.EntityBoardsView })),
+);
+const CampaignMapWorkspacePageLazy = React.lazy(() =>
+  import("./dm/map/CampaignMapWorkspacePage.js").then((module) => ({ default: module.CampaignMapWorkspacePage })),
+);
+const CanvasViewLazy = React.lazy(() =>
+  import("./dm/map/canvas/CanvasView.js").then((module) => ({ default: module.CanvasView })),
+);
+const NetworkViewLazy = React.lazy(() =>
+  import("./dm/map/network/NetworkView.js").then((module) => ({ default: module.NetworkView })),
+);
+const StoryWorkspacePageLazy = React.lazy(() =>
+  import("./dm/story/StoryWorkspacePage.js").then((module) => ({ default: module.StoryWorkspacePage })),
+);
+const CampaignHistoryViewLazy = React.lazy(() =>
+  import("./dm/story/history/CampaignHistoryView.js").then((module) => ({ default: module.CampaignHistoryView })),
+);
+const PeopleWorkspacePageLazy = React.lazy(() =>
+  import("./dm/people/PeopleWorkspacePage.js").then((module) => ({ default: module.PeopleWorkspacePage })),
+);
+const GroupViewLazy = React.lazy(() =>
+  import("./dm/people/group/GroupView.js").then((module) => ({ default: module.GroupView })),
+);
+const InvitationsViewLazy = React.lazy(() =>
+  import("./dm/people/invitations/InvitationsView.js").then((module) => ({ default: module.InvitationsView })),
+);
+const PlayerKnowledgeViewLazy = React.lazy(() =>
+  import("./dm/people/knowledge/PlayerKnowledgeView.js").then((module) => ({ default: module.PlayerKnowledgeView })),
 );
 const SessionPageLazy = React.lazy(() =>
   import("./dm/sessions/SessionPage.js").then((module) => ({ default: module.SessionPage })),
-);
-const EntitiesPageLazy = React.lazy(() =>
-  import("./dm/entities/EntitiesPage.js").then((module) => ({ default: module.EntitiesPage })),
-);
-const CanvasPageLazy = React.lazy(() =>
-  import("./dm/canvas/pages/CanvasPage.js").then((module) => ({ default: module.CanvasPage })),
-);
-const GraphPageLazy = React.lazy(() =>
-  import("./dm/graph/GraphPage.js").then((module) => ({ default: module.GraphPage })),
-);
-const TimelinePageLazy = React.lazy(() =>
-  import("./dm/sessions/TimelinePage.js").then((module) => ({ default: module.TimelinePage })),
-);
-const SearchPageLazy = React.lazy(() =>
-  import("./dm/pages/SearchPage.js").then((module) => ({ default: module.SearchPage })),
-);
-const BoardsPageLazy = React.lazy(() =>
-  import("./dm/pages/BoardsPage.js").then((module) => ({ default: module.BoardsPage })),
-);
-const PlayersPageLazy = React.lazy(() =>
-  import("./dm/pages/PlayersPage.js").then((module) => ({ default: module.PlayersPage })),
 );
 const CampaignMessagesPageLazy = React.lazy(() =>
   import("./dm/pages/CampaignMessagesPage.js").then((module) => ({ default: module.CampaignMessagesPage })),
 );
 const RulesPageLazy = React.lazy(() =>
   import("./dm/pages/RulesPage.js").then((module) => ({ default: module.RulesPage })),
-);
-const PlayerKnowledgePageLazy = React.lazy(() =>
-  import("./dm/pages/PlayerKnowledgePage.js").then((module) => ({ default: module.PlayerKnowledgePage })),
 );
 const SettingsPageLazy = React.lazy(() =>
   import("./dm/pages/SettingsPage.js").then((module) => ({ default: module.SettingsPage })),
@@ -331,55 +343,101 @@ const campaignIndexRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/",
   beforeLoad: ({ params }) => {
-    throw redirect({ to: "/campaigns/$campaignId/command-center", params });
+    throw redirect({ to: "/campaigns/$campaignId/overview", params });
   },
   component: () => null,
 });
-const commandCenterRoute = createRoute({
+const overviewRoute = createRoute({
   getParentRoute: () => campaignRoute,
-  path: "/command-center",
-  component: withSuspense(CommandCenterPageLazy),
+  path: "/overview",
+  component: withSuspense(OverviewPageLazy),
 });
 const sessionRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/session",
   component: withSuspense(SessionPageLazy),
 });
-const entitiesRoute = createRoute({
+
+// Library Workspace
+const libraryRoute = createRoute({
   getParentRoute: () => campaignRoute,
-  path: "/entities",
-  component: withSuspense(EntitiesPageLazy),
+  path: "/library",
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: "/campaigns/$campaignId/library/list", params });
+  },
+  component: withSuspense(LibraryWorkspacePageLazy),
 });
-const canvasRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/canvas",
-  component: withSuspense(CanvasPageLazy),
+const libraryListRoute = createRoute({
+  getParentRoute: () => libraryRoute,
+  path: "/list",
+  component: withSuspense(EntityListViewLazy),
 });
-const graphRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/graph",
-  component: withSuspense(GraphPageLazy),
-});
-const timelineRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/timeline",
-  component: withSuspense(TimelinePageLazy),
-});
-const searchRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/search",
-  component: withSuspense(SearchPageLazy),
-});
-const boardsRoute = createRoute({
-  getParentRoute: () => campaignRoute,
+const libraryBoardsRoute = createRoute({
+  getParentRoute: () => libraryRoute,
   path: "/boards",
-  component: withSuspense(BoardsPageLazy),
+  component: withSuspense(EntityBoardsViewLazy),
 });
-const playersRoute = createRoute({
+
+// Map Workspace
+const mapRoute = createRoute({
   getParentRoute: () => campaignRoute,
-  path: "/players",
-  component: withSuspense(PlayersPageLazy),
+  path: "/map",
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: "/campaigns/$campaignId/map/canvas", params });
+  },
+  component: withSuspense(CampaignMapWorkspacePageLazy),
 });
+const mapCanvasRoute = createRoute({
+  getParentRoute: () => mapRoute,
+  path: "/canvas",
+  component: withSuspense(CanvasViewLazy),
+});
+const mapNetworkRoute = createRoute({
+  getParentRoute: () => mapRoute,
+  path: "/network",
+  component: withSuspense(NetworkViewLazy),
+});
+
+// Story Workspace
+const storyRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/story",
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: "/campaigns/$campaignId/story/history", params });
+  },
+  component: withSuspense(StoryWorkspacePageLazy),
+});
+const storyHistoryRoute = createRoute({
+  getParentRoute: () => storyRoute,
+  path: "/history",
+  component: withSuspense(CampaignHistoryViewLazy),
+});
+
+// People Workspace
+const peopleRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/people",
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: "/campaigns/$campaignId/people/group", params });
+  },
+  component: withSuspense(PeopleWorkspacePageLazy),
+});
+const peopleGroupRoute = createRoute({
+  getParentRoute: () => peopleRoute,
+  path: "/group",
+  component: withSuspense(GroupViewLazy),
+});
+const peopleInvitationsRoute = createRoute({
+  getParentRoute: () => peopleRoute,
+  path: "/invitations",
+  component: withSuspense(InvitationsViewLazy),
+});
+const peopleKnowledgeRoute = createRoute({
+  getParentRoute: () => peopleRoute,
+  path: "/knowledge",
+  component: withSuspense(PlayerKnowledgeViewLazy),
+});
+
 const messagesRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/messages",
@@ -389,11 +447,6 @@ const rulesRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/rules",
   component: withSuspense(RulesPageLazy),
-});
-const knowledgeRoute = createRoute({
-  getParentRoute: () => campaignRoute,
-  path: "/knowledge",
-  component: withSuspense(PlayerKnowledgePageLazy),
 });
 const settingsRoute = createRoute({
   getParentRoute: () => campaignRoute,
@@ -505,18 +558,26 @@ const routeTree = rootRoute.addChildren([
   adminGameSystemsRoute,
   campaignRoute.addChildren([
     campaignIndexRoute,
-    commandCenterRoute,
+    overviewRoute,
     sessionRoute,
-    entitiesRoute,
-    canvasRoute,
-    graphRoute,
-    timelineRoute,
-    searchRoute,
-    boardsRoute,
-    playersRoute,
+    libraryRoute.addChildren([
+      libraryListRoute,
+      libraryBoardsRoute,
+    ]),
+    mapRoute.addChildren([
+      mapCanvasRoute,
+      mapNetworkRoute,
+    ]),
+    storyRoute.addChildren([
+      storyHistoryRoute,
+    ]),
+    peopleRoute.addChildren([
+      peopleGroupRoute,
+      peopleInvitationsRoute,
+      peopleKnowledgeRoute,
+    ]),
     messagesRoute,
     rulesRoute,
-    knowledgeRoute,
     settingsRoute,
   ]),
   playerCampaignRoute.addChildren([
