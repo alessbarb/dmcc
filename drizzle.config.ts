@@ -3,6 +3,7 @@ import { defineConfig } from "drizzle-kit";
 export default defineConfig({
   schema: [
     "./src/backend/db/schema.ts",
+    "./src/backend/db/authSchema.ts",
     "./src/backend/db/playerPortalSchema.ts",
     "./src/backend/db/messagingSchema.ts",
     "./src/backend/db/operationsSchema.ts",
