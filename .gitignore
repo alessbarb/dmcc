@@ -13,6 +13,7 @@ playwright-report/
 !.env.example
 !.env.development.example
 !.env.production.example
+!.env.test
 *.log
 *.local
 .claude/
