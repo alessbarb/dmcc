@@ -17,6 +17,8 @@ import type { DomainEventType, StoredEvent } from "@core/domain/shared/events.js
 import { storedEventSchema, eventPayloadSchemas } from "@core/domain/shared/events.js";
 import { normalizeEventPayload } from "@core/domain/shared/normalizeEventPayload.js";
 import { calculateCommandHash, CommandConflictError } from "@core/persistence/repositories/campaignRepository.js";
+import { projectDomainEventToActivity } from "@core/projections/activity/projectDomainEventToActivity.js";
+import { activityRepository } from "../activity/activityRepository.js";
 
 function computeEventHash(eventWithoutHash: Omit<StoredEvent, "hash">): string {
   return createHash("sha256").update(JSON.stringify({
@@ -228,6 +230,12 @@ function buildStoredEvent(input: {
 
 async function projectReadModelsTx(tx: DbTransaction, events: StoredEvent[]): Promise<void> {
   for (const event of events) {
+    // Project and write campaign activity
+    const activities = projectDomainEventToActivity(event);
+    for (const activity of activities) {
+      await activityRepository.insertActivity(tx, activity);
+    }
+
     // event.payload is `any` via StoredEvent's deliberately untyped generic default (see
     // events.ts); each switch case below duck-types the specific event payload it expects.
     const payload = event.payload;
