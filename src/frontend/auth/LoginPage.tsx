@@ -1,62 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Shield, Eye, EyeOff, ArrowLeft, Plus } from "lucide-react";
-import { login, fetchAuthStatus } from "../shared/auth/authClient.js";
+import { Eye, EyeOff, ArrowLeft, Plus, UserRound } from "lucide-react";
+import { login, fetchSession } from "../shared/auth/authClient.js";
+import { consumeAuthReturnTo } from "../shared/auth/authReturnTo.js";
 import { RpgPortalBackground } from "../shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "../shared/components/PortalTopBar.js";
-import { useTranslation } from "../shared/i18n/useTranslation.js";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const [email, setEmail] = useState("");
-  const [secret, setSecret] = useState("");
-  const [showSecret, setShowSecret] = useState(false);
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [retryAfterMs, setRetryAfterMs] = useState<number>(0);
+  const [retryAfterMs, setRetryAfterMs] = useState(0);
 
   useEffect(() => {
-    void fetchAuthStatus().then((status) => {
-      if (status.sessionValid) void navigate({ to: "/portal" });
-    }).catch(() => {});
-  }, [navigate]);
+    void fetchSession().then((session) => {
+      if (session.sessionValid) window.location.assign(consumeAuthReturnTo());
+    }).catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     if (retryAfterMs <= 0) return;
-    const interval = setInterval(() => {
-      setRetryAfterMs((prev) => {
-        const next = prev - 1000;
-        if (next <= 0) { clearInterval(interval); return 0; }
-        return next;
-      });
+    const interval = window.setInterval(() => {
+      setRetryAfterMs((previous) => Math.max(0, previous - 1000));
     }, 1000);
-    return () => clearInterval(interval);
+    return () => window.clearInterval(interval);
   }, [retryAfterMs]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const run = async () => {
-      if (!email || !secret || retryAfterMs > 0) return;
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    void (async () => {
+      if (!email || !password || retryAfterMs > 0) return;
       setLoading(true);
       setError(null);
       try {
-        await login(email, secret);
-        void navigate({ to: "/portal" });
-      } catch (err: unknown) {
-        const errMessage = err instanceof Error ? err.message : String(err);
-        if (errMessage.toLowerCase().includes("too many")) {
-          const match = errMessage.match(/\((\d+)s\)/);
+        await login(email, password);
+        window.location.assign(consumeAuthReturnTo());
+      } catch (cause: unknown) {
+        const message = cause instanceof Error ? cause.message : String(cause);
+        if (message.toLowerCase().includes("too many")) {
+          const match = message.match(/\((\d+)s\)/);
           setRetryAfterMs(match ? Number(match[1]) * 1000 : 30_000);
-          setError(t("dmLogin.errorTooMany"));
+          setError("Demasiados intentos. Espera un momento antes de volver a probar.");
         } else {
-          setError(t("dmLogin.errorWrongSecret"));
+          setError("El correo o la contraseña no son correctos.");
         }
       } finally {
         setLoading(false);
       }
-    };
-    void run();
+    })();
   };
 
   const isBlocked = retryAfterMs > 0;
@@ -66,84 +60,37 @@ export function LoginPage() {
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--bg-main)" }}>
       <PortalTopBar />
       <div className="join-portal-container" style={{ flex: 1 }}>
-        <div className="join-portal-background">
-          <RpgPortalBackground />
-          <div className="join-portal-radial-glow" />
-        </div>
-
+        <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
         <div className="join-portal-card">
           <div className="join-portal-header">
-            <div className="join-portal-icon-wrapper">
-              <Shield className="join-portal-icon" size={32} />
-              <div className="join-portal-icon-glow" />
-            </div>
-            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("dmLogin.loginBtn")}</h1>
+            <div className="join-portal-icon-wrapper"><UserRound className="join-portal-icon" size={32} /><div className="join-portal-icon-glow" /></div>
+            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>Iniciar sesión</h1>
+            <p style={{ color: "var(--text-muted)", margin: "4px 0 0" }}>Accede a tu cuenta de DMCC.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="join-portal-form">
             <div className="form-group">
-              <label className="form-label" htmlFor="email">{t("dmLogin.emailLabel")}</label>
-              <input
-                id="email"
-                type="email"
-                className="form-input join-portal-input"
-                placeholder={t("dmLogin.emailPlaceholder")}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoFocus={!email}
-                autoComplete="email"
-                disabled={isBlocked}
-              />
+              <label className="form-label" htmlFor="email">Correo electrónico</label>
+              <input id="email" type="email" className="form-input join-portal-input" value={email} onChange={(event) => setEmail(event.target.value)} required autoFocus autoComplete="email" disabled={isBlocked} />
             </div>
-
             <div className="form-group">
-              <label className="form-label" htmlFor="secret">{t("dmLogin.secretLabel")}</label>
+              <label className="form-label" htmlFor="password">Contraseña</label>
               <div className="access-code-input-wrapper">
-                <input
-                  id="secret"
-                  type={showSecret ? "text" : "password"}
-                  className="form-input join-portal-input"
-                  placeholder={t("dmLogin.secretPlaceholder")}
-                  value={secret}
-                  onChange={(e) => setSecret(e.target.value)}
-                  required
-                  autoFocus={!!email}
-                  autoComplete="current-password"
-                  disabled={isBlocked}
-                />
-                <button type="button" className="input-icon" style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }} onClick={() => setShowSecret((v) => !v)}>
-                  {showSecret ? <EyeOff size={14} /> : <Eye size={14} />}
+                <input id="password" type={showPassword ? "text" : "password"} className="form-input join-portal-input" value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" disabled={isBlocked} />
+                <button type="button" className="input-icon" aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }} onClick={() => setShowPassword((value) => !value)}>
+                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
             </div>
-
-            {error && (
-              <div className="join-portal-error">
-                <p>{error}{isBlocked && ` (${secondsLeft}s)`}</p>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              className="btn btn-primary join-portal-btn"
-              disabled={loading || !email || !secret || isBlocked}
-            >
-              {loading
-                ? t("dmLogin.checkingBtn")
-                : isBlocked
-                ? t("dmLogin.waitBtn", { seconds: String(secondsLeft) })
-                : t("dmLogin.loginBtn")}
+            {error && <div className="join-portal-error"><p role="alert">{error}{isBlocked && ` (${secondsLeft}s)`}</p></div>}
+            <button type="submit" className="btn btn-primary join-portal-btn" disabled={loading || !email || !password || isBlocked}>
+              {loading ? "Entrando…" : isBlocked ? `Espera ${secondsLeft}s` : "Entrar"}
             </button>
           </form>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "12px" }}>
-            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => { void navigate({ to: "/auth/register" }); }}>
-              <Plus size={14} /> {t("common.create")}
-            </button>
-            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => { void navigate({ to: "/" }); }}>
-              <ArrowLeft size={14} /> {t("common.back")}
-            </button>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 12 }}>
+            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => void navigate({ to: "/auth/register" })}><Plus size={14} /> Crear cuenta</button>
+            <button type="button" className="btn btn-secondary" style={{ width: "100%" }} onClick={() => void navigate({ to: "/" })}><ArrowLeft size={14} /> Volver</button>
           </div>
         </div>
       </div>

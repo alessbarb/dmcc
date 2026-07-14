@@ -13,7 +13,7 @@ import {
   Wand2,
 } from "lucide-react";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
-import { fetchAuthStatus } from "../../shared/auth/authClient.js";
+import { fetchSession } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { PremadeImportDialog, type PremadeImportMode } from "../../shared/components/PremadeImportDialog.js";
@@ -156,8 +156,8 @@ export function PremadeCampaignPreviewPage() {
 
   useEffect(() => {
     const init = async () => {
-      const status = await fetchAuthStatus().catch(() => null);
-      if (!status?.sessionValid) {
+      const session = await fetchSession().catch(() => null);
+      if (!session?.sessionValid) {
         await navigate({ to: "/auth/login" });
         return;
       }

@@ -7,6 +7,7 @@ import { campaignMessages } from "../../../db/messagingSchema.js";
 import { systemAnnouncements } from "../../../db/announcementsSchema.js";
 import { campaignPurgeJobs, operationsAuditLog } from "../../../db/operationsSchema.js";
 import { campaignTemplateSettings, gameSystemSettings } from "../../../db/catalogSettingsSchema.js";
+import { userRoles } from "../../../db/authSchema.js";
 import { getRequiredPlatformAdmin } from "../webAccess.js";
 import { createId } from "@shared/ids.js";
 import { HttpError } from "../../errors.js";
@@ -420,12 +421,13 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
         email: schema.users.emailNormalized,
         displayName: schema.users.displayName,
         avatarUrl: schema.users.avatarUrl,
-        isPlatformAdmin: schema.users.isPlatformAdmin,
+        isPlatformAdmin: sql<boolean>`${userRoles.userId} IS NOT NULL`,
         createdAt: schema.users.createdAt,
         lastLoginAt: schema.users.lastLoginAt,
         disabledAt: schema.users.disabledAt,
       })
       .from(schema.users)
+      .leftJoin(userRoles, and(eq(userRoles.userId, schema.users.userId), eq(userRoles.role, "admin")))
       .where(whereClause)
       .orderBy(schema.users.userId)
       .limit(limit);
@@ -448,12 +450,13 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
         email: schema.users.emailNormalized,
         displayName: schema.users.displayName,
         avatarUrl: schema.users.avatarUrl,
-        isPlatformAdmin: schema.users.isPlatformAdmin,
+        isPlatformAdmin: sql<boolean>`${userRoles.userId} IS NOT NULL`,
         createdAt: schema.users.createdAt,
         lastLoginAt: schema.users.lastLoginAt,
         disabledAt: schema.users.disabledAt,
       })
       .from(schema.users)
+      .leftJoin(userRoles, and(eq(userRoles.userId, schema.users.userId), eq(userRoles.role, "admin")))
       .where(eq(schema.users.userId, userId))
       .limit(1);
 

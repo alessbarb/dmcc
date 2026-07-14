@@ -1,18 +1,14 @@
+export type PlatformRole = "dm" | "player" | "admin";
+
 export interface AuthUser {
   userId: string;
   email?: string;
   displayName?: string;
   avatarUrl?: string;
-  isPlatformAdmin?: boolean;
+  roles?: PlatformRole[];
 }
 
-export interface AuthStatus {
+export interface Session {
   sessionValid: boolean;
   user: AuthUser | null;
-  memberships?: Array<{
-    campaignId: string;
-    userId: string;
-    role: "dm" | "co_dm" | "player";
-    playerId?: string | null;
-  }>;
 }

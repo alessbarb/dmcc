@@ -1,153 +1,33 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "@tanstack/react-router";
-import { Shield, Ticket, Users } from "lucide-react";
-import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
-import { fetchAuthStatus, login, registerAccount } from "../../shared/auth/authClient.js";
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, ArrowRight, Ticket } from "lucide-react";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 
- type Membership = {
-  campaignId: string;
-  title: string;
-  role: "dm" | "co_dm" | "player";
-  playerId?: string | null;
-};
-
-type InvitationPreview = {
-  campaign: { campaignId: string; title: string; summary?: string | null };
-  role: string;
-};
+function normalizeInvitationToken(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  try {
+    const url = new URL(trimmed);
+    const segments = url.pathname.split("/").filter(Boolean);
+    return segments.at(-1) ?? "";
+  } catch {
+    return trimmed.replace(/^.*\/invitations\//, "").replace(/^.*\/join\//, "");
+  }
+}
 
 export function PlayerJoinPage() {
   const navigate = useNavigate();
-  const params = useParams({ strict: false }) as { inviteToken?: string; campaignId?: string };
-  const inviteToken = params.inviteToken ?? params.campaignId ?? null;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [memberships, setMemberships] = useState<Membership[]>([]);
-  const [invitation, setInvitation] = useState<InvitationPreview | null>(null);
-  const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [invitation, setInvitation] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const hasInvite = Boolean(inviteToken);
-  const title = hasInvite ? "Unirte a una campaña" : "Entrar en tus campañas";
-  const subtitle = useMemo(() => {
-    if (invitation) return `Invitación para ${invitation.campaign.title}`;
-    if (hasInvite) return "Inicia sesión o crea una cuenta para aceptar la invitación.";
-    return "Accede a las campañas donde tienes permiso como DM o jugador.";
-  }, [hasInvite, invitation]);
-
-  const loadMemberships = async () => {
-    const [dmResponse, playerResponse] = await Promise.all([
-      apiFetch("/api/campaigns"),
-      apiFetch("/api/player/campaigns"),
-    ]);
-    if (!dmResponse.ok || !playerResponse.ok) {
-      setAuthenticated(false);
-      setMemberships([]);
+  const continueToInvitation = () => {
+    const inviteToken = normalizeInvitationToken(invitation);
+    if (!inviteToken) {
+      setError("Introduce el enlace o el token de la invitación.");
       return;
     }
-
-    const [dmCampaigns, playerPayload] = await Promise.all([
-      dmResponse.json(),
-      playerResponse.json(),
-    ]);
-    const playerCampaigns = Array.isArray(playerPayload?.campaigns) ? playerPayload.campaigns : [];
-    const combined = [
-      ...(Array.isArray(dmCampaigns) ? dmCampaigns : []),
-      ...playerCampaigns,
-    ];
-    const uniqueMemberships = new Map<string, Membership>();
-    for (const campaign of combined) {
-      if (!campaign?.campaignId || !campaign?.role) continue;
-      uniqueMemberships.set(`${campaign.campaignId}:${campaign.role}`, {
-        campaignId: campaign.campaignId,
-        title: campaign.title,
-        role: campaign.role,
-        playerId: campaign.playerId,
-      });
-    }
-
-    setAuthenticated(true);
-    setMemberships(Array.from(uniqueMemberships.values()));
-  };
-
-  const loadInvitation = async () => {
-    if (!inviteToken) return;
-    const response = await apiFetch(`/api/invitations/${encodeURIComponent(inviteToken)}`);
-    if (!response.ok) {
-      setInvitation(null);
-      setError(await readApiError(response, "Invitación no válida o caducada"));
-      return;
-    }
-    setInvitation(await response.json());
-  };
-
-  useEffect(() => {
-    void fetchAuthStatus()
-      .then((status) => {
-        setAuthenticated(status.sessionValid);
-        if (status.sessionValid) void loadMemberships();
-      })
-      .catch(() => undefined);
-    void loadInvitation();
-  }, [inviteToken]);
-
-  const enterCampaign = (membership: Membership) => {
-    if (membership.role === "player") {
-      void navigate({
-        to: "/portal",
-        search: { campaignId: membership.campaignId, tab: "home" },
-      });
-    } else {
-      void navigate({
-        to: "/campaigns/$campaignId/command-center",
-        params: { campaignId: membership.campaignId },
-      });
-    }
-  };
-
-  const acceptInvite = async () => {
-    if (!inviteToken) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await apiFetch(`/api/invitations/${encodeURIComponent(inviteToken)}/accept`, {
-        init: { method: "POST" },
-      });
-      if (!response.ok) throw new Error(await readApiError(response, "No se pudo aceptar la invitación"));
-      const body = await response.json();
-      const campaignId = body.campaignId ?? invitation?.campaign.campaignId;
-      if (!campaignId) throw new Error("La invitación no devolvió campaña");
-      void navigate({
-        to: "/portal",
-        search: { campaignId, tab: "home" },
-      });
-    } catch (cause: unknown) {
-      const errMsg = cause instanceof Error ? cause.message : String(cause);
-      setError(errMsg || "No se pudo aceptar la invitación");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const authenticate = async (register: boolean) => {
-    setLoading(true);
-    setError(null);
-    try {
-      if (register) await registerAccount({ email, password, displayName });
-      else await login(email, password);
-      setAuthenticated(true);
-      await loadMemberships();
-      if (inviteToken) await acceptInvite();
-    } catch (cause: unknown) {
-      const errMsg = cause instanceof Error ? cause.message : String(cause);
-      setError(errMsg || "No se pudo autenticar la cuenta");
-    } finally {
-      setLoading(false);
-    }
+    void navigate({ to: "/invitations/$inviteToken", params: { inviteToken } });
   };
 
   return (
@@ -157,53 +37,31 @@ export function PlayerJoinPage() {
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
         <div className="join-portal-card" style={{ maxWidth: 620 }}>
           <div className="join-portal-header">
-            <div className="join-portal-icon-wrapper">{hasInvite ? <Ticket className="join-portal-icon" size={32} /> : <Shield className="join-portal-icon" size={32} />}</div>
-            <h1 className="join-portal-title">{title}</h1>
-            <p style={{ color: "var(--text-muted)" }}>{subtitle}</p>
+            <div className="join-portal-icon-wrapper"><Ticket className="join-portal-icon" size={32} /></div>
+            <h1 className="join-portal-title">Unirte a una campaña</h1>
+            <p style={{ color: "var(--text-muted)" }}>Pega el enlace completo o el token que te ha enviado el director de juego.</p>
           </div>
 
-          {error && <div className="join-portal-error"><p>{error}</p></div>}
+          <form className="join-portal-form" onSubmit={(event) => { event.preventDefault(); continueToInvitation(); }}>
+            <label className="form-label" htmlFor="invitation-token">Invitación</label>
+            <input
+              id="invitation-token"
+              className="form-input"
+              value={invitation}
+              onChange={(event) => setInvitation(event.target.value)}
+              placeholder="https://…/invitations/inv_…"
+              autoComplete="off"
+              autoFocus
+            />
+            {error && <div className="join-portal-error"><p role="alert">{error}</p></div>}
+            <button type="submit" className="btn btn-primary btn-full" disabled={!invitation.trim()}>
+              Continuar <ArrowRight size={16} />
+            </button>
+          </form>
 
-          {invitation && (
-            <section className="glass-card" style={{ marginBottom: 20, padding: 16 }}>
-              <h2 style={{ marginTop: 0 }}>{invitation.campaign.title}</h2>
-              {invitation.campaign.summary && <p style={{ color: "var(--text-muted)" }}>{invitation.campaign.summary}</p>}
-              <p style={{ color: "var(--text-muted)" }}>Rol ofrecido: {invitation.role}</p>
-            </section>
-          )}
-
-          {!authenticated ? (
-            <form className="join-portal-form" onSubmit={(event) => { event.preventDefault(); void authenticate(false); }}>
-              <label className="form-label">Nombre visible</label>
-              <input className="form-input" value={displayName} onChange={(event) => setDisplayName(event.target.value)} autoComplete="name" />
-              <label className="form-label">Email</label>
-              <input className="form-input" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="email" />
-              <label className="form-label">Contraseña</label>
-              <input className="form-input" type="password" minLength={12} maxLength={128} value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" />
-              <button className="btn btn-primary" disabled={loading}>Entrar</button>
-              <button type="button" className="btn btn-secondary" disabled={loading} onClick={() => void authenticate(true)}>Crear cuenta y continuar</button>
-            </form>
-          ) : (
-            <>
-              {hasInvite && (
-                <button className="btn btn-primary btn-full" disabled={loading || !invitation} onClick={() => void acceptInvite()}>
-                  Aceptar invitación
-                </button>
-              )}
-
-              {!hasInvite && (
-                <section style={{ display: "grid", gap: 8 }}>
-                  <h2 style={{ display: "flex", alignItems: "center", gap: 8 }}><Users size={18} /> Tus campañas</h2>
-                  {memberships.length === 0 && <p style={{ color: "var(--text-muted)" }}>Todavía no tienes campañas asociadas.</p>}
-                  {memberships.map((membership) => (
-                    <button className="btn btn-secondary" key={`${membership.campaignId}:${membership.role}`} onClick={() => enterCampaign(membership)}>
-                      {membership.title} · {membership.role}
-                    </button>
-                  ))}
-                </section>
-              )}
-            </>
-          )}
+          <button type="button" className="join-portal-back-btn" onClick={() => void navigate({ to: "/home" })}>
+            <ArrowLeft size={14} style={{ marginRight: 6 }} /> Volver a portales
+          </button>
         </div>
       </div>
     </div>

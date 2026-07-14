@@ -10,7 +10,13 @@ import { hashOpaque, issueOpaqueToken, type WebUser } from "../webSession.js";
 
 function makeInviteUrl(request: FastifyRequest, token: string): string {
   const origin = process.env.DMCC_PUBLIC_ORIGIN ?? `${request.protocol}://${request.headers.host}`;
-  return `${origin.replace(/\/$/, "")}/join/${token}`;
+  return `${origin.replace(/\/$/, "")}/invitations/${token}`;
+}
+
+function invitationRole(value: unknown): "player" | "co_dm" {
+  if (value === undefined || value === "player") return "player";
+  if (value === "co_dm") return "co_dm";
+  throw new HttpError("Invitation role must be player or co_dm", 400);
 }
 
 async function acceptInvitation(token: string, user: WebUser) {
@@ -37,7 +43,6 @@ async function acceptInvitation(token: string, user: WebUser) {
     if (existingMembership) {
       return { campaignId: invitation.campaignId, membership: existingMembership, alreadyAccepted: true };
     }
-
     if (invitation.usesCount >= invitation.maxUses) {
       throw new HttpError("Invitation has no remaining uses", 409);
     }
@@ -62,8 +67,7 @@ async function acceptInvitation(token: string, user: WebUser) {
       createdAt: new Date(),
     };
     await tx.insert(schema.campaignMemberships).values(membership);
-    await tx
-      .update(schema.campaignInvitations)
+    await tx.update(schema.campaignInvitations)
       .set({ usesCount: invitation.usesCount + 1 })
       .where(eq(schema.campaignInvitations.invitationId, invitation.invitationId));
     await tx.insert(schema.campaignInvitationAcceptances).values({
@@ -89,66 +93,57 @@ export async function registerInvitationWebRoutes(server: FastifyInstance): Prom
     Body: { role?: string; maxUses?: number; expiresInHours?: number; label?: string };
   }>("/api/campaigns/:campaignId/invitations", async (request, reply) => {
     const { user } = await requireCampaignOwner(request, request.params.campaignId);
+    const role = invitationRole(request.body?.role);
     const token = issueOpaqueToken("inv");
     const invitationId = createId("inv");
-    const expiresAt = new Date(
-      Date.now() + (request.body?.expiresInHours ?? 168) * 60 * 60 * 1000,
-    );
+    const expiresAt = new Date(Date.now() + (request.body?.expiresInHours ?? 168) * 60 * 60 * 1000);
     await db.insert(schema.campaignInvitations).values({
       invitationId,
       campaignId: request.params.campaignId,
       tokenHash: hashOpaque(token),
-      role: request.body?.role ?? "player",
+      role,
       maxUses: request.body?.maxUses ?? 1,
       usesCount: 0,
       expiresAt,
       createdBy: user.userId,
     });
     reply.code(201);
-    return { invitation: { invitationId, url: makeInviteUrl(request, token), token, expiresAt } };
+    return { invitation: { invitationId, url: makeInviteUrl(request, token), token, expiresAt, role } };
   });
 
-  server.get<{ Params: { campaignId: string } }>(
-    "/api/campaigns/:campaignId/invitations",
-    async (request) => {
-      await requireCampaignOwner(request, request.params.campaignId);
-      const invitations = await db
-        .select()
-        .from(schema.campaignInvitations)
-        .where(eq(schema.campaignInvitations.campaignId, request.params.campaignId))
-        .orderBy(desc(schema.campaignInvitations.createdAt));
-      return {
-        invitations: invitations.map((invitation) => ({
-          invitationId: invitation.invitationId,
-          role: invitation.role,
-          maxUses: invitation.maxUses,
-          usesCount: invitation.usesCount,
-          expiresAt: invitation.expiresAt,
-          revokedAt: invitation.revokedAt,
-          createdAt: invitation.createdAt,
-          status: invitation.revokedAt
-            ? "revoked"
-            : invitation.expiresAt < new Date()
-              ? "expired"
-              : invitation.usesCount >= invitation.maxUses
-                ? "exhausted"
-                : "active",
-        })),
-      };
-    },
-  );
+  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/invitations", async (request) => {
+    await requireCampaignOwner(request, request.params.campaignId);
+    const invitations = await db.select().from(schema.campaignInvitations)
+      .where(eq(schema.campaignInvitations.campaignId, request.params.campaignId))
+      .orderBy(desc(schema.campaignInvitations.createdAt));
+    return {
+      invitations: invitations.map((invitation) => ({
+        invitationId: invitation.invitationId,
+        role: invitation.role,
+        maxUses: invitation.maxUses,
+        usesCount: invitation.usesCount,
+        expiresAt: invitation.expiresAt,
+        revokedAt: invitation.revokedAt,
+        createdAt: invitation.createdAt,
+        status: invitation.revokedAt
+          ? "revoked"
+          : invitation.expiresAt < new Date()
+            ? "expired"
+            : invitation.usesCount >= invitation.maxUses
+              ? "exhausted"
+              : "active",
+      })),
+    };
+  });
 
   server.post<{ Params: { campaignId: string; invitationId: string } }>(
     "/api/campaigns/:campaignId/invitations/:invitationId/revoke",
     async (request) => {
       const { user } = await requireCampaignOwner(request, request.params.campaignId);
-      await db
-        .update(schema.campaignInvitations)
-        .set({ revokedAt: new Date() })
-        .where(and(
-          eq(schema.campaignInvitations.campaignId, request.params.campaignId),
-          eq(schema.campaignInvitations.invitationId, request.params.invitationId),
-        ));
+      await db.update(schema.campaignInvitations).set({ revokedAt: new Date() }).where(and(
+        eq(schema.campaignInvitations.campaignId, request.params.campaignId),
+        eq(schema.campaignInvitations.invitationId, request.params.invitationId),
+      ));
       await db.insert(schema.activityFeed).values({
         campaignId: request.params.campaignId,
         activityId: createId("act"),
@@ -160,45 +155,40 @@ export async function registerInvitationWebRoutes(server: FastifyInstance): Prom
     },
   );
 
-  server.get<{ Params: { token: string } }>(
-    "/api/invitations/:token",
-    async (request, reply) => {
-      const tokenHash = hashOpaque(request.params.token);
-      const [row] = await db
-        .select({ invitation: schema.campaignInvitations, campaign: schema.campaigns })
-        .from(schema.campaignInvitations)
-        .innerJoin(
-          schema.campaigns,
-          eq(schema.campaignInvitations.campaignId, schema.campaigns.campaignId),
-        )
-        .where(eq(schema.campaignInvitations.tokenHash, tokenHash))
-        .limit(1);
-      if (!row || row.invitation.revokedAt || row.invitation.expiresAt < new Date()) {
-        reply.code(404);
-        return { error: "Invitation not found" };
-      }
-      return {
-        campaign: {
-          campaignId: row.campaign.campaignId,
-          title: row.campaign.title,
-          summary: row.campaign.summary,
-        },
-        role: row.invitation.role,
-      };
-    },
-  );
+  server.get<{ Params: { token: string } }>("/api/invitations/:token", async (request, reply) => {
+    const [row] = await db
+      .select({ invitation: schema.campaignInvitations, campaign: schema.campaigns })
+      .from(schema.campaignInvitations)
+      .innerJoin(schema.campaigns, eq(schema.campaignInvitations.campaignId, schema.campaigns.campaignId))
+      .where(eq(schema.campaignInvitations.tokenHash, hashOpaque(request.params.token)))
+      .limit(1);
+    if (!row || row.invitation.revokedAt || row.invitation.expiresAt < new Date()) {
+      reply.code(404);
+      return { error: "Invitation not found" };
+    }
+    return {
+      campaign: {
+        campaignId: row.campaign.campaignId,
+        title: row.campaign.title,
+        summary: row.campaign.summary,
+      },
+      role: row.invitation.role,
+      expiresAt: row.invitation.expiresAt,
+    };
+  });
 
-  server.post<{ Params: { token: string } }>(
-    "/api/invitations/:token/accept",
-    async (request, reply) => {
-      const user = (request as { webUser?: WebUser }).webUser;
-      if (!user) {
-        reply.code(401);
-        return { error: "AUTH_REQUIRED" };
-      }
-      const result = await acceptInvitation(request.params.token, user);
-      campaignEventBus.publish(result.campaignId, { type: "invitation.accepted" });
-      return { ok: true, campaignId: result.campaignId };
-    },
-  );
+  server.post<{ Params: { token: string } }>("/api/invitations/:token/accept", async (request, reply) => {
+    const user = (request as { webUser?: WebUser }).webUser;
+    if (!user) {
+      reply.code(401);
+      return { error: "AUTH_REQUIRED" };
+    }
+    const result = await acceptInvitation(request.params.token, user);
+    campaignEventBus.publish(result.campaignId, { type: "invitation.accepted" });
+    return {
+      ok: true,
+      campaignId: result.campaignId,
+      portal: result.membership.role === "player" ? "player" : "dm",
+    };
+  });
 }
