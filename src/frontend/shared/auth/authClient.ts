@@ -35,7 +35,10 @@ export async function registerAccount(payload: { email: string; password: string
   });
   if (!response.ok) throw new Error(await readApiError(response, "Failed to create account"));
   await response.json().catch(() => null);
-  await login(payload.email, payload.password);
+  const status = await fetchAuthStatus();
+  if (!status.sessionValid) {
+    throw new Error("La cuenta ya existe. Inicia sesión para continuar.");
+  }
 }
 
 export async function login(email: string, password: string): Promise<void> {
