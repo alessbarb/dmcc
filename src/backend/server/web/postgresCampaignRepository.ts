@@ -856,7 +856,7 @@ export class PostgresCampaignRepository {
     return db.transaction((tx) => loadEventsTx(tx, campaignId));
   }
 
-  async executeCommand(campaignId: string, command: Command, options?: { commandId?: string; actorUserId?: string }): Promise<CampaignProjection> {
+  async executeCommand(campaignId: string, command: Command, options?: { commandId?: string; actorUserId?: string; tx?: any }): Promise<CampaignProjection> {
     const commandId = options?.commandId;
     if (!commandId) {
       throw new HttpError("Missing Idempotency-Key header", 400);
@@ -869,7 +869,7 @@ export class PostgresCampaignRepository {
     const normalizedCommand = { ...command, campaignId } as Command;
     const commandHash = createHash("sha256").update(canonicalCommandPayload(normalizedCommand)).digest("hex") || calculateCommandHash(normalizedCommand);
 
-    return db.transaction(async (tx) => {
+    const executeWithTx = async (tx: any) => {
       await acquireCampaignAdvisoryLock(tx, campaignId);
 
       const [existing] = await tx
@@ -949,6 +949,11 @@ export class PostgresCampaignRepository {
       });
 
       return updatedProjection;
-    });
+    };
+
+    if (options?.tx) {
+      return executeWithTx(options.tx);
+    }
+    return db.transaction(async (tx) => executeWithTx(tx));
   }
 }
