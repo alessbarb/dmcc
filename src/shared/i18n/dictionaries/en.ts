@@ -1001,6 +1001,16 @@ export const en = {
     emptyDescription: "Create entities and relations to see the narrative network.",
     openDetail: "View detail",
   },
+  shortcuts: {
+    title: "Shortcuts",
+    empty: "No shortcuts yet. Add entities, sessions, or canvases for quick access.",
+    remove: "Remove from shortcuts",
+    add: "Add to shortcuts",
+    addedToast: "Added to shortcuts.",
+    removedToast: "Removed from shortcuts.",
+    archivedHint: "This target is archived",
+    archivedBadge: "archived",
+  },
   campaignShell: {
     defaultTitle: "Campaign",
     defaultEyebrow: "Campaign archive",

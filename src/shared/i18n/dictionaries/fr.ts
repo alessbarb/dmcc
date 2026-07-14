@@ -774,6 +774,16 @@ export const fr: TranslationDictionary = {
     emptyDescription: "Créez des entités et des relations pour voir le réseau narratif.",
     openDetail: "Voir le détail",
   },
+  shortcuts: {
+    title: "Raccourcis",
+    empty: "Aucun raccourci pour l'instant. Ajoutez des entités, sessions ou canevas pour un accès rapide.",
+    remove: "Retirer des raccourcis",
+    add: "Ajouter aux raccourcis",
+    addedToast: "Ajouté aux raccourcis.",
+    removedToast: "Retiré des raccourcis.",
+    archivedHint: "Cette cible est archivée",
+    archivedBadge: "archivé",
+  },
 
   campaignShell: {
     defaultTitle: "Campagne",

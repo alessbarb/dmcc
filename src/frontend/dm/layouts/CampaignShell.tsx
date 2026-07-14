@@ -24,6 +24,7 @@ import { useKeyboardShortcuts } from "../../shared/hooks/useKeyboardShortcuts.js
 import { MobileDock } from "../../shared/components/MobileDock.js";
 import { orderCampaignMobileDockItems } from "../navigation/campaignNavigation.js";
 import { CAMPAIGN_SECTIONS } from "../navigation/campaignSections.js";
+import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 
 export function CampaignShell() {
   const { campaignId } = useParams({ from: "/campaigns/$campaignId" });
@@ -266,6 +267,12 @@ export function CampaignShell() {
             <p className="sidebar-nav__section-label">{t("campaignShell.mobileTools")}</p>
           )}
           {renderSidebarItems(secondaryNav)}
+          {isDM && campaignId && (
+            <>
+              <div className="sidebar-nav__separator" aria-hidden="true" />
+              <ShortcutsPanel campaignId={campaignId} collapsed={sidebarCollapsed} />
+            </>
+          )}
         </nav>
 
         <div className="sidebar-footer" style={{ padding: sidebarCollapsed ? "12px 8px" : undefined }}>

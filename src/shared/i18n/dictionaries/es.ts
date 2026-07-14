@@ -1012,6 +1012,16 @@ export const es: TranslationDictionary = {
     emptyDescription: "Crea entidades y relaciones para ver la red narrativa.",
     openDetail: "Ver detalle",
   },
+  shortcuts: {
+    title: "Atajos",
+    empty: "Sin atajos todavía. Añade entidades, sesiones o canvas para acceder rápido.",
+    remove: "Quitar de atajos",
+    add: "Añadir a atajos",
+    addedToast: "Añadido a atajos.",
+    removedToast: "Quitado de atajos.",
+    archivedHint: "Este destino está archivado",
+    archivedBadge: "archivado",
+  },
   campaignShell: {
     defaultTitle: "Campaña",
     defaultEyebrow: "Archivo de campaña",
