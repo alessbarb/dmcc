@@ -406,15 +406,28 @@ export const playerProposals = pgTable("player_proposals", {
   }).onDelete("cascade"),
 }));
 
-export const activityFeed = pgTable("activity_feed", {
+export const campaignActivity = pgTable("campaign_activity", {
+  activityId: text("activity_id").primaryKey(),
   campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
-  activityId: text("activity_id").notNull(),
+  sourceKind: text("source_kind").notNull(),
+  sourceId: text("source_id").notNull(),
   type: text("type").notNull(),
-  content: jsonb("content").$type<Record<string, unknown>>().notNull(),
+  category: text("category").notNull(),
+  data: jsonb("data").$type<Record<string, unknown>>().notNull(),
   actorUserId: text("actor_user_id").references(() => users.userId, { onDelete: "set null" }),
-  occurredAt: timestamp("occurred_at").notNull().defaultNow(),
+  sessionId: text("session_id"),
+  targetType: text("target_type"),
+  targetId: text("target_id"),
+  occurredAt: timestamp("occurred_at").notNull(),
 }, (table) => ({
-  pk: primaryKey({ columns: [table.campaignId, table.activityId] }),
+  uniqueSource: uniqueIndex("campaign_activity_campaign_id_source_kind_source_id_key").on(table.campaignId, table.sourceKind, table.sourceId),
+  sourceKindCheck: check("campaign_activity_source_kind_check", sql`${table.sourceKind} IN ('domain_event', 'operation')`),
+  categoryCheck: check("campaign_activity_category_check", sql`${table.category} IN ('session', 'content', 'knowledge', 'story', 'people', 'collaboration', 'operation')`),
+  targetCoherenceCheck: check("campaign_activity_target_coherence_check", sql`(${table.targetType} IS NULL AND ${table.targetId} IS NULL) OR (${table.targetType} IS NOT NULL AND ${table.targetId} IS NOT NULL)`),
+  occurredAtIdx: index("campaign_activity_campaign_id_occurred_at_idx").on(table.campaignId, table.occurredAt.desc()),
+  categoryIdx: index("campaign_activity_campaign_id_category_occurred_at_idx").on(table.campaignId, table.category, table.occurredAt.desc()),
+  targetIdx: index("campaign_activity_campaign_id_target_type_target_id_occurred_at_idx").on(table.campaignId, table.targetType, table.targetId, table.occurredAt.desc()),
+  sessionIdx: index("campaign_activity_campaign_id_session_id_occurred_at_idx").on(table.campaignId, table.sessionId, table.occurredAt.desc()),
 }));
 
 export const notifications = pgTable("notifications", {
