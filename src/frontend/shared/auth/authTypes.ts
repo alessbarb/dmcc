@@ -5,7 +5,7 @@ export interface AuthUser {
   email?: string;
   displayName?: string;
   avatarUrl?: string;
-  isPlatformAdmin?: boolean;
+  roles?: PlatformRole[];
 }
 
 export interface AuthStatus {
