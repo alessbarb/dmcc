@@ -151,7 +151,7 @@ test.describe("Minimum release web API flow", () => {
       data: { role: "player", maxUses: 1, expiresInHours: 1 },
     }), 201);
     expect(invitationResult.invitation.invitationId).toMatch(/^inv_/);
-    expect(invitationResult.invitation.url).toContain("/join/");
+    expect(invitationResult.invitation.url).toContain("/invitations/");
     expect(invitationResult.invitation.token).toEqual(expect.any(String));
 
     const listedInvitations = await expectStatus(await request.get(`/api/campaigns/${campaignId}/invitations`), 200);

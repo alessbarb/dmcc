@@ -3,10 +3,10 @@ import { randomUUID } from "node:crypto";
 
 async function expectAuthenticated(page: Page): Promise<void> {
   await expect.poll(async () => {
-    const response = await page.request.get("/api/auth/status");
+    const response = await page.request.get("/api/auth/session");
     if (!response.ok()) return false;
     const body = await response.json().catch(() => null);
-    return Boolean(body?.sessionValid);
+    return Boolean(body?.user);
   }, {
     message: "The browser session should be authenticated",
     timeout: 15_000,
@@ -31,11 +31,11 @@ test.describe("Critical UI smoke flow", () => {
     await expect(page.locator("#email")).toBeVisible({ timeout: 15_000 });
     await page.locator("#displayName").fill("UI Smoke DM");
     await page.locator("#email").fill(email);
-    await page.locator("#secret").fill(password);
-    await page.locator("#confirmSecret").fill(password);
+    await page.locator("#password").fill(password);
+    await page.locator("#confirmPassword").fill(password);
 
     await Promise.all([
-      page.waitForURL(/\/portal$/, { timeout: 15_000 }),
+      page.waitForURL(/\/home$/, { timeout: 15_000 }),
       page.locator('form button[type="submit"]').click(),
     ]);
     await expectAuthenticated(page);
@@ -82,10 +82,10 @@ test.describe("Critical UI smoke flow", () => {
     await page.goto("/auth/login");
     await expect(page.locator("#email")).toBeVisible({ timeout: 15_000 });
     await page.locator("#email").fill(email);
-    await page.locator("#secret").fill(password);
+    await page.locator("#password").fill(password);
 
     await Promise.all([
-      page.waitForURL(/\/portal$/, { timeout: 15_000 }),
+      page.waitForURL(/\/home$/, { timeout: 15_000 }),
       page.locator('form button[type="submit"]').click(),
     ]);
     await expectAuthenticated(page);
@@ -118,10 +118,10 @@ test.describe("Player invitation UI flow", () => {
     await expect(page.locator("#email")).toBeVisible({ timeout: 15_000 });
     await page.locator("#displayName").fill("UI Invite DM");
     await page.locator("#email").fill(email);
-    await page.locator("#secret").fill(password);
-    await page.locator("#confirmSecret").fill(password);
+    await page.locator("#password").fill(password);
+    await page.locator("#confirmPassword").fill(password);
     await Promise.all([
-      page.waitForURL(/\/portal$/, { timeout: 15_000 }),
+      page.waitForURL(/\/home$/, { timeout: 15_000 }),
       page.locator('form button[type="submit"]').click(),
     ]);
     await expectAuthenticated(page);
@@ -142,7 +142,7 @@ test.describe("Player invitation UI flow", () => {
     await expect(page.getByRole("heading", { name: /player invitations|invitaciones de jugador/i })).toBeVisible();
 
     await page.getByRole("button", { name: /generate invitation link|generar enlace de invitación/i }).click();
-    await expect(page.getByText(/\/join\//)).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText(/\/invitations\//)).toBeVisible({ timeout: 15_000 });
     await expect(page.getByText(/something went wrong/i)).toHaveCount(0);
     await expect(page.getByText(/cannot read properties of undefined \(reading 'slice'\)/i)).toHaveCount(0);
     await expect(page.getByText(/^(active|activa)$/i)).toBeVisible({ timeout: 15_000 });
