@@ -21,6 +21,7 @@ import { registerSearchWebRoutes } from "./routes/searchWebRoutes.js";
 import { registerAdminWebRoutes } from "./routes/adminWebRoutes.js";
 import { registerAnnouncementsWebRoutes } from "./routes/announcementsWebRoutes.js";
 import { registerGameSystemsWebRoutes } from "./routes/gameSystemsWebRoutes.js";
+import { registerPortalContextWebRoutes } from "./routes/portalContextWebRoutes.js";
 
 export interface WebRoutesOptions {
   dataDir: string;
@@ -30,6 +31,7 @@ export interface WebRoutesOptions {
 /** Registers the PostgreSQL-backed multi-user web API surface. */
 export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOptions): void {
   registerAuthWebRoutes(server);
+  registerPortalContextWebRoutes(server);
   void registerAccountWebRoutes(server);
   void registerHealthWebRoutes(server);
   void registerRoleScopedCampaignListWebRoutes(server);
