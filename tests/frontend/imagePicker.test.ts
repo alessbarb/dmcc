@@ -172,7 +172,7 @@ describe("IdentityEditor wiring", () => {
 
 describe("PlayersPage wiring", () => {
   it("uses ImagePickerButton and removes separate imageUrl/avatarUrl inputs", () => {
-    const src = read("src/frontend/dm/pages/PlayersPage.tsx");
+    const src = read("src/frontend/dm/people/group/GroupView.tsx");
     expect(src).toContain("ImagePickerButton");
     expect(src).toContain('catalog="avatars"');
     expect(src).not.toContain('placeholder="https://example.com/avatar.png"');

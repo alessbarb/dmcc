@@ -117,7 +117,7 @@ describe("frontend contracts", () => {
       }
     }
 
-    expect(registeredDestinations).toContain("command-center");
+    expect(registeredDestinations).toContain("overview");
     expect(registeredDestinations).toContain("rules");
     expect(registeredDestinations).not.toContain("dashboard");
     expect(registeredDestinations).not.toContain("what-now");
@@ -168,7 +168,7 @@ describe("frontend contracts", () => {
 
     const consumers: Array<[string, RegExp]> = [
       ["src/frontend/dm/canvas/pages/CanvasPage.tsx", /session\.status === "planned"/],
-      ["src/frontend/dm/pages/CommandCenterPage.tsx", /session\.status === "planned"/],
+      ["src/frontend/dm/overview/OverviewPage.tsx", /session\.status === "planned"/],
       ["src/frontend/dm/sessions/SessionPage.tsx", /session\.status === "planned"/],
       ["src/frontend/dm/hub/useDmHubDashboard.ts", /record\.status === "planned"/],
       ["src/frontend/dm/hub/dmHubTypes.ts", /"running" \| "paused" \| "planned"/],

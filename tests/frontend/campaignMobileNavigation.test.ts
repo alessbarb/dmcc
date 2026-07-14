@@ -6,31 +6,27 @@ import {
 
 describe("campaign mobile navigation", () => {
   const campaignDestinations = [
-    "command-center",
+    "overview",
     "session",
-    "entities",
-    "canvas",
-    "graph",
-    "timeline",
-    "search",
-    "boards",
-    "players",
+    "library",
+    "map",
+    "story",
+    "people",
     "messages",
     "rules",
-    "knowledge",
     "settings",
   ].map((path) => ({ path }));
 
-  it("keeps Canvas directly accessible from the mobile campaign dock", () => {
+  it("keeps overview, session, library, map directly accessible from the mobile campaign dock", () => {
     const orderedPaths = orderCampaignMobileDockItems(campaignDestinations).map((item) => item.path);
 
     expect(orderedPaths.slice(0, 4)).toEqual([
-      "command-center",
+      "overview",
       "session",
-      "canvas",
-      "entities",
+      "library",
+      "map",
     ]);
-    expect(CAMPAIGN_MOBILE_DOCK_PRIORITY).toContain("canvas");
+    expect(CAMPAIGN_MOBILE_DOCK_PRIORITY).toContain("map");
   });
 
   it("keeps every campaign destination reachable exactly once", () => {
