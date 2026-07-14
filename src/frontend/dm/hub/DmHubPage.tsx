@@ -42,8 +42,9 @@ import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js"
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 function formatCampaignSystem(system?: string) {
-  if (system === "dnd_srd_5_2_1") return "D&D 5e";
-  if (system === "generic_fantasy_d20") return "d20 Fantasy";
+  if (system === "dnd_5e") return "D&D 5e";
+  if (system === "pathfinder_2e") return "Pathfinder 2e";
+  if (system === "shadowdark") return "Shadowdark";
   return "Custom";
 }
 
@@ -110,7 +111,7 @@ export function DmHubPage() {
 
   // Create campaign form
   const [newCampaignTitle, setNewCampaignTitle] = useState("");
-  const [newCampaignSystem, setNewCampaignSystem] = useState("generic_fantasy_d20");
+  const [newCampaignSystem, setNewCampaignSystem] = useState("custom");
   const [newCampaignCoverUrl, setNewCampaignCoverUrl] = useState("");
   const [isCreatingCampaign, setIsCreatingCampaign] = useState(false);
   const [createCampaignError, setCreateCampaignError] = useState<string | null>(null);
@@ -131,7 +132,7 @@ export function DmHubPage() {
   const [editTarget, setEditTarget] = useState<{ campaignId: string; title: string; summary?: string; system?: string; coverUrl?: string } | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editSummary, setEditSummary] = useState("");
-  const [editSystem, setEditSystem] = useState("generic_fantasy_d20");
+  const [editSystem, setEditSystem] = useState("custom");
   const [editCoverUrl, setEditCoverUrl] = useState("");
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState<string | null>(null);
@@ -156,7 +157,7 @@ export function DmHubPage() {
         const { fetchAuthStatus } = await import("../../shared/auth/authClient.js");
         const status = await fetchAuthStatus();
         if (!status.sessionValid) {
-          await navigate({ to: status.accountConfigured ? "/dm/login" : "/dm/setup" });
+          await navigate({ to: "/auth/login" });
           return;
         }
         setDmProfile(status.user || null);
@@ -207,7 +208,7 @@ export function DmHubPage() {
   const handleSwitchDm = () => {
     runDmHubAction((async () => {
       await logout();
-      await navigate({ to: "/dm/login" });
+      await navigate({ to: "/auth/login" });
     })(), "No se pudo cambiar de DM.");
   };
 
@@ -223,7 +224,7 @@ export function DmHubPage() {
   };
 
   const navigateToDmSetup = () => {
-    runDmHubAction(navigate({ to: "/dm/setup" }), "No se pudo abrir la configuración de DM.");
+    runDmHubAction(navigate({ to: "/auth/register" }), "No se pudo abrir la configuración de DM.");
   };
 
   const navigateToPremade = (templateId: string) => {
@@ -315,7 +316,7 @@ export function DmHubPage() {
     setEditTarget(campaign);
     setEditTitle(campaign.title);
     setEditSummary(campaign.summary ?? "");
-    setEditSystem(campaign.system ?? "generic_fantasy_d20");
+    setEditSystem(campaign.system ?? "custom");
     setEditCoverUrl(campaign.coverUrl ?? "");
     setEditError(null);
   };
@@ -987,8 +988,9 @@ export function DmHubPage() {
                   value={newCampaignSystem}
                   onChange={(e) => setNewCampaignSystem(e.target.value)}
                 >
-                  <option value="generic_fantasy_d20">{t("landing.systemFantasyD20Generic")}</option>
-                  <option value="dnd_srd_5_2_1">{t("landing.systemDnD")}</option>
+                  <option value="dnd_5e">{t("landing.systemDnD")}</option>
+                  <option value="pathfinder_2e">Pathfinder 2e</option>
+                  <option value="shadowdark">Shadowdark</option>
                   <option value="custom">{t("landing.systemCustom")}</option>
                 </select>
               </div>
@@ -1170,8 +1172,9 @@ export function DmHubPage() {
             <div className="form-group">
               <label className="form-label">{t("landing.systemLabel")}</label>
               <select className="form-select" value={editSystem} onChange={(e) => setEditSystem(e.target.value)}>
-                <option value="generic_fantasy_d20">{t("landing.systemFantasyD20Generic")}</option>
-                <option value="dnd_srd_5_2_1">{t("landing.systemDnD")}</option>
+                <option value="dnd_5e">{t("landing.systemDnD")}</option>
+                <option value="pathfinder_2e">Pathfinder 2e</option>
+                <option value="shadowdark">Shadowdark</option>
                 <option value="custom">{t("landing.systemCustom")}</option>
               </select>
             </div>

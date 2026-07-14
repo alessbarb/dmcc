@@ -3,7 +3,6 @@ import { apiFetch, readApiError } from "../api/apiClient.js";
 
 function unauthenticatedStatus(): AuthStatus {
   return {
-    accountConfigured: false,
     sessionValid: false,
     user: null,
     memberships: [],
@@ -19,26 +18,24 @@ export async function fetchAuthStatus(): Promise<AuthStatus> {
   const status = await res.json();
   const user: AuthUser | null = status.user ?? null;
   const sessionValid = Boolean(status.sessionValid ?? user);
-  const accountConfigured = Boolean(status.accountConfigured);
   return {
-    accountConfigured,
     sessionValid,
     user,
     memberships: status.memberships ?? [],
   };
 }
 
-export async function setupDmAccount(payload: { email: string; secret: string; displayName?: string }): Promise<void> {
+export async function registerAccount(payload: { email: string; password: string; displayName?: string }): Promise<void> {
   const register = await apiFetch("/api/auth/register", {
     init: {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: payload.email, password: payload.secret, displayName: payload.displayName }),
+      body: JSON.stringify({ email: payload.email, password: payload.password, displayName: payload.displayName }),
     },
   });
   if (!register.ok) throw new Error(await readApiError(register, "Failed to create account"));
   await register.json().catch(() => null);
-  await login(payload.email, payload.secret);
+  await login(payload.email, payload.password);
 }
 
 export async function login(email: string, secret: string): Promise<void> {

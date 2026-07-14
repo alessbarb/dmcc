@@ -55,7 +55,7 @@ export const dnd521PlayerCharacterMetadataSchema = z.object({
 });
 
 export const dnd521Rules: RuleSystem = {
-  systemCode: "dnd_srd_5_2_1",
+  systemCode: "dnd_5e",
   systemName: "Dungeons & Dragons SRD 5.2.1",
   characterMetadataSchema: dnd521PlayerCharacterMetadataSchema,
   getInitialCharacterMetadata() {

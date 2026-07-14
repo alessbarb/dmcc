@@ -130,7 +130,7 @@ export function ResetPasswordPage() {
             </button>
           </form>
 
-          <button type="button" className="join-portal-back-btn" onClick={() => { void navigate({ to: "/dm/login" }); }}>
+          <button type="button" className="join-portal-back-btn" onClick={() => { void navigate({ to: "/auth/login" }); }}>
             <ArrowLeft size={14} style={{ marginRight: "6px" }} />
             {t("resetPassword.backToLogin")}
           </button>

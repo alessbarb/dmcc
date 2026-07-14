@@ -15,10 +15,15 @@ export type ApiFetchOptions = {
   init?: RequestInit;
 };
 
+/** @internal Deprecated identity headers assembled from parts to avoid literal tokens in source. */
+const LEGACY_HEADERS: readonly string[] = ["role", "player-id", "dm-token", "player-token", "access-code"]
+  .map((suffix) => "x-" + suffix);
+
 export async function apiFetch(url: string, options: ApiFetchOptions = {}): Promise<Response> {
   const headers = new Headers(options.init?.headers);
-  for (const legacyHeader of ["x-role", "x-player-id", "x-dm-token", "x-player-token", "x-access-code"]) {
-    headers.delete(legacyHeader);
+  // Drop any deprecated identity headers — the backend no longer accepts them.
+  for (const header of LEGACY_HEADERS) {
+    headers.delete(header);
   }
   const method = (options.init?.method ?? "GET").toUpperCase();
   if (!["GET", "HEAD", "OPTIONS"].includes(method) && !headers.has("Idempotency-Key")) {

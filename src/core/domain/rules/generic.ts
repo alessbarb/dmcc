@@ -48,7 +48,7 @@ export const genericPlayerCharacterMetadataSchema = z.object({
 });
 
 export const genericRules: RuleSystem = {
-  systemCode: "generic_fantasy_d20",
+  systemCode: "custom",
   systemName: "Genérico d20",
   characterMetadataSchema: genericPlayerCharacterMetadataSchema,
   getInitialCharacterMetadata() {

@@ -16,7 +16,6 @@ async function seedCampaignWithChildren(): Promise<void> {
     emailHash: "cascade-owner",
     displayName: "Owner",
     passwordHash: "hash",
-    passwordSalt: "salt",
   });
   await db.insert(schema.workspaces).values({ workspaceId: ids.workspace, name: "Cascade workspace", ownerId: ids.owner });
   await db.insert(schema.campaigns).values({ campaignId: ids.campaign, title: "Cascade campaign", workspaceId: ids.workspace, ownerId: ids.owner });

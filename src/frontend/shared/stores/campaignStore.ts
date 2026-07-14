@@ -20,7 +20,7 @@ import {
   readApiError,
 } from "../api.js";
 import { readNdjsonStream } from "../api/readNdjsonStream.js";
-import type { ImportStage, PremadeImportEvent } from "@shared/premadeImportTypes.js";
+import type { ImportStage, CampaignTemplateImportEvent } from "@shared/templateImportTypes.js";
 
 type ActiveCampaignRole = "dm" | "player";
 
@@ -603,7 +603,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       let campaignId: string | null = null;
       let successEventReceived = false;
 
-      await readNdjsonStream<PremadeImportEvent>(res, (event) => {
+      await readNdjsonStream<CampaignTemplateImportEvent>(res, (event) => {
         if (event.type === "started") {
           campaignId = event.campaignId;
           set((s) => ({

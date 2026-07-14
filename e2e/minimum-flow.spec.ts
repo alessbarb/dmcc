@@ -55,11 +55,11 @@ test.describe("Minimum release web API flow", () => {
     const initialDashboard = await expectStatus(await request.get("/api/dm/dashboard"), 200);
     expect(initialDashboard.campaigns).toEqual([]);
 
-    const premades = await expectStatus(await request.get("/api/premade-campaigns?locale=en"), 200);
+    const premades = await expectStatus(await request.get("/api/campaign-templates?locale=en"), 200);
     expect(premades.templates.length).toBeGreaterThan(0);
     const firstPremade = premades.templates[0];
     const premadeDetail = await expectStatus(
-      await request.get(`/api/premade-campaigns/${encodeURIComponent(firstPremade.templateId)}?locale=en`),
+      await request.get(`/api/campaign-templates/${encodeURIComponent(firstPremade.templateId)}?locale=en`),
       200,
     );
     expect(premadeDetail.templateId).toBe(firstPremade.templateId);
@@ -67,7 +67,7 @@ test.describe("Minimum release web API flow", () => {
     const createdCampaign = await expectStatus(await request.post("/api/campaigns", {
       data: {
         title: campaignTitle,
-        system: "generic_fantasy_d20",
+        system: "custom",
       },
     }), 201);
     const campaignId = createdCampaign.campaignId;

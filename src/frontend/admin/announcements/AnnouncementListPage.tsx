@@ -1,0 +1,305 @@
+import React, { useEffect, useState } from "react";
+import { AdminShell } from "../AdminShell.js";
+import {
+  fetchAdminAnnouncements,
+  createAnnouncement,
+  updateAnnouncement,
+  archiveAnnouncement,
+  type AnnouncementSummary,
+  type AnnouncementInput,
+} from "../adminClient.js";
+import { Plus, Archive, Power, Loader, X } from "lucide-react";
+
+const EMPTY_FORM: AnnouncementInput = {
+  content: { title: "", body: "" },
+  kind: "info",
+  isEnabled: true,
+  showOnLanding: true,
+  showOnDashboard: true,
+  isDismissible: true,
+  priority: 0,
+  startsAt: null,
+  expiresAt: null,
+};
+
+export function AnnouncementListPage() {
+  const [announcements, setAnnouncements] = useState<AnnouncementSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState<AnnouncementInput>(EMPTY_FORM);
+  const [saving, setSaving] = useState(false);
+
+  const loadAnnouncements = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchAdminAnnouncements({});
+      setAnnouncements(data.announcements);
+    } catch (err: any) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void loadAnnouncements();
+  }, []);
+
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.content.title.trim() || !form.content.body.trim()) {
+      alert("Title and body are required.");
+      return;
+    }
+    setSaving(true);
+    try {
+      await createAnnouncement(form);
+      setForm(EMPTY_FORM);
+      setShowForm(false);
+      await loadAnnouncements();
+    } catch (err: any) {
+      alert(`Error creating announcement: ${err.message}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleToggleEnabled = async (ann: AnnouncementSummary) => {
+    setActionLoading(ann.announcementId);
+    try {
+      await updateAnnouncement(ann.announcementId, { isEnabled: !ann.isEnabled });
+      await loadAnnouncements();
+    } catch (err: any) {
+      alert(`Error updating announcement: ${err.message}`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleArchive = async (announcementId: string) => {
+    if (!confirm("Archive this announcement? It will stop being shown publicly.")) return;
+    setActionLoading(announcementId);
+    try {
+      await archiveAnnouncement(announcementId);
+      await loadAnnouncements();
+    } catch (err: any) {
+      alert(`Error archiving announcement: ${err.message}`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const kindColor = (kind: AnnouncementSummary["kind"]) => {
+    if (kind === "warning") return "#e05624";
+    if (kind === "maintenance") return "#c42a2a";
+    return "var(--gold)";
+  };
+
+  return (
+    <AdminShell>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <header style={{ marginBottom: "32px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Announcements</h1>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+              Publish informational banners shown across the landing page and dashboard.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowForm((v) => !v)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "10px 16px",
+              borderRadius: "8px",
+              backgroundColor: showForm ? "rgba(255,255,255,0.05)" : "var(--gold)",
+              color: showForm ? "inherit" : "var(--bg-main)",
+              border: "1px solid var(--border)",
+              cursor: "pointer",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+            }}
+          >
+            {showForm ? <X size={16} /> : <Plus size={16} />}
+            <span>{showForm ? "Cancel" : "New Announcement"}</span>
+          </button>
+        </header>
+
+        {error && (
+          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+            <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
+          </div>
+        )}
+
+        {showForm && (
+          <form
+            onSubmit={(e) => { void handleCreate(e); }}
+            style={{
+              backgroundColor: "var(--bg-card)",
+              padding: "20px",
+              borderRadius: "12px",
+              border: "1px solid var(--border)",
+              marginBottom: "24px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Title"
+              value={form.content.title}
+              onChange={(e) => setForm({ ...form, content: { ...form.content, title: e.target.value } })}
+              style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid var(--border)", color: "inherit", fontSize: "0.85rem" }}
+            />
+            <textarea
+              placeholder="Message body"
+              value={form.content.body}
+              onChange={(e) => setForm({ ...form, content: { ...form.content, body: e.target.value } })}
+              rows={3}
+              style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid var(--border)", color: "inherit", fontSize: "0.85rem", resize: "vertical" }}
+            />
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+              <select
+                value={form.kind}
+                onChange={(e) => setForm({ ...form, kind: e.target.value as AnnouncementInput["kind"] })}
+                style={{ padding: "8px 12px", borderRadius: "8px", backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid var(--border)", color: "inherit", fontSize: "0.85rem" }}
+              >
+                <option value="info">Info</option>
+                <option value="warning">Warning</option>
+                <option value="maintenance">Maintenance</option>
+              </select>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                <input
+                  type="checkbox"
+                  checked={form.showOnLanding ?? true}
+                  onChange={(e) => setForm({ ...form, showOnLanding: e.target.checked })}
+                />
+                Show on landing
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                <input
+                  type="checkbox"
+                  checked={form.showOnDashboard ?? true}
+                  onChange={(e) => setForm({ ...form, showOnDashboard: e.target.checked })}
+                />
+                Show on dashboard
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                <input
+                  type="checkbox"
+                  checked={form.isDismissible ?? true}
+                  onChange={(e) => setForm({ ...form, isDismissible: e.target.checked })}
+                />
+                Dismissible
+              </label>
+            </div>
+            <button
+              type="submit"
+              disabled={saving}
+              style={{
+                alignSelf: "flex-start",
+                padding: "10px 20px",
+                borderRadius: "8px",
+                backgroundColor: "var(--gold)",
+                color: "var(--bg-main)",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "0.85rem",
+                fontWeight: 600,
+              }}
+            >
+              {saving ? "Publishing..." : "Publish Announcement"}
+            </button>
+          </form>
+        )}
+
+        {loading ? (
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--text-muted)" }}>
+            Loading announcements...
+          </div>
+        ) : announcements.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--text-muted)" }}>
+            No announcements yet.
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {announcements.map((ann) => (
+              <div
+                key={ann.announcementId}
+                style={{
+                  backgroundColor: "var(--bg-card)",
+                  border: "1px solid var(--border)",
+                  borderLeft: `3px solid ${kindColor(ann.kind)}`,
+                  borderRadius: "8px",
+                  padding: "16px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "16px",
+                  opacity: ann.archivedAt ? 0.5 : 1,
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                    <strong style={{ fontSize: "0.95rem" }}>{ann.content.title}</strong>
+                    <span style={{ fontSize: "0.7rem", textTransform: "uppercase", color: kindColor(ann.kind), fontWeight: 700 }}>{ann.kind}</span>
+                    {ann.archivedAt && <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>(archived)</span>}
+                  </div>
+                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>{ann.content.body}</p>
+                </div>
+                {!ann.archivedAt && (
+                  <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+                    <button
+                      onClick={() => void handleToggleEnabled(ann)}
+                      disabled={actionLoading !== null}
+                      title={ann.isEnabled ? "Disable" : "Enable"}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "6px 12px",
+                        borderRadius: "6px",
+                        backgroundColor: ann.isEnabled ? "rgba(40, 167, 69, 0.1)" : "rgba(255,255,255,0.03)",
+                        border: `1px solid ${ann.isEnabled ? "rgba(40, 167, 69, 0.3)" : "var(--border)"}`,
+                        color: ann.isEnabled ? "var(--green)" : "inherit",
+                        cursor: "pointer",
+                        fontSize: "0.8rem",
+                      }}
+                    >
+                      {actionLoading === ann.announcementId ? <Loader size={12} className="spin-animation" /> : <Power size={12} />}
+                      <span>{ann.isEnabled ? "Enabled" : "Disabled"}</span>
+                    </button>
+                    <button
+                      onClick={() => void handleArchive(ann.announcementId)}
+                      disabled={actionLoading !== null}
+                      title="Archive"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "6px 12px",
+                        borderRadius: "6px",
+                        backgroundColor: "rgba(220, 53, 69, 0.1)",
+                        border: "1px solid rgba(220, 53, 69, 0.3)",
+                        color: "var(--red)",
+                        cursor: "pointer",
+                        fontSize: "0.8rem",
+                      }}
+                    >
+                      <Archive size={12} />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </AdminShell>
+  );
+}

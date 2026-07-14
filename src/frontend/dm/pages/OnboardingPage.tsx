@@ -4,10 +4,10 @@ import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
 const SYSTEMS = [
-  { value: "generic_fantasy_d20", label: "D&D 5e / D20 Fantasy" },
-  { value: "pathfinder2e", label: "Pathfinder 2e" },
+  { value: "dnd_5e", label: "D&D 5e / D20 Fantasy" },
+  { value: "pathfinder_2e", label: "Pathfinder 2e" },
   { value: "shadowdark", label: "Shadowdark" },
-  { value: "generic", label: "Sistema personalizado" },
+  { value: "custom", label: "Sistema personalizado" },
 ];
 
 export function OnboardingPage() {
@@ -16,7 +16,7 @@ export function OnboardingPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [title, setTitle] = useState("");
-  const [system, setSystem] = useState("generic_fantasy_d20");
+  const [system, setSystem] = useState("dnd_5e");
   const [template, setTemplate] = useState<"empty" | "starter">("empty");
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);

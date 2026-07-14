@@ -101,7 +101,7 @@ describe("frontend contracts", () => {
     const registeredDestinations = registeredCampaignDestinations(routerSource);
     const unknownReferences: string[] = [];
     const campaignNavigationPattern =
-      /(?<!\/api)(?<!\/player)\/campaigns\/(?:\$\{[^}]+\}|\$campaignId)\/([a-z0-9-]+)/g;
+      /(?<!\/api)(?<!\/player)(?<!\/admin)\/campaigns\/(?:\$\{[^}]+\}|\$campaignId)\/([a-z0-9-]+)/g;
 
     for (const sourcePath of listSourceFiles(FRONTEND_ROOT)) {
       const source = readFileSync(sourcePath, "utf8");

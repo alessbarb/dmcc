@@ -15,8 +15,8 @@ const ids = {
 
 async function seedCampaigns(): Promise<void> {
   await db.insert(schema.users).values([
-    { userId: ids.owner, emailNormalized: "integrity-owner@example.test", emailHash: "integrity-owner", displayName: "Owner", passwordHash: "hash", passwordSalt: "salt" },
-    { userId: ids.viewer, emailNormalized: "integrity-viewer@example.test", emailHash: "integrity-viewer", displayName: "Viewer", passwordHash: "hash", passwordSalt: "salt" },
+    { userId: ids.owner, emailNormalized: "integrity-owner@example.test", emailHash: "integrity-owner", displayName: "Owner", passwordHash: "hash" },
+    { userId: ids.viewer, emailNormalized: "integrity-viewer@example.test", emailHash: "integrity-viewer", displayName: "Viewer", passwordHash: "hash" },
   ]);
   await db.insert(schema.workspaces).values({ workspaceId: ids.workspace, name: "Integrity workspace", ownerId: ids.owner });
   await db.insert(schema.campaigns).values([

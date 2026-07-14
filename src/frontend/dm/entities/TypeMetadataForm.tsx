@@ -240,7 +240,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
         </div>
       );
     case "player_character":
-      return campaignSystem === "dnd_srd_5_2_1" ? (
+      return campaignSystem === "dnd_5e" ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
           <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Ficha de personaje (D&D 5.2.1)</h4>
 

@@ -1,4 +1,4 @@
-import type { Campaign } from "./campaign/campaign.js";
+import type { Campaign } from "./campaign/types.js";
 import type { Entity } from "./entity/entity.js";
 import type { Relation } from "./relation/relation.js";
 import type { Fact } from "./fact/fact.js";

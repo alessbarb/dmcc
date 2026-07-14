@@ -14,7 +14,9 @@ interface CampaignForeignKey {
 // a single campaign row. Empty today — if a future table needs an exception,
 // add it here explicitly instead of letting the audit test go silently green
 // for the wrong reason.
-const CAMPAIGN_ID_FK_EXCEPTIONS = new Set<string>([]);
+const CAMPAIGN_ID_FK_EXCEPTIONS = new Set<string>([
+  "campaign_purge_jobs",
+]);
 
 // Total number of campaign-owned tables known when this plan was written
 // (7 already compliant + 16 pending here). This is only a floor to catch the

@@ -127,7 +127,7 @@ test.describe("Player invitation UI flow", () => {
     await expectAuthenticated(page);
 
     const campaignResponse = await page.request.post("/api/campaigns", {
-      data: { title: `UI Invitation ${suffix}`, system: "generic_fantasy_d20" },
+      data: { title: `UI Invitation ${suffix}`, system: "custom" },
     });
     expect(campaignResponse.ok()).toBe(true);
     const campaign = await campaignResponse.json();
