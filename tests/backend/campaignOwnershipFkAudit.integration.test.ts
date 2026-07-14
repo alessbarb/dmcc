@@ -141,7 +141,7 @@ const CAMPAIGN_OWNED_DRIZZLE_TABLES = [
   schema.liveTables,
   schema.campaignInvitations,
   schema.campaignNotes,
-  schema.activityFeed,
+  schema.campaignActivity,
   schema.attachments,
   playerPortalStates,
   playerPortalResources,

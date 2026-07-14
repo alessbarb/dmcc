@@ -13,7 +13,7 @@ assertLocalTestDatabase("Vitest integration tests");
 async function cleanDatabase() {
   await db.delete(campaignMessageReads);
   await db.delete(campaignMessages);
-  await db.delete(schema.activityFeed);
+  await db.delete(schema.campaignActivity);
   await db.delete(schema.attachments);
   await db.delete(schema.campaignInvitationAcceptances);
   await db.delete(schema.campaignInvitations);
