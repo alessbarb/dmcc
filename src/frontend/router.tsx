@@ -362,10 +362,15 @@ const sessionRoute = createRoute({
 const libraryRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/library",
+  component: withSuspense(LibraryWorkspacePageLazy),
+});
+const libraryIndexRoute = createRoute({
+  getParentRoute: () => libraryRoute,
+  path: "/",
   beforeLoad: ({ params }) => {
     throw redirect({ to: "/campaigns/$campaignId/library/list", params });
   },
-  component: withSuspense(LibraryWorkspacePageLazy),
+  component: () => null,
 });
 const libraryListRoute = createRoute({
   getParentRoute: () => libraryRoute,
@@ -382,10 +387,15 @@ const libraryBoardsRoute = createRoute({
 const mapRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/map",
+  component: withSuspense(CampaignMapWorkspacePageLazy),
+});
+const mapIndexRoute = createRoute({
+  getParentRoute: () => mapRoute,
+  path: "/",
   beforeLoad: ({ params }) => {
     throw redirect({ to: "/campaigns/$campaignId/map/canvas", params });
   },
-  component: withSuspense(CampaignMapWorkspacePageLazy),
+  component: () => null,
 });
 const mapCanvasRoute = createRoute({
   getParentRoute: () => mapRoute,
@@ -402,10 +412,15 @@ const mapNetworkRoute = createRoute({
 const storyRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/story",
+  component: withSuspense(StoryWorkspacePageLazy),
+});
+const storyIndexRoute = createRoute({
+  getParentRoute: () => storyRoute,
+  path: "/",
   beforeLoad: ({ params }) => {
     throw redirect({ to: "/campaigns/$campaignId/story/history", params });
   },
-  component: withSuspense(StoryWorkspacePageLazy),
+  component: () => null,
 });
 const storyHistoryRoute = createRoute({
   getParentRoute: () => storyRoute,
@@ -417,10 +432,15 @@ const storyHistoryRoute = createRoute({
 const peopleRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/people",
+  component: withSuspense(PeopleWorkspacePageLazy),
+});
+const peopleIndexRoute = createRoute({
+  getParentRoute: () => peopleRoute,
+  path: "/",
   beforeLoad: ({ params }) => {
     throw redirect({ to: "/campaigns/$campaignId/people/group", params });
   },
-  component: withSuspense(PeopleWorkspacePageLazy),
+  component: () => null,
 });
 const peopleGroupRoute = createRoute({
   getParentRoute: () => peopleRoute,
@@ -561,17 +581,21 @@ const routeTree = rootRoute.addChildren([
     overviewRoute,
     sessionRoute,
     libraryRoute.addChildren([
+      libraryIndexRoute,
       libraryListRoute,
       libraryBoardsRoute,
     ]),
     mapRoute.addChildren([
+      mapIndexRoute,
       mapCanvasRoute,
       mapNetworkRoute,
     ]),
     storyRoute.addChildren([
+      storyIndexRoute,
       storyHistoryRoute,
     ]),
     peopleRoute.addChildren([
+      peopleIndexRoute,
       peopleGroupRoute,
       peopleInvitationsRoute,
       peopleKnowledgeRoute,

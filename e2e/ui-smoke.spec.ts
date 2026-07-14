@@ -59,11 +59,11 @@ test.describe("Critical UI smoke flow", () => {
     await createDialog.locator("input.form-input").first().fill(campaignTitle);
 
     await Promise.all([
-      page.waitForURL(/\/campaigns\/[^/]+\/command-center$/, { timeout: 15_000 }),
+      page.waitForURL(/\/campaigns\/[^/]+\/overview$/, { timeout: 15_000 }),
       createDialog.locator('button[type="submit"]').click(),
     ]);
 
-    const campaignId = page.url().match(/\/campaigns\/([^/]+)\/command-center$/)?.[1];
+    const campaignId = page.url().match(/\/campaigns\/([^/]+)\/overview$/)?.[1];
     expect(campaignId).toBeTruthy();
 
     const rulesResponsePromise = page.waitForResponse((response) => {
@@ -94,10 +94,10 @@ test.describe("Critical UI smoke flow", () => {
       const url = new URL(response.url());
       return url.pathname === `/api/campaigns/${campaignId}` && response.request().method() === "GET";
     });
-    await page.goto(`/campaigns/${campaignId}/command-center`);
+    await page.goto(`/campaigns/${campaignId}/overview`);
     const campaignResponse = await campaignResponsePromise;
     expect(campaignResponse.ok()).toBe(true);
-    await expect(page).toHaveURL(new RegExp(`/campaigns/${campaignId}/command-center$`));
+    await expect(page).toHaveURL(new RegExp(`/campaigns/${campaignId}/overview$`));
   });
 });
 
@@ -133,13 +133,13 @@ test.describe("Player invitation UI flow", () => {
     const campaign = await campaignResponse.json();
     const campaignId = campaign.campaignId as string;
 
-    await page.goto(`/campaigns/${campaignId}/players`);
+    await page.goto(`/campaigns/${campaignId}/people/group`);
     await expect(page.getByRole("heading", {
       level: 1,
-      name: /players and characters|jugadores y personajes/i,
+      name: /people|jugadores/i,
     })).toBeVisible({ timeout: 15_000 });
-    await page.getByRole("button", { name: /invite player|invitar jugador/i }).click();
-    await expect(page.getByRole("heading", { name: /player invitations|invitaciones de jugador/i })).toBeVisible();
+    await page.getByRole("link", { name: /player invitations|invitaciones de jugador/i }).click();
+    await expect(page.getByRole("heading", { name: /player invitations|invitaciones de jugador/i, level: 3 })).toBeVisible();
 
     await page.getByRole("button", { name: /generate invitation link|generar enlace de invitación/i }).click();
     await expect(page.getByText(/\/invitations\//)).toBeVisible({ timeout: 15_000 });
