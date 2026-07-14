@@ -27,9 +27,9 @@ export async function registerCommandCenterWebRoutes(server: FastifyInstance): P
           db.select().from(schema.playerProposals).where(eq(schema.playerProposals.campaignId, campaignId)),
           db
             .select()
-            .from(schema.activityFeed)
-            .where(eq(schema.activityFeed.campaignId, campaignId))
-            .orderBy(desc(schema.activityFeed.occurredAt))
+            .from(schema.campaignActivity)
+            .where(eq(schema.campaignActivity.campaignId, campaignId))
+            .orderBy(desc(schema.campaignActivity.occurredAt), desc(schema.campaignActivity.activityId))
             .limit(12),
         ]);
 
@@ -122,7 +122,14 @@ export async function registerCommandCenterWebRoutes(server: FastifyInstance): P
         openObjectives: openObjectives.slice(0, 12),
         unresolvedClues: unresolvedClues.slice(0, 12),
         pendingProposals: pendingProposals.slice(0, 12),
-        recentActivity: activity,
+        recentActivity: activity.map((row) => ({
+          activityId: row.activityId,
+          campaignId: row.campaignId,
+          type: row.type,
+          content: row.data,
+          actorUserId: row.actorUserId,
+          occurredAt: row.occurredAt,
+        })),
       };
     },
   );

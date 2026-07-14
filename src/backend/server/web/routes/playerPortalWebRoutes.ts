@@ -14,6 +14,7 @@ import {
 import { requireCampaignMembership } from "../webAccess.js";
 import type { WebUser } from "../webSession.js";
 import { HttpError } from "../../errors.js";
+import { recordOperationalActivity } from "../../activity/recordOperationalActivity.js";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -314,7 +315,14 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
     const title = asString(body.title, asString(body.label, "Objetivo personal")).slice(0, 180);
     const linkedEntityIds = Array.isArray(body.linkedEntityIds) ? body.linkedEntityIds.filter((id): id is string => typeof id === "string") : [];
     await db.insert(schema.campaignObjectives).values({ campaignId: request.params.campaignId, objectiveId, playerId: membership.playerId, title, description: asOptionalString(body.description) ?? asOptionalString(body.details) ?? null, kind: asString(body.kind, "player"), status: asString(body.status, "open"), visibilityScope: asString(body.visibility, "specific_player"), linkedEntityIds, sourceType: "player" });
-    await db.insert(schema.activityFeed).values({ campaignId: request.params.campaignId, activityId: createId("act"), type: "player.objective.created", actorUserId: user.userId, content: { objectiveId, title } });
+    await recordOperationalActivity(db, {
+      campaignId: request.params.campaignId,
+      sourceId: createId("act"),
+      type: "player.objective.created",
+      category: "knowledge",
+      data: { objectiveId, title },
+      actorUserId: user.userId,
+    });
     campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated", playerId: membership.playerId! });
     return { ok: true, objectiveId };
   });
@@ -340,7 +348,14 @@ export async function registerPlayerPortalWebRoutes(server: FastifyInstance) {
     const proposalId = createId("prop");
     const content = { ...body, kind: "link_request", type: "link_request", targetCharacterEntityId: characterEntityId, characterEntityId };
     await db.insert(schema.playerProposals).values({ campaignId: request.params.campaignId, proposalId, userId: user.userId, playerId: membership.playerId!, type: "link_request", content, status: "submitted" });
-    await db.insert(schema.activityFeed).values({ campaignId: request.params.campaignId, activityId: createId("act"), type: "player.character.link.requested", actorUserId: user.userId, content: { proposalId, characterEntityId } });
+    await recordOperationalActivity(db, {
+      campaignId: request.params.campaignId,
+      sourceId: createId("act"),
+      type: "player.character.link.requested",
+      category: "people",
+      data: { proposalId, characterEntityId },
+      actorUserId: user.userId,
+    });
     campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated", playerId: membership.playerId! });
     return { ok: true, proposalId };
   });

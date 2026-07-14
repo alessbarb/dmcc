@@ -431,7 +431,22 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/activity", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    return { activity: await db.select().from(schema.activityFeed).where(eq(schema.activityFeed.campaignId, request.params.campaignId)).orderBy(desc(schema.activityFeed.occurredAt)).limit(100) };
+    const activity = await db
+      .select()
+      .from(schema.campaignActivity)
+      .where(eq(schema.campaignActivity.campaignId, request.params.campaignId))
+      .orderBy(desc(schema.campaignActivity.occurredAt), desc(schema.campaignActivity.activityId))
+      .limit(100);
+    return {
+      activity: activity.map((row) => ({
+        activityId: row.activityId,
+        campaignId: row.campaignId,
+        type: row.type,
+        content: row.data,
+        actorUserId: row.actorUserId,
+        occurredAt: row.occurredAt,
+      })),
+    };
   });
 
   server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities", async (request, reply) => executeDmCommand(request, reply, { type: "CreateEntity", ...(request.body ?? {}) }));

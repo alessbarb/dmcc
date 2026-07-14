@@ -7,6 +7,7 @@ import * as schema from "../../../db/schema.js";
 import { campaignEventBus, type CampaignRealtimeEvent } from "../../realtime/campaignEventBus.js";
 import { getRequiredWebUser } from "../webSession.js";
 import { getMembership, requireCampaignMembership, requireCampaignRole } from "../webAccess.js";
+import { recordOperationalActivity } from "../../activity/recordOperationalActivity.js";
 
 export const SHORT_TABLE_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
@@ -46,12 +47,14 @@ export async function registerLiveTableWebRoutes(server: FastifyInstance): Promi
         status: "active",
         expiresAt,
       });
-      await tx.insert(schema.activityFeed).values({
+      await recordOperationalActivity(tx, {
         campaignId: request.params.campaignId,
-        activityId: createId("act"),
+        sourceId: createId("act"),
         type: "live_table.opened",
+        category: "collaboration",
+        data: { liveTableId, activeSessionId: request.body?.activeSessionId ?? null, expiresAt },
         actorUserId: user.userId,
-        content: { liveTableId, activeSessionId: request.body?.activeSessionId ?? null, expiresAt },
+        sessionId: request.body?.activeSessionId ?? null,
       });
     });
     campaignEventBus.publish(request.params.campaignId, { type: "campaign.updated" });
@@ -87,12 +90,13 @@ export async function registerLiveTableWebRoutes(server: FastifyInstance): Promi
           eq(schema.liveTables.campaignId, request.params.campaignId),
           eq(schema.liveTables.liveTableId, request.params.liveTableId),
         ));
-      await db.insert(schema.activityFeed).values({
+      await recordOperationalActivity(db, {
         campaignId: request.params.campaignId,
-        activityId: createId("act"),
+        sourceId: createId("act"),
         type: "live_table.closed",
+        category: "collaboration",
+        data: { liveTableId: request.params.liveTableId },
         actorUserId: user.userId,
-        content: { liveTableId: request.params.liveTableId },
       });
       campaignEventBus.publish(request.params.campaignId, { type: "campaign.updated" });
       return { ok: true };

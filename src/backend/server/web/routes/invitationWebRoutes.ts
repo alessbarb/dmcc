@@ -8,6 +8,7 @@ import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { requireCampaignOwner } from "../webAccess.js";
 import { HttpError } from "../../errors.js";
 import { hashOpaque, issueOpaqueToken, type WebUser } from "../webSession.js";
+import { recordOperationalActivity } from "../../activity/recordOperationalActivity.js";
 
 function makeInviteUrl(request: FastifyRequest, token: string): string {
   const origin = process.env.DMCC_PUBLIC_ORIGIN ?? `${request.protocol}://${request.headers.host}`;
@@ -82,12 +83,13 @@ async function acceptInvitation(token: string, user: WebUser) {
       userId: user.userId,
       acceptedAt: new Date(),
     });
-    await tx.insert(schema.activityFeed).values({
+    await recordOperationalActivity(tx, {
       campaignId: invitation.campaignId,
-      activityId: createId("act"),
-      type: "invitation.accepted",
+      sourceId: createId("act"),
+      type: "player.invitation.consumed",
+      category: "people",
+      data: { role: invitation.role, playerId },
       actorUserId: user.userId,
-      content: { role: invitation.role, playerId },
     });
     return { campaignId: invitation.campaignId, membership, alreadyAccepted: false };
   });
@@ -150,12 +152,13 @@ export async function registerInvitationWebRoutes(server: FastifyInstance): Prom
         eq(schema.campaignInvitations.campaignId, request.params.campaignId),
         eq(schema.campaignInvitations.invitationId, request.params.invitationId),
       ));
-      await db.insert(schema.activityFeed).values({
+      await recordOperationalActivity(db, {
         campaignId: request.params.campaignId,
-        activityId: createId("act"),
-        type: "invitation.revoked",
+        sourceId: createId("act"),
+        type: "player.invitation.revoked",
+        category: "people",
+        data: { invitationId: request.params.invitationId },
         actorUserId: user.userId,
-        content: { invitationId: request.params.invitationId },
       });
       return { ok: true };
     },

@@ -8,6 +8,7 @@ import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { requireCampaignRole } from "../webAccess.js";
 import { HttpError } from "../../errors.js";
+import { recordOperationalActivity } from "../../activity/recordOperationalActivity.js";
 
 interface PortalCharacter {
   entityId: string;
@@ -179,12 +180,13 @@ export function registerPlayerCharacterLinkWebRoutes(server: FastifyInstance): v
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.profileId, playerId),
         ));
-      await db.insert(schema.activityFeed).values({
+      await recordOperationalActivity(db, {
         campaignId: request.params.campaignId,
-        activityId: createId("act"),
+        sourceId: createId("act"),
         type: "player.character.linked",
+        category: "people",
+        data: { playerId, characterEntityId, ownership: request.body?.ownership, syncMode: request.body?.syncMode },
         actorUserId: user.userId,
-        content: { playerId, characterEntityId, ownership: request.body?.ownership, syncMode: request.body?.syncMode },
       });
     }
     campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated", playerId });
@@ -216,12 +218,13 @@ export function registerPlayerCharacterLinkWebRoutes(server: FastifyInstance): v
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.profileId, request.params.playerId),
         ));
-      await db.insert(schema.activityFeed).values({
+      await recordOperationalActivity(db, {
         campaignId: request.params.campaignId,
-        activityId: createId("act"),
+        sourceId: createId("act"),
         type: "player.character.unlinked",
+        category: "people",
+        data: { playerId: request.params.playerId, characterEntityId: profile.linkedCharacterId },
         actorUserId: user.userId,
-        content: { playerId: request.params.playerId, characterEntityId: profile.linkedCharacterId },
       });
       campaignEventBus.publish(request.params.campaignId, { type: "player.portal.updated", playerId: request.params.playerId });
       return { ok: true };

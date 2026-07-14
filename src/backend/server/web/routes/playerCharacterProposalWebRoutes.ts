@@ -7,6 +7,7 @@ import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { requireCampaignRole } from "../webAccess.js";
 import { HttpError } from "../../errors.js";
+import { recordOperationalActivity } from "../../activity/recordOperationalActivity.js";
 
 function valuesOf<T>(value: unknown): T[] {
   if (!value) return [];
@@ -114,12 +115,13 @@ export function registerPlayerCharacterProposalWebRoutes(server: FastifyInstance
           eq(schema.playerProfiles.campaignId, request.params.campaignId),
           eq(schema.playerProfiles.profileId, proposal.playerId),
         ));
-      await db.insert(schema.activityFeed).values({
+      await recordOperationalActivity(db, {
         campaignId: request.params.campaignId,
-        activityId: createId("act"),
+        sourceId: createId("act"),
         type: "player.character.linked",
+        category: "people",
+        data: { playerId: proposal.playerId, characterEntityId, proposalId: proposal.proposalId },
         actorUserId: user.userId,
-        content: { playerId: proposal.playerId, characterEntityId, proposalId: proposal.proposalId },
       });
     }
 
