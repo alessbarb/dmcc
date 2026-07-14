@@ -3,7 +3,6 @@ import { and, eq, isNull, sql } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../db/client.js";
 import * as schema from "../../db/schema.js";
-import { userRoles } from "../../db/authSchema.js";
 import { getRequiredWebUser, type WebUser } from "./webSession.js";
 import { HttpError } from "../errors.js";
 
@@ -116,13 +115,10 @@ export async function listAccessibleCampaigns(userId: string): Promise<Accessibl
   }));
 }
 
-export async function getRequiredPlatformAdmin(request: FastifyRequest): Promise<WebUser> {
+export function getRequiredPlatformAdmin(request: FastifyRequest): WebUser {
   const user = getRequiredWebUser(request);
-  const [role] = await db
-    .select({ role: userRoles.role })
-    .from(userRoles)
-    .where(and(eq(userRoles.userId, user.userId), eq(userRoles.role, "admin")))
-    .limit(1);
-  if (!role) throw new HttpError("Platform administrator access required", 403);
+  if (!user.roles.includes("admin")) {
+    throw new HttpError("Platform administrator access required", 403);
+  }
   return user;
 }
