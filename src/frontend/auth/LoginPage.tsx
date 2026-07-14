@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, ArrowLeft, Plus, UserRound } from "lucide-react";
 import { login, fetchAuthStatus } from "../shared/auth/authClient.js";
+import { consumeAuthReturnTo } from "../shared/auth/authReturnTo.js";
 import { RpgPortalBackground } from "../shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "../shared/components/PortalTopBar.js";
 
@@ -16,9 +17,9 @@ export function LoginPage() {
 
   useEffect(() => {
     void fetchAuthStatus().then((status) => {
-      if (status.sessionValid) void navigate({ to: "/home" });
+      if (status.sessionValid) window.location.assign(consumeAuthReturnTo());
     }).catch(() => undefined);
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     if (retryAfterMs <= 0) return;
@@ -36,7 +37,7 @@ export function LoginPage() {
       setError(null);
       try {
         await login(email, password);
-        void navigate({ to: "/home" });
+        window.location.assign(consumeAuthReturnTo());
       } catch (cause: unknown) {
         const message = cause instanceof Error ? cause.message : String(cause);
         if (message.toLowerCase().includes("too many")) {
