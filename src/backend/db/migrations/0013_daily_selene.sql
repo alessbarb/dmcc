@@ -47,7 +47,7 @@ BEGIN
 END $$;
 --> statement-breakpoint
 
-CREATE TABLE "campaign_purge_jobs" (
+CREATE TABLE IF NOT EXISTS "campaign_purge_jobs" (
 	"job_id" text PRIMARY KEY NOT NULL,
 	"campaign_id" text NOT NULL,
 	"actor_user_id" text,
@@ -85,7 +85,7 @@ CREATE TABLE "campaign_purge_jobs" (
 	CONSTRAINT "chk_purge_jobs_attempt_count" CHECK (attempt_count >= 0)
 );
 --> statement-breakpoint
-CREATE TABLE "operations_audit_log" (
+CREATE TABLE IF NOT EXISTS "operations_audit_log" (
 	"audit_id" text PRIMARY KEY NOT NULL,
 	"actor_user_id" text,
 	"actor_type" text NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE "operations_audit_log" (
   )
 );
 --> statement-breakpoint
-CREATE TABLE "system_announcements" (
+CREATE TABLE IF NOT EXISTS "system_announcements" (
 	"announcement_id" text PRIMARY KEY NOT NULL,
 	"content" jsonb NOT NULL,
 	"kind" text DEFAULT 'info' NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE "system_announcements" (
 	CONSTRAINT "chk_announcement_kind" CHECK ("system_announcements"."kind" IN ('info', 'warning', 'maintenance'))
 );
 --> statement-breakpoint
-CREATE TABLE "campaign_template_settings" (
+CREATE TABLE IF NOT EXISTS "campaign_template_settings" (
 	"template_id" text PRIMARY KEY NOT NULL,
 	"is_visible" boolean DEFAULT true NOT NULL,
 	"sort_order" integer DEFAULT 0 NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE "campaign_template_settings" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "game_system_settings" (
+CREATE TABLE IF NOT EXISTS "game_system_settings" (
 	"system_id" text PRIMARY KEY NOT NULL,
 	"is_enabled_for_new_campaigns" boolean DEFAULT true NOT NULL,
 	"sort_order" integer DEFAULT 0 NOT NULL,
@@ -209,26 +209,173 @@ ALTER TABLE "campaigns" ADD COLUMN IF NOT EXISTS "trashed_by_user_id" text;--> s
 ALTER TABLE "campaigns" ADD COLUMN IF NOT EXISTS "purge_eligible_at" timestamp;--> statement-breakpoint
 ALTER TABLE "live_tables" ADD COLUMN IF NOT EXISTS "status" text DEFAULT 'active' NOT NULL;--> statement-breakpoint
 ALTER TABLE "live_tables" ADD COLUMN IF NOT EXISTS "closed_at" timestamp;--> statement-breakpoint
-ALTER TABLE "campaign_purge_jobs" ADD CONSTRAINT "campaign_purge_jobs_actor_user_id_users_user_id_fk" FOREIGN KEY ("actor_user_id") REFERENCES "public"."users"("user_id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "operations_audit_log" ADD CONSTRAINT "operations_audit_log_actor_user_id_users_user_id_fk" FOREIGN KEY ("actor_user_id") REFERENCES "public"."users"("user_id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "system_announcements" ADD CONSTRAINT "system_announcements_created_by_user_id_users_user_id_fk" FOREIGN KEY ("created_by_user_id") REFERENCES "public"."users"("user_id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "campaign_template_settings" ADD CONSTRAINT "campaign_template_settings_updated_by_user_id_users_user_id_fk" FOREIGN KEY ("updated_by_user_id") REFERENCES "public"."users"("user_id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "game_system_settings" ADD CONSTRAINT "game_system_settings_updated_by_user_id_users_user_id_fk" FOREIGN KEY ("updated_by_user_id") REFERENCES "public"."users"("user_id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
-CREATE UNIQUE INDEX "uq_active_campaign_purge_job" ON "campaign_purge_jobs" USING btree ("campaign_id") WHERE "campaign_purge_jobs"."status" IN ('pending', 'running', 'failed');--> statement-breakpoint
-CREATE INDEX "idx_purge_jobs_status_lease" ON "campaign_purge_jobs" USING btree ("status","lease_expires_at","created_at");--> statement-breakpoint
-CREATE INDEX "idx_operations_audit_created_at" ON "operations_audit_log" USING btree ("created_at");--> statement-breakpoint
-CREATE INDEX "idx_operations_audit_target" ON "operations_audit_log" USING btree ("target_type","target_id","created_at");--> statement-breakpoint
-ALTER TABLE "campaigns" ADD CONSTRAINT "campaigns_trashed_by_user_id_users_user_id_fk" FOREIGN KEY ("trashed_by_user_id") REFERENCES "public"."users"("user_id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.campaign_purge_jobs'::regclass
+      AND conname = 'campaign_purge_jobs_actor_user_id_users_user_id_fk'
+  ) THEN
+    ALTER TABLE "campaign_purge_jobs"
+      ADD CONSTRAINT "campaign_purge_jobs_actor_user_id_users_user_id_fk"
+      FOREIGN KEY ("actor_user_id")
+      REFERENCES "public"."users"("user_id")
+      ON DELETE set null
+      ON UPDATE no action;
+  END IF;
+END $$;--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.operations_audit_log'::regclass
+      AND conname = 'operations_audit_log_actor_user_id_users_user_id_fk'
+  ) THEN
+    ALTER TABLE "operations_audit_log"
+      ADD CONSTRAINT "operations_audit_log_actor_user_id_users_user_id_fk"
+      FOREIGN KEY ("actor_user_id")
+      REFERENCES "public"."users"("user_id")
+      ON DELETE set null
+      ON UPDATE no action;
+  END IF;
+END $$;--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.system_announcements'::regclass
+      AND conname = 'system_announcements_created_by_user_id_users_user_id_fk'
+  ) THEN
+    ALTER TABLE "system_announcements"
+      ADD CONSTRAINT "system_announcements_created_by_user_id_users_user_id_fk"
+      FOREIGN KEY ("created_by_user_id")
+      REFERENCES "public"."users"("user_id")
+      ON DELETE set null
+      ON UPDATE no action;
+  END IF;
+END $$;--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.campaign_template_settings'::regclass
+      AND conname = 'campaign_template_settings_updated_by_user_id_users_user_id_fk'
+  ) THEN
+    ALTER TABLE "campaign_template_settings"
+      ADD CONSTRAINT "campaign_template_settings_updated_by_user_id_users_user_id_fk"
+      FOREIGN KEY ("updated_by_user_id")
+      REFERENCES "public"."users"("user_id")
+      ON DELETE set null
+      ON UPDATE no action;
+  END IF;
+END $$;--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.game_system_settings'::regclass
+      AND conname = 'game_system_settings_updated_by_user_id_users_user_id_fk'
+  ) THEN
+    ALTER TABLE "game_system_settings"
+      ADD CONSTRAINT "game_system_settings_updated_by_user_id_users_user_id_fk"
+      FOREIGN KEY ("updated_by_user_id")
+      REFERENCES "public"."users"("user_id")
+      ON DELETE set null
+      ON UPDATE no action;
+  END IF;
+END $$;--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "uq_active_campaign_purge_job" ON "campaign_purge_jobs" USING btree ("campaign_id") WHERE "campaign_purge_jobs"."status" IN ('pending', 'running', 'failed');--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_purge_jobs_status_lease" ON "campaign_purge_jobs" USING btree ("status","lease_expires_at","created_at");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_operations_audit_created_at" ON "operations_audit_log" USING btree ("created_at");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "idx_operations_audit_target" ON "operations_audit_log" USING btree ("target_type","target_id","created_at");--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.campaigns'::regclass
+      AND conname = 'campaigns_trashed_by_user_id_users_user_id_fk'
+  ) THEN
+    ALTER TABLE "campaigns"
+      ADD CONSTRAINT "campaigns_trashed_by_user_id_users_user_id_fk"
+      FOREIGN KEY ("trashed_by_user_id")
+      REFERENCES "public"."users"("user_id")
+      ON DELETE set null
+      ON UPDATE no action;
+  END IF;
+END $$;--> statement-breakpoint
 ALTER TABLE "campaigns" DROP COLUMN IF EXISTS "workspace_partition_id";--> statement-breakpoint
 ALTER TABLE "users" DROP COLUMN IF EXISTS "workspace_partition_id";--> statement-breakpoint
 ALTER TABLE "users" DROP COLUMN IF EXISTS "password_salt";--> statement-breakpoint
 ALTER TABLE "users" DROP COLUMN IF EXISTS "password_algorithm";--> statement-breakpoint
 ALTER TABLE "workspaces" DROP COLUMN IF EXISTS "workspace_partition_id";--> statement-breakpoint
-ALTER TABLE "users" ADD CONSTRAINT "users_email_normalized_unique" UNIQUE("email_normalized");--> statement-breakpoint
-ALTER TABLE "users" ADD CONSTRAINT "users_email_hash_unique" UNIQUE("email_hash");--> statement-breakpoint
-ALTER TABLE "campaigns" ADD CONSTRAINT "chk_campaign_status" CHECK ("campaigns"."status" IN ('importing', 'active', 'trashed'));--> statement-breakpoint
-ALTER TABLE "campaigns" ADD CONSTRAINT "chk_campaign_trash_coherence" CHECK (
-    (status = 'trashed' AND trashed_at IS NOT NULL AND purge_eligible_at IS NOT NULL)
-    OR
-    (status IN ('active', 'importing') AND trashed_at IS NULL AND trashed_by_user_id IS NULL AND purge_eligible_at IS NULL)
-  );
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.users'::regclass
+      AND conname = 'users_email_normalized_unique'
+  ) AND to_regclass('public.users_email_normalized_unique') IS NULL THEN
+    ALTER TABLE "users"
+      ADD CONSTRAINT "users_email_normalized_unique"
+      UNIQUE ("email_normalized");
+  END IF;
+END $$;--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.users'::regclass
+      AND conname = 'users_email_hash_unique'
+  ) AND to_regclass('public.users_email_hash_unique') IS NULL THEN
+    ALTER TABLE "users"
+      ADD CONSTRAINT "users_email_hash_unique"
+      UNIQUE ("email_hash");
+  END IF;
+END $$;--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.campaigns'::regclass
+      AND conname = 'chk_campaign_status'
+  ) THEN
+    ALTER TABLE "campaigns"
+      ADD CONSTRAINT "chk_campaign_status"
+      CHECK ("status" IN ('importing', 'active', 'trashed'));
+  END IF;
+END $$;--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint
+    WHERE conrelid = 'public.campaigns'::regclass
+      AND conname = 'chk_campaign_trash_coherence'
+  ) THEN
+    ALTER TABLE "campaigns"
+      ADD CONSTRAINT "chk_campaign_trash_coherence"
+      CHECK (
+        (
+          status = 'trashed'
+          AND trashed_at IS NOT NULL
+          AND purge_eligible_at IS NOT NULL
+        )
+        OR
+        (
+          status IN ('active', 'importing')
+          AND trashed_at IS NULL
+          AND trashed_by_user_id IS NULL
+          AND purge_eligible_at IS NULL
+        )
+      );
+  END IF;
+END $$;
