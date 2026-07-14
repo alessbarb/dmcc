@@ -56,7 +56,7 @@ function canonicalCommandPayload(command: Command): string {
 // serialized as arrays instead of plain objects by an older snapshot format).
 function pickSerializedRecordId(item: unknown): string {
   if (!isRecord(item)) return "";
-  const candidate = item.id ?? item.entityId ?? item.relationId ?? item.factId ?? item.sessionId ?? item.playerId;
+  const candidate = item.id ?? item.entityId ?? item.relationId ?? item.factId ?? item.sessionId ?? item.playerId ?? item.notebookId ?? item.notebookItemId ?? item.threadId ?? item.stepId;
   return typeof candidate === "string" ? candidate : "";
 }
 
@@ -89,6 +89,10 @@ function snapshotToProjection(row: typeof schema.campaignSnapshots.$inferSelect 
     tags: mapFromSerialized(projection.tags),
     attachments: mapFromSerialized(projection.attachments),
     canvases: mapFromSerialized(projection.canvases),
+    notebooks: mapFromSerialized(projection.notebooks),
+    notebookItems: mapFromSerialized(projection.notebookItems),
+    storyThreads: mapFromSerialized(projection.storyThreads),
+    storySteps: mapFromSerialized(projection.storySteps),
     lastSequence: Number(projection.lastSequence ?? row.sequence ?? 0),
   } as CampaignProjection;
 }
@@ -109,6 +113,10 @@ function serializeProjection(projection: CampaignProjection) {
     tags: toPlain(projection.tags),
     attachments: toPlain(projection.attachments),
     canvases: toPlain(projection.canvases),
+    notebooks: toPlain(projection.notebooks),
+    notebookItems: toPlain(projection.notebookItems),
+    storyThreads: toPlain(projection.storyThreads),
+    storySteps: toPlain(projection.storySteps),
     lastSequence: projection.lastSequence,
   };
 }
@@ -127,6 +135,10 @@ function projectionToCampaignState(campaignId: string, projection: CampaignProje
     tags: projection.tags,
     attachments: projection.attachments,
     canvases: projection.canvases,
+    notebooks: projection.notebooks,
+    notebookItems: projection.notebookItems,
+    storyThreads: projection.storyThreads,
+    storySteps: projection.storySteps,
   };
 }
 

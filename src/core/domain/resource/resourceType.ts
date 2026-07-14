@@ -3,7 +3,13 @@
  * Grows in later PRs when a new type gets a ResourceNavigationDefinition —
  * PR 5 adds "notebook", PR 6 adds "story_thread"/"story_step".
  */
-export type ShortcutTargetType = "entity" | "session" | "canvas";
+export type ShortcutTargetType =
+  | "entity"
+  | "session"
+  | "canvas"
+  | "notebook"
+  | "story_thread"
+  | "story_step";
 
 /** Types referenceable as Cuaderno items (PR 5). */
 export type NotebookItemTargetType =

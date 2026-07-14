@@ -9,6 +9,10 @@ export type EventId = string;
 export type AttachmentId = string;
 export type TagId = string;
 export type ShortcutId = string;
+export type NotebookId = string;
+export type NotebookItemId = string;
+export type StoryThreadId = string;
+export type StoryStepId = string;
 
 function getWebCrypto(): Crypto {
   const crypto = globalThis.crypto;
@@ -88,4 +92,20 @@ export function generateTagId(): TagId {
 
 export function generateShortcutId(): ShortcutId {
   return createId("sht");
+}
+
+export function generateNotebookId(): NotebookId {
+  return createId("nbk");
+}
+
+export function generateNotebookItemId(): NotebookItemId {
+  return createId("nbi");
+}
+
+export function generateStoryThreadId(): StoryThreadId {
+  return createId("sth");
+}
+
+export function generateStoryStepId(): StoryStepId {
+  return createId("stp");
 }

@@ -262,6 +262,114 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         targetType: "canvas",
         targetId: payload?.id,
       }];
+    case "NotebookCreated":
+      return [{
+        ...base,
+        type: "notebook.created",
+        category: "content",
+        data: { notebookId: payload?.notebookId, title: payload?.title },
+        targetType: "notebook",
+        targetId: payload?.notebookId,
+      }];
+    case "NotebookUpdated":
+      return [{
+        ...base,
+        type: "notebook.updated",
+        category: "content",
+        data: { notebookId: payload?.notebookId, title: payload?.title },
+        targetType: "notebook",
+        targetId: payload?.notebookId,
+      }];
+    case "NotebookArchived":
+      return [{
+        ...base,
+        type: "notebook.archived",
+        category: "content",
+        data: { notebookId: payload?.notebookId },
+        targetType: "notebook",
+        targetId: payload?.notebookId,
+      }];
+    case "StoryThreadCreated":
+      return [{
+        ...base,
+        type: "story_thread.created",
+        category: "story",
+        data: { threadId: payload?.threadId, title: payload?.title },
+        targetType: "story_thread",
+        targetId: payload?.threadId,
+      }];
+    case "StoryThreadUpdated":
+      return [{
+        ...base,
+        type: "story_thread.updated",
+        category: "story",
+        data: { threadId: payload?.threadId, title: payload?.title },
+        targetType: "story_thread",
+        targetId: payload?.threadId,
+      }];
+    case "StoryThreadArchived":
+      return [{
+        ...base,
+        type: "story_thread.archived",
+        category: "story",
+        data: { threadId: payload?.threadId },
+        targetType: "story_thread",
+        targetId: payload?.threadId,
+      }];
+    case "StoryStepCreated":
+      return [{
+        ...base,
+        type: "story_step.created",
+        category: "story",
+        data: { stepId: payload?.stepId, title: payload?.title },
+        targetType: "story_step",
+        targetId: payload?.stepId,
+      }];
+    case "StoryStepUpdated":
+      return [{
+        ...base,
+        type: "story_step.updated",
+        category: "story",
+        data: { stepId: payload?.stepId, title: payload?.title },
+        targetType: "story_step",
+        targetId: payload?.stepId,
+      }];
+    case "StoryStepScheduled":
+      return [{
+        ...base,
+        type: "story_step.scheduled",
+        category: "story",
+        data: { stepId: payload?.stepId, plannedSessionId: payload?.plannedSessionId, plannedSessionOrder: payload?.plannedSessionOrder },
+        targetType: "story_step",
+        targetId: payload?.stepId,
+      }];
+    case "StoryStepDeferred":
+      return [{
+        ...base,
+        type: "story_step.deferred",
+        category: "story",
+        data: { stepId: payload?.stepId, plannedSessionId: payload?.plannedSessionId, plannedSessionOrder: payload?.plannedSessionOrder },
+        targetType: "story_step",
+        targetId: payload?.stepId,
+      }];
+    case "StoryStepUnscheduled":
+      return [{
+        ...base,
+        type: "story_step.unscheduled",
+        category: "story",
+        data: { stepId: payload?.stepId },
+        targetType: "story_step",
+        targetId: payload?.stepId,
+      }];
+    case "StoryStepReconciled":
+      return [{
+        ...base,
+        type: "story_step.reconciled",
+        category: "story",
+        data: { stepId: payload?.stepId, resolvedSessionId: payload?.resolvedSessionId, status: payload?.status, resolutionKind: payload?.resolutionKind, actualOutcome: payload?.actualOutcome },
+        targetType: "story_step",
+        targetId: payload?.stepId,
+      }];
     default:
       return [];
   }

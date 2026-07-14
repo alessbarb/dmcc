@@ -1,4 +1,4 @@
-import type { CampaignId, EntityId, FactId, RelationId, SessionId } from "@shared/ids.js";
+import type { CampaignId, EntityId, FactId, RelationId, SessionId, NotebookId, NotebookItemId, StoryThreadId, StoryStepId } from "@shared/ids.js";
 import type { EntityImportance, EntityType } from "../domain/entity/entity.js";
 import type { FactConfidence, FactKind, FactSource } from "../domain/fact/fact.js";
 import type { RelationType } from "../domain/relation/relation.js";
@@ -693,4 +693,194 @@ export type Command =
       newCampaignId: CampaignId;
       newTitle: string;
       actorId: string;
+    }
+  | {
+      type: "CreateNotebook";
+      campaignId: CampaignId;
+      actorId: string;
+      notebookId: NotebookId;
+      parentNotebookId?: NotebookId | null;
+      title: string;
+      description?: string | null;
+      icon?: string | null;
+      sortOrder: number;
+    }
+  | {
+      type: "UpdateNotebook";
+      campaignId: CampaignId;
+      actorId: string;
+      notebookId: NotebookId;
+      parentNotebookId?: NotebookId | null;
+      title?: string;
+      description?: string | null;
+      icon?: string | null;
+    }
+  | {
+      type: "ArchiveNotebook";
+      campaignId: CampaignId;
+      actorId: string;
+      notebookId: NotebookId;
+    }
+  | {
+      type: "AddNotebookItem";
+      campaignId: CampaignId;
+      actorId: string;
+      notebookItemId: NotebookItemId;
+      notebookId: NotebookId;
+      targetType: string;
+      targetId: string;
+      sortOrder: number;
+    }
+  | {
+      type: "RemoveNotebookItem";
+      campaignId: CampaignId;
+      actorId: string;
+      notebookItemId: NotebookItemId;
+    }
+  | {
+      type: "ReorderNotebookItems";
+      campaignId: CampaignId;
+      actorId: string;
+      notebookId: NotebookId;
+      orderedItemIds: NotebookItemId[];
+    }
+  | {
+      type: "CreateStoryThread";
+      campaignId: CampaignId;
+      actorId: string;
+      threadId: StoryThreadId;
+      title: string;
+      summary?: string | null;
+      status: string;
+      sortOrder: number;
+    }
+  | {
+      type: "UpdateStoryThread";
+      campaignId: CampaignId;
+      actorId: string;
+      threadId: StoryThreadId;
+      title?: string;
+      summary?: string | null;
+      status?: string;
+    }
+  | {
+      type: "ArchiveStoryThread";
+      campaignId: CampaignId;
+      actorId: string;
+      threadId: StoryThreadId;
+    }
+  | {
+      type: "ReorderStoryThreads";
+      campaignId: CampaignId;
+      actorId: string;
+      orderedThreadIds: StoryThreadId[];
+    }
+  | {
+      type: "CreateStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+      threadId: StoryThreadId;
+      title: string;
+      intent?: string | null;
+      expectedOutcome?: string | null;
+      sceneEntityId?: EntityId | null;
+      plannedSessionId?: SessionId | null;
+      plannedSessionOrder?: number | null;
+      sortOrder: number;
+    }
+  | {
+      type: "UpdateStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+      title?: string;
+      intent?: string | null;
+      expectedOutcome?: string | null;
+      sceneEntityId?: EntityId | null;
+    }
+  | {
+      type: "ScheduleStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+      plannedSessionId: SessionId;
+      plannedSessionOrder: number;
+    }
+  | {
+      type: "DeferStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+      plannedSessionId: SessionId;
+      plannedSessionOrder: number;
+    }
+  | {
+      type: "UnscheduleStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+    }
+  | {
+      type: "ReconcileStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+      resolvedSessionId: SessionId;
+      status: "resolved" | "discarded";
+      resolutionKind: "as_planned" | "changed" | "discarded";
+      actualOutcome?: string | null;
+    }
+  | {
+      type: "ReorderStorySteps";
+      campaignId: CampaignId;
+      actorId: string;
+      threadId: StoryThreadId;
+      orderedStepIds: StoryStepId[];
+    }
+  | {
+      type: "LinkEntityToStoryThread";
+      campaignId: CampaignId;
+      actorId: string;
+      threadId: StoryThreadId;
+      entityId: EntityId;
+    }
+  | {
+      type: "UnlinkEntityFromStoryThread";
+      campaignId: CampaignId;
+      actorId: string;
+      threadId: StoryThreadId;
+      entityId: EntityId;
+    }
+  | {
+      type: "LinkEntityToStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+      entityId: EntityId;
+    }
+  | {
+      type: "UnlinkEntityFromStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+      entityId: EntityId;
+    }
+  | {
+      type: "ActivateStoryThread";
+      campaignId: CampaignId;
+      actorId: string;
+      threadId: StoryThreadId;
+    }
+  | {
+      type: "ResolveStoryThread";
+      campaignId: CampaignId;
+      actorId: string;
+      threadId: StoryThreadId;
+    }
+  | {
+      type: "DiscardStoryThread";
+      campaignId: CampaignId;
+      actorId: string;
+      threadId: StoryThreadId;
     };

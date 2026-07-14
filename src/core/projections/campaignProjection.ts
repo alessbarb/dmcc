@@ -12,6 +12,8 @@ import type {
   CampaignTagRecord,
 } from "../domain/state.js";
 import type { Canvas } from "../domain/canvas/types.js";
+import type { CampaignNotebook, CampaignNotebookItem } from "../domain/notebook/types.js";
+import type { StoryThread, StoryStep } from "../domain/story/types.js";
 
 export type ProjectedCampaign = Campaign & { campaignId: string };
 type CanvasNodeLayoutUpdate = {
@@ -36,6 +38,10 @@ export interface CampaignProjection {
   tags: Map<string, CampaignTagRecord>;
   attachments: Map<string, CampaignAttachmentRecord>;
   canvases: Map<string, Canvas>;
+  notebooks: Map<string, CampaignNotebook>;
+  notebookItems: Map<string, CampaignNotebookItem>;
+  storyThreads: Map<string, StoryThread>;
+  storySteps: Map<string, StoryStep>;
   lastSequence: number;
 }
 
@@ -52,6 +58,10 @@ export function createEmptyCampaignProjection(): CampaignProjection {
     tags: new Map(),
     attachments: new Map(),
     canvases: new Map(),
+    notebooks: new Map(),
+    notebookItems: new Map(),
+    storyThreads: new Map(),
+    storySteps: new Map(),
     lastSequence: 0,
   };
 }
@@ -72,6 +82,10 @@ export function applyEvent(
     tags: new Map(projection.tags),
     attachments: new Map(projection.attachments),
     canvases: new Map(projection.canvases),
+    notebooks: new Map(projection.notebooks),
+    notebookItems: new Map(projection.notebookItems),
+    storyThreads: new Map(projection.storyThreads),
+    storySteps: new Map(projection.storySteps),
     lastSequence: event.sequence,
   };
 
@@ -607,6 +621,203 @@ export function applyEvent(
           ...existing,
           nodes,
           updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "NotebookCreated": {
+      next.notebooks.set(payload.notebookId, { ...payload });
+      break;
+    }
+    case "NotebookUpdated": {
+      const existing = next.notebooks.get(payload.notebookId);
+      if (existing) {
+        next.notebooks.set(payload.notebookId, { ...existing, ...payload, updatedAt: occurredAt });
+      }
+      break;
+    }
+    case "NotebookArchived": {
+      const existing = next.notebooks.get(payload.notebookId);
+      if (existing) {
+        next.notebooks.set(payload.notebookId, { ...existing, archivedAt: occurredAt, updatedAt: occurredAt });
+      }
+      break;
+    }
+    case "NotebookItemAdded": {
+      next.notebookItems.set(payload.notebookItemId, { ...payload });
+      break;
+    }
+    case "NotebookItemRemoved": {
+      next.notebookItems.delete(payload.notebookItemId);
+      break;
+    }
+    case "NotebookItemsReordered": {
+      payload.orderedItemIds.forEach((itemId: string, idx: number) => {
+        const item = next.notebookItems.get(itemId);
+        if (item) {
+          next.notebookItems.set(itemId, { ...item, sortOrder: idx });
+        }
+      });
+      break;
+    }
+    case "StoryThreadCreated": {
+      next.storyThreads.set(payload.threadId, { ...payload, entityIds: payload.entityIds || [] });
+      break;
+    }
+    case "StoryThreadUpdated": {
+      const existing = next.storyThreads.get(payload.threadId);
+      if (existing) {
+        next.storyThreads.set(payload.threadId, { ...existing, ...payload, updatedAt: occurredAt });
+      }
+      break;
+    }
+    case "StoryThreadArchived": {
+      const existing = next.storyThreads.get(payload.threadId);
+      if (existing) {
+        next.storyThreads.set(payload.threadId, { ...existing, archivedAt: occurredAt, updatedAt: occurredAt });
+      }
+      break;
+    }
+    case "StoryThreadReordered": {
+      payload.orderedThreadIds.forEach((threadId: string, idx: number) => {
+        const thread = next.storyThreads.get(threadId);
+        if (thread) {
+          next.storyThreads.set(threadId, { ...thread, sortOrder: idx, updatedAt: occurredAt });
+        }
+      });
+      break;
+    }
+    case "StoryThreadActivated": {
+      const existing = next.storyThreads.get(payload.threadId);
+      if (existing) {
+        next.storyThreads.set(payload.threadId, { ...existing, status: "active", updatedAt: occurredAt });
+      }
+      break;
+    }
+    case "StoryThreadResolved": {
+      const existing = next.storyThreads.get(payload.threadId);
+      if (existing) {
+        next.storyThreads.set(payload.threadId, { ...existing, status: "resolved", updatedAt: occurredAt });
+      }
+      break;
+    }
+    case "StoryThreadDiscarded": {
+      const existing = next.storyThreads.get(payload.threadId);
+      if (existing) {
+        next.storyThreads.set(payload.threadId, { ...existing, status: "discarded", updatedAt: occurredAt });
+      }
+      break;
+    }
+    case "StoryStepCreated": {
+      next.storySteps.set(payload.stepId, { ...payload, entityIds: payload.entityIds || [] });
+      break;
+    }
+    case "StoryStepUpdated": {
+      const existing = next.storySteps.get(payload.stepId);
+      if (existing) {
+        next.storySteps.set(payload.stepId, { ...existing, ...payload, updatedAt: occurredAt });
+      }
+      break;
+    }
+    case "StoryStepScheduled": {
+      const existing = next.storySteps.get(payload.stepId);
+      if (existing) {
+        next.storySteps.set(payload.stepId, {
+          ...existing,
+          plannedSessionId: payload.plannedSessionId,
+          plannedSessionOrder: payload.plannedSessionOrder,
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
+    case "StoryStepDeferred": {
+      const existing = next.storySteps.get(payload.stepId);
+      if (existing) {
+        next.storySteps.set(payload.stepId, {
+          ...existing,
+          plannedSessionId: payload.plannedSessionId,
+          plannedSessionOrder: payload.plannedSessionOrder,
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
+    case "StoryStepUnscheduled": {
+      const existing = next.storySteps.get(payload.stepId);
+      if (existing) {
+        next.storySteps.set(payload.stepId, {
+          ...existing,
+          plannedSessionId: null,
+          plannedSessionOrder: null,
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
+    case "StoryStepReconciled": {
+      const existing = next.storySteps.get(payload.stepId);
+      if (existing) {
+        next.storySteps.set(payload.stepId, {
+          ...existing,
+          resolvedSessionId: payload.resolvedSessionId,
+          status: payload.status,
+          resolutionKind: payload.resolutionKind,
+          actualOutcome: payload.actualOutcome,
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
+    case "StoryStepsReordered": {
+      payload.orderedStepIds.forEach((stepId: string, idx: number) => {
+        const step = next.storySteps.get(stepId);
+        if (step) {
+          next.storySteps.set(stepId, { ...step, sortOrder: idx, updatedAt: occurredAt });
+        }
+      });
+      break;
+    }
+    case "EntityLinkedToStoryThread": {
+      const thread = next.storyThreads.get(payload.threadId);
+      if (thread && !thread.entityIds.includes(payload.entityId)) {
+        next.storyThreads.set(payload.threadId, {
+          ...thread,
+          entityIds: [...thread.entityIds, payload.entityId],
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
+    case "EntityUnlinkedFromStoryThread": {
+      const thread = next.storyThreads.get(payload.threadId);
+      if (thread) {
+        next.storyThreads.set(payload.threadId, {
+          ...thread,
+          entityIds: thread.entityIds.filter(id => id !== payload.entityId),
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
+    case "EntityLinkedToStoryStep": {
+      const step = next.storySteps.get(payload.stepId);
+      if (step && !step.entityIds.includes(payload.entityId)) {
+        next.storySteps.set(payload.stepId, {
+          ...step,
+          entityIds: [...step.entityIds, payload.entityId],
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
+    case "EntityUnlinkedFromStoryStep": {
+      const step = next.storySteps.get(payload.stepId);
+      if (step) {
+        next.storySteps.set(payload.stepId, {
+          ...step,
+          entityIds: step.entityIds.filter(id => id !== payload.entityId),
+          updatedAt: occurredAt
         });
       }
       break;

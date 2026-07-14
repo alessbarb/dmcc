@@ -34,6 +34,10 @@ describe("markdown campaign export", () => {
       players: new Map(),
       invitations: new Map(),
       lastSequence: 0,
+      notebooks: new Map(),
+      notebookItems: new Map(),
+      storyThreads: new Map(),
+      storySteps: new Map(),
       entities: new Map([
         [
           "ent_oracle",

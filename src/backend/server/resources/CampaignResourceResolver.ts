@@ -66,10 +66,37 @@ export async function resolveManyCampaignResources(
         archived: canvas.archived,
         capabilities: { navigable: true, canvasPlaceable: false },
       });
+    } else if (ref.type === "notebook") {
+      const notebook = projection.notebooks.get(ref.resourceId);
+      if (!notebook) continue;
+      resolved.set(key, {
+        ref,
+        campaignId,
+        title: notebook.title,
+        archived: notebook.archivedAt != null,
+        capabilities: { navigable: true, canvasPlaceable: false },
+      });
+    } else if (ref.type === "story_thread") {
+      const thread = projection.storyThreads.get(ref.resourceId);
+      if (!thread) continue;
+      resolved.set(key, {
+        ref,
+        campaignId,
+        title: thread.title,
+        archived: thread.archivedAt != null,
+        capabilities: { navigable: true, canvasPlaceable: false },
+      });
+    } else if (ref.type === "story_step") {
+      const step = projection.storySteps.get(ref.resourceId);
+      if (!step) continue;
+      resolved.set(key, {
+        ref,
+        campaignId,
+        title: step.title,
+        archived: false,
+        capabilities: { navigable: true, canvasPlaceable: false },
+      });
     }
-    // fact/relation/session_event/attachment/notebook/story_* resolution is
-    // out of scope here — they gain ShortcutTargetType support (and thus a
-    // resolver case) in the PR that introduces their navigation definition.
   }
 
   return resolved;

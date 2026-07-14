@@ -15,6 +15,10 @@ import type { StoredEvent } from "../domain/events.js";
 import type { CampaignState } from "../domain/state.js";
 import type { CanvasNode } from "../domain/canvas/types.js";
 import type { Command } from "./commands.js";
+import { hasNotebookCycle, getHierarchyDepthIfParentSet } from "../domain/notebook/notebook.js";
+import { validateNotebookTitle, validateNotebookId, validateNotebookItemId, validateNotebookItemTarget } from "../domain/notebook/validators.js";
+import { validateStoryThreadId, validateStoryStepId, validateStoryThreadTitle, validateStoryStepTitle, validateStoryThreadStatus, validateStoryStepStatus, validateStoryStepResolutionCoherence } from "../domain/story/validators.js";
+import { canResolveStoryThread } from "../domain/story/story.js";
 
 export interface CommandResult {
   state: CampaignState;
@@ -1123,6 +1127,625 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
             entityId,
           }),
         ],
+      };
+    }
+    case "CreateNotebook": {
+      validateNotebookId(command.notebookId);
+      validateNotebookTitle(command.title);
+
+      const notebooks = new Map(state.notebooks || new Map());
+      if (command.parentNotebookId) {
+        validateNotebookId(command.parentNotebookId);
+        const parent = notebooks.get(command.parentNotebookId);
+        if (!parent) {
+          throw new Error(`Parent notebook not found: ${command.parentNotebookId}`);
+        }
+        if (getHierarchyDepthIfParentSet(notebooks, command.notebookId, command.parentNotebookId) > 3) {
+          throw new Error("Notebook depth limit exceeded. Maximum depth is 3");
+        }
+      }
+
+      const notebook = {
+        campaignId: command.campaignId,
+        notebookId: command.notebookId,
+        parentNotebookId: command.parentNotebookId ?? null,
+        title: command.title,
+        description: command.description ?? null,
+        icon: command.icon ?? null,
+        sortOrder: command.sortOrder,
+        archivedAt: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      notebooks.set(command.notebookId, notebook);
+
+      return {
+        state: { ...state, notebooks },
+        events: [makeEvent(command.actorId, command.campaignId, "NotebookCreated", notebook)],
+      };
+    }
+    case "UpdateNotebook": {
+      validateNotebookId(command.notebookId);
+      const notebooks = new Map(state.notebooks || new Map());
+      const existing = notebooks.get(command.notebookId);
+      if (!existing) {
+        throw new Error(`Notebook not found: ${command.notebookId}`);
+      }
+
+      if (command.title !== undefined) {
+        validateNotebookTitle(command.title);
+      }
+
+      let parentNotebookId = existing.parentNotebookId;
+      if (command.parentNotebookId !== undefined) {
+        parentNotebookId = command.parentNotebookId;
+        if (parentNotebookId) {
+          validateNotebookId(parentNotebookId);
+          const parent = notebooks.get(parentNotebookId);
+          if (!parent) {
+            throw new Error(`Parent notebook not found: ${parentNotebookId}`);
+          }
+          if (hasNotebookCycle(notebooks, command.notebookId, parentNotebookId)) {
+            throw new Error("Setting parent would create a cycle");
+          }
+          if (getHierarchyDepthIfParentSet(notebooks, command.notebookId, parentNotebookId) > 3) {
+            throw new Error("Notebook depth limit exceeded. Maximum depth is 3");
+          }
+        }
+      }
+
+      const updated = {
+        ...existing,
+        parentNotebookId,
+        ...(command.title !== undefined && { title: command.title }),
+        ...(command.description !== undefined && { description: command.description }),
+        ...(command.icon !== undefined && { icon: command.icon }),
+        updatedAt: new Date().toISOString(),
+      };
+      notebooks.set(command.notebookId, updated);
+
+      return {
+        state: { ...state, notebooks },
+        events: [makeEvent(command.actorId, command.campaignId, "NotebookUpdated", updated)],
+      };
+    }
+    case "ArchiveNotebook": {
+      validateNotebookId(command.notebookId);
+      const notebooks = new Map(state.notebooks || new Map());
+      const existing = notebooks.get(command.notebookId);
+      if (!existing) {
+        throw new Error(`Notebook not found: ${command.notebookId}`);
+      }
+
+      const now = new Date().toISOString();
+      const updated = {
+        ...existing,
+        archivedAt: now,
+        updatedAt: now,
+      };
+      notebooks.set(command.notebookId, updated);
+
+      return {
+        state: { ...state, notebooks },
+        events: [makeEvent(command.actorId, command.campaignId, "NotebookArchived", { notebookId: command.notebookId })],
+      };
+    }
+    case "AddNotebookItem": {
+      validateNotebookItemId(command.notebookItemId);
+      validateNotebookId(command.notebookId);
+      
+      const notebooks = state.notebooks || new Map();
+      if (!notebooks.has(command.notebookId)) {
+        throw new Error(`Notebook not found: ${command.notebookId}`);
+      }
+
+      validateNotebookItemTarget(command.targetType as any, command.targetId);
+
+      // Validate target existence in the campaign
+      const targetType = command.targetType;
+      const targetId = command.targetId;
+      if (targetType === "entity") {
+        if (!state.entities.has(targetId)) throw new Error(`Entity not found: ${targetId}`);
+      } else if (targetType === "fact") {
+        if (!state.facts.has(targetId)) throw new Error(`Fact not found: ${targetId}`);
+      } else if (targetType === "relation") {
+        if (!state.relations.has(targetId)) throw new Error(`Relation not found: ${targetId}`);
+      } else if (targetType === "session") {
+        if (!state.sessions.has(targetId)) throw new Error(`Session not found: ${targetId}`);
+      } else if (targetType === "session_event") {
+        if (!state.sessionEvents.has(targetId)) throw new Error(`Session event not found: ${targetId}`);
+      } else if (targetType === "canvas") {
+        if (!state.canvases.has(targetId)) throw new Error(`Canvas not found: ${targetId}`);
+      } else if (targetType === "attachment") {
+        if (!state.attachments.has(targetId)) throw new Error(`Attachment not found: ${targetId}`);
+      }
+
+      // No duplicate resources in the same notebook
+      const items = new Map(state.notebookItems || new Map());
+      for (const item of items.values()) {
+        if (item.notebookId === command.notebookId && item.targetType === targetType && item.targetId === targetId) {
+          throw new Error(`Resource ${targetType}:${targetId} is already in the notebook`);
+        }
+      }
+
+      const item = {
+        campaignId: command.campaignId,
+        notebookItemId: command.notebookItemId,
+        notebookId: command.notebookId,
+        targetType: targetType as any,
+        targetId: targetId,
+        sortOrder: command.sortOrder,
+        createdAt: new Date().toISOString(),
+      };
+      items.set(command.notebookItemId, item);
+
+      return {
+        state: { ...state, notebookItems: items },
+        events: [makeEvent(command.actorId, command.campaignId, "NotebookItemAdded", item)],
+      };
+    }
+    case "RemoveNotebookItem": {
+      validateNotebookItemId(command.notebookItemId);
+      const items = new Map(state.notebookItems || new Map());
+      if (!items.has(command.notebookItemId)) {
+        throw new Error(`Notebook item not found: ${command.notebookItemId}`);
+      }
+      items.delete(command.notebookItemId);
+
+      return {
+        state: { ...state, notebookItems: items },
+        events: [makeEvent(command.actorId, command.campaignId, "NotebookItemRemoved", { notebookItemId: command.notebookItemId })],
+      };
+    }
+    case "ReorderNotebookItems": {
+      validateNotebookId(command.notebookId);
+      const items = new Map(state.notebookItems || new Map());
+
+      for (const [idx, itemId] of command.orderedItemIds.entries()) {
+        const item = items.get(itemId);
+        if (!item) {
+          throw new Error(`Notebook item not found: ${itemId}`);
+        }
+        if (item.notebookId !== command.notebookId) {
+          throw new Error(`Notebook item ${itemId} does not belong to notebook ${command.notebookId}`);
+        }
+        items.set(itemId, { ...item, sortOrder: idx });
+      }
+
+      return {
+        state: { ...state, notebookItems: items },
+        events: [makeEvent(command.actorId, command.campaignId, "NotebookItemsReordered", { notebookId: command.notebookId, orderedItemIds: command.orderedItemIds })],
+      };
+    }
+    case "CreateStoryThread": {
+      validateStoryThreadId(command.threadId);
+      validateStoryThreadTitle(command.title);
+      validateStoryThreadStatus(command.status);
+
+      const threads = new Map(state.storyThreads || new Map());
+      const thread = {
+        campaignId: command.campaignId,
+        threadId: command.threadId,
+        title: command.title,
+        summary: command.summary ?? null,
+        status: command.status as any,
+        sortOrder: command.sortOrder,
+        archivedAt: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        entityIds: [],
+      };
+      threads.set(command.threadId, thread);
+
+      return {
+        state: { ...state, storyThreads: threads },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryThreadCreated", thread)],
+      };
+    }
+    case "UpdateStoryThread": {
+      validateStoryThreadId(command.threadId);
+      const threads = new Map(state.storyThreads || new Map());
+      const existing = threads.get(command.threadId);
+      if (!existing) {
+        throw new Error(`Story thread not found: ${command.threadId}`);
+      }
+
+      if (command.title !== undefined) validateStoryThreadTitle(command.title);
+      if (command.status !== undefined) validateStoryThreadStatus(command.status);
+
+      const updated = {
+        ...existing,
+        ...(command.title !== undefined && { title: command.title }),
+        ...(command.summary !== undefined && { summary: command.summary }),
+        ...(command.status !== undefined && { status: command.status as any }),
+        updatedAt: new Date().toISOString(),
+      };
+      threads.set(command.threadId, updated);
+
+      return {
+        state: { ...state, storyThreads: threads },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryThreadUpdated", updated)],
+      };
+    }
+    case "ArchiveStoryThread": {
+      validateStoryThreadId(command.threadId);
+      const threads = new Map(state.storyThreads || new Map());
+      const existing = threads.get(command.threadId);
+      if (!existing) {
+        throw new Error(`Story thread not found: ${command.threadId}`);
+      }
+
+      const now = new Date().toISOString();
+      const updated = {
+        ...existing,
+        archivedAt: now,
+        updatedAt: now,
+      };
+      threads.set(command.threadId, updated);
+
+      return {
+        state: { ...state, storyThreads: threads },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryThreadArchived", { threadId: command.threadId })],
+      };
+    }
+    case "ReorderStoryThreads": {
+      const threads = new Map(state.storyThreads || new Map());
+
+      for (const [idx, threadId] of command.orderedThreadIds.entries()) {
+        const thread = threads.get(threadId);
+        if (!thread) throw new Error(`Story thread not found: ${threadId}`);
+        threads.set(threadId, { ...thread, sortOrder: idx, updatedAt: new Date().toISOString() });
+      }
+
+      return {
+        state: { ...state, storyThreads: threads },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryThreadReordered", { orderedThreadIds: command.orderedThreadIds })],
+      };
+    }
+    case "ActivateStoryThread": {
+      validateStoryThreadId(command.threadId);
+      const threads = new Map(state.storyThreads || new Map());
+      const existing = threads.get(command.threadId);
+      if (!existing) throw new Error(`Story thread not found: ${command.threadId}`);
+
+      const updated = { ...existing, status: "active" as const, updatedAt: new Date().toISOString() };
+      threads.set(command.threadId, updated);
+
+      return {
+        state: { ...state, storyThreads: threads },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryThreadActivated", { threadId: command.threadId })],
+      };
+    }
+    case "ResolveStoryThread": {
+      validateStoryThreadId(command.threadId);
+      const threads = new Map(state.storyThreads || new Map());
+      const existing = threads.get(command.threadId);
+      if (!existing) throw new Error(`Story thread not found: ${command.threadId}`);
+
+      const steps = Array.from((state.storySteps || new Map()).values())
+        .filter((step) => step.threadId === command.threadId);
+
+      if (!canResolveStoryThread(steps)) {
+        throw new Error("Cannot resolve story thread: not all steps are terminal or no steps are resolved");
+      }
+
+      const updated = { ...existing, status: "resolved" as const, updatedAt: new Date().toISOString() };
+      threads.set(command.threadId, updated);
+
+      return {
+        state: { ...state, storyThreads: threads },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryThreadResolved", { threadId: command.threadId })],
+      };
+    }
+    case "DiscardStoryThread": {
+      validateStoryThreadId(command.threadId);
+      const threads = new Map(state.storyThreads || new Map());
+      const existing = threads.get(command.threadId);
+      if (!existing) throw new Error(`Story thread not found: ${command.threadId}`);
+
+      const updated = { ...existing, status: "discarded" as const, updatedAt: new Date().toISOString() };
+      threads.set(command.threadId, updated);
+
+      return {
+        state: { ...state, storyThreads: threads },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryThreadDiscarded", { threadId: command.threadId })],
+      };
+    }
+    case "CreateStoryStep": {
+      validateStoryStepId(command.stepId);
+      validateStoryThreadId(command.threadId);
+      validateStoryStepTitle(command.title);
+
+      const threads = state.storyThreads || new Map();
+      if (!threads.has(command.threadId)) {
+        throw new Error(`Story thread not found: ${command.threadId}`);
+      }
+
+      if (command.sceneEntityId) {
+        const scene = state.entities.get(command.sceneEntityId);
+        if (!scene) throw new Error(`Scene entity not found: ${command.sceneEntityId}`);
+        if (scene.entityType !== "scene") {
+          throw new Error("Scene entity ID must reference an entity of type 'scene'");
+        }
+      }
+
+      if (command.plannedSessionId) {
+        if (!state.sessions.has(command.plannedSessionId)) {
+          throw new Error(`Session not found: ${command.plannedSessionId}`);
+        }
+      }
+
+      const steps = new Map(state.storySteps || new Map());
+      const step = {
+        campaignId: command.campaignId,
+        stepId: command.stepId,
+        threadId: command.threadId,
+        title: command.title,
+        intent: command.intent ?? null,
+        expectedOutcome: command.expectedOutcome ?? null,
+        actualOutcome: null,
+        status: "planned" as const,
+        resolutionKind: null,
+        sceneEntityId: command.sceneEntityId ?? null,
+        plannedSessionId: command.plannedSessionId ?? null,
+        plannedSessionOrder: command.plannedSessionOrder ?? null,
+        resolvedSessionId: null,
+        sortOrder: command.sortOrder,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        entityIds: [],
+      };
+      steps.set(command.stepId, step);
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryStepCreated", step)],
+      };
+    }
+    case "UpdateStoryStep": {
+      validateStoryStepId(command.stepId);
+      const steps = new Map(state.storySteps || new Map());
+      const existing = steps.get(command.stepId);
+      if (!existing) {
+        throw new Error(`Story step not found: ${command.stepId}`);
+      }
+
+      if (command.title !== undefined) validateStoryStepTitle(command.title);
+      if (command.sceneEntityId) {
+        const scene = state.entities.get(command.sceneEntityId);
+        if (!scene) throw new Error(`Scene entity not found: ${command.sceneEntityId}`);
+        if (scene.entityType !== "scene") {
+          throw new Error("Scene entity ID must reference an entity of type 'scene'");
+        }
+      }
+
+      const updated = {
+        ...existing,
+        ...(command.title !== undefined && { title: command.title }),
+        ...(command.intent !== undefined && { intent: command.intent }),
+        ...(command.expectedOutcome !== undefined && { expectedOutcome: command.expectedOutcome }),
+        ...(command.sceneEntityId !== undefined && { sceneEntityId: command.sceneEntityId }),
+        updatedAt: new Date().toISOString(),
+      };
+      steps.set(command.stepId, updated);
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryStepUpdated", updated)],
+      };
+    }
+    case "ScheduleStoryStep": {
+      validateStoryStepId(command.stepId);
+      const steps = new Map(state.storySteps || new Map());
+      const existing = steps.get(command.stepId);
+      if (!existing) throw new Error(`Story step not found: ${command.stepId}`);
+
+      if (!state.sessions.has(command.plannedSessionId)) {
+        throw new Error(`Session not found: ${command.plannedSessionId}`);
+      }
+
+      const updated = {
+        ...existing,
+        plannedSessionId: command.plannedSessionId,
+        plannedSessionOrder: command.plannedSessionOrder,
+        updatedAt: new Date().toISOString(),
+      };
+      steps.set(command.stepId, updated);
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryStepScheduled", { stepId: command.stepId, plannedSessionId: command.plannedSessionId, plannedSessionOrder: command.plannedSessionOrder })],
+      };
+    }
+    case "DeferStoryStep": {
+      validateStoryStepId(command.stepId);
+      const steps = new Map(state.storySteps || new Map());
+      const existing = steps.get(command.stepId);
+      if (!existing) throw new Error(`Story step not found: ${command.stepId}`);
+
+      if (!state.sessions.has(command.plannedSessionId)) {
+        throw new Error(`Session not found: ${command.plannedSessionId}`);
+      }
+
+      const updated = {
+        ...existing,
+        plannedSessionId: command.plannedSessionId,
+        plannedSessionOrder: command.plannedSessionOrder,
+        updatedAt: new Date().toISOString(),
+      };
+      steps.set(command.stepId, updated);
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryStepDeferred", { stepId: command.stepId, plannedSessionId: command.plannedSessionId, plannedSessionOrder: command.plannedSessionOrder })],
+      };
+    }
+    case "UnscheduleStoryStep": {
+      validateStoryStepId(command.stepId);
+      const steps = new Map(state.storySteps || new Map());
+      const existing = steps.get(command.stepId);
+      if (!existing) throw new Error(`Story step not found: ${command.stepId}`);
+
+      const updated = {
+        ...existing,
+        plannedSessionId: null,
+        plannedSessionOrder: null,
+        updatedAt: new Date().toISOString(),
+      };
+      steps.set(command.stepId, updated);
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryStepUnscheduled", { stepId: command.stepId })],
+      };
+    }
+    case "ReconcileStoryStep": {
+      validateStoryStepId(command.stepId);
+      const steps = new Map(state.storySteps || new Map());
+      const existing = steps.get(command.stepId);
+      if (!existing) throw new Error(`Story step not found: ${command.stepId}`);
+
+      const session = state.sessions.get(command.resolvedSessionId);
+      if (!session) throw new Error(`Session not found: ${command.resolvedSessionId}`);
+      if (session.status !== "archived" && session.status !== "closed") {
+        throw new Error("Resolved session must be closed or archived");
+      }
+
+      validateStoryStepResolutionCoherence(command.status as any, command.resolutionKind as any, command.actualOutcome);
+
+      const updated = {
+        ...existing,
+        status: command.status as any,
+        resolutionKind: command.resolutionKind as any,
+        resolvedSessionId: command.resolvedSessionId,
+        actualOutcome: command.actualOutcome ?? null,
+        updatedAt: new Date().toISOString(),
+      };
+      steps.set(command.stepId, updated);
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryStepReconciled", {
+          stepId: command.stepId,
+          resolvedSessionId: command.resolvedSessionId,
+          status: command.status,
+          resolutionKind: command.resolutionKind,
+          actualOutcome: command.actualOutcome
+        })],
+      };
+    }
+    case "ReorderStorySteps": {
+      validateStoryThreadId(command.threadId);
+      const steps = new Map(state.storySteps || new Map());
+
+      for (const [idx, stepId] of command.orderedStepIds.entries()) {
+        const step = steps.get(stepId);
+        if (!step) throw new Error(`Story step not found: ${stepId}`);
+        if (step.threadId !== command.threadId) {
+          throw new Error(`Story step ${stepId} does not belong to thread ${command.threadId}`);
+        }
+        steps.set(stepId, { ...step, sortOrder: idx, updatedAt: new Date().toISOString() });
+      }
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryStepsReordered", { threadId: command.threadId, orderedStepIds: command.orderedStepIds })],
+      };
+    }
+    case "LinkEntityToStoryThread": {
+      validateStoryThreadId(command.threadId);
+      if (!state.entities.has(command.entityId)) {
+        throw new Error(`Entity not found: ${command.entityId}`);
+      }
+
+      const threads = new Map(state.storyThreads || new Map());
+      const thread = threads.get(command.threadId);
+      if (!thread) throw new Error(`Story thread not found: ${command.threadId}`);
+
+      if (thread.entityIds.includes(command.entityId)) {
+        return { state, events: [] };
+      }
+
+      const updated = {
+        ...thread,
+        entityIds: [...thread.entityIds, command.entityId],
+        updatedAt: new Date().toISOString(),
+      };
+      threads.set(command.threadId, updated);
+
+      return {
+        state: { ...state, storyThreads: threads },
+        events: [makeEvent(command.actorId, command.campaignId, "EntityLinkedToStoryThread", { threadId: command.threadId, entityId: command.entityId })],
+      };
+    }
+    case "UnlinkEntityFromStoryThread": {
+      validateStoryThreadId(command.threadId);
+      const threads = new Map(state.storyThreads || new Map());
+      const thread = threads.get(command.threadId);
+      if (!thread) throw new Error(`Story thread not found: ${command.threadId}`);
+
+      if (!thread.entityIds.includes(command.entityId)) {
+        return { state, events: [] };
+      }
+
+      const updated = {
+        ...thread,
+        entityIds: thread.entityIds.filter((id) => id !== command.entityId),
+        updatedAt: new Date().toISOString(),
+      };
+      threads.set(command.threadId, updated);
+
+      return {
+        state: { ...state, storyThreads: threads },
+        events: [makeEvent(command.actorId, command.campaignId, "EntityUnlinkedFromStoryThread", { threadId: command.threadId, entityId: command.entityId })],
+      };
+    }
+    case "LinkEntityToStoryStep": {
+      validateStoryStepId(command.stepId);
+      if (!state.entities.has(command.entityId)) {
+        throw new Error(`Entity not found: ${command.entityId}`);
+      }
+
+      const steps = new Map(state.storySteps || new Map());
+      const step = steps.get(command.stepId);
+      if (!step) throw new Error(`Story step not found: ${command.stepId}`);
+
+      if (step.entityIds.includes(command.entityId)) {
+        return { state, events: [] };
+      }
+
+      const updated = {
+        ...step,
+        entityIds: [...step.entityIds, command.entityId],
+        updatedAt: new Date().toISOString(),
+      };
+      steps.set(command.stepId, updated);
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "EntityLinkedToStoryStep", { stepId: command.stepId, entityId: command.entityId })],
+      };
+    }
+    case "UnlinkEntityFromStoryStep": {
+      validateStoryStepId(command.stepId);
+      const steps = new Map(state.storySteps || new Map());
+      const step = steps.get(command.stepId);
+      if (!step) throw new Error(`Story step not found: ${command.stepId}`);
+
+      if (!step.entityIds.includes(command.entityId)) {
+        return { state, events: [] };
+      }
+
+      const updated = {
+        ...step,
+        entityIds: step.entityIds.filter((id) => id !== command.entityId),
+        updatedAt: new Date().toISOString(),
+      };
+      steps.set(command.stepId, updated);
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "EntityUnlinkedFromStoryStep", { stepId: command.stepId, entityId: command.entityId })],
       };
     }
   }

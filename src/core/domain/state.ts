@@ -6,6 +6,8 @@ import type { Session } from "./session/session.js";
 import type { SessionEvent } from "./session/types.js";
 import type { Canvas } from "./canvas/types.js";
 import type { CampaignRole } from "./campaign/player.js";
+import type { CampaignNotebook, CampaignNotebookItem } from "./notebook/types.js";
+import type { StoryThread, StoryStep } from "./story/types.js";
 
 export interface CampaignPlayerRecord {
   id: string;
@@ -62,6 +64,10 @@ export interface CampaignState {
   tags: Map<string, CampaignTagRecord>;
   attachments: Map<string, CampaignAttachmentRecord>;
   canvases: Map<string, Canvas>;
+  notebooks: Map<string, CampaignNotebook>;
+  notebookItems: Map<string, CampaignNotebookItem>;
+  storyThreads: Map<string, StoryThread>;
+  storySteps: Map<string, StoryStep>;
 }
 
 export function createCampaignState(campaignId: string): CampaignState {
@@ -78,5 +84,9 @@ export function createCampaignState(campaignId: string): CampaignState {
     tags: new Map(),
     attachments: new Map(),
     canvases: new Map(),
+    notebooks: new Map(),
+    notebookItems: new Map(),
+    storyThreads: new Map(),
+    storySteps: new Map(),
   };
 }
