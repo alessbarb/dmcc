@@ -814,6 +814,8 @@ export const pt = {
       map: "Mapa",
       story: "História",
       people: "Jogadores",
+      notebooks: "Cadernos",
+      storyPlan: "Plano Narrativo",
     },
     meta: {
       canvasTitle: "Canvas da campanha",

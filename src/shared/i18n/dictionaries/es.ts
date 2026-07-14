@@ -1067,6 +1067,8 @@ export const es: TranslationDictionary = {
       map: "Mapa",
       story: "Historia",
       people: "Jugadores",
+      notebooks: "Cuadernos",
+      storyPlan: "Plan Narrativo",
     },
     meta: {
       canvasTitle: "Campaign Canvas",

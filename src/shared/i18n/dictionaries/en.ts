@@ -1056,6 +1056,8 @@ export const en = {
       map: "Map",
       story: "Story",
       people: "People",
+      notebooks: "Notebooks",
+      storyPlan: "Narrative Plan",
     },
     meta: {
       canvasTitle: "Campaign Canvas",

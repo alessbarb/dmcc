@@ -828,6 +828,8 @@ export const fr: TranslationDictionary = {
       map: "Carte",
       story: "Histoire",
       people: "Joueurs",
+      notebooks: "Carnets",
+      storyPlan: "Plan Narratif",
     },
     meta: {
       canvasTitle: "Canevas de campagne",
