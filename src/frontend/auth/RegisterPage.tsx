@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, ArrowLeft, UserPlus } from "lucide-react";
 import { fetchAuthStatus, registerAccount } from "../shared/auth/authClient.js";
+import { consumeAuthReturnTo } from "../shared/auth/authReturnTo.js";
 import { RpgPortalBackground } from "../shared/components/RpgPortalBackground.js";
 import { PortalTopBar } from "../shared/components/PortalTopBar.js";
 
@@ -21,11 +22,11 @@ export function RegisterPage() {
   useEffect(() => {
     void fetchAuthStatus()
       .then((status) => {
-        if (status.sessionValid) void navigate({ to: "/home" });
+        if (status.sessionValid) window.location.assign(consumeAuthReturnTo());
       })
       .catch(() => undefined)
       .finally(() => setCheckingSession(false));
-  }, [navigate]);
+  }, []);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,7 +38,7 @@ export function RegisterPage() {
       setError(null);
       try {
         await registerAccount({ email, password, displayName });
-        void navigate({ to: "/home" });
+        window.location.assign(consumeAuthReturnTo());
       } catch (cause: unknown) {
         setError(cause instanceof Error ? cause.message : String(cause));
       } finally {
