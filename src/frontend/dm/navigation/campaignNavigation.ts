@@ -1,12 +1,14 @@
+import { CAMPAIGN_SECTIONS } from "./campaignSections.js";
+
 export type CampaignNavigationItemLike = {
   path: string;
 };
 
 export const CAMPAIGN_MOBILE_DOCK_PRIORITY = [
-  "command-center",
+  "overview",
   "session",
-  "canvas",
-  "entities",
+  "library",
+  "map",
 ] as const;
 
 export function orderCampaignMobileDockItems<T extends CampaignNavigationItemLike>(
