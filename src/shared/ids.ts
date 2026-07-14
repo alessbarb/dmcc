@@ -8,6 +8,7 @@ export type SessionEventId = string;
 export type EventId = string;
 export type AttachmentId = string;
 export type TagId = string;
+export type ShortcutId = string;
 
 function getWebCrypto(): Crypto {
   const crypto = globalThis.crypto;
@@ -83,4 +84,8 @@ export function generateAttachmentId(): AttachmentId {
 
 export function generateTagId(): TagId {
   return createId("tag");
+}
+
+export function generateShortcutId(): ShortcutId {
+  return createId("sht");
 }

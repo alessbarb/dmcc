@@ -16,6 +16,12 @@ interface CampaignForeignKey {
 // for the wrong reason.
 const CAMPAIGN_ID_FK_EXCEPTIONS = new Set<string>([
   "campaign_purge_jobs",
+  // campaign_shortcuts has no direct FK to campaigns: ownership is transitive
+  // through its composite FK to campaign_memberships(campaign_id, user_id),
+  // which itself cascades from campaigns. See
+  // "campaign_shortcuts cascades transitively through campaign_memberships"
+  // below for the integration proof that a campaign delete still removes it.
+  "campaign_shortcuts",
 ]);
 
 // Total number of campaign-owned tables known when this plan was written
@@ -24,7 +30,7 @@ const CAMPAIGN_ID_FK_EXCEPTIONS = new Set<string>([
 // name) — the dynamic discovery below is what actually enforces coverage of
 // tables added after this plan lands, this constant does not need to be kept
 // in sync with future tables.
-const BASELINE_CAMPAIGN_OWNED_TABLE_COUNT = 23;
+const BASELINE_CAMPAIGN_OWNED_TABLE_COUNT = 24;
 
 async function findTablesWithCampaignIdColumn(): Promise<string[]> {
   const result = await pool.query<{ table_name: string }>(
