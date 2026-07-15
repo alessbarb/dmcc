@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet, useParams } from "@tanstack/react-router";
 import { CampaignWorkspace } from "../workspaces/CampaignWorkspace.js";
 import { List, LayoutGrid, BookOpen } from "lucide-react";
+import "./boards/entityBoards.css";
 
 export function LibraryWorkspacePage() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
