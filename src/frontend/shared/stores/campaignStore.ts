@@ -333,7 +333,7 @@ export interface CampaignStateStore {
   visibility: unknown;
 
   playerPortalState: unknown;
-  dmPlayerPortalSummary: unknown;
+  dmPlayerPortalSummary: playerPortalApi.DmPlayerPortalSummary | null;
 
   loading: boolean;
   error: string | null;
@@ -1044,6 +1044,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err) {
       set({ error: errorMessage(err), loading: false });
+      throw err;
     }
   },
 
@@ -1057,6 +1058,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err) {
       set({ error: errorMessage(err), loading: false });
+      throw err;
     }
   },
 
@@ -1070,6 +1072,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err) {
       set({ error: errorMessage(err), loading: false });
+      throw err;
     }
   },
 
@@ -1385,7 +1388,9 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     try {
       const res = await playerPortalApi.getPlayerPortalDmSummary(activeCampaignId);
       if (!res.ok) throw new Error("Failed to load DM player portal summary");
-      const dmPlayerPortalSummary = await res.json();
+      // No backend Zod schema validates this endpoint's response; this is the one place
+      // that receives it, so the cast to the frontend contract lives here.
+      const dmPlayerPortalSummary = await res.json() as playerPortalApi.DmPlayerPortalSummary;
       if (get().activeCampaignId === activeCampaignId) {
         set({ dmPlayerPortalSummary });
       }
@@ -1405,6 +1410,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await Promise.all([get().loadDmPlayerPortalSummary(), get().reloadCampaignIfActive(activeCampaignId)]);
     } catch (err) {
       set({ error: errorMessage(err) });
+      throw err;
     }
   },
 
@@ -1417,6 +1423,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await get().loadDmPlayerPortalSummary();
     } catch (err) {
       set({ error: errorMessage(err) });
+      throw err;
     }
   },
 
@@ -1429,6 +1436,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       await Promise.all([get().loadDmPlayerPortalSummary(), get().reloadCampaignIfActive(activeCampaignId)]);
     } catch (err) {
       set({ error: errorMessage(err) });
+      throw err;
     }
   },
 

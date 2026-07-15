@@ -1,5 +1,78 @@
 import { apiFetch } from "./apiClient.js";
+import type {
+  PlayerCharacterProposalKind,
+  PlayerCharacterProposalStatus,
+  PlayerPortalObjectiveKind,
+  PlayerPortalObjectiveStatus,
+} from "@core/domain/playerPortal/types.js";
+
 const jsonInit = (method: string, body?: unknown): RequestInit => ({ method, headers: { "Content-Type": "application/json" }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
+
+// Response contract for GET .../player-portal/dm-character-summary. There is no backend
+// Zod schema for this endpoint (it returns an ad hoc shape from playerCharacterLinkWebRoutes.ts),
+// so this is the only definition of it; it reuses the official player-portal proposal/objective
+// unions where the backend's remapped fields line up with them.
+export interface DmPortalCharacterSummary {
+  entityId: string;
+  entityType: string;
+  title: string;
+  summary?: string;
+  status?: string;
+  importance?: string;
+}
+
+export interface DmPortalProposal {
+  proposalId: string;
+  kind?: PlayerCharacterProposalKind;
+  status?: PlayerCharacterProposalStatus;
+  targetCharacterEntityId?: string;
+  proposedChanges?: {
+    title?: string;
+    name?: string;
+    className?: string;
+    species?: string;
+    race?: string;
+    background?: string;
+  };
+}
+
+export interface DmPortalObjective {
+  objectiveId: string;
+  title: string;
+  description?: string;
+  status?: PlayerPortalObjectiveStatus;
+  kind?: PlayerPortalObjectiveKind;
+}
+
+export interface DmPortalNote {
+  noteId: string;
+  title: string;
+  content?: string;
+}
+
+export interface DmPortalPlayerSheetStatus {
+  hitPointsCurrent?: number;
+  hitPointsMax?: number;
+  armorClass?: number;
+  inspiration?: boolean;
+  conditions?: string[];
+}
+
+export interface DmPortalPlayer {
+  playerId: string;
+  displayName: string;
+  link: { characterEntityId: string } | null;
+  linkedCharacter?: DmPortalCharacterSummary | null;
+  sheet?: { status?: DmPortalPlayerSheetStatus };
+  proposals?: DmPortalProposal[];
+  objectives?: DmPortalObjective[];
+  notes?: DmPortalNote[];
+}
+
+export interface DmPlayerPortalSummary {
+  players: DmPortalPlayer[];
+  availableCharacters?: DmPortalCharacterSummary[];
+}
 export const getPlayerPortalState = (campaignId: string) => apiFetch(`/api/campaigns/${campaignId}/player-portal/state`);
 export const updatePlayerPortalStatus = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/status`, { init: jsonInit("PUT", payload) });
 export const createPlayerPortalResource = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/player-portal/resources`, { init: jsonInit("POST", payload) });
