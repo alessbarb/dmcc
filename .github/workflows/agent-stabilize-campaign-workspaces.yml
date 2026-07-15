@@ -6,6 +6,8 @@ on:
     paths:
       - scripts/agent_stabilize_campaign_workspaces.py
       - .github/workflows/agent-stabilize-campaign-workspaces.yml
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: write
