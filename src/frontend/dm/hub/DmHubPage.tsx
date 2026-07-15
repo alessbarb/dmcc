@@ -965,7 +965,7 @@ export function DmHubPage() {
               </button>
             </div>
             <p className="dm-muted-text" style={{ marginTop: 0, marginBottom: "20px" }}>
-              Crea una nueva campaña desde cero und empieza a construir tu mundo.
+              Crea una nueva campaña desde cero y empieza a construir tu mundo.
             </p>
             <form onSubmit={(e) => {
               runDmHubAction(handleCreateCampaignSubmit(e), "No se pudo crear la campaña.");
