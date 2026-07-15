@@ -7,13 +7,13 @@ import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { requireCampaignRole } from "../webAccess.js";
 import { writeCommandError } from "../commandErrorResponse.js";
 
-async function executeNotebookCommand<TSuccess extends Record<string, unknown> = Record<string, never>>(
+async function executeNotebookCommand(
   request: FastifyRequest,
   reply: FastifyReply,
   campaignId: string,
   command: Record<string, unknown>,
   repository: PostgresCampaignRepository,
-  success?: TSuccess,
+  success: Record<string, unknown> = {},
 ) {
   const { user } = await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
   const commandIdHeader = request.headers["idempotency-key"];
@@ -57,7 +57,7 @@ export async function registerNotebooksWebRoutes(server: FastifyInstance): Promi
     const campaignId = request.params.campaignId;
     await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
 
-    const title = requiredTitle(request.body?.title);
+    const title = requiredTitle(request.body.title);
     const parentNotebookId = request.body.parentNotebookId ?? null;
     const notebooks = (await repository.getCampaignState(campaignId)).notebooks;
     const nextSortOrder = request.body.sortOrder ?? Array.from(notebooks.values())
