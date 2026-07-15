@@ -1,0 +1,44 @@
+.campaign-workspace--map-tool {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: 100%;
+  min-width: 0;
+  min-height: calc(100dvh - 88px);
+  height: calc(100dvh - 88px);
+}
+
+.campaign-workspace--map-tool__tabs {
+  position: relative;
+  z-index: 20;
+  padding-inline: clamp(16px, 3vw, 32px);
+  border-bottom: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-main) 96%, transparent);
+}
+
+.campaign-workspace--map-tool__tabs .workspace-tabs {
+  margin: 0;
+}
+
+.campaign-workspace--map-tool__content {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.campaign-workspace--network .campaign-workspace--map-tool__content,
+.campaign-workspace--network .network-workspace-view,
+.campaign-workspace--network .network-workspace-view > * {
+  height: 100%;
+  min-height: 0;
+}
+
+@media (max-width: 760px) {
+  .campaign-workspace--map-tool {
+    min-height: calc(100dvh - 72px);
+    height: calc(100dvh - 72px);
+  }
+
+  .campaign-workspace--map-tool__tabs {
+    padding-inline: 12px;
+  }
+}
