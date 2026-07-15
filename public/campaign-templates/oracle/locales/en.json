@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/campaign-template/locale/v1.json",
   "locale": "en",
-  "templateId": "oracle-triple-eclipse",
+  "templateId": "oracle",
   "templateVersion": "1.2.0",
   "translationVersion": "1.1.0",
   "translatedFromLocale": "en",

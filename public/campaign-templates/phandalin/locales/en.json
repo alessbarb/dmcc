@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/campaign-template/locale/v1.json",
   "locale": "en",
-  "templateId": "phandalin-starter",
+  "templateId": "phandalin",
   "templateVersion": "1.1.0",
   "translationVersion": "1.0.0",
   "translatedFromLocale": "es",

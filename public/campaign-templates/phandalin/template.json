@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/campaign-template/template/v1.json",
-  "templateId": "phandalin-starter",
+  "templateId": "phandalin",
   "version": "1.2.0",
   "system": "dnd_5e",
   "difficulty": "starter",

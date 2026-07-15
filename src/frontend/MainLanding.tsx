@@ -46,7 +46,7 @@ function AppPreviewMock() {
           </div>
         </div>
         <div className="rl-preview-body">
-          <div className="rl-preview-cover" style={{ backgroundImage: "url(/assets/campaigns/premade-oracle-triple-eclipse.jpg)" }}>
+          <div className="rl-preview-cover" style={{ backgroundImage: "url(/assets/campaigns/premade-oracle.jpg)" }}>
             <div className="rl-preview-cover__overlay" />
             <span className="rl-preview-cover__title">Oracle: La Triple Eclipse</span>
             <span className="rl-preview-cover__badge"><span className="rl-preview-pulse" />Sesión activa</span>
@@ -277,7 +277,7 @@ export function MainLanding() {
               onClick={() => {
                 void navigate({
                   to: "/premades/$templateId",
-                  params: { templateId: "oracle-triple-eclipse" },
+                  params: { templateId: "oracle" },
                 }).catch(handleNavigationError);
               }}
             >

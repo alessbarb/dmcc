@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/campaign-template/template/v1.json",
-  "templateId": "oracle-triple-eclipse",
+  "templateId": "oracle",
   "version": "1.3.0",
   "system": "custom",
   "difficulty": "advanced",

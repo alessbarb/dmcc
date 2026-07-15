@@ -317,7 +317,7 @@ npm run premade:build         # Normalize template metadata
 npm run premade:build:check   # Check if normalization is needed (CI-safe)
 ```
 
-Templates: **oracle-triple-eclipse** (La Sombra del Oráculo) and **phandalin-starter** (Shadows over Phandalin). Both available in English and Spanish.
+Templates: **oracle** (La Sombra del Oráculo) and **phandalin** (Shadows over Phandalin). Both available in English and Spanish.
 
 ## Project structure
 
