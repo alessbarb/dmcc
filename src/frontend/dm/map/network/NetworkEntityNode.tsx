@@ -14,7 +14,7 @@ export interface NetworkEntityNodeProps {
   selected?: boolean;
 }
 
-export function NetworkEntityNode({ data, selected }: NetworkEntityNodeProps) {
+export const NetworkEntityNode = React.memo(function NetworkEntityNode({ data, selected }: NetworkEntityNodeProps) {
   const campaignState = useCampaignStore((state) => state.campaignState);
   const entity = campaignState?.entities?.find((candidate: Entity) => candidate.entityId === data.entityId);
 
@@ -32,6 +32,6 @@ export function NetworkEntityNode({ data, selected }: NetworkEntityNodeProps) {
       <Handle type="source" position={Position.Bottom} className="network-node-handle" />
     </div>
   );
-}
+});
 
 export default NetworkEntityNode;
