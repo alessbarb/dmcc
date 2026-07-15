@@ -2074,6 +2074,8 @@ export const en = {
     quickNPCIntroduced: "NPC introduced: {name}",
     decisionPrefix: "Decision: {text}",
     consequencePrefix: "Consequence: {text}",
+    quickCaptureHelp: "+note · +npc name | role · +decision · +consequence · +clue",
+    consequenceCreatedFromDecision: "Consequence created: {title}",
     startButton: "Start session #{number}",
     closingButton: "Closing...",
     prepareNextSessionTitle: "Prepare next session",

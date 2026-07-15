@@ -1776,6 +1776,8 @@ export const pt = {
     quickNPCIntroduced: "PNJ introduzido: {name}",
     decisionPrefix: "Decisão: {text}",
     consequencePrefix: "Consequência: {text}",
+    quickCaptureHelp: "+note · +npc nome | papel · +decision · +consequence · +clue",
+    consequenceCreatedFromDecision: "Consequência criada: {title}",
     startButton: "Iniciar sessão #{number}",
     closingButton: "A fechar...",
     prepareNextSessionTitle: "Preparar próxima sessão",

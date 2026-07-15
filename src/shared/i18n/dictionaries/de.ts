@@ -1799,6 +1799,8 @@ export const de: TranslationDictionary = {
     quickNPCIntroduced: "NSC eingeführt: {name}",
     decisionPrefix: "Entscheidung: {text}",
     consequencePrefix: "Konsequenz: {text}",
+    quickCaptureHelp: "+note · +npc Name | Rolle · +decision · +consequence · +clue",
+    consequenceCreatedFromDecision: "Konsequenz erstellt: {title}",
     startButton: "Sitzung #{number} starten",
     closingButton: "Wird geschlossen...",
     prepareNextSessionTitle: "Nächste Sitzung vorbereiten",
