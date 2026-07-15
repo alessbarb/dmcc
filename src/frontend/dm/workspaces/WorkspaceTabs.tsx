@@ -19,22 +19,9 @@ export function WorkspaceTabs({ tabs }: WorkspaceTabsProps) {
   const currentPathname = routerState.location.pathname;
 
   return (
-    <nav
-      className="workspace-tabs"
-      aria-label={t("common.sectionNavigation")}
-      style={{
-        display: "flex",
-        width: "100%",
-        minWidth: 0,
-        gap: 8,
-        overflowX: "auto",
-        overscrollBehaviorX: "contain",
-        scrollbarWidth: "thin",
-        borderBottom: "1px solid var(--border-color)",
-      }}
-    >
+    <nav className="workspace-tabs" aria-label={t("common.sectionNavigation")}>
       {tabs.map((tab) => {
-        const isActive = currentPathname === tab.path || currentPathname.startsWith(tab.path + "/");
+        const isActive = currentPathname === tab.path || currentPathname.startsWith(`${tab.path}/`);
         const Icon = tab.icon;
 
         return (
@@ -43,26 +30,8 @@ export function WorkspaceTabs({ tabs }: WorkspaceTabsProps) {
             to={tab.path}
             className={`workspace-tab ${isActive ? "active" : ""}`}
             aria-current={isActive ? "page" : undefined}
-            style={{
-              display: "inline-flex",
-              flex: "0 0 auto",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-              minHeight: 44,
-              padding: "10px 12px",
-              color: isActive ? "var(--color-primary, #6366f1)" : "var(--text-muted)",
-              borderBottom: isActive ? "2px solid var(--color-primary, #6366f1)" : "2px solid transparent",
-              fontWeight: isActive ? 700 : 500,
-              fontSize: "0.875rem",
-              lineHeight: 1.2,
-              whiteSpace: "nowrap",
-              textDecoration: "none",
-              cursor: "pointer",
-              transition: "color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease",
-            }}
           >
-            {Icon && <Icon size={16} />}
+            {Icon && <Icon size={16} aria-hidden="true" />}
             <span>{t(tab.labelKey)}</span>
           </Link>
         );
