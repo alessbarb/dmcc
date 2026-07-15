@@ -103,7 +103,24 @@ export async function registerNotebooksWebRoutes(server: FastifyInstance): Promi
     Body: { targetType: NotebookItemTargetType; targetId: string };
   }>("/api/campaigns/:campaignId/notebooks/:notebookId/items", async (request, reply) => {
     const campaignId = request.params.campaignId;
-    const items = (await repository.getCampaignState(campaignId)).notebookItems;
+    await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
+    const projection = await repository.getCampaignState(campaignId);
+    const items = projection.notebookItems;
+    const existingItem = Array.from(items.values()).find((item) =>
+      item.notebookId === request.params.notebookId
+      && item.targetType === request.body.targetType
+      && item.targetId === request.body.targetId,
+    );
+
+    if (existingItem) {
+      return {
+        ok: true,
+        notebookItemId: existingItem.notebookItemId,
+        alreadyLinked: true,
+        sequence: projection.lastSequence,
+      };
+    }
+
     const nextSortOrder = Array.from(items.values())
       .filter((item) => item.notebookId === request.params.notebookId)
       .reduce((maximum, item) => Math.max(maximum, item.sortOrder), -1) + 1;
@@ -116,7 +133,7 @@ export async function registerNotebooksWebRoutes(server: FastifyInstance): Promi
       targetType: request.body.targetType,
       targetId: request.body.targetId,
       sortOrder: nextSortOrder,
-    }, repository, { notebookItemId });
+    }, repository, { notebookItemId, alreadyLinked: false });
   });
 
   server.delete<{ Params: { campaignId: string; notebookItemId: string } }>(
