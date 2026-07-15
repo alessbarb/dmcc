@@ -472,7 +472,7 @@ export function NotebooksView() {
         <div className="notebooks-sidebar-search">
           <Search size={14} className="search-icon" />
           <input
-            type="text"
+            type="search"
             placeholder="Buscar..."
             value={notebookSearch}
             onChange={(e) => setNotebookSearch(e.target.value)}
@@ -487,7 +487,7 @@ export function NotebooksView() {
         {isCreatingRoot && (
           <div className="glass-form notebooks-inline-form">
             <label>{t("notebooks.form.newRootName")}</label>
-            <input value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder={t("notebooks.form.titlePlaceholder")} autoFocus />
+            <input type="text" value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder={t("notebooks.form.titlePlaceholder")} autoFocus />
             <div className="notebooks-form-actions">
               <button type="button" className="btn btn-sm btn-secondary" title={t("notebooks.actions.cancel")} onClick={() => setIsCreatingRoot(false)}><X size={12} /></button>
               <button type="button" className="btn btn-sm btn-primary" title={t("notebooks.actions.save")} disabled={!newTitle.trim()} onClick={() => void createNotebook(null)}><Check size={12} /></button>
@@ -515,7 +515,7 @@ export function NotebooksView() {
               <div className="notebook-detail-copy">
                 {isEditing ? (
                   <div className="notebooks-edit-form">
-                    <input value={editTitle} onChange={(event) => setEditTitle(event.target.value)} placeholder={t("notebooks.form.titlePlaceholder")} autoFocus />
+                    <input type="text" value={editTitle} onChange={(event) => setEditTitle(event.target.value)} placeholder={t("notebooks.form.titlePlaceholder")} autoFocus />
                     <textarea value={editDescription} onChange={(event) => setEditDescription(event.target.value)} placeholder={t("notebooks.form.descriptionPlaceholder")} rows={2} />
                     <select value={editParentId ?? ""} onChange={(event) => setEditParentId(event.target.value || null)}>
                       <option value="">{t("notebooks.form.newRootName")}</option>
@@ -557,7 +557,7 @@ export function NotebooksView() {
             {isCreatingChild && (
               <div className="glass-form notebooks-inline-form">
                 <label>{t("notebooks.form.newChildName")}</label>
-                <input value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder={t("notebooks.form.titlePlaceholder")} autoFocus />
+                <input type="text" value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder={t("notebooks.form.titlePlaceholder")} autoFocus />
                 <div className="notebooks-form-actions">
                   <button type="button" className="btn btn-sm btn-secondary" title={t("notebooks.actions.cancel")} onClick={() => setIsCreatingChild(false)}><X size={12} /></button>
                   <button type="button" className="btn btn-sm btn-primary" title={t("notebooks.actions.save")} disabled={!newTitle.trim()} onClick={() => void createNotebook(selectedNotebook.notebookId)}><Check size={12} /></button>
