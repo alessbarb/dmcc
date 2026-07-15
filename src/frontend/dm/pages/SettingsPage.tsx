@@ -155,7 +155,7 @@ export function SettingsPage(props: SettingsPageProps = {}) {
               <div className="settings-export-result__actions">
                 <button className="btn btn-secondary btn-sm" onClick={() => handleCopyExportPath(lastMarkdownExport.path)}>
                   {copiedExportPath ? <Check size={14} /> : <Copy size={14} />}
-                  {t("settings.copyExportPath")}
+                  {t("common.copy")}
                 </button>
                 {lastMarkdownExport.downloadUrl && (
                   <button className="btn btn-primary btn-sm" onClick={() => runSettingsAction(handleDownloadMarkdown(), "No se pudo descargar el Markdown.")}>
