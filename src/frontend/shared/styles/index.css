@@ -8179,7 +8179,7 @@ small.canvas-navigator-result-action {
 .dm-hub-main {
   max-width: 1760px;
   margin: 0 auto;
-  padding: 24px 28px 48px;
+  padding: 24px 28px calc(24px + var(--app-footer-height));
   position: relative;
   z-index: 1;
 }
