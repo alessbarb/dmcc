@@ -117,10 +117,10 @@ export const CAMPAIGN_SECTIONS: CampaignSectionDefinition[] = [
   {
     id: "messages",
     path: "messages",
-    labelKey: "campaignShell.nav.messages", // Wait, this key is added in campaignMessaging.ts or we can use "campaignShell.nav.players"
-    titleKey: "campaignShell.meta.playersTitle",
-    eyebrowKey: "campaignShell.meta.playersEyebrow",
-    descriptionKey: "campaignShell.meta.playersDescription",
+    labelKey: "campaignShell.nav.messages",
+    titleKey: "campaignShell.meta.messagesTitle",
+    eyebrowKey: "campaignShell.meta.messagesEyebrow",
+    descriptionKey: "campaignShell.meta.messagesDescription",
     icon: MessageCircle,
     placement: "secondary",
     mobilePlacement: "more",
