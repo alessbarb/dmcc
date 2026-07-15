@@ -12,7 +12,6 @@ import { SessionPrepEditor } from "./SessionPrepEditor.js";
 export function NoActiveSessionView({
   campaignState,
   locale,
-  hasNoSessions,
   preparedSessions,
   recentSessions,
   nextNumber,
@@ -26,7 +25,6 @@ export function NoActiveSessionView({
 }: {
   campaignState: MaybeCampaignState;
   locale: SupportedLocale;
-  hasNoSessions: boolean;
   preparedSessions: Session[];
   recentSessions: Session[];
   nextNumber: number;
