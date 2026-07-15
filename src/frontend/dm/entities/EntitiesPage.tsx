@@ -387,7 +387,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
         <div className="entities-toolbar">
           <div className="entities-header-bar">
             <div className="entities-header-bar__left">
-              <span className="search-input-wrapper" style={{ position: "relative", flex: 1, maxWidth: 320 }}>
+              <span className="search-input-wrapper" style={{ position: "relative", flex: 1, minWidth: 140, maxWidth: 320 }}>
                 <Search
                   size={16}
                   aria-hidden="true"
@@ -403,7 +403,7 @@ export function EntitiesPage(props: EntitiesPageProps = {}) {
                   type="search"
                   className="form-input"
                   placeholder={t("entitiesPage.searchPlaceholder")}
-                  style={{ paddingLeft: 36, height: 38 }}
+                  style={{ paddingLeft: 36, height: 38, width: "100%", textOverflow: "ellipsis" }}
                   value={entitySearchQuery}
                   onChange={(event) => setEntitySearchQuery(event.target.value)}
                 />

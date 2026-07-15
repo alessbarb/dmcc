@@ -29,9 +29,10 @@
 .entities-header-bar__left {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
   flex: 1;
-  min-width: 280px;
+  min-width: 420px;
 }
 
 .entities-header-bar__right {
