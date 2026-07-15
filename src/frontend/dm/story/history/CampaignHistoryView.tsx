@@ -81,7 +81,7 @@ const CATEGORIES = [
 
 export function CampaignHistoryView() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
-  const { locale, t } = useTranslation();
+  const { locale } = useTranslation();
   const isEs = locale === "es";
 
   const [entries, setEntries] = useState<CampaignHistoryResponse["entries"]>([]);

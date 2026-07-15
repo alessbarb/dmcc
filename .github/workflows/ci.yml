@@ -53,6 +53,12 @@ jobs:
           NODE_ENV: test
         run: npm run db:migrate
 
+      - name: Lint
+        run: npm run lint
+
+      - name: Dependency boundaries
+        run: npm run audit:deps
+
       - name: Typecheck
         run: npm run typecheck:all
 

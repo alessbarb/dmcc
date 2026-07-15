@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import {
   Shield,
   Play,
@@ -122,7 +122,7 @@ export const CAMPAIGN_SECTIONS: CampaignSectionDefinition[] = [
     eyebrowKey: "campaignShell.meta.messagesEyebrow",
     descriptionKey: "campaignShell.meta.messagesDescription",
     icon: MessageCircle,
-    placement: "secondary",
+    placement: "primary",
     mobilePlacement: "more",
     mobilePriority: 70,
   },

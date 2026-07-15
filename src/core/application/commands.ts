@@ -5,6 +5,7 @@ import type { RelationType } from "../domain/relation/relation.js";
 import type { VisibilityRule } from "../domain/visibility/visibility.js";
 import type { PlayerCharacterProposal } from "../domain/playerPortal/types.js";
 import type { CampaignSettings, CampaignSystem, CampaignStatus } from "../domain/campaign/types.js";
+import type { NotebookItemTargetType } from "../domain/resource/resourceType.js";
 
 export type Command =
   | {
@@ -727,7 +728,7 @@ export type Command =
       actorId: string;
       notebookItemId: NotebookItemId;
       notebookId: NotebookId;
-      targetType: string;
+      targetType: NotebookItemTargetType;
       targetId: string;
       sortOrder: number;
     }
@@ -817,6 +818,18 @@ export type Command =
     }
   | {
       type: "UnscheduleStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+    }
+  | {
+      type: "MarkStoryStepReady";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+    }
+  | {
+      type: "ActivateStoryStep";
       campaignId: CampaignId;
       actorId: string;
       stepId: StoryStepId;

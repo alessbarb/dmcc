@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Plus, Link2, Copy, Trash2, Clock, Wifi } from "lucide-react";
+import { Plus, Link2, Copy, Trash2, Clock } from "lucide-react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
@@ -116,7 +116,6 @@ export function InvitationsView() {
   const [invitationError, setInvitationError] = useState<string | null>(null);
   const [inviteLoading, setInviteLoading] = useState(false);
   const [newInviteUrl, setNewInviteUrl] = useState<string | null>(null);
-  const [networkUrl, setNetworkUrl] = useState<string | null>(null);
 
   const fetchInvitations = useCallback(async () => {
     const activeCampaignId = store.activeCampaignId;
@@ -140,22 +139,6 @@ export function InvitationsView() {
     runPlayersAction(fetchInvitations(), "No se pudieron cargar las invitaciones.");
   }, [fetchInvitations]);
 
-  useEffect(() => {
-    fetch("/api/network-info")
-      .then(async (r) => {
-        if (!r.ok) {
-          setNetworkUrl(null);
-          return null;
-        }
-        return r.json();
-      })
-      .then((d: unknown) => {
-        if (d && typeof d === "object" && "url" in d && typeof d.url === "string") {
-          setNetworkUrl(d.url);
-        }
-      })
-      .catch(() => setNetworkUrl(null));
-  }, []);
 
   const handleCreateInvite = async () => {
     const activeCampaignId = store.activeCampaignId;
@@ -211,13 +194,6 @@ export function InvitationsView() {
             {t("players.playerInvitations")}
           </h3>
         </div>
-        {networkUrl && (
-          <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "12px", padding: "6px 10px", borderRadius: "6px", background: "rgba(16,185,129,0.07)", border: "1px solid rgba(16,185,129,0.2)" }}>
-            <Wifi size={13} style={{ color: "#34d399", flexShrink: 0 }} />
-            <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>{t("players.localNetworkActive")} </span>
-            <code style={{ fontSize: "0.78rem", color: "#34d399" }}>{networkUrl}</code>
-          </div>
-        )}
 
         <button
           className="btn btn-primary btn-sm"

@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { boolean, check, foreignKey, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { check, foreignKey, index, integer, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 import type { UserPreferences, SocialVisibility } from "../server/account/accountTypes.js";
 
 // Mirrors accountWebRoutes.ts's defaultVisibility(); duplicated here (rather than imported)
@@ -298,17 +298,6 @@ export const campaignSessions = pgTable("campaign_sessions", {
   pk: primaryKey({ columns: [table.campaignId, table.sessionId] }),
 }));
 
-export const campaignScenes = pgTable("campaign_scenes", {
-  campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
-  sceneId: text("scene_id").notNull(),
-  sessionId: text("session_id").notNull(),
-  title: text("title").notNull(),
-  orderIndex: integer("order_index").notNull().default(0),
-  status: text("status").notNull().default("active"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-}, (table) => ({
-  pk: primaryKey({ columns: [table.campaignId, table.sceneId] }),
-}));
 
 export const campaignObjectives = pgTable("campaign_objectives", {
   campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),

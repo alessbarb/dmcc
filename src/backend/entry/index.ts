@@ -7,10 +7,6 @@ const port = Number(process.env.PORT ?? process.env.DMCC_PORT ?? "4877");
 const server = createServer({ dataDir: process.env.DMCC_DATA_DIR });
 const SHUTDOWN_TIMEOUT_MS = 15_000;
 
-if (host === "0.0.0.0") {
-  (server as any).lanExposed = true;
-}
-
 let shutdownPromise: Promise<void> | undefined;
 
 async function closeRuntimeResources(): Promise<void> {

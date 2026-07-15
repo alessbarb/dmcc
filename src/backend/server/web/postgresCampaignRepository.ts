@@ -632,6 +632,274 @@ async function projectReadModelsTx(tx: DbTransaction, events: StoredEvent[]): Pr
         });
         break;
       }
+
+      case "NotebookCreated":
+      case "NotebookUpdated": {
+        const campaignId = event.campaignId ?? payload.campaignId;
+        await tx.insert(schema.campaignNotebooks).values({
+          campaignId,
+          notebookId: payload.notebookId,
+          parentNotebookId: payload.parentNotebookId ?? null,
+          title: payload.title,
+          description: payload.description ?? null,
+          icon: payload.icon ?? null,
+          sortOrder: payload.sortOrder ?? 0,
+          archivedAt: payload.archivedAt ? new Date(payload.archivedAt) : null,
+          createdAt: new Date(payload.createdAt ?? event.occurredAt),
+          updatedAt: new Date(payload.updatedAt ?? event.occurredAt),
+        }).onConflictDoUpdate({
+          target: [schema.campaignNotebooks.campaignId, schema.campaignNotebooks.notebookId],
+          set: {
+            parentNotebookId: payload.parentNotebookId ?? null,
+            title: payload.title,
+            description: payload.description ?? null,
+            icon: payload.icon ?? null,
+            sortOrder: payload.sortOrder ?? 0,
+            archivedAt: payload.archivedAt ? new Date(payload.archivedAt) : null,
+            updatedAt: new Date(payload.updatedAt ?? event.occurredAt),
+          },
+        });
+        break;
+      }
+      case "NotebookArchived": {
+        await tx.update(schema.campaignNotebooks).set({
+          archivedAt: new Date(event.occurredAt),
+          updatedAt: new Date(event.occurredAt),
+        }).where(and(
+          eq(schema.campaignNotebooks.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignNotebooks.notebookId, payload.notebookId),
+        ));
+        break;
+      }
+      case "NotebookItemAdded": {
+        await tx.insert(schema.campaignNotebookItems).values({
+          campaignId: event.campaignId ?? payload.campaignId,
+          notebookItemId: payload.notebookItemId,
+          notebookId: payload.notebookId,
+          targetType: payload.targetType,
+          targetId: payload.targetId,
+          sortOrder: payload.sortOrder ?? 0,
+          createdAt: new Date(payload.createdAt ?? event.occurredAt),
+        }).onConflictDoUpdate({
+          target: [schema.campaignNotebookItems.campaignId, schema.campaignNotebookItems.notebookItemId],
+          set: {
+            notebookId: payload.notebookId,
+            targetType: payload.targetType,
+            targetId: payload.targetId,
+            sortOrder: payload.sortOrder ?? 0,
+          },
+        });
+        break;
+      }
+      case "NotebookItemRemoved": {
+        await tx.delete(schema.campaignNotebookItems).where(and(
+          eq(schema.campaignNotebookItems.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignNotebookItems.notebookItemId, payload.notebookItemId),
+        ));
+        break;
+      }
+      case "NotebookItemsReordered": {
+        for (const [sortOrder, notebookItemId] of (payload.orderedItemIds ?? []).entries()) {
+          await tx.update(schema.campaignNotebookItems).set({ sortOrder }).where(and(
+            eq(schema.campaignNotebookItems.campaignId, event.campaignId ?? payload.campaignId),
+            eq(schema.campaignNotebookItems.notebookId, payload.notebookId),
+            eq(schema.campaignNotebookItems.notebookItemId, notebookItemId),
+          ));
+        }
+        break;
+      }
+      case "StoryThreadCreated":
+      case "StoryThreadUpdated": {
+        const campaignId = event.campaignId ?? payload.campaignId;
+        await tx.insert(schema.campaignStoryThreads).values({
+          campaignId,
+          threadId: payload.threadId,
+          title: payload.title,
+          summary: payload.summary ?? null,
+          status: payload.status ?? "planned",
+          sortOrder: payload.sortOrder ?? 0,
+          archivedAt: payload.archivedAt ? new Date(payload.archivedAt) : null,
+          createdAt: new Date(payload.createdAt ?? event.occurredAt),
+          updatedAt: new Date(payload.updatedAt ?? event.occurredAt),
+        }).onConflictDoUpdate({
+          target: [schema.campaignStoryThreads.campaignId, schema.campaignStoryThreads.threadId],
+          set: {
+            title: payload.title,
+            summary: payload.summary ?? null,
+            status: payload.status ?? "planned",
+            sortOrder: payload.sortOrder ?? 0,
+            archivedAt: payload.archivedAt ? new Date(payload.archivedAt) : null,
+            updatedAt: new Date(payload.updatedAt ?? event.occurredAt),
+          },
+        });
+        break;
+      }
+      case "StoryThreadArchived": {
+        await tx.update(schema.campaignStoryThreads).set({ archivedAt: new Date(event.occurredAt), updatedAt: new Date(event.occurredAt) }).where(and(
+          eq(schema.campaignStoryThreads.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStoryThreads.threadId, payload.threadId),
+        ));
+        break;
+      }
+      case "StoryThreadActivated":
+      case "StoryThreadResolved":
+      case "StoryThreadDiscarded": {
+        const status = event.type === "StoryThreadActivated" ? "active" : event.type === "StoryThreadResolved" ? "resolved" : "discarded";
+        await tx.update(schema.campaignStoryThreads).set({ status, updatedAt: new Date(event.occurredAt) }).where(and(
+          eq(schema.campaignStoryThreads.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStoryThreads.threadId, payload.threadId),
+        ));
+        break;
+      }
+      case "StoryThreadReordered": {
+        for (const [sortOrder, threadId] of (payload.orderedThreadIds ?? []).entries()) {
+          await tx.update(schema.campaignStoryThreads).set({ sortOrder, updatedAt: new Date(event.occurredAt) }).where(and(
+            eq(schema.campaignStoryThreads.campaignId, event.campaignId ?? payload.campaignId),
+            eq(schema.campaignStoryThreads.threadId, threadId),
+          ));
+        }
+        break;
+      }
+      case "StoryStepCreated":
+      case "StoryStepUpdated": {
+        const campaignId = event.campaignId ?? payload.campaignId;
+        await tx.insert(schema.campaignStorySteps).values({
+          campaignId,
+          stepId: payload.stepId,
+          threadId: payload.threadId,
+          title: payload.title,
+          intent: payload.intent ?? null,
+          expectedOutcome: payload.expectedOutcome ?? null,
+          actualOutcome: payload.actualOutcome ?? null,
+          status: payload.status ?? "planned",
+          resolutionKind: payload.resolutionKind ?? null,
+          sceneEntityId: payload.sceneEntityId ?? null,
+          plannedSessionId: payload.plannedSessionId ?? null,
+          plannedSessionOrder: payload.plannedSessionOrder ?? null,
+          resolvedSessionId: payload.resolvedSessionId ?? null,
+          sortOrder: payload.sortOrder ?? 0,
+          createdAt: new Date(payload.createdAt ?? event.occurredAt),
+          updatedAt: new Date(payload.updatedAt ?? event.occurredAt),
+        }).onConflictDoUpdate({
+          target: [schema.campaignStorySteps.campaignId, schema.campaignStorySteps.stepId],
+          set: {
+            threadId: payload.threadId,
+            title: payload.title,
+            intent: payload.intent ?? null,
+            expectedOutcome: payload.expectedOutcome ?? null,
+            actualOutcome: payload.actualOutcome ?? null,
+            status: payload.status ?? "planned",
+            resolutionKind: payload.resolutionKind ?? null,
+            sceneEntityId: payload.sceneEntityId ?? null,
+            plannedSessionId: payload.plannedSessionId ?? null,
+            plannedSessionOrder: payload.plannedSessionOrder ?? null,
+            resolvedSessionId: payload.resolvedSessionId ?? null,
+            sortOrder: payload.sortOrder ?? 0,
+            updatedAt: new Date(payload.updatedAt ?? event.occurredAt),
+          },
+        });
+        break;
+      }
+      case "StoryStepScheduled":
+      case "StoryStepDeferred": {
+        await tx.update(schema.campaignStorySteps).set({
+          plannedSessionId: payload.plannedSessionId,
+          plannedSessionOrder: payload.plannedSessionOrder,
+          updatedAt: new Date(event.occurredAt),
+        }).where(and(
+          eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStorySteps.stepId, payload.stepId),
+        ));
+        break;
+      }
+      case "StoryStepUnscheduled": {
+        await tx.update(schema.campaignStorySteps).set({
+          plannedSessionId: null,
+          plannedSessionOrder: null,
+          updatedAt: new Date(event.occurredAt),
+        }).where(and(
+          eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStorySteps.stepId, payload.stepId),
+        ));
+        break;
+      }
+      case "StoryStepMarkedReady": {
+        await tx.update(schema.campaignStorySteps).set({
+          status: "ready",
+          updatedAt: new Date(event.occurredAt),
+        }).where(and(
+          eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStorySteps.stepId, payload.stepId),
+        ));
+        break;
+      }
+      case "StoryStepActivated": {
+        await tx.update(schema.campaignStorySteps).set({
+          status: "active",
+          updatedAt: new Date(event.occurredAt),
+        }).where(and(
+          eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStorySteps.stepId, payload.stepId),
+        ));
+        break;
+      }
+      case "StoryStepReconciled": {
+        await tx.update(schema.campaignStorySteps).set({
+          status: payload.status,
+          resolutionKind: payload.resolutionKind,
+          actualOutcome: payload.actualOutcome ?? null,
+          resolvedSessionId: payload.resolvedSessionId,
+          plannedSessionId: null,
+          plannedSessionOrder: null,
+          updatedAt: new Date(event.occurredAt),
+        }).where(and(
+          eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStorySteps.stepId, payload.stepId),
+        ));
+        break;
+      }
+      case "StoryStepsReordered": {
+        for (const [sortOrder, stepId] of (payload.orderedStepIds ?? []).entries()) {
+          await tx.update(schema.campaignStorySteps).set({ sortOrder, updatedAt: new Date(event.occurredAt) }).where(and(
+            eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),
+            eq(schema.campaignStorySteps.threadId, payload.threadId),
+            eq(schema.campaignStorySteps.stepId, stepId),
+          ));
+        }
+        break;
+      }
+      case "EntityLinkedToStoryThread": {
+        await tx.insert(schema.campaignStoryThreadEntities).values({
+          campaignId: event.campaignId ?? payload.campaignId,
+          threadId: payload.threadId,
+          entityId: payload.entityId,
+        }).onConflictDoNothing();
+        break;
+      }
+      case "EntityUnlinkedFromStoryThread": {
+        await tx.delete(schema.campaignStoryThreadEntities).where(and(
+          eq(schema.campaignStoryThreadEntities.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStoryThreadEntities.threadId, payload.threadId),
+          eq(schema.campaignStoryThreadEntities.entityId, payload.entityId),
+        ));
+        break;
+      }
+      case "EntityLinkedToStoryStep": {
+        await tx.insert(schema.campaignStoryStepEntities).values({
+          campaignId: event.campaignId ?? payload.campaignId,
+          stepId: payload.stepId,
+          entityId: payload.entityId,
+        }).onConflictDoNothing();
+        break;
+      }
+      case "EntityUnlinkedFromStoryStep": {
+        await tx.delete(schema.campaignStoryStepEntities).where(and(
+          eq(schema.campaignStoryStepEntities.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStoryStepEntities.stepId, payload.stepId),
+          eq(schema.campaignStoryStepEntities.entityId, payload.entityId),
+        ));
+        break;
+      }
       case "PlayerPortalNoteCreated": {
         await tx.insert(schema.campaignNotes).values({
           campaignId: event.campaignId ?? payload.campaignId,

@@ -1,5 +1,3 @@
-import { CAMPAIGN_SECTIONS } from "./campaignSections.js";
-
 export type CampaignNavigationItemLike = {
   path: string;
 };

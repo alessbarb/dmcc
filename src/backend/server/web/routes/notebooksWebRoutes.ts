@@ -1,132 +1,127 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import type { Command } from "@core/application/commands.js";
+import type { NotebookItemTargetType } from "@core/domain/resource/resourceType.js";
 import { createId } from "@shared/ids.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { requireCampaignRole } from "../webAccess.js";
+import { writeCommandError } from "../commandErrorResponse.js";
 
 async function executeNotebookCommand(
   request: FastifyRequest,
   reply: FastifyReply,
   campaignId: string,
   command: Record<string, unknown>,
-  repo: PostgresCampaignRepository,
+  repository: PostgresCampaignRepository,
 ) {
   const { user } = await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
   const commandIdHeader = request.headers["idempotency-key"];
   const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
   try {
-    const projection = await repo.executeCommand(campaignId, {
+    const projection = await repository.executeCommand(campaignId, {
       ...command,
       campaignId,
       actorId: user.userId,
     } as Command, { commandId, actorUserId: user.userId });
     campaignEventBus.publish(campaignId, { type: "projection.updated", sequence: projection.lastSequence });
     return { ok: true, sequence: projection.lastSequence };
-  } catch (error: any) {
-    reply.code(error.name === "CommandConflictError" || /Conflict/.test(error.message) ? 409 : 500);
-    return { error: error.message || "Command failed" };
+  } catch (error: unknown) {
+    return writeCommandError(reply, error);
   }
 }
 
 export async function registerNotebooksWebRoutes(server: FastifyInstance): Promise<void> {
-  const repo = new PostgresCampaignRepository();
+  const repository = new PostgresCampaignRepository();
 
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/notebooks", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const projection = await repo.getCampaignState(request.params.campaignId);
-
-    const notebooks = Array.from(projection.notebooks.values()).filter(n => !n.archivedAt);
-    const items = Array.from(projection.notebookItems.values());
-
-    return { notebooks, items };
+    const projection = await repository.getCampaignState(request.params.campaignId);
+    return {
+      notebooks: Array.from(projection.notebooks.values()).filter((notebook) => !notebook.archivedAt),
+      items: Array.from(projection.notebookItems.values()),
+    };
   });
 
-  server.post<{ Params: { campaignId: string }; Body: { title: string; parentNotebookId?: string | null; sortOrder?: number } }>(
-    "/api/campaigns/:campaignId/notebooks",
-    async (request, reply) => {
-      const campaignId = request.params.campaignId;
-      const notebookId = createId("nbk");
-      
-      const notebooks = (await repo.getCampaignState(campaignId)).notebooks;
-      const nextSortOrder = request.body.sortOrder ?? (Array.from(notebooks.values()).reduce((max, n) => Math.max(max, n.sortOrder), -1) + 1);
+  server.post<{
+    Params: { campaignId: string };
+    Body: { title: string; description?: string | null; icon?: string | null; parentNotebookId?: string | null; sortOrder?: number };
+  }>("/api/campaigns/:campaignId/notebooks", async (request, reply) => {
+    const campaignId = request.params.campaignId;
+    const parentNotebookId = request.body.parentNotebookId ?? null;
+    const notebooks = (await repository.getCampaignState(campaignId)).notebooks;
+    const nextSortOrder = request.body.sortOrder ?? Array.from(notebooks.values())
+      .filter((notebook) => notebook.parentNotebookId === parentNotebookId && !notebook.archivedAt)
+      .reduce((maximum, notebook) => Math.max(maximum, notebook.sortOrder), -1) + 1;
 
-      return executeNotebookCommand(request, reply, campaignId, {
-        type: "CreateNotebook",
-        notebookId,
-        parentNotebookId: request.body.parentNotebookId ?? null,
-        title: request.body.title,
-        sortOrder: nextSortOrder,
-      }, repo);
-    }
-  );
+    return executeNotebookCommand(request, reply, campaignId, {
+      type: "CreateNotebook",
+      notebookId: createId("nbk"),
+      parentNotebookId,
+      title: request.body.title,
+      description: request.body.description ?? null,
+      icon: request.body.icon ?? null,
+      sortOrder: nextSortOrder,
+    }, repository);
+  });
 
-  server.patch<{ Params: { campaignId: string; notebookId: string }; Body: { title?: string; parentNotebookId?: string | null } }>(
-    "/api/campaigns/:campaignId/notebooks/:notebookId",
-    async (request, reply) => {
-      const campaignId = request.params.campaignId;
-      return executeNotebookCommand(request, reply, campaignId, {
-        type: "UpdateNotebook",
-        notebookId: request.params.notebookId,
-        title: request.body.title,
-        parentNotebookId: request.body.parentNotebookId,
-      }, repo);
-    }
-  );
+  server.patch<{
+    Params: { campaignId: string; notebookId: string };
+    Body: { title?: string; description?: string | null; icon?: string | null; parentNotebookId?: string | null };
+  }>("/api/campaigns/:campaignId/notebooks/:notebookId", async (request, reply) => {
+    return executeNotebookCommand(request, reply, request.params.campaignId, {
+      type: "UpdateNotebook",
+      notebookId: request.params.notebookId,
+      title: request.body.title,
+      description: request.body.description,
+      icon: request.body.icon,
+      parentNotebookId: request.body.parentNotebookId,
+    }, repository);
+  });
 
   server.delete<{ Params: { campaignId: string; notebookId: string } }>(
     "/api/campaigns/:campaignId/notebooks/:notebookId",
-    async (request, reply) => {
-      const campaignId = request.params.campaignId;
-      return executeNotebookCommand(request, reply, campaignId, {
-        type: "ArchiveNotebook",
-        notebookId: request.params.notebookId,
-      }, repo);
-    }
+    async (request, reply) => executeNotebookCommand(request, reply, request.params.campaignId, {
+      type: "ArchiveNotebook",
+      notebookId: request.params.notebookId,
+    }, repository),
   );
 
-  server.post<{ Params: { campaignId: string; notebookId: string }; Body: { targetType: string; targetId: string } }>(
-    "/api/campaigns/:campaignId/notebooks/:notebookId/items",
-    async (request, reply) => {
-      const campaignId = request.params.campaignId;
-      const notebookItemId = createId("nbi");
-      
-      const items = (await repo.getCampaignState(campaignId)).notebookItems;
-      const nextSortOrder = Array.from(items.values())
-        .filter(item => item.notebookId === request.params.notebookId)
-        .reduce((max, item) => Math.max(max, item.sortOrder), -1) + 1;
+  server.post<{
+    Params: { campaignId: string; notebookId: string };
+    Body: { targetType: NotebookItemTargetType; targetId: string };
+  }>("/api/campaigns/:campaignId/notebooks/:notebookId/items", async (request, reply) => {
+    const campaignId = request.params.campaignId;
+    const items = (await repository.getCampaignState(campaignId)).notebookItems;
+    const nextSortOrder = Array.from(items.values())
+      .filter((item) => item.notebookId === request.params.notebookId)
+      .reduce((maximum, item) => Math.max(maximum, item.sortOrder), -1) + 1;
 
-      return executeNotebookCommand(request, reply, campaignId, {
-        type: "AddNotebookItem",
-        notebookItemId,
-        notebookId: request.params.notebookId,
-        targetType: request.body.targetType,
-        targetId: request.body.targetId,
-        sortOrder: nextSortOrder,
-      }, repo);
-    }
-  );
+    return executeNotebookCommand(request, reply, campaignId, {
+      type: "AddNotebookItem",
+      notebookItemId: createId("nbi"),
+      notebookId: request.params.notebookId,
+      targetType: request.body.targetType,
+      targetId: request.body.targetId,
+      sortOrder: nextSortOrder,
+    }, repository);
+  });
 
   server.delete<{ Params: { campaignId: string; notebookItemId: string } }>(
     "/api/campaigns/:campaignId/notebooks/items/:notebookItemId",
-    async (request, reply) => {
-      const campaignId = request.params.campaignId;
-      return executeNotebookCommand(request, reply, campaignId, {
-        type: "RemoveNotebookItem",
-        notebookItemId: request.params.notebookItemId,
-      }, repo);
-    }
+    async (request, reply) => executeNotebookCommand(request, reply, request.params.campaignId, {
+      type: "RemoveNotebookItem",
+      notebookItemId: request.params.notebookItemId,
+    }, repository),
   );
 
-  server.patch<{ Params: { campaignId: string; notebookId: string }; Body: { orderedItemIds: string[] } }>(
-    "/api/campaigns/:campaignId/notebooks/:notebookId/items/reorder",
-    async (request, reply) => {
-      const campaignId = request.params.campaignId;
-      return executeNotebookCommand(request, reply, campaignId, {
-        type: "ReorderNotebookItems",
-        notebookId: request.params.notebookId,
-        orderedItemIds: request.body.orderedItemIds,
-      }, repo);
-    }
-  );
+  server.patch<{
+    Params: { campaignId: string; notebookId: string };
+    Body: { orderedItemIds: string[] };
+  }>("/api/campaigns/:campaignId/notebooks/:notebookId/items/reorder", async (request, reply) => {
+    return executeNotebookCommand(request, reply, request.params.campaignId, {
+      type: "ReorderNotebookItems",
+      notebookId: request.params.notebookId,
+      orderedItemIds: request.body.orderedItemIds,
+    }, repository);
+  });
 }

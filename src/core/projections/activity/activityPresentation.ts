@@ -1,3 +1,5 @@
+import type { CampaignActivityData } from "./activityTypes.js";
+
 export interface ActivityVisualConfig {
   label: string;
   color: string;
@@ -8,7 +10,7 @@ export interface ActivityVisualConfig {
 
 export function getActivityVisualConfig(
   type: string,
-  data: Record<string, any>,
+  data: CampaignActivityData,
   locale: "es" | "en"
 ): ActivityVisualConfig {
   const isEs = locale === "es";

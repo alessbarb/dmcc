@@ -474,7 +474,7 @@ export interface CampaignHistoryResponse {
     sourceId: string;
     type: string;
     category: "session" | "content" | "knowledge" | "story" | "people" | "collaboration" | "operation";
-    data: Record<string, any>;
+    data: Record<string, unknown>;
     actorUserId?: string | null;
     sessionId?: string | null;
     targetType?: string | null;

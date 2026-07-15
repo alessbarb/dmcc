@@ -6,7 +6,6 @@ import {
   ChevronRight,
   LogOut,
   User,
-  Users,
 } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { ToastContainer } from "../../shared/components/ToastContainer.js";
@@ -195,7 +194,7 @@ export function CampaignShell() {
 
   return (
     <div
-      className={`app-container app-container--campaign-shell ${currentSegment === "canvas" ? "app-container--canvas" : ""
+      className={`app-container app-container--campaign-shell ${isCanvasRoute ? "app-container--canvas" : ""
         }`}
     >
       <aside className={`sidebar ${sidebarCollapsed ? "sidebar--collapsed" : ""}`}>

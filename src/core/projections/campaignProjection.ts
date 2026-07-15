@@ -755,6 +755,28 @@ export function applyEvent(
       }
       break;
     }
+    case "StoryStepMarkedReady": {
+      const existing = next.storySteps.get(payload.stepId);
+      if (existing) {
+        next.storySteps.set(payload.stepId, {
+          ...existing,
+          status: "ready",
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
+    case "StoryStepActivated": {
+      const existing = next.storySteps.get(payload.stepId);
+      if (existing) {
+        next.storySteps.set(payload.stepId, {
+          ...existing,
+          status: "active",
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
     case "StoryStepReconciled": {
       const existing = next.storySteps.get(payload.stepId);
       if (existing) {
@@ -764,6 +786,8 @@ export function applyEvent(
           status: payload.status,
           resolutionKind: payload.resolutionKind,
           actualOutcome: payload.actualOutcome,
+          plannedSessionId: null,
+          plannedSessionOrder: null,
           updatedAt: occurredAt
         });
       }

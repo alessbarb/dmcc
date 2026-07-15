@@ -161,7 +161,6 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
     const [factsCount] = await db.select({ value: count() }).from(schema.campaignFacts).where(eq(schema.campaignFacts.campaignId, campaignId));
     const [relationsCount] = await db.select({ value: count() }).from(schema.campaignRelations).where(eq(schema.campaignRelations.campaignId, campaignId));
     const [sessionsCount] = await db.select({ value: count() }).from(schema.campaignSessions).where(eq(schema.campaignSessions.campaignId, campaignId));
-    const [scenesCount] = await db.select({ value: count() }).from(schema.campaignScenes).where(eq(schema.campaignScenes.campaignId, campaignId));
     const [cluesCount] = await db.select({ value: count() }).from(schema.campaignClues).where(eq(schema.campaignClues.campaignId, campaignId));
     const [charactersCount] = await db.select({ value: count() }).from(schema.characters).where(eq(schema.characters.campaignId, campaignId));
     const [notesCount] = await db.select({ value: count() }).from(schema.campaignNotes).where(eq(schema.campaignNotes.campaignId, campaignId));
@@ -175,7 +174,6 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
         facts: factsCount.value,
         relations: relationsCount.value,
         sessions: sessionsCount.value,
-        scenes: scenesCount.value,
         clues: cluesCount.value,
         characters: charactersCount.value,
         notes: notesCount.value,

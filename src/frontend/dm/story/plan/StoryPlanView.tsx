@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { storyApi } from "../../../shared/api.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
@@ -8,23 +8,16 @@ import {
   GitBranch,
   Plus,
   Trash2,
-  Edit2,
   Check,
   X,
   ArrowUp,
   ArrowDown,
   Bookmark,
   BookmarkMinus,
-  Link2,
   Play,
   CheckCircle2,
-  HelpCircle,
   Calendar,
-  AlertCircle,
   RotateCcw,
-  Eye,
-  FileText,
-  User,
 } from "lucide-react";
 
 export function StoryPlanView() {
@@ -73,6 +66,15 @@ export function StoryPlanView() {
   const entities = campaignState?.entities ?? [];
 
   const activeThreads = threads.filter((t) => !t.archivedAt).sort((a, b) => a.sortOrder - b.sortOrder);
+
+  useEffect(() => {
+    const search = new URLSearchParams(window.location.search);
+    const requestedStepId = search.get("stepId");
+    const requestedThreadId = search.get("threadId") ?? steps.find((step) => step.stepId === requestedStepId)?.threadId;
+    if (requestedThreadId && activeThreads.some((thread) => thread.threadId === requestedThreadId)) {
+      setSelectedThreadId(requestedThreadId);
+    }
+  }, [threads, steps]);
   const selectedThread = activeThreads.find((t) => t.threadId === selectedThreadId);
 
   const selectedThreadSteps = selectedThread
@@ -85,15 +87,33 @@ export function StoryPlanView() {
 
   const handleToggleShortcut = async () => {
     if (!selectedThreadId || !activeCampaignId) return;
-    if (isShortcutAdded) {
-      const existing = shortcuts.find((s) => s.targetType === "story_thread" && s.targetId === selectedThreadId);
+    try {
+      if (isShortcutAdded) {
+        const existing = shortcuts.find((shortcut) => shortcut.targetType === "story_thread" && shortcut.targetId === selectedThreadId);
+        if (existing) await removeShortcut(existing.shortcutId);
+        addToast(t("shortcuts.removedToast"), "success");
+      } else {
+        await addShortcut("story_thread", selectedThreadId);
+        addToast(t("shortcuts.addedToast"), "success");
+      }
+    } catch (error: unknown) {
+      addToast(error instanceof Error ? error.message : t("common.error"), "error");
+    }
+  };
+
+  const handleToggleStepShortcut = async (stepId: string) => {
+    if (!activeCampaignId) return;
+    const existing = shortcuts.find((shortcut) => shortcut.targetType === "story_step" && shortcut.targetId === stepId);
+    try {
       if (existing) {
         await removeShortcut(existing.shortcutId);
         addToast(t("shortcuts.removedToast"), "success");
+      } else {
+        await addShortcut("story_step", stepId);
+        addToast(t("shortcuts.addedToast"), "success");
       }
-    } else {
-      await addShortcut("story_thread", selectedThreadId);
-      addToast(t("shortcuts.addedToast"), "success");
+    } catch (error: unknown) {
+      addToast(error instanceof Error ? error.message : t("common.error"), "error");
     }
   };
 
@@ -103,7 +123,6 @@ export function StoryPlanView() {
       const res = await storyApi.createStoryThread(activeCampaignId, {
         title: threadTitle.trim(),
         summary: threadSummary.trim() || null,
-        status: "planned",
       });
       if (res.ok) {
         setThreadTitle("");
@@ -136,7 +155,7 @@ export function StoryPlanView() {
     if (!activeCampaignId || !selectedThreadId) return;
     try {
       // Direct execute using the API wrapper that dispatches to Fastify Command boundary
-      const res = await storyApi.updateStoryThread(activeCampaignId, selectedThreadId, { status: "active" });
+      const res = await storyApi.activateStoryThread(activeCampaignId, selectedThreadId);
       if (res.ok) {
         addToast(t("story.threadActivated") || "Story thread is now active", "success");
         await reloadCampaign();
@@ -149,7 +168,7 @@ export function StoryPlanView() {
   const handleResolveThread = async () => {
     if (!activeCampaignId || !selectedThreadId) return;
     try {
-      const res = await storyApi.updateStoryThread(activeCampaignId, selectedThreadId, { status: "resolved" });
+      const res = await storyApi.resolveStoryThread(activeCampaignId, selectedThreadId);
       if (res.ok) {
         addToast(t("story.threadResolved") || "Story thread resolved successfully!", "success");
         await reloadCampaign();
@@ -166,7 +185,7 @@ export function StoryPlanView() {
     if (!activeCampaignId || !selectedThreadId) return;
     if (!confirm(t("story.confirmDiscardThread") || "Discard this story thread?")) return;
     try {
-      const res = await storyApi.updateStoryThread(activeCampaignId, selectedThreadId, { status: "discarded" });
+      const res = await storyApi.discardStoryThread(activeCampaignId, selectedThreadId);
       if (res.ok) {
         addToast(t("story.threadDiscarded") || "Story thread discarded", "success");
         await reloadCampaign();
@@ -267,9 +286,44 @@ export function StoryPlanView() {
       if (res.ok) {
         addToast(t("story.stepUnscheduled") || "Step unscheduled", "success");
         await reloadCampaign();
+      } else {
+        const errorData = await res.json().catch(() => null);
+        addToast(errorData?.error || "Failed to unschedule step", "error");
       }
-    } catch (err: any) {
-      addToast(err.message || "Error unscheduling step", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error unscheduling step", "error");
+    }
+  };
+
+  const handleMarkStepReady = async (stepId: string) => {
+    if (!activeCampaignId) return;
+    try {
+      const res = await storyApi.markStoryStepReady(activeCampaignId, stepId);
+      if (res.ok) {
+        addToast(t("story.ready"), "success");
+        await reloadCampaign();
+      } else {
+        const errorData = await res.json().catch(() => null);
+        addToast(errorData?.error || "Failed to mark step ready", "error");
+      }
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error marking step ready", "error");
+    }
+  };
+
+  const handleActivateStep = async (stepId: string) => {
+    if (!activeCampaignId) return;
+    try {
+      const res = await storyApi.activateStoryStep(activeCampaignId, stepId);
+      if (res.ok) {
+        addToast(t("story.activate"), "success");
+        await reloadCampaign();
+      } else {
+        const errorData = await res.json().catch(() => null);
+        addToast(errorData?.error || "Failed to activate step", "error");
+      }
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error activating step", "error");
     }
   };
 
@@ -354,7 +408,7 @@ export function StoryPlanView() {
   };
 
   // Helper getters
-  const getPlannedSessions = () => sessions.filter((s) => s.status === "planned" || s.status === "ready");
+  const getPlannedSessions = () => sessions.filter((s) => s.status === "planned");
   const getClosedSessions = () => sessions.filter((s) => s.status === "closed");
   const getLinkableEntities = (existingIds: string[]) => {
     const ids = new Set(existingIds);
@@ -422,7 +476,7 @@ export function StoryPlanView() {
               <button
                 type="button"
                 className="btn btn-sm btn-primary"
-                onClick={handleCreateThread}
+                onClick={() => void handleCreateThread()}
                 disabled={!threadTitle.trim()}
               >
                 <Check size={12} />
@@ -524,7 +578,7 @@ export function StoryPlanView() {
                 <button
                   type="button"
                   className={`btn btn-sm ${isShortcutAdded ? "btn-primary" : "btn-outline-secondary"}`}
-                  onClick={handleToggleShortcut}
+                  onClick={() => void handleToggleShortcut()}
                   title={isShortcutAdded ? t("shortcuts.remove") : t("shortcuts.add")}
                 >
                   {isShortcutAdded ? <BookmarkMinus size={16} /> : <Bookmark size={16} />}
@@ -532,23 +586,23 @@ export function StoryPlanView() {
 
                 {/* Status Transitions */}
                 {selectedThread.status === "planned" && (
-                  <button type="button" className="btn btn-sm btn-primary" onClick={handleActivateThread}>
+                  <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleActivateThread()}>
                     <Play size={14} style={{ marginRight: 4 }} /> {t("story.activate") || "Activar"}
                   </button>
                 )}
                 {selectedThread.status === "active" && (
-                  <button type="button" className="btn btn-sm btn-success" onClick={handleResolveThread}>
+                  <button type="button" className="btn btn-sm btn-success" onClick={() => void handleResolveThread()}>
                     <CheckCircle2 size={14} style={{ marginRight: 4 }} /> {t("story.resolve") || "Resolver"}
                   </button>
                 )}
                 {selectedThread.status !== "discarded" && selectedThread.status !== "resolved" && (
-                  <button type="button" className="btn btn-sm btn-outline-danger" onClick={handleDiscardThread}>
+                  <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => void handleDiscardThread()}>
                     {t("story.discard") || "Descartar"}
                   </button>
                 )}
 
                 {/* Archive thread */}
-                <button type="button" className="btn btn-sm btn-outline-danger" onClick={handleArchiveThread}>
+                <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => void handleArchiveThread()}>
                   <Trash2 size={16} />
                 </button>
               </div>
@@ -585,7 +639,7 @@ export function StoryPlanView() {
                     </select>
                   </div>
                   <button type="button" className="btn btn-sm btn-secondary" onClick={() => setLinkingToThread(false)}><X size={12} /></button>
-                  <button type="button" className="btn btn-sm btn-primary" onClick={handleLinkEntityToThread} disabled={!selectedEntityId}><Check size={12} /></button>
+                  <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleLinkEntityToThread()} disabled={!selectedEntityId}><Check size={12} /></button>
                 </div>
               )}
 
@@ -611,7 +665,7 @@ export function StoryPlanView() {
                       {ent.title}
                       <button
                         type="button"
-                        onClick={() => handleUnlinkEntityFromThread(eid)}
+                        onClick={() => void handleUnlinkEntityFromThread(eid)}
                         style={{ border: "none", background: "none", cursor: "pointer", padding: 0, color: "var(--color-danger)" }}
                       >
                         <X size={12} />
@@ -677,7 +731,7 @@ export function StoryPlanView() {
                   </div>
                   <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
                     <button type="button" className="btn btn-sm btn-secondary" onClick={() => setIsCreatingStep(false)}>{t("common.cancel")}</button>
-                    <button type="button" className="btn btn-sm btn-primary" onClick={handleCreateStep} disabled={!stepTitle.trim()}>{t("common.save")}</button>
+                    <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleCreateStep()} disabled={!stepTitle.trim()}>{t("common.save")}</button>
                   </div>
                 </div>
               )}
@@ -724,8 +778,19 @@ export function StoryPlanView() {
                             <button
                               type="button"
                               className="btn btn-sm btn-link"
+                              onClick={() => void handleToggleStepShortcut(step.stepId)}
+                              title={t("shortcuts.add")}
+                              style={{ padding: 2 }}
+                            >
+                              {shortcuts.some((shortcut) => shortcut.targetType === "story_step" && shortcut.targetId === step.stepId)
+                                ? <BookmarkMinus size={14} />
+                                : <Bookmark size={14} />}
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-link"
                               disabled={index === 0}
-                              onClick={() => handleReorderSteps(index, "up")}
+                              onClick={() => void handleReorderSteps(index, "up")}
                               style={{ padding: 2 }}
                             >
                               <ArrowUp size={14} />
@@ -734,7 +799,7 @@ export function StoryPlanView() {
                               type="button"
                               className="btn btn-sm btn-link"
                               disabled={index === selectedThreadSteps.length - 1}
-                              onClick={() => handleReorderSteps(index, "down")}
+                              onClick={() => void handleReorderSteps(index, "down")}
                               style={{ padding: 2 }}
                             >
                               <ArrowDown size={14} />
@@ -787,7 +852,7 @@ export function StoryPlanView() {
                             return (
                               <span key={eid} className="badge" style={{ background: "var(--bg-card)", border: "1px solid var(--border-color)", fontSize: "0.75rem", padding: "2px 4px", display: "inline-flex", alignItems: "center", gap: 4 }}>
                                 {ent.title}
-                                <button type="button" onClick={() => handleUnlinkEntityFromStep(step.stepId, eid)} style={{ border: "none", background: "none", padding: 0, color: "var(--color-danger)" }}><X size={10} /></button>
+                                <button type="button" onClick={() => void handleUnlinkEntityFromStep(step.stepId, eid)} style={{ border: "none", background: "none", padding: 0, color: "var(--color-danger)" }}><X size={10} /></button>
                               </span>
                             );
                           })}
@@ -804,7 +869,7 @@ export function StoryPlanView() {
                                   <option key={e.entityId} value={e.entityId}>{e.title}</option>
                                 ))}
                               </select>
-                              <button type="button" className="btn btn-sm btn-primary" onClick={handleLinkEntityToStep} style={{ padding: "2px 4px" }}><Check size={10} /></button>
+                              <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleLinkEntityToStep()} style={{ padding: "2px 4px" }}><Check size={10} /></button>
                               <button type="button" className="btn btn-sm btn-secondary" onClick={() => setLinkingToStepId(null)} style={{ padding: "2px 4px" }}><X size={10} /></button>
                             </div>
                           ) : (
@@ -816,9 +881,18 @@ export function StoryPlanView() {
 
                         {/* Step actions: schedule, defer, reconcile */}
                         <div style={{ display: "flex", gap: 8, marginTop: 4, borderTop: "1px solid var(--border-color)", paddingTop: 8 }}>
-                          {step.status === "planned" && (
+                          {(step.status === "planned" || step.status === "ready" || step.status === "active") && (
                             <>
-                              {schedulingStepId === step.stepId ? (
+                              {step.plannedSessionId ? (
+                                <>
+                                  <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => void handleDeferStep(step.stepId)}>
+                                    <RotateCcw size={12} style={{ marginRight: 4 }} /> {t("story.defer") || "Posponer"}
+                                  </button>
+                                  <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => void handleUnscheduleStep(step.stepId)}>
+                                    {t("story.unschedule") || "Desprogramar"}
+                                  </button>
+                                </>
+                              ) : schedulingStepId === step.stepId ? (
                                 <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                                   <select
                                     className="form-control form-control-sm"
@@ -830,7 +904,7 @@ export function StoryPlanView() {
                                       <option key={s.sessionId} value={s.sessionId}>Sesión #{s.number} - {s.title}</option>
                                     ))}
                                   </select>
-                                  <button type="button" className="btn btn-sm btn-primary" onClick={handleScheduleStep} disabled={!scheduleSessionId}><Check size={12} /></button>
+                                  <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleScheduleStep()} disabled={!scheduleSessionId}><Check size={12} /></button>
                                   <button type="button" className="btn btn-sm btn-secondary" onClick={() => setSchedulingStepId(null)}><X size={12} /></button>
                                 </div>
                               ) : (
@@ -841,15 +915,16 @@ export function StoryPlanView() {
                             </>
                           )}
 
+                          {step.status === "planned" && (
+                            <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleMarkStepReady(step.stepId)}>
+                              <Check size={12} style={{ marginRight: 4 }} /> {t("story.ready")}
+                            </button>
+                          )}
+
                           {step.status === "ready" && (
-                            <>
-                              <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => handleDeferStep(step.stepId)}>
-                                <RotateCcw size={12} style={{ marginRight: 4 }} /> {t("story.defer") || "Posponer"}
-                              </button>
-                              <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => handleUnscheduleStep(step.stepId)}>
-                                {t("story.unschedule") || "Desprogramar"}
-                              </button>
-                            </>
+                            <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleActivateStep(step.stepId)}>
+                              <Play size={12} style={{ marginRight: 4 }} /> {t("story.activate")}
+                            </button>
                           )}
 
                           {/* Reconciliation available for ready, active steps */}
@@ -1008,7 +1083,7 @@ export function StoryPlanView() {
               <button
                 type="button"
                 className="btn btn-success"
-                onClick={handleReconcileStep}
+                onClick={() => void handleReconcileStep()}
                 disabled={!reconcileSessionId || (reconcileKind === "changed" && !reconcileOutcome.trim())}
               >
                 {t("story.completeReconciliation") || "Completar"}
