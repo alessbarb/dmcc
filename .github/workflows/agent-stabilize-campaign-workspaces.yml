@@ -67,6 +67,10 @@ jobs:
               "                         <option value=\"canvas\">{t(\"notebooks.type.canvas\") || \"Canvas\"}</option>\\n",
               "                        <option value=\"canvas\">{t(\"notebooks.type.canvas\") || \"Canvas\"}</option>\\n",
           )
+          content = content.replace(
+              "replace_once(\"src/core/application/commandBus.ts\", '        status: command.status as any,', '        status: \"planned\" as const,')",
+              "sub_once(\\n    \"src/core/application/commandBus.ts\",\\n    r'(case \"CreateStoryThread\": \\{.*?status:) command\\.status as any,',\\n    r'\\1 \"planned\" as const,',\\n    re.S,\\n)",
+          )
           path.write_text(content, encoding="utf-8")
           PY
           set -o pipefail
