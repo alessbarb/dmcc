@@ -9,6 +9,97 @@
     var(--bg-main);
 }
 
+.network-flow-workspace {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+}
+
+.network-flow-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.network-flow-header h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.15rem;
+}
+
+.network-flow-header p {
+  margin: 3px 0 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.network-flow-layout-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.network-flow-layout-controls > span {
+  margin-right: 2px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.network-flow-path {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--semantic-success, #34d399);
+  font-size: 0.8rem;
+}
+
+.network-flow-stage {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg, 14px);
+  background: color-mix(in srgb, var(--bg-main) 96%, transparent);
+}
+
+.network-flow-canvas {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 460px;
+}
+
+.network-flow-state {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  padding: 24px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.network-flow-state--error {
+  color: var(--semantic-danger);
+}
+
+.network-flow-state--error strong {
+  color: var(--text-primary);
+}
+
 .network-workspace-view--immersive .react-flow {
   background: transparent;
 }
@@ -67,6 +158,24 @@
 
 body:has(.network-workspace-view--immersive) .watermark {
   display: none;
+}
+
+@media (max-width: 760px) {
+  .network-flow-workspace {
+    padding: 12px;
+  }
+
+  .network-flow-header {
+    flex-direction: column;
+  }
+
+  .network-flow-layout-controls {
+    justify-content: flex-start;
+  }
+
+  .network-flow-canvas {
+    min-height: 420px;
+  }
 }
 
 @media (max-width: 640px) {
