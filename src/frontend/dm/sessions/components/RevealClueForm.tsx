@@ -52,7 +52,7 @@ export function RevealClueForm({
       addToast(t("toasts.clueRevealed"), "success");
       onClose();
     } catch (error) {
-      addToast(t("toasts.clueRevealError", { error: errorMessage(error) }), "error");
+      addToast(errorMessage(error), "error");
     } finally {
       setBusy(false);
     }
