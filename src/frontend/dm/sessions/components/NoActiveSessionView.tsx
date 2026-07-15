@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Play, StickyNote, Archive, HelpCircle, MapPin, UserPlus, X } from "lucide-react";
+import { Archive, CalendarClock, HelpCircle, MapPin, Play, StickyNote, UserPlus, X } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { SupportedLocale } from "@shared/i18n/types.js";
 import type { CampaignStateStore, Session } from "../../../shared/stores/campaignStore.js";
@@ -41,10 +41,13 @@ export function NoActiveSessionView({
   const { t } = useTranslation();
   const [newTitle, setNewTitle] = useState("");
   const [editingPrepSessionId, setEditingPrepSessionId] = useState<string | null>(null);
+  const [isPreparing, setIsPreparing] = useState(false);
+  const [isStarting, setIsStarting] = useState(false);
 
-  const handlePrepare = async (e: React.SubmitEvent) => {
-    e.preventDefault();
+  const handlePrepare = async (event: React.SubmitEvent) => {
+    event.preventDefault();
     const title = newTitle.trim() || t("session.sessionNumber", { number: nextNumber });
+    setIsPreparing(true);
     try {
       await createPreparedSession(title, {
         state: "draft",
@@ -60,19 +63,24 @@ export function NoActiveSessionView({
       });
       addToast(t("toasts.sessionPrepared", { title }), "success");
       setNewTitle("");
-    } catch (err) {
-      addToast(t("toasts.sessionPrepareError", { error: errorMessage(err) }), "error");
+    } catch (error) {
+      addToast(t("toasts.sessionPrepareError", { error: errorMessage(error) }), "error");
+    } finally {
+      setIsPreparing(false);
     }
   };
 
   const handleStartAdHoc = async () => {
     const title = newTitle.trim() || t("session.sessionNumber", { number: nextNumber });
+    setIsStarting(true);
     try {
       await startSession(title);
       addToast(t("toasts.sessionStarted", { title }), "success");
       setNewTitle("");
-    } catch (err) {
-      addToast(t("toasts.sessionStartError", { error: errorMessage(err) }), "error");
+    } catch (error) {
+      addToast(t("toasts.sessionStartError", { error: errorMessage(error) }), "error");
+    } finally {
+      setIsStarting(false);
     }
   };
 
@@ -80,8 +88,8 @@ export function NoActiveSessionView({
     try {
       await activateSession(sessionId);
       addToast(t("toasts.sessionActivated", { title }), "success");
-    } catch (err) {
-      addToast(t("toasts.sessionActivateError", { error: errorMessage(err) }), "error");
+    } catch (error) {
+      addToast(t("toasts.sessionActivateError", { error: errorMessage(error) }), "error");
     }
   };
 
@@ -90,8 +98,8 @@ export function NoActiveSessionView({
       await updateSessionPrep(sessionId, { title, scheduledAt, prep });
       addToast(t("toasts.sessionPrepUpdated", { title }), "success");
       setEditingPrepSessionId(null);
-    } catch (err) {
-      addToast(t("toasts.sessionPrepUpdateError", { error: errorMessage(err) }), "error");
+    } catch (error) {
+      addToast(t("toasts.sessionPrepUpdateError", { error: errorMessage(error) }), "error");
     }
   };
 
@@ -101,8 +109,8 @@ export function NoActiveSessionView({
       await cancelSession(sessionId);
       addToast(t("toasts.sessionCancelled", { title }), "info");
       if (editingPrepSessionId === sessionId) setEditingPrepSessionId(null);
-    } catch (err) {
-      addToast(t("toasts.sessionCancelError", { error: errorMessage(err) }), "error");
+    } catch (error) {
+      addToast(t("toasts.sessionCancelError", { error: errorMessage(error) }), "error");
     }
   };
 
@@ -112,61 +120,24 @@ export function NoActiveSessionView({
       await archiveSession(sessionId);
       addToast(t("toasts.sessionArchived", { title }), "info");
       if (editingPrepSessionId === sessionId) setEditingPrepSessionId(null);
-    } catch (err) {
-      addToast(t("toasts.sessionArchiveError", { error: errorMessage(err) }), "error");
+    } catch (error) {
+      addToast(t("toasts.sessionArchiveError", { error: errorMessage(error) }), "error");
     }
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-      <section
-        className="card"
-        style={{
-          maxWidth: "620px",
-          margin: "0 auto",
-          width: "100%",
-          textAlign: "center",
-          padding: "44px 40px",
-        }}
-      >
-        <div
-          style={{
-            width: "64px",
-            height: "64px",
-            borderRadius: "var(--radius-full)",
-            backgroundColor: "var(--primary-light)",
-            border: "1px solid hsla(255, 85%, 65%, 0.3)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 20px",
-          }}
-        >
-          <StickyNote size={28} style={{ color: "var(--primary)" }} />
+    <div className="session-idle-workspace">
+      <section className="session-create-panel surface-panel">
+        <div className="session-create-panel__icon" aria-hidden="true">
+          <CalendarClock size={28} />
         </div>
-        <h2
-          style={{
-            fontSize: "1.4rem",
-            fontWeight: "800",
-            marginBottom: "8px",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          {t("sessionPage.prepareNextSessionTitle")}
-        </h2>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            marginBottom: "28px",
-            fontSize: "0.93rem",
-          }}
-        >
-          {t("sessionPage.prepareSessionDescription")}
-        </p>
-        <form onSubmit={(event) => {
-          runSessionAction(handlePrepare(event), "No se pudo preparar la sesión.");
-        }}>
-          <div className="form-group" style={{ textAlign: "left" }}>
+        <div className="session-create-panel__copy">
+          <p className="session-section-eyebrow">{t("sessionPage.preparedSessions")}</p>
+          <h2>{t("sessionPage.prepareNextSessionTitle")}</h2>
+          <p>{t("sessionPage.prepareSessionDescription")}</p>
+        </div>
+        <form className="session-create-form" onSubmit={(event) => runSessionAction(handlePrepare(event), "No se pudo preparar la sesión.") }>
+          <div className="form-group">
             <label className="form-label" htmlFor="session-title-input">
               {t("sessionPage.sessionTitleLabel")}
             </label>
@@ -176,229 +147,170 @@ export function NoActiveSessionView({
               className="form-input"
               placeholder={t("session.sessionNumber", { number: nextNumber })}
               value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              style={{ fontSize: "1rem" }}
+              onChange={(event) => setNewTitle(event.target.value)}
             />
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              style={{ padding: "14px", fontSize: "1rem" }}
-            >
-              <StickyNote size={16} /> {t("sessionPage.prepareSessionButton", { number: nextNumber })}
+          <div className="session-create-form__actions">
+            <button type="submit" className="btn btn-primary" disabled={isPreparing || isStarting}>
+              <StickyNote size={16} />
+              {isPreparing ? t("common.saving") : t("sessionPage.prepareSessionButton", { number: nextNumber })}
             </button>
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => {
-                runSessionAction(handleStartAdHoc(), "No se pudo iniciar una sesión ad hoc.");
-              }}
-              style={{ padding: "14px", fontSize: "1rem" }}
+              disabled={isPreparing || isStarting}
+              onClick={() => runSessionAction(handleStartAdHoc(), "No se pudo iniciar una sesión ad hoc.")}
             >
-              <Play size={16} /> {t("sessionPage.startAdHocButton")}
+              <Play size={16} />
+              {isStarting ? t("common.loading") : t("sessionPage.startAdHocButton")}
             </button>
           </div>
         </form>
       </section>
 
-      {hasNoSessions && (
-        <section style={{ maxWidth: "720px", margin: "0 auto", width: "100%" }}>
-          <GuidedEmptyState
-            icon={<HelpCircle size={30} />}
-            title={t("guidedStart.empty.session.title")}
-            description={t("guidedStart.empty.session.description")}
-            actions={[
-              {
-                label: t("guidedStart.empty.session.createPlace"),
-                icon: <MapPin size={14} />,
-                onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "location", content: t("guidedStart.templates.location.content"), metadata: { locationType: "settlement", atmosphere: "" } } })),
-              },
-              {
-                label: t("guidedStart.empty.session.createNpc"),
-                icon: <UserPlus size={14} />,
-                onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "npc", content: t("guidedStart.templates.npc.content"), metadata: { role: "", attitudeToParty: "neutral", goal: "" } } })),
-              },
-              {
-                label: t("guidedStart.empty.session.prepare"),
-                icon: <StickyNote size={14} />,
-                primary: true,
-                onClick: () => {
-                  // DOM lookup boundary cast: getElementById only returns Element | null.
-                  const input = document.getElementById("session-title-input") as HTMLInputElement | null;
-                  input?.focus();
-                },
-              },
-            ]}
-          />
-        </section>
-      )}
-
-      {preparedSessions.length > 0 && (
-        <section style={{ maxWidth: "720px", margin: "0 auto", width: "100%" }}>
-          <h3
-            style={{
-              fontWeight: "700",
-              fontSize: "0.85rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              color: "var(--text-muted)",
-              marginBottom: "14px",
-            }}
-          >
-            {t("sessionPage.preparedSessions")}
-          </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            {preparedSessions.map((session) => {
-              const prep: SessionPrep = session.prep ?? {};
-              const linkedCount = new Set([
-                ...(prep.sceneIds ?? []),
-                ...(prep.involvedEntityIds ?? []),
-                ...(prep.availableClueIds ?? []),
-                ...(prep.secretsAtRiskIds ?? []),
-                ...(prep.expectedConsequenceIds ?? []),
-              ]).size;
-              return (
-                <React.Fragment key={session.sessionId}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: "14px",
-                    padding: "16px 18px",
-                    backgroundColor: "var(--bg-card)",
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "var(--radius-md)",
-                  }}
-                >
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontWeight: 800, fontSize: "0.98rem", color: "var(--text-main)", marginBottom: "4px" }}>
-                      {session.number ? `#${session.number} ` : ""}{session.title}
-                    </div>
-                    <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                      {prep.state === "ready" ? t("sessionPage.readyToPlay") : t("sessionPage.prepDraft")}
-                      {linkedCount > 0 ? ` · ${t("sessionPage.linkedElementsCount", { count: linkedCount })}` : ""}
-                      {(prep.goals?.length ?? 0) > 0 ? ` · ${t("sessionPage.goalsCount", { count: prep.goals?.length ?? 0 })}` : ""}
-                    </div>
-                    {prep.summary && (
-                      <p style={{ marginTop: "6px", fontSize: "0.84rem", color: "var(--text-muted)", lineHeight: 1.35 }}>
-                        {prep.summary}
-                      </p>
-                    )}
-                  </div>
-                  <div style={{ display: "flex", gap: "8px", flexShrink: 0, flexWrap: "wrap", justifyContent: "flex-end" }}>
-                    <button
-                      type="button"
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => setEditingPrepSessionId(editingPrepSessionId === session.sessionId ? null : session.sessionId)}
-                    >
-                      <StickyNote size={14} /> {t("sessionPage.editPreparationButton")}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-primary btn-sm"
-                      onClick={() => {
-                        runSessionAction(handleActivate(session.sessionId, session.title), "No se pudo activar la sesión preparada.");
-                      }}
-                    >
-                      <Play size={14} /> {t("sessionPage.activatePreparedSessionButton")}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => {
-                        runSessionAction(handleCancelPrepared(session.sessionId, session.title), "No se pudo cancelar la sesión preparada.");
-                      }}
-                      title={t("sessionPage.cancelPreparedSessionButton")}
-                    >
-                      <X size={14} />
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => {
-                        runSessionAction(handleArchivePrepared(session.sessionId, session.title), "No se pudo archivar la sesión preparada.");
-                      }}
-                      title={t("sessionPage.archivePreparedSessionButton")}
-                    >
-                      <Archive size={14} />
-                    </button>
-                  </div>
+      <div className="session-idle-grid">
+        <main className="session-idle-main">
+          {preparedSessions.length > 0 ? (
+            <section className="session-list-section" aria-labelledby="prepared-sessions-heading">
+              <div className="session-list-section__header">
+                <div>
+                  <p className="session-section-eyebrow">{preparedSessions.length}</p>
+                  <h3 id="prepared-sessions-heading">{t("sessionPage.preparedSessions")}</h3>
                 </div>
-                {editingPrepSessionId === session.sessionId && (
-                  <SessionPrepEditor
-                    session={session}
-                    campaignState={campaignState}
-                    onSave={(title, prep, scheduledAt) => handleSavePrep(session.sessionId, title, prep, scheduledAt)}
-                    onCancel={() => setEditingPrepSessionId(null)}
-                  />
-                )}
-              </React.Fragment>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {recentSessions.length > 0 && (
-        <section style={{ maxWidth: "720px", margin: "0 auto", width: "100%" }}>
-          <h3
-            style={{
-              fontWeight: "700",
-              fontSize: "0.85rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              color: "var(--text-muted)",
-              marginBottom: "14px",
-            }}
-          >
-            {t("sessionPage.previousSessions")}
-          </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            {recentSessions.map((s) => (
-              <div
-                key={s.sessionId}
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  justifyContent: "space-between",
-                  gap: "12px",
-                  padding: "14px 16px",
-                  backgroundColor: "var(--bg-card)",
-                  border: "1px solid var(--border-color)",
-                  borderRadius: "var(--radius-md)",
-                }}
-              >
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontWeight: "700", fontSize: "0.93rem", marginBottom: "4px", color: "var(--text-main)" }}>
-                    {s.number ? `#${s.number} ` : ""}{s.title}
-                  </div>
-                  {s.summary && (
-                    <p
-                      style={{
-                        fontSize: "0.82rem",
-                        color: "var(--text-muted)",
-                        overflow: "hidden",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                      }}
-                    >
-                      {s.summary}
-                    </p>
-                  )}
-                </div>
-                <span style={{ fontSize: "0.78rem", color: "var(--text-muted)", whiteSpace: "nowrap", flexShrink: 0 }}>
-                  {s.endedAt
-                    ? new Date(s.endedAt).toLocaleDateString(locale, { day: "2-digit", month: "short", year: "numeric" })
-                    : "—"}
-                </span>
               </div>
-            ))}
+              <div className="session-prepared-list">
+                {preparedSessions.map((session) => {
+                  const prep: SessionPrep = session.prep ?? {};
+                  const linkedCount = new Set([
+                    ...(prep.sceneIds ?? []),
+                    ...(prep.involvedEntityIds ?? []),
+                    ...(prep.availableClueIds ?? []),
+                    ...(prep.secretsAtRiskIds ?? []),
+                    ...(prep.expectedConsequenceIds ?? []),
+                  ]).size;
+                  const isEditing = editingPrepSessionId === session.sessionId;
+
+                  return (
+                    <article key={session.sessionId} className={`prepared-session-card ${isEditing ? "is-editing" : ""}`}>
+                      <div className="prepared-session-card__summary">
+                        <div className="prepared-session-card__title-row">
+                          <h4>{session.number ? `#${session.number} ` : ""}{session.title}</h4>
+                          <span className={`session-state-badge ${prep.state === "ready" ? "is-ready" : ""}`}>
+                            {prep.state === "ready" ? t("sessionPage.readyToPlay") : t("sessionPage.prepDraft")}
+                          </span>
+                        </div>
+                        <div className="prepared-session-card__meta">
+                          {linkedCount > 0 && <span>{t("sessionPage.linkedElementsCount", { count: linkedCount })}</span>}
+                          {(prep.goals?.length ?? 0) > 0 && <span>{t("sessionPage.goalsCount", { count: prep.goals?.length ?? 0 })}</span>}
+                        </div>
+                        {prep.summary && <p>{prep.summary}</p>}
+                      </div>
+                      <div className="prepared-session-card__actions">
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          onClick={() => setEditingPrepSessionId(isEditing ? null : session.sessionId)}
+                        >
+                          <StickyNote size={14} /> {t("sessionPage.editPreparationButton")}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-sm"
+                          onClick={() => runSessionAction(handleActivate(session.sessionId, session.title), "No se pudo activar la sesión preparada.")}
+                        >
+                          <Play size={14} /> {t("sessionPage.activatePreparedSessionButton")}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-icon btn-secondary btn-sm"
+                          onClick={() => runSessionAction(handleCancelPrepared(session.sessionId, session.title), "No se pudo cancelar la sesión preparada.")}
+                          title={t("sessionPage.cancelPreparedSessionButton")}
+                          aria-label={t("sessionPage.cancelPreparedSessionButton")}
+                        >
+                          <X size={14} />
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-icon btn-secondary btn-sm"
+                          onClick={() => runSessionAction(handleArchivePrepared(session.sessionId, session.title), "No se pudo archivar la sesión preparada.")}
+                          title={t("sessionPage.archivePreparedSessionButton")}
+                          aria-label={t("sessionPage.archivePreparedSessionButton")}
+                        >
+                          <Archive size={14} />
+                        </button>
+                      </div>
+                      {isEditing && (
+                        <div className="prepared-session-card__editor">
+                          <SessionPrepEditor
+                            session={session}
+                            campaignState={campaignState}
+                            onSave={(title, prep, scheduledAt) => handleSavePrep(session.sessionId, title, prep, scheduledAt)}
+                            onCancel={() => setEditingPrepSessionId(null)}
+                          />
+                        </div>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          ) : (
+            <section className="session-empty-prepared surface-panel">
+              <GuidedEmptyState
+                icon={<HelpCircle size={30} />}
+                title={t("guidedStart.empty.session.title")}
+                description={t("guidedStart.empty.session.description")}
+                actions={[
+                  {
+                    label: t("guidedStart.empty.session.createPlace"),
+                    icon: <MapPin size={14} />,
+                    onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "location", content: t("guidedStart.templates.location.content"), metadata: { locationType: "settlement", atmosphere: "" } } })),
+                  },
+                  {
+                    label: t("guidedStart.empty.session.createNpc"),
+                    icon: <UserPlus size={14} />,
+                    onClick: () => window.dispatchEvent(new CustomEvent("dmcc:open-entity-template", { detail: { entityType: "npc", content: t("guidedStart.templates.npc.content"), metadata: { role: "", attitudeToParty: "neutral", goal: "" } } })),
+                  },
+                  {
+                    label: t("guidedStart.empty.session.prepare"),
+                    icon: <StickyNote size={14} />,
+                    primary: true,
+                    onClick: () => document.getElementById("session-title-input")?.focus(),
+                  },
+                ]}
+              />
+            </section>
+          )}
+        </main>
+
+        <aside className="session-history-panel surface-panel" aria-labelledby="recent-sessions-heading">
+          <div className="session-list-section__header">
+            <div>
+              <p className="session-section-eyebrow">{recentSessions.length}</p>
+              <h3 id="recent-sessions-heading">{t("sessionPage.previousSessions")}</h3>
+            </div>
           </div>
-        </section>
-      )}
+          {recentSessions.length > 0 ? (
+            <div className="session-history-list">
+              {recentSessions.map((session) => (
+                <article key={session.sessionId} className="session-history-item">
+                  <div>
+                    <h4>{session.number ? `#${session.number} ` : ""}{session.title}</h4>
+                    {session.summary && <p>{session.summary}</p>}
+                  </div>
+                  <time dateTime={session.endedAt ?? undefined}>
+                    {session.endedAt
+                      ? new Date(session.endedAt).toLocaleDateString(locale, { day: "2-digit", month: "short", year: "numeric" })
+                      : "—"}
+                  </time>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p className="session-history-panel__empty">{t("sessionPage.previousSessions")}: 0</p>
+          )}
+        </aside>
+      </div>
     </div>
   );
 }
