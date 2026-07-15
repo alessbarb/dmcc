@@ -25,6 +25,7 @@ function largeNetwork(size = 154): { nodes: NetworkNodeModel[]; edges: NetworkEd
   for (let index = 1; index < size; index += 1) {
     edges.push({
       id: `edge-${index}`,
+      kind: "relation",
       source: `entity-${Math.max(0, Math.floor((index - 1) / 2))}`,
       target: `entity-${index}`,
       relationType: "related_to",
