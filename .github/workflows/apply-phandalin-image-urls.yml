@@ -1,0 +1,113 @@
+name: Apply Phandalin image URLs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/apply-phandalin-image-urls.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update Phandalin entity image URLs
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          template_path = Path("public/campaign-templates/phandalin/template.json")
+          asset_root = Path("public/assets/premades/phandalin")
+
+          image_urls = {
+              "ent_tpl_phandalin_town": "locations/phandalin.png",
+              "ent_tpl_phandalin_trail": "locations/triboar_trail.png",
+              "ent_tpl_phandalin_hideout": "locations/cragmaw_hideout.png",
+              "ent_tpl_phandalin_tresendar": "locations/tresendar_manor.png",
+              "ent_tpl_phandalin_wave_echo": "locations/wave_echo_cave.png",
+              "ent_tpl_phandalin_inn": "locations/stonehill_inn.png",
+              "ent_tpl_phandalin_shrine": "locations/shrine_of_luck.png",
+              "ent_tpl_phandalin_cragmaw_castle": "locations/cragmaw_castle.png",
+              "ent_tpl_phandalin_forge_of_spells": "locations/forge_of_spells.png",
+              "ent_tpl_phandalin_conyberry": "locations/conyberry_ruins.png",
+              "ent_tpl_phandalin_agatha_lair": "locations/agathas_lair.png",
+              "ent_tpl_phandalin_old_owl_well": "locations/old_owl_well.png",
+              "ent_tpl_phandalin_wyvern_tor": "locations/wyvern_tor.png",
+              "ent_tpl_phandalin_redbrands": "factions/redbrands.png",
+              "ent_tpl_phandalin_faction_town": "factions/phandalin_townsfolk.png",
+              "ent_tpl_phandalin_faction_cragmaw": "factions/cragmaw_clan.png",
+              "ent_tpl_phandalin_faction_rockseeker": "factions/rockseeker_brothers.png",
+              "ent_tpl_phandalin_faction_ash_zombies": "factions/thundertree_ash_zombies.png",
+              "ent_tpl_phandalin_gundren": "npcs/gundren_rockseeker.png",
+              "ent_tpl_phandalin_sildar": "npcs/sildar_hallwinter.png",
+              "ent_tpl_phandalin_iarno": "npcs/iarno_albrek_glasstaff.png",
+              "ent_tpl_phandalin_nezznar": "npcs/nezznar_the_black_spider.png",
+              "ent_tpl_phandalin_toblen": "npcs/toblen_stonehill.png",
+              "ent_tpl_phandalin_linene": "npcs/linene_graywind.png",
+              "ent_tpl_phandalin_halia": "npcs/halia_thornton.png",
+              "ent_tpl_phandalin_qelline": "npcs/qelline_alderleaf.png",
+              "ent_tpl_phandalin_elmar": "npcs/elmar_barthen.png",
+              "ent_tpl_phandalin_trilena": "npcs/trilena_stonehill.png",
+              "ent_tpl_phandalin_harbin": "npcs/harbin_wester.png",
+              "ent_tpl_phandalin_garaele": "npcs/sister_garaele.png",
+              "ent_tpl_phandalin_daran": "npcs/daran_edermath.png",
+              "ent_tpl_phandalin_carp": "npcs/carp_alderleaf.png",
+              "ent_tpl_phandalin_mirna": "npcs/mirna_dendrar.png",
+              "ent_tpl_phandalin_nothic": "npcs/tresendar_nothic.png",
+              "ent_tpl_phandalin_grista": "npcs/grista.png",
+              "ent_tpl_phandalin_klarg": "npcs/klarg.png",
+              "ent_tpl_phandalin_yeemik": "npcs/yeemik.png",
+              "ent_tpl_phandalin_grol": "npcs/king_grol.png",
+              "ent_tpl_phandalin_vyerith": "npcs/vyerith.png",
+              "ent_tpl_phandalin_nundro": "npcs/nundro_rockseeker.png",
+              "ent_tpl_phandalin_tharden": "npcs/tharden_rockseeker.png",
+              "ent_tpl_phandalin_hamun": "npcs/hamun_kost.png",
+              "ent_tpl_phandalin_reidoth": "npcs/reidoth.png",
+              "ent_tpl_phandalin_agatha": "npcs/agatha.png",
+              "ent_tpl_phandalin_brughor": "npcs/brughor_axe_biter.png",
+              "ent_tpl_phandalin_venomfang": "npcs/venomfang.png",
+              "ent_tpl_phandalin_pc_aric": "player_characters/aric_veldan.png",
+              "ent_tpl_phandalin_pc_mira": "player_characters/mira_nightrill.png",
+              "ent_tpl_phandalin_pc_brom": "player_characters/brom_cindermug.png",
+              "ent_tpl_phandalin_pc_nim": "player_characters/nimue_ashbottle.png",
+          }
+
+          missing_assets = [str(asset_root / relative) for relative in image_urls.values() if not (asset_root / relative).is_file()]
+          if missing_assets:
+              raise SystemExit("Missing Phandalin assets:\n" + "\n".join(missing_assets))
+
+          template = json.loads(template_path.read_text(encoding="utf-8"))
+          entities = {entity["entityId"]: entity for entity in template["entities"]}
+          missing_entities = sorted(set(image_urls) - set(entities))
+          if missing_entities:
+              raise SystemExit("Missing Phandalin entities:\n" + "\n".join(missing_entities))
+
+          for entity_id, relative_path in image_urls.items():
+              entities[entity_id]["imageUrl"] = f"/assets/premades/phandalin/{relative_path}"
+
+          template_path.write_text(
+              json.dumps(template, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          print(f"Updated {len(image_urls)} Phandalin entities with imageUrl")
+
+      - name: Commit generated mapping
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/campaign-templates/phandalin/template.json
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git commit -m "feat(premades): link Phandalin entity images"
+          git push origin main
