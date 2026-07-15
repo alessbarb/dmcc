@@ -8,11 +8,22 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) {
   overscroll-behavior: none;
 }
 
+/* Route entry animations leave a transform on the route root because they use fill-mode: both.
+   A transformed ancestor changes the containing block of position: fixed descendants, which
+   centered the dialog inside the content column instead of the physical viewport. */
 body:has(.modal-overlay > .modal-content > div:first-child > img) .app-container,
 body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content,
-body:has(.modal-overlay > .modal-content > div:first-child > img) .content-body {
+body:has(.modal-overlay > .modal-content > div:first-child > img) .content-body,
+body:has(.modal-overlay > .modal-content > div:first-child > img) .content-body > * {
   transform: none !important;
   filter: none !important;
+  perspective: none !important;
+  contain: none !important;
+  will-change: auto !important;
+}
+
+body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:not(.main-content--canvas) .content-body > * {
+  animation: none !important;
 }
 
 .modal-overlay:has(> .modal-content > div:first-child > img) {
@@ -29,6 +40,7 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .content-body 
   background: rgba(3, 5, 12, 0.66) !important;
   backdrop-filter: blur(5px) saturate(82%);
   overscroll-behavior: contain;
+  transform: none !important;
 }
 
 .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content {
