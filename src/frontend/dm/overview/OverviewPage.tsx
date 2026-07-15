@@ -336,7 +336,7 @@ export function OverviewPage() {
             <button
               className="btn btn-secondary"
               type="button"
-              onClick={() => navigateToCampaignPage("search")}
+              onClick={() => navigateToCampaignPage("library/list")}
             >
               <Search size={16} /> {t("campaignShell.nav.search")}
             </button>
