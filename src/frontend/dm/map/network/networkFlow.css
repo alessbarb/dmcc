@@ -1,0 +1,82 @@
+.network-workspace-view--immersive {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--dmcc-border-default, var(--border-color));
+  border-radius: var(--dmcc-radius-panel, 12px);
+  background:
+    radial-gradient(circle at top, color-mix(in srgb, var(--accent-amethyst) 7%, transparent), transparent 42%),
+    var(--bg-main);
+}
+
+.network-workspace-view--immersive .react-flow {
+  background: transparent;
+}
+
+.network-workspace-view--immersive .react-flow__background-pattern {
+  stroke: color-mix(in srgb, var(--text-muted) 18%, transparent);
+}
+
+.network-workspace-view--immersive .react-flow__controls {
+  overflow: hidden;
+  border: 1px solid var(--dmcc-border-default, var(--border-color));
+  border-radius: 9px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.network-workspace-view--immersive .react-flow__controls-button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-bottom: 1px solid var(--dmcc-border-subtle, var(--border-color));
+  background: var(--bg-card);
+  color: var(--text-primary);
+  fill: currentColor;
+}
+
+.network-workspace-view--immersive .react-flow__controls-button:last-child {
+  border-bottom: 0;
+}
+
+.network-workspace-view--immersive .react-flow__controls-button:hover {
+  background: color-mix(in srgb, var(--accent-amethyst) 12%, var(--bg-card));
+  color: var(--accent-fire);
+}
+
+.network-workspace-view--immersive .react-flow__minimap {
+  overflow: hidden;
+  border: 1px solid var(--dmcc-border-default, var(--border-color));
+  border-radius: 10px;
+  background: var(--bg-abyss) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.network-workspace-view--immersive .react-flow__minimap-mask {
+  fill: color-mix(in srgb, var(--bg-main) 58%, transparent);
+}
+
+.network-workspace-view--immersive .react-flow__minimap-node {
+  fill: color-mix(in srgb, var(--accent-amethyst) 58%, var(--bg-card));
+  stroke: var(--accent-fire);
+  stroke-width: 1;
+}
+
+.network-workspace-view--immersive .react-flow__panel {
+  color: var(--text-primary);
+}
+
+body:has(.network-workspace-view--immersive) .watermark {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .network-workspace-view--immersive .react-flow__minimap {
+    width: 116px;
+    height: 82px;
+  }
+
+  .network-workspace-view--immersive .react-flow__controls-button {
+    width: 38px;
+    height: 38px;
+  }
+}
