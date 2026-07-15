@@ -11,6 +11,7 @@ import * as schema from "../../../db/schema.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { writeMarkdownCampaignExport } from "../../export/markdownCampaignExport.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
+import { moveCampaignToTrash } from "../../../operations/campaigns/campaignTrash.js";
 import { getRequiredWebUser } from "../webSession.js";
 import { ensureDefaultWorkspace, isDmRole, listAccessibleCampaigns, requireCampaignOwner, requireCampaignRole } from "../webAccess.js";
 
@@ -331,8 +332,8 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
   server.patch<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateCampaign", ...(request.body ?? {}) }));
 
   server.delete<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId", async (request, _reply) => {
-    await requireCampaignOwner(request, request.params.campaignId);
-    await db.update(schema.campaigns).set({ status: "deleted", updatedAt: new Date() }).where(eq(schema.campaigns.campaignId, request.params.campaignId));
+    const { user } = await requireCampaignOwner(request, request.params.campaignId);
+    await moveCampaignToTrash({ campaignId: request.params.campaignId, actorUserId: user.userId });
     return { ok: true };
   });
 
