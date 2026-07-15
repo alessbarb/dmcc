@@ -49,7 +49,7 @@ export function CampaignWorkspace({
       };
       if (cancelled) return;
 
-      let hydratedCampaignState: typeof campaignState = null;
+      let hydratedCampaignState: ReturnType<typeof useCampaignStore.getState>["campaignState"] = null;
       useCampaignStore.setState((state) => {
         if (
           !state.campaignState
