@@ -22,10 +22,10 @@ function isFinitePosition(position: NetworkLayoutPosition | undefined): position
 }
 
 function fallbackPosition(index: number, viewportWidth: number): Pick<NetworkLayoutPosition, "x" | "y"> {
-  const nodeWidth = 240;
-  const nodeHeight = 250;
-  const horizontalGap = 48;
-  const verticalGap = 56;
+  const nodeWidth = 180;
+  const nodeHeight = 112;
+  const horizontalGap = 38;
+  const verticalGap = 42;
   const usableWidth = Math.max(viewportWidth - 80, nodeWidth);
   const columns = Math.max(1, Math.floor(usableWidth / (nodeWidth + horizontalGap)));
 
