@@ -2,7 +2,7 @@ import { and, or, lt, eq, desc, sql } from "drizzle-orm";
 import { db } from "../../db/client.js";
 import { campaignActivity } from "../../db/schema.js";
 import type { CampaignHistoryEntry, ActivityFilter } from "../../../core/projections/activity/activityTypes.js";
-import { activityIdForSource } from "./activityId.js";
+import { activityIdForSource } from "@core/projections/activity/activityId.js";
 
 export function encodeCursor(occurredAt: Date, activityId: string): string {
   const payload = `${occurredAt.toISOString()}|${activityId}`;

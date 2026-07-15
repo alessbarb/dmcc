@@ -1,5 +1,5 @@
 import type { StoredEvent } from "../../domain/shared/events.js";
-import { activityIdForSource } from "../../../backend/server/activity/activityId.js";
+import { activityIdForSource } from "./activityId.js";
 
 export function projectDomainEventToActivity(event: StoredEvent): any[] {
   const { eventId, campaignId, type, occurredAt, actorId, payload } = event;
