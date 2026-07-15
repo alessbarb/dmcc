@@ -1,6 +1,5 @@
 import React from "react";
 import { Outlet, useParams, useRouterState } from "@tanstack/react-router";
-import { CampaignWorkspace } from "../workspaces/CampaignWorkspace.js";
 import { WorkspaceTabs } from "../workspaces/WorkspaceTabs.js";
 import { LayoutGrid, GitFork } from "lucide-react";
 
@@ -8,6 +7,7 @@ export function CampaignMapWorkspacePage() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
   const routerState = useRouterState();
   const isCanvas = routerState.location.pathname.includes("/map/canvas");
+  const isNetwork = routerState.location.pathname.includes("/map/network");
 
   const tabs = [
     {
@@ -24,26 +24,16 @@ export function CampaignMapWorkspacePage() {
     },
   ];
 
-  if (isCanvas) {
-    return (
-      <div className="campaign-workspace campaign-workspace--canvas" style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}>
-        <div style={{ padding: "0 24px" }}>
-          <WorkspaceTabs tabs={tabs} />
-        </div>
-        <div style={{ flex: 1, minHeight: 0 }}>
-          <Outlet />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <CampaignWorkspace
-      titleKey="campaignShell.meta.mapTitle"
-      descriptionKey="campaignShell.meta.mapDescription"
-      tabs={tabs}
+    <div
+      className={`campaign-workspace campaign-workspace--map-tool ${isCanvas ? "campaign-workspace--canvas" : ""} ${isNetwork ? "campaign-workspace--network" : ""}`}
     >
-      <Outlet />
-    </CampaignWorkspace>
+      <div className="campaign-workspace--map-tool__tabs">
+        <WorkspaceTabs tabs={tabs} />
+      </div>
+      <div className="campaign-workspace--map-tool__content">
+        <Outlet />
+      </div>
+    </div>
   );
 }
