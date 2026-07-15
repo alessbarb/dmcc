@@ -114,6 +114,9 @@
           },
           "status": {
             "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
           }
         },
         "required": [

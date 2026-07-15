@@ -476,7 +476,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known"
+      "status": "known",
+      "imageUrl": "/assets/premades/phandalin/locations/barthens_provisions.png"
     },
     {
       "entityId": "ent_tpl_phandalin_lionshield",
@@ -486,7 +487,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known"
+      "status": "known",
+      "imageUrl": "/assets/premades/phandalin/locations/lionshield_coster.png"
     },
     {
       "entityId": "ent_tpl_phandalin_sleeping_giant",
@@ -496,7 +498,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available"
+      "status": "available",
+      "imageUrl": "/assets/premades/phandalin/locations/sleeping_giant.png"
     },
     {
       "entityId": "ent_tpl_phandalin_townmaster",
@@ -506,7 +509,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known"
+      "status": "known",
+      "imageUrl": "/assets/premades/phandalin/locations/townmasters_hall.png"
     },
     {
       "entityId": "ent_tpl_phandalin_edermath",
@@ -516,7 +520,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known"
+      "status": "known",
+      "imageUrl": "/assets/premades/phandalin/locations/edermath_orchard.png"
     },
     {
       "entityId": "ent_tpl_phandalin_alderleaf",
@@ -526,7 +531,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known"
+      "status": "known",
+      "imageUrl": "/assets/premades/phandalin/locations/alderleaf_farm.png"
     },
     {
       "entityId": "ent_tpl_phandalin_miners_exchange",
@@ -536,7 +542,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "known"
+      "status": "known",
+      "imageUrl": "/assets/premades/phandalin/locations/miners_exchange.png"
     },
     {
       "entityId": "ent_tpl_phandalin_cragmaw_castle",
@@ -612,7 +619,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/locations/thundertree.png"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_town",
@@ -827,7 +835,8 @@
       "metadata": {
         "desire": "Separar al mago respetable del jefe criminal."
       },
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/npcs/glasstaff.png"
     },
     {
       "entityId": "ent_tpl_phandalin_nothic",
