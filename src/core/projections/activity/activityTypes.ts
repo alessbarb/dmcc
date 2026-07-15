@@ -1,11 +1,30 @@
+export type CampaignActivityCategory = "session" | "content" | "knowledge" | "story" | "people" | "collaboration" | "operation";
+
+export type CampaignActivityData = Record<string, unknown>;
+
+export interface ProjectedCampaignActivity {
+  activityId: string;
+  campaignId: string;
+  sourceKind: "domain_event";
+  sourceId: string;
+  type: string;
+  category: CampaignActivityCategory;
+  data: CampaignActivityData;
+  actorUserId: string | null;
+  sessionId: string | null;
+  targetType: string | null;
+  targetId: string | null;
+  occurredAt: Date;
+}
+
 export interface CampaignHistoryEntry {
   activityId: string;
   campaignId: string;
   sourceKind: "domain_event" | "operation";
   sourceId: string;
   type: string;
-  category: "session" | "content" | "knowledge" | "story" | "people" | "collaboration" | "operation";
-  data: Record<string, any>;
+  category: CampaignActivityCategory;
+  data: CampaignActivityData;
   actorUserId?: string | null;
   sessionId?: string | null;
   targetType?: string | null;

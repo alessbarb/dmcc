@@ -91,7 +91,9 @@ export function ShortcutsPanel({ campaignId, collapsed = false, emptyHint }: Sho
                   aria-label={t("shortcuts.remove")}
                   onClick={(event) => {
                     event.stopPropagation();
-                    void removeShortcut(shortcut.shortcutId);
+                    void removeShortcut(shortcut.shortcutId).catch((error: unknown) => {
+                      console.error("Could not remove campaign shortcut", error);
+                    });
                   }}
                   style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", padding: 2 }}
                 >

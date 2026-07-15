@@ -84,6 +84,20 @@ describe("Story Plan Domain & Commands", () => {
     expect(state.storySteps.get("stp_step1")?.title).toBe("Find the key");
     expect(state.storySteps.get("stp_step1")?.status).toBe("planned");
 
+    // Validate resolution coherence before the step becomes terminal:
+    // resolving as changed requires an actual outcome.
+    expect(() => {
+      handleCommand(state, {
+        type: "ReconcileStoryStep",
+        campaignId: "cmp_one",
+        actorId: "usr_dm",
+        stepId: "stp_step1",
+        resolvedSessionId: "sess_one",
+        status: "resolved",
+        resolutionKind: "changed",
+      });
+    }).toThrow("require an actual outcome");
+
     // Reconcile step as resolved (as_planned)
     const result3 = handleCommand(state, {
       type: "ReconcileStoryStep",
@@ -98,18 +112,5 @@ describe("Story Plan Domain & Commands", () => {
     expect(state.storySteps.get("stp_step1")?.status).toBe("resolved");
     expect(state.storySteps.get("stp_step1")?.resolutionKind).toBe("as_planned");
     expect(state.storySteps.get("stp_step1")?.resolvedSessionId).toBe("sess_one");
-
-    // Validate resolution coherence: resolved as changed requires outcome
-    expect(() => {
-      handleCommand(state, {
-        type: "ReconcileStoryStep",
-        campaignId: "cmp_one",
-        actorId: "usr_dm",
-        stepId: "stp_step1",
-        resolvedSessionId: "sess_one",
-        status: "resolved",
-        resolutionKind: "changed",
-      });
-    }).toThrow("require an actual outcome");
   });
 });

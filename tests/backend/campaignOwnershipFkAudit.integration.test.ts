@@ -30,7 +30,7 @@ const CAMPAIGN_ID_FK_EXCEPTIONS = new Set<string>([
 // name) — the dynamic discovery below is what actually enforces coverage of
 // tables added after this plan lands, this constant does not need to be kept
 // in sync with future tables.
-const BASELINE_CAMPAIGN_OWNED_TABLE_COUNT = 24;
+const BASELINE_CAMPAIGN_OWNED_TABLE_COUNT = 23;
 
 async function findTablesWithCampaignIdColumn(): Promise<string[]> {
   const result = await pool.query<{ table_name: string }>(
@@ -140,7 +140,6 @@ const CAMPAIGN_OWNED_DRIZZLE_TABLES = [
   schema.campaignFacts,
   schema.campaignRelations,
   schema.campaignSessions,
-  schema.campaignScenes,
   schema.campaignObjectives,
   schema.campaignClues,
   schema.characters,

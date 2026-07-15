@@ -2,24 +2,145 @@
   "version": "7",
   "dialect": "postgresql",
   "entries": [
-    { "idx": 0, "version": "7", "when": 1783017672504, "tag": "0000_powerful_mulholland_black", "breakpoints": true },
-    { "idx": 1, "version": "7", "when": 1783017704948, "tag": "0001_neat_wolf_cub", "breakpoints": true },
-    { "idx": 2, "version": "7", "when": 1783017850344, "tag": "0002_lively_obadiah_stane", "breakpoints": true },
-    { "idx": 3, "version": "7", "when": 1783020000000, "tag": "0003_dmcc_web_platform_guards", "breakpoints": true },
-    { "idx": 4, "version": "7", "when": 1783023600000, "tag": "0004_read_models_command_center", "breakpoints": true },
-    { "idx": 5, "version": "7", "when": 1783027200000, "tag": "0005_backfill_campaign_owner_id", "breakpoints": true },
-    { "idx": 6, "version": "7", "when": 1783839000000, "tag": "0006_player_portal_state", "breakpoints": true },
-    { "idx": 7, "version": "7", "when": 1783843200000, "tag": "0007_campaign_messaging", "breakpoints": true },
-    { "idx": 8, "version": "7", "when": 1783890000000, "tag": "0008_visibility_grant_identity", "breakpoints": true },
-    { "idx": 9, "version": "7", "when": 1783904400000, "tag": "0009_player_visibility_integrity", "breakpoints": true },
-    { "idx": 10, "version": "7", "when": 1783918800000, "tag": "0010_campaign_ownership_core", "breakpoints": true },
-    { "idx": 11, "version": "7", "when": 1783922400000, "tag": "0011_campaign_ownership_narrative", "breakpoints": true },
-    { "idx": 12, "version": "7", "when": 1783926000000, "tag": "0012_campaign_ownership_collaboration", "breakpoints": true },
-    { "idx": 13, "version": "7", "when": 1784020000000, "tag": "0013_daily_selene", "breakpoints": true },
-    { "idx": 14, "version": "7", "when": 1784030000000, "tag": "0014_rebuild_platform_roles", "breakpoints": true },
-    { "idx": 15, "version": "7", "when": 1784031000000, "tag": "0015_drop_is_platform_admin", "breakpoints": true },
-    { "idx": 16, "version": "7", "when": 1784032000000, "tag": "0016_campaign_activity", "breakpoints": true },
-    { "idx": 17, "version": "7", "when": 1784100000000, "tag": "0017_campaign_shortcuts", "breakpoints": true },
-    { "idx": 18, "version": "7", "when": 1784200000000, "tag": "0018_campaign_notebooks_and_story", "breakpoints": true }
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1783017672504,
+      "tag": "0000_powerful_mulholland_black",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1783017704948,
+      "tag": "0001_neat_wolf_cub",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783017850344,
+      "tag": "0002_lively_obadiah_stane",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1783020000000,
+      "tag": "0003_dmcc_web_platform_guards",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1783023600000,
+      "tag": "0004_read_models_command_center",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1783027200000,
+      "tag": "0005_backfill_campaign_owner_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1783839000000,
+      "tag": "0006_player_portal_state",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1783843200000,
+      "tag": "0007_campaign_messaging",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1783890000000,
+      "tag": "0008_visibility_grant_identity",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1783904400000,
+      "tag": "0009_player_visibility_integrity",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1783918800000,
+      "tag": "0010_campaign_ownership_core",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1783922400000,
+      "tag": "0011_campaign_ownership_narrative",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1783926000000,
+      "tag": "0012_campaign_ownership_collaboration",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1784020000000,
+      "tag": "0013_daily_selene",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1784030000000,
+      "tag": "0014_rebuild_platform_roles",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1784031000000,
+      "tag": "0015_drop_is_platform_admin",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1784032000000,
+      "tag": "0016_campaign_activity",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1784100000000,
+      "tag": "0017_campaign_shortcuts",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1784200000000,
+      "tag": "0018_campaign_notebooks_and_story",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1784210000000,
+      "tag": "0019_stabilize_campaign_workspaces",
+      "breakpoints": true
+    }
   ]
 }

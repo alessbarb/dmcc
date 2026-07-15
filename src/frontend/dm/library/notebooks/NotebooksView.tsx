@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { notebooksApi } from "../../../shared/api.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { useCampaignShortcuts } from "../../shortcuts/useCampaignShortcuts.js";
+import type { NotebookItemTargetType } from "@core/domain/resource/resourceType.js";
 import {
   BookOpen,
   Plus,
@@ -12,14 +13,11 @@ import {
   Edit2,
   Check,
   X,
-  ChevronRight,
-  ChevronDown,
   ArrowUp,
   ArrowDown,
   Bookmark,
   BookmarkMinus,
   Link,
-  Eye,
   FileText,
   Layers,
   HelpCircle,
@@ -42,11 +40,12 @@ export function NotebooksView() {
   const [newTitle, setNewTitle] = useState("");
   const [editTitle, setEditTitle] = useState("");
   const [editDesc, setEditDesc] = useState("");
+  const [editParentId, setEditParentId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   
   // Adding items state
   const [isAddingItem, setIsAddingItem] = useState(false);
-  const [selectedItemType, setSelectedItemType] = useState("entity");
+  const [selectedItemType, setSelectedItemType] = useState<NotebookItemTargetType>("entity");
   const [selectedItemId, setSelectedItemId] = useState("");
 
   const notebooks = campaignState?.notebooks ?? [];
@@ -54,6 +53,13 @@ export function NotebooksView() {
 
   // Active notebooks (not archived)
   const activeNotebooks = notebooks.filter((n) => !n.archivedAt);
+
+  useEffect(() => {
+    const requestedNotebookId = new URLSearchParams(window.location.search).get("notebookId");
+    if (requestedNotebookId && activeNotebooks.some((notebook) => notebook.notebookId === requestedNotebookId)) {
+      setSelectedNotebookId(requestedNotebookId);
+    }
+  }, [notebooks]);
 
   // Group by parent
   const rootNotebooks = activeNotebooks.filter((n) => !n.parentNotebookId).sort((a, b) => a.sortOrder - b.sortOrder);
@@ -71,15 +77,17 @@ export function NotebooksView() {
 
   const handleToggleShortcut = async () => {
     if (!selectedNotebookId || !activeCampaignId) return;
-    if (isShortcutAdded) {
-      const existing = shortcuts.find((s) => s.targetType === "notebook" && s.targetId === selectedNotebookId);
-      if (existing) {
-        await removeShortcut(existing.shortcutId);
+    try {
+      if (isShortcutAdded) {
+        const existing = shortcuts.find((shortcut) => shortcut.targetType === "notebook" && shortcut.targetId === selectedNotebookId);
+        if (existing) await removeShortcut(existing.shortcutId);
         addToast(t("shortcuts.removedToast"), "success");
+      } else {
+        await addShortcut("notebook", selectedNotebookId);
+        addToast(t("shortcuts.addedToast"), "success");
       }
-    } else {
-      await addShortcut("notebook", selectedNotebookId);
-      addToast(t("shortcuts.addedToast"), "success");
+    } catch (error: unknown) {
+      addToast(error instanceof Error ? error.message : t("common.error"), "error");
     }
   };
 
@@ -110,6 +118,8 @@ export function NotebooksView() {
     try {
       const res = await notebooksApi.updateNotebook(activeCampaignId, selectedNotebookId, {
         title: editTitle.trim(),
+        description: editDesc.trim() || null,
+        parentNotebookId: editParentId,
       });
       if (res.ok) {
         setIsEditing(false);
@@ -242,6 +252,7 @@ export function NotebooksView() {
             setSelectedNotebookId(notebook.notebookId);
             setEditTitle(notebook.title);
             setEditDesc(notebook.description || "");
+            setEditParentId(notebook.parentNotebookId ?? null);
             setIsEditing(false);
           }}
           className={`notebook-tree-item ${isSelected ? "selected" : ""}`}
@@ -333,7 +344,7 @@ export function NotebooksView() {
               <button
                 type="button"
                 className="btn btn-sm btn-primary"
-                onClick={() => handleCreateNotebook(null)}
+                onClick={() => void handleCreateNotebook(null)}
                 disabled={!newTitle.trim()}
               >
                 <Check size={12} />
@@ -388,6 +399,18 @@ export function NotebooksView() {
                       placeholder="Add a description..."
                       rows={2}
                     />
+                    <select
+                      className="form-control"
+                      value={editParentId ?? ""}
+                      onChange={(event) => setEditParentId(event.target.value || null)}
+                    >
+                      <option value="">{t("notebooks.rootLevel")}</option>
+                      {activeNotebooks
+                        .filter((notebook) => notebook.notebookId !== selectedNotebookId)
+                        .map((notebook) => (
+                          <option key={notebook.notebookId} value={notebook.notebookId}>{notebook.title}</option>
+                        ))}
+                    </select>
                     <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
                       <button
                         type="button"
@@ -399,7 +422,7 @@ export function NotebooksView() {
                       <button
                         type="button"
                         className="btn btn-primary"
-                        onClick={handleUpdateNotebook}
+                        onClick={() => void handleUpdateNotebook()}
                         disabled={!editTitle.trim()}
                       >
                         {t("common.save") || "Guardar"}
@@ -431,7 +454,7 @@ export function NotebooksView() {
                 <button
                   type="button"
                   className={`btn btn-sm ${isShortcutAdded ? "btn-primary" : "btn-outline-secondary"}`}
-                  onClick={handleToggleShortcut}
+                  onClick={() => void handleToggleShortcut()}
                   title={isShortcutAdded ? t("shortcuts.remove") : t("shortcuts.add")}
                 >
                   {isShortcutAdded ? <BookmarkMinus size={16} /> : <Bookmark size={16} />}
@@ -455,7 +478,7 @@ export function NotebooksView() {
                 <button
                   type="button"
                   className="btn btn-sm btn-outline-danger"
-                  onClick={handleArchiveNotebook}
+                  onClick={() => void handleArchiveNotebook()}
                   title={t("common.archive") || "Archivar"}
                 >
                   <Trash2 size={16} />
@@ -488,7 +511,7 @@ export function NotebooksView() {
                   <button
                     type="button"
                     className="btn btn-sm btn-primary"
-                    onClick={() => handleCreateNotebook(selectedNotebook.notebookId)}
+                    onClick={() => void handleCreateNotebook(selectedNotebook.notebookId)}
                     disabled={!newTitle.trim()}
                   >
                     <Check size={12} />
@@ -525,13 +548,17 @@ export function NotebooksView() {
                         className="form-control"
                         value={selectedItemType}
                         onChange={(e) => {
-                          setSelectedItemType(e.target.value);
+                          setSelectedItemType(e.target.value as NotebookItemTargetType);
                           setSelectedItemId("");
                         }}
                       >
                         <option value="entity">{t("notebooks.type.entity") || "Entidad"}</option>
                         <option value="session">{t("notebooks.type.session") || "Sesión"}</option>
                         <option value="canvas">{t("notebooks.type.canvas") || "Canvas"}</option>
+                        <option value="fact">{t("notebooks.type.fact")}</option>
+                        <option value="relation">{t("notebooks.type.relation")}</option>
+                        <option value="session_event">{t("notebooks.type.sessionEvent")}</option>
+                        <option value="attachment">{t("notebooks.type.attachment")}</option>
                       </select>
                     </div>
 
@@ -566,7 +593,7 @@ export function NotebooksView() {
                     <button
                       type="button"
                       className="btn btn-sm btn-primary"
-                      onClick={handleAddItem}
+                      onClick={() => void handleAddItem()}
                       disabled={!selectedItemId}
                     >
                       {t("common.add") || "Vincular"}
@@ -616,7 +643,7 @@ export function NotebooksView() {
                             type="button"
                             className="btn btn-sm btn-link"
                             disabled={index === 0}
-                            onClick={() => handleReorderItems(index, "up")}
+                            onClick={() => void handleReorderItems(index, "up")}
                             style={{ padding: 2 }}
                           >
                             <ArrowUp size={14} />
@@ -625,7 +652,7 @@ export function NotebooksView() {
                             type="button"
                             className="btn btn-sm btn-link"
                             disabled={index === selectedNotebookItems.length - 1}
-                            onClick={() => handleReorderItems(index, "down")}
+                            onClick={() => void handleReorderItems(index, "down")}
                             style={{ padding: 2 }}
                           >
                             <ArrowDown size={14} />
@@ -633,7 +660,7 @@ export function NotebooksView() {
                           <button
                             type="button"
                             className="btn btn-sm btn-link text-danger"
-                            onClick={() => handleRemoveItem(item.notebookItemId)}
+                            onClick={() => void handleRemoveItem(item.notebookItemId)}
                             style={{ padding: 2, marginLeft: 6 }}
                           >
                             <X size={14} />

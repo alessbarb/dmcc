@@ -11,7 +11,7 @@ import { HttpError } from "../../errors.js";
 import { assertCampaignResourceAccess } from "../../resources/assertCampaignResourceAccess.js";
 import { resolveManyCampaignResources } from "../../resources/CampaignResourceResolver.js";
 
-const SHORTCUT_TARGET_TYPES: readonly ShortcutTargetType[] = ["entity", "session", "canvas"];
+const SHORTCUT_TARGET_TYPES: readonly ShortcutTargetType[] = ["entity", "session", "canvas", "notebook", "story_thread", "story_step"];
 
 function isShortcutTargetType(value: unknown): value is ShortcutTargetType {
   return typeof value === "string" && (SHORTCUT_TARGET_TYPES as readonly string[]).includes(value);
@@ -61,7 +61,7 @@ export async function registerShortcutsWebRoutes(server: FastifyInstance): Promi
 
     if (!isShortcutTargetType(targetType) || !targetId) {
       reply.code(400);
-      return { error: "targetType (entity|session|canvas) and targetId are required" };
+      return { error: `targetType (${SHORTCUT_TARGET_TYPES.join("|")}) and targetId are required` };
     }
 
     await assertCampaignResourceAccess(campaignId, { type: targetType, resourceId: targetId });

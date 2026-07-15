@@ -1,5 +1,3 @@
-import type { CampaignNotebook } from "./types.js";
-
 /**
  * Checks if setting parentNotebookId would create a cycle.
  */

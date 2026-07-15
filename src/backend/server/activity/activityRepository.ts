@@ -1,4 +1,4 @@
-import { and, or, lt, eq, desc, sql } from "drizzle-orm";
+import { and, or, lt, eq, desc } from "drizzle-orm";
 import { db } from "../../db/client.js";
 import { campaignActivity } from "../../db/schema.js";
 import type { CampaignHistoryEntry, ActivityFilter } from "../../../core/projections/activity/activityTypes.js";
@@ -14,7 +14,9 @@ export function decodeCursor(cursor: string): { occurredAt: Date; activityId: st
     const raw = Buffer.from(cursor, "base64url").toString("utf8");
     const [dateStr, activityId] = raw.split("|");
     if (!dateStr || !activityId) return null;
-    return { occurredAt: new Date(dateStr), activityId };
+    const occurredAt = new Date(dateStr);
+    if (Number.isNaN(occurredAt.getTime())) return null;
+    return { occurredAt, activityId };
   } catch {
     return null;
   }
@@ -74,7 +76,7 @@ export const activityRepository = {
     filters: ActivityFilter
   ): Promise<{ entries: CampaignHistoryEntry[]; nextCursor?: string }> {
     const client = tx || db;
-    const limit = Math.min(filters.limit || 50, 100);
+    const limit = Math.max(1, Math.min(filters.limit || 50, 100));
 
     const conditions = [eq(campaignActivity.campaignId, campaignId)];
 

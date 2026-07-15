@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Plus, X, User, Pencil, Archive, Eye, ShieldCheck, Wifi, MessageSquare, Target } from "lucide-react";
-import type { Entity, PlayerProfile, StoreCampaignState } from "../../../shared/stores/campaignStore.js";
+import { Plus, X, User, Pencil, Archive, Eye, ShieldCheck, MessageSquare, Target } from "lucide-react";
+import type { Entity, PlayerProfile } from "../../../shared/stores/campaignStore.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";

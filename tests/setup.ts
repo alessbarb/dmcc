@@ -22,7 +22,6 @@ async function cleanDatabase() {
   await db.delete(schema.campaignObjectives);
   await db.delete(schema.campaignClues);
   await db.delete(schema.characters);
-  await db.delete(schema.campaignScenes);
   await db.delete(schema.campaignSessions);
   await db.delete(schema.liveTables);
   await db.delete(playerPortalResources);

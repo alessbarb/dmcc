@@ -1,7 +1,12 @@
 import type { StoredEvent } from "../../domain/shared/events.js";
 import { activityIdForSource } from "./activityId.js";
+import type { ProjectedCampaignActivity } from "./activityTypes.js";
 
-export function projectDomainEventToActivity(event: StoredEvent): any[] {
+function nullableString(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+export function projectDomainEventToActivity(event: StoredEvent<Record<string, unknown>>): ProjectedCampaignActivity[] {
   const { eventId, campaignId, type, occurredAt, actorId, payload } = event;
   if (!campaignId) return [];
 
@@ -39,7 +44,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "people",
         data: { profileId: payload?.profileId, name: payload?.name, displayName: payload?.displayName },
         targetType: "player_profile",
-        targetId: payload?.profileId,
+        targetId: nullableString(payload?.profileId),
       }];
     case "PlayerProfileUpdated":
       return [{
@@ -48,7 +53,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "people",
         data: { profileId: payload?.profileId, name: payload?.name, displayName: payload?.displayName },
         targetType: "player_profile",
-        targetId: payload?.profileId,
+        targetId: nullableString(payload?.profileId),
       }];
     case "PlayerProfileArchived":
       return [{
@@ -57,7 +62,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "people",
         data: { profileId: payload?.profileId },
         targetType: "player_profile",
-        targetId: payload?.profileId,
+        targetId: nullableString(payload?.profileId),
       }];
     case "PlayerInvitationCreated":
       return [{
@@ -66,7 +71,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "people",
         data: { invitationId: payload?.invitationId, role: payload?.role },
         targetType: "player_invitation",
-        targetId: payload?.invitationId,
+        targetId: nullableString(payload?.invitationId),
       }];
     case "PlayerInvitationConsumed":
       return [{
@@ -75,7 +80,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "people",
         data: { invitationId: payload?.invitationId, userId: payload?.userId },
         targetType: "player_invitation",
-        targetId: payload?.invitationId,
+        targetId: nullableString(payload?.invitationId),
       }];
     case "PlayerInvitationRevoked":
       return [{
@@ -84,7 +89,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "people",
         data: { invitationId: payload?.invitationId },
         targetType: "player_invitation",
-        targetId: payload?.invitationId,
+        targetId: nullableString(payload?.invitationId),
       }];
     case "EntityCreated":
       return [{
@@ -93,7 +98,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { entityId: payload?.entityId || payload?.id, name: payload?.name || payload?.title, type: payload?.type || payload?.entityType },
         targetType: "entity",
-        targetId: payload?.entityId || payload?.id,
+        targetId: nullableString(payload?.entityId || payload?.id),
       }];
     case "EntityUpdated":
       return [{
@@ -102,7 +107,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { entityId: payload?.entityId || payload?.id, name: payload?.name || payload?.title, type: payload?.type || payload?.entityType },
         targetType: "entity",
-        targetId: payload?.entityId || payload?.id,
+        targetId: nullableString(payload?.entityId || payload?.id),
       }];
     case "EntityArchived":
       return [{
@@ -111,7 +116,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { entityId: payload?.entityId || payload?.id },
         targetType: "entity",
-        targetId: payload?.entityId || payload?.id,
+        targetId: nullableString(payload?.entityId || payload?.id),
       }];
     case "RelationCreated":
       return [{
@@ -120,7 +125,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { relationId: payload?.relationId || payload?.id, sourceId: payload?.sourceId, targetId: payload?.targetId, type: payload?.type || payload?.relationType },
         targetType: "relation",
-        targetId: payload?.relationId || payload?.id,
+        targetId: nullableString(payload?.relationId || payload?.id),
       }];
     case "RelationUpdated":
       return [{
@@ -129,7 +134,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { relationId: payload?.relationId || payload?.id, sourceId: payload?.sourceId, targetId: payload?.targetId, type: payload?.type || payload?.relationType },
         targetType: "relation",
-        targetId: payload?.relationId || payload?.id,
+        targetId: nullableString(payload?.relationId || payload?.id),
       }];
     case "RelationArchived":
       return [{
@@ -138,7 +143,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { relationId: payload?.relationId || payload?.id },
         targetType: "relation",
-        targetId: payload?.relationId || payload?.id,
+        targetId: nullableString(payload?.relationId || payload?.id),
       }];
     case "FactCreated":
       return [{
@@ -147,7 +152,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { factId: payload?.factId || payload?.id, title: payload?.title || payload?.statement },
         targetType: "fact",
-        targetId: payload?.factId || payload?.id,
+        targetId: nullableString(payload?.factId || payload?.id),
       }];
     case "FactUpdated":
       return [{
@@ -156,7 +161,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { factId: payload?.factId || payload?.id, title: payload?.title || payload?.statement },
         targetType: "fact",
-        targetId: payload?.factId || payload?.id,
+        targetId: nullableString(payload?.factId || payload?.id),
       }];
     case "FactArchived":
       return [{
@@ -165,57 +170,57 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { factId: payload?.factId || payload?.id },
         targetType: "fact",
-        targetId: payload?.factId || payload?.id,
+        targetId: nullableString(payload?.factId || payload?.id),
       }];
     case "SessionCreated":
       return [{
         ...base,
         type: "session.created",
         category: "session",
-        sessionId: payload?.sessionId || payload?.id,
+        sessionId: nullableString(payload?.sessionId || payload?.id),
         data: { sessionId: payload?.sessionId || payload?.id, sessionNumber: payload?.sessionNumber || payload?.number, title: payload?.title },
         targetType: "session",
-        targetId: payload?.sessionId || payload?.id,
+        targetId: nullableString(payload?.sessionId || payload?.id),
       }];
     case "SessionStarted":
       return [{
         ...base,
         type: "session.started",
         category: "session",
-        sessionId: payload?.sessionId || payload?.id,
+        sessionId: nullableString(payload?.sessionId || payload?.id),
         data: { sessionId: payload?.sessionId || payload?.id, sessionNumber: payload?.sessionNumber || payload?.number, title: payload?.title },
         targetType: "session",
-        targetId: payload?.sessionId || payload?.id,
+        targetId: nullableString(payload?.sessionId || payload?.id),
       }];
     case "SessionClosed":
       return [{
         ...base,
         type: "session.closed",
         category: "session",
-        sessionId: payload?.sessionId || payload?.id,
+        sessionId: nullableString(payload?.sessionId || payload?.id),
         data: { sessionId: payload?.sessionId || payload?.id, sessionNumber: payload?.sessionNumber || payload?.number, title: payload?.title },
         targetType: "session",
-        targetId: payload?.sessionId || payload?.id,
+        targetId: nullableString(payload?.sessionId || payload?.id),
       }];
     case "SessionCancelled":
       return [{
         ...base,
         type: "session.cancelled",
         category: "session",
-        sessionId: payload?.sessionId || payload?.id,
+        sessionId: nullableString(payload?.sessionId || payload?.id),
         data: { sessionId: payload?.sessionId || payload?.id, sessionNumber: payload?.sessionNumber || payload?.number, title: payload?.title },
         targetType: "session",
-        targetId: payload?.sessionId || payload?.id,
+        targetId: nullableString(payload?.sessionId || payload?.id),
       }];
     case "SessionArchived":
       return [{
         ...base,
         type: "session.archived",
         category: "session",
-        sessionId: payload?.sessionId || payload?.id,
+        sessionId: nullableString(payload?.sessionId || payload?.id),
         data: { sessionId: payload?.sessionId || payload?.id },
         targetType: "session",
-        targetId: payload?.sessionId || payload?.id,
+        targetId: nullableString(payload?.sessionId || payload?.id),
       }];
     case "AttachmentAdded":
       return [{
@@ -224,7 +229,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { attachmentId: payload?.attachmentId || payload?.id, name: payload?.name },
         targetType: "attachment",
-        targetId: payload?.attachmentId || payload?.id,
+        targetId: nullableString(payload?.attachmentId || payload?.id),
       }];
     case "AttachmentRemoved":
       return [{
@@ -233,7 +238,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { attachmentId: payload?.attachmentId || payload?.id },
         targetType: "attachment",
-        targetId: payload?.attachmentId || payload?.id,
+        targetId: nullableString(payload?.attachmentId || payload?.id),
       }];
     case "CanvasCreated":
       return [{
@@ -242,7 +247,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { canvasId: payload?.id, title: payload?.title },
         targetType: "canvas",
-        targetId: payload?.id,
+        targetId: nullableString(payload?.id),
       }];
     case "CanvasUpdated":
       return [{
@@ -251,7 +256,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { canvasId: payload?.id, title: payload?.title },
         targetType: "canvas",
-        targetId: payload?.id,
+        targetId: nullableString(payload?.id),
       }];
     case "CanvasArchived":
       return [{
@@ -260,7 +265,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { canvasId: payload?.id },
         targetType: "canvas",
-        targetId: payload?.id,
+        targetId: nullableString(payload?.id),
       }];
     case "NotebookCreated":
       return [{
@@ -269,7 +274,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { notebookId: payload?.notebookId, title: payload?.title },
         targetType: "notebook",
-        targetId: payload?.notebookId,
+        targetId: nullableString(payload?.notebookId),
       }];
     case "NotebookUpdated":
       return [{
@@ -278,7 +283,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { notebookId: payload?.notebookId, title: payload?.title },
         targetType: "notebook",
-        targetId: payload?.notebookId,
+        targetId: nullableString(payload?.notebookId),
       }];
     case "NotebookArchived":
       return [{
@@ -287,7 +292,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "content",
         data: { notebookId: payload?.notebookId },
         targetType: "notebook",
-        targetId: payload?.notebookId,
+        targetId: nullableString(payload?.notebookId),
       }];
     case "StoryThreadCreated":
       return [{
@@ -296,7 +301,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "story",
         data: { threadId: payload?.threadId, title: payload?.title },
         targetType: "story_thread",
-        targetId: payload?.threadId,
+        targetId: nullableString(payload?.threadId),
       }];
     case "StoryThreadUpdated":
       return [{
@@ -305,7 +310,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "story",
         data: { threadId: payload?.threadId, title: payload?.title },
         targetType: "story_thread",
-        targetId: payload?.threadId,
+        targetId: nullableString(payload?.threadId),
       }];
     case "StoryThreadArchived":
       return [{
@@ -314,7 +319,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "story",
         data: { threadId: payload?.threadId },
         targetType: "story_thread",
-        targetId: payload?.threadId,
+        targetId: nullableString(payload?.threadId),
       }];
     case "StoryStepCreated":
       return [{
@@ -323,7 +328,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "story",
         data: { stepId: payload?.stepId, title: payload?.title },
         targetType: "story_step",
-        targetId: payload?.stepId,
+        targetId: nullableString(payload?.stepId),
       }];
     case "StoryStepUpdated":
       return [{
@@ -332,7 +337,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "story",
         data: { stepId: payload?.stepId, title: payload?.title },
         targetType: "story_step",
-        targetId: payload?.stepId,
+        targetId: nullableString(payload?.stepId),
       }];
     case "StoryStepScheduled":
       return [{
@@ -341,7 +346,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "story",
         data: { stepId: payload?.stepId, plannedSessionId: payload?.plannedSessionId, plannedSessionOrder: payload?.plannedSessionOrder },
         targetType: "story_step",
-        targetId: payload?.stepId,
+        targetId: nullableString(payload?.stepId),
       }];
     case "StoryStepDeferred":
       return [{
@@ -350,7 +355,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "story",
         data: { stepId: payload?.stepId, plannedSessionId: payload?.plannedSessionId, plannedSessionOrder: payload?.plannedSessionOrder },
         targetType: "story_step",
-        targetId: payload?.stepId,
+        targetId: nullableString(payload?.stepId),
       }];
     case "StoryStepUnscheduled":
       return [{
@@ -359,7 +364,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "story",
         data: { stepId: payload?.stepId },
         targetType: "story_step",
-        targetId: payload?.stepId,
+        targetId: nullableString(payload?.stepId),
       }];
     case "StoryStepReconciled":
       return [{
@@ -368,7 +373,7 @@ export function projectDomainEventToActivity(event: StoredEvent): any[] {
         category: "story",
         data: { stepId: payload?.stepId, resolvedSessionId: payload?.resolvedSessionId, status: payload?.status, resolutionKind: payload?.resolutionKind, actualOutcome: payload?.actualOutcome },
         targetType: "story_step",
-        targetId: payload?.stepId,
+        targetId: nullableString(payload?.stepId),
       }];
     default:
       return [];

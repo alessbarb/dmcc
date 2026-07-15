@@ -17,7 +17,7 @@ import type { CanvasNode } from "../domain/canvas/types.js";
 import type { Command } from "./commands.js";
 import { hasNotebookCycle, getHierarchyDepthIfParentSet } from "../domain/notebook/notebook.js";
 import { validateNotebookTitle, validateNotebookId, validateNotebookItemId, validateNotebookItemTarget } from "../domain/notebook/validators.js";
-import { validateStoryThreadId, validateStoryStepId, validateStoryThreadTitle, validateStoryStepTitle, validateStoryThreadStatus, validateStoryStepStatus, validateStoryStepResolutionCoherence } from "../domain/story/validators.js";
+import { validateStoryThreadId, validateStoryStepId, validateStoryThreadTitle, validateStoryStepTitle, validateStoryStepResolutionCoherence } from "../domain/story/validators.js";
 import { canResolveStoryThread } from "../domain/story/story.js";
 
 export interface CommandResult {
@@ -1140,6 +1140,9 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         if (!parent) {
           throw new Error(`Parent notebook not found: ${command.parentNotebookId}`);
         }
+        if (parent.archivedAt) {
+          throw new Error("Cannot create a notebook under an archived parent");
+        }
         if (getHierarchyDepthIfParentSet(notebooks, command.notebookId, command.parentNotebookId) > 3) {
           throw new Error("Notebook depth limit exceeded. Maximum depth is 3");
         }
@@ -1184,6 +1187,9 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
           const parent = notebooks.get(parentNotebookId);
           if (!parent) {
             throw new Error(`Parent notebook not found: ${parentNotebookId}`);
+          }
+          if (parent.archivedAt) {
+            throw new Error("Cannot move a notebook under an archived parent");
           }
           if (hasNotebookCycle(notebooks, command.notebookId, parentNotebookId)) {
             throw new Error("Setting parent would create a cycle");
@@ -1235,11 +1241,15 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       validateNotebookId(command.notebookId);
       
       const notebooks = state.notebooks || new Map();
-      if (!notebooks.has(command.notebookId)) {
+      const notebook = notebooks.get(command.notebookId);
+      if (!notebook) {
         throw new Error(`Notebook not found: ${command.notebookId}`);
       }
+      if (notebook.archivedAt) {
+        throw new Error("Cannot add an item to an archived notebook");
+      }
 
-      validateNotebookItemTarget(command.targetType as any, command.targetId);
+      validateNotebookItemTarget(command.targetType, command.targetId);
 
       // Validate target existence in the campaign
       const targetType = command.targetType;
@@ -1272,7 +1282,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         campaignId: command.campaignId,
         notebookItemId: command.notebookItemId,
         notebookId: command.notebookId,
-        targetType: targetType as any,
+        targetType,
         targetId: targetId,
         sortOrder: command.sortOrder,
         createdAt: new Date().toISOString(),
@@ -1300,8 +1310,13 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
     case "ReorderNotebookItems": {
       validateNotebookId(command.notebookId);
       const items = new Map(state.notebookItems || new Map());
+      const notebookItemIds = Array.from(items.values()).filter((item) => item.notebookId === command.notebookId).map((item) => item.notebookItemId);
+      const requestedItemIds = command.orderedItemIds;
+      if (new Set(requestedItemIds).size !== requestedItemIds.length || requestedItemIds.length !== notebookItemIds.length || requestedItemIds.some((itemId) => !notebookItemIds.includes(itemId))) {
+        throw new Error("orderedItemIds must exactly match the notebook items");
+      }
 
-      for (const [idx, itemId] of command.orderedItemIds.entries()) {
+      for (const [idx, itemId] of requestedItemIds.entries()) {
         const item = items.get(itemId);
         if (!item) {
           throw new Error(`Notebook item not found: ${itemId}`);
@@ -1320,7 +1335,6 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
     case "CreateStoryThread": {
       validateStoryThreadId(command.threadId);
       validateStoryThreadTitle(command.title);
-      validateStoryThreadStatus(command.status);
 
       const threads = new Map(state.storyThreads || new Map());
       const thread = {
@@ -1328,7 +1342,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         threadId: command.threadId,
         title: command.title,
         summary: command.summary ?? null,
-        status: command.status as any,
+        status: "planned" as const,
         sortOrder: command.sortOrder,
         archivedAt: null,
         createdAt: new Date().toISOString(),
@@ -1351,13 +1365,11 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       }
 
       if (command.title !== undefined) validateStoryThreadTitle(command.title);
-      if (command.status !== undefined) validateStoryThreadStatus(command.status);
 
       const updated = {
         ...existing,
         ...(command.title !== undefined && { title: command.title }),
         ...(command.summary !== undefined && { summary: command.summary }),
-        ...(command.status !== undefined && { status: command.status as any }),
         updatedAt: new Date().toISOString(),
       };
       threads.set(command.threadId, updated);
@@ -1390,8 +1402,13 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
     }
     case "ReorderStoryThreads": {
       const threads = new Map(state.storyThreads || new Map());
+      const reorderableThreadIds = Array.from(threads.values()).filter((thread) => !thread.archivedAt).map((thread) => thread.threadId);
+      const requestedThreadIds = command.orderedThreadIds;
+      if (new Set(requestedThreadIds).size !== requestedThreadIds.length || requestedThreadIds.length !== reorderableThreadIds.length || requestedThreadIds.some((threadId) => !reorderableThreadIds.includes(threadId))) {
+        throw new Error("orderedThreadIds must exactly match the active story threads");
+      }
 
-      for (const [idx, threadId] of command.orderedThreadIds.entries()) {
+      for (const [idx, threadId] of requestedThreadIds.entries()) {
         const thread = threads.get(threadId);
         if (!thread) throw new Error(`Story thread not found: ${threadId}`);
         threads.set(threadId, { ...thread, sortOrder: idx, updatedAt: new Date().toISOString() });
@@ -1469,10 +1486,16 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         }
       }
 
-      if (command.plannedSessionId) {
-        if (!state.sessions.has(command.plannedSessionId)) {
-          throw new Error(`Session not found: ${command.plannedSessionId}`);
-        }
+      const hasPlannedSession = command.plannedSessionId !== undefined && command.plannedSessionId !== null;
+      const hasPlannedOrder = command.plannedSessionOrder !== undefined && command.plannedSessionOrder !== null;
+      if (hasPlannedSession !== hasPlannedOrder) {
+        throw new Error("plannedSessionId and plannedSessionOrder must be provided together");
+      }
+      if (hasPlannedOrder && command.plannedSessionOrder! < 0) {
+        throw new Error("plannedSessionOrder must be non-negative");
+      }
+      if (command.plannedSessionId && !state.sessions.has(command.plannedSessionId)) {
+        throw new Error(`Session not found: ${command.plannedSessionId}`);
       }
 
       const steps = new Map(state.storySteps || new Map());
@@ -1539,6 +1562,12 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const steps = new Map(state.storySteps || new Map());
       const existing = steps.get(command.stepId);
       if (!existing) throw new Error(`Story step not found: ${command.stepId}`);
+      if (existing.status === "resolved" || existing.status === "discarded") {
+        throw new Error("Cannot schedule a terminal story step");
+      }
+      if (command.plannedSessionOrder < 0) {
+        throw new Error("plannedSessionOrder must be non-negative");
+      }
 
       if (!state.sessions.has(command.plannedSessionId)) {
         throw new Error(`Session not found: ${command.plannedSessionId}`);
@@ -1548,6 +1577,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...existing,
         plannedSessionId: command.plannedSessionId,
         plannedSessionOrder: command.plannedSessionOrder,
+        status: "ready" as const,
         updatedAt: new Date().toISOString(),
       };
       steps.set(command.stepId, updated);
@@ -1562,6 +1592,12 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const steps = new Map(state.storySteps || new Map());
       const existing = steps.get(command.stepId);
       if (!existing) throw new Error(`Story step not found: ${command.stepId}`);
+      if (existing.status === "resolved" || existing.status === "discarded") {
+        throw new Error("Cannot defer a terminal story step");
+      }
+      if (command.plannedSessionOrder < 0) {
+        throw new Error("plannedSessionOrder must be non-negative");
+      }
 
       if (!state.sessions.has(command.plannedSessionId)) {
         throw new Error(`Session not found: ${command.plannedSessionId}`);
@@ -1571,6 +1607,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...existing,
         plannedSessionId: command.plannedSessionId,
         plannedSessionOrder: command.plannedSessionOrder,
+        status: "ready" as const,
         updatedAt: new Date().toISOString(),
       };
       steps.set(command.stepId, updated);
@@ -1585,11 +1622,15 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const steps = new Map(state.storySteps || new Map());
       const existing = steps.get(command.stepId);
       if (!existing) throw new Error(`Story step not found: ${command.stepId}`);
+      if (existing.status === "resolved" || existing.status === "discarded") {
+        throw new Error("Cannot unschedule a terminal story step");
+      }
 
       const updated = {
         ...existing,
         plannedSessionId: null,
         plannedSessionOrder: null,
+        status: "planned" as const,
         updatedAt: new Date().toISOString(),
       };
       steps.set(command.stepId, updated);
@@ -1604,6 +1645,9 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const steps = new Map(state.storySteps || new Map());
       const existing = steps.get(command.stepId);
       if (!existing) throw new Error(`Story step not found: ${command.stepId}`);
+      if (existing.status === "resolved" || existing.status === "discarded") {
+        throw new Error("Cannot reconcile a terminal story step");
+      }
 
       const session = state.sessions.get(command.resolvedSessionId);
       if (!session) throw new Error(`Session not found: ${command.resolvedSessionId}`);
@@ -1611,12 +1655,12 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         throw new Error("Resolved session must be closed or archived");
       }
 
-      validateStoryStepResolutionCoherence(command.status as any, command.resolutionKind as any, command.actualOutcome);
+      validateStoryStepResolutionCoherence(command.status, command.resolutionKind, command.actualOutcome);
 
       const updated = {
         ...existing,
-        status: command.status as any,
-        resolutionKind: command.resolutionKind as any,
+        status: command.status,
+        resolutionKind: command.resolutionKind,
         resolvedSessionId: command.resolvedSessionId,
         actualOutcome: command.actualOutcome ?? null,
         updatedAt: new Date().toISOString(),
@@ -1637,8 +1681,13 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
     case "ReorderStorySteps": {
       validateStoryThreadId(command.threadId);
       const steps = new Map(state.storySteps || new Map());
+      const threadStepIds = Array.from(steps.values()).filter((step) => step.threadId === command.threadId).map((step) => step.stepId);
+      const requestedStepIds = command.orderedStepIds;
+      if (new Set(requestedStepIds).size !== requestedStepIds.length || requestedStepIds.length !== threadStepIds.length || requestedStepIds.some((stepId) => !threadStepIds.includes(stepId))) {
+        throw new Error("orderedStepIds must exactly match the story thread steps");
+      }
 
-      for (const [idx, stepId] of command.orderedStepIds.entries()) {
+      for (const [idx, stepId] of requestedStepIds.entries()) {
         const step = steps.get(stepId);
         if (!step) throw new Error(`Story step not found: ${stepId}`);
         if (step.threadId !== command.threadId) {

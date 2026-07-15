@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { create } from "zustand";
 import type { ShortcutTargetType } from "@core/domain/resource/resourceType.js";
+import { readApiError } from "../../shared/api/apiClient.js";
 import { createShortcut, deleteShortcut, listShortcuts, reorderShortcuts } from "../../shared/api/shortcutsApi.js";
 
 export interface ResolvedShortcutResource {
@@ -26,10 +27,11 @@ interface CampaignShortcutsState {
   reorder: (campaignId: string, shortcutIds: string[]) => Promise<void>;
 }
 
-/**
- * Personal per-user shortcuts, separate from campaignState — shortcuts never
- * grant access and shouldn't be conflated with the shared campaign aggregate.
- */
+async function requireOk(response: Response, fallback: string): Promise<void> {
+  if (!response.ok) throw new Error(await readApiError(response, fallback));
+}
+
+/** Personal per-user shortcuts, deliberately separate from campaignState. */
 export const useCampaignShortcutsStore = create<CampaignShortcutsState>((set, get) => ({
   shortcutsByCampaignId: {},
   loadingCampaignIds: {},
@@ -37,10 +39,11 @@ export const useCampaignShortcutsStore = create<CampaignShortcutsState>((set, ge
   fetchShortcuts: async (campaignId) => {
     set((state) => ({ loadingCampaignIds: { ...state.loadingCampaignIds, [campaignId]: true } }));
     try {
-      const res = await listShortcuts(campaignId);
-      const shortcuts: CampaignShortcut[] = res.ok ? (await res.json()).shortcuts : [];
+      const response = await listShortcuts(campaignId);
+      await requireOk(response, "Could not load campaign shortcuts");
+      const body = await response.json() as { shortcuts?: CampaignShortcut[] };
       set((state) => ({
-        shortcutsByCampaignId: { ...state.shortcutsByCampaignId, [campaignId]: shortcuts },
+        shortcutsByCampaignId: { ...state.shortcutsByCampaignId, [campaignId]: body.shortcuts ?? [] },
       }));
     } finally {
       set((state) => ({ loadingCampaignIds: { ...state.loadingCampaignIds, [campaignId]: false } }));
@@ -48,10 +51,9 @@ export const useCampaignShortcutsStore = create<CampaignShortcutsState>((set, ge
   },
 
   addShortcut: async (campaignId, targetType, targetId) => {
-    const res = await createShortcut(campaignId, { targetType, targetId });
-    if (res.ok) {
-      await get().fetchShortcuts(campaignId);
-    }
+    const response = await createShortcut(campaignId, { targetType, targetId });
+    await requireOk(response, "Could not add campaign shortcut");
+    await get().fetchShortcuts(campaignId);
   },
 
   removeShortcut: async (campaignId, shortcutId) => {
@@ -62,9 +64,10 @@ export const useCampaignShortcutsStore = create<CampaignShortcutsState>((set, ge
         [campaignId]: previous.filter((shortcut) => shortcut.shortcutId !== shortcutId),
       },
     }));
-    const res = await deleteShortcut(campaignId, shortcutId);
-    if (!res.ok) {
+    const response = await deleteShortcut(campaignId, shortcutId);
+    if (!response.ok) {
       set((state) => ({ shortcutsByCampaignId: { ...state.shortcutsByCampaignId, [campaignId]: previous } }));
+      throw new Error(await readApiError(response, "Could not remove campaign shortcut"));
     }
   },
 
@@ -74,9 +77,10 @@ export const useCampaignShortcutsStore = create<CampaignShortcutsState>((set, ge
       .map((shortcutId) => previous.find((shortcut) => shortcut.shortcutId === shortcutId))
       .filter((shortcut): shortcut is CampaignShortcut => Boolean(shortcut));
     set((state) => ({ shortcutsByCampaignId: { ...state.shortcutsByCampaignId, [campaignId]: reordered } }));
-    const res = await reorderShortcuts(campaignId, shortcutIds);
-    if (!res.ok) {
+    const response = await reorderShortcuts(campaignId, shortcutIds);
+    if (!response.ok) {
       set((state) => ({ shortcutsByCampaignId: { ...state.shortcutsByCampaignId, [campaignId]: previous } }));
+      throw new Error(await readApiError(response, "Could not reorder campaign shortcuts"));
     }
   },
 }));
@@ -90,7 +94,9 @@ export function useCampaignShortcuts(campaignId: string | undefined) {
   const reorder = useCampaignShortcutsStore((state) => state.reorder);
 
   useEffect(() => {
-    if (campaignId) void fetchShortcuts(campaignId);
+    if (campaignId) void fetchShortcuts(campaignId).catch((error: unknown) => {
+      console.error("Could not load campaign shortcuts", error);
+    });
   }, [campaignId, fetchShortcuts]);
 
   return {

@@ -25,7 +25,6 @@ import { registerHistoryWebRoutes } from "./routes/historyWebRoutes.js";
 import { registerShortcutsWebRoutes } from "./routes/shortcutsWebRoutes.js";
 import { registerNotebooksWebRoutes } from "./routes/notebooksWebRoutes.js";
 import { registerStoryWebRoutes } from "./routes/storyWebRoutes.js";
-import { registerNetworkInfoWebRoutes } from "./routes/networkInfoWebRoutes.js";
 
 export interface WebRoutesOptions {
   dataDir: string;
@@ -59,6 +58,5 @@ export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOpt
   void registerShortcutsWebRoutes(server);
   void registerNotebooksWebRoutes(server);
   void registerStoryWebRoutes(server);
-  void registerNetworkInfoWebRoutes(server);
   server.register(registerAssetRoutes, { assetsDir: options.assetsDir });
 }
