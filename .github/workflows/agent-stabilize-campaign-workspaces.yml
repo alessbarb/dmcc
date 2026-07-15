@@ -51,7 +51,25 @@ jobs:
       - run: npm ci
 
       - name: Apply guarded source transformations
-        run: python3 scripts/agent_stabilize_campaign_workspaces.py
+        id: apply
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 scripts/agent_stabilize_campaign_workspaces.py 2>&1 | tee stabilization-apply.log
+
+      - name: Upload transformation diagnostics
+        if: steps.apply.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: stabilization-apply-log
+          path: stabilization-apply.log
+          if-no-files-found: error
+          retention-days: 2
+
+      - name: Stop after transformation failure
+        if: steps.apply.outcome == 'failure'
+        run: exit 1
 
       - name: Migrate test database
         run: npm run db:migrate
