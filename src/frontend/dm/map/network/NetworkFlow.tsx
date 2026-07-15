@@ -308,13 +308,17 @@ function NetworkFlowInner() {
                 icon={<Layers size={30} />}
                 title={t("network.emptyTitle")}
                 description={t("network.emptyDescription")}
-                actions={[
-                  {
-                    label: t("network.filterAllTypes"),
-                    icon: <Plus size={14} />,
-                    onClick: () => setTypeFilter([]),
-                  },
-                ]}
+                actions={
+                  typeFilter.length > 0
+                    ? [
+                        {
+                          label: t("network.filterAllTypes"),
+                          icon: <Plus size={14} />,
+                          onClick: () => setTypeFilter([]),
+                        },
+                      ]
+                    : []
+                }
               />
             </div>
           ) : (
