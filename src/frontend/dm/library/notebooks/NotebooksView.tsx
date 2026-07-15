@@ -224,7 +224,11 @@ export function NotebooksView() {
     setIsLinking(false);
     setIsAddingItem(false);
     setSelectedItemIds(new Set());
-    await refreshNotebooks();
+    try {
+      await refreshNotebooks();
+    } catch (error: unknown) {
+      addToast(errorMessage(error, t("notebooks.errors.genericError")), "error");
+    }
 
     if (successCount > 0) {
       addToast(
