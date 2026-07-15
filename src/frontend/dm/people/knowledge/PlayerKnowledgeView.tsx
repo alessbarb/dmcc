@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Eye, EyeOff, RefreshCw, User } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Eye, EyeOff, RefreshCw, Search, User, Users } from "lucide-react";
 import { apiFetch, readApiError } from "../../../shared/api/apiClient.js";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
@@ -24,21 +24,14 @@ interface KnowledgeProjection {
   targets: Array<Omit<KnowledgeItem, "visible" | "reason">>;
 }
 
-const reasonLabel: Record<KnowledgeItem["reason"], string> = {
-  public: "Público",
-  all_players: "Todo el grupo",
-  specific_player: "Concesión específica",
-  specific_user: "Concesión al usuario",
-  linked_character: "Personaje asignado",
-  hidden: "Oculto",
-};
-
 export function PlayerKnowledgeView() {
   const { t } = useTranslation();
   const activeCampaignId = useCampaignStore((state) => state.activeCampaignId);
   const [projection, setProjection] = useState<KnowledgeProjection | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+  const [visibilityFilter, setVisibilityFilter] = useState<"all" | "visible" | "hidden">("all");
 
   const load = async () => {
     if (!activeCampaignId) return;
@@ -46,8 +39,8 @@ export function PlayerKnowledgeView() {
     setError(null);
     try {
       const response = await apiFetch(`/api/campaigns/${encodeURIComponent(activeCampaignId)}/player-knowledge`);
-      if (!response.ok) throw new Error(await readApiError(response, "No se pudo cargar el conocimiento de los jugadores"));
-      setProjection(await response.json());
+      if (!response.ok) throw new Error(await readApiError(response, t("playerKnowledge.noPlayers")));
+      setProjection(await response.json() as KnowledgeProjection);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : String(loadError));
     } finally {
@@ -66,67 +59,112 @@ export function PlayerKnowledgeView() {
     ]),
   ), [projection]);
 
+  const filteredTargets = useMemo(() => {
+    const normalizedQuery = query.trim().toLocaleLowerCase();
+    return (projection?.targets ?? []).filter((target) => {
+      if (normalizedQuery && !`${target.title} ${target.subtitle ?? ""}`.toLocaleLowerCase().includes(normalizedQuery)) return false;
+      if (visibilityFilter === "all") return true;
+      const visibleToAnyPlayer = (projection?.players ?? []).some((player) =>
+        Boolean(knowledgeByPlayer.get(player.playerId)?.get(`${target.targetType}:${target.targetId}`)?.visible),
+      );
+      return visibilityFilter === "visible" ? visibleToAnyPlayer : !visibleToAnyPlayer;
+    });
+  }, [knowledgeByPlayer, projection, query, visibilityFilter]);
+
   if (loading) {
-    return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 200, color: "var(--text-muted)" }}>{t("common.loading")}</div>;
+    return <div className="people-loading-state" role="status">{t("common.loading")}</div>;
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
-        <div>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: 4 }}>{t("playerKnowledge.subtitle")}</p>
+    <div className="people-knowledge-view">
+      <header className="people-knowledge-toolbar surface-panel">
+        <div className="people-knowledge-toolbar__copy">
+          <p className="people-section-eyebrow">{projection?.targets.length ?? 0}</p>
+          <h2>{t("playerKnowledge.title")}</h2>
+          <p>{t("playerKnowledge.subtitle")}</p>
         </div>
         <button type="button" className="btn btn-secondary btn-sm" onClick={() => void load()}>
           <RefreshCw size={15} /> {t("playerPortal.actions.refresh")}
         </button>
-      </div>
+      </header>
 
-      {error && <div className="card" role="alert" style={{ padding: 16, color: "var(--color-danger)" }}>{error}</div>}
+      {error && <div className="people-inline-error surface-panel" role="alert">{error}</div>}
 
       {!error && (projection?.players.length ?? 0) === 0 ? (
-        <div className="card" style={{ padding: 24, textAlign: "center", color: "var(--text-muted)" }}>{t("playerKnowledge.noPlayers")}</div>
+        <section className="people-empty-state surface-panel">
+          <Users size={34} aria-hidden="true" />
+          <h3>{t("playerKnowledge.noPlayers")}</h3>
+        </section>
       ) : !error && (
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem" }}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: "left", padding: "8px 12px", borderBottom: "2px solid var(--border-color)", color: "var(--text-muted)", position: "sticky", left: 0, background: "var(--bg-main)", minWidth: 240 }}>
-                  {t("playerKnowledge.entityColumn")}
-                </th>
-                {projection?.players.map((player) => (
-                  <th key={player.playerId} style={{ padding: "8px 12px", borderBottom: "2px solid var(--border-color)", textAlign: "center", minWidth: 110 }}>
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                      <User size={14} style={{ color: "var(--text-muted)" }} />
-                      <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{player.displayName}</span>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {projection?.targets.map((target) => (
-                <tr key={`${target.targetType}:${target.targetId}`} style={{ borderBottom: "1px solid var(--border-color)" }}>
-                  <td style={{ padding: "8px 12px", position: "sticky", left: 0, background: "var(--bg-main)" }}>
-                    <span style={{ color: "var(--primary)", fontWeight: 500 }}>{target.title}</span>
-                    <span style={{ marginLeft: 6, fontSize: "0.75rem", color: "var(--text-muted)" }}>{target.subtitle ?? target.targetType}</span>
-                  </td>
-                  {projection.players.map((player) => {
-                    const item = knowledgeByPlayer.get(player.playerId)?.get(`${target.targetType}:${target.targetId}`);
-                    const visible = Boolean(item?.visible);
-                    const label = item ? reasonLabel[item.reason] : reasonLabel.hidden;
-                    return (
-                      <td key={player.playerId} style={{ padding: "8px 12px", textAlign: "center" }} title={label}>
-                        {visible
-                          ? <Eye size={16} style={{ color: "var(--success, #22c55e)" }} aria-label={`${t("playerKnowledge.visible")}: ${label}`} />
-                          : <EyeOff size={16} style={{ color: "var(--text-muted)", opacity: 0.35 }} aria-label={`${t("playerKnowledge.hidden")}: ${label}`} />}
+        <>
+          <div className="people-knowledge-filters">
+            <label className="people-search-field">
+              <Search size={16} aria-hidden="true" />
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={t("common.search")}
+                aria-label={t("common.search")}
+              />
+            </label>
+            <div className="people-filter-group" role="group" aria-label={t("playerKnowledge.visible")}>
+              <button type="button" className={`btn btn-sm ${visibilityFilter === "all" ? "btn-primary" : "btn-secondary"}`} onClick={() => setVisibilityFilter("all")}>
+                <Users size={14} /> {projection?.targets.length ?? 0}
+              </button>
+              <button type="button" className={`btn btn-sm ${visibilityFilter === "visible" ? "btn-primary" : "btn-secondary"}`} onClick={() => setVisibilityFilter("visible")}>
+                <Eye size={14} /> {t("playerKnowledge.visible")}
+              </button>
+              <button type="button" className={`btn btn-sm ${visibilityFilter === "hidden" ? "btn-primary" : "btn-secondary"}`} onClick={() => setVisibilityFilter("hidden")}>
+                <EyeOff size={14} /> {t("playerKnowledge.hidden")}
+              </button>
+            </div>
+          </div>
+
+          {filteredTargets.length === 0 ? (
+            <section className="people-empty-state surface-panel">
+              <Search size={32} aria-hidden="true" />
+              <h3>{t("playerKnowledge.entityColumn")}: 0</h3>
+            </section>
+          ) : (
+            <div className="people-knowledge-table-wrap surface-panel">
+              <table className="people-knowledge-table">
+                <thead>
+                  <tr>
+                    <th className="people-knowledge-table__target">{t("playerKnowledge.entityColumn")}</th>
+                    {projection?.players.map((player) => (
+                      <th key={player.playerId}>
+                        <span className="people-player-column"><User size={14} aria-hidden="true" />{player.displayName}</span>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredTargets.map((target) => (
+                    <tr key={`${target.targetType}:${target.targetId}`}>
+                      <td className="people-knowledge-table__target">
+                        <strong>{target.title}</strong>
+                        {target.subtitle && <span>{target.subtitle}</span>}
                       </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                      {projection?.players.map((player) => {
+                        const item = knowledgeByPlayer.get(player.playerId)?.get(`${target.targetType}:${target.targetId}`);
+                        const visible = Boolean(item?.visible);
+                        const label = visible ? t("playerKnowledge.visible") : t("playerKnowledge.hidden");
+                        return (
+                          <td key={player.playerId} title={label}>
+                            <span className={`people-knowledge-cell ${visible ? "is-visible" : "is-hidden"}`}>
+                              {visible ? <Eye size={17} aria-label={label} /> : <EyeOff size={17} aria-label={label} />}
+                            </span>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
