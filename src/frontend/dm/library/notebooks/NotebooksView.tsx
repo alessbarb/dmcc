@@ -1,704 +1,406 @@
-import React, { useEffect, useState } from "react";
-import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import type { NotebookItemTargetType } from "@core/domain/resource/resourceType.js";
+import { notebookUiCopy } from "@shared/i18n/notebookUi.js";
+import {
+  ArrowDown,
+  ArrowUp,
+  BookOpen,
+  Bookmark,
+  BookmarkMinus,
+  Check,
+  Edit2,
+  FileText,
+  FolderPlus,
+  Layers,
+  Link,
+  Plus,
+  Trash2,
+  User,
+  X,
+} from "lucide-react";
 import { notebooksApi } from "../../../shared/api.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
+import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useCampaignShortcuts } from "../../shortcuts/useCampaignShortcuts.js";
-import type { NotebookItemTargetType } from "@core/domain/resource/resourceType.js";
-import {
-  BookOpen,
-  Plus,
-  FolderPlus,
-  Trash2,
-  Edit2,
-  Check,
-  X,
-  ArrowUp,
-  ArrowDown,
-  Bookmark,
-  BookmarkMinus,
-  Link,
-  FileText,
-  Layers,
-  HelpCircle,
-  User,
-} from "lucide-react";
+
+type CampaignState = NonNullable<ReturnType<typeof useCampaignStore.getState>["campaignState"]>;
+type Notebook = CampaignState["notebooks"][number];
+type NotebookItem = CampaignState["notebookItems"][number];
+
+function errorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error && error.message ? error.message : fallback;
+}
 
 export function NotebooksView() {
-  const { t } = useTranslation();
+  const { locale, t } = useTranslation();
+  const copy = notebookUiCopy[locale];
   const { addToast } = useToast();
-  const store = useCampaignStore();
-  const { campaignState, reloadCampaign, activeCampaignId } = store;
-
-  // Shortcuts integration
+  const campaignState = useCampaignStore((state) => state.campaignState);
+  const activeCampaignId = useCampaignStore((state) => state.activeCampaignId);
   const { shortcuts, addShortcut, removeShortcut } = useCampaignShortcuts(activeCampaignId ?? undefined);
 
-  // Component states
   const [selectedNotebookId, setSelectedNotebookId] = useState<string | null>(null);
   const [isCreatingRoot, setIsCreatingRoot] = useState(false);
   const [isCreatingChild, setIsCreatingChild] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [editTitle, setEditTitle] = useState("");
-  const [editDesc, setEditDesc] = useState("");
+  const [editDescription, setEditDescription] = useState("");
   const [editParentId, setEditParentId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  
-  // Adding items state
   const [isAddingItem, setIsAddingItem] = useState(false);
   const [selectedItemType, setSelectedItemType] = useState<NotebookItemTargetType>("entity");
   const [selectedItemId, setSelectedItemId] = useState("");
 
-  const notebooks = campaignState?.notebooks ?? [];
-  const items = campaignState?.notebookItems ?? [];
+  const refreshNotebooks = useCallback(async () => {
+    if (!activeCampaignId) return;
+    const response = await notebooksApi.listNotebooks(activeCampaignId);
+    if (!response.ok) throw new Error(copy.genericError);
+    const payload = await response.json() as {
+      notebooks?: CampaignState["notebooks"];
+      items?: CampaignState["notebookItems"];
+    };
+    useCampaignStore.setState((state) => {
+      if (!state.campaignState || state.activeCampaignId !== activeCampaignId) return state;
+      return {
+        campaignState: {
+          ...state.campaignState,
+          notebooks: payload.notebooks ?? [],
+          notebookItems: payload.items ?? [],
+        },
+      };
+    });
+  }, [activeCampaignId, copy.genericError]);
 
-  // Active notebooks (not archived)
-  const activeNotebooks = notebooks.filter((n) => !n.archivedAt);
+  useEffect(() => {
+    void refreshNotebooks().catch((error: unknown) => addToast(errorMessage(error, copy.genericError), "error"));
+  }, [refreshNotebooks]);
+
+  const notebooks = useMemo(
+    () => (campaignState?.notebooks ?? []).filter((notebook) => !notebook.archivedAt),
+    [campaignState?.notebooks],
+  );
+  const notebookItems = campaignState?.notebookItems ?? [];
+  const rootNotebooks = useMemo(
+    () => notebooks.filter((notebook) => !notebook.parentNotebookId).sort((a, b) => a.sortOrder - b.sortOrder),
+    [notebooks],
+  );
+  const selectedNotebook = notebooks.find((notebook) => notebook.notebookId === selectedNotebookId);
+  const selectedNotebookItems = selectedNotebook
+    ? notebookItems.filter((item) => item.notebookId === selectedNotebook.notebookId).sort((a, b) => a.sortOrder - b.sortOrder)
+    : [];
 
   useEffect(() => {
     const requestedNotebookId = new URLSearchParams(window.location.search).get("notebookId");
-    if (requestedNotebookId && activeNotebooks.some((notebook) => notebook.notebookId === requestedNotebookId)) {
+    if (requestedNotebookId && notebooks.some((notebook) => notebook.notebookId === requestedNotebookId)) {
       setSelectedNotebookId(requestedNotebookId);
     }
   }, [notebooks]);
 
-  // Group by parent
-  const rootNotebooks = activeNotebooks.filter((n) => !n.parentNotebookId).sort((a, b) => a.sortOrder - b.sortOrder);
-  const getChildren = (parentId: string) =>
-    activeNotebooks.filter((n) => n.parentNotebookId === parentId).sort((a, b) => a.sortOrder - b.sortOrder);
-
-  const selectedNotebook = activeNotebooks.find((n) => n.notebookId === selectedNotebookId);
-  const selectedNotebookItems = selectedNotebook
-    ? items.filter((item) => item.notebookId === selectedNotebookId).sort((a, b) => a.sortOrder - b.sortOrder)
-    : [];
+  const getChildren = (parentId: string) => notebooks
+    .filter((notebook) => notebook.parentNotebookId === parentId)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 
   const isShortcutAdded = selectedNotebookId
-    ? shortcuts.some((s) => s.targetType === "notebook" && s.targetId === selectedNotebookId)
+    ? shortcuts.some((shortcut) => shortcut.targetType === "notebook" && shortcut.targetId === selectedNotebookId)
     : false;
 
-  const handleToggleShortcut = async () => {
-    if (!selectedNotebookId || !activeCampaignId) return;
+  const toggleShortcut = async () => {
+    if (!selectedNotebookId) return;
     try {
-      if (isShortcutAdded) {
-        const existing = shortcuts.find((shortcut) => shortcut.targetType === "notebook" && shortcut.targetId === selectedNotebookId);
-        if (existing) await removeShortcut(existing.shortcutId);
+      const existing = shortcuts.find((shortcut) => shortcut.targetType === "notebook" && shortcut.targetId === selectedNotebookId);
+      if (existing) {
+        await removeShortcut(existing.shortcutId);
         addToast(t("shortcuts.removedToast"), "success");
       } else {
         await addShortcut("notebook", selectedNotebookId);
         addToast(t("shortcuts.addedToast"), "success");
       }
     } catch (error: unknown) {
-      addToast(error instanceof Error ? error.message : t("common.error"), "error");
+      addToast(errorMessage(error, copy.genericError), "error");
     }
   };
 
-  const handleCreateNotebook = async (parentId: string | null = null) => {
+  const createNotebook = async (parentNotebookId: string | null) => {
     if (!activeCampaignId || !newTitle.trim()) return;
     try {
-      const res = await notebooksApi.createNotebook(activeCampaignId, {
+      const response = await notebooksApi.createNotebook(activeCampaignId, {
         title: newTitle.trim(),
-        parentNotebookId: parentId,
+        parentNotebookId,
       });
-      if (res.ok) {
-        setNewTitle("");
-        setIsCreatingRoot(false);
-        setIsCreatingChild(false);
-        addToast(t("notebooks.createSuccess") || "Notebook created successfully", "success");
-        await reloadCampaign();
-      } else {
-        const errorData = await res.json().catch(() => null);
-        addToast(errorData?.error || "Failed to create notebook", "error");
-      }
-    } catch (err: any) {
-      addToast(err.message || "Error creating notebook", "error");
+      if (!response.ok) throw new Error(copy.createError);
+      setNewTitle("");
+      setIsCreatingRoot(false);
+      setIsCreatingChild(false);
+      await refreshNotebooks();
+      addToast(copy.createSuccess, "success");
+    } catch (error: unknown) {
+      addToast(errorMessage(error, copy.createError), "error");
     }
   };
 
-  const handleUpdateNotebook = async () => {
+  const updateNotebook = async () => {
     if (!activeCampaignId || !selectedNotebookId || !editTitle.trim()) return;
     try {
-      const res = await notebooksApi.updateNotebook(activeCampaignId, selectedNotebookId, {
+      const response = await notebooksApi.updateNotebook(activeCampaignId, selectedNotebookId, {
         title: editTitle.trim(),
-        description: editDesc.trim() || null,
+        description: editDescription.trim() || null,
         parentNotebookId: editParentId,
       });
-      if (res.ok) {
-        setIsEditing(false);
-        addToast(t("notebooks.updateSuccess") || "Notebook updated successfully", "success");
-        await reloadCampaign();
-      } else {
-        const errorData = await res.json().catch(() => null);
-        addToast(errorData?.error || "Failed to update notebook", "error");
-      }
-    } catch (err: any) {
-      addToast(err.message || "Error updating notebook", "error");
+      if (!response.ok) throw new Error(copy.updateError);
+      setIsEditing(false);
+      await refreshNotebooks();
+      addToast(copy.updateSuccess, "success");
+    } catch (error: unknown) {
+      addToast(errorMessage(error, copy.updateError), "error");
     }
   };
 
-  const handleArchiveNotebook = async () => {
-    if (!activeCampaignId || !selectedNotebookId) return;
-    if (!confirm(t("notebooks.confirmArchive") || "Are you sure you want to archive this notebook? All nested notebooks will also be inaccessible.")) return;
+  const archiveNotebook = async () => {
+    if (!activeCampaignId || !selectedNotebookId || !window.confirm(copy.confirmArchive)) return;
     try {
-      const res = await notebooksApi.deleteNotebook(activeCampaignId, selectedNotebookId);
-      if (res.ok) {
-        setSelectedNotebookId(null);
-        addToast(t("notebooks.archiveSuccess") || "Notebook archived successfully", "success");
-        await reloadCampaign();
-      } else {
-        addToast("Failed to archive notebook", "error");
-      }
-    } catch (err: any) {
-      addToast(err.message || "Error archiving notebook", "error");
+      const response = await notebooksApi.deleteNotebook(activeCampaignId, selectedNotebookId);
+      if (!response.ok) throw new Error(copy.archiveError);
+      setSelectedNotebookId(null);
+      await refreshNotebooks();
+      addToast(copy.archiveSuccess, "success");
+    } catch (error: unknown) {
+      addToast(errorMessage(error, copy.archiveError), "error");
     }
   };
 
-  const handleAddItem = async () => {
+  const addItem = async () => {
     if (!activeCampaignId || !selectedNotebookId || !selectedItemId) return;
     try {
-      const res = await notebooksApi.addNotebookItem(activeCampaignId, selectedNotebookId, {
+      const response = await notebooksApi.addNotebookItem(activeCampaignId, selectedNotebookId, {
         targetType: selectedItemType,
         targetId: selectedItemId,
       });
-      if (res.ok) {
-        setSelectedItemId("");
-        setIsAddingItem(false);
-        addToast(t("notebooks.itemAddedSuccess") || "Item added to notebook", "success");
-        await reloadCampaign();
-      } else {
-        const errorData = await res.json().catch(() => null);
-        addToast(errorData?.error || "Failed to add item", "error");
-      }
-    } catch (err: any) {
-      addToast(err.message || "Error adding item", "error");
+      if (!response.ok) throw new Error(copy.itemAddError);
+      setSelectedItemId("");
+      setIsAddingItem(false);
+      await refreshNotebooks();
+      addToast(copy.itemAddedSuccess, "success");
+    } catch (error: unknown) {
+      addToast(errorMessage(error, copy.itemAddError), "error");
     }
   };
 
-  const handleRemoveItem = async (itemId: string) => {
+  const removeItem = async (notebookItemId: string) => {
     if (!activeCampaignId) return;
     try {
-      const res = await notebooksApi.removeNotebookItem(activeCampaignId, itemId);
-      if (res.ok) {
-        addToast(t("notebooks.itemRemovedSuccess") || "Item removed from notebook", "success");
-        await reloadCampaign();
-      } else {
-        addToast("Failed to remove item", "error");
-      }
-    } catch (err: any) {
-      addToast(err.message || "Error removing item", "error");
+      const response = await notebooksApi.removeNotebookItem(activeCampaignId, notebookItemId);
+      if (!response.ok) throw new Error(copy.itemRemoveError);
+      await refreshNotebooks();
+      addToast(copy.itemRemovedSuccess, "success");
+    } catch (error: unknown) {
+      addToast(errorMessage(error, copy.itemRemoveError), "error");
     }
   };
 
-  const handleReorderItems = async (index: number, direction: "up" | "down") => {
+  const reorderItems = async (index: number, direction: "up" | "down") => {
     if (!activeCampaignId || !selectedNotebookId) return;
-    const reordered = [...selectedNotebookItems];
     const targetIndex = direction === "up" ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= reordered.length) return;
-
-    // Swap
-    const temp = reordered[index];
-    reordered[index] = reordered[targetIndex];
-    reordered[targetIndex] = temp;
-
-    const orderedItemIds = reordered.map((item) => item.notebookItemId);
+    if (targetIndex < 0 || targetIndex >= selectedNotebookItems.length) return;
+    const reordered = [...selectedNotebookItems];
+    [reordered[index], reordered[targetIndex]] = [reordered[targetIndex], reordered[index]];
     try {
-      const res = await notebooksApi.reorderNotebookItems(activeCampaignId, selectedNotebookId, { orderedItemIds });
-      if (res.ok) {
-        await reloadCampaign();
-      }
-    } catch (err) {
-      console.error(err);
+      const response = await notebooksApi.reorderNotebookItems(activeCampaignId, selectedNotebookId, {
+        orderedItemIds: reordered.map((item) => item.notebookItemId),
+      });
+      if (!response.ok) throw new Error(copy.reorderError);
+      await refreshNotebooks();
+    } catch (error: unknown) {
+      addToast(errorMessage(error, copy.reorderError), "error");
     }
   };
 
-  // Helper to resolve linked item display name and icon
-  const resolveItemDetails = (type: string, id: string) => {
-    if (type === "entity") {
-      const entity = campaignState?.entities.find((e) => e.entityId === id);
-      return { title: entity?.title || id, subtitle: entity?.entityType || "Entity", icon: User };
-    } else if (type === "session") {
-      const session = campaignState?.sessions.find((s) => s.sessionId === id);
-      return { title: session?.title || id, subtitle: "Session", icon: FileText };
-    } else if (type === "canvas") {
-      const canvas = campaignState?.canvases.find((c) => c.id === id);
-      return { title: canvas?.title || id, subtitle: "Canvas", icon: Layers };
-    }
-    return { title: id, subtitle: type, icon: HelpCircle };
-  };
-
-  // Filter out candidates that are already inside the selected notebook
-  const getAddItemCandidates = () => {
+  const candidates = useMemo(() => {
     const existingIds = new Set(selectedNotebookItems.map((item) => item.targetId));
     if (selectedItemType === "entity") {
-      return (campaignState?.entities ?? []).filter((e) => !e.archived && !existingIds.has(e.entityId));
-    } else if (selectedItemType === "session") {
-      return (campaignState?.sessions ?? []).filter((s) => s.status !== "archived" && !existingIds.has(s.sessionId));
-    } else if (selectedItemType === "canvas") {
-      return (campaignState?.canvases ?? []).filter((c) => !c.archived && !existingIds.has(c.id));
+      return (campaignState?.entities ?? []).filter((entity) => !entity.archived && !existingIds.has(entity.entityId));
     }
-    return [];
+    if (selectedItemType === "session") {
+      return (campaignState?.sessions ?? []).filter((session) => session.status !== "archived" && !existingIds.has(session.sessionId));
+    }
+    return (campaignState?.canvases ?? []).filter((canvas) => !canvas.archived && !existingIds.has(canvas.id));
+  }, [campaignState, selectedItemType, selectedNotebookItems]);
+
+  const itemDetails = (item: NotebookItem) => {
+    if (item.targetType === "entity") {
+      const entity = campaignState?.entities.find((candidate) => candidate.entityId === item.targetId);
+      return { title: entity?.title ?? item.targetId, subtitle: copy.typeEntity, icon: User };
+    }
+    if (item.targetType === "session") {
+      const session = campaignState?.sessions.find((candidate) => candidate.sessionId === item.targetId);
+      return { title: session?.title ?? item.targetId, subtitle: copy.typeSession, icon: FileText };
+    }
+    const canvas = campaignState?.canvases.find((candidate) => candidate.id === item.targetId);
+    return { title: canvas?.title ?? item.targetId, subtitle: copy.typeCanvas, icon: Layers };
   };
 
-  const candidates = getAddItemCandidates();
-
-  // Recursively render notebook items in hierarchy sidebar
-  const renderNotebookNode = (notebook: any, depth: number = 0) => {
-    const isSelected = selectedNotebookId === notebook.notebookId;
-    const children = getChildren(notebook.notebookId);
-
-    return (
-      <div key={notebook.notebookId} style={{ marginLeft: depth * 12 }}>
-        <button
-          type="button"
-          onClick={() => {
-            setSelectedNotebookId(notebook.notebookId);
-            setEditTitle(notebook.title);
-            setEditDesc(notebook.description || "");
-            setEditParentId(notebook.parentNotebookId ?? null);
-            setIsEditing(false);
-          }}
-          className={`notebook-tree-item ${isSelected ? "selected" : ""}`}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            width: "100%",
-            padding: "8px 12px",
-            border: "none",
-            background: isSelected ? "var(--bg-active)" : "none",
-            color: isSelected ? "var(--text-active)" : "var(--text-main)",
-            borderRadius: "6px",
-            cursor: "pointer",
-            textAlign: "left",
-            fontSize: "0.9rem",
-            marginBottom: "2px",
-            transition: "all 0.2s ease",
-          }}
-        >
-          <BookOpen size={14} style={{ marginRight: 8, opacity: 0.7 }} />
-          <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-            {notebook.title}
-          </span>
-          {children.length > 0 && (
-            <span style={{ fontSize: "0.75rem", opacity: 0.5, marginLeft: "auto" }}>
-              ({children.length})
-            </span>
-          )}
-        </button>
-        {children.map((child) => renderNotebookNode(child, depth + 1))}
-      </div>
-    );
+  const selectNotebook = (notebook: Notebook) => {
+    setSelectedNotebookId(notebook.notebookId);
+    setEditTitle(notebook.title);
+    setEditDescription(notebook.description ?? "");
+    setEditParentId(notebook.parentNotebookId ?? null);
+    setIsEditing(false);
   };
+
+  const renderNotebook = (notebook: Notebook, depth = 0): React.ReactNode => (
+    <div key={notebook.notebookId} style={{ marginLeft: depth * 12 }}>
+      <button
+        type="button"
+        className={`notebook-tree-item ${selectedNotebookId === notebook.notebookId ? "selected" : ""}`}
+        onClick={() => selectNotebook(notebook)}
+      >
+        <BookOpen size={14} />
+        <span>{notebook.title}</span>
+      </button>
+      {getChildren(notebook.notebookId).map((child) => renderNotebook(child, depth + 1))}
+    </div>
+  );
 
   return (
-    <div className="notebooks-workspace" style={{ display: "flex", gap: "24px", minHeight: "60vh" }}>
-      {/* LEFT SIDEBAR: Notebooks hierarchy list */}
-      <div
-        className="notebooks-sidebar glass-panel"
-        style={{
-          width: "280px",
-          padding: "16px",
-          borderRadius: "12px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          background: "var(--bg-card)",
-          border: "1px solid var(--border-color)",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <h3 style={{ margin: 0, fontSize: "1.1rem" }}>{t("notebooks.title") || "Cuadernos"}</h3>
+    <div className="notebooks-workspace">
+      <aside className="notebooks-sidebar glass-panel">
+        <div className="notebooks-sidebar__header">
+          <h3>{copy.title}</h3>
           <button
             type="button"
             className="btn btn-sm btn-outline-primary"
-            onClick={() => {
-              setIsCreatingRoot(true);
-              setIsCreatingChild(false);
-              setNewTitle("");
-            }}
-            title={t("notebooks.addRoot") || "Crear cuaderno raíz"}
+            title={copy.addRoot}
+            onClick={() => { setIsCreatingRoot(true); setIsCreatingChild(false); setNewTitle(""); }}
           >
             <FolderPlus size={16} />
           </button>
         </div>
 
-        {/* Create Root Notebook form inline */}
         {isCreatingRoot && (
-          <div className="glass-form" style={{ padding: 12, borderRadius: 8, background: "var(--bg-main)" }}>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: 6 }}>
-              {t("notebooks.newRootName") || "Nuevo Cuaderno Raíz"}
-            </div>
-            <input
-              type="text"
-              className="form-control form-control-sm"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="Title..."
-              style={{ marginBottom: 8 }}
-            />
-            <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
-              <button
-                type="button"
-                className="btn btn-sm btn-secondary"
-                onClick={() => setIsCreatingRoot(false)}
-              >
-                <X size={12} />
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-primary"
-                onClick={() => void handleCreateNotebook(null)}
-                disabled={!newTitle.trim()}
-              >
-                <Check size={12} />
-              </button>
+          <div className="glass-form notebooks-inline-form">
+            <label>{copy.newRootName}</label>
+            <input value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder={copy.titlePlaceholder} />
+            <div className="notebooks-form-actions">
+              <button type="button" className="btn btn-sm btn-secondary" title={copy.cancel} onClick={() => setIsCreatingRoot(false)}><X size={12} /></button>
+              <button type="button" className="btn btn-sm btn-primary" title={copy.save} disabled={!newTitle.trim()} onClick={() => void createNotebook(null)}><Check size={12} /></button>
             </div>
           </div>
         )}
 
-        <div className="notebooks-tree-container" style={{ flex: 1, overflowY: "auto" }}>
-          {rootNotebooks.length === 0 ? (
-            <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", textAlign: "center", padding: "20px 0" }}>
-              {t("notebooks.emptyTree") || "No hay cuadernos creados."}
-            </div>
-          ) : (
-            rootNotebooks.map((notebook) => renderNotebookNode(notebook, 0))
-          )}
+        <div className="notebooks-tree-container">
+          {rootNotebooks.length ? rootNotebooks.map((notebook) => renderNotebook(notebook)) : <p className="notebooks-empty">{copy.emptyTree}</p>}
         </div>
-      </div>
+      </aside>
 
-      {/* RIGHT WORKSPACE: Notebook contents/details */}
-      <div className="notebook-content-area" style={{ flex: 1 }}>
+      <section className="notebook-content-area">
         {selectedNotebook ? (
-          <div
-            className="glass-panel"
-            style={{
-              padding: "24px",
-              borderRadius: "12px",
-              background: "var(--bg-card)",
-              border: "1px solid var(--border-color)",
-              minHeight: "100%",
-              display: "flex",
-              flexDirection: "column",
-              gap: "20px",
-            }}
-          >
-            {/* Header section with inline edits / shortcuts toggle / archive */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
-              <div style={{ flex: 1 }}>
+          <div className="glass-panel notebook-detail-panel">
+            <div className="notebook-detail-header">
+              <div className="notebook-detail-copy">
                 {isEditing ? (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <input
-                      type="text"
-                      className="form-control form-control-lg"
-                      value={editTitle}
-                      onChange={(e) => setEditTitle(e.target.value)}
-                      placeholder="Title..."
-                    />
-                    <textarea
-                      className="form-control"
-                      value={editDesc}
-                      onChange={(e) => setEditDesc(e.target.value)}
-                      placeholder="Add a description..."
-                      rows={2}
-                    />
-                    <select
-                      className="form-control"
-                      value={editParentId ?? ""}
-                      onChange={(event) => setEditParentId(event.target.value || null)}
-                    >
-                      <option value="">{t("notebooks.rootLevel")}</option>
-                      {activeNotebooks
-                        .filter((notebook) => notebook.notebookId !== selectedNotebookId)
-                        .map((notebook) => (
-                          <option key={notebook.notebookId} value={notebook.notebookId}>{notebook.title}</option>
-                        ))}
+                  <div className="notebooks-edit-form">
+                    <input value={editTitle} onChange={(event) => setEditTitle(event.target.value)} placeholder={copy.titlePlaceholder} />
+                    <textarea value={editDescription} onChange={(event) => setEditDescription(event.target.value)} placeholder={copy.descriptionPlaceholder} rows={2} />
+                    <select value={editParentId ?? ""} onChange={(event) => setEditParentId(event.target.value || null)}>
+                      <option value="">{copy.newRootName}</option>
+                      {notebooks.filter((notebook) => notebook.notebookId !== selectedNotebookId).map((notebook) => (
+                        <option key={notebook.notebookId} value={notebook.notebookId}>{notebook.title}</option>
+                      ))}
                     </select>
-                    <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={() => setIsEditing(false)}
-                      >
-                        {t("common.cancel") || "Cancelar"}
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={() => void handleUpdateNotebook()}
-                        disabled={!editTitle.trim()}
-                      >
-                        {t("common.save") || "Guardar"}
-                      </button>
+                    <div className="notebooks-form-actions">
+                      <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(false)}>{copy.cancel}</button>
+                      <button type="button" className="btn btn-primary" disabled={!editTitle.trim()} onClick={() => void updateNotebook()}>{copy.save}</button>
                     </div>
                   </div>
                 ) : (
-                  <div>
-                    <h2 style={{ margin: "0 0 4px", display: "flex", alignItems: "center", gap: 12 }}>
-                      {selectedNotebook.title}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-link"
-                        onClick={() => setIsEditing(true)}
-                        style={{ padding: 4 }}
-                      >
-                        <Edit2 size={14} />
-                      </button>
-                    </h2>
-                    <p style={{ color: "var(--text-muted)", margin: 0, whiteSpace: "pre-wrap" }}>
-                      {selectedNotebook.description || t("notebooks.noDescription") || "Sin descripción."}
-                    </p>
-                  </div>
+                  <>
+                    <h2>{selectedNotebook.title}</h2>
+                    <p>{selectedNotebook.description || copy.noDescription}</p>
+                  </>
                 )}
               </div>
-
-              <div style={{ display: "flex", gap: 8 }}>
-                {/* Shortcut toggle */}
-                <button
-                  type="button"
-                  className={`btn btn-sm ${isShortcutAdded ? "btn-primary" : "btn-outline-secondary"}`}
-                  onClick={() => void handleToggleShortcut()}
-                  title={isShortcutAdded ? t("shortcuts.remove") : t("shortcuts.add")}
-                >
+              <div className="notebook-detail-actions">
+                <button type="button" className={`btn btn-sm ${isShortcutAdded ? "btn-primary" : "btn-outline-secondary"}`} title={isShortcutAdded ? t("shortcuts.remove") : t("shortcuts.add")} onClick={() => void toggleShortcut()}>
                   {isShortcutAdded ? <BookmarkMinus size={16} /> : <Bookmark size={16} />}
                 </button>
-
-                {/* Subfolder addition */}
-                <button
-                  type="button"
-                  className="btn btn-sm btn-outline-primary"
-                  onClick={() => {
-                    setIsCreatingChild(true);
-                    setIsCreatingRoot(false);
-                    setNewTitle("");
-                  }}
-                  title={t("notebooks.addChild") || "Crear subcuaderno"}
-                >
-                  <FolderPlus size={16} />
-                </button>
-
-                {/* Archive button */}
-                <button
-                  type="button"
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={() => void handleArchiveNotebook()}
-                  title={t("common.archive") || "Archivar"}
-                >
-                  <Trash2 size={16} />
-                </button>
+                <button type="button" className="btn btn-sm btn-outline-secondary" title={copy.editNotebook} onClick={() => setIsEditing(true)}><Edit2 size={16} /></button>
+                <button type="button" className="btn btn-sm btn-outline-primary" title={copy.addChild} onClick={() => { setIsCreatingChild(true); setIsCreatingRoot(false); setNewTitle(""); }}><FolderPlus size={16} /></button>
+                <button type="button" className="btn btn-sm btn-outline-danger" title={copy.archive} onClick={() => void archiveNotebook()}><Trash2 size={16} /></button>
               </div>
             </div>
 
-            {/* Create Child Notebook inline form */}
             {isCreatingChild && (
-              <div className="glass-form" style={{ padding: 12, borderRadius: 8, background: "var(--bg-main)", maxWidth: 320 }}>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: 6 }}>
-                  {t("notebooks.newChildName") || "Nuevo Subcuaderno"}
-                </div>
-                <input
-                  type="text"
-                  className="form-control form-control-sm"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="Title..."
-                  style={{ marginBottom: 8 }}
-                />
-                <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-secondary"
-                    onClick={() => setIsCreatingChild(false)}
-                  >
-                    <X size={12} />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-primary"
-                    onClick={() => void handleCreateNotebook(selectedNotebook.notebookId)}
-                    disabled={!newTitle.trim()}
-                  >
-                    <Check size={12} />
-                  </button>
+              <div className="glass-form notebooks-inline-form">
+                <label>{copy.newChildName}</label>
+                <input value={newTitle} onChange={(event) => setNewTitle(event.target.value)} placeholder={copy.titlePlaceholder} />
+                <div className="notebooks-form-actions">
+                  <button type="button" className="btn btn-sm btn-secondary" title={copy.cancel} onClick={() => setIsCreatingChild(false)}><X size={12} /></button>
+                  <button type="button" className="btn btn-sm btn-primary" title={copy.save} disabled={!newTitle.trim()} onClick={() => void createNotebook(selectedNotebook.notebookId)}><Check size={12} /></button>
                 </div>
               </div>
             )}
 
-            <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: 20 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                <h4 style={{ margin: 0 }}>{t("notebooks.items") || "Elementos vinculados"}</h4>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-primary"
-                  onClick={() => {
-                    setIsAddingItem(true);
-                    setSelectedItemId("");
-                  }}
-                >
-                  <Plus size={14} style={{ marginRight: 4 }} /> {t("notebooks.addItem") || "Añadir elemento"}
-                </button>
+            <div className="notebook-items-section">
+              <div className="notebook-items-header">
+                <h4>{copy.items}</h4>
+                <button type="button" className="btn btn-sm btn-primary" onClick={() => { setIsAddingItem(true); setSelectedItemId(""); }}><Plus size={14} /> {copy.addItem}</button>
               </div>
 
-              {/* Add Item Panel */}
               {isAddingItem && (
-                <div className="glass-panel" style={{ padding: 16, borderRadius: 8, background: "var(--bg-main)", marginBottom: 16 }}>
-                  <h5 style={{ margin: "0 0 12px" }}>{t("notebooks.selectResource") || "Vincular recurso de campaña"}</h5>
-                  <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-                    <div style={{ flex: 1 }}>
-                      <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: 4 }}>
-                        {t("notebooks.resourceType") || "Tipo de recurso"}
-                      </label>
-                      <select
-                        className="form-control"
-                        value={selectedItemType}
-                        onChange={(e) => {
-                          setSelectedItemType(e.target.value as NotebookItemTargetType);
-                          setSelectedItemId("");
-                        }}
-                      >
-                        <option value="entity">{t("notebooks.type.entity") || "Entidad"}</option>
-                        <option value="session">{t("notebooks.type.session") || "Sesión"}</option>
-                        <option value="canvas">{t("notebooks.type.canvas") || "Canvas"}</option>
-                        <option value="fact">{t("notebooks.type.fact")}</option>
-                        <option value="relation">{t("notebooks.type.relation")}</option>
-                        <option value="session_event">{t("notebooks.type.sessionEvent")}</option>
-                        <option value="attachment">{t("notebooks.type.attachment")}</option>
-                      </select>
-                    </div>
-
-                    <div style={{ flex: 2 }}>
-                      <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: 4 }}>
-                        {t("notebooks.resourceSelect") || "Seleccionar..."}
-                      </label>
-                      <select
-                        className="form-control"
-                        value={selectedItemId}
-                        onChange={(e) => setSelectedItemId(e.target.value)}
-                        disabled={candidates.length === 0}
-                      >
-                        <option value="">-- {t("common.select") || "Seleccionar"} --</option>
-                        {candidates.map((c: any) => (
-                          <option key={c.entityId || c.sessionId || c.canvasId} value={c.entityId || c.sessionId || c.canvasId}>
-                            {c.title} {c.entityType ? `(${c.entityType})` : ""}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-secondary"
-                      onClick={() => setIsAddingItem(false)}
-                    >
-                      {t("common.cancel") || "Cancelar"}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-primary"
-                      onClick={() => void handleAddItem()}
-                      disabled={!selectedItemId}
-                    >
-                      {t("common.add") || "Vincular"}
-                    </button>
+                <div className="glass-panel notebook-resource-form">
+                  <h5>{copy.selectResource}</h5>
+                  <label>{copy.resourceType}</label>
+                  <select value={selectedItemType} onChange={(event) => { setSelectedItemType(event.target.value as NotebookItemTargetType); setSelectedItemId(""); }}>
+                    <option value="entity">{copy.typeEntity}</option>
+                    <option value="session">{copy.typeSession}</option>
+                    <option value="canvas">{copy.typeCanvas}</option>
+                  </select>
+                  <label>{copy.resourceSelect}</label>
+                  <select value={selectedItemId} onChange={(event) => setSelectedItemId(event.target.value)} disabled={!candidates.length}>
+                    <option value="">{copy.selectOption}</option>
+                    {candidates.map((candidate) => {
+                      const id = "entityId" in candidate ? candidate.entityId : "sessionId" in candidate ? candidate.sessionId : candidate.id;
+                      return <option key={id} value={id}>{candidate.title}</option>;
+                    })}
+                  </select>
+                  <div className="notebooks-form-actions">
+                    <button type="button" className="btn btn-sm btn-secondary" onClick={() => setIsAddingItem(false)}>{copy.cancel}</button>
+                    <button type="button" className="btn btn-sm btn-primary" disabled={!selectedItemId} onClick={() => void addItem()}>{copy.link}</button>
                   </div>
                 </div>
               )}
 
-              {/* Items List */}
-              {selectedNotebookItems.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "40px 0", color: "var(--text-muted)" }}>
-                  <Link size={24} style={{ opacity: 0.3, marginBottom: 8 }} />
-                  <p style={{ margin: 0, fontSize: "0.9rem" }}>
-                    {t("notebooks.emptyItems") || "No hay elementos en este cuaderno todavía."}
-                  </p>
-                </div>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {selectedNotebookItems.length ? (
+                <div className="notebook-items-list">
                   {selectedNotebookItems.map((item, index) => {
-                    const details = resolveItemDetails(item.targetType, item.targetId);
+                    const details = itemDetails(item);
                     const ItemIcon = details.icon;
-
                     return (
-                      <div
-                        key={item.notebookItemId}
-                        className="notebook-item-card glass-panel"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 12,
-                          padding: "10px 16px",
-                          borderRadius: 8,
-                          background: "var(--bg-main)",
-                          border: "1px solid var(--border-color)",
-                          transition: "all 0.2s ease",
-                        }}
-                      >
-                        <ItemIcon size={16} style={{ color: "var(--text-muted)" }} />
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontWeight: 500, fontSize: "0.92rem" }}>{details.title}</div>
-                          <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{details.subtitle}</div>
-                        </div>
-
-                        {/* Reordering and removal controls */}
-                        <div style={{ display: "flex", gap: 4 }}>
-                          <button
-                            type="button"
-                            className="btn btn-sm btn-link"
-                            disabled={index === 0}
-                            onClick={() => void handleReorderItems(index, "up")}
-                            style={{ padding: 2 }}
-                          >
-                            <ArrowUp size={14} />
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-sm btn-link"
-                            disabled={index === selectedNotebookItems.length - 1}
-                            onClick={() => void handleReorderItems(index, "down")}
-                            style={{ padding: 2 }}
-                          >
-                            <ArrowDown size={14} />
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-sm btn-link text-danger"
-                            onClick={() => void handleRemoveItem(item.notebookItemId)}
-                            style={{ padding: 2, marginLeft: 6 }}
-                          >
-                            <X size={14} />
-                          </button>
+                      <div key={item.notebookItemId} className="notebook-item-card glass-panel">
+                        <ItemIcon size={16} />
+                        <div className="notebook-item-copy"><strong>{details.title}</strong><span>{details.subtitle}</span></div>
+                        <div className="notebook-item-actions">
+                          <button type="button" className="btn btn-sm btn-link" title={copy.moveUp} disabled={index === 0} onClick={() => void reorderItems(index, "up")}><ArrowUp size={14} /></button>
+                          <button type="button" className="btn btn-sm btn-link" title={copy.moveDown} disabled={index === selectedNotebookItems.length - 1} onClick={() => void reorderItems(index, "down")}><ArrowDown size={14} /></button>
+                          <button type="button" className="btn btn-sm btn-link text-danger" title={copy.removeItem} onClick={() => void removeItem(item.notebookItemId)}><X size={14} /></button>
                         </div>
                       </div>
                     );
                   })}
                 </div>
+              ) : (
+                <div className="notebooks-empty notebooks-empty--items"><Link size={24} /><p>{copy.emptyItems}</p></div>
               )}
             </div>
           </div>
         ) : (
-          <div
-            className="glass-panel"
-            style={{
-              padding: "48px",
-              borderRadius: "12px",
-              background: "var(--bg-card)",
-              border: "1px solid var(--border-color)",
-              textAlign: "center",
-              color: "var(--text-muted)",
-              minHeight: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <BookOpen size={48} style={{ opacity: 0.2, marginBottom: 16 }} />
-            <h3>{t("notebooks.selectPlaceholderTitle") || "Gestionar Cuadernos de Campaña"}</h3>
-            <p style={{ maxWidth: 420, margin: "0 auto 16px" }}>
-              {t("notebooks.selectPlaceholderDesc") ||
-                "Crea cuadernos jerárquicos de hasta 3 niveles de profundidad para organizar tus NPC, sesiones, mapas y tableros en un único lugar lógico."}
-            </p>
+          <div className="glass-panel notebook-placeholder">
+            <BookOpen size={48} />
+            <h3>{copy.selectPlaceholderTitle}</h3>
+            <p>{copy.selectPlaceholderDesc}</p>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }
