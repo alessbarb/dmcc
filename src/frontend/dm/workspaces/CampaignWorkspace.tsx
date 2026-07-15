@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { notebooksApi } from "../../shared/api.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
@@ -24,12 +24,22 @@ export function CampaignWorkspace({
 }: CampaignWorkspaceProps) {
   const { t } = useTranslation();
   const activeCampaignId = useCampaignStore((state) => state.activeCampaignId);
-  const activeCampaignLoadId = useCampaignStore((state) => state.activeCampaignLoadId);
+  const campaignState = useCampaignStore((state) => state.campaignState);
+  const hydratedCampaignStateRef = useRef<typeof campaignState>(null);
 
   useEffect(() => {
-    if (!activeCampaignId || !window.location.pathname.endsWith("/library/notebooks")) return;
+    if (
+      !activeCampaignId
+      || !campaignState
+      || hydratedCampaignStateRef.current === campaignState
+      || !window.location.pathname.endsWith("/library/notebooks")
+    ) {
+      return;
+    }
 
     let cancelled = false;
+    const sourceCampaignState = campaignState;
+
     void notebooksApi.listNotebooks(activeCampaignId).then(async (response) => {
       if (!response.ok || cancelled) return;
 
@@ -39,22 +49,33 @@ export function CampaignWorkspace({
       };
       if (cancelled) return;
 
+      let hydratedCampaignState: typeof campaignState = null;
       useCampaignStore.setState((state) => {
-        if (!state.campaignState || state.activeCampaignId !== activeCampaignId) return state;
-        return {
-          campaignState: {
-            ...state.campaignState,
-            notebooks: payload.notebooks ?? [],
-            notebookItems: payload.items ?? [],
-          },
+        if (
+          !state.campaignState
+          || state.campaignState !== sourceCampaignState
+          || state.activeCampaignId !== activeCampaignId
+        ) {
+          return state;
+        }
+
+        hydratedCampaignState = {
+          ...state.campaignState,
+          notebooks: payload.notebooks ?? [],
+          notebookItems: payload.items ?? [],
         };
+        return { campaignState: hydratedCampaignState };
       });
+
+      if (hydratedCampaignState) {
+        hydratedCampaignStateRef.current = hydratedCampaignState;
+      }
     }).catch(() => undefined);
 
     return () => {
       cancelled = true;
     };
-  }, [activeCampaignId, activeCampaignLoadId]);
+  }, [activeCampaignId, campaignState]);
 
   return (
     <section className="campaign-workspace">
