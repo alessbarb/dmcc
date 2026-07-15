@@ -1,0 +1,146 @@
+.campaign-workspace {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 24px);
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+}
+
+.campaign-workspace__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.campaign-workspace__heading {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.campaign-workspace .page-eyebrow {
+  margin: 0 0 6px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.campaign-workspace .page-title {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.campaign-workspace .page-description {
+  max-width: 72ch;
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.campaign-workspace__actions {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.campaign-workspace__content {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.campaign-workspace__content > * {
+  width: 100%;
+  min-width: 0;
+}
+
+.network-workspace-view {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: clamp(520px, calc(100dvh - 300px), 860px);
+}
+
+.network-workspace-view > * {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.notebooks-workspace {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .campaign-workspace__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .campaign-workspace__actions {
+    justify-content: flex-start;
+  }
+
+  .notebooks-workspace {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .notebooks-workspace .notebooks-sidebar {
+    width: 100% !important;
+    max-height: min(42dvh, 360px);
+  }
+
+  .notebooks-workspace .notebook-content-area {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .campaign-workspace {
+    gap: 14px;
+  }
+
+  .campaign-workspace__header {
+    gap: 12px;
+    padding-bottom: 14px;
+  }
+
+  .campaign-workspace .page-title {
+    font-size: 1.45rem;
+  }
+
+  .campaign-workspace__actions,
+  .campaign-workspace__actions > * {
+    width: 100%;
+  }
+
+  .network-workspace-view {
+    min-height: max(480px, calc(100dvh - 250px));
+  }
+
+  .notebooks-workspace .glass-panel {
+    padding: 16px !important;
+  }
+}
