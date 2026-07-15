@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { notebooksApi } from "../../shared/api.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { WorkspaceTabs, type WorkspaceTab } from "./WorkspaceTabs.js";
 import "./campaignWorkspace.css";
 
@@ -21,6 +23,38 @@ export function CampaignWorkspace({
   children,
 }: CampaignWorkspaceProps) {
   const { t } = useTranslation();
+  const activeCampaignId = useCampaignStore((state) => state.activeCampaignId);
+  const activeCampaignLoadId = useCampaignStore((state) => state.activeCampaignLoadId);
+
+  useEffect(() => {
+    if (!activeCampaignId || !window.location.pathname.endsWith("/library/notebooks")) return;
+
+    let cancelled = false;
+    void notebooksApi.listNotebooks(activeCampaignId).then(async (response) => {
+      if (!response.ok || cancelled) return;
+
+      const payload = await response.json() as {
+        notebooks?: NonNullable<ReturnType<typeof useCampaignStore.getState>["campaignState"]>["notebooks"];
+        items?: NonNullable<ReturnType<typeof useCampaignStore.getState>["campaignState"]>["notebookItems"];
+      };
+      if (cancelled) return;
+
+      useCampaignStore.setState((state) => {
+        if (!state.campaignState || state.activeCampaignId !== activeCampaignId) return state;
+        return {
+          campaignState: {
+            ...state.campaignState,
+            notebooks: payload.notebooks ?? [],
+            notebookItems: payload.items ?? [],
+          },
+        };
+      });
+    }).catch(() => undefined);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeCampaignId, activeCampaignLoadId]);
 
   return (
     <section className="campaign-workspace">
