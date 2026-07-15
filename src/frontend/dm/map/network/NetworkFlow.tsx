@@ -299,7 +299,7 @@ function NetworkFlowInner() {
             type="button"
             className="btn btn-secondary btn-sm"
             disabled={flowNodes.length === 0}
-            onClick={() => fitView({ duration: 350, padding: 0.15 })}
+            onClick={() => void fitView({ duration: 350, padding: 0.15 })}
             aria-label={t("network.title")}
             title={t("network.title")}
           >
