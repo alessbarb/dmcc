@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ReactFlow, Background, Controls, MiniMap, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import type { Edge, Node } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Layers, Plus, Search, X } from "lucide-react";
+import { Layers, LoaderCircle, Maximize2, Plus, Search, X } from "lucide-react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { GuidedEmptyState } from "../../onboarding/CampaignStarterHub.js";
@@ -42,6 +42,7 @@ function NetworkFlowInner() {
   const [pathModeArmed, setPathModeArmed] = useState(false);
   const [showFullOverride, setShowFullOverride] = useState(false);
   const [positions, setPositions] = useState<Map<string, { x: number; y: number }>>(new Map());
+  const [layoutError, setLayoutError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewportSize, setViewportSize] = useState({ w: 900, h: 600 });
 
@@ -53,9 +54,9 @@ function NetworkFlowInner() {
       }
     };
     measure();
-    const ro = new ResizeObserver(measure);
-    if (containerRef.current) ro.observe(containerRef.current);
-    return () => ro.disconnect();
+    const observer = new ResizeObserver(measure);
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   const entities = campaignState?.entities ?? [];
@@ -81,7 +82,7 @@ function NetworkFlowInner() {
       currentLocationId: campaignState?.campaign?.currentLocationId ?? null,
       nextSessionCriticalEntityId:
         (campaignState?.entities ?? []).find(
-          (e) => e.entityType === "quest" && e.status === "active" && !e.archived,
+          (entity) => entity.entityType === "quest" && entity.status === "active" && !entity.archived,
         )?.entityId ?? null,
     });
   }, [showFullOverride, filteredEntityIds, relations, selectedEntityId, campaignState]);
@@ -106,6 +107,7 @@ function NetworkFlowInner() {
 
   useEffect(() => {
     setPositions(new Map());
+    setLayoutError(null);
     if (focus.mode === "search-required" || model.nodes.length === 0) return;
 
     let cancelled = false;
@@ -115,9 +117,15 @@ function NetworkFlowInner() {
       preset: layoutPreset,
       viewportWidth: viewportSize.w,
       viewportHeight: viewportSize.h,
-    }).then((result) => {
-      if (!cancelled) setPositions(result);
-    });
+    })
+      .then((result) => {
+        if (!cancelled) setPositions(result);
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          setLayoutError(error instanceof Error ? error.message : String(error));
+        }
+      });
 
     return () => {
       cancelled = true;
@@ -133,7 +141,7 @@ function NetworkFlowInner() {
   const narrativePath = useMemo(() => {
     if (!selectedEntityId || !pathTargetId || selectedEntityId === pathTargetId) return null;
     return findNetworkPath(
-      model.nodes.map((n) => n.id),
+      model.nodes.map((node) => node.id),
       model.edges,
       selectedEntityId,
       pathTargetId,
@@ -144,23 +152,23 @@ function NetworkFlowInner() {
     return model.nodes
       .filter((node) => positions.has(node.id))
       .map((node) => {
-        const pos = positions.get(node.id)!;
+        const position = positions.get(node.id)!;
         const isOnPath = !!narrativePath?.includes(node.id);
         if (node.kind === "entity") {
           return {
             id: node.id,
             type: "entity",
-            position: pos,
+            position,
             selected: node.id === selectedEntityId,
             data: { entityId: node.entityId },
             style: isOnPath ? { filter: "drop-shadow(0 0 8px #10b981)" } : undefined,
           };
         }
-        const fact = facts.find((f) => f.factId === node.factId);
+        const fact = facts.find((candidate) => candidate.factId === node.factId);
         return {
           id: node.id,
           type: "fact",
-          position: pos,
+          position,
           data: {
             fact,
             relatedCount: fact?.relatedEntityIds.length ?? 0,
@@ -174,8 +182,12 @@ function NetworkFlowInner() {
       .filter((edge) => positions.has(edge.source) && positions.has(edge.target))
       .map((edge) => {
         const visual = edge.relationType ? getRelationVisual(edge.relationType) : null;
-        const isOnPath = !!(narrativePath && narrativePath.includes(edge.source) && narrativePath.includes(edge.target) &&
-          Math.abs(narrativePath.indexOf(edge.source) - narrativePath.indexOf(edge.target)) === 1);
+        const isOnPath = !!(
+          narrativePath &&
+          narrativePath.includes(edge.source) &&
+          narrativePath.includes(edge.target) &&
+          Math.abs(narrativePath.indexOf(edge.source) - narrativePath.indexOf(edge.target)) === 1
+        );
         return {
           id: edge.id,
           type: "relation",
@@ -229,14 +241,14 @@ function NetworkFlowInner() {
 
   if (focus.mode === "search-required") {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "16px", height: "100%" }}>
+      <div className="network-flow-workspace">
         <NetworkFilterBar
           entities={entities}
           typeFilter={typeFilter}
           onChangeTypeFilter={setTypeFilter}
-          onSelectEntity={(entityId) => setSelectedEntityId(entityId)}
+          onSelectEntity={setSelectedEntityId}
         />
-        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="network-flow-state">
           <GuidedEmptyState
             icon={<Search size={30} />}
             title={t("network.searchRequiredTitle")}
@@ -254,19 +266,21 @@ function NetworkFlowInner() {
     );
   }
 
+  const layoutPending = model.nodes.length > 0 && positions.size === 0 && !layoutError;
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "16px", height: "100%" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div className="network-flow-workspace">
+      <header className="network-flow-header">
         <div>
-          <h2 style={{ fontWeight: 700 }}>{t("network.title")}</h2>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "2px" }}>
+          <h2>{t("network.title")}</h2>
+          <p>
             {focus.mode === "neighborhood"
               ? t("network.neighborhoodOf", { title: entitiesById.get(focus.anchorEntityId)?.title ?? focus.anchorEntityId })
               : `${model.nodes.length} · ${model.edges.length}`}
           </p>
         </div>
-        <div style={{ display: "flex", gap: "6px" }}>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{t("network.layoutLabel")}</span>
+        <div className="network-flow-layout-controls">
+          <span>{t("network.layoutLabel")}</span>
           <button
             type="button"
             className={`btn btn-sm ${layoutPreset === "compact" ? "btn-primary" : "btn-secondary"}`}
@@ -281,8 +295,18 @@ function NetworkFlowInner() {
           >
             {t("network.layoutHierarchical")}
           </button>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            disabled={flowNodes.length === 0}
+            onClick={() => fitView({ duration: 350, padding: 0.15 })}
+            aria-label={t("network.title")}
+            title={t("network.title")}
+          >
+            <Maximize2 size={14} />
+          </button>
         </div>
-      </div>
+      </header>
 
       <NetworkFilterBar
         entities={entities}
@@ -292,7 +316,7 @@ function NetworkFlowInner() {
       />
 
       {narrativePath && (
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.8rem", color: "#34d399" }}>
+        <div className="network-flow-path">
           {t("network.pathTo", { title: entitiesById.get(pathTargetId ?? "")?.title ?? "" })}
           <button type="button" className="btn btn-secondary btn-sm" onClick={() => setPathTargetId(null)}>
             <X size={12} /> {t("network.clearPath")}
@@ -300,10 +324,10 @@ function NetworkFlowInner() {
         </div>
       )}
 
-      <div style={{ display: "flex", flex: 1, minHeight: 0, borderRadius: "var(--radius-md)", overflow: "hidden", border: "1px solid var(--border-color)" }}>
-        <div ref={containerRef} style={{ flex: "1 1 auto", minWidth: 0, position: "relative" }}>
+      <div className="network-flow-stage">
+        <div ref={containerRef} className="network-flow-canvas">
           {model.nodes.length === 0 ? (
-            <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+            <div className="network-flow-state">
               <GuidedEmptyState
                 icon={<Layers size={30} />}
                 title={t("network.emptyTitle")}
@@ -320,6 +344,17 @@ function NetworkFlowInner() {
                     : []
                 }
               />
+            </div>
+          ) : layoutError ? (
+            <div className="network-flow-state network-flow-state--error" role="alert">
+              <Layers size={30} />
+              <strong>{t("network.emptyTitle")}</strong>
+              <span>{layoutError}</span>
+            </div>
+          ) : layoutPending ? (
+            <div className="network-flow-state" aria-live="polite">
+              <LoaderCircle className="animate-spin" size={32} />
+              <span>{t("common.loading")}</span>
             </div>
           ) : (
             <ReactFlow
