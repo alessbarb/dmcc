@@ -170,9 +170,9 @@ describe("IdentityEditor wiring", () => {
   });
 });
 
-describe("PlayersPage wiring", () => {
+describe("PlayerProfileModal wiring", () => {
   it("uses ImagePickerButton and removes separate imageUrl/avatarUrl inputs", () => {
-    const src = read("src/frontend/dm/people/group/GroupView.tsx");
+    const src = read("src/frontend/dm/people/group/components/PlayerProfileModal.tsx");
     expect(src).toContain("ImagePickerButton");
     expect(src).toContain('catalog="avatars"');
     expect(src).not.toContain('placeholder="https://example.com/avatar.png"');
