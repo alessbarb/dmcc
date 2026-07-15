@@ -1274,7 +1274,17 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const items = new Map(state.notebookItems || new Map());
       for (const item of items.values()) {
         if (item.notebookId === command.notebookId && item.targetType === targetType && item.targetId === targetId) {
-          throw new Error(`Resource ${targetType}:${targetId} is already in the notebook`);
+          throw Object.assign(
+            new Error(`Notebook item already exists: Resource ${targetType}:${targetId} is already in the notebook`),
+            {
+              errorCode: "NOTEBOOK_ITEM_DUPLICATE",
+              details: {
+                notebookId: command.notebookId,
+                targetType,
+                targetId,
+              },
+            }
+          );
         }
       }
 

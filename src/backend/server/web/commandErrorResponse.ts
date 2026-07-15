@@ -10,7 +10,7 @@ function explicitStatus(error: unknown): number | undefined {
   return typeof statusCode === "number" ? statusCode : undefined;
 }
 
-export function writeCommandError(reply: FastifyReply, error: unknown): { error: string } {
+export function writeCommandError(reply: FastifyReply, error: unknown): Record<string, any> {
   const message = errorMessage(error);
   const normalized = message.toLowerCase();
   let statusCode = explicitStatus(error);
@@ -29,5 +29,16 @@ export function writeCommandError(reply: FastifyReply, error: unknown): { error:
   }
 
   reply.code(statusCode ?? 500);
-  return { error: message };
+
+  const responsePayload: Record<string, any> = { error: message };
+  if (error && typeof error === "object") {
+    if ("errorCode" in error) {
+      responsePayload.errorCode = (error as any).errorCode;
+    }
+    if ("details" in error) {
+      responsePayload.details = (error as any).details;
+    }
+  }
+
+  return responsePayload;
 }
