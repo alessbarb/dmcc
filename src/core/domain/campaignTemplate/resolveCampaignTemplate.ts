@@ -23,6 +23,7 @@ export type ResolvedCampaignTemplateEntity = {
   importance?: "low" | "normal" | "high" | "critical";
   visibility?: CampaignTemplateVisibility;
   metadata?: Record<string, unknown>;
+  imageUrl?: string;
 };
 
 export type ResolvedCampaignTemplateRelation = {
@@ -161,6 +162,7 @@ function mergeEntities(base: CampaignTemplateEntityFile[], overlayEntities?: Cam
       importance: entity.importance,
       visibility: entity.visibility,
       metadata: overlay?.metadata ?? entity.metadata,
+      imageUrl: overlay?.imageUrl ?? entity.imageUrl,
     };
   });
 }

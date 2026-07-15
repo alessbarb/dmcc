@@ -35,7 +35,7 @@ function uniqueCampaignTitle(baseTitle: string, usedTitles: Set<string>): string
   return `${clean} ${index}`;
 }
 
-function normalizeEntityMetadata(
+export function normalizeEntityMetadata(
   entity: CampaignTemplateResolved["entities"][number],
   template: CampaignTemplateResolved,
 ): Record<string, unknown> {
@@ -44,6 +44,15 @@ function normalizeEntityMetadata(
     createdFromTemplateId: template.templateId,
     createdFromTemplateVersion: template.version,
   };
+
+  const imageUrlRaw = entity.imageUrl || (entity.metadata?.imageUrl as string | undefined);
+  if (imageUrlRaw) {
+    let finalUrl = imageUrlRaw.trim();
+    if (!finalUrl.startsWith("/") && !finalUrl.startsWith("http://") && !finalUrl.startsWith("https://")) {
+      finalUrl = "/" + finalUrl;
+    }
+    metadata.imageUrl = finalUrl;
+  }
 
   if (entity.entityType === "player_character" && !metadata.playerId) {
     metadata.isPremade = true;

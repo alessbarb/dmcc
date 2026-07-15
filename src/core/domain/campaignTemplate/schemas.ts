@@ -20,6 +20,7 @@ export const campaignTemplateEntityFileSchema = z.strictObject({
   importance: z.enum(["low", "normal", "high", "critical"]).optional(),
   visibility: campaignTemplateVisibilitySchema.optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
+  imageUrl: z.string().optional(),
   // Opcionales por si se definen textos base directamente
   title: z.string().optional(),
   subtitle: z.string().optional(),
@@ -172,6 +173,7 @@ export const campaignTemplateLocaleOverlaySchema = z.strictObject({
       content: z.string().optional(),
       status: z.string().optional(),
       metadata: z.record(z.string(), z.unknown()).optional(),
+      imageUrl: z.string().optional(),
     })
   ).optional(),
   relations: z.record(
