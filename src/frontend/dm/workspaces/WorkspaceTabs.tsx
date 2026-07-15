@@ -31,7 +31,7 @@ export function WorkspaceTabs({ tabs }: WorkspaceTabsProps) {
             className={`workspace-tab ${isActive ? "active" : ""}`}
             aria-current={isActive ? "page" : undefined}
           >
-            {Icon && <Icon size={16} aria-hidden="true" />}
+            {Icon && <Icon size={16} />}
             <span>{t(tab.labelKey)}</span>
           </Link>
         );
