@@ -10,7 +10,7 @@ export interface NetworkRelationEdgeData extends Record<string, unknown> {
   emphasized?: boolean;
 }
 
-export function NetworkRelationEdge({
+export const NetworkRelationEdge = React.memo(function NetworkRelationEdge({
   id,
   sourceX,
   sourceY,
@@ -31,11 +31,12 @@ export function NetworkRelationEdge({
   });
 
   const edgeData = (data ?? {}) as NetworkRelationEdgeData;
+  const showLabel = Boolean(edgeData.label && edgeData.emphasized);
 
   return (
     <>
       <BaseEdge id={id} path={edgePath} style={style} />
-      {edgeData.label && (
+      {showLabel && (
         <EdgeLabelRenderer>
           <div
             style={{
@@ -44,12 +45,12 @@ export function NetworkRelationEdge({
               pointerEvents: "none",
             }}
           >
-            <RelationEdgeLabel label={edgeData.label} style={{ opacity: edgeData.emphasized ? 1 : 0.85 }} />
+            <RelationEdgeLabel label={edgeData.label!} />
           </div>
         </EdgeLabelRenderer>
       )}
     </>
   );
-}
+});
 
 export default NetworkRelationEdge;
