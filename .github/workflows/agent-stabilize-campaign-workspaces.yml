@@ -76,6 +76,19 @@ jobs:
               re.S,
           )""",
           )
+          content = content.replace(
+              """replace_once(
+              "src/core/application/commandBus.ts",
+              '      if (!existing) throw new Error(`Story step not found: ${command.stepId}`);\\n\\n      if (!state.sessions.has(command.plannedSessionId)) {',
+              '      if (!existing) throw new Error(`Story step not found: ${command.stepId}`);\\n      if (existing.status === "resolved" || existing.status === "discarded") {\\n        throw new Error("Cannot schedule a terminal story step");\\n      }\\n      if (command.plannedSessionOrder < 0) {\\n        throw new Error("plannedSessionOrder must be non-negative");\\n      }\\n\\n      if (!state.sessions.has(command.plannedSessionId)) {',
+          )""",
+              """sub_once(
+              "src/core/application/commandBus.ts",
+              r'(case "ScheduleStoryStep": \\{.*?if \\(!existing\\) throw new Error\\(`Story step not found: \\$\\{command\\.stepId\\}`\\);)\\n\\n      if \\(!state\\.sessions\\.has\\(command\\.plannedSessionId\\)\\)',
+              r'\\1\\n      if (existing.status === "resolved" || existing.status === "discarded") {\\n        throw new Error("Cannot schedule a terminal story step");\\n      }\\n      if (command.plannedSessionOrder < 0) {\\n        throw new Error("plannedSessionOrder must be non-negative");\\n      }\\n\\n      if (!state.sessions.has(command.plannedSessionId))',
+              re.S,
+          )""",
+          )
           path.write_text(content, encoding="utf-8")
           PY
           set -o pipefail
