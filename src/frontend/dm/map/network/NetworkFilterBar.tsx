@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import Fuse from "fuse.js";
-import { Search, X } from "lucide-react";
+import { Check, Filter, Search, X } from "lucide-react";
 import type { Entity } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatEntityType } from "@shared/i18n/index.js";
@@ -23,21 +23,24 @@ interface SearchItem {
 export function NetworkFilterBar({ entities, typeFilter, onChangeTypeFilter, onSelectEntity }: NetworkFilterBarProps) {
   const { t, locale } = useTranslation();
   const [query, setQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const availableTypes = useMemo(() => {
-    const types = new Set(entities.map((entity) => entity.entityType));
-    return Array.from(types).sort();
-  }, [entities]);
+    const types = new Set(entities.filter((entity) => !entity.archived).map((entity) => entity.entityType));
+    return Array.from(types).sort((left, right) => formatEntityType(left, locale).localeCompare(formatEntityType(right, locale)));
+  }, [entities, locale]);
 
   const searchItems = useMemo<SearchItem[]>(
     () =>
-      entities.map((entity) => ({
-        entityId: entity.entityId,
-        title: entity.title,
-        type: formatEntityType(entity.entityType, locale),
-        summary: entity.summary,
-      })),
+      entities
+        .filter((entity) => !entity.archived)
+        .map((entity) => ({
+          entityId: entity.entityId,
+          title: entity.title,
+          type: formatEntityType(entity.entityType, locale),
+          summary: entity.summary,
+        })),
     [entities, locale],
   );
 
@@ -63,45 +66,41 @@ export function NetworkFilterBar({ entities, typeFilter, onChangeTypeFilter, onS
   }, [fuse, query, searchItems]);
 
   const toggleType = (type: string) => {
-    if (typeFilter.includes(type)) {
-      onChangeTypeFilter(typeFilter.filter((t2) => t2 !== type));
-    } else {
-      onChangeTypeFilter([...typeFilter, type]);
-    }
+    onChangeTypeFilter(
+      typeFilter.includes(type)
+        ? typeFilter.filter((candidate) => candidate !== type)
+        : [...typeFilter, type],
+    );
   };
 
   return (
-    <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
-      <div className="graph-search" style={{ position: "relative", minWidth: "240px" }}>
-        <Search size={15} className="graph-search__icon" aria-hidden="true" />
+    <div className="network-explorer-toolbar">
+      <div className="graph-search">
+        <Search size={16} className="graph-search__icon" aria-hidden="true" />
         <input
           className="form-input graph-search__input"
           type="search"
           placeholder={t("network.searchPlaceholder")}
           value={query}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => setSearchOpen(true)}
+          onBlur={() => window.setTimeout(() => setSearchOpen(false), 120)}
           onChange={(event) => {
             setQuery(event.target.value);
-            setIsOpen(true);
+            setSearchOpen(true);
           }}
           onKeyDown={(event) => {
             if (event.key === "Escape") {
               setQuery("");
-              setIsOpen(false);
+              setSearchOpen(false);
             }
           }}
         />
         {query && (
-          <button
-            type="button"
-            className="graph-search__clear"
-            aria-label={t("network.clearSearch")}
-            onClick={() => setQuery("")}
-          >
+          <button type="button" className="graph-search__clear" aria-label={t("network.clearSearch")} onClick={() => setQuery("")}>
             <X size={14} />
           </button>
         )}
-        {isOpen && results.length > 0 && (
+        {searchOpen && results.length > 0 && (
           <div className="graph-search__results" role="listbox">
             {results.map((result) => (
               <button
@@ -113,7 +112,7 @@ export function NetworkFilterBar({ entities, typeFilter, onChangeTypeFilter, onS
                   event.preventDefault();
                   onSelectEntity(result.entityId);
                   setQuery("");
-                  setIsOpen(false);
+                  setSearchOpen(false);
                 }}
               >
                 <span className="graph-search__result-title">{result.title}</span>
@@ -124,32 +123,59 @@ export function NetworkFilterBar({ entities, typeFilter, onChangeTypeFilter, onS
         )}
       </div>
 
-      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "center" }}>
-        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginRight: "4px" }}>
-          {t("network.filterLabel")}
-        </span>
+      <div className="network-filter-menu">
         <button
           type="button"
-          className={`btn btn-sm ${typeFilter.length === 0 ? "btn-primary" : "btn-secondary"}`}
-          onClick={() => onChangeTypeFilter([])}
+          className={`btn btn-sm ${typeFilter.length > 0 ? "btn-primary" : "btn-secondary"}`}
+          aria-expanded={filtersOpen}
+          onClick={() => setFiltersOpen((current) => !current)}
         >
-          {t("network.filterAllTypes")}
+          <Filter size={15} />
+          {t("network.filterLabel")}
+          {typeFilter.length > 0 && <span className="network-filter-count">{typeFilter.length}</span>}
         </button>
-        {availableTypes.map((type) => {
-          const cfg = getEntityVisual(type);
-          const active = typeFilter.includes(type);
-          return (
+
+        {filtersOpen && (
+          <div className="network-filter-popover">
+            <div className="network-filter-popover__header">
+              <strong>{t("network.filterLabel")}</strong>
+              <button type="button" className="btn btn-sm btn-link" onClick={() => setFiltersOpen(false)}>
+                <X size={15} />
+              </button>
+            </div>
             <button
-              key={type}
               type="button"
-              className={`btn btn-sm ${active ? "btn-primary" : "btn-secondary"}`}
-              onClick={() => toggleType(type)}
-              style={active ? { borderColor: cfg.accent } : undefined}
+              className={`network-filter-option ${typeFilter.length === 0 ? "is-active" : ""}`}
+              onClick={() => onChangeTypeFilter([])}
             >
-              {t(cfg.labelKey)}
+              <span>{t("network.filterAllTypes")}</span>
+              {typeFilter.length === 0 && <Check size={15} />}
             </button>
-          );
-        })}
+            <div className="network-filter-options">
+              {availableTypes.map((type) => {
+                const config = getEntityVisual(type);
+                const active = typeFilter.includes(type);
+                return (
+                  <button
+                    key={type}
+                    type="button"
+                    className={`network-filter-option ${active ? "is-active" : ""}`}
+                    onClick={() => toggleType(type)}
+                  >
+                    <span className="network-filter-option__dot" style={{ background: config.accent }} />
+                    <span>{t(config.labelKey)}</span>
+                    {active && <Check size={15} />}
+                  </button>
+                );
+              })}
+            </div>
+            {typeFilter.length > 0 && (
+              <button type="button" className="btn btn-secondary btn-sm network-filter-clear" onClick={() => onChangeTypeFilter([])}>
+                {t("network.filterAllTypes")}
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
