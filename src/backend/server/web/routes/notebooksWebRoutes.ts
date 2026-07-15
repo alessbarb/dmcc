@@ -13,6 +13,7 @@ async function executeNotebookCommand(
   campaignId: string,
   command: Record<string, unknown>,
   repository: PostgresCampaignRepository,
+  success: Record<string, unknown> = {},
 ) {
   const { user } = await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
   const commandIdHeader = request.headers["idempotency-key"];
@@ -24,10 +25,17 @@ async function executeNotebookCommand(
       actorId: user.userId,
     } as Command, { commandId, actorUserId: user.userId });
     campaignEventBus.publish(campaignId, { type: "projection.updated", sequence: projection.lastSequence });
-    return { ok: true, sequence: projection.lastSequence };
+    return { ok: true, sequence: projection.lastSequence, ...success };
   } catch (error: unknown) {
     return writeCommandError(reply, error);
   }
+}
+
+function requiredTitle(value: unknown): string {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw Object.assign(new Error("Notebook title is required"), { statusCode: 400 });
+  }
+  return value.trim();
 }
 
 export async function registerNotebooksWebRoutes(server: FastifyInstance): Promise<void> {
@@ -47,21 +55,25 @@ export async function registerNotebooksWebRoutes(server: FastifyInstance): Promi
     Body: { title: string; description?: string | null; icon?: string | null; parentNotebookId?: string | null; sortOrder?: number };
   }>("/api/campaigns/:campaignId/notebooks", async (request, reply) => {
     const campaignId = request.params.campaignId;
+    await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
+
+    const title = requiredTitle(request.body.title);
     const parentNotebookId = request.body.parentNotebookId ?? null;
     const notebooks = (await repository.getCampaignState(campaignId)).notebooks;
     const nextSortOrder = request.body.sortOrder ?? Array.from(notebooks.values())
       .filter((notebook) => notebook.parentNotebookId === parentNotebookId && !notebook.archivedAt)
       .reduce((maximum, notebook) => Math.max(maximum, notebook.sortOrder), -1) + 1;
+    const notebookId = createId("nbk");
 
     return executeNotebookCommand(request, reply, campaignId, {
       type: "CreateNotebook",
-      notebookId: createId("nbk"),
+      notebookId,
       parentNotebookId,
-      title: request.body.title,
+      title,
       description: request.body.description ?? null,
       icon: request.body.icon ?? null,
       sortOrder: nextSortOrder,
-    }, repository);
+    }, repository, { notebookId });
   });
 
   server.patch<{
@@ -95,15 +107,16 @@ export async function registerNotebooksWebRoutes(server: FastifyInstance): Promi
     const nextSortOrder = Array.from(items.values())
       .filter((item) => item.notebookId === request.params.notebookId)
       .reduce((maximum, item) => Math.max(maximum, item.sortOrder), -1) + 1;
+    const notebookItemId = createId("nbi");
 
     return executeNotebookCommand(request, reply, campaignId, {
       type: "AddNotebookItem",
-      notebookItemId: createId("nbi"),
+      notebookItemId,
       notebookId: request.params.notebookId,
       targetType: request.body.targetType,
       targetId: request.body.targetId,
       sortOrder: nextSortOrder,
-    }, repository);
+    }, repository, { notebookItemId });
   });
 
   server.delete<{ Params: { campaignId: string; notebookItemId: string } }>(
