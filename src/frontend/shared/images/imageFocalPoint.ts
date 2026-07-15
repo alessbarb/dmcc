@@ -51,7 +51,15 @@ export function imageFocalPointToObjectPosition(
 export function applyStoredImageFocalPoint(image: HTMLImageElement): void {
   const point = parseImageFocalPoint(image.getAttribute("src") ?? undefined);
   if (!point) return;
-  image.style.objectPosition = imageFocalPointToObjectPosition(point);
+
+  // A stored focal point is the authoritative crop for every entity surface.
+  // Use important so route-level presentation rules (for example the detail hero)
+  // cannot silently reset the image to center.
+  image.style.setProperty(
+    "object-position",
+    imageFocalPointToObjectPosition(point),
+    "important",
+  );
 }
 
 export function applyStoredImageFocalPoints(root: ParentNode = document): void {
