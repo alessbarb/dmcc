@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet, useParams, useRouterState } from "@tanstack/react-router";
 import { WorkspaceTabs } from "../workspaces/WorkspaceTabs.js";
 import { LayoutGrid, GitFork } from "lucide-react";
+import "./network/networkFlow.css";
 
 export function CampaignMapWorkspacePage() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
