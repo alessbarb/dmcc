@@ -1,3 +1,4 @@
+# Applies the reviewed story lifecycle invariant patch.
 name: Apply story lifecycle stabilization
 
 on:
