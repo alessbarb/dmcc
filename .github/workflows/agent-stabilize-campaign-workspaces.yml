@@ -55,6 +55,20 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("scripts/agent_stabilize_campaign_workspaces.py")
+          content = path.read_text(encoding="utf-8")
+          content = content.replace(
+              "                         onChange={(e) => {\\n                           setSelectedItemType(e.target.value);",
+              "                        onChange={(e) => {\\n                          setSelectedItemType(e.target.value);",
+          )
+          content = content.replace(
+              "                         <option value=\"canvas\">{t(\"notebooks.type.canvas\") || \"Canvas\"}</option>\\n",
+              "                        <option value=\"canvas\">{t(\"notebooks.type.canvas\") || \"Canvas\"}</option>\\n",
+          )
+          path.write_text(content, encoding="utf-8")
+          PY
           set -o pipefail
           python3 scripts/agent_stabilize_campaign_workspaces.py 2>&1 | tee stabilization-apply.log
 
