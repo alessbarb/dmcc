@@ -295,6 +295,22 @@ export function StoryPlanView() {
     }
   };
 
+  const handleMarkStepReady = async (stepId: string) => {
+    if (!activeCampaignId) return;
+    try {
+      const res = await storyApi.markStoryStepReady(activeCampaignId, stepId);
+      if (res.ok) {
+        addToast(t("story.ready"), "success");
+        await reloadCampaign();
+      } else {
+        const errorData = await res.json().catch(() => null);
+        addToast(errorData?.error || "Failed to mark step ready", "error");
+      }
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error marking step ready", "error");
+    }
+  };
+
   const handleActivateStep = async (stepId: string) => {
     if (!activeCampaignId) return;
     try {
@@ -865,9 +881,18 @@ export function StoryPlanView() {
 
                         {/* Step actions: schedule, defer, reconcile */}
                         <div style={{ display: "flex", gap: 8, marginTop: 4, borderTop: "1px solid var(--border-color)", paddingTop: 8 }}>
-                          {step.status === "planned" && (
+                          {(step.status === "planned" || step.status === "ready" || step.status === "active") && (
                             <>
-                              {schedulingStepId === step.stepId ? (
+                              {step.plannedSessionId ? (
+                                <>
+                                  <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => void handleDeferStep(step.stepId)}>
+                                    <RotateCcw size={12} style={{ marginRight: 4 }} /> {t("story.defer") || "Posponer"}
+                                  </button>
+                                  <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => void handleUnscheduleStep(step.stepId)}>
+                                    {t("story.unschedule") || "Desprogramar"}
+                                  </button>
+                                </>
+                              ) : schedulingStepId === step.stepId ? (
                                 <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                                   <select
                                     className="form-control form-control-sm"
@@ -890,18 +915,16 @@ export function StoryPlanView() {
                             </>
                           )}
 
+                          {step.status === "planned" && (
+                            <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleMarkStepReady(step.stepId)}>
+                              <Check size={12} style={{ marginRight: 4 }} /> {t("story.ready")}
+                            </button>
+                          )}
+
                           {step.status === "ready" && (
-                            <>
-                              <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleActivateStep(step.stepId)}>
-                                <Play size={12} style={{ marginRight: 4 }} /> {t("story.activate")}
-                              </button>
-                              <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => void handleDeferStep(step.stepId)}>
-                                <RotateCcw size={12} style={{ marginRight: 4 }} /> {t("story.defer") || "Posponer"}
-                              </button>
-                              <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => void handleUnscheduleStep(step.stepId)}>
-                                {t("story.unschedule") || "Desprogramar"}
-                              </button>
-                            </>
+                            <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleActivateStep(step.stepId)}>
+                              <Play size={12} style={{ marginRight: 4 }} /> {t("story.activate")}
+                            </button>
                           )}
 
                           {/* Reconciliation available for ready, active steps */}

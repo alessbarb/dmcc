@@ -726,7 +726,6 @@ export function applyEvent(
           ...existing,
           plannedSessionId: payload.plannedSessionId,
           plannedSessionOrder: payload.plannedSessionOrder,
-          status: "ready",
           updatedAt: occurredAt
         });
       }
@@ -739,7 +738,6 @@ export function applyEvent(
           ...existing,
           plannedSessionId: payload.plannedSessionId,
           plannedSessionOrder: payload.plannedSessionOrder,
-          status: "ready",
           updatedAt: occurredAt
         });
       }
@@ -752,7 +750,17 @@ export function applyEvent(
           ...existing,
           plannedSessionId: null,
           plannedSessionOrder: null,
-          status: "planned",
+          updatedAt: occurredAt
+        });
+      }
+      break;
+    }
+    case "StoryStepMarkedReady": {
+      const existing = next.storySteps.get(payload.stepId);
+      if (existing) {
+        next.storySteps.set(payload.stepId, {
+          ...existing,
+          status: "ready",
           updatedAt: occurredAt
         });
       }

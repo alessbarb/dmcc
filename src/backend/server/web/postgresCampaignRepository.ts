@@ -805,7 +805,6 @@ async function projectReadModelsTx(tx: DbTransaction, events: StoredEvent[]): Pr
         await tx.update(schema.campaignStorySteps).set({
           plannedSessionId: payload.plannedSessionId,
           plannedSessionOrder: payload.plannedSessionOrder,
-          status: "ready",
           updatedAt: new Date(event.occurredAt),
         }).where(and(
           eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),
@@ -817,7 +816,16 @@ async function projectReadModelsTx(tx: DbTransaction, events: StoredEvent[]): Pr
         await tx.update(schema.campaignStorySteps).set({
           plannedSessionId: null,
           plannedSessionOrder: null,
-          status: "planned",
+          updatedAt: new Date(event.occurredAt),
+        }).where(and(
+          eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStorySteps.stepId, payload.stepId),
+        ));
+        break;
+      }
+      case "StoryStepMarkedReady": {
+        await tx.update(schema.campaignStorySteps).set({
+          status: "ready",
           updatedAt: new Date(event.occurredAt),
         }).where(and(
           eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),

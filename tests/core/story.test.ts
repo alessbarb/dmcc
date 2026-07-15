@@ -103,6 +103,13 @@ describe("Story Plan Domain & Commands", () => {
       plannedSessionId: "sess_planned",
       plannedSessionOrder: 0,
     }).state;
+    expect(state.storySteps.get("stp_step1")?.status).toBe("planned");
+    state = handleCommand(state, {
+      type: "MarkStoryStepReady",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      stepId: "stp_step1",
+    }).state;
     expect(state.storySteps.get("stp_step1")?.status).toBe("ready");
 
     // Validate resolution coherence before the step becomes terminal:

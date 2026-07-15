@@ -1511,8 +1511,14 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       if (hasPlannedOrder && command.plannedSessionOrder! < 0) {
         throw new Error("plannedSessionOrder must be non-negative");
       }
-      if (command.plannedSessionId && !state.sessions.has(command.plannedSessionId)) {
-        throw new Error(`Session not found: ${command.plannedSessionId}`);
+      if (command.plannedSessionId) {
+        const plannedSession = state.sessions.get(command.plannedSessionId);
+        if (!plannedSession) {
+          throw new Error(`Session not found: ${command.plannedSessionId}`);
+        }
+        if (plannedSession.status !== "planned") {
+          throw new Error("Story steps can only be created for a planned session");
+        }
       }
 
       const steps = new Map(state.storySteps || new Map());
@@ -1524,7 +1530,7 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         intent: command.intent ?? null,
         expectedOutcome: command.expectedOutcome ?? null,
         actualOutcome: null,
-        status: hasPlannedSession ? "ready" as const : "planned" as const,
+        status: "planned" as const,
         resolutionKind: null,
         sceneEntityId: command.sceneEntityId ?? null,
         plannedSessionId: command.plannedSessionId ?? null,
@@ -1598,7 +1604,6 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...existing,
         plannedSessionId: command.plannedSessionId,
         plannedSessionOrder: command.plannedSessionOrder,
-        status: "ready" as const,
         updatedAt: new Date().toISOString(),
       };
       steps.set(command.stepId, updated);
@@ -1632,7 +1637,6 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...existing,
         plannedSessionId: command.plannedSessionId,
         plannedSessionOrder: command.plannedSessionOrder,
-        status: "ready" as const,
         updatedAt: new Date().toISOString(),
       };
       steps.set(command.stepId, updated);
@@ -1655,7 +1659,6 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...existing,
         plannedSessionId: null,
         plannedSessionOrder: null,
-        status: "planned" as const,
         updatedAt: new Date().toISOString(),
       };
       steps.set(command.stepId, updated);
@@ -1663,6 +1666,28 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       return {
         state: { ...state, storySteps: steps },
         events: [makeEvent(command.actorId, command.campaignId, "StoryStepUnscheduled", { stepId: command.stepId })],
+      };
+    }
+    case "MarkStoryStepReady": {
+      validateStoryStepId(command.stepId);
+      const steps = new Map(state.storySteps || new Map());
+      const existing = steps.get(command.stepId);
+      if (!existing) throw new Error(`Story step not found: ${command.stepId}`);
+      if (existing.status === "ready") return { state, events: [] };
+      if (existing.status !== "planned") {
+        throw new Error("Only a planned story step can be marked ready");
+      }
+
+      const updated = {
+        ...existing,
+        status: "ready" as const,
+        updatedAt: new Date().toISOString(),
+      };
+      steps.set(command.stepId, updated);
+
+      return {
+        state: { ...state, storySteps: steps },
+        events: [makeEvent(command.actorId, command.campaignId, "StoryStepMarkedReady", { stepId: command.stepId })],
       };
     }
     case "ActivateStoryStep": {
@@ -1675,6 +1700,14 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         throw new Error("Only a ready story step can be activated");
       }
 
+      const threads = new Map(state.storyThreads || new Map());
+      const thread = threads.get(existing.threadId);
+      if (!thread) throw new Error(`Story thread not found: ${existing.threadId}`);
+      if (thread.archivedAt) throw new Error("Cannot activate a step in an archived story thread");
+      if (thread.status === "resolved" || thread.status === "discarded") {
+        throw new Error("Cannot activate a step in a terminal story thread");
+      }
+
       const updated = {
         ...existing,
         status: "active" as const,
@@ -1682,9 +1715,20 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       };
       steps.set(command.stepId, updated);
 
+      const events = [];
+      if (thread.status === "planned") {
+        threads.set(existing.threadId, {
+          ...thread,
+          status: "active" as const,
+          updatedAt: new Date().toISOString(),
+        });
+        events.push(makeEvent(command.actorId, command.campaignId, "StoryThreadActivated", { threadId: existing.threadId }));
+      }
+      events.push(makeEvent(command.actorId, command.campaignId, "StoryStepActivated", { stepId: command.stepId }));
+
       return {
-        state: { ...state, storySteps: steps },
-        events: [makeEvent(command.actorId, command.campaignId, "StoryStepActivated", { stepId: command.stepId })],
+        state: { ...state, storyThreads: threads, storySteps: steps },
+        events,
       };
     }
     case "ReconcileStoryStep": {

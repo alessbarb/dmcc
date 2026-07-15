@@ -159,6 +159,14 @@ export async function registerStoryWebRoutes(server: FastifyInstance): Promise<v
   );
 
   server.post<{ Params: { campaignId: string; stepId: string } }>(
+    "/api/campaigns/:campaignId/story/steps/:stepId/ready",
+    async (request, reply) => executeStoryCommand(request, reply, request.params.campaignId, {
+      type: "MarkStoryStepReady",
+      stepId: request.params.stepId,
+    }, repository),
+  );
+
+  server.post<{ Params: { campaignId: string; stepId: string } }>(
     "/api/campaigns/:campaignId/story/steps/:stepId/activate",
     async (request, reply) => executeStoryCommand(request, reply, request.params.campaignId, {
       type: "ActivateStoryStep",

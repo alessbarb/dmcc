@@ -49,7 +49,7 @@ describe("campaign workspace stabilization", () => {
     })).toThrow("Cannot resolve story thread");
   });
 
-  it("moves scheduled steps to ready and unscheduling returns them to planned", () => {
+  it("keeps readiness independent from session scheduling", () => {
     let state = storyState();
     state = handleCommand(state, {
       type: "ScheduleStoryStep",
@@ -59,14 +59,27 @@ describe("campaign workspace stabilization", () => {
       plannedSessionId: "sess_planned",
       plannedSessionOrder: 0,
     }).state;
+    expect(state.storySteps.get("stp_main")?.status).toBe("planned");
+
+    state = handleCommand(state, {
+      type: "MarkStoryStepReady",
+      campaignId: "cmp_workspace",
+      actorId: "usr_dm",
+      stepId: "stp_main",
+    }).state;
     expect(state.storySteps.get("stp_main")?.status).toBe("ready");
+
     state = handleCommand(state, {
       type: "UnscheduleStoryStep",
       campaignId: "cmp_workspace",
       actorId: "usr_dm",
       stepId: "stp_main",
     }).state;
-    expect(state.storySteps.get("stp_main")?.status).toBe("planned");
+    expect(state.storySteps.get("stp_main")).toMatchObject({
+      status: "ready",
+      plannedSessionId: null,
+      plannedSessionOrder: null,
+    });
   });
 
 
@@ -97,12 +110,19 @@ describe("campaign workspace stabilization", () => {
       plannedSessionOrder: 0,
     }).state;
     state = handleCommand(state, {
+      type: "MarkStoryStepReady",
+      campaignId: "cmp_workspace",
+      actorId: "usr_dm",
+      stepId: "stp_main",
+    }).state;
+    state = handleCommand(state, {
       type: "ActivateStoryStep",
       campaignId: "cmp_workspace",
       actorId: "usr_dm",
       stepId: "stp_main",
     }).state;
     expect(state.storySteps.get("stp_main")?.status).toBe("active");
+    expect(state.storyThreads.get("sth_main")?.status).toBe("active");
 
     state = handleCommand(state, {
       type: "ReconcileStoryStep",
@@ -118,6 +138,24 @@ describe("campaign workspace stabilization", () => {
       plannedSessionId: null,
       plannedSessionOrder: null,
     });
+  });
+
+  it("only schedules steps into planned sessions", () => {
+    const state = storyState();
+    state.sessions.set("sess_closed", {
+      ...state.sessions.get("sess_planned")!,
+      id: "sess_closed",
+      sessionId: "sess_closed",
+      status: "closed",
+    });
+    expect(() => handleCommand(state, {
+      type: "ScheduleStoryStep",
+      campaignId: "cmp_workspace",
+      actorId: "usr_dm",
+      stepId: "stp_main",
+      plannedSessionId: "sess_closed",
+      plannedSessionOrder: 0,
+    })).toThrow("planned session");
   });
 
   it("does not discard a thread while it has live steps", () => {
