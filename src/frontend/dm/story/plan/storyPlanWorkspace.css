@@ -1,0 +1,152 @@
+.story-plan-workspace {
+  display: grid !important;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  align-items: start;
+  gap: 20px !important;
+  min-height: min(760px, calc(100dvh - 230px)) !important;
+}
+
+.story-plan-workspace .story-sidebar {
+  position: sticky;
+  top: 76px;
+  width: auto !important;
+  max-height: min(760px, calc(100dvh - 230px));
+  padding: 16px !important;
+  overflow: hidden;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-lg, 14px) !important;
+  background: color-mix(in srgb, var(--bg-mist) 96%, transparent) !important;
+}
+
+.story-plan-workspace .threads-list {
+  min-height: 0;
+  padding-right: 3px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent-fire) 34%, transparent) transparent;
+}
+
+.story-plan-workspace .thread-item-btn {
+  min-height: 48px;
+  padding: 10px 12px !important;
+  border: 1px solid transparent !important;
+  border-left-width: 3px !important;
+  border-radius: var(--radius-md, 10px) !important;
+  background: transparent !important;
+}
+
+.story-plan-workspace .thread-item-btn:hover {
+  border-color: var(--border-color) !important;
+  background: var(--surface-hover) !important;
+}
+
+.story-plan-workspace .thread-item-btn.selected {
+  border-color: color-mix(in srgb, var(--accent-fire) 34%, var(--border-color)) !important;
+  background: color-mix(in srgb, var(--accent-fire) 8%, var(--bg-tomb)) !important;
+  box-shadow: inset 3px 0 0 var(--accent-fire);
+}
+
+.story-plan-workspace .story-content-area {
+  min-width: 0;
+}
+
+.story-plan-workspace .story-content-area > .glass-panel {
+  min-height: 100% !important;
+  padding: clamp(18px, 2.5vw, 26px) !important;
+  border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent) !important;
+  border-radius: var(--radius-lg, 14px) !important;
+  background: color-mix(in srgb, var(--bg-mist) 97%, transparent) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+}
+
+.story-plan-workspace .glass-form,
+.story-plan-workspace .step-card {
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md, 10px) !important;
+  background: color-mix(in srgb, var(--bg-tomb) 78%, var(--bg-mist)) !important;
+}
+
+.story-plan-workspace .step-card {
+  padding: 15px !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.story-plan-workspace .step-card:hover {
+  border-color: color-mix(in srgb, var(--accent-fire) 28%, var(--border-color)) !important;
+}
+
+.story-plan-workspace .step-card.status-active,
+.story-plan-workspace .step-card.status-ready {
+  box-shadow: inset 3px 0 0 var(--accent-fire), 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.story-plan-workspace .form-control,
+.story-plan-workspace .form-control-sm {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md, 10px);
+  color: var(--text-primary);
+  background: var(--bg-tomb);
+  font: inherit;
+}
+
+.story-plan-workspace textarea.form-control {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.story-plan-workspace .badge {
+  min-height: 22px;
+  font-size: 0.68rem !important;
+}
+
+.story-plan-workspace button[style*="padding: 2"] {
+  width: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 6px !important;
+}
+
+body:has(.story-plan-workspace) .watermark {
+  opacity: 0.008;
+}
+
+@media (max-width: 980px) {
+  .story-plan-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .story-plan-workspace .story-sidebar {
+    position: static;
+    width: 100% !important;
+    max-height: none;
+  }
+
+  .story-plan-workspace .threads-list {
+    max-height: 280px;
+  }
+}
+
+@media (max-width: 640px) {
+  .story-plan-workspace {
+    gap: 14px !important;
+  }
+
+  .story-plan-workspace .story-content-area > .glass-panel,
+  .story-plan-workspace .story-sidebar {
+    padding: 14px !important;
+  }
+
+  .story-plan-workspace .story-content-area [style*="justify-content: space-between"] {
+    flex-wrap: wrap;
+  }
+
+  .story-plan-workspace .story-content-area [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .story-plan-workspace .story-content-area .btn {
+    min-height: 40px;
+  }
+}
