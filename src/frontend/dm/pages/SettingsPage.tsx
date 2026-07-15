@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { RotateCcw, Download, Upload, Copy, Check } from "lucide-react";
+import { Check, Copy, Download, FileArchive, Languages, RotateCcw, Upload } from "lucide-react";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { LanguageSelector } from "../../shared/i18n/LanguageSelector.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { apiFetch } from "../../shared/api/apiClient.js";
+import "./settingsPage.css";
 
 export interface SettingsPageProps {
   campaigns?: any[];
@@ -32,25 +33,25 @@ export function SettingsPage(props: SettingsPageProps = {}) {
   const exportJson = props.exportJson ?? store.exportJson;
   const exportMarkdown = props.exportMarkdown ?? store.exportMarkdown;
   const addToast = props.addToast ?? toastAdd;
-  const [copiedExportPath, setCopiedExportPath] = React.useState(false);
+  const [copiedExportPath, setCopiedExportPath] = useState(false);
   const [lastMarkdownExport, setLastMarkdownExport] = useState<any | null>(null);
+  const [busyAction, setBusyAction] = useState<"backup" | "json" | "markdown" | null>(null);
 
   const handleCopyExportPath = (path: string) => {
     runSettingsAction((async () => {
       await navigator.clipboard.writeText(path);
       setCopiedExportPath(true);
       addToast(t("settings.copyExportPathSuccess"), "success");
-      setTimeout(() => setCopiedExportPath(false), 2000);
+      window.setTimeout(() => setCopiedExportPath(false), 2000);
     })(), "No se pudo copiar la ruta de exportación.");
   };
-
 
   const handleDownloadMarkdown = async () => {
     if (!lastMarkdownExport?.downloadUrl) return;
     try {
-      const res = await apiFetch(lastMarkdownExport.downloadUrl);
-      if (!res.ok) throw new Error("download failed");
-      const blob = await res.blob();
+      const response = await apiFetch(lastMarkdownExport.downloadUrl);
+      if (!response.ok) throw new Error("download failed");
+      const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -64,100 +65,106 @@ export function SettingsPage(props: SettingsPageProps = {}) {
     }
   };
 
+  const handleBackup = async () => {
+    setBusyAction("backup");
+    try {
+      await createBackup();
+      addToast(t("settings.backupSuccess"), "success");
+    } catch {
+      addToast(t("settings.backupError"), "error");
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const handleJsonExport = async () => {
+    setBusyAction("json");
+    try {
+      await exportJson();
+      addToast(t("settings.exportJsonSuccess"), "success");
+    } catch {
+      addToast(t("settings.exportJsonError"), "error");
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
+  const handleMarkdownExport = async () => {
+    setBusyAction("markdown");
+    try {
+      const result = await exportMarkdown();
+      setLastMarkdownExport(result);
+      addToast(t("settings.exportMarkdownSuccess", { count: result.fileCount ?? "?" }), "success");
+    } catch {
+      addToast(t("settings.exportMarkdownError"), "error");
+    } finally {
+      setBusyAction(null);
+    }
+  };
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-      <div>
-        <h2 style={{ fontWeight: "700" }}>{t("settings.pageTitle")}</h2>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "2px" }}>
-          Administra copias de seguridad, exportaciones e idioma de la aplicación.
-        </p>
-      </div>
+    <div className="settings-workspace">
+      <header className="settings-workspace__header">
+        <div>
+          <h2>{t("settings.pageTitle")}</h2>
+        </div>
+      </header>
 
-      <LanguageSelector />
+      <section className="settings-workspace__language" aria-label={t("settings.pageTitle")}>
+        <div className="settings-card__header">
+          <span className="settings-card__icon" aria-hidden="true"><Languages size={20} /></span>
+          <LanguageSelector />
+        </div>
+      </section>
 
-      <div className="grid grid-cols-2">
-        <section className="card">
-          <h3 style={{ fontWeight: "700", marginBottom: "20px" }}>{t("settings.backupsTitle")}</h3>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "16px" }}>
-            Crea puntos de recuperación de la campaña con registros históricos y metadatos de restauración.
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <button className="btn btn-primary" onClick={() => {
-              runSettingsAction((async () => {
-                try {
-                  await createBackup();
-                  addToast(t("settings.backupSuccess"), "success");
-                } catch {
-                  addToast(t("settings.backupError"), "error");
-                }
-              })(), "No se pudo crear la copia de seguridad.");
-            }}>
-              <RotateCcw size={16} /> {t("settings.createBackup")}
+      <div className="settings-workspace__grid">
+        <section className="card settings-card">
+          <div className="settings-card__header">
+            <span className="settings-card__icon" aria-hidden="true"><RotateCcw size={20} /></span>
+            <h3>{t("settings.backupsTitle")}</h3>
+          </div>
+          <div className="settings-card__actions">
+            <button className="btn btn-secondary" disabled={busyAction !== null} onClick={() => void handleBackup()}>
+              <RotateCcw size={16} />
+              {busyAction === "backup" ? t("common.loading") : t("settings.createBackup")}
             </button>
           </div>
         </section>
 
-        <section className="card">
-          <h3 style={{ fontWeight: "700", marginBottom: "20px" }}>{t("settings.exportsTitle")}</h3>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "16px" }}>
-            Exporta los registros de la campaña a formatos estructurados para revisión, archivo o documentación.
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <button className="btn btn-secondary" onClick={() => {
-              runSettingsAction((async () => {
-                try {
-                  await exportJson();
-                  addToast(t("settings.exportJsonSuccess"), "success");
-                } catch {
-                  addToast(t("settings.exportJsonError"), "error");
-                }
-              })(), "No se pudo exportar la campaña en JSON.");
-            }}>
-              <Download size={16} /> {t("settings.exportCampaignJson")}
-            </button>
-
-            <button className="btn btn-secondary" onClick={() => {
-              runSettingsAction((async () => {
-                try {
-                  const result = await exportMarkdown();
-                  setLastMarkdownExport(result);
-                  addToast(t("settings.exportMarkdownSuccess", { count: result.fileCount ?? "?" }), "success");
-                } catch {
-                  addToast(t("settings.exportMarkdownError"), "error");
-                }
-              })(), "No se pudo exportar la campaña en Markdown.");
-            }}>
-              <Upload size={16} /> {t("settings.exportCampaignMarkdown")}
-            </button>
-
-            {lastMarkdownExport && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px", padding: "12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", background: "#06070e" }}>
-                <span style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-muted)" }}>{t("settings.lastMarkdownExport")}</span>
-                <input
-                  type="text"
-                  readOnly
-                  value={lastMarkdownExport.path}
-                  style={{ padding: "8px 12px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)", backgroundColor: "var(--bg-input)", color: "var(--text-main)", fontSize: "0.8rem", fontFamily: "monospace" }}
-                />
-                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                  <button className="btn btn-secondary btn-sm" onClick={() => handleCopyExportPath(lastMarkdownExport.path)}>
-                    {copiedExportPath ? <Check size={14} style={{ color: "var(--primary)" }} /> : <Copy size={14} />}
-                    Copiar ruta
-                  </button>
-                  {lastMarkdownExport.downloadUrl && (
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => {
-                        runSettingsAction(handleDownloadMarkdown(), "No se pudo descargar el Markdown.");
-                      }}
-                    >
-                      <Download size={14} /> {t("settings.downloadFile", { file: lastMarkdownExport.primaryFile })}
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
+        <section className="card settings-card">
+          <div className="settings-card__header">
+            <span className="settings-card__icon" aria-hidden="true"><FileArchive size={20} /></span>
+            <h3>{t("settings.exportsTitle")}</h3>
           </div>
+
+          <div className="settings-card__actions">
+            <button className="btn btn-secondary" disabled={busyAction !== null} onClick={() => void handleJsonExport()}>
+              <Download size={16} />
+              {busyAction === "json" ? t("common.loading") : t("settings.exportCampaignJson")}
+            </button>
+            <button className="btn btn-secondary" disabled={busyAction !== null} onClick={() => void handleMarkdownExport()}>
+              <Upload size={16} />
+              {busyAction === "markdown" ? t("common.loading") : t("settings.exportCampaignMarkdown")}
+            </button>
+          </div>
+
+          {lastMarkdownExport && (
+            <div className="settings-export-result">
+              <span className="settings-export-result__label">{t("settings.lastMarkdownExport")}</span>
+              <input className="settings-export-result__path" type="text" readOnly value={lastMarkdownExport.path} />
+              <div className="settings-export-result__actions">
+                <button className="btn btn-secondary btn-sm" onClick={() => handleCopyExportPath(lastMarkdownExport.path)}>
+                  {copiedExportPath ? <Check size={14} /> : <Copy size={14} />}
+                  {t("settings.copyExportPath")}
+                </button>
+                {lastMarkdownExport.downloadUrl && (
+                  <button className="btn btn-primary btn-sm" onClick={() => runSettingsAction(handleDownloadMarkdown(), "No se pudo descargar el Markdown.")}>
+                    <Download size={14} /> {t("settings.downloadFile", { file: lastMarkdownExport.primaryFile })}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </section>
       </div>
     </div>
