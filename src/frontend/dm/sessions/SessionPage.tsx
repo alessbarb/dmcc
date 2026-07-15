@@ -56,7 +56,6 @@ export function SessionPage() {
         <NoActiveSessionView
           campaignState={campaignState}
           locale={locale}
-          hasNoSessions={sessions.length === 0}
           preparedSessions={preparedSessions}
           recentSessions={recentSessions}
           nextNumber={sessions.length + 1}
