@@ -366,6 +366,15 @@ export function projectDomainEventToActivity(event: StoredEvent<Record<string, u
         targetType: "story_step",
         targetId: nullableString(payload?.stepId),
       }];
+    case "StoryStepActivated":
+      return [{
+        ...base,
+        type: "story_step.activated",
+        category: "story",
+        data: { stepId: payload?.stepId },
+        targetType: "story_step",
+        targetId: nullableString(payload?.stepId),
+      }];
     case "StoryStepReconciled":
       return [{
         ...base,

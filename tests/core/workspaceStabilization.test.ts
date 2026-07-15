@@ -69,6 +69,67 @@ describe("campaign workspace stabilization", () => {
     expect(state.storySteps.get("stp_main")?.status).toBe("planned");
   });
 
+
+  it("requires a ready or active step before reconciliation and clears its schedule", () => {
+    let state = storyState();
+    state.sessions.set("sess_closed", {
+      ...state.sessions.get("sess_planned")!,
+      id: "sess_closed",
+      sessionId: "sess_closed",
+      status: "closed",
+    });
+    expect(() => handleCommand(state, {
+      type: "ReconcileStoryStep",
+      campaignId: "cmp_workspace",
+      actorId: "usr_dm",
+      stepId: "stp_main",
+      resolvedSessionId: "sess_closed",
+      status: "resolved",
+      resolutionKind: "as_planned",
+    })).toThrow("ready or active");
+
+    state = handleCommand(state, {
+      type: "ScheduleStoryStep",
+      campaignId: "cmp_workspace",
+      actorId: "usr_dm",
+      stepId: "stp_main",
+      plannedSessionId: "sess_planned",
+      plannedSessionOrder: 0,
+    }).state;
+    state = handleCommand(state, {
+      type: "ActivateStoryStep",
+      campaignId: "cmp_workspace",
+      actorId: "usr_dm",
+      stepId: "stp_main",
+    }).state;
+    expect(state.storySteps.get("stp_main")?.status).toBe("active");
+
+    state = handleCommand(state, {
+      type: "ReconcileStoryStep",
+      campaignId: "cmp_workspace",
+      actorId: "usr_dm",
+      stepId: "stp_main",
+      resolvedSessionId: "sess_closed",
+      status: "resolved",
+      resolutionKind: "as_planned",
+    }).state;
+    expect(state.storySteps.get("stp_main")).toMatchObject({
+      status: "resolved",
+      plannedSessionId: null,
+      plannedSessionOrder: null,
+    });
+  });
+
+  it("does not discard a thread while it has live steps", () => {
+    const state = storyState();
+    expect(() => handleCommand(state, {
+      type: "DiscardStoryThread",
+      campaignId: "cmp_workspace",
+      actorId: "usr_dm",
+      threadId: "sth_main",
+    })).toThrow("non-discarded steps");
+  });
+
   it("rejects partial and duplicate reorder payloads", () => {
     let state = storyState();
     state = handleCommand(state, {

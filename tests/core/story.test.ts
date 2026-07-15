@@ -43,18 +43,29 @@ describe("Story Plan Domain & Commands", () => {
   it("handles CreateStoryThread, CreateStoryStep and ReconcileStoryStep commands", () => {
     let state = createCampaignState("cmp_one");
 
-    // Mock a closed session in state for reconciliation validation
-    state.sessions.set("sess_one", {
-      id: "sess_one",
+    // Mock one planned session for scheduling and one closed session for reconciliation.
+    const sessionBase = {
       campaignId: "cmp_one",
-      sessionId: "sess_one",
-      number: 1,
-      title: "Session One",
-      status: "closed",
       presentPlayerIds: [],
       presentCharacterIds: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+    };
+    state.sessions.set("sess_planned", {
+      ...sessionBase,
+      id: "sess_planned",
+      sessionId: "sess_planned",
+      number: 1,
+      title: "Planned session",
+      status: "planned",
+    });
+    state.sessions.set("sess_one", {
+      ...sessionBase,
+      id: "sess_one",
+      sessionId: "sess_one",
+      number: 2,
+      title: "Closed session",
+      status: "closed",
     });
 
     // Create thread
@@ -83,6 +94,16 @@ describe("Story Plan Domain & Commands", () => {
     state = result2.state;
     expect(state.storySteps.get("stp_step1")?.title).toBe("Find the key");
     expect(state.storySteps.get("stp_step1")?.status).toBe("planned");
+
+    state = handleCommand(state, {
+      type: "ScheduleStoryStep",
+      campaignId: "cmp_one",
+      actorId: "usr_dm",
+      stepId: "stp_step1",
+      plannedSessionId: "sess_planned",
+      plannedSessionOrder: 0,
+    }).state;
+    expect(state.storySteps.get("stp_step1")?.status).toBe("ready");
 
     // Validate resolution coherence before the step becomes terminal:
     // resolving as changed requires an actual outcome.

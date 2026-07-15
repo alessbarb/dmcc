@@ -823,6 +823,12 @@ export type Command =
       stepId: StoryStepId;
     }
   | {
+      type: "ActivateStoryStep";
+      campaignId: CampaignId;
+      actorId: string;
+      stepId: StoryStepId;
+    }
+  | {
       type: "ReconcileStoryStep";
       campaignId: CampaignId;
       actorId: string;

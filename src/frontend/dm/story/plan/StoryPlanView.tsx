@@ -286,9 +286,28 @@ export function StoryPlanView() {
       if (res.ok) {
         addToast(t("story.stepUnscheduled") || "Step unscheduled", "success");
         await reloadCampaign();
+      } else {
+        const errorData = await res.json().catch(() => null);
+        addToast(errorData?.error || "Failed to unschedule step", "error");
       }
-    } catch (err: any) {
-      addToast(err.message || "Error unscheduling step", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error unscheduling step", "error");
+    }
+  };
+
+  const handleActivateStep = async (stepId: string) => {
+    if (!activeCampaignId) return;
+    try {
+      const res = await storyApi.activateStoryStep(activeCampaignId, stepId);
+      if (res.ok) {
+        addToast(t("story.activate"), "success");
+        await reloadCampaign();
+      } else {
+        const errorData = await res.json().catch(() => null);
+        addToast(errorData?.error || "Failed to activate step", "error");
+      }
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error activating step", "error");
     }
   };
 
@@ -373,7 +392,7 @@ export function StoryPlanView() {
   };
 
   // Helper getters
-  const getPlannedSessions = () => sessions.filter((s) => s.status === "planned" || s.status === "ready");
+  const getPlannedSessions = () => sessions.filter((s) => s.status === "planned");
   const getClosedSessions = () => sessions.filter((s) => s.status === "closed");
   const getLinkableEntities = (existingIds: string[]) => {
     const ids = new Set(existingIds);
@@ -873,6 +892,9 @@ export function StoryPlanView() {
 
                           {step.status === "ready" && (
                             <>
+                              <button type="button" className="btn btn-sm btn-primary" onClick={() => void handleActivateStep(step.stepId)}>
+                                <Play size={12} style={{ marginRight: 4 }} /> {t("story.activate")}
+                              </button>
                               <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => void handleDeferStep(step.stepId)}>
                                 <RotateCcw size={12} style={{ marginRight: 4 }} /> {t("story.defer") || "Posponer"}
                               </button>
@@ -883,7 +905,7 @@ export function StoryPlanView() {
                           )}
 
                           {/* Reconciliation available for ready, active steps */}
-                          {(step.status === "ready" || step.status === "active" || (step.status === "planned" && Boolean(step.plannedSessionId))) && (
+                          {(step.status === "ready" || step.status === "active") && (
                             <button
                               type="button"
                               className="btn btn-sm btn-outline-success"

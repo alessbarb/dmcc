@@ -825,12 +825,24 @@ async function projectReadModelsTx(tx: DbTransaction, events: StoredEvent[]): Pr
         ));
         break;
       }
+      case "StoryStepActivated": {
+        await tx.update(schema.campaignStorySteps).set({
+          status: "active",
+          updatedAt: new Date(event.occurredAt),
+        }).where(and(
+          eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),
+          eq(schema.campaignStorySteps.stepId, payload.stepId),
+        ));
+        break;
+      }
       case "StoryStepReconciled": {
         await tx.update(schema.campaignStorySteps).set({
           status: payload.status,
           resolutionKind: payload.resolutionKind,
           actualOutcome: payload.actualOutcome ?? null,
           resolvedSessionId: payload.resolvedSessionId,
+          plannedSessionId: null,
+          plannedSessionOrder: null,
           updatedAt: new Date(event.occurredAt),
         }).where(and(
           eq(schema.campaignStorySteps.campaignId, event.campaignId ?? payload.campaignId),

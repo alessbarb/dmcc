@@ -42,6 +42,8 @@ export const deferStoryStep = (campaignId: string, stepId: string, payload: { pl
   apiFetch(`/api/campaigns/${campaignId}/story/steps/${stepId}/defer`, { init: jsonInit("POST", payload) });
 export const unscheduleStoryStep = (campaignId: string, stepId: string) =>
   apiFetch(`/api/campaigns/${campaignId}/story/steps/${stepId}/unschedule`, { init: { method: "POST" } });
+export const activateStoryStep = (campaignId: string, stepId: string) =>
+  apiFetch(`/api/campaigns/${campaignId}/story/steps/${stepId}/activate`, { init: { method: "POST" } });
 export const reconcileStoryStep = (campaignId: string, stepId: string, payload: {
   resolvedSessionId: string;
   status: "resolved" | "discarded";

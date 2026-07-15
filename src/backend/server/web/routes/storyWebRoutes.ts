@@ -158,6 +158,14 @@ export async function registerStoryWebRoutes(server: FastifyInstance): Promise<v
     }, repository),
   );
 
+  server.post<{ Params: { campaignId: string; stepId: string } }>(
+    "/api/campaigns/:campaignId/story/steps/:stepId/activate",
+    async (request, reply) => executeStoryCommand(request, reply, request.params.campaignId, {
+      type: "ActivateStoryStep",
+      stepId: request.params.stepId,
+    }, repository),
+  );
+
   server.post<{
     Params: { campaignId: string; stepId: string };
     Body: { resolvedSessionId: string; status: "resolved" | "discarded"; resolutionKind: "as_planned" | "changed" | "discarded"; actualOutcome?: string | null };
