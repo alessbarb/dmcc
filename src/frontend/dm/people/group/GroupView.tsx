@@ -74,7 +74,7 @@ export function GroupView() {
             <div className="group-view-summary__metrics" aria-live="polite">
               <span><strong>{players.length}</strong> {t("campaignShell.nav.players")}</span>
               <span><strong>{portalPlayers.length}</strong> {t("players.portalHeading")}</span>
-              {dmInbox.length > 0 && <span className="group-view-summary__pending"><strong>{dmInbox.length}</strong></span>}
+              {dmInbox.total > 0 && <span className="group-view-summary__pending"><strong>{dmInbox.total}</strong></span>}
             </div>
           </div>
         </div>
