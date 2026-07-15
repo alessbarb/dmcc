@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import type { NotebookItemTargetType } from "@core/domain/resource/resourceType.js";
 import {
   ArrowDown,
   ArrowUp,
@@ -11,7 +10,6 @@ import {
   FileText,
   FolderPlus,
   Layers,
-  Link,
   Plus,
   Trash2,
   User,
