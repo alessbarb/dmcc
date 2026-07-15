@@ -14,6 +14,7 @@ import {
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
 import { RULE_CATEGORY_IDS } from "@shared/rules/categories.js";
+import "./rulesPage.css";
 
 interface RuleEntry {
   id: string;
@@ -134,135 +135,99 @@ export function RulesPage() {
   }, [selectedRule, targetRuleId]);
 
   return (
-    <div className="rules-layout" style={{ color: "var(--text-main)" }}>
-      <aside className="rules-sidebar card" aria-label={t("rules.category")}>
-        <label htmlFor="rules-search" style={{ display: "grid", gap: 6 }}>
-          <span className="form-label">{t("rules.searchInRules")}</span>
-          <span style={{ position: "relative" }}>
-            <Search
-              size={16}
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                left: 10,
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "var(--text-muted)",
-              }}
-            />
-            <input
-              id="rules-search"
-              type="search"
-              className="form-input"
-              style={{ paddingLeft: 32, fontSize: "0.85rem", width: "100%" }}
-              placeholder={t("rules.searchInRules")}
-              value={searchQuery}
-              onChange={(event) => setSearchQuery(event.target.value)}
-            />
-          </span>
-        </label>
+    <div className="rules-page">
+      <div className="rules-layout">
+        <aside className="rules-sidebar card" aria-label={t("rules.category")}>
+          <label htmlFor="rules-search" className="rules-page__field">
+            <span className="form-label">{t("rules.searchInRules")}</span>
+            <span className="rules-page__search">
+              <Search size={16} aria-hidden="true" />
+              <input
+                id="rules-search"
+                type="search"
+                className="form-input"
+                placeholder={t("rules.searchInRules")}
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+              />
+            </span>
+          </label>
 
-        <label htmlFor="rules-category" style={{ display: "grid", gap: 6 }}>
-          <span className="form-label">{t("rules.category")}</span>
-          <select
-            id="rules-category"
-            className="form-select"
-            style={{ fontSize: "0.85rem", width: "100%" }}
-            value={selectedCategory}
-            onChange={(event) => setSelectedCategory(event.target.value)}
-          >
-            {categories.map((category) => (
-              <option key={category} value={category}>{category}</option>
-            ))}
-          </select>
-        </label>
+          <label htmlFor="rules-category" className="rules-page__field">
+            <span className="form-label">{t("rules.category")}</span>
+            <select
+              id="rules-category"
+              className="form-select"
+              value={selectedCategory}
+              onChange={(event) => setSelectedCategory(event.target.value)}
+            >
+              {categories.map((category) => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+          </label>
 
-        <div className="rules-list" role="listbox" aria-label={t("rules.selectRule")}>
-          {loading ? (
-            <div aria-live="polite" style={{ textAlign: "center", padding: 20, color: "var(--text-muted)" }}>
-              {t("rules.loadingRules")}
-            </div>
-          ) : rules.length === 0 ? (
-            <div style={{ textAlign: "center", padding: 20, color: "var(--text-muted)" }}>
-              {t("rules.noMatches")}
-            </div>
-          ) : (
-            rules.map((rule) => {
-              const active = selectedRule?.id === rule.id;
-              return (
-                <button
-                  key={rule.id}
-                  type="button"
-                  role="option"
-                  aria-selected={active}
-                  onClick={() => setSelectedRule(rule)}
-                  className="rules-list__item"
-                  style={{
-                    backgroundColor: active ? "rgba(59, 130, 246, 0.15)" : "var(--bg-input)",
-                    borderColor: active ? "var(--primary)" : "var(--border-color)",
-                  }}
-                >
-                  <span style={{ fontWeight: 700, display: "flex", alignItems: "center", gap: 8 }}>
-                    {CATEGORY_ICONS[rule.category] || <Book size={14} />}
-                    {rule.title}
-                  </span>
-                  {rule.subtitle && (
-                    <span style={{ color: "var(--text-muted)", marginTop: 4, fontStyle: "italic" }}>
-                      {rule.subtitle}
+          <div className="rules-list" role="listbox" aria-label={t("rules.selectRule")}>
+            {loading ? (
+              <div className="rules-page__list-state" aria-live="polite">
+                {t("rules.loadingRules")}
+              </div>
+            ) : rules.length === 0 ? (
+              <div className="rules-page__list-state">{t("rules.noMatches")}</div>
+            ) : (
+              rules.map((rule) => {
+                const active = selectedRule?.id === rule.id;
+                return (
+                  <button
+                    key={rule.id}
+                    type="button"
+                    role="option"
+                    aria-selected={active}
+                    onClick={() => setSelectedRule(rule)}
+                    className="rules-list__item"
+                  >
+                    <span className="rules-page__item-title">
+                      {CATEGORY_ICONS[rule.category] || <Book size={14} />}
+                      {rule.title}
                     </span>
-                  )}
-                </button>
-              );
-            })
-          )}
-        </div>
-
-        <div aria-live="polite" style={{ fontSize: "0.75rem", color: "var(--text-muted)", textAlign: "right" }}>
-          {t("rules.entriesInCategory", { count: totalCount })}
-        </div>
-      </aside>
-
-      <main className="rules-detail card" tabIndex={-1}>
-        {error && <p role="alert" style={{ color: "var(--color-danger)" }}>{error}</p>}
-        {selectedRule ? (
-          <article aria-labelledby="selected-rule-title">
-            <header style={{ borderBottom: "2px solid var(--border-color)", paddingBottom: 16, marginBottom: 20 }}>
-              <span
-                style={{
-                  backgroundColor: "rgba(59, 130, 246, 0.2)",
-                  color: "var(--primary)",
-                  padding: "4px 10px",
-                  borderRadius: 20,
-                  fontSize: "0.75rem",
-                  fontWeight: 600,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                }}
-              >
-                {CATEGORY_ICONS[selectedRule.category] || <Book size={12} />}
-                {selectedRule.category}
-              </span>
-              <h2 id="selected-rule-title" style={{ fontSize: "clamp(1.45rem, 4vw, 1.8rem)", fontWeight: 800, color: "var(--secondary)", margin: "12px 0 4px" }}>
-                {selectedRule.title}
-              </h2>
-              {selectedRule.subtitle && (
-                <p style={{ fontSize: "0.95rem", color: "var(--text-muted)", fontStyle: "italic", margin: 0 }}>
-                  {selectedRule.subtitle}
-                </p>
-              )}
-            </header>
-            <div style={{ fontSize: "0.95rem", lineHeight: 1.65, whiteSpace: "pre-wrap", color: "var(--text-main)" }}>
-              {selectedRule.content}
-            </div>
-          </article>
-        ) : (
-          <div className="rules-detail__empty">
-            <Info size={48} aria-hidden="true" style={{ opacity: 0.3 }} />
-            <div>{t("rules.selectRule")}</div>
+                    {rule.subtitle && (
+                      <span className="rules-page__item-subtitle">{rule.subtitle}</span>
+                    )}
+                  </button>
+                );
+              })
+            )}
           </div>
-        )}
-      </main>
+
+          <div className="rules-page__count" aria-live="polite">
+            {t("rules.entriesInCategory", { count: totalCount })}
+          </div>
+        </aside>
+
+        <main className="rules-detail card" tabIndex={-1}>
+          {error && <p role="alert" className="rules-page__error">{error}</p>}
+          {selectedRule ? (
+            <article className="rules-page__article" aria-labelledby="selected-rule-title">
+              <header className="rules-page__article-header">
+                <span className="rules-page__category">
+                  {CATEGORY_ICONS[selectedRule.category] || <Book size={12} />}
+                  {selectedRule.category}
+                </span>
+                <h2 id="selected-rule-title">{selectedRule.title}</h2>
+                {selectedRule.subtitle && (
+                  <p className="rules-page__subtitle">{selectedRule.subtitle}</p>
+                )}
+              </header>
+              <div className="rules-page__content">{selectedRule.content}</div>
+            </article>
+          ) : (
+            <div className="rules-detail__empty">
+              <Info size={48} aria-hidden="true" />
+              <div>{t("rules.selectRule")}</div>
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 }
