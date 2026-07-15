@@ -309,12 +309,12 @@ npm run db:migrate       # Apply database migrations
 
 ## Premade campaigns
 
-Demo campaign content ships as static JSON premade templates under `public/premades/`. Import them through the UI or use these maintenance scripts:
+Demo campaign content ships as static JSON templates under `public/campaign-templates/` (manifest + per-template `template.json` and locale files), with cover/portrait images under `public/assets/premades/`. Import them through the UI or use these maintenance scripts:
 
 ```bash
-npm run premade:validate      # Validate all templates (refs, locale parity)
-npm run premade:build         # Normalize template metadata
-npm run premade:build:check   # Check if normalization is needed (CI-safe)
+npm run templates:validate      # Validate all templates (refs, locale parity)
+npm run templates:build         # Normalize template metadata
+npm run templates:build:check   # Check if normalization is needed (CI-safe)
 ```
 
 Templates: **oracle** (La Sombra del Oráculo) and **phandalin** (Shadows over Phandalin). Both available in English and Spanish.
@@ -323,16 +323,17 @@ Templates: **oracle** (La Sombra del Oráculo) and **phandalin** (Shadows over P
 
 ```txt
 src/
-  backend/       Web API, PostgreSQL repositories and deployment runtime
-  frontend/      React application and campaign UI
-  core/          Campaign domain, commands, events and projections
-  shared/        Shared schemas, IDs, rules, i18n and utilities
+  backend/                Web API, PostgreSQL repositories and deployment runtime
+  frontend/                React application and campaign UI
+  core/                    Campaign domain, commands, events and projections
+  shared/                  Shared schemas, IDs, rules, i18n and utilities
 
-public/          Static assets
-tests/           Unit and integration tests
-e2e/             End-to-end tests
-public/premades/ Premade campaign templates (JSON)
-scripts/         Build and maintenance scripts
+public/                    Static assets
+public/campaign-templates/ Premade campaign templates (manifest + JSON)
+public/assets/premades/    Premade campaign images
+tests/                     Unit and integration tests
+e2e/                       End-to-end tests
+scripts/                   Build and maintenance scripts
 ```
 
 ## Technical overview
@@ -344,8 +345,7 @@ DMCC is built as a TypeScript web application.
 - React
 - TanStack Router
 - Zustand
-- React Flow
-- React Force Graph 3D
+- @xyflow/react (graph canvas) + elkjs (auto-layout)
 - Fuse.js
 - Lucide React
 
