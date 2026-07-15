@@ -29,7 +29,7 @@ export function ImagePickerButton({
   const rawDisplaySrc = value || defaultImage || "";
   const displaySrc = rawDisplaySrc ? stripImageFocalPoint(rawDisplaySrc) : "";
   const isCircle = shape === "circle";
-  const isEntityPreview = catalog === "entities" && !isCircle;
+  const isEntityPreview = catalog === "entities";
   const focalPoint = parseImageFocalPoint(value) ?? DEFAULT_IMAGE_FOCAL_POINT;
 
   const handleSelect = (path: string) => {
