@@ -67,8 +67,15 @@ test.describe("Campaign workspace regressions", () => {
     await page.locator(".notebooks-sidebar button.btn-primary").click();
     const createResponse = await createResponsePromise;
     expect(createResponse.ok()).toBe(true);
-    expect((await createResponse.json()).notebookId).toMatch(/^nbk_/);
     await expect(page.getByText("Session clues", { exact: true })).toBeVisible({ timeout: 15_000 });
+
+    const notebooksResponse = await page.request.get(`/api/campaigns/${campaignId}/notebooks`);
+    expect(notebooksResponse.ok()).toBe(true);
+    const notebooksPayload = await notebooksResponse.json();
+    expect(notebooksPayload.notebooks).toContainEqual(expect.objectContaining({
+      notebookId: expect.stringMatching(/^nbk_/),
+      title: "Session clues",
+    }));
 
     await page.goto(`/campaigns/${campaignId}/map/network`);
     const networkWorkspace = page.getByTestId("network-workspace-view");
