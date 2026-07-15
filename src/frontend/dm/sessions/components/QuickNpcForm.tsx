@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { ToastKind } from "../../../shared/hooks/useToast.js";
 import type { CampaignStateStore, Session } from "../../../shared/stores/campaignStore.js";
-import { runSessionAction } from "../sessionFormSubmit.js";
+import { errorMessage, runSessionAction } from "../sessionFormSubmit.js";
 
 export function QuickNpcForm({
   createEntity,
@@ -21,38 +21,36 @@ export function QuickNpcForm({
   const [description, setDescription] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.SubmitEvent) => {
+    event.preventDefault();
     if (!name.trim()) return;
+
     setBusy(true);
-    await createEntity({
-      entityType: "npc",
-      title: name.trim(),
-      subtitle: role.trim(),
-      summary: description.trim(),
-      status: "known",
-      importance: "normal",
-      createdInSessionId: activeSession?.sessionId,
-      metadata: {
-        role: role.trim(),
-      },
-    });
-    addToast(t("toasts.npcCreated", { name: name.trim() }), "success");
-    setBusy(false);
-    onClose();
+    try {
+      await createEntity({
+        entityType: "npc",
+        title: name.trim(),
+        subtitle: role.trim(),
+        summary: description.trim(),
+        status: "known",
+        importance: "normal",
+        createdInSessionId: activeSession.sessionId,
+        metadata: {
+          role: role.trim(),
+        },
+      });
+      addToast(t("toasts.npcCreated", { name: name.trim() }), "success");
+      onClose();
+    } catch (error) {
+      addToast(errorMessage(error), "error");
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
-    <form onSubmit={(event) => {
-      runSessionAction(handleSubmit(event), "No se pudo crear el PNJ rápido.");
-    }}>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "16px",
-        }}
-      >
+    <form onSubmit={(event) => runSessionAction(handleSubmit(event), "No se pudo crear el PNJ rápido.") }>
+      <div className="session-form-grid session-form-grid--two-columns">
         <div className="form-group">
           <label className="form-label" htmlFor="pnj-name">
             {t("sessionPage.npcNameLabel")}
@@ -63,7 +61,7 @@ export function QuickNpcForm({
             className="form-input"
             placeholder={t("sessionPage.npcNamePlaceholder")}
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(event) => setName(event.target.value)}
             required
             autoFocus
           />
@@ -78,7 +76,7 @@ export function QuickNpcForm({
             className="form-input"
             placeholder={t("sessionPage.npcRolePlaceholder")}
             value={role}
-            onChange={(e) => setRole(e.target.value)}
+            onChange={(event) => setRole(event.target.value)}
           />
         </div>
       </div>
@@ -93,15 +91,15 @@ export function QuickNpcForm({
           className="form-input"
           placeholder={t("sessionPage.npcDescPlaceholder")}
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(event) => setDescription(event.target.value)}
         />
       </div>
 
-      <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
-        <button type="button" className="btn btn-secondary" onClick={onClose}>
+      <div className="session-form-actions">
+        <button type="button" className="btn btn-secondary" disabled={busy} onClick={onClose}>
           {t("common.cancel")}
         </button>
-        <button type="submit" className="btn btn-primary" disabled={busy}>
+        <button type="submit" className="btn btn-primary" disabled={busy || !name.trim()}>
           {busy ? t("common.saving") : t("session.createNpc")}
         </button>
       </div>
