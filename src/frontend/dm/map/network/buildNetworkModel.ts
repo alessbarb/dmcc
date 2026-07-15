@@ -2,10 +2,10 @@ import type { Entity, Fact, Relation } from "../../../shared/stores/campaignStor
 
 export const FULL_NETWORK_NODE_LIMIT = 250;
 
-export const NETWORK_ENTITY_NODE_WIDTH = 220;
-export const NETWORK_ENTITY_NODE_HEIGHT = 230;
-export const NETWORK_FACT_NODE_WIDTH = 220;
-export const NETWORK_FACT_NODE_HEIGHT = 150;
+export const NETWORK_ENTITY_NODE_WIDTH = 176;
+export const NETWORK_ENTITY_NODE_HEIGHT = 104;
+export const NETWORK_FACT_NODE_WIDTH = 156;
+export const NETWORK_FACT_NODE_HEIGHT = 88;
 
 export interface NetworkEntityNodeModel {
   id: string;
@@ -133,8 +133,8 @@ function buildUndirectedAdjacency(entityIds: string[], relations: Relation[]): M
     if (relation.archived) continue;
     const { sourceEntityId, targetEntityId } = relation;
     if (!idSet.has(sourceEntityId) || !idSet.has(targetEntityId)) continue;
-    adjacency.get(sourceEntityId)!.push(targetEntityId);
-    adjacency.get(targetEntityId)!.push(sourceEntityId);
+    adjacency.get(sourceEntityId)?.push(targetEntityId);
+    adjacency.get(targetEntityId)?.push(sourceEntityId);
   }
 
   return adjacency;
