@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet, useParams } from "@tanstack/react-router";
 import { CampaignWorkspace } from "../workspaces/CampaignWorkspace.js";
 import { List, GitBranch } from "lucide-react";
+import "./plan/storyPlanWorkspace.css";
 
 export function StoryWorkspacePage() {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
