@@ -5,7 +5,6 @@ import {
 } from "../../src/core/domain/campaignTemplate/schemas.js";
 import { resolveCampaignTemplateCampaign } from "../../src/core/domain/campaignTemplate/resolveCampaignTemplate.js";
 import { normalizeEntityMetadata } from "../../src/backend/server/web/routes/campaignTemplateWebRoutes.js";
-import type { CampaignTemplateResolved } from "../../src/backend/server/campaignTemplate/campaignTemplates.js";
 
 describe("Campaign template entity imageUrl support", () => {
   it("validates campaignTemplateEntityFileSchema with imageUrl", () => {
