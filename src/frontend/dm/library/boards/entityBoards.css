@@ -1,3 +1,41 @@
+.campaign-workspace__content [role="tablist"][aria-label] {
+  display: flex !important;
+  gap: 8px !important;
+  overflow-x: auto;
+  flex-wrap: nowrap !important;
+  padding: 2px 2px 4px;
+  scrollbar-width: none;
+}
+
+.campaign-workspace__content [role="tablist"][aria-label]::-webkit-scrollbar {
+  display: none;
+}
+
+.campaign-workspace__content [role="tablist"][aria-label] .btn {
+  min-height: 38px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-full);
+  box-shadow: none;
+}
+
+.campaign-workspace__content [role="tablist"][aria-label] + .card {
+  display: flex !important;
+  gap: 8px 14px !important;
+  align-items: center;
+  padding: 10px 14px !important;
+  overflow-x: auto;
+  flex-wrap: nowrap !important;
+  border-color: color-mix(in srgb, var(--border-color) 74%, transparent);
+  background: color-mix(in srgb, var(--bg-tomb) 72%, transparent);
+  box-shadow: none;
+  scrollbar-width: thin;
+}
+
+.campaign-workspace__content [role="tablist"][aria-label] + .card > span {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .kanban-scroll {
   width: 100%;
   min-width: 0;
@@ -90,8 +128,8 @@
 }
 
 .kanban-column__empty {
-  min-height: 112px;
-  padding: 20px;
+  min-height: 88px;
+  padding: 16px;
   border-color: color-mix(in srgb, var(--border-color) 72%, transparent);
   background: color-mix(in srgb, var(--bg-tomb) 35%, transparent);
   line-height: 1.45;
@@ -157,6 +195,12 @@
   text-transform: none;
 }
 
+@media (min-width: 1440px) {
+  .kanban-board {
+    grid-auto-columns: clamp(286px, 20vw, 330px);
+  }
+}
+
 @media (max-width: 900px) {
   .kanban-board {
     grid-auto-columns: min(82vw, 330px);
@@ -172,6 +216,11 @@
 }
 
 @media (max-width: 640px) {
+  .campaign-workspace__content [role="tablist"][aria-label] + .card {
+    margin-inline: -4px;
+    padding-inline: 10px !important;
+  }
+
   .kanban-scroll {
     margin-inline: -4px;
     padding-inline: 4px;
