@@ -5,6 +5,7 @@ import { router } from "./router.js";
 import { I18nProvider } from "./shared/i18n/I18nProvider.js";
 import { PwaUpdateBanner } from "./shared/components/PwaUpdateBanner.js";
 import { Watermark } from "./shared/components/Watermark.js";
+import { ImageFocalPointBehavior } from "./shared/images/ImageFocalPointBehavior.js";
 import "./shared/styles/index.css";
 import "./shared/styles/p1.css";
 
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <I18nProvider>
       <RouterProvider router={router} />
+      <ImageFocalPointBehavior />
       <Watermark />
       <PwaUpdateBanner />
     </I18nProvider>
