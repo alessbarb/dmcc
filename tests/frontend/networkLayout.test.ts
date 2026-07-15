@@ -55,9 +55,9 @@ describe("2D network layout", () => {
     expect(positions.size).toBe(model.nodes.length);
     for (const node of model.nodes) {
       const position = positions.get(node.id);
-      expect(position, `missing layout position for ${node.id}`).toBeDefined();
-      expect(Number.isFinite(position?.x)).toBe(true);
-      expect(Number.isFinite(position?.y)).toBe(true);
+      if (!position) throw new Error(`missing layout position for ${node.id}`);
+      expect(Number.isFinite(position.x)).toBe(true);
+      expect(Number.isFinite(position.y)).toBe(true);
     }
   });
 
