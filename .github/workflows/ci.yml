@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, agent/stabilize-campaign-workspaces]
+    branches: [main]
   pull_request:
 
 permissions:
@@ -142,46 +142,3 @@ jobs:
           path: test-results
           if-no-files-found: ignore
           retention-days: 7
-
-  publish-story-lifecycle:
-    name: Publish story lifecycle hardening
-    if: github.event_name == 'push' && github.ref == 'refs/heads/agent/stabilize-campaign-workspaces' && github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-          ref: agent/stabilize-campaign-workspaces
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: package-lock.json
-
-      - run: npm ci
-
-      - name: Apply story lifecycle patch
-        run: |
-          base64 -d scripts/story-lifecycle.patch.gz.b64 | gzip -dc > /tmp/story-lifecycle.patch
-          patch -p1 < /tmp/story-lifecycle.patch
-
-      - name: Validate lifecycle hardening
-        run: |
-          npm run typecheck:all
-          npm run lint -- --quiet
-          npx vitest run tests/core/workspaceStabilization.test.ts tests/core/story.test.ts
-
-      - name: Publish lifecycle hardening
-        run: |
-          git show origin/main:.github/workflows/ci.yml > .github/workflows/ci.yml
-          rm -f .github/workflows/apply-story-lifecycle.yml
-          rm -f scripts/story-lifecycle.patch.gz.b64
-          git config user.name "dmcc-stabilization-agent"
-          git config user.email "alessbarb@gmail.com"
-          git add -A
-          git commit -m "Harden story lifecycle transitions"
-          git push origin HEAD:agent/stabilize-campaign-workspaces
