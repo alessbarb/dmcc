@@ -3,7 +3,7 @@ import { AlertTriangle } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { ToastKind } from "../../../shared/hooks/useToast.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
-import { runSessionAction } from "../sessionFormSubmit.js";
+import { errorMessage, runSessionAction } from "../sessionFormSubmit.js";
 
 export function CloseSessionForm({
   activeSession,
@@ -14,7 +14,7 @@ export function CloseSessionForm({
 }: {
   activeSession: Session;
   closeSession: (id: string, summary: string) => Promise<void>;
-  setCurrentPage: (p: string) => void;
+  setCurrentPage: (page: string) => void;
   addToast: (msg: string, kind?: ToastKind) => void;
   onClose: () => void;
 }) {
@@ -33,45 +33,34 @@ export function CloseSessionForm({
       [t("sessionPage.closingNextPrepSection"), nextPrep.trim()],
     ].filter(([, value]) => value.length > 0);
 
-    return sections
-      .map(([title, value]) => `${title}\n${value}`)
-      .join("\n\n");
+    return sections.map(([title, value]) => `${title}\n${value}`).join("\n\n");
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.SubmitEvent) => {
+    event.preventDefault();
     if (!sessionSummary.trim()) return;
+
     setBusy(true);
-    await closeSession(activeSession.sessionId, buildStructuredSummary());
-    addToast(t("toasts.sessionClosed"), "success");
-    setSessionSummary("");
-    setDecisions("");
-    setOpenThreads("");
-    setNextPrep("");
-    setBusy(false);
-    setCurrentPage("dashboard");
+    try {
+      await closeSession(activeSession.sessionId, buildStructuredSummary());
+      addToast(t("toasts.sessionClosed"), "success");
+      setSessionSummary("");
+      setDecisions("");
+      setOpenThreads("");
+      setNextPrep("");
+      setCurrentPage("dashboard");
+    } catch (error) {
+      addToast(errorMessage(error), "error");
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
-    <form onSubmit={(event) => {
-      runSessionAction(handleSubmit(event), "No se pudo cerrar la sesión.");
-    }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          padding: "12px 14px",
-          backgroundColor: "var(--color-warning-bg)",
-          borderRadius: "var(--radius-md)",
-          border: "1px solid hsla(38, 95%, 55%, 0.25)",
-          marginBottom: "20px",
-        }}
-      >
-        <AlertTriangle size={16} style={{ color: "var(--color-warning)", flexShrink: 0 }} />
-        <p style={{ fontSize: "0.87rem", color: "var(--color-warning)" }}>
-          {t("sessionPage.closingWarning")}
-        </p>
+    <form onSubmit={(event) => runSessionAction(handleSubmit(event), "No se pudo cerrar la sesión.") }>
+      <div className="session-form-warning">
+        <AlertTriangle size={16} aria-hidden="true" />
+        <p>{t("sessionPage.closingWarning")}</p>
       </div>
 
       <div className="form-group">
@@ -80,17 +69,16 @@ export function CloseSessionForm({
         </label>
         <textarea
           id="close-summary"
-          className="form-textarea"
+          className="form-textarea session-form-textarea--large"
           placeholder={t("session.exampleSummary")}
           value={sessionSummary}
-          onChange={(e) => setSessionSummary(e.target.value)}
+          onChange={(event) => setSessionSummary(event.target.value)}
           required
           autoFocus
-          style={{ minHeight: "110px" }}
         />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+      <div className="session-form-grid session-form-grid--two-columns">
         <div className="form-group">
           <label className="form-label" htmlFor="close-decisions">
             {t("sessionPage.closingDecisionsLabel")}
@@ -100,8 +88,7 @@ export function CloseSessionForm({
             className="form-textarea"
             placeholder={t("sessionPage.closingDecisionsPlaceholder")}
             value={decisions}
-            onChange={(e) => setDecisions(e.target.value)}
-            style={{ minHeight: "82px" }}
+            onChange={(event) => setDecisions(event.target.value)}
           />
         </div>
         <div className="form-group">
@@ -113,8 +100,7 @@ export function CloseSessionForm({
             className="form-textarea"
             placeholder={t("sessionPage.closingOpenThreadsPlaceholder")}
             value={openThreads}
-            onChange={(e) => setOpenThreads(e.target.value)}
-            style={{ minHeight: "82px" }}
+            onChange={(event) => setOpenThreads(event.target.value)}
           />
         </div>
       </div>
@@ -128,13 +114,12 @@ export function CloseSessionForm({
           className="form-textarea"
           placeholder={t("sessionPage.closingNextPrepPlaceholder")}
           value={nextPrep}
-          onChange={(e) => setNextPrep(e.target.value)}
-          style={{ minHeight: "74px" }}
+          onChange={(event) => setNextPrep(event.target.value)}
         />
       </div>
 
-      <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
-        <button type="button" className="btn btn-secondary" onClick={onClose}>
+      <div className="session-form-actions">
+        <button type="button" className="btn btn-secondary" disabled={busy} onClick={onClose}>
           {t("common.cancel")}
         </button>
         <button type="submit" className="btn btn-danger" disabled={busy || !sessionSummary.trim()}>
