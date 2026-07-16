@@ -1370,16 +1370,16 @@ export const en = {
     restoreButton: "Restore State",
     restoring: "Restoring…",
     restoreSuccess: "Backup restored successfully.",
-    premadeTitle: "Example campaigns",
-    premadeDescription:
+    campaignTemplateTitle: "Example campaigns",
+    campaignTemplateDescription:
       "Explore prepared campaigns bundled with DMCC. When you create a copy, it becomes yours and only your DM account can see it.",
-    premadeEmpty: "No example campaigns are available in this version.",
-    premadeDifficulty: "Difficulty: {difficulty}",
-    premadeStats: "{entities} entities · {sessions} sessions",
-    premadeTagsLabel: "Example campaign tags",
-    premadeExploreButton: "Explore",
-    premadeImportButton: "Create my copy",
-    premadeExistingCopies: "Ya tienes {count} copia(s)",
+    campaignTemplateEmpty: "No example campaigns are available in this version.",
+    campaignTemplateDifficulty: "Difficulty: {difficulty}",
+    campaignTemplateStats: "{entities} entities · {sessions} sessions",
+    campaignTemplateTagsLabel: "Example campaign tags",
+    campaignTemplateExploreButton: "Explore",
+    campaignTemplateImportButton: "Create my copy",
+    campaignTemplateExistingCopies: "Ya tienes {count} copia(s)",
     createdFromTemplate: "Desde {title}",
     campaignActions: "Actions for campaign {title}",
     renameCampaign: "Renombrar campaña {title}",
@@ -1487,7 +1487,7 @@ export const en = {
     createCampaignLabel: "Create campaign",
     selectCampaignLabel: "Select campaign",
   },
-  premadePreview: {
+  campaignTemplatePreview: {
     loading: "Loading example campaign…",
     eyebrow: "Read-only preview",
     readOnlyTitle: "You are exploring an example campaign",
@@ -1598,7 +1598,7 @@ export const en = {
       advanced: "Advanced",
     },
   },
-  premadeImport: {
+  campaignTemplateImport: {
     eyebrow: "Campaña de ejemplo",
     title: "Crear copia editable",
     description: "Se creará una copia privada de {title} para tu DM.",

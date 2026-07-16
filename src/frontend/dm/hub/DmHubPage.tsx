@@ -771,10 +771,10 @@ export function DmHubPage() {
                 </div>
               </div>
               <p className="dm-muted-text" style={{ marginTop: 0, marginBottom: "20px" }}>
-                {t("landing.premadeDescription")}
+                {t("landing.campaignTemplateDescription")}
               </p>
               {campaignTemplates.length === 0 ? (
-                <p className="dm-muted-text">{t("landing.premadeEmpty")}</p>
+                <p className="dm-muted-text">{t("landing.campaignTemplateEmpty")}</p>
               ) : (
                 <div className="dm-premades-grid">
                   {campaignTemplates.map((template) => {
@@ -790,13 +790,13 @@ export function DmHubPage() {
                         </div>
                         <p className="dm-premade-card__desc">{template.description}</p>
                         <div className="dm-premade-card__meta">
-                          <span>{t("landing.premadeDifficulty", { difficulty: template.difficulty })}</span>
+                          <span>{t("landing.campaignTemplateDifficulty", { difficulty: template.difficulty })}</span>
                           {copies.length > 0 && (
                             <span style={{ color: "var(--accent)" }}>
-                              {t("landing.premadeExistingCopies", { count: String(copies.length) })}
+                              {t("landing.campaignTemplateExistingCopies", { count: String(copies.length) })}
                             </span>
                           )}
-                          <span>{t("landing.premadeStats", {
+                          <span>{t("landing.campaignTemplateStats", {
                             entities: String(template.stats.entities),
                             sessions: String(template.stats.preparedSessions),
                           })}</span>
@@ -814,7 +814,7 @@ export function DmHubPage() {
                             style={{ flex: 1 }}
                           >
                             <Eye size={12} />
-                            {t("landing.premadeExploreButton")}
+                            {t("landing.campaignTemplateExploreButton")}
                           </button>
                           <button
                             type="button"
@@ -823,7 +823,7 @@ export function DmHubPage() {
                             disabled={loading || importingTemplateId === template.templateId}
                             style={{ flex: 1 }}
                           >
-                            {importingTemplateId === template.templateId ? "…" : t("landing.premadeImportButton")}
+                            {importingTemplateId === template.templateId ? "…" : t("landing.campaignTemplateImportButton")}
                           </button>
                         </div>
                       </article>

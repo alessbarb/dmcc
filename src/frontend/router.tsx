@@ -496,7 +496,7 @@ const onboardingRoute = createRoute({
   beforeLoad: requirePlatformRole("dm"),
   component: withSuspense(OnboardingPageLazy),
 });
-const premadePreviewRoute = createRoute({
+const campaignTemplatePreviewRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/campaign-templates/$templateId",
   component: withSuspense(CampaignTemplatePreviewPageLazy),
@@ -582,7 +582,7 @@ const routeTree = rootRoute.addChildren([
   playerJoinRoute,
   accountRoute,
   onboardingRoute,
-  premadePreviewRoute,
+  campaignTemplatePreviewRoute,
   adminOverviewRoute,
   adminCampaignsRoute,
   adminUsersRoute,

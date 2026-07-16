@@ -67,9 +67,9 @@ export function CampaignTemplateImportDialog({
   if (!template) return null;
 
   const modeOptions: Array<{ value: CampaignTemplateImportMode; title: string; desc: string }> = [
-    { value: "full", title: t("premadeImport.mode.full.title"), desc: t("premadeImport.mode.full.desc") },
-    { value: "structure", title: t("premadeImport.mode.structure.title"), desc: t("premadeImport.mode.structure.desc") },
-    { value: "sessions", title: t("premadeImport.mode.sessions.title"), desc: t("premadeImport.mode.sessions.desc") },
+    { value: "full", title: t("campaignTemplateImport.mode.full.title"), desc: t("campaignTemplateImport.mode.full.desc") },
+    { value: "structure", title: t("campaignTemplateImport.mode.structure.title"), desc: t("campaignTemplateImport.mode.structure.desc") },
+    { value: "sessions", title: t("campaignTemplateImport.mode.sessions.title"), desc: t("campaignTemplateImport.mode.sessions.desc") },
   ];
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
@@ -93,7 +93,7 @@ export function CampaignTemplateImportDialog({
         {isRunning ? (
           <div className="premade-import-loading">
             <Loader2 className="premade-import-loading__spinner" size={40} />
-            <h3 className="premade-import-loading__title">{t("premadeImport.creating")}</h3>
+            <h3 className="premade-import-loading__title">{t("campaignTemplateImport.creating")}</h3>
             <div 
               className="premade-import-loading__status" 
               role="progressbar" 
@@ -103,7 +103,7 @@ export function CampaignTemplateImportDialog({
               aria-live="polite"
             >
               {importProgress.stage 
-                ? t(`premadeImport.progress.${importProgress.stage}`, { current: importProgress.completedSteps, total: importProgress.totalSteps }) 
+                ? t(`campaignTemplateImport.progress.${importProgress.stage}`, { current: importProgress.completedSteps, total: importProgress.totalSteps })
                 : ""}
             </div>
             <div className="premade-import-progress">
@@ -120,9 +120,9 @@ export function CampaignTemplateImportDialog({
           <>
             <header className="premade-import-dialog__header">
               <div>
-                <span className="premade-import-dialog__eyebrow"><ShieldCheck size={14} />{t("premadeImport.eyebrow")}</span>
-                <h2 id="premade-import-title">{t("premadeImport.title")}</h2>
-                <p>{t("premadeImport.description", { title: template.title })}</p>
+                <span className="premade-import-dialog__eyebrow"><ShieldCheck size={14} />{t("campaignTemplateImport.eyebrow")}</span>
+                <h2 id="premade-import-title">{t("campaignTemplateImport.title")}</h2>
+                <p>{t("campaignTemplateImport.description", { title: template.title })}</p>
               </div>
               <button type="button" className="icon-button" onClick={onClose} disabled={importing} aria-label={t("common.close") || t("common.cancel")}>
                 <X size={16} />
@@ -132,12 +132,12 @@ export function CampaignTemplateImportDialog({
             <div className="premade-import-dialog__body">
               {existingCopies.length > 0 ? (
                 <section className="premade-import-existing">
-                  <strong>{t("premadeImport.existingTitle", { count: existingCopies.length })}</strong>
-                  <p>{t("premadeImport.existingDesc")}</p>
+                  <strong>{t("campaignTemplateImport.existingTitle", { count: existingCopies.length })}</strong>
+                  <p>{t("campaignTemplateImport.existingDesc")}</p>
                   <div className="premade-import-existing__list">
                     {existingCopies.map((campaign) => (
                       <button key={campaign.campaignId} type="button" className="btn btn-secondary btn-sm" onClick={() => onOpenExisting(campaign.campaignId)} disabled={importing}>
-                        {t("premadeImport.openExisting", { title: campaign.title })}
+                        {t("campaignTemplateImport.openExisting", { title: campaign.title })}
                       </button>
                     ))}
                   </div>
@@ -145,7 +145,7 @@ export function CampaignTemplateImportDialog({
               ) : null}
 
               <div className="form-group">
-                <label className="form-label" htmlFor="premade-import-title-input">{t("premadeImport.nameLabel")}</label>
+                <label className="form-label" htmlFor="premade-import-title-input">{t("campaignTemplateImport.nameLabel")}</label>
                 <input
                   id="premade-import-title-input"
                   className="form-input"
@@ -154,29 +154,29 @@ export function CampaignTemplateImportDialog({
                   disabled={importing}
                   autoFocus
                 />
-                <small className="form-hint">{t("premadeImport.nameConflictHint")}</small>
+                <small className="form-hint">{t("campaignTemplateImport.nameConflictHint")}</small>
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="premade-import-summary-input">{t("premadeImport.summaryLabel")}</label>
+                <label className="form-label" htmlFor="premade-import-summary-input">{t("campaignTemplateImport.summaryLabel")}</label>
                 <textarea
                   id="premade-import-summary-input"
                   className="form-input premade-import-dialog__textarea"
                   value={summary}
                   onChange={(event) => setSummary(event.target.value)}
-                  placeholder={t("premadeImport.summaryPlaceholder")}
+                  placeholder={t("campaignTemplateImport.summaryPlaceholder")}
                   disabled={importing}
                 />
               </div>
 
               <div className="form-group">
-                <span className="form-label">{t("premadeImport.modeLabel")}</span>
+                <span className="form-label">{t("campaignTemplateImport.modeLabel")}</span>
                 <div className="premade-import-mode-grid">
                   {modeOptions.map((option) => (
                     <label key={option.value} className={`premade-import-mode ${importMode === option.value ? "is-selected" : ""}`}>
                       <input
                         type="radio"
-                        name="premadeImportMode"
+                        name="campaignTemplateImportMode"
                         value={option.value}
                         checked={importMode === option.value}
                         onChange={() => setImportMode(option.value)}
@@ -190,12 +190,12 @@ export function CampaignTemplateImportDialog({
               </div>
 
               <section className="premade-import-assurances">
-                <p><CheckCircle2 size={16} />{t("premadeImport.privateCopy")}</p>
-                <p><CheckCircle2 size={16} />{t("premadeImport.secretsRemainPrivate")}</p>
-                <p><CheckCircle2 size={16} />{t("premadeImport.originalUntouched")}</p>
+                <p><CheckCircle2 size={16} />{t("campaignTemplateImport.privateCopy")}</p>
+                <p><CheckCircle2 size={16} />{t("campaignTemplateImport.secretsRemainPrivate")}</p>
+                <p><CheckCircle2 size={16} />{t("campaignTemplateImport.originalUntouched")}</p>
                 <label className="premade-import-checkbox">
                   <input type="checkbox" checked={openAfterCreate} onChange={(event) => setOpenAfterCreate(event.target.checked)} disabled={importing} />
-                  {t("premadeImport.openAfterCreate")}
+                  {t("campaignTemplateImport.openAfterCreate")}
                 </label>
               </section>
 
@@ -205,7 +205,7 @@ export function CampaignTemplateImportDialog({
             <footer className="premade-import-dialog__footer">
               <button type="button" className="btn btn-secondary" onClick={onClose} disabled={importing}>{t("common.cancel")}</button>
               <button type="submit" className="btn btn-primary" disabled={importing || !title.trim()}>
-                {importing ? t("premadeImport.creating") : (openAfterCreate ? t("premadeImport.createAndOpen") : t("premadeImport.createOnly"))}
+                {importing ? t("campaignTemplateImport.creating") : (openAfterCreate ? t("campaignTemplateImport.createAndOpen") : t("campaignTemplateImport.createOnly"))}
               </button>
             </footer>
           </>

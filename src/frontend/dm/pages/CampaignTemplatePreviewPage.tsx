@@ -27,75 +27,75 @@ function runPremadePreviewAction(operation: Promise<unknown>, errorMessage: stri
 type TranslateFn = (key: string, vars?: Record<string, string>) => string;
 
 const ENTITY_TYPE_LABEL_KEYS: Record<string, string> = {
-  player_character: "premadePreview.entityType.playerCharacter",
-  npc: "premadePreview.entityType.npc",
-  location: "premadePreview.entityType.location",
-  faction: "premadePreview.entityType.faction",
-  quest: "premadePreview.entityType.quest",
-  clue: "premadePreview.entityType.clue",
-  secret: "premadePreview.entityType.secret",
-  item: "premadePreview.entityType.item",
-  creature: "premadePreview.entityType.creature",
-  encounter: "premadePreview.entityType.encounter",
-  scene: "premadePreview.entityType.scene",
-  front: "premadePreview.entityType.front",
-  clock: "premadePreview.entityType.clock",
-  decision: "premadePreview.entityType.decision",
-  consequence: "premadePreview.entityType.consequence",
-  rumor: "premadePreview.entityType.rumor",
-  rule_reference: "premadePreview.entityType.ruleReference",
-  handout: "premadePreview.entityType.handout",
-  note: "premadePreview.entityType.note",
+  player_character: "campaignTemplatePreview.entityType.playerCharacter",
+  npc: "campaignTemplatePreview.entityType.npc",
+  location: "campaignTemplatePreview.entityType.location",
+  faction: "campaignTemplatePreview.entityType.faction",
+  quest: "campaignTemplatePreview.entityType.quest",
+  clue: "campaignTemplatePreview.entityType.clue",
+  secret: "campaignTemplatePreview.entityType.secret",
+  item: "campaignTemplatePreview.entityType.item",
+  creature: "campaignTemplatePreview.entityType.creature",
+  encounter: "campaignTemplatePreview.entityType.encounter",
+  scene: "campaignTemplatePreview.entityType.scene",
+  front: "campaignTemplatePreview.entityType.front",
+  clock: "campaignTemplatePreview.entityType.clock",
+  decision: "campaignTemplatePreview.entityType.decision",
+  consequence: "campaignTemplatePreview.entityType.consequence",
+  rumor: "campaignTemplatePreview.entityType.rumor",
+  rule_reference: "campaignTemplatePreview.entityType.ruleReference",
+  handout: "campaignTemplatePreview.entityType.handout",
+  note: "campaignTemplatePreview.entityType.note",
 };
 
 const RELATION_LABEL_KEYS: Record<string, string> = {
-  ally_of: "premadePreview.relationType.allyOf",
-  blocks: "premadePreview.relationType.blocks",
-  causes: "premadePreview.relationType.causes",
-  contains: "premadePreview.relationType.contains",
-  depends_on: "premadePreview.relationType.dependsOn",
-  enemy_of: "premadePreview.relationType.enemyOf",
-  hides: "premadePreview.relationType.hides",
-  knows: "premadePreview.relationType.knows",
-  leader_of: "premadePreview.relationType.leaderOf",
-  located_in: "premadePreview.relationType.locatedIn",
-  points_to: "premadePreview.relationType.pointsTo",
-  protects: "premadePreview.relationType.protects",
-  reveals: "premadePreview.relationType.reveals",
-  threatens: "premadePreview.relationType.threatens",
-  unlocks: "premadePreview.relationType.unlocks",
+  ally_of: "campaignTemplatePreview.relationType.allyOf",
+  blocks: "campaignTemplatePreview.relationType.blocks",
+  causes: "campaignTemplatePreview.relationType.causes",
+  contains: "campaignTemplatePreview.relationType.contains",
+  depends_on: "campaignTemplatePreview.relationType.dependsOn",
+  enemy_of: "campaignTemplatePreview.relationType.enemyOf",
+  hides: "campaignTemplatePreview.relationType.hides",
+  knows: "campaignTemplatePreview.relationType.knows",
+  leader_of: "campaignTemplatePreview.relationType.leaderOf",
+  located_in: "campaignTemplatePreview.relationType.locatedIn",
+  points_to: "campaignTemplatePreview.relationType.pointsTo",
+  protects: "campaignTemplatePreview.relationType.protects",
+  reveals: "campaignTemplatePreview.relationType.reveals",
+  threatens: "campaignTemplatePreview.relationType.threatens",
+  unlocks: "campaignTemplatePreview.relationType.unlocks",
 };
 
 const FACT_KIND_LABEL_KEYS: Record<string, string> = {
-  canon: "premadePreview.factKind.canon",
-  dm_secret: "premadePreview.factKind.dmSecret",
-  rumor: "premadePreview.factKind.rumor",
-  lie: "premadePreview.factKind.lie",
-  player_theory: "premadePreview.factKind.playerTheory",
-  mistake: "premadePreview.factKind.mistake",
-  retcon: "premadePreview.factKind.retcon",
-  unknown: "premadePreview.factKind.unknown",
+  canon: "campaignTemplatePreview.factKind.canon",
+  dm_secret: "campaignTemplatePreview.factKind.dmSecret",
+  rumor: "campaignTemplatePreview.factKind.rumor",
+  lie: "campaignTemplatePreview.factKind.lie",
+  player_theory: "campaignTemplatePreview.factKind.playerTheory",
+  mistake: "campaignTemplatePreview.factKind.mistake",
+  retcon: "campaignTemplatePreview.factKind.retcon",
+  unknown: "campaignTemplatePreview.factKind.unknown",
 };
 
 const CONFIDENCE_LABEL_KEYS: Record<string, string> = {
-  unconfirmed: "premadePreview.confidence.unconfirmed",
-  suspected: "premadePreview.confidence.suspected",
-  likely: "premadePreview.confidence.likely",
-  confirmed: "premadePreview.confidence.confirmed",
-  false: "premadePreview.confidence.false",
+  unconfirmed: "campaignTemplatePreview.confidence.unconfirmed",
+  suspected: "campaignTemplatePreview.confidence.suspected",
+  likely: "campaignTemplatePreview.confidence.likely",
+  confirmed: "campaignTemplatePreview.confidence.confirmed",
+  false: "campaignTemplatePreview.confidence.false",
 };
 
 const SYSTEM_LABEL_KEYS: Record<string, string> = {
-  dnd_5e: "premadePreview.system.dndSrd521",
-  pathfinder_2e: "premadePreview.system.custom",
-  shadowdark: "premadePreview.system.custom",
-  custom: "premadePreview.system.custom",
+  dnd_5e: "campaignTemplatePreview.system.dndSrd521",
+  pathfinder_2e: "campaignTemplatePreview.system.custom",
+  shadowdark: "campaignTemplatePreview.system.custom",
+  custom: "campaignTemplatePreview.system.custom",
 };
 
 const DIFFICULTY_LABEL_KEYS: Record<string, string> = {
-  starter: "premadePreview.difficulty.starter",
-  medium: "premadePreview.difficulty.medium",
-  advanced: "premadePreview.difficulty.advanced",
+  starter: "campaignTemplatePreview.difficulty.starter",
+  medium: "campaignTemplatePreview.difficulty.medium",
+  advanced: "campaignTemplatePreview.difficulty.advanced",
 };
 
 function isDefined<T>(value: T | null | undefined): value is T {
@@ -120,11 +120,11 @@ function visibilityLabel(visibility: VisibilityRule | undefined, t: TranslateFn)
   const kind = visibility?.kind ?? "dm_only";
   switch (kind) {
     case "public":
-      return t("premadePreview.visibilityPublic");
+      return t("campaignTemplatePreview.visibilityPublic");
     case "party":
-      return t("premadePreview.visibilityParty");
+      return t("campaignTemplatePreview.visibilityParty");
     case "dm_only":
-      return t("premadePreview.visibilityDmOnly");
+      return t("campaignTemplatePreview.visibilityDmOnly");
     default:
       return tokenFallback(kind);
   }
@@ -240,7 +240,7 @@ export function CampaignTemplatePreviewPage() {
   if (!authChecked || (loading && !template)) {
     return (
       <div className="premade-preview-page premade-preview-page--centered">
-        <p className="landing-muted">{t("premadePreview.loading")}</p>
+        <p className="landing-muted">{t("campaignTemplatePreview.loading")}</p>
       </div>
     );
   }
@@ -250,8 +250,8 @@ export function CampaignTemplatePreviewPage() {
       <div className="premade-preview-page premade-preview-page--centered">
         <section className="card premade-preview-error">
           <Sparkles size={28} />
-          <h1>{t("premadePreview.notFoundTitle")}</h1>
-          <p>{error || t("premadePreview.notFoundDesc")}</p>
+          <h1>{t("campaignTemplatePreview.notFoundTitle")}</h1>
+          <p>{error || t("campaignTemplatePreview.notFoundDesc")}</p>
           <button
             type="button"
             className="btn btn-secondary"
@@ -260,7 +260,7 @@ export function CampaignTemplatePreviewPage() {
             }}
           >
             <ArrowLeft size={14} />
-            {t("premadePreview.backToCampaigns")}
+            {t("campaignTemplatePreview.backToCampaigns")}
           </button>
         </section>
       </div>
@@ -278,22 +278,22 @@ export function CampaignTemplatePreviewPage() {
           }}
         >
           <ArrowLeft size={14} />
-          {t("premadePreview.backToCampaigns")}
+          {t("campaignTemplatePreview.backToCampaigns")}
         </button>
 
         <div className="premade-preview-hero__body">
           <div className="premade-preview-hero__eyebrow">
             <Eye size={16} />
-            {t("premadePreview.eyebrow")}
+            {t("campaignTemplatePreview.eyebrow")}
           </div>
           <h1>{template.title}</h1>
           <p>{template.pitch || template.summary || template.description}</p>
           <div className="premade-preview-hero__meta">
             <span>{labelFor(template.system, SYSTEM_LABEL_KEYS, t)}</span>
             <span>{labelFor(template.difficulty, DIFFICULTY_LABEL_KEYS, t)}</span>
-            <span>{t("premadePreview.version", { version: template.version })}</span>
+            <span>{t("campaignTemplatePreview.version", { version: template.version })}</span>
           </div>
-          <div className="premade-template-card__tags" aria-label={t("landing.premadeTagsLabel")}>
+          <div className="premade-template-card__tags" aria-label={t("landing.campaignTemplateTagsLabel")}>
             {template.tags.map((tag) => (
               <span key={tag}>{tag}</span>
             ))}
@@ -303,7 +303,7 @@ export function CampaignTemplatePreviewPage() {
         <div className="premade-preview-hero__actions">
           <button type="button" className="btn btn-primary" onClick={() => setImportDialogOpen(true)} disabled={importing || loading}>
             <Wand2 size={16} />
-            {importing ? t("premadePreview.importing") : t("premadePreview.createCopy")}
+            {importing ? t("campaignTemplatePreview.importing") : t("campaignTemplatePreview.createCopy")}
           </button>
         </div>
       </header>
@@ -311,39 +311,39 @@ export function CampaignTemplatePreviewPage() {
       <section className="premade-readonly-banner" role="note">
         <Lock size={18} />
         <div>
-          <strong>{t("premadePreview.readOnlyTitle")}</strong>
-          <p>{t("premadePreview.readOnlyDesc")}</p>
+          <strong>{t("campaignTemplatePreview.readOnlyTitle")}</strong>
+          <p>{t("campaignTemplatePreview.readOnlyDesc")}</p>
         </div>
       </section>
 
-      <section className="premade-preview-stats" aria-label={t("premadePreview.statsLabel")}>
+      <section className="premade-preview-stats" aria-label={t("campaignTemplatePreview.statsLabel")}>
         <article className="card">
           <Layers size={18} />
           <strong>{template.entities.filter((entity) => !isGuideEntity(entity)).length}</strong>
-          <span>{t("premadePreview.entities")}</span>
+          <span>{t("campaignTemplatePreview.entities")}</span>
         </article>
         <article className="card">
           <GitFork size={18} />
           <strong>{template.relations.length}</strong>
-          <span>{t("premadePreview.relations")}</span>
+          <span>{t("campaignTemplatePreview.relations")}</span>
         </article>
         <article className="card">
           <BookOpen size={18} />
           <strong>{template.sessions.length}</strong>
-          <span>{t("premadePreview.sessions")}</span>
+          <span>{t("campaignTemplatePreview.sessions")}</span>
         </article>
         <article className="card">
           <ScrollText size={18} />
           <strong>{template.facts.length}</strong>
-          <span>{t("premadePreview.facts")}</span>
+          <span>{t("campaignTemplatePreview.facts")}</span>
         </article>
       </section>
 
       <div className="premade-editorial-grid">
         <section className="card premade-preview-card premade-editorial-card">
           <div className="premade-preview-section-heading">
-            <h2>{t("premadePreview.whyTitle")}</h2>
-            <span>{t("premadePreview.whyDesc")}</span>
+            <h2>{t("campaignTemplatePreview.whyTitle")}</h2>
+            <span>{t("campaignTemplatePreview.whyDesc")}</span>
           </div>
           <p>{template.recommendedFor}</p>
           <ul className="premade-preview-check-list">
@@ -358,8 +358,8 @@ export function CampaignTemplatePreviewPage() {
 
         <section className="card premade-preview-card premade-editorial-card">
           <div className="premade-preview-section-heading">
-            <h2>{t("premadePreview.includesTitle")}</h2>
-            <span>{t("premadePreview.includesDesc")}</span>
+            <h2>{t("campaignTemplatePreview.includesTitle")}</h2>
+            <span>{t("campaignTemplatePreview.includesDesc")}</span>
           </div>
           <ul className="premade-preview-check-list">
             {(template.includedMaterial ?? []).map((material) => (
@@ -376,7 +376,7 @@ export function CampaignTemplatePreviewPage() {
         <section className="card premade-preview-card premade-quickstart-card">
           <div className="premade-preview-section-heading">
             <h2>{template.quickStart.title}</h2>
-            <span>{t("premadePreview.quickStartDesc")}</span>
+            <span>{t("campaignTemplatePreview.quickStartDesc")}</span>
           </div>
           <ol>
             {template.quickStart.steps.map((step) => (
@@ -389,8 +389,8 @@ export function CampaignTemplatePreviewPage() {
       <div className="premade-preview-grid">
         <section className="card premade-preview-card premade-preview-card--wide">
           <div className="premade-preview-section-heading">
-            <h2>{t("premadePreview.entityMapTitle")}</h2>
-            <span>{t("premadePreview.entityMapDesc")}</span>
+            <h2>{t("campaignTemplatePreview.entityMapTitle")}</h2>
+            <span>{t("campaignTemplatePreview.entityMapDesc")}</span>
           </div>
           <div className="premade-preview-entity-groups">
             {groupedEntities.map(([type, entities]) => (
@@ -405,14 +405,14 @@ export function CampaignTemplatePreviewPage() {
         {guideEntities.length > 0 ? (
           <section className="card premade-preview-card">
             <div className="premade-preview-section-heading">
-              <h2>{t("premadePreview.guideTitle")}</h2>
-              <span>{t("premadePreview.guideDesc")}</span>
+              <h2>{t("campaignTemplatePreview.guideTitle")}</h2>
+              <span>{t("campaignTemplatePreview.guideDesc")}</span>
             </div>
             <div className="premade-preview-list">
               {guideEntities.map((entity) => (
                 <article key={entity.entityId}>
                   <strong>{entity.title}</strong>
-                  <p>{entity.summary || entity.content || t("premadePreview.noSummary")}</p>
+                  <p>{entity.summary || entity.content || t("campaignTemplatePreview.noSummary")}</p>
                 </article>
               ))}
             </div>
@@ -421,16 +421,16 @@ export function CampaignTemplatePreviewPage() {
 
         <section className="card premade-preview-card">
           <div className="premade-preview-section-heading">
-            <h2>{t("premadePreview.sessionsTitle")}</h2>
-            <span>{t("premadePreview.sessionsDesc")}</span>
+            <h2>{t("campaignTemplatePreview.sessionsTitle")}</h2>
+            <span>{t("campaignTemplatePreview.sessionsDesc")}</span>
           </div>
           <div className="premade-preview-list">
             {template.sessions.map((session) => (
               <article key={session.sessionId}>
                 <strong>{session.title}</strong>
-                <p>{session.prep?.summary || session.prep?.openingPrompt || t("premadePreview.noSummary")}</p>
+                <p>{session.prep?.summary || session.prep?.openingPrompt || t("campaignTemplatePreview.noSummary")}</p>
                 <span>
-                  {t("premadePreview.sessionPrepared", {
+                  {t("campaignTemplatePreview.sessionPrepared", {
                     goals: String(session.prep?.goals?.length ?? 0),
                     checklist: String(session.prep?.checklist?.length ?? 0),
                   })}
@@ -442,8 +442,8 @@ export function CampaignTemplatePreviewPage() {
 
         <section className="card premade-preview-card">
           <div className="premade-preview-section-heading">
-            <h2>{t("premadePreview.featuredEntitiesTitle")}</h2>
-            <span>{t("premadePreview.featuredEntitiesDesc")}</span>
+            <h2>{t("campaignTemplatePreview.featuredEntitiesTitle")}</h2>
+            <span>{t("campaignTemplatePreview.featuredEntitiesDesc")}</span>
           </div>
           <div className="premade-preview-list premade-preview-list--compact">
             {featuredEntities.map((entity) => (
@@ -461,8 +461,8 @@ export function CampaignTemplatePreviewPage() {
 
         <section className="card premade-preview-card">
           <div className="premade-preview-section-heading">
-            <h2>{t("premadePreview.factsTitle")}</h2>
-            <span>{t("premadePreview.factsDesc")}</span>
+            <h2>{t("campaignTemplatePreview.factsTitle")}</h2>
+            <span>{t("campaignTemplatePreview.factsDesc")}</span>
           </div>
           <div className="premade-preview-list premade-preview-list--compact">
             {featuredFacts.map((fact) => (
@@ -480,8 +480,8 @@ export function CampaignTemplatePreviewPage() {
 
         <section className="card premade-preview-card">
           <div className="premade-preview-section-heading">
-            <h2>{t("premadePreview.relationsTitle")}</h2>
-            <span>{t("premadePreview.relationsDesc")}</span>
+            <h2>{t("campaignTemplatePreview.relationsTitle")}</h2>
+            <span>{t("campaignTemplatePreview.relationsDesc")}</span>
           </div>
           <div className="premade-preview-list premade-preview-list--compact">
             {featuredRelations.map((relation) => {
@@ -489,8 +489,8 @@ export function CampaignTemplatePreviewPage() {
               const target = entityById.get(relation.targetEntityId)?.title;
               return (
                 <article key={relation.relationId}>
-                  <strong>{relation.description || t("premadePreview.relationFallback", { source: source ?? relation.sourceEntityId, target: target ?? relation.targetEntityId })}</strong>
-                  <p>{source && target ? t("premadePreview.relationBetween", { source, target }) : labelFor(relation.relationType, RELATION_LABEL_KEYS, t)}</p>
+                  <strong>{relation.description || t("campaignTemplatePreview.relationFallback", { source: source ?? relation.sourceEntityId, target: target ?? relation.targetEntityId })}</strong>
+                  <p>{source && target ? t("campaignTemplatePreview.relationBetween", { source, target }) : labelFor(relation.relationType, RELATION_LABEL_KEYS, t)}</p>
                   <span>{labelFor(relation.relationType, RELATION_LABEL_KEYS, t)} · {visibilityLabel(relation.visibility, t)}</span>
                 </article>
               );
@@ -501,12 +501,12 @@ export function CampaignTemplatePreviewPage() {
 
       <section className="premade-preview-bottom-cta card">
         <div>
-          <h2>{t("premadePreview.bottomCtaTitle")}</h2>
-          <p>{t("premadePreview.bottomCtaDesc")}</p>
+          <h2>{t("campaignTemplatePreview.bottomCtaTitle")}</h2>
+          <p>{t("campaignTemplatePreview.bottomCtaDesc")}</p>
         </div>
         <button type="button" className="btn btn-primary" onClick={() => setImportDialogOpen(true)} disabled={importing || loading}>
           <Wand2 size={16} />
-          {importing ? t("premadePreview.importing") : t("premadePreview.createCopy")}
+          {importing ? t("campaignTemplatePreview.importing") : t("campaignTemplatePreview.createCopy")}
         </button>
       </section>
 
