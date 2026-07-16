@@ -12,6 +12,7 @@ import type {
 import { detectBrowserLocale } from "@shared/i18n/index.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { readStoredLocale } from "../../shared/i18n/localeStorage.js";
+import { readCampaignTemplatesFromDashboard } from "./campaignTemplateDashboardCompatibility.js";
 
 const DEFAULT_CAMPAIGN_COVER = "/assets/campaigns/default-campaign-cover.jpg";
 
@@ -254,11 +255,7 @@ function normalizeRemoteDashboard(
   const activeTables = Array.isArray(data.activeTables)
     ? (data.activeTables.map((x: unknown) => normalizeActiveTable(x, t)).filter((x): x is DmHubActiveTable => x !== null))
     : buildActiveTables(campaigns, t);
-  const campaignTemplates = Array.isArray(data.premadeTemplates)
-    ? (data.premadeTemplates as CampaignTemplateSummary[])
-    : Array.isArray(data.premades)
-      ? (data.premades as CampaignTemplateSummary[])
-      : fallbackCampaignTemplates;
+  const campaignTemplates = readCampaignTemplatesFromDashboard(data, fallbackCampaignTemplates);
 
   return {
     campaigns,
