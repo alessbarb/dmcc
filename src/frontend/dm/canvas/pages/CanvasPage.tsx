@@ -11,6 +11,7 @@ import { SessionPrepForm } from "../components/SessionPrepForm.js";
 import { CanvasBoardDialogs } from "../components/CanvasBoardDialogs.js";
 import { CanvasPageHeader } from "../components/CanvasPageHeader.js";
 import { MysteryHealthPanel } from "../components/MysteryHealthPanel.js";
+import { CanvasNarrativeLintDrawer } from "../components/CanvasNarrativeLintDrawer.js";
 import { Plus, Layout, Shield, Play, MoreHorizontal, SlidersHorizontal, X, Search, ListPlus, MousePointer2, Hand, StickyNote, Frame, Maximize2, ZoomIn, ZoomOut, CalendarDays } from "lucide-react";
 import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
@@ -26,7 +27,6 @@ import type { Entity, Relation, Session } from "../../../shared/stores/campaignS
 import { getCanvasTemplate } from "../templates/index.js";
 import { applyCanvasTemplate } from "../services/applyCanvasTemplate.js";
 import { parseAndImportText } from "../services/importCanvasText.js";
-import { runNarrativeLint } from "../services/canvasNarrativeLint.js";
 
 type CanvasMobilePanel = "search" | "add" | "detail" | "more" | null;
 
@@ -797,72 +797,18 @@ export function CanvasPage() {
             />
           )}
 
-          {/* Narrative Lint Drawer Panel */}
-          {!isPlayerView && isLintOpen && (
-            <div className="canvas-inspector canvas-lint-drawer">
-              <div className="inspector-header">
-                <h2>🧠 Consistencia Narrativa</h2>
-                <button onClick={() => setIsLintOpen(false)} className="inspector-close-btn">
-                  <X size={16} />
-                </button>
-              </div>
-              <div className="inspector-content">
-                {(() => {
-                  if (!campaignState) return null;
-                  const issues = runNarrativeLint(campaignState, activeCanvas, t);
-                  if (issues.length === 0) {
-                    return (
-                      <div style={{ textAlign: "center", padding: "20px", color: "var(--theme-text-secondary)" }}>
-                        <span style={{ fontSize: "2rem" }}>✨</span>
-                        <p style={{ marginTop: "10px", color: "var(--success)", fontWeight: "600" }}>¡Todo perfecto!</p>
-                        <p style={{ fontSize: "0.85rem" }}>No se han detectado problemas de consistencia narrativa en tu canvas.</p>
-                      </div>
-                    );
-                  }
-                  return (
-                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                      <p style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
-                        Se han encontrado <strong>{issues.length}</strong> detalles a revisar:
-                      </p>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "10px", overflowY: "auto", maxHeight: "calc(100vh - 160px)" }}>
-                        {issues.map((iss) => (
-                          <div
-                            key={iss.id}
-                            style={{
-                              padding: "10px",
-                              borderRadius: "var(--theme-shapes-radius-small)",
-                              borderLeft: `3px solid ${iss.type === "error" ? "var(--theme-feedback-danger-foreground)" : iss.type === "warning" ? "var(--theme-feedback-warning-foreground)" : "var(--theme-accents-primary-foreground)"}`,
-                              backgroundColor: "var(--theme-surfaces-interactive)",
-                              fontSize: "0.82rem",
-                              lineHeight: "1.4"
-                            }}
-                          >
-                            <div style={{ fontWeight: "600", marginBottom: "4px", color: iss.type === "error" ? "var(--theme-feedback-danger-foreground)" : iss.type === "warning" ? "var(--theme-feedback-warning-foreground)" : "var(--theme-text-primary)" }}>
-                              {iss.type === "error" ? t("canvas.node.statusCritical") : iss.type === "warning" ? "⚠️ Advertencia" : "💡 Sugerencia"}
-                            </div>
-                            <div>{iss.message}</div>
-                            {iss.entityId && (
-                              <button
-                                onClick={() => {
-                                  setSelectedNodeId(activeCanvas.nodes.find((n: CanvasNode) => n.entityId === iss.entityId)?.id || null);
-                                  setSelectedEdgeId(null);
-                                }}
-                                className="btn btn-link btn-xs"
-                                style={{ padding: 0, marginTop: "6px", fontSize: "10px", color: "var(--theme-accents-primary-foreground)", border: "none", background: "transparent", cursor: "pointer" }}
-                              >
-                                Inspeccionar elemento
-                              </button>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
-            </div>
+          {!isPlayerView && isLintOpen && campaignState && (
+            <CanvasNarrativeLintDrawer
+              activeCanvas={activeCanvas}
+              campaignState={campaignState}
+              onClose={() => setIsLintOpen(false)}
+              onSelectEntity={(entityId) => {
+                setSelectedNodeId(activeCanvas.nodes.find((node: CanvasNode) => node.entityId === entityId)?.id || null);
+                setSelectedEdgeId(null);
+              }}
+              t={t}
+            />
           )}
-
 
           {!isPlayerView && deviceMode === "mobile" && (
             <>
