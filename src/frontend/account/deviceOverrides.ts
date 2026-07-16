@@ -2,6 +2,7 @@ import { getTheme } from "./themeRegistry.js";
 import { getTypographySet } from "./typographyRegistry.js";
 
 export const DEVICE_PREFERENCES_KEY = "dmcc.account.device-preferences.v1";
+export const DEVICE_PREFERENCES_CHANGED_EVENT = "dmcc:device-preferences-changed";
 
 export type DeviceOverrides = {
   themeId?: string;
@@ -41,4 +42,9 @@ export function readDeviceOverrides(storage: ReadStorage): DeviceOverrides {
 
 export function writeDeviceOverrides(storage: WriteStorage, value: DeviceOverrides): void {
   storage.setItem(DEVICE_PREFERENCES_KEY, JSON.stringify(value));
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent<DeviceOverrides>(DEVICE_PREFERENCES_CHANGED_EVENT, {
+      detail: value,
+    }));
+  }
 }
