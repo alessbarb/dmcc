@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { X, AlertTriangle } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
+import { themeCss } from "@frontend/shared/theme/themeCssVariables.js";
 
 interface RelationCreateModalProps {
   isOpen: boolean;
@@ -169,9 +170,24 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
             </div>
           </div>
           {error?.includes("Duplicate relation") && (
-            <div style={{ padding: "10px 16px", backgroundColor: "hsl(30, 60%, 15%)", borderTop: "1px solid hsl(30, 60%, 30%)", display: "flex", alignItems: "center", gap: "10px", fontSize: "0.85rem" }}>
-              <AlertTriangle size={14} style={{ color: "hsl(30, 80%, 60%)", flexShrink: 0 }} />
-              <span style={{ color: "hsl(30, 80%, 70%)" }}>{t("relationModal.duplicateWarning")}</span>
+            <div
+              style={{
+                padding: "10px 16px",
+                backgroundColor: themeCss.feedback.warning.background,
+                borderTop: `1px solid ${themeCss.feedback.warning.border}`,
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                fontSize: "0.85rem",
+              }}
+            >
+              <AlertTriangle
+                size={14}
+                style={{ color: themeCss.feedback.warning.foreground, flexShrink: 0 }}
+              />
+              <span style={{ color: themeCss.feedback.warning.foreground }}>
+                {t("relationModal.duplicateWarning")}
+              </span>
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
