@@ -18,7 +18,6 @@ import {
   ArrowRight,
   Settings,
   Trash2,
-  Eye,
   Users,
   Shield,
   Calendar,
@@ -32,6 +31,7 @@ import {
   Bell,
   ChevronDown,
 } from "lucide-react";
+import { CampaignTemplateLibrarySection } from "./CampaignTemplateLibrarySection.js";
 import { logout } from "../../shared/auth/authClient.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 import { AccountModal } from "../../account/AccountModal.js";
@@ -762,76 +762,15 @@ export function DmHubPage() {
               </section>
             </div>
 
-            {/* ── AVENTURAS PREPARADAS ── */}
-            <section id="campaign-template-library-section" className="dm-panel">
-              <div className="dm-panel__header">
-                <div className="dm-panel__title-group">
-                  <Sparkles size={17} style={{ color: "var(--accent)" }} />
-                  <h2 className="dm-panel__title">Aventuras preparadas</h2>
-                </div>
-              </div>
-              <p className="dm-muted-text" style={{ marginTop: 0, marginBottom: "20px" }}>
-                {t("landing.campaignTemplateDescription")}
-              </p>
-              {campaignTemplates.length === 0 ? (
-                <p className="dm-muted-text">{t("landing.campaignTemplateEmpty")}</p>
-              ) : (
-                <div className="dm-campaign-templates-grid">
-                  {campaignTemplates.map((template) => {
-                    const copies = campaigns.filter((c) => c.metadata?.createdFromTemplateId === template.templateId);
-                    return (
-                      <article key={template.templateId} className="dm-campaign-template-card">
-                        <div className="dm-campaign-template-card__header">
-                          <div>
-                            <h3 className="dm-campaign-template-card__title">{template.title}</h3>
-                            <p className="dm-campaign-template-card__subtitle">{template.subtitle}</p>
-                          </div>
-                          <span className="dm-campaign-template-card__version">v{template.version}</span>
-                        </div>
-                        <p className="dm-campaign-template-card__desc">{template.description}</p>
-                        <div className="dm-campaign-template-card__meta">
-                          <span>{t("landing.campaignTemplateDifficulty", { difficulty: template.difficulty })}</span>
-                          {copies.length > 0 && (
-                            <span style={{ color: "var(--accent)" }}>
-                              {t("landing.campaignTemplateExistingCopies", { count: String(copies.length) })}
-                            </span>
-                          )}
-                          <span>{t("landing.campaignTemplateStats", {
-                            entities: String(template.stats.entities),
-                            sessions: String(template.stats.preparedSessions),
-                          })}</span>
-                        </div>
-                        <div className="dm-campaign-template-card__tags">
-                          {template.tags.slice(0, 4).map((tag) => (
-                            <span key={tag} className="dm-tag">{tag}</span>
-                          ))}
-                        </div>
-                        <div className="dm-campaign-template-card__actions">
-                          <button
-                            type="button"
-                            className="btn btn-secondary btn-sm"
-                            onClick={() => navigateToCampaignTemplate(template.templateId)}
-                            style={{ flex: 1 }}
-                          >
-                            <Eye size={12} />
-                            {t("landing.campaignTemplateExploreButton")}
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-primary btn-sm"
-                            onClick={() => openCampaignTemplateImportDialog(template.templateId)}
-                            disabled={loading || importingTemplateId === template.templateId}
-                            style={{ flex: 1 }}
-                          >
-                            {importingTemplateId === template.templateId ? "…" : t("landing.campaignTemplateImportButton")}
-                          </button>
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
+            <CampaignTemplateLibrarySection
+              templates={campaignTemplates}
+              campaigns={campaigns}
+              loading={loading}
+              importingTemplateId={importingTemplateId}
+              t={t}
+              onExplore={navigateToCampaignTemplate}
+              onImport={openCampaignTemplateImportDialog}
+            />
           </div>
 
           {/* ──────────── RIGHT COLUMN (30%) ──────────── */}
