@@ -108,21 +108,21 @@
   backdrop-filter: blur(6px) saturate(84%);
 }
 
-/* Let the artwork continue into the first data row before becoming fully solid. */
+/* Keep the data layout in normal flow. The artwork is only suggested through a short
+   translucent transition, so the visibility row never slides under the tab rail. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-body {
   position: relative;
   z-index: 2;
-  margin-top: -72px !important;
-  padding-top: 48px !important;
+  margin-top: 0 !important;
+  padding-top: clamp(24px, 2.5vw, 34px) !important;
   background:
     linear-gradient(
       to bottom,
-      rgba(12, 15, 28, 0.18) 0,
-      color-mix(in srgb, var(--bg-card) 58%, transparent) 44px,
-      color-mix(in srgb, var(--bg-card) 88%, transparent) 96px,
-      var(--bg-card) 156px
+      color-mix(in srgb, rgba(12, 15, 28, 0.78) 72%, transparent) 0,
+      color-mix(in srgb, var(--bg-card) 94%, transparent) 42px,
+      var(--bg-card) 88px
     ) !important;
 }
 
@@ -144,8 +144,8 @@
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > .modal-body {
-    margin-top: -52px !important;
-    padding-top: 44px !important;
+    margin-top: 0 !important;
+    padding-top: 24px !important;
   }
 }
 
@@ -167,7 +167,7 @@
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > .modal-body {
-    margin-top: -36px !important;
-    padding-top: 38px !important;
+    margin-top: 0 !important;
+    padding-top: 20px !important;
   }
 }
