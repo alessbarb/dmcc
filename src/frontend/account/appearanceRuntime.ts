@@ -1,12 +1,27 @@
 import type { DeviceOverrides } from "./deviceOverrides.js";
-import { readDeviceOverrides } from "./deviceOverrides.js";
+import {
+  DEVICE_PREFERENCES_CHANGED_EVENT,
+  readDeviceOverrides,
+} from "./deviceOverrides.js";
 import { createThemeController, type ThemeController } from "./themeRuntime.js";
+import { getTypographySet } from "./typographyRegistry.js";
 
 let documentController: ThemeController | undefined;
+let listeningForChanges = false;
 
 function getDocumentController(): ThemeController {
   documentController ??= createThemeController(document.documentElement, window);
   return documentController;
+}
+
+function handleDevicePreferencesChanged(event: Event): void {
+  applyDeviceAppearance((event as CustomEvent<DeviceOverrides>).detail);
+}
+
+function ensureChangeListener(): void {
+  if (listeningForChanges) return;
+  window.addEventListener(DEVICE_PREFERENCES_CHANGED_EVENT, handleDevicePreferencesChanged);
+  listeningForChanges = true;
 }
 
 export function applyDeviceAppearance(overrides: DeviceOverrides): void {
@@ -16,6 +31,11 @@ export function applyDeviceAppearance(overrides: DeviceOverrides): void {
   });
 
   const root = document.documentElement;
+  const typography = getTypographySet(overrides.typographySetId ?? "cinzel-outfit");
+  root.style.setProperty("--font-display", typography.headingFamily);
+  root.style.setProperty("--font-sans", typography.bodyFamily);
+  root.style.setProperty("--font-mono", typography.monoFamily);
+  root.dataset.typography = typography.id;
   root.dataset.density = overrides.density ?? "comfortable";
   root.dataset.enhancedContrast = String(Boolean(overrides.enhancedContrast));
   root.dataset.reducedMotion = String(Boolean(overrides.reducedMotion));
@@ -28,10 +48,15 @@ export function applyDeviceAppearance(overrides: DeviceOverrides): void {
 }
 
 export function bootstrapDeviceAppearance(storage: Pick<Storage, "getItem"> = localStorage): void {
+  ensureChangeListener();
   applyDeviceAppearance(readDeviceOverrides(storage));
 }
 
 export function disposeDeviceAppearance(): void {
   documentController?.dispose();
   documentController = undefined;
+  if (listeningForChanges) {
+    window.removeEventListener(DEVICE_PREFERENCES_CHANGED_EVENT, handleDevicePreferencesChanged);
+    listeningForChanges = false;
+  }
 }
