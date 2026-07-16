@@ -159,17 +159,6 @@ export async function fetchAdminCampaigns(params: { status?: string; query?: str
   return res.json();
 }
 
-async function fetchAdminCampaignDetails(campaignId: string): Promise<AdminCampaignDetails> {
-  const res = await apiFetch(`/api/admin/campaigns/${campaignId}`);
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch campaign details"));
-  return res.json();
-}
-
-async function moveCampaignToTrash(campaignId: string): Promise<void> {
-  const res = await apiFetch(`/api/admin/campaigns/${campaignId}/trash`, { init: { method: "PUT" } });
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to trash campaign"));
-}
-
 export async function restoreCampaign(campaignId: string): Promise<void> {
   const res = await apiFetch(`/api/admin/campaigns/${campaignId}/restore`, { init: { method: "POST" } });
   if (!res.ok) throw new Error(await readApiError(res, "Failed to restore campaign"));
@@ -183,12 +172,6 @@ export async function purgeCampaign(campaignId: string, currentPassword: string)
   return res.json();
 }
 
-async function purgeIncompleteImport(campaignId: string): Promise<{ success: boolean; outcome: string }> {
-  const res = await apiFetch(`/api/admin/campaigns/${campaignId}/purge-incomplete-import`, { init: { method: "POST" } });
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to purge incomplete import"));
-  return res.json();
-}
-
 export async function fetchPurgeJobs(params: { status?: string; cursor?: string; limit?: number }): Promise<{ jobs: PurgeJobSummary[]; nextCursor: string | null }> {
   const q = new URLSearchParams();
   if (params.status) q.set("status", params.status);
@@ -196,12 +179,6 @@ export async function fetchPurgeJobs(params: { status?: string; cursor?: string;
   if (params.cursor) q.set("cursor", params.cursor);
   const res = await apiFetch(`/api/admin/purge-jobs?${q.toString()}`);
   if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch purge jobs"));
-  return res.json();
-}
-
-async function fetchPurgeJobDetails(jobId: string): Promise<PurgeJobSummary> {
-  const res = await apiFetch(`/api/admin/purge-jobs/${jobId}`);
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch purge job details"));
   return res.json();
 }
 
@@ -218,12 +195,6 @@ export async function fetchAdminUsers(params: { query?: string; status?: string;
   if (params.cursor) q.set("cursor", params.cursor);
   const res = await apiFetch(`/api/admin/users?${q.toString()}`);
   if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch admin users"));
-  return res.json();
-}
-
-async function fetchAdminUserDetails(userId: string): Promise<AdminUserSummary> {
-  const res = await apiFetch(`/api/admin/users/${userId}`);
-  if (!res.ok) throw new Error(await readApiError(res, "Failed to fetch user details"));
   return res.json();
 }
 

@@ -1,5 +1,5 @@
-import type { Entity, Fact, Relation, Session } from "../../../shared/stores/campaignStore.js";
-import type { MobileCampaignStateLike, MobileEntitySummary, MobileFactSummary, MobileRelationSummary, MobileSessionSummary } from "../types.js";
+import type { Entity, Session } from "../../../shared/stores/campaignStore.js";
+import type { MobileCampaignStateLike, MobileEntitySummary, MobileSessionSummary } from "../types.js";
 
 export const activeItems = <T>(items: T[] | undefined): T[] => (items ?? []).filter((item) => !("archived" in (item as object)) || !(item as { archived?: boolean }).archived);
 
@@ -11,14 +11,6 @@ export const toEntitySummary = (entity: Entity): MobileEntitySummary => ({
   status: entity.status,
   importance: entity.importance,
   visibility: entity.visibility,
-});
-
-const toFactSummary = (fact: Fact): MobileFactSummary => ({
-  id: fact.factId,
-  statement: fact.statement,
-  kind: fact.kind,
-  confidence: fact.confidence,
-  visibility: fact.visibility,
 });
 
 export const toSessionSummary = (session: Session): MobileSessionSummary => ({
@@ -35,24 +27,4 @@ export const findActiveSession = (state: MobileCampaignStateLike, preferredSessi
   return sessions.find((session) => session.sessionId === preferredSessionId)
     ?? sessions.find((session) => session.status === "active" || session.status === "in_progress")
     ?? sessions.find((session) => !session.endedAt);
-};
-
-const buildRelationSummaries = (state: MobileCampaignStateLike, entityId: string): MobileRelationSummary[] => {
-  const entitiesById = new Map((state.entities ?? []).map((entity) => [entity.entityId, entity]));
-  return activeItems(state.relations)
-    .filter((relation) => relation.sourceEntityId === entityId || relation.targetEntityId === entityId)
-    .map((relation: Relation) => {
-      const outgoing = relation.sourceEntityId === entityId;
-      const targetEntityId = outgoing ? relation.targetEntityId : relation.sourceEntityId;
-      return {
-        id: relation.relationId,
-        sourceEntityId: relation.sourceEntityId,
-        targetEntityId: relation.targetEntityId,
-        targetTitle: entitiesById.get(targetEntityId)?.title ?? targetEntityId,
-        relationType: relation.relationType,
-        direction: outgoing ? "outgoing" : "incoming",
-        visibility: relation.visibility,
-        status: relation.status,
-      };
-    });
 };
