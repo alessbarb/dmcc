@@ -53,7 +53,7 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const metadata = record(selectedEntity.metadata);
-  const campaignId = (campaignState.campaign as { campaignId?: string } | undefined)?.campaignId;
+  const campaignId = campaignState.campaignId;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -64,10 +64,6 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
   }, [onClose]);
 
   useEffect(() => {
-    if (!campaignId) {
-      setLoading(false);
-      return;
-    }
     const controller = new AbortController();
     setLoading(true);
     setError(null);
@@ -107,12 +103,14 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
     ["INT", firstValue(live.intelligence, metadata.intelligence)],
     ["SAB", firstValue(live.wisdom, metadata.wisdom)],
     ["CAR", firstValue(live.charisma, metadata.charisma)],
-  ];
+  ] as const;
   const hasAbilities = abilities.some(([, value]) => value !== undefined && value !== null && value !== "");
   const hasBasics = Object.values(basics).some((value) => value !== undefined && value !== null && value !== "");
 
   return (
-    <div className="entity-detail-overlay" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div className="entity-detail-overlay" role="presentation" onMouseDown={(event) => {
+      if (event.target === event.currentTarget) onClose();
+    }}>
       <section className="player-character-detail" role="dialog" aria-modal="true" aria-labelledby="player-character-title">
         <header className="player-character-detail__header">
           <div>
@@ -168,7 +166,7 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
             <section className="player-character-detail__section">
               <h3>Atributos</h3>
               <div className="player-character-detail__abilities">
-                {abilities.map(([label, value]) => <div key={String(label)}><span>{label}</span><strong>{text(value)}</strong></div>)}
+                {abilities.map(([label, value]) => <div key={label}><span>{label}</span><strong>{text(value)}</strong></div>)}
               </div>
             </section>
           )}
