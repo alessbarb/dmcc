@@ -111,27 +111,6 @@ export function revokeAllSessions(): Promise<{ revoked: true }> {
   return request("/api/account/sessions", { method: "DELETE" });
 }
 
-export function changePassword(payload: {
-  currentPassword: string;
-  newPassword: string;
-}): Promise<{ ok: true }> {
-  return request("/api/auth/password/change", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-}
-
-export async function regenerateRecoveryCodes(currentPassword: string): Promise<string[]> {
-  return (
-    await request<{ codes: string[] }>("/api/auth/recovery-codes/regenerate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentPassword }),
-    })
-  ).codes;
-}
-
 export type DeletionBlocker = {
   campaignId: string;
   reason: "sole_responsible_dm";
