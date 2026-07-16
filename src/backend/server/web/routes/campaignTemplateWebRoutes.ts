@@ -13,6 +13,7 @@ import {
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { ensureDefaultWorkspace, listAccessibleCampaigns } from "../webAccess.js";
 import { getRequiredWebUser } from "../webSession.js";
+import { requireIdempotencyKey } from "../idempotencyKey.js";
 
 type CampaignTemplateImportMode = "full" | "structure" | "sessions";
 type ImportBody = {
@@ -334,10 +335,12 @@ export async function registerCampaignTemplateWebRoutes(server: FastifyInstance)
         return { error: "Campaign template not found" };
       }
 
-      const operationId = (request.headers["idempotency-key"] || request.headers["command-id"]) as string;
-      if (!operationId) {
+      let operationId: string;
+      try {
+        operationId = requireIdempotencyKey(request);
+      } catch (error) {
         reply.code(400);
-        return { error: "Idempotency-Key or Command-Id header is required" };
+        return { error: error instanceof Error ? error.message : "Idempotency-Key header is required" };
       }
 
       // Check for existing campaign with this operationId (Idempotency check)
@@ -434,10 +437,14 @@ export async function registerCampaignTemplateWebRoutes(server: FastifyInstance)
         });
       });
 
-      const execute = (command: Command) => repo.executeCommand(campaignId, command, {
-        commandId: createId("cmd"),
-        actorUserId: user.userId,
-      });
+      let commandCounter = 0;
+      const execute = (command: Command) => {
+        commandCounter += 1;
+        return repo.executeCommand(campaignId, command, {
+          commandId: `${operationId}:template-command:${commandCounter}`,
+          actorUserId: user.userId,
+        });
+      };
 
       // Build steps dynamically using our dynamic plan builder
       const steps = buildCampaignTemplateImportSteps({
