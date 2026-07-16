@@ -192,7 +192,7 @@ describe("EntityCreateModal wiring", () => {
 
 describe("EntityDetailModal wiring", () => {
   it("uses ImagePickerButton for imageUrl in edit form with entities catalog", () => {
-    const src = read("src/frontend/dm/entities/EntityDetailModal.tsx");
+    const src = read("src/frontend/dm/entities/ResumenTab.tsx");
     expect(src).toContain("ImagePickerButton");
     expect(src).toContain('catalog="entities"');
     expect(src).not.toContain('placeholder="https://ejemplo.com/foto.jpg"');
