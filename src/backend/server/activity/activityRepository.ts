@@ -1,8 +1,43 @@
 import { and, or, lt, eq, desc } from "drizzle-orm";
 import { db } from "../../db/client.js";
+import type { DbClient, DbTransaction } from "../../db/client.js";
 import { campaignActivity } from "../../db/schema.js";
-import type { CampaignHistoryEntry, ActivityFilter } from "../../../core/projections/activity/activityTypes.js";
+import type {
+  CampaignActivityCategory,
+  CampaignActivityData,
+  CampaignHistoryEntry,
+  ActivityFilter,
+} from "../../../core/projections/activity/activityTypes.js";
 import { activityIdForSource } from "@core/projections/activity/activityId.js";
+
+type DbExecutor = DbClient | DbTransaction | null;
+type CampaignActivityInsert = typeof campaignActivity.$inferInsert;
+const ACTIVITY_CATEGORIES = [
+  "session",
+  "content",
+  "knowledge",
+  "story",
+  "people",
+  "collaboration",
+  "operation",
+] as const satisfies readonly CampaignActivityCategory[];
+
+function getClient(tx: DbExecutor | undefined): DbClient | DbTransaction {
+  return tx ?? db;
+}
+
+function campaignActivityCategory(value: string): CampaignActivityCategory {
+  const category = ACTIVITY_CATEGORIES.find((candidate) => candidate === value);
+  if (category) {
+    return category;
+  }
+  throw new Error(`Invalid campaign activity category: ${value}`);
+}
+
+function campaignActivitySourceKind(value: string): "domain_event" | "operation" {
+  if (value === "domain_event" || value === "operation") return value;
+  throw new Error(`Invalid campaign activity source kind: ${value}`);
+}
 
 export function encodeCursor(occurredAt: Date, activityId: string): string {
   const payload = `${occurredAt.toISOString()}|${activityId}`;
@@ -23,8 +58,8 @@ export function decodeCursor(cursor: string): { occurredAt: Date; activityId: st
 }
 
 export const activityRepository = {
-  async insertActivity(tx: any, activity: any) {
-    const client = tx || db;
+  async insertActivity(tx: DbExecutor, activity: CampaignActivityInsert) {
+    const client = getClient(tx);
     await client
       .insert(campaignActivity)
       .values(activity)
@@ -32,13 +67,13 @@ export const activityRepository = {
   },
 
   async recordOperationalActivity(
-    tx: any,
+    tx: DbExecutor,
     params: {
       campaignId: string;
       sourceId: string;
       type: string;
       category: "session" | "content" | "knowledge" | "story" | "people" | "collaboration" | "operation";
-      data: Record<string, any>;
+      data: CampaignActivityData;
       actorUserId?: string | null;
       sessionId?: string | null;
       targetType?: string | null;
@@ -46,7 +81,7 @@ export const activityRepository = {
       occurredAt?: Date;
     }
   ) {
-    const client = tx || db;
+    const client = getClient(tx);
     const occurredAt = params.occurredAt || new Date();
     const activityId = activityIdForSource({
       campaignId: params.campaignId,
@@ -71,11 +106,11 @@ export const activityRepository = {
   },
 
   async findCampaignHistory(
-    tx: any,
+    tx: DbExecutor,
     campaignId: string,
     filters: ActivityFilter
   ): Promise<{ entries: CampaignHistoryEntry[]; nextCursor?: string }> {
-    const client = tx || db;
+    const client = getClient(tx);
     const limit = Math.max(1, Math.min(filters.limit || 50, 100));
 
     const conditions = [eq(campaignActivity.campaignId, campaignId)];
@@ -123,13 +158,13 @@ export const activityRepository = {
     const hasNext = rows.length > limit;
     const items = hasNext ? rows.slice(0, limit) : rows;
 
-    const entries: CampaignHistoryEntry[] = items.map((row: any) => ({
+    const entries: CampaignHistoryEntry[] = items.map((row) => ({
       activityId: row.activityId,
       campaignId: row.campaignId,
-      sourceKind: row.sourceKind as "domain_event" | "operation",
+      sourceKind: campaignActivitySourceKind(row.sourceKind),
       sourceId: row.sourceId,
       type: row.type,
-      category: row.category as any,
+      category: campaignActivityCategory(row.category),
       data: row.data,
       actorUserId: row.actorUserId,
       sessionId: row.sessionId,
@@ -147,8 +182,8 @@ export const activityRepository = {
     return { entries, nextCursor };
   },
 
-  async deleteCampaignActivities(tx: any, campaignId: string) {
-    const client = tx || db;
+  async deleteCampaignActivities(tx: DbExecutor, campaignId: string) {
+    const client = getClient(tx);
     await client.delete(campaignActivity).where(eq(campaignActivity.campaignId, campaignId));
   },
 };

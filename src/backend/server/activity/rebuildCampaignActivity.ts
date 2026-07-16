@@ -1,11 +1,22 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/client.js";
+import type { DbClient, DbTransaction } from "../../db/client.js";
 import { campaignActivity, domainEvents } from "../../db/schema.js";
 import { projectDomainEventToActivity } from "../../../core/projections/activity/projectDomainEventToActivity.js";
 import { activityRepository } from "./activityRepository.js";
+import { domainEventTypeSchema } from "../../../core/domain/shared/events.js";
+import type { StoredEvent } from "../../../core/domain/shared/events.js";
 
-export async function rebuildCampaignActivity(tx: any, campaignId: string): Promise<void> {
-  const client = tx || db;
+type DbExecutor = DbClient | DbTransaction;
+
+function recordPayload(value: unknown): Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value)
+    ? Object.fromEntries(Object.entries(value))
+    : {};
+}
+
+export async function rebuildCampaignActivity(tx: DbExecutor, campaignId: string): Promise<void> {
+  const client = tx ?? db;
 
   // 1. Delete derived activities only (source_kind = 'domain_event')
   await client
@@ -26,14 +37,14 @@ export async function rebuildCampaignActivity(tx: any, campaignId: string): Prom
 
   // 3. Project and insert
   for (const row of events) {
-    const storedEvent = {
+    const storedEvent: StoredEvent<Record<string, unknown>> = {
       sequence: row.sequence,
       eventId: row.eventId,
       campaignId: row.campaignId,
-      type: row.type as any,
+      type: domainEventTypeSchema.parse(row.type),
       occurredAt: row.occurredAt,
       actorId: row.actorId,
-      payload: row.payload,
+      payload: recordPayload(row.payload),
       schemaVersion: row.schemaVersion,
       commandId: row.commandId || undefined,
       commandHash: row.commandHash || undefined,
@@ -48,8 +59,8 @@ export async function rebuildCampaignActivity(tx: any, campaignId: string): Prom
   }
 }
 
-export async function rebuildAllCampaignsActivity(tx: any): Promise<void> {
-  const client = tx || db;
+export async function rebuildAllCampaignsActivity(tx: DbExecutor): Promise<void> {
+  const client = tx ?? db;
   const campaigns = await client
     .select({ campaignId: domainEvents.campaignId })
     .from(domainEvents)

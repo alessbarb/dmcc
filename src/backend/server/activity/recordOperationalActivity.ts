@@ -1,10 +1,14 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/client.js";
+import type { DbClient, DbTransaction } from "../../db/client.js";
 import { campaignSessions } from "../../db/schema.js";
 import { activityRepository } from "./activityRepository.js";
+import type { CampaignActivityCategory, CampaignActivityData } from "../../../core/projections/activity/activityTypes.js";
 
-export async function assertSessionBelongsToCampaign(tx: any, campaignId: string, sessionId: string): Promise<void> {
-  const client = tx || db;
+type DbExecutor = DbClient | DbTransaction;
+
+export async function assertSessionBelongsToCampaign(tx: DbExecutor, campaignId: string, sessionId: string): Promise<void> {
+  const client = tx ?? db;
   const [session] = await client
     .select({ sessionId: campaignSessions.sessionId })
     .from(campaignSessions)
@@ -22,13 +26,13 @@ export async function assertSessionBelongsToCampaign(tx: any, campaignId: string
 }
 
 export async function recordOperationalActivity(
-  tx: any,
+  tx: DbExecutor,
   params: {
     campaignId: string;
     sourceId: string;
     type: string;
-    category: "session" | "content" | "knowledge" | "story" | "people" | "collaboration" | "operation";
-    data: Record<string, any>;
+    category: CampaignActivityCategory;
+    data: CampaignActivityData;
     actorUserId?: string | null;
     sessionId?: string | null;
     targetType?: string | null;
