@@ -1,17 +1,23 @@
 import { defaultTheme } from "./defaultTheme.js";
+import { fantasyTheme } from "./fantasyTheme.js";
+import { sciFiTheme } from "./sciFiTheme.js";
 import type { ThemePackageV1 } from "./themeContract.js";
+import { assertThemeContrast } from "./themeContrast.js";
 import { validateThemePackage } from "./themeValidation.js";
 
 export type ThemePackage = ThemePackageV1;
 
 function assertThemePackage(value: unknown): ThemePackageV1 {
   const result = validateThemePackage(value);
-  if (result.valid) return result.value;
+  if (!result.valid) {
+    const details = result.issues
+      .map((issue) => `${issue.path}: ${issue.message}`)
+      .join("\n");
+    throw new Error(`Invalid theme package:\n${details}`);
+  }
 
-  const details = result.issues
-    .map((issue) => `${issue.path}: ${issue.message}`)
-    .join("\n");
-  throw new Error(`Invalid theme package:\n${details}`);
+  assertThemeContrast(result.value);
+  return result.value;
 }
 
 export const themes = new Map<string, ThemePackage>();
@@ -26,6 +32,8 @@ export function registerTheme(value: unknown): ThemePackageV1 {
 }
 
 registerTheme(defaultTheme);
+registerTheme(fantasyTheme);
+registerTheme(sciFiTheme);
 
 export function getTheme(id: string): ThemePackage {
   return themes.get(id) ?? defaultTheme;
