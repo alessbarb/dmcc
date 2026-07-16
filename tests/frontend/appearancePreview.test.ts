@@ -61,8 +61,9 @@ function createHarness(initialDark = false) {
 }
 
 describe("appearance preview", () => {
-  it("applies theme and typography to an isolated target", () => {
+  it("applies theme and typography only to its isolated target", () => {
     const harness = createHarness();
+    const unrelatedProperties = new Map<string, string>();
     const controller = createAppearancePreviewController(
       harness.target,
       harness.environment,
@@ -80,9 +81,10 @@ describe("appearance preview", () => {
     expect(harness.properties.get("--theme-surfaces-canvas")).toBeTruthy();
     expect(harness.properties.get("--font-display")).toContain("Cinzel");
     expect(harness.properties.get("--font-sans")).toContain("Outfit");
+    expect(unrelatedProperties.size).toBe(0);
   });
 
-  it("tracks system mode without affecting the document root", () => {
+  it("tracks system mode and releases its media listener", () => {
     const harness = createHarness(false);
     const controller = createAppearancePreviewController(
       harness.target,
