@@ -22,7 +22,7 @@
   transform-origin: center;
 }
 
-/* Replace the short 80px fade supplied by the component with a long cinematic blend. */
+/* Keep more artwork visible through the middle before the final cinematic fade. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > div:first-child
@@ -35,20 +35,20 @@
   background:
     linear-gradient(
       to bottom,
-      rgba(7, 9, 18, 0.02) 0%,
-      rgba(7, 9, 18, 0.08) 24%,
-      rgba(7, 9, 18, 0.25) 45%,
-      rgba(7, 9, 18, 0.52) 62%,
-      rgba(7, 9, 18, 0.78) 77%,
-      rgba(7, 9, 18, 0.94) 90%,
+      rgba(7, 9, 18, 0.01) 0%,
+      rgba(7, 9, 18, 0.04) 26%,
+      rgba(7, 9, 18, 0.16) 48%,
+      rgba(7, 9, 18, 0.38) 64%,
+      rgba(7, 9, 18, 0.68) 79%,
+      rgba(7, 9, 18, 0.91) 92%,
       var(--bg-card) 100%
     ),
     linear-gradient(
       to right,
-      rgba(7, 9, 18, 0.18) 0%,
+      rgba(7, 9, 18, 0.14) 0%,
       transparent 18%,
       transparent 82%,
-      rgba(7, 9, 18, 0.16) 100%
+      rgba(7, 9, 18, 0.13) 100%
     ) !important;
 }
 
@@ -63,11 +63,35 @@
   padding-top: 62px !important;
   background: linear-gradient(
     to bottom,
-    rgba(12, 15, 28, 0.06),
-    rgba(12, 15, 28, 0.48) 42%,
-    rgba(12, 15, 28, 0.82) 100%
+    rgba(12, 15, 28, 0.02),
+    rgba(12, 15, 28, 0.34) 44%,
+    rgba(12, 15, 28, 0.72) 100%
   ) !important;
   backdrop-filter: none;
+}
+
+/* Keep the close control available without competing with the identity. */
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content
+  > .modal-header
+  > button:last-child {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  background: rgba(7, 9, 18, 0.58) !important;
+  color: color-mix(in srgb, var(--text-main) 82%, transparent) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(8px);
+}
+
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content
+  > .modal-header
+  > button:last-child:hover {
+  border-color: color-mix(in srgb, var(--secondary) 34%, transparent) !important;
+  background: rgba(7, 9, 18, 0.76) !important;
+  color: var(--text-main) !important;
 }
 
 /* The tab rail remains over the final, almost-black portion of the same image. */
@@ -77,16 +101,25 @@
   + div {
   position: relative !important;
   z-index: 3 !important;
-  background: rgba(12, 15, 28, 0.88) !important;
-  backdrop-filter: blur(8px) saturate(82%);
+  border-top-color: rgba(255, 255, 255, 0.025) !important;
+  border-bottom-color: color-mix(in srgb, var(--border-color) 68%, transparent) !important;
+  background: rgba(12, 15, 28, 0.76) !important;
+  backdrop-filter: blur(7px) saturate(84%);
 }
 
+/* Close the artwork-to-content transition softly instead of switching to a flat block. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-body {
   position: relative;
   z-index: 2;
-  background: var(--bg-card);
+  background:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--bg-card) 84%, transparent) 0,
+      color-mix(in srgb, var(--bg-card) 96%, transparent) 36px,
+      var(--bg-card) 72px
+    );
 }
 
 @media (max-width: 900px) {
