@@ -1,7 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
-import { bootstrapDeviceAppearance } from "./account/appearanceRuntime.js";
+import {
+  bootstrapDeviceAppearance,
+  hydrateAccountAppearance,
+} from "./account/appearanceRuntime.js";
 import { router } from "./router.js";
 import { I18nProvider } from "./shared/i18n/I18nProvider.js";
 import { EntityDetailEscapeBehavior } from "./shared/components/EntityDetailEscapeBehavior.js";
@@ -12,6 +15,7 @@ import "./shared/styles/index.css";
 import "./shared/styles/p1.css";
 
 bootstrapDeviceAppearance();
+void hydrateAccountAppearance();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
