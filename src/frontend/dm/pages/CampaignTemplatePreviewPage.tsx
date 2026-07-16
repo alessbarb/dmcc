@@ -239,7 +239,7 @@ export function CampaignTemplatePreviewPage() {
 
   if (!authChecked || (loading && !template)) {
     return (
-      <div className="premade-preview-page premade-preview-page--centered">
+      <div className="campaign-template-preview-page campaign-template-preview-page--centered">
         <p className="landing-muted">{t("campaignTemplatePreview.loading")}</p>
       </div>
     );
@@ -247,8 +247,8 @@ export function CampaignTemplatePreviewPage() {
 
   if (!template) {
     return (
-      <div className="premade-preview-page premade-preview-page--centered">
-        <section className="card premade-preview-error">
+      <div className="campaign-template-preview-page campaign-template-preview-page--centered">
+        <section className="card campaign-template-preview-error">
           <Sparkles size={28} />
           <h1>{t("campaignTemplatePreview.notFoundTitle")}</h1>
           <p>{error || t("campaignTemplatePreview.notFoundDesc")}</p>
@@ -268,8 +268,8 @@ export function CampaignTemplatePreviewPage() {
   }
 
   return (
-    <div className="premade-preview-page">
-      <header className="premade-preview-hero">
+    <div className="campaign-template-preview-page">
+      <header className="campaign-template-preview-hero">
         <button
           type="button"
           className="btn btn-secondary btn-sm"
@@ -281,26 +281,26 @@ export function CampaignTemplatePreviewPage() {
           {t("campaignTemplatePreview.backToCampaigns")}
         </button>
 
-        <div className="premade-preview-hero__body">
-          <div className="premade-preview-hero__eyebrow">
+        <div className="campaign-template-preview-hero__body">
+          <div className="campaign-template-preview-hero__eyebrow">
             <Eye size={16} />
             {t("campaignTemplatePreview.eyebrow")}
           </div>
           <h1>{template.title}</h1>
           <p>{template.pitch || template.summary || template.description}</p>
-          <div className="premade-preview-hero__meta">
+          <div className="campaign-template-preview-hero__meta">
             <span>{labelFor(template.system, SYSTEM_LABEL_KEYS, t)}</span>
             <span>{labelFor(template.difficulty, DIFFICULTY_LABEL_KEYS, t)}</span>
             <span>{t("campaignTemplatePreview.version", { version: template.version })}</span>
           </div>
-          <div className="premade-template-card__tags" aria-label={t("landing.campaignTemplateTagsLabel")}>
+          <div className="campaign-template-template-card__tags" aria-label={t("landing.campaignTemplateTagsLabel")}>
             {template.tags.map((tag) => (
               <span key={tag}>{tag}</span>
             ))}
           </div>
         </div>
 
-        <div className="premade-preview-hero__actions">
+        <div className="campaign-template-preview-hero__actions">
           <button type="button" className="btn btn-primary" onClick={() => setImportDialogOpen(true)} disabled={importing || loading}>
             <Wand2 size={16} />
             {importing ? t("campaignTemplatePreview.importing") : t("campaignTemplatePreview.createCopy")}
@@ -308,7 +308,7 @@ export function CampaignTemplatePreviewPage() {
         </div>
       </header>
 
-      <section className="premade-readonly-banner" role="note">
+      <section className="campaign-template-readonly-banner" role="note">
         <Lock size={18} />
         <div>
           <strong>{t("campaignTemplatePreview.readOnlyTitle")}</strong>
@@ -316,7 +316,7 @@ export function CampaignTemplatePreviewPage() {
         </div>
       </section>
 
-      <section className="premade-preview-stats" aria-label={t("campaignTemplatePreview.statsLabel")}>
+      <section className="campaign-template-preview-stats" aria-label={t("campaignTemplatePreview.statsLabel")}>
         <article className="card">
           <Layers size={18} />
           <strong>{template.entities.filter((entity) => !isGuideEntity(entity)).length}</strong>
@@ -339,14 +339,14 @@ export function CampaignTemplatePreviewPage() {
         </article>
       </section>
 
-      <div className="premade-editorial-grid">
-        <section className="card premade-preview-card premade-editorial-card">
-          <div className="premade-preview-section-heading">
+      <div className="campaign-template-editorial-grid">
+        <section className="card campaign-template-preview-card campaign-template-editorial-card">
+          <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.whyTitle")}</h2>
             <span>{t("campaignTemplatePreview.whyDesc")}</span>
           </div>
           <p>{template.recommendedFor}</p>
-          <ul className="premade-preview-check-list">
+          <ul className="campaign-template-preview-check-list">
             {(template.learningGoals ?? []).map((goal) => (
               <li key={goal}>
                 <CheckCircle2 size={15} />
@@ -356,12 +356,12 @@ export function CampaignTemplatePreviewPage() {
           </ul>
         </section>
 
-        <section className="card premade-preview-card premade-editorial-card">
-          <div className="premade-preview-section-heading">
+        <section className="card campaign-template-preview-card campaign-template-editorial-card">
+          <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.includesTitle")}</h2>
             <span>{t("campaignTemplatePreview.includesDesc")}</span>
           </div>
-          <ul className="premade-preview-check-list">
+          <ul className="campaign-template-preview-check-list">
             {(template.includedMaterial ?? []).map((material) => (
               <li key={material}>
                 <CheckCircle2 size={15} />
@@ -373,8 +373,8 @@ export function CampaignTemplatePreviewPage() {
       </div>
 
       {template.quickStart ? (
-        <section className="card premade-preview-card premade-quickstart-card">
-          <div className="premade-preview-section-heading">
+        <section className="card campaign-template-preview-card campaign-template-quickstart-card">
+          <div className="campaign-template-preview-section-heading">
             <h2>{template.quickStart.title}</h2>
             <span>{t("campaignTemplatePreview.quickStartDesc")}</span>
           </div>
@@ -386,15 +386,15 @@ export function CampaignTemplatePreviewPage() {
         </section>
       ) : null}
 
-      <div className="premade-preview-grid">
-        <section className="card premade-preview-card premade-preview-card--wide">
-          <div className="premade-preview-section-heading">
+      <div className="campaign-template-preview-grid">
+        <section className="card campaign-template-preview-card campaign-template-preview-card--wide">
+          <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.entityMapTitle")}</h2>
             <span>{t("campaignTemplatePreview.entityMapDesc")}</span>
           </div>
-          <div className="premade-preview-entity-groups">
+          <div className="campaign-template-preview-entity-groups">
             {groupedEntities.map(([type, entities]) => (
-              <div key={type} className="premade-preview-entity-group">
+              <div key={type} className="campaign-template-preview-entity-group">
                 <strong>{labelFor(type, ENTITY_TYPE_LABEL_KEYS, t)}</strong>
                 <span>{entities.length}</span>
               </div>
@@ -403,12 +403,12 @@ export function CampaignTemplatePreviewPage() {
         </section>
 
         {guideEntities.length > 0 ? (
-          <section className="card premade-preview-card">
-            <div className="premade-preview-section-heading">
+          <section className="card campaign-template-preview-card">
+            <div className="campaign-template-preview-section-heading">
               <h2>{t("campaignTemplatePreview.guideTitle")}</h2>
               <span>{t("campaignTemplatePreview.guideDesc")}</span>
             </div>
-            <div className="premade-preview-list">
+            <div className="campaign-template-preview-list">
               {guideEntities.map((entity) => (
                 <article key={entity.entityId}>
                   <strong>{entity.title}</strong>
@@ -419,12 +419,12 @@ export function CampaignTemplatePreviewPage() {
           </section>
         ) : null}
 
-        <section className="card premade-preview-card">
-          <div className="premade-preview-section-heading">
+        <section className="card campaign-template-preview-card">
+          <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.sessionsTitle")}</h2>
             <span>{t("campaignTemplatePreview.sessionsDesc")}</span>
           </div>
-          <div className="premade-preview-list">
+          <div className="campaign-template-preview-list">
             {template.sessions.map((session) => (
               <article key={session.sessionId}>
                 <strong>{session.title}</strong>
@@ -440,17 +440,17 @@ export function CampaignTemplatePreviewPage() {
           </div>
         </section>
 
-        <section className="card premade-preview-card">
-          <div className="premade-preview-section-heading">
+        <section className="card campaign-template-preview-card">
+          <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.featuredEntitiesTitle")}</h2>
             <span>{t("campaignTemplatePreview.featuredEntitiesDesc")}</span>
           </div>
-          <div className="premade-preview-list premade-preview-list--compact">
+          <div className="campaign-template-preview-list campaign-template-preview-list--compact">
             {featuredEntities.map((entity) => (
               <article key={entity.entityId}>
-                <div className="premade-preview-item-heading">
+                <div className="campaign-template-preview-item-heading">
                   <strong>{entity.title}</strong>
-                  <span className="premade-preview-badge">{labelFor(entity.entityType, ENTITY_TYPE_LABEL_KEYS, t)}</span>
+                  <span className="campaign-template-preview-badge">{labelFor(entity.entityType, ENTITY_TYPE_LABEL_KEYS, t)}</span>
                 </div>
                 <p>{entity.subtitle || entity.summary || labelFor(entity.entityType, ENTITY_TYPE_LABEL_KEYS, t)}</p>
                 <span>{visibilityLabel(entity.visibility, t)}</span>
@@ -459,17 +459,17 @@ export function CampaignTemplatePreviewPage() {
           </div>
         </section>
 
-        <section className="card premade-preview-card">
-          <div className="premade-preview-section-heading">
+        <section className="card campaign-template-preview-card">
+          <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.factsTitle")}</h2>
             <span>{t("campaignTemplatePreview.factsDesc")}</span>
           </div>
-          <div className="premade-preview-list premade-preview-list--compact">
+          <div className="campaign-template-preview-list campaign-template-preview-list--compact">
             {featuredFacts.map((fact) => (
               <article key={fact.factId}>
-                <div className="premade-preview-item-heading">
+                <div className="campaign-template-preview-item-heading">
                   <strong>{labelFor(fact.kind, FACT_KIND_LABEL_KEYS, t)}</strong>
-                  <span className="premade-preview-badge">{labelFor(fact.confidence, CONFIDENCE_LABEL_KEYS, t)}</span>
+                  <span className="campaign-template-preview-badge">{labelFor(fact.confidence, CONFIDENCE_LABEL_KEYS, t)}</span>
                 </div>
                 <p>{fact.statement}</p>
                 <span>{visibilityLabel(fact.visibility, t)}</span>
@@ -478,12 +478,12 @@ export function CampaignTemplatePreviewPage() {
           </div>
         </section>
 
-        <section className="card premade-preview-card">
-          <div className="premade-preview-section-heading">
+        <section className="card campaign-template-preview-card">
+          <div className="campaign-template-preview-section-heading">
             <h2>{t("campaignTemplatePreview.relationsTitle")}</h2>
             <span>{t("campaignTemplatePreview.relationsDesc")}</span>
           </div>
-          <div className="premade-preview-list premade-preview-list--compact">
+          <div className="campaign-template-preview-list campaign-template-preview-list--compact">
             {featuredRelations.map((relation) => {
               const source = entityById.get(relation.sourceEntityId)?.title;
               const target = entityById.get(relation.targetEntityId)?.title;
@@ -499,7 +499,7 @@ export function CampaignTemplatePreviewPage() {
         </section>
       </div>
 
-      <section className="premade-preview-bottom-cta card">
+      <section className="campaign-template-preview-bottom-cta card">
         <div>
           <h2>{t("campaignTemplatePreview.bottomCtaTitle")}</h2>
           <p>{t("campaignTemplatePreview.bottomCtaDesc")}</p>
