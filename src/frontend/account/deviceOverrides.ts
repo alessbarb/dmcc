@@ -1,7 +1,7 @@
 import { getTheme } from "./themeRegistry.js";
 import { getTypographySet } from "./typographyRegistry.js";
 
-export const DEVICE_PREFERENCES_KEY = "dmcc.account.device-preferences.v1";
+const DEVICE_PREFERENCES_KEY = "dmcc.account.device-preferences.v1";
 export const DEVICE_PREFERENCES_CHANGED_EVENT = "dmcc:device-preferences-changed";
 
 export type DeviceOverrides = {

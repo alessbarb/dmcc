@@ -88,7 +88,7 @@ export function applyAccountAppearance(preferences: AppearancePreferences): void
   renderAppearance();
 }
 
-export function applyDeviceAppearance(overrides: DeviceOverrides): void {
+function applyDeviceAppearance(overrides: DeviceOverrides): void {
   deviceOverrides = overrides;
   renderAppearance();
 }
@@ -105,16 +105,5 @@ export async function hydrateAccountAppearance(): Promise<void> {
     applyAccountAppearance(aggregate.preferences);
   } catch {
     // Public and signed-out routes intentionally keep the bootstrapped local appearance.
-  }
-}
-
-export function disposeDeviceAppearance(): void {
-  documentController?.dispose();
-  documentController = undefined;
-  accountAppearance = DEFAULT_APPEARANCE;
-  deviceOverrides = {};
-  if (listeningForChanges) {
-    window.removeEventListener(DEVICE_PREFERENCES_CHANGED_EVENT, handleDevicePreferencesChanged);
-    listeningForChanges = false;
   }
 }

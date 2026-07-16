@@ -75,7 +75,7 @@ function getCampaignTemplateDirectoryCandidates(): string[] {
   ].filter((candidate): candidate is string => Boolean(candidate));
 }
 
-export function getCampaignTemplateDirectory(): string | null {
+function getCampaignTemplateDirectory(): string | null {
   return getCampaignTemplateDirectoryCandidates().find((candidate) => existsSync(join(candidate, "manifest.json"))) ?? null;
 }
 

@@ -3,7 +3,7 @@ import { rm } from "node:fs/promises";
 import { homedir } from "node:os";
 import { isAbsolute, join, resolve, sep } from "node:path";
 
-export function getDataDir(): string {
+function getDataDir(): string {
   return process.env.DMCC_DATA_DIR ?? join(homedir(), "Documents", "DMCampaignCompanion");
 }
 

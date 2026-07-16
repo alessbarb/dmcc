@@ -11,7 +11,7 @@ const AUDIENCES = new Set(["party", "dm", "player"]);
 const MESSAGE_WRITER_ROLES = new Set(["dm", "co_dm", "player"]);
 const SENDER_COLOR_COUNT = 10;
 export const MAX_CAMPAIGN_MESSAGE_LENGTH = 4_000;
-export const CAMPAIGN_MESSAGE_PAGE_SIZE = 50;
+const CAMPAIGN_MESSAGE_PAGE_SIZE = 50;
 const MAX_READ_RECEIPTS_PER_REQUEST = 100;
 const MAX_CLIENT_MESSAGE_ID_LENGTH = 128;
 

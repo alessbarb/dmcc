@@ -5,7 +5,7 @@ import type {
   EditableSocialProfile,
 } from "./accountTypes.js";
 
-export class AccountConflict<T = unknown> extends Error {
+class AccountConflict<T = unknown> extends Error {
   constructor(public readonly current: T) {
     super("Account data changed on another device");
     this.name = "AccountConflict";

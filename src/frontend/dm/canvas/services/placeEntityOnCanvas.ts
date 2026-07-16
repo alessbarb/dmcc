@@ -36,7 +36,7 @@ function hasFinitePoint(point: CanvasPoint | null | undefined): point is CanvasP
   return Number.isFinite(point?.x) && Number.isFinite(point?.y);
 }
 
-export function getEntityCanvasPlacement(selectedNode?: CanvasNode | null, viewportCenter?: CanvasPoint | null): CanvasPoint {
+function getEntityCanvasPlacement(selectedNode?: CanvasNode | null, viewportCenter?: CanvasPoint | null): CanvasPoint {
   if (selectedNode) {
     return { x: selectedNode.x + SELECTED_NODE_X_OFFSET, y: selectedNode.y };
   }

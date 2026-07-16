@@ -39,12 +39,12 @@ function campaignActivitySourceKind(value: string): "domain_event" | "operation"
   throw new Error(`Invalid campaign activity source kind: ${value}`);
 }
 
-export function encodeCursor(occurredAt: Date, activityId: string): string {
+function encodeCursor(occurredAt: Date, activityId: string): string {
   const payload = `${occurredAt.toISOString()}|${activityId}`;
   return Buffer.from(payload).toString("base64url");
 }
 
-export function decodeCursor(cursor: string): { occurredAt: Date; activityId: string } | null {
+function decodeCursor(cursor: string): { occurredAt: Date; activityId: string } | null {
   try {
     const raw = Buffer.from(cursor, "base64url").toString("utf8");
     const [dateStr, activityId] = raw.split("|");

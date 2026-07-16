@@ -7,7 +7,7 @@ import type { CampaignActivityCategory, CampaignActivityData } from "../../../co
 
 type DbExecutor = DbClient | DbTransaction;
 
-export async function assertSessionBelongsToCampaign(tx: DbExecutor, campaignId: string, sessionId: string): Promise<void> {
+async function assertSessionBelongsToCampaign(tx: DbExecutor, campaignId: string, sessionId: string): Promise<void> {
   const client = tx ?? db;
   const [session] = await client
     .select({ sessionId: campaignSessions.sessionId })

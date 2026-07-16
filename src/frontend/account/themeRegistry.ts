@@ -22,7 +22,7 @@ function assertThemePackage(value: unknown): ThemePackageV1 {
 
 export const themes = new Map<string, ThemePackage>();
 
-export function registerTheme(value: unknown): ThemePackageV1 {
+function registerTheme(value: unknown): ThemePackageV1 {
   const theme = assertThemePackage(value);
   if (themes.has(theme.id)) {
     throw new Error(`Theme "${theme.id}" is already registered`);
