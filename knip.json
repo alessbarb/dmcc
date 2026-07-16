@@ -10,11 +10,13 @@
     "vitest.benchmark.config.ts",
     "playwright.config.ts",
     "eslint.config.js",
+    "e2e/**/*.{ts,tsx}",
     "tests/**/*.{ts,tsx}"
   ],
   "project": [
     "src/**/*.{ts,tsx}",
     "scripts/**/*.{js,mjs,ts}",
+    "e2e/**/*.{ts,tsx}",
     "tests/**/*.{ts,tsx}",
     "*.config.{js,ts}",
     "vite.config.ts",
@@ -33,5 +35,6 @@
   "ignoreIssues": {
     "src/core/domain/**": ["exports", "types", "nsExports", "nsTypes", "enumMembers", "namespaceMembers"],
     "src/shared/**": ["exports", "types", "nsExports", "nsTypes", "enumMembers", "namespaceMembers"]
-  }
+  },
+  "playwright": false
 }
