@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { getEntityDefaultImage } from "./entityVisuals.js";
 import { TypeMetadataForm } from "./TypeMetadataForm.js";
+import { RelacionesTab } from "./RelacionesTab.js";
 import { ImagePickerButton } from "../../shared/components/ImagePickerButton.js";
 import { EntityImageReframeDialog } from "../../shared/components/EntityImageReframeDialog.js";
 import {
@@ -50,6 +51,10 @@ interface EntityDetailModalProps {
 
 type TabId = "resumen" | "relaciones" | "hechos" | "trazabilidad";
 
+function getRelationsArray(relations: unknown): Relation[] {
+  return Array.isArray(relations) ? relations as Relation[] : [];
+}
+
 const TABS: { id: TabId; labelKey: string; icon: React.ReactNode }[] = [
   { id: "resumen", labelKey: "entityDetail.tabsSummary", icon: <AlignLeft size={13} /> },
   { id: "relaciones", labelKey: "entityDetail.tabsRelations", icon: <GitBranch size={13} /> },
@@ -64,14 +69,6 @@ function runEntityDetailAction(operation: Promise<unknown>, errorMessage: string
 }
 
 // Safely get values from Maps or plain objects/arrays
-function getRelationsArray(relations: unknown): Relation[] {
-  if (!relations) return [];
-  if (Array.isArray(relations)) return relations;
-  if (relations instanceof Map) return Array.from(relations.values());
-  if (typeof relations === "object") return Object.values(relations);
-  return [];
-}
-
 function getFactsArray(facts: unknown): Fact[] {
   if (!facts) return [];
   if (Array.isArray(facts)) return facts;
@@ -708,97 +705,6 @@ function ResumenTab({
   );
 }
 
-function RelacionesTab({
-  entity,
-  campaignState,
-}: {
-  entity: Entity;
-  campaignState: CampaignState;
-}) {
-  const relations = getRelationsArray(campaignState?.relations).filter(
-    (r) =>
-      !r.archived &&
-      (r.sourceEntityId === entity.entityId || r.targetEntityId === entity.entityId)
-  );
-
-  if (relations.length === 0) {
-    return (
-      <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem", padding: "8px 0" }}>
-        Esta entidad no tiene relaciones registradas.
-      </p>
-    );
-  }
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      {relations.map((r) => {
-        const isSource = r.sourceEntityId === entity.entityId;
-        const otherId = isSource ? r.targetEntityId : r.sourceEntityId;
-        const other = campaignState?.entities?.find(
-          (e: Entity) => e.entityId === otherId
-        );
-        return (
-          <div
-            key={r.relationId}
-            style={{
-              fontSize: "0.85rem",
-              padding: "10px 12px",
-              backgroundColor: "var(--theme-surfaces-interactive)",
-              borderRadius: "var(--theme-shapes-radius-small)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "4px",
-            }}
-          >
-            <div>
-              {isSource ? (
-                <>
-                  <strong>Esta entidad</strong>{" "}
-                  <span
-                    style={{
-                      padding: "1px 7px",
-                      borderRadius: "var(--theme-shapes-radius-small)",
-                      backgroundColor: "hsl(210, 60%, 20%)",
-                      color: "hsl(210, 80%, 70%)",
-                      fontSize: "0.78rem",
-                      fontWeight: "600",
-                    }}
-                  >
-                    {r.relationType}
-                  </span>{" "}
-                  <strong>{other?.title ?? otherId}</strong>
-                </>
-              ) : (
-                <>
-                  <strong>{other?.title ?? otherId}</strong>{" "}
-                  <span
-                    style={{
-                      padding: "1px 7px",
-                      borderRadius: "var(--theme-shapes-radius-small)",
-                      backgroundColor: "hsl(210, 60%, 20%)",
-                      color: "hsl(210, 80%, 70%)",
-                      fontSize: "0.78rem",
-                      fontWeight: "600",
-                    }}
-                  >
-                    {r.relationType}
-                  </span>{" "}
-                  <strong>esta entidad</strong>
-                </>
-              )}
-            </div>
-            {r.description && (
-              <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.82rem", margin: 0 }}>
-                {r.description}
-              </p>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
 function formatFactSource(
   source: { kind: string; sessionId?: string; note?: string; playerId?: string; importId?: string } | null | undefined,
   sessions: Array<{ sessionId: string; number?: number; title?: string }>,
@@ -1288,7 +1194,11 @@ function StandardEntityDetailModal({
             />
           )}
           {activeTab === "relaciones" && (
-            <RelacionesTab entity={selectedEntity} campaignState={campaignState} />
+            <RelacionesTab
+              entity={selectedEntity}
+              campaignState={campaignState}
+              relations={getRelationsArray(campaignState.relations)}
+            />
           )}
           {activeTab === "hechos" && (
             <HechosTab entity={selectedEntity} campaignState={campaignState} />
