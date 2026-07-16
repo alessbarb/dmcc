@@ -2639,6 +2639,10 @@ export const en = {
       theme: "Theme",
       mode: "Mode",
       fontSet: "Font set",
+      themeDefault: "Default",
+      themeFantasy: "Fantasy",
+      themeSciFi: "Sci-fi",
+      typographyDefault: "Cinzel + Outfit",
       modeOptions: {
         system: "System",
         light: "Light",

@@ -335,7 +335,7 @@ const light: ThemeVariant = {
 export const defaultTheme = {
   id: "default",
   contractVersion: THEME_CONTRACT_VERSION,
-  labelKey: "accountCenter.appearance.themeDefault",
+  labelKey: "account.appearance.themeDefault",
   supportsEnhancedContrast: true,
   variants: { light, dark },
 } satisfies ThemePackageV1;

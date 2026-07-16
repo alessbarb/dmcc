@@ -201,8 +201,8 @@ const light: ThemeVariant = {
     inverse: "hsl(196 36% 97%)",
     onAccent: "hsl(196 36% 98%)",
     onMedia: "hsl(0 0% 100%)",
-    link: "hsl(190 76% 34%)",
-    linkHover: "hsl(191 84% 26%)",
+    link: "hsl(190 82% 28%)",
+    linkHover: "hsl(191 88% 22%)",
   },
   borders: {
     subtle: "hsl(197 23% 82%)",
@@ -210,17 +210,17 @@ const light: ThemeVariant = {
     strong: "hsl(192 33% 58%)",
     interactive: "hsl(195 27% 73%)",
     interactiveHover: "hsl(190 46% 47%)",
-    selected: "hsl(190 76% 34%)",
+    selected: "hsl(190 82% 28%)",
     overlay: "hsl(190 42% 47% / 0.4)",
   },
   accents: {
     primary: {
-      foreground: "hsl(190 76% 34%)",
-      hover: "hsl(191 84% 26%)",
-      active: "hsl(191 88% 21%)",
+      foreground: "hsl(190 82% 28%)",
+      hover: "hsl(191 88% 22%)",
+      active: "hsl(191 91% 18%)",
       background: "hsl(190 76% 34% / 0.11)",
-      backgroundStrong: "hsl(190 76% 34%)",
-      border: "hsl(190 76% 34%)",
+      backgroundStrong: "hsl(190 82% 28%)",
+      border: "hsl(190 82% 28%)",
       onAccent: "hsl(196 36% 98%)",
     },
     secondary: {
@@ -235,7 +235,7 @@ const light: ThemeVariant = {
   },
   focus: {
     ring: "0 0 0 3px hsl(190 76% 34% / 0.27)",
-    outline: "hsl(190 76% 34%)",
+    outline: "hsl(190 82% 28%)",
   },
   shadows: {
     small: "0 1px 2px hsl(222 42% 11% / 0.11)",
@@ -251,7 +251,7 @@ const light: ThemeVariant = {
     grid: "hsl(195 27% 73% / 0.62)",
     edge: "hsl(218 27% 28%)",
     edgeMuted: "hsl(211 17% 42% / 0.52)",
-    edgeHighlighted: "hsl(190 76% 34%)",
+    edgeHighlighted: "hsl(190 82% 28%)",
     edgeLabelBackground: "hsl(195 45% 99% / 0.97)",
     edgeLabelText: "hsl(222 42% 11%)",
     nodeShadow: "0 8px 24px hsl(222 42% 11% / 0.15)",
@@ -261,7 +261,7 @@ const light: ThemeVariant = {
     background: "hsl(196 36% 96%)",
     grid: "hsl(195 27% 73% / 0.58)",
     selection: "hsl(190 76% 34% / 0.1)",
-    selectionBorder: "hsl(190 76% 34%)",
+    selectionBorder: "hsl(190 82% 28%)",
     guide: "hsl(286 58% 42%)",
     toolbarBackground: "hsl(195 45% 99% / 0.97)",
     toolbarBorder: "hsl(195 27% 73%)",
@@ -282,7 +282,7 @@ const light: ThemeVariant = {
     ownBorder: "hsl(190 76% 34% / 0.32)",
     systemBackground: "hsl(286 58% 42% / 0.1)",
     systemBorder: "hsl(286 58% 42% / 0.3)",
-    unreadMarker: "hsl(190 76% 34%)",
+    unreadMarker: "hsl(190 82% 28%)",
     mentionBackground: "hsl(49 84% 48% / 0.16)",
   },
   identityPalette: [
@@ -300,7 +300,7 @@ const light: ThemeVariant = {
 export const sciFiTheme = {
   id: "sci-fi",
   contractVersion: THEME_CONTRACT_VERSION,
-  labelKey: "accountCenter.appearance.themeSciFi",
+  labelKey: "account.appearance.themeSciFi",
   supportsEnhancedContrast: true,
   variants: { light, dark },
 } satisfies ThemePackageV1;

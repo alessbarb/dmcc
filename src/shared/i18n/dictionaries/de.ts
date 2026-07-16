@@ -2216,6 +2216,10 @@ export const de: TranslationDictionary = {
       theme: "Design",
       mode: "Modus",
       fontSet: "Schriftartsatz",
+      themeDefault: "Standard",
+      themeFantasy: "Fantasy",
+      themeSciFi: "Science-Fiction",
+      typographyDefault: "Cinzel + Outfit",
       modeOptions: {
         system: "System",
         light: "Hell",
