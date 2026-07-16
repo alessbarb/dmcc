@@ -74,7 +74,18 @@ jobs:
           retention-days: 1
 
       - name: Unit tests
-        run: npm test
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee theme-unit-tests.log
+
+      - name: Upload unit test diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-unit-test-diagnostics
+          path: theme-unit-tests.log
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Integration tests
         run: npm run test:integration
