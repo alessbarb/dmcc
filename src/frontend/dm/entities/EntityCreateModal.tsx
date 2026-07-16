@@ -68,7 +68,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
 
   useEffect(() => {
     // DOM CustomEvent boundary: detail shape is contractually defined by dispatchers
-    // elsewhere (EntitiesPage, GraphPage, SessionPage, CampaignStarterHub) but not
+    // elsewhere (EntityListView, NoActiveSessionView, CampaignStarterHub) but not
     // enforced at runtime.
     const listener = (event: Event) => {
       const detail = (event as CustomEvent<EntityTemplateEventDetail>).detail ?? {};
