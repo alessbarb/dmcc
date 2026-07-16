@@ -3,6 +3,13 @@ import { randomUUID } from "node:crypto";
 
 type JsonObject = Record<string, any>;
 
+function commandRequestOptions(data?: JsonObject): { data?: JsonObject; headers: Record<string, string> } {
+  return {
+    ...(data === undefined ? {} : { data }),
+    headers: { "Idempotency-Key": randomUUID() },
+  };
+}
+
 async function readJson(response: APIResponse): Promise<JsonObject> {
   try {
     return await response.json();
@@ -64,71 +71,59 @@ test.describe("Minimum release web API flow", () => {
     );
     expect(premadeDetail.templateId).toBe(firstPremade.templateId);
 
-    const createdCampaign = await expectStatus(await request.post("/api/campaigns", {
-      data: {
+    const createdCampaign = await expectStatus(await request.post("/api/campaigns", commandRequestOptions({
         title: campaignTitle,
         system: "custom",
-      },
-    }), 201);
+    })), 201);
     const campaignId = createdCampaign.campaignId;
     expect(campaignId).toEqual(expect.stringMatching(/^cmp_/));
 
     const dashboardAfterCreate = await expectStatus(await request.get("/api/dm/dashboard"), 200);
     expect(dashboardAfterCreate.campaigns.map((campaign: JsonObject) => campaign.campaignId)).toContain(campaignId);
 
-    await expectStatus(await request.post(`/api/campaigns/${campaignId}/entities`, {
-      data: {
+    await expectStatus(await request.post(`/api/campaigns/${campaignId}/entities`, commandRequestOptions({
         entityId: npcId,
         entityType: "npc",
         title: "Lord Malvus",
         summary: "Cult leader hiding behind a noble identity.",
         visibility: { kind: "dm_only" },
-      },
-    }), 200);
+    })), 200);
 
-    await expectStatus(await request.post(`/api/campaigns/${campaignId}/entities`, {
-      data: {
+    await expectStatus(await request.post(`/api/campaigns/${campaignId}/entities`, commandRequestOptions({
         entityId: playerCharacterId,
         entityType: "player_character",
         title: "E2E Hero",
         summary: "Character controlled by the authenticated player.",
         visibility: { kind: "party" },
         metadata: { isPremade: true },
-      },
-    }), 200);
+    })), 200);
 
-    await expectStatus(await request.post(`/api/campaigns/${campaignId}/entities`, {
-      data: {
+    await expectStatus(await request.post(`/api/campaigns/${campaignId}/entities`, commandRequestOptions({
         entityId: clueId,
         entityType: "clue",
         title: "Bloodstained Map",
         summary: "A map that reveals the path to the sunken ruins.",
         visibility: { kind: "party" },
         metadata: { content: "The route is marked with a coded sigil." },
-      },
-    }), 200);
+    })), 200);
 
-    await expectStatus(await request.post(`/api/campaigns/${campaignId}/entities`, {
-      data: {
+    await expectStatus(await request.post(`/api/campaigns/${campaignId}/entities`, commandRequestOptions({
         entityId: secretId,
         entityType: "secret",
         title: "True Identity of Malvus",
         summary: "Malvus is an alias used by the cult leader.",
         visibility: { kind: "dm_only" },
         metadata: { truth: "His noble lineage is forged." },
-      },
-    }), 200);
+    })), 200);
 
-    await expectStatus(await request.post(`/api/campaigns/${campaignId}/relations`, {
-      data: {
+    await expectStatus(await request.post(`/api/campaigns/${campaignId}/relations`, commandRequestOptions({
         relationId,
         sourceEntityId: clueId,
         targetEntityId: secretId,
         relationType: "reveals",
         description: "The clue points to the hidden truth.",
         visibility: { kind: "dm_only" },
-      },
-    }), 200);
+    })), 200);
 
     const entitiesResponse = await expectStatus(await request.get(`/api/campaigns/${campaignId}/entities`), 200);
     expect(entitiesResponse.entities.map((entity: JsonObject) => entity.entityId)).toEqual(
@@ -137,9 +132,7 @@ test.describe("Minimum release web API flow", () => {
     const relationsResponse = await expectStatus(await request.get(`/api/campaigns/${campaignId}/relations`), 200);
     expect(relationsResponse.relations.map((relation: JsonObject) => relation.relationId)).toContain(relationId);
 
-    await expectStatus(await request.post(`/api/campaigns/${campaignId}/canvases`, {
-      data: { canvasId, title: "E2E Canvas", kind: "custom" },
-    }), 200);
+    await expectStatus(await request.post(`/api/campaigns/${campaignId}/canvases`, commandRequestOptions({ canvasId, title: "E2E Canvas", kind: "custom" })), 200);
     const canvasResponse = await expectStatus(await request.get(`/api/campaigns/${campaignId}/canvases`), 200);
     expect(canvasResponse.canvases.map((canvas: JsonObject) => canvas.canvasId)).toContain(canvasId);
 
@@ -148,9 +141,7 @@ test.describe("Minimum release web API flow", () => {
     const rulesSearch = await expectStatus(await request.get("/api/rules/search?category=Glosario%20de%20Reglas"), 200);
     expect(Array.isArray(rulesSearch.results)).toBe(true);
 
-    const invitationResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/invitations`, {
-      data: { role: "player", maxUses: 1, expiresInHours: 1 },
-    }), 201);
+    const invitationResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/invitations`, commandRequestOptions({ role: "player", maxUses: 1, expiresInHours: 1 })), 201);
     expect(invitationResult.invitation.invitationId).toMatch(/^inv_/);
     expect(invitationResult.invitation.url).toContain("/invitations/");
     expect(invitationResult.invitation.token).toEqual(expect.any(String));
@@ -164,7 +155,7 @@ test.describe("Minimum release web API flow", () => {
     );
 
     await expectStatus(
-      await request.post(`/api/campaigns/${campaignId}/invitations/${invitationResult.invitation.invitationId}/revoke`),
+      await request.post(`/api/campaigns/${campaignId}/invitations/${invitationResult.invitation.invitationId}/revoke`, commandRequestOptions()),
       200,
     );
     const revokedInvitations = await expectStatus(await request.get(`/api/campaigns/${campaignId}/invitations`), 200);
@@ -175,13 +166,9 @@ test.describe("Minimum release web API flow", () => {
       }),
     );
 
-    const playerInvitationResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/invitations`, {
-      data: { role: "player", maxUses: 1, expiresInHours: 1 },
-    }), 201);
+    const playerInvitationResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/invitations`, commandRequestOptions({ role: "player", maxUses: 1, expiresInHours: 1 })), 201);
 
-    const liveTableResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/live-tables`, {
-      data: { durationHours: 1 },
-    }), 201);
+    const liveTableResult = await expectStatus(await request.post(`/api/campaigns/${campaignId}/live-tables`, commandRequestOptions({ durationHours: 1 })), 201);
     expect(liveTableResult.liveTable.shortCode).toMatch(/^[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/);
 
     const playerRequest = await playwrightRequest.newContext({ baseURL: "http://127.0.0.1:4877" });
@@ -195,7 +182,7 @@ test.describe("Minimum release web API flow", () => {
       expect(invitation.campaign.campaignId).toBe(campaignId);
 
       const acceptance = await expectStatus(
-        await playerRequest.post(`/api/invitations/${playerInvitationResult.invitation.token}/accept`),
+        await playerRequest.post(`/api/invitations/${playerInvitationResult.invitation.token}/accept`, commandRequestOptions()),
         200,
       );
       expect(acceptance.campaignId).toBe(campaignId);
@@ -237,9 +224,7 @@ test.describe("Minimum release web API flow", () => {
       expect(dmSummary.players).toContainEqual(expect.objectContaining({ playerId: portalState.playerId }));
       expect(dmSummary.availableCharacters).toContainEqual(expect.objectContaining({ entityId: playerCharacterId }));
 
-      await expectStatus(await request.post(`/api/campaigns/${campaignId}/player-portal/links`, {
-        data: { playerId: portalState.playerId, characterEntityId: playerCharacterId },
-      }), 200);
+      await expectStatus(await request.post(`/api/campaigns/${campaignId}/player-portal/links`, commandRequestOptions({ playerId: portalState.playerId, characterEntityId: playerCharacterId })), 200);
 
       const linkedPortalState = await expectStatus(
         await playerRequest.get(`/api/campaigns/${campaignId}/player-portal/state`),
@@ -251,7 +236,7 @@ test.describe("Minimum release web API flow", () => {
         title: "E2E Hero",
       }));
 
-      await expectStatus(await request.delete(`/api/campaigns/${campaignId}/player-portal/links/${portalState.playerId}`), 200);
+      await expectStatus(await request.delete(`/api/campaigns/${campaignId}/player-portal/links/${portalState.playerId}`, commandRequestOptions()), 200);
       const unlinkedPortalState = await expectStatus(
         await playerRequest.get(`/api/campaigns/${campaignId}/player-portal/state`),
         200,
@@ -259,12 +244,10 @@ test.describe("Minimum release web API flow", () => {
       expect(unlinkedPortalState.link).toBeNull();
       expect(unlinkedPortalState.linkedCharacter).toBeNull();
 
-      await expectStatus(await playerRequest.post(`/api/campaigns/${campaignId}/player-portal/notes`, {
-        data: { title: "E2E note", content: "Remember the bloodstained map.", visibility: "private" },
-      }), 200);
+      await expectStatus(await playerRequest.post(`/api/campaigns/${campaignId}/player-portal/notes`, commandRequestOptions({ title: "E2E note", content: "Remember the bloodstained map.", visibility: "private" })), 200);
 
       const liveJoin = await expectStatus(
-        await playerRequest.post(`/api/live-tables/${liveTableResult.liveTable.shortCode}/join`),
+        await playerRequest.post(`/api/live-tables/${liveTableResult.liveTable.shortCode}/join`, commandRequestOptions()),
         200,
       );
       expect(liveJoin.campaignId).toBe(campaignId);
@@ -279,7 +262,7 @@ test.describe("Minimum release web API flow", () => {
     expect(currentLiveTable.liveTable.liveTableId).toBe(liveTableResult.liveTable.liveTableId);
 
     await expectStatus(
-      await request.post(`/api/campaigns/${campaignId}/live-tables/${liveTableResult.liveTable.liveTableId}/close`),
+      await request.post(`/api/campaigns/${campaignId}/live-tables/${liveTableResult.liveTable.liveTableId}/close`, commandRequestOptions()),
       200,
     );
 

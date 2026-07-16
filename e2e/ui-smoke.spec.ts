@@ -1,6 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
+function idempotencyHeaders(): Record<string, string> {
+  return { "Idempotency-Key": randomUUID() };
+}
+
 async function expectAuthenticated(page: Page): Promise<void> {
   await expect.poll(async () => {
     const response = await page.request.get("/api/auth/session");
@@ -127,6 +131,7 @@ test.describe("Player invitation UI flow", () => {
     await expectAuthenticated(page);
 
     const campaignResponse = await page.request.post("/api/campaigns", {
+      headers: idempotencyHeaders(),
       data: { title: `UI Invitation ${suffix}`, system: "custom" },
     });
     expect(campaignResponse.ok()).toBe(true);
@@ -170,11 +175,13 @@ test.describe("Player invitation acceptance and routed workspace", () => {
     });
     expect(dmRegisterRes.ok()).toBe(true);
     const campaignResponse = await page.request.post("/api/campaigns", {
+      headers: idempotencyHeaders(),
       data: { title: `UI Accept ${suffix}`, system: "custom" },
     });
     expect(campaignResponse.ok()).toBe(true);
     const campaignId = (await campaignResponse.json()).campaignId as string;
     const invitationResponse = await page.request.post(`/api/campaigns/${campaignId}/invitations`, {
+      headers: idempotencyHeaders(),
       data: { role: "player" },
     });
     expect(invitationResponse.ok()).toBe(true);

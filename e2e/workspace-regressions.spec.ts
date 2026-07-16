@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
+function idempotencyHeaders(): Record<string, string> {
+  return { "Idempotency-Key": randomUUID() };
+}
+
 test.describe("Campaign workspace regressions", () => {
   test("creates a notebook through the UI and renders the 2D network on desktop and mobile", async ({ page }) => {
     test.setTimeout(90_000);
@@ -16,6 +20,7 @@ test.describe("Campaign workspace regressions", () => {
     expect(registerResponse.ok()).toBe(true);
 
     const campaignResponse = await page.request.post("/api/campaigns", {
+      headers: idempotencyHeaders(),
       data: { title: `Workspace Regression ${suffix}`, system: "custom" },
     });
     expect(campaignResponse.ok()).toBe(true);
@@ -27,6 +32,7 @@ test.describe("Campaign workspace regressions", () => {
 
     for (const [entityId, title] of [[firstEntityId, "Aster"], [secondEntityId, "Bram"]] as const) {
       const response = await page.request.post(`/api/campaigns/${campaignId}/entities`, {
+        headers: idempotencyHeaders(),
         data: {
           entityId,
           entityType: "npc",
@@ -38,6 +44,7 @@ test.describe("Campaign workspace regressions", () => {
     }
 
     const relationResponse = await page.request.post(`/api/campaigns/${campaignId}/relations`, {
+      headers: idempotencyHeaders(),
       data: {
         relationId,
         sourceEntityId: firstEntityId,
