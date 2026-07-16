@@ -228,7 +228,7 @@ export function DmHubPage() {
   };
 
   const navigateToPremade = (templateId: string) => {
-    runDmHubAction(navigate({ to: `/premades/${templateId}` }), "No se pudo abrir la aventura preparada.");
+    runDmHubAction(navigate({ to: `/campaign-templates/${templateId}` }), "No se pudo abrir la aventura preparada.");
   };
 
   const navigateToActiveSession = (campaignId: string) => {
