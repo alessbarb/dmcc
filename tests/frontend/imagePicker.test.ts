@@ -210,7 +210,7 @@ describe("CanvasInspector wiring", () => {
 
 describe("DM hub campaign cover wiring", () => {
   it("uses ImagePickerButton for campaign coverUrl", () => {
-    const src = read("src/frontend/dm/hub/DmHubPage.tsx");
+    const src = read("src/frontend/dm/hub/DmHubCampaignModals.tsx");
     expect(src).toContain("ImagePickerButton");
     expect(src).toContain('catalog="campaigns"');
     expect(src).not.toContain("editCoverUrl} onChange={(e) => setEditCoverUrl");
