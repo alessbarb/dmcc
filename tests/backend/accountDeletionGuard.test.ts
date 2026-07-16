@@ -1,8 +1,8 @@
-import Fastify from "fastify";
+import Fastify, { type FastifyInstance } from "fastify";
 import { describe, expect, it } from "vitest";
 import { registerAccountDeletionGuard } from "../../src/backend/server/web/accountDeletionGuard.js";
 
-async function createServer() {
+async function createServer(registerExtraRoutes?: (server: FastifyInstance) => void) {
   const server = Fastify();
   server.decorateRequest("webUser", null);
   server.addHook("onRequest", async (request) => {
@@ -15,6 +15,7 @@ async function createServer() {
   });
   registerAccountDeletionGuard(server);
   server.delete("/api/account", async () => ({ deleted: true }));
+  registerExtraRoutes?.(server);
   await server.ready();
   return server;
 }
@@ -55,8 +56,9 @@ describe("account deletion confirmation", () => {
   });
 
   it("does not affect other endpoints", async () => {
-    const server = await createServer();
-    server.delete("/api/account/sessions", async () => ({ revoked: true }));
+    const server = await createServer((app) => {
+      app.delete("/api/account/sessions", async () => ({ revoked: true }));
+    });
 
     const response = await server.inject({
       method: "DELETE",

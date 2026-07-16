@@ -9,6 +9,17 @@ export type CampaignPurgeWorker = {
   stop: () => void;
 };
 
+type CampaignPurgeWorkerTimer = ReturnType<typeof setInterval>;
+
+export type CampaignPurgeWorkerDependencies = {
+  enqueueExpiredCampaignPurges?: typeof enqueueExpiredCampaignPurges;
+  processPendingCampaignPurges?: typeof processPendingCampaignPurges;
+  setInterval?: (callback: () => void, intervalMs: number) => CampaignPurgeWorkerTimer;
+  clearInterval?: (timer: CampaignPurgeWorkerTimer) => void;
+  logger?: Pick<Console, "info" | "error">;
+  autoStart?: boolean;
+};
+
 function positiveInteger(value: string | undefined, fallback: number): number {
   const parsed = Number(value);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
@@ -16,9 +27,15 @@ function positiveInteger(value: string | undefined, fallback: number): number {
 
 export function startCampaignPurgeWorker(
   env: NodeJS.ProcessEnv = process.env,
+  dependencies: CampaignPurgeWorkerDependencies = {},
 ): CampaignPurgeWorker {
   const intervalMs = positiveInteger(env.DMCC_PURGE_WORKER_INTERVAL_MS, DEFAULT_INTERVAL_MS);
   const batchSize = positiveInteger(env.DMCC_PURGE_WORKER_BATCH_SIZE, DEFAULT_BATCH_SIZE);
+  const enqueueExpired = dependencies.enqueueExpiredCampaignPurges ?? enqueueExpiredCampaignPurges;
+  const processPending = dependencies.processPendingCampaignPurges ?? processPendingCampaignPurges;
+  const scheduleInterval = dependencies.setInterval ?? ((callback, interval) => setInterval(callback, interval));
+  const unscheduleInterval = dependencies.clearInterval ?? ((timer) => clearInterval(timer));
+  const logger = dependencies.logger ?? console;
   let running = false;
   let stopped = false;
 
@@ -27,11 +44,11 @@ export function startCampaignPurgeWorker(
     running = true;
 
     try {
-      const enqueued = await enqueueExpiredCampaignPurges();
-      const result = await processPendingCampaignPurges({ limit: batchSize });
+      const enqueued = await enqueueExpired();
+      const result = await processPending({ limit: batchSize });
 
       if (enqueued.length > 0 || result.processedCount > 0) {
-        console.info("[campaign-purge-worker] cycle completed", {
+        logger.info("[campaign-purge-worker] cycle completed", {
           enqueuedCount: enqueued.length,
           processedCount: result.processedCount,
           successCount: result.successes.length,
@@ -40,29 +57,31 @@ export function startCampaignPurgeWorker(
       }
 
       if (result.failures.length > 0) {
-        console.error("[campaign-purge-worker] purge jobs failed", {
+        logger.error("[campaign-purge-worker] purge jobs failed", {
           failures: result.failures,
         });
       }
     } catch (error) {
-      console.error("[campaign-purge-worker] cycle failed", error);
+      logger.error("[campaign-purge-worker] cycle failed", error);
     } finally {
       running = false;
     }
   };
 
-  const timer = setInterval(() => {
+  const timer = scheduleInterval(() => {
     void runNow();
   }, intervalMs);
-  timer.unref();
+  timer.unref?.();
 
-  void runNow();
+  if (dependencies.autoStart !== false) {
+    void runNow();
+  }
 
   return {
     runNow,
     stop: () => {
       stopped = true;
-      clearInterval(timer);
+      unscheduleInterval(timer);
     },
   };
 }
