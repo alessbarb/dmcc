@@ -134,8 +134,8 @@ function isGuideEntity(entity: { entityType: string; metadata?: Record<string, u
   return entity.entityType === "note" || entity.metadata?.previewRole === "guide";
 }
 
-export function PremadeCampaignPreviewPage() {
-  const { templateId } = useParams({ from: "/premades/$templateId" });
+export function CampaignTemplatePreviewPage() {
+  const { templateId } = useParams({ from: "/campaign-templates/$templateId" });
   const navigate = useNavigate();
   const { t } = useTranslation();
   const {

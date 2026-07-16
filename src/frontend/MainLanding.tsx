@@ -276,7 +276,7 @@ export function MainLanding() {
               className="rl-cta-primary"
               onClick={() => {
                 void navigate({
-                  to: "/premades/$templateId",
+                  to: "/campaign-templates/$templateId",
                   params: { templateId: "oracle" },
                 }).catch(handleNavigationError);
               }}

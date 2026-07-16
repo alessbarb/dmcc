@@ -143,8 +143,8 @@ const SettingsPageLazy = React.lazy(() =>
 const OnboardingPageLazy = React.lazy(() =>
   import("./dm/pages/OnboardingPage.js").then((module) => ({ default: module.OnboardingPage })),
 );
-const PremadeCampaignPreviewPageLazy = React.lazy(() =>
-  import("./dm/pages/PremadeCampaignPreviewPage.js").then((module) => ({ default: module.PremadeCampaignPreviewPage })),
+const CampaignTemplatePreviewPageLazy = React.lazy(() =>
+  import("./dm/pages/CampaignTemplatePreviewPage.js").then((module) => ({ default: module.CampaignTemplatePreviewPage })),
 );
 const AccountPageLazy = React.lazy(() =>
   import("./account/AccountPage.js").then((module) => ({ default: module.AccountPage })),
@@ -498,8 +498,8 @@ const onboardingRoute = createRoute({
 });
 const premadePreviewRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/premades/$templateId",
-  component: withSuspense(PremadeCampaignPreviewPageLazy),
+  path: "/campaign-templates/$templateId",
+  component: withSuspense(CampaignTemplatePreviewPageLazy),
 });
 const accountRoute = createRoute({
   getParentRoute: () => rootRoute,
