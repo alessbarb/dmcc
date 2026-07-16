@@ -1,12 +1,13 @@
 /* Entity reading composition.
-   The artwork occupies the upper 60% of the dialog while the reading surface starts at 40%,
-   creating a real 20% overlap. Editing mode keeps its dedicated workspace contract. */
+   The artwork occupies the upper 60% of the dialog while the reading surface starts at 20%,
+   creating a real 40% overlap and preserving 80% of the dialog for reading.
+   Editing mode keeps its dedicated workspace contract. */
 
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content {
   position: relative !important;
   display: grid !important;
-  grid-template-rows: 40% auto auto minmax(0, 1fr) auto !important;
+  grid-template-rows: 20% auto auto minmax(0, 1fr) auto !important;
   padding: 0 !important;
   overflow: hidden !important;
   background: var(--bg-card) !important;
@@ -70,7 +71,7 @@
     ) !important;
 }
 
-/* Reading surface begins at the physical 40% row, inside the artwork. */
+/* Reading surface begins at the physical 20% row, inside the artwork. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-header {
@@ -174,13 +175,13 @@
 @media (max-width: 620px) {
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content {
-    grid-template-rows: 38% auto auto minmax(0, 1fr) auto !important;
+    grid-template-rows: 20% auto auto minmax(0, 1fr) auto !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > div:first-child {
-    height: 58% !important;
+    height: 60% !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
