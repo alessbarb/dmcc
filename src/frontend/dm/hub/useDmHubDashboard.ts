@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Campaign, PremadeCampaignTemplateSummary } from "../../shared/stores/campaignStore.js";
+import type { Campaign, CampaignTemplateSummary } from "../../shared/stores/campaignStore.js";
 import { apiFetch } from "../../shared/api/apiClient.js";
 import type {
   DmHubActiveTable,
@@ -176,7 +176,7 @@ function buildActiveTables(campaigns: DmHubCampaign[], t: (key: string) => strin
 
 function buildFallbackDashboard(
   rawCampaigns: Campaign[],
-  premadeTemplates: PremadeCampaignTemplateSummary[],
+  premadeTemplates: CampaignTemplateSummary[],
   t: (key: string) => string
 ): DmHubDashboard {
   const campaigns = rawCampaigns.map(normalizeCampaign);
@@ -246,7 +246,7 @@ function normalizeActivityItem(raw: unknown): DmHubActivityItem | null {
 
 function normalizeRemoteDashboard(
   data: unknown,
-  fallbackPremadeTemplates: PremadeCampaignTemplateSummary[],
+  fallbackPremadeTemplates: CampaignTemplateSummary[],
   t: (key: string) => string
 ): DmHubDashboard | null {
   if (!isRecord(data)) return null;
@@ -255,9 +255,9 @@ function normalizeRemoteDashboard(
     ? (data.activeTables.map((x: unknown) => normalizeActiveTable(x, t)).filter((x): x is DmHubActiveTable => x !== null))
     : buildActiveTables(campaigns, t);
   const premadeTemplates = Array.isArray(data.premadeTemplates)
-    ? (data.premadeTemplates as PremadeCampaignTemplateSummary[])
+    ? (data.premadeTemplates as CampaignTemplateSummary[])
     : Array.isArray(data.premades)
-      ? (data.premades as PremadeCampaignTemplateSummary[])
+      ? (data.premades as CampaignTemplateSummary[])
       : fallbackPremadeTemplates;
 
   return {
@@ -280,7 +280,7 @@ function campaignRefreshKey(campaigns: Campaign[]): string {
 
 export function useDmHubDashboard(
   rawCampaigns: Campaign[],
-  premadeTemplates: PremadeCampaignTemplateSummary[]
+  premadeTemplates: CampaignTemplateSummary[]
 ): DmHubDashboard {
   const { t } = useTranslation();
   const [remoteDashboard, setRemoteDashboard] = useState<DmHubDashboard | null>(null);

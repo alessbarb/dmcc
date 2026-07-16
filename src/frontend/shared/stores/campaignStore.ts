@@ -118,7 +118,7 @@ function normalizeCampaignState(raw: unknown): StoreCampaignState | null {
   return normalized as unknown as StoreCampaignState;
 }
 
-export interface PremadeCampaignTemplateSummary {
+export interface CampaignTemplateSummary {
   templateId: string;
   version: string;
   title: string;
@@ -147,7 +147,7 @@ export interface PremadeCampaignTemplateSummary {
   };
 }
 
-export interface PremadeCampaignTemplate extends PremadeCampaignTemplateSummary {
+export interface CampaignTemplate extends CampaignTemplateSummary {
   schemaVersion?: number;
   summary: string;
   entities: Array<{
@@ -302,9 +302,9 @@ export interface PlayerProfile {
 
 export interface CampaignStateStore {
   campaigns: Campaign[];
-  premadeTemplates: PremadeCampaignTemplateSummary[];
+  premadeTemplates: CampaignTemplateSummary[];
   premadeTemplatesLocale: string | null;
-  activePremadeTemplate: PremadeCampaignTemplate | null;
+  activePremadeTemplate: CampaignTemplate | null;
   activePremadeTemplateKey: string | null;
   activeCampaignId: string | null;
   activeCampaignLoadId: string | null;
@@ -348,7 +348,7 @@ export interface CampaignStateStore {
 
   fetchCampaigns: () => Promise<void>;
   fetchPremadeCampaigns: () => Promise<void>;
-  fetchPremadeCampaignTemplate: (templateId: string) => Promise<PremadeCampaignTemplate | null>;
+  fetchCampaignTemplate: (templateId: string) => Promise<CampaignTemplate | null>;
   importCampaignTemplate: (templateId: string, options?: { title?: string; summary?: string; importMode?: "full" | "structure" | "sessions"; locale?: string }) => Promise<string | undefined>;
   updateCampaign: (campaignId: string, updates: { title?: string; summary?: string; system?: string; status?: string; coverUrl?: string; metadata?: Record<string, unknown> }) => Promise<Campaign | undefined>;
   selectCampaign: (campaignId: string) => Promise<void>;
@@ -559,7 +559,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
   },
 
-  fetchPremadeCampaignTemplate: async (templateId) => {
+  fetchCampaignTemplate: async (templateId) => {
     const locale = getCampaignTemplateLocale();
     set({ loading: true, error: null });
     try {
@@ -568,7 +568,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         const message = await readApiError(res, "Failed to fetch premade campaign");
         throw new Error(message);
       }
-      const template = await res.json() as PremadeCampaignTemplate;
+      const template = await res.json() as CampaignTemplate;
       set({ activePremadeTemplate: template, activePremadeTemplateKey: `${templateId}:${locale}`, loading: false });
       return template;
     } catch (err) {

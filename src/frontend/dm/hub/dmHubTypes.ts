@@ -1,4 +1,4 @@
-import type { Campaign, PremadeCampaignTemplateSummary } from "../../shared/stores/campaignStore.js";
+import type { Campaign, CampaignTemplateSummary } from "../../shared/stores/campaignStore.js";
 
 export type DmHubCampaignStats = {
   playersCount: number;
@@ -49,7 +49,7 @@ export type DmHubActivityItem = {
 
 export type DmHubDashboard = {
   campaigns: DmHubCampaign[];
-  premadeTemplates: PremadeCampaignTemplateSummary[];
+  premadeTemplates: CampaignTemplateSummary[];
   activeTables: DmHubActiveTable[];
   alerts: DmHubAlert[];
   recentActivity: DmHubActivityItem[];
