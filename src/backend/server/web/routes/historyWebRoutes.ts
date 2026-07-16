@@ -29,7 +29,7 @@ export async function registerHistoryWebRoutes(server: FastifyInstance): Promise
       targetType: query.targetType,
       targetId: query.targetId,
       cursor: query.cursor,
-      limit: isNaN(limit as any) ? undefined : limit,
+      limit: limit === undefined || Number.isNaN(limit) ? undefined : limit,
     };
 
     const history = await activityRepository.findCampaignHistory(null, campaignId, filters);
