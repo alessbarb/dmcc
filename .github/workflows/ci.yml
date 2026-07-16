@@ -6,13 +6,35 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  finalize-theme:
+    name: Finalize theme foundation
+    if: github.head_ref == 'feat/theme-contract-foundation'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/theme-contract-foundation
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Apply final theme migrations
+        run: node scripts/theme/finalize-theme-foundation.mjs
+      - name: Commit finalized foundation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "refactor(theme): finalize v1 theme foundation"
+          git push origin HEAD:feat/theme-contract-foundation
+
   quality:
     name: Typecheck, test and build
     runs-on: ubuntu-latest
