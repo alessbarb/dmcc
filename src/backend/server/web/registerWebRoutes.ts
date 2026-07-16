@@ -1,5 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { registerAssetRoutes } from "../routes/assetRoutes.js";
+import { registerAccountDeletionGuard } from "./accountDeletionGuard.js";
 import { registerAccountWebRoutes } from "./routes/accountWebRoutes.js";
 import { registerAuthWebRoutes } from "./routes/authWebRoutes.js";
 import { registerCampaignMessagingWebRoutes } from "./routes/campaignMessagingWebRoutes.js";
@@ -35,6 +36,7 @@ export interface WebRoutesOptions {
 /** Registers the PostgreSQL-backed multi-user web API surface. */
 export function registerWebRoutes(server: FastifyInstance, options: WebRoutesOptions): void {
   registerAuthWebRoutes(server);
+  registerAccountDeletionGuard(server);
   void registerAccountWebRoutes(server);
   void registerHealthWebRoutes(server);
   void registerRoleScopedCampaignListWebRoutes(server);

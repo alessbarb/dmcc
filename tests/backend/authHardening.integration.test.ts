@@ -15,6 +15,8 @@ describe("authentication hardening", () => {
 
     expect(server.hasRoute({ method: "POST", url: "/api/auth/login" })).toBe(true);
     expect(server.hasRoute({ method: "POST", url: "/api/auth/register" })).toBe(true);
+    expect(server.hasRoute({ method: "POST", url: "/api/auth/password/change" })).toBe(false);
+    expect(server.hasRoute({ method: "POST", url: "/api/auth/recovery-codes/regenerate" })).toBe(false);
 
     await server.close();
   });

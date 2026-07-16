@@ -348,7 +348,7 @@ export async function registerCampaignTemplateWebRoutes(server: FastifyInstance)
           and(
             eq(schema.campaigns.ownerId, user.userId),
             sql`${schema.campaigns.metadata}->>'operationId' = ${operationId}`,
-            sql`${schema.campaigns.status} <> 'deleted'`,
+            sql`${schema.campaigns.status} <> 'trashed'`,
           )
         )
         .limit(1);
