@@ -152,7 +152,8 @@ describe("ImagePickerButton", () => {
 
   it("wires modal selection to onChange", () => {
     const src = read("src/frontend/shared/components/ImagePickerButton.tsx");
-    expect(src).toContain("onSelect={onChange}");
+    expect(src).toContain("onSelect={handleSelect}");
+    expect(src).toMatch(/const handleSelect = \([^)]*\) => \{[\s\S]*?onChange\(/);
   });
 
   it("uses Pencil icon as edit trigger", () => {

@@ -139,7 +139,14 @@ function computeVerticalLayout(
   viewportWidth: number,
 ): Map<string, NetworkLayoutPosition> {
   const rawLayers = computeVerticalLayers(nodes, edges);
-  const maxColumns = Math.max(3, Math.min(10, Math.floor(Math.max(viewportWidth - 2 * OUTER_PADDING, NODE_WIDTH) / (NODE_WIDTH + HORIZONTAL_GAP))));
+  // The canvas is pannable/zoomable, so large networks aren't bound to the initial
+  // viewport width: without this, a deep near-binary tree collapses into a tall,
+  // narrow column (columns capped by viewport alone) that validateNetworkLayout
+  // rejects as too narrow, and the caller's fallback recomputes this same function
+  // with the same inputs, producing an identical result.
+  const viewportColumns = Math.floor(Math.max(viewportWidth - 2 * OUTER_PADDING, NODE_WIDTH) / (NODE_WIDTH + HORIZONTAL_GAP));
+  const nodeCountColumns = Math.ceil(Math.sqrt(nodes.length));
+  const maxColumns = Math.max(3, Math.min(20, Math.max(viewportColumns, nodeCountColumns)));
   const visualRows: string[][] = [];
 
   for (const layer of rawLayers) {
