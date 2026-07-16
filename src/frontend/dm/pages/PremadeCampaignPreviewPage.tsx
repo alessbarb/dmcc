@@ -144,7 +144,7 @@ export function PremadeCampaignPreviewPage() {
     loading,
     error,
     fetchCampaigns,
-    fetchPremadeCampaignTemplate,
+    fetchCampaignTemplate,
     importCampaignTemplate,
     premadeImportState,
     clearPremadeImportState,
@@ -161,12 +161,12 @@ export function PremadeCampaignPreviewPage() {
         await navigate({ to: "/auth/login" });
         return;
       }
-      await Promise.all([fetchPremadeCampaignTemplate(templateId), fetchCampaigns().catch(() => {})]);
+      await Promise.all([fetchCampaignTemplate(templateId), fetchCampaigns().catch(() => {})]);
       setAuthChecked(true);
     };
 
     runPremadePreviewAction(init(), "No se pudo inicializar la vista previa de aventura preparada.");
-  }, [fetchCampaigns, fetchPremadeCampaignTemplate, navigate, templateId]);
+  }, [fetchCampaigns, fetchCampaignTemplate, navigate, templateId]);
 
   const template = activePremadeTemplate?.templateId === templateId ? activePremadeTemplate : null;
 

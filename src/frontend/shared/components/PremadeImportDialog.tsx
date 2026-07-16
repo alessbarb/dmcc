@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, CheckCircle2, ShieldCheck, X, Loader2 } from "lucide-react";
-import type { Campaign, PremadeCampaignTemplate, PremadeCampaignTemplateSummary, PremadeImportState } from "../stores/campaignStore.js";
+import type { Campaign, CampaignTemplate, CampaignTemplateSummary, PremadeImportState } from "../stores/campaignStore.js";
 import { useTranslation } from "../i18n/useTranslation.js";
 
 export type PremadeImportMode = "full" | "structure" | "sessions";
@@ -13,7 +13,7 @@ export interface PremadeImportOptions {
 }
 
 interface PremadeImportDialogProps {
-  template: PremadeCampaignTemplateSummary | PremadeCampaignTemplate | null;
+  template: CampaignTemplateSummary | CampaignTemplate | null;
   campaigns: Campaign[];
   importing?: boolean;
   importProgress?: PremadeImportState | null;
@@ -23,7 +23,7 @@ interface PremadeImportDialogProps {
   onConfirm: (options: PremadeImportOptions) => void | Promise<void>;
 }
 
-function templateSummary(template: PremadeCampaignTemplateSummary | PremadeCampaignTemplate): string {
+function templateSummary(template: CampaignTemplateSummary | CampaignTemplate): string {
   if ("summary" in template && typeof template.summary === "string" && template.summary.trim()) {
     return template.summary.trim();
   }
