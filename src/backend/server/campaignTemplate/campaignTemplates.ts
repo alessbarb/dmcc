@@ -13,19 +13,9 @@ import {
 import {
   resolveCampaignTemplateCampaign,
   type ResolvedCampaignTemplateCampaign,
-  type ResolvedCampaignTemplateEntity,
-  type ResolvedCampaignTemplateRelation,
-  type ResolvedCampaignTemplateFact,
-  type ResolvedCampaignTemplateSession,
-  type ResolvedCampaignTemplateCanvas,
 } from "@core/domain/campaignTemplate/resolveCampaignTemplate.js";
 
 export type CampaignTemplateResolved = ResolvedCampaignTemplateCampaign;
-export type CampaignTemplateEntity = ResolvedCampaignTemplateEntity;
-export type CampaignTemplateRelation = ResolvedCampaignTemplateRelation;
-export type CampaignTemplateFact = ResolvedCampaignTemplateFact;
-export type CampaignTemplateSession = ResolvedCampaignTemplateSession;
-export type CampaignTemplateCanvas = ResolvedCampaignTemplateCanvas;
 
 export interface CampaignTemplateResolvedSummary extends Omit<ResolvedCampaignTemplateCampaign, "entities" | "relations" | "facts" | "sessions" | "canvases" | "summary" | "schemaVersion"> {
   templateFile?: string;

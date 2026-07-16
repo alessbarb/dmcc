@@ -1,5 +1,5 @@
 export type ProfileAudience = "private" | "dm" | "table" | "global";
-export type PublicationState = "private" | "unlisted" | "published";
+type PublicationState = "private" | "unlisted" | "published";
 export type SocialField =
   | "displayName"
   | "avatarUrl"
@@ -10,7 +10,7 @@ export type SocialField =
 
 export type SocialVisibility = Record<SocialField, ProfileAudience>;
 
-export type NotificationPreferences = {
+type NotificationPreferences = {
   membership: boolean;
   campaignActivity: boolean;
   sessionReminder: boolean;
@@ -49,8 +49,3 @@ export type SocialProfileBase = {
 };
 
 export type DmSocialProfile = SocialProfileBase;
-
-export type PlayerSocialProfile = SocialProfileBase & {
-  campaignId: string;
-  playerId: string;
-};
