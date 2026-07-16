@@ -8,6 +8,12 @@ import * as schema from "../../../db/schema.js";
 import { userRoles } from "../../../db/authSchema.js";
 import { HttpError } from "../../errors.js";
 import { sendExistingAccountRegistrationEmail, sendPasswordResetEmail } from "../../emailService.js";
+import {
+  clearLoginLockout,
+  consumeAuthRateLimit,
+  getLoginLockoutRetryAfter,
+  recordFailedLogin,
+} from "../authThrottleStore.js";
 import { listAccessibleCampaigns } from "../webAccess.js";
 import {
   clearWebSessionCookie,
@@ -21,10 +27,6 @@ import {
   setWebSessionCookie,
   type WebUser,
 } from "../webSession.js";
-
-type RegisterRateLimitEntry = { count: number; resetAt: number };
-type LoginRateLimitEntry = { count: number; resetAt: number };
-type LoginLockoutEntry = { failures: number; windowResetAt: number; lockedUntil: number };
 
 const MIN_PASSWORD_LENGTH = 12;
 const MAX_PASSWORD_LENGTH = 128;
@@ -41,75 +43,38 @@ const LOGIN_LOCKOUT_WINDOW_MS = 15 * 60_000;
 const LOGIN_LOCKOUT_THRESHOLD = 5;
 const LOGIN_LOCKOUT_BASE_MS = 60_000;
 const LOGIN_LOCKOUT_MAX_MS = 15 * 60_000;
-const AUTH_STATE_MAX_ENTRIES = 10_000;
 const fallbackPasswordHashPromise = argon2.hash(randomBytes(32));
 
-function pruneExpiringMap<T>(entries: Map<string, T>, isExpired: (entry: T) => boolean): void {
-  for (const [key, entry] of entries) {
-    if (isExpired(entry)) entries.delete(key);
-  }
-  while (entries.size >= AUTH_STATE_MAX_ENTRIES) {
-    const oldestKey = entries.keys().next().value as string | undefined;
-    if (!oldestKey) break;
-    entries.delete(oldestKey);
-  }
-}
-
-function getRateLimitRetryAfter<T extends { count: number; resetAt: number }>(
-  entries: Map<string, T>,
-  key: string,
-  limit: number,
-  windowMs: number,
-  now = Date.now(),
-): number | null {
-  pruneExpiringMap(entries, (entry) => entry.resetAt <= now);
-  const current = entries.get(key);
-  if (!current || current.resetAt <= now) {
-    entries.set(key, { count: 1, resetAt: now + windowMs } as T);
-    return null;
-  }
-  if (current.count >= limit) return Math.max(1, Math.ceil((current.resetAt - now) / 1000));
-  current.count += 1;
-  entries.set(key, current);
-  return null;
-}
-
-function enforceLoginRateLimit(entries: Map<string, LoginRateLimitEntry>, request: FastifyRequest, email: string): number | null {
-  const byIp = getRateLimitRetryAfter(entries, `login:ip:${request.ip}`, LOGIN_RATE_LIMIT_MAX_BY_IP, LOGIN_RATE_LIMIT_WINDOW_MS);
-  const byEmail = getRateLimitRetryAfter(entries, `login:email:${hashOpaque(email)}`, LOGIN_RATE_LIMIT_MAX_BY_EMAIL, LOGIN_RATE_LIMIT_WINDOW_MS);
+async function enforceLoginRateLimit(request: FastifyRequest, email: string): Promise<number | null> {
+  const byIp = await consumeAuthRateLimit({
+    key: `login:ip:${hashOpaque(request.ip)}`,
+    purpose: "login_rate",
+    limit: LOGIN_RATE_LIMIT_MAX_BY_IP,
+    windowMs: LOGIN_RATE_LIMIT_WINDOW_MS,
+  });
+  const byEmail = await consumeAuthRateLimit({
+    key: `login:email:${hashOpaque(email)}`,
+    purpose: "login_rate",
+    limit: LOGIN_RATE_LIMIT_MAX_BY_EMAIL,
+    windowMs: LOGIN_RATE_LIMIT_WINDOW_MS,
+  });
   return Math.max(byIp ?? 0, byEmail ?? 0) || null;
 }
 
-function enforceRegisterRateLimit(entries: Map<string, RegisterRateLimitEntry>, request: FastifyRequest, email: string): number | null {
-  const byIp = getRateLimitRetryAfter(entries, `register:ip:${request.ip}`, REGISTER_RATE_LIMIT_MAX_BY_IP, REGISTER_RATE_LIMIT_WINDOW_MS);
-  const byEmail = getRateLimitRetryAfter(entries, `register:email:${hashOpaque(email)}`, REGISTER_RATE_LIMIT_MAX_BY_EMAIL, REGISTER_RATE_LIMIT_WINDOW_MS);
+async function enforceRegisterRateLimit(request: FastifyRequest, email: string): Promise<number | null> {
+  const byIp = await consumeAuthRateLimit({
+    key: `register:ip:${hashOpaque(request.ip)}`,
+    purpose: "register_rate",
+    limit: REGISTER_RATE_LIMIT_MAX_BY_IP,
+    windowMs: REGISTER_RATE_LIMIT_WINDOW_MS,
+  });
+  const byEmail = await consumeAuthRateLimit({
+    key: `register:email:${hashOpaque(email)}`,
+    purpose: "register_rate",
+    limit: REGISTER_RATE_LIMIT_MAX_BY_EMAIL,
+    windowMs: REGISTER_RATE_LIMIT_WINDOW_MS,
+  });
   return Math.max(byIp ?? 0, byEmail ?? 0) || null;
-}
-
-function getLoginLockoutRetryAfter(entries: Map<string, LoginLockoutEntry>, email: string, now = Date.now()): number | null {
-  pruneExpiringMap(entries, (entry) => entry.windowResetAt <= now && entry.lockedUntil <= now);
-  const key = hashOpaque(email);
-  const current = entries.get(key);
-  if (!current) return null;
-  if (current.windowResetAt <= now && current.lockedUntil <= now) {
-    entries.delete(key);
-    return null;
-  }
-  return current.lockedUntil > now ? Math.max(1, Math.ceil((current.lockedUntil - now) / 1000)) : null;
-}
-
-function recordFailedLogin(entries: Map<string, LoginLockoutEntry>, email: string, now = Date.now()): void {
-  pruneExpiringMap(entries, (entry) => entry.windowResetAt <= now && entry.lockedUntil <= now);
-  const key = hashOpaque(email);
-  const current = entries.get(key);
-  const entry = !current || current.windowResetAt <= now
-    ? { failures: 1, windowResetAt: now + LOGIN_LOCKOUT_WINDOW_MS, lockedUntil: 0 }
-    : { ...current, failures: current.failures + 1 };
-  if (entry.failures >= LOGIN_LOCKOUT_THRESHOLD) {
-    const step = entry.failures - LOGIN_LOCKOUT_THRESHOLD;
-    entry.lockedUntil = now + Math.min(LOGIN_LOCKOUT_MAX_MS, LOGIN_LOCKOUT_BASE_MS * (2 ** step));
-  }
-  entries.set(key, entry);
 }
 
 function requireBodyString(value: unknown, field: string): string {
@@ -125,13 +90,9 @@ function validatePassword(password: string): string | null {
 }
 
 export function registerAuthWebRoutes(server: FastifyInstance): void {
-  const registerRateLimits = new Map<string, RegisterRateLimitEntry>();
-  const loginRateLimits = new Map<string, LoginRateLimitEntry>();
-  const loginLockouts = new Map<string, LoginLockoutEntry>();
-
   server.post<{ Body: { email?: string; password?: string; displayName?: string } }>("/api/auth/register", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
-    const retryAfter = enforceRegisterRateLimit(registerRateLimits, request, email);
+    const retryAfter = await enforceRegisterRateLimit(request, email);
     if (retryAfter) {
       reply.header("Retry-After", String(retryAfter));
       reply.code(429);
@@ -182,13 +143,14 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
 
   server.post<{ Body: { email?: string; password?: string } }>("/api/auth/login", async (request, reply) => {
     const email = normalizeEmail(requireBodyString(request.body?.email, "email"));
-    const lockoutRetryAfter = getLoginLockoutRetryAfter(loginLockouts, email);
+    const lockoutKey = `login-lockout:email:${hashOpaque(email)}`;
+    const lockoutRetryAfter = await getLoginLockoutRetryAfter({ key: lockoutKey });
     if (lockoutRetryAfter) {
       reply.header("Retry-After", String(lockoutRetryAfter));
       reply.code(401);
       return LOGIN_FAILURE_RESPONSE;
     }
-    const retryAfter = enforceLoginRateLimit(loginRateLimits, request, email);
+    const retryAfter = await enforceLoginRateLimit(request, email);
     if (retryAfter) {
       reply.header("Retry-After", String(retryAfter));
       reply.code(429);
@@ -201,12 +163,18 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
       ? await argon2.verify(user.passwordHash, password).catch(() => false)
       : await fallbackPasswordHashPromise.then((hash) => argon2.verify(hash, password).catch(() => false));
     if (!user || !passwordValid) {
-      recordFailedLogin(loginLockouts, email);
+      await recordFailedLogin({
+        key: lockoutKey,
+        windowMs: LOGIN_LOCKOUT_WINDOW_MS,
+        threshold: LOGIN_LOCKOUT_THRESHOLD,
+        baseLockoutMs: LOGIN_LOCKOUT_BASE_MS,
+        maxLockoutMs: LOGIN_LOCKOUT_MAX_MS,
+      });
       reply.code(401);
       return LOGIN_FAILURE_RESPONSE;
     }
 
-    loginLockouts.delete(hashOpaque(email));
+    await clearLoginLockout(lockoutKey);
     await db.update(schema.users).set({ lastLoginAt: new Date() }).where(eq(schema.users.userId, user.userId));
     const roles = await getPlatformRoles(user.userId);
     const session = await createWebSession(user.userId);

@@ -39,6 +39,7 @@ async function cleanDatabase() {
   await db.delete(schema.campaigns);
   await db.delete(schema.workspaceMemberships);
   await db.delete(schema.workspaces);
+  await db.delete(schema.authThrottleStates);
   await db.delete(schema.authSessions);
   await db.delete(schema.userPreferences);
   await db.delete(schema.recoveryCodes);

@@ -60,7 +60,7 @@ async function createEntity(campaignId: string, actorHeaders: Record<string, str
   const res = await server.inject({
     method: "POST",
     url: `/api/campaigns/${campaignId}/entities`,
-    headers: actorHeaders,
+    headers: { ...actorHeaders, "idempotency-key": createId("cmd") },
     payload: { entityType: overrides.entityType ?? "npc", title },
   });
   expect(res.statusCode).toBe(200);
@@ -74,7 +74,7 @@ async function createCanvas(campaignId: string, actorHeaders: Record<string, str
   const res = await server.inject({
     method: "POST",
     url: `/api/campaigns/${campaignId}/canvases`,
-    headers: actorHeaders,
+    headers: { ...actorHeaders, "idempotency-key": createId("cmd") },
     payload: { title, kind: "custom" },
   });
   expect(res.statusCode).toBe(200);
@@ -206,7 +206,11 @@ describe("shortcuts integration", () => {
     const entityId = await createEntity(campaignId, dmHeaders);
     await server.inject({ method: "POST", url: `/api/campaigns/${campaignId}/shortcuts`, headers: dmHeaders, payload: { targetType: "entity", targetId: entityId } });
 
-    const archiveRes = await server.inject({ method: "DELETE", url: `/api/campaigns/${campaignId}/entities/${entityId}`, headers: dmHeaders });
+    const archiveRes = await server.inject({
+      method: "DELETE",
+      url: `/api/campaigns/${campaignId}/entities/${entityId}`,
+      headers: { ...dmHeaders, "idempotency-key": createId("cmd") },
+    });
     expect(archiveRes.statusCode).toBe(200);
 
     const listRes = await server.inject({ method: "GET", url: `/api/campaigns/${campaignId}/shortcuts`, headers: dmHeaders });

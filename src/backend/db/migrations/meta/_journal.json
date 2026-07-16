@@ -148,6 +148,13 @@
       "when": 1784220000000,
       "tag": "0020_unique_profile_public_handles",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1784223600000,
+      "tag": "0021_auth_throttle_states",
+      "breakpoints": true
     }
   ]
 }
