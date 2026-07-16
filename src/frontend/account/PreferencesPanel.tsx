@@ -48,7 +48,6 @@ export function PreferencesPanel({
 
     const controller = createAppearancePreviewController(target, window);
     previewControllerRef.current = controller;
-    controller.apply(preview);
 
     return () => {
       controller.dispose();
@@ -112,9 +111,26 @@ export function PreferencesPanel({
         />
         {t("account.appearance.deviceOverride")}
       </label>
-      <div ref={previewElementRef} className="account-preview">
-        <strong>{t("account.appearance.livePreview")}</strong>
-        <p>{t("account.appearance.previewText")}</p>
+      <div
+        ref={previewElementRef}
+        className="account-preview"
+        style={{
+          padding: "1rem",
+          border: "1px solid var(--theme-borders-default)",
+          borderRadius: "var(--theme-shapes-radius-panel)",
+          background: "var(--theme-surfaces-base)",
+          color: "var(--theme-text-primary)",
+          boxShadow: "var(--theme-shadows-medium)",
+          fontFamily: "var(--font-sans)",
+          fontSize: "calc(1rem * var(--typography-scale, 1))",
+        }}
+      >
+        <strong style={{ fontFamily: "var(--font-display)" }}>
+          {t("account.appearance.livePreview")}
+        </strong>
+        <p style={{ color: "var(--theme-text-secondary)" }}>
+          {t("account.appearance.previewText")}
+        </p>
       </div>
       <button type="button" onClick={() => void onSave(draft)}>{t("account.appearance.saveBtn")}</button>
     </section>
