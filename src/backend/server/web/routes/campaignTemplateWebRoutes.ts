@@ -538,7 +538,7 @@ export async function registerCampaignTemplateWebRoutes(server: FastifyInstance)
           type: "error",
           operationId,
           code: "IMPORT_FAILED",
-          messageKey: "premadeImport.error.failed",
+          messageKey: "campaignTemplateImport.error.failed",
         } as CampaignTemplateImportEvent) + "\n");
       } finally {
         reply.raw.end();

@@ -1387,16 +1387,16 @@ export const es: TranslationDictionary = {
     restoreButton: "Restaurar Estado",
     restoring: "Restaurando…",
     restoreSuccess: "Copia de seguridad restaurada correctamente.",
-    premadeTitle: "Campañas de ejemplo",
-    premadeDescription:
+    campaignTemplateTitle: "Campañas de ejemplo",
+    campaignTemplateDescription:
       "Explora campañas preparadas que vienen con DMCC. Al crear una copia, pasan a ser tuyas y solo las ve tu DM.",
-    premadeEmpty: "No hay campañas de ejemplo disponibles en esta versión.",
-    premadeDifficulty: "Dificultad: {difficulty}",
-    premadeStats: "{entities} entidades · {sessions} sesiones",
-    premadeTagsLabel: "Etiquetas de la campaña de ejemplo",
-    premadeExploreButton: "Explorar",
-    premadeImportButton: "Crear mi copia",
-    premadeExistingCopies: "Ya tienes {count} copia(s)",
+    campaignTemplateEmpty: "No hay campañas de ejemplo disponibles en esta versión.",
+    campaignTemplateDifficulty: "Dificultad: {difficulty}",
+    campaignTemplateStats: "{entities} entidades · {sessions} sesiones",
+    campaignTemplateTagsLabel: "Etiquetas de la campaña de ejemplo",
+    campaignTemplateExploreButton: "Explorar",
+    campaignTemplateImportButton: "Crear mi copia",
+    campaignTemplateExistingCopies: "Ya tienes {count} copia(s)",
     createdFromTemplate: "Desde {title}",
     campaignActions: "Acciones de la campaña {title}",
     renameCampaign: "Renombrar campaña {title}",
@@ -1507,7 +1507,7 @@ export const es: TranslationDictionary = {
     createCampaignLabel: "Crear campaña",
     selectCampaignLabel: "Seleccionar campaña",
   },
-  premadePreview: {
+  campaignTemplatePreview: {
     loading: "Cargando campaña de ejemplo…",
     eyebrow: "Vista previa solo lectura",
     readOnlyTitle: "Estás explorando una campaña de ejemplo",
@@ -1618,7 +1618,7 @@ export const es: TranslationDictionary = {
       advanced: "Avanzada",
     },
   },
-  premadeImport: {
+  campaignTemplateImport: {
     eyebrow: "Campaña de ejemplo",
     title: "Crear copia editable",
     description: "Se creará una copia privada de {title} para tu DM.",

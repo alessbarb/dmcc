@@ -641,14 +641,14 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       });
 
       if (!successEventReceived || !campaignId) {
-        throw new Error("premadeImport.error.interrupted");
+        throw new Error("campaignTemplateImport.error.interrupted");
       }
 
       await get().fetchCampaigns();
       markCampaignGuidedTourPending(campaignId);
       return campaignId;
     } catch (err: any) {
-      const errorMsg = err.message || "premadeImport.error.failed";
+      const errorMsg = err.message || "campaignTemplateImport.error.failed";
       set((s) => ({
         campaignTemplateImportState: {
           ...s.campaignTemplateImportState,
