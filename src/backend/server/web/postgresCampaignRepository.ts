@@ -226,15 +226,10 @@ function buildStoredEvent(input: {
     commandHash: input.commandHash,
   };
   const event = { ...eventWithoutHash, hash: computeEventHash(eventWithoutHash) } as StoredEvent;
-  // event.type (DomainEventType) is a superset of eventPayloadSchemas' keys by design (not
-  // every event type has a payload schema yet); the `if (payloadSchema)` below covers a
-  // runtime miss safely. Narrowing to `keyof typeof eventPayloadSchemas` here is intentional.
-  const payloadSchema = eventPayloadSchemas[event.type as keyof typeof eventPayloadSchemas];
-  if (payloadSchema) {
-    const parsed = payloadSchema.safeParse(event.payload);
-    if (!parsed.success) {
-      throw new Error(`Payload schema validation failed for "${event.type}": ${parsed.error.message}`);
-    }
+  const payloadSchema = eventPayloadSchemas[event.type];
+  const parsed = payloadSchema.safeParse(event.payload);
+  if (!parsed.success) {
+    throw new Error(`Payload schema validation failed for "${event.type}": ${parsed.error.message}`);
   }
   storedEventSchema.parse(event);
   return event;

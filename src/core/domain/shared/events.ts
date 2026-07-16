@@ -296,6 +296,22 @@ export const eventPayloadSchemas = {
   PlayerProfileCreated: playerProfileSchema,
   PlayerProfileUpdated: playerProfileSchema.partial().extend({ id: z.string() }),
   PlayerProfileArchived: z.object({ id: z.string().optional(), playerId: z.string().optional() }),
+  PlayerInvitationCreated: z.object({
+    inviteId: z.string().min(1),
+    inviteTokenHash: z.string().min(1),
+    label: z.string().optional(),
+    createdAt: z.string().min(1),
+    expiresAt: z.string().optional(),
+  }),
+  PlayerInvitationConsumed: z.object({
+    inviteId: z.string().min(1),
+    playerId: z.string().min(1),
+    emailHash: z.string().min(1),
+    consumedAt: z.string().min(1),
+  }),
+  PlayerInvitationRevoked: z.object({
+    inviteId: z.string().min(1),
+  }),
   EntityCreated: entitySchema,
   EntityUpdated: baseEntitySchema.partial().extend({ id: z.string().optional(), entityId: z.string().optional() }),
   EntityArchived: z.object({ id: z.string().optional(), entityId: z.string().optional() }),
@@ -557,7 +573,7 @@ export const eventPayloadSchemas = {
     dmResolutionNote: z.string().optional(),
     resolvedAt: z.string().min(1),
   }),
-};
+} satisfies Record<DomainEventType, z.ZodTypeAny>;
 export type EventPayloads = {
   [K in keyof typeof eventPayloadSchemas]: z.infer<(typeof eventPayloadSchemas)[K]>;
 };

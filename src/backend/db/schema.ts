@@ -97,6 +97,7 @@ export const playerProfiles = pgTable("player_profiles", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => ({
   campaignProfileUq: uniqueIndex("uq_player_profiles_campaign_profile").on(table.campaignId, table.profileId),
+  publicHandleUq: uniqueIndex("uq_player_profiles_public_handle").on(table.publicHandle).where(sql`${table.publicHandle} is not null`),
 }));
 
 export const campaignMemberships = pgTable("campaign_memberships", {
@@ -148,7 +149,9 @@ export const dmProfiles = pgTable("dm_profiles", {
   version: integer("version").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+}, (table) => ({
+  publicHandleUq: uniqueIndex("uq_dm_profiles_public_handle").on(table.publicHandle).where(sql`${table.publicHandle} is not null`),
+}));
 
 export const recoveryCodes = pgTable("recovery_codes", {
   userId: text("user_id").notNull().references(() => users.userId, { onDelete: "cascade" }),

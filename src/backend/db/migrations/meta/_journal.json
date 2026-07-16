@@ -141,6 +141,13 @@
       "when": 1784210000000,
       "tag": "0019_stabilize_campaign_workspaces",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1784220000000,
+      "tag": "0020_unique_profile_public_handles",
+      "breakpoints": true
     }
   ]
 }
