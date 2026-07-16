@@ -19,7 +19,6 @@ import {
   Trash2,
   Users,
   Shield,
-  Calendar,
   Clock,
   BookOpen,
   Map,
@@ -32,6 +31,7 @@ import {
 } from "lucide-react";
 import { CampaignTemplateLibrarySection } from "./CampaignTemplateLibrarySection.js";
 import { DmHubCampaignModals } from "./DmHubCampaignModals.js";
+import { DmHubHero } from "./DmHubHero.js";
 import { logout } from "../../shared/auth/authClient.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 import { AccountModal } from "../../account/AccountModal.js";
@@ -475,76 +475,23 @@ export function DmHubPage() {
       {/* ── MAIN CONTENT ── */}
       <main className="dm-hub-main">
 
-        {/* ── DM HEADER HERO ── */}
-        <header className="dm-hub-hero">
-          <div className="dm-hub-hero__profile">
-            <div className="dm-hub-hero__avatar-ring">
-              <img
-                className="dm-hub-hero__avatar"
-                src={dmProfile?.avatarUrl || "/assets/avatars/default-avatar.png"}
-                alt={dmDisplayName}
-              />
-            </div>
-            <div className="dm-hub-hero__info">
-              <h1 className="dm-hub-hero__greeting">
-                {t("landing.dmWelcome", { name: dmProfile?.displayName || dmProfile?.email || "Maestro" })}
-              </h1>
-              <p className="dm-hub-hero__subtitle">Centro de Mando del Director de Juego</p>
-              <div className="dm-hub-hero__stats">
-                {[
-                  { icon: <FolderOpen size={14} />, value: totalCampaignsCount, label: t("landing.campaignsLabel") },
-                  { icon: <Activity size={14} />, value: activeTablesCount, label: "Mesas activas" },
-                  { icon: <Users size={14} />, value: totalPlayersCount, label: t("landing.playersLabel") },
-                  { icon: <Calendar size={14} />, value: totalSessionsCount, label: "Sesiones" },
-                  { icon: <UserRound size={14} />, value: totalNpcsCount, label: "PNJs" },
-                  { icon: <Layers size={14} />, value: totalEntitiesCount, label: t("landing.entitiesLabel") },
-                ].map((s, i) => (
-                  <div key={i} className="dm-stat-pill">
-                    <span className="dm-stat-pill__icon">{s.icon}</span>
-                    <span className="dm-stat-pill__value">{s.value}</span>
-                    <span className="dm-stat-pill__label">{s.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="dm-hub-hero__calendar">
-            <div className="dm-hub-hero__calendar-date">
-              <Calendar size={13} style={{ color: "var(--accent)", marginRight: "6px", verticalAlign: "middle" }} />
-              {formattedTodayDate}
-            </div>
-            <div className="dm-hub-hero__calendar-world">{dashboard.activeTables.length > 0 ? `${dashboard.activeTables.length} mesa(s) activas ahora` : "Sin mesas activas ahora"}</div>
-            <button
-              type="button"
-              className="btn btn-secondary btn-sm"
-              style={{ marginTop: "8px", width: "100%" }}
-              onClick={dashboard.activeTables.length > 0 ? handleQuickTimeline : undefined}
-              disabled={dashboard.activeTables.length === 0}
-            >
-              {t("landing.viewTimeline")}
-            </button>
-          </div>
-        </header>
-
-        <nav className="dm-hub-mobile-actions" aria-label="Acciones rápidas de campañas">
-          <button type="button" className="dm-hub-mobile-action dm-hub-mobile-action--theme-accents-primary-foreground" onClick={() => setIsCreateModalOpen(true)}>
-            <Plus size={16} />
-            <span>Nueva</span>
-          </button>
-          <button type="button" className="dm-hub-mobile-action" onClick={() => document.getElementById("dm-campaigns-section")?.scrollIntoView({ behavior: "smooth" })}>
-            <FolderOpen size={16} />
-            <span>Campañas</span>
-          </button>
-          <button type="button" className="dm-hub-mobile-action" onClick={handleQuickTemplates}>
-            <Sparkles size={16} />
-            <span>Aventuras</span>
-          </button>
-          <button type="button" className="dm-hub-mobile-action" onClick={() => setIsRestoreModalOpen(true)}>
-            <RotateCcw size={16} />
-            <span>Restaurar</span>
-          </button>
-        </nav>
-
+        <DmHubHero
+          dmProfile={dmProfile}
+          dmDisplayName={dmDisplayName}
+          formattedTodayDate={formattedTodayDate}
+          totalCampaignsCount={totalCampaignsCount}
+          activeTablesCount={activeTablesCount}
+          totalPlayersCount={totalPlayersCount}
+          totalSessionsCount={totalSessionsCount}
+          totalNpcsCount={totalNpcsCount}
+          totalEntitiesCount={totalEntitiesCount}
+          activeTablesLength={dashboard.activeTables.length}
+          onViewTimeline={handleQuickTimeline}
+          onCreateCampaign={() => setIsCreateModalOpen(true)}
+          onOpenCampaigns={() => document.getElementById("dm-campaigns-section")?.scrollIntoView({ behavior: "smooth" })}
+          onOpenTemplates={handleQuickTemplates}
+          onRestoreBackup={() => setIsRestoreModalOpen(true)}
+        />
         {/* ── MAIN GRID: 70 / 30 ── */}
         <div className="dm-hub-grid">
           {/* ──────────── LEFT COLUMN (70%) ──────────── */}
