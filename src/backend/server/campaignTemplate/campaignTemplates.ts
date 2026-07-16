@@ -55,7 +55,9 @@ function normalizeLocale(locale?: string | null): CampaignTemplateLocale {
 }
 
 function getCampaignTemplateDirectoryCandidates(): string[] {
-  const explicitDir = process.env.DMCC_PREMADE_DIR?.trim();
+  const explicitDir =
+    process.env.DMCC_CAMPAIGN_TEMPLATES_DIR?.trim() ||
+    process.env.DMCC_PREMADE_DIR?.trim();
 
   return [
     explicitDir ? resolve(explicitDir) : null,
