@@ -221,24 +221,6 @@ export interface PlayerConstellationResponse {
   canvases: PortalCanvas[];
 }
 
-export interface InvitationSummary {
-  invitationId: string;
-  role: string;
-  maxUses: number;
-  usesCount: number;
-  expiresAt: string;
-  revokedAt: string | null;
-  createdAt: string;
-  status: "active" | "revoked" | "expired" | "exhausted";
-}
-
-export interface CreatedInvitation {
-  invitationId: string;
-  url: string;
-  token: string;
-  expiresAt: string;
-}
-
 async function readJson<T>(response: Response, fallback: string): Promise<T> {
   if (!response.ok) throw new Error(await readApiError(response, fallback));
   const data: unknown = await response.json();
@@ -251,21 +233,6 @@ export async function getCommandCenter(campaignId: string): Promise<CommandCente
   return readJson(
     await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/command-center`),
     "No se pudo cargar el Command Center",
-  );
-}
-
-export async function searchCampaign(
-  campaignId: string,
-  query: string,
-  signal?: AbortSignal,
-): Promise<{ results: CampaignSearchResult[] }> {
-  const q = query.trim();
-  if (!q) return { results: [] };
-  return readJson(
-    await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/search?q=${encodeURIComponent(q)}`, {
-      init: { signal },
-    }),
-    "No se pudo buscar en la campaña",
   );
 }
 
@@ -324,39 +291,6 @@ export async function closeLiveTable(campaignId: string, liveTableId: string): P
       { init: { method: "POST" } },
     ),
     "No se pudo cerrar el modo mesa",
-  );
-}
-
-export async function listInvitations(campaignId: string): Promise<{ invitations: InvitationSummary[] }> {
-  return readJson(
-    await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/invitations`),
-    "No se pudieron cargar las invitaciones",
-  );
-}
-
-export async function createInvitation(
-  campaignId: string,
-  input: { role?: string; maxUses?: number; expiresInHours?: number; label?: string } = {},
-): Promise<{ invitation: CreatedInvitation }> {
-  return readJson(
-    await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/invitations`, {
-      init: {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
-      },
-    }),
-    "No se pudo crear la invitación",
-  );
-}
-
-export async function revokeInvitation(campaignId: string, invitationId: string): Promise<void> {
-  await readJson(
-    await apiFetch(
-      `/api/campaigns/${encodeURIComponent(campaignId)}/invitations/${encodeURIComponent(invitationId)}/revoke`,
-      { init: { method: "POST" } },
-    ),
-    "No se pudo revocar la invitación",
   );
 }
 

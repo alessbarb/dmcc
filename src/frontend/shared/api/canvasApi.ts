@@ -1,9 +1,7 @@
 import { apiFetch } from "./apiClient.js";
 const jsonInit = (method: string, body?: unknown): RequestInit => ({ method, headers: { "Content-Type": "application/json" }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
-export const loadCanvas = (campaignId: string, canvasId: string) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}`);
 export const createCanvas = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases`, { init: jsonInit("POST", payload) });
 export const updateCanvas = (campaignId: string, canvasId: string, updates: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}`, { init: jsonInit("PATCH", updates) });
-export const deleteCanvas = (campaignId: string, canvasId: string) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}`, { init: { method: "DELETE" } });
 export const createNode = (campaignId: string, canvasId: string, node: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/nodes`, { init: jsonInit("POST", { node }) });
 export const updateNode = (campaignId: string, canvasId: string, nodeId: string, updates: unknown) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/nodes/${nodeId}`, { init: jsonInit("PATCH", { updates }) });
 export const deleteNode = (campaignId: string, canvasId: string, nodeId: string) => apiFetch(`/api/campaigns/${campaignId}/canvases/${canvasId}/nodes/${nodeId}`, { init: jsonInit("DELETE", {}) });
