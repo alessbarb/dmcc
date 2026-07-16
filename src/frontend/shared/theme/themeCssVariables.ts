@@ -3,6 +3,16 @@ import {
   type ThemeEntityType,
 } from "../../account/themeContract.js";
 
+function feedbackThemeColor(type: "success" | "warning" | "danger" | "info") {
+  return {
+    foreground: `var(--theme-feedback-${type}-foreground)`,
+    background: `var(--theme-feedback-${type}-background)`,
+    border: `var(--theme-feedback-${type}-border)`,
+    strong: `var(--theme-feedback-${type}-strong)`,
+    onStrong: `var(--theme-feedback-${type}-on-strong)`,
+  } as const;
+}
+
 export const themeCss = {
   text: {
     primary: "var(--theme-text-primary)",
@@ -13,11 +23,10 @@ export const themeCss = {
     link: "var(--theme-text-link)",
   },
   feedback: {
-    danger: {
-      foreground: "var(--theme-feedback-danger-foreground)",
-      background: "var(--theme-feedback-danger-background)",
-      border: "var(--theme-feedback-danger-border)",
-    },
+    success: feedbackThemeColor("success"),
+    warning: feedbackThemeColor("warning"),
+    danger: feedbackThemeColor("danger"),
+    info: feedbackThemeColor("info"),
   },
 } as const;
 
