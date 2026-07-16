@@ -1,7 +1,7 @@
 {
   "$schema": "../../schemas/campaign-template/template/v1.json",
   "templateId": "phandalin",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "system": "dnd_5e",
   "difficulty": "starter",
   "tags": [
@@ -172,7 +172,8 @@
       "metadata": {
         "delivery": "escena inicial",
         "pointsTo": "ent_tpl_phandalin_hideout"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/clues/dead_horses_on_the_road.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_iarno",
@@ -197,7 +198,8 @@
       },
       "metadata": {
         "trigger": "derrotar o exponer a los Redbrands"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/consequences/phandalin_finds_its_voice.png"
     },
     {
       "entityId": "ent_tpl_phandalin_inn",
@@ -259,7 +261,8 @@
       "importance": "high",
       "visibility": {
         "kind": "party"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/quests/break_the_redbrands_hold.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_blackseal",
@@ -283,7 +286,8 @@
       "importance": "low",
       "visibility": {
         "kind": "party"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/rumors/the_old_well_sings_at_night.png"
     },
     {
       "entityId": "ent_tpl_phandalin_handout_map",
@@ -291,7 +295,8 @@
       "importance": "critical",
       "visibility": {
         "kind": "party"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/handouts/gundrens_torn_map.png"
     },
     {
       "entityId": "ent_tpl_phandalin_encounter_street",
@@ -299,7 +304,8 @@
       "importance": "normal",
       "visibility": {
         "kind": "dm_only"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/encounters/fight_on_the_main_street.png"
     },
     {
       "entityId": "ent_tpl_phandalin_consequence_people_rise",
@@ -307,7 +313,8 @@
       "importance": "high",
       "visibility": {
         "kind": "dm_only"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/consequences/the_town_begins_to_organize.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_nezznar_funds",
@@ -671,7 +678,8 @@
       "metadata": {
         "agenda": "Restaurar orden sin admitir cuánto se les ha escapado la región."
       },
-      "status": "available"
+      "status": "available",
+      "imageUrl": "/assets/premades/phandalin/factions/lords_alliance.png"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_zhentarim",
@@ -683,7 +691,8 @@
       "metadata": {
         "agenda": "Convertir el vacío de poder en ventaja comercial."
       },
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/factions/zhentarim.png"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_order_gauntlet",
@@ -695,7 +704,8 @@
       "metadata": {
         "agenda": "Que la región no normalice el miedo como gobierno."
       },
-      "status": "available"
+      "status": "available",
+      "imageUrl": "/assets/premades/phandalin/factions/order_of_the_gauntlet.png"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_emerald_enclave",
@@ -707,7 +717,8 @@
       "metadata": {
         "agenda": "Evitar que ruinas, dragones y magia minera rompan el equilibrio local."
       },
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/factions/emerald_enclave.png"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_wyvern_orcs",
@@ -719,7 +730,8 @@
       "metadata": {
         "agenda": "Robar, probar fuerza y retirarse antes de una respuesta organizada."
       },
-      "status": "available"
+      "status": "available",
+      "imageUrl": "/assets/premades/phandalin/factions/wyvern_tor_orcs.png"
     },
     {
       "entityId": "ent_tpl_phandalin_faction_ash_zombies",
@@ -1017,7 +1029,8 @@
       "metadata": {
         "successState": "Las provisiones llegan y el grupo gana un punto de anclaje social en Barthen."
       },
-      "status": "completed"
+      "status": "completed",
+      "imageUrl": "/assets/premades/phandalin/quests/deliver_the_supplies.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_dendrar",
@@ -1027,7 +1040,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available"
+      "status": "available",
+      "imageUrl": "/assets/premades/phandalin/quests/rescue_the_dendrar_family.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_find_castle",
@@ -1077,7 +1091,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available"
+      "status": "available",
+      "imageUrl": "/assets/premades/phandalin/quests/question_agatha.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_old_owl",
