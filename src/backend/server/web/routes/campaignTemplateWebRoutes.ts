@@ -82,6 +82,7 @@ export function normalizeEntityMetadata(
 
 interface CampaignTemplateImportStep {
   stage: ImportStage;
+  label: string;
   run: () => Promise<void>;
 }
 
@@ -107,6 +108,7 @@ function buildCampaignTemplateImportSteps(options: {
   // 1. Create Campaign
   steps.push({
     stage: "campaign",
+    label: "campaign",
     run: async () => {
       await execute({
         type: "CreateCampaign",
@@ -125,6 +127,7 @@ function buildCampaignTemplateImportSteps(options: {
     for (const entity of template.entities) {
       steps.push({
         stage: "entities",
+        label: `entity ${entity.entityId} (${entity.entityType})`,
         run: async () => {
           await execute({
             type: "CreateEntity",
@@ -151,6 +154,7 @@ function buildCampaignTemplateImportSteps(options: {
     for (const relation of template.relations) {
       steps.push({
         stage: "relations",
+        label: `relation ${relation.relationId} (${relation.relationType}: ${relation.sourceEntityId} -> ${relation.targetEntityId})`,
         run: async () => {
           await execute({
             type: "CreateRelation",
@@ -174,6 +178,7 @@ function buildCampaignTemplateImportSteps(options: {
     for (const fact of template.facts) {
       steps.push({
         stage: "facts",
+        label: `fact ${fact.factId}`,
         run: async () => {
           await execute({
             type: "RecordFact",
@@ -202,6 +207,7 @@ function buildCampaignTemplateImportSteps(options: {
     for (const session of template.sessions) {
       steps.push({
         stage: "sessions",
+        label: `session ${session.sessionId}`,
         run: async () => {
           await execute({
             type: "CreatePreparedSession",
@@ -222,6 +228,7 @@ function buildCampaignTemplateImportSteps(options: {
     for (const canvas of template.canvases) {
       steps.push({
         stage: "canvases",
+        label: `canvas ${canvas.canvasId}`,
         run: async () => {
           await execute({
             type: "CreateCanvas",
@@ -238,6 +245,7 @@ function buildCampaignTemplateImportSteps(options: {
       for (const node of canvas.nodes ?? []) {
         steps.push({
           stage: "canvases",
+          label: `canvas ${canvas.canvasId} node ${node.id}`,
           run: async () => {
             await execute({
               type: "PlaceNodeOnCanvas",
@@ -253,6 +261,7 @@ function buildCampaignTemplateImportSteps(options: {
       for (const edge of canvas.edges ?? []) {
         steps.push({
           stage: "canvases",
+          label: `canvas ${canvas.canvasId} edge ${edge.id}`,
           run: async () => {
             await execute({
               type: "AddEdgeToCanvas",
@@ -270,6 +279,7 @@ function buildCampaignTemplateImportSteps(options: {
   // 7. Record Import
   steps.push({
     stage: "finalizing",
+    label: "finalizing",
     run: async () => {
       const count = (shouldImportEntities ? template.entities.length : 0)
         + (shouldImportRelations ? template.relations.length : 0)
@@ -464,11 +474,13 @@ export async function registerCampaignTemplateWebRoutes(server: FastifyInstance)
         aborted = true;
       });
 
+      let currentStepLabel: string | null = null;
       try {
         for (const [index, step] of steps.entries()) {
           if (aborted) {
             throw new Error("Client disconnected during campaign import");
           }
+          currentStepLabel = step.label;
           await step.run();
 
           const completedSteps = index + 1;
@@ -500,7 +512,10 @@ export async function registerCampaignTemplateWebRoutes(server: FastifyInstance)
         } as CampaignTemplateImportEvent) + "\n");
 
       } catch (error) {
-        request.log.error({ err: error, campaignId, operationId }, "Error during campaign template import");
+        request.log.error(
+          { err: error, campaignId, operationId, failedStep: currentStepLabel },
+          "Error during campaign template import",
+        );
 
         try {
           await db.delete(schema.campaigns).where(eq(schema.campaigns.campaignId, campaignId));
