@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createId } from "@shared/ids.js";
 import { resolveActiveCanvasId } from "../utils/canvasSelection.js";
 import { markCampaignGuidedTourPending } from "../../dm/onboarding/campaignGuidedTourStorage.js";
+import { createCampaignTemplateActions, idleCampaignTemplateImportState } from "./campaignTemplateStoreActions.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import type { Canvas, CanvasNode, CanvasEdge } from "@core/domain/canvas/types.js";
 import type { FactSource } from "@core/domain/fact/types.js";
@@ -12,15 +13,10 @@ import {
   API_CLIENT_TAB_ID,
   campaignApi,
   canvasApi,
-  getCampaignTemplate,
-  getCampaignTemplateLocale,
-  importCampaignTemplate,
-  listCampaignTemplates,
   playerPortalApi,
   readApiError,
 } from "../api.js";
-import { readNdjsonStream } from "../api/readNdjsonStream.js";
-import type { ImportStage, CampaignTemplateImportEvent } from "@shared/templateImportTypes.js";
+import type { ImportStage } from "@shared/templateImportTypes.js";
 
 type ActiveCampaignRole = "dm" | "player";
 
@@ -498,30 +494,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   loading: false,
   error: null,
 
-  campaignTemplateImportState: {
-    status: "idle",
-    templateId: null,
-    operationId: null,
-    campaignId: null,
-    completedSteps: 0,
-    totalSteps: 0,
-    percent: 0,
-    stage: null,
-    error: null,
-  },
-  clearCampaignTemplateImportState: () => set({
-    campaignTemplateImportState: {
-      status: "idle",
-      templateId: null,
-      operationId: null,
-      campaignId: null,
-      completedSteps: 0,
-      totalSteps: 0,
-      percent: 0,
-      stage: null,
-      error: null,
-    }
-  }),
+  campaignTemplateImportState: idleCampaignTemplateImportState(),
+  ...createCampaignTemplateActions(set, get),
 
   isEntityModalOpen: false,
   setIsEntityModalOpen: (open) => set({ isEntityModalOpen: open }),
@@ -541,122 +515,6 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       set({ campaigns, loading: false });
     } catch (err) {
       set({ error: errorMessage(err), loading: false });
-    }
-  },
-
-  fetchCampaignTemplates: async () => {
-    const locale = getCampaignTemplateLocale();
-    try {
-      const res = await listCampaignTemplates(locale);
-      if (!res.ok) {
-        const message = await readApiError(res, "Failed to fetch campaign templates");
-        throw new Error(message);
-      }
-      const data = await res.json();
-      set({ campaignTemplates: Array.isArray(data.templates) ? data.templates : [], campaignTemplatesLocale: locale });
-    } catch (err) {
-      set({ campaignTemplates: [], campaignTemplatesLocale: locale, error: errorMessage(err) });
-    }
-  },
-
-  fetchCampaignTemplate: async (templateId) => {
-    const locale = getCampaignTemplateLocale();
-    set({ loading: true, error: null });
-    try {
-      const res = await getCampaignTemplate(templateId, locale);
-      if (!res.ok) {
-        const message = await readApiError(res, "Failed to fetch campaign template");
-        throw new Error(message);
-      }
-      const template = await res.json() as CampaignTemplate;
-      set({ activeCampaignTemplate: template, activeCampaignTemplateKey: `${templateId}:${locale}`, loading: false });
-      return template;
-    } catch (err) {
-      set({ activeCampaignTemplate: null, activeCampaignTemplateKey: null, error: errorMessage(err), loading: false });
-      return null;
-    }
-  },
-
-  importCampaignTemplate: async (templateId, options) => {
-    const operationId = `imp_${createId("cmd")}`;
-    set({
-      campaignTemplateImportState: {
-        status: "running",
-        templateId,
-        operationId,
-        campaignId: null,
-        completedSteps: 0,
-        totalSteps: 0,
-        percent: 0,
-        stage: "preparing",
-        error: null,
-      },
-    });
-    try {
-      const res = await importCampaignTemplate(templateId, options, {
-        "Idempotency-Key": operationId,
-      });
-      if (!res.ok) {
-        const message = await readApiError(res, "Failed to import campaign template");
-        throw new Error(message);
-      }
-
-      let campaignId: string | null = null;
-      let successEventReceived = false;
-
-      await readNdjsonStream<CampaignTemplateImportEvent>(res, (event) => {
-        if (event.type === "started") {
-          campaignId = event.campaignId;
-          set((s) => ({
-            campaignTemplateImportState: {
-              ...s.campaignTemplateImportState,
-              campaignId: event.campaignId,
-              totalSteps: event.totalSteps,
-            },
-          }));
-        } else if (event.type === "progress") {
-          set((s) => ({
-            campaignTemplateImportState: {
-              ...s.campaignTemplateImportState,
-              completedSteps: event.completedSteps,
-              totalSteps: event.totalSteps,
-              percent: event.percent,
-              stage: event.stage,
-            },
-          }));
-        } else if (event.type === "success") {
-          successEventReceived = true;
-          campaignId = event.campaignId;
-          set((s) => ({
-            campaignTemplateImportState: {
-              ...s.campaignTemplateImportState,
-              status: "idle",
-              percent: 100,
-              campaignId: event.campaignId,
-            },
-          }));
-        } else if (event.type === "error") {
-          throw new Error(event.messageKey || "Failed to import campaign template");
-        }
-      });
-
-      if (!successEventReceived || !campaignId) {
-        throw new Error("campaignTemplateImport.error.interrupted");
-      }
-
-      await get().fetchCampaigns();
-      markCampaignGuidedTourPending(campaignId);
-      return campaignId;
-    } catch (err: any) {
-      const errorMsg = err.message || "campaignTemplateImport.error.failed";
-      set((s) => ({
-        campaignTemplateImportState: {
-          ...s.campaignTemplateImportState,
-          status: "failed",
-          error: errorMsg,
-        },
-      }));
-      throw err;
     }
   },
 
