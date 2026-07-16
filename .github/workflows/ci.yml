@@ -26,7 +26,17 @@ jobs:
         with:
           node-version: 22
       - name: Apply final theme migrations
-        run: node scripts/theme/finalize-theme-foundation.mjs
+        run: |
+          set -o pipefail
+          node scripts/theme/finalize-theme-foundation.mjs 2>&1 | tee theme-finalizer.log
+      - name: Upload finalizer diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-finalizer-diagnostics
+          path: theme-finalizer.log
+          if-no-files-found: error
+          retention-days: 1
       - name: Commit finalized foundation
         run: |
           git config user.name "github-actions[bot]"
