@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  changePassword,
   fetchSessions,
-  regenerateRecoveryCodes,
   revokeAllSessions,
   revokeOtherSessions,
   revokeSession,
@@ -14,11 +12,6 @@ export function SecurityPanel() {
   const { t } = useTranslation();
   const [sessions, setSessions] = useState<AccountSession[]>([]);
   const [status, setStatus] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [recoveryPassword, setRecoveryPassword] = useState("");
-  const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
-  const [codesSaved, setCodesSaved] = useState(false);
 
   const reload = () => fetchSessions().then(setSessions).catch((error) => {
     setStatus(error instanceof Error ? error.message : "Unable to load sessions");
@@ -39,57 +32,6 @@ export function SecurityPanel() {
         </div>
       </div>
 
-      <div className="account-security-grid">
-        <form className="account-panel-card" onSubmit={(event) => {
-          event.preventDefault();
-          void changePassword({ currentPassword, newPassword }).then(() => {
-            setStatus(t("account.security.passwordChangedMsg"));
-            window.location.assign("/login");
-          }).catch((error) => setStatus(error instanceof Error ? error.message : "Unable to change password"));
-        }}>
-          <h3>{t("account.security.changePasswordTitle")}</h3>
-          <label>
-            {t("account.security.currentPassword")}
-            <input type="password" autoComplete="current-password" required value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} />
-          </label>
-          <label>
-            {t("account.security.newPassword")}
-            <input type="password" autoComplete="new-password" minLength={12} required value={newPassword} onChange={(event) => setNewPassword(event.target.value)} />
-          </label>
-          <div className="account-form-actions">
-            <button type="submit">{t("account.security.changePasswordBtn")}</button>
-          </div>
-        </form>
-
-        <form className="account-panel-card" onSubmit={(event) => {
-          event.preventDefault();
-          void regenerateRecoveryCodes(recoveryPassword).then((codes) => {
-            setRecoveryCodes(codes);
-            setCodesSaved(false);
-            setStatus(t("account.security.codesGeneratedMsg"));
-          }).catch((error) => setStatus(error instanceof Error ? error.message : "Unable to regenerate recovery codes"));
-        }}>
-          <h3>{t("account.security.recoveryCodesTitle")}</h3>
-          <label>
-            {t("account.security.currentPassword")}
-            <input type="password" autoComplete="current-password" required value={recoveryPassword} onChange={(event) => setRecoveryPassword(event.target.value)} />
-          </label>
-          <div className="account-form-actions">
-            <button type="submit">{t("account.security.generateCodesBtn")}</button>
-          </div>
-          {recoveryCodes.length ? (
-            <div role="region" aria-label="New recovery codes" className="account-recovery-codes">
-              <ul>{recoveryCodes.map((code) => <li key={code}><code>{code}</code></li>)}</ul>
-              <label className="account-checkbox">
-                <input type="checkbox" checked={codesSaved} onChange={(event) => setCodesSaved(event.target.checked)} />
-                {t("account.security.codesSavedLabel")}
-              </label>
-              <button type="button" disabled={!codesSaved} onClick={() => setRecoveryCodes([])}>{t("account.security.hideCodesBtn")}</button>
-            </div>
-          ) : null}
-        </form>
-      </div>
-
       <div className="account-panel-card">
         <div className="account-form-actions split">
           <button
@@ -97,6 +39,8 @@ export function SecurityPanel() {
             onClick={() => void revokeOtherSessions().then(() => {
               setStatus(t("account.security.otherSessionsRevokedMsg"));
               return reload();
+            }).catch((error) => {
+              setStatus(error instanceof Error ? error.message : "Unable to revoke other sessions");
             })}
           >
             {t("account.security.signOutOtherBtn")}
@@ -106,7 +50,11 @@ export function SecurityPanel() {
             className="btn-secondary"
             onClick={() => {
               if (!window.confirm(t("account.security.confirmSignOutAll"))) return;
-              void revokeAllSessions().then(() => window.location.assign("/login"));
+              void revokeAllSessions()
+                .then(() => window.location.assign("/auth/login"))
+                .catch((error) => {
+                  setStatus(error instanceof Error ? error.message : "Unable to revoke all sessions");
+                });
             }}
           >
             {t("account.security.signOutAllBtn")}
@@ -125,7 +73,11 @@ export function SecurityPanel() {
                 <button
                   type="button"
                   className="btn-secondary"
-                  onClick={() => void revokeSession(session.sessionRef).then(reload)}
+                  onClick={() => void revokeSession(session.sessionRef)
+                    .then(reload)
+                    .catch((error) => {
+                      setStatus(error instanceof Error ? error.message : "Unable to revoke session");
+                    })}
                 >
                   {t("account.security.revokeBtn")}
                 </button>
