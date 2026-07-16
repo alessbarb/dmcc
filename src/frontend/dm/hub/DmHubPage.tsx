@@ -3,34 +3,23 @@ import { useNavigate } from "@tanstack/react-router";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useDmHubDashboard } from "./useDmHubDashboard.js";
 import {
-  Plus,
-  X,
-  RotateCcw,
-  Search,
-  AlertTriangle,
-  FolderOpen,
-  Layers,
   Sparkles,
   LogOut,
   UserPlus,
   UserRound,
   Activity,
   Settings,
-  Trash2,
   Users,
-  Shield,
   Clock,
   BookOpen,
   Map,
   FileText,
-  Globe,
-  Star,
   LayoutGrid,
   Bell,
   ChevronDown,
 } from "lucide-react";
-import { CampaignTemplateLibrarySection } from "./CampaignTemplateLibrarySection.js";
 import { DmHubCampaignModals } from "./DmHubCampaignModals.js";
+import { DmHubCampaignsColumn } from "./DmHubCampaignsColumn.js";
 import { DmHubHero } from "./DmHubHero.js";
 import { logout } from "../../shared/auth/authClient.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
@@ -39,23 +28,6 @@ import { AppFooter } from "../../shared/components/AppFooter.js";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
-
-function formatCampaignSystem(system?: string) {
-  if (system === "dnd_5e") return "D&D 5e";
-  if (system === "pathfinder_2e") return "Pathfinder 2e";
-  if (system === "shadowdark") return "Shadowdark";
-  return "Custom";
-}
-
-function activityIcon(type: string) {
-  switch (type) {
-    case "session": return <Activity size={14} style={{ color: "var(--accent)" }} />;
-    case "npc": return <UserPlus size={14} style={{ color: "var(--accent)" }} />;
-    case "note": return <FileText size={14} style={{ color: "var(--accent)" }} />;
-    case "entity": return <Layers size={14} style={{ color: "var(--accent)" }} />;
-    default: return <Globe size={14} style={{ color: "var(--accent)" }} />;
-  }
-}
 
 // ─── Main App Component ──────────────────────────────────────────────────────
 
@@ -494,231 +466,34 @@ export function DmHubPage() {
         />
         {/* ── MAIN GRID: 70 / 30 ── */}
         <div className="dm-hub-grid">
-          {/* ──────────── LEFT COLUMN (70%) ──────────── */}
-          <div className="dm-hub-grid__left">
-
-            {/* ── TUS CAMPAÑAS ── */}
-            <section id="dm-campaigns-section" className="dm-panel dm-panel--campaigns">
-              <div className="dm-panel__header dm-panel__header--campaigns">
-                <div className="dm-panel__title-group">
-                  <FolderOpen size={17} style={{ color: "var(--accent)" }} />
-                  <h2 className="dm-panel__title">Tus campañas</h2>
-                </div>
-                <div className="dm-panel__controls">
-                  <div className="dm-search-wrapper">
-                    <Search size={13} className="dm-search-icon" />
-                    <input
-                      type="text"
-                      className="dm-search-input"
-                      placeholder={t("landing.searchCampaignPlaceholder")}
-                      value={landingSearchQuery}
-                      onChange={(e) => setLandingSearchQuery(e.target.value)}
-                    />
-                    {landingSearchQuery && (
-                      <button type="button" className="dm-search-clear" onClick={() => setLandingSearchQuery("")}>
-                        <X size={11} />
-                      </button>
-                    )}
-                  </div>
-                  <select
-                    className="dm-filter-select"
-                    value={campaignFilter}
-                    onChange={(e) => setCampaignFilter(e.target.value)}
-                  >
-                    <option value="all">Todas</option>
-                    <option value="active">En curso</option>
-                    <option value="paused">Pausadas</option>
-                  </select>
-                </div>
-              </div>
-
-              {loading ? (
-                <p className="dm-muted-text">{t("landing.loadingCampaigns")}</p>
-              ) : error ? (
-                <div className="dm-empty-state dm-empty-state--error">
-                  <AlertTriangle size={22} className="icon-critical" />
-                  <p>{t("landing.errorTitle")}</p>
-                  <span>{error}</span>
-                  <button className="btn btn-secondary btn-sm" type="button" onClick={refreshCampaigns}>
-                    {t("landing.retryButton")}
-                  </button>
-                </div>
-              ) : campaigns.length === 0 ? (
-                <div className="dm-empty-state">
-                  <Shield size={32} style={{ color: "var(--accent)", opacity: 0.5, marginBottom: "12px" }} />
-                  <p style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--theme-text-primary)" }}>
-                    Todavía no tienes campañas
-                  </p>
-                  <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", lineHeight: 1.5, display: "block", margin: "8px 0 20px", maxWidth: "380px" }}>
-                    Crea tu primera campaña desde cero, usa una aventura preparada o restaura una copia de seguridad.
-                  </span>
-                  <div className="dm-empty-state__actions">
-                    <button className="btn btn-gold btn-sm" onClick={() => setIsCreateModalOpen(true)}>
-                      <Plus size={14} /> {t("landing.createCampaignLabel")}
-                    </button>
-                    <button className="btn btn-secondary btn-sm" onClick={handleQuickTemplates}>
-                      Explorar aventuras
-                    </button>
-                    <button className="btn btn-secondary btn-sm" onClick={() => setIsRestoreModalOpen(true)}>
-                      <RotateCcw size={14} /> Restaurar copia
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="dm-campaigns-grid">
-                    {filteredCampaigns.map((c) => {
-                      const isActive = Boolean(c.stats?.activeSession) || c.status === "active";
-                      const statusLabel = isActive ? "EN CURSO" : "PAUSADA";
-                      const lastUpdated = c.updatedAt
-                        ? t("landing.daysAgo", { count: String(Math.max(1, Math.floor((Date.now() - new Date(c.updatedAt).getTime()) / 86400000))) })
-                        : "Sin actividad registrada";
-
-                      return (
-                        <div
-                          key={c.campaignId}
-                          className="dm-campaign-card"
-                          onClick={() => triggerMysticalTransition(c.campaignId)}
-                        >
-                          <div
-                            className="dm-campaign-card__cover"
-                            style={{ backgroundImage: `url(${c.coverUrl || "/assets/campaigns/default-campaign-cover.jpg"})` }}
-                          >
-                            <div className="dm-campaign-card__cover-overlay" />
-                            <span className={`dm-campaign-card__badge ${isActive ? "active" : "paused"}`}>
-                              {statusLabel}
-                            </span>
-                            <button
-                              type="button"
-                              className="dm-campaign-card__fav"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <Star size={11} fill="var(--accent)" style={{ color: "var(--accent)" }} />
-                            </button>
-                            <div
-                              className="dm-campaign-card__actions"
-                              onClick={(e) => e.stopPropagation()}
-                              aria-label="Acciones de campaña"
-                            >
-                              <button
-                                type="button"
-                                className="dm-campaign-card__action"
-                                onClick={() => openEditModal(c)}
-                                aria-label="Editar campaña"
-                              >
-                                <Settings size={11} />
-                              </button>
-                              <button
-                                type="button"
-                                className="dm-campaign-card__action dm-campaign-card__action--danger"
-                                onClick={() => openDeleteModal(c.campaignId, c.title)}
-                                aria-label="Eliminar campaña"
-                              >
-                                <Trash2 size={11} />
-                              </button>
-                            </div>
-                          </div>
-                          <div className="dm-campaign-card__body">
-                            <h3 className="dm-campaign-card__title">{c.title}</h3>
-                            <p className="dm-campaign-card__system">{formatCampaignSystem(c.system)}</p>
-                            <p className="dm-campaign-card__desc">
-                              {c.summary || t("landing.noDescriptionYet")}
-                            </p>
-                            {c.loadWarning === "snapshot_unreadable" ? (
-                              <p className="dm-muted-text" role="status">
-                                <AlertTriangle size={12} aria-hidden="true" /> Snapshot unreadable; campaign metadata may be incomplete.
-                              </p>
-                            ) : null}
-                            <div className="dm-campaign-card__meta">
-                              <span><Clock size={10} /> Sesión {c.stats?.sessionsCount ?? 0}</span>
-                              <span><Users size={10} /> {c.stats?.playersCount ?? 0} jugadores</span>
-                            </div>
-                            <div className="dm-campaign-card__footer">
-                              <span>Última sesión: {lastUpdated}</span>
-                              {c.progressPercent !== null && (
-                                <span className="dm-campaign-card__pct">{c.progressPercent}%</span>
-                              )}
-                            </div>
-                            {c.progressPercent !== null && (
-                              <div className="dm-campaign-card__progress-track">
-                                <div className="dm-campaign-card__progress-fill" style={{ width: `${c.progressPercent}%` }} />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                    {/* Create card */}
-                    <div className="dm-campaign-card dm-campaign-card--create" onClick={() => setIsCreateModalOpen(true)}>
-                      <div className="dm-campaign-card--create__inner">
-                        <div className="dm-campaign-card--create__icon"><Plus size={22} /></div>
-                        <h3>Nueva campaña</h3>
-                        <p>Crea desde cero</p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-            </section>
-
-            {/* ── RESUMEN GENERAL + ACTIVIDAD RECIENTE ── */}
-            <div className="dm-hub-twin-grid">
-              <section className="dm-panel">
-                <div className="dm-panel__header">
-                  <h2 className="dm-panel__title">Resumen general</h2>
-                </div>
-                <div className="dm-summary-grid">
-                  {[
-                    { value: totalPlayersCount, label: t("landing.totalPlayers") },
-                    { value: totalNpcsCount, label: "PNJs creados" },
-                    { value: totalEntitiesCount, label: t("landing.totalEntities") },
-                    { value: totalSessionsCount, label: "Sesiones realizadas" },
-                    { value: dashboard.totals.playtimeLast30DaysLabel, label: "Tiempo de juego (30d)" },
-                    { value: dashboard.totals.completedCampaigns, label: t("landing.completedCampaigns") },
-                  ].map((s, i) => (
-                    <div key={i} className="dm-summary-item">
-                      <span className="dm-summary-item__value">{s.value}</span>
-                      <span className="dm-summary-item__label">{s.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="dm-panel">
-                <div className="dm-panel__header">
-                  <h2 className="dm-panel__title">Actividad reciente</h2>
-                </div>
-                {dashboard.recentActivity.length === 0 ? (
-                  <div className="dm-empty-state dm-empty-state--compact">
-                    <FileText size={22} style={{ color: "var(--accent)", opacity: 0.55, marginBottom: "10px" }} />
-                    <p>No hay actividad reciente.</p>
-                    <span>Cuando crees campañas, sesiones, PNJs o notas, aparecerán aquí.</span>
-                  </div>
-                ) : (
-                  <div className="dm-activity-list">
-                    {dashboard.recentActivity.map((item) => (
-                      <div key={item.id} className="dm-activity-row">
-                        <div className="dm-activity-row__icon">{activityIcon(item.icon)}</div>
-                        <span className="dm-activity-row__text">{item.text}</span>
-                        <span className="dm-activity-row__time">{item.time}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
-            </div>
-
-            <CampaignTemplateLibrarySection
-              templates={campaignTemplates}
-              campaigns={campaigns}
-              loading={loading}
-              importingTemplateId={importingTemplateId}
-              t={t}
-              onExplore={navigateToCampaignTemplate}
-              onImport={openCampaignTemplateImportDialog}
-            />
-          </div>
-
+          <DmHubCampaignsColumn
+            campaigns={campaigns}
+            filteredCampaigns={filteredCampaigns}
+            campaignTemplates={campaignTemplates}
+            loading={loading}
+            error={error}
+            refreshCampaigns={refreshCampaigns}
+            landingSearchQuery={landingSearchQuery}
+            setLandingSearchQuery={setLandingSearchQuery}
+            campaignFilter={campaignFilter}
+            setCampaignFilter={setCampaignFilter}
+            totalPlayersCount={totalPlayersCount}
+            totalNpcsCount={totalNpcsCount}
+            totalEntitiesCount={totalEntitiesCount}
+            totalSessionsCount={totalSessionsCount}
+            playtimeLast30DaysLabel={dashboard.totals.playtimeLast30DaysLabel}
+            completedCampaigns={dashboard.totals.completedCampaigns}
+            recentActivity={dashboard.recentActivity}
+            triggerMysticalTransition={triggerMysticalTransition}
+            openEditModal={openEditModal}
+            openDeleteModal={openDeleteModal}
+            onCreateCampaign={() => setIsCreateModalOpen(true)}
+            onExploreTemplates={handleQuickTemplates}
+            onRestoreBackup={() => setIsRestoreModalOpen(true)}
+            navigateToCampaignTemplate={navigateToCampaignTemplate}
+            importingTemplateId={importingTemplateId}
+            onImportTemplate={openCampaignTemplateImportDialog}
+          />
           {/* ──────────── RIGHT COLUMN (30%) ──────────── */}
           <div className="dm-hub-grid__right">
 
