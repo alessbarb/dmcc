@@ -34,6 +34,20 @@ export const authSessions = pgTable("auth_sessions", {
   revokedAt: timestamp("revoked_at"),
 });
 
+export const authThrottleStates = pgTable("auth_throttle_states", {
+  key: text("key").primaryKey(),
+  purpose: text("purpose").notNull(),
+  count: integer("count").notNull().default(0),
+  windowResetAt: timestamp("window_reset_at").notNull(),
+  lockedUntil: timestamp("locked_until"),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+  purposeIndex: index("idx_auth_throttle_states_purpose").on(table.purpose),
+  updatedAtIndex: index("idx_auth_throttle_states_updated_at").on(table.updatedAt),
+  purposeCheck: check("chk_auth_throttle_states_purpose", sql`${table.purpose} IN ('login_rate', 'register_rate', 'login_lockout')`),
+  countCheck: check("chk_auth_throttle_states_count", sql`${table.count} >= 0`),
+}));
+
 export const userPreferences = pgTable("user_preferences", {
   userId: text("user_id").primaryKey().references(() => users.userId, { onDelete: "cascade" }),
   preferences: jsonb("preferences").$type<UserPreferences>().notNull(),
