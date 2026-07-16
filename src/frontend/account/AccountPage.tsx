@@ -130,19 +130,19 @@ export function AccountPage({ surface = "page", onRequestClose }: AccountPagePro
 
   const activeMemberships = aggregate
     ? aggregate.memberships.filter(
-        (m) => m.role === "player" && !m.revokedAt && m.campaignStatus !== "archived" && m.campaignStatus !== "deleted"
+        (m) => m.role === "player" && !m.revokedAt && m.campaignStatus !== "trashed"
       )
     : [];
 
   const archivedMemberships = aggregate
     ? aggregate.memberships.filter(
-        (m) => m.role === "player" && (Boolean(m.revokedAt) || m.campaignStatus === "archived" || m.campaignStatus === "deleted")
+        (m) => m.role === "player" && (Boolean(m.revokedAt) || m.campaignStatus === "trashed")
       )
     : [];
 
   const dmMemberships = aggregate
     ? aggregate.memberships.filter(
-        (m) => m.role === "dm" && !m.revokedAt && m.campaignStatus !== "archived" && m.campaignStatus !== "deleted"
+        (m) => m.role === "dm" && !m.revokedAt && m.campaignStatus !== "trashed"
       )
     : [];
 

@@ -189,12 +189,12 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
 
     const activeMemberships = membershipRows.filter((membership) => {
       const campaign = campaignById.get(membership.campaignId);
-      return campaign && campaign.status !== "deleted";
+      return campaign && campaign.status !== "trashed";
     });
 
     const activePlayerProfiles = playerProfileRows.filter((profile) => {
       const campaign = campaignById.get(profile.campaignId);
-      return campaign && campaign.status !== "deleted";
+      return campaign && campaign.status !== "trashed";
     });
 
     return {
@@ -469,7 +469,7 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
     const ownedCampaigns = await db.select().from(schema.campaigns).where(
       and(
         eq(schema.campaigns.ownerId, webUser.userId),
-        ne(schema.campaigns.status, "deleted")
+        ne(schema.campaigns.status, "trashed")
       )
     );
     return { blockers: ownedCampaigns.map((campaign) => ({ campaignId: campaign.campaignId, reason: "sole_responsible_dm" })) };
@@ -489,7 +489,7 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
     const ownedCampaigns = await db.select().from(schema.campaigns).where(
       and(
         eq(schema.campaigns.ownerId, webUser.userId),
-        ne(schema.campaigns.status, "deleted")
+        ne(schema.campaigns.status, "trashed")
       )
     );
     if (ownedCampaigns.length > 0) {
