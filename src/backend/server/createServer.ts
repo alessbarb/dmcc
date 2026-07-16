@@ -44,7 +44,7 @@ function requireConfiguredPublicOrigin(rawOrigin = process.env.DMCC_PUBLIC_ORIGI
   return origin;
 }
 
-export function resolveCorsAllowedOrigins(nodeEnv = process.env.NODE_ENV, publicOrigin = process.env.DMCC_PUBLIC_ORIGIN): string[] {
+function resolveCorsAllowedOrigins(nodeEnv = process.env.NODE_ENV, publicOrigin = process.env.DMCC_PUBLIC_ORIGIN): string[] {
   const configuredPublicOrigin = publicOrigin?.trim();
 
   if (nodeEnv === "production") {
@@ -57,7 +57,7 @@ export function resolveCorsAllowedOrigins(nodeEnv = process.env.NODE_ENV, public
   ]));
 }
 
-export function resolveAllowedMutationOrigins(nodeEnv = process.env.NODE_ENV, publicOrigin = process.env.DMCC_PUBLIC_ORIGIN): Set<string> {
+function resolveAllowedMutationOrigins(nodeEnv = process.env.NODE_ENV, publicOrigin = process.env.DMCC_PUBLIC_ORIGIN): Set<string> {
   if (nodeEnv === "production") {
     return new Set([requireConfiguredPublicOrigin(publicOrigin)]);
   }
@@ -80,7 +80,7 @@ type TrustProxyConfig = FastifyServerOptions["trustProxy"];
  * development safe by disabling trustProxy. The open `true` mode is
  * intentionally not accepted because it trusts every upstream sender.
  */
-export function resolveTrustProxyConfig(rawValue = process.env.DMCC_TRUST_PROXY_HOPS): TrustProxyConfig | undefined {
+function resolveTrustProxyConfig(rawValue = process.env.DMCC_TRUST_PROXY_HOPS): TrustProxyConfig | undefined {
   const value = rawValue?.trim();
   if (!value || value === "0") {
     return undefined;
@@ -110,7 +110,7 @@ export function resolveTrustProxyConfig(rawValue = process.env.DMCC_TRUST_PROXY_
   return entries.length === 1 ? entries[0] : entries;
 }
 
-export function getRequiredSessionSecret(): string {
+function getRequiredSessionSecret(): string {
   const secret = process.env.SESSION_SECRET;
 
   if (!secret || secret.trim().length === 0) {
