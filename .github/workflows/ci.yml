@@ -15,7 +15,7 @@ concurrency:
 jobs:
   quality:
     name: Typecheck, test and build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     services:
       postgres:
