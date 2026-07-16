@@ -22,7 +22,7 @@ export interface PlayerCharacterDetailModalProps {
   onArchive: (entityId: string) => Promise<void>;
   onVisibilityChange: (entityId: string, visibility: unknown) => Promise<void>;
   addToast: (msg: string, kind?: ToastKind) => void;
-  onOpenLegacy: () => void;
+  onEditEntity: () => void;
 }
 
 function record(value: unknown): Record<string, unknown> {
@@ -48,7 +48,7 @@ function Field({ label, value }: { label: string; value: unknown }) {
   );
 }
 
-export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onClose, onOpenLegacy }: PlayerCharacterDetailModalProps) {
+export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onClose, onEditEntity }: PlayerCharacterDetailModalProps) {
   const [sheet, setSheet] = useState<CharacterSheetResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -134,7 +134,7 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
             <UserRound size={16} />
             <span>{sheet?.player?.displayName || "Sin jugador vinculado"}</span>
           </div>
-          <button type="button" className="btn btn-secondary btn-sm" onClick={onOpenLegacy}>
+          <button type="button" className="btn btn-secondary btn-sm" onClick={onEditEntity}>
             <Pencil size={14} /> Editar entidad
           </button>
         </div>
