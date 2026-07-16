@@ -67,15 +67,15 @@ function metadataText(metadata: Record<string, unknown> | undefined, key: string
   return normalizeText(metadata[key]);
 }
 
-export function getActiveEntities(campaignState: StarterProgressCampaignState | null | undefined): Entity[] {
+function getActiveEntities(campaignState: StarterProgressCampaignState | null | undefined): Entity[] {
   return asArray<Entity>(campaignState?.entities).filter((entity) => !entity?.archived);
 }
 
-export function getActiveRelations(campaignState: StarterProgressCampaignState | null | undefined): Relation[] {
+function getActiveRelations(campaignState: StarterProgressCampaignState | null | undefined): Relation[] {
   return asArray<Relation>(campaignState?.relations).filter((relation) => !relation?.archived);
 }
 
-export function getActiveSessions(campaignState: StarterProgressCampaignState | null | undefined): Session[] {
+function getActiveSessions(campaignState: StarterProgressCampaignState | null | undefined): Session[] {
   return asArray<Session>(campaignState?.sessions).filter(
     (session) => !(session as { archived?: boolean })?.archived && session?.status !== "cancelled",
   );

@@ -3,10 +3,10 @@ export interface StoredCampaignGuidedTourState {
   dismissedAt?: string;
 }
 
-export const CAMPAIGN_GUIDED_TOUR_VERSION = "v1";
-export const PENDING_CAMPAIGN_GUIDED_TOUR_KEY = "dmcc_pending_campaign_tour_id";
+const CAMPAIGN_GUIDED_TOUR_VERSION = "v1";
+const PENDING_CAMPAIGN_GUIDED_TOUR_KEY = "dmcc_pending_campaign_tour_id";
 
-export function getCampaignGuidedTourStorageKey(campaignId: string): string {
+function getCampaignGuidedTourStorageKey(campaignId: string): string {
   return `dmcc_campaign_guided_tour_${CAMPAIGN_GUIDED_TOUR_VERSION}:${campaignId}`;
 }
 
