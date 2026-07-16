@@ -235,5 +235,3 @@ export function CampaignHistoryView() {
     </div>
   );
 }
-
-export default CampaignHistoryView;

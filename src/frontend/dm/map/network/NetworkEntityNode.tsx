@@ -33,5 +33,3 @@ export const NetworkEntityNode = React.memo(function NetworkEntityNode({ data, s
     </div>
   );
 });
-
-export default NetworkEntityNode;

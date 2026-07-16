@@ -28,4 +28,3 @@ export function RelationEdgeLabel({ label, style = {} }: RelationEdgeLabelProps)
     </div>
   );
 }
-export default RelationEdgeLabel;

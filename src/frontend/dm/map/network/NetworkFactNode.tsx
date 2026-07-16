@@ -28,5 +28,3 @@ export function NetworkFactNode({ data, selected }: NetworkFactNodeProps) {
     </ResourceNodeFrame>
   );
 }
-
-export default NetworkFactNode;

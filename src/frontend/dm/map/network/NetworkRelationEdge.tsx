@@ -52,5 +52,3 @@ export const NetworkRelationEdge = React.memo(function NetworkRelationEdge({
     </>
   );
 });
-
-export default NetworkRelationEdge;
