@@ -26,6 +26,7 @@ import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { CampaignStarterHub } from "../onboarding/CampaignStarterHub.js";
 import { EntityDetailModal } from "../entities/EntityDetailModal.js";
+import { resolveActiveEntity } from "../entities/relations/resolveActiveEntity.js";
 import { LiveTableModal } from "../components/LiveTableModal.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 
@@ -155,7 +156,7 @@ export function OverviewPage() {
   const [liveTable, setLiveTable] = useState<LiveTableSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null);
+  const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [liveTableModalOpen, setLiveTableModalOpen] = useState(false);
   const [exportingMarkdown, setExportingMarkdown] = useState(false);
 
@@ -189,6 +190,7 @@ export function OverviewPage() {
 
   const campaign = campaignState?.campaign ?? commandCenter?.campaign ?? null;
   const entities: Entity[] = campaignState?.entities ?? [];
+  const selectedEntity = selectedEntityId ? resolveActiveEntity(entities, selectedEntityId) : null;
   const sessions = campaignState?.sessions ?? [];
   const activeSession = sessions.find((session) => session.status === "active") ?? null;
   const nextPreparedSession = sessions
@@ -413,7 +415,7 @@ export function OverviewPage() {
                 <button
                   className="dashboard-entity-row"
                   type="button"
-                  onClick={() => setSelectedEntity(currentLocation)}
+                  onClick={() => setSelectedEntityId(currentLocation.entityId)}
                 >
                   <span className="dashboard-entity-row__title">{currentLocation.title}</span>
                 </button>
@@ -430,7 +432,7 @@ export function OverviewPage() {
                 <button
                   className="dashboard-entity-row"
                   type="button"
-                  onClick={() => setSelectedEntity(currentQuest)}
+                  onClick={() => setSelectedEntityId(currentQuest.entityId)}
                 >
                   <span className="dashboard-entity-row__title">{currentQuest.title}</span>
                 </button>
@@ -598,7 +600,7 @@ export function OverviewPage() {
             <EntityList
               items={npcWarnings}
               empty={t("dashboard.noneMasculine")}
-              onSelect={setSelectedEntity}
+              onSelect={(entity) => setSelectedEntityId(entity.entityId)}
             />
           </Card>
 
@@ -609,7 +611,7 @@ export function OverviewPage() {
             <EntityList
               items={blockedQuests}
               empty={t("dashboard.noneFeminine")}
-              onSelect={setSelectedEntity}
+              onSelect={(entity) => setSelectedEntityId(entity.entityId)}
             />
           </Card>
 
@@ -620,7 +622,7 @@ export function OverviewPage() {
             <EntityList
               items={[...criticalHiddenClues, ...preparedClues]}
               empty={t("whatNowPage.noCriticalClues")}
-              onSelect={setSelectedEntity}
+              onSelect={(entity) => setSelectedEntityId(entity.entityId)}
             />
           </Card>
 
@@ -631,7 +633,7 @@ export function OverviewPage() {
             <EntityList
               items={pendingConsequences}
               empty={t("whatNowPage.noPendingConsequences")}
-              onSelect={setSelectedEntity}
+              onSelect={(entity) => setSelectedEntityId(entity.entityId)}
             />
           </Card>
         </div>
@@ -756,18 +758,17 @@ export function OverviewPage() {
         <EntityDetailModal
           selectedEntity={selectedEntity}
           campaignState={campaignState}
-          onClose={() => setSelectedEntity(null)}
+          onClose={() => setSelectedEntityId(null)}
+          onSelectEntity={setSelectedEntityId}
           onEdit={async (entityId, updates) => {
             await updateEntity(entityId, updates);
-            setSelectedEntity({ ...selectedEntity, ...updates });
           }}
           onArchive={async (entityId) => {
             await archiveEntity(entityId);
-            setSelectedEntity(null);
+            setSelectedEntityId(null);
           }}
           onVisibilityChange={async (entityId, visibility) => {
             await updateEntity(entityId, { visibility });
-            setSelectedEntity({ ...selectedEntity, visibility });
           }}
           addToast={addToast}
         />

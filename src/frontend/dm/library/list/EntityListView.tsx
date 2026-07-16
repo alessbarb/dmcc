@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Eye, EyeOff, Filter, MapPin, Network, Plus, Search, Users, X, Zap, LayoutGrid, List } from "lucide-react";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 import { useCampaignStore, type Entity } from "../../../shared/stores/campaignStore.js";
+import { resolveActiveEntity } from "../../entities/relations/resolveActiveEntity.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
@@ -40,7 +41,7 @@ export function EntityListView() {
   const { updateEntity, archiveEntity, setIsEntityModalOpen } = store;
   const { addToast } = useToast();
   const { locale, t } = useTranslation();
-  const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null);
+  const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [entitySearchQuery, setEntitySearchQuery] = useState("");
   const [entityTypeFilter, setEntityTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -92,6 +93,8 @@ export function EntityListView() {
     () => (campaignState?.entities ?? []).filter((entity: Entity) => !entity.archived),
     [campaignState?.entities],
   );
+
+  const selectedEntity = selectedEntityId ? resolveActiveEntity(activeEntities, selectedEntityId) : null;
 
   const entityTypes = useMemo<string[]>(
     () => Array.from(new Set(activeEntities.map((entity) => entity.entityType))).sort(),
@@ -236,7 +239,7 @@ export function EntityListView() {
     const entityId = parameters.get("entityId");
     if (!entityId) return;
     const target = activeEntities.find((entity) => entity.entityId === entityId);
-    if (target) setSelectedEntity(target);
+    if (target) setSelectedEntityId(target.entityId);
     window.history.replaceState(null, "", window.location.pathname);
   }, [activeEntities]);
 
@@ -264,7 +267,7 @@ export function EntityListView() {
           key={entity.entityId}
           type="button"
           className={`entity-compact-row ${isDmOnly ? "entity-compact-row--dm-only" : ""} ${isCritical ? "entity-compact-row--critical" : ""}`}
-          onClick={() => setSelectedEntity(entity)}
+          onClick={() => setSelectedEntityId(entity.entityId)}
           style={{
             "--entity-accent": cfg.accent,
             "--entity-accent-soft": cfg.accentSoft,
@@ -318,7 +321,7 @@ export function EntityListView() {
         key={entity.entityId}
         type="button"
         className={cardClasses}
-        onClick={() => setSelectedEntity(entity)}
+        onClick={() => setSelectedEntityId(entity.entityId)}
         style={{
           "--entity-accent": cfg.accent,
           "--entity-accent-soft": cfg.accentSoft,
@@ -757,23 +760,22 @@ export function EntityListView() {
         <EntityDetailModal
           selectedEntity={selectedEntity}
           campaignState={campaignState}
-          onClose={() => setSelectedEntity(null)}
+          onClose={() => setSelectedEntityId(null)}
+          onSelectEntity={setSelectedEntityId}
           onEdit={async (entityId, updates) => {
             try {
               await updateEntity(entityId, updates);
-              setSelectedEntity((current) => current ? { ...current, ...updates } as Entity : null);
             } catch (error: any) {
               addToast(error.message || t("entitiesPage.updateError"), "error");
             }
           }}
           onArchive={async (entityId) => {
             await archiveEntity(entityId);
-            setSelectedEntity(null);
+            setSelectedEntityId(null);
           }}
           onVisibilityChange={async (entityId, visibility) => {
             try {
               await updateEntity(entityId, { visibility });
-              setSelectedEntity((current) => current ? { ...current, visibility } : null);
             } catch (error: any) {
               addToast(error.message || t("entitiesPage.updateError"), "error");
             }

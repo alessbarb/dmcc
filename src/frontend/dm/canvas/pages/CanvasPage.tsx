@@ -897,6 +897,7 @@ export function CanvasPage() {
           onClose={() => {
             setDetailEntityId(null);
           }}
+          onSelectEntity={setDetailEntityId}
           onEdit={async (entityId, updates) => {
             await updateEntity(entityId, updates);
           }}

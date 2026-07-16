@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
+import { resolveActiveEntity } from "../../entities/relations/resolveActiveEntity.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 
@@ -290,7 +291,7 @@ export function EntityBoardsView() {
   const { campaignState, updateEntity, archiveEntity } = useCampaignStore();
   const { addToast } = useToast();
   const { t } = useTranslation();
-  const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null);
+  const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [activeBoard, setActiveBoard] = useState<BoardType>("quests");
   const [movingIds, setMovingIds] = useState<Set<string>>(new Set());
   const [dragOverStatus, setDragOverStatus] = useState<string | null>(null);
@@ -299,6 +300,7 @@ export function EntityBoardsView() {
     () => (campaignState?.entities ?? []).filter((entity: Entity) => !entity.archived),
     [campaignState?.entities],
   );
+  const selectedEntity = selectedEntityId ? resolveActiveEntity(allEntities, selectedEntityId) : null;
   const board = BOARDS.find((candidate) => candidate.id === activeBoard) ?? BOARDS[0];
   const boardEntities = useMemo(() => {
     const types = Array.isArray(board.entityType) ? board.entityType : [board.entityType];
@@ -325,7 +327,7 @@ export function EntityBoardsView() {
     if (entity) {
       const destinationBoard = boardForEntity(entity);
       if (destinationBoard) setActiveBoard(destinationBoard.id);
-      setSelectedEntity(entity);
+      setSelectedEntityId(entity.entityId);
     }
     window.history.replaceState(null, "", window.location.pathname);
   }, [allEntities]);
@@ -342,9 +344,6 @@ export function EntityBoardsView() {
           status: translatedStatus ? t(translatedStatus.labelKey) : status,
         }),
         "success",
-      );
-      setSelectedEntity((current) =>
-        current?.entityId === entity.entityId ? { ...current, status } : current,
       );
     } catch (error: any) {
       addToast(error?.message ?? String(error), "error");
@@ -435,7 +434,7 @@ export function EntityBoardsView() {
                   dragOver={dragOverStatus === state.key}
                   onDrop={handleDrop}
                   onMove={(entity, status) => void moveEntity(entity, status)}
-                  onSelect={setSelectedEntity}
+                  onSelect={(entity) => setSelectedEntityId(entity.entityId)}
                   onDragStart={handleDragStart}
                   onDragEnter={setDragOverStatus}
                   onDragLeave={(event) => {
@@ -454,18 +453,17 @@ export function EntityBoardsView() {
         <EntityDetailModal
           selectedEntity={selectedEntity}
           campaignState={campaignState}
-          onClose={() => setSelectedEntity(null)}
+          onClose={() => setSelectedEntityId(null)}
+          onSelectEntity={setSelectedEntityId}
           onEdit={async (entityId, updates) => {
             await updateEntity(entityId, updates);
-            setSelectedEntity((current) => current ? { ...current, ...updates } as Entity : null);
           }}
           onArchive={async (entityId) => {
             await archiveEntity(entityId);
-            setSelectedEntity(null);
+            setSelectedEntityId(null);
           }}
           onVisibilityChange={async (entityId, visibility) => {
             await updateEntity(entityId, { visibility });
-            setSelectedEntity((current) => current ? { ...current, visibility } : null);
           }}
           addToast={addToast}
         />
