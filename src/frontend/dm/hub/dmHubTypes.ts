@@ -49,7 +49,7 @@ export type DmHubActivityItem = {
 
 export type DmHubDashboard = {
   campaigns: DmHubCampaign[];
-  premadeTemplates: CampaignTemplateSummary[];
+  campaignTemplates: CampaignTemplateSummary[];
   activeTables: DmHubActiveTable[];
   alerts: DmHubAlert[];
   recentActivity: DmHubActivityItem[];

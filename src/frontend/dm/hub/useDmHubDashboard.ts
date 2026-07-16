@@ -176,7 +176,7 @@ function buildActiveTables(campaigns: DmHubCampaign[], t: (key: string) => strin
 
 function buildFallbackDashboard(
   rawCampaigns: Campaign[],
-  premadeTemplates: CampaignTemplateSummary[],
+  campaignTemplates: CampaignTemplateSummary[],
   t: (key: string) => string
 ): DmHubDashboard {
   const campaigns = rawCampaigns.map(normalizeCampaign);
@@ -185,7 +185,7 @@ function buildFallbackDashboard(
 
   return {
     campaigns,
-    premadeTemplates,
+    campaignTemplates,
     activeTables,
     alerts: [],
     recentActivity: [],
@@ -246,7 +246,7 @@ function normalizeActivityItem(raw: unknown): DmHubActivityItem | null {
 
 function normalizeRemoteDashboard(
   data: unknown,
-  fallbackPremadeTemplates: CampaignTemplateSummary[],
+  fallbackCampaignTemplates: CampaignTemplateSummary[],
   t: (key: string) => string
 ): DmHubDashboard | null {
   if (!isRecord(data)) return null;
@@ -254,15 +254,15 @@ function normalizeRemoteDashboard(
   const activeTables = Array.isArray(data.activeTables)
     ? (data.activeTables.map((x: unknown) => normalizeActiveTable(x, t)).filter((x): x is DmHubActiveTable => x !== null))
     : buildActiveTables(campaigns, t);
-  const premadeTemplates = Array.isArray(data.premadeTemplates)
+  const campaignTemplates = Array.isArray(data.premadeTemplates)
     ? (data.premadeTemplates as CampaignTemplateSummary[])
     : Array.isArray(data.premades)
       ? (data.premades as CampaignTemplateSummary[])
-      : fallbackPremadeTemplates;
+      : fallbackCampaignTemplates;
 
   return {
     campaigns,
-    premadeTemplates,
+    campaignTemplates,
     activeTables,
     alerts: Array.isArray(data.alerts)
       ? data.alerts.map(normalizeAlert).filter((x): x is DmHubAlert => x !== null)
@@ -280,7 +280,7 @@ function campaignRefreshKey(campaigns: Campaign[]): string {
 
 export function useDmHubDashboard(
   rawCampaigns: Campaign[],
-  premadeTemplates: CampaignTemplateSummary[]
+  campaignTemplates: CampaignTemplateSummary[]
 ): DmHubDashboard {
   const { t } = useTranslation();
   const [remoteDashboard, setRemoteDashboard] = useState<DmHubDashboard | null>(null);
@@ -294,7 +294,7 @@ export function useDmHubDashboard(
         const res = await apiFetch(withCampaignTemplateLocale("/api/dm/dashboard"));
         if (!res.ok) throw new Error(`DM dashboard unavailable (${res.status})`);
         const data: unknown = await res.json();
-        const normalized = normalizeRemoteDashboard(data, premadeTemplates, t);
+        const normalized = normalizeRemoteDashboard(data, campaignTemplates, t);
         if (!cancelled) setRemoteDashboard(normalized);
       } catch {
         if (!cancelled) setRemoteDashboard(null);
@@ -303,11 +303,11 @@ export function useDmHubDashboard(
 
     void loadDashboard();
     return () => { cancelled = true; };
-  }, [refreshKey, premadeTemplates.length, t]);
+  }, [refreshKey, campaignTemplates.length, t]);
 
   const fallbackDashboard = useMemo(
-    () => buildFallbackDashboard(rawCampaigns, premadeTemplates, t),
-    [rawCampaigns, premadeTemplates, t]
+    () => buildFallbackDashboard(rawCampaigns, campaignTemplates, t),
+    [rawCampaigns, campaignTemplates, t]
   );
 
   return remoteDashboard ?? fallbackDashboard;

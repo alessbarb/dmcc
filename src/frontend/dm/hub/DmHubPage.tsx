@@ -33,7 +33,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { logout } from "../../shared/auth/authClient.js";
-import { PremadeImportDialog, type PremadeImportMode } from "../../shared/components/PremadeImportDialog.js";
+import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 import { AccountModal } from "../../account/AccountModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
 import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
@@ -64,27 +64,27 @@ export function DmHubPage() {
   const { t } = useTranslation();
   const {
     campaigns: rawCampaigns,
-    premadeTemplates: rawPremadeTemplates,
+    campaignTemplates: rawCampaignTemplates,
     loading,
     error,
     fetchCampaigns,
-    fetchPremadeCampaigns,
+    fetchCampaignTemplates,
     importCampaignTemplate,
     updateCampaign,
     selectCampaign,
     createCampaign,
     deleteCampaign,
     restoreBackup,
-    premadeImportState,
-    clearPremadeImportState,
+    campaignTemplateImportState,
+    clearCampaignTemplateImportState,
   } = useCampaignStore();
 
   const navigate = useNavigate();
 
   // ── Global DM dashboard data ───────────────────────────────────────────────
-  const dashboard = useDmHubDashboard(rawCampaigns, rawPremadeTemplates);
+  const dashboard = useDmHubDashboard(rawCampaigns, rawCampaignTemplates);
   const campaigns = dashboard.campaigns;
-  const premadeTemplates = dashboard.premadeTemplates;
+  const campaignTemplates = dashboard.campaignTemplates;
   const totalCampaignsCount = dashboard.totals.campaigns;
   const activeTablesCount = dashboard.totals.activeTables;
   const totalPlayersCount = dashboard.totals.players;
@@ -138,9 +138,9 @@ export function DmHubPage() {
   const [editError, setEditError] = useState<string | null>(null);
 
   // Premade import
-  const [premadeDialogTemplateId, setPremadeDialogTemplateId] = useState<string | null>(null);
-  const importingTemplateId = premadeImportState.status === "running" ? premadeImportState.templateId : null;
-  const premadeImportError = premadeImportState.error ? t(premadeImportState.error) : null;
+  const [campaignTemplateDialogId, setCampaignTemplateDialogId] = useState<string | null>(null);
+  const importingTemplateId = campaignTemplateImportState.status === "running" ? campaignTemplateImportState.templateId : null;
+  const campaignTemplateImportError = campaignTemplateImportState.error ? t(campaignTemplateImportState.error) : null;
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -167,14 +167,14 @@ export function DmHubPage() {
       }
       await Promise.all([
         fetchCampaigns().catch(() => {}),
-        fetchPremadeCampaigns().catch(() => {}),
+        fetchCampaignTemplates().catch(() => {}),
       ]);
       setCampaignsFetched(true);
     };
     void initAuth().catch((error: unknown) => {
       console.error("No se pudo inicializar el hub de DM.", error);
     });
-  }, [fetchCampaigns, fetchPremadeCampaigns, navigate]);
+  }, [fetchCampaigns, fetchCampaignTemplates, navigate]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -342,14 +342,14 @@ export function DmHubPage() {
     }
   };
 
-  const openPremadeImportDialog = (templateId: string) => {
-    clearPremadeImportState();
-    setPremadeDialogTemplateId(templateId);
+  const openCampaignTemplateImportDialog = (templateId: string) => {
+    clearCampaignTemplateImportState();
+    setCampaignTemplateDialogId(templateId);
   };
 
   const handleImportPremade = async (
     templateId: string,
-    options: { title: string; summary?: string; importMode: PremadeImportMode; openAfterCreate: boolean }
+    options: { title: string; summary?: string; importMode: CampaignTemplateImportMode; openAfterCreate: boolean }
   ) => {
     try {
       const campaignId = await importCampaignTemplate(templateId, {
@@ -358,8 +358,8 @@ export function DmHubPage() {
         importMode: options.importMode,
       });
       if (campaignId) {
-        setPremadeDialogTemplateId(null);
-        clearPremadeImportState();
+        setCampaignTemplateDialogId(null);
+        clearCampaignTemplateImportState();
         if (options.openAfterCreate) {
           await navigate({ to: `/campaigns/${campaignId}/overview` });
         }
@@ -412,7 +412,7 @@ export function DmHubPage() {
     return matchesQuery;
   });
 
-  const selectedPremadeTemplate = premadeTemplates.find((t) => t.templateId === premadeDialogTemplateId) ?? null;
+  const selectedCampaignTemplate = campaignTemplates.find((t) => t.templateId === campaignTemplateDialogId) ?? null;
 
   const dmDisplayName = dmProfile?.displayName || dmProfile?.email || "Director de Juego";
 
@@ -773,11 +773,11 @@ export function DmHubPage() {
               <p className="dm-muted-text" style={{ marginTop: 0, marginBottom: "20px" }}>
                 {t("landing.premadeDescription")}
               </p>
-              {premadeTemplates.length === 0 ? (
+              {campaignTemplates.length === 0 ? (
                 <p className="dm-muted-text">{t("landing.premadeEmpty")}</p>
               ) : (
                 <div className="dm-premades-grid">
-                  {premadeTemplates.map((template) => {
+                  {campaignTemplates.map((template) => {
                     const copies = campaigns.filter((c) => c.metadata?.createdFromTemplateId === template.templateId);
                     return (
                       <article key={template.templateId} className="dm-premade-card">
@@ -819,7 +819,7 @@ export function DmHubPage() {
                           <button
                             type="button"
                             className="btn btn-primary btn-sm"
-                            onClick={() => openPremadeImportDialog(template.templateId)}
+                            onClick={() => openCampaignTemplateImportDialog(template.templateId)}
                             disabled={loading || importingTemplateId === template.templateId}
                             style={{ flex: 1 }}
                           >
@@ -1273,16 +1273,16 @@ export function DmHubPage() {
       <AccountModal open={isAccountModalOpen} onClose={() => setIsAccountModalOpen(false)} />
 
       {/* ── PREMADE IMPORT DIALOG ── */}
-      <PremadeImportDialog
-        template={selectedPremadeTemplate}
-        // DmHubCampaign.stats uses a different shape than Campaign.stats; PremadeImportDialog never reads stats.
-        campaigns={campaigns as unknown as React.ComponentProps<typeof PremadeImportDialog>["campaigns"]}
+      <CampaignTemplateImportDialog
+        template={selectedCampaignTemplate}
+        // DmHubCampaign.stats uses a different shape than Campaign.stats; CampaignTemplateImportDialog never reads stats.
+        campaigns={campaigns as unknown as React.ComponentProps<typeof CampaignTemplateImportDialog>["campaigns"]}
         importing={Boolean(importingTemplateId)}
-        importProgress={premadeImportState}
-        error={premadeImportError}
-        onClose={() => { if (!importingTemplateId) { setPremadeDialogTemplateId(null); clearPremadeImportState(); } }}
-        onOpenExisting={(campaignId) => { setPremadeDialogTemplateId(null); clearPremadeImportState(); triggerMysticalTransition(campaignId); }}
-        onConfirm={(options) => selectedPremadeTemplate ? handleImportPremade(selectedPremadeTemplate.templateId, options) : undefined}
+        importProgress={campaignTemplateImportState}
+        error={campaignTemplateImportError}
+        onClose={() => { if (!importingTemplateId) { setCampaignTemplateDialogId(null); clearCampaignTemplateImportState(); } }}
+        onOpenExisting={(campaignId) => { setCampaignTemplateDialogId(null); clearCampaignTemplateImportState(); triggerMysticalTransition(campaignId); }}
+        onConfirm={(options) => selectedCampaignTemplate ? handleImportPremade(selectedCampaignTemplate.templateId, options) : undefined}
       />
 
       {/* ── MYSTICAL TRANSITION ── */}
