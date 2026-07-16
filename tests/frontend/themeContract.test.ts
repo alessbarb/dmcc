@@ -46,8 +46,11 @@ describe("theme contract v1", () => {
   });
 
   it("rejects a missing token with its full path", () => {
-    const theme = createValidTheme() as unknown as Record<string, any>;
-    delete theme.variants.dark.surfaces.raised;
+    const theme = createValidTheme();
+    const surfaces = theme.variants.dark.surfaces as typeof theme.variants.dark.surfaces & {
+      raised?: string;
+    };
+    delete surfaces.raised;
 
     const result = validateThemePackage(theme);
 
@@ -61,8 +64,8 @@ describe("theme contract v1", () => {
   });
 
   it("rejects unknown properties instead of silently accepting extensions", () => {
-    const theme = createValidTheme() as unknown as Record<string, any>;
-    theme.variants.light.surfaces.abyss = "black";
+    const theme = createValidTheme();
+    Object.assign(theme.variants.light.surfaces, { abyss: "black" });
 
     const result = validateThemePackage(theme);
 
@@ -76,8 +79,11 @@ describe("theme contract v1", () => {
   });
 
   it("requires exactly eight non-empty identity colors", () => {
-    const theme = createValidTheme() as unknown as Record<string, any>;
-    theme.variants.light.identityPalette = ["red", "blue"];
+    const theme = createValidTheme();
+    const variant = theme.variants.light as typeof theme.variants.light & {
+      identityPalette: string[];
+    };
+    variant.identityPalette = ["red", "blue"];
 
     const result = validateThemePackage(theme);
 
@@ -91,8 +97,9 @@ describe("theme contract v1", () => {
   });
 
   it("rejects unsupported contract versions and empty values", () => {
-    const theme = createValidTheme() as unknown as Record<string, any>;
-    theme.contractVersion = 2;
+    const theme = createValidTheme();
+    const versionedTheme = theme as ThemePackageV1 & { contractVersion: number };
+    versionedTheme.contractVersion = 2;
     theme.variants.dark.text.primary = " ";
 
     const result = validateThemePackage(theme);
