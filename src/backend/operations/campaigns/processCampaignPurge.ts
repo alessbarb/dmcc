@@ -69,7 +69,7 @@ export async function claimCampaignPurgeJob(params: {
 /**
  * Renews the lease for a running job to prevent it from expiring.
  */
-export async function renewCampaignPurgeLease(params: {
+async function renewCampaignPurgeLease(params: {
   jobId: string;
   workerId: string;
   leaseToken: string;

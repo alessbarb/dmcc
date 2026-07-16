@@ -4,13 +4,13 @@ import type { ShortcutTargetType } from "@core/domain/resource/resourceType.js";
 import { readApiError } from "../../shared/api/apiClient.js";
 import { createShortcut, deleteShortcut, listShortcuts, reorderShortcuts } from "../../shared/api/shortcutsApi.js";
 
-export interface ResolvedShortcutResource {
+interface ResolvedShortcutResource {
   title: string;
   subtitle?: string;
   archived: boolean;
 }
 
-export interface CampaignShortcut {
+interface CampaignShortcut {
   shortcutId: string;
   targetType: ShortcutTargetType;
   targetId: string;
@@ -32,7 +32,7 @@ async function requireOk(response: Response, fallback: string): Promise<void> {
 }
 
 /** Personal per-user shortcuts, deliberately separate from campaignState. */
-export const useCampaignShortcutsStore = create<CampaignShortcutsState>((set, get) => ({
+const useCampaignShortcutsStore = create<CampaignShortcutsState>((set, get) => ({
   shortcutsByCampaignId: {},
   loadingCampaignIds: {},
 
