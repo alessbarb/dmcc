@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Crosshair, ImagePlus, Pencil, RotateCcw } from "lucide-react";
+import { ImagePlus, Move, Pencil } from "lucide-react";
 import { ImagePickerModal, type ImageCatalogType } from "./ImagePickerModal.js";
+import { EntityImageReframeDialog } from "./EntityImageReframeDialog.js";
 import {
   DEFAULT_IMAGE_FOCAL_POINT,
   imageFocalPointToObjectPosition,
@@ -25,6 +26,7 @@ export function ImagePickerButton({
   shape = "circle",
 }: ImagePickerButtonProps) {
   const [open, setOpen] = useState(false);
+  const [reframing, setReframing] = useState(false);
   const [hovered, setHovered] = useState(false);
   const rawDisplaySrc = value || defaultImage || "";
   const displaySrc = rawDisplaySrc ? stripImageFocalPoint(rawDisplaySrc) : "";
@@ -41,19 +43,20 @@ export function ImagePickerButton({
     setOpen(false);
   };
 
-  const handleSetFocalPoint = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!displaySrc) {
-      setOpen(true);
-      return;
-    }
-
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width;
-    const y = (event.clientY - bounds.top) / bounds.height;
-    onChange(withImageFocalPoint(value || displaySrc, { x, y }));
-  };
-
   if (isEntityPreview) {
+    const saveReframe = (nextX: number, nextY: number) => {
+      onChange(
+        withImageFocalPoint(
+          value || displaySrc,
+          {
+            x: nextX / 100,
+            y: nextY / 100,
+          },
+        ),
+      );
+      setReframing(false);
+    };
+
     return (
       <>
         <div
@@ -69,121 +72,85 @@ export function ImagePickerButton({
             boxShadow: "0 12px 28px rgba(0, 0, 0, 0.22)",
           }}
         >
-          <button
-            type="button"
-            onClick={handleSetFocalPoint}
-            aria-label={displaySrc ? "Marcar punto de interés" : "Seleccionar imagen"}
-            title={displaySrc ? "Haz clic sobre el punto de interés" : "Seleccionar imagen"}
+          <div
             style={{
               position: "relative",
               minHeight: "180px",
               overflow: "hidden",
-              border: 0,
               background: "var(--bg-input, #111)",
-              cursor: displaySrc ? "crosshair" : "pointer",
-              padding: 0,
             }}
           >
             {displaySrc ? (
-              <>
-                <img
-                  src={displaySrc}
-                  alt="Previsualización de la entidad"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    minHeight: "180px",
-                    maxHeight: "260px",
-                    objectFit: "cover",
-                    objectPosition: imageFocalPointToObjectPosition(focalPoint),
-                    display: "block",
-                  }}
-                />
-                <span
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    left: `${focalPoint.x * 100}%`,
-                    top: `${focalPoint.y * 100}%`,
-                    width: "30px",
-                    height: "30px",
-                    display: "grid",
-                    placeItems: "center",
-                    transform: "translate(-50%, -50%)",
-                    border: "2px solid white",
-                    borderRadius: "50%",
-                    background: "rgba(5, 7, 14, 0.48)",
-                    boxShadow: "0 0 0 2px rgba(0, 0, 0, 0.5)",
-                    pointerEvents: "none",
-                  }}
-                >
-                  <Crosshair size={16} color="white" />
-                </span>
-                <span
-                  style={{
-                    position: "absolute",
-                    inset: "auto 0 0",
-                    padding: "26px 12px 10px",
-                    color: "white",
-                    fontSize: "0.78rem",
-                    textAlign: "center",
-                    background: "linear-gradient(to top, rgba(3, 5, 12, 0.82), transparent)",
-                    pointerEvents: "none",
-                  }}
-                >
-                  Haz clic sobre el punto que debe permanecer visible
-                </span>
-              </>
-            ) : (
-              <span
+              <img
+                src={displaySrc}
+                alt="Previsualización de la entidad"
                 style={{
+                  width: "100%",
+                  height: "100%",
+                  minHeight: "180px",
+                  maxHeight: "260px",
+                  objectFit: "cover",
+                  objectPosition: imageFocalPointToObjectPosition(focalPoint),
+                  display: "block",
+                }}
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                style={{
+                  width: "100%",
                   minHeight: "180px",
                   display: "grid",
                   placeItems: "center",
                   gap: "8px",
+                  border: 0,
                   color: "var(--text-muted, #888)",
+                  background: "transparent",
+                  cursor: "pointer",
                 }}
               >
                 <ImagePlus size={28} />
                 <span>Seleccionar imagen</span>
-              </span>
+              </button>
             )}
-          </button>
+          </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "8px",
-              padding: "10px 12px",
-              borderTop: "1px solid var(--border-color, #444)",
-            }}
-          >
-            <span style={{ color: "var(--text-muted)", fontSize: "0.76rem" }}>
-              Foco: {Math.round(focalPoint.x * 100)}%, {Math.round(focalPoint.y * 100)}%
-            </span>
-            <div style={{ display: "flex", gap: "8px" }}>
-              {displaySrc && (
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-sm"
-                  onClick={() => onChange(withImageFocalPoint(value || displaySrc, DEFAULT_IMAGE_FOCAL_POINT))}
-                  title="Restablecer foco"
-                >
-                  <RotateCcw size={14} /> Centrar
-                </button>
-              )}
+          <div className="entity-image-editor-actions">
+            {displaySrc && (
               <button
                 type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => setOpen(true)}
+                className="btn btn-secondary entity-image-editor-action"
+                onClick={() => setReframing(true)}
               >
-                <Pencil size={14} /> {displaySrc ? "Cambiar imagen" : "Elegir imagen"}
+                <Move size={15} />
+                <span>Reencuadrar</span>
               </button>
-            </div>
+            )}
+
+            <button
+              type="button"
+              className="btn btn-secondary entity-image-editor-action"
+              onClick={() => setOpen(true)}
+            >
+              <Pencil size={15} />
+              <span>
+                {displaySrc ? "Cambiar imagen" : "Elegir imagen"}
+              </span>
+            </button>
           </div>
         </div>
+
+        {reframing && displaySrc && (
+          <EntityImageReframeDialog
+            imageUrl={displaySrc}
+            title="Imagen de la entidad"
+            initialX={focalPoint.x * 100}
+            initialY={focalPoint.y * 100}
+            onCancel={() => setReframing(false)}
+            onSave={saveReframe}
+          />
+        )}
 
         {open && (
           <ImagePickerModal

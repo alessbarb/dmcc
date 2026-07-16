@@ -71,7 +71,15 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  object-position: center !important;
+
+  /*
+   * El bridge establece esta variable a partir del encuadre guardado.
+   * Sólo usamos el foco predeterminado cuando la entidad todavía no tiene
+   * un ajuste manual.
+   */
+  object-position:
+    var(--entity-detail-image-position, 50% 42%)
+    !important;
 }
 
 .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-header {

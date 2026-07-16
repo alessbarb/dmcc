@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
 
 const routePath = new URL("../../src/backend/server/web/routes/playerCharacterSheetWebRoutes.ts", import.meta.url);
 const registerPath = new URL("../../src/backend/server/web/registerWebRoutes.ts", import.meta.url);
@@ -42,11 +43,23 @@ describe("player character sheet synchronization contract", () => {
       readFile(bridgePath, "utf8"),
       readFile(stylesPath, "utf8"),
     ]);
-    expect(bridge).toContain("imageFocusX");
-    expect(bridge).toContain("imageFocusY");
-    expect(bridge).toContain("objectPosition");
+    expect(bridge).toContain("parseImageFocalPoint");
+    expect(bridge).toContain("withImageFocalPoint");
+    expect(bridge).toContain("--entity-detail-image-position");
+    expect(bridge).toContain("EntityImageReframeDialog");
     expect(bridge).toContain("Ajustar encuadre");
     expect(bridge).toContain("Ver imagen completa");
-    expect(styles).toContain("object-fit: contain");
+    const imageDialogStyles = readFileSync(
+      new URL(
+        "../../src/frontend/shared/components/entityImageReframeDialog.css",
+        import.meta.url,
+      ),
+      "utf8",
+    );
+
+    expect(imageDialogStyles).toContain(
+      ".entity-image-lightbox__stage img",
+    );
+    expect(imageDialogStyles).toContain("object-fit: contain");
   });
 });
