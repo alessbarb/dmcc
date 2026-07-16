@@ -3,14 +3,27 @@ import {
   type ThemeEntityType,
 } from "../../account/themeContract.js";
 
-function feedbackThemeColor(type: "success" | "warning" | "danger" | "info") {
+export type ThemeCssColor = {
+  foreground: string;
+  background: string;
+  border: string;
+};
+
+export type ThemeCssFeedbackColor = ThemeCssColor & {
+  strong: string;
+  onStrong: string;
+};
+
+function feedbackThemeColor(
+  type: "success" | "warning" | "danger" | "info",
+): ThemeCssFeedbackColor {
   return {
     foreground: `var(--theme-feedback-${type}-foreground)`,
     background: `var(--theme-feedback-${type}-background)`,
     border: `var(--theme-feedback-${type}-border)`,
     strong: `var(--theme-feedback-${type}-strong)`,
     onStrong: `var(--theme-feedback-${type}-on-strong)`,
-  } as const;
+  };
 }
 
 export const themeCss = {
@@ -58,20 +71,20 @@ export function isThemeEntityType(value: string): value is ThemeEntityType {
   return entityTypeSet.has(value);
 }
 
-export function activityThemeColor(type: ThemeActivityType) {
+export function activityThemeColor(type: ThemeActivityType): ThemeCssColor {
   return {
     foreground: `var(--theme-activity-${type}-foreground)`,
     background: `var(--theme-activity-${type}-background)`,
     border: `var(--theme-activity-${type}-border)`,
-  } as const;
+  };
 }
 
-export function entityThemeColor(type: ThemeEntityType) {
+export function entityThemeColor(type: ThemeEntityType): ThemeCssColor {
   return {
     foreground: `var(--theme-entities-${type}-foreground)`,
     background: `var(--theme-entities-${type}-background)`,
     border: `var(--theme-entities-${type}-border)`,
-  } as const;
+  };
 }
 
 export function identityThemeColor(index: number): string {
