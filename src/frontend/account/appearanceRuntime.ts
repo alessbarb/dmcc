@@ -1,3 +1,4 @@
+import { fetchAccount } from "./accountClient.js";
 import type { AccountPreferences } from "./accountTypes.js";
 import type { DeviceOverrides } from "./deviceOverrides.js";
 import {
@@ -96,6 +97,15 @@ export function bootstrapDeviceAppearance(storage: Pick<Storage, "getItem"> = lo
   ensureChangeListener();
   deviceOverrides = readDeviceOverrides(storage);
   renderAppearance();
+}
+
+export async function hydrateAccountAppearance(): Promise<void> {
+  try {
+    const aggregate = await fetchAccount();
+    applyAccountAppearance(aggregate.preferences);
+  } catch {
+    // Public and signed-out routes intentionally keep the bootstrapped local appearance.
+  }
 }
 
 export function disposeDeviceAppearance(): void {
