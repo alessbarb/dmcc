@@ -88,7 +88,7 @@ export function applyAccountAppearance(preferences: AppearancePreferences): void
   renderAppearance();
 }
 
-export function applyDeviceAppearance(overrides: DeviceOverrides): void {
+function applyDeviceAppearance(overrides: DeviceOverrides): void {
   deviceOverrides = overrides;
   renderAppearance();
 }
@@ -108,7 +108,7 @@ export async function hydrateAccountAppearance(): Promise<void> {
   }
 }
 
-export function disposeDeviceAppearance(): void {
+function disposeDeviceAppearance(): void {
   documentController?.dispose();
   documentController = undefined;
   accountAppearance = DEFAULT_APPEARANCE;

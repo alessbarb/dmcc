@@ -10,7 +10,7 @@ export type AccountModuleId =
 
 import { useTranslation } from "../shared/i18n/useTranslation.js";
 
-export const ACCOUNT_MODULES: Array<{ id: AccountModuleId; label: string }> = [
+const ACCOUNT_MODULES: Array<{ id: AccountModuleId; label: string }> = [
   { id: "account", label: "Account" },
   { id: "dm-profile", label: "DM profile" },
   { id: "player-profiles", label: "Player profiles" },

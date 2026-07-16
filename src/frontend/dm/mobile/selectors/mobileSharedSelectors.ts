@@ -13,7 +13,7 @@ export const toEntitySummary = (entity: Entity): MobileEntitySummary => ({
   visibility: entity.visibility,
 });
 
-export const toFactSummary = (fact: Fact): MobileFactSummary => ({
+const toFactSummary = (fact: Fact): MobileFactSummary => ({
   id: fact.factId,
   statement: fact.statement,
   kind: fact.kind,
@@ -37,7 +37,7 @@ export const findActiveSession = (state: MobileCampaignStateLike, preferredSessi
     ?? sessions.find((session) => !session.endedAt);
 };
 
-export const buildRelationSummaries = (state: MobileCampaignStateLike, entityId: string): MobileRelationSummary[] => {
+const buildRelationSummaries = (state: MobileCampaignStateLike, entityId: string): MobileRelationSummary[] => {
   const entitiesById = new Map((state.entities ?? []).map((entity) => [entity.entityId, entity]));
   return activeItems(state.relations)
     .filter((relation) => relation.sourceEntityId === entityId || relation.targetEntityId === entityId)

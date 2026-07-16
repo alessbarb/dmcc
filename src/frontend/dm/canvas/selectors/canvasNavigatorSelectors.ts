@@ -92,7 +92,7 @@ export function getUnplacedEntities(canvas: Canvas | null | undefined, campaignS
   return (campaignState?.entities ?? []).filter((entity) => !placedEntityIds.has(entity.entityId));
 }
 
-export function searchEntities(entities: Entity[], query: string): Entity[] {
+function searchEntities(entities: Entity[], query: string): Entity[] {
   return entities.filter((entity) => matchesQuery([entity.title, entity.subtitle, entity.summary, entity.entityType], query));
 }
 
