@@ -1,0 +1,39 @@
+name: Finalize theme packages
+
+on:
+  push:
+    branches: [feat/theme-contract-foundation]
+    paths:
+      - scripts/theme/finalize-theme-packages.mjs
+      - .github/workflows/finalize-theme-packages.yml
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/theme-contract-foundation
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - run: npm ci
+      - run: node scripts/theme/finalize-theme-packages.mjs
+      - run: npm run typecheck:all
+      - run: npm test -- --runInBand
+
+      - name: Commit finalized packages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "fix(theme): finalize accessible packages and labels"
+          git push origin HEAD:feat/theme-contract-foundation
