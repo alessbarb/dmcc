@@ -10,7 +10,7 @@ import {
   activityThemeColor,
   themeCss,
   type ThemeActivityType,
-} from "@shared/theme/themeCssVariables.js";
+} from "@frontend/shared/theme/themeCssVariables.js";
 
 function visualColors(type: ThemeActivityType) {
   const colors = activityThemeColor(type);
