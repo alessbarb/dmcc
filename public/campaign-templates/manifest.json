@@ -7,41 +7,28 @@
       "templateId": "oracle",
       "version": "1.3.0",
       "defaultLocale": "en",
-      "availableLocales": [
-        "en",
-        "es"
-      ],
+      "availableLocales": ["en", "es"],
       "templateFile": "oracle/template.json",
-      "locales": {
-        "en": "oracle/locales/en.json",
-        "es": "oracle/locales/es.json"
-      },
-      "stats": {
-        "entities": 109,
-        "relations": 228,
-        "facts": 25,
-        "preparedSessions": 8
-      }
+      "locales": {"en": "oracle/locales/en.json", "es": "oracle/locales/es.json"},
+      "stats": {"entities": 109, "relations": 228, "facts": 25, "preparedSessions": 8}
     },
     {
       "templateId": "phandalin",
       "version": "1.2.0",
       "defaultLocale": "en",
-      "availableLocales": [
-        "en",
-        "es"
-      ],
+      "availableLocales": ["en", "es"],
       "templateFile": "phandalin/template.json",
-      "locales": {
-        "en": "phandalin/locales/en.json",
-        "es": "phandalin/locales/es.json"
-      },
-      "stats": {
-        "entities": 134,
-        "relations": 145,
-        "facts": 20,
-        "preparedSessions": 8
-      }
+      "locales": {"en": "phandalin/locales/en.json", "es": "phandalin/locales/es.json"},
+      "stats": {"entities": 134, "relations": 145, "facts": 20, "preparedSessions": 8}
+    },
+    {
+      "templateId": "khepri_9",
+      "version": "1.0.0",
+      "defaultLocale": "en",
+      "availableLocales": ["en", "es"],
+      "templateFile": "khepri_9/template.json",
+      "locales": {"en": "khepri_9/locales/en.json", "es": "khepri_9/locales/es.json"},
+      "stats": {"entities": 30, "relations": 18, "facts": 5, "preparedSessions": 8}
     }
   ]
 }
