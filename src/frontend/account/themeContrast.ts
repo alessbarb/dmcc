@@ -9,7 +9,7 @@ export type ThemeContrastIssue = {
 type Rgb = readonly [number, number, number];
 
 function hslToRgb(hue: number, saturation: number, lightness: number): Rgb {
-  const h = ((hue % 360) + 360) % 360 / 360;
+  const h = (((hue % 360) + 360) % 360) / 360;
   const s = saturation / 100;
   const l = lightness / 100;
 
@@ -17,7 +17,7 @@ function hslToRgb(hue: number, saturation: number, lightness: number): Rgb {
 
   const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
   const p = 2 * l - q;
-  const channel = (offset: number) => {
+  const channel = (offset: number): number => {
     let t = h + offset;
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
@@ -31,26 +31,42 @@ function hslToRgb(hue: number, saturation: number, lightness: number): Rgb {
 }
 
 function parseColor(value: string): Rgb | null {
-  const hsl = value.match(/^hsl\(\s*(-?[\d.]+)(?:deg)?\s+([\d.]+)%\s+([\d.]+)%(?:\s*\/\s*[\d.]+%?)?\s*\)$/i);
+  const hsl = value.match(
+    /^hsl\(\s*(-?[\d.]+)(?:deg)?\s+([\d.]+)%\s+([\d.]+)%(?:\s*\/\s*[\d.]+%?)?\s*\)$/i,
+  );
   if (hsl) {
-    return hslToRgb(Number(hsl[1]), Number(hsl[2]), Number(hsl[3]));
+    const [, hue, saturation, lightness] = hsl;
+    if (hue === undefined || saturation === undefined || lightness === undefined) {
+      return null;
+    }
+    return hslToRgb(Number(hue), Number(saturation), Number(lightness));
   }
 
   const hex = value.match(/^#([\da-f]{3}|[\da-f]{6})$/i);
-  if (!hex) return null;
-  const normalized = hex[1].length === 3
-    ? [...hex[1]].map((character) => character + character).join("")
-    : hex[1];
-  return [0, 2, 4].map((index) => Number.parseInt(normalized.slice(index, index + 2), 16) / 255) as unknown as Rgb;
+  const source = hex?.[1];
+  if (!source) return null;
+
+  const normalized = source.length === 3
+    ? [...source].map((character) => character + character).join("")
+    : source;
+  const red = Number.parseInt(normalized.slice(0, 2), 16) / 255;
+  const green = Number.parseInt(normalized.slice(2, 4), 16) / 255;
+  const blue = Number.parseInt(normalized.slice(4, 6), 16) / 255;
+  return [red, green, blue];
+}
+
+function linearize(channel: number): number {
+  return channel <= 0.04045
+    ? channel / 12.92
+    : ((channel + 0.055) / 1.055) ** 2.4;
 }
 
 function relativeLuminance([red, green, blue]: Rgb): number {
-  const linear = [red, green, blue].map((channel) => (
-    channel <= 0.04045
-      ? channel / 12.92
-      : ((channel + 0.055) / 1.055) ** 2.4
-  ));
-  return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  return (
+    0.2126 * linearize(red)
+    + 0.7152 * linearize(green)
+    + 0.0722 * linearize(blue)
+  );
 }
 
 export function getContrastRatio(foreground: string, background: string): number | null {
