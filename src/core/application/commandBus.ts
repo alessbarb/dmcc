@@ -2,13 +2,8 @@ import { createId } from "@shared/ids.js";
 import type { EntityId, FactId, RelationId, SessionId } from "@shared/ids.js";
 import { createCampaign } from "../domain/campaign/campaign.js";
 import { campaignSettingsSchema } from "../domain/campaign/types.js";
-import { createEntity } from "../domain/entity/entity.js";
 import type { Entity } from "../domain/entity/entity.js";
-import { validatePlayerCharacterMetadata } from "../domain/entity/metadata.js";
-import { normalizeRevelationAnchors } from "../domain/entity/revelationAnchors.js";
-import { createFact } from "../domain/fact/fact.js";
 import type { Fact } from "../domain/fact/fact.js";
-import { createRelation } from "../domain/relation/relation.js";
 import type { Relation } from "../domain/relation/relation.js";
 import { closeSession, createSession, sessionEventTypeSchema, sessionPrepSchema } from "../domain/session/session.js";
 import type { StoredEvent } from "../domain/events.js";
@@ -18,6 +13,7 @@ import { handleStoryCommand } from "./storyCommandHandlers.js";
 import { handleCanvasCommand } from "./canvasCommandHandlers.js";
 import { handlePlayerPortalCommand } from "./playerPortalCommandHandlers.js";
 import { handleNotebookCommand } from "./notebookCommandHandlers.js";
+import { handleContentCommand } from "./contentCommandHandlers.js";
 
 export interface CommandResult {
   state: CampaignState;
@@ -70,76 +66,17 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
         ...(command.metadata !== undefined && { metadata: nextCampaign.metadata }),
       }));
     }
-    case "CreateEntity": {
-      const entity = createEntity({
-        entityId: command.entityId ?? createId("ent"),
-        campaignId: command.campaignId,
-        entityType: command.entityType,
-        title: command.title,
-        subtitle: command.subtitle,
-        tagIds: command.tagIds,
-        createdInSessionId: command.createdInSessionId,
-        firstSeenSessionId: command.createdInSessionId,
-        lastSeenSessionId: command.createdInSessionId,
-        summary: command.summary,
-        content: command.content,
-        status: command.status,
-        importance: command.importance,
-        visibility: command.visibility,
-        metadata: command.metadata,
-        campaignSystem: state.campaign?.system,
-      });
-      const entities = new Map(state.entities);
-      entities.set(entity.entityId, entity);
-      const nextState = { ...state, entities };
-      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "EntityCreated", entity));
-    }
-    case "CreateRelation": {
-      const source = requireEntity(state, command.sourceEntityId);
-      const target = requireEntity(state, command.targetEntityId);
-      const duplicate = [...state.relations.values()].some(
-        (relation) =>
-          !relation.archived &&
-          relation.sourceEntityId === command.sourceEntityId &&
-          relation.targetEntityId === command.targetEntityId &&
-          relation.relationType === command.relationType,
-      );
-      if (duplicate && command.allowDuplicate !== true) {
-        throw new Error("Duplicate relation requires confirmation");
-      }
-      const relation = createRelation({
-        relationId: command.relationId ?? createId("rel"),
-        campaignId: command.campaignId,
-        source,
-        target,
-        relationType: command.relationType,
-        description: command.description,
-        visibility: command.visibility,
-        sourceSessionId: command.sourceSessionId,
-        sourceFactId: command.sourceFactId,
-      });
-      const relations = new Map(state.relations);
-      relations.set(relation.relationId, relation);
-      const nextState = { ...state, relations };
-      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "RelationCreated", relation));
-    }
-    case "RecordFact": {
-      const fact = createFact({
-        factId: command.factId ?? createId("fact"),
-        campaignId: command.campaignId,
-        statement: command.statement,
-        kind: command.kind,
-        confidence: command.confidence,
-        visibility: command.visibility,
-        relatedEntityIds: command.relatedEntityIds,
-        relatedRelationIds: command.relatedRelationIds,
-        source: command.source,
-      });
-      const facts = new Map(state.facts);
-      facts.set(fact.factId, fact);
-      const nextState = { ...state, facts };
-      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "FactCreated", fact));
-    }
+    case "CreateEntity":
+    case "CreateRelation":
+    case "RecordFact":
+    case "UpdateEntity":
+    case "ArchiveEntity":
+    case "UpdateRelation":
+    case "ArchiveRelation":
+    case "UpdateFact":
+    case "ArchiveFact":
+    case "RevealClue":
+      return handleContentCommand(state, command);
     case "CreatePreparedSession": {
       const session = createSession({
         sessionId: command.sessionId ?? createId("sess"),
@@ -246,98 +183,6 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
       const sessions = new Map(state.sessions);
       sessions.set(archived.sessionId, archived);
       return singleEvent({ ...state, sessions }, makeEvent(command.actorId, command.campaignId, "SessionArchived", archived));
-    }
-    case "UpdateEntity": {
-      const entity = requireEntity(state, command.entityId);
-      if (entity.archived) throw new Error("Cannot update archived entity");
-      const updated: Entity = {
-        ...entity,
-        ...(command.title !== undefined && { title: command.title }),
-        ...(command.subtitle !== undefined && { subtitle: command.subtitle }),
-        ...(command.tagIds !== undefined && { tagIds: command.tagIds }),
-        ...(command.summary !== undefined && { summary: command.summary }),
-        ...(command.content !== undefined && { content: command.content }),
-        ...(command.status !== undefined && { status: command.status }),
-        ...(command.importance !== undefined && { importance: command.importance }),
-        ...(command.visibility !== undefined && { visibility: command.visibility }),
-        ...(command.metadata !== undefined && { metadata: command.metadata }),
-      };
-      if (updated.title.trim().length === 0) throw new Error("Entity title is required");
-      if (updated.entityType === "player_character") {
-        validatePlayerCharacterMetadata(updated.metadata, state.campaign?.system);
-      }
-      const entities = new Map(state.entities);
-      entities.set(updated.entityId, updated);
-      return singleEvent({ ...state, entities }, makeEvent(command.actorId, command.campaignId, "EntityUpdated", updated));
-    }
-    case "ArchiveEntity": {
-      const entity = requireEntity(state, command.entityId);
-      if (entity.archived) throw new Error("Entity is already archived");
-      const archived: Entity = { ...entity, archived: true };
-      const entities = new Map(state.entities);
-      entities.set(archived.entityId, archived);
-      return singleEvent({ ...state, entities }, makeEvent(command.actorId, command.campaignId, "EntityArchived", { entityId: command.entityId }));
-    }
-    case "UpdateRelation": {
-      const relation = requireRelation(state, command.relationId);
-      if (relation.archived) throw new Error("Cannot update archived relation");
-      const updated = {
-        ...relation,
-        ...(command.description !== undefined && { description: command.description }),
-        ...(command.visibility !== undefined && { visibility: command.visibility }),
-      };
-      const relations = new Map(state.relations);
-      relations.set(updated.relationId, updated);
-      return singleEvent({ ...state, relations }, makeEvent(command.actorId, command.campaignId, "RelationUpdated", updated));
-    }
-    case "ArchiveRelation": {
-      const relation = requireRelation(state, command.relationId);
-      if (relation.archived) throw new Error("Relation is already archived");
-      const archived = { ...relation, archived: true, status: "archived" as const };
-      const relations = new Map(state.relations);
-      relations.set(archived.relationId, archived);
-      return singleEvent({ ...state, relations }, makeEvent(command.actorId, command.campaignId, "RelationArchived", { relationId: command.relationId }));
-    }
-    case "UpdateFact": {
-      const fact = requireFact(state, command.factId);
-      if (fact.archived) throw new Error("Cannot update archived fact");
-      const updated = {
-        ...fact,
-        ...(command.statement !== undefined && { statement: command.statement }),
-        ...(command.kind !== undefined && { kind: command.kind }),
-        ...(command.confidence !== undefined && { confidence: command.confidence }),
-        ...(command.visibility !== undefined && { visibility: command.visibility }),
-      };
-      if (updated.statement.trim().length === 0) throw new Error("Fact statement is required");
-      const facts = new Map(state.facts);
-      facts.set(updated.factId, updated);
-      return singleEvent({ ...state, facts }, makeEvent(command.actorId, command.campaignId, "FactUpdated", updated));
-    }
-    case "ArchiveFact": {
-      const fact = requireFact(state, command.factId);
-      if (fact.archived) throw new Error("Fact is already archived");
-      const archived = { ...fact, archived: true };
-      const facts = new Map(state.facts);
-      facts.set(archived.factId, archived);
-      return singleEvent({ ...state, facts }, makeEvent(command.actorId, command.campaignId, "FactArchived", { factId: command.factId }));
-    }
-    case "RevealClue": {
-      const clue = requireEntity(state, command.clueEntityId);
-      if (clue.entityType !== "clue") {
-        throw new Error("RevealClue requires a clue entity");
-      }
-      requireSession(state, command.sessionId);
-      const updated: Entity = { ...clue, visibility: command.audience, status: "revealed" };
-      const entities = new Map(state.entities);
-      entities.set(updated.entityId, updated);
-      const nextState = { ...state, entities };
-      return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "ClueRevealed", {
-          clueEntityId: command.clueEntityId,
-          sessionId: command.sessionId,
-          visibility: command.audience,
-          note: command.note,
-          revelationAnchors: command.revelationAnchors ? normalizeRevelationAnchors(command.revelationAnchors) : undefined,
-        }));
     }
     case "UpdateCampaignSettings": {
       if (!state.campaign) throw new Error("Campaign not found");
