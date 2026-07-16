@@ -392,11 +392,11 @@ export function DmHubPage() {
 
   const handleQuickCanvas = () => requireCampaign((cid) => navigateToCampaignSection(cid, "canvas"));
   const handleQuickNpcs = () => requireCampaign((cid) => navigateToCampaignSection(cid, "entities"));
-  const handleQuickLibrary = () => document.getElementById("premade-library-section")?.scrollIntoView({ behavior: "smooth" });
+  const handleQuickLibrary = () => document.getElementById("campaign-template-library-section")?.scrollIntoView({ behavior: "smooth" });
   const handleQuickRules = () => requireCampaign((cid) => navigateToCampaignSection(cid, "rules"));
   const handleQuickMap = () => requireCampaign((cid) => navigateToCampaignSection(cid, "graph"));
   const handleQuickTimeline = () => requireCampaign((cid) => navigateToCampaignSection(cid, "timeline"));
-  const handleQuickTemplates = () => document.getElementById("premade-library-section")?.scrollIntoView({ behavior: "smooth" });
+  const handleQuickTemplates = () => document.getElementById("campaign-template-library-section")?.scrollIntoView({ behavior: "smooth" });
   const handleQuickSettings = () => campaigns.length > 0
     ? requireCampaign((cid) => navigateToCampaignSection(cid, "settings"))
     : setIsAccountModalOpen(true);
@@ -763,7 +763,7 @@ export function DmHubPage() {
             </div>
 
             {/* ── AVENTURAS PREPARADAS ── */}
-            <section id="premade-library-section" className="dm-panel">
+            <section id="campaign-template-library-section" className="dm-panel">
               <div className="dm-panel__header">
                 <div className="dm-panel__title-group">
                   <Sparkles size={17} style={{ color: "var(--accent)" }} />
@@ -780,16 +780,16 @@ export function DmHubPage() {
                   {campaignTemplates.map((template) => {
                     const copies = campaigns.filter((c) => c.metadata?.createdFromTemplateId === template.templateId);
                     return (
-                      <article key={template.templateId} className="dm-premade-card">
-                        <div className="dm-premade-card__header">
+                      <article key={template.templateId} className="dm-campaign-template-card">
+                        <div className="dm-campaign-template-card__header">
                           <div>
-                            <h3 className="dm-premade-card__title">{template.title}</h3>
-                            <p className="dm-premade-card__subtitle">{template.subtitle}</p>
+                            <h3 className="dm-campaign-template-card__title">{template.title}</h3>
+                            <p className="dm-campaign-template-card__subtitle">{template.subtitle}</p>
                           </div>
-                          <span className="dm-premade-card__version">v{template.version}</span>
+                          <span className="dm-campaign-template-card__version">v{template.version}</span>
                         </div>
-                        <p className="dm-premade-card__desc">{template.description}</p>
-                        <div className="dm-premade-card__meta">
+                        <p className="dm-campaign-template-card__desc">{template.description}</p>
+                        <div className="dm-campaign-template-card__meta">
                           <span>{t("landing.campaignTemplateDifficulty", { difficulty: template.difficulty })}</span>
                           {copies.length > 0 && (
                             <span style={{ color: "var(--accent)" }}>
@@ -801,12 +801,12 @@ export function DmHubPage() {
                             sessions: String(template.stats.preparedSessions),
                           })}</span>
                         </div>
-                        <div className="dm-premade-card__tags">
+                        <div className="dm-campaign-template-card__tags">
                           {template.tags.slice(0, 4).map((tag) => (
                             <span key={tag} className="dm-tag">{tag}</span>
                           ))}
                         </div>
-                        <div className="dm-premade-card__actions">
+                        <div className="dm-campaign-template-card__actions">
                           <button
                             type="button"
                             className="btn btn-secondary btn-sm"

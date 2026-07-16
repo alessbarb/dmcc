@@ -88,14 +88,14 @@ export function CampaignTemplateImportDialog({
   const isRunning = importProgress && importProgress.status === "running";
 
   return (
-    <div className="modal-overlay premade-import-dialog-overlay" role="presentation" onClick={(event) => { if (event.target === event.currentTarget && !isRunning && !importing) onClose(); }}>
-      <form className="premade-import-dialog" onSubmit={handleSubmit} aria-modal="true" role="dialog" aria-labelledby="premade-import-title">
+    <div className="modal-overlay campaign-template-import-dialog-overlay" role="presentation" onClick={(event) => { if (event.target === event.currentTarget && !isRunning && !importing) onClose(); }}>
+      <form className="campaign-template-import-dialog" onSubmit={handleSubmit} aria-modal="true" role="dialog" aria-labelledby="campaign-template-import-title">
         {isRunning ? (
-          <div className="premade-import-loading">
-            <Loader2 className="premade-import-loading__spinner" size={40} />
-            <h3 className="premade-import-loading__title">{t("campaignTemplateImport.creating")}</h3>
+          <div className="campaign-template-import-loading">
+            <Loader2 className="campaign-template-import-loading__spinner" size={40} />
+            <h3 className="campaign-template-import-loading__title">{t("campaignTemplateImport.creating")}</h3>
             <div 
-              className="premade-import-loading__status" 
+              className="campaign-template-import-loading__status"
               role="progressbar" 
               aria-valuenow={importProgress.percent} 
               aria-valuemin={0} 
@@ -106,22 +106,22 @@ export function CampaignTemplateImportDialog({
                 ? t(`campaignTemplateImport.progress.${importProgress.stage}`, { current: importProgress.completedSteps, total: importProgress.totalSteps })
                 : ""}
             </div>
-            <div className="premade-import-progress">
+            <div className="campaign-template-import-progress">
               <div 
-                className="premade-import-progress-fill" 
+                className="campaign-template-import-progress-fill"
                 style={{ width: `${importProgress.percent}%` }}
               />
             </div>
-            <span className="premade-import-loading__tip">
+            <span className="campaign-template-import-loading__tip">
               Por favor, no cierres esta ventana mientras preparamos tu campaña.
             </span>
           </div>
         ) : (
           <>
-            <header className="premade-import-dialog__header">
+            <header className="campaign-template-import-dialog__header">
               <div>
-                <span className="premade-import-dialog__eyebrow"><ShieldCheck size={14} />{t("campaignTemplateImport.eyebrow")}</span>
-                <h2 id="premade-import-title">{t("campaignTemplateImport.title")}</h2>
+                <span className="campaign-template-import-dialog__eyebrow"><ShieldCheck size={14} />{t("campaignTemplateImport.eyebrow")}</span>
+                <h2 id="campaign-template-import-title">{t("campaignTemplateImport.title")}</h2>
                 <p>{t("campaignTemplateImport.description", { title: template.title })}</p>
               </div>
               <button type="button" className="icon-button" onClick={onClose} disabled={importing} aria-label={t("common.close") || t("common.cancel")}>
@@ -129,12 +129,12 @@ export function CampaignTemplateImportDialog({
               </button>
             </header>
 
-            <div className="premade-import-dialog__body">
+            <div className="campaign-template-import-dialog__body">
               {existingCopies.length > 0 ? (
-                <section className="premade-import-existing">
+                <section className="campaign-template-import-existing">
                   <strong>{t("campaignTemplateImport.existingTitle", { count: existingCopies.length })}</strong>
                   <p>{t("campaignTemplateImport.existingDesc")}</p>
-                  <div className="premade-import-existing__list">
+                  <div className="campaign-template-import-existing__list">
                     {existingCopies.map((campaign) => (
                       <button key={campaign.campaignId} type="button" className="btn btn-secondary btn-sm" onClick={() => onOpenExisting(campaign.campaignId)} disabled={importing}>
                         {t("campaignTemplateImport.openExisting", { title: campaign.title })}
@@ -145,9 +145,9 @@ export function CampaignTemplateImportDialog({
               ) : null}
 
               <div className="form-group">
-                <label className="form-label" htmlFor="premade-import-title-input">{t("campaignTemplateImport.nameLabel")}</label>
+                <label className="form-label" htmlFor="campaign-template-import-title-input">{t("campaignTemplateImport.nameLabel")}</label>
                 <input
-                  id="premade-import-title-input"
+                  id="campaign-template-import-title-input"
                   className="form-input"
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
@@ -158,10 +158,10 @@ export function CampaignTemplateImportDialog({
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="premade-import-summary-input">{t("campaignTemplateImport.summaryLabel")}</label>
+                <label className="form-label" htmlFor="campaign-template-import-summary-input">{t("campaignTemplateImport.summaryLabel")}</label>
                 <textarea
-                  id="premade-import-summary-input"
-                  className="form-input premade-import-dialog__textarea"
+                  id="campaign-template-import-summary-input"
+                  className="form-input campaign-template-import-dialog__textarea"
                   value={summary}
                   onChange={(event) => setSummary(event.target.value)}
                   placeholder={t("campaignTemplateImport.summaryPlaceholder")}
@@ -171,9 +171,9 @@ export function CampaignTemplateImportDialog({
 
               <div className="form-group">
                 <span className="form-label">{t("campaignTemplateImport.modeLabel")}</span>
-                <div className="premade-import-mode-grid">
+                <div className="campaign-template-import-mode-grid">
                   {modeOptions.map((option) => (
-                    <label key={option.value} className={`premade-import-mode ${importMode === option.value ? "is-selected" : ""}`}>
+                    <label key={option.value} className={`campaign-template-import-mode ${importMode === option.value ? "is-selected" : ""}`}>
                       <input
                         type="radio"
                         name="campaignTemplateImportMode"
@@ -189,20 +189,20 @@ export function CampaignTemplateImportDialog({
                 </div>
               </div>
 
-              <section className="premade-import-assurances">
+              <section className="campaign-template-import-assurances">
                 <p><CheckCircle2 size={16} />{t("campaignTemplateImport.privateCopy")}</p>
                 <p><CheckCircle2 size={16} />{t("campaignTemplateImport.secretsRemainPrivate")}</p>
                 <p><CheckCircle2 size={16} />{t("campaignTemplateImport.originalUntouched")}</p>
-                <label className="premade-import-checkbox">
+                <label className="campaign-template-import-checkbox">
                   <input type="checkbox" checked={openAfterCreate} onChange={(event) => setOpenAfterCreate(event.target.checked)} disabled={importing} />
                   {t("campaignTemplateImport.openAfterCreate")}
                 </label>
               </section>
 
-              {error ? <p className="premade-import-error"><AlertTriangle size={16} />{error}</p> : null}
+              {error ? <p className="campaign-template-import-error"><AlertTriangle size={16} />{error}</p> : null}
             </div>
 
-            <footer className="premade-import-dialog__footer">
+            <footer className="campaign-template-import-dialog__footer">
               <button type="button" className="btn btn-secondary" onClick={onClose} disabled={importing}>{t("common.cancel")}</button>
               <button type="submit" className="btn btn-primary" disabled={importing || !title.trim()}>
                 {importing ? t("campaignTemplateImport.creating") : (openAfterCreate ? t("campaignTemplateImport.createAndOpen") : t("campaignTemplateImport.createOnly"))}
