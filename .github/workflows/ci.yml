@@ -15,7 +15,7 @@ concurrency:
 jobs:
   quality:
     name: Typecheck, test and build
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
 
     services:
       postgres:
@@ -73,7 +73,7 @@ jobs:
 
   e2e:
     name: Browser smoke tests
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, Linux, X64]
 
     services:
       postgres:
@@ -123,9 +123,6 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ steps.playwright-version.outputs.version }}
-
-      - name: Install Playwright system dependencies
-        run: npx playwright install-deps chromium
 
       - name: Install Playwright Chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
