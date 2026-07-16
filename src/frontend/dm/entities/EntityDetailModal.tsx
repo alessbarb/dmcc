@@ -1185,28 +1185,6 @@ export function EntityDetailModal({
               pointerEvents: "none",
             }}
           />
-
-          <div
-            className="entity-detail-hero-controls"
-            onPointerDown={(event) => event.stopPropagation()}
-            onMouseDown={(event) => event.stopPropagation()}
-            onClick={(event) => event.stopPropagation()}
-          >
-            {heroActions}
-
-            <button
-              type="button"
-              className="btn btn-secondary btn-icon entity-detail-hero-close"
-              onClick={(event) => {
-                event.stopPropagation();
-                onClose();
-              }}
-              aria-label={t("common.close")}
-              title={t("common.close")}
-            >
-              <X size={18} />
-            </button>
-          </div>
         </div>
 
         {/* Header */}
@@ -1226,48 +1204,63 @@ export function EntityDetailModal({
         </div>
 
         {/* Tab bar */}
-        <div
-          style={{
-            display: "flex",
-            gap: "2px",
-            padding: "0 24px",
-            borderBottom: "1px solid var(--border-color)",
-            backgroundColor: "var(--bg-card)",
-          }}
-        >
-          {TABS.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "5px",
-                  padding: "10px 14px",
-                  background: "none",
-                  border: "none",
-                  borderBottom: isActive
-                    ? "2px solid var(--color-primary, hsl(210, 80%, 55%))"
-                    : "2px solid transparent",
-                  cursor: "pointer",
-                  fontSize: "0.83rem",
-                  fontWeight: isActive ? "700" : "500",
-                  color: isActive
-                    ? "var(--color-primary, hsl(210, 80%, 55%))"
-                    : "var(--text-muted)",
-                  transition: "color 0.15s, border-color 0.15s",
-                  marginBottom: "-1px",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {tab.icon}
-                {t(tab.labelKey)}
-              </button>
-            );
-          })}
+        <div className="entity-detail-tab-bar">
+          <div
+            className="entity-detail-tabs"
+            role="tablist"
+            aria-label="Secciones de la entidad"
+          >
+            {TABS.map((tab) => {
+              const isActive = activeTab === tab.id;
+
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setActiveTab(tab.id)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "5px",
+                    padding: "10px 14px",
+                    background: "none",
+                    border: "none",
+                    borderBottom: isActive
+                      ? "2px solid var(--color-primary, hsl(210, 80%, 55%))"
+                      : "2px solid transparent",
+                    cursor: "pointer",
+                    fontSize: "0.83rem",
+                    fontWeight: isActive ? "700" : "500",
+                    color: isActive
+                      ? "var(--color-primary, hsl(210, 80%, 55%))"
+                      : "var(--text-muted)",
+                    transition: "color 0.15s, border-color 0.15s",
+                    marginBottom: "-1px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {tab.icon}
+                  {t(tab.labelKey)}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="entity-detail-tab-actions">
+            {heroActions}
+
+            <button
+              type="button"
+              className="btn btn-secondary btn-icon"
+              onClick={onClose}
+              aria-label="Cerrar"
+              title="Cerrar"
+            >
+              <X size={17} />
+            </button>
+          </div>
         </div>
 
         {/* Tab body */}

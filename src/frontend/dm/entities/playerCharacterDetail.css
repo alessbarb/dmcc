@@ -391,109 +391,170 @@
   display: contents !important;
 }
 
-/* Entity hero controls */
-.entity-detail-focus-shell .entity-detail-hero-controls {
-  position: absolute !important;
-  top: 16px !important;
-  right: 16px !important;
-  bottom: auto !important;
-  left: auto !important;
-  z-index: 100 !important;
+/* Entity detail tab actions v2 */
+.entity-detail-tab-bar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  padding: 0 14px 0 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-card);
+  pointer-events: auto;
+}
 
-  display: flex !important;
-  flex-direction: row !important;
+.entity-detail-tabs {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: stretch;
+  min-width: 0;
+  gap: 2px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.entity-detail-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.entity-detail-tabs > button {
+  flex: 0 0 auto;
+  pointer-events: auto;
+}
+
+.entity-detail-tab-actions {
+  position: relative;
+  z-index: 21;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  align-self: stretch;
+  justify-content: flex-end;
+  gap: 7px;
+  margin-left: auto;
+  padding-left: 14px;
+  background: var(--bg-card);
+  box-shadow: -12px 0 16px var(--bg-card);
+  pointer-events: auto !important;
+}
+
+.entity-detail-tab-actions > button {
+  position: relative !important;
+  z-index: 22 !important;
+  display: inline-flex !important;
+  flex: 0 0 34px !important;
   align-items: center !important;
-  justify-content: flex-end !important;
-  gap: 8px !important;
+  justify-content: center !important;
 
-  width: auto !important;
-  height: auto !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  max-width: 34px !important;
+  max-height: 34px !important;
 
   margin: 0 !important;
   padding: 0 !important;
+
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+}
+
+.entity-detail-tab-actions > button svg {
+  display: block;
+  flex: none;
+  pointer-events: none;
+}
+
+.entity-detail-tab-actions > button:hover {
+  background: var(--bg-input) !important;
+}
+
+.entity-detail-tab-actions > button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .entity-detail-tab-bar {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .entity-detail-tab-actions {
+    gap: 5px;
+    padding-left: 8px;
+  }
+
+  .entity-detail-tab-actions > button {
+    flex-basis: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+  }
+}
+/* End entity detail tab actions v2 */
+
+/* Entity image dialogs layer fix */
+
+/*
+ * El modal de entidad usa z-index: 20000.
+ * Estos portales se renderizan en document.body y deben quedar por encima.
+ */
+.entity-image-dialog-overlay,
+.entity-image-lightbox {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 30000 !important;
 
   pointer-events: auto !important;
   isolation: isolate;
 }
 
-.entity-detail-focus-shell .entity-detail-hero-controls::before,
-.entity-detail-focus-shell .entity-detail-hero-controls::after {
+/* El contenido debe recibir la interacción, no quedar bajo el backdrop. */
+.entity-image-dialog,
+.entity-image-lightbox > img,
+.entity-image-lightbox > button {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto !important;
+}
+
+/* Evita que el modal inferior interfiera visualmente con los portales. */
+body:has(.entity-image-dialog-overlay)
+  .modal-overlay:has(> .modal-content > div:first-child > img),
+body:has(.entity-image-lightbox)
+  .modal-overlay:has(> .modal-content > div:first-child > img) {
   pointer-events: none !important;
 }
 
-.entity-detail-focus-shell .entity-detail-hero-controls > .btn {
-  position: relative !important;
-  z-index: 101 !important;
-
-  display: inline-flex !important;
-  flex: 0 0 40px !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  min-height: 40px !important;
-  max-width: 40px !important;
-  max-height: 40px !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  border-radius: 10px !important;
-  background: rgb(8 10 18 / 86%) !important;
-  box-shadow:
-    0 4px 16px rgb(0 0 0 / 38%),
-    inset 0 0 0 1px rgb(255 255 255 / 5%);
-
-  backdrop-filter: blur(8px);
+/*
+ * El diálogo de ajuste necesita interacción en toda su superficie:
+ * vista previa, sliders y botones.
+ */
+.entity-image-dialog,
+.entity-image-dialog button,
+.entity-image-dialog input,
+.entity-image-focus-preview {
   pointer-events: auto !important;
-  cursor: pointer !important;
-  touch-action: manipulation;
 }
 
-.entity-detail-focus-shell .entity-detail-hero-controls > .btn:hover {
-  background: rgb(20 24 38 / 94%) !important;
-  transform: translateY(-1px);
+/* El visor completo queda nítido y por encima del modal. */
+.entity-image-lightbox {
+  background: rgb(2 3 8 / 94%) !important;
+  backdrop-filter: none !important;
 }
 
-.entity-detail-focus-shell .entity-detail-hero-controls > .btn:active {
-  transform: translateY(0);
+.entity-image-lightbox > img {
+  filter: none !important;
+  opacity: 1 !important;
 }
 
-.entity-detail-focus-shell .entity-detail-hero-controls > .btn:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.entity-detail-focus-shell .entity-detail-hero-controls > .btn svg {
-  display: block;
-  flex: none;
-  width: 17px;
-  height: 17px;
-  pointer-events: none;
-}
-
-.entity-detail-focus-shell .entity-detail-hero-close {
-  margin-left: 4px !important;
-}
-
-@media (max-width: 720px) {
-  .entity-detail-focus-shell .entity-detail-hero-controls {
-    top: 12px !important;
-    right: 12px !important;
-  }
-
-  .entity-detail-focus-shell .entity-detail-hero-controls > .btn {
-    flex-basis: 38px !important;
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    min-height: 38px !important;
-    max-width: 38px !important;
-    max-height: 38px !important;
-  }
-}
-/* End entity hero controls */
+/* End entity image dialogs layer fix */
