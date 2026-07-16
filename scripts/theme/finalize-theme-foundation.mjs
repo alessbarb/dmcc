@@ -92,15 +92,6 @@ update("src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx", (source) =>
   ], "CampaignCanvasFlow.tsx"),
 );
 
-update("src/frontend/shared/components/RpgPortalBackground.tsx", (source) =>
-  replaceMany(source, [
-    ["stroke=\"hsla(220, 20%, 30%, 0.12)\"", "stroke=\"var(--theme-canvas-grid)\""],
-    ["fill=\"rgba(13, 16, 23, 0.45)\"", "fill=\"var(--theme-surfaces-overlay)\""],
-    ["fill=\"rgba(255, 255, 255, 0.05)\"", "fill=\"var(--theme-media-overlay-subtle)\""],
-    ["fill=\"hsl(220, 25%, 96%)\"", "fill=\"var(--theme-text-on-media)\""],
-  ], "RpgPortalBackground.tsx"),
-);
-
 const translations = {
   en: ["Default", "Fantasy", "Sci-fi", "Cinzel + Outfit"],
   es: ["Predeterminado", "Fantasía", "Ciencia ficción", "Cinzel + Outfit"],
