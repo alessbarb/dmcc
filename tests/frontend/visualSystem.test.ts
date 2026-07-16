@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 const root = resolve(import.meta.dirname, "../..");
 const read = (path: string) => readFileSync(resolve(root, path), "utf8");
 
-describe("Modern Dark Narrative visual system", () => {
+describe("theme-backed visual system", () => {
   it("loads local display and interface fonts with their licenses", () => {
     expect(existsSync(resolve(root, "public/fonts/cinzel-latin.woff2"))).toBe(true);
     expect(existsSync(resolve(root, "public/fonts/outfit-latin.woff2"))).toBe(true);
@@ -22,30 +22,37 @@ describe("Modern Dark Narrative visual system", () => {
     expect(html).toContain('href="/fonts/outfit-latin.woff2"');
   });
 
-  it("defines semantic tokens, compatibility aliases, and one touch target", () => {
+  it("bridges existing consumers to the v1 runtime tokens", () => {
     const tokens = read("src/frontend/shared/styles/tokens.css");
-    for (const token of [
-      "--bg-abyss",
-      "--bg-mist",
-      "--bg-tomb",
-      "--accent-fire",
-      "--accent-fire-hover",
-      "--accent-amethyst",
-      "--semantic-secret",
-      "--semantic-rumor",
-      "--semantic-canon",
-      "--semantic-theory",
-      "--semantic-consequence",
-      "--touch-target-min",
-      "--bg-main",
-      "--bg-card",
-      "--bg-input",
-      "--primary",
-      "--secondary",
+    for (const mapping of [
+      "--bg-abyss: var(--theme-surfaces-canvas",
+      "--bg-mist: var(--theme-surfaces-base",
+      "--accent-fire: var(--theme-accents-primary-foreground",
+      "--text-primary: var(--theme-text-primary",
+      "--semantic-danger: var(--theme-feedback-danger-foreground",
+      "--entity-player: var(--theme-entities-player-foreground",
+      "--radius-md: var(--theme-shapes-radius-medium",
+      "--shadow-md: var(--theme-shadows-medium",
+      "--bg-main: var(--theme-surfaces-canvas",
+      "--primary: var(--theme-accents-primary-foreground",
     ]) {
-      expect(tokens).toContain(token);
+      expect(tokens).toContain(mapping);
     }
     expect(tokens.match(/--touch-target-min\s*:/g)).toHaveLength(1);
+  });
+
+  it("defines the previously implicit fifth spacing step", () => {
+    const tokens = read("src/frontend/shared/styles/tokens.css");
+    expect(tokens).toContain("--space-5: 1.25rem");
+    expect(tokens).not.toContain("var(--space-5, 1.25rem)");
+  });
+
+  it("lets the resolved runtime mode control native color scheme", () => {
+    const tokens = read("src/frontend/shared/styles/tokens.css");
+    expect(tokens).toContain(':root[data-color-mode="dark"]');
+    expect(tokens).toContain("color-scheme: dark");
+    expect(tokens).toContain(':root[data-color-mode="light"]');
+    expect(tokens).toContain("color-scheme: light");
   });
 
   it("loads tokens before primitives and previous surface rules", () => {
