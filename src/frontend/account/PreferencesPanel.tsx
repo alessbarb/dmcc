@@ -18,6 +18,21 @@ type Props = {
   onDeviceChange(overrides: DeviceOverrides): void;
 };
 
+const THEME_FALLBACK_LABELS: Record<string, string> = {
+  default: "Default",
+  fantasy: "Fantasy",
+  "sci-fi": "Sci-fi",
+};
+
+function translatedLabel(
+  translate: (key: string) => string,
+  key: string,
+  fallback: string,
+): string {
+  const translated = translate(key);
+  return translated === key ? fallback : translated;
+}
+
 export function PreferencesPanel({
   preferences,
   deviceOverrides,
@@ -42,9 +57,9 @@ export function PreferencesPanel({
   }, [preferences]);
 
   useEffect(() => {
-    (window as any).__accountCenterDirty = isFormDirty;
+    window.__accountCenterDirty = isFormDirty;
     return () => {
-      (window as any).__accountCenterDirty = false;
+      window.__accountCenterDirty = false;
     };
   }, [isFormDirty]);
 
@@ -81,7 +96,9 @@ export function PreferencesPanel({
             onChange={(event) => setDraft({ ...draft, themeId: event.target.value })}
           >
             {[...themes.values()].map((theme) => (
-              <option key={theme.id} value={theme.id}>{t(theme.labelKey)}</option>
+              <option key={theme.id} value={theme.id}>
+                {translatedLabel(t, theme.labelKey, THEME_FALLBACK_LABELS[theme.id] ?? theme.id)}
+              </option>
             ))}
           </select>
         </label>
@@ -106,7 +123,9 @@ export function PreferencesPanel({
             onChange={(event) => setDraft({ ...draft, typographySetId: event.target.value })}
           >
             {[...typographySets.values()].map((set) => (
-              <option key={set.id} value={set.id}>{t(set.labelKey)}</option>
+              <option key={set.id} value={set.id}>
+                {translatedLabel(t, set.labelKey, set.id === "cinzel-outfit" ? "Cinzel + Outfit" : set.id)}
+              </option>
             ))}
           </select>
         </label>
