@@ -12,7 +12,8 @@ import { CanvasBoardDialogs } from "../components/CanvasBoardDialogs.js";
 import { CanvasPageHeader } from "../components/CanvasPageHeader.js";
 import { MysteryHealthPanel } from "../components/MysteryHealthPanel.js";
 import { CanvasNarrativeLintDrawer } from "../components/CanvasNarrativeLintDrawer.js";
-import { Plus, Layout, Shield, Play, MoreHorizontal, SlidersHorizontal, X, Search, ListPlus, MousePointer2, Hand, StickyNote, Frame, Maximize2, ZoomIn, ZoomOut, CalendarDays } from "lucide-react";
+import { CanvasMobileMorePanel } from "../components/CanvasMobileMorePanel.js";
+import { Plus, Layout, MoreHorizontal, X, Search, ListPlus, MousePointer2, Hand } from "lucide-react";
 import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
@@ -812,29 +813,26 @@ export function CanvasPage() {
 
           {!isPlayerView && deviceMode === "mobile" && (
             <>
-              <div className={`canvas-mobile-more-panel ${mobilePanel === "more" ? "is-open" : ""}`} aria-label="Acciones secundarias del canvas">
-                <div className="canvas-mobile-sheet-header">
-                  <span>Más acciones</span>
-                  <button type="button" className="canvas-mobile-sheet-close" onClick={() => setMobilePanel(null)} aria-label="Cerrar panel de más acciones">
-                    <X size={16} />
-                  </button>
-                </div>
-                <div className="canvas-mobile-more-actions">
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={handleMobileAddNote}><StickyNote size={14} /> Nota rápida</button>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={handleMobileAddGroup}><Frame size={14} /> Grupo visual</button>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => canvasFlowRef.current?.fitView()}><Maximize2 size={14} /> Ajustar vista</button>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => canvasFlowRef.current?.zoomIn()}><ZoomIn size={14} /> Zoom +</button>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => canvasFlowRef.current?.zoomOut()}><ZoomOut size={14} /> Zoom -</button>
-                  <button type="button" className={`btn btn-sm ${tablePrivacy ? "btn-primary" : "btn-secondary"}`} onClick={() => setTablePrivacy(value => !value)}><Shield size={14} /> Privacidad de mesa</button>
-                  <label className="canvas-mobile-more-field"><SlidersHorizontal size={14} /> Filtros<select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="canvas-select"><option value="all">Todos los tipos</option><option value="npc">PNJs</option><option value="location">Lugares</option><option value="quest">Misiones</option><option value="clue">Pistas</option><option value="secret">Secretos</option><option value="scene">Escenas</option><option value="other">Otros</option></select></label>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsSessionPrepOpen(true); setMobilePanel(null); }}><CalendarDays size={14} /> Preparar sesión</button>
-                  <button type="button" className={`btn btn-sm ${isFullscreenPresentation ? "btn-primary" : "btn-secondary"}`} onClick={() => { toggleFullscreenPresentation(); setMobilePanel(null); }}><Play size={14} /> Modo presentación</button>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsCreateBoardOpen(true); setMobilePanel(null); }}>Nuevo tablero</button>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsImportOpen(true); setMobilePanel(null); }}>Importar texto</button>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsLegendOpen(true); setMobilePanel(null); }}>Leyenda</button>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => { setIsLintOpen(true); setMobilePanel(null); }}>Consistencia</button>
-                </div>
-              </div>
+              <CanvasMobileMorePanel
+                isOpen={mobilePanel === "more"}
+                onClose={() => setMobilePanel(null)}
+                onAddNote={handleMobileAddNote}
+                onAddGroup={handleMobileAddGroup}
+                onFitView={() => canvasFlowRef.current?.fitView()}
+                onZoomIn={() => canvasFlowRef.current?.zoomIn()}
+                onZoomOut={() => canvasFlowRef.current?.zoomOut()}
+                tablePrivacy={tablePrivacy}
+                setTablePrivacy={setTablePrivacy}
+                typeFilter={typeFilter}
+                setTypeFilter={setTypeFilter}
+                onPrepareSession={() => { setIsSessionPrepOpen(true); setMobilePanel(null); }}
+                isFullscreenPresentation={isFullscreenPresentation}
+                onTogglePresentation={() => { toggleFullscreenPresentation(); setMobilePanel(null); }}
+                onCreateBoard={() => { setIsCreateBoardOpen(true); setMobilePanel(null); }}
+                onImport={() => { setIsImportOpen(true); setMobilePanel(null); }}
+                onOpenLegend={() => { setIsLegendOpen(true); setMobilePanel(null); }}
+                onOpenLint={() => { setIsLintOpen(true); setMobilePanel(null); }}
+              />
               <nav className="canvas-mobile-dock" aria-label="Paneles del canvas">
                 <button type="button" className={interactionMode === "pan" ? "is-active" : ""} onClick={() => setInteractionMode((mode) => mode === "pan" ? "select" : "pan")} title={interactionMode === "pan" ? "Cambiar a seleccionar" : "Cambiar a mover"}>{interactionMode === "pan" ? <Hand size={18} /> : <MousePointer2 size={18} />}<span>{interactionMode === "pan" ? "Mover" : "Seleccionar"}</span></button>
                 <button type="button" className={mobilePanel === "search" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "search" ? null : "search")}><Search size={18} /><span>Buscar</span></button>
