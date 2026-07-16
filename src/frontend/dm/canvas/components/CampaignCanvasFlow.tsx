@@ -847,7 +847,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
             style={{
               marginLeft: "auto",
               background: "rgba(255,255,255,0.08)",
-              color: "var(--text-main)",
+              color: "var(--theme-text-primary)",
               border: "1px solid rgba(255,255,255,0.15)",
               padding: "3px 8px",
               borderRadius: "4px",

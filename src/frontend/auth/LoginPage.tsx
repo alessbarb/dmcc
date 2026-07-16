@@ -59,7 +59,7 @@ export function LoginPage() {
   const secondsLeft = Math.ceil(retryAfterMs / 1000);
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--bg-main)" }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--theme-surfaces-canvas)" }}>
       <PortalTopBar />
       <div className="join-portal-container" style={{ flex: 1 }}>
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
@@ -67,7 +67,7 @@ export function LoginPage() {
           <div className="join-portal-header">
             <div className="join-portal-icon-wrapper"><UserRound className="join-portal-icon" size={32} /><div className="join-portal-icon-glow" /></div>
             <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("auth.login.title")}</h1>
-            <p style={{ color: "var(--text-muted)", margin: "4px 0 0" }}>{t("auth.login.subtitle")}</p>
+            <p style={{ color: "var(--theme-text-secondary)", margin: "4px 0 0" }}>{t("auth.login.subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="join-portal-form">

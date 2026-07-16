@@ -200,17 +200,17 @@ function ResumenTab({
           alignItems: "center",
           gap: "12px",
           padding: "10px 14px",
-          backgroundColor: "var(--bg-input)",
-          borderRadius: "var(--radius-sm)",
+          backgroundColor: "var(--theme-surfaces-interactive)",
+          borderRadius: "var(--theme-shapes-radius-small)",
         }}
       >
-        <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: "600" }}>
+        <span style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>
           VISIBILIDAD
         </span>
         <span
           style={{
             padding: "2px 10px",
-            borderRadius: "var(--radius-sm)",
+            borderRadius: "var(--theme-shapes-radius-small)",
             fontSize: "0.8rem",
             fontWeight: "700",
             backgroundColor:
@@ -249,7 +249,7 @@ function ResumenTab({
 
       {entity.summary && (
         <div>
-          <h4 style={{ fontWeight: "700", fontSize: "0.9rem", color: "var(--text-muted)" }}>
+          <h4 style={{ fontWeight: "700", fontSize: "0.9rem", color: "var(--theme-text-secondary)" }}>
             Resumen
           </h4>
           <p style={{ marginTop: "4px" }}>{entity.summary}</p>
@@ -258,7 +258,7 @@ function ResumenTab({
 
       {entity.content && (
         <div>
-          <h4 style={{ fontWeight: "700", fontSize: "0.9rem", color: "var(--text-muted)" }}>
+          <h4 style={{ fontWeight: "700", fontSize: "0.9rem", color: "var(--theme-text-secondary)" }}>
             Notas y descripción
           </h4>
           <p style={{ marginTop: "4px", whiteSpace: "pre-line", fontSize: "0.95rem" }}>
@@ -274,7 +274,7 @@ function ResumenTab({
             style={{
               fontWeight: "700",
               fontSize: "0.9rem",
-              color: "var(--text-muted)",
+              color: "var(--theme-text-secondary)",
               marginBottom: "8px",
             }}
           >
@@ -290,8 +290,8 @@ function ResumenTab({
             const Field = ({ label, value }: { label: string; value: unknown }) =>
               value != null && String(value).trim() !== "" ? (
                 <div style={{ fontSize: "0.85rem", display: "flex", gap: "8px" }}>
-                  <span style={{ color: "var(--text-muted)", minWidth: "100px" }}>{label}</span>
-                  <span style={{ color: "var(--text-main)", fontWeight: "500" }}>
+                  <span style={{ color: "var(--theme-text-secondary)", minWidth: "100px" }}>{label}</span>
+                  <span style={{ color: "var(--theme-text-primary)", fontWeight: "500" }}>
                     {String(value)}
                   </span>
                 </div>
@@ -304,13 +304,13 @@ function ResumenTab({
                   gap: "6px",
                   backgroundColor: "#06070e",
                   padding: "12px",
-                  borderRadius: "var(--radius-md)",
+                  borderRadius: "var(--theme-shapes-radius-medium)",
                 }}
               >
                 {(entityType === "npc" || entityType === "player_character" || entityType === "creature") && (
                   entityType === "player_character" && campaignState?.campaign?.system === "dnd_5e" ? (
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
                         <Field label="Clase" value={m.className} />
                         <Field label="Subclase" value={m.subclass} />
                         <Field label="Nivel" value={m.level} />
@@ -325,7 +325,7 @@ function ResumenTab({
                       </div>
 
                       <div>
-                        <h5 style={{ fontSize: "0.75rem", fontWeight: "700", color: "var(--text-muted)", marginBottom: "8px", textTransform: "uppercase" }}>Atributos Principales</h5>
+                        <h5 style={{ fontSize: "0.75rem", fontWeight: "700", color: "var(--theme-text-secondary)", marginBottom: "8px", textTransform: "uppercase" }}>Atributos Principales</h5>
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
                           {[
                             { label: "FUERZA", key: "strength", short: "STR" },
@@ -339,76 +339,76 @@ function ResumenTab({
                             const mod = numVal !== undefined ? Math.floor((numVal - 10) / 2) : null;
                             const modStr = mod !== null ? (mod >= 0 ? `+${mod}` : `${mod}`) : "--";
                             return (
-                              <div key={attr.key} style={{ backgroundColor: "#06070e", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", padding: "6px 4px", textAlign: "center" }}>
-                                <div style={{ fontSize: "0.6rem", fontWeight: "700", color: "var(--text-muted)" }}>{attr.short}</div>
-                                <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--secondary)", margin: "2px 0" }}>{modStr}</div>
-                                <div style={{ fontSize: "0.7rem", color: "var(--text-main)" }}>{metaStr(m[attr.key], "--")}</div>
+                              <div key={attr.key} style={{ backgroundColor: "#06070e", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-medium)", padding: "6px 4px", textAlign: "center" }}>
+                                <div style={{ fontSize: "0.6rem", fontWeight: "700", color: "var(--theme-text-secondary)" }}>{attr.short}</div>
+                                <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-accents-secondary-foreground)", margin: "2px 0" }}>{modStr}</div>
+                                <div style={{ fontSize: "0.7rem", color: "var(--theme-text-primary)" }}>{metaStr(m[attr.key], "--")}</div>
                               </div>
                             );
                           })}
                         </div>
                       </div>
 
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
                         <div style={{ textAlign: "center" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>CLASE ARMADURA</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>🛡️ {metaStr(m.armorClass, "10")}</div>
+                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>CLASE ARMADURA</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-text-primary)", marginTop: "4px" }}>🛡️ {metaStr(m.armorClass, "10")}</div>
                         </div>
                         <div style={{ textAlign: "center" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>INICIATIVA</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>⚡ {(() => { const v = metaNum(m.initiative); return v !== undefined && v >= 0 ? `+${v}` : String(v ?? 0); })()}</div>
+                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>INICIATIVA</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-text-primary)", marginTop: "4px" }}>⚡ {(() => { const v = metaNum(m.initiative); return v !== undefined && v >= 0 ? `+${v}` : String(v ?? 0); })()}</div>
                         </div>
                         <div style={{ textAlign: "center" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>VELOCIDAD</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--text-main)", marginTop: "4px" }}>🏃‍♂️ {metaStr(m.speed, "30")} ft</div>
+                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>VELOCIDAD</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-text-primary)", marginTop: "4px" }}>🏃‍♂️ {metaStr(m.speed, "30")} ft</div>
                         </div>
-                        <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--border-color)", paddingTop: "8px", marginTop: "4px" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>PUNTOS DE GOLPE (HP)</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--color-critical)", marginTop: "4px" }}>
+                        <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "8px", marginTop: "4px" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>PUNTOS DE GOLPE (HP)</div>
+                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-feedback-danger-foreground)", marginTop: "4px" }}>
                             ❤️ {metaStr(m.hitPointsCurrent, "10")} / {metaStr(m.hitPointsMax, "10")}
-                            {(metaNum(m.hitPointsTemp) ?? 0) > 0 && <span style={{ color: "var(--color-warning)", fontSize: "0.85rem", marginLeft: "6px" }}>+{metaStr(m.hitPointsTemp, "0")} Temp</span>}
+                            {(metaNum(m.hitPointsTemp) ?? 0) > 0 && <span style={{ color: "var(--theme-feedback-warning-foreground)", fontSize: "0.85rem", marginLeft: "6px" }}>+{metaStr(m.hitPointsTemp, "0")} Temp</span>}
                           </div>
                         </div>
-                        <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--border-color)", paddingTop: "8px" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "600" }}>DADOS DE GOLPE</div>
-                          <div style={{ fontSize: "0.95rem", fontWeight: "700", color: "var(--text-main)", marginTop: "4px" }}>🎲 {metaStr(m.hitDice, "--")}</div>
+                        <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "8px" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>DADOS DE GOLPE</div>
+                          <div style={{ fontSize: "0.95rem", fontWeight: "700", color: "var(--theme-text-primary)", marginTop: "4px" }}>🎲 {metaStr(m.hitDice, "--")}</div>
                         </div>
                       </div>
 
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px", backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--radius-md)", textAlign: "center" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px", backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)", textAlign: "center" }}>
                         <div>
-                          <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontWeight: "600" }}>PERCEPCION PASIVA</div>
+                          <div style={{ fontSize: "0.6rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>PERCEPCION PASIVA</div>
                           <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>👁️ {metaStr(m.passivePerception, "10")}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontWeight: "600" }}>PERSPIACACIA PASIVA</div>
+                          <div style={{ fontSize: "0.6rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>PERSPIACACIA PASIVA</div>
                           <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🧠 {metaStr(m.passiveInsight, "10")}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontWeight: "600" }}>INVESTIGACION PASIVA</div>
+                          <div style={{ fontSize: "0.6rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>INVESTIGACION PASIVA</div>
                           <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🔍 {metaStr(m.passiveInvestigation, "10")}</div>
                         </div>
                       </div>
 
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" }}>
-                        <div style={{ backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--radius-md)" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Salvaciones</div>
+                        <div style={{ backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Salvaciones</div>
                           {Array.isArray(m.savingThrows) && m.savingThrows.length > 0 ? (
                             <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
                               {m.savingThrows.map((s: string) => {
                                 const trans: Record<string, string> = { str: "FUER", dex: "DEST", con: "CONS", int: "INTE", wis: "SABI", cha: "CARI" };
                                 return (
-                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--primary-light)", border: "1px solid hsla(255, 85%, 65%, 0.3)", borderRadius: "4px", color: "var(--text-main)", textTransform: "uppercase" }}>
+                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--theme-accents-primary-background)", border: "1px solid hsla(255, 85%, 65%, 0.3)", borderRadius: "4px", color: "var(--theme-text-primary)", textTransform: "uppercase" }}>
                                     {trans[s] || s}
                                   </span>
                                 );
                               })}
                             </div>
-                          ) : <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontStyle: "italic" }}>Ninguna</span>}
+                          ) : <span style={{ fontSize: "0.7rem", color: "var(--theme-text-secondary)", fontStyle: "italic" }}>Ninguna</span>}
                         </div>
 
-                        <div style={{ backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--radius-md)" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Habilidades</div>
+                        <div style={{ backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Habilidades</div>
                           {Array.isArray(m.skills) && m.skills.length > 0 ? (
                             <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
                               {m.skills.map((s: string) => {
@@ -420,24 +420,24 @@ function ResumenTab({
                                   survival: "Supervivencia"
                                 };
                                 return (
-                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--primary-light)", border: "1px solid hsla(255, 85%, 65%, 0.3)", borderRadius: "4px", color: "var(--text-main)" }}>
+                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--theme-accents-primary-background)", border: "1px solid hsla(255, 85%, 65%, 0.3)", borderRadius: "4px", color: "var(--theme-text-primary)" }}>
                                     {trans[s] || s}
                                   </span>
                                 );
                               })}
                             </div>
-                          ) : <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontStyle: "italic" }}>Ninguna</span>}
+                          ) : <span style={{ fontSize: "0.7rem", color: "var(--theme-text-secondary)", fontStyle: "italic" }}>Ninguna</span>}
                         </div>
                       </div>
 
-                      <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "8px" }}>
                         <Field label="Dotes" value={Array.isArray(m.feats) ? m.feats.join(", ") : m.feats} />
                         <Field label="Idiomas" value={getMetadataLanguages(m)} />
                       </div>
 
                       {(m.spellSaveDC != null || m.spellAttackBonus != null) && (
-                        <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "8px", border: "1px dashed var(--secondary)" }}>
-                          <div style={{ fontSize: "0.7rem", color: "var(--secondary)", fontWeight: "700", textTransform: "uppercase" }}>✨ Magia y Conjuros</div>
+                        <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "8px", border: "1px dashed var(--theme-accents-secondary-foreground)" }}>
+                          <div style={{ fontSize: "0.7rem", color: "var(--theme-accents-secondary-foreground)", fontWeight: "700", textTransform: "uppercase" }}>✨ Magia y Conjuros</div>
                           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                             <Field label={t("entityDetail.spellSaveDc")} value={m.spellSaveDC} />
                             <Field label="Bono de Ataque" value={m.spellAttackBonus != null ? `+${m.spellAttackBonus}` : null} />
@@ -446,9 +446,9 @@ function ResumenTab({
                       )}
 
                       {Boolean(m.note) && (
-                        <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: "6px" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "700", textTransform: "uppercase" }}>Notas adicionales</div>
-                          <div style={{ fontSize: "0.75rem", color: "var(--text-main)", whiteSpace: "pre-line" }}>{metaStr(m.note, "")}</div>
+                        <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "6px" }}>
+                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "700", textTransform: "uppercase" }}>Notas adicionales</div>
+                          <div style={{ fontSize: "0.75rem", color: "var(--theme-text-primary)", whiteSpace: "pre-line" }}>{metaStr(m.note, "")}</div>
                         </div>
                       )}
                     </div>
@@ -570,12 +570,12 @@ function ResumenTab({
         <div
           style={{
             padding: "16px",
-            borderTop: "1px solid var(--border-color)",
+            borderTop: "1px solid var(--theme-borders-default)",
             display: "flex",
             flexDirection: "column",
             gap: "12px",
-            backgroundColor: "var(--bg-input)",
-            borderRadius: "var(--radius-md)",
+            backgroundColor: "var(--theme-surfaces-interactive)",
+            borderRadius: "var(--theme-shapes-radius-medium)",
           }}
         >
           <h4 style={{ fontWeight: "700", fontSize: "0.9rem", marginBottom: "4px" }}>
@@ -711,7 +711,7 @@ function RelacionesTab({
 
   if (relations.length === 0) {
     return (
-      <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", padding: "8px 0" }}>
+      <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem", padding: "8px 0" }}>
         Esta entidad no tiene relaciones registradas.
       </p>
     );
@@ -731,8 +731,8 @@ function RelacionesTab({
             style={{
               fontSize: "0.85rem",
               padding: "10px 12px",
-              backgroundColor: "var(--bg-input)",
-              borderRadius: "var(--radius-sm)",
+              backgroundColor: "var(--theme-surfaces-interactive)",
+              borderRadius: "var(--theme-shapes-radius-small)",
               display: "flex",
               flexDirection: "column",
               gap: "4px",
@@ -745,7 +745,7 @@ function RelacionesTab({
                   <span
                     style={{
                       padding: "1px 7px",
-                      borderRadius: "var(--radius-sm)",
+                      borderRadius: "var(--theme-shapes-radius-small)",
                       backgroundColor: "hsl(210, 60%, 20%)",
                       color: "hsl(210, 80%, 70%)",
                       fontSize: "0.78rem",
@@ -762,7 +762,7 @@ function RelacionesTab({
                   <span
                     style={{
                       padding: "1px 7px",
-                      borderRadius: "var(--radius-sm)",
+                      borderRadius: "var(--theme-shapes-radius-small)",
                       backgroundColor: "hsl(210, 60%, 20%)",
                       color: "hsl(210, 80%, 70%)",
                       fontSize: "0.78rem",
@@ -776,7 +776,7 @@ function RelacionesTab({
               )}
             </div>
             {r.description && (
-              <p style={{ color: "var(--text-muted)", fontSize: "0.82rem", margin: 0 }}>
+              <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.82rem", margin: 0 }}>
                 {r.description}
               </p>
             )}
@@ -838,7 +838,7 @@ function HechosTab({
 
   if (facts.length === 0) {
     return (
-      <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", padding: "8px 0" }}>
+      <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem", padding: "8px 0" }}>
         No hay hechos registrados para esta entidad.
       </p>
     );
@@ -853,8 +853,8 @@ function HechosTab({
             key={f.factId}
             style={{
               padding: "10px 12px",
-              backgroundColor: "var(--bg-input)",
-              borderRadius: "var(--radius-sm)",
+              backgroundColor: "var(--theme-surfaces-interactive)",
+              borderRadius: "var(--theme-shapes-radius-small)",
               display: "flex",
               flexDirection: "column",
               gap: "6px",
@@ -864,7 +864,7 @@ function HechosTab({
               <span
                 style={{
                   padding: "1px 8px",
-                  borderRadius: "var(--radius-sm)",
+                  borderRadius: "var(--theme-shapes-radius-small)",
                   backgroundColor: color.bg,
                   color: color.fg,
                   fontSize: "0.75rem",
@@ -876,7 +876,7 @@ function HechosTab({
                 {f.kind}
               </span>
               {f.confidence !== "confirmed" && (
-                <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
+                <span style={{ fontSize: "0.78rem", color: "var(--theme-text-secondary)" }}>
                   Confianza: {f.confidence}
                 </span>
               )}
@@ -885,7 +885,7 @@ function HechosTab({
               {f.statement}
             </p>
             {f.source && formatFactSource(f.source, getSessionsArray(campaignState?.sessions), t) && (
-              <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "3px", display: "flex", alignItems: "center", gap: "4px" }}>
+              <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)", marginTop: "3px", display: "flex", alignItems: "center", gap: "4px" }}>
                 <span style={{ opacity: 0.5 }}>↳</span>
                 {formatFactSource(f.source, getSessionsArray(campaignState?.sessions), t)}
               </div>
@@ -923,7 +923,7 @@ function TrazabilidadTab({
 
   if (entries.length === 0) {
     return (
-      <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", padding: "8px 0" }}>
+      <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem", padding: "8px 0" }}>
         Sin datos de trazabilidad disponibles.
       </p>
     );
@@ -966,7 +966,7 @@ function TrazabilidadTab({
                     width: "2px",
                     flex: "1",
                     minHeight: "16px",
-                    backgroundColor: "var(--border-color)",
+                    backgroundColor: "var(--theme-borders-default)",
                     marginTop: "2px",
                   }}
                 />
@@ -1000,7 +1000,7 @@ function TrazabilidadTab({
                 >
                   {style.label}
                 </span>
-                <span style={{ fontSize: "0.76rem", color: "var(--text-muted)" }}>
+                <span style={{ fontSize: "0.76rem", color: "var(--theme-text-secondary)" }}>
                   {formatDate(entry.at, locale)}
                 </span>
               </div>
@@ -1008,7 +1008,7 @@ function TrazabilidadTab({
                 style={{
                   margin: "2px 0 0",
                   fontSize: "0.87rem",
-                  color: "var(--text-main)",
+                  color: "var(--theme-text-primary)",
                   lineHeight: "1.4",
                 }}
               >
@@ -1019,7 +1019,7 @@ function TrazabilidadTab({
                   style={{
                     margin: "2px 0 0",
                     fontSize: "0.8rem",
-                    color: "var(--text-muted)",
+                    color: "var(--theme-text-secondary)",
                   }}
                 >
                   {entry.detail}
@@ -1163,7 +1163,7 @@ export function EntityDetailModal({
                 justifyContent: "center",
                 gap: "8px",
                 backgroundColor: "rgba(6, 7, 14, 0.4)",
-                color: "var(--color-critical)",
+                color: "var(--theme-feedback-danger-foreground)",
                 fontSize: "0.95rem",
                 fontWeight: "700",
                 textTransform: "uppercase",
@@ -1181,7 +1181,7 @@ export function EntityDetailModal({
               left: 0,
               right: 0,
               height: "80px",
-              background: "linear-gradient(to top, var(--bg-card), transparent)",
+              background: "linear-gradient(to top, var(--theme-surfaces-base), transparent)",
               pointerEvents: "none",
             }}
           />
@@ -1235,7 +1235,7 @@ export function EntityDetailModal({
                     fontWeight: isActive ? "700" : "500",
                     color: isActive
                       ? "var(--color-primary, hsl(210, 80%, 55%))"
-                      : "var(--text-muted)",
+                      : "var(--theme-text-secondary)",
                     transition: "color 0.15s, border-color 0.15s",
                     marginBottom: "-1px",
                     whiteSpace: "nowrap",
@@ -1309,7 +1309,7 @@ export function EntityDetailModal({
             </button>
           </div>
           <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-            <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+            <span style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
               Actualizado: {new Date(selectedEntity.updatedAt).toLocaleString()}
             </span>
             {activeTab === "resumen" && (

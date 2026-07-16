@@ -205,7 +205,7 @@ export function RelationshipTypePopover({
       <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "400px" }}>
         <div className="modal-header">
           <h2>
-            <GitCommit size={18} style={{ color: "var(--primary)" }} />
+            <GitCommit size={18} style={{ color: "var(--theme-accents-primary-foreground)" }} />
             {t("canvas.relationPopover.createConnection")}
           </h2>
           <button onClick={onCancel} className="modal-close-btn">

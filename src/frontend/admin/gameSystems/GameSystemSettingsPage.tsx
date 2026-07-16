@@ -48,7 +48,7 @@ export function GameSystemSettingsPage() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <header style={{ marginBottom: "32px" }}>
           <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Game Systems</h1>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+          <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
             Control which RPG systems are available when creating a new campaign. The Custom system is always available.
           </p>
         </header>
@@ -60,11 +60,11 @@ export function GameSystemSettingsPage() {
         )}
 
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--text-muted)" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
             Loading game systems...
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
@@ -78,7 +78,7 @@ export function GameSystemSettingsPage() {
                   <tr key={s.systemId} style={{ borderBottom: "1px solid var(--border)" }}>
                     <td style={{ padding: "16px" }}>
                       <div style={{ fontWeight: 600 }}>{s.label}</div>
-                      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{s.systemId}</div>
+                      <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>{s.systemId}</div>
                     </td>
                     <td style={{ padding: "16px" }}>
                       <span style={{
@@ -87,7 +87,7 @@ export function GameSystemSettingsPage() {
                         fontSize: "0.75rem",
                         fontWeight: 600,
                         backgroundColor: s.isEnabledForNewCampaigns ? "rgba(40, 167, 69, 0.1)" : "rgba(255, 255, 255, 0.05)",
-                        color: s.isEnabledForNewCampaigns ? "var(--green)" : "var(--text-muted)",
+                        color: s.isEnabledForNewCampaigns ? "var(--green)" : "var(--theme-text-secondary)",
                         border: `1px solid ${s.isEnabledForNewCampaigns ? "rgba(40, 167, 69, 0.3)" : "var(--border)"}`,
                       }}>
                         {s.isEnabledForNewCampaigns ? "Enabled" : "Disabled"}

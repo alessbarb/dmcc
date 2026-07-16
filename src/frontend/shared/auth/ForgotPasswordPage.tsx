@@ -40,7 +40,7 @@ export function ForgotPasswordPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--bg-main)" }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--theme-surfaces-canvas)" }}>
       <PortalTopBar />
       <div className="join-portal-container" style={{ flex: 1 }}>
         <div className="join-portal-background">
@@ -55,7 +55,7 @@ export function ForgotPasswordPage() {
               <div className="join-portal-icon-glow" />
             </div>
             <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("forgotPassword.title")}</h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", margin: "4px 0 0" }}>
+            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", margin: "4px 0 0" }}>
               {t("forgotPassword.subtitle")}
             </p>
           </div>

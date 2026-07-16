@@ -3,8 +3,8 @@
   display: grid;
   grid-template-rows: auto auto 1fr;
   background:
-    radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--accent-fire) 10%, transparent), transparent 32rem),
-    var(--bg-main);
+    radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent), transparent 32rem),
+    var(--theme-surfaces-canvas);
 }
 
 .player-portal-header {
@@ -15,8 +15,8 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) clamp(1rem, 3vw, 2rem);
-  border-bottom: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--bg-main) 90%, transparent);
+  border-bottom: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 90%, transparent);
   backdrop-filter: blur(16px);
 }
 
@@ -33,8 +33,8 @@
   gap: var(--space-2);
   padding: var(--space-3) clamp(1rem, 3vw, 2rem);
   overflow-x: auto;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--bg-mist);
+  border-bottom: 1px solid var(--theme-borders-default);
+  background: var(--theme-surfaces-base);
   scrollbar-width: thin;
 }
 
@@ -47,24 +47,24 @@
   flex: 0 0 auto;
   padding: 0.55rem 0.8rem;
   border: 1px solid transparent;
-  border-radius: var(--radius-full);
-  color: var(--text-muted);
+  border-radius: var(--theme-shapes-radius-pill);
+  color: var(--theme-text-secondary);
   background: transparent;
   font: 650 0.82rem/1.2 var(--font-sans);
   cursor: pointer;
 }
 
 .player-portal-nav__item:hover {
-  color: var(--text-main);
-  border-color: var(--border-color);
-  background: var(--surface-hover);
+  color: var(--theme-text-primary);
+  border-color: var(--theme-borders-default);
+  background: var(--theme-surfaces-interactive-hover);
 }
 
 .player-portal-nav__item.active {
-  color: var(--text-inverse);
-  border-color: color-mix(in srgb, var(--accent-fire) 55%, transparent);
-  background: var(--accent-fire);
-  box-shadow: var(--shadow-primary);
+  color: var(--theme-text-inverse);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 55%, transparent);
+  background: var(--theme-accents-primary-foreground);
+  box-shadow: var(--theme-shadows-accent);
 }
 
 .player-portal-main {
@@ -127,7 +127,7 @@
   content: "";
   width: 1.6rem;
   height: 0.18rem;
-  border-radius: var(--radius-full);
+  border-radius: var(--theme-shapes-radius-pill);
   background: currentColor;
 }
 
@@ -138,7 +138,7 @@
 }
 
 .player-portal-help {
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.85rem;
 }
 

@@ -8,8 +8,8 @@
   flex-basis: 310px;
   width: 310px;
   padding: 18px;
-  border-color: color-mix(in srgb, var(--border-color) 82%, transparent);
-  background: color-mix(in srgb, var(--bg-tomb) 88%, var(--bg-mist));
+  border-color: color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
 }
 
@@ -34,12 +34,12 @@
 }
 
 .notebook-tree-item:hover {
-  border-color: color-mix(in srgb, var(--border-color) 72%, transparent);
+  border-color: color-mix(in srgb, var(--theme-borders-default) 72%, transparent);
 }
 
 .notebook-tree-item.selected {
-  border-color: color-mix(in srgb, var(--accent-fire) 34%, var(--border-color));
-  background: color-mix(in srgb, var(--accent-fire) 8%, var(--bg-mist));
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 34%, var(--theme-borders-default));
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, var(--theme-surfaces-base));
 }
 
 .notebook-content-area {
@@ -51,8 +51,8 @@
 .notebook-placeholder {
   width: 100%;
   min-height: 100%;
-  border-color: color-mix(in srgb, var(--border-color) 82%, transparent);
-  background: color-mix(in srgb, var(--bg-mist) 96%, transparent);
+  border-color: color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
 }
 
 .notebook-detail-panel {
@@ -82,7 +82,7 @@
 .notebook-item-card {
   min-height: 74px;
   padding: 14px 16px;
-  background: color-mix(in srgb, var(--bg-tomb) 72%, var(--bg-mist));
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 72%, var(--theme-surfaces-base));
 }
 
 .notebook-item-actions .btn {
@@ -105,7 +105,7 @@
 .notebooks-empty-actionable .subtext,
 .notebook-placeholder p {
   max-width: 56ch;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   line-height: 1.55;
 }
 
@@ -137,17 +137,17 @@
   width: 100%;
   min-height: 44px;
   padding: 10px 14px 10px 40px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
-  background: var(--bg-tomb);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive);
 }
 
 .notebooks-link-modal .search-control .search-icon {
   position: absolute;
   top: 50%;
   left: 14px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   transform: translateY(-50%);
 }
 
@@ -161,27 +161,27 @@
 .notebooks-link-modal .tab-btn {
   min-height: 36px;
   padding: 7px 12px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
-  color: var(--text-muted);
-  background: var(--bg-tomb);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-pill);
+  color: var(--theme-text-secondary);
+  background: var(--theme-surfaces-interactive);
   white-space: nowrap;
   cursor: pointer;
 }
 
 .notebooks-link-modal .tab-btn.active {
-  border-color: color-mix(in srgb, var(--accent-fire) 48%, var(--border-color));
-  color: var(--text-primary);
-  background: color-mix(in srgb, var(--accent-fire) 10%, var(--bg-tomb));
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 48%, var(--theme-borders-default));
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, var(--theme-surfaces-interactive));
 }
 
 .notebooks-link-modal .candidates-list {
   min-height: 180px;
   max-height: 420px;
   overflow-y: auto;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--bg-tomb) 70%, transparent);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-large);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 70%, transparent);
 }
 
 .notebooks-link-modal .candidate-item {
@@ -191,7 +191,7 @@
   gap: 12px;
   min-height: 58px;
   padding: 10px 14px;
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-borders-default) 70%, transparent);
   cursor: pointer;
 }
 
@@ -201,7 +201,7 @@
 
 .notebooks-link-modal .candidate-item:hover,
 .notebooks-link-modal .candidate-item.selected {
-  background: var(--surface-hover);
+  background: var(--theme-surfaces-interactive-hover);
 }
 
 .notebooks-link-modal .candidate-item.linked {
@@ -225,7 +225,7 @@
 
 .notebooks-link-modal .item-info span,
 .notebooks-link-modal .linked-badge {
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.78rem;
 }
 

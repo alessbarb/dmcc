@@ -31,7 +31,7 @@ export function PlayerJoinPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--bg-main)" }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--theme-surfaces-canvas)" }}>
       <PortalTopBar />
       <div className="join-portal-container" style={{ flex: 1 }}>
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
@@ -39,7 +39,7 @@ export function PlayerJoinPage() {
           <div className="join-portal-header">
             <div className="join-portal-icon-wrapper"><Ticket className="join-portal-icon" size={32} /></div>
             <h1 className="join-portal-title">Unirte a una campaña</h1>
-            <p style={{ color: "var(--text-muted)" }}>Pega el enlace completo o el token que te ha enviado el director de juego.</p>
+            <p style={{ color: "var(--theme-text-secondary)" }}>Pega el enlace completo o el token que te ha enviado el director de juego.</p>
           </div>
 
           <form className="join-portal-form" onSubmit={(event) => { event.preventDefault(); continueToInvitation(); }}>

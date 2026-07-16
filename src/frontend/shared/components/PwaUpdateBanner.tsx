@@ -25,12 +25,12 @@ export function PwaUpdateBanner() {
         alignItems: "center",
         gap: "12px",
         padding: "10px 16px",
-        background: "var(--bg-card)",
-        border: "1px solid var(--border-hover)",
-        borderRadius: "var(--radius-lg)",
-        boxShadow: "var(--shadow-lg)",
+        background: "var(--theme-surfaces-base)",
+        border: "1px solid var(--theme-borders-interactive-hover)",
+        borderRadius: "var(--theme-shapes-radius-large)",
+        boxShadow: "var(--theme-shadows-large)",
         fontSize: "0.85rem",
-        color: "var(--text-main)",
+        color: "var(--theme-text-primary)",
         whiteSpace: "nowrap",
       }}
     >
@@ -40,10 +40,10 @@ export function PwaUpdateBanner() {
           runPwaUpdateAction(updateServiceWorker(true), "No se pudo actualizar el service worker.");
         }}
         style={{
-          background: "var(--primary)",
-          color: "var(--text-main)",
+          background: "var(--theme-accents-primary-foreground)",
+          color: "var(--theme-text-primary)",
           border: "none",
-          borderRadius: "var(--radius-md)",
+          borderRadius: "var(--theme-shapes-radius-medium)",
           padding: "5px 12px",
           cursor: "pointer",
           fontWeight: 600,

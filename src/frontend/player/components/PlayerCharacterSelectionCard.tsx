@@ -51,7 +51,7 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
           <User size={22} aria-hidden="true" />
           <div>
             <strong>{payload.linkedCharacter.title}</strong>
-            <p style={{ color: "var(--text-muted)", marginBottom: 0 }}>
+            <p style={{ color: "var(--theme-text-secondary)", marginBottom: 0 }}>
               {payload.linkedCharacter.summary ?? t("playerPortal.empty.noVisibleSummary")}
             </p>
           </div>
@@ -63,10 +63,10 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
   return (
     <section className="card" style={{ padding: 16 }}>
       <h2 style={{ marginTop: 0 }}>{t("playerPortal.character.heading")}</h2>
-      <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.character.notLinked")}</p>
+      <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.character.notLinked")}</p>
 
       {characters.length === 0 ? (
-        <p style={{ color: "var(--text-muted)", marginBottom: 0 }}>{t("playerPortal.empty.nothingYet")}</p>
+        <p style={{ color: "var(--theme-text-secondary)", marginBottom: 0 }}>{t("playerPortal.empty.nothingYet")}</p>
       ) : (
         <div style={{ display: "grid", gap: 12 }}>
           <label className="player-portal-field" htmlFor="player-character-selection">
@@ -89,9 +89,9 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
           </label>
 
           {selectedCharacter && (
-            <article style={{ border: "1px solid var(--border-color)", borderRadius: 12, padding: 12 }}>
+            <article style={{ border: "1px solid var(--theme-borders-default)", borderRadius: 12, padding: 12 }}>
               <strong>{selectedCharacter.title}</strong>
-              <p style={{ color: "var(--text-muted)", marginBottom: 0 }}>
+              <p style={{ color: "var(--theme-text-secondary)", marginBottom: 0 }}>
                 {selectedCharacter.summary ?? t("playerPortal.empty.noVisibleSummary")}
               </p>
             </article>

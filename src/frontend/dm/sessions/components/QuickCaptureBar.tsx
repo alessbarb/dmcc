@@ -136,19 +136,19 @@ export function QuickCaptureBar({
           gap: "8px",
           alignItems: "center",
           padding: "10px 14px",
-          backgroundColor: "var(--bg-input)",
-          border: "1px solid var(--border-color)",
-          borderRadius: "var(--radius-lg)",
+          backgroundColor: "var(--theme-surfaces-interactive)",
+          border: "1px solid var(--theme-borders-default)",
+          borderRadius: "var(--theme-shapes-radius-large)",
           transition: "border-color var(--transition-fast)",
         }}
         onFocus={(e) => {
-          (e.currentTarget as HTMLDivElement).style.borderColor = "var(--primary)";
+          (e.currentTarget as HTMLDivElement).style.borderColor = "var(--theme-accents-primary-foreground)";
         }}
         onBlur={(e) => {
-          (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border-color)";
+          (e.currentTarget as HTMLDivElement).style.borderColor = "var(--theme-borders-default)";
         }}
       >
-        <Terminal size={16} style={{ color: "var(--text-muted)", flexShrink: 0 }} aria-hidden="true" />
+        <Terminal size={16} style={{ color: "var(--theme-text-secondary)", flexShrink: 0 }} aria-hidden="true" />
         <input
           ref={inputRef}
           type="text"
@@ -163,7 +163,7 @@ export function QuickCaptureBar({
             border: "none",
             outline: "none",
             fontSize: "0.92rem",
-            color: "var(--text-main)",
+            color: "var(--theme-text-primary)",
             fontFamily: "inherit",
           }}
         />
@@ -172,9 +172,9 @@ export function QuickCaptureBar({
             type="submit"
             disabled={busy}
             style={{
-              background: "var(--primary)",
+              background: "var(--theme-accents-primary-foreground)",
               border: "none",
-              borderRadius: "var(--radius-sm)",
+              borderRadius: "var(--theme-shapes-radius-small)",
               color: "#fff",
               fontSize: "0.78rem",
               fontWeight: "700",
@@ -191,7 +191,7 @@ export function QuickCaptureBar({
       <p
         style={{
           fontSize: "0.73rem",
-          color: "var(--text-muted)",
+          color: "var(--theme-text-secondary)",
           marginTop: "5px",
           paddingLeft: "4px",
           opacity: 0.7,

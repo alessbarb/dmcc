@@ -370,7 +370,7 @@ export function NotebooksView() {
         title: entity?.title ?? item.targetId,
         subtitle: entity ? t(visual?.labelKey || "notebooks.types.entity") : t("notebooks.types.entity"),
         icon: visual?.icon ?? User,
-        color: visual?.accent ?? "var(--text-subtle)",
+        color: visual?.accent ?? "var(--theme-text-subtle)",
         description: entity?.summary || "",
       };
     }
@@ -380,7 +380,7 @@ export function NotebooksView() {
         title: session?.title ?? item.targetId,
         subtitle: t("notebooks.types.session"),
         icon: FileText,
-        color: "var(--semantic-info)",
+        color: "var(--theme-feedback-info-foreground)",
         description: session ? `${session.status === "active" ? "En curso" : session.status === "completed" ? "Finalizada" : "Preparada"}` : "",
       };
     }
@@ -389,7 +389,7 @@ export function NotebooksView() {
       title: canvas?.title ?? item.targetId,
       subtitle: t("notebooks.types.canvas"),
       icon: Layers,
-      color: "var(--semantic-secret)",
+      color: "var(--theme-narrative-secret-foreground)",
       description: "",
     };
   };

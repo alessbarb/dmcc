@@ -2,12 +2,12 @@
   --dmcc-page-compact: 760px;
   --dmcc-page-standard: 1080px;
   --dmcc-page-wide: 1280px;
-  --dmcc-surface-1: color-mix(in srgb, var(--bg-card) 92%, transparent);
-  --dmcc-surface-2: color-mix(in srgb, var(--bg-card) 82%, var(--bg-main));
-  --dmcc-border-subtle: color-mix(in srgb, var(--border-color) 55%, transparent);
-  --dmcc-border-default: var(--border-color);
-  --dmcc-border-interactive: color-mix(in srgb, var(--border-color) 68%, var(--accent-amethyst));
-  --dmcc-border-selected: var(--accent-fire);
+  --dmcc-surface-1: color-mix(in srgb, var(--theme-surfaces-base) 92%, transparent);
+  --dmcc-surface-2: color-mix(in srgb, var(--theme-surfaces-base) 82%, var(--theme-surfaces-canvas));
+  --dmcc-border-subtle: color-mix(in srgb, var(--theme-borders-default) 55%, transparent);
+  --dmcc-border-default: var(--theme-borders-default);
+  --dmcc-border-interactive: color-mix(in srgb, var(--theme-borders-default) 68%, var(--theme-accents-secondary-foreground));
+  --dmcc-border-selected: var(--theme-accents-primary-foreground);
   --dmcc-radius-panel: 12px;
   --dmcc-radius-control: 8px;
   --dmcc-control-height: 42px;
@@ -72,7 +72,7 @@
   gap: 8px;
   min-height: 44px;
   padding: 10px 12px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   border-radius: 8px 8px 0 0;
   font-size: 0.875rem;
   font-weight: 500;
@@ -94,21 +94,21 @@
 }
 
 .workspace-tab:hover {
-  color: var(--text-primary);
-  background: color-mix(in srgb, var(--accent-amethyst) 8%, transparent);
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 8%, transparent);
 }
 
 .workspace-tab.active {
-  color: var(--accent-amethyst);
+  color: var(--theme-accents-secondary-foreground);
   font-weight: 700;
 }
 
 .workspace-tab.active::after {
-  background: var(--accent-amethyst);
+  background: var(--theme-accents-secondary-foreground);
 }
 
 .workspace-tab:focus-visible {
-  outline: 2px solid var(--accent-fire);
+  outline: 2px solid var(--theme-accents-primary-foreground);
   outline-offset: -2px;
 }
 

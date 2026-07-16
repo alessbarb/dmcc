@@ -320,9 +320,9 @@ export function CanvasToolbar({
           className="canvas-toolbar__select"
           title={t("canvas.toolbar.focusGroup")}
         >
-          <option value="" style={{ background: "var(--bg-card)", color: "var(--text-muted)" }}>{t("canvas.toolbar.focusPlaceholder")}</option>
+          <option value="" style={{ background: "var(--theme-surfaces-base)", color: "var(--theme-text-secondary)" }}>{t("canvas.toolbar.focusPlaceholder")}</option>
           {groups.map(g => (
-            <option key={g.id} value={g.id} style={{ background: "var(--bg-card)", color: "var(--text-main)" }}>
+            <option key={g.id} value={g.id} style={{ background: "var(--theme-surfaces-base)", color: "var(--theme-text-primary)" }}>
               {typeof g.data?.title === "string" ? g.data.title : t("canvas.toolbar.groupFallback")}
             </option>
           ))}

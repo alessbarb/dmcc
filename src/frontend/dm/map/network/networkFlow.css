@@ -12,8 +12,8 @@
   position: relative;
   z-index: 20;
   padding: 0 18px;
-  border-bottom: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--bg-main) 94%, transparent);
+  border-bottom: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 94%, transparent);
 }
 
 .campaign-workspace--map-tool__content {
@@ -42,8 +42,8 @@ body:has(.campaign-workspace--network) .watermark {
   border: 0;
   border-radius: 0;
   background:
-    radial-gradient(circle at 50% -10%, color-mix(in srgb, var(--accent-amethyst) 8%, transparent), transparent 38%),
-    var(--bg-main);
+    radial-gradient(circle at 50% -10%, color-mix(in srgb, var(--theme-accents-secondary-foreground) 8%, transparent), transparent 38%),
+    var(--theme-surfaces-canvas);
 }
 
 .network-flow-workspace {
@@ -75,13 +75,13 @@ body:has(.campaign-workspace--network) .watermark {
 
 .network-explorer-heading h2 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--theme-text-primary);
   font-size: 1rem;
   line-height: 1.2;
 }
 
 .network-explorer-heading span {
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.72rem;
   white-space: nowrap;
 }
@@ -112,11 +112,11 @@ body:has(.campaign-workspace--network) .watermark {
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
   border-radius: 14px;
   background:
-    radial-gradient(circle at 50% 25%, color-mix(in srgb, var(--accent-amethyst) 4%, transparent), transparent 42%),
-    color-mix(in srgb, var(--bg-main) 97%, black);
+    radial-gradient(circle at 50% 25%, color-mix(in srgb, var(--theme-accents-secondary-foreground) 4%, transparent), transparent 42%),
+    color-mix(in srgb, var(--theme-surfaces-canvas) 97%, black);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025), 0 18px 48px rgba(0, 0, 0, 0.22);
 }
 
@@ -144,9 +144,9 @@ body:has(.campaign-workspace--network) .watermark {
   gap: 8px;
   min-width: 0;
   padding: 7px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 92%, transparent);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(16px);
 }
@@ -162,7 +162,7 @@ body:has(.campaign-workspace--network) .watermark {
   top: 50%;
   left: 10px;
   z-index: 1;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -172,13 +172,13 @@ body:has(.campaign-workspace--network) .watermark {
   min-height: 38px;
   padding: 8px 34px 8px 34px;
   border-color: transparent;
-  background: color-mix(in srgb, var(--bg-input) 86%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 86%, transparent);
   font-size: 0.82rem;
 }
 
 .graph-search__input:focus {
-  border-color: color-mix(in srgb, var(--accent-amethyst) 55%, var(--border-color));
-  box-shadow: var(--focus-ring);
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 55%, var(--theme-borders-default));
+  box-shadow: var(--theme-focus-ring);
 }
 
 .graph-search__clear {
@@ -194,14 +194,14 @@ body:has(.campaign-workspace--network) .watermark {
   border: 0;
   border-radius: 7px;
   background: transparent;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   cursor: pointer;
   transform: translateY(-50%);
 }
 
 .graph-search__clear:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
+  background: var(--theme-surfaces-interactive-hover);
+  color: var(--theme-text-primary);
 }
 
 .graph-search__results {
@@ -213,9 +213,9 @@ body:has(.campaign-workspace--network) .watermark {
   max-height: min(420px, 55vh);
   overflow-y: auto;
   padding: 6px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 11px;
-  background: color-mix(in srgb, var(--bg-card) 97%, black);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 97%, black);
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
 }
 
@@ -227,14 +227,14 @@ body:has(.campaign-workspace--network) .watermark {
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: var(--text-primary);
+  color: var(--theme-text-primary);
   text-align: left;
   cursor: pointer;
 }
 
 .graph-search__result:hover,
 .graph-search__result:focus-visible {
-  background: var(--surface-hover);
+  background: var(--theme-surfaces-interactive-hover);
   outline: 0;
 }
 
@@ -247,7 +247,7 @@ body:has(.campaign-workspace--network) .watermark {
 }
 
 .graph-search__result-meta {
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.7rem;
 }
 
@@ -263,7 +263,7 @@ body:has(.campaign-workspace--network) .watermark {
   place-items: center;
   padding: 0 5px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--bg-main) 78%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 78%, transparent);
   font-size: 0.68rem;
 }
 
@@ -276,9 +276,9 @@ body:has(.campaign-workspace--network) .watermark {
   max-height: min(520px, 68vh);
   overflow: hidden;
   padding: 8px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--bg-card) 97%, black);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 97%, black);
   box-shadow: 0 20px 56px rgba(0, 0, 0, 0.42);
 }
 
@@ -313,21 +313,21 @@ body:has(.campaign-workspace--network) .watermark {
   border: 1px solid transparent;
   border-radius: 8px;
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--theme-text-secondary);
   font-size: 0.78rem;
   text-align: left;
   cursor: pointer;
 }
 
 .network-filter-option:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
+  background: var(--theme-surfaces-interactive-hover);
+  color: var(--theme-text-primary);
 }
 
 .network-filter-option.is-active {
-  border-color: color-mix(in srgb, var(--accent-amethyst) 36%, var(--border-color));
-  background: color-mix(in srgb, var(--accent-amethyst) 11%, transparent);
-  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 36%, var(--theme-borders-default));
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 11%, transparent);
+  color: var(--theme-text-primary);
 }
 
 .network-filter-option__dot {
@@ -351,10 +351,10 @@ body:has(.campaign-workspace--network) .watermark {
   gap: 8px;
   max-width: min(620px, calc(100% - 28px));
   padding: 7px 9px;
-  border: 1px solid color-mix(in srgb, var(--semantic-success) 40%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 40%, var(--theme-borders-default));
   border-radius: 10px;
-  background: color-mix(in srgb, var(--bg-card) 93%, transparent);
-  color: var(--semantic-success, #34d399);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 93%, transparent);
+  color: var(--theme-feedback-success-foreground, #34d399);
   font-size: 0.76rem;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
   backdrop-filter: blur(14px);
@@ -369,24 +369,24 @@ body:has(.campaign-workspace--network) .watermark {
   gap: 10px;
   min-height: 320px;
   padding: 24px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   text-align: center;
 }
 
 .network-flow-state--error {
-  color: var(--semantic-danger);
+  color: var(--theme-feedback-danger-foreground);
 }
 
 .network-flow-state--error strong {
-  color: var(--text-primary);
+  color: var(--theme-text-primary);
 }
 
 .network-entity-node {
   width: 166px;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--network-node-accent) 45%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--network-node-accent) 45%, var(--theme-borders-default));
   border-radius: 11px;
-  background: color-mix(in srgb, var(--bg-card) 96%, black);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, black);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
   transform-origin: center;
   transition: opacity 160ms ease, filter 160ms ease, transform 160ms ease, box-shadow 160ms ease;
@@ -411,8 +411,8 @@ body:has(.campaign-workspace--network) .watermark {
 
 .network-entity-node .rg-card__hero {
   height: 34px !important;
-  border-bottom: 1px solid color-mix(in srgb, var(--network-node-accent) 28%, var(--border-color));
-  background: linear-gradient(90deg, color-mix(in srgb, var(--network-node-accent) 18%, var(--bg-card)), var(--bg-card)) !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--network-node-accent) 28%, var(--theme-borders-default));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--network-node-accent) 18%, var(--theme-surfaces-base)), var(--theme-surfaces-base)) !important;
 }
 
 .network-entity-node .rg-card__hero--img {
@@ -430,7 +430,7 @@ body:has(.campaign-workspace--network) .watermark {
   left: 8px !important;
   max-width: calc(100% - 16px);
   overflow: hidden;
-  background: color-mix(in srgb, var(--bg-main) 74%, transparent) !important;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 74%, transparent) !important;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -481,16 +481,16 @@ body:has(.campaign-workspace--network) .watermark {
   width: min(360px, calc(100% - 28px));
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--network-inspector-accent) 32%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--network-inspector-accent) 32%, var(--theme-borders-default));
   border-radius: 14px;
-  background: color-mix(in srgb, var(--bg-card) 96%, black);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, black);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.46);
   backdrop-filter: blur(18px);
 }
 
 .network-inspector__header {
   padding: 16px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--theme-borders-default);
   background: linear-gradient(145deg, color-mix(in srgb, var(--network-inspector-accent) 12%, transparent), transparent 55%);
 }
 
@@ -520,18 +520,18 @@ body:has(.campaign-workspace--network) .watermark {
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   cursor: pointer;
 }
 
 .network-inspector__close:hover {
-  background: var(--surface-hover);
-  color: var(--text-primary);
+  background: var(--theme-surfaces-interactive-hover);
+  color: var(--theme-text-primary);
 }
 
 .network-inspector h3 {
   margin: 8px 0 0;
-  color: var(--text-primary);
+  color: var(--theme-text-primary);
   font-size: 1.05rem;
   line-height: 1.3;
 }
@@ -541,7 +541,7 @@ body:has(.campaign-workspace--network) .watermark {
   align-items: center;
   gap: 5px;
   margin-top: 6px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.7rem;
 }
 
@@ -555,8 +555,8 @@ body:has(.campaign-workspace--network) .watermark {
 .network-inspector__summary {
   margin: 0;
   padding: 14px 16px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  border-bottom: 1px solid var(--theme-borders-default);
+  color: var(--theme-text-secondary);
   font-size: 0.78rem;
   line-height: 1.55;
 }
@@ -572,7 +572,7 @@ body:has(.campaign-workspace--network) .watermark {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.66rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -585,7 +585,7 @@ body:has(.campaign-workspace--network) .watermark {
   height: 24px;
   place-items: center;
   border-radius: 999px;
-  background: var(--surface-raised);
+  background: var(--theme-surfaces-raised);
   font-size: 0.68rem;
 }
 
@@ -599,21 +599,21 @@ body:has(.campaign-workspace--network) .watermark {
   gap: 4px;
   width: 100%;
   padding: 8px 9px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
   border-radius: 8px;
-  background: color-mix(in srgb, var(--bg-main) 62%, transparent);
-  color: var(--text-primary);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 62%, transparent);
+  color: var(--theme-text-primary);
   text-align: left;
   cursor: pointer;
 }
 
 .network-inspector__relation:hover {
-  border-color: color-mix(in srgb, var(--network-inspector-accent) 40%, var(--border-color));
-  background: var(--surface-hover);
+  border-color: color-mix(in srgb, var(--network-inspector-accent) 40%, var(--theme-borders-default));
+  background: var(--theme-surfaces-interactive-hover);
 }
 
 .network-inspector__relation-type {
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.64rem;
 }
 
@@ -639,7 +639,7 @@ body:has(.campaign-workspace--network) .watermark {
 }
 
 .network-inspector__empty {
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
 }
 
 .network-workspace-view--immersive .react-flow {
@@ -647,12 +647,12 @@ body:has(.campaign-workspace--network) .watermark {
 }
 
 .network-workspace-view--immersive .react-flow__background-pattern {
-  stroke: color-mix(in srgb, var(--text-muted) 13%, transparent);
+  stroke: color-mix(in srgb, var(--theme-text-secondary) 13%, transparent);
 }
 
 .network-workspace-view--immersive .react-flow__controls {
   overflow: hidden;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 10px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.32);
 }
@@ -661,9 +661,9 @@ body:has(.campaign-workspace--network) .watermark {
   width: 38px;
   height: 38px;
   border: 0;
-  border-bottom: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--bg-card) 95%, black);
-  color: var(--text-primary);
+  border-bottom: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 95%, black);
+  color: var(--theme-text-primary);
   fill: currentColor;
 }
 
@@ -672,27 +672,27 @@ body:has(.campaign-workspace--network) .watermark {
 }
 
 .network-workspace-view--immersive .react-flow__controls-button:hover {
-  background: var(--surface-hover);
-  color: var(--accent-fire);
+  background: var(--theme-surfaces-interactive-hover);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .network-workspace-view--immersive .react-flow__minimap {
   overflow: hidden;
   width: 180px;
   height: 122px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 11px;
-  background: color-mix(in srgb, var(--bg-main) 96%, black) !important;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 96%, black) !important;
   box-shadow: 0 12px 34px rgba(0, 0, 0, 0.34);
 }
 
 .network-workspace-view--immersive .react-flow__minimap-mask {
-  fill: color-mix(in srgb, var(--bg-main) 54%, transparent);
+  fill: color-mix(in srgb, var(--theme-surfaces-canvas) 54%, transparent);
 }
 
 .network-workspace-view--immersive .react-flow__minimap-node {
-  fill: color-mix(in srgb, var(--accent-amethyst) 62%, var(--bg-card));
-  stroke: var(--accent-fire);
+  fill: color-mix(in srgb, var(--theme-accents-secondary-foreground) 62%, var(--theme-surfaces-base));
+  stroke: var(--theme-accents-primary-foreground);
   stroke-width: 1;
 }
 

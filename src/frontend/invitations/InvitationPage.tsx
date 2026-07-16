@@ -59,7 +59,7 @@ export function InvitationPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--bg-main)" }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--theme-surfaces-canvas)" }}>
       <PortalTopBar />
       <div className="join-portal-container" style={{ flex: 1 }}>
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
@@ -67,7 +67,7 @@ export function InvitationPage() {
           <div className="join-portal-header">
             <div className="join-portal-icon-wrapper"><Ticket className="join-portal-icon" size={32} /></div>
             <h1 className="join-portal-title">{t("invitations.title")}</h1>
-            {preview && <p style={{ color: "var(--text-muted)" }}>{t("invitations.invitedTo", { campaign: preview.campaign.title })}</p>}
+            {preview && <p style={{ color: "var(--theme-text-secondary)" }}>{t("invitations.invitedTo", { campaign: preview.campaign.title })}</p>}
           </div>
 
           {loading && <p aria-live="polite">{t("invitations.loading")}</p>}
@@ -76,8 +76,8 @@ export function InvitationPage() {
           {preview && (
             <section className="glass-card" style={{ marginBottom: 20, padding: 16 }}>
               <h2 style={{ marginTop: 0 }}>{preview.campaign.title}</h2>
-              {preview.campaign.summary && <p style={{ color: "var(--text-muted)" }}>{preview.campaign.summary}</p>}
-              <p style={{ color: "var(--text-muted)" }}>{t("invitations.roleOffered", { role: t(preview.role === "player" ? "invitations.rolePlayer" : "invitations.roleCoDm") })}</p>
+              {preview.campaign.summary && <p style={{ color: "var(--theme-text-secondary)" }}>{preview.campaign.summary}</p>}
+              <p style={{ color: "var(--theme-text-secondary)" }}>{t("invitations.roleOffered", { role: t(preview.role === "player" ? "invitations.rolePlayer" : "invitations.roleCoDm") })}</p>
             </section>
           )}
 

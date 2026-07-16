@@ -38,8 +38,8 @@ export function EntityNodeContent({
       <div style={{ display: "flex", padding: "12px", alignItems: "center", gap: "12px" }}>
         <FileText size={24} style={{ color: "#475569", opacity: 0.5 }} />
         <div>
-          <div style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: "600" }}>[Archivada]</div>
-          <div style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>{entity.entityId.slice(0, 8)}…</div>
+          <div style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", fontWeight: "600" }}>[Archivada]</div>
+          <div style={{ color: "var(--theme-text-secondary)", fontSize: "0.75rem" }}>{entity.entityId.slice(0, 8)}…</div>
         </div>
       </div>
     );
@@ -75,7 +75,7 @@ export function EntityNodeContent({
             inset: 0,
             background: "rgba(15, 23, 42, 0.9)",
             border: "none",
-            color: "var(--text-muted)",
+            color: "var(--theme-text-secondary)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -97,7 +97,7 @@ export function EntityNodeContent({
           height: density === "compact" ? "40px" : "120px",
           position: "relative",
           overflow: "hidden",
-          background: "var(--border-color)",
+          background: "var(--theme-borders-default)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center"
@@ -123,7 +123,7 @@ export function EntityNodeContent({
         {imageUrl && <div className="rg-card__img-gradient" />}
 
         {/* Type Badge */}
-        <div className="rg-card__type-badge" style={{ position: "absolute", bottom: "8px", left: "8px", display: "flex", alignItems: "center", gap: "4px", background: "rgba(15, 23, 42, 0.75)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.7rem", color: "var(--text-main)" }}>
+        <div className="rg-card__type-badge" style={{ position: "absolute", bottom: "8px", left: "8px", display: "flex", alignItems: "center", gap: "4px", background: "rgba(15, 23, 42, 0.75)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.7rem", color: "var(--theme-text-primary)" }}>
           <IconComponent size={9} />
           <span>{t(cfg.labelKey)}</span>
         </div>
@@ -157,11 +157,11 @@ export function EntityNodeContent({
 
       {/* Body */}
       <div className="rg-card__body" style={{ padding: "12px", flex: 1, display: "flex", flexDirection: "column", gap: "4px" }}>
-        <div className="rg-card__name" style={{ fontWeight: "700", fontSize: "0.95rem", color: "var(--text-main)" }} title={entity.title}>
+        <div className="rg-card__name" style={{ fontWeight: "700", fontSize: "0.95rem", color: "var(--theme-text-primary)" }} title={entity.title}>
           {entity.title}
         </div>
         {subtitle && (
-          <div className="rg-card__sub" style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+          <div className="rg-card__sub" style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
             {subtitle}
           </div>
         )}
@@ -180,7 +180,7 @@ export function EntityNodeContent({
             gap: "4px",
             background: isCritical ? "rgba(239, 68, 68, 0.15)" : isBlocked ? "rgba(245, 158, 11, 0.15)" : "rgba(16, 185, 129, 0.15)",
             color: isCritical ? "#f87171" : isBlocked ? "#fbbf24" : "#34d399",
-            borderTop: "1px solid var(--border-color)"
+            borderTop: "1px solid var(--theme-borders-default)"
           }}
         >
           {isBlocked && <><AlertTriangle size={9} /> Bloqueado</>}

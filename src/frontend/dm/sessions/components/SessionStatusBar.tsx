@@ -15,10 +15,10 @@ export function SessionStatusBar({ activeSession }: { activeSession: Session }) 
         justifyContent: "space-between",
         gap: "16px",
         padding: "16px 20px",
-        backgroundColor: "var(--bg-card)",
-        border: "1px solid var(--border-color)",
-        borderRadius: "var(--radius-lg)",
-        borderLeft: "3px solid var(--color-success)",
+        backgroundColor: "var(--theme-surfaces-base)",
+        border: "1px solid var(--theme-borders-default)",
+        borderRadius: "var(--theme-shapes-radius-large)",
+        borderLeft: "3px solid var(--theme-feedback-success-foreground)",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
@@ -27,8 +27,8 @@ export function SessionStatusBar({ activeSession }: { activeSession: Session }) 
             width: "10px",
             height: "10px",
             borderRadius: "50%",
-            backgroundColor: "var(--color-success)",
-            boxShadow: "0 0 8px var(--color-success)",
+            backgroundColor: "var(--theme-feedback-success-foreground)",
+            boxShadow: "0 0 8px var(--theme-feedback-success-foreground)",
             flexShrink: 0,
           }}
           aria-hidden="true"
@@ -39,7 +39,7 @@ export function SessionStatusBar({ activeSession }: { activeSession: Session }) 
               fontWeight: "800",
               fontSize: "1.1rem",
               letterSpacing: "-0.01em",
-              color: "var(--text-main)",
+              color: "var(--theme-text-primary)",
             }}
           >
             {activeSession.title}
@@ -47,7 +47,7 @@ export function SessionStatusBar({ activeSession }: { activeSession: Session }) 
           <div
             style={{
               fontSize: "0.8rem",
-              color: "var(--text-muted)",
+              color: "var(--theme-text-secondary)",
               marginTop: "2px",
             }}
           >
@@ -68,13 +68,13 @@ export function SessionStatusBar({ activeSession }: { activeSession: Session }) 
           display: "flex",
           alignItems: "center",
           gap: "6px",
-          backgroundColor: "var(--bg-input)",
-          border: "1px solid var(--border-color)",
-          borderRadius: "var(--radius-md)",
+          backgroundColor: "var(--theme-surfaces-interactive)",
+          border: "1px solid var(--theme-borders-default)",
+          borderRadius: "var(--theme-shapes-radius-medium)",
           padding: "8px 14px",
           fontSize: "0.88rem",
           fontWeight: "700",
-          color: "var(--text-muted)",
+          color: "var(--theme-text-secondary)",
           flexShrink: 0,
         }}
       >

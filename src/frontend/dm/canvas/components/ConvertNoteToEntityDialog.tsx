@@ -66,7 +66,7 @@ export function ConvertNoteToEntityDialog({
       <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "450px" }}>
         <div className="modal-header">
           <h2>
-            <Wand2 size={18} style={{ color: "var(--primary)" }} />
+            <Wand2 size={18} style={{ color: "var(--theme-accents-primary-foreground)" }} />
             Convertir nota en entidad
           </h2>
           <button onClick={onClose} className="modal-close-btn">

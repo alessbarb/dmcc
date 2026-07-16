@@ -24,7 +24,7 @@
   font-size: 0.78rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
 }
 
 .account-page-header h1,
@@ -36,7 +36,7 @@
 .account-module-header p {
   margin: 0.45rem 0 0;
   max-width: 70ch;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
 }
 
 .account-header-actions {
@@ -52,11 +52,11 @@
 .account-danger-zone,
 .account-helper-card,
 .account-profile-preview-card {
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
-    var(--bg-card);
-  border-radius: var(--radius-lg);
+    var(--theme-surfaces-base);
+  border-radius: var(--theme-shapes-radius-large);
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
 }
 
@@ -79,7 +79,7 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--primary) 45%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 45%, var(--theme-borders-default));
   background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
   display: grid;
   place-items: center;
@@ -131,7 +131,7 @@
 .account-panel-card p,
 .account-panel-card small {
   margin: 0;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
 }
 
 .account-role-pill,
@@ -146,13 +146,13 @@
   font-weight: 700;
   letter-spacing: 0.02em;
   background: rgba(214, 166, 78, 0.14);
-  color: var(--primary);
+  color: var(--theme-accents-primary-foreground);
   border: 1px solid rgba(214, 166, 78, 0.22);
 }
 
 .account-card-badge.pending {
   background: rgba(148, 163, 184, 0.14);
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   border-color: rgba(148, 163, 184, 0.25);
 }
 
@@ -179,9 +179,9 @@
   min-height: 36px;
   padding: 0.4rem 0.7rem;
   border-radius: 999px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   background: rgba(255,255,255,0.02);
-  color: var(--text-main);
+  color: var(--theme-text-primary);
 }
 
 .account-stat-grid {
@@ -192,8 +192,8 @@
 
 .account-stat-card {
   padding: 0.95rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
+  border-radius: var(--theme-shapes-radius-medium);
+  border: 1px solid var(--theme-borders-default);
   background: rgba(255,255,255,0.025);
   display: grid;
   gap: 0.2rem;
@@ -206,7 +206,7 @@
 
 .account-stat-label {
   font-size: 0.9rem;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
 }
 
 .account-layout {
@@ -231,14 +231,14 @@
   min-height: 48px;
   padding: 0.8rem 0.95rem;
   text-align: left;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   background: rgba(255,255,255,0.02);
-  color: var(--text-main);
-  border-radius: var(--radius-md);
+  color: var(--theme-text-primary);
+  border-radius: var(--theme-shapes-radius-medium);
 }
 
 .account-nav button[aria-current="page"] {
-  border-color: var(--primary);
+  border-color: var(--theme-accents-primary-foreground);
   background: linear-gradient(90deg, rgba(214, 166, 78, 0.16), rgba(214, 166, 78, 0.06));
 }
 
@@ -286,7 +286,7 @@
 .account-mini-list.surfaced li {
   padding: 0.75rem 0.85rem;
   border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--radius-md);
+  border-radius: var(--theme-shapes-radius-medium);
   background: rgba(255,255,255,0.02);
 }
 
@@ -319,7 +319,7 @@
 .account-bullet-list {
   display: grid;
   gap: 0.45rem;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
 }
 
 .account-bullet-list.compact {
@@ -353,13 +353,13 @@
   padding: 1rem;
   border: 1px solid rgba(255,255,255,0.06);
   background: rgba(255,255,255,0.02);
-  border-radius: var(--radius-md);
+  border-radius: var(--theme-shapes-radius-medium);
 }
 
 .account-form-card {
   padding: 1rem;
   border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--radius-lg);
+  border-radius: var(--theme-shapes-radius-large);
   background: rgba(255,255,255,0.02);
 }
 
@@ -376,10 +376,10 @@
   width: 100%;
   min-height: 44px;
   padding: 0.7rem 0.85rem;
-  color: var(--text-main);
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
 }
 
 .account-layout textarea {
@@ -413,7 +413,7 @@
   gap: 1rem;
   padding: 0.85rem 0.95rem;
   border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--radius-md);
+  border-radius: var(--theme-shapes-radius-medium);
   background: rgba(255,255,255,0.02);
 }
 
@@ -452,14 +452,14 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   background: rgba(255,255,255,0.02);
-  border-radius: var(--radius-md);
+  border-radius: var(--theme-shapes-radius-medium);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .account-card:hover {
-  border-color: var(--primary-light);
+  border-color: var(--theme-accents-primary-background);
   background: rgba(255,255,255,0.04);
   transform: translateY(-1px);
 }
@@ -479,7 +479,7 @@
 
 .account-card-meta {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
 }
 
 .account-card-meta.italic {
@@ -493,9 +493,9 @@
 .account-empty-state {
   text-align: center;
   padding: 2rem;
-  border: 2px dashed var(--border-color);
-  border-radius: var(--radius-lg);
-  color: var(--text-muted);
+  border: 2px dashed var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-large);
+  color: var(--theme-text-secondary);
   display: grid;
   gap: 1rem;
   justify-content: center;
@@ -511,10 +511,10 @@
 
 .account-danger-zone {
   padding: 1.1rem;
-  border-color: var(--color-critical);
+  border-color: var(--theme-feedback-danger-foreground);
   background:
     linear-gradient(180deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.015)),
-    var(--bg-card);
+    var(--theme-surfaces-base);
 }
 
 .account-audience-tabs {
@@ -527,13 +527,13 @@
   min-height: 38px;
   padding: 0.4rem 0.7rem;
   border-radius: 999px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   background: rgba(255,255,255,0.02);
-  color: var(--text-main);
+  color: var(--theme-text-primary);
 }
 
 .account-audience-tabs button.is-active {
-  border-color: var(--primary);
+  border-color: var(--theme-accents-primary-foreground);
   background: rgba(214, 166, 78, 0.14);
 }
 
@@ -545,7 +545,7 @@
 
 .account-preview-item {
   padding: 0.85rem;
-  border-radius: var(--radius-md);
+  border-radius: var(--theme-shapes-radius-medium);
   border: 1px solid rgba(255,255,255,0.06);
   background: rgba(255,255,255,0.02);
 }
@@ -555,7 +555,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   margin-bottom: 0.3rem;
 }
 
@@ -587,7 +587,7 @@
 
 .account-recovery-codes li {
   padding: 0.6rem 0.7rem;
-  border-radius: var(--radius-md);
+  border-radius: var(--theme-shapes-radius-medium);
   border: 1px solid rgba(255,255,255,0.06);
   background: rgba(255,255,255,0.02);
 }
@@ -604,7 +604,7 @@
   gap: 1rem;
   padding: 0.9rem 1rem;
   border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--radius-md);
+  border-radius: var(--theme-shapes-radius-medium);
   background: rgba(255,255,255,0.02);
 }
 
@@ -614,7 +614,7 @@
 }
 
 .account-session-list.cards li span {
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.92rem;
 }
 
@@ -699,11 +699,11 @@
   width: min(1180px, 100%);
   max-height: min(92vh, 980px);
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, var(--theme-borders-default));
   border-radius: clamp(18px, 2vw, 28px);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025)),
-    color-mix(in srgb, var(--bg-main) 88%, #000 12%);
+    color-mix(in srgb, var(--theme-surfaces-canvas) 88%, #000 12%);
   box-shadow: 0 30px 110px rgba(0, 0, 0, 0.58), inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
@@ -728,7 +728,7 @@
   padding-top: clamp(1rem, 2.2vw, 1.75rem);
   padding-bottom: 1rem;
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--bg-main) 94%, #000 6%) 0%, color-mix(in srgb, var(--bg-main) 84%, transparent 16%) 76%, transparent 100%);
+    linear-gradient(180deg, color-mix(in srgb, var(--theme-surfaces-canvas) 94%, #000 6%) 0%, color-mix(in srgb, var(--theme-surfaces-canvas) 84%, transparent 16%) 76%, transparent 100%);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
@@ -740,9 +740,9 @@
   place-items: center;
   flex: 0 0 auto;
   border-radius: 999px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   background: rgba(255,255,255,0.04);
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   cursor: pointer;
   transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
 }
@@ -750,7 +750,7 @@
 .account-modal-close:hover,
 .account-modal-close:focus-visible {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--primary) 42%, var(--border-color));
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 42%, var(--theme-borders-default));
   background: rgba(255,255,255,0.08);
   outline: none;
 }
@@ -804,7 +804,7 @@
     position: sticky;
     top: 0;
     z-index: 4;
-    background: color-mix(in srgb, var(--bg-main) 92%, #000 8%);
+    background: color-mix(in srgb, var(--theme-surfaces-canvas) 92%, #000 8%);
     padding-block: 0.5rem;
   }
 }

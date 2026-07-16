@@ -75,11 +75,11 @@ export interface RelationVisual {
 }
 
 const RELATION_VISUALS: Record<RelationVisual["semantic"], RelationVisual> = {
-  canon: { semantic: "canon", color: "var(--semantic-canon)", line: "solid", label: "Canon" },
-  rumor: { semantic: "rumor", color: "var(--semantic-rumor)", line: "dashed", label: "Rumor" },
-  distrust: { semantic: "distrust", color: "var(--semantic-theory)", line: "dashed", label: "Desconfianza" },
-  hostility: { semantic: "hostility", color: "var(--semantic-danger)", line: "double", label: "Hostilidad" },
-  neutral: { semantic: "neutral", color: "var(--text-subtle)", line: "solid", label: "Relation" },
+  canon: { semantic: "canon", color: "var(--theme-narrative-canon-foreground)", line: "solid", label: "Canon" },
+  rumor: { semantic: "rumor", color: "var(--theme-narrative-rumor-foreground)", line: "dashed", label: "Rumor" },
+  distrust: { semantic: "distrust", color: "var(--theme-narrative-theory-foreground)", line: "dashed", label: "Desconfianza" },
+  hostility: { semantic: "hostility", color: "var(--theme-feedback-danger-foreground)", line: "double", label: "Hostilidad" },
+  neutral: { semantic: "neutral", color: "var(--theme-text-subtle)", line: "solid", label: "Relation" },
 };
 
 export function getRelationVisual(relationType: string, edgeStyle = ""): RelationVisual {

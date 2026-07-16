@@ -10,9 +10,9 @@ const severityLabel: Record<MysteryIssue["severity"], string> = {
 };
 
 const severityColor: Record<MysteryIssue["severity"], string> = {
-  error: "var(--color-critical)",
-  warning: "var(--color-warning)",
-  info: "var(--primary)",
+  error: "var(--theme-feedback-danger-foreground)",
+  warning: "var(--theme-feedback-warning-foreground)",
+  info: "var(--theme-accents-primary-foreground)",
 };
 
 export function MysteryHealthPanel({
@@ -52,7 +52,7 @@ export function MysteryHealthPanel({
         </div>
 
         {issues.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "20px", color: "var(--text-muted)" }}>
+          <div style={{ textAlign: "center", padding: "20px", color: "var(--theme-text-secondary)" }}>
             <span style={{ fontSize: "2rem" }}>✨</span>
             <p style={{ marginTop: "10px", color: "var(--success)", fontWeight: 600 }}>Misterio saludable</p>
             <p style={{ fontSize: "0.85rem" }}>Todas las pistas y revelaciones principales tienen una ruta revisable.</p>
@@ -64,9 +64,9 @@ export function MysteryHealthPanel({
                 key={issue.id}
                 style={{
                   padding: "10px",
-                  borderRadius: "var(--radius-sm)",
+                  borderRadius: "var(--theme-shapes-radius-small)",
                   borderLeft: `3px solid ${severityColor[issue.severity]}`,
-                  backgroundColor: "var(--bg-input)",
+                  backgroundColor: "var(--theme-surfaces-interactive)",
                   fontSize: "0.82rem",
                   lineHeight: 1.4,
                 }}
@@ -79,7 +79,7 @@ export function MysteryHealthPanel({
                   <button
                     type="button"
                     className="btn btn-link btn-xs"
-                    style={{ padding: 0, marginTop: "6px", fontSize: "10px", color: "var(--primary)", border: "none", background: "transparent", cursor: "pointer" }}
+                    style={{ padding: 0, marginTop: "6px", fontSize: "10px", color: "var(--theme-accents-primary-foreground)", border: "none", background: "transparent", cursor: "pointer" }}
                     onClick={() => {
                       if (issue.entityId) onFocusEntity?.(issue.entityId);
                       if (issue.factId) onFocusFact?.(issue.factId);

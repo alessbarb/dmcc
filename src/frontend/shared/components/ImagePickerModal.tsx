@@ -102,10 +102,10 @@ const overlayStyle: CSSProperties = {
 };
 
 const sheetBaseStyle: CSSProperties = {
-  background: "var(--bg-card, #151922)",
-  color: "var(--text-main, #f5f5f4)",
-  border: "1px solid var(--border-color, rgba(255,255,255,0.14))",
-  boxShadow: "var(--shadow-lg, 0 22px 70px rgba(0,0,0,0.55))",
+  background: "var(--theme-surfaces-base, #151922)",
+  color: "var(--theme-text-primary, #f5f5f4)",
+  border: "1px solid var(--theme-borders-default, rgba(255,255,255,0.14))",
+  boxShadow: "var(--theme-shadows-large, 0 22px 70px rgba(0,0,0,0.55))",
   display: "flex",
   flexDirection: "column",
   overflow: "hidden",
@@ -118,7 +118,7 @@ const headerStyle: CSSProperties = {
   justifyContent: "space-between",
   gap: 12,
   padding: "14px 16px",
-  borderBottom: "1px solid var(--border-color, rgba(255,255,255,0.14))",
+  borderBottom: "1px solid var(--theme-borders-default, rgba(255,255,255,0.14))",
 };
 
 const bodyStyle: CSSProperties = {
@@ -144,7 +144,7 @@ const footerStyle: CSSProperties = {
   justifyContent: "flex-end",
   gap: 12,
   padding: "12px 16px",
-  borderTop: "1px solid var(--border-color, rgba(255,255,255,0.14))",
+  borderTop: "1px solid var(--theme-borders-default, rgba(255,255,255,0.14))",
 };
 
 export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePickerModalProps) {
@@ -261,7 +261,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
         ...sheetBaseStyle,
         width: "min(640px, calc(100dvw - 32px))",
         maxHeight: "calc(100dvh - 48px)",
-        borderRadius: "var(--radius-lg, 16px)",
+        borderRadius: "var(--theme-shapes-radius-large, 16px)",
       };
 
   const modal = (
@@ -284,7 +284,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
         </div>
 
         {!isMobilePicker && groupEntries.length > 1 && (
-          <div style={{ flex: "0 0 auto", display: "flex", gap: 8, padding: "12px 16px", flexWrap: "wrap", borderBottom: "1px solid var(--border-color, rgba(255,255,255,0.14))" }}>
+          <div style={{ flex: "0 0 auto", display: "flex", gap: 8, padding: "12px 16px", flexWrap: "wrap", borderBottom: "1px solid var(--theme-borders-default, rgba(255,255,255,0.14))" }}>
             {groupEntries.map(([group]) => (
               <button
                 type="button"
@@ -345,7 +345,7 @@ function GroupBrowser({ sections, onOpenGroup }: { sections: CatalogGroupSection
     <div style={{ ...scrollStyle, display: "flex", flexDirection: "column", gap: 16 }}>
       {sections.map((section) => (
         <section key={section.catalog}>
-          <h3 style={{ margin: "0 0 8px", color: "var(--text-muted, #a8a29e)", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+          <h3 style={{ margin: "0 0 8px", color: "var(--theme-text-secondary, #a8a29e)", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase" }}>
             {titleCase(section.catalog)}
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -361,17 +361,17 @@ function GroupBrowser({ sections, onOpenGroup }: { sections: CatalogGroupSection
                   alignItems: "center",
                   gap: 12,
                   padding: "10px 12px",
-                  border: "1px solid var(--border-color, rgba(255,255,255,0.14))",
-                  borderRadius: "var(--radius-sm, 8px)",
+                  border: "1px solid var(--theme-borders-default, rgba(255,255,255,0.14))",
+                  borderRadius: "var(--theme-shapes-radius-small, 8px)",
                   background: "var(--bg-elevated, rgba(255,255,255,0.04))",
-                  color: "var(--text-main, #f5f5f4)",
+                  color: "var(--theme-text-primary, #f5f5f4)",
                   cursor: "pointer",
                   textAlign: "left",
                 }}
               >
                 <span style={{ flex: "1 1 auto", minWidth: 0 }}>
                   <span style={{ display: "block", fontWeight: 800 }}>{titleCase(group.label)}</span>
-                  <span style={{ display: "block", marginTop: 2, color: "var(--text-muted, #a8a29e)", fontSize: "0.8rem" }}>
+                  <span style={{ display: "block", marginTop: 2, color: "var(--theme-text-secondary, #a8a29e)", fontSize: "0.8rem" }}>
                     {group.count} {group.count === 1 ? "imagen" : "imágenes"}
                   </span>
                 </span>
@@ -415,7 +415,7 @@ function ImageGrid({ images, value, onSelect, onClose, isMobile }: {
             height: isMobile ? mobileTileHeight : undefined,
             padding: 0,
             border: value === image.src ? "2px solid var(--color-accent, #c5a028)" : "2px solid transparent",
-            borderRadius: "var(--radius-sm, 8px)",
+            borderRadius: "var(--theme-shapes-radius-small, 8px)",
             overflow: "hidden",
             cursor: "pointer",
             background: "rgba(255,255,255,0.03)",

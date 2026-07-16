@@ -79,7 +79,7 @@ function Pill({
         borderRadius: 999,
         padding: "4px 9px",
         fontSize: 12,
-        color: "var(--text-main)",
+        color: "var(--theme-text-primary)",
       }}
     >
       {children}
@@ -99,14 +99,14 @@ function MetricCard({
   return (
     <Card>
       {icon}
-      <p style={{ margin: "8px 0 0", color: "var(--text-muted)", fontSize: 12 }}>{label}</p>
+      <p style={{ margin: "8px 0 0", color: "var(--theme-text-secondary)", fontSize: 12 }}>{label}</p>
       <strong style={{ fontSize: 28 }}>{value}</strong>
     </Card>
   );
 }
 
 function EmptyMessage({ children }: { children: React.ReactNode }) {
-  return <p style={{ margin: 0, color: "var(--text-muted)", fontSize: 14 }}>{children}</p>;
+  return <p style={{ margin: 0, color: "var(--theme-text-secondary)", fontSize: 14 }}>{children}</p>;
 }
 
 function EntityList({
@@ -307,7 +307,7 @@ export function OverviewPage() {
             <p
               style={{
                 margin: "0 0 6px",
-                color: "var(--text-muted)",
+                color: "var(--theme-text-secondary)",
                 textTransform: "uppercase",
                 letterSpacing: ".12em",
                 fontSize: 12,
@@ -318,7 +318,7 @@ export function OverviewPage() {
             <h1 style={{ margin: 0, fontSize: "clamp(1.8rem, 4vw, 3rem)" }}>
               {campaign?.title ?? t("campaignShell.defaultTitle")}
             </h1>
-            <p style={{ margin: "8px 0 0", color: "var(--text-muted)", maxWidth: 760 }}>
+            <p style={{ margin: "8px 0 0", color: "var(--theme-text-secondary)", maxWidth: 760 }}>
               {campaign?.summary ?? t("campaignShell.meta.dashboardDescription")}
             </p>
           </div>
@@ -447,7 +447,7 @@ export function OverviewPage() {
                 <div style={{ display: "grid", gap: 4 }}>
                   <strong>{lastClosedSession.title}</strong>
                   {lastClosedSession.endedAt && (
-                    <span style={{ color: "var(--text-muted)", fontSize: 13 }}>
+                    <span style={{ color: "var(--theme-text-secondary)", fontSize: 13 }}>
                       {new Date(lastClosedSession.endedAt).toLocaleString(locale, {
                         dateStyle: "medium",
                         timeStyle: "short",
@@ -455,7 +455,7 @@ export function OverviewPage() {
                     </span>
                   )}
                   {lastClosedSession.summary && (
-                    <span style={{ color: "var(--text-muted)", fontSize: 13 }}>
+                    <span style={{ color: "var(--theme-text-secondary)", fontSize: 13 }}>
                       {lastClosedSession.summary}
                     </span>
                   )}
@@ -530,9 +530,9 @@ export function OverviewPage() {
                         alignItems: "center",
                         gap: 12,
                         padding: 12,
-                        borderRadius: "var(--radius-md)",
-                        background: "var(--bg-input)",
-                        border: "1px solid var(--border-color)",
+                        borderRadius: "var(--theme-shapes-radius-medium)",
+                        background: "var(--theme-surfaces-interactive)",
+                        border: "1px solid var(--theme-borders-default)",
                       }}
                     >
                       <input
@@ -546,7 +546,7 @@ export function OverviewPage() {
                         style={{
                           flex: 1,
                           textDecoration: checked ? "line-through" : "none",
-                          color: checked ? "var(--text-muted)" : "var(--text-main)",
+                          color: checked ? "var(--theme-text-secondary)" : "var(--theme-text-primary)",
                         }}
                       >
                         {item.task}
@@ -571,8 +571,8 @@ export function OverviewPage() {
                   <div
                     key={alert.clueId ?? alert.message ?? index}
                     style={{
-                      border: "1px solid var(--border-color)",
-                      borderRadius: "var(--radius-md)",
+                      border: "1px solid var(--theme-borders-default)",
+                      borderRadius: "var(--theme-shapes-radius-medium)",
                       padding: 12,
                     }}
                   >
@@ -647,7 +647,7 @@ export function OverviewPage() {
             <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
               <CalendarDays size={18} /> {t("dashboard.nextSessionPrep")}
             </h2>
-            <p style={{ color: "var(--text-muted)", lineHeight: 1.6 }}>
+            <p style={{ color: "var(--theme-text-secondary)", lineHeight: 1.6 }}>
               {commandCenter?.recap ?? lastClosedSession?.summary ?? t("dashboard.noPreviousSessions")}
             </p>
             {activeSession ? (
@@ -670,12 +670,12 @@ export function OverviewPage() {
                   key={item.activityId}
                   style={{
                     fontSize: 13,
-                    color: "var(--text-muted)",
-                    borderBottom: "1px solid var(--border-color)",
+                    color: "var(--theme-text-secondary)",
+                    borderBottom: "1px solid var(--theme-borders-default)",
                     paddingBottom: 8,
                   }}
                 >
-                  <strong style={{ color: "var(--text-main)" }}>{item.type}</strong>
+                  <strong style={{ color: "var(--theme-text-primary)" }}>{item.type}</strong>
                   <br />
                   {new Date(item.occurredAt).toLocaleString(locale)}
                 </div>
@@ -694,7 +694,7 @@ export function OverviewPage() {
           </h2>
           <div className="dashboard-quick-actions">
             <button
-              className="btn btn-primary dashboard-quick-action dashboard-quick-action--primary"
+              className="btn btn-primary dashboard-quick-action dashboard-quick-action--theme-accents-primary-foreground"
               type="button"
               onClick={() => navigateToCampaignPage("session")}
             >

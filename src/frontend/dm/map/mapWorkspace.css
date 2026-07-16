@@ -5,7 +5,7 @@
   min-width: 0;
   min-height: calc(100dvh - 88px);
   height: calc(100dvh - 88px);
-  background: var(--bg-main);
+  background: var(--theme-surfaces-canvas);
 }
 
 .campaign-workspace--map-tool__tabs {
@@ -16,8 +16,8 @@
   justify-content: space-between;
   gap: 12px;
   padding-inline: clamp(16px, 3vw, 32px);
-  border-bottom: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--bg-main) 96%, transparent);
+  border-bottom: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 96%, transparent);
 }
 
 .campaign-workspace--map-tool__tabs .workspace-tabs {
@@ -32,18 +32,18 @@
   height: 36px;
   place-items: center;
   padding: 0;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 9px;
   background: var(--surface-interactive);
-  color: var(--text-secondary);
+  color: var(--theme-text-secondary);
   cursor: pointer;
 }
 
 .map-workspace-fullscreen-button:hover,
 .map-workspace-fullscreen-button:focus-visible {
-  border-color: color-mix(in srgb, var(--accent-gold) 58%, var(--border-color));
-  background: var(--surface-hover);
-  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--accent-gold) 58%, var(--theme-borders-default));
+  background: var(--theme-surfaces-interactive-hover);
+  color: var(--theme-text-primary);
   outline: 0;
 }
 
@@ -65,7 +65,7 @@
   height: 100dvh;
   min-height: 100dvh;
   padding: 0;
-  background: var(--bg-main);
+  background: var(--theme-surfaces-canvas);
 }
 
 .campaign-workspace--map-tool:fullscreen .campaign-workspace--map-tool__tabs {

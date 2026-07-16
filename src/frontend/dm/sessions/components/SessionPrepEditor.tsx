@@ -63,7 +63,7 @@ export function SessionPrepEditor({
         runSessionAction(handleSubmit(event), "No se pudo guardar la preparación de sesión.");
       }}
       className="card"
-      style={{ marginTop: "10px", padding: "18px", borderLeft: "3px solid var(--primary)" }}
+      style={{ marginTop: "10px", padding: "18px", borderLeft: "3px solid var(--theme-accents-primary-foreground)" }}
     >
       <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "12px" }}>
         <div className="form-group">

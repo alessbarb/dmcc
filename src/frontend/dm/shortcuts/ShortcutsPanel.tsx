@@ -30,7 +30,7 @@ export function ShortcutsPanel({ campaignId, collapsed = false, emptyHint }: Sho
     if (collapsed) return null;
     return (
       <div className="shortcuts-panel shortcuts-panel--empty">
-        <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", margin: 0 }}>
+        <p style={{ fontSize: "0.78rem", color: "var(--theme-text-secondary)", margin: 0 }}>
           {emptyHint ?? t("shortcuts.empty")}
         </p>
       </div>
@@ -95,7 +95,7 @@ export function ShortcutsPanel({ campaignId, collapsed = false, emptyHint }: Sho
                       console.error("Could not remove campaign shortcut", error);
                     });
                   }}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", padding: 2 }}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--theme-text-secondary)", padding: 2 }}
                 >
                   <X size={12} />
                 </button>

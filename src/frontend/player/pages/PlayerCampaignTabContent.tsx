@@ -107,7 +107,7 @@ function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: Translat
   return (
     <Card>
       <label htmlFor="player-memory-search" style={{ display: "grid", gap: 8 }}>
-        <span style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--text-muted)", fontSize: 13 }}>
+        <span style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--theme-text-secondary)", fontSize: 13 }}>
           <Search size={15} /> {t("playerPortal.search.label")}
         </span>
         <input
@@ -130,7 +130,7 @@ function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: Translat
               onClick={() => setSelectedResult(result)}
             >
               <strong>{result.item.title ?? result.type}</strong>
-              <span style={{ display: "block", marginTop: 4, color: "var(--text-muted)", fontSize: 13 }}>
+              <span style={{ display: "block", marginTop: 4, color: "var(--theme-text-secondary)", fontSize: 13 }}>
                 {result.item.summary ?? t("playerPortal.empty.noVisibleSummary")}
               </span>
             </button>
@@ -138,10 +138,10 @@ function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: Translat
         </section>
       )}
       {selectedResult && (
-        <article style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--border-color)" }}>
+        <article style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--theme-borders-default)" }}>
           <span className="badge badge-default">{selectedResult.type}</span>
           <h3>{selectedResult.item.title ?? selectedResult.item.id}</h3>
-          <p style={{ color: "var(--text-muted)", whiteSpace: "pre-wrap" }}>
+          <p style={{ color: "var(--theme-text-secondary)", whiteSpace: "pre-wrap" }}>
             {selectedResult.item.summary ?? t("playerPortal.empty.noVisibleContent")}
           </p>
         </article>
@@ -158,7 +158,7 @@ function renderMemory(memory: PlayerPortalTabPayload, t: (key: TranslationKey) =
     <div style={{ display: "grid", gap: 14 }}>
       <Card>
         <h2 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownMemory")}</h2>
-        <p style={{ color: "var(--text-muted)" }}>
+        <p style={{ color: "var(--theme-text-secondary)" }}>
           {t("playerPortal.memory.visibilityHint")}
         </p>
       </Card>
@@ -167,31 +167,31 @@ function renderMemory(memory: PlayerPortalTabPayload, t: (key: TranslationKey) =
           <h3 style={{ marginTop: 0, textTransform: "capitalize" }}>{group}</h3>
           <div style={{ display: "grid", gap: 8 }}>
             {items.length > 0 ? items.map((item) => (
-              <article key={item.entityId} style={{ border: "1px solid var(--border-color)", borderRadius: 12, padding: 12 }}>
+              <article key={item.entityId} style={{ border: "1px solid var(--theme-borders-default)", borderRadius: 12, padding: 12 }}>
                 <strong>{item.title}</strong>
-                <p style={{ margin: "5px 0 0", color: "var(--text-muted)" }}>
+                <p style={{ margin: "5px 0 0", color: "var(--theme-text-secondary)" }}>
                   {item.summary ?? item.status ?? t("playerPortal.empty.noVisibleSummary")}
                 </p>
               </article>
-            )) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.nothingYet")}</p>}
+            )) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.nothingYet")}</p>}
           </div>
         </Card>
       ))}
       <Card>
         <h3 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownFacts")}</h3>
         {facts.length > 0 ? facts.map((fact) => (
-          <p key={fact.factId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>
+          <p key={fact.factId} style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: 8 }}>
             {fact.statement}
           </p>
-        )) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noVisibleFacts")}</p>}
+        )) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.noVisibleFacts")}</p>}
       </Card>
       <Card>
         <h3 style={{ marginTop: 0 }}>{t("playerPortal.memory.knownRelations")}</h3>
         {relations.length > 0 ? relations.map((relation) => (
-          <p key={relation.relationId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>
+          <p key={relation.relationId} style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: 8 }}>
             <strong>{relation.label}</strong>: {relation.description ?? t("playerPortal.memory.knownRelation")}
           </p>
-        )) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noVisibleRelations")}</p>}
+        )) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.noVisibleRelations")}</p>}
       </Card>
     </div>
   );
@@ -262,7 +262,7 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
       {!loading && !error && !activeCanvas && <Card>{t("playerPortal.empty.noPublicConstellations")}</Card>}
       {activeCanvas && (
         <section className="card" style={{ padding: 0, overflow: "hidden" }}>
-          <div style={{ display: "flex", gap: 8, padding: 12, borderBottom: "1px solid var(--border-color)", overflowX: "auto" }}>
+          <div style={{ display: "flex", gap: 8, padding: 12, borderBottom: "1px solid var(--theme-borders-default)", overflowX: "auto" }}>
             {canvases.map((canvas) => (
               <button
                 key={canvas.canvasId}
@@ -396,9 +396,9 @@ export function PlayerCampaignTabContent({ campaignId, tab }: { campaignId: stri
           <p style={{ fontSize: 17, lineHeight: 1.55 }}>{payload.recap ?? t("playerPortal.empty.noSharedRecapYet")}</p>
         </Card>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
-          <Card><strong>{counts.visibleEntities ?? 0}</strong><br /><span style={{ color: "var(--text-muted)" }}>{t("playerPortal.metrics.memories")}</span></Card>
-          <Card><strong>{counts.facts ?? 0}</strong><br /><span style={{ color: "var(--text-muted)" }}>{t("playerPortal.metrics.facts")}</span></Card>
-          <Card><strong>{payload.objectives?.length ?? 0}</strong><br /><span style={{ color: "var(--text-muted)" }}>{t("playerPortal.metrics.objectives")}</span></Card>
+          <Card><strong>{counts.visibleEntities ?? 0}</strong><br /><span style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.metrics.memories")}</span></Card>
+          <Card><strong>{counts.facts ?? 0}</strong><br /><span style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.metrics.facts")}</span></Card>
+          <Card><strong>{payload.objectives?.length ?? 0}</strong><br /><span style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.metrics.objectives")}</span></Card>
         </div>
         <PlayerSearch campaignId={campaignId} t={t} />
       </div>
@@ -411,12 +411,12 @@ export function PlayerCampaignTabContent({ campaignId, tab }: { campaignId: stri
       <Card>
         <h2 style={{ marginTop: 0 }}>{t("playerPortal.objectivesHeading")}</h2>
         {payload.objectives?.length ? payload.objectives.map((objective) => (
-          <article key={objective.objectiveId} style={{ borderTop: "1px solid var(--border-color)", padding: "10px 0" }}>
+          <article key={objective.objectiveId} style={{ borderTop: "1px solid var(--theme-borders-default)", padding: "10px 0" }}>
             <strong>{objective.title}</strong>
-            <p style={{ color: "var(--text-muted)", margin: "4px 0" }}>{objective.description ?? objective.kind}</p>
+            <p style={{ color: "var(--theme-text-secondary)", margin: "4px 0" }}>{objective.description ?? objective.kind}</p>
             <span style={{ fontSize: 12 }}>{objective.status}</span>
           </article>
-        )) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noOpenObjectives")}</p>}
+        )) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.noOpenObjectives")}</p>}
       </Card>
     );
     if (tab === "recap") return <Card><h2 style={{ marginTop: 0 }}>{t("playerPortal.recap.heading")}</h2><p style={{ lineHeight: 1.6 }}>{payload.recap ?? t("playerPortal.empty.noSharedRecap")}</p></Card>;
@@ -439,7 +439,7 @@ export function PlayerCampaignTabContent({ campaignId, tab }: { campaignId: stri
             });
           }}><CheckCircle2 size={16} /> {t("playerPortal.notes.save")}</button>
         </Card>
-        <Card>{payload.notes?.length ? payload.notes.map((note) => <p key={note.noteId} style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: 8 }}>{note.content}</p>) : <p style={{ color: "var(--text-muted)" }}>{t("playerPortal.empty.noNotesYet")}</p>}</Card>
+        <Card>{payload.notes?.length ? payload.notes.map((note) => <p key={note.noteId} style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: 8 }}>{note.content}</p>) : <p style={{ color: "var(--theme-text-secondary)" }}>{t("playerPortal.empty.noNotesYet")}</p>}</Card>
       </div>
     );
     return null;

@@ -82,7 +82,7 @@ export function PlayerCampaignShell() {
           {t("playerPortal.actions.portal")}
         </button>
         <div style={{ minWidth: 0, flex: 1 }}>
-          <p style={{ margin: "0 0 3px", color: "var(--text-muted)", fontSize: 11, textTransform: "uppercase", letterSpacing: ".12em" }}>{t("playerPortal.title")}</p>
+          <p style={{ margin: "0 0 3px", color: "var(--theme-text-secondary)", fontSize: 11, textTransform: "uppercase", letterSpacing: ".12em" }}>{t("playerPortal.title")}</p>
           <h1 ref={headingRef} tabIndex={-1} style={{ margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</h1>
         </div>
         <Link
