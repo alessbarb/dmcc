@@ -5,7 +5,7 @@ import {
   GitPullRequest, HelpCircle, KeyRound, MapPin, MessageSquare, RefreshCcw,
   Shield, Skull, StickyNote, User, UserCheck,
 } from "lucide-react";
-import { entityThemeColor } from "@shared/theme/themeCssVariables.js";
+import { entityThemeColor } from "@frontend/shared/theme/themeCssVariables.js";
 import type { ThemeEntityType } from "@frontend/account/themeContract.js";
 
 export type EntityVisualShape = "portrait" | "hex-header" | "compact" | "veiled";
