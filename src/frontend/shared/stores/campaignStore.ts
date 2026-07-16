@@ -12,10 +12,10 @@ import {
   API_CLIENT_TAB_ID,
   campaignApi,
   canvasApi,
-  getPremade,
-  getPremadeLocale,
-  importPremade,
-  listPremades,
+  getCampaignTemplate,
+  getCampaignTemplateLocale,
+  importCampaignTemplate,
+  listCampaignTemplates,
   playerPortalApi,
   readApiError,
 } from "../api.js";
@@ -349,7 +349,7 @@ export interface CampaignStateStore {
   fetchCampaigns: () => Promise<void>;
   fetchPremadeCampaigns: () => Promise<void>;
   fetchPremadeCampaignTemplate: (templateId: string) => Promise<PremadeCampaignTemplate | null>;
-  importPremadeCampaign: (templateId: string, options?: { title?: string; summary?: string; importMode?: "full" | "structure" | "sessions"; locale?: string }) => Promise<string | undefined>;
+  importCampaignTemplate: (templateId: string, options?: { title?: string; summary?: string; importMode?: "full" | "structure" | "sessions"; locale?: string }) => Promise<string | undefined>;
   updateCampaign: (campaignId: string, updates: { title?: string; summary?: string; system?: string; status?: string; coverUrl?: string; metadata?: Record<string, unknown> }) => Promise<Campaign | undefined>;
   selectCampaign: (campaignId: string) => Promise<void>;
   enterDmCampaign: (campaignId: string) => void;
@@ -545,9 +545,9 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   fetchPremadeCampaigns: async () => {
-    const locale = getPremadeLocale();
+    const locale = getCampaignTemplateLocale();
     try {
-      const res = await listPremades(locale);
+      const res = await listCampaignTemplates(locale);
       if (!res.ok) {
         const message = await readApiError(res, "Failed to fetch premade campaigns");
         throw new Error(message);
@@ -560,10 +560,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   },
 
   fetchPremadeCampaignTemplate: async (templateId) => {
-    const locale = getPremadeLocale();
+    const locale = getCampaignTemplateLocale();
     set({ loading: true, error: null });
     try {
-      const res = await getPremade(templateId, locale);
+      const res = await getCampaignTemplate(templateId, locale);
       if (!res.ok) {
         const message = await readApiError(res, "Failed to fetch premade campaign");
         throw new Error(message);
@@ -577,7 +577,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
   },
 
-  importPremadeCampaign: async (templateId, options) => {
+  importCampaignTemplate: async (templateId, options) => {
     const operationId = `imp_${createId("cmd")}`;
     set({
       premadeImportState: {
@@ -593,7 +593,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
       },
     });
     try {
-      const res = await importPremade(templateId, options, {
+      const res = await importCampaignTemplate(templateId, options, {
         "Idempotency-Key": operationId,
       });
       if (!res.ok) {

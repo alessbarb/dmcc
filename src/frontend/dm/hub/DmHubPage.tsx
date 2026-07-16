@@ -69,7 +69,7 @@ export function DmHubPage() {
     error,
     fetchCampaigns,
     fetchPremadeCampaigns,
-    importPremadeCampaign,
+    importCampaignTemplate,
     updateCampaign,
     selectCampaign,
     createCampaign,
@@ -352,7 +352,7 @@ export function DmHubPage() {
     options: { title: string; summary?: string; importMode: PremadeImportMode; openAfterCreate: boolean }
   ) => {
     try {
-      const campaignId = await importPremadeCampaign(templateId, {
+      const campaignId = await importCampaignTemplate(templateId, {
         title: options.title,
         summary: options.summary,
         importMode: options.importMode,

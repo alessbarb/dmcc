@@ -145,7 +145,7 @@ export function PremadeCampaignPreviewPage() {
     error,
     fetchCampaigns,
     fetchPremadeCampaignTemplate,
-    importPremadeCampaign,
+    importCampaignTemplate,
     premadeImportState,
     clearPremadeImportState,
   } = useCampaignStore();
@@ -220,7 +220,7 @@ export function PremadeCampaignPreviewPage() {
   const handleCreateCopy = async (options: { title: string; summary?: string; importMode: PremadeImportMode; openAfterCreate: boolean }) => {
     if (!template) return;
     try {
-      const campaignId = await importPremadeCampaign(template.templateId, {
+      const campaignId = await importCampaignTemplate(template.templateId, {
         title: options.title,
         summary: options.summary,
         importMode: options.importMode,

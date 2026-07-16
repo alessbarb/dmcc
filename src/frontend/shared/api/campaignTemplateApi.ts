@@ -2,18 +2,18 @@ import { apiFetch } from "./apiClient.js";
 import { detectBrowserLocale } from "@shared/i18n/index.js";
 import { readStoredLocale } from "../i18n/localeStorage.js";
 
-export function getPremadeLocale(): string {
+export function getCampaignTemplateLocale(): string {
   return detectBrowserLocale(readStoredLocale());
 }
 
-function withPremadeLocale(path: string, locale = getPremadeLocale()): string {
+function withCampaignTemplateLocale(path: string, locale = getCampaignTemplateLocale()): string {
   const separator = path.includes("?") ? "&" : "?";
   return `${path}${separator}locale=${encodeURIComponent(locale)}`;
 }
 
-export const listPremades = (locale = getPremadeLocale()) => apiFetch(withPremadeLocale("/api/campaign-templates", locale));
-export const getPremade = (templateId: string, locale = getPremadeLocale()) => apiFetch(withPremadeLocale(`/api/campaign-templates/${encodeURIComponent(templateId)}`, locale));
-export const importPremade = (
+export const listCampaignTemplates = (locale = getCampaignTemplateLocale()) => apiFetch(withCampaignTemplateLocale("/api/campaign-templates", locale));
+export const getCampaignTemplate = (templateId: string, locale = getCampaignTemplateLocale()) => apiFetch(withCampaignTemplateLocale(`/api/campaign-templates/${encodeURIComponent(templateId)}`, locale));
+export const importCampaignTemplate = (
   templateId: string,
   options?: { locale?: string; [key: string]: unknown },
   headers?: Record<string, string>
@@ -24,6 +24,6 @@ export const importPremade = (
       "Content-Type": "application/json",
       ...(headers ?? {}),
     },
-    body: JSON.stringify({ ...(options ?? {}), locale: options?.locale ?? getPremadeLocale() }),
+    body: JSON.stringify({ ...(options ?? {}), locale: options?.locale ?? getCampaignTemplateLocale() }),
   },
 });
