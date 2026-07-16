@@ -1166,7 +1166,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "revealed"
+      "status": "revealed",
+      "imageUrl": "/assets/premades/phandalin/clues/sildars_warning.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_redbrand_threats",
@@ -1176,7 +1177,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "revealed"
+      "status": "revealed",
+      "imageUrl": "/assets/premades/phandalin/clues/red_cloak_threats.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_town_fears",
@@ -1186,7 +1188,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "revealed"
+      "status": "revealed",
+      "imageUrl": "/assets/premades/phandalin/clues/the_towns_fear.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_carp_tunnel",
@@ -1196,7 +1199,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/carp_saw_a_secret_entrance.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_giant_boast",
@@ -1206,7 +1210,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/sleeping_giant_boast.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_ledger",
@@ -1227,7 +1232,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/blue_crystal_letter.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_nothic_whispers",
@@ -1237,7 +1243,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/whispers_beneath_tresendar.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_mirna_heirloom",
@@ -1280,7 +1287,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/darans_old_report.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_linene_cargo",
@@ -1312,7 +1320,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/cragmaw_ransom_message.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_vyerith_disguise",
@@ -1322,7 +1331,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/details_that_do_not_fit.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_grol_bargain",
@@ -1332,7 +1342,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/grols_bargain.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_nundro_testimony",
@@ -1342,7 +1353,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/nundros_testimony.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_spider_sigil",
@@ -1363,7 +1375,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/gundrens_map.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_forge_echo",
@@ -1384,7 +1397,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/thardens_fate.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_reidoth_warning",
@@ -1394,7 +1408,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/reidoths_warning.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_dragon_signs",
@@ -1404,7 +1419,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/signs_of_a_dragon.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_old_owl_signs",
@@ -1414,7 +1430,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/signs_at_old_owl_well.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_agatha_memory",
@@ -1424,7 +1441,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/agathas_memory.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_wyvern_raids",
@@ -1434,7 +1452,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/wyvern_tor_raid_traces.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_power_vacuum",
@@ -1444,7 +1463,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/power_vacuum_in_phandalin.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_nezznar",

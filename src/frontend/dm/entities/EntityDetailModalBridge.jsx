@@ -114,7 +114,6 @@ function StandardEntityDetailWithImageFocus(props) {
   const metadata = props.selectedEntity?.metadata ?? {};
   const [focusX, setFocusX] = useState(() => clampFocus(metadata.imageFocusX));
   const [focusY, setFocusY] = useState(() => clampFocus(metadata.imageFocusY));
-  const [heroElement, setHeroElement] = useState(null);
   const [isAdjusting, setIsAdjusting] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const imageUrl = useMemo(() => resolveEntityImage(props.selectedEntity), [props.selectedEntity]);
@@ -127,11 +126,11 @@ function StandardEntityDetailWithImageFocus(props) {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;
-    const hero = root.querySelector(".modal-content > div:first-child");
-    const image = hero?.querySelector("img");
-    if (!hero || !image) return undefined;
+    const image = root.querySelector(
+      ".modal-content > div:first-child > img",
+    );
+    if (!image) return undefined;
 
-    setHeroElement(hero);
     image.style.objectPosition = `${focusX}% ${focusY}%`;
     image.classList.add("entity-detail-hero-image");
 
@@ -155,56 +154,46 @@ function StandardEntityDetailWithImageFocus(props) {
     setIsAdjusting(false);
   };
 
-  const stopHeroActionEvent = (event) => {
-    event.stopPropagation();
-  };
-
   return (
     <div ref={rootRef} className="entity-detail-focus-shell">
-      <StandardEntityDetailModal {...props} />
-      {heroElement && createPortal(
-        <div
-          className="entity-image-hero-actions"
-          role="toolbar"
-          aria-label="Acciones de la imagen y del modal"
-          onPointerDown={stopHeroActionEvent}
-          onMouseDown={stopHeroActionEvent}
-          onClick={stopHeroActionEvent}
-        >
-          {imageUrl && (
-            <>
-              <button
-                type="button"
-                className="btn btn-secondary btn-icon"
-                onClick={() => setIsAdjusting(true)}
-                aria-label="Ajustar encuadre"
-                title="Ajustar encuadre"
-              >
-                <Focus size={16} />
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary btn-icon"
-                onClick={() => setIsExpanded(true)}
-                aria-label="Ver imagen completa"
-                title="Ver imagen completa"
-              >
-                <Expand size={16} />
-              </button>
-            </>
-          )}
-          <button
-            type="button"
-            className="btn btn-secondary btn-icon"
-            onClick={props.onClose}
-            aria-label="Cerrar entidad"
-            title="Cerrar"
-          >
-            <X size={18} />
-          </button>
-        </div>,
-        heroElement,
-      )}
+      <StandardEntityDetailModal
+        {...props}
+        heroActions={imageUrl ? (
+          <>
+            <button
+              type="button"
+              className="btn btn-secondary btn-icon"
+              onPointerDown={(event) => event.stopPropagation()}
+              onMouseDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                setIsAdjusting(true);
+              }}
+              aria-label="Ajustar encuadre"
+              title="Ajustar encuadre"
+            >
+              <Focus size={16} />
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-secondary btn-icon"
+              onPointerDown={(event) => event.stopPropagation()}
+              onMouseDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                setIsExpanded(true);
+              }}
+              aria-label="Ver imagen completa"
+              title="Ver imagen completa"
+            >
+              <Expand size={16} />
+            </button>
+          </>
+        ) : null}
+      />
       {isAdjusting && imageUrl && (
         <ImageFocusDialog
           imageUrl={imageUrl}

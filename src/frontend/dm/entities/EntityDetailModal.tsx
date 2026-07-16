@@ -33,6 +33,7 @@ interface EntityDetailModalProps {
   onArchive: (entityId: string) => Promise<void>;
   onVisibilityChange: (entityId: string, visibility: VisibilityRule) => Promise<void>;
   addToast: (msg: string, kind?: ToastKind) => void;
+  heroActions?: React.ReactNode;
 }
 
 type TabId = "resumen" | "relaciones" | "hechos" | "trazabilidad";
@@ -1047,6 +1048,7 @@ export function EntityDetailModal({
   onArchive,
   onVisibilityChange,
   addToast,
+  heroActions,
 }: EntityDetailModalProps) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabId>("resumen");
@@ -1180,8 +1182,31 @@ export function EntityDetailModal({
               right: 0,
               height: "80px",
               background: "linear-gradient(to top, var(--bg-card), transparent)",
+              pointerEvents: "none",
             }}
           />
+
+          <div
+            className="entity-detail-hero-controls"
+            onPointerDown={(event) => event.stopPropagation()}
+            onMouseDown={(event) => event.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
+          >
+            {heroActions}
+
+            <button
+              type="button"
+              className="btn btn-secondary btn-icon entity-detail-hero-close"
+              onClick={(event) => {
+                event.stopPropagation();
+                onClose();
+              }}
+              aria-label={t("common.close")}
+              title={t("common.close")}
+            >
+              <X size={18} />
+            </button>
+          </div>
         </div>
 
         {/* Header */}
@@ -1198,9 +1223,6 @@ export function EntityDetailModal({
               <h4 className="card-subtitle">{selectedEntity.subtitle}</h4>
             )}
           </div>
-          <button className="btn btn-icon btn-secondary" onClick={onClose}>
-            <X size={18} />
-          </button>
         </div>
 
         {/* Tab bar */}
