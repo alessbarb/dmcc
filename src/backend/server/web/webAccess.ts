@@ -17,21 +17,6 @@ export function isDmRole(role?: string | null): boolean {
   return role === "dm" || role === "co_dm";
 }
 
-function getExpectedAuthErrorStatusCode(error: unknown): 401 | 403 | null {
-  if (error instanceof HttpError) {
-    return error.statusCode === 401 || error.statusCode === 403 ? error.statusCode : null;
-  }
-  if (error instanceof Error && "statusCode" in error) {
-    const statusCode = (error as { statusCode?: unknown }).statusCode;
-    return statusCode === 401 || statusCode === 403 ? statusCode : null;
-  }
-  return null;
-}
-
-function getSafeErrorMessage(error: unknown): string {
-  return error instanceof Error && error.message ? error.message : "Authentication required";
-}
-
 export async function ensureDefaultWorkspace(user: WebUser): Promise<string> {
   const existing = await db
     .select({ workspaceId: schema.workspaceMemberships.workspaceId })

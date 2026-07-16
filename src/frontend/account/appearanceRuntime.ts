@@ -107,14 +107,3 @@ export async function hydrateAccountAppearance(): Promise<void> {
     // Public and signed-out routes intentionally keep the bootstrapped local appearance.
   }
 }
-
-function disposeDeviceAppearance(): void {
-  documentController?.dispose();
-  documentController = undefined;
-  accountAppearance = DEFAULT_APPEARANCE;
-  deviceOverrides = {};
-  if (listeningForChanges) {
-    window.removeEventListener(DEVICE_PREFERENCES_CHANGED_EVENT, handleDevicePreferencesChanged);
-    listeningForChanges = false;
-  }
-}
