@@ -1,13 +1,12 @@
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
 
 const routePath = new URL("../../src/backend/server/web/routes/playerCharacterSheetWebRoutes.ts", import.meta.url);
 const registerPath = new URL("../../src/backend/server/web/registerWebRoutes.ts", import.meta.url);
 const modalPath = new URL("../../src/frontend/dm/entities/PlayerCharacterDetailModal.tsx", import.meta.url);
 const wrapperPath = new URL("../../src/frontend/dm/entities/EntityDetailModal.js", import.meta.url);
 const bridgePath = new URL("../../src/frontend/dm/entities/EntityDetailModalBridge.jsx", import.meta.url);
-const stylesPath = new URL("../../src/frontend/dm/entities/playerCharacterDetail.css", import.meta.url);
 
 describe("player character sheet synchronization contract", () => {
   it("exposes one sheet endpoint backed by the same state used by the player portal", async () => {
@@ -39,16 +38,14 @@ describe("player character sheet synchronization contract", () => {
   });
 
   it("persists a focal point and offers a complete image view", async () => {
-    const [bridge, styles] = await Promise.all([
-      readFile(bridgePath, "utf8"),
-      readFile(stylesPath, "utf8"),
-    ]);
+    const bridge = await readFile(bridgePath, "utf8");
     expect(bridge).toContain("parseImageFocalPoint");
     expect(bridge).toContain("withImageFocalPoint");
     expect(bridge).toContain("--entity-detail-image-position");
     expect(bridge).toContain("EntityImageReframeDialog");
     expect(bridge).toContain("Ajustar encuadre");
     expect(bridge).toContain("Ver imagen completa");
+
     const imageDialogStyles = readFileSync(
       new URL(
         "../../src/frontend/shared/components/entityImageReframeDialog.css",
