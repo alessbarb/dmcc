@@ -1,23 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useDmHubDashboard } from "./useDmHubDashboard.js";
-import {
-  LogOut,
-  UserPlus,
-  UserRound,
-  Settings,
-  ChevronDown,
-} from "lucide-react";
 import { DmHubCampaignModals } from "./DmHubCampaignModals.js";
 import { DmHubCampaignsColumn } from "./DmHubCampaignsColumn.js";
 import { DmHubSidebar } from "./DmHubSidebar.js";
 import { DmHubHero } from "./DmHubHero.js";
+import { DmHubTopBar } from "./DmHubTopBar.js";
 import { logout } from "../../shared/auth/authClient.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 import { AccountModal } from "../../account/AccountModal.js";
 import { AppFooter } from "../../shared/components/AppFooter.js";
-import { PortalTopBar } from "../../shared/components/PortalTopBar.js";
 import { RpgPortalBackground } from "../../shared/components/RpgPortalBackground.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 
@@ -63,7 +56,6 @@ export function DmHubPage() {
   const [, setCampaignsFetched] = useState(false);
   const [landingSearchQuery, setLandingSearchQuery] = useState("");
   const [campaignFilter, setCampaignFilter] = useState("all");
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
@@ -105,8 +97,6 @@ export function DmHubPage() {
   const importingTemplateId = campaignTemplateImportState.status === "running" ? campaignTemplateImportState.templateId : null;
   const campaignTemplateImportError = campaignTemplateImportState.error ? t(campaignTemplateImportState.error) : null;
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
   const runDmHubAction = (operation: Promise<unknown>, errorMessage: string) => {
     void operation.catch((error: unknown) => {
       console.error(errorMessage, error);
@@ -138,17 +128,6 @@ export function DmHubPage() {
       console.error("No se pudo inicializar el hub de DM.", error);
     });
   }, [fetchCampaigns, fetchCampaignTemplates, navigate]);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && e.target instanceof Node && !dropdownRef.current.contains(e.target)) {
-        setIsUserDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   // ── Handlers ───────────────────────────────────────────────────────────────
 
@@ -384,57 +363,14 @@ export function DmHubPage() {
     <div className="dm-hub-root" style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <RpgPortalBackground />
 
-      {/* ── TOPBAR ── */}
-      <PortalTopBar actions={
-        <div className="dm-hub-topbar-actions">
-          <button
-            type="button"
-            className="dm-topbar-ghost-btn"
-            onClick={navigateToDmSetup}
-          >
-            <UserPlus size={13} />
-            {t("nav.addDm")}
-          </button>
-          <button
-            type="button"
-            className="dm-topbar-ghost-btn"
-            onClick={handleSwitchDm}
-          >
-            <UserRound size={13} />
-            {t("nav.switchDm")}
-          </button>
-
-          {/* User dropdown */}
-          <div ref={dropdownRef} style={{ position: "relative" }}>
-            <button
-              type="button"
-              className="dm-topbar-ghost-btn dm-topbar-user-btn"
-              onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-            >
-              <UserRound size={13} />
-              <span>{dmDisplayName}</span>
-              <ChevronDown size={11} style={{ opacity: 0.6 }} />
-            </button>
-            {isUserDropdownOpen && (
-              <div className="dm-user-dropdown animate-fade-in">
-                <div className="dm-user-dropdown__header">
-                  <p className="dm-user-dropdown__name">{dmDisplayName}</p>
-                  <p className="dm-user-dropdown__email">{dmProfile?.email}</p>
-                </div>
-                <button className="dm-user-dropdown__item" onClick={() => { setIsUserDropdownOpen(false); setIsAccountModalOpen(true); }}>
-                  <Settings size={13} />
-                  Gestionar cuenta
-                </button>
-                <div className="dm-user-dropdown__divider" />
-                <button className="dm-user-dropdown__item dm-user-dropdown__item--danger" onClick={() => { setIsUserDropdownOpen(false); handleSignOutDm(); }}>
-                  <LogOut size={13} />
-                  {t("nav.signOut")}
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      } />
+      <DmHubTopBar
+        dmProfile={dmProfile}
+        dmDisplayName={dmDisplayName}
+        onAddDm={navigateToDmSetup}
+        onSwitchDm={handleSwitchDm}
+        onOpenAccount={() => setIsAccountModalOpen(true)}
+        onSignOut={handleSignOutDm}
+      />
 
       {/* ── MAIN CONTENT ── */}
       <main className="dm-hub-main">
