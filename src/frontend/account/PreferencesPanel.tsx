@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { AccountPreferences } from "./accountTypes.js";
 import type { DeviceOverrides } from "./deviceOverrides.js";
+import { applyAccountAppearance } from "./appearanceRuntime.js";
 import {
   createAppearancePreviewController,
   type AppearancePreviewController,
@@ -36,6 +37,11 @@ export function PreferencesPanel({
   const isFormDirty = isDirty(preferences, draft);
 
   useEffect(() => {
+    setDraft(preferences);
+    applyAccountAppearance(preferences);
+  }, [preferences]);
+
+  useEffect(() => {
     (window as any).__accountCenterDirty = isFormDirty;
     return () => {
       (window as any).__accountCenterDirty = false;
@@ -59,6 +65,11 @@ export function PreferencesPanel({
     previewControllerRef.current?.apply(preview);
   }, [preview]);
 
+  const savePreferences = async () => {
+    await onSave(draft);
+    applyAccountAppearance(draft);
+  };
+
   return (
     <section aria-labelledby="appearance-title">
       <h2 id="appearance-title">{t("account.appearance.title")}</h2>
@@ -70,7 +81,7 @@ export function PreferencesPanel({
             onChange={(event) => setDraft({ ...draft, themeId: event.target.value })}
           >
             {[...themes.values()].map((theme) => (
-              <option key={theme.id} value={theme.id}>{theme.id}</option>
+              <option key={theme.id} value={theme.id}>{t(theme.labelKey)}</option>
             ))}
           </select>
         </label>
@@ -95,7 +106,7 @@ export function PreferencesPanel({
             onChange={(event) => setDraft({ ...draft, typographySetId: event.target.value })}
           >
             {[...typographySets.values()].map((set) => (
-              <option key={set.id} value={set.id}>{set.id}</option>
+              <option key={set.id} value={set.id}>{t(set.labelKey)}</option>
             ))}
           </select>
         </label>
@@ -132,7 +143,9 @@ export function PreferencesPanel({
           {t("account.appearance.previewText")}
         </p>
       </div>
-      <button type="button" onClick={() => void onSave(draft)}>{t("account.appearance.saveBtn")}</button>
+      <button type="button" onClick={() => void savePreferences()}>
+        {t("account.appearance.saveBtn")}
+      </button>
     </section>
   );
 }
