@@ -41,9 +41,42 @@ describe("theme-backed visual system", () => {
     expect(tokens.match(/--touch-target-min\s*:/g)).toHaveLength(1);
   });
 
+  it("uses only the v1 theme vocabulary in shared primitives", () => {
+    const primitives = read("src/frontend/shared/styles/primitives.css");
+    for (const retiredReference of [
+      "var(--bg-",
+      "var(--surface-",
+      "var(--accent-",
+      "var(--text-main",
+      "var(--text-muted",
+      "var(--text-primary",
+      "var(--text-secondary",
+      "var(--text-subtle",
+      "var(--semantic-",
+      "var(--border-color",
+      "var(--border-hover",
+      "var(--radius-",
+      "var(--shadow-",
+      "var(--focus-ring",
+      "var(--primary",
+      "var(--secondary",
+    ]) {
+      expect(primitives).not.toContain(retiredReference);
+    }
+    expect(primitives).toContain("var(--theme-surfaces-base)");
+    expect(primitives).toContain("var(--theme-borders-default)");
+    expect(primitives).toContain("var(--theme-text-primary)");
+  });
+
   it("defines the previously implicit fifth spacing step", () => {
     const tokens = read("src/frontend/shared/styles/tokens.css");
     expect(tokens).toContain("--space-5: 1.25rem");
+  });
+
+  it("lets runtime preferences and the operating system reduce motion", () => {
+    const primitives = read("src/frontend/shared/styles/primitives.css");
+    expect(primitives).toContain("@media (prefers-reduced-motion: reduce)");
+    expect(primitives).toContain(':root[data-reduced-motion="true"] *');
   });
 
   it("lets the resolved runtime mode control native color scheme", () => {
