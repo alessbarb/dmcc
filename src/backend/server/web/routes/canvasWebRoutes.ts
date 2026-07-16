@@ -6,6 +6,7 @@ import { createId } from "@shared/ids.js";
 import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { requireCampaignRole } from "../webAccess.js";
+import { requireIdempotencyKey } from "../idempotencyKey.js";
 
 type CanvasParams = { campaignId: string; canvasId: string };
 type NodeParams = CanvasParams & { nodeId: string };
@@ -56,9 +57,9 @@ async function executeCanvasCommand(
   repo: PostgresCampaignRepository,
 ) {
   const { user } = await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
-  const commandIdHeader = request.headers["idempotency-key"];
-  const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
+  let commandId: string;
   try {
+    commandId = requireIdempotencyKey(request);
     // HTTP boundary: command is assembled from DM-supplied fields; handleCommand validates
     // the concrete shape for `type` before producing any event.
     const projection = await repo.executeCommand(campaignId, {

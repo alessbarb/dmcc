@@ -5,6 +5,7 @@ import { campaignEventBus } from "../../realtime/campaignEventBus.js";
 import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { requireCampaignRole } from "../webAccess.js";
 import { writeCommandError } from "../commandErrorResponse.js";
+import { requireIdempotencyKey } from "../idempotencyKey.js";
 
 async function executeStoryCommand(
   request: FastifyRequest,
@@ -14,9 +15,9 @@ async function executeStoryCommand(
   repository: PostgresCampaignRepository,
 ) {
   const { user } = await requireCampaignRole(request, campaignId, ["dm", "co_dm"]);
-  const commandIdHeader = request.headers["idempotency-key"];
-  const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
+  let commandId: string;
   try {
+    commandId = requireIdempotencyKey(request);
     const projection = await repository.executeCommand(campaignId, {
       ...command,
       campaignId,

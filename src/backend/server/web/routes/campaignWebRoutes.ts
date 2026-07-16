@@ -14,6 +14,7 @@ import { PostgresCampaignRepository } from "../postgresCampaignRepository.js";
 import { moveCampaignToTrash } from "../../../operations/campaigns/campaignTrash.js";
 import { getRequiredWebUser } from "../webSession.js";
 import { ensureDefaultWorkspace, isDmRole, listAccessibleCampaigns, requireCampaignOwner, requireCampaignRole } from "../webAccess.js";
+import { requireIdempotencyKey } from "../idempotencyKey.js";
 
 type RequestBody = Record<string, unknown>;
 type DmCommandInput = { type: string } & RequestBody;
@@ -211,10 +212,10 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
       ...(request.body?.system ? { system: request.body.system } : {}),
       ...(request.body?.coverUrl ? { coverUrl: request.body.coverUrl } : {}),
     };
-    const commandIdHeader = request.headers["idempotency-key"];
-    const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
-
+    let commandId: string;
     try {
+      commandId = requireIdempotencyKey(request);
+
       await db.transaction(async (tx) => {
         await tx.insert(schema.campaigns).values({ campaignId, title, summary: request.body?.summary ?? null, workspaceId, ownerId: user.userId, status: "active", metadata });
         await tx.insert(schema.campaignMemberships).values({ campaignId, userId: user.userId, role: "dm", playerId: null }).onConflictDoNothing();
@@ -293,10 +294,13 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
 
   server.post<{ Params: { campaignId: string }; Body: CampaignCommandBody }>("/api/campaigns/:campaignId/commands", async (request, reply) => {
     const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const commandId = request.headers["idempotency-key"];
-    if (!commandId || Array.isArray(commandId)) {
-      reply.code(400);
-      return { error: "Idempotency-Key header is required" };
+    let commandId: string;
+    try {
+      commandId = requireIdempotencyKey(request);
+    } catch (error) {
+      const payload = commandErrorPayload(error);
+      reply.code(payload.statusCode);
+      return { error: payload.message };
     }
     // HTTP boundary: raw request body, not yet validated against the Command union.
     // The command bus (handleCommand) validates shape/type before any event is produced.
@@ -314,9 +318,9 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
 
   async function executeDmCommand(request: FastifyRequest<{ Params: { campaignId: string }; Body?: RequestBody }>, reply: FastifyReply, command: DmCommandInput) {
     const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
-    const commandIdHeader = request.headers["idempotency-key"];
-    const commandId = Array.isArray(commandIdHeader) ? commandIdHeader[0] : commandIdHeader ?? createId("cmd");
+    let commandId: string;
     try {
+      commandId = requireIdempotencyKey(request);
       // HTTP boundary: command is assembled from DM-supplied fields; handleCommand validates
       // the concrete shape for `type` before producing any event.
       const projection = await repo.executeCommand(request.params.campaignId, { ...command, campaignId: request.params.campaignId, actorId: user.userId } as Command, { commandId, actorUserId: user.userId });

@@ -369,13 +369,12 @@ export function createServer(config?: ServerConfig): FastifyInstance {
   }
 
   server.addHook("onRequest", (request, _reply, done) => {
-    const commandId =
+    const requestContextId =
       getSingleHeader(request.headers["idempotency-key"]) ??
-      getSingleHeader(request.headers["command-id"]) ??
+      getSingleHeader(request.headers["x-request-id"]) ??
       randomUUID();
 
-    request.headers["command-id"] = commandId;
-    requestContextStore.run({ commandId, counter: 0 }, done);
+    requestContextStore.run({ commandId: requestContextId, counter: 0 }, done);
   });
 
   server.addHook("preValidation", async (request, reply) => {

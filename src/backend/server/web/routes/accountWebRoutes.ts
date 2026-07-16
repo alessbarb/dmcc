@@ -153,6 +153,45 @@ function bodyString(value: unknown): string | undefined {
   return typeof value === "string" ? value.trim() : undefined;
 }
 
+function normalizePublicHandle(value: unknown): string | null {
+  const raw = bodyString(value);
+  if (!raw) return null;
+  const normalized = raw.replace(/^@+/, "").toLowerCase();
+  if (!/^[a-z0-9][a-z0-9_-]{2,31}$/.test(normalized)) {
+    throw Object.assign(new Error("Public handle must be 3-32 lowercase letters, numbers, underscores or hyphens"), { statusCode: 400, field: "publicHandle" });
+  }
+  return normalized;
+}
+
+function isProfileConflict(error: unknown): error is Error & { statusCode: number; field?: string } {
+  return error instanceof Error && "statusCode" in error && typeof error.statusCode === "number";
+}
+
+async function assertPublicHandleAvailable(
+  publicHandle: string | null,
+  owner: { dmUserId?: string; playerProfileId?: string },
+): Promise<void> {
+  if (!publicHandle) return;
+
+  const [dmProfile] = await db.select().from(schema.dmProfiles).where(eq(schema.dmProfiles.publicHandle, publicHandle)).limit(1);
+  if (dmProfile && dmProfile.userId !== owner.dmUserId) {
+    throw Object.assign(new Error("Public handle is already in use"), { statusCode: 409, field: "publicHandle" });
+  }
+
+  const [playerProfile] = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.publicHandle, publicHandle)).limit(1);
+  if (playerProfile && playerProfile.profileId !== owner.playerProfileId) {
+    throw Object.assign(new Error("Public handle is already in use"), { statusCode: 409, field: "publicHandle" });
+  }
+}
+
+function expectedProfileVersion(value: unknown): number | null {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0 ? value : null;
+}
+
+function profileWriteConflict() {
+  return { error: "Profile was modified by another request", field: "version" };
+}
+
 async function verifyCurrentPassword(user: typeof schema.users.$inferSelect, currentPassword: unknown): Promise<boolean> {
   if (typeof currentPassword !== "string" || currentPassword.length === 0) return false;
   return argon2.verify(user.passwordHash, currentPassword).catch(() => false);
@@ -270,9 +309,30 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
     return { preferences };
   });
 
-  server.put<{ Body: EditableSocialProfile }>("/api/account/profiles/dm", async (request) => {
+  server.put<{ Body: EditableSocialProfile }>("/api/account/profiles/dm", async (request, reply) => {
     const webUser = getRequiredWebUser(request);
     const body = request.body;
+    let publicHandle: string | null;
+    try {
+      publicHandle = normalizePublicHandle(body.publicHandle);
+      await assertPublicHandleAvailable(publicHandle, { dmUserId: webUser.userId });
+    } catch (error) {
+      if (!isProfileConflict(error)) throw error;
+      reply.code(error.statusCode);
+      return { error: error.message, field: error.field };
+    }
+
+    const [existing] = await db.select().from(schema.dmProfiles).where(eq(schema.dmProfiles.userId, webUser.userId)).limit(1);
+    const expectedVersion = expectedProfileVersion(body.version);
+    if (existing && expectedVersion !== existing.version) {
+      reply.code(409);
+      return profileWriteConflict();
+    }
+    if (!existing && expectedVersion !== null && expectedVersion !== 0) {
+      reply.code(409);
+      return profileWriteConflict();
+    }
+
     const displayName = bodyString(body.displayName) || webUser.displayName || webUser.email;
     const values = {
       userId: webUser.userId,
@@ -282,13 +342,26 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
       timeZone: body.timeZone ?? null,
       biography: body.biography ?? null,
       contact: body.contact ?? null,
-      publicHandle: body.publicHandle ?? null,
+      publicHandle,
       publicationState: body.publicationState ?? "private",
       visibility: body.visibility ?? defaultVisibility(),
-      version: (body.version ?? 0) + 1,
+      version: (existing?.version ?? 0) + 1,
       updatedAt: new Date(),
     };
-    await db.insert(schema.dmProfiles).values(values).onConflictDoUpdate({ target: schema.dmProfiles.userId, set: values });
+
+    if (existing) {
+      const updated = await db.update(schema.dmProfiles).set(values).where(and(
+        eq(schema.dmProfiles.userId, webUser.userId),
+        eq(schema.dmProfiles.version, existing.version),
+      )).returning();
+      if (updated.length === 0) {
+        reply.code(409);
+        return profileWriteConflict();
+      }
+    } else {
+      await db.insert(schema.dmProfiles).values(values);
+    }
+
     return { profile: { ...body, ...values } };
   });
 
@@ -319,6 +392,27 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
         .limit(1);
       const profileId = existing[0]?.profileId ?? membership[0].playerId ?? createId("ply");
       const body = request.body;
+      let publicHandle: string | null;
+      try {
+        publicHandle = normalizePublicHandle(body.publicHandle);
+        await assertPublicHandleAvailable(publicHandle, { playerProfileId: profileId });
+      } catch (error) {
+        if (!isProfileConflict(error)) throw error;
+        reply.code(error.statusCode);
+        return { error: error.message, field: error.field };
+      }
+
+      const current = existing[0];
+      const expectedVersion = expectedProfileVersion(body.version);
+      if (current && expectedVersion !== current.version) {
+        reply.code(409);
+        return profileWriteConflict();
+      }
+      if (!current && expectedVersion !== null && expectedVersion !== 0) {
+        reply.code(409);
+        return profileWriteConflict();
+      }
+
       const values = {
         profileId,
         campaignId: request.params.campaignId,
@@ -327,15 +421,22 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
         pronouns: body.pronouns ?? null,
         biography: body.biography ?? null,
         contact: body.contact ?? null,
-        linkedCharacterId: null,
-        publicHandle: body.publicHandle ?? null,
+        linkedCharacterId: current?.linkedCharacterId ?? null,
+        publicHandle,
         publicationState: body.publicationState ?? "private",
         visibility: body.visibility ?? defaultVisibility(),
-        version: (body.version ?? 0) + 1,
+        version: (current?.version ?? 0) + 1,
         updatedAt: new Date(),
       };
-      if (existing[0]) {
-        await db.update(schema.playerProfiles).set(values).where(eq(schema.playerProfiles.profileId, profileId));
+      if (current) {
+        const updated = await db.update(schema.playerProfiles).set(values).where(and(
+          eq(schema.playerProfiles.profileId, profileId),
+          eq(schema.playerProfiles.version, current.version),
+        )).returning();
+        if (updated.length === 0) {
+          reply.code(409);
+          return profileWriteConflict();
+        }
       } else {
         await db.insert(schema.playerProfiles).values(values);
       }
