@@ -1498,7 +1498,7 @@ export const en = {
     backToCampaigns: "Back to campaigns",
     notFoundTitle: "I can’t find this example campaign",
     notFoundDesc:
-      "The template may not exist or the premade catalog may be unavailable.",
+      "The template may not exist or the campaign template catalog may be unavailable.",
     statsLabel: "Example campaign summary",
     entities: "Entities",
     relations: "Relations",

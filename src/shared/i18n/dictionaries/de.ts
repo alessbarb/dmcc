@@ -1242,7 +1242,7 @@ export const de: TranslationDictionary = {
     importing: "Kopie wird erstellt…",
     backToCampaigns: "Zurück zu Kampagnen",
     notFoundTitle: "Diese Beispielkampagne wurde nicht gefunden",
-    notFoundDesc: "Das Template existiert möglicherweise nicht oder der Premade-Katalog ist nicht verfügbar.",
+    notFoundDesc: "Das Template existiert möglicherweise nicht oder der Katalog für Kampagnenvorlagen ist nicht verfügbar.",
     statsLabel: "Zusammenfassung der Beispielkampagne",
     entities: "Entitäten",
     relations: "Beziehungen",

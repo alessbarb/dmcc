@@ -549,7 +549,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     try {
       const res = await listCampaignTemplates(locale);
       if (!res.ok) {
-        const message = await readApiError(res, "Failed to fetch premade campaigns");
+        const message = await readApiError(res, "Failed to fetch campaign templates");
         throw new Error(message);
       }
       const data = await res.json();
@@ -565,7 +565,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     try {
       const res = await getCampaignTemplate(templateId, locale);
       if (!res.ok) {
-        const message = await readApiError(res, "Failed to fetch premade campaign");
+        const message = await readApiError(res, "Failed to fetch campaign template");
         throw new Error(message);
       }
       const template = await res.json() as CampaignTemplate;
@@ -597,7 +597,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         "Idempotency-Key": operationId,
       });
       if (!res.ok) {
-        const message = await readApiError(res, "Failed to import premade campaign");
+        const message = await readApiError(res, "Failed to import campaign template");
         throw new Error(message);
       }
 
@@ -636,7 +636,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
             },
           }));
         } else if (event.type === "error") {
-          throw new Error(event.messageKey || "Failed to import premade campaign");
+          throw new Error(event.messageKey || "Failed to import campaign template");
         }
       });
 

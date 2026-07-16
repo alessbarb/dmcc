@@ -57,7 +57,7 @@ function normalizeText(value: unknown): string {
 /**
  * Reads a free-text field from the campaign's metadata bag. `Campaign` itself
  * only has `summary` as a canonical premise field; `description`/`pitch`/`notes`
- * are optional author-supplied metadata keys some premade templates use.
+ * are optional author-supplied metadata keys some campaign templates use.
  * (Previously this read `campaign.description`/`.pitch`/`.notes` directly,
  * which are not fields on `Campaign` and were therefore always `undefined` —
  * dead checks. Reading them from `metadata` makes them actually functional.)
