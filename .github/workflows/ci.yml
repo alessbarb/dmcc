@@ -15,7 +15,7 @@ concurrency:
 jobs:
   quality:
     name: Typecheck, test and build
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-latest
 
     services:
       postgres:
@@ -25,7 +25,7 @@ jobs:
           POSTGRES_PASSWORD: dmcc_password
           POSTGRES_DB: dmcc_test
         ports:
-          - 55432:5432
+          - 5432:5432
         options: >-
           --health-cmd "pg_isready -U dmcc -d dmcc_test"
           --health-interval 1s
@@ -33,7 +33,7 @@ jobs:
           --health-retries 20
 
     env:
-      DATABASE_URL: postgresql://dmcc:dmcc_password@127.0.0.1:55432/dmcc_test
+      DATABASE_URL: postgresql://dmcc:dmcc_password@127.0.0.1:5432/dmcc_test
       DATABASE_SSL_MODE: disable
       SESSION_SECRET: dmcc-ci-session-secret-2026-07-11-only-for-automated-tests
 
@@ -73,7 +73,7 @@ jobs:
 
   e2e:
     name: Browser smoke tests
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-24.04
 
     services:
       postgres:
@@ -83,7 +83,7 @@ jobs:
           POSTGRES_PASSWORD: dmcc_password
           POSTGRES_DB: dmcc_test
         ports:
-          - 55433:5432
+          - 5432:5432
         options: >-
           --health-cmd "pg_isready -U dmcc -d dmcc_test"
           --health-interval 1s
@@ -91,7 +91,7 @@ jobs:
           --health-retries 20
 
     env:
-      DATABASE_URL: postgresql://dmcc:dmcc_password@127.0.0.1:55433/dmcc_test
+      DATABASE_URL: postgresql://dmcc:dmcc_password@127.0.0.1:5432/dmcc_test
       DATABASE_SSL_MODE: disable
       SESSION_SECRET: dmcc-ci-session-secret-2026-07-11-only-for-automated-tests
 
@@ -124,20 +124,12 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ steps.playwright-version.outputs.version }}
 
+      - name: Install Playwright system dependencies
+        run: npx playwright install-deps chromium
+
       - name: Install Playwright Chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install chromium
-
-      - name: Stop stale end-to-end server
-        run: |
-          if command -v fuser >/dev/null 2>&1; then
-            fuser -k 4877/tcp || true
-          elif command -v lsof >/dev/null 2>&1; then
-            pids="$(lsof -ti tcp:4877 || true)"
-            if [ -n "$pids" ]; then
-              kill $pids || true
-            fi
-          fi
 
       - name: End-to-end tests
         run: npm run test:e2e
