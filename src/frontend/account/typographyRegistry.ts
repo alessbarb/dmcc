@@ -13,7 +13,7 @@ export type TypographyPackage = {
 const defaultTypography: TypographyPackage = {
   id: "cinzel-outfit",
   contractVersion: 1,
-  labelKey: "accountCenter.appearance.typographyDefault",
+  labelKey: "account.appearance.typographyDefault",
   headingFamily: '"Cinzel", Georgia, serif',
   bodyFamily: '"Outfit", Inter, system-ui, sans-serif',
   monoFamily: "ui-monospace, monospace",

@@ -15,133 +15,31 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light dark;
 
   --font-display: "Cinzel", Georgia, "Times New Roman", serif;
   --font-sans: "Outfit", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 
-  --bg-abyss: hsl(228 36% 6%);
-  --bg-mist: hsl(226 25% 10%);
-  --bg-tomb: hsl(224 21% 14%);
-  --surface-raised: hsl(224 20% 17%);
-  --surface-hover: hsl(222 20% 20%);
-  --surface-glass: hsl(225 24% 11% / 0.88);
-
-  --accent-fire: hsl(38 66% 62%);
-  --accent-fire-hover: hsl(39 76% 70%);
-  --accent-fire-soft: hsl(38 66% 62% / 0.14);
-  --accent-amethyst: hsl(270 52% 70%);
-  --accent-amethyst-soft: hsl(270 52% 70% / 0.14);
-
-  --text-primary: hsl(42 30% 94%);
-  --text-secondary: hsl(35 18% 78%);
-  --text-subtle: hsl(32 12% 66%);
-  --text-inverse: hsl(228 36% 8%);
-
-  --semantic-secret: hsl(277 58% 72%);
-  --semantic-secret-soft: hsl(277 58% 72% / 0.14);
-  --semantic-rumor: hsl(193 55% 65%);
-  --semantic-rumor-soft: hsl(193 55% 65% / 0.13);
-  --semantic-canon: hsl(38 66% 62%);
-  --semantic-canon-soft: hsl(38 66% 62% / 0.14);
-  --semantic-theory: hsl(219 66% 72%);
-  --semantic-theory-soft: hsl(219 66% 72% / 0.13);
-  --semantic-consequence: hsl(8 70% 69%);
-  --semantic-consequence-soft: hsl(8 70% 69% / 0.13);
-  --semantic-success: hsl(145 48% 61%);
-  --semantic-success-soft: hsl(145 48% 61% / 0.13);
-  --semantic-warning: hsl(44 78% 65%);
-  --semantic-warning-soft: hsl(44 78% 65% / 0.13);
-  --semantic-info: hsl(204 66% 68%);
-  --semantic-info-soft: hsl(204 66% 68% / 0.13);
-  --semantic-danger: hsl(3 72% 68%);
-  --semantic-danger-soft: hsl(3 72% 68% / 0.13);
-
-  --entity-player: hsl(238 78% 74%);
-  --entity-player-soft: hsl(238 78% 74% / 0.16);
-  --entity-npc: hsl(255 70% 72%);
-  --entity-npc-soft: hsl(255 70% 72% / 0.16);
-  --entity-location: hsl(158 52% 58%);
-  --entity-location-soft: hsl(158 52% 58% / 0.16);
-  --entity-faction: hsl(230 70% 68%);
-  --entity-faction-soft: hsl(230 70% 68% / 0.16);
-  --entity-quest: hsl(43 85% 60%);
-  --entity-quest-soft: hsl(43 85% 60% / 0.16);
-  --entity-clue: hsl(185 75% 55%);
-  --entity-clue-soft: hsl(185 75% 55% / 0.16);
-  --entity-secret: hsl(285 70% 65%);
-  --entity-secret-soft: hsl(285 70% 65% / 0.16);
-  --entity-item: hsl(35 85% 55%);
-  --entity-item-soft: hsl(35 85% 55% / 0.16);
-  --entity-creature: hsl(355 65% 50%);
-  --entity-creature-soft: hsl(355 65% 50% / 0.16);
-  --entity-encounter: hsl(190 58% 52%);
-  --entity-encounter-soft: hsl(190 58% 52% / 0.16);
-  --entity-scene: hsl(215 18% 64%);
-  --entity-scene-soft: hsl(215 18% 64% / 0.16);
-  --entity-front: hsl(264 64% 68%);
-  --entity-front-soft: hsl(264 64% 68% / 0.16);
-  --entity-clock: hsl(199 70% 61%);
-  --entity-clock-soft: hsl(199 70% 61% / 0.16);
-  --entity-decision: hsl(35 66% 57%);
-  --entity-decision-soft: hsl(35 66% 57% / 0.16);
-  --entity-consequence: var(--semantic-consequence);
-  --entity-consequence-soft: var(--semantic-consequence-soft);
-  --entity-rumor: hsl(210 20% 65%);
-  --entity-rumor-soft: hsl(210 20% 65% / 0.16);
-  --entity-reference: hsl(218 12% 61%);
-  --entity-reference-soft: hsl(218 12% 61% / 0.16);
-  --entity-handout: hsl(217 72% 66%);
-  --entity-handout-soft: hsl(217 72% 66% / 0.16);
-  --entity-note: hsl(216 13% 63%);
-  --entity-note-soft: hsl(216 13% 63% / 0.16);
-
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
+  --space-5: 1.25rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-12: 3rem;
-
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-narrative: 1rem 0.5rem 1rem 0.5rem;
-  --radius-full: 9999px;
-
-  --shadow-sm: 0 1px 2px hsl(228 60% 2% / 0.55);
-  --shadow-md: 0 8px 24px hsl(228 60% 2% / 0.34);
-  --shadow-lg: 0 18px 46px hsl(228 60% 2% / 0.48);
-  --shadow-primary: 0 0 24px hsl(38 66% 62% / 0.2);
-  --focus-ring: 0 0 0 3px hsl(38 78% 65% / 0.38);
 
   --transition-fast: 140ms ease;
   --transition-normal: 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
   --touch-target-min: 44px;
   --app-footer-height: 64px;
+}
 
-  /* Compatibility aliases retained during the incremental migration. */
-  --bg-main: var(--bg-abyss);
-  --bg-card: var(--bg-mist);
-  --bg-card-hover: var(--surface-hover);
-  --bg-input: var(--bg-tomb);
-  --border-color: hsl(36 20% 28%);
-  --border-hover: hsl(37 30% 42%);
-  --text-main: var(--text-primary);
-  --text-muted: var(--text-secondary);
-  --primary: var(--accent-fire);
-  --primary-hover: var(--accent-fire-hover);
-  --primary-light: var(--accent-fire-soft);
-  --secondary: var(--accent-amethyst);
-  --secondary-hover: hsl(270 60% 78%);
-  --color-critical: var(--semantic-danger);
-  --color-critical-bg: var(--semantic-danger-soft);
-  --color-warning: var(--semantic-warning);
-  --color-warning-bg: var(--semantic-warning-soft);
-  --color-success: var(--semantic-success);
-  --color-success-bg: var(--semantic-success-soft);
-  --color-info: var(--semantic-info);
-  --color-info-bg: var(--semantic-info-soft);
+:root[data-color-mode="dark"] {
+  color-scheme: dark;
+}
+
+:root[data-color-mode="light"] {
+  color-scheme: light;
 }

@@ -723,8 +723,8 @@ export function CanvasInspector({
                 </div>
 
                 {entity.visibility?.kind === "players" && campaignState?.players && (
-                  <div className="form-group inspector-players-visibility" style={{ marginTop: "0px", marginBottom: "16px", padding: "10px", backgroundColor: "var(--bg-input)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
-                    <label style={{ fontSize: "11px", fontWeight: "700", color: "var(--text-muted)", marginBottom: "8px", display: "block", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  <div className="form-group inspector-players-visibility" style={{ marginTop: "0px", marginBottom: "16px", padding: "10px", backgroundColor: "var(--theme-surfaces-interactive)", borderRadius: "var(--theme-shapes-radius-small)", border: "1px solid var(--theme-borders-default)" }}>
+                    <label style={{ fontSize: "11px", fontWeight: "700", color: "var(--theme-text-secondary)", marginBottom: "8px", display: "block", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                       Revelado a los jugadores:
                     </label>
                     <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "140px", overflowY: "auto" }}>
@@ -732,7 +732,7 @@ export function CanvasInspector({
                         const currentIds = entity.visibility.kind === "players" ? entity.visibility.playerIds : [];
                         const isChecked = currentIds.includes(p.playerId);
                         return (
-                          <label key={p.playerId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--text-main)" }}>
+                          <label key={p.playerId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--theme-text-primary)" }}>
                             <input
                               type="checkbox"
                               checked={isChecked}
@@ -818,8 +818,8 @@ export function CanvasInspector({
                 </div>
 
                 {entity.entityType === "scene" && (
-                  <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px", marginTop: "12px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <h3 style={{ fontSize: "11px", fontWeight: "700", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0" }}>
+                  <div style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: "12px", marginTop: "12px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                    <h3 style={{ fontSize: "11px", fontWeight: "700", color: "var(--theme-text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0" }}>
                       Preparación de Escena:
                     </h3>
                     <div className="form-group">
@@ -865,14 +865,14 @@ export function CanvasInspector({
                 )}
 
                 {entity.entityType === "secret" && campaignState?.entities && (
-                  <div className="form-group" style={{ borderTop: "1px solid var(--border-color)", paddingTop: "12px", marginTop: "12px" }}>
-                    <label style={{ fontSize: "11px", fontWeight: "700", color: "var(--text-muted)", marginBottom: "8px", display: "block", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  <div className="form-group" style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: "12px", marginTop: "12px" }}>
+                    <label style={{ fontSize: "11px", fontWeight: "700", color: "var(--theme-text-secondary)", marginBottom: "8px", display: "block", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                       Anclas de Revelación:
                     </label>
                     <div className="text-muted" style={{ fontSize: "11px", marginBottom: "8px" }}>
                       Elige qué elementos de la campaña disparan la revelación de este secreto.
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "150px", overflowY: "auto", padding: "8px", backgroundColor: "var(--bg-input)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-color)" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "150px", overflowY: "auto", padding: "8px", backgroundColor: "var(--theme-surfaces-interactive)", borderRadius: "var(--theme-shapes-radius-small)", border: "1px solid var(--theme-borders-default)" }}>
                       {campaignState.entities
                         .filter((e: Entity) => !e.archived && e.entityId !== entity.entityId && ["clue", "location", "npc"].includes(e.entityType))
                         .map((e: Entity) => {
@@ -881,7 +881,7 @@ export function CanvasInspector({
                             : [];
                           const isChecked = currentAnchors.includes(e.entityId);
                           return (
-                            <label key={e.entityId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--text-main)" }}>
+                            <label key={e.entityId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--theme-text-primary)" }}>
                               <input
                                 type="checkbox"
                                 checked={isChecked}

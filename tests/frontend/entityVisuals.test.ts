@@ -13,8 +13,12 @@ describe("entity visuals", () => {
         labelKey: `domain.entityTypes.${type}`,
       });
       expect(ENTITY_VISUALS[type].icon).toBeTypeOf("object");
-      expect(ENTITY_VISUALS[type].accent).toMatch(/^var\(--entity-/);
-      expect(ENTITY_VISUALS[type].accentSoft).toMatch(/^var\(--entity-/);
+      expect(ENTITY_VISUALS[type].accent).toMatch(
+        /^var\(--theme-entities-[a-z-]+-foreground\)$/,
+      );
+      expect(ENTITY_VISUALS[type].accentSoft).toMatch(
+        /^var\(--theme-entities-[a-z-]+-background\)$/,
+      );
     }
   });
 

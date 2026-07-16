@@ -528,7 +528,7 @@ export function DmHubPage() {
         </header>
 
         <nav className="dm-hub-mobile-actions" aria-label="Acciones rápidas de campañas">
-          <button type="button" className="dm-hub-mobile-action dm-hub-mobile-action--primary" onClick={() => setIsCreateModalOpen(true)}>
+          <button type="button" className="dm-hub-mobile-action dm-hub-mobile-action--theme-accents-primary-foreground" onClick={() => setIsCreateModalOpen(true)}>
             <Plus size={16} />
             <span>Nueva</span>
           </button>
@@ -600,10 +600,10 @@ export function DmHubPage() {
               ) : campaigns.length === 0 ? (
                 <div className="dm-empty-state">
                   <Shield size={32} style={{ color: "var(--accent)", opacity: 0.5, marginBottom: "12px" }} />
-                  <p style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--text-main)" }}>
+                  <p style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--theme-text-primary)" }}>
                     Todavía no tienes campañas
                   </p>
-                  <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: 1.5, display: "block", margin: "8px 0 20px", maxWidth: "380px" }}>
+                  <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", lineHeight: 1.5, display: "block", margin: "8px 0 20px", maxWidth: "380px" }}>
                     Crea tu primera campaña desde cero, usa una aventura preparada o restaura una copia de seguridad.
                   </span>
                   <div className="dm-empty-state__actions">
@@ -1042,7 +1042,7 @@ export function DmHubPage() {
             </div>
             {backupRestoreState === "success" ? (
               <div style={{ textAlign: "center", padding: "24px 0" }}>
-                <p style={{ color: "var(--color-success, #4ade80)", fontWeight: 700, fontSize: "1rem" }}>
+                <p style={{ color: "var(--theme-feedback-success-foreground, #4ade80)", fontWeight: 700, fontSize: "1rem" }}>
                   ✓ Copia restaurada correctamente
                 </p>
                 <button type="button" className="btn btn-secondary btn-sm" style={{ marginTop: "12px" }} onClick={() => { setIsRestoreModalOpen(false); setBackupRestoreState("idle"); }}>
@@ -1253,10 +1253,10 @@ export function DmHubPage() {
                     backgroundSize: "cover", backgroundPosition: "center",
                   }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ margin: 0, fontWeight: 700, fontSize: "0.85rem", color: "var(--text-main)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <p style={{ margin: 0, fontWeight: 700, fontSize: "0.85rem", color: "var(--theme-text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {c.title}
                     </p>
-                    <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--text-muted)" }}>
+                    <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--theme-text-secondary)" }}>
                       {formatCampaignSystem(c.system)} · Sesión {c.stats?.sessionsCount ?? 0}
                     </p>
                   </div>

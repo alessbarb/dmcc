@@ -47,7 +47,7 @@ export function InvitationListPage() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <header style={{ marginBottom: "32px" }}>
           <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Invitations</h1>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+          <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
             Review and revoke campaign invitation links across the platform.
           </p>
         </header>
@@ -64,7 +64,7 @@ export function InvitationListPage() {
           alignItems: "center",
           gap: "16px",
           marginBottom: "24px",
-          backgroundColor: "var(--bg-card)",
+          backgroundColor: "var(--theme-surfaces-base)",
           padding: "16px",
           borderRadius: "12px",
           border: "1px solid var(--border)",
@@ -81,7 +81,7 @@ export function InvitationListPage() {
                   padding: "8px 16px",
                   borderRadius: "8px",
                   backgroundColor: activeOnly === opt.key ? "var(--gold)" : "rgba(255,255,255,0.03)",
-                  color: activeOnly === opt.key ? "var(--bg-main)" : "inherit",
+                  color: activeOnly === opt.key ? "var(--theme-surfaces-canvas)" : "inherit",
                   border: "1px solid var(--border)",
                   cursor: "pointer",
                   fontSize: "0.85rem",
@@ -95,15 +95,15 @@ export function InvitationListPage() {
         </div>
 
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--text-muted)" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
             Loading invitations...
           </div>
         ) : invitations.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--text-muted)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
             No invitations found.
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
@@ -122,7 +122,7 @@ export function InvitationListPage() {
                   return (
                     <tr key={inv.invitationId} style={{ borderBottom: "1px solid var(--border)" }}>
                       <td style={{ padding: "16px" }}>
-                        <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{inv.campaignId}</div>
+                        <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>{inv.campaignId}</div>
                       </td>
                       <td style={{ padding: "16px", textTransform: "capitalize" }}>{inv.role.replace("_", " ")}</td>
                       <td style={{ padding: "16px" }}>{inv.usesCount} / {inv.maxUses}</td>
@@ -134,7 +134,7 @@ export function InvitationListPage() {
                           fontSize: "0.75rem",
                           fontWeight: 600,
                           backgroundColor: revoked ? "rgba(220, 53, 69, 0.1)" : expired ? "rgba(255,255,255,0.05)" : "rgba(40, 167, 69, 0.1)",
-                          color: revoked ? "var(--red)" : expired ? "var(--text-muted)" : "var(--green)",
+                          color: revoked ? "var(--red)" : expired ? "var(--theme-text-secondary)" : "var(--green)",
                           border: `1px solid ${revoked ? "rgba(220, 53, 69, 0.3)" : expired ? "var(--border)" : "rgba(40, 167, 69, 0.3)"}`,
                         }}>
                           {revoked ? "Revoked" : expired ? "Expired" : "Active"}

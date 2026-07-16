@@ -31,7 +31,7 @@ export function OperationsOverviewPage() {
         <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
           <div>
             <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>System Dashboard</h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
               Real-time platform metrics and operations monitoring.
             </p>
           </div>
@@ -45,7 +45,7 @@ export function OperationsOverviewPage() {
               gap: "8px",
               padding: "8px 16px",
               borderRadius: "8px",
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "var(--theme-surfaces-base)",
               border: "1px solid var(--border)",
               color: "inherit",
               cursor: "pointer",
@@ -65,14 +65,14 @@ export function OperationsOverviewPage() {
         )}
 
         {loading && !metrics ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--text-muted)" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
             Loading metrics...
           </div>
         ) : metrics ? (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
             {/* User Statistics Card */}
             <div style={{
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "var(--theme-surfaces-base)",
               borderRadius: "12px",
               border: "1px solid var(--border)",
               padding: "24px",
@@ -91,15 +91,15 @@ export function OperationsOverviewPage() {
                   <Users size={20} style={{ color: "var(--gold)" }} />
                 </div>
               </div>
-              <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: 500 }}>Total Accounts</span>
+              <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", fontWeight: 500 }}>Total Accounts</span>
               <h2 style={{ fontSize: "2rem", fontWeight: 700, margin: "8px 0 16px" }}>{metrics.totalUsers}</h2>
               <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Active</span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Active</span>
                   <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0" }}>{metrics.activeUsers}</p>
                 </div>
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Disabled</span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Disabled</span>
                   <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: "var(--red)" }}>
                     {metrics.totalUsers - metrics.activeUsers}
                   </p>
@@ -109,7 +109,7 @@ export function OperationsOverviewPage() {
 
             {/* Campaign Statistics Card */}
             <div style={{
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "var(--theme-surfaces-base)",
               borderRadius: "12px",
               border: "1px solid var(--border)",
               padding: "24px",
@@ -127,15 +127,15 @@ export function OperationsOverviewPage() {
                   <Layers size={20} style={{ color: "var(--gold)" }} />
                 </div>
               </div>
-              <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: 500 }}>Total Campaigns</span>
+              <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", fontWeight: 500 }}>Total Campaigns</span>
               <h2 style={{ fontSize: "2rem", fontWeight: 700, margin: "8px 0 16px" }}>{metrics.totalCampaigns}</h2>
               <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Active</span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Active</span>
                   <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0" }}>{metrics.activeCampaigns}</p>
                 </div>
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>In Trash</span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>In Trash</span>
                   <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: "var(--gold)" }}>{metrics.trashedCampaigns}</p>
                 </div>
               </div>
@@ -143,7 +143,7 @@ export function OperationsOverviewPage() {
 
             {/* Purge Jobs Statistics Card */}
             <div style={{
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "var(--theme-surfaces-base)",
               borderRadius: "12px",
               border: "1px solid var(--border)",
               padding: "24px",
@@ -161,15 +161,15 @@ export function OperationsOverviewPage() {
                   <ShieldAlert size={20} style={{ color: metrics.failedPurgeJobs > 0 ? "var(--red)" : "var(--gold)" }} />
                 </div>
               </div>
-              <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: 500 }}>Purge Queue Jobs</span>
+              <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", fontWeight: 500 }}>Purge Queue Jobs</span>
               <h2 style={{ fontSize: "2rem", fontWeight: 700, margin: "8px 0 16px" }}>{metrics.totalPurgeJobs}</h2>
               <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Pending</span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Pending</span>
                   <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0" }}>{metrics.pendingPurgeJobs}</p>
                 </div>
                 <div>
-                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Failed</span>
+                  <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Failed</span>
                   <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: metrics.failedPurgeJobs > 0 ? "var(--red)" : "inherit" }}>
                     {metrics.failedPurgeJobs}
                   </p>

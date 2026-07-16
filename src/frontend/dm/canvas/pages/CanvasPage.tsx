@@ -980,21 +980,21 @@ export function CanvasPage() {
                   position: "absolute",
                   top: "34px",
                   right: 0,
-                  backgroundColor: "var(--bg-card)",
-                  border: "1px solid var(--border-color)",
-                  borderRadius: "var(--radius-md)",
+                  backgroundColor: "var(--theme-surfaces-base)",
+                  border: "1px solid var(--theme-borders-default)",
+                  borderRadius: "var(--theme-shapes-radius-medium)",
                   display: "flex",
                   flexDirection: "column",
                   zIndex: 1000,
                   minWidth: "220px",
-                  boxShadow: "var(--shadow-lg)",
+                  boxShadow: "var(--theme-shadows-large)",
                   padding: "12px",
                   gap: "10px",
                 }}
               >
                 {/* Section 1: Modos (Buttons) */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  <div style={{ fontSize: "10px", color: "var(--text-muted)", fontWeight: "bold", letterSpacing: "0.05em" }}>MODOS DE VISTA</div>
+                  <div style={{ fontSize: "10px", color: "var(--theme-text-secondary)", fontWeight: "bold", letterSpacing: "0.05em" }}>MODOS DE VISTA</div>
                   
                   {!isFullscreenPresentation && (
                     <button
@@ -1059,15 +1059,15 @@ export function CanvasPage() {
                   )}
                 </div>
 
-                <div style={{ height: "1px", backgroundColor: "var(--border-color)", margin: "4px 0" }} />
+                <div style={{ height: "1px", backgroundColor: "var(--theme-borders-default)", margin: "4px 0" }} />
 
                 {/* Section 2: Configurations / Filtros */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <div style={{ fontSize: "10px", color: "var(--text-muted)", fontWeight: "bold", letterSpacing: "0.05em" }}>FILTROS Y DENSIDAD</div>
+                  <div style={{ fontSize: "10px", color: "var(--theme-text-secondary)", fontWeight: "bold", letterSpacing: "0.05em" }}>FILTROS Y DENSIDAD</div>
 
                   {/* Densidad Selector */}
                   <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                    <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Densidad</span>
+                    <span style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>Densidad</span>
                     <select
                       value={density}
                       onChange={(e) => {
@@ -1077,7 +1077,7 @@ export function CanvasPage() {
                         }
                       }}
                       className="canvas-select"
-                      style={{ width: "100%", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
+                      style={{ width: "100%", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", color: "var(--theme-text-primary)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
                     >
                       <option value="compact">🗜️ Compacta</option>
                       <option value="normal">📱 Normal</option>
@@ -1088,12 +1088,12 @@ export function CanvasPage() {
                   {/* Relaciones Filter */}
                   {!isPlayerView && (
                     <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                      <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Relaciones</span>
+                      <span style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>Relaciones</span>
                       <select
                         value={relationsFilter}
                         onChange={(e) => { if (isRelationsFilter(e.target.value)) setRelationsFilter(e.target.value); }}
                         className="canvas-select"
-                        style={{ width: "100%", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
+                        style={{ width: "100%", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", color: "var(--theme-text-primary)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
                         title={t("canvas.toolbar.filterConnections")}
                       >
                         <option value="all">🔗 Todas</option>
@@ -1107,12 +1107,12 @@ export function CanvasPage() {
                   {/* Type Filter Select */}
                   {!isPlayerView && (
                     <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                      <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Tipos de entidad</span>
+                      <span style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>Tipos de entidad</span>
                       <select
                         value={typeFilter}
                         onChange={(e) => setTypeFilter(e.target.value)}
                         className="canvas-select"
-                        style={{ width: "100%", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
+                        style={{ width: "100%", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", color: "var(--theme-text-primary)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
                       >
                         <option value="all">Todos los tipos</option>
                         <option value="npc">PNJs</option>
@@ -1143,16 +1143,16 @@ export function CanvasPage() {
               <span>Más</span>
             </button>
             {isActionsDropdownOpen && (
-              <div className="dropdown-menu" style={{ position: "absolute", top: "34px", right: 0, backgroundColor: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", zIndex: 1000, minWidth: "180px", boxShadow: "var(--shadow-lg)", padding: "4px" }}>
+              <div className="dropdown-menu" style={{ position: "absolute", top: "34px", right: 0, backgroundColor: "var(--theme-surfaces-base)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", zIndex: 1000, minWidth: "180px", boxShadow: "var(--theme-shadows-large)", padding: "4px" }}>
                 {!isPlayerView && (
                   <>
                     <button className="dropdown-item" onClick={() => { setIsImportOpen(true); setIsActionsDropdownOpen(false); }}>✏️ Importar por Texto</button>
                     <button className="dropdown-item" onClick={() => { setIsLintOpen(v => !v); setIsActionsDropdownOpen(false); }}>🧠 Analizar Lore (Lint)</button>
                     <button className="dropdown-item" onClick={() => { setIsLegendOpen(true); setIsActionsDropdownOpen(false); }}>📖 Ver Leyenda</button>
-                    <div style={{ height: "1px", backgroundColor: "var(--border-color)", margin: "4px 0" }} />
+                    <div style={{ height: "1px", backgroundColor: "var(--theme-borders-default)", margin: "4px 0" }} />
                   </>
                 )}
-                <div style={{ fontSize: "9px", padding: "4px 12px", color: "var(--text-muted)", fontWeight: "bold" }}>EXPORTACIONES</div>
+                <div style={{ fontSize: "9px", padding: "4px 12px", color: "var(--theme-text-secondary)", fontWeight: "bold" }}>EXPORTACIONES</div>
                 <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("svg", "dm"), "No se pudo exportar el canvas en SVG para DM."); setIsActionsDropdownOpen(false); }}>Vector SVG - Vista DM</button>
                 <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("svg", "player"), "No se pudo exportar el canvas en SVG para jugadores."); setIsActionsDropdownOpen(false); }}>Vector SVG - Vista Jugador</button>
                 <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("png", "dm"), "No se pudo exportar el canvas en PNG para DM."); setIsActionsDropdownOpen(false); }}>Imagen PNG - Vista DM</button>
@@ -1163,7 +1163,7 @@ export function CanvasPage() {
         </div>
 
         {activeCanvas && (
-          <div className="canvas-board-info" style={{ marginLeft: "12px", borderLeft: "1px solid var(--border-color)", paddingLeft: "12px" }}>
+          <div className="canvas-board-info" style={{ marginLeft: "12px", borderLeft: "1px solid var(--theme-borders-default)", paddingLeft: "12px" }}>
             <span
               className="badge badge-primary"
               title={activeCanvas.description || undefined}
@@ -1252,7 +1252,7 @@ export function CanvasPage() {
               </button>
             </div>
             <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: "1.4" }}>
+              <p style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", lineHeight: "1.4" }}>
                 Escribe o pega texto estructurado. Usa <code># Grupo</code> para agrupar, <code>[Tipo] Nombre</code> para declarar entidades y <code>Origen -&gt; Relación -&gt; Destino</code> para enlazarlas.
               </p>
               <textarea
@@ -1261,9 +1261,9 @@ export function CanvasPage() {
                 placeholder={t("canvas.page.importExampleContent")}
                 rows={10}
                 className="form-textarea"
-                style={{ fontFamily: "monospace", fontSize: "0.82rem", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", color: "var(--text-main)", padding: "10px" }}
+                style={{ fontFamily: "monospace", fontSize: "0.82rem", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", color: "var(--theme-text-primary)", padding: "10px" }}
               />
-              <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+              <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>
                 Tipos de entidad: NPC (pnj), PC (pj), Lugar, Faccion, Pista, Secreto, Mision, Objeto, Criatura, Escena, Consecuencia, Rumor, Nota.
               </div>
             </div>
@@ -1289,12 +1289,12 @@ export function CanvasPage() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "320px" }}>
             <div className="modal-header">
               <h2>📖 Leyenda del Canvas</h2>
-              <button onClick={() => setIsLegendOpen(false)} className="modal-close-btn" style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}>
+              <button onClick={() => setIsLegendOpen(false)} className="modal-close-btn" style={{ background: "none", border: "none", color: "var(--theme-text-secondary)", cursor: "pointer" }}>
                 <X size={16} />
               </button>
             </div>
             <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--border-color)", paddingBottom: "4px", color: "var(--primary)" }}>VISIBILIDAD</div>
+              <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "4px", color: "var(--theme-accents-primary-foreground)" }}>VISIBILIDAD</div>
               <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px" }}>
                 <span style={{ fontSize: "12px" }}>🔒</span>
                 <div><strong>Secreto DM</strong>: Visible solo para el DM.</div>
@@ -1308,7 +1308,7 @@ export function CanvasPage() {
                 <div><strong>Revelado</strong>: Visible públicamente para jugadores.</div>
               </div>
 
-              <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--border-color)", paddingBottom: "4px", marginTop: "8px", color: "var(--primary)" }}>ENTIDADES</div>
+              <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "4px", marginTop: "8px", color: "var(--theme-accents-primary-foreground)" }}>ENTIDADES</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "11px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><UserCheck size={12} color="#3b82f6" /> <span>🎭 PNJ</span></div>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><User size={12} color="#6366f1" /> <span>👤 PJ</span></div>
@@ -1320,7 +1320,7 @@ export function CanvasPage() {
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Film size={12} color="#64748b" /> <span>🎬 Escena</span></div>
               </div>
 
-              <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--border-color)", paddingBottom: "4px", marginTop: "8px", color: "var(--primary)" }}>RELACIONES</div>
+              <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "4px", marginTop: "8px", color: "var(--theme-accents-primary-foreground)" }}>RELACIONES</div>
               <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px" }}>
                 <div style={{ width: "24px", height: "2px", backgroundColor: "#ef4444", borderStyle: "dashed" }} />
                 <div><strong>Línea Roja Punteada</strong>: Secreto DM.</div>
@@ -1346,7 +1346,7 @@ export function CanvasPage() {
             top: "16px",
             right: "16px",
             zIndex: 99999,
-            boxShadow: "var(--shadow-lg)",
+            boxShadow: "var(--theme-shadows-large)",
             fontSize: "12px",
             padding: "8px 12px",
             opacity: 0.8
@@ -1479,7 +1479,7 @@ export function CanvasPage() {
                   const issues = runNarrativeLint(campaignState, activeCanvas, t);
                   if (issues.length === 0) {
                     return (
-                      <div style={{ textAlign: "center", padding: "20px", color: "var(--text-muted)" }}>
+                      <div style={{ textAlign: "center", padding: "20px", color: "var(--theme-text-secondary)" }}>
                         <span style={{ fontSize: "2rem" }}>✨</span>
                         <p style={{ marginTop: "10px", color: "var(--success)", fontWeight: "600" }}>¡Todo perfecto!</p>
                         <p style={{ fontSize: "0.85rem" }}>No se han detectado problemas de consistencia narrativa en tu canvas.</p>
@@ -1488,7 +1488,7 @@ export function CanvasPage() {
                   }
                   return (
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                      <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                      <p style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
                         Se han encontrado <strong>{issues.length}</strong> detalles a revisar:
                       </p>
                       <div style={{ display: "flex", flexDirection: "column", gap: "10px", overflowY: "auto", maxHeight: "calc(100vh - 160px)" }}>
@@ -1497,14 +1497,14 @@ export function CanvasPage() {
                             key={iss.id}
                             style={{
                               padding: "10px",
-                              borderRadius: "var(--radius-sm)",
-                              borderLeft: `3px solid ${iss.type === "error" ? "var(--color-critical)" : iss.type === "warning" ? "var(--color-warning)" : "var(--primary)"}`,
-                              backgroundColor: "var(--bg-input)",
+                              borderRadius: "var(--theme-shapes-radius-small)",
+                              borderLeft: `3px solid ${iss.type === "error" ? "var(--theme-feedback-danger-foreground)" : iss.type === "warning" ? "var(--theme-feedback-warning-foreground)" : "var(--theme-accents-primary-foreground)"}`,
+                              backgroundColor: "var(--theme-surfaces-interactive)",
                               fontSize: "0.82rem",
                               lineHeight: "1.4"
                             }}
                           >
-                            <div style={{ fontWeight: "600", marginBottom: "4px", color: iss.type === "error" ? "var(--color-critical)" : iss.type === "warning" ? "var(--color-warning)" : "var(--text-main)" }}>
+                            <div style={{ fontWeight: "600", marginBottom: "4px", color: iss.type === "error" ? "var(--theme-feedback-danger-foreground)" : iss.type === "warning" ? "var(--theme-feedback-warning-foreground)" : "var(--theme-text-primary)" }}>
                               {iss.type === "error" ? t("canvas.node.statusCritical") : iss.type === "warning" ? "⚠️ Advertencia" : "💡 Sugerencia"}
                             </div>
                             <div>{iss.message}</div>
@@ -1515,7 +1515,7 @@ export function CanvasPage() {
                                   setSelectedEdgeId(null);
                                 }}
                                 className="btn btn-link btn-xs"
-                                style={{ padding: 0, marginTop: "6px", fontSize: "10px", color: "var(--primary)", border: "none", background: "transparent", cursor: "pointer" }}
+                                style={{ padding: 0, marginTop: "6px", fontSize: "10px", color: "var(--theme-accents-primary-foreground)", border: "none", background: "transparent", cursor: "pointer" }}
                               >
                                 Inspeccionar elemento
                               </button>
@@ -1883,7 +1883,7 @@ function SessionPrepForm({
         <p style={{ fontSize: "0.93rem" }}>
           {t("sessionPage.selectedElementsIntro", { count: selectedCount })}
         </p>
-        <div style={{ maxHeight: "100px", overflowY: "auto", padding: "8px", backgroundColor: "var(--bg-input)", borderRadius: "var(--radius-sm)", fontSize: "0.85rem", color: "var(--text-muted)", border: "1px solid var(--border-color)" }}>
+        <div style={{ maxHeight: "100px", overflowY: "auto", padding: "8px", backgroundColor: "var(--theme-surfaces-interactive)", borderRadius: "var(--theme-shapes-radius-small)", fontSize: "0.85rem", color: "var(--theme-text-secondary)", border: "1px solid var(--theme-borders-default)" }}>
           {elementNames.join(", ")}
         </div>
 
@@ -1899,7 +1899,7 @@ function SessionPrepForm({
               />
               <div>
                 <strong>{t("sessionPage.addToActiveSessionLabel", { title: activeSession.title })}</strong>
-                <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+                <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>
                   {t("sessionPage.addToActiveSessionHelp")}
                 </div>
               </div>
@@ -1917,7 +1917,7 @@ function SessionPrepForm({
               />
               <div style={{ flex: 1 }}>
                 <strong>{t("sessionPage.addToPreparedSessionLabel")}</strong>
-                <div style={{ fontSize: "11px", color: "var(--text-muted)", marginBottom: "8px" }}>
+                <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)", marginBottom: "8px" }}>
                   {t("sessionPage.addToPreparedSessionHelp")}
                 </div>
                 {targetMode === "prepared" && (
@@ -1943,7 +1943,7 @@ function SessionPrepForm({
             />
             <div>
               <strong>{t("sessionPage.createPreparedSessionWithElements")}</strong>
-              <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+              <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>
                 {t("sessionPage.createPreparedSessionHelp")}
               </div>
             </div>

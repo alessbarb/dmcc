@@ -2193,6 +2193,10 @@ export const pt = {
       theme: "Tema",
       mode: "Modo",
       fontSet: "Conjunto de fontes",
+      themeDefault: "Padrão",
+      themeFantasy: "Fantasia",
+      themeSciFi: "Ficção científica",
+      typographyDefault: "Cinzel + Outfit",
       modeOptions: {
         system: "Sistema",
         light: "Claro",

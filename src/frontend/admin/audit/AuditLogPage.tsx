@@ -37,7 +37,7 @@ export function AuditLogPage() {
         <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
           <div>
             <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>System Audit Logs</h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
               Immutable operational audit trail recording all administrative actions.
             </p>
           </div>
@@ -51,7 +51,7 @@ export function AuditLogPage() {
               gap: "8px",
               padding: "8px 16px",
               borderRadius: "8px",
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "var(--theme-surfaces-base)",
               border: "1px solid var(--border)",
               color: "inherit",
               cursor: "pointer",
@@ -75,14 +75,14 @@ export function AuditLogPage() {
           display: "flex",
           gap: "16px",
           marginBottom: "24px",
-          backgroundColor: "var(--bg-card)",
+          backgroundColor: "var(--theme-surfaces-base)",
           padding: "16px",
           borderRadius: "12px",
           border: "1px solid var(--border)",
           flexWrap: "wrap",
         }}>
           <div style={{ flex: 1, minWidth: "200px" }}>
-            <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "6px", fontWeight: 600 }}>Filter by Action</label>
+            <label style={{ display: "block", fontSize: "0.75rem", color: "var(--theme-text-secondary)", marginBottom: "6px", fontWeight: 600 }}>Filter by Action</label>
             <input
               type="text"
               placeholder="e.g. campaign.purged"
@@ -101,7 +101,7 @@ export function AuditLogPage() {
           </div>
 
           <div style={{ flex: 1, minWidth: "200px" }}>
-            <label style={{ display: "block", fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "6px", fontWeight: 600 }}>Filter by Actor User ID</label>
+            <label style={{ display: "block", fontSize: "0.75rem", color: "var(--theme-text-secondary)", marginBottom: "6px", fontWeight: 600 }}>Filter by Actor User ID</label>
             <input
               type="text"
               placeholder="User UUID..."
@@ -122,13 +122,13 @@ export function AuditLogPage() {
 
         {/* Content & Details panel */}
         <div style={{ display: "flex", gap: "24px", alignItems: "flex-start", flexWrap: "wrap" }}>
-          <div style={{ flex: 2, minWidth: "600px", backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ flex: 2, minWidth: "600px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
             {loading ? (
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--text-muted)" }}>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
                 Loading audit logs...
               </div>
             ) : logs.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "48px", color: "var(--text-muted)" }}>
+              <div style={{ textAlign: "center", padding: "48px", color: "var(--theme-text-secondary)" }}>
                 No audit log entries found.
               </div>
             ) : (
@@ -162,11 +162,11 @@ export function AuditLogPage() {
                       </td>
                       <td style={{ padding: "12px 16px" }}>
                         <div>{l.actorType}</div>
-                        {l.actorUserId && <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>{l.actorUserId.substring(0, 8)}...</div>}
+                        {l.actorUserId && <div style={{ fontSize: "0.7rem", color: "var(--theme-text-secondary)" }}>{l.actorUserId.substring(0, 8)}...</div>}
                       </td>
                       <td style={{ padding: "12px 16px" }}>
                         <div>{l.targetType}</div>
-                        {l.targetId && <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>{l.targetId.substring(0, 8)}...</div>}
+                        {l.targetId && <div style={{ fontSize: "0.7rem", color: "var(--theme-text-secondary)" }}>{l.targetId.substring(0, 8)}...</div>}
                       </td>
                       <td style={{ padding: "12px 16px", textAlign: "right" }}>
                         <button
@@ -177,7 +177,7 @@ export function AuditLogPage() {
                           style={{
                             background: "none",
                             border: "none",
-                            color: "var(--text-muted)",
+                            color: "var(--theme-text-secondary)",
                             cursor: "pointer",
                           }}
                         >
@@ -195,7 +195,7 @@ export function AuditLogPage() {
           <div style={{
             flex: 1,
             minWidth: "300px",
-            backgroundColor: "var(--bg-card)",
+            backgroundColor: "var(--theme-surfaces-base)",
             borderRadius: "12px",
             border: "1px solid var(--border)",
             padding: "24px",
@@ -206,39 +206,39 @@ export function AuditLogPage() {
             {selectedLog ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "16px", fontSize: "0.8rem" }}>
                 <div>
-                  <span style={{ color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>Audit ID</span>
+                  <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "4px" }}>Audit ID</span>
                   <span style={{ fontFamily: "monospace", wordBreak: "break-all" }}>{selectedLog.auditId}</span>
                 </div>
                 <div>
-                  <span style={{ color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>Action</span>
+                  <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "4px" }}>Action</span>
                   <strong style={{ color: "var(--gold)" }}>{selectedLog.action}</strong>
                 </div>
                 <div>
-                  <span style={{ color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>Actor Type</span>
+                  <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "4px" }}>Actor Type</span>
                   <span>{selectedLog.actorType}</span>
                 </div>
                 {selectedLog.actorUserId && (
                   <div>
-                    <span style={{ color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>Actor User ID</span>
+                    <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "4px" }}>Actor User ID</span>
                     <span style={{ fontFamily: "monospace" }}>{selectedLog.actorUserId}</span>
                   </div>
                 )}
                 <div>
-                  <span style={{ color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>Target</span>
+                  <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "4px" }}>Target</span>
                   <span>{selectedLog.targetType} ({selectedLog.targetId || "None"})</span>
                 </div>
                 <div>
-                  <span style={{ color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>Timestamp</span>
+                  <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "4px" }}>Timestamp</span>
                   <span>{new Date(selectedLog.createdAt).toLocaleString()}</span>
                 </div>
                 {selectedLog.commandId && (
                   <div>
-                    <span style={{ color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>Correlation Command ID</span>
+                    <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "4px" }}>Correlation Command ID</span>
                     <span style={{ fontFamily: "monospace" }}>{selectedLog.commandId}</span>
                   </div>
                 )}
                 <div style={{ borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
-                  <span style={{ color: "var(--text-muted)", display: "block", marginBottom: "8px" }}>Audit Metadata (Details)</span>
+                  <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "8px" }}>Audit Metadata (Details)</span>
                   <pre style={{
                     backgroundColor: "rgba(0,0,0,0.3)",
                     padding: "12px",
@@ -253,7 +253,7 @@ export function AuditLogPage() {
                 </div>
               </div>
             ) : (
-              <div style={{ textAlign: "center", color: "var(--text-muted)", padding: "24px 0" }}>
+              <div style={{ textAlign: "center", color: "var(--theme-text-secondary)", padding: "24px 0" }}>
                 Select an entry on the left to inspect its parameters and audit details.
               </div>
             )}

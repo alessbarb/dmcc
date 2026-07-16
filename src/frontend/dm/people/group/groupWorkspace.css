@@ -14,8 +14,8 @@
   padding: clamp(18px, 2.4vw, 26px);
   overflow: hidden;
   background:
-    radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 32%),
-    color-mix(in srgb, var(--bg-mist) 94%, transparent);
+    radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent), transparent 32%),
+    color-mix(in srgb, var(--theme-surfaces-base) 94%, transparent);
 }
 
 .group-view-summary__identity {
@@ -31,17 +31,17 @@
   height: 48px;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid color-mix(in srgb, var(--primary) 40%, var(--border-color));
-  border-radius: var(--radius-lg);
-  color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 10%, var(--bg-tomb));
-  box-shadow: inset 0 0 18px color-mix(in srgb, var(--primary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 40%, var(--theme-borders-default));
+  border-radius: var(--theme-shapes-radius-large);
+  color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, var(--theme-surfaces-interactive));
+  box-shadow: inset 0 0 18px color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent);
 }
 
 .group-view-summary__eyebrow,
 .group-view-section__eyebrow {
   margin: 0 0 5px;
-  color: var(--text-subtle, var(--text-muted));
+  color: var(--theme-text-subtle, var(--theme-text-secondary));
   font-size: 0.7rem;
   font-weight: 750;
   letter-spacing: 0.1em;
@@ -53,7 +53,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 18px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.84rem;
 }
 
@@ -64,7 +64,7 @@
 }
 
 .group-view-summary__metrics strong {
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: 1rem;
 }
 
@@ -72,9 +72,9 @@
   min-width: 1.8rem;
   justify-content: center;
   padding: 3px 8px;
-  border: 1px solid color-mix(in srgb, var(--primary) 38%, var(--border-color));
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 38%, var(--theme-borders-default));
+  border-radius: var(--theme-shapes-radius-pill);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent);
 }
 
 .group-view-overview {
@@ -95,7 +95,7 @@
 
 .group-view-section--portal {
   padding-left: clamp(18px, 2vw, 26px);
-  border-left: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--theme-borders-default) 78%, transparent);
 }
 
 .group-view-section__header {
@@ -111,23 +111,23 @@
   align-items: center;
   gap: 8px;
   margin: 0;
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: 1.05rem;
   font-weight: 750;
 }
 
 .group-view-section__header h2 svg {
-  color: var(--primary);
+  color: var(--theme-accents-primary-foreground);
 }
 
 /* Inbox */
 
 .group-view-inbox {
   padding: clamp(16px, 2vw, 20px);
-  border: 1px solid color-mix(in srgb, var(--primary) 32%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 32%, var(--theme-borders-default));
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--primary) 7%, transparent), transparent 46%),
-    var(--bg-mist);
+    linear-gradient(135deg, color-mix(in srgb, var(--theme-accents-primary-foreground) 7%, transparent), transparent 46%),
+    var(--theme-surfaces-base);
 }
 
 .group-view-inbox__header {
@@ -143,19 +143,19 @@
   align-items: center;
   gap: 8px;
   margin: 0;
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: 1rem;
   font-weight: 800;
 }
 
 .group-view-inbox__header h3 svg {
-  color: var(--primary);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .group-view-inbox__header p {
   max-width: 62ch;
   margin: 4px 0 0;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.84rem;
 }
 
@@ -170,31 +170,31 @@
   align-items: flex-start;
   gap: 10px;
   padding: 11px 12px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 82%, transparent);
-  border-radius: var(--radius-md, 10px);
-  background: color-mix(in srgb, var(--bg-tomb) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, transparent);
   transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
 .group-view-inbox-item:hover {
-  border-color: color-mix(in srgb, var(--primary) 34%, var(--border-color));
-  background: color-mix(in srgb, var(--primary) 5%, var(--bg-tomb));
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 34%, var(--theme-borders-default));
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 5%, var(--theme-surfaces-interactive));
 }
 
 .group-view-inbox-item svg {
   flex: 0 0 auto;
   margin-top: 2px;
-  color: var(--primary);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .group-view-inbox-item strong {
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: 0.84rem;
 }
 
 .group-view-inbox-item p {
   margin: 2px 0 0;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.78rem;
   line-height: 1.4;
 }
@@ -208,15 +208,15 @@
   align-content: center;
   gap: 12px;
   padding: 34px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   text-align: center;
   background:
-    radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--primary) 7%, transparent), transparent 42%),
-    var(--bg-mist);
+    radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--theme-accents-primary-foreground) 7%, transparent), transparent 42%),
+    var(--theme-surfaces-base);
 }
 
 .group-view-empty svg {
-  color: var(--primary);
+  color: var(--theme-accents-primary-foreground);
   opacity: 0.48;
 }
 
@@ -243,14 +243,14 @@
   padding: 17px;
   overflow: hidden;
   background:
-    linear-gradient(145deg, color-mix(in srgb, var(--primary) 4%, transparent), transparent 52%),
-    var(--bg-mist);
+    linear-gradient(145deg, color-mix(in srgb, var(--theme-accents-primary-foreground) 4%, transparent), transparent 52%),
+    var(--theme-surfaces-base);
   transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .group-player-card:hover {
-  border-color: color-mix(in srgb, var(--primary) 34%, var(--border-color));
-  box-shadow: var(--shadow-lg);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 34%, var(--theme-borders-default));
+  box-shadow: var(--theme-shadows-large);
   transform: translateY(-1px);
 }
 
@@ -274,9 +274,9 @@
   flex-shrink: 0;
   width: 48px;
   height: 48px;
-  border: 1px solid color-mix(in srgb, var(--accent-fire) 55%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 55%, var(--theme-borders-default));
   border-radius: 13px;
-  background: var(--bg-tomb);
+  background: var(--theme-surfaces-interactive);
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.28);
 }
 
@@ -294,7 +294,7 @@
 .group-player-card__names h3 {
   overflow: hidden;
   margin: 0 0 2px;
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: 0.98rem;
   font-weight: 750;
   text-overflow: ellipsis;
@@ -304,7 +304,7 @@
 .group-player-card__email {
   overflow: hidden;
   margin: 0;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.78rem;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -325,12 +325,12 @@
 
 .group-player-card__characters {
   padding-top: 12px;
-  border-top: 1px solid color-mix(in srgb, var(--border-color) 80%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--theme-borders-default) 80%, transparent);
 }
 
 .group-player-card__section-label {
   margin-bottom: 8px;
-  color: var(--text-subtle, var(--text-muted));
+  color: var(--theme-text-subtle, var(--theme-text-secondary));
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -339,7 +339,7 @@
 
 .group-player-card__empty-hint {
   margin: 0;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.78rem;
   font-style: italic;
   line-height: 1.45;
@@ -353,10 +353,10 @@
 
 .group-character-chip {
   padding: 4px 8px;
-  border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--border-color));
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--primary) 7%, var(--bg-tomb));
-  color: var(--text-main);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 24%, var(--theme-borders-default));
+  border-radius: var(--theme-shapes-radius-pill);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 7%, var(--theme-surfaces-interactive));
+  color: var(--theme-text-primary);
   font-size: 0.76rem;
 }
 
@@ -372,7 +372,7 @@
 }
 
 .group-view-portal-heading svg {
-  color: var(--primary);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .group-view-portal-grid {
@@ -388,14 +388,14 @@
   gap: 13px;
   padding: 17px;
   background:
-    linear-gradient(145deg, color-mix(in srgb, var(--primary) 5%, transparent), transparent 50%),
-    var(--bg-mist);
+    linear-gradient(145deg, color-mix(in srgb, var(--theme-accents-primary-foreground) 5%, transparent), transparent 50%),
+    var(--theme-surfaces-base);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .group-view-portal-card:hover {
-  border-color: color-mix(in srgb, var(--primary) 35%, var(--border-color));
-  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 35%, var(--theme-borders-default));
+  box-shadow: var(--theme-shadows-medium);
 }
 
 .group-view-portal-card__header {
@@ -406,30 +406,30 @@
 
 .group-view-portal-card__header svg {
   flex-shrink: 0;
-  color: var(--primary);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .group-view-portal-card__name {
   margin: 0;
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: 0.98rem;
   font-weight: 750;
 }
 
 .group-view-portal-card__link-status {
   margin: 2px 0 0;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.78rem;
 }
 
 .group-view-portal-section {
   padding-top: 12px;
-  border-top: 1px solid color-mix(in srgb, var(--border-color) 80%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--theme-borders-default) 80%, transparent);
 }
 
 .group-view-portal-section__label {
   margin-bottom: 8px;
-  color: var(--text-subtle, var(--text-muted));
+  color: var(--theme-text-subtle, var(--theme-text-secondary));
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -444,20 +444,20 @@
 
 .group-view-status-badge {
   padding: 3px 8px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
-  background: var(--bg-tomb);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-pill);
+  background: var(--theme-surfaces-interactive);
   font-size: 0.76rem;
 }
 
 .group-view-status-badge--accent {
-  color: var(--primary);
-  border-color: color-mix(in srgb, var(--primary) 32%, var(--border-color));
+  color: var(--theme-accents-primary-foreground);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 32%, var(--theme-borders-default));
 }
 
 .group-view-status-badge--danger {
-  color: var(--semantic-danger, var(--danger, #e05252));
-  border-color: color-mix(in srgb, var(--semantic-danger, #e05252) 30%, var(--border-color));
+  color: var(--theme-feedback-danger-foreground, var(--danger, #e05252));
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground, #e05252) 30%, var(--theme-borders-default));
 }
 
 .group-view-portal-list {
@@ -468,7 +468,7 @@
 }
 
 .group-view-portal-list li {
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: 0.78rem;
   line-height: 1.4;
 }
@@ -483,21 +483,21 @@
 
 .group-view-proposal-card {
   padding: 11px;
-  border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--border-color));
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--primary) 5%, var(--bg-tomb));
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, var(--theme-borders-default));
+  border-radius: var(--theme-shapes-radius-medium);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 5%, var(--theme-surfaces-interactive));
 }
 
 .group-view-proposal-card__kind {
   margin-bottom: 6px;
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: 0.8rem;
   font-weight: 750;
 }
 
 .group-view-proposal-card__detail {
   margin-bottom: 8px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.78rem;
 }
 
@@ -505,7 +505,7 @@
   display: grid;
   gap: 3px;
   margin-bottom: 9px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.77rem;
 }
 
@@ -531,7 +531,7 @@
   min-width: 0;
   margin: 0;
   overflow: hidden;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.78rem;
   font-style: italic;
   text-overflow: ellipsis;
@@ -543,10 +543,10 @@
   min-height: 2.25rem;
   flex: 1;
   padding: 5px 9px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  background: var(--bg-tomb);
-  color: var(--text-main);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-surfaces-interactive);
+  color: var(--theme-text-primary);
   font-size: 0.78rem;
 }
 
@@ -564,7 +564,7 @@
   .group-view-section--portal {
     padding-top: 20px;
     padding-left: 0;
-    border-top: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--theme-borders-default) 78%, transparent);
     border-left: 0;
   }
 }

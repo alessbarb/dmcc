@@ -409,27 +409,27 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
         const isAttenuated = (highlightedNodeIds ? !isHighlighted : false) || isAttenuatedBySelection;
 
-        let strokeColor = "hsl(220, 20%, 40%)";
+        let strokeColor = "var(--theme-graph-edge)";
         let strokeWidth = 1.5;
         let strokeDasharray: string | undefined;
         let filter: string | undefined;
         let opacity = 1;
 
         if (isSecret) {
-          strokeColor = "#ef4444";
+          strokeColor = "var(--theme-graph-edge-critical)";
           strokeWidth = 1.5;
           strokeDasharray = "4 3";
-          filter = "drop-shadow(0 0 3px rgba(239,68,68,0.5))";
+          filter = "drop-shadow(0 0 3px var(--theme-graph-edge-critical))";
         } else if (isDashed) {
-          strokeColor = "hsl(220, 20%, 50%)";
+          strokeColor = "var(--theme-graph-edge-muted)";
           strokeDasharray = "6 4";
         } else if (isStrong) {
           strokeWidth = 3;
-          strokeColor = "hsl(220, 30%, 65%)";
-          filter = "drop-shadow(0 0 4px rgba(148,163,184,0.35))";
+          strokeColor = "var(--theme-graph-edge)";
+          filter = "drop-shadow(0 0 4px var(--theme-graph-edge-muted))";
         } else if (isWeak) {
           strokeWidth = 1;
-          strokeColor = "hsl(220, 15%, 30%)";
+          strokeColor = "var(--theme-graph-edge-muted)";
         }
 
         if (!isSecret && relationVisual.semantic !== "neutral") {
@@ -444,8 +444,8 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
 
         const isSelected = selectedEdgeId === edge.id;
         if (isSelected) {
-          strokeColor = "hsl(255, 85%, 72%)";
-          filter = "drop-shadow(0 0 5px hsla(255, 85%, 65%, 0.6))";
+          strokeColor = "var(--theme-graph-edge-selected)";
+          filter = "drop-shadow(0 0 5px var(--theme-graph-edge-selected))";
           strokeWidth = Math.max(strokeWidth, 2);
         }
 
@@ -477,14 +477,14 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
             opacity,
           },
           labelStyle: {
-            fill: isSecret ? "#f87171" : isSelected ? "hsl(255, 85%, 80%)" : "hsl(220, 20%, 75%)",
+            fill: isSecret ? "var(--theme-graph-edge-critical)" : isSelected ? "var(--theme-graph-edge-selected)" : "var(--theme-graph-edge-label-text)",
             fontWeight: 600,
             fontSize: "10px",
             letterSpacing: "0.02em",
             opacity,
           },
           labelBgStyle: {
-            fill: "hsl(230, 28%, 10%)",
+            fill: "var(--theme-graph-edge-label-background)",
             fillOpacity: 0.9,
             rx: 4,
             opacity,
@@ -535,20 +535,20 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
               target: secretNode.id,
               type: "smoothstep",
               style: {
-                stroke: "rgba(167, 139, 250, 0.45)",
+                stroke: "color-mix(in srgb, var(--theme-narrative-secret-foreground) 45%, transparent)",
                 strokeWidth: 1.2,
                 strokeDasharray: "3 3",
                 opacity: opacityVal,
               },
               label: "ancla",
               labelStyle: {
-                fill: "rgba(167, 139, 250, 0.6)",
+                fill: "color-mix(in srgb, var(--theme-narrative-secret-foreground) 60%, transparent)",
                 fontSize: "8px",
                 fontWeight: 500,
                 opacity: opacityVal,
               },
               labelBgStyle: {
-                fill: "hsl(230, 28%, 10%)",
+                fill: "var(--theme-graph-edge-label-background)",
                 fillOpacity: 0.8,
                 rx: 3,
                 opacity: opacityVal,
@@ -847,7 +847,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
             style={{
               marginLeft: "auto",
               background: "rgba(255,255,255,0.08)",
-              color: "var(--text-main)",
+              color: "var(--theme-text-primary)",
               border: "1px solid rgba(255,255,255,0.15)",
               padding: "3px 8px",
               borderRadius: "4px",

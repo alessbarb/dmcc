@@ -293,10 +293,10 @@ export function EntityListView() {
                 {entity.importance}
               </span>
             )}
-            <span className="entity-compact-row__date" style={{ color: "var(--text-muted)", fontSize: "0.75rem", marginRight: "4px" }}>
+            <span className="entity-compact-row__date" style={{ color: "var(--theme-text-secondary)", fontSize: "0.75rem", marginRight: "4px" }}>
               {formattedDate}
             </span>
-            <span style={{ display: "flex", alignItems: "center", gap: 4, color: isDmOnly ? "var(--entity-npc)" : "var(--text-muted)", fontSize: "0.8rem" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 4, color: isDmOnly ? "var(--theme-entities-npc-foreground)" : "var(--theme-text-secondary)", fontSize: "0.8rem" }}>
               {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
             </span>
           </div>
@@ -369,7 +369,7 @@ export function EntityListView() {
           </span>
           <div className="entity-card__footer">
             <span>{t("entitiesPage.importanceLabel")}: {entity.importance}</span>
-            <span style={{ display: "flex", alignItems: "center", gap: 4, color: isDmOnly ? "var(--entity-npc)" : "inherit" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 4, color: isDmOnly ? "var(--theme-entities-npc-foreground)" : "inherit" }}>
               {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
               {formatVisibility(visibility, locale)}
             </span>
@@ -394,7 +394,7 @@ export function EntityListView() {
                     left: 12,
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "var(--text-muted)",
+                    color: "var(--theme-text-secondary)",
                   }}
                 />
                 <input
@@ -418,8 +418,8 @@ export function EntityListView() {
                 <span>{t("entitiesPage.toggleFilters")}</span>
                 {activeFiltersCount > 0 && (
                   <span className="filter-badge" style={{
-                    backgroundColor: "var(--primary-foreground, #fff)",
-                    color: "var(--primary, #000)",
+                    backgroundColor: "var(--theme-accents-primary-foreground-foreground, #fff)",
+                    color: "var(--theme-accents-primary-foreground, #000)",
                     fontSize: "0.75rem",
                     fontWeight: 700,
                     borderRadius: "50%",
@@ -437,11 +437,11 @@ export function EntityListView() {
 
               <span className="entities-count-badge" style={{
                 fontSize: "13px",
-                color: "var(--text-muted)",
+                color: "var(--theme-text-secondary)",
                 backgroundColor: "rgba(255,255,255,0.04)",
                 padding: "4px 10px",
                 borderRadius: "12px",
-                border: "1px solid var(--border-color)",
+                border: "1px solid var(--theme-borders-default)",
                 whiteSpace: "nowrap"
               }}>
                 {t("entitiesPage.resultCount", { count: sortedEntities.length })}
@@ -449,7 +449,7 @@ export function EntityListView() {
             </div>
 
             <div className="entities-header-bar__right">
-              <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-muted)", marginBottom: 0 }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--theme-text-secondary)", marginBottom: 0 }}>
                 <span>{t("entitiesPage.groupBy") || "Agrupar por"}</span>
                 <select
                   className="form-select"
@@ -465,7 +465,7 @@ export function EntityListView() {
                 </select>
               </label>
 
-              <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--text-muted)", marginBottom: 0 }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--theme-text-secondary)", marginBottom: 0 }}>
                 <span>{t("entitiesPage.sortBy")}</span>
                 <select
                   className="form-select"
@@ -479,7 +479,7 @@ export function EntityListView() {
                 </select>
               </label>
 
-              <div className="btn-group" style={{ display: "flex", borderRadius: 6, overflow: "hidden", border: "1px solid var(--border-color)" }}>
+              <div className="btn-group" style={{ display: "flex", borderRadius: 6, overflow: "hidden", border: "1px solid var(--theme-borders-default)" }}>
                 <button
                   type="button"
                   className="btn"
@@ -487,7 +487,7 @@ export function EntityListView() {
                     height: 38,
                     padding: "0 12px",
                     background: viewMode === "card" ? "var(--bg-active, hsl(230, 20%, 20%))" : "transparent",
-                    color: viewMode === "card" ? "var(--text-color, #fff)" : "var(--text-muted)",
+                    color: viewMode === "card" ? "var(--text-color, #fff)" : "var(--theme-text-secondary)",
                     borderRadius: 0,
                     border: "none",
                   }}
@@ -504,7 +504,7 @@ export function EntityListView() {
                     height: 38,
                     padding: "0 12px",
                     background: viewMode === "compact" ? "var(--bg-active, hsl(230, 20%, 20%))" : "transparent",
-                    color: viewMode === "compact" ? "var(--text-color, #fff)" : "var(--text-muted)",
+                    color: viewMode === "compact" ? "var(--text-color, #fff)" : "var(--theme-text-secondary)",
                     borderRadius: 0,
                     border: "none",
                   }}
@@ -647,7 +647,7 @@ export function EntityListView() {
               ]}
             />
           ) : (
-            <div className="card" style={{ textAlign: "center", padding: 40, color: "var(--text-muted)" }}>
+            <div className="card" style={{ textAlign: "center", padding: 40, color: "var(--theme-text-secondary)" }}>
               <Filter size={36} aria-hidden="true" style={{ opacity: 0.3, marginBottom: 12 }} />
               <p>{t("entitiesPage.noResults")}</p>
               <button className="btn btn-secondary" type="button" onClick={resetFilters}>
@@ -665,7 +665,7 @@ export function EntityListView() {
                 <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
                   {relevantNowEntities.map(entity => renderEntityItem(entity))}
                 </div>
-                <div className="entities-section-divider" style={{ borderBottom: "1px solid var(--border-color)", margin: "32px 0 24px 0" }} />
+                <div className="entities-section-divider" style={{ borderBottom: "1px solid var(--theme-borders-default)", margin: "32px 0 24px 0" }} />
               </div>
             )}
 
@@ -714,7 +714,7 @@ export function EntityListView() {
                           width: "100%",
                           padding: "10px 16px",
                           background: "var(--card-bg, hsl(230, 20%, 15%))",
-                          border: "1px solid var(--border-color)",
+                          border: "1px solid var(--theme-borders-default)",
                           borderRadius: "6px",
                           cursor: "pointer",
                           color: "var(--text-color, #fff)",
@@ -728,7 +728,7 @@ export function EntityListView() {
                           <span>{label}</span>
                           <span style={{
                             fontSize: "0.75rem",
-                            color: "var(--text-muted)",
+                            color: "var(--theme-text-secondary)",
                             backgroundColor: "rgba(255,255,255,0.06)",
                             padding: "2px 8px",
                             borderRadius: "10px",

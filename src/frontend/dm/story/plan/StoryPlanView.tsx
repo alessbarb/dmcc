@@ -427,8 +427,8 @@ export function StoryPlanView() {
           display: "flex",
           flexDirection: "column",
           gap: "16px",
-          background: "var(--bg-card)",
-          border: "1px solid var(--border-color)",
+          background: "var(--theme-surfaces-base)",
+          border: "1px solid var(--theme-borders-default)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -445,8 +445,8 @@ export function StoryPlanView() {
 
         {/* Create Thread Form Inline */}
         {isCreatingThread && (
-          <div className="glass-form" style={{ padding: 12, borderRadius: 8, background: "var(--bg-main)" }}>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: 6 }}>
+          <div className="glass-form" style={{ padding: 12, borderRadius: 8, background: "var(--theme-surfaces-canvas)" }}>
+            <div style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)", marginBottom: 6 }}>
               {t("story.newThreadTitle") || "Nuevo Hilo Narrativo"}
             </div>
             <input
@@ -487,15 +487,15 @@ export function StoryPlanView() {
 
         <div className="threads-list" style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 4 }}>
           {activeThreads.length === 0 ? (
-            <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", textAlign: "center", padding: "20px 0" }}>
+            <div style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", textAlign: "center", padding: "20px 0" }}>
               {t("story.emptyThreads") || "No hay hilos narrativos."}
             </div>
           ) : (
             activeThreads.map((thread) => {
               const isSelected = selectedThreadId === thread.threadId;
-              let badgeColor = "var(--text-muted)";
+              let badgeColor = "var(--theme-text-secondary)";
               if (thread.status === "active") badgeColor = "var(--color-primary)";
-              if (thread.status === "resolved") badgeColor = "var(--color-success)";
+              if (thread.status === "resolved") badgeColor = "var(--theme-feedback-success-foreground)";
 
               return (
                 <button
@@ -511,7 +511,7 @@ export function StoryPlanView() {
                     padding: "10px 12px",
                     border: "none",
                     background: isSelected ? "var(--bg-active)" : "none",
-                    color: isSelected ? "var(--text-active)" : "var(--text-main)",
+                    color: isSelected ? "var(--text-active)" : "var(--theme-text-primary)",
                     borderRadius: "8px",
                     cursor: "pointer",
                     textAlign: "left",
@@ -540,8 +540,8 @@ export function StoryPlanView() {
             style={{
               padding: "24px",
               borderRadius: "12px",
-              background: "var(--bg-card)",
-              border: "1px solid var(--border-color)",
+              background: "var(--theme-surfaces-base)",
+              border: "1px solid var(--theme-borders-default)",
               minHeight: "100%",
               display: "flex",
               flexDirection: "column",
@@ -567,7 +567,7 @@ export function StoryPlanView() {
                   </span>
                 </div>
                 {selectedThread.summary && (
-                  <p style={{ color: "var(--text-muted)", margin: "8px 0 0", fontSize: "0.95rem" }}>
+                  <p style={{ color: "var(--theme-text-secondary)", margin: "8px 0 0", fontSize: "0.95rem" }}>
                     {selectedThread.summary}
                   </p>
                 )}
@@ -609,7 +609,7 @@ export function StoryPlanView() {
             </div>
 
             {/* Linked Entities section */}
-            <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: 16 }}>
+            <div style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: 16 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                 <h5 style={{ margin: 0 }}>{t("story.linkedEntities") || "Entidades vinculadas al hilo"}</h5>
                 <button
@@ -623,7 +623,7 @@ export function StoryPlanView() {
 
               {/* Link Entity Form Inline */}
               {linkingToThread && (
-                <div className="glass-form" style={{ padding: 12, borderRadius: 8, background: "var(--bg-main)", marginBottom: 12, display: "flex", gap: 12, alignItems: "flex-end" }}>
+                <div className="glass-form" style={{ padding: 12, borderRadius: 8, background: "var(--theme-surfaces-canvas)", marginBottom: 12, display: "flex", gap: 12, alignItems: "flex-end" }}>
                   <div style={{ flex: 1 }}>
                     <select
                       className="form-control form-control-sm"
@@ -652,8 +652,8 @@ export function StoryPlanView() {
                       key={eid}
                       className="badge"
                       style={{
-                        background: "var(--bg-main)",
-                        border: "1px solid var(--border-color)",
+                        background: "var(--theme-surfaces-canvas)",
+                        border: "1px solid var(--theme-borders-default)",
                         padding: "4px 8px",
                         borderRadius: 6,
                         display: "inline-flex",
@@ -677,7 +677,7 @@ export function StoryPlanView() {
             </div>
 
             {/* Steps section */}
-            <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: 16 }}>
+            <div style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: 16 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
                 <h4 style={{ margin: 0 }}>{t("story.steps") || "Pasos del Plan"}</h4>
                 <button
@@ -691,7 +691,7 @@ export function StoryPlanView() {
 
               {/* Create Step Form */}
               {isCreatingStep && (
-                <div className="glass-panel" style={{ padding: 16, borderRadius: 8, background: "var(--bg-main)", marginBottom: 16, display: "flex", flexDirection: "column", gap: 12 }}>
+                <div className="glass-panel" style={{ padding: 16, borderRadius: 8, background: "var(--theme-surfaces-canvas)", marginBottom: 16, display: "flex", flexDirection: "column", gap: 12 }}>
                   <h5 style={{ margin: 0 }}>{t("story.newStep") || "Nuevo paso narrativo"}</h5>
                   <input
                     type="text"
@@ -715,7 +715,7 @@ export function StoryPlanView() {
                     onChange={(e) => setStepExpectedOutcome(e.target.value)}
                   />
                   <div>
-                    <label style={{ fontSize: "0.8rem", color: "var(--text-muted)", display: "block", marginBottom: 4 }}>
+                    <label style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
                       {t("story.associatedScene") || "Escena o localización asociada"}
                     </label>
                     <select
@@ -738,7 +738,7 @@ export function StoryPlanView() {
 
               {/* Steps List */}
               {selectedThreadSteps.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "40px 0", color: "var(--text-muted)" }}>
+                <div style={{ textAlign: "center", padding: "40px 0", color: "var(--theme-text-secondary)" }}>
                   <GitBranch size={24} style={{ opacity: 0.3, marginBottom: 8 }} />
                   <p>{t("story.emptySteps") || "No hay pasos planificados en esta trama."}</p>
                 </div>
@@ -756,8 +756,8 @@ export function StoryPlanView() {
                         style={{
                           padding: "16px",
                           borderRadius: "8px",
-                          background: "var(--bg-main)",
-                          border: "1px solid var(--border-color)",
+                          background: "var(--theme-surfaces-canvas)",
+                          border: "1px solid var(--theme-borders-default)",
                           display: "flex",
                           flexDirection: "column",
                           gap: "10px",
@@ -808,7 +808,7 @@ export function StoryPlanView() {
                         </div>
 
                         {/* Step Details grid */}
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
                           {step.intent && (
                             <div>
                               <strong>{t("story.intent") || "Intención"}:</strong> {step.intent}
@@ -843,14 +843,14 @@ export function StoryPlanView() {
 
                         {/* Step Linked Entities */}
                         <div style={{ display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
-                          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginRight: 4 }}>
+                          <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)", marginRight: 4 }}>
                             {t("story.linked") || "Vinculados"}:
                           </span>
                           {(step.entityIds || []).map((eid) => {
                             const ent = entities.find((e) => e.entityId === eid);
                             if (!ent) return null;
                             return (
-                              <span key={eid} className="badge" style={{ background: "var(--bg-card)", border: "1px solid var(--border-color)", fontSize: "0.75rem", padding: "2px 4px", display: "inline-flex", alignItems: "center", gap: 4 }}>
+                              <span key={eid} className="badge" style={{ background: "var(--theme-surfaces-base)", border: "1px solid var(--theme-borders-default)", fontSize: "0.75rem", padding: "2px 4px", display: "inline-flex", alignItems: "center", gap: 4 }}>
                                 {ent.title}
                                 <button type="button" onClick={() => void handleUnlinkEntityFromStep(step.stepId, eid)} style={{ border: "none", background: "none", padding: 0, color: "var(--color-danger)" }}><X size={10} /></button>
                               </span>
@@ -880,7 +880,7 @@ export function StoryPlanView() {
                         </div>
 
                         {/* Step actions: schedule, defer, reconcile */}
-                        <div style={{ display: "flex", gap: 8, marginTop: 4, borderTop: "1px solid var(--border-color)", paddingTop: 8 }}>
+                        <div style={{ display: "flex", gap: 8, marginTop: 4, borderTop: "1px solid var(--theme-borders-default)", paddingTop: 8 }}>
                           {(step.status === "planned" || step.status === "ready" || step.status === "active") && (
                             <>
                               {step.plannedSessionId ? (
@@ -957,10 +957,10 @@ export function StoryPlanView() {
             style={{
               padding: "48px",
               borderRadius: "12px",
-              background: "var(--bg-card)",
-              border: "1px solid var(--border-color)",
+              background: "var(--theme-surfaces-base)",
+              border: "1px solid var(--theme-borders-default)",
               textAlign: "center",
-              color: "var(--text-muted)",
+              color: "var(--theme-text-secondary)",
               minHeight: "100%",
               display: "flex",
               flexDirection: "column",
@@ -999,8 +999,8 @@ export function StoryPlanView() {
           <div
             className="glass-panel modal-content"
             style={{
-              background: "var(--bg-card)",
-              border: "1px solid var(--border-color)",
+              background: "var(--theme-surfaces-base)",
+              border: "1px solid var(--theme-borders-default)",
               padding: "24px",
               borderRadius: "12px",
               width: "480px",
@@ -1012,7 +1012,7 @@ export function StoryPlanView() {
             <h3 style={{ margin: 0 }}>{t("story.reconcileStepTitle") || "Reconciliar paso narrativo"}</h3>
             
             <div>
-              <label style={{ fontSize: "0.85rem", color: "var(--text-muted)", display: "block", marginBottom: 4 }}>
+              <label style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
                 {t("story.reconcileSession") || "Sesión en la que se resolvió (debe estar cerrada)"}
               </label>
               <select
@@ -1028,7 +1028,7 @@ export function StoryPlanView() {
             </div>
 
             <div>
-              <label style={{ fontSize: "0.85rem", color: "var(--text-muted)", display: "block", marginBottom: 4 }}>
+              <label style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
                 {t("story.reconcileStatus") || "Estado final"}
               </label>
               <select
@@ -1047,7 +1047,7 @@ export function StoryPlanView() {
 
             {reconcileStatus === "resolved" && (
               <div>
-                <label style={{ fontSize: "0.85rem", color: "var(--text-muted)", display: "block", marginBottom: 4 }}>
+                <label style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
                   {t("story.reconcileKind") || "Cómo se resolvió"}
                 </label>
                 <select
@@ -1063,7 +1063,7 @@ export function StoryPlanView() {
 
             {reconcileKind === "changed" && (
               <div>
-                <label style={{ fontSize: "0.85rem", color: "var(--text-muted)", display: "block", marginBottom: 4 }}>
+                <label style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", display: "block", marginBottom: 4 }}>
                   {t("story.actualOutcomeTitle") || "Resultado real (requerido para cambios)"}
                 </label>
                 <textarea

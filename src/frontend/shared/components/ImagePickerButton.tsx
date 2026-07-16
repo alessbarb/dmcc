@@ -66,8 +66,8 @@ export function ImagePickerButton({
             width: "min(100%, 460px)",
             minWidth: 0,
             overflow: "hidden",
-            border: "1px solid var(--border-color, #444)",
-            borderRadius: "var(--radius-md, 10px)",
+            border: "1px solid var(--theme-borders-default, #444)",
+            borderRadius: "var(--theme-shapes-radius-medium, 10px)",
             background: "var(--bg-elevated, #1e1e1e)",
             boxShadow: "0 12px 28px rgba(0, 0, 0, 0.22)",
           }}
@@ -77,7 +77,7 @@ export function ImagePickerButton({
               position: "relative",
               minHeight: "180px",
               overflow: "hidden",
-              background: "var(--bg-input, #111)",
+              background: "var(--theme-surfaces-interactive, #111)",
             }}
           >
             {displaySrc ? (
@@ -105,7 +105,7 @@ export function ImagePickerButton({
                   placeItems: "center",
                   gap: "8px",
                   border: 0,
-                  color: "var(--text-muted, #888)",
+                  color: "var(--theme-text-secondary, #888)",
                   background: "transparent",
                   cursor: "pointer",
                 }}
@@ -166,7 +166,7 @@ export function ImagePickerButton({
 
   const containerStyle: React.CSSProperties = isCircle
     ? { width: "72px", height: "72px", borderRadius: "50%" }
-    : { width: "120px", height: "72px", borderRadius: "var(--radius-sm, 6px)" };
+    : { width: "120px", height: "72px", borderRadius: "var(--theme-shapes-radius-small, 6px)" };
 
   return (
     <>
@@ -178,7 +178,7 @@ export function ImagePickerButton({
           flexShrink: 0,
           ...containerStyle,
           overflow: "hidden",
-          border: "2px solid var(--border-color, #444)",
+          border: "2px solid var(--theme-borders-default, #444)",
           background: "var(--bg-elevated, #1e1e1e)",
           cursor: "pointer",
           padding: 0,
@@ -204,7 +204,7 @@ export function ImagePickerButton({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "var(--text-muted, #888)",
+              color: "var(--theme-text-secondary, #888)",
               fontSize: "11px",
               textAlign: "center",
               padding: "4px",

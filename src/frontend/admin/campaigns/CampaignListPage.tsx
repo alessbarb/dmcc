@@ -73,7 +73,7 @@ export function CampaignListPage() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <header style={{ marginBottom: "32px" }}>
           <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Campaign Management</h1>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+          <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
             Monitor campaign states, restore soft-deleted campaigns, or permanently purge them.
           </p>
         </header>
@@ -91,7 +91,7 @@ export function CampaignListPage() {
           alignItems: "center",
           gap: "16px",
           marginBottom: "24px",
-          backgroundColor: "var(--bg-card)",
+          backgroundColor: "var(--theme-surfaces-base)",
           padding: "16px",
           borderRadius: "12px",
           border: "1px solid var(--border)",
@@ -106,7 +106,7 @@ export function CampaignListPage() {
                   padding: "8px 16px",
                   borderRadius: "8px",
                   backgroundColor: status === s ? "var(--gold)" : "rgba(255,255,255,0.03)",
-                  color: status === s ? "var(--bg-main)" : "inherit",
+                  color: status === s ? "var(--theme-surfaces-canvas)" : "inherit",
                   border: "1px solid var(--border)",
                   cursor: "pointer",
                   fontSize: "0.85rem",
@@ -121,7 +121,7 @@ export function CampaignListPage() {
 
           <form onSubmit={handleSearchSubmit} style={{ display: "flex", gap: "8px", flex: 1, maxWidth: "400px" }}>
             <div style={{ position: "relative", flex: 1 }}>
-              <Search size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+              <Search size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--theme-text-secondary)" }} />
               <input
                 type="text"
                 placeholder="Search by title or owner email..."
@@ -157,15 +157,15 @@ export function CampaignListPage() {
         </div>
 
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--text-muted)" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
             Loading campaigns...
           </div>
         ) : campaigns.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--text-muted)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
             No campaigns found matching the criteria.
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
@@ -181,11 +181,11 @@ export function CampaignListPage() {
                   <tr key={c.campaignId} style={{ borderBottom: "1px solid var(--border)", transition: "background-color 0.2s" }}>
                     <td style={{ padding: "16px" }}>
                       <div style={{ fontWeight: 600 }}>{c.title}</div>
-                      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "2px" }}>{c.campaignId}</div>
+                      <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)", marginTop: "2px" }}>{c.campaignId}</div>
                     </td>
                     <td style={{ padding: "16px" }}>
                       <div>{c.ownerName || c.ownerEmail}</div>
-                      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "2px" }}>{c.ownerEmail}</div>
+                      <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)", marginTop: "2px" }}>{c.ownerEmail}</div>
                     </td>
                     <td style={{ padding: "16px" }}>
                       {new Date(c.createdAt).toLocaleDateString()}
@@ -241,7 +241,7 @@ export function CampaignListPage() {
                           </>
                         )}
                         {status === "active" && (
-                          <span style={{ color: "var(--text-muted)", fontSize: "0.8rem", padding: "6px 12px" }}>
+                          <span style={{ color: "var(--theme-text-secondary)", fontSize: "0.8rem", padding: "6px 12px" }}>
                             Active
                           </span>
                         )}

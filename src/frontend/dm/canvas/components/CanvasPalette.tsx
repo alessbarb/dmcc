@@ -261,14 +261,14 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
   if (isDirectionMode) {
     const isSecret = selectedEntity && isDmOnlyVisibility(selectedEntity.visibility);
     return (
-      <div className="canvas-palette canvas-palette--direction" style={{ backgroundColor: "rgba(15,18,30,0.92)", borderRight: "1px solid var(--border-color)", padding: "16px", display: "flex", flexDirection: "column", gap: "16px", zIndex: 10, position: "relative" }}>
+      <div className="canvas-palette canvas-palette--direction" style={{ backgroundColor: "rgba(15,18,30,0.92)", borderRight: "1px solid var(--theme-borders-default)", padding: "16px", display: "flex", flexDirection: "column", gap: "16px", zIndex: 10, position: "relative" }}>
         <button
           onClick={toggleCollapsed}
           title={t("canvasPalette.collapsePalette")}
           style={{
             position: "absolute", top: "8px", right: "8px",
             background: "none", border: "none", cursor: "pointer",
-            color: "var(--text-muted)", padding: "2px 4px", borderRadius: "4px",
+            color: "var(--theme-text-secondary)", padding: "2px 4px", borderRadius: "4px",
             display: "flex", alignItems: "center",
           }}
         >
@@ -280,7 +280,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
             <button
               onClick={handleCreateQuickScene}
               className="palette-list-item-btn"
-              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-input)", color: "var(--text-main)" }}
+              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", backgroundColor: "var(--theme-surfaces-interactive)", color: "var(--theme-text-primary)" }}
             >
               <Film size={14} style={{ color: "#64748b" }} />
               <span>🎬 {t("canvasPalette.createQuickScene")}</span>
@@ -288,7 +288,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
             <button
               onClick={handleQuickSessionNote}
               className="palette-list-item-btn"
-              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--border-color)", borderRadius: "var(--radius-sm)", backgroundColor: "var(--bg-input)", color: "var(--text-main)" }}
+              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", backgroundColor: "var(--theme-surfaces-interactive)", color: "var(--theme-text-primary)" }}
             >
               <StickyNote size={14} style={{ color: "#eab308" }} />
               <span>📝 {t("canvasPalette.quickSessionNote")}</span>
@@ -296,17 +296,17 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
           </div>
         </div>
 
-        <div className="palette-divider" style={{ height: "1px", backgroundColor: "var(--border-color)", opacity: 0.3 }} />
+        <div className="palette-divider" style={{ height: "1px", backgroundColor: "var(--theme-borders-default)", opacity: 0.3 }} />
 
         <div className="palette-section" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
           <h3>🎯 {t("canvasPalette.actionOnSelection")}</h3>
           {selectedNode ? (
-            <div style={{ marginTop: "12px", padding: "12px", borderRadius: "var(--radius-md)", backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid var(--border-color)", display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div style={{ marginTop: "12px", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid var(--theme-borders-default)", display: "flex", flexDirection: "column", gap: "10px" }}>
               <div>
-                <div style={{ fontSize: "9px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold" }}>
+                <div style={{ fontSize: "9px", color: "var(--theme-text-secondary)", textTransform: "uppercase", fontWeight: "bold" }}>
                   {selectedNode.kind === "entity" ? (selectedEntity?.entityType || "Entidad") : selectedNode.kind}
                 </div>
-                <div style={{ fontSize: "12px", fontWeight: "bold", color: "var(--text-main)", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <div style={{ fontSize: "12px", fontWeight: "bold", color: "var(--theme-text-primary)", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {selectedEntity?.title || selectedNode.title || selectedNode.text || t("canvas.node.untitledElement")}
                 </div>
               </div>
@@ -353,7 +353,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
               </button>
             </div>
           ) : (
-            <div style={{ fontSize: "11px", color: "var(--text-muted)", textAlign: "center", padding: "16px 0", flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)", textAlign: "center", padding: "16px 0", flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
               {t("canvasPalette.selectNodeForActions")}
             </div>
           )}
@@ -380,8 +380,8 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
       <div
         style={{
           width: "32px",
-          background: "var(--bg-card)",
-          borderRight: "1px solid var(--border-color)",
+          background: "var(--theme-surfaces-base)",
+          borderRight: "1px solid var(--theme-borders-default)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -397,7 +397,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
             background: "none",
             border: "none",
             cursor: "pointer",
-            color: "var(--text-muted)",
+            color: "var(--theme-text-secondary)",
             padding: "6px",
             borderRadius: "4px",
             display: "flex",
@@ -428,7 +428,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
             background: "none",
             border: "none",
             cursor: "pointer",
-            color: "var(--text-muted)",
+            color: "var(--theme-text-secondary)",
             padding: "2px 4px",
             borderRadius: "4px",
             display: "flex",
@@ -692,7 +692,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
       <button
         onClick={() => setShowFactSearch(v => !v)}
         className="palette-list-item-btn"
-        style={{ justifyContent: "space-between", fontSize: "0.68rem", color: "var(--text-muted)", cursor: "pointer" }}
+        style={{ justifyContent: "space-between", fontSize: "0.68rem", color: "var(--theme-text-secondary)", cursor: "pointer" }}
       >
         <span>{t("canvasPalette.placeExistingFact")}</span>
         <Search size={11} />
@@ -710,7 +710,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
           />
           <div style={{ maxHeight: "140px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "2px" }}>
             {availableFacts.length === 0 ? (
-              <div style={{ fontSize: "10px", color: "var(--text-muted)", padding: "8px 0", textAlign: "center" }}>
+              <div style={{ fontSize: "10px", color: "var(--theme-text-secondary)", padding: "8px 0", textAlign: "center" }}>
                 {allFacts.length === 0 ? t("canvasPalette.noFactsCreated") : t("canvas.palette.allFactsOnCanvas")}
               </div>
             ) : (

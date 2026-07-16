@@ -24,12 +24,12 @@ const EVENT_TYPE_ICONS: Partial<Record<SessionEventType, React.ReactNode>> = {
 };
 
 const EVENT_TYPE_COLORS: Partial<Record<SessionEventType, string>> = {
-  note_recorded: "var(--color-info)",
-  npc_met: "var(--color-success)",
-  clue_revealed: "var(--secondary)",
-  decision_made: "var(--primary)",
-  consequence_created: "var(--color-warning)",
-  custom: "var(--text-muted)",
+  note_recorded: "var(--theme-feedback-info-foreground)",
+  npc_met: "var(--theme-feedback-success-foreground)",
+  clue_revealed: "var(--theme-accents-secondary-foreground)",
+  decision_made: "var(--theme-accents-primary-foreground)",
+  consequence_created: "var(--theme-feedback-warning-foreground)",
+  custom: "var(--theme-text-secondary)",
 };
 
 export function SessionEventFeed({
@@ -50,9 +50,9 @@ export function SessionEventFeed({
   return (
     <div
       style={{
-        backgroundColor: "var(--bg-card)",
-        border: "1px solid var(--border-color)",
-        borderRadius: "var(--radius-lg)",
+        backgroundColor: "var(--theme-surfaces-base)",
+        border: "1px solid var(--theme-borders-default)",
+        borderRadius: "var(--theme-shapes-radius-large)",
         overflow: "hidden",
       }}
     >
@@ -68,7 +68,7 @@ export function SessionEventFeed({
           background: "transparent",
           border: "none",
           cursor: "pointer",
-          color: "var(--text-muted)",
+          color: "var(--theme-text-secondary)",
           fontSize: "0.8rem",
           fontWeight: "700",
           textTransform: "uppercase",
@@ -81,9 +81,9 @@ export function SessionEventFeed({
           {events.length > 0 && (
             <span
               style={{
-                backgroundColor: "var(--primary-light)",
-                color: "var(--primary)",
-                borderRadius: "var(--radius-full)",
+                backgroundColor: "var(--theme-accents-primary-background)",
+                color: "var(--theme-accents-primary-foreground)",
+                borderRadius: "var(--theme-shapes-radius-pill)",
                 padding: "1px 7px",
                 fontSize: "0.72rem",
                 fontWeight: "800",
@@ -97,12 +97,12 @@ export function SessionEventFeed({
       </button>
 
       {!collapsed && (
-        <div style={{ borderTop: "1px solid var(--border-color)" }}>
+        <div style={{ borderTop: "1px solid var(--theme-borders-default)" }}>
           {events.length === 0 ? (
             <p
               style={{
                 padding: "20px 16px",
-                color: "var(--text-muted)",
+                color: "var(--theme-text-secondary)",
                 fontSize: "0.85rem",
                 textAlign: "center",
               }}
@@ -122,7 +122,7 @@ export function SessionEventFeed({
                       alignItems: "flex-start",
                       gap: "10px",
                       padding: "9px 16px",
-                      borderBottom: i < events.length - 1 ? "1px solid var(--border-color)" : "none",
+                      borderBottom: i < events.length - 1 ? "1px solid var(--theme-borders-default)" : "none",
                     }}
                   >
                     <span
@@ -139,7 +139,7 @@ export function SessionEventFeed({
                       style={{
                         flex: 1,
                         fontSize: "0.85rem",
-                        color: "var(--text-main)",
+                        color: "var(--theme-text-primary)",
                         lineHeight: 1.35,
                         minWidth: 0,
                         overflow: "hidden",
@@ -153,7 +153,7 @@ export function SessionEventFeed({
                     <span
                       style={{
                         fontSize: "0.73rem",
-                        color: "var(--text-muted)",
+                        color: "var(--theme-text-secondary)",
                         flexShrink: 0,
                         marginTop: "2px",
                       }}

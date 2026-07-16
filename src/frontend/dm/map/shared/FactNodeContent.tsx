@@ -67,7 +67,7 @@ export function FactNodeContent({
           style={{
             margin: 0,
             fontSize: "0.85rem",
-            color: "var(--text-main)",
+            color: "var(--theme-text-primary)",
             lineHeight: 1.4,
             display: "-webkit-box",
             WebkitLineClamp: 3,
@@ -88,8 +88,8 @@ export function FactNodeContent({
           justifyContent: "space-between",
           alignItems: "center",
           fontSize: "0.75rem",
-          color: "var(--text-muted)",
-          borderTop: "1px solid var(--border-color)"
+          color: "var(--theme-text-secondary)",
+          borderTop: "1px solid var(--theme-borders-default)"
         }}
       >
         <span className="fact-node__confidence" style={{ display: "flex", alignItems: "center", gap: "4px" }}>

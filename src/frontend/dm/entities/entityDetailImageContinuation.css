@@ -10,7 +10,7 @@
   grid-template-rows: 20% auto auto minmax(0, 1fr) auto !important;
   padding: 0 !important;
   overflow: hidden !important;
-  background: var(--bg-card) !important;
+  background: var(--theme-surfaces-base) !important;
 }
 
 /* Artwork is a background layer: 60% from the physical top of the dialog. */
@@ -24,7 +24,7 @@
   height: 60% !important;
   min-height: 0 !important;
   overflow: hidden !important;
-  background: var(--bg-card);
+  background: var(--theme-surfaces-base);
   pointer-events: none;
 }
 
@@ -60,7 +60,7 @@
       rgba(7, 9, 18, 0.42) 78%,
       rgba(7, 9, 18, 0.76) 90%,
       rgba(7, 9, 18, 0.96) 98%,
-      var(--bg-card) 100%
+      var(--theme-surfaces-base) 100%
     ),
     linear-gradient(
       to right,
@@ -101,7 +101,7 @@
   min-width: 38px !important;
   border-color: rgba(255, 255, 255, 0.16) !important;
   background: rgba(7, 9, 18, 0.58) !important;
-  color: color-mix(in srgb, var(--text-main) 82%, transparent) !important;
+  color: color-mix(in srgb, var(--theme-text-primary) 82%, transparent) !important;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(8px);
 }
@@ -110,9 +110,9 @@
   > .modal-content
   > .modal-header
   > button:last-child:hover {
-  border-color: color-mix(in srgb, var(--secondary) 34%, transparent) !important;
+  border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 34%, transparent) !important;
   background: rgba(7, 9, 18, 0.76) !important;
-  color: var(--text-main) !important;
+  color: var(--theme-text-primary) !important;
 }
 
 /* Tabs finish the overlap while remaining in normal grid flow. */
@@ -124,7 +124,7 @@
   z-index: 3 !important;
   grid-row: 3;
   border-top-color: rgba(255, 255, 255, 0.02) !important;
-  border-bottom-color: color-mix(in srgb, var(--border-color) 62%, transparent) !important;
+  border-bottom-color: color-mix(in srgb, var(--theme-borders-default) 62%, transparent) !important;
   background: rgba(12, 15, 28, 0.78) !important;
   backdrop-filter: blur(6px) saturate(84%);
 }
@@ -144,8 +144,8 @@
     linear-gradient(
       to bottom,
       color-mix(in srgb, rgba(12, 15, 28, 0.86) 78%, transparent) 0,
-      color-mix(in srgb, var(--bg-card) 96%, transparent) 42px,
-      var(--bg-card) 86px
+      color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent) 42px,
+      var(--theme-surfaces-base) 86px
     ) !important;
 }
 

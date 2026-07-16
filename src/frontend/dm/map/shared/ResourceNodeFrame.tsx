@@ -11,7 +11,7 @@ export interface ResourceNodeFrameProps {
 
 export function ResourceNodeFrame({
   selected,
-  accentColor = "var(--primary)",
+  accentColor = "var(--theme-accents-primary-foreground)",
   children,
   className = "",
   style = {},

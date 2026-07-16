@@ -54,11 +54,11 @@ export function AdminShell({ children }: AdminShellProps) {
   };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "var(--bg-main)", color: "var(--text-main)" }}>
+    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "var(--theme-surfaces-canvas)", color: "var(--theme-text-primary)" }}>
       {/* Sidebar navigation */}
       <aside style={{
         width: "260px",
-        backgroundColor: "var(--bg-card)",
+        backgroundColor: "var(--theme-surfaces-base)",
         borderRight: "1px solid var(--border)",
         display: "flex",
         flexDirection: "column",
@@ -79,7 +79,7 @@ export function AdminShell({ children }: AdminShellProps) {
           </div>
           <div>
             <h2 style={{ fontSize: "0.95rem", fontWeight: 700, margin: 0, letterSpacing: "0.05em" }}>DMCC ADMIN</h2>
-            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Platform Console</span>
+            <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Platform Console</span>
           </div>
         </div>
 
@@ -108,7 +108,7 @@ export function AdminShell({ children }: AdminShellProps) {
               border: "none",
               cursor: "pointer",
               textAlign: "left",
-              color: "var(--text-muted)",
+              color: "var(--theme-text-secondary)",
               fontSize: "0.85rem",
               width: "100%",
             }}

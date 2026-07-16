@@ -129,7 +129,7 @@ export function SystemAnnouncements() {
                   margin: "0 0 4px 0",
                   fontSize: "0.9rem",
                   fontWeight: 600,
-                  color: "var(--text-main, #fff)",
+                  color: "var(--theme-text-primary, #fff)",
                 }}
               >
                 {ann.content.title}
@@ -138,7 +138,7 @@ export function SystemAnnouncements() {
                 style={{
                   margin: 0,
                   fontSize: "0.8rem",
-                  color: "var(--text-muted, #a0a0a5)",
+                  color: "var(--theme-text-secondary, #a0a0a5)",
                   lineHeight: "1.4",
                 }}
               >
@@ -155,7 +155,7 @@ export function SystemAnnouncements() {
                   border: "none",
                   padding: "4px",
                   cursor: "pointer",
-                  color: "var(--text-muted, #a0a0a5)",
+                  color: "var(--theme-text-secondary, #a0a0a5)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -164,11 +164,11 @@ export function SystemAnnouncements() {
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.05)";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--text-main, #fff)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "var(--theme-text-primary, #fff)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted, #a0a0a5)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "var(--theme-text-secondary, #a0a0a5)";
                 }}
               >
                 <X size={16} />

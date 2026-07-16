@@ -155,10 +155,10 @@ export function CampaignShell() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "var(--bg-main)",
+          background: "var(--theme-surfaces-canvas)",
         }}
       >
-        <p style={{ margin: 0, color: "var(--text-muted)" }}>
+        <p style={{ margin: 0, color: "var(--theme-text-secondary)" }}>
           {t("campaignShell.loading.loadingTitle")}
         </p>
       </div>
@@ -173,13 +173,13 @@ export function CampaignShell() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "var(--bg-main)",
+          background: "var(--theme-surfaces-canvas)",
           padding: 24,
         }}
       >
         <div style={{ maxWidth: 420, textAlign: "center" }}>
           <h2>{t("campaignShell.loading.errorTitle")}</h2>
-          <p style={{ color: "var(--text-muted)" }}>{t("campaignShell.loading.errorDesc")}</p>
+          <p style={{ color: "var(--theme-text-secondary)" }}>{t("campaignShell.loading.errorDesc")}</p>
           <p style={{ color: "var(--color-danger)", fontFamily: "monospace" }}>{error}</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
             <button className="btn btn-primary" type="button" onClick={() => void selectCampaign(campaignId)}>
@@ -245,7 +245,7 @@ export function CampaignShell() {
               background: "none",
               border: "none",
               cursor: "pointer",
-              color: "var(--text-muted)",
+              color: "var(--theme-text-secondary)",
               padding: 4,
               display: "flex",
               width: "100%",

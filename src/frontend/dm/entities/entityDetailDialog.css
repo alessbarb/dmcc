@@ -56,8 +56,8 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   overflow: hidden !important;
   transform: none !important;
   border-radius: 18px !important;
-  border: 1px solid color-mix(in srgb, var(--secondary) 30%, var(--border-color)) !important;
-  background: color-mix(in srgb, var(--bg-card) 98%, black) !important;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, var(--theme-borders-default)) !important;
+  background: color-mix(in srgb, var(--theme-surfaces-base) 98%, black) !important;
   box-shadow: 0 30px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.035) !important;
   isolation: isolate;
 }
@@ -84,8 +84,8 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
 
 .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-header {
   padding: 18px 28px 16px !important;
-  border-bottom: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--bg-card) 96%, transparent);
+  border-bottom: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
 }
 
 .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-header h2 {
@@ -108,8 +108,8 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   flex-wrap: wrap;
   gap: 14px !important;
   padding: 16px 24px !important;
-  border-top: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--bg-card) 98%, black);
+  border-top: 1px solid var(--theme-borders-default);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 98%, black);
   box-shadow: 0 -14px 32px rgba(0, 0, 0, 0.22);
 }
 
@@ -188,7 +188,7 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
 .modal-overlay:has(.modal-body [style*="border-top"]) > .modal-content > .modal-body {
   overflow: hidden !important;
   padding: 18px !important;
-  background: color-mix(in srgb, var(--bg-main) 58%, var(--bg-card));
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 58%, var(--theme-surfaces-base));
 }
 
 .modal-overlay:has(.modal-body [style*="border-top"]) .modal-body > div {
@@ -211,9 +211,9 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   min-height: 0;
   padding: 22px !important;
   overflow: auto;
-  border: 1px solid color-mix(in srgb, var(--secondary) 22%, var(--border-color)) !important;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 22%, var(--theme-borders-default)) !important;
   border-radius: 12px !important;
-  background: color-mix(in srgb, var(--bg-card) 98%, black) !important;
+  background: color-mix(in srgb, var(--theme-surfaces-base) 98%, black) !important;
   scrollbar-gutter: stable;
 }
 
@@ -221,7 +221,7 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   grid-column: 1 / -1;
   margin: 0 0 2px !important;
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--theme-borders-default);
   font-size: 1rem !important;
 }
 

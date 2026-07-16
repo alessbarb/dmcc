@@ -12,8 +12,8 @@ export function RelationEdgeLabel({ label, style = {} }: RelationEdgeLabelProps)
       style={{
         background: "rgba(15, 23, 42, 0.85)",
         backdropFilter: "blur(4px)",
-        border: "1px solid var(--border-color)",
-        color: "var(--text-main)",
+        border: "1px solid var(--theme-borders-default)",
+        color: "var(--theme-text-primary)",
         padding: "2px 8px",
         borderRadius: "4px",
         fontSize: "0.75rem",

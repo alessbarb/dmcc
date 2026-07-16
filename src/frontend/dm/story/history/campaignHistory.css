@@ -11,19 +11,19 @@
   justify-content: space-between;
   gap: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--theme-borders-default);
 }
 
 .campaign-history__header h1 {
   margin: 0;
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: clamp(1.55rem, 3vw, 2rem);
 }
 
 .campaign-history__header p {
   max-width: 74ch;
   margin: 6px 0 0;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -43,14 +43,14 @@
   flex-direction: column;
   gap: 6px;
   padding: 14px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg, 14px);
-  background: color-mix(in srgb, var(--bg-mist) 94%, transparent);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-large, 14px);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 94%, transparent);
 }
 
 .campaign-history__filters-title {
   margin: 0 0 8px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.7rem;
   font-weight: 750;
   letter-spacing: 0.1em;
@@ -65,8 +65,8 @@
   gap: 10px;
   padding: 9px 11px;
   border: 1px solid transparent;
-  border-radius: var(--radius-md, 10px);
-  color: var(--text-muted);
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  color: var(--theme-text-secondary);
   background: transparent;
   font: inherit;
   font-size: 0.86rem;
@@ -75,16 +75,16 @@
 }
 
 .campaign-history__filter:hover {
-  color: var(--text-main);
-  border-color: var(--border-color);
-  background: var(--surface-hover);
+  color: var(--theme-text-primary);
+  border-color: var(--theme-borders-default);
+  background: var(--theme-surfaces-interactive-hover);
 }
 
 .campaign-history__filter.is-active {
-  color: var(--text-main);
-  border-color: color-mix(in srgb, var(--accent-fire) 34%, var(--border-color));
-  background: color-mix(in srgb, var(--accent-fire) 8%, var(--bg-tomb));
-  box-shadow: inset 3px 0 0 var(--accent-fire);
+  color: var(--theme-text-primary);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 34%, var(--theme-borders-default));
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, var(--theme-surfaces-interactive));
+  box-shadow: inset 3px 0 0 var(--theme-accents-primary-foreground);
 }
 
 .campaign-history__content {
@@ -96,10 +96,10 @@
 
 .campaign-history__error {
   padding: 14px 16px;
-  border: 1px solid color-mix(in srgb, var(--semantic-danger) 36%, transparent);
-  border-radius: var(--radius-md);
-  color: var(--semantic-danger);
-  background: var(--semantic-danger-soft);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 36%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  color: var(--theme-feedback-danger-foreground);
+  background: var(--theme-feedback-danger-background);
 }
 
 .campaign-history__state {
@@ -107,9 +107,9 @@
   display: grid;
   place-items: center;
   padding: 32px;
-  border: 1px dashed var(--border-color);
-  border-radius: var(--radius-lg);
-  color: var(--text-muted);
+  border: 1px dashed var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-large);
+  color: var(--theme-text-secondary);
   text-align: center;
 }
 
@@ -139,7 +139,7 @@
   bottom: 16px;
   left: 14px;
   width: 1px;
-  background: var(--border-color);
+  background: var(--theme-borders-default);
 }
 
 .campaign-history-entry {
@@ -155,19 +155,19 @@
   height: 30px;
   display: grid;
   place-items: center;
-  border: 2px solid var(--history-color, var(--accent-fire));
+  border: 2px solid var(--history-color, var(--theme-accents-primary-foreground));
   border-radius: 50%;
-  color: var(--history-color, var(--accent-fire));
-  background: var(--history-bg, var(--bg-tomb));
+  color: var(--history-color, var(--theme-accents-primary-foreground));
+  background: var(--history-bg, var(--theme-surfaces-interactive));
 }
 
 .campaign-history-entry__card {
   display: grid;
   gap: 12px;
   padding: 16px 18px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent);
-  border-radius: var(--radius-lg, 14px);
-  background: color-mix(in srgb, var(--bg-mist) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
+  border-radius: var(--theme-shapes-radius-large, 14px);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
 }
 
@@ -176,12 +176,12 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 7px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.76rem;
 }
 
 .campaign-history-entry__category {
-  color: var(--history-color, var(--accent-fire));
+  color: var(--history-color, var(--theme-accents-primary-foreground));
   font-weight: 750;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -189,14 +189,14 @@
 
 .campaign-history-entry__description {
   margin: 0;
-  color: var(--text-main);
+  color: var(--theme-text-primary);
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.5;
 }
 
 .campaign-history-entry__technical {
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--theme-borders-default);
   padding-top: 10px;
 }
 
@@ -204,7 +204,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.76rem;
   cursor: pointer;
 }
@@ -214,7 +214,7 @@
   grid-template-columns: max-content minmax(0, 1fr);
   gap: 5px 10px;
   margin: 12px 0;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.75rem;
 }
 
@@ -233,10 +233,10 @@
   margin: 0;
   padding: 12px;
   overflow: auto;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  color: var(--accent-amethyst);
-  background: var(--bg-tomb);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  color: var(--theme-accents-secondary-foreground);
+  background: var(--theme-surfaces-interactive);
   font-size: 0.74rem;
 }
 

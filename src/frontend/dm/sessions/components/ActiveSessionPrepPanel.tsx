@@ -25,7 +25,7 @@ export function ActiveSessionPrepPanel({ session, campaignState }: { session: Se
   if (!hasContent) return null;
 
   return (
-    <section className="card" style={{ padding: "0", overflow: "hidden", borderLeft: "3px solid var(--primary)" }}>
+    <section className="card" style={{ padding: "0", overflow: "hidden", borderLeft: "3px solid var(--theme-accents-primary-foreground)" }}>
       <button
         type="button"
         onClick={() => setCollapsed((value) => !value)}
@@ -37,38 +37,38 @@ export function ActiveSessionPrepPanel({ session, campaignState }: { session: Se
           gap: "12px",
           background: "transparent",
           border: "none",
-          color: "var(--text-main)",
+          color: "var(--theme-text-primary)",
           padding: "14px 18px",
           cursor: "pointer",
         }}
       >
         <span style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 800 }}>
-          <CheckSquare size={16} style={{ color: "var(--primary)" }} />
+          <CheckSquare size={16} style={{ color: "var(--theme-accents-primary-foreground)" }} />
           {t("sessionPage.activePrepPanelTitle")}
           <span className="badge" style={{ fontSize: "0.7rem" }}>{prep.state === "ready" ? t("sessionPage.readyToPlay") : t("sessionPage.prepDraft")}</span>
         </span>
         {collapsed ? <ChevronDown size={15} /> : <ChevronUp size={15} />}
       </button>
       {!collapsed && (
-        <div style={{ borderTop: "1px solid var(--border-color)", padding: "16px 18px", display: "flex", flexDirection: "column", gap: "16px" }}>
+        <div style={{ borderTop: "1px solid var(--theme-borders-default)", padding: "16px 18px", display: "flex", flexDirection: "column", gap: "16px" }}>
           {prep.openingPrompt && (
-            <div style={{ padding: "12px", borderRadius: "var(--radius-md)", backgroundColor: "var(--bg-input)", border: "1px solid var(--border-color)" }}>
-              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.openingPromptLabel")}</div>
+            <div style={{ padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)" }}>
+              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--theme-text-secondary)", marginBottom: "6px" }}>{t("sessionPage.openingPromptLabel")}</div>
               <p style={{ whiteSpace: "pre-line", fontSize: "0.9rem", lineHeight: 1.45 }}>{prep.openingPrompt}</p>
             </div>
           )}
-          {prep.summary && <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.45 }}>{prep.summary}</p>}
+          {prep.summary && <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem", lineHeight: 1.45 }}>{prep.summary}</p>}
           {(prep.goals?.length ?? 0) > 0 && (
             <div>
-              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.goalsLabel")}</div>
-              <ul style={{ margin: 0, paddingLeft: "20px", color: "var(--text-main)", fontSize: "0.9rem", lineHeight: 1.5 }}>
+              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--theme-text-secondary)", marginBottom: "6px" }}>{t("sessionPage.goalsLabel")}</div>
+              <ul style={{ margin: 0, paddingLeft: "20px", color: "var(--theme-text-primary)", fontSize: "0.9rem", lineHeight: 1.5 }}>
                 {(prep.goals ?? []).map((goal: string, index: number) => <li key={`${goal}-${index}`}>{goal}</li>)}
               </ul>
             </div>
           )}
           {(prep.checklist?.length ?? 0) > 0 && (
             <div>
-              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.checklistLabel")}</div>
+              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--theme-text-secondary)", marginBottom: "6px" }}>{t("sessionPage.checklistLabel")}</div>
               <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
                 {(prep.checklist ?? []).map((item) => (
                   <li key={item.id ?? item.label} style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "0.9rem" }}>
@@ -87,9 +87,9 @@ export function ActiveSessionPrepPanel({ session, campaignState }: { session: Se
             <PrepLinkedList title={t("sessionPage.prepInvolvedLabel")} ids={prep.involvedEntityIds} campaignState={campaignState} />
           </div>
           {prep.notes && (
-            <div style={{ paddingTop: "12px", borderTop: "1px solid var(--border-color)" }}>
-              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: "6px" }}>{t("sessionPage.privatePrepNotesLabel")}</div>
-              <p style={{ whiteSpace: "pre-line", fontSize: "0.86rem", color: "var(--text-muted)", lineHeight: 1.45 }}>{prep.notes}</p>
+            <div style={{ paddingTop: "12px", borderTop: "1px solid var(--theme-borders-default)" }}>
+              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--theme-text-secondary)", marginBottom: "6px" }}>{t("sessionPage.privatePrepNotesLabel")}</div>
+              <p style={{ whiteSpace: "pre-line", fontSize: "0.86rem", color: "var(--theme-text-secondary)", lineHeight: 1.45 }}>{prep.notes}</p>
             </div>
           )}
         </div>

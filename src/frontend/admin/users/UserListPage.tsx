@@ -96,7 +96,7 @@ export function UserListPage() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <header style={{ marginBottom: "32px" }}>
           <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>User Management</h1>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+          <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
             Enable or disable user access, manage administrator privileges, and terminate active web sessions.
           </p>
         </header>
@@ -114,7 +114,7 @@ export function UserListPage() {
           alignItems: "center",
           gap: "16px",
           marginBottom: "24px",
-          backgroundColor: "var(--bg-card)",
+          backgroundColor: "var(--theme-surfaces-base)",
           padding: "16px",
           borderRadius: "12px",
           border: "1px solid var(--border)",
@@ -129,7 +129,7 @@ export function UserListPage() {
                   padding: "8px 16px",
                   borderRadius: "8px",
                   backgroundColor: status === s ? "var(--gold)" : "rgba(255,255,255,0.03)",
-                  color: status === s ? "var(--bg-main)" : "inherit",
+                  color: status === s ? "var(--theme-surfaces-canvas)" : "inherit",
                   border: "1px solid var(--border)",
                   cursor: "pointer",
                   fontSize: "0.85rem",
@@ -144,7 +144,7 @@ export function UserListPage() {
 
           <form onSubmit={handleSearchSubmit} style={{ display: "flex", gap: "8px", flex: 1, maxWidth: "400px" }}>
             <div style={{ position: "relative", flex: 1 }}>
-              <Search size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
+              <Search size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--theme-text-secondary)" }} />
               <input
                 type="text"
                 placeholder="Search by name or email..."
@@ -180,15 +180,15 @@ export function UserListPage() {
         </div>
 
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--text-muted)" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
             Loading users...
           </div>
         ) : users.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--text-muted)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
             No users found matching the criteria.
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
@@ -213,7 +213,7 @@ export function UserListPage() {
                         )}
                         <div>
                           <div style={{ fontWeight: 600 }}>{u.displayName || "(No Name)"}</div>
-                          <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{u.email}</div>
+                          <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>{u.email}</div>
                         </div>
                       </div>
                     </td>

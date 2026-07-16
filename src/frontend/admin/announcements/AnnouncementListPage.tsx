@@ -104,7 +104,7 @@ export function AnnouncementListPage() {
         <header style={{ marginBottom: "32px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
             <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Announcements</h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
               Publish informational banners shown across the landing page and dashboard.
             </p>
           </div>
@@ -117,7 +117,7 @@ export function AnnouncementListPage() {
               padding: "10px 16px",
               borderRadius: "8px",
               backgroundColor: showForm ? "rgba(255,255,255,0.05)" : "var(--gold)",
-              color: showForm ? "inherit" : "var(--bg-main)",
+              color: showForm ? "inherit" : "var(--theme-surfaces-canvas)",
               border: "1px solid var(--border)",
               cursor: "pointer",
               fontSize: "0.85rem",
@@ -139,7 +139,7 @@ export function AnnouncementListPage() {
           <form
             onSubmit={(e) => { void handleCreate(e); }}
             style={{
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "var(--theme-surfaces-base)",
               padding: "20px",
               borderRadius: "12px",
               border: "1px solid var(--border)",
@@ -173,7 +173,7 @@ export function AnnouncementListPage() {
                 <option value="warning">Warning</option>
                 <option value="maintenance">Maintenance</option>
               </select>
-              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
                 <input
                   type="checkbox"
                   checked={form.showOnLanding ?? true}
@@ -181,7 +181,7 @@ export function AnnouncementListPage() {
                 />
                 Show on landing
               </label>
-              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
                 <input
                   type="checkbox"
                   checked={form.showOnDashboard ?? true}
@@ -189,7 +189,7 @@ export function AnnouncementListPage() {
                 />
                 Show on dashboard
               </label>
-              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
                 <input
                   type="checkbox"
                   checked={form.isDismissible ?? true}
@@ -206,7 +206,7 @@ export function AnnouncementListPage() {
                 padding: "10px 20px",
                 borderRadius: "8px",
                 backgroundColor: "var(--gold)",
-                color: "var(--bg-main)",
+                color: "var(--theme-surfaces-canvas)",
                 border: "none",
                 cursor: "pointer",
                 fontSize: "0.85rem",
@@ -219,11 +219,11 @@ export function AnnouncementListPage() {
         )}
 
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--text-muted)" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
             Loading announcements...
           </div>
         ) : announcements.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--text-muted)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
             No announcements yet.
           </div>
         ) : (
@@ -232,7 +232,7 @@ export function AnnouncementListPage() {
               <div
                 key={ann.announcementId}
                 style={{
-                  backgroundColor: "var(--bg-card)",
+                  backgroundColor: "var(--theme-surfaces-base)",
                   border: "1px solid var(--border)",
                   borderLeft: `3px solid ${kindColor(ann.kind)}`,
                   borderRadius: "8px",
@@ -248,9 +248,9 @@ export function AnnouncementListPage() {
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
                     <strong style={{ fontSize: "0.95rem" }}>{ann.content.title}</strong>
                     <span style={{ fontSize: "0.7rem", textTransform: "uppercase", color: kindColor(ann.kind), fontWeight: 700 }}>{ann.kind}</span>
-                    {ann.archivedAt && <span style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>(archived)</span>}
+                    {ann.archivedAt && <span style={{ fontSize: "0.7rem", color: "var(--theme-text-secondary)" }}>(archived)</span>}
                   </div>
-                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>{ann.content.body}</p>
+                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>{ann.content.body}</p>
                 </div>
                 {!ann.archivedAt && (
                   <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>

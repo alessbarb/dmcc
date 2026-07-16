@@ -89,7 +89,7 @@ const SECRET_STATES: BoardState[] = [
 ];
 
 const BOARDS: BoardDefinition[] = [
-  { id: "quests", labelKey: "boards.tabs.quests", entityType: "quest", color: "var(--primary)", states: QUEST_STATES },
+  { id: "quests", labelKey: "boards.tabs.quests", entityType: "quest", color: "var(--theme-accents-primary-foreground)", states: QUEST_STATES },
   { id: "clues", labelKey: "boards.tabs.clues", entityType: "clue", color: "#059669", states: CLUE_STATES },
   { id: "consequences", labelKey: "boards.tabs.consequences", entityType: ["consequence", "front"], color: "#d97706", states: CONSEQUENCE_STATES },
   { id: "npcs", labelKey: "boards.tabs.npcs", entityType: "npc", color: "#7c3aed", states: NPC_STATES },
@@ -403,8 +403,8 @@ export function EntityBoardsView() {
         </div>
 
         <div className="card" style={{ display: "flex", gap: 16, padding: "12px 16px", flexWrap: "wrap" }} aria-live="polite">
-          <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-            {t("boards.total")}: <strong style={{ color: "var(--text-main)" }}>{boardEntities.length}</strong>
+          <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
+            {t("boards.total")}: <strong style={{ color: "var(--theme-text-primary)" }}>{boardEntities.length}</strong>
           </span>
           {board.states.map((state) => (
             <span key={state.key} style={{ fontSize: "0.85rem", color: state.color }}>
@@ -412,14 +412,14 @@ export function EntityBoardsView() {
             </span>
           ))}
           {entitiesByStatus._unknown.length > 0 && (
-            <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+            <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
               {t("boards.unknownStatus")}: <strong>{entitiesByStatus._unknown.length}</strong>
             </span>
           )}
         </div>
 
         {boardEntities.length === 0 ? (
-          <div className="card" style={{ textAlign: "center", padding: 48, color: "var(--text-muted)" }}>
+          <div className="card" style={{ textAlign: "center", padding: 48, color: "var(--theme-text-secondary)" }}>
             <p style={{ fontSize: "1rem" }}>{t("boards.noItems", { board: boardLabel.toLocaleLowerCase() })}</p>
           </div>
         ) : (

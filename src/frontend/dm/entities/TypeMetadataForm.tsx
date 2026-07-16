@@ -20,8 +20,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
   switch (entityType) {
     case "npc":
       return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
-          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Datos del PNJ</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--theme-borders-default)", padding: "12px", borderRadius: "var(--theme-shapes-radius-small)", marginTop: "12px" }}>
+          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-primary-foreground)" }}>Datos del PNJ</h4>
           <div className="grid grid-cols-2">
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Rol</label>
@@ -77,8 +77,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
       );
     case "location":
       return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
-          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Datos de la ubicación</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--theme-borders-default)", padding: "12px", borderRadius: "var(--theme-shapes-radius-small)", marginTop: "12px" }}>
+          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-primary-foreground)" }}>Datos de la ubicación</h4>
           <div className="grid grid-cols-2">
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Tipo de ubicación</label>
@@ -118,8 +118,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
       );
     case "quest":
       return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
-          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Datos de la misión</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--theme-borders-default)", padding: "12px", borderRadius: "var(--theme-shapes-radius-small)", marginTop: "12px" }}>
+          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-primary-foreground)" }}>Datos de la misión</h4>
           <div className="grid grid-cols-2">
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Prioridad de la misión</label>
@@ -155,8 +155,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
       );
     case "clue":
       return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
-          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Datos de la pista</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--theme-borders-default)", padding: "12px", borderRadius: "var(--theme-shapes-radius-small)", marginTop: "12px" }}>
+          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-primary-foreground)" }}>Datos de la pista</h4>
           <div className="grid grid-cols-2">
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Tipo de pista</label>
@@ -191,8 +191,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
       );
     case "secret":
       return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
-          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Datos del secreto</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--theme-borders-default)", padding: "12px", borderRadius: "var(--theme-shapes-radius-small)", marginTop: "12px" }}>
+          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-primary-foreground)" }}>Datos del secreto</h4>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">La verdad *</label>
             <textarea
@@ -217,8 +217,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
       );
     case "clock":
       return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
-          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Metadatos del reloj narrativo</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--theme-borders-default)", padding: "12px", borderRadius: "var(--theme-shapes-radius-small)", marginTop: "12px" }}>
+          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-primary-foreground)" }}>Metadatos del reloj narrativo</h4>
           <div className="grid grid-cols-2">
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Segmentos máximos *</label>
@@ -241,11 +241,11 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
       );
     case "player_character":
       return campaignSystem === "dnd_5e" ? (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
-          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Ficha de personaje (D&D 5.2.1)</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--theme-borders-default)", padding: "12px", borderRadius: "var(--theme-shapes-radius-small)", marginTop: "12px" }}>
+          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-primary-foreground)" }}>Ficha de personaje (D&D 5.2.1)</h4>
 
-          <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
-            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Datos Básicos</h5>
+          <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)" }}>Datos Básicos</h5>
             <div className="grid grid-cols-2">
               <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="form-label">Perfil del jugador *</label>
@@ -279,8 +279,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
             </div>
           </div>
 
-          <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
-            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Atributos Principales (1-30)</h5>
+          <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)" }}>Atributos Principales (1-30)</h5>
             <div className="grid grid-cols-3">
               <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="form-label">Fuerza (STR) *</label>
@@ -309,8 +309,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
             </div>
           </div>
 
-          <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
-            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Estadísticas de Combate y Progreso</h5>
+          <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)" }}>Estadísticas de Combate y Progreso</h5>
             <div className="grid grid-cols-3">
               <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="form-label">CA *</label>
@@ -347,8 +347,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
             </div>
           </div>
 
-          <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
-            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Atributos Pasivos</h5>
+          <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)" }}>Atributos Pasivos</h5>
             <div className="grid grid-cols-3">
               <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="form-label">Percepción Pasiva *</label>
@@ -366,7 +366,7 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
           </div>
 
           <div>
-            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--secondary)" }}>Competencias, Dotes e Idiomas</h5>
+            <h5 style={{ margin: "0 0 8px 0", fontSize: "0.8rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)" }}>Competencias, Dotes e Idiomas</h5>
             <div className="form-group">
               <label className="form-label">Salvaciones Competentes (ej. dex, con)</label>
               <input type="text" className="form-input" placeholder="Separadas por comas"
@@ -408,8 +408,8 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
           </div>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--border-color)", padding: "12px", borderRadius: "var(--radius-sm)", marginTop: "12px" }}>
-          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--primary)" }}>Metadatos del personaje jugador</h4>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", border: "1px solid var(--theme-borders-default)", padding: "12px", borderRadius: "var(--theme-shapes-radius-small)", marginTop: "12px" }}>
+          <h4 style={{ margin: 0, fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-primary-foreground)" }}>Metadatos del personaje jugador</h4>
           <div className="grid grid-cols-2">
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Perfil del jugador propietario *</label>

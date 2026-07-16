@@ -51,11 +51,11 @@ export function RegisterPage() {
   };
 
   if (checkingSession) {
-    return <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", background: "var(--bg-main)", color: "var(--text-muted)" }}>{t("common.loading")}</div>;
+    return <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", background: "var(--theme-surfaces-canvas)", color: "var(--theme-text-secondary)" }}>{t("common.loading")}</div>;
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--bg-main)" }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--theme-surfaces-canvas)" }}>
       <PortalTopBar />
       <div className="join-portal-container" style={{ flex: 1 }}>
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
@@ -63,7 +63,7 @@ export function RegisterPage() {
           <div className="join-portal-header">
             <div className="join-portal-icon-wrapper"><UserPlus className="join-portal-icon" size={32} /><div className="join-portal-icon-glow" /></div>
             <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("auth.register.title")}</h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", margin: "4px 0 0" }}>{t("auth.register.subtitle")}</p>
+            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", margin: "4px 0 0" }}>{t("auth.register.subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="join-portal-form">

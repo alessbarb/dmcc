@@ -52,7 +52,7 @@ export function ConfirmPasswordDialog({
         style={{
           width: "100%",
           maxWidth: "380px",
-          backgroundColor: "var(--bg-card)",
+          backgroundColor: "var(--theme-surfaces-base)",
           border: "1px solid var(--border)",
           borderRadius: "12px",
           padding: "24px",
@@ -71,15 +71,15 @@ export function ConfirmPasswordDialog({
             type="button"
             onClick={onCancel}
             aria-label="Cancel"
-            style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-muted)", padding: "4px" }}
+            style={{ background: "none", border: "none", cursor: "pointer", color: "var(--theme-text-secondary)", padding: "4px" }}
           >
             <X size={16} />
           </button>
         </div>
 
-        <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>{description}</p>
+        <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>{description}</p>
 
-        <label style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+        <label style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
           Current password
           <input
             type="password"

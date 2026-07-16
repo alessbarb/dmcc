@@ -30,7 +30,7 @@ export function PlayerMessagesPage() {
   });
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg-main)", paddingBottom: "calc(5.25rem + env(safe-area-inset-bottom))" }}>
+    <div style={{ minHeight: "100vh", background: "var(--theme-surfaces-canvas)", paddingBottom: "calc(5.25rem + env(safe-area-inset-bottom))" }}>
       <PortalTopBar actions={(
         <button
           type="button"

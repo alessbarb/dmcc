@@ -404,8 +404,8 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
             {entityForm.entityType === "player_character" && (
               campaignState?.campaign?.system === "dnd_5e" ? (
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Información Básica</h4>
+                  <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
+                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Información Básica</h4>
                     <div className="grid grid-cols-2" style={{ gap: "12px" }}>
                       <div className="form-group">
                         <label className="form-label">Perfil del jugador</label>
@@ -445,8 +445,8 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     </div>
                   </div>
 
-                  <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Atributos Principales (1-30)</h4>
+                  <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
+                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Atributos Principales (1-30)</h4>
                     <div className="grid grid-cols-3" style={{ gap: "12px" }}>
                       <div className="form-group">
                         <label className="form-label">Fuerza (STR) *</label>
@@ -481,8 +481,8 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     </div>
                   </div>
 
-                  <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Estadísticas de Combate y Progreso</h4>
+                  <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
+                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Estadísticas de Combate y Progreso</h4>
                     <div className="grid grid-cols-3" style={{ gap: "12px" }}>
                       <div className="form-group">
                         <label className="form-label">CA *</label>
@@ -527,8 +527,8 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                     </div>
                   </div>
 
-                  <div style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "12px", marginBottom: "8px" }}>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Habilidades Pasivas</h4>
+                  <div style={{ borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "12px", marginBottom: "8px" }}>
+                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Habilidades Pasivas</h4>
                     <div className="grid grid-cols-3" style={{ gap: "12px" }}>
                       <div className="form-group">
                         <label className="form-label">Percepción Pasiva *</label>
@@ -549,7 +549,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
                   </div>
 
                   <div>
-                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--secondary)", marginBottom: "12px" }}>Competencias, Dotes e Idiomas</h4>
+                    <h4 style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--theme-accents-secondary-foreground)", marginBottom: "12px" }}>Competencias, Dotes e Idiomas</h4>
                     <div className="form-group">
                       <label className="form-label">Salvaciones Competentes (ej. dex, con)</label>
                       <input type="text" className="form-input" placeholder="Separadas por comas"

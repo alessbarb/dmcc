@@ -59,7 +59,7 @@ export function CampaignTemplateSettingsPage() {
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <header style={{ marginBottom: "32px" }}>
           <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Campaign Templates</h1>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "4px" }}>
+          <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
             Control which premade campaigns are visible to users and which are featured.
           </p>
         </header>
@@ -71,15 +71,15 @@ export function CampaignTemplateSettingsPage() {
         )}
 
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--text-muted)" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
             Loading templates...
           </div>
         ) : templates.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--text-muted)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
             No campaign templates found on disk.
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--bg-card)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
@@ -94,7 +94,7 @@ export function CampaignTemplateSettingsPage() {
                   <tr key={t.templateId} style={{ borderBottom: "1px solid var(--border)" }}>
                     <td style={{ padding: "16px" }}>
                       <div style={{ fontWeight: 600 }}>{t.title}</div>
-                      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{t.templateId}</div>
+                      <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>{t.templateId}</div>
                     </td>
                     <td style={{ padding: "16px" }}>{t.system}</td>
                     <td style={{ padding: "16px", textTransform: "capitalize" }}>{t.difficulty}</td>

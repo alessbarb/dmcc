@@ -23,10 +23,10 @@
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    color-mix(in srgb, var(--bg-card) 12%, transparent) 30%,
-    color-mix(in srgb, var(--bg-card) 56%, transparent) 62%,
-    color-mix(in srgb, var(--bg-card) 94%, transparent) 88%,
-    var(--bg-card) 100%
+    color-mix(in srgb, var(--theme-surfaces-base) 12%, transparent) 30%,
+    color-mix(in srgb, var(--theme-surfaces-base) 56%, transparent) 62%,
+    color-mix(in srgb, var(--theme-surfaces-base) 94%, transparent) 88%,
+    var(--theme-surfaces-base) 100%
   );
 }
 
@@ -50,9 +50,9 @@
   padding-top: 54px;
   background: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--bg-card) 36%, transparent) 0%,
-    color-mix(in srgb, var(--bg-card) 88%, transparent) 28px,
-    var(--bg-card) 58px
+    color-mix(in srgb, var(--theme-surfaces-base) 36%, transparent) 0%,
+    color-mix(in srgb, var(--theme-surfaces-base) 88%, transparent) 28px,
+    var(--theme-surfaces-base) 58px
   );
 }
 

@@ -19,16 +19,16 @@
 .settings-workspace__header p,
 .settings-card__description {
   margin: 5px 0 0;
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.86rem;
   line-height: 1.5;
 }
 
 .settings-workspace__language {
   padding: 18px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent);
-  border-radius: var(--radius-lg, 14px);
-  background: color-mix(in srgb, var(--bg-mist) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
+  border-radius: var(--theme-shapes-radius-large, 14px);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 94%, transparent);
 }
 
 .settings-workspace__grid {
@@ -57,10 +57,10 @@
   display: grid;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid color-mix(in srgb, var(--accent-fire) 28%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 28%, var(--theme-borders-default));
   border-radius: 12px;
-  color: var(--accent-fire);
-  background: color-mix(in srgb, var(--accent-fire) 8%, var(--bg-tomb));
+  color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, var(--theme-surfaces-interactive));
 }
 
 .settings-card__actions {
@@ -78,13 +78,13 @@
   display: grid;
   gap: 10px;
   padding: 14px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  background: var(--bg-tomb);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-surfaces-interactive);
 }
 
 .settings-export-result__label {
-  color: var(--text-muted);
+  color: var(--theme-text-secondary);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -95,10 +95,10 @@
   width: 100%;
   min-width: 0;
   padding: 9px 11px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  color: var(--text-main);
-  background: var(--bg-input);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-small);
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive);
   font-family: monospace;
   font-size: 0.78rem;
 }

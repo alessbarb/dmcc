@@ -68,37 +68,37 @@ export function SessionQuickActions({
       id: "nota",
       label: t("session.quickNote"),
       icon: <StickyNote size={22} />,
-      accentVar: "var(--color-info)",
+      accentVar: "var(--theme-feedback-info-foreground)",
     },
     {
       id: "pista",
       label: t("sessionPage.revealClueButton"),
       icon: <Eye size={22} />,
-      accentVar: "var(--secondary)",
+      accentVar: "var(--theme-accents-secondary-foreground)",
     },
     {
       id: "decision",
       label: t("session.recordDecision"),
       icon: <GitMerge size={22} />,
-      accentVar: "var(--primary)",
+      accentVar: "var(--theme-accents-primary-foreground)",
     },
     {
       id: "consecuencia",
       label: t("session.createConsequence"),
       icon: <Zap size={22} />,
-      accentVar: "var(--color-warning)",
+      accentVar: "var(--theme-feedback-warning-foreground)",
     },
     {
       id: "pnj",
       label: t("session.createQuickNpc"),
       icon: <UserPlus size={22} />,
-      accentVar: "var(--color-success)",
+      accentVar: "var(--theme-feedback-success-foreground)",
     },
     {
       id: "cerrar",
       label: t("session.closeSession"),
       icon: <X size={22} />,
-      accentVar: "var(--color-critical)",
+      accentVar: "var(--theme-feedback-danger-foreground)",
     },
   ];
 
@@ -135,15 +135,15 @@ export function SessionQuickActions({
                 minHeight: "96px",
                 padding: "16px 12px",
                 backgroundColor: isActive
-                  ? "var(--bg-card-hover)"
-                  : "var(--bg-card)",
+                  ? "var(--theme-surfaces-interactive-hover)"
+                  : "var(--theme-surfaces-base)",
                 border: isActive
                   ? `2px solid ${action.accentVar}`
-                  : "1px solid var(--border-color)",
-                borderRadius: "var(--radius-lg)",
+                  : "1px solid var(--theme-borders-default)",
+                borderRadius: "var(--theme-shapes-radius-large)",
                 cursor: "pointer",
                 transition: "var(--transition-fast)",
-                color: isActive ? action.accentVar : "var(--text-muted)",
+                color: isActive ? action.accentVar : "var(--theme-text-secondary)",
                 boxShadow: isActive
                   ? `0 0 14px ${action.accentVar}33`
                   : "none",
@@ -151,7 +151,7 @@ export function SessionQuickActions({
             >
               <span
                 style={{
-                  color: isActive ? action.accentVar : "var(--text-muted)",
+                  color: isActive ? action.accentVar : "var(--theme-text-secondary)",
                   transition: "var(--transition-fast)",
                 }}
               >
@@ -163,7 +163,7 @@ export function SessionQuickActions({
                   fontWeight: "700",
                   textAlign: "center",
                   lineHeight: 1.25,
-                  color: isActive ? "var(--text-main)" : "var(--text-muted)",
+                  color: isActive ? "var(--theme-text-primary)" : "var(--theme-text-secondary)",
                 }}
               >
                 {action.label}

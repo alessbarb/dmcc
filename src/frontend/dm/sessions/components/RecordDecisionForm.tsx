@@ -194,7 +194,7 @@ export function RecordDecisionForm({
           type="checkbox"
           checked={createPending}
           onChange={(e) => setCreatePending(e.target.checked)}
-          style={{ width: "16px", height: "16px", accentColor: "var(--primary)", cursor: "pointer" }}
+          style={{ width: "16px", height: "16px", accentColor: "var(--theme-accents-primary-foreground)", cursor: "pointer" }}
         />
         <label
           htmlFor="create-pending"

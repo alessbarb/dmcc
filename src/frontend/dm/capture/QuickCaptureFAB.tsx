@@ -119,7 +119,7 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  color: "var(--text-muted)",
+                  color: "var(--theme-text-secondary)",
                   padding: "4px",
                 }}
               >

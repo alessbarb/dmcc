@@ -1,6 +1,11 @@
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { AccountPreferences } from "./accountTypes.js";
 import type { DeviceOverrides } from "./deviceOverrides.js";
+import { applyAccountAppearance } from "./appearanceRuntime.js";
+import {
+  createAppearancePreviewController,
+  type AppearancePreviewController,
+} from "./appearancePreview.js";
 import { themes } from "./themeRegistry.js";
 import { typographySets } from "./typographyRegistry.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
@@ -13,6 +18,21 @@ type Props = {
   onDeviceChange(overrides: DeviceOverrides): void;
 };
 
+const THEME_FALLBACK_LABELS: Record<string, string> = {
+  default: "Default",
+  fantasy: "Fantasy",
+  "sci-fi": "Sci-fi",
+};
+
+function translatedLabel(
+  translate: (key: string) => string,
+  key: string,
+  fallback: string,
+): string {
+  const translated = translate(key);
+  return translated === key ? fallback : translated;
+}
+
 export function PreferencesPanel({
   preferences,
   deviceOverrides,
@@ -21,6 +41,8 @@ export function PreferencesPanel({
 }: Props) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState(preferences);
+  const previewElementRef = useRef<HTMLDivElement | null>(null);
+  const previewControllerRef = useRef<AppearancePreviewController | null>(null);
   const preview = useMemo(() => ({
     themeId: deviceOverrides.themeId ?? draft.themeId,
     colorMode: deviceOverrides.colorMode ?? draft.colorMode,
@@ -30,11 +52,38 @@ export function PreferencesPanel({
   const isFormDirty = isDirty(preferences, draft);
 
   useEffect(() => {
-    (window as any).__accountCenterDirty = isFormDirty;
+    setDraft(preferences);
+    applyAccountAppearance(preferences);
+  }, [preferences]);
+
+  useEffect(() => {
+    window.__accountCenterDirty = isFormDirty;
     return () => {
-      (window as any).__accountCenterDirty = false;
+      window.__accountCenterDirty = false;
     };
   }, [isFormDirty]);
+
+  useEffect(() => {
+    const target = previewElementRef.current;
+    if (!target) return;
+
+    const controller = createAppearancePreviewController(target, window);
+    previewControllerRef.current = controller;
+
+    return () => {
+      controller.dispose();
+      previewControllerRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    previewControllerRef.current?.apply(preview);
+  }, [preview]);
+
+  const savePreferences = async () => {
+    await onSave(draft);
+    applyAccountAppearance(draft);
+  };
 
   return (
     <section aria-labelledby="appearance-title">
@@ -47,7 +96,9 @@ export function PreferencesPanel({
             onChange={(event) => setDraft({ ...draft, themeId: event.target.value })}
           >
             {[...themes.values()].map((theme) => (
-              <option key={theme.id} value={theme.id}>{theme.id}</option>
+              <option key={theme.id} value={theme.id}>
+                {translatedLabel(t, theme.labelKey, THEME_FALLBACK_LABELS[theme.id] ?? theme.id)}
+              </option>
             ))}
           </select>
         </label>
@@ -72,7 +123,9 @@ export function PreferencesPanel({
             onChange={(event) => setDraft({ ...draft, typographySetId: event.target.value })}
           >
             {[...typographySets.values()].map((set) => (
-              <option key={set.id} value={set.id}>{set.id}</option>
+              <option key={set.id} value={set.id}>
+                {translatedLabel(t, set.labelKey, set.id === "cinzel-outfit" ? "Cinzel + Outfit" : set.id)}
+              </option>
             ))}
           </select>
         </label>
@@ -88,11 +141,30 @@ export function PreferencesPanel({
         />
         {t("account.appearance.deviceOverride")}
       </label>
-      <div className="account-preview" data-theme={preview.themeId} data-mode={preview.colorMode}>
-        <strong>{t("account.appearance.livePreview")}</strong>
-        <p data-typography={preview.typographySetId}>{t("account.appearance.previewText")}</p>
+      <div
+        ref={previewElementRef}
+        className="account-preview"
+        style={{
+          padding: "1rem",
+          border: "1px solid var(--theme-borders-default)",
+          borderRadius: "var(--theme-shapes-radius-panel)",
+          background: "var(--theme-surfaces-base)",
+          color: "var(--theme-text-primary)",
+          boxShadow: "var(--theme-shadows-medium)",
+          fontFamily: "var(--font-sans)",
+          fontSize: "calc(1rem * var(--typography-scale, 1))",
+        }}
+      >
+        <strong style={{ fontFamily: "var(--font-display)" }}>
+          {t("account.appearance.livePreview")}
+        </strong>
+        <p style={{ color: "var(--theme-text-secondary)" }}>
+          {t("account.appearance.previewText")}
+        </p>
       </div>
-      <button type="button" onClick={() => void onSave(draft)}>{t("account.appearance.saveBtn")}</button>
+      <button type="button" onClick={() => void savePreferences()}>
+        {t("account.appearance.saveBtn")}
+      </button>
     </section>
   );
 }

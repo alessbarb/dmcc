@@ -4,7 +4,7 @@ const kindStyles: Record<string, string> = {
   success: "#22c55e",
   error: "#ef4444",
   warning: "#f59e0b",
-  info: "var(--primary)",
+  info: "var(--theme-accents-primary-foreground)",
 };
 
 interface Props {
@@ -30,14 +30,14 @@ export function ToastContainer({ toasts, onRemove }: Props) {
           key={t.id}
           onClick={() => onRemove(t.id)}
           style={{
-            background: "var(--bg-card)",
+            background: "var(--theme-surfaces-base)",
             border: `1px solid ${kindStyles[t.kind]}`,
             borderLeft: `4px solid ${kindStyles[t.kind]}`,
-            borderRadius: "var(--radius-sm)",
+            borderRadius: "var(--theme-shapes-radius-small)",
             padding: "10px 16px",
             cursor: "pointer",
             fontSize: "0.875rem",
-            color: "var(--text-main)",
+            color: "var(--theme-text-primary)",
             boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
           }}
         >

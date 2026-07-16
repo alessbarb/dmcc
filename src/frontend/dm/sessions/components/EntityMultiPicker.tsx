@@ -31,9 +31,9 @@ export function EntityMultiPicker({
   return (
     <div className="form-group">
       <label className="form-label">{label}</label>
-      {help && <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginBottom: "8px" }}>{help}</p>}
+      {help && <p style={{ fontSize: "0.78rem", color: "var(--theme-text-secondary)", marginBottom: "8px" }}>{help}</p>}
       {entities.length === 0 ? (
-        <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", padding: "10px 0" }}>—</p>
+        <p style={{ fontSize: "0.82rem", color: "var(--theme-text-secondary)", padding: "10px 0" }}>—</p>
       ) : (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", maxHeight: "120px", overflowY: "auto", padding: "4px" }}>
           {entities.map((entity: Entity) => (

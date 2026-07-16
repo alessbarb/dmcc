@@ -41,7 +41,7 @@ export function OnboardingPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg-main)", padding: "24px" }}>
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--theme-surfaces-canvas)", padding: "24px" }}>
       <div style={{ width: "100%", maxWidth: "480px" }}>
         {/* Step dots */}
         <div style={{ display: "flex", gap: "8px", marginBottom: "32px", justifyContent: "center" }}>
@@ -52,7 +52,7 @@ export function OnboardingPage() {
                 width: "32px",
                 height: "4px",
                 borderRadius: "2px",
-                background: n <= step ? "var(--primary)" : "var(--border-color)",
+                background: n <= step ? "var(--theme-accents-primary-foreground)" : "var(--theme-borders-default)",
                 transition: "background 0.2s"
               }}
             />
@@ -63,7 +63,7 @@ export function OnboardingPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div>
               <h1 style={{ fontSize: "1.5rem", fontWeight: "700", marginBottom: "8px" }}>{t("onboarding.step1Title")}</h1>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{t("onboarding.step1Desc")}</p>
+              <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem" }}>{t("onboarding.step1Desc")}</p>
             </div>
             <div>
               <label style={{ display: "block", marginBottom: "6px", fontWeight: "600", fontSize: "0.9rem" }}>{t("onboarding.nameLabel")}</label>
@@ -109,17 +109,17 @@ export function OnboardingPage() {
                 style={{
                   textAlign: "left",
                   cursor: "pointer",
-                  border: `2px solid ${template === tpl ? "var(--primary)" : "var(--border-color)"}`,
+                  border: `2px solid ${template === tpl ? "var(--theme-accents-primary-foreground)" : "var(--theme-borders-default)"}`,
                   padding: "16px",
                   borderRadius: "8px",
-                  background: template === tpl ? "var(--bg-elevated, var(--bg-main))" : "transparent",
+                  background: template === tpl ? "var(--bg-elevated, var(--theme-surfaces-canvas))" : "transparent",
                   transition: "border-color 0.15s"
                 }}
               >
                 <div style={{ fontWeight: "700", marginBottom: "4px" }}>
                   {t(tpl === "empty" ? "onboarding.templateEmpty" : "onboarding.templateStarter")}
                 </div>
-                <div style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                <div style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem" }}>
                   {t(tpl === "empty" ? "onboarding.templateEmptyDesc" : "onboarding.templateStarterDesc")}
                 </div>
               </button>
