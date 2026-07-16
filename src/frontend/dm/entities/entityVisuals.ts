@@ -5,6 +5,8 @@ import {
   GitPullRequest, HelpCircle, KeyRound, MapPin, MessageSquare, RefreshCcw,
   Shield, Skull, StickyNote, User, UserCheck,
 } from "lucide-react";
+import { entityThemeColor } from "@shared/theme/themeCssVariables.js";
+import type { ThemeEntityType } from "@frontend/account/themeContract.js";
 
 export type EntityVisualShape = "portrait" | "hex-header" | "compact" | "veiled";
 export type EntityBorderPattern = "solid" | "dashed" | "double";
@@ -14,6 +16,7 @@ export interface EntityVisual {
   icon: LucideIcon;
   accent: string;
   accentSoft: string;
+  accentBorder: string;
   heroStyle: "portrait" | "panorama" | "compact";
   shape: EntityVisualShape;
   borderPattern: EntityBorderPattern;
@@ -23,17 +26,19 @@ export interface EntityVisual {
 function visual(
   type: EntityType,
   icon: LucideIcon,
-  tone: string,
+  tone: ThemeEntityType,
   heroStyle: EntityVisual["heroStyle"] = "compact",
   shape: EntityVisualShape = "compact",
   borderPattern: EntityBorderPattern = "solid",
   privacy?: EntityVisual["privacy"],
 ): EntityVisual {
+  const colors = entityThemeColor(tone);
   return {
     labelKey: `domain.entityTypes.${type}`,
     icon,
-    accent: `var(--entity-${tone})`,
-    accentSoft: `var(--entity-${tone}-soft)`,
+    accent: colors.foreground,
+    accentSoft: colors.background,
+    accentBorder: colors.border,
     heroStyle,
     shape,
     borderPattern,
