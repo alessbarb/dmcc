@@ -188,7 +188,8 @@
           "ent_tpl_phandalin_tresendar"
         ],
         "revealImpact": "cambia la confianza en los aliados adultos"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/secrets/iarno_is_glasstaff.png"
     },
     {
       "entityId": "ent_tpl_phandalin_consequence_town",
@@ -325,7 +326,8 @@
       "importance": "high",
       "visibility": {
         "kind": "dm_only"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/secrets/the_black_spider_funds_chaos_from_afar.png"
     },
     {
       "entityId": "ent_tpl_phandalin_pc_aric",
@@ -1452,7 +1454,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/the_black_spider_coordinates_the_region.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_castle",
@@ -1462,7 +1465,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/cragmaw_castle_is_hidden_by_false_routes.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_map",
@@ -1472,7 +1476,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/gundrens_map_is_the_real_key.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_halia",
@@ -1482,7 +1487,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/halia_wants_to_inherit_the_power_vacuum.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_harbin",
@@ -1492,7 +1498,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/harbin_knows_more_than_he_admits.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_cragmaw",
@@ -1502,7 +1509,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/the_cragmaws_can_be_divided.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_forge",
@@ -1512,7 +1520,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/the_forge_of_spells_partially_works.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_dendrars",
@@ -1522,7 +1531,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/the_dendrar_family_is_still_alive.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_nothic",
@@ -1532,7 +1542,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/the_nothic_knows_tresendars_secrets.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_hostages",
@@ -1542,7 +1553,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/the_redbrands_plan_to_move_the_hostages.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_vyerith",
@@ -1552,7 +1564,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/vyerith_is_not_who_she_appears.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_tharden",
@@ -1562,7 +1575,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/tharden_already_died_in_the_mine.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_hamun",
@@ -1572,7 +1586,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/hamun_kost_is_not_the_main_villain.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_venomfang",
@@ -1582,7 +1597,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/venomfang_prefers_manipulation_to_combat.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_agatha",
@@ -1592,7 +1608,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/agatha_knows_more_than_one_answer.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_wyvern",
@@ -1602,7 +1619,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/the_orcs_are_testing_phandalins_weakness.png"
     },
     {
       "entityId": "ent_tpl_phandalin_secret_power_vacuum",
@@ -1612,7 +1630,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/secrets/freeing_phandalin_opens_a_political_struggle.png"
     }
   ],
   "relations": [
