@@ -1,0 +1,70 @@
+name: Apply campaign status cleanup
+
+on:
+  push:
+    branches:
+      - fix/p0-account-security-and-purge-operations
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: fix/p0-account-security-and-purge-operations
+          fetch-depth: 0
+
+      - name: Replace obsolete campaign lifecycle states
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              Path('src/backend/server/web/routes/accountWebRoutes.ts'): [
+                  ('import { and, eq, inArray, isNull, ne } from "drizzle-orm";',
+                   'import { and, eq, inArray, isNull, ne } from "drizzle-orm";'),
+                  ('campaign.status !== "deleted"', 'campaign.status !== "trashed"'),
+                  ('ne(schema.campaigns.status, "deleted")', 'ne(schema.campaigns.status, "trashed")'),
+              ],
+              Path('src/frontend/account/AccountPage.tsx'): [
+                  ('m.campaignStatus !== "archived" && m.campaignStatus !== "deleted"',
+                   'm.campaignStatus !== "trashed"'),
+                  ('Boolean(m.revokedAt) || m.campaignStatus === "archived" || m.campaignStatus === "deleted"',
+                   'Boolean(m.revokedAt) || m.campaignStatus === "trashed"'),
+              ],
+              Path('src/backend/server/web/routes/campaignTemplateWebRoutes.ts'): [
+                  ("sql`${schema.campaigns.status} <> 'deleted'`", "sql`${schema.campaigns.status} <> 'trashed'`"),
+              ],
+          }
+
+          for path, pairs in replacements.items():
+              text = path.read_text(encoding='utf-8')
+              original = text
+              for old, new in pairs:
+                  if old not in text and old != new:
+                      raise SystemExit(f'Expected text not found in {path}: {old}')
+                  text = text.replace(old, new)
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+
+          test_path = Path('tests/backend/campaignLifecycleVocabulary.test.ts')
+          test_path.write_text('''import { readFileSync } from "node:fs";\nimport { describe, expect, it } from "vitest";\n\nconst read = (path: string) => readFileSync(path, "utf8");\n\ndescribe("canonical campaign lifecycle vocabulary", () => {\n  it("uses importing, active and trashed in account and template flows", () => {\n    const accountRoutes = read("src/backend/server/web/routes/accountWebRoutes.ts");\n    const accountPage = read("src/frontend/account/AccountPage.tsx");\n    const templateRoutes = read("src/backend/server/web/routes/campaignTemplateWebRoutes.ts");\n\n    expect(accountRoutes).not.toContain('campaign.status !== "deleted"');\n    expect(accountRoutes).not.toContain('ne(schema.campaigns.status, "deleted")');\n    expect(accountRoutes).toContain('campaign.status !== "trashed"');\n    expect(accountRoutes).toContain('ne(schema.campaigns.status, "trashed")');\n\n    expect(accountPage).not.toContain('campaignStatus === "archived"');\n    expect(accountPage).not.toContain('campaignStatus === "deleted"');\n    expect(accountPage).toContain('campaignStatus === "trashed"');\n\n    expect(templateRoutes).not.toContain("campaigns.status} <> 'deleted'");\n    expect(templateRoutes).toContain("campaigns.status} <> 'trashed'");\n  });\n});\n''', encoding='utf-8')
+          PY
+
+      - name: Commit cleanup
+        run: |
+          if git diff --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/backend/server/web/routes/accountWebRoutes.ts \
+                  src/frontend/account/AccountPage.tsx \
+                  src/backend/server/web/routes/campaignTemplateWebRoutes.ts \
+                  tests/backend/campaignLifecycleVocabulary.test.ts
+          git commit -m "fix(campaigns): use canonical lifecycle states"
+          git push origin HEAD:fix/p0-account-security-and-purge-operations
