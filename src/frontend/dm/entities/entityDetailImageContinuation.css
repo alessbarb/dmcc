@@ -11,6 +11,8 @@
   background: var(--bg-card);
 }
 
+/* The open entity is an editorial hero, not a constrained thumbnail.
+   Ignore the stored focal point here and always begin from the real top of the artwork. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > div:first-child
@@ -18,8 +20,9 @@
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
+  object-position: 50% 0% !important;
   transform: scale(1.01);
-  transform-origin: center;
+  transform-origin: center top;
 }
 
 /* Keep more artwork visible through the middle before the final cinematic fade. */
