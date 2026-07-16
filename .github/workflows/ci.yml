@@ -60,7 +60,18 @@ jobs:
         run: npm run audit:deps
 
       - name: Typecheck
-        run: npm run typecheck:all
+        run: |
+          set -o pipefail
+          npm run typecheck:all 2>&1 | tee theme-typecheck.log
+
+      - name: Upload typecheck diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-typecheck-diagnostics
+          path: theme-typecheck.log
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Unit tests
         run: npm test
