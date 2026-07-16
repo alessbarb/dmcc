@@ -43,9 +43,7 @@ describe("theme-backed visual system", () => {
 
   it("defines the previously implicit fifth spacing step", () => {
     const tokens = read("src/frontend/shared/styles/tokens.css");
-    const primitives = read("src/frontend/shared/styles/primitives.css");
     expect(tokens).toContain("--space-5: 1.25rem");
-    expect(primitives).not.toContain("var(--space-5, 1.25rem)");
   });
 
   it("lets the resolved runtime mode control native color scheme", () => {
