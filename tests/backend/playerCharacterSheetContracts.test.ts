@@ -6,8 +6,9 @@ const registerPath = new URL("../../src/backend/server/web/registerWebRoutes.ts"
 const modalPath = new URL("../../src/frontend/dm/entities/PlayerCharacterDetailModal.tsx", import.meta.url);
 const wrapperPath = new URL("../../src/frontend/dm/entities/EntityDetailModal.js", import.meta.url);
 const bridgePath = new URL("../../src/frontend/dm/entities/EntityDetailModalBridge.jsx", import.meta.url);
+const stylesPath = new URL("../../src/frontend/dm/entities/playerCharacterDetail.css", import.meta.url);
 
- describe("player character sheet synchronization contract", () => {
+describe("player character sheet synchronization contract", () => {
   it("exposes one sheet endpoint backed by the same state used by the player portal", async () => {
     const source = await readFile(routePath, "utf8");
     expect(source).toContain('"/api/campaigns/:campaignId/characters/:entityId/sheet"');
@@ -37,12 +38,15 @@ const bridgePath = new URL("../../src/frontend/dm/entities/EntityDetailModalBrid
   });
 
   it("persists a focal point and offers a complete image view", async () => {
-    const bridge = await readFile(bridgePath, "utf8");
+    const [bridge, styles] = await Promise.all([
+      readFile(bridgePath, "utf8"),
+      readFile(stylesPath, "utf8"),
+    ]);
     expect(bridge).toContain("imageFocusX");
     expect(bridge).toContain("imageFocusY");
     expect(bridge).toContain("objectPosition");
     expect(bridge).toContain("Ajustar encuadre");
     expect(bridge).toContain("Ver imagen completa");
-    expect(bridge).toContain("object-fit: contain").not;
+    expect(styles).toContain("object-fit: contain");
   });
 });
