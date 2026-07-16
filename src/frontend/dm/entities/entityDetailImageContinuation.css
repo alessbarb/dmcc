@@ -1,14 +1,13 @@
 /* Entity reading composition.
    The artwork occupies the upper 60% of the dialog while the reading surface starts at 40%,
-   creating a 20% visual overlap without allowing the image to consume document flow.
-   Editing mode keeps its dedicated workspace contract. */
+   creating a real 20% overlap. Editing mode keeps its dedicated workspace contract. */
 
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content {
   position: relative !important;
-  display: flex !important;
-  flex-direction: column;
-  padding-top: 40% !important;
+  display: grid !important;
+  grid-template-rows: 40% auto auto minmax(0, 1fr) auto !important;
+  padding: 0 !important;
   overflow: hidden !important;
   background: var(--bg-card) !important;
 }
@@ -71,13 +70,13 @@
     ) !important;
 }
 
-/* Reading surface starts at 40%, inside the lower part of the artwork. */
+/* Reading surface begins at the physical 40% row, inside the artwork. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-header {
   position: relative !important;
   z-index: 3 !important;
-  flex: 0 0 auto;
+  grid-row: 2;
   min-height: 112px;
   margin: 0 !important;
   padding: 42px 28px 16px !important;
@@ -115,14 +114,14 @@
   color: var(--text-main) !important;
 }
 
-/* Tabs finish the overlap; they do not consume image height in normal flow. */
+/* Tabs finish the overlap while remaining in normal grid flow. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-header
   + div {
   position: relative !important;
   z-index: 3 !important;
-  flex: 0 0 auto;
+  grid-row: 3;
   border-top-color: rgba(255, 255, 255, 0.02) !important;
   border-bottom-color: color-mix(in srgb, var(--border-color) 62%, transparent) !important;
   background: rgba(12, 15, 28, 0.78) !important;
@@ -135,7 +134,7 @@
   > .modal-body {
   position: relative;
   z-index: 2;
-  flex: 1 1 auto;
+  grid-row: 4;
   min-height: 0 !important;
   margin: 0 !important;
   overflow-y: auto !important;
@@ -152,15 +151,12 @@
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-footer {
-  flex: 0 0 auto;
+  position: relative !important;
+  z-index: 4;
+  grid-row: 5;
 }
 
 @media (max-width: 900px) {
-  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-    > .modal-content {
-    padding-top: 40% !important;
-  }
-
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > .modal-header {
@@ -178,7 +174,13 @@
 @media (max-width: 620px) {
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content {
-    padding-top: 40% !important;
+    grid-template-rows: 38% auto auto minmax(0, 1fr) auto !important;
+  }
+
+  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+    > .modal-content
+    > div:first-child {
+    height: 58% !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
