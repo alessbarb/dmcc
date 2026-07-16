@@ -47,21 +47,6 @@ async function requirePlayerPortal(request: FastifyRequest<{ Params: { campaignI
   return context;
 }
 
-function sanitizeObject(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(sanitizeObject).filter((item) => item !== undefined);
-  if (!isRecord(value)) return value;
-  const visibilityValue = value.visibility;
-  const visibility = isRecord(visibilityValue) ? visibilityValue.kind ?? visibilityValue.mode : visibilityValue ?? value.visibilityScope;
-  if (visibility === "dm_only" || visibility === "dm" || value.kind === "dm_secret") return undefined;
-  const result: Record<string, unknown> = {};
-  for (const [key, child] of Object.entries(value)) {
-    if (/^dm|secret/i.test(key) || key === "contentDm") continue;
-    const sanitized = sanitizeObject(child);
-    if (sanitized !== undefined) result[key] = sanitized;
-  }
-  return result;
-}
-
 type PortalEntity = ReturnType<typeof toPortalEntity>;
 
 function toPortalEntity(entity: typeof schema.campaignEntities.$inferSelect) {
@@ -94,6 +79,85 @@ function groupPortalEntities(entities: Array<typeof schema.campaignEntities.$inf
     groups[key].push(toPortalEntity(entity));
   }
   return groups;
+}
+
+function toPortalPlayerProfile(profile: typeof schema.playerProfiles.$inferSelect) {
+  return {
+    playerId: profile.profileId,
+    displayName: profile.displayName,
+    pronouns: profile.pronouns,
+    biography: profile.biography,
+    publicHandle: profile.publicHandle,
+    publicationState: profile.publicationState,
+    visibility: profile.visibility,
+    linkedCharacterId: profile.linkedCharacterId,
+    version: profile.version,
+    updatedAt: profile.updatedAt,
+  };
+}
+
+function toPortalResource(resource: typeof playerPortalResources.$inferSelect) {
+  return {
+    resourceId: resource.resourceId,
+    data: isRecord(resource.data) ? resource.data : {},
+    createdAt: resource.createdAt,
+    updatedAt: resource.updatedAt,
+  };
+}
+
+function toPortalLiveTable(liveTable: typeof schema.liveTables.$inferSelect | null) {
+  if (!liveTable) return null;
+  return {
+    liveTableId: liveTable.liveTableId,
+    campaignId: liveTable.campaignId,
+    activeSessionId: liveTable.activeSessionId,
+    shortCode: liveTable.shortCode,
+    status: liveTable.status,
+    createdAt: liveTable.createdAt,
+    expiresAt: liveTable.expiresAt,
+    closedAt: liveTable.closedAt,
+  };
+}
+
+function toPortalNotification(notification: typeof schema.notifications.$inferSelect) {
+  const content = isRecord(notification.content) ? notification.content : {};
+  const message = typeof content.message === "string" ? content.message : undefined;
+  const title = typeof content.title === "string" ? content.title : undefined;
+  const href = typeof content.href === "string" ? content.href : undefined;
+  return {
+    notificationId: notification.notificationId,
+    type: notification.type,
+    title,
+    message,
+    href,
+    createdAt: notification.createdAt,
+  };
+}
+
+function toPortalProposal(proposal: typeof schema.playerProposals.$inferSelect) {
+  const content = isRecord(proposal.content) ? proposal.content : {};
+  const targetCharacterEntityId = typeof content.targetCharacterEntityId === "string"
+    ? content.targetCharacterEntityId
+    : typeof content.characterEntityId === "string"
+      ? content.characterEntityId
+      : undefined;
+  const proposedChanges = isRecord(content.proposedChanges) ? {
+    title: typeof content.proposedChanges.title === "string" ? content.proposedChanges.title : undefined,
+    name: typeof content.proposedChanges.name === "string" ? content.proposedChanges.name : undefined,
+    className: typeof content.proposedChanges.className === "string" ? content.proposedChanges.className : undefined,
+    species: typeof content.proposedChanges.species === "string" ? content.proposedChanges.species : undefined,
+    race: typeof content.proposedChanges.race === "string" ? content.proposedChanges.race : undefined,
+    background: typeof content.proposedChanges.background === "string" ? content.proposedChanges.background : undefined,
+  } : undefined;
+  return {
+    proposalId: proposal.proposalId,
+    kind: proposal.type,
+    type: proposal.type,
+    status: proposal.status,
+    targetCharacterEntityId,
+    proposedChanges,
+    createdAt: proposal.createdAt,
+  };
 }
 
 function projectPlayerCanvases(state: CampaignProjection, visibleEntityIds: Set<string>, visibleFactIds: Set<string>, visibleRelationIds: Set<string>) {
@@ -191,22 +255,22 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
     new Set(safeRelations.map((relation) => relation.relationId)),
   );
 
-  const rawPortal = {
+  return {
     campaign: campaign[0] ? { campaignId: campaign[0].campaignId, title: campaign[0].title, summary: campaign[0].summary, status: campaign[0].status } : { campaignId },
     playerId: profile.profileId,
     player: { playerId: profile.profileId, displayName: profile.displayName },
-    playerProfile: profile,
+    playerProfile: toPortalPlayerProfile(profile),
     link: profile.linkedCharacterId ? { characterEntityId: profile.linkedCharacterId } : null,
     linkedCharacter,
     availableCharacters: safeEntities.filter((entity) => entity.entityType === "player_character"),
-    sheet: { status: stateRow[0]?.status ?? {}, resources: resources.map((resource) => ({ resourceId: resource.resourceId, ...(isRecord(resource.data) ? resource.data : {}) })) },
+    sheet: { status: stateRow[0]?.status ?? {}, resources: resources.map(toPortalResource) },
     recap: history[0]?.recap ?? null,
     history,
-    liveTable: currentLiveTable,
-    notifications: campaignNotifications,
+    liveTable: toPortalLiveTable(currentLiveTable),
+    notifications: campaignNotifications.map(toPortalNotification),
     notes: notes.map((note) => ({ noteId: note.noteId, title: note.content.slice(0, 80), content: note.content, visibility: note.visibilityScope, createdAt: note.createdAt, updatedAt: note.updatedAt })),
     objectives: objectives.map((objective) => ({ objectiveId: objective.objectiveId, title: objective.title, description: objective.description ?? undefined, kind: objective.kind, status: objective.status, visibility: objective.visibilityScope, linkedEntityIds: objective.linkedEntityIds, playerId: objective.playerId })),
-    proposals,
+    proposals: proposals.map(toPortalProposal),
     memory: {
       entities: groupPortalEntities(entities),
       facts: safeFacts,
@@ -227,9 +291,6 @@ async function buildPlayerPortal(campaignId: string, user: WebUser) {
     clues: clues.map((clue) => ({ clueId: clue.clueId, entityId: clue.entityId, title: clue.title, summary: clue.publicSummary ?? undefined, status: clue.status })),
     canvases,
   };
-  // sanitizeObject strips dm-only branches recursively but otherwise preserves the shape of
-  // its input; casting back to the pre-sanitize shape keeps downstream property access typed.
-  return sanitizeObject(rawPortal) as typeof rawPortal;
 }
 
 export type PlayerPortalPayload = Awaited<ReturnType<typeof buildPlayerPortal>>;
