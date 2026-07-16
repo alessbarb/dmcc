@@ -1,6 +1,10 @@
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { AccountPreferences } from "./accountTypes.js";
 import type { DeviceOverrides } from "./deviceOverrides.js";
+import {
+  createAppearancePreviewController,
+  type AppearancePreviewController,
+} from "./appearancePreview.js";
 import { themes } from "./themeRegistry.js";
 import { typographySets } from "./typographyRegistry.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
@@ -21,6 +25,8 @@ export function PreferencesPanel({
 }: Props) {
   const { t } = useTranslation();
   const [draft, setDraft] = useState(preferences);
+  const previewElementRef = useRef<HTMLDivElement | null>(null);
+  const previewControllerRef = useRef<AppearancePreviewController | null>(null);
   const preview = useMemo(() => ({
     themeId: deviceOverrides.themeId ?? draft.themeId,
     colorMode: deviceOverrides.colorMode ?? draft.colorMode,
@@ -35,6 +41,24 @@ export function PreferencesPanel({
       (window as any).__accountCenterDirty = false;
     };
   }, [isFormDirty]);
+
+  useEffect(() => {
+    const target = previewElementRef.current;
+    if (!target) return;
+
+    const controller = createAppearancePreviewController(target, window);
+    previewControllerRef.current = controller;
+    controller.apply(preview);
+
+    return () => {
+      controller.dispose();
+      previewControllerRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    previewControllerRef.current?.apply(preview);
+  }, [preview]);
 
   return (
     <section aria-labelledby="appearance-title">
@@ -88,9 +112,9 @@ export function PreferencesPanel({
         />
         {t("account.appearance.deviceOverride")}
       </label>
-      <div className="account-preview" data-theme={preview.themeId} data-mode={preview.colorMode}>
+      <div ref={previewElementRef} className="account-preview">
         <strong>{t("account.appearance.livePreview")}</strong>
-        <p data-typography={preview.typographySetId}>{t("account.appearance.previewText")}</p>
+        <p>{t("account.appearance.previewText")}</p>
       </div>
       <button type="button" onClick={() => void onSave(draft)}>{t("account.appearance.saveBtn")}</button>
     </section>
