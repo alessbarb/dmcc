@@ -1242,7 +1242,7 @@ export const fr: TranslationDictionary = {
     importing: "Création de la copie…",
     backToCampaigns: "Retour aux campagnes",
     notFoundTitle: "Campagne d’exemple introuvable",
-    notFoundDesc: "Le modèle n’existe peut-être pas ou le catalogue premade est indisponible.",
+    notFoundDesc: "Le modèle n’existe peut-être pas ou le catalogue de modèles de campagne est indisponible.",
     statsLabel: "Résumé de la campagne d’exemple",
     entities: "Entités",
     relations: "Relations",

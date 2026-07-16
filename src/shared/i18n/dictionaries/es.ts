@@ -1518,7 +1518,7 @@ export const es: TranslationDictionary = {
     backToCampaigns: "Volver a campañas",
     notFoundTitle: "No encuentro esta campaña de ejemplo",
     notFoundDesc:
-      "Puede que el template no exista o que el catálogo de premades no esté disponible.",
+      "Puede que el template no exista o que el catálogo de plantillas de campaña no esté disponible.",
     statsLabel: "Resumen de campaña de ejemplo",
     entities: "Entidades",
     relations: "Relaciones",

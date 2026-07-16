@@ -18,7 +18,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 
-function runPremadePreviewAction(operation: Promise<unknown>, errorMessage: string): void {
+function runCampaignTemplatePreviewAction(operation: Promise<unknown>, errorMessage: string): void {
   void operation.catch((error: unknown) => {
     console.error(errorMessage, error);
   });
@@ -165,7 +165,7 @@ export function CampaignTemplatePreviewPage() {
       setAuthChecked(true);
     };
 
-    runPremadePreviewAction(init(), "No se pudo inicializar la vista previa de aventura preparada.");
+    runCampaignTemplatePreviewAction(init(), "No se pudo inicializar la vista previa de aventura preparada.");
   }, [fetchCampaigns, fetchCampaignTemplate, navigate, templateId]);
 
   const template = activeCampaignTemplate?.templateId === templateId ? activeCampaignTemplate : null;
@@ -256,7 +256,7 @@ export function CampaignTemplatePreviewPage() {
             type="button"
             className="btn btn-secondary"
             onClick={() => {
-              runPremadePreviewAction(navigate({ to: "/dm" }), "No se pudo volver a campañas.");
+              runCampaignTemplatePreviewAction(navigate({ to: "/dm" }), "No se pudo volver a campañas.");
             }}
           >
             <ArrowLeft size={14} />
@@ -274,7 +274,7 @@ export function CampaignTemplatePreviewPage() {
           type="button"
           className="btn btn-secondary btn-sm"
           onClick={() => {
-            runPremadePreviewAction(navigate({ to: "/dm" }), "No se pudo volver a campañas.");
+            runCampaignTemplatePreviewAction(navigate({ to: "/dm" }), "No se pudo volver a campañas.");
           }}
         >
           <ArrowLeft size={14} />
@@ -520,7 +520,7 @@ export function CampaignTemplatePreviewPage() {
         onOpenExisting={(campaignId) => {
           setImportDialogOpen(false);
           clearCampaignTemplateImportState();
-          runPremadePreviewAction(
+          runCampaignTemplatePreviewAction(
             navigate({ to: `/campaigns/${campaignId}/overview` }),
             "No se pudo abrir la campaña existente.",
           );

@@ -60,7 +60,7 @@ export function CampaignTemplateSettingsPage() {
         <header style={{ marginBottom: "32px" }}>
           <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Campaign Templates</h1>
           <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
-            Control which premade campaigns are visible to users and which are featured.
+            Control which campaign templates are visible to users and which are featured.
           </p>
         </header>
 

@@ -1225,7 +1225,7 @@ export const pt = {
     importing: "A criar cópia…",
     backToCampaigns: "Voltar às campanhas",
     notFoundTitle: "Não encontro esta campanha de exemplo",
-    notFoundDesc: "O template pode não existir ou o catálogo de premades pode estar indisponível.",
+    notFoundDesc: "O template pode não existir ou o catálogo de modelos de campanha pode estar indisponível.",
     statsLabel: "Resumo da campanha de exemplo",
     entities: "Entidades",
     relations: "Relações",

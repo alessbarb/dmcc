@@ -137,7 +137,7 @@ export function DmHubPage() {
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState<string | null>(null);
 
-  // Premade import
+  // Campaign template import
   const [campaignTemplateDialogId, setCampaignTemplateDialogId] = useState<string | null>(null);
   const importingTemplateId = campaignTemplateImportState.status === "running" ? campaignTemplateImportState.templateId : null;
   const campaignTemplateImportError = campaignTemplateImportState.error ? t(campaignTemplateImportState.error) : null;
@@ -227,7 +227,7 @@ export function DmHubPage() {
     runDmHubAction(navigate({ to: "/auth/register" }), "No se pudo abrir la configuración de DM.");
   };
 
-  const navigateToPremade = (templateId: string) => {
+  const navigateToCampaignTemplate = (templateId: string) => {
     runDmHubAction(navigate({ to: `/campaign-templates/${templateId}` }), "No se pudo abrir la aventura preparada.");
   };
 
@@ -347,7 +347,7 @@ export function DmHubPage() {
     setCampaignTemplateDialogId(templateId);
   };
 
-  const handleImportPremade = async (
+  const handleImportCampaignTemplate = async (
     templateId: string,
     options: { title: string; summary?: string; importMode: CampaignTemplateImportMode; openAfterCreate: boolean }
   ) => {
@@ -776,7 +776,7 @@ export function DmHubPage() {
               {campaignTemplates.length === 0 ? (
                 <p className="dm-muted-text">{t("landing.campaignTemplateEmpty")}</p>
               ) : (
-                <div className="dm-premades-grid">
+                <div className="dm-campaign-templates-grid">
                   {campaignTemplates.map((template) => {
                     const copies = campaigns.filter((c) => c.metadata?.createdFromTemplateId === template.templateId);
                     return (
@@ -810,7 +810,7 @@ export function DmHubPage() {
                           <button
                             type="button"
                             className="btn btn-secondary btn-sm"
-                            onClick={() => navigateToPremade(template.templateId)}
+                            onClick={() => navigateToCampaignTemplate(template.templateId)}
                             style={{ flex: 1 }}
                           >
                             <Eye size={12} />
@@ -1272,7 +1272,7 @@ export function DmHubPage() {
 
       <AccountModal open={isAccountModalOpen} onClose={() => setIsAccountModalOpen(false)} />
 
-      {/* ── PREMADE IMPORT DIALOG ── */}
+      {/* ── CAMPAIGN TEMPLATE IMPORT DIALOG ── */}
       <CampaignTemplateImportDialog
         template={selectedCampaignTemplate}
         // DmHubCampaign.stats uses a different shape than Campaign.stats; CampaignTemplateImportDialog never reads stats.
@@ -1282,7 +1282,7 @@ export function DmHubPage() {
         error={campaignTemplateImportError}
         onClose={() => { if (!importingTemplateId) { setCampaignTemplateDialogId(null); clearCampaignTemplateImportState(); } }}
         onOpenExisting={(campaignId) => { setCampaignTemplateDialogId(null); clearCampaignTemplateImportState(); triggerMysticalTransition(campaignId); }}
-        onConfirm={(options) => selectedCampaignTemplate ? handleImportPremade(selectedCampaignTemplate.templateId, options) : undefined}
+        onConfirm={(options) => selectedCampaignTemplate ? handleImportCampaignTemplate(selectedCampaignTemplate.templateId, options) : undefined}
       />
 
       {/* ── MYSTICAL TRANSITION ── */}
