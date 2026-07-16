@@ -1,14 +1,31 @@
-/* Extend the entity artwork behind the reading header instead of cutting it off.
-   Editing mode hides the hero, so this contract only affects the entity reading surface. */
+/* Entity reading composition.
+   The artwork occupies the upper 60% of the dialog while the reading surface starts at 40%,
+   creating a 20% visual overlap without allowing the image to consume document flow.
+   Editing mode keeps its dedicated workspace contract. */
 
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column;
+  padding-top: 40% !important;
+  overflow: hidden !important;
+  background: var(--bg-card) !important;
+}
+
+/* Artwork is a background layer: 60% from the physical top of the dialog. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > div:first-child {
-  position: relative !important;
+  position: absolute !important;
+  inset: 0 0 auto !important;
   z-index: 0;
-  height: clamp(460px, 58dvh, 620px) !important;
+  width: 100% !important;
+  height: 60% !important;
+  min-height: 0 !important;
   overflow: hidden !important;
   background: var(--bg-card);
+  pointer-events: none;
 }
 
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
@@ -19,12 +36,11 @@
   height: 100% !important;
   object-fit: cover !important;
   object-position: 50% 0% !important;
-  transform: scale(1.005);
+  transform: scale(1.002);
   transform-origin: center top;
 }
 
-/* Preserve the scene through most of the hero. The strong fade is delayed to the
-   lower quarter so groups, environments and narrative context remain readable. */
+/* Keep most of the scene readable and reserve the lower overlap for identity and navigation. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > div:first-child
@@ -38,37 +54,39 @@
     linear-gradient(
       to bottom,
       rgba(7, 9, 18, 0.005) 0%,
-      rgba(7, 9, 18, 0.015) 24%,
-      rgba(7, 9, 18, 0.05) 46%,
-      rgba(7, 9, 18, 0.13) 62%,
-      rgba(7, 9, 18, 0.34) 76%,
-      rgba(7, 9, 18, 0.67) 88%,
-      rgba(7, 9, 18, 0.92) 96%,
+      rgba(7, 9, 18, 0.015) 26%,
+      rgba(7, 9, 18, 0.05) 48%,
+      rgba(7, 9, 18, 0.16) 64%,
+      rgba(7, 9, 18, 0.42) 78%,
+      rgba(7, 9, 18, 0.76) 90%,
+      rgba(7, 9, 18, 0.96) 98%,
       var(--bg-card) 100%
     ),
     linear-gradient(
       to right,
-      rgba(7, 9, 18, 0.1) 0%,
+      rgba(7, 9, 18, 0.09) 0%,
       transparent 14%,
       transparent 86%,
-      rgba(7, 9, 18, 0.1) 100%
+      rgba(7, 9, 18, 0.09) 100%
     ) !important;
 }
 
-/* Pull the identity block into the darkened lower edge without consuming the scene. */
+/* Reading surface starts at 40%, inside the lower part of the artwork. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-header {
   position: relative !important;
   z-index: 3 !important;
-  min-height: 138px;
-  margin-top: -196px !important;
-  padding-top: 78px !important;
+  flex: 0 0 auto;
+  min-height: 112px;
+  margin: 0 !important;
+  padding: 42px 28px 16px !important;
+  border-bottom-color: rgba(255, 255, 255, 0.035) !important;
   background: linear-gradient(
     to bottom,
-    rgba(12, 15, 28, 0.005),
-    rgba(12, 15, 28, 0.2) 48%,
-    rgba(12, 15, 28, 0.64) 100%
+    rgba(12, 15, 28, 0.08),
+    rgba(12, 15, 28, 0.48) 58%,
+    rgba(12, 15, 28, 0.82) 100%
   ) !important;
   backdrop-filter: none;
 }
@@ -97,79 +115,82 @@
   color: var(--text-main) !important;
 }
 
-/* The tab rail remains over the final, almost-black portion of the same image. */
+/* Tabs finish the overlap; they do not consume image height in normal flow. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-header
   + div {
   position: relative !important;
   z-index: 3 !important;
+  flex: 0 0 auto;
   border-top-color: rgba(255, 255, 255, 0.02) !important;
-  border-bottom-color: color-mix(in srgb, var(--border-color) 58%, transparent) !important;
-  background: rgba(12, 15, 28, 0.66) !important;
-  backdrop-filter: blur(5px) saturate(84%);
+  border-bottom-color: color-mix(in srgb, var(--border-color) 62%, transparent) !important;
+  background: rgba(12, 15, 28, 0.78) !important;
+  backdrop-filter: blur(6px) saturate(84%);
 }
 
-/* Keep the data layout in normal flow. The artwork is only suggested through a short
-   translucent transition, so the visibility row never slides under the tab rail. */
+/* The body receives the remaining reading height and owns the internal scroll. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-body {
   position: relative;
   z-index: 2;
-  margin-top: 0 !important;
-  padding-top: clamp(24px, 2.5vw, 34px) !important;
+  flex: 1 1 auto;
+  min-height: 0 !important;
+  margin: 0 !important;
+  overflow-y: auto !important;
+  padding-top: clamp(22px, 2.2vw, 30px) !important;
   background:
     linear-gradient(
       to bottom,
-      color-mix(in srgb, rgba(12, 15, 28, 0.74) 70%, transparent) 0,
-      color-mix(in srgb, var(--bg-card) 92%, transparent) 48px,
-      var(--bg-card) 96px
+      color-mix(in srgb, rgba(12, 15, 28, 0.86) 78%, transparent) 0,
+      color-mix(in srgb, var(--bg-card) 96%, transparent) 42px,
+      var(--bg-card) 86px
     ) !important;
+}
+
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content
+  > .modal-footer {
+  flex: 0 0 auto;
 }
 
 @media (max-width: 900px) {
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-    > .modal-content
-    > div:first-child {
-    height: clamp(360px, 48dvh, 480px) !important;
+    > .modal-content {
+    padding-top: 40% !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > .modal-header {
-    margin-top: -166px !important;
-    min-height: 124px;
-    padding-top: 62px !important;
+    min-height: 104px;
+    padding: 36px 20px 14px !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > .modal-body {
-    margin-top: 0 !important;
-    padding-top: 24px !important;
+    padding-top: 22px !important;
   }
 }
 
 @media (max-width: 620px) {
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-    > .modal-content
-    > div:first-child {
-    height: clamp(300px, 42dvh, 390px) !important;
+    > .modal-content {
+    padding-top: 40% !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > .modal-header {
-    margin-top: -132px !important;
-    min-height: 110px;
-    padding-top: 46px !important;
+    min-height: 96px;
+    padding: 30px 16px 12px !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > .modal-body {
-    margin-top: 0 !important;
-    padding-top: 20px !important;
+    padding-top: 18px !important;
   }
 }
