@@ -1,5 +1,6 @@
 import { createId } from "@shared/ids.js";
 import type { CanvasNode } from "../domain/canvas/types.js";
+import { createEntity } from "../domain/entity/entity.js";
 import type { StoredEvent } from "../domain/events.js";
 import type { CampaignState } from "../domain/state.js";
 import type { Command } from "./commands.js";
@@ -15,7 +16,8 @@ type CanvasCommandType =
   | "RemoveNodeFromCanvas"
   | "AddEdgeToCanvas"
   | "UpdateCanvasEdge"
-  | "RemoveEdgeFromCanvas";
+  | "RemoveEdgeFromCanvas"
+  | "ConvertCanvasNoteToEntity";
 
 type CanvasCommand = Extract<Command, { type: CanvasCommandType }>;
 
@@ -341,6 +343,61 @@ case "RemoveEdgeFromCanvas": {
       edgeId: command.edgeId,
     }));
 }
+case "ConvertCanvasNoteToEntity": {
+  const canvases = new Map(state.canvases || new Map());
+  const canvas = canvases.get(command.canvasId);
+  if (!canvas) throw new Error(`Canvas not found: ${command.canvasId}`);
+  if (canvas.archived) throw new Error("Cannot convert note on archived canvas");
+
+  const nodeIndex = canvas.nodes.findIndex((n) => n.id === command.nodeId);
+  if (nodeIndex === -1) throw new Error(`Node not found: ${command.nodeId}`);
+  const node = canvas.nodes[nodeIndex];
+  if (node.kind !== "note") throw new Error("Canvas node is not a note");
+
+  const entityId = createId("ent");
+  const entity = createEntity({
+    entityId,
+    campaignId: command.campaignId,
+    entityType: command.entityType,
+    title: command.title,
+    subtitle: command.subtitle,
+    summary: command.summary,
+    content: command.content,
+    status: command.status ?? "ready",
+    importance: command.importance ?? "normal",
+    visibility: command.visibility ?? { kind: "dm_only" },
+    metadata: command.metadata,
+    campaignSystem: state.campaign?.system,
+  });
+
+  const updatedNode = {
+    ...node,
+    kind: "entity" as const,
+    entityId,
+    text: undefined,
+    title: undefined,
+    updatedAt: new Date().toISOString(),
+  };
+  const nodes = [...canvas.nodes];
+  nodes[nodeIndex] = updatedNode;
+  const updatedCanvas = { ...canvas, nodes, updatedAt: new Date().toISOString() };
+  const entities = new Map(state.entities);
+  entities.set(entityId, entity);
+  canvases.set(command.canvasId, updatedCanvas);
+
+  return {
+    state: { ...state, entities, canvases },
+    events: [
+      makeEvent(command.actorId, command.campaignId, "EntityCreated", entity),
+      makeEvent(command.actorId, command.campaignId, "CanvasNoteConvertedToEntity", {
+        canvasId: command.canvasId,
+        nodeId: command.nodeId,
+        entityId,
+      }),
+    ],
+  };
+}
+
   }
   throw new Error("Unsupported canvas command");
 }
