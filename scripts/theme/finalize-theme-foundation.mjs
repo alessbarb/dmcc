@@ -20,6 +20,13 @@ function replaceRequired(source, search, replacement, path) {
   return source.replaceAll(search, replacement);
 }
 
+function replaceMany(source, replacements, path) {
+  return replacements.reduce(
+    (current, [search, replacement]) => replaceRequired(current, search, replacement, path),
+    source,
+  );
+}
+
 const themeFiles = [
   ["src/frontend/account/defaultTheme.ts", "accountCenter.appearance.themeDefault", "account.appearance.themeDefault"],
   ["src/frontend/account/fantasyTheme.ts", "accountCenter.appearance.themeFantasy", "account.appearance.themeFantasy"],
@@ -39,21 +46,21 @@ update("src/frontend/account/typographyRegistry.ts", (source) =>
   ),
 );
 
-update("src/frontend/account/fantasyTheme.ts", (source) => {
-  let result = source;
-  result = replaceRequired(result, "hsl(35 68% 36%)", "hsl(35 72% 32%)", "fantasyTheme.ts");
-  result = replaceRequired(result, "hsl(35 76% 28%)", "hsl(35 79% 25%)", "fantasyTheme.ts");
-  result = replaceRequired(result, "hsl(34 79% 23%)", "hsl(34 82% 20%)", "fantasyTheme.ts");
-  return result;
-});
+update("src/frontend/account/fantasyTheme.ts", (source) =>
+  replaceMany(source, [
+    ["hsl(35 68% 36%)", "hsl(35 72% 32%)"],
+    ["hsl(35 76% 28%)", "hsl(35 79% 25%)"],
+    ["hsl(34 79% 23%)", "hsl(34 82% 20%)"],
+  ], "fantasyTheme.ts"),
+);
 
-update("src/frontend/account/sciFiTheme.ts", (source) => {
-  let result = source;
-  result = replaceRequired(result, "hsl(190 76% 34%)", "hsl(190 82% 28%)", "sciFiTheme.ts");
-  result = replaceRequired(result, "hsl(191 84% 26%)", "hsl(191 88% 22%)", "sciFiTheme.ts");
-  result = replaceRequired(result, "hsl(191 88% 21%)", "hsl(191 91% 18%)", "sciFiTheme.ts");
-  return result;
-});
+update("src/frontend/account/sciFiTheme.ts", (source) =>
+  replaceMany(source, [
+    ["hsl(190 76% 34%)", "hsl(190 82% 28%)"],
+    ["hsl(191 84% 26%)", "hsl(191 88% 22%)"],
+    ["hsl(191 88% 21%)", "hsl(191 91% 18%)"],
+  ], "sciFiTheme.ts"),
+);
 
 update("src/frontend/account/themeRegistry.ts", (source) => {
   const helperStart = source.indexOf("function strengthenLightPrimary");
@@ -66,6 +73,33 @@ update("src/frontend/account/themeRegistry.ts", (source) => {
   result = replaceRequired(result, "registerTheme(accessibleSciFiTheme);", "registerTheme(sciFiTheme);", "themeRegistry.ts");
   return result;
 });
+
+update("src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx", (source) =>
+  replaceMany(source, [
+    ["\"hsl(220, 20%, 40%)\"", "\"var(--theme-graph-edge)\""],
+    ["\"#ef4444\"", "\"var(--theme-graph-edge-critical)\""],
+    ["\"drop-shadow(0 0 3px rgba(239,68,68,0.5))\"", "\"drop-shadow(0 0 3px var(--theme-graph-edge-critical))\""],
+    ["\"hsl(220, 20%, 50%)\"", "\"var(--theme-graph-edge-muted)\""],
+    ["\"hsl(220, 30%, 65%)\"", "\"var(--theme-graph-edge)\""],
+    ["\"drop-shadow(0 0 4px rgba(148,163,184,0.35))\"", "\"drop-shadow(0 0 4px var(--theme-graph-edge-muted))\""],
+    ["\"hsl(220, 15%, 30%)\"", "\"var(--theme-graph-edge-muted)\""],
+    ["\"hsl(255, 85%, 72%)\"", "\"var(--theme-graph-edge-selected)\""],
+    ["\"drop-shadow(0 0 5px hsla(255, 85%, 65%, 0.6))\"", "\"drop-shadow(0 0 5px var(--theme-graph-edge-selected))\""],
+    ["isSecret ? \"#f87171\" : isSelected ? \"hsl(255, 85%, 80%)\" : \"hsl(220, 20%, 75%)\"", "isSecret ? \"var(--theme-graph-edge-critical)\" : isSelected ? \"var(--theme-graph-edge-selected)\" : \"var(--theme-graph-edge-label-text)\""],
+    ["fill: \"hsl(230, 28%, 10%)\"", "fill: \"var(--theme-graph-edge-label-background)\""],
+    ["stroke: \"rgba(167, 139, 250, 0.45)\"", "stroke: \"color-mix(in srgb, var(--theme-narrative-secret-foreground) 45%, transparent)\""],
+    ["fill: \"rgba(167, 139, 250, 0.6)\"", "fill: \"color-mix(in srgb, var(--theme-narrative-secret-foreground) 60%, transparent)\""],
+  ], "CampaignCanvasFlow.tsx"),
+);
+
+update("src/frontend/shared/components/RpgPortalBackground.tsx", (source) =>
+  replaceMany(source, [
+    ["stroke=\"hsla(220, 20%, 30%, 0.12)\"", "stroke=\"var(--theme-canvas-grid)\""],
+    ["fill=\"rgba(13, 16, 23, 0.45)\"", "fill=\"var(--theme-surfaces-overlay)\""],
+    ["fill=\"rgba(255, 255, 255, 0.05)\"", "fill=\"var(--theme-media-overlay-subtle)\""],
+    ["fill=\"hsl(220, 25%, 96%)\"", "fill=\"var(--theme-text-on-media)\""],
+  ], "RpgPortalBackground.tsx"),
+);
 
 const translations = {
   en: ["Default", "Fantasy", "Sci-fi", "Cinzel + Outfit"],
