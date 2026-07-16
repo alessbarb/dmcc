@@ -25,6 +25,7 @@ import { orderCampaignMobileDockItems } from "../navigation/campaignNavigation.j
 import { CAMPAIGN_SECTIONS } from "../navigation/campaignSections.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 import "../entities/entityDetailDialog.css";
+import "../entities/entityDetailImageContinuation.css";
 
 export function CampaignShell() {
   const { campaignId } = useParams({ from: "/campaigns/$campaignId" });
