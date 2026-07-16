@@ -1,0 +1,56 @@
+.entity-detail-focus-shell .modal-content > div:first-child {
+  isolation: isolate;
+}
+
+.entity-detail-focus-shell .entity-image-hero-actions {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  right: auto;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+  transform: translateX(-50%);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: calc(var(--radius-sm) + 4px);
+  background: rgb(8 10 18 / 82%);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 38%);
+  backdrop-filter: blur(10px) saturate(120%);
+  isolation: isolate;
+  pointer-events: auto !important;
+}
+
+.entity-detail-focus-shell .entity-image-hero-actions .btn {
+  position: relative;
+  z-index: 1;
+  min-width: 36px;
+  min-height: 36px;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  background: rgb(12 15 25 / 92%);
+}
+
+.entity-detail-focus-shell .entity-image-hero-actions .btn:hover,
+.entity-detail-focus-shell .entity-image-hero-actions .btn:focus-visible {
+  background: color-mix(in srgb, var(--secondary) 28%, rgb(12 15 25 / 96%));
+}
+
+/* The close action now belongs to the centered hero toolbar. Keeping the
+   original header button would create two competing close targets. */
+.entity-detail-focus-shell .modal-header > .btn.btn-icon {
+  display: none !important;
+}
+
+@media (max-width: 720px) {
+  .entity-detail-focus-shell .entity-image-hero-actions {
+    top: 10px;
+    max-width: calc(100% - 24px);
+  }
+
+  .entity-detail-focus-shell .entity-image-hero-actions .btn {
+    min-width: 40px;
+    min-height: 40px;
+  }
+}
