@@ -60,18 +60,7 @@ jobs:
         run: npm run audit:deps
 
       - name: Typecheck
-        run: |
-          set -o pipefail
-          npm run typecheck:all 2>&1 | tee typecheck.log
-
-      - name: Upload typecheck diagnostics
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: typecheck-diagnostics
-          path: typecheck.log
-          if-no-files-found: ignore
-          retention-days: 1
+        run: npm run typecheck:all
 
       - name: Unit tests
         run: npm test
