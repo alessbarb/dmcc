@@ -376,7 +376,7 @@ export async function registerCampaignTemplateWebRoutes(server: FastifyInstance)
             await db.delete(schema.campaigns).where(eq(schema.campaigns.campaignId, existingCampaign.campaignId));
           } catch (cleanupError) {
             request.log.error(
-              { cleanupError, campaignId: existingCampaign.campaignId, operationId },
+              { err: cleanupError, campaignId: existingCampaign.campaignId, operationId },
               "Failed to clean up campaign template import during retry",
             );
           }
@@ -500,13 +500,13 @@ export async function registerCampaignTemplateWebRoutes(server: FastifyInstance)
         } as CampaignTemplateImportEvent) + "\n");
 
       } catch (error) {
-        request.log.error({ error, campaignId, operationId }, "Error during campaign template import");
-        
+        request.log.error({ err: error, campaignId, operationId }, "Error during campaign template import");
+
         try {
           await db.delete(schema.campaigns).where(eq(schema.campaigns.campaignId, campaignId));
         } catch (cleanupError) {
           request.log.error(
-            { cleanupError, campaignId, operationId },
+            { err: cleanupError, campaignId, operationId },
             "Failed to clean up campaign template import",
           );
         }
