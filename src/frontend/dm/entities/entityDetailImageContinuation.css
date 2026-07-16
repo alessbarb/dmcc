@@ -1,0 +1,122 @@
+/* Extend the entity artwork behind the reading header instead of cutting it off.
+   Editing mode hides the hero, so this contract only affects the entity reading surface. */
+
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content
+  > div:first-child {
+  position: relative !important;
+  z-index: 0;
+  height: clamp(340px, 43dvh, 450px) !important;
+  overflow: hidden !important;
+  background: var(--bg-card);
+}
+
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content
+  > div:first-child
+  > img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transform: scale(1.01);
+  transform-origin: center;
+}
+
+/* Replace the short 80px fade supplied by the component with a long cinematic blend. */
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content
+  > div:first-child
+  > div:last-child {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  height: auto !important;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(7, 9, 18, 0.02) 0%,
+      rgba(7, 9, 18, 0.08) 24%,
+      rgba(7, 9, 18, 0.25) 45%,
+      rgba(7, 9, 18, 0.52) 62%,
+      rgba(7, 9, 18, 0.78) 77%,
+      rgba(7, 9, 18, 0.94) 90%,
+      var(--bg-card) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(7, 9, 18, 0.18) 0%,
+      transparent 18%,
+      transparent 82%,
+      rgba(7, 9, 18, 0.16) 100%
+    ) !important;
+}
+
+/* Pull the identity block into the darkened part of the artwork. */
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content
+  > .modal-header {
+  position: relative !important;
+  z-index: 3 !important;
+  min-height: 126px;
+  margin-top: -164px !important;
+  padding-top: 62px !important;
+  background: linear-gradient(
+    to bottom,
+    rgba(12, 15, 28, 0.06),
+    rgba(12, 15, 28, 0.48) 42%,
+    rgba(12, 15, 28, 0.82) 100%
+  ) !important;
+  backdrop-filter: none;
+}
+
+/* The tab rail remains over the final, almost-black portion of the same image. */
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content
+  > .modal-header
+  + div {
+  position: relative !important;
+  z-index: 3 !important;
+  background: rgba(12, 15, 28, 0.88) !important;
+  backdrop-filter: blur(8px) saturate(82%);
+}
+
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+  > .modal-content
+  > .modal-body {
+  position: relative;
+  z-index: 2;
+  background: var(--bg-card);
+}
+
+@media (max-width: 900px) {
+  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+    > .modal-content
+    > div:first-child {
+    height: clamp(290px, 40dvh, 390px) !important;
+  }
+
+  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+    > .modal-content
+    > .modal-header {
+    margin-top: -142px !important;
+    min-height: 116px;
+    padding-top: 52px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+    > .modal-content
+    > div:first-child {
+    height: clamp(250px, 35dvh, 330px) !important;
+  }
+
+  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
+    > .modal-content
+    > .modal-header {
+    margin-top: -116px !important;
+    min-height: 104px;
+    padding-top: 38px !important;
+  }
+}
