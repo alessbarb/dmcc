@@ -160,7 +160,8 @@
       },
       "metadata": {
         "objectiveKey": "rescue_gundren_and_recover_map"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/quests/find_gundren.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_dead_horses",
@@ -270,7 +271,8 @@
       "importance": "high",
       "visibility": {
         "kind": "dm_only"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/clues/black_sealed_note.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_redclay",
@@ -278,7 +280,8 @@
       "importance": "normal",
       "visibility": {
         "kind": "dm_only"
-      }
+      },
+      "imageUrl": "/assets/premades/phandalin/clues/red_clay_boots.png"
     },
     {
       "entityId": "ent_tpl_phandalin_rumor_well",
@@ -1051,7 +1054,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "pending"
+      "status": "pending",
+      "imageUrl": "/assets/premades/phandalin/quests/find_cragmaw_castle.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_wave_echo",
@@ -1061,7 +1065,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/quests/reach_wave_echo_cave.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_black_spider",
@@ -1071,7 +1076,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/quests/unmask_the_black_spider.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_lionshield",
@@ -1081,7 +1087,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available"
+      "status": "available",
+      "imageUrl": "/assets/premades/phandalin/quests/recover_the_lionshield_shipment.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_agatha",
@@ -1102,7 +1109,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available"
+      "status": "available",
+      "imageUrl": "/assets/premades/phandalin/quests/investigate_old_owl_well.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_wyvern_tor",
@@ -1112,7 +1120,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "available"
+      "status": "available",
+      "imageUrl": "/assets/premades/phandalin/quests/drive_out_the_wyvern_tor_orcs.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_thundertree",
@@ -1122,7 +1131,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/quests/deal_with_thundertree.png"
     },
     {
       "entityId": "ent_tpl_phandalin_quest_future",
@@ -1132,7 +1142,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "hidden"
+      "status": "hidden",
+      "imageUrl": "/assets/premades/phandalin/quests/decide_phandalins_future.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_goblin_trail",
@@ -1142,7 +1153,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "revealed"
+      "status": "revealed",
+      "imageUrl": "/assets/premades/phandalin/clues/goblin_trail_to_the_stream.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_sildar_warning",
@@ -1202,7 +1214,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/redbrand_debt_ledger.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_glasstaff_letter",
@@ -1232,7 +1245,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/mirnas_heirloom.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_halia_offer",
@@ -1242,7 +1256,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/halias_offer.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_harbin_notice",
@@ -1252,7 +1267,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/townmasters_hall_notices.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_daran_report",
@@ -1272,7 +1288,8 @@
         "kind": "party"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/lionshield_shipment_marks.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_castle_marks",
@@ -1282,7 +1299,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/marks_toward_the_castle.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_ransom",
@@ -1332,7 +1350,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/black_spider_sigil.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_mine_map",
@@ -1352,7 +1371,8 @@
         "kind": "dm_only"
       },
       "metadata": {},
-      "status": "prepared"
+      "status": "prepared",
+      "imageUrl": "/assets/premades/phandalin/clues/magical_echo_in_the_rock.png"
     },
     {
       "entityId": "ent_tpl_phandalin_clue_tharden_body",
