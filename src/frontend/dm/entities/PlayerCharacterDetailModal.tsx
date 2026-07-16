@@ -3,9 +3,9 @@ import { Activity, Heart, Pencil, Shield, Sparkles, UserRound, X } from "lucide-
 import type { Entity, CampaignStateStore } from "../../shared/stores/campaignStore.js";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 
-type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
+export type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
 
-type CharacterSheetResponse = {
+export type CharacterSheetResponse = {
   entityId: string;
   player: { playerId: string; displayName: string; pronouns?: string | null } | null;
   status: Record<string, unknown>;
@@ -14,7 +14,7 @@ type CharacterSheetResponse = {
   source: "entity" | "player_portal";
 };
 
-interface Props {
+export interface PlayerCharacterDetailModalProps {
   selectedEntity: Entity;
   campaignState: CampaignState;
   onClose: () => void;
@@ -48,12 +48,12 @@ function Field({ label, value }: { label: string; value: unknown }) {
   );
 }
 
-export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onClose, onOpenLegacy }: Props) {
+export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onClose, onOpenLegacy }: PlayerCharacterDetailModalProps) {
   const [sheet, setSheet] = useState<CharacterSheetResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const metadata = record(selectedEntity.metadata);
-  const campaignId = campaignState.campaignId;
+  const campaignId = campaignState.campaign?.campaignId;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -64,6 +64,12 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
   }, [onClose]);
 
   useEffect(() => {
+    if (!campaignId) {
+      setLoading(false);
+      setError("No se pudo identificar la campaña del personaje.");
+      return undefined;
+    }
+
     const controller = new AbortController();
     setLoading(true);
     setError(null);
