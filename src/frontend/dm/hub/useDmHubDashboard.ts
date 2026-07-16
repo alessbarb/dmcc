@@ -23,13 +23,13 @@ function asRecord(value: unknown): Record<string, unknown> {
   return isRecord(value) ? value : {};
 }
 
-function getPremadeLocale(): string {
+function getCampaignTemplateLocale(): string {
   return detectBrowserLocale(readStoredLocale());
 }
 
-function withPremadeLocale(path: string): string {
+function withCampaignTemplateLocale(path: string): string {
   const separator = path.includes("?") ? "&" : "?";
-  return `${path}${separator}locale=${encodeURIComponent(getPremadeLocale())}`;
+  return `${path}${separator}locale=${encodeURIComponent(getCampaignTemplateLocale())}`;
 }
 
 function getString(value: unknown): string | undefined {
@@ -291,7 +291,7 @@ export function useDmHubDashboard(
 
     const loadDashboard = async () => {
       try {
-        const res = await apiFetch(withPremadeLocale("/api/dm/dashboard"));
+        const res = await apiFetch(withCampaignTemplateLocale("/api/dm/dashboard"));
         if (!res.ok) throw new Error(`DM dashboard unavailable (${res.status})`);
         const data: unknown = await res.json();
         const normalized = normalizeRemoteDashboard(data, premadeTemplates, t);
