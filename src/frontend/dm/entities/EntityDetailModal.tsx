@@ -1415,7 +1415,7 @@ function StandardEntityDetailWithImageFocus(props: EntityDetailModalProps) {
     [props.selectedEntity],
   );
   const storedFocus = useMemo(
-    () => parseImageFocalPoint(imageUrl) ?? DEFAULT_IMAGE_FOCAL_POINT,
+    () => parseImageFocalPoint(imageUrl ?? undefined) ?? DEFAULT_IMAGE_FOCAL_POINT,
     [imageUrl],
   );
   const [focusX, setFocusX] = useState(() => storedFocus.x * 100);

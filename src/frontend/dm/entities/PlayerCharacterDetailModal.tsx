@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Activity, Heart, Pencil, Shield, Sparkles, UserRound, X } from "lucide-react";
 import type { Entity, CampaignStateStore } from "../../shared/stores/campaignStore.js";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
+import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 
 export type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
 
@@ -20,7 +21,7 @@ export interface PlayerCharacterDetailModalProps {
   onClose: () => void;
   onEdit: (entityId: string, updates: Partial<Entity>) => Promise<void>;
   onArchive: (entityId: string) => Promise<void>;
-  onVisibilityChange: (entityId: string, visibility: unknown) => Promise<void>;
+  onVisibilityChange: (entityId: string, visibility: VisibilityRule) => Promise<void>;
   addToast: (msg: string, kind?: ToastKind) => void;
   onEditEntity: () => void;
 }
