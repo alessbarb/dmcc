@@ -1,16 +1,20 @@
 import { closeDatabasePool } from "../db/client.js";
+import { startCampaignPurgeWorker } from "../operations/campaigns/campaignPurgeWorker.js";
 import { createServer } from "../server/createServer.js";
 import { formatListenUrl, resolveListenHost } from "./serverConfig.js";
 
 const host = resolveListenHost(process.env);
 const port = Number(process.env.PORT ?? process.env.DMCC_PORT ?? "4877");
 const server = createServer({ dataDir: process.env.DMCC_DATA_DIR });
+const purgeWorker = startCampaignPurgeWorker();
 const SHUTDOWN_TIMEOUT_MS = 15_000;
 
 let shutdownPromise: Promise<void> | undefined;
 
 async function closeRuntimeResources(): Promise<void> {
   const failures: unknown[] = [];
+
+  purgeWorker.stop();
 
   try {
     await server.close();
