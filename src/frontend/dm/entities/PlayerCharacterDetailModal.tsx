@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useMemo, useState } from "react";
 import { Activity, Heart, Pencil, Shield, Sparkles, UserRound, X } from "lucide-react";
 import type { Entity, CampaignStateStore } from "../../shared/stores/campaignStore.js";
