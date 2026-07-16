@@ -114,7 +114,7 @@ export function publicWebUser(
   };
 }
 
-export function shouldRefreshSessionLastSeen(lastSeenAt: Date, now = new Date()): boolean {
+function shouldRefreshSessionLastSeen(lastSeenAt: Date, now = new Date()): boolean {
   return now.getTime() - lastSeenAt.getTime() >= SESSION_LAST_SEEN_REFRESH_MS;
 }
 

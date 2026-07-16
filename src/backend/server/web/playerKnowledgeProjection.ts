@@ -148,7 +148,7 @@ export function buildKnowledgeAccessIndex(snapshot: KnowledgeSnapshot): Knowledg
   return index;
 }
 
-export function knowledgeAccessReason(
+function knowledgeAccessReason(
   index: KnowledgeAccessIndex,
   targetType: KnowledgeTargetType,
   targetId: string,

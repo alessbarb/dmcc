@@ -17,7 +17,7 @@ export function isDmRole(role?: string | null): boolean {
   return role === "dm" || role === "co_dm";
 }
 
-export function getExpectedAuthErrorStatusCode(error: unknown): 401 | 403 | null {
+function getExpectedAuthErrorStatusCode(error: unknown): 401 | 403 | null {
   if (error instanceof HttpError) {
     return error.statusCode === 401 || error.statusCode === 403 ? error.statusCode : null;
   }
@@ -28,7 +28,7 @@ export function getExpectedAuthErrorStatusCode(error: unknown): 401 | 403 | null
   return null;
 }
 
-export function getSafeErrorMessage(error: unknown): string {
+function getSafeErrorMessage(error: unknown): string {
   return error instanceof Error && error.message ? error.message : "Authentication required";
 }
 

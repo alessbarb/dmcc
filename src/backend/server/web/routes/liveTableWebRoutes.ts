@@ -9,9 +9,9 @@ import { getRequiredWebUser } from "../webSession.js";
 import { getMembership, requireCampaignMembership, requireCampaignRole } from "../webAccess.js";
 import { recordOperationalActivity } from "../../activity/recordOperationalActivity.js";
 
-export const SHORT_TABLE_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const SHORT_TABLE_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-export function generateShortTableCode(): string {
+function generateShortTableCode(): string {
   const pick = () =>
     Array.from(
       { length: 4 },

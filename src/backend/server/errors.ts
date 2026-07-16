@@ -5,7 +5,7 @@ export class HttpError extends Error {
   }
 }
 
-export function getErrorMessage(error: unknown): string {
+function getErrorMessage(error: unknown): string {
   if (error instanceof Error && error.message) {
     return error.message;
   }
@@ -15,7 +15,7 @@ export function getErrorMessage(error: unknown): string {
   return "Unknown error";
 }
 
-export function toError(error: unknown): Error {
+function toError(error: unknown): Error {
   if (error instanceof Error) {
     return error;
   }

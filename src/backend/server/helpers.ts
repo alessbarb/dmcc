@@ -65,7 +65,7 @@ export function slugifyTitle(title: string): string {
     .trim() || "entity";
 }
 
-export function isPathWithinDir(
+function isPathWithinDir(
   filePath: string,
   allowedDir: string,
   pathApi: PathLike = path,
@@ -88,14 +88,14 @@ export function assertWithinDir(filePath: string, allowedDir: string): void {
 
 
 
-export function getCharacterEntityIdForPlayer(entities: EntityLike[], playerId: string): string | undefined {
+function getCharacterEntityIdForPlayer(entities: EntityLike[], playerId: string): string | undefined {
   const character = entities.find(
     (e) => e.entityType === "player_character" && e.metadata?.playerId === playerId
   );
   return character?.entityId;
 }
 
-export function getVisibleEntities(
+function getVisibleEntities(
   entities: EntityLike[],
   role: string,
   playerId?: string,
@@ -118,7 +118,7 @@ export function getVisibleEntities(
   });
 }
 
-export function getVisibleRelations(
+function getVisibleRelations(
   relations: RelationLike[],
   visibleEntityIds: Set<string>,
   role: string,
@@ -140,7 +140,7 @@ export function getVisibleRelations(
   });
 }
 
-export function getVisibleFacts(
+function getVisibleFacts(
   facts: FactLike[],
   role: string,
   playerId?: string,
@@ -160,7 +160,7 @@ export function getVisibleFacts(
   });
 }
 
-export function getVisibleSessions(sessions: SessionLike[], role: string) {
+function getVisibleSessions(sessions: SessionLike[], role: string) {
   if (role === "dm") return sessions;
 
   return sessions
@@ -177,7 +177,7 @@ export function getVisibleSessions(sessions: SessionLike[], role: string) {
     }));
 }
 
-export function toPublicCampaign(campaign: CampaignLike | null | undefined) {
+function toPublicCampaign(campaign: CampaignLike | null | undefined) {
   if (!campaign) return null;
   return {
     campaignId: campaign.campaignId,
