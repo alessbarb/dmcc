@@ -38,20 +38,23 @@ function getDocumentController(): ThemeController {
   return documentController;
 }
 
-function resolveAppearance(): AppearancePreferences {
+export function resolveAppearancePreferences(
+  account: AppearancePreferences,
+  overrides: DeviceOverrides,
+): AppearancePreferences {
   return {
-    themeId: deviceOverrides.themeId ?? accountAppearance.themeId,
-    colorMode: deviceOverrides.colorMode ?? accountAppearance.colorMode,
-    typographySetId: deviceOverrides.typographySetId ?? accountAppearance.typographySetId,
-    density: deviceOverrides.density ?? accountAppearance.density,
-    textScale: deviceOverrides.textScale ?? accountAppearance.textScale,
-    enhancedContrast: deviceOverrides.enhancedContrast ?? accountAppearance.enhancedContrast,
-    reducedMotion: deviceOverrides.reducedMotion ?? accountAppearance.reducedMotion,
+    themeId: overrides.themeId ?? account.themeId,
+    colorMode: overrides.colorMode ?? account.colorMode,
+    typographySetId: overrides.typographySetId ?? account.typographySetId,
+    density: overrides.density ?? account.density,
+    textScale: overrides.textScale ?? account.textScale,
+    enhancedContrast: overrides.enhancedContrast ?? account.enhancedContrast,
+    reducedMotion: overrides.reducedMotion ?? account.reducedMotion,
   };
 }
 
 function renderAppearance(): void {
-  const appearance = resolveAppearance();
+  const appearance = resolveAppearancePreferences(accountAppearance, deviceOverrides);
   getDocumentController().apply({
     themeId: appearance.themeId,
     colorMode: appearance.colorMode,
