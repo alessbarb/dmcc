@@ -16,7 +16,7 @@ import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import { fetchSession } from "../../shared/auth/authClient.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
-import { PremadeImportDialog, type PremadeImportMode } from "../../shared/components/PremadeImportDialog.js";
+import { CampaignTemplateImportDialog, type CampaignTemplateImportMode } from "../../shared/components/CampaignTemplateImportDialog.js";
 
 function runPremadePreviewAction(operation: Promise<unknown>, errorMessage: string): void {
   void operation.catch((error: unknown) => {
@@ -140,19 +140,19 @@ export function CampaignTemplatePreviewPage() {
   const { t } = useTranslation();
   const {
     campaigns,
-    activePremadeTemplate,
+    activeCampaignTemplate,
     loading,
     error,
     fetchCampaigns,
     fetchCampaignTemplate,
     importCampaignTemplate,
-    premadeImportState,
-    clearPremadeImportState,
+    campaignTemplateImportState,
+    clearCampaignTemplateImportState,
   } = useCampaignStore();
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
-  const importing = premadeImportState.status === "running";
-  const importError = premadeImportState.error ? t(premadeImportState.error) : null;
+  const importing = campaignTemplateImportState.status === "running";
+  const importError = campaignTemplateImportState.error ? t(campaignTemplateImportState.error) : null;
 
   useEffect(() => {
     const init = async () => {
@@ -168,7 +168,7 @@ export function CampaignTemplatePreviewPage() {
     runPremadePreviewAction(init(), "No se pudo inicializar la vista previa de aventura preparada.");
   }, [fetchCampaigns, fetchCampaignTemplate, navigate, templateId]);
 
-  const template = activePremadeTemplate?.templateId === templateId ? activePremadeTemplate : null;
+  const template = activeCampaignTemplate?.templateId === templateId ? activeCampaignTemplate : null;
 
   const groupedEntities = useMemo(() => {
     if (!template) return [];
@@ -217,7 +217,7 @@ export function CampaignTemplatePreviewPage() {
     return (selected.length ? selected : template.relations).slice(0, 10);
   }, [template]);
 
-  const handleCreateCopy = async (options: { title: string; summary?: string; importMode: PremadeImportMode; openAfterCreate: boolean }) => {
+  const handleCreateCopy = async (options: { title: string; summary?: string; importMode: CampaignTemplateImportMode; openAfterCreate: boolean }) => {
     if (!template) return;
     try {
       const campaignId = await importCampaignTemplate(template.templateId, {
@@ -227,7 +227,7 @@ export function CampaignTemplatePreviewPage() {
       });
       if (campaignId) {
         setImportDialogOpen(false);
-        clearPremadeImportState();
+        clearCampaignTemplateImportState();
         if (options.openAfterCreate) {
           await navigate({ to: `/campaigns/${campaignId}/overview` });
         }
@@ -510,16 +510,16 @@ export function CampaignTemplatePreviewPage() {
         </button>
       </section>
 
-      <PremadeImportDialog
+      <CampaignTemplateImportDialog
         template={importDialogOpen ? template : null}
         campaigns={campaigns}
         importing={importing}
-        importProgress={premadeImportState}
+        importProgress={campaignTemplateImportState}
         error={importError}
-        onClose={() => { if (!importing) { setImportDialogOpen(false); clearPremadeImportState(); } }}
+        onClose={() => { if (!importing) { setImportDialogOpen(false); clearCampaignTemplateImportState(); } }}
         onOpenExisting={(campaignId) => {
           setImportDialogOpen(false);
-          clearPremadeImportState();
+          clearCampaignTemplateImportState();
           runPremadePreviewAction(
             navigate({ to: `/campaigns/${campaignId}/overview` }),
             "No se pudo abrir la campaña existente.",

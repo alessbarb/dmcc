@@ -24,7 +24,7 @@ import type { ImportStage, CampaignTemplateImportEvent } from "@shared/templateI
 
 type ActiveCampaignRole = "dm" | "player";
 
-export interface PremadeImportState {
+export interface CampaignTemplateImportState {
   status: "idle" | "running" | "failed";
   templateId: string | null;
   operationId: string | null;
@@ -302,10 +302,10 @@ export interface PlayerProfile {
 
 export interface CampaignStateStore {
   campaigns: Campaign[];
-  premadeTemplates: CampaignTemplateSummary[];
-  premadeTemplatesLocale: string | null;
-  activePremadeTemplate: CampaignTemplate | null;
-  activePremadeTemplateKey: string | null;
+  campaignTemplates: CampaignTemplateSummary[];
+  campaignTemplatesLocale: string | null;
+  activeCampaignTemplate: CampaignTemplate | null;
+  activeCampaignTemplateKey: string | null;
   activeCampaignId: string | null;
   activeCampaignLoadId: string | null;
   activeCampaignRole: ActiveCampaignRole;
@@ -338,8 +338,8 @@ export interface CampaignStateStore {
   loading: boolean;
   error: string | null;
 
-  premadeImportState: PremadeImportState;
-  clearPremadeImportState: () => void;
+  campaignTemplateImportState: CampaignTemplateImportState;
+  clearCampaignTemplateImportState: () => void;
 
   isEntityModalOpen: boolean;
   setIsEntityModalOpen: (open: boolean) => void;
@@ -347,7 +347,7 @@ export interface CampaignStateStore {
   setIsRelationModalOpen: (open: boolean) => void;
 
   fetchCampaigns: () => Promise<void>;
-  fetchPremadeCampaigns: () => Promise<void>;
+  fetchCampaignTemplates: () => Promise<void>;
   fetchCampaignTemplate: (templateId: string) => Promise<CampaignTemplate | null>;
   importCampaignTemplate: (templateId: string, options?: { title?: string; summary?: string; importMode?: "full" | "structure" | "sessions"; locale?: string }) => Promise<string | undefined>;
   updateCampaign: (campaignId: string, updates: { title?: string; summary?: string; system?: string; status?: string; coverUrl?: string; metadata?: Record<string, unknown> }) => Promise<Campaign | undefined>;
@@ -479,10 +479,10 @@ const syncChannel = typeof window !== "undefined" ? new BroadcastChannel("dmcc_c
 
 export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   campaigns: [],
-  premadeTemplates: [],
-  premadeTemplatesLocale: null,
-  activePremadeTemplate: null,
-  activePremadeTemplateKey: null,
+  campaignTemplates: [],
+  campaignTemplatesLocale: null,
+  activeCampaignTemplate: null,
+  activeCampaignTemplateKey: null,
   activeCampaignId: null,
   activeCampaignLoadId: null,
   activeCampaignRole: "dm",
@@ -498,7 +498,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   loading: false,
   error: null,
 
-  premadeImportState: {
+  campaignTemplateImportState: {
     status: "idle",
     templateId: null,
     operationId: null,
@@ -509,8 +509,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     stage: null,
     error: null,
   },
-  clearPremadeImportState: () => set({
-    premadeImportState: {
+  clearCampaignTemplateImportState: () => set({
+    campaignTemplateImportState: {
       status: "idle",
       templateId: null,
       operationId: null,
@@ -544,7 +544,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     }
   },
 
-  fetchPremadeCampaigns: async () => {
+  fetchCampaignTemplates: async () => {
     const locale = getCampaignTemplateLocale();
     try {
       const res = await listCampaignTemplates(locale);
@@ -553,9 +553,9 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         throw new Error(message);
       }
       const data = await res.json();
-      set({ premadeTemplates: Array.isArray(data.templates) ? data.templates : [], premadeTemplatesLocale: locale });
+      set({ campaignTemplates: Array.isArray(data.templates) ? data.templates : [], campaignTemplatesLocale: locale });
     } catch (err) {
-      set({ premadeTemplates: [], premadeTemplatesLocale: locale, error: errorMessage(err) });
+      set({ campaignTemplates: [], campaignTemplatesLocale: locale, error: errorMessage(err) });
     }
   },
 
@@ -569,10 +569,10 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         throw new Error(message);
       }
       const template = await res.json() as CampaignTemplate;
-      set({ activePremadeTemplate: template, activePremadeTemplateKey: `${templateId}:${locale}`, loading: false });
+      set({ activeCampaignTemplate: template, activeCampaignTemplateKey: `${templateId}:${locale}`, loading: false });
       return template;
     } catch (err) {
-      set({ activePremadeTemplate: null, activePremadeTemplateKey: null, error: errorMessage(err), loading: false });
+      set({ activeCampaignTemplate: null, activeCampaignTemplateKey: null, error: errorMessage(err), loading: false });
       return null;
     }
   },
@@ -580,7 +580,7 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
   importCampaignTemplate: async (templateId, options) => {
     const operationId = `imp_${createId("cmd")}`;
     set({
-      premadeImportState: {
+      campaignTemplateImportState: {
         status: "running",
         templateId,
         operationId,
@@ -608,16 +608,16 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         if (event.type === "started") {
           campaignId = event.campaignId;
           set((s) => ({
-            premadeImportState: {
-              ...s.premadeImportState,
+            campaignTemplateImportState: {
+              ...s.campaignTemplateImportState,
               campaignId: event.campaignId,
               totalSteps: event.totalSteps,
             },
           }));
         } else if (event.type === "progress") {
           set((s) => ({
-            premadeImportState: {
-              ...s.premadeImportState,
+            campaignTemplateImportState: {
+              ...s.campaignTemplateImportState,
               completedSteps: event.completedSteps,
               totalSteps: event.totalSteps,
               percent: event.percent,
@@ -628,8 +628,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
           successEventReceived = true;
           campaignId = event.campaignId;
           set((s) => ({
-            premadeImportState: {
-              ...s.premadeImportState,
+            campaignTemplateImportState: {
+              ...s.campaignTemplateImportState,
               status: "idle",
               percent: 100,
               campaignId: event.campaignId,
@@ -650,8 +650,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
     } catch (err: any) {
       const errorMsg = err.message || "premadeImport.error.failed";
       set((s) => ({
-        premadeImportState: {
-          ...s.premadeImportState,
+        campaignTemplateImportState: {
+          ...s.campaignTemplateImportState,
           status: "failed",
           error: errorMsg,
         },

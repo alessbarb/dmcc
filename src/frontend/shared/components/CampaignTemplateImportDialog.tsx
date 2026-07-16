@@ -1,26 +1,26 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, CheckCircle2, ShieldCheck, X, Loader2 } from "lucide-react";
-import type { Campaign, CampaignTemplate, CampaignTemplateSummary, PremadeImportState } from "../stores/campaignStore.js";
+import type { Campaign, CampaignTemplate, CampaignTemplateSummary, CampaignTemplateImportState } from "../stores/campaignStore.js";
 import { useTranslation } from "../i18n/useTranslation.js";
 
-export type PremadeImportMode = "full" | "structure" | "sessions";
+export type CampaignTemplateImportMode = "full" | "structure" | "sessions";
 
-export interface PremadeImportOptions {
+export interface CampaignTemplateImportOptions {
   title: string;
   summary?: string;
-  importMode: PremadeImportMode;
+  importMode: CampaignTemplateImportMode;
   openAfterCreate: boolean;
 }
 
-interface PremadeImportDialogProps {
+interface CampaignTemplateImportDialogProps {
   template: CampaignTemplateSummary | CampaignTemplate | null;
   campaigns: Campaign[];
   importing?: boolean;
-  importProgress?: PremadeImportState | null;
+  importProgress?: CampaignTemplateImportState | null;
   error?: string | null;
   onClose: () => void;
   onOpenExisting: (campaignId: string) => void;
-  onConfirm: (options: PremadeImportOptions) => void | Promise<void>;
+  onConfirm: (options: CampaignTemplateImportOptions) => void | Promise<void>;
 }
 
 function templateSummary(template: CampaignTemplateSummary | CampaignTemplate): string {
@@ -35,7 +35,7 @@ function getTemplateOrigin(campaign: Campaign): string | undefined {
   return typeof origin === "string" ? origin : undefined;
 }
 
-export function PremadeImportDialog({
+export function CampaignTemplateImportDialog({
   template,
   campaigns,
   importing = false,
@@ -44,11 +44,11 @@ export function PremadeImportDialog({
   onClose,
   onOpenExisting,
   onConfirm,
-}: PremadeImportDialogProps) {
+}: CampaignTemplateImportDialogProps) {
   const { t } = useTranslation();
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
-  const [importMode, setImportMode] = useState<PremadeImportMode>("full");
+  const [importMode, setImportMode] = useState<CampaignTemplateImportMode>("full");
   const [openAfterCreate, setOpenAfterCreate] = useState(true);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export function PremadeImportDialog({
 
   if (!template) return null;
 
-  const modeOptions: Array<{ value: PremadeImportMode; title: string; desc: string }> = [
+  const modeOptions: Array<{ value: CampaignTemplateImportMode; title: string; desc: string }> = [
     { value: "full", title: t("premadeImport.mode.full.title"), desc: t("premadeImport.mode.full.desc") },
     { value: "structure", title: t("premadeImport.mode.structure.title"), desc: t("premadeImport.mode.structure.desc") },
     { value: "sessions", title: t("premadeImport.mode.sessions.title"), desc: t("premadeImport.mode.sessions.desc") },
