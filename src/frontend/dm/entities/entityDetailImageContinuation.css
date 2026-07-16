@@ -6,7 +6,7 @@
   > div:first-child {
   position: relative !important;
   z-index: 0;
-  height: clamp(380px, 48dvh, 500px) !important;
+  height: clamp(460px, 58dvh, 620px) !important;
   overflow: hidden !important;
   background: var(--bg-card);
 }
@@ -19,11 +19,12 @@
   height: 100% !important;
   object-fit: cover !important;
   object-position: 50% 0% !important;
-  transform: scale(1.01);
+  transform: scale(1.005);
   transform-origin: center top;
 }
 
-/* Keep more artwork visible through the middle before the final cinematic fade. */
+/* Preserve the scene through most of the hero. The strong fade is delayed to the
+   lower quarter so groups, environments and narrative context remain readable. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > div:first-child
@@ -36,37 +37,38 @@
   background:
     linear-gradient(
       to bottom,
-      rgba(7, 9, 18, 0.01) 0%,
-      rgba(7, 9, 18, 0.03) 28%,
-      rgba(7, 9, 18, 0.12) 50%,
-      rgba(7, 9, 18, 0.3) 66%,
-      rgba(7, 9, 18, 0.6) 81%,
-      rgba(7, 9, 18, 0.88) 93%,
+      rgba(7, 9, 18, 0.005) 0%,
+      rgba(7, 9, 18, 0.015) 24%,
+      rgba(7, 9, 18, 0.05) 46%,
+      rgba(7, 9, 18, 0.13) 62%,
+      rgba(7, 9, 18, 0.34) 76%,
+      rgba(7, 9, 18, 0.67) 88%,
+      rgba(7, 9, 18, 0.92) 96%,
       var(--bg-card) 100%
     ),
     linear-gradient(
       to right,
-      rgba(7, 9, 18, 0.14) 0%,
-      transparent 18%,
-      transparent 82%,
-      rgba(7, 9, 18, 0.13) 100%
+      rgba(7, 9, 18, 0.1) 0%,
+      transparent 14%,
+      transparent 86%,
+      rgba(7, 9, 18, 0.1) 100%
     ) !important;
 }
 
-/* Pull the identity block into the darkened part of the artwork. */
+/* Pull the identity block into the darkened lower edge without consuming the scene. */
 .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
   > .modal-content
   > .modal-header {
   position: relative !important;
   z-index: 3 !important;
-  min-height: 132px;
-  margin-top: -184px !important;
-  padding-top: 70px !important;
+  min-height: 138px;
+  margin-top: -196px !important;
+  padding-top: 78px !important;
   background: linear-gradient(
     to bottom,
-    rgba(12, 15, 28, 0.01),
-    rgba(12, 15, 28, 0.28) 46%,
-    rgba(12, 15, 28, 0.68) 100%
+    rgba(12, 15, 28, 0.005),
+    rgba(12, 15, 28, 0.2) 48%,
+    rgba(12, 15, 28, 0.64) 100%
   ) !important;
   backdrop-filter: none;
 }
@@ -102,10 +104,10 @@
   + div {
   position: relative !important;
   z-index: 3 !important;
-  border-top-color: rgba(255, 255, 255, 0.025) !important;
-  border-bottom-color: color-mix(in srgb, var(--border-color) 62%, transparent) !important;
-  background: rgba(12, 15, 28, 0.7) !important;
-  backdrop-filter: blur(6px) saturate(84%);
+  border-top-color: rgba(255, 255, 255, 0.02) !important;
+  border-bottom-color: color-mix(in srgb, var(--border-color) 58%, transparent) !important;
+  background: rgba(12, 15, 28, 0.66) !important;
+  backdrop-filter: blur(5px) saturate(84%);
 }
 
 /* Keep the data layout in normal flow. The artwork is only suggested through a short
@@ -120,9 +122,9 @@
   background:
     linear-gradient(
       to bottom,
-      color-mix(in srgb, rgba(12, 15, 28, 0.78) 72%, transparent) 0,
-      color-mix(in srgb, var(--bg-card) 94%, transparent) 42px,
-      var(--bg-card) 88px
+      color-mix(in srgb, rgba(12, 15, 28, 0.74) 70%, transparent) 0,
+      color-mix(in srgb, var(--bg-card) 92%, transparent) 48px,
+      var(--bg-card) 96px
     ) !important;
 }
 
@@ -130,15 +132,15 @@
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > div:first-child {
-    height: clamp(320px, 43dvh, 420px) !important;
+    height: clamp(360px, 48dvh, 480px) !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > .modal-header {
-    margin-top: -154px !important;
-    min-height: 120px;
-    padding-top: 56px !important;
+    margin-top: -166px !important;
+    min-height: 124px;
+    padding-top: 62px !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
@@ -153,15 +155,15 @@
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > div:first-child {
-    height: clamp(280px, 38dvh, 350px) !important;
+    height: clamp(300px, 42dvh, 390px) !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
     > .modal-content
     > .modal-header {
-    margin-top: -124px !important;
-    min-height: 108px;
-    padding-top: 42px !important;
+    margin-top: -132px !important;
+    min-height: 110px;
+    padding-top: 46px !important;
   }
 
   .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
