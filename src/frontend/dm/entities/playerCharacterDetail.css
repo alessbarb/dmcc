@@ -1,0 +1,188 @@
+.player-character-detail {
+  width: min(1040px, calc(100vw - 32px));
+  max-height: min(860px, calc(100vh - 32px));
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: 0 28px 80px rgb(0 0 0 / 55%);
+  display: flex;
+  flex-direction: column;
+}
+
+.player-character-detail__header,
+.player-character-detail__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.player-character-detail__header h2 {
+  margin: 8px 0 2px;
+  font-size: clamp(1.55rem, 3vw, 2rem);
+}
+
+.player-character-detail__header p,
+.player-character-detail__freshness {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: .82rem;
+}
+
+.player-character-detail__toolbar {
+  padding-block: 12px;
+}
+
+.player-character-detail__owner,
+.player-character-detail__section h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-character-detail__body {
+  overflow: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.player-character-detail__summary {
+  margin: 0;
+  max-width: 75ch;
+  line-height: 1.55;
+}
+
+.player-character-detail__section {
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+}
+
+.player-character-detail__section h3 {
+  margin: 0 0 14px;
+  font-size: .9rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text-muted);
+}
+
+.player-character-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.player-character-detail__field,
+.player-character-detail__resources > div {
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.player-character-detail__field span,
+.player-character-detail__vitals span,
+.player-character-detail__abilities span {
+  color: var(--text-muted);
+  font-size: .72rem;
+  text-transform: uppercase;
+}
+
+.player-character-detail__empty {
+  padding: 18px;
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.player-character-detail__vitals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.player-character-detail__vitals > div {
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 10px;
+  align-items: center;
+}
+
+.player-character-detail__vitals strong,
+.player-character-detail__vitals small {
+  grid-column: 2;
+}
+
+.player-character-detail__abilities {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.player-character-detail__abilities > div {
+  padding: 12px 6px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.player-character-detail__abilities strong {
+  font-size: 1.15rem;
+}
+
+.player-character-detail__resources {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.player-character-detail__resources > div {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 720px) {
+  .player-character-detail {
+    width: 100vw;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+  }
+
+  .player-character-detail__header,
+  .player-character-detail__toolbar,
+  .player-character-detail__body {
+    padding-inline: 16px;
+  }
+
+  .player-character-detail__grid,
+  .player-character-detail__vitals {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .player-character-detail__abilities {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .player-character-detail__resources {
+    grid-template-columns: 1fr;
+  }
+}
