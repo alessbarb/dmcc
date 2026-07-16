@@ -6,6 +6,7 @@ import { EntityDetailModal as StandardEntityDetailModal } from "./EntityDetailMo
 // @ts-ignore -- Vite supports explicit TSX imports in source modules.
 import { PlayerCharacterDetailModal } from "./PlayerCharacterDetailModal.tsx";
 import "./playerCharacterDetail.css";
+import "./entityDetailHeroActions.css";
 
 function clampFocus(value, fallback = 50) {
   const numeric = Number(value);
@@ -154,16 +155,52 @@ function StandardEntityDetailWithImageFocus(props) {
     setIsAdjusting(false);
   };
 
+  const stopHeroActionEvent = (event) => {
+    event.stopPropagation();
+  };
+
   return (
     <div ref={rootRef} className="entity-detail-focus-shell">
       <StandardEntityDetailModal {...props} />
-      {heroElement && imageUrl && createPortal(
-        <div className="entity-image-hero-actions">
-          <button type="button" className="btn btn-secondary btn-icon" onClick={(event) => { event.stopPropagation(); setIsAdjusting(true); }} aria-label="Ajustar encuadre" title="Ajustar encuadre">
-            <Focus size={16} />
-          </button>
-          <button type="button" className="btn btn-secondary btn-icon" onClick={(event) => { event.stopPropagation(); setIsExpanded(true); }} aria-label="Ver imagen completa" title="Ver imagen completa">
-            <Expand size={16} />
+      {heroElement && createPortal(
+        <div
+          className="entity-image-hero-actions"
+          role="toolbar"
+          aria-label="Acciones de la imagen y del modal"
+          onPointerDown={stopHeroActionEvent}
+          onMouseDown={stopHeroActionEvent}
+          onClick={stopHeroActionEvent}
+        >
+          {imageUrl && (
+            <>
+              <button
+                type="button"
+                className="btn btn-secondary btn-icon"
+                onClick={() => setIsAdjusting(true)}
+                aria-label="Ajustar encuadre"
+                title="Ajustar encuadre"
+              >
+                <Focus size={16} />
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary btn-icon"
+                onClick={() => setIsExpanded(true)}
+                aria-label="Ver imagen completa"
+                title="Ver imagen completa"
+              >
+                <Expand size={16} />
+              </button>
+            </>
+          )}
+          <button
+            type="button"
+            className="btn btn-secondary btn-icon"
+            onClick={props.onClose}
+            aria-label="Cerrar entidad"
+            title="Cerrar"
+          >
+            <X size={18} />
           </button>
         </div>,
         heroElement,
