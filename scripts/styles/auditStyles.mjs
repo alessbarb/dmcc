@@ -83,7 +83,7 @@ function auditCss(pathname, source) {
   const variableReferences = collectRegex(source, /var\(\s*(--[a-zA-Z0-9_-]+)/g).map((match) => match[1]);
 
   if (!isColorAllowed(pathname)) {
-    const colorPattern = /#[0-9a-fA-F]{3,8}\b|\b(?:rgb|rgba|hsl|hsla|oklch|lab|lch)\([^)]*\)|\b(?:white|black|red|green|blue)\b/g;
+    const colorPattern = /#[0-9a-fA-F]{3,8}\b|\b(?:rgb|rgba|hsl|hsla|oklch|lab|lch)\([^)]*\)|\b(?:white|black|red|green|blue)\b(?!-space)/g;
     for (const match of collectRegex(source, colorPattern)) {
       findings.push(finding(pathname, source, match.index, {
         sourceType: "css",

@@ -11,3 +11,13 @@
   line-height: 1.2;
   text-transform: uppercase;
 }
+
+.badge--danger {
+  background: var(--theme-feedback-danger-background);
+  color: var(--theme-feedback-danger-foreground);
+}
+
+.badge--success {
+  background: var(--theme-feedback-success-background);
+  color: var(--theme-feedback-success-foreground);
+}
