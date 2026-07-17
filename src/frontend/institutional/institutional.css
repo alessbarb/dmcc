@@ -3,11 +3,11 @@
   min-height: 100vh;
   overflow: hidden;
   padding: clamp(1rem, 3vw, 2.5rem);
-  color: #f8efe2;
+  color: var(--theme-text-primary);
   background:
-    radial-gradient(circle at top left, rgb(158 113 50 / 0.24), transparent 34rem),
-    radial-gradient(circle at bottom right, rgb(104 75 168 / 0.22), transparent 32rem),
-    linear-gradient(135deg, #120d16 0%, #201528 48%, #0f111d 100%);
+    radial-gradient(circle at top left, color-mix(in srgb, var(--theme-accents-primary-foreground) 24%, transparent), transparent 34rem),
+    radial-gradient(circle at bottom right, color-mix(in srgb, var(--theme-accents-secondary-foreground) 22%, transparent), transparent 32rem),
+    linear-gradient(135deg, var(--theme-surfaces-canvas) 0%, var(--theme-surfaces-base) 48%, var(--theme-surfaces-subtle) 100%);
 }
 
 .institutional-orb {
@@ -23,7 +23,7 @@
   right: 8%;
   width: 11rem;
   height: 11rem;
-  background: rgb(225 169 74 / 0.3);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 30%, transparent);
 }
 
 .institutional-orb--violet {
@@ -31,7 +31,7 @@
   left: 7%;
   width: 14rem;
   height: 14rem;
-  background: rgb(122 92 211 / 0.24);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 24%, transparent);
 }
 
 .institutional-hero,
@@ -55,18 +55,18 @@
   width: 2.5rem;
   height: 2.5rem;
   place-items: center;
-  border: 1px solid rgb(232 190 109 / 0.4);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 40%, transparent);
   border-radius: 999px;
-  color: #f0c977;
-  background: rgb(255 255 255 / 0.07);
-  box-shadow: 0 0 28px rgb(232 190 109 / 0.18);
+  color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-text-on-media) 7%, transparent);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--theme-accents-primary-foreground) 18%, transparent);
 }
 
 .institutional-hero__kicker,
 .institutional-panel__eyebrow,
 .institutional-contact__eyebrow {
   margin: 0;
-  color: #e8c27b;
+  color: var(--theme-accents-primary-foreground);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.18em;
@@ -82,7 +82,7 @@
 .institutional-hero p:last-child {
   max-width: 42rem;
   margin: 0;
-  color: rgb(248 239 226 / 0.76);
+  color: color-mix(in srgb, var(--theme-text-primary) 76%, transparent);
 }
 
 .institutional-frame {
@@ -97,19 +97,19 @@
   z-index: 1;
   width: min(1120px, 100%);
   margin: clamp(1rem, 3vw, 2rem) auto 0;
-  border: 1px solid rgb(255 255 255 / 0.12);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 12%, transparent);
   border-radius: 1.25rem;
-  background: rgb(18 13 22 / 0.62);
-  box-shadow: 0 24px 80px rgb(0 0 0 / 0.22);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 62%, transparent);
+  box-shadow: 0 24px 80px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent);
   backdrop-filter: blur(18px);
 }
 
 .institutional-nav,
 .institutional-panel,
 .institutional-contact {
-  border: 1px solid rgb(255 255 255 / 0.14);
-  background: rgb(18 13 22 / 0.62);
-  box-shadow: 0 24px 80px rgb(0 0 0 / 0.28);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 14%, transparent);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 62%, transparent);
+  box-shadow: 0 24px 80px color-mix(in srgb, var(--theme-surfaces-canvas) 28%, transparent);
   backdrop-filter: blur(18px);
 }
 
@@ -129,7 +129,7 @@
   padding: 0 0.9rem;
   border: 1px solid transparent;
   border-radius: 0.9rem;
-  color: rgb(248 239 226 / 0.76);
+  color: color-mix(in srgb, var(--theme-text-primary) 76%, transparent);
   font-weight: 750;
   text-decoration: none;
   transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
@@ -138,9 +138,9 @@
 .institutional-nav__link:hover,
 .institutional-nav__link:focus-visible,
 .institutional-nav__link.is-active {
-  border-color: rgb(232 190 109 / 0.36);
-  color: #fff7ea;
-  background: rgb(232 190 109 / 0.12);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 36%, transparent);
+  color: var(--theme-text-primary);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent);
   outline: none;
 }
 
@@ -162,7 +162,7 @@
 
 .institutional-panel__summary {
   margin: 1rem 0 0;
-  color: rgb(248 239 226 / 0.78);
+  color: color-mix(in srgb, var(--theme-text-primary) 78%, transparent);
   font-size: 1.05rem;
   line-height: 1.7;
 }
@@ -170,10 +170,10 @@
 .institutional-panel__notice {
   margin: 1rem 0 0;
   padding: 0.8rem 0.95rem;
-  border: 1px solid rgb(232 190 109 / 0.24);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 24%, transparent);
   border-radius: 0.9rem;
-  color: rgb(248 239 226 / 0.78);
-  background: rgb(232 190 109 / 0.08);
+  color: color-mix(in srgb, var(--theme-text-primary) 78%, transparent);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, transparent);
   font-size: 0.95rem;
   line-height: 1.55;
 }
@@ -186,18 +186,18 @@
 
 .institutional-section {
   padding-top: 1rem;
-  border-top: 1px solid rgb(255 255 255 / 0.11);
+  border-top: 1px solid color-mix(in srgb, var(--theme-text-on-media) 11%, transparent);
 }
 
 .institutional-section h3 {
   margin: 0 0 0.5rem;
-  color: #ffe2aa;
+  color: var(--theme-accents-primary-hover);
 }
 
 .institutional-section p,
 .institutional-contact p {
   margin: 0.55rem 0 0;
-  color: rgb(248 239 226 / 0.74);
+  color: color-mix(in srgb, var(--theme-text-primary) 74%, transparent);
   line-height: 1.7;
 }
 
@@ -214,10 +214,10 @@
   align-items: center;
   min-width: 0;
   padding: 0.75rem;
-  border: 1px solid rgb(255 255 255 / 0.12);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 12%, transparent);
   border-radius: 0.9rem;
-  color: #ffe2aa;
-  background: rgb(255 255 255 / 0.06);
+  color: var(--theme-accents-primary-hover);
+  background: color-mix(in srgb, var(--theme-text-on-media) 6%, transparent);
   text-decoration: none;
 }
 
@@ -227,8 +227,8 @@
 
 .institutional-contact__link:hover,
 .institutional-contact__link:focus-visible {
-  border-color: rgb(232 190 109 / 0.42);
-  background: rgb(232 190 109 / 0.12);
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 42%, transparent);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent);
   outline: none;
 }
 
