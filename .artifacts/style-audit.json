@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T11:51:49.834Z",
+  "generatedAt": "2026-07-17T12:01:20.110Z",
   "summary": {
     "cssFiles": 44,
     "tsxFilesWithInlineStyles": 96,
@@ -1711,7 +1711,7 @@
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
       "layer": "feature",
       "domain": "entities",
-      "lineCount": 384,
+      "lineCount": 391,
       "selectorCount": 60,
       "imports": [],
       "importedBy": [
@@ -1855,7 +1855,7 @@
       "path": "src/frontend/dm/entities/relations/RelationshipEdge.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 68,
+      "lineCount": 64,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -1891,7 +1891,7 @@
       "path": "src/frontend/dm/entities/relations/computeRadialRelationshipLayout.ts",
       "layer": null,
       "domain": null,
-      "lineCount": 98,
+      "lineCount": 94,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -20790,9 +20790,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/entities/entityDetailDialog.css:143:66",
+      "id": "literal-color:src/frontend/dm/entities/entityDetailDialog.css:150:66",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 143,
+      "line": 150,
       "column": 66,
       "severity": "high",
       "status": "temporary",
@@ -20802,9 +20802,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/entities/entityDetailDialog.css:144:28",
+      "id": "literal-color:src/frontend/dm/entities/entityDetailDialog.css:151:28",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 144,
+      "line": 151,
       "column": 28,
       "severity": "high",
       "status": "temporary",
@@ -20814,9 +20814,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/entities/entityDetailDialog.css:247:66",
+      "id": "literal-color:src/frontend/dm/entities/entityDetailDialog.css:254:66",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 247,
+      "line": 254,
       "column": 66,
       "severity": "high",
       "status": "temporary",
@@ -21222,10 +21222,10 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:66:42",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:73:66",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 66,
-      "column": 42,
+      "line": 73,
+      "column": 66,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -21234,9 +21234,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:67:21",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:74:21",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 67,
+      "line": 74,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -21246,10 +21246,10 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:68:31",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:75:55",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 68,
-      "column": 31,
+      "line": 75,
+      "column": 55,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -21258,10 +21258,10 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:69:35",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:76:59",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 69,
-      "column": 35,
+      "line": 76,
+      "column": 59,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -21270,9 +21270,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:79:56",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:86:56",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 79,
+      "line": 86,
       "column": 56,
       "severity": "high",
       "status": "temporary",
@@ -21282,9 +21282,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:84:17",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:91:17",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 84,
+      "line": 91,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -21294,9 +21294,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:88:35",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:95:35",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 88,
+      "line": 95,
       "column": 35,
       "severity": "high",
       "status": "temporary",
@@ -21306,9 +21306,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:89:36",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:96:36",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 89,
+      "line": 96,
       "column": 36,
       "severity": "high",
       "status": "temporary",
@@ -21318,9 +21318,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:93:17",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:100:17",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 93,
+      "line": 100,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -21330,9 +21330,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:97:38",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:104:38",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 97,
+      "line": 104,
       "column": 38,
       "severity": "high",
       "status": "temporary",
@@ -21342,9 +21342,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:102:15",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:109:15",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 102,
+      "line": 109,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -21354,9 +21354,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:103:16",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:110:16",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 103,
+      "line": 110,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -21366,9 +21366,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:104:21",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:111:21",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 104,
+      "line": 111,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -21378,9 +21378,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:113:5",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:120:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 113,
+      "line": 120,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -21390,9 +21390,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:117:27",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:124:27",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 117,
+      "line": 124,
       "column": 27,
       "severity": "high",
       "status": "temporary",
@@ -21402,9 +21402,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:123:40",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:130:40",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 123,
+      "line": 130,
       "column": 40,
       "severity": "high",
       "status": "temporary",
@@ -21414,9 +21414,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:128:17",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:135:17",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 128,
+      "line": 135,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -21426,9 +21426,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:129:20",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:136:20",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 129,
+      "line": 136,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -21438,9 +21438,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:131:37",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:138:37",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 131,
+      "line": 138,
       "column": 37,
       "severity": "high",
       "status": "temporary",
@@ -21450,9 +21450,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:132:13",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:139:13",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 132,
+      "line": 139,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -21462,9 +21462,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:137:22",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:144:22",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 137,
+      "line": 144,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -21474,9 +21474,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:140:13",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:147:13",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 140,
+      "line": 147,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -21486,9 +21486,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:141:22",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:148:22",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 141,
+      "line": 148,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -21498,9 +21498,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:193:17",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:200:17",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 193,
+      "line": 200,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -21510,9 +21510,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:197:42",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:204:42",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 197,
+      "line": 204,
       "column": 42,
       "severity": "high",
       "status": "temporary",
@@ -21522,9 +21522,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:198:21",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:205:21",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 198,
+      "line": 205,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -21534,9 +21534,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:199:31",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:206:31",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 199,
+      "line": 206,
       "column": 31,
       "severity": "high",
       "status": "temporary",
@@ -21546,9 +21546,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:200:35",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:207:35",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 200,
+      "line": 207,
       "column": 35,
       "severity": "high",
       "status": "temporary",
@@ -21558,9 +21558,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:202:23",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:209:23",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 202,
+      "line": 209,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -21570,9 +21570,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:207:17",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:214:17",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 207,
+      "line": 214,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -21582,9 +21582,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:212:22",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:219:22",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 212,
+      "line": 219,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -21594,9 +21594,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:216:22",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:223:22",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 216,
+      "line": 223,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -21606,9 +21606,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:220:20",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:227:20",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 220,
+      "line": 227,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -21618,9 +21618,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:221:17",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:228:17",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 221,
+      "line": 228,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -21630,9 +21630,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:228:10",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:235:10",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 228,
+      "line": 235,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -21642,34 +21642,10 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:232:17",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:239:17",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 232,
+      "line": 239,
       "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:236:17",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 236,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:240:18",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 240,
-      "column": 18,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -21690,237 +21666,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:245:117",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 245,
-      "column": 117,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:246:23",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 246,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:247:73",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:247:18",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
       "line": 247,
-      "column": 73,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:253:19",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 253,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:256:19",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 256,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:298:17",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 298,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:303:29",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 303,
-      "column": 29,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:317:31",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 317,
-      "column": 31,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:318:33",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 318,
-      "column": 33,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:319:37",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 319,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:323:19",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 323,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:335:19",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 335,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:339:31",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 339,
-      "column": 31,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:340:33",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 340,
-      "column": 33,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:341:37",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 341,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:342:25",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 342,
-      "column": 25,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:346:40",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 346,
-      "column": 40,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:356:30",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 356,
-      "column": 30,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:357:16",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 357,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:361:18",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 361,
       "column": 18,
       "severity": "high",
       "status": "temporary",
@@ -21930,10 +21678,10 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:362:31",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:250:17",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 362,
-      "column": 31,
+      "line": 250,
+      "column": 17,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -21942,9 +21690,21 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:363:23",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:252:117",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 363,
+      "line": 252,
+      "column": 117,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:253:23",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 253,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -21954,9 +21714,249 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:364:34",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:254:73",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 254,
+      "column": 73,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:260:19",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 260,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:263:19",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 263,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:305:17",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 305,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:310:29",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 310,
+      "column": 29,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:324:31",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 324,
+      "column": 31,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:325:33",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 325,
+      "column": 33,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:326:37",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 326,
+      "column": 37,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:330:19",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 330,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:342:19",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 342,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:346:31",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 346,
+      "column": 31,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:347:33",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 347,
+      "column": 33,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:348:37",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 348,
+      "column": 37,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:349:25",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 349,
+      "column": 25,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:353:40",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 353,
+      "column": 40,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:363:30",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 363,
+      "column": 30,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:364:16",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
       "line": 364,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:368:18",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 368,
+      "column": 18,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:369:31",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 369,
+      "column": 31,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:370:23",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 370,
+      "column": 23,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:371:34",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 371,
       "column": 34,
       "severity": "high",
       "status": "temporary",
@@ -21966,9 +21966,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:370:26",
+      "id": "important:src/frontend/dm/entities/entityDetailDialog.css:377:26",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 370,
+      "line": 377,
       "column": 26,
       "severity": "high",
       "status": "temporary",
@@ -22058,13 +22058,13 @@
       "status": "temporary",
       "sourceType": "css",
       "category": "cross-component-selector",
-      "selectorOrComponent": "width: min(1480px, calc(100vw - 24px)) !important;\n  max-width: 1480px !important;\n  height: calc(100dvh - 24px) !important;\n  max-height: calc(100dvh - 24px) !important;\n}\n\n/* Ampliado: solo queda el eyebrow (tipo + título) — hero, tabs y footer se\n   ocultan para que el grafo ocupe todo el espacio disponible del modal.\n   entityDetailImageContinuation.css defines a same-tie-break-weight 20%-hero\n   grid (`.modal-overlay.modal-overlay:has(...):not(:has(...))`) that would\n   otherwise win the cascade on source order; these rules repeat that same\n   doubled-class + :not() shape so ours wins on specificity instead. */\n.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*=\"border-top\"])) > .modal-content.entity-detail-dialog--relations-expanded",
+      "selectorOrComponent": "/* Match the overlay's own responsive padding (clamp(16px, 2.5vw, 36px) per\n     side, see the .modal-overlay rule above) exactly, rather than guessing a\n     fixed value — a mismatched hardcoded calc() here previously let the\n     modal overflow the viewport. `100%` doesn't work as a substitute: this\n     grid has no explicit track sizing, so its implicit track sizes to\n     content instead of stretching, and percentages against an auto track\n     collapse instead of filling it. */\n  width: min(1480px, calc(100vw - 2 * clamp(16px, 2.5vw, 36px))) !important;\n  max-width: 1480px !important;\n  height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px)) !important;\n  max-height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px)) !important;\n}\n\n/* Ampliado: solo queda el eyebrow (tipo + título) — hero, tabs y footer se\n   ocultan para que el grafo ocupe todo el espacio disponible del modal.\n   entityDetailImageContinuation.css defines a same-tie-break-weight 20%-hero\n   grid (`.modal-overlay.modal-overlay:has(...):not(:has(...))`) that would\n   otherwise win the cascade on source order; these rules repeat that same\n   doubled-class + :not() shape so ours wins on specificity instead. */\n.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*=\"border-top\"])) > .modal-content.entity-detail-dialog--relations-expanded",
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:79:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:86:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 79,
+      "line": 86,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22074,9 +22074,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:84:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:91:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 84,
+      "line": 91,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22086,9 +22086,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:88:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:95:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 88,
+      "line": 95,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22098,9 +22098,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:93:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:100:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 93,
+      "line": 100,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22110,9 +22110,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:97:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:104:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 97,
+      "line": 104,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22122,9 +22122,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:102:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:109:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 102,
+      "line": 109,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22134,9 +22134,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:117:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:124:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 117,
+      "line": 124,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22146,9 +22146,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:123:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:130:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 123,
+      "line": 130,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22158,9 +22158,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:128:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:135:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 128,
+      "line": 135,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22170,27 +22170,15 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:137:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:144:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 137,
+      "line": 144,
       "column": 3,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
       "category": "cross-component-selector",
       "selectorOrComponent": "position: relative !important;\n  z-index: 3;\n  flex-wrap: wrap;\n  gap: 14px !important;\n  padding: 16px 24px !important;\n  border-top: 1px solid var(--theme-borders-default);\n  background: color-mix(in srgb, var(--theme-surfaces-base) 98%, black);\n  box-shadow: 0 -14px 32px rgba(0, 0, 0, 0.22);\n}\n\n.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer > div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:148:3",
-      "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 148,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 8px;\n}\n\n.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer > div:last-child",
       "reason": "Selector depends on another component's DOM structure."
     },
     {
@@ -22202,13 +22190,25 @@
       "status": "temporary",
       "sourceType": "css",
       "category": "cross-component-selector",
+      "selectorOrComponent": "display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 8px;\n}\n\n.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer > div:last-child",
+      "reason": "Selector depends on another component's DOM structure."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:162:3",
+      "path": "src/frontend/dm/entities/entityDetailDialog.css",
+      "line": 162,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "cross-component-selector",
       "selectorOrComponent": "margin-left: auto;\n  justify-content: flex-end;\n}\n\n.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer > div:last-child > span",
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:160:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:167:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 160,
+      "line": 167,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22218,9 +22218,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:165:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:172:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 165,
+      "line": 172,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22230,9 +22230,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:170:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:177:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 170,
+      "line": 177,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22242,9 +22242,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:176:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:183:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 176,
+      "line": 183,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22254,9 +22254,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:181:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:188:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 181,
+      "line": 188,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22266,9 +22266,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:187:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:194:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 187,
+      "line": 194,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22278,9 +22278,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:193:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:200:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 193,
+      "line": 200,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22290,9 +22290,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:197:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:204:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 197,
+      "line": 204,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22302,9 +22302,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:207:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:214:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 207,
+      "line": 214,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22314,9 +22314,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:211:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:218:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 211,
+      "line": 218,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22326,9 +22326,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:216:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:223:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 216,
+      "line": 223,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22338,9 +22338,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:220:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:227:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 220,
+      "line": 227,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22350,9 +22350,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:226:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:233:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 226,
+      "line": 233,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22362,9 +22362,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:232:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:239:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 232,
+      "line": 239,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22374,9 +22374,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:236:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:243:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 236,
+      "line": 243,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22386,9 +22386,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:252:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:259:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 252,
+      "line": 259,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22398,9 +22398,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:261:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:268:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 261,
+      "line": 268,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22410,9 +22410,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:266:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:273:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 266,
+      "line": 273,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22422,9 +22422,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:272:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:279:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 272,
+      "line": 279,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22434,9 +22434,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:277:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:284:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 277,
+      "line": 284,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22446,9 +22446,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:283:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:290:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 283,
+      "line": 290,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22458,9 +22458,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:288:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:295:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 288,
+      "line": 295,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22470,9 +22470,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:292:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:299:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 292,
+      "line": 299,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22482,9 +22482,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:298:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:305:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 298,
+      "line": 305,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22494,9 +22494,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:302:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:309:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 302,
+      "line": 309,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22506,9 +22506,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:307:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:314:3",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 307,
+      "line": 314,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -22518,9 +22518,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:196:1",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:203:1",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 196,
+      "line": 203,
       "column": 1,
       "severity": "high",
       "status": "temporary",
@@ -22530,9 +22530,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:317:5",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:324:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 317,
+      "line": 324,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -22542,9 +22542,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:323:5",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:330:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 323,
+      "line": 330,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -22566,9 +22566,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:335:5",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:342:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 335,
+      "line": 342,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -22578,9 +22578,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:339:5",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:346:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 339,
+      "line": 346,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -22590,9 +22590,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:346:5",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:353:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 346,
+      "line": 353,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -22614,9 +22614,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:356:5",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:363:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 356,
+      "line": 363,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -22626,9 +22626,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:361:5",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:368:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 361,
+      "line": 368,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -22638,9 +22638,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:370:5",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:377:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 370,
+      "line": 377,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -22650,9 +22650,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:376:5",
+      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailDialog.css:383:5",
       "path": "src/frontend/dm/entities/entityDetailDialog.css",
-      "line": 376,
+      "line": 383,
       "column": 5,
       "severity": "high",
       "status": "temporary",
@@ -22670,7 +22670,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (384 lines, 60 selectors)."
+      "reason": "Large stylesheet requires atomization (391 lines, 60 selectors)."
     },
     {
       "id": "literal-color:src/frontend/dm/entities/entityDetailHeroActions.css:16:21",
@@ -24469,9 +24469,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/RelationshipEdge.tsx:55:13",
+      "id": "static-inline:src/frontend/dm/entities/relations/RelationshipEdge.tsx:51:13",
       "path": "src/frontend/dm/entities/relations/RelationshipEdge.tsx",
-      "line": 55,
+      "line": 51,
       "column": 13,
       "severity": "high",
       "status": "temporary",
