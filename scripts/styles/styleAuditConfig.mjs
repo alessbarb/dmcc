@@ -17,6 +17,7 @@ export const STYLE_AUDIT_CONFIG = {
     "--app-footer-",
     "--typography-",
     "--entity-detail-",
+    "--card-accent",
     "--campaign-progress",
     "--drift",
     "--timeline-event-",

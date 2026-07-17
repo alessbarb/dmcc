@@ -385,7 +385,7 @@ export function EntityBoardsView() {
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        <div role="tablist" aria-label={t("boards.ariaLabel")} style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <div role="tablist" aria-label={t("boards.ariaLabel")}>
           {BOARDS.map((candidate) => (
             <button
               key={candidate.id}
@@ -401,7 +401,7 @@ export function EntityBoardsView() {
           ))}
         </div>
 
-        <div className="card" style={{ display: "flex", gap: 16, padding: "12px 16px", flexWrap: "wrap" }} aria-live="polite">
+        <div className="card" aria-live="polite">
           <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
             {t("boards.total")}: <strong style={{ color: "var(--theme-text-primary)" }}>{boardEntities.length}</strong>
           </span>

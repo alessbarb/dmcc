@@ -2,7 +2,6 @@ import React from "react";
 import { Outlet, useParams } from "@tanstack/react-router";
 import { CampaignWorkspace } from "../workspaces/CampaignWorkspace.js";
 import { List, LayoutGrid, BookOpen } from "lucide-react";
-import "./list/entityListRefinements.css";
 import "./boards/entityBoards.css";
 import "./notebooks/notebooksWorkspace.css";
 

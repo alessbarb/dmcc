@@ -1,8 +1,8 @@
 .campaign-workspace__content [role="tablist"][aria-label] {
-  display: flex !important;
-  gap: 8px !important;
+  display: flex;
+  gap: 8px;
   overflow-x: auto;
-  flex-wrap: nowrap !important;
+  flex-wrap: nowrap;
   padding: 2px 2px 4px;
   scrollbar-width: none;
 }
@@ -19,12 +19,12 @@
 }
 
 .campaign-workspace__content [role="tablist"][aria-label] + .card {
-  display: flex !important;
-  gap: 8px 14px !important;
+  display: flex;
+  gap: 8px 14px;
   align-items: center;
-  padding: 10px 14px !important;
+  padding: 10px 14px;
   overflow-x: auto;
-  flex-wrap: nowrap !important;
+  flex-wrap: nowrap;
   border-color: color-mix(in srgb, var(--theme-borders-default) 74%, transparent);
   background: color-mix(in srgb, var(--theme-surfaces-interactive) 72%, transparent);
   box-shadow: none;
@@ -81,16 +81,16 @@
   padding: 0;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
-  border-radius: var(--theme-shapes-radius-large, 14px);
+  border-radius: var(--theme-shapes-radius-large);
   background: color-mix(in srgb, var(--theme-surfaces-base) 94%, transparent);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--theme-shadows-medium);
   scroll-snap-align: start;
 }
 
 .kanban-column--drag-over {
   border-color: var(--theme-accents-primary-hover);
   background: color-mix(in srgb, var(--theme-accents-primary-foreground) 8%, var(--theme-surfaces-base));
-  box-shadow: var(--theme-focus-ring), 0 18px 42px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--theme-focus-ring), var(--theme-shadows-large);
 }
 
 .kanban-column__header {
@@ -106,7 +106,7 @@
 
 .kanban-column__header strong {
   overflow: hidden;
-  color: var(--theme-text-primary, var(--theme-text-primary));
+  color: var(--theme-text-primary);
   font-size: 0.78rem;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -138,15 +138,15 @@
 .kanban-card {
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--theme-borders-default) 86%, transparent);
-  border-radius: var(--theme-shapes-radius-medium, 10px);
-  background: var(--theme-surfaces-base, var(--theme-surfaces-base));
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.13);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-surfaces-base);
+  box-shadow: var(--theme-shadows-medium);
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
 .kanban-card:hover {
   border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 42%, var(--theme-borders-default));
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--theme-shadows-large);
   transform: translateY(-1px);
 }
 
@@ -161,7 +161,7 @@
 }
 
 .kanban-card__title {
-  color: var(--theme-text-primary, var(--theme-text-primary));
+  color: var(--theme-text-primary);
   font-size: 0.92rem;
   line-height: 1.35;
 }
@@ -218,7 +218,7 @@
 @media (max-width: 640px) {
   .campaign-workspace__content [role="tablist"][aria-label] + .card {
     margin-inline: -4px;
-    padding-inline: 10px !important;
+    padding-inline: 10px;
   }
 
   .kanban-scroll {
