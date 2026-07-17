@@ -1,67 +1,14 @@
-.entity-detail-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: color-mix(in srgb, var(--theme-surfaces-canvas) 75%, transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
+/* Player-character body content, rendered inside the shared entity detail
+   modal shell (.modal-overlay/.modal-content/.modal-header/.modal-body/
+   .modal-footer, entity-detail-modal.css). PlayerCharacterDetailModal.tsx
+   used to duplicate that whole shell under .entity-detail-overlay/
+   .player-character-detail*; it now reuses the shared shell and this file
+   only styles the character-sheet content that goes inside it. */
 
-.player-character-detail {
-  width: min(1040px, calc(100vw - 32px));
-  max-height: min(860px, calc(100vh - 32px));
-  overflow: hidden;
-  border: 1px solid var(--theme-borders-default);
-  border-radius: var(--theme-shapes-radius-large);
-  background: var(--theme-surfaces-base);
-  box-shadow: 0 28px 80px color-mix(in srgb, var(--theme-surfaces-canvas) 55%, transparent);
-  display: flex;
-  flex-direction: column;
-}
-
-.player-character-detail__header,
-.player-character-detail__toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--theme-borders-default);
-}
-
-.player-character-detail__header h2 {
-  margin: 8px 0 2px;
-  font-size: clamp(1.55rem, 3vw, 2rem);
-}
-
-.player-character-detail__header p,
-.player-character-detail__freshness {
-  margin: 0;
-  color: var(--theme-text-secondary);
-  font-size: .82rem;
-}
-
-.player-character-detail__toolbar {
-  padding-block: 12px;
-}
-
-.player-character-detail__owner,
-.player-character-detail__section h3 {
+.player-character-detail__owner {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.player-character-detail__body {
-  overflow: auto;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
 .player-character-detail__summary {
@@ -78,6 +25,9 @@
 }
 
 .player-character-detail__section h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0 0 14px;
   font-size: .9rem;
   text-transform: uppercase;
@@ -172,40 +122,13 @@
   justify-content: space-between;
 }
 
-.entity-detail-focus-shell .entity-detail-hero-image {
-  cursor: zoom-in;
-  transition: object-position .18s ease;
-}
-
-.entity-image-hero-actions {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 6;
-  display: flex;
-  gap: 8px;
-  pointer-events: auto;
-}
-
-.entity-image-hero-actions .btn {
-  background: color-mix(in srgb, var(--theme-surfaces-canvas) 78%, transparent);
-  backdrop-filter: blur(8px);
+.player-character-detail__freshness {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: .82rem;
 }
 
 @media (max-width: 720px) {
-  .player-character-detail {
-    width: 100vw;
-    height: 100dvh;
-    max-height: none;
-    border-radius: 0;
-  }
-
-  .player-character-detail__header,
-  .player-character-detail__toolbar,
-  .player-character-detail__body {
-    padding-inline: 16px;
-  }
-
   .player-character-detail__grid,
   .player-character-detail__vitals {
     grid-template-columns: 1fr 1fr;
@@ -218,141 +141,4 @@
   .player-character-detail__resources {
     grid-template-columns: 1fr;
   }
-
-  .entity-image-hero-actions {
-    top: 12px;
-    left: 12px;
-  }
-
-  .entity-image-focus-sliders {
-    grid-template-columns: 1fr;
-  }
-
-  .entity-image-dialog > footer {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .entity-image-dialog > footer > div,
-  .entity-image-dialog > footer button {
-    width: 100%;
-  }
 }
-
-
-
-/* La disposición pertenece ahora a .entity-detail-hero-controls. */
-.entity-image-hero-actions {
-  display: contents !important;
-}
-
-/* Entity detail tab actions v2 */
-.entity-detail-tab-bar {
-  position: relative;
-  z-index: 20;
-  display: flex;
-  align-items: stretch;
-  width: 100%;
-  min-width: 0;
-  padding: 0 14px 0 24px;
-  border-bottom: 1px solid var(--theme-borders-default);
-  background: var(--theme-surfaces-base);
-  pointer-events: auto;
-}
-
-.entity-detail-tabs {
-  display: flex;
-  flex: 1 1 auto;
-  align-items: stretch;
-  min-width: 0;
-  gap: 2px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-}
-
-.entity-detail-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.entity-detail-tabs > button {
-  flex: 0 0 auto;
-  pointer-events: auto;
-}
-
-.entity-detail-tab-actions {
-  position: relative;
-  z-index: 21;
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  align-self: stretch;
-  justify-content: flex-end;
-  gap: 7px;
-  margin-left: auto;
-  padding-left: 14px;
-  background: var(--theme-surfaces-base);
-  box-shadow: -12px 0 16px var(--theme-surfaces-base);
-  pointer-events: auto !important;
-}
-
-.entity-detail-tab-actions > button {
-  position: relative !important;
-  z-index: 22 !important;
-  display: inline-flex !important;
-  flex: 0 0 34px !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  width: 34px !important;
-  height: 34px !important;
-  min-width: 34px !important;
-  min-height: 34px !important;
-  max-width: 34px !important;
-  max-height: 34px !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  cursor: pointer !important;
-  pointer-events: auto !important;
-  touch-action: manipulation;
-}
-
-.entity-detail-tab-actions > button svg {
-  display: block;
-  flex: none;
-  pointer-events: none;
-}
-
-.entity-detail-tab-actions > button:hover {
-  background: var(--theme-surfaces-interactive) !important;
-}
-
-.entity-detail-tab-actions > button:focus-visible {
-  outline: 2px solid var(--theme-accents-primary-foreground);
-  outline-offset: 2px;
-}
-
-@media (max-width: 720px) {
-  .entity-detail-tab-bar {
-    padding-right: 8px;
-    padding-left: 8px;
-  }
-
-  .entity-detail-tab-actions {
-    gap: 5px;
-    padding-left: 8px;
-  }
-
-  .entity-detail-tab-actions > button {
-    flex-basis: 32px !important;
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
-    max-width: 32px !important;
-    max-height: 32px !important;
-  }
-}
-/* End entity detail tab actions v2 */
