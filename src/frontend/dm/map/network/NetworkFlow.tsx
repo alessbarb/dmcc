@@ -215,7 +215,7 @@ function NetworkFlowInner() {
           position,
           selected: node.id === selectedEntityId,
           data: { entityId: node.entityId, dimmed },
-          style: isOnPath ? { filter: "drop-shadow(0 0 10px #10b981)" } : undefined,
+          style: isOnPath ? { filter: "drop-shadow(0 0 10px var(--theme-feedback-success-foreground))" } : undefined,
         };
       }
       const fact = facts.find((candidate) => candidate.factId === node.factId);
@@ -250,7 +250,7 @@ function NetworkFlowInner() {
         },
         style: {
           opacity: dimmed ? 0.08 : emphasized ? 0.92 : 0.22,
-          stroke: isOnPath ? "#10b981" : visual?.color ?? "rgba(148,163,184,0.5)",
+          stroke: isOnPath ? "var(--theme-feedback-success-foreground)" : visual?.color ?? "var(--theme-graph-edge-muted)",
           strokeWidth: emphasized ? 2.4 : 1,
           strokeDasharray: visual?.line === "dashed" ? "5 5" : undefined,
         },
