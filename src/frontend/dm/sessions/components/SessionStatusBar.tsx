@@ -2,6 +2,7 @@ import { Clock } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
 import { formatElapsed } from "../sessionTimeFormat.js";
+import "./session-status.css";
 
 export function SessionStatusBar({ activeSession }: { activeSession: Session }) {
   const { t, locale } = useTranslation();
