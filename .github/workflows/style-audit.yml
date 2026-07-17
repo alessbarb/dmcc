@@ -24,9 +24,9 @@ jobs:
           cache-dependency-path: package-lock.json
       - run: npm ci
       - name: Check style architecture ratchet
-        run: npm run styles:audit:check
+        run: node scripts/styles/checkStyleAuditRatchet.mjs
       - name: Run style audit contract tests
-        run: npm test -- --run tests/frontend/styleAuditContracts.test.ts
+        run: npm test -- --run tests/frontend/styleAuditContracts.test.ts tests/frontend/styleFoundationContracts.test.ts
       - name: Upload current audit report
         if: always()
         uses: actions/upload-artifact@v7
