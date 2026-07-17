@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 45,
+  "cssFiles": 44,
   "tsxFilesWithInlineStyles": 96,
   "forbiddenLiteralColors": 1568,
   "staticInlineStyles": 1329,
@@ -47,8 +47,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/sessions/sessionWorkspace.css` | feature | sessions | 404 | 67 | 1 |
 | `src/frontend/dm/story/history/campaignHistory.css` | feature | story | 295 | 41 | 1 |
 | `src/frontend/dm/story/plan/storyPlanWorkspace.css` | feature | story | 153 | 27 | 1 |
-| `src/frontend/dm/workspaces/campaignWorkspace.css` | layout | workspace | 850 | 124 | 1 |
-| `src/frontend/dm/workspaces/workspaceSystem.css` | layout | workspace | 161 | 26 | 2 |
 | `src/frontend/institutional/institutional.css` | feature | institutional | 274 | 38 | 1 |
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 154 | 27 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
@@ -63,7 +61,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
 | `src/frontend/shared/styles/index.css` | legacy | shared | 9653 | 1398 | 1 |
 | `src/frontend/shared/styles/landing.css` | legacy | shared | 2595 | 391 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 24 | 0 | 1 |
+| `src/frontend/shared/styles/layout/workspace.css` | legacy | shared | 1010 | 150 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 26 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | legacy | shared | 14 | 1 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | legacy | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | legacy | shared | 26 | 5 | 1 |
@@ -1362,21 +1361,21 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:197` | Important declarations bypass the intended cascade. |
 | high | legacy-token | `src/frontend/dm/entities/EntityDetailModal.tsx:1` | Legacy CSS variable remains in use. |
 | high | legacy-token | `src/frontend/dm/entities/EntityDetailModal.tsx:1` | Legacy CSS variable remains in use. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:189` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:201` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:211` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:221` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:234` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:249` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:253` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:279` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:287` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:293` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:323` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:363` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:364` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:384` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:385` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:191` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:203` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:213` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:223` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:251` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:255` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:289` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:295` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:325` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:365` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:366` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:386` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:387` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:38` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:38` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:39` | Literal visual color outside a registered theme package. |
@@ -1763,21 +1762,21 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:75` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:76` | Important declarations bypass the intended cascade. |
 | high | unknown-token | `src/frontend/dm/layouts/CampaignShell.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:153` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:171` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:180` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:152` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:170` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:179` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:182` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:183` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:184` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:206` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:213` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:244` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:263` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:212` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:243` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:262` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:278` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:279` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:280` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:286` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:295` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:285` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:294` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/library/boards/entityBoards.css:1` | Large stylesheet requires atomization (243 lines, 37 selectors). |
 | high | important | `src/frontend/dm/library/boards/entityBoards.css:2` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/library/boards/entityBoards.css:3` | Important declarations bypass the intended cascade. |
@@ -2420,23 +2419,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:133` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:138` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:146` | Important declarations bypass the intended cascade. |
-| critical | mixed-responsibility | `src/frontend/dm/workspaces/campaignWorkspace.css:1` | Large stylesheet requires atomization (850 lines, 124 selectors). |
-| high | cross-component-selector | `src/frontend/dm/workspaces/campaignWorkspace.css:90` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:115` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:123` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:256` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:331` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:421` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:431` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:433` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:456` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:466` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:509` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:655` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:701` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:721` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/workspaceSystem.css:80` | Literal visual color outside a registered theme package. |
-| high | cross-component-selector | `src/frontend/dm/workspaces/workspaceSystem.css:111` | Selector depends on another component's DOM structure. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:97` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -3898,5 +3880,22 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/landing.css:2547` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2554` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2567` | Literal visual color outside a registered theme package. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1010 lines, 150 selectors). |
+| high | cross-component-selector | `src/frontend/shared/styles/layout/workspace.css:90` | Selector depends on another component's DOM structure. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:115` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:123` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:256` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:331` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:421` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:431` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:433` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:456` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:466` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:509` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:655` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:701` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:721` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:929` | Literal visual color outside a registered theme package. |
+| high | cross-component-selector | `src/frontend/shared/styles/layout/workspace.css:960` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/shared/styles/primitives/button.css:12` | Literal visual color outside a registered theme package. |
 | medium | global-selector | `src/frontend/shared/styles/primitives/card.css:1` | Generic selector has global collision risk. |

@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet, useParams, useRouterState } from "@tanstack/react-router";
 import { WorkspaceTabs } from "../workspaces/WorkspaceTabs.js";
 import { GitFork, LayoutGrid, Maximize2, Minimize2 } from "lucide-react";
-import "../workspaces/workspaceSystem.css";
 import "./mapWorkspace.css";
 
 export function CampaignMapWorkspacePage() {

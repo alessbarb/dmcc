@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "../i18n/useTranslation.js";
 import { institutionalLinks, institutionalPageLinks } from "../../institutional/institutionalLinks.js";
-import "../../dm/layouts/campaign-route-transitions.css";
 
 const APP_VERSION = "0.1.0";
 
