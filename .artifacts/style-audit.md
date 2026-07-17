@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 63,
+  "cssFiles": 64,
   "tsxFilesWithInlineStyles": 84,
   "forbiddenLiteralColors": 308,
-  "staticInlineStyles": 1177,
+  "staticInlineStyles": 1166,
   "dynamicInlineStyles": 36,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -28,6 +28,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/account/account.css` | legacy | account | 804 | 121 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
 | `src/frontend/dm/entities/entity-card.css` | feature | entities | 390 | 53 | 1 |
+| `src/frontend/dm/entities/entity-detail-modal.css` | feature | entities | 104 | 12 | 1 |
 | `src/frontend/dm/entities/entity-grid.css` | feature | entities | 16 | 3 | 1 |
 | `src/frontend/dm/entities/entity-list-toolbar.css` | feature | entities | 97 | 17 | 1 |
 | `src/frontend/dm/entities/entity-summary-character-sheet.css` | feature | entities | 179 | 26 | 1 |
@@ -926,18 +927,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailImageContinuation.css:190` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:191` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:197` | Important declarations bypass the intended cascade. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:191` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:203` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:213` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:251` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:255` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:325` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:365` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:366` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:386` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:387` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:196` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |

@@ -28,6 +28,7 @@ import {
 } from "../../shared/images/imageFocalPoint.js";
 import { PlayerCharacterDetailModal } from "./PlayerCharacterDetailModal.js";
 import "./playerCharacterDetail.css";
+import "./entity-detail-modal.css";
 import "./entityDetailHeroActions.css";
 import "./entityDetailDialog.css";
 import "./entityDetailImageContinuation.css";
@@ -187,72 +188,30 @@ function StandardEntityDetailModal({
         style={isRelationsExpanded ? undefined : { maxWidth: "700px" }}
       >
         {/* Hero image */}
-        <div
-          style={{
-            width: "100%",
-            height: "240px",
-            overflow: "hidden",
-            position: "relative",
-            borderTopLeftRadius: "inherit",
-            borderTopRightRadius: "inherit",
-          }}
-        >
+        <div className="entity-detail-hero">
           <img
             src={imgUrl}
             alt={isDmOnly ? "" : selectedEntity.title}
+            className="entity-detail-hero__image"
             style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              filter: isDmOnly ? "grayscale(70%) brightness(35%)" : "none",
-              opacity: selectedEntity.metadata?.imageUrl ? 1 : 0.6,
-            }}
+              "--entity-detail-hero-filter": isDmOnly ? "grayscale(70%) brightness(35%)" : "none",
+              "--entity-detail-hero-opacity": selectedEntity.metadata?.imageUrl ? 1 : 0.6,
+            } as React.CSSProperties}
           />
           {isDmOnly && (
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                backgroundColor: "var(--theme-media-overlay-subtle)",
-                color: "var(--theme-feedback-danger-foreground)",
-                fontSize: "0.95rem",
-                fontWeight: "700",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
+            <div className="entity-detail-hero__dm-overlay">
               <EyeOff size={20} />
               <span>Secreto / Solo DM</span>
             </div>
           )}
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "80px",
-              background: "linear-gradient(to top, var(--theme-surfaces-base), transparent)",
-              pointerEvents: "none",
-            }}
-          />
+          <div className="entity-detail-hero__gradient" />
         </div>
 
         {/* Header */}
-        <div
-          className="modal-header"
-          style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-        >
+        <div className="modal-header entity-detail-modal__header">
           <div>
             <span className="badge badge-primary">{selectedEntity.entityType}</span>
-            <h2 style={{ fontWeight: "800", fontSize: "1.5rem", marginTop: "6px" }}>
+            <h2 className="entity-detail-modal__title">
               {selectedEntity.title}
             </h2>
             {selectedEntity.subtitle && (
@@ -278,26 +237,7 @@ function StandardEntityDetailModal({
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => setActiveTab(tab.id)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                    padding: "10px 14px",
-                    background: "none",
-                    border: "none",
-                    borderBottom: isActive
-                      ? "2px solid var(--theme-accents-primary-foreground)"
-                      : "2px solid transparent",
-                    cursor: "pointer",
-                    fontSize: "0.83rem",
-                    fontWeight: isActive ? "700" : "500",
-                    color: isActive
-                      ? "var(--theme-accents-primary-foreground)"
-                      : "var(--theme-text-secondary)",
-                    transition: "color 0.15s, border-color 0.15s",
-                    marginBottom: "-1px",
-                    whiteSpace: "nowrap",
-                  }}
+                  className={`entity-detail-modal__tab-btn${isActive ? " entity-detail-modal__tab-btn--active" : ""}`}
                 >
                   {tab.icon}
                   {t(tab.labelKey)}
@@ -322,7 +262,7 @@ function StandardEntityDetailModal({
         </div>
 
         {/* Tab body */}
-        <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div className="modal-body entity-detail-modal__body">
           {activeTab === "resumen" && (
             <ResumenTab
               entity={selectedEntity}
@@ -362,8 +302,8 @@ function StandardEntityDetailModal({
         </div>
 
         {/* Footer */}
-        <div className="modal-footer" style={{ justifyContent: "space-between" }}>
-          <div style={{ display: "flex", gap: "8px" }}>
+        <div className="modal-footer entity-detail-modal__footer">
+          <div className="entity-detail-modal__footer-group">
             <button
               type="button"
               className={`btn btn-sm ${isConfirmingArchive ? "btn-danger" : "btn-secondary"}`}
@@ -383,8 +323,8 @@ function StandardEntityDetailModal({
               {existingShortcut ? t("shortcuts.remove") : t("shortcuts.add")}
             </button>
           </div>
-          <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-            <span style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
+          <div className="entity-detail-modal__footer-group">
+            <span className="entity-detail-modal__updated-label">
               Actualizado: {new Date(selectedEntity.updatedAt).toLocaleString()}
             </span>
             {activeTab === "resumen" && (
@@ -499,7 +439,7 @@ function StandardEntityDetailWithImageFocus(props: EntityDetailModalProps) {
     const root = rootRef.current;
     if (!root) return undefined;
     const image = root.querySelector<HTMLImageElement>(
-      ".modal-content > div:first-child > img",
+      ".modal-content > .entity-detail-hero > img",
     );
     if (!image) return undefined;
 

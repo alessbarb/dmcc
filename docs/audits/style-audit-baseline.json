@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T19:03:35.606Z",
+  "generatedAt": "2026-07-17T19:09:28.386Z",
   "summary": {
-    "cssFiles": 63,
+    "cssFiles": 64,
     "tsxFilesWithInlineStyles": 84,
     "forbiddenLiteralColors": 308,
-    "staticInlineStyles": 1177,
+    "staticInlineStyles": 1166,
     "dynamicInlineStyles": 36,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -1645,25 +1645,18 @@
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 628,
+      "lineCount": 568,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/entities/playerCharacterDetail.css",
+        "src/frontend/dm/entities/entity-detail-modal.css",
         "src/frontend/dm/entities/entityDetailHeroActions.css",
         "src/frontend/dm/entities/entityDetailDialog.css",
         "src/frontend/dm/entities/entityDetailImageContinuation.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-media-overlay-subtle",
-        "--theme-feedback-danger-foreground",
-        "--theme-surfaces-base",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-text-secondary",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/entities/HechosTab.tsx",
@@ -1894,6 +1887,29 @@
         "--card-accent",
         "--theme-text-primary",
         "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "layer": "feature",
+      "domain": "entities",
+      "lineCount": 104,
+      "selectorCount": 12,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/entities/EntityDetailModal.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--entity-detail-hero-filter",
+        "--entity-detail-hero-opacity",
+        "--theme-media-overlay-subtle",
+        "--theme-feedback-danger-foreground",
+        "--theme-surfaces-base",
+        "--theme-text-secondary",
+        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground",
         "--theme-text-secondary"
       ]
     },
@@ -16337,160 +16353,17 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:191:11",
+      "id": "dynamic-style:src/frontend/dm/entities/EntityDetailModal.tsx:196:13",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 191,
-      "column": 11,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n            width: \"100%\",\n            height: \"240px\",\n            overflow: \"hidden\",\n            position: \"relative\",\n            borderTopLeftRadius: \"inherit\",\n            borderTopRightRadius: \"inherit\",\n          }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/entities/EntityDetailModal.tsx:203:13",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 203,
+      "line": 196,
       "column": 13,
       "severity": "info",
       "status": "allowed",
       "sourceType": "tsx-inline",
       "category": "dynamic-style",
-      "value": "style={{\n              width: \"100%\",\n              height: \"100%\",\n              objectFit: \"cover\",\n              filter: isDmOnly ? \"grayscale(70%) brightness(35%)\" : \"none\",\n              opacity: selectedEntity.metadata?.imageUrl ? 1 :",
+      "value": "style={{\n              \"--entity-detail-hero-filter\": isDmOnly ? \"grayscale(70%) brightness(35%)\" : \"none\",\n              \"--entity-detail-hero-opacity\": selectedEntity.metadata?.imageUrl ? 1 : 0.6,\n            } as React.CSSProperties}\n   ",
       "classification": "dynamic",
       "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:213:15",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 213,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                position: \"absolute\",\n                top: 0,\n                left: 0,\n                right: 0,\n                bottom: 0,\n                display: \"flex\",\n                alignItems: \"center\",\n                just",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:236:13",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 236,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n              position: \"absolute\",\n              bottom: 0,\n              left: 0,\n              right: 0,\n              height: \"80px\",\n              background: \"linear-gradient(to top, var(--theme-surfaces-base), transparent)\",",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:251:11",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 251,
-      "column": 11,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:255:17",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 255,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontWeight: \"800\", fontSize: \"1.5rem\", marginTop: \"6px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:281:19",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 281,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                    display: \"flex\",\n                    alignItems: \"center\",\n                    gap: \"5px\",\n                    padding: \"10px 14px\",\n                    background: \"none\",\n                    border: \"none\",\n  ",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:325:37",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 325,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"20px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:365:39",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 365,
-      "column": 39,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ justifyContent: \"space-between\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:366:16",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 366,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"8px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:386:16",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 386,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"8px\", alignItems: \"center\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:387:19",
-      "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 387,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"0.8rem\", color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "static-inline:src/frontend/dm/entities/HechosTab.tsx:57:10",
@@ -33812,6 +33685,7 @@
     ],
     "src/frontend/dm/entities/EntityDetailModal.tsx": [
       "src/frontend/dm/entities/playerCharacterDetail.css",
+      "src/frontend/dm/entities/entity-detail-modal.css",
       "src/frontend/dm/entities/entityDetailHeroActions.css",
       "src/frontend/dm/entities/entityDetailDialog.css",
       "src/frontend/dm/entities/entityDetailImageContinuation.css"
