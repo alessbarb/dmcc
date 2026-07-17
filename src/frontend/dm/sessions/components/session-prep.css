@@ -98,10 +98,6 @@
   line-height: 1.45;
 }
 
-.active-session-prep__preformatted {
-  white-space: pre-line;
-}
-
 .active-session-prep__summary,
 .active-session-prep__notes-copy {
   color: var(--theme-text-secondary);
