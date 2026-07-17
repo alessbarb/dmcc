@@ -1329,7 +1329,7 @@
       "relationId": "rel_tpl_khepri9_rebuilders_survivors",
       "sourceEntityId": "ent_tpl_khepri9_rebuilders",
       "targetEntityId": "ent_tpl_khepri9_survivors",
-      "relationType": "part_of",
+      "relationType": "member_of",
       "visibility": {
         "kind": "party"
       }
@@ -1338,7 +1338,7 @@
       "relationId": "rel_tpl_khepri9_security_survivors",
       "sourceEntityId": "ent_tpl_khepri9_security_bloc",
       "targetEntityId": "ent_tpl_khepri9_survivors",
-      "relationType": "part_of",
+      "relationType": "member_of",
       "visibility": {
         "kind": "party"
       }
@@ -1347,7 +1347,7 @@
       "relationId": "rel_tpl_khepri9_listeners_survivors",
       "sourceEntityId": "ent_tpl_khepri9_listeners",
       "targetEntityId": "ent_tpl_khepri9_survivors",
-      "relationType": "part_of",
+      "relationType": "member_of",
       "visibility": {
         "kind": "party"
       }
@@ -1419,7 +1419,7 @@
       "relationId": "rel_tpl_khepri9_juno_mara",
       "sourceEntityId": "ent_tpl_khepri9_juno_marr",
       "targetEntityId": "ent_tpl_khepri9_mara_quill",
-      "relationType": "rival_of",
+      "relationType": "enemy_of",
       "visibility": {
         "kind": "party"
       }
@@ -1428,7 +1428,7 @@
       "relationId": "rel_tpl_khepri9_mara_roan",
       "sourceEntityId": "ent_tpl_khepri9_mara_quill",
       "targetEntityId": "ent_tpl_khepri9_roan_vek",
-      "relationType": "rival_of",
+      "relationType": "enemy_of",
       "visibility": {
         "kind": "party"
       }
