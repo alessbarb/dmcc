@@ -1,8 +1,6 @@
 import React from "react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { WorkspaceTabs, type WorkspaceTab } from "./WorkspaceTabs.js";
-import "./campaignWorkspace.css";
-import "./workspaceSystem.css";
 
 export type CampaignWorkspaceSize = "compact" | "standard" | "wide" | "fluid";
 export type CampaignWorkspaceVariant = "standard" | "immersive";

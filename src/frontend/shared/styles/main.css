@@ -16,6 +16,8 @@
 @import "./features/kanban-board.css";
 @import "./features/sidebar-nav.css";
 
+@import "./layout/workspace.css";
+
 @import "./landing.css";
 @import "../../account/account.css";
 

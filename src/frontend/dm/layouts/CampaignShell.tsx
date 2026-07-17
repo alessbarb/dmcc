@@ -24,8 +24,7 @@ import { MobileDock } from "../../shared/components/MobileDock.js";
 import { orderCampaignMobileDockItems } from "../navigation/campaignNavigation.js";
 import { CAMPAIGN_SECTIONS } from "../navigation/campaignSections.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
-import "../entities/entityDetailDialog.css";
-import "../entities/entityDetailImageContinuation.css";
+import "./campaign-route-transitions.css";
 
 export function CampaignShell() {
   const { campaignId } = useParams({ from: "/campaigns/$campaignId" });

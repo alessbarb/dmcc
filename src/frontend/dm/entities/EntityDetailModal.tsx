@@ -29,6 +29,8 @@ import {
 import { PlayerCharacterDetailModal } from "./PlayerCharacterDetailModal.js";
 import "./playerCharacterDetail.css";
 import "./entityDetailHeroActions.css";
+import "./entityDetailDialog.css";
+import "./entityDetailImageContinuation.css";
 import { useCampaignShortcuts } from "../shortcuts/useCampaignShortcuts.js";
 import type { Entity, Relation, Fact, Session, CampaignStateStore } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";

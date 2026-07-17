@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 45,
+  "cssFiles": 44,
   "tsxFilesWithInlineStyles": 96,
   "forbiddenLiteralColors": 1568,
   "staticInlineStyles": 1329,
@@ -28,7 +28,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/account/account.css` | legacy | account | 811 | 123 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
 | `src/frontend/dm/entities/entities.css` | feature | entities | 502 | 70 | 1 |
-| `src/frontend/dm/entities/entityDetailDialog.css` | feature | entities | 384 | 60 | 1 |
+| `src/frontend/dm/entities/entityDetailDialog.css` | feature | entities | 391 | 60 | 1 |
 | `src/frontend/dm/entities/entityDetailHeroActions.css` | feature | entities | 57 | 8 | 1 |
 | `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 199 | 18 | 1 |
 | `src/frontend/dm/entities/playerCharacterDetail.css` | feature | entities | 359 | 50 | 1 |
@@ -47,8 +47,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/sessions/sessionWorkspace.css` | feature | sessions | 404 | 67 | 1 |
 | `src/frontend/dm/story/history/campaignHistory.css` | feature | story | 295 | 41 | 1 |
 | `src/frontend/dm/story/plan/storyPlanWorkspace.css` | feature | story | 153 | 27 | 1 |
-| `src/frontend/dm/workspaces/campaignWorkspace.css` | layout | workspace | 850 | 124 | 1 |
-| `src/frontend/dm/workspaces/workspaceSystem.css` | layout | workspace | 161 | 26 | 2 |
 | `src/frontend/institutional/institutional.css` | feature | institutional | 274 | 38 | 1 |
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 154 | 27 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
@@ -63,7 +61,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
 | `src/frontend/shared/styles/index.css` | legacy | shared | 9653 | 1398 | 1 |
 | `src/frontend/shared/styles/landing.css` | legacy | shared | 2595 | 391 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 24 | 0 | 1 |
+| `src/frontend/shared/styles/layout/workspace.css` | legacy | shared | 1010 | 150 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 26 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | legacy | shared | 14 | 1 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | legacy | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | legacy | shared | 26 | 5 | 1 |
@@ -1101,7 +1100,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:597` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:679` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:1` | Selector depends on another component's DOM structure. |
-| critical | mixed-responsibility | `src/frontend/dm/entities/entityDetailDialog.css:1` | Large stylesheet requires atomization (384 lines, 60 selectors). |
+| critical | mixed-responsibility | `src/frontend/dm/entities/entityDetailDialog.css:1` | Large stylesheet requires atomization (391 lines, 60 selectors). |
 | high | legacy-token | `src/frontend/dm/entities/entityDetailDialog.css:1` | Legacy CSS variable remains in use. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:7` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:7` | Selector depends on another component's DOM structure. |
@@ -1147,121 +1146,121 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:61` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:61` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:61` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:66` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:66` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:67` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:68` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:69` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:79` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:79` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:84` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:84` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:88` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:88` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:89` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:93` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:93` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:97` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:97` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:102` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:102` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:103` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:73` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:74` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:75` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:76` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:86` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:86` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:91` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:91` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:95` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:95` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:96` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:100` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:100` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:104` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:113` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:117` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:117` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:123` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:123` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:128` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:128` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:129` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:131` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:132` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:137` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:137` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:140` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:141` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:143` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:144` | Literal visual color outside a registered theme package. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:148` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:104` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:109` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:109` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:110` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:111` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:120` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:124` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:124` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:130` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:130` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:135` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:135` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:136` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:138` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:139` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:144` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:144` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:147` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:148` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:150` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:151` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:155` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:160` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:165` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:170` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:176` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:181` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:187` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:193` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:193` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:196` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:197` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:197` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:198` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:199` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:162` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:167` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:172` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:177` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:183` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:188` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:194` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:200` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:202` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:200` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:203` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:204` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:204` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:205` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:206` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:207` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:207` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:211` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:212` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:216` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:216` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:220` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:220` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:221` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:226` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:209` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:214` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:214` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:218` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:219` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:223` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:223` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:227` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:227` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:228` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:232` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:232` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:236` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:236` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:240` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:233` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:235` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:239` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:239` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:243` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:245` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:246` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:247` | Literal visual color outside a registered theme package. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:243` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:247` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:252` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:250` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:252` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:253` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:256` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:261` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:266` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:272` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:277` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:283` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:288` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:292` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:298` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:298` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:302` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:303` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:307` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:317` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:317` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:318` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:319` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:323` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:323` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:335` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:335` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:339` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:339` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:340` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:341` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:254` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:254` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:259` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:260` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:263` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:268` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:273` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:279` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:284` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:290` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:295` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:299` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:305` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:305` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:309` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:310` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:314` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:324` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:324` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:325` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:326` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:330` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:330` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:342` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:342` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:346` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:346` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:356` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:356` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:357` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:361` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:361` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/entityDetailDialog.css:362` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:347` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:348` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:349` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:353` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:353` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:363` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:363` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:364` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:368` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:368` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:369` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:370` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:370` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:376` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:371` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entityDetailDialog.css:377` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:377` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:383` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailHeroActions.css:1` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/dm/entities/entityDetailHeroActions.css:16` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/entities/entityDetailHeroActions.css:18` | Literal visual color outside a registered theme package. |
@@ -1362,21 +1361,21 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:197` | Important declarations bypass the intended cascade. |
 | high | legacy-token | `src/frontend/dm/entities/EntityDetailModal.tsx:1` | Legacy CSS variable remains in use. |
 | high | legacy-token | `src/frontend/dm/entities/EntityDetailModal.tsx:1` | Legacy CSS variable remains in use. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:189` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:201` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:211` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:221` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:234` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:249` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:253` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:279` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:287` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:293` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:323` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:363` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:364` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:384` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:385` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:191` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:203` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:213` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:223` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:251` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:255` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:289` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:295` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:325` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:365` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:366` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:386` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:387` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:38` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:38` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:39` | Literal visual color outside a registered theme package. |
@@ -1460,7 +1459,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:204` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:212` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:235` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:55` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | legacy-token | `src/frontend/dm/entities/relations/relationshipGraph.css:1` | Legacy CSS variable remains in use. |
 | high | legacy-token | `src/frontend/dm/entities/relations/relationshipGraph.css:1` | Legacy CSS variable remains in use. |
 | high | literal-color | `src/frontend/dm/entities/relations/relationshipGraph.css:26` | Literal visual color outside a registered theme package. |
@@ -1763,21 +1762,21 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:75` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:76` | Important declarations bypass the intended cascade. |
 | high | unknown-token | `src/frontend/dm/layouts/CampaignShell.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:153` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:171` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:180` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:152` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:170` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:179` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:182` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:183` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:184` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:206` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:213` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:244` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:263` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:212` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:243` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:262` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:278` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:279` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:280` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:286` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:295` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:285` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:294` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/library/boards/entityBoards.css:1` | Large stylesheet requires atomization (243 lines, 37 selectors). |
 | high | important | `src/frontend/dm/library/boards/entityBoards.css:2` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/library/boards/entityBoards.css:3` | Important declarations bypass the intended cascade. |
@@ -2420,23 +2419,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:133` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:138` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:146` | Important declarations bypass the intended cascade. |
-| critical | mixed-responsibility | `src/frontend/dm/workspaces/campaignWorkspace.css:1` | Large stylesheet requires atomization (850 lines, 124 selectors). |
-| high | cross-component-selector | `src/frontend/dm/workspaces/campaignWorkspace.css:90` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:115` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:123` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:256` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:331` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:421` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:431` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:433` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:456` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:466` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:509` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:655` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:701` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/campaignWorkspace.css:721` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/workspaces/workspaceSystem.css:80` | Literal visual color outside a registered theme package. |
-| high | cross-component-selector | `src/frontend/dm/workspaces/workspaceSystem.css:111` | Selector depends on another component's DOM structure. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/home/AccountHomePage.tsx:97` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -3898,5 +3880,22 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/landing.css:2547` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2554` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2567` | Literal visual color outside a registered theme package. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1010 lines, 150 selectors). |
+| high | cross-component-selector | `src/frontend/shared/styles/layout/workspace.css:90` | Selector depends on another component's DOM structure. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:115` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:123` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:256` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:331` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:421` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:431` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:433` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:456` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:466` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:509` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:655` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:701` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:721` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:929` | Literal visual color outside a registered theme package. |
+| high | cross-component-selector | `src/frontend/shared/styles/layout/workspace.css:960` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/shared/styles/primitives/button.css:12` | Literal visual color outside a registered theme package. |
 | medium | global-selector | `src/frontend/shared/styles/primitives/card.css:1` | Generic selector has global collision risk. |
