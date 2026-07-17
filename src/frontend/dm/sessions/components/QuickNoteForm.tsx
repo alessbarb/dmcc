@@ -4,6 +4,7 @@ import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { ToastKind } from "../../../shared/hooks/useToast.js";
 import type { CampaignStateStore, Session } from "../../../shared/stores/campaignStore.js";
 import { errorMessage, runSessionAction } from "../sessionFormSubmit.js";
+import "./quick-note.css";
 
 export function QuickNoteForm({
   createEntity,
