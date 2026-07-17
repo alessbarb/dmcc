@@ -34,10 +34,13 @@ for (const metric of debtMetrics) {
 }
 
 function signature(finding) {
+  const stableReason = finding.category === "mixed-responsibility"
+    ? "Large stylesheet requires atomization."
+    : finding.reason;
   return JSON.stringify([
     finding.category,
     finding.value ?? null,
-    finding.reason,
+    stableReason,
     finding.status,
   ]);
 }
