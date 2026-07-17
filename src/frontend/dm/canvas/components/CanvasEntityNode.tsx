@@ -11,7 +11,7 @@ import { isDmOnlyVisibility } from "@core/domain/visibility/visibility.js";
 /** CSSProperties plus arbitrary CSS custom properties (`--foo`) used for theming hooks. */
 type CanvasCardStyle = CSSProperties & Record<`--${string}`, string>;
 
-const archivedCardStyle: CanvasCardStyle = { "--rg-accent": "#475569" };
+const archivedCardStyle: CanvasCardStyle = { "--rg-accent": "var(--theme-text-secondary)" };
 
 export interface CanvasEntityNodeProps {
   id: string;
@@ -67,7 +67,7 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
            style={archivedCardStyle}>
         <Handle type="target" position={Position.Top} className="canvas-handle target-handle" />
         <div className="rg-card__hero rg-card__hero--icon">
-          <FileText size={24} style={{ color: "#475569", opacity: 0.5 }} />
+          <FileText size={24} style={{ color: "var(--theme-text-secondary)", opacity: 0.5 }} />
         </div>
         <div className="rg-card__body">
           <div className="rg-card__name rg-card__name--muted">[Archivada]</div>

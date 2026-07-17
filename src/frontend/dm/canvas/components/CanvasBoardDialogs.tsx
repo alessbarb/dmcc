@@ -171,23 +171,23 @@ export function CanvasBoardDialogs({
 
               <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "4px", marginTop: "8px", color: "var(--theme-accents-primary-foreground)" }}>ENTIDADES</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "11px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><UserCheck size={12} color="#3b82f6" /> <span>🎭 PNJ</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><User size={12} color="#6366f1" /> <span>👤 PJ</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><MapPin size={12} color="#10b981" /> <span>📍 Lugar</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Shield size={12} color="#f59e0b" /> <span>🏛 Facción</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><HelpCircle size={12} color="#eab308" /> <span>🧩 Pista</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Key size={12} color="#ef4444" /> <span>🔑 Secreto</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Award size={12} color="#f97316" /> <span>🏆 Misión</span></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Film size={12} color="#64748b" /> <span>🎬 Escena</span></div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><UserCheck size={12} color="var(--theme-entities-npc-foreground)" /> <span>🎭 PNJ</span></div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><User size={12} color="var(--theme-entities-player-foreground)" /> <span>👤 PJ</span></div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><MapPin size={12} color="var(--theme-entities-location-foreground)" /> <span>📍 Lugar</span></div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Shield size={12} color="var(--theme-entities-faction-foreground)" /> <span>🏛 Facción</span></div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><HelpCircle size={12} color="var(--theme-entities-clue-foreground)" /> <span>🧩 Pista</span></div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Key size={12} color="var(--theme-entities-secret-foreground)" /> <span>🔑 Secreto</span></div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Award size={12} color="var(--theme-entities-quest-foreground)" /> <span>🏆 Misión</span></div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><Film size={12} color="var(--theme-entities-scene-foreground)" /> <span>🎬 Escena</span></div>
               </div>
 
               <div style={{ fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid var(--theme-borders-default)", paddingBottom: "4px", marginTop: "8px", color: "var(--theme-accents-primary-foreground)" }}>RELACIONES</div>
               <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px" }}>
-                <div style={{ width: "24px", height: "2px", backgroundColor: "#ef4444", borderStyle: "dashed" }} />
+                <div style={{ width: "24px", height: "2px", backgroundColor: "var(--theme-graph-edge-critical)", borderStyle: "dashed" }} />
                 <div><strong>Línea Roja Punteada</strong>: Secreto DM.</div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px" }}>
-                <div style={{ width: "24px", height: "2px", backgroundColor: "rgba(167, 139, 250, 0.6)", borderStyle: "dashed" }} />
+                <div style={{ width: "24px", height: "2px", backgroundColor: "color-mix(in srgb, var(--theme-narrative-secret-foreground) 60%, transparent)", borderStyle: "dashed" }} />
                 <div><strong>Línea Violeta Punteada</strong>: Ancla de secreto.</div>
               </div>
             </div>
