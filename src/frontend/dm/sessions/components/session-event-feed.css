@@ -82,7 +82,7 @@
   margin-top: 2px;
 }
 
-.session-event-feed__icon--info {
+.session-event-feed__icon--information {
   color: var(--theme-feedback-info-foreground);
 }
 
@@ -90,11 +90,11 @@
   color: var(--theme-feedback-success-foreground);
 }
 
-.session-event-feed__icon--secondary {
+.session-event-feed__icon--clue {
   color: var(--theme-accents-secondary-foreground);
 }
 
-.session-event-feed__icon--primary {
+.session-event-feed__icon--decision {
   color: var(--theme-accents-primary-foreground);
 }
 
