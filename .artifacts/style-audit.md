@@ -6,17 +6,17 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 44,
+  "cssFiles": 46,
   "tsxFilesWithInlineStyles": 96,
-  "forbiddenLiteralColors": 1568,
-  "staticInlineStyles": 1329,
+  "forbiddenLiteralColors": 1504,
+  "staticInlineStyles": 1327,
   "dynamicInlineStyles": 37,
-  "unknownCssVariables": 256,
-  "legacyCssVariables": 70,
+  "unknownCssVariables": 252,
+  "legacyCssVariables": 34,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 18,
   "crossComponentSelectors": 131,
-  "importantDeclarations": 415,
+  "importantDeclarations": 399,
   "unclassifiedCssFiles": 0
 }
 ```
@@ -27,7 +27,9 @@ Generated mechanically by `npm run styles:audit:report`.
 |---|---:|---:|---:|---:|---:|
 | `src/frontend/account/account.css` | legacy | account | 811 | 123 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
-| `src/frontend/dm/entities/entities.css` | feature | entities | 502 | 70 | 1 |
+| `src/frontend/dm/entities/entity-card.css` | feature | entities | 390 | 53 | 1 |
+| `src/frontend/dm/entities/entity-grid.css` | feature | entities | 16 | 3 | 1 |
+| `src/frontend/dm/entities/entity-list-toolbar.css` | feature | entities | 97 | 17 | 1 |
 | `src/frontend/dm/entities/entityDetailDialog.css` | feature | entities | 391 | 60 | 1 |
 | `src/frontend/dm/entities/entityDetailHeroActions.css` | feature | entities | 57 | 8 | 1 |
 | `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 199 | 18 | 1 |
@@ -1002,85 +1004,10 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/canvas/templates/dungeonTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
-| critical | mixed-responsibility | `src/frontend/dm/entities/entities.css:1` | Large stylesheet requires atomization (502 lines, 70 selectors). |
-| high | unknown-token | `src/frontend/dm/entities/entities.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/entities/entities.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/dm/entities/entities.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/entities.css:1` | Legacy CSS variable remains in use. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:23` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:46` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:87` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:88` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:93` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:93` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:94` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:94` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:111` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:123` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:125` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:126` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:126` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:129` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:130` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:130` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:141` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:142` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:143` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:148` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:155` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:155` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:167` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:173` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:186` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:201` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:201` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:202` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:202` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:203` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:229` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:230` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:230` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:238` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:239` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:239` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:263` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:264` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:312` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:318` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:335` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:366` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:367` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:373` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:386` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:390` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:432` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:433` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:442` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entities.css:450` | Literal visual color outside a registered theme package. |
+| critical | mixed-responsibility | `src/frontend/dm/entities/entity-card.css:1` | Large stylesheet requires atomization (390 lines, 53 selectors). |
+| high | literal-color | `src/frontend/dm/entities/entity-card.css:349` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/entities/entity-card.css:358` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/entities/entity-card.css:366` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:230` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:406` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:407` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1778,20 +1705,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:285` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:294` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/library/boards/entityBoards.css:1` | Large stylesheet requires atomization (243 lines, 37 selectors). |
-| high | important | `src/frontend/dm/library/boards/entityBoards.css:2` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/boards/entityBoards.css:3` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/boards/entityBoards.css:5` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/boards/entityBoards.css:22` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/boards/entityBoards.css:23` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/boards/entityBoards.css:25` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/boards/entityBoards.css:27` | Important declarations bypass the intended cascade. |
 | high | literal-color | `src/frontend/dm/library/boards/entityBoards.css:36` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/library/boards/entityBoards.css:86` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/library/boards/entityBoards.css:93` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/library/boards/entityBoards.css:112` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/library/boards/entityBoards.css:143` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/library/boards/entityBoards.css:149` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/dm/library/boards/entityBoards.css:221` | Important declarations bypass the intended cascade. |
 | high | literal-color | `src/frontend/dm/library/boards/EntityBoardsView.tsx:45` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/library/boards/EntityBoardsView.tsx:46` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/library/boards/EntityBoardsView.tsx:47` | Literal visual color outside a registered theme package. |
@@ -1838,75 +1753,45 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:264` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/library/boards/EntityBoardsView.tsx:378` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:387` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:388` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:404` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:405` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:406` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:409` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:414` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:421` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:422` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | important | `src/frontend/dm/library/list/entityListRefinements.css:7` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/list/entityListRefinements.css:8` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/list/entityListRefinements.css:9` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/list/entityListRefinements.css:10` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/list/entityListRefinements.css:11` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/list/entityListRefinements.css:12` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/list/entityListRefinements.css:78` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/library/list/entityListRefinements.css:93` | Important declarations bypass the intended cascade. |
-| high | legacy-token | `src/frontend/dm/library/list/EntityListView.tsx:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/library/list/EntityListView.tsx:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/library/list/EntityListView.tsx:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/library/list/EntityListView.tsx:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/library/list/EntityListView.tsx:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/library/list/EntityListView.tsx:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/dm/library/list/EntityListView.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/dm/library/list/EntityListView.tsx:1` | Legacy CSS variable remains in use. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:271` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:302` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:325` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:375` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:387` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:391` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:395` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:407` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:416` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:423` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:424` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:425` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:441` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:444` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:455` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:459` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:471` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:475` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:485` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:489` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:492` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:493` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:506` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:509` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:510` | Literal visual color outside a registered theme package. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:522` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:586` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:589` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:653` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:654` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:664` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:665` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:665` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:671` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:676` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:676` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:686` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:708` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:713` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:719` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:723` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:729` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:730` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:274` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:305` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:328` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:378` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:390` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:394` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:398` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:410` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:419` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:426` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:444` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:458` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:462` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:474` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:478` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:488` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:492` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:509` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:525` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:589` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:592` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:656` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:657` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:667` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:668` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:674` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:679` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:689` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:711` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:716` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:732` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/library/list/EntityListView.tsx:735` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:733` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:735` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:424` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:433` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:511` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1920,7 +1805,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:618` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:622` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:1` | Large stylesheet requires atomization (293 lines, 50 selectors). |
-| high | literal-color | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:13` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:168` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:223` | Literal visual color outside a registered theme package. |
 | high | legacy-token | `src/frontend/dm/map/mapWorkspace.css:1` | Legacy CSS variable remains in use. |
@@ -2759,10 +2643,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
 | high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
 | high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
 | high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
 | high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
 | high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |

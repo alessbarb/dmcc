@@ -10,7 +10,7 @@
   padding: 18px;
   border-color: color-mix(in srgb, var(--theme-borders-default) 82%, transparent);
   background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--theme-shadows-large);
 }
 
 .notebooks-sidebar__header {

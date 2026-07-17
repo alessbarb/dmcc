@@ -114,8 +114,8 @@ export function CanvasEntityNode({ id: _id, data, selected }: CanvasEntityNodePr
 
   const cardStyle: CanvasCardStyle = {
     "--rg-accent": cfg.accent,
-    "--entity-accent": cfg.accent,
-    "--entity-accent-soft": cfg.accentSoft,
+    "--card-accent": cfg.accent,
+    "--card-accent-soft": cfg.accentSoft,
   };
 
   return (

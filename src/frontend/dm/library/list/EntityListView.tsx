@@ -8,7 +8,10 @@ import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatEntityType, formatVisibility } from "@shared/i18n/index.js";
 import { GuidedEmptyState } from "../../onboarding/CampaignStarterHub.js";
-import "../../entities/entities.css";
+import "../../entities/entity-list-toolbar.css";
+import "../../entities/entity-grid.css";
+import "../../entities/entity-card.css";
+import "./entityListRefinements.css";
 
 function resolveEntityImageUrl(entity: Entity): string | undefined {
   const metadata = entity.metadata && typeof entity.metadata === "object" ? entity.metadata : {};
@@ -269,8 +272,8 @@ export function EntityListView() {
           className={`entity-compact-row ${isDmOnly ? "entity-compact-row--dm-only" : ""} ${isCritical ? "entity-compact-row--critical" : ""}`}
           onClick={() => setSelectedEntityId(entity.entityId)}
           style={{
-            "--entity-accent": cfg.accent,
-            "--entity-accent-soft": cfg.accentSoft,
+            "--card-accent": cfg.accent,
+            "--card-accent-soft": cfg.accentSoft,
           } as React.CSSProperties}
         >
           <div className="entity-compact-row__left">
@@ -323,8 +326,8 @@ export function EntityListView() {
         className={cardClasses}
         onClick={() => setSelectedEntityId(entity.entityId)}
         style={{
-          "--entity-accent": cfg.accent,
-          "--entity-accent-soft": cfg.accentSoft,
+          "--card-accent": cfg.accent,
+          "--card-accent-soft": cfg.accentSoft,
         } as React.CSSProperties}
         aria-label={`${entity.title}. ${formatEntityType(entity.entityType, locale)}. ${formatVisibility(visibility, locale)}`}
       >
@@ -421,8 +424,8 @@ export function EntityListView() {
                 <span>{t("entitiesPage.toggleFilters")}</span>
                 {activeFiltersCount > 0 && (
                   <span className="filter-badge" style={{
-                    backgroundColor: "var(--theme-accents-primary-foreground-foreground, #fff)",
-                    color: "var(--theme-accents-primary-foreground, #000)",
+                    backgroundColor: "var(--theme-accents-primary-foreground)",
+                    color: "var(--theme-accents-primary-on-accent)",
                     fontSize: "0.75rem",
                     fontWeight: 700,
                     borderRadius: "50%",
@@ -441,7 +444,7 @@ export function EntityListView() {
               <span className="entities-count-badge" style={{
                 fontSize: "13px",
                 color: "var(--theme-text-secondary)",
-                backgroundColor: "rgba(255,255,255,0.04)",
+                backgroundColor: "var(--theme-surfaces-interactive)",
                 padding: "4px 10px",
                 borderRadius: "12px",
                 border: "1px solid var(--theme-borders-default)",
@@ -489,8 +492,8 @@ export function EntityListView() {
                   style={{
                     height: 38,
                     padding: "0 12px",
-                    background: viewMode === "card" ? "var(--bg-active, hsl(230, 20%, 20%))" : "transparent",
-                    color: viewMode === "card" ? "var(--text-color, #fff)" : "var(--theme-text-secondary)",
+                    background: viewMode === "card" ? "var(--theme-surfaces-interactive-hover)" : "transparent",
+                    color: viewMode === "card" ? "var(--theme-text-primary)" : "var(--theme-text-secondary)",
                     borderRadius: 0,
                     border: "none",
                   }}
@@ -506,8 +509,8 @@ export function EntityListView() {
                   style={{
                     height: 38,
                     padding: "0 12px",
-                    background: viewMode === "compact" ? "var(--bg-active, hsl(230, 20%, 20%))" : "transparent",
-                    color: viewMode === "compact" ? "var(--text-color, #fff)" : "var(--theme-text-secondary)",
+                    background: viewMode === "compact" ? "var(--theme-surfaces-interactive-hover)" : "transparent",
+                    color: viewMode === "compact" ? "var(--theme-text-primary)" : "var(--theme-text-secondary)",
                     borderRadius: 0,
                     border: "none",
                   }}
@@ -662,7 +665,7 @@ export function EntityListView() {
           <>
             {relevantNowEntities.length > 0 && !hasFilters && (
               <div className="entities-context-section" style={{ marginBottom: "32px" }}>
-                <h2 className="entities-section-title" style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "16px", color: "var(--text-color, #fff)" }}>
+                <h2 className="entities-section-title" style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "16px", color: "var(--theme-text-primary)" }}>
                   {t("entitiesPage.relevantNow") || "Relevantes ahora"}
                 </h2>
                 <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
@@ -673,7 +676,7 @@ export function EntityListView() {
             )}
 
             {!hasFilters && (
-              <h2 className="entities-section-title" style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "20px", color: "var(--text-color, #fff)" }}>
+              <h2 className="entities-section-title" style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "20px", color: "var(--theme-text-primary)" }}>
                 {t("entitiesPage.allEntities") || "Todas las entidades"}
               </h2>
             )}
@@ -716,11 +719,11 @@ export function EntityListView() {
                           justifyContent: "space-between",
                           width: "100%",
                           padding: "10px 16px",
-                          background: "var(--card-bg, hsl(230, 20%, 15%))",
+                          background: "var(--theme-surfaces-raised)",
                           border: "1px solid var(--theme-borders-default)",
                           borderRadius: "6px",
                           cursor: "pointer",
-                          color: "var(--text-color, #fff)",
+                          color: "var(--theme-text-primary)",
                           fontWeight: 600,
                           fontSize: "1.05rem",
                           textAlign: "left"
@@ -732,7 +735,7 @@ export function EntityListView() {
                           <span style={{
                             fontSize: "0.75rem",
                             color: "var(--theme-text-secondary)",
-                            backgroundColor: "rgba(255,255,255,0.06)",
+                            backgroundColor: "var(--theme-surfaces-interactive)",
                             padding: "2px 8px",
                             borderRadius: "10px",
                             marginLeft: "4px"

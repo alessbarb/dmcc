@@ -2493,7 +2493,7 @@ small.canvas-navigator-result-action {
 .rg-card--border-double { border-style: double; border-width: 3px; }
 .rg-card--shape-veiled {
   background:
-    linear-gradient(135deg, var(--entity-accent-soft), transparent 45%),
+    linear-gradient(135deg, var(--card-accent-soft), transparent 45%),
     linear-gradient(160deg, hsl(230 28% 13%), hsl(230 25% 10%));
 }
 
@@ -2506,12 +2506,12 @@ small.canvas-navigator-result-action {
 .rg-card--shape-portrait .rg-card__hero-icon {
   box-sizing: content-box;
   padding: 12px;
-  border: 1px solid color-mix(in srgb, var(--entity-accent) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-accent) 55%, transparent);
   border-radius: 50%;
-  background: var(--entity-accent-soft);
+  background: var(--card-accent-soft);
 }
 
-.rg-card__hero-icon { color: var(--entity-accent); }
+.rg-card__hero-icon { color: var(--card-accent); }
 
 .palette-item__icon { color: var(--item-color); }
 
