@@ -8,7 +8,7 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 61,
   "tsxFilesWithInlineStyles": 85,
-  "forbiddenLiteralColors": 897,
+  "forbiddenLiteralColors": 377,
   "staticInlineStyles": 1250,
   "dynamicInlineStyles": 36,
   "unknownCssVariables": 0,
@@ -1997,215 +1997,47 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/foundation/motion.css:24` | Important declarations bypass the intended cascade. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/index.css:1` | Large stylesheet requires atomization (9012 lines, 1309 selectors). |
 | high | cross-component-selector | `src/frontend/shared/styles/index.css:2` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/shared/styles/index.css:135` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:270` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:276` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:282` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:288` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:379` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:440` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:514` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:589` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:592` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:593` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:594` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:604` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:605` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:606` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:607` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:611` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:612` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:635` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:636` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:643` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:648` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:653` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:661` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:666` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:671` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:683` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:683` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:684` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:696` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:697` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:697` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:698` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:704` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:705` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:717` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:745` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:748` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:766` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:801` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:802` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:834` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:852` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:853` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:853` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:867` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:869` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:870` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:896` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:922` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:923` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:924` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:928` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:929` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:930` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:934` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:935` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:936` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:983` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:984` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:989` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:990` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:999` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1012` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1013` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1014` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1020` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1034` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1044` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1045` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1052` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1053` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1109` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1110` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1134` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1161` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1162` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1219` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:1228` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1285` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1335` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1342` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1508` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1512` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1513` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1518` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1519` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1522` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1523` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1528` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1529` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1530` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1533` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1534` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1535` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1540` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1541` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1544` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1545` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1548` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1550` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1551` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1552` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1555` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1556` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1557` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1562` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1563` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1566` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1586` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1587` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1617` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1617` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1659` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1661` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1690` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1701` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1727` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1729` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1729` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1731` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1739` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1739` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1756` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1762` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1777` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1779` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1781` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1857` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1859` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1859` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1864` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1878` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1900` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1910` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1920` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2024` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2030` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2164` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2219` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2220` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2223` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2224` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2228` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2229` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2232` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2233` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2349` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2377` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2378` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2380` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2380` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2394` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2408` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2415` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2416` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:2420` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2421` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:2421` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:2425` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:2426` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:2453` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:2454` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2462` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2463` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2471` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2474` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2475` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2475` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2476` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2476` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2484` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2497` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2497` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2531` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2532` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/shared/styles/index.css:2558` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2635` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2675` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2678` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:2685` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2686` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:2686` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2695` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2710` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2711` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2731` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2742` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2761` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2776` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2777` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2784` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2797` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2799` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2816` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2818` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2824` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2830` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2850` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2854` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2855` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2859` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2860` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2864` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2865` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2876` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2877` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2878` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2882` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:2882` | Important declarations bypass the intended cascade. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2886` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:2886` | Important declarations bypass the intended cascade. |
@@ -2216,9 +2048,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:2891` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2892` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2893` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2901` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2913` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2920` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2923` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2924` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2924` | Literal visual color outside a registered theme package. |
@@ -2227,9 +2056,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:2926` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2927` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:2941` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2969` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:2981` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2982` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:2982` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3005` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3006` | Important declarations bypass the intended cascade. |
@@ -2242,53 +2069,27 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/index.css:3022` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3023` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3024` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3064` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3068` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3068` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3068` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3075` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3102` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3119` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3134` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3178` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3189` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3189` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3190` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3190` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3194` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3194` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3212` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3216` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3217` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3218` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3219` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3224` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3224` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3225` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3225` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3226` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3226` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3230` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3230` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3231` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3231` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3232` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3232` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3236` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3236` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3237` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3237` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3238` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3238` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3247` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3256` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3256` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3289` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3303` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3356` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3376` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3377` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3394` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3411` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3414` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3447` | Important declarations bypass the intended cascade. |
@@ -2315,56 +2116,21 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/index.css:3497` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3502` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3503` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3504` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3504` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3507` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3508` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3512` | Important declarations bypass the intended cascade. |
 | high | literal-color | `src/frontend/shared/styles/index.css:3534` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:3539` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3566` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3587` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3588` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3608` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3685` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3686` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3696` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3699` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3703` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3704` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3705` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3736` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3736` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3737` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3748` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3753` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3761` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3783` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3784` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:3799` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3807` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3840` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3851` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3851` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3852` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:3852` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3864` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3882` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3883` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3887` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3895` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3926` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:4012` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4013` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4023` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:4051` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4070` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:4103` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:4107` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:4111` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4125` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4125` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4126` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:4146` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:4156` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:4173` | Important declarations bypass the intended cascade. |
@@ -2376,22 +2142,10 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/index.css:4238` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:4242` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/shared/styles/index.css:4242` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4276` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4345` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:4436` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4460` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4460` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4461` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4486` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:4495` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4506` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4516` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4529` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:4544` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:4552` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4561` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4587` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4597` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:4614` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:4615` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:4619` | Important declarations bypass the intended cascade. |
@@ -2409,321 +2163,47 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/index.css:4683` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:4684` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:4723` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4730` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4805` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4898` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4898` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4934` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5011` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/shared/styles/index.css:5105` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5108` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/shared/styles/index.css:5129` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5155` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:5168` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:5176` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:5181` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:5182` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5266` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5293` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5310` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5313` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5431` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5433` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5439` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:5686` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5688` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5690` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/index.css:5691` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:5692` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5735` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5748` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5791` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5841` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5872` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5873` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5887` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6001` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6007` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6009` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6043` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6052` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6053` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6054` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6089` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6120` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6120` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6121` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6130` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6131` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6147` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6148` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6161` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6161` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6184` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6185` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6192` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6193` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6204` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6205` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6229` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6229` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6230` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6233` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6242` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6248` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6248` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6287` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6314` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6315` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6321` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6322` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6355` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6356` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6368` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6369` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6377` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6378` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6394` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6395` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6403` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6414` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6415` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6445` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6446` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6447` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6456` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6456` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6458` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6459` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6459` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6503` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6509` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6510` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6531` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6532` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6659` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6660` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6699` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6700` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6708` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6709` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6709` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6737` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6737` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6738` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6739` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6743` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6743` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6744` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6745` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6749` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6749` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6750` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6751` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6764` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6767` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6771` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6772` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6773` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6784` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6792` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6793` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6832` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6832` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6833` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6838` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6838` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6839` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6904` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6905` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6912` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6912` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6928` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6937` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6937` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6960` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6961` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6993` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6994` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7023` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7024` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7036` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7037` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7037` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7045` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7051` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7068` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7069` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7070` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7074` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7075` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7076` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7087` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7143` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7166` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7174` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7179` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7180` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7193` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7194` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7202` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7203` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7213` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7214` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7216` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7242` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7243` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7253` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7254` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7282` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7283` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7289` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7290` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7323` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7335` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7336` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7337` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7341` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7342` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7343` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7351` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7360` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7386` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7387` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7394` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7395` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7406` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7407` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7408` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7428` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7429` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7438` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7439` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7466` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7485` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7495` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7510` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7514` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7519` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7556` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7565` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7577` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7578` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7578` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7579` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7581` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7595` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7598` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7637` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7638` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7640` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7664` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7665` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7707` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7708` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7708` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7709` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7712` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7753` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7774` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7775` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7787` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7805` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7807` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7852` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7853` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7864` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7865` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7879` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7879` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7895` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7896` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7900` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7908` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7933` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7935` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7942` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7943` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7965` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8015` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8022` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8030` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8031` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8041` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8042` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8059` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8098` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8099` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8128` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8150` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8166` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8167` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8174` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8175` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8182` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8204` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8217` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8246` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8250` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8251` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8252` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8256` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8258` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8274` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8275` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8282` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8296` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8298` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8304` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8306` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8323` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8324` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8332` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8333` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8368` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8369` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8376` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8403` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8404` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8443` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8444` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8457` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8457` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8458` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8465` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8469` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8551` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8614` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8617` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8629` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8631` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8644` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8645` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8697` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8736` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8814` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8815` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8816` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8832` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8859` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8868` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8869` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8873` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8874` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8875` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8910` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8911` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8913` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8913` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8927` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8936` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8948` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8958` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8969` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8977` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8978` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8987` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:9002` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:1` | Selector depends on another component's DOM structure. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/landing.css:1` | Large stylesheet requires atomization (2640 lines, 392 selectors). |
 | high | literal-color | `src/frontend/shared/styles/landing.css:13` | Literal visual color outside a registered theme package. |
