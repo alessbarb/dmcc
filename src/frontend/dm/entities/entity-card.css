@@ -110,6 +110,10 @@
   transition: filter 0.2s;
 }
 
+.entity-card__hero-img--dm-only {
+  filter: grayscale(20%) brightness(85%);
+}
+
 /* Fallback graphic styles based on shapes & typography */
 .entity-card__hero--no-img {
   background:

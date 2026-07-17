@@ -6,11 +6,11 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 65,
-  "tsxFilesWithInlineStyles": 83,
+  "cssFiles": 67,
+  "tsxFilesWithInlineStyles": 84,
   "forbiddenLiteralColors": 308,
-  "staticInlineStyles": 1079,
-  "dynamicInlineStyles": 36,
+  "staticInlineStyles": 1052,
+  "dynamicInlineStyles": 32,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
@@ -27,7 +27,7 @@ Generated mechanically by `npm run styles:audit:report`.
 |---|---:|---:|---:|---:|---:|
 | `src/frontend/account/account.css` | legacy | account | 804 | 121 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
-| `src/frontend/dm/entities/entity-card.css` | feature | entities | 390 | 53 | 1 |
+| `src/frontend/dm/entities/entity-card.css` | feature | entities | 394 | 54 | 1 |
 | `src/frontend/dm/entities/entity-detail-modal.css` | feature | entities | 216 | 25 | 2 |
 | `src/frontend/dm/entities/entity-grid.css` | feature | entities | 16 | 3 | 1 |
 | `src/frontend/dm/entities/entity-list-toolbar.css` | feature | entities | 97 | 17 | 1 |
@@ -37,10 +37,12 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/entities/entityDetailHeroActions.css` | feature | entities | 57 | 8 | 2 |
 | `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 183 | 18 | 2 |
 | `src/frontend/dm/entities/playerCharacterDetail.css` | feature | entities | 145 | 21 | 1 |
-| `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 103 | 16 | 2 |
+| `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 139 | 21 | 2 |
 | `src/frontend/dm/entities/type-metadata-form.css` | feature | entities | 30 | 4 | 1 |
 | `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 82 | 19 | 1 |
 | `src/frontend/dm/library/boards/entityBoards.css` | feature | library | 243 | 37 | 1 |
+| `src/frontend/dm/library/list/entity-list-toolbar-controls.css` | feature | library | 118 | 17 | 1 |
+| `src/frontend/dm/library/list/entity-list-view.css` | feature | library | 117 | 18 | 1 |
 | `src/frontend/dm/library/list/entityListRefinements.css` | feature | library | 96 | 16 | 1 |
 | `src/frontend/dm/library/notebooks/notebooksWorkspace.css` | feature | library | 293 | 50 | 1 |
 | `src/frontend/dm/map/mapWorkspace.css` | feature | map | 94 | 14 | 1 |
@@ -700,7 +702,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/canvas/templates/dungeonTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
-| critical | mixed-responsibility | `src/frontend/dm/entities/entity-card.css:1` | Large stylesheet requires atomization (390 lines, 53 selectors). |
+| critical | mixed-responsibility | `src/frontend/dm/entities/entity-card.css:1` | Large stylesheet requires atomization (394 lines, 54 selectors). |
 | high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:133` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:142` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:154` | Important declarations bypass the intended cascade. |
@@ -937,16 +939,17 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:186` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:188` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:194` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:40` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:47` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:127` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:135` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:204` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:212` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:235` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:41` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:52` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:150` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:158` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:247` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:255` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:265` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:128` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:135` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1093,39 +1096,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:414` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:421` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:422` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:274` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:305` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:328` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:378` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:390` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:394` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:398` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:410` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:419` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:426` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:444` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:458` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:462` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:474` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:478` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:488` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:492` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:509` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:525` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:589` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:592` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:656` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:657` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:667` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:668` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:674` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:679` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:689` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:711` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:716` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:732` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:733` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:735` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:276` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:426` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:435` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:513` | Static or mixed inline style must move to an atomized stylesheet. |
