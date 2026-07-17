@@ -8,9 +8,7 @@ export interface RelationshipLayoutPoint {
 export interface ComputeRadialRelationshipLayoutInput {
   centerNode: RelationshipGraphEntity;
   neighborNodes: RelationshipGraphEntity[];
-  firstRingCapacity?: number;
   firstRingRadius?: number;
-  ringSpacing?: number;
   /** Rendered node footprint, used to keep same-ring neighbors from overlapping. */
   nodeWidth?: number;
   nodeHeight?: number;
@@ -18,23 +16,28 @@ export interface ComputeRadialRelationshipLayoutInput {
   minNodeGap?: number;
 }
 
-const DEFAULT_FIRST_RING_CAPACITY = 8;
 const DEFAULT_FIRST_RING_RADIUS = 220;
-const DEFAULT_RING_SPACING = 160;
 const DEFAULT_NODE_WIDTH = 176;
 const DEFAULT_NODE_HEIGHT = 104;
 const DEFAULT_MIN_NODE_GAP = 32;
 
 /**
- * Smallest radius at which `count` boxes of `nodeSize`, evenly spaced around
- * a circle, don't overlap: the chord between two adjacent boxes must be at
- * least one box width plus the desired gap. A single node has no neighbor to
- * overlap, so no minimum applies.
+ * Smallest radius at which `count` boxes, evenly spaced around a circle,
+ * don't overlap: the chord between two adjacent boxes must be at least one
+ * box's worth of clearance plus the desired gap. A single node has no
+ * neighbor to overlap, so no minimum applies.
+ *
+ * Uses the box's bounding-circle diameter (its diagonal), not just its
+ * width: boxes are axis-aligned rectangles, not shapes rotated to face the
+ * circle's center, so a box positioned where the tangent isn't horizontal
+ * needs its full diagonal — not just its width — to stay clear of the
+ * radial spoke running to its neighbor on either side.
  */
-function minRadiusForRingSpacing(count: number, nodeSize: number, minGap: number): number {
+function minRadiusForRingSpacing(count: number, nodeWidth: number, nodeHeight: number, minGap: number): number {
   if (count <= 1) return 0;
+  const boxDiameter = Math.hypot(nodeWidth, nodeHeight);
   const angleStep = (2 * Math.PI) / count;
-  return (nodeSize + minGap) / (2 * Math.sin(angleStep / 2));
+  return (boxDiameter + minGap) / (2 * Math.sin(angleStep / 2));
 }
 
 function compareNeighborOrder(a: RelationshipGraphEntity, b: RelationshipGraphEntity): number {
@@ -45,16 +48,24 @@ function compareNeighborOrder(a: RelationshipGraphEntity, b: RelationshipGraphEn
 
 /**
  * Positions nodes in abstract, container-independent coordinates: the center
- * at the origin, neighbors distributed across rings around it. Callers adapt
+ * at the origin, every neighbor on a single ring around it. Callers adapt
  * these centers to a specific rendering surface (e.g. subtracting half a
  * node's width/height to get a React Flow top-left `position`).
+ *
+ * Every relation in this view connects the center to exactly one neighbor
+ * (a star topology), so straight center-to-neighbor spokes can never cross
+ * each other — they share an endpoint. A single ring, radius-adapted to fit
+ * however many neighbors there are, is what makes that guarantee hold: an
+ * earlier multi-ring version could place an outer-ring neighbor at the same
+ * angle as an inner-ring one, and the spoke to the outer node would then
+ * pass straight through the inner node's box. Observed neighbor counts in
+ * shipped campaigns top out around 17-20, well within where a single ring
+ * stays legible after `fitView` zooms to fit it.
  */
 export function computeRadialRelationshipLayout({
   centerNode,
   neighborNodes,
-  firstRingCapacity = DEFAULT_FIRST_RING_CAPACITY,
   firstRingRadius = DEFAULT_FIRST_RING_RADIUS,
-  ringSpacing = DEFAULT_RING_SPACING,
   nodeWidth = DEFAULT_NODE_WIDTH,
   nodeHeight = DEFAULT_NODE_HEIGHT,
   minNodeGap = DEFAULT_MIN_NODE_GAP,
@@ -65,33 +76,18 @@ export function computeRadialRelationshipLayout({
   if (neighborNodes.length === 0) return positions;
 
   const ordered = [...neighborNodes].sort(compareNeighborOrder);
+  const angularFloor = minRadiusForRingSpacing(ordered.length, nodeWidth, nodeHeight, minNodeGap);
+  // Also large enough that even a lone neighbor doesn't overlap the center card.
+  const radius = Math.max(firstRingRadius, angularFloor, nodeWidth / 2 + nodeHeight / 2 + minNodeGap);
+  const angleStep = (2 * Math.PI) / ordered.length;
 
-  let index = 0;
-  let ring = 0;
-  let previousRingRadius = 0;
-  while (index < ordered.length) {
-    const ringCapacity = firstRingCapacity * (ring + 1);
-    const ringNodes = ordered.slice(index, index + ringCapacity);
-    const baseRadius = firstRingRadius + ring * ringSpacing;
-    // Two floors: same-ring boxes must clear each other around the arc, and
-    // this ring must clear the previous ring's outer edge radially.
-    const angularFloor = minRadiusForRingSpacing(ringNodes.length, nodeWidth, minNodeGap);
-    const radialFloor = ring === 0 ? 0 : previousRingRadius + nodeHeight + minNodeGap;
-    const radius = Math.max(baseRadius, angularFloor, radialFloor);
-    previousRingRadius = radius;
-    const angleStep = (2 * Math.PI) / ringNodes.length;
-
-    ringNodes.forEach((node, positionInRing) => {
-      const angle = angleStep * positionInRing - Math.PI / 2;
-      positions.set(node.entityId, {
-        centerX: Math.round(radius * Math.cos(angle) * 1000) / 1000,
-        centerY: Math.round(radius * Math.sin(angle) * 1000) / 1000,
-      });
+  ordered.forEach((node, positionInRing) => {
+    const angle = angleStep * positionInRing - Math.PI / 2;
+    positions.set(node.entityId, {
+      centerX: Math.round(radius * Math.cos(angle) * 1000) / 1000,
+      centerY: Math.round(radius * Math.sin(angle) * 1000) / 1000,
     });
-
-    index += ringCapacity;
-    ring += 1;
-  }
+  });
 
   return positions;
 }

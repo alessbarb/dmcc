@@ -63,10 +63,17 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
 }
 
 .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content.entity-detail-dialog--relations-expanded {
-  width: min(1480px, calc(100vw - 24px)) !important;
+  /* Match the overlay's own responsive padding (clamp(16px, 2.5vw, 36px) per
+     side, see the .modal-overlay rule above) exactly, rather than guessing a
+     fixed value — a mismatched hardcoded calc() here previously let the
+     modal overflow the viewport. `100%` doesn't work as a substitute: this
+     grid has no explicit track sizing, so its implicit track sizes to
+     content instead of stretching, and percentages against an auto track
+     collapse instead of filling it. */
+  width: min(1480px, calc(100vw - 2 * clamp(16px, 2.5vw, 36px))) !important;
   max-width: 1480px !important;
-  height: calc(100dvh - 24px) !important;
-  max-height: calc(100dvh - 24px) !important;
+  height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px)) !important;
+  max-height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px)) !important;
 }
 
 /* Ampliado: solo queda el eyebrow (tipo + título) — hero, tabs y footer se

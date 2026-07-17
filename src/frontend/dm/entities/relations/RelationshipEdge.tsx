@@ -1,5 +1,5 @@
 import React from "react";
-import { BaseEdge, EdgeLabelRenderer, getBezierPath } from "@xyflow/react";
+import { BaseEdge, EdgeLabelRenderer, getStraightPath } from "@xyflow/react";
 import type { EdgeProps } from "@xyflow/react";
 import { RelationEdgeLabel } from "../../map/shared/RelationEdgeLabel.js";
 
@@ -20,20 +20,16 @@ export const RelationshipEdge = React.memo(function RelationshipEdge({
   sourceY,
   targetX,
   targetY,
-  sourcePosition,
-  targetPosition,
   style,
   data,
   markerEnd,
 }: EdgeProps) {
-  const [edgePath] = getBezierPath({
-    sourceX,
-    sourceY,
-    sourcePosition,
-    targetX,
-    targetY,
-    targetPosition,
-  });
+  // Every edge here is a direct hub-and-spoke connection (center <-> one
+  // neighbor), never a multi-hop path — a straight line is both the
+  // clearest reading and structurally incapable of the bezier overshoot
+  // that made long, near-vertical edges visually "loop" around nodes
+  // stacked on the same axis.
+  const [edgePath] = getStraightPath({ sourceX, sourceY, targetX, targetY });
 
   const edgeData = (data ?? {}) as RelationshipEdgeData;
 

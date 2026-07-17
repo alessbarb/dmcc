@@ -53,35 +53,30 @@ describe("computeRadialRelationshipLayout", () => {
     expect(a.get("ent_b")).toEqual(b.get("ent_b"));
   });
 
-  it("keeps everything on the first ring when under capacity", () => {
+  it("keeps every neighbor on a single ring regardless of count", () => {
     const neighbors = Array.from({ length: 6 }, (_, i) => makeNode(`ent_${i}`));
     const positions = computeRadialRelationshipLayout({
       centerNode: center,
       neighborNodes: neighbors,
-      firstRingCapacity: 8,
       firstRingRadius: 220,
-    });
-
-    for (const neighbor of neighbors) {
-      const point = positions.get(neighbor.entityId)!;
-      const radius = Math.hypot(point.centerX, point.centerY);
-      expect(radius).toBeCloseTo(220, 3);
-    }
-  });
-
-  it("spills into a second ring once the first is full", () => {
-    const neighbors = Array.from({ length: 12 }, (_, i) => makeNode(`ent_${i}`));
-    const positions = computeRadialRelationshipLayout({
-      centerNode: center,
-      neighborNodes: neighbors,
-      firstRingCapacity: 8,
-      firstRingRadius: 220,
-      ringSpacing: 160,
     });
 
     const radii = neighbors.map((n) => Math.hypot(...(Object.values(positions.get(n.entityId)!) as [number, number])));
     const distinctRadii = new Set(radii.map((r) => Math.round(r)));
-    expect(distinctRadii.size).toBe(2);
+    expect(distinctRadii.size).toBe(1);
+  });
+
+  it("guarantees no neighbor sits behind another on a spoke from the center (star topology: single ring only)", () => {
+    // A larger count that would have spilled into a second ring under the
+    // old multi-ring layout — regression coverage for the bug where an
+    // outer-ring neighbor landed at the same angle as an inner-ring one,
+    // putting it directly behind it from the center's point of view.
+    const neighbors = Array.from({ length: 12 }, (_, i) => makeNode(`ent_${i}`));
+    const positions = computeRadialRelationshipLayout({ centerNode: center, neighborNodes: neighbors });
+
+    const radii = neighbors.map((n) => Math.hypot(...(Object.values(positions.get(n.entityId)!) as [number, number])));
+    const distinctRadii = new Set(radii.map((r) => Math.round(r)));
+    expect(distinctRadii.size).toBe(1);
   });
 
   it("produces the same result for the same input", () => {
@@ -107,15 +102,18 @@ describe("computeRadialRelationshipLayout", () => {
     });
 
     const points = neighbors.map((n) => positions.get(n.entityId)!);
+    const boxDiameter = Math.hypot(nodeWidth, nodeHeight);
     for (let i = 0; i < points.length; i += 1) {
       for (let j = i + 1; j < points.length; j += 1) {
         const dx = points[i].centerX - points[j].centerX;
         const dy = points[i].centerY - points[j].centerY;
         const distance = Math.hypot(dx, dy);
-        // Boxes are axis-aligned around their center; a distance at or above
-        // the width floor guarantees no horizontal/vertical overlap for any
-        // pair on this ring, since the tightest legal pairs are adjacent.
-        expect(distance).toBeGreaterThanOrEqual(nodeWidth + minNodeGap - 0.01);
+        // Boxes are axis-aligned rectangles at arbitrary angles around the
+        // ring, so the guaranteed-safe floor is each box's full diagonal
+        // (its bounding-circle diameter), not just its width — a distance
+        // at or above that floor clears any orientation for any pair, since
+        // the tightest legal pairs are adjacent.
+        expect(distance).toBeGreaterThanOrEqual(boxDiameter + minNodeGap - 0.01);
       }
     }
   });
