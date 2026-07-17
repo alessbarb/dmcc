@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T13:35:34.677Z",
+  "generatedAt": "2026-07-17T14:03:22.520Z",
   "summary": {
     "cssFiles": 49,
     "tsxFilesWithInlineStyles": 96,
-    "forbiddenLiteralColors": 1357,
+    "forbiddenLiteralColors": 1318,
     "staticInlineStyles": 1327,
     "dynamicInlineStyles": 37,
     "unknownCssVariables": 252,
@@ -2665,7 +2665,11 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": []
+      "variableReferences": [
+        "--theme-feedback-success-foreground",
+        "--theme-feedback-success-foreground",
+        "--theme-graph-edge-muted"
+      ]
     },
     {
       "path": "src/frontend/dm/map/network/NetworkInspector.tsx",
@@ -2756,8 +2760,11 @@
         "--theme-borders-default",
         "--theme-accents-secondary-foreground",
         "--theme-surfaces-canvas",
+        "--theme-text-on-media",
+        "--theme-surfaces-canvas",
         "--theme-borders-default",
         "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
         "--theme-text-secondary",
         "--theme-surfaces-interactive",
         "--theme-accents-secondary-foreground",
@@ -2768,12 +2775,14 @@
         "--theme-text-primary",
         "--theme-borders-default",
         "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
         "--theme-text-primary",
         "--theme-surfaces-interactive-hover",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-borders-default",
         "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
         "--theme-text-secondary",
         "--theme-surfaces-interactive-hover",
         "--theme-text-primary",
@@ -2785,15 +2794,19 @@
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-feedback-success-foreground",
+        "--theme-surfaces-canvas",
         "--theme-text-secondary",
         "--theme-feedback-danger-foreground",
         "--theme-text-primary",
         "--network-node-accent",
         "--theme-borders-default",
         "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas",
         "--network-node-accent",
         "--network-node-accent",
         "--network-node-accent",
+        "--theme-surfaces-canvas",
         "--network-node-accent",
         "--theme-borders-default",
         "--network-node-accent",
@@ -2801,10 +2814,12 @@
         "--theme-surfaces-base",
         "--theme-surfaces-canvas",
         "--network-node-accent",
+        "--theme-text-on-media",
         "--network-node-accent",
         "--network-inspector-accent",
         "--theme-borders-default",
         "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
         "--theme-borders-default",
         "--network-inspector-accent",
         "--network-inspector-accent",
@@ -2827,12 +2842,14 @@
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-borders-default",
+        "--theme-surfaces-canvas",
         "--theme-borders-default",
         "--theme-surfaces-base",
         "--theme-text-primary",
         "--theme-surfaces-interactive-hover",
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
+        "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-accents-secondary-foreground",
@@ -2853,8 +2870,17 @@
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-text-secondary",
+        "--theme-media-overlay-strong",
+        "--theme-text-on-media",
         "--theme-borders-default",
-        "--theme-text-primary",
+        "--theme-media-overlay-strong",
+        "--theme-text-on-media",
+        "--theme-feedback-danger-strong",
+        "--theme-feedback-danger-on-strong",
+        "--theme-feedback-success-strong",
+        "--theme-feedback-success-on-strong",
+        "--theme-feedback-warning-strong",
+        "--theme-feedback-warning-on-strong",
         "--theme-text-primary",
         "--theme-text-secondary"
       ]
@@ -2871,7 +2897,8 @@
       "variableReferences": [
         "--theme-text-primary",
         "--theme-text-secondary",
-        "--theme-borders-default"
+        "--theme-borders-default",
+        "--theme-text-on-media"
       ]
     },
     {
@@ -2884,8 +2911,10 @@
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": [
+        "--theme-graph-edge-label-background",
         "--theme-borders-default",
-        "--theme-text-primary"
+        "--theme-graph-edge-label-text",
+        "--theme-surfaces-canvas"
       ]
     },
     {
@@ -2898,7 +2927,10 @@
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": [
-        "--theme-accents-primary-foreground"
+        "--theme-accents-primary-foreground",
+        "--theme-text-on-media",
+        "--theme-text-on-media",
+        "--theme-surfaces-canvas"
       ]
     },
     {
@@ -25357,42 +25389,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "literal-color:src/frontend/dm/map/network/NetworkFlow.tsx:218:61",
-      "path": "src/frontend/dm/map/network/NetworkFlow.tsx",
-      "line": 218,
-      "column": 61,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#10b981",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/NetworkFlow.tsx:253:31",
-      "path": "src/frontend/dm/map/network/NetworkFlow.tsx",
-      "line": 253,
-      "column": 31,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#10b981",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/NetworkFlow.tsx:253:60",
-      "path": "src/frontend/dm/map/network/NetworkFlow.tsx",
-      "line": 253,
-      "column": 60,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(148,163,184,0.5)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "static-inline:src/frontend/dm/map/network/NetworkInspector.tsx:32:42",
       "path": "src/frontend/dm/map/network/NetworkInspector.tsx",
       "line": 32,
@@ -25443,78 +25439,6 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:119:58",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 119,
-      "column": 58,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "black",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:120:29",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 120,
-      "column": 29,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(255, 255, 255, 0.025)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:120:69",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 120,
-      "column": 69,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.22)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:150:27",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 150,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.28)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:218:66",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 218,
-      "column": 66,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "black",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:219:27",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 219,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.38)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:246:3",
       "path": "src/frontend/dm/map/network/networkFlow.css",
       "line": 246,
@@ -25524,102 +25448,6 @@
       "sourceType": "css",
       "category": "literal-color",
       "value": "white",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:281:66",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 281,
-      "column": 66,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "black",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:282:27",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 282,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.42)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:357:51",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 357,
-      "column": 51,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "#34d399",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:359:27",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 359,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.24)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:389:66",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 389,
-      "column": 66,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "black",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:390:27",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 390,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.22)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:398:27",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 398,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.32)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:404:102",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 404,
-      "column": 102,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.34)",
       "reason": "Literal visual color outside a registered theme package."
     },
     {
@@ -25647,42 +25475,6 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:469:72",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 469,
-      "column": 72,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "white",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:486:66",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 486,
-      "column": 66,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "black",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:487:27",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 487,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.46)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:512:3",
       "path": "src/frontend/dm/map/network/networkFlow.css",
       "line": 512,
@@ -25704,54 +25496,6 @@
       "sourceType": "css",
       "category": "literal-color",
       "value": "white",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:657:27",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 657,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.32)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:665:66",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 665,
-      "column": 66,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "black",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:685:68",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 685,
-      "column": 68,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "black",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/network/networkFlow.css:686:27",
-      "path": "src/frontend/dm/map/network/networkFlow.css",
-      "line": 686,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.34)",
       "reason": "Literal visual color outside a registered theme package."
     },
     {
@@ -25935,10 +25679,10 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:469:79",
+      "id": "important:src/frontend/dm/map/network/networkFlow.css:469:100",
       "path": "src/frontend/dm/map/network/networkFlow.css",
       "line": 469,
-      "column": 79,
+      "column": 100,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -25959,10 +25703,10 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/map/network/networkFlow.css:685:75",
+      "id": "important:src/frontend/dm/map/network/networkFlow.css:685:44",
       "path": "src/frontend/dm/map/network/networkFlow.css",
       "line": 685,
-      "column": 75,
+      "column": 44,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",
@@ -25994,114 +25738,6 @@
       "reason": "Large stylesheet requires atomization (805 lines, 113 selectors)."
     },
     {
-      "id": "literal-color:src/frontend/dm/map/shared/EntityNodeContent.tsx:39:46",
-      "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
-      "line": 39,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#475569",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/EntityNodeContent.tsx:76:26",
-      "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
-      "line": 76,
-      "column": 26,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(15, 23, 42, 0.9)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/EntityNodeContent.tsx:126:169",
-      "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
-      "line": 126,
-      "column": 169,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(15, 23, 42, 0.75)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/EntityNodeContent.tsx:137:44",
-      "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
-      "line": 137,
-      "column": 44,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(239, 68, 68, 0.85)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/EntityNodeContent.tsx:137:78",
-      "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
-      "line": 137,
-      "column": 78,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#fff",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/EntityNodeContent.tsx:143:44",
-      "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
-      "line": 143,
-      "column": 44,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(16, 185, 129, 0.85)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/EntityNodeContent.tsx:143:79",
-      "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
-      "line": 143,
-      "column": 79,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#fff",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/EntityNodeContent.tsx:149:44",
-      "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
-      "line": 149,
-      "column": 44,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(245, 158, 11, 0.85)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/EntityNodeContent.tsx:149:79",
-      "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
-      "line": 149,
-      "column": 79,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#fff",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "static-inline:src/frontend/dm/map/shared/EntityNodeContent.tsx:38:12",
       "path": "src/frontend/dm/map/shared/EntityNodeContent.tsx",
       "line": 38,
@@ -26123,7 +25759,7 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{ color: \"#475569\", opacity: 0.5 }}",
+      "value": "style={{ color: \"var(--theme-text-secondary)\", opacity: 0.5 }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -26175,7 +25811,7 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{\n            position: \"absolute\",\n            inset: 0,\n            background: \"rgba(15, 23, 42, 0.9)\",\n            border: \"none\",\n            color: \"var(--theme-text-secondary)\",\n            display: \"flex\",\n            flexDir",
+      "value": "style={{\n            position: \"absolute\",\n            inset: 0,\n            background: \"var(--theme-media-overlay-strong)\",\n            border: \"none\",\n            color: \"var(--theme-text-on-media)\",\n            display: \"flex\",\n        ",
       "classification": "mixed",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -26240,7 +25876,7 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{ position: \"absolute\", bottom: \"8px\", left: \"8px\", display: \"flex\", alignItems: \"center\", gap: \"4px\", background: \"rgba(15, 23, 42, 0.75)\", padding: \"2px 6px\", borderRadius: \"4px\", fontSize: \"0.7rem\", color: \"var(--theme-text-primar",
+      "value": "style={{ position: \"absolute\", bottom: \"8px\", left: \"8px\", display: \"flex\", alignItems: \"center\", gap: \"4px\", background: \"var(--theme-media-overlay-strong)\", padding: \"2px 6px\", borderRadius: \"4px\", fontSize: \"0.7rem\", color: \"var(--theme-",
       "classification": "mixed",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -26266,7 +25902,7 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{ background: \"rgba(239, 68, 68, 0.85)\", color: \"#fff\", padding: \"2px 6px\", borderRadius: \"4px\", fontSize: \"0.65rem\", fontWeight: \"600\" }}",
+      "value": "style={{ background: \"color-mix(in srgb, var(--theme-feedback-danger-strong) 85%, transparent)\", color: \"var(--theme-feedback-danger-on-strong)\", padding: \"2px 6px\", borderRadius: \"4px\", fontSize: \"0.65rem\", fontWeight: \"600\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -26279,7 +25915,7 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{ background: \"rgba(16, 185, 129, 0.85)\", color: \"#fff\", padding: \"2px 6px\", borderRadius: \"4px\", fontSize: \"0.65rem\", fontWeight: \"600\" }}",
+      "value": "style={{ background: \"color-mix(in srgb, var(--theme-feedback-success-strong) 85%, transparent)\", color: \"var(--theme-feedback-success-on-strong)\", padding: \"2px 6px\", borderRadius: \"4px\", fontSize: \"0.65rem\", fontWeight: \"600\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -26292,7 +25928,7 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{ background: \"rgba(245, 158, 11, 0.85)\", color: \"#fff\", padding: \"2px 6px\", borderRadius: \"4px\", fontSize: \"0.65rem\", fontWeight: \"600\" }}",
+      "value": "style={{ background: \"color-mix(in srgb, var(--theme-feedback-warning-strong) 85%, transparent)\", color: \"var(--theme-feedback-warning-on-strong)\", padding: \"2px 6px\", borderRadius: \"4px\", fontSize: \"0.65rem\", fontWeight: \"600\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -26444,18 +26080,6 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/map/shared/FactNodeContent.tsx:112:69",
-      "path": "src/frontend/dm/map/shared/FactNodeContent.tsx",
-      "line": 112,
-      "column": 69,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(255, 255, 255, 0.05)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "static-inline:src/frontend/dm/map/shared/FactNodeContent.tsx:44:10",
       "path": "src/frontend/dm/map/shared/FactNodeContent.tsx",
       "line": 44,
@@ -26555,33 +26179,9 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{ background: \"rgba(255, 255, 255, 0.05)\", padding: \"2px 6px\", borderRadius: \"4px\" }}",
+      "value": "style={{ background: \"color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)\", padding: \"2px 6px\", borderRadius: \"4px\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/RelationEdgeLabel.tsx:13:22",
-      "path": "src/frontend/dm/map/shared/RelationEdgeLabel.tsx",
-      "line": 13,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(15, 23, 42, 0.85)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/RelationEdgeLabel.tsx:21:31",
-      "path": "src/frontend/dm/map/shared/RelationEdgeLabel.tsx",
-      "line": 21,
-      "column": 31,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.4)",
-      "reason": "Literal visual color outside a registered theme package."
     },
     {
       "id": "static-inline:src/frontend/dm/map/shared/RelationEdgeLabel.tsx:12:7",
@@ -26592,45 +26192,9 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{\n        background: \"rgba(15, 23, 42, 0.85)\",\n        backdropFilter: \"blur(4px)\",\n        border: \"1px solid var(--theme-borders-default)\",\n        color: \"var(--theme-text-primary)\",\n        padding: \"2px 8px\",\n        borderRadi",
+      "value": "style={{\n        background: \"var(--theme-graph-edge-label-background)\",\n        backdropFilter: \"blur(4px)\",\n        border: \"1px solid var(--theme-borders-default)\",\n        color: \"var(--theme-graph-edge-label-text)\",\n        padding: \"2",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/ResourceNodeFrame.tsx:27:22",
-      "path": "src/frontend/dm/map/shared/ResourceNodeFrame.tsx",
-      "line": 27,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(255, 255, 255, 0.03)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/ResourceNodeFrame.tsx:30:56",
-      "path": "src/frontend/dm/map/shared/ResourceNodeFrame.tsx",
-      "line": 30,
-      "column": 56,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(255, 255, 255, 0.1)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/map/shared/ResourceNodeFrame.tsx:31:73",
-      "path": "src/frontend/dm/map/shared/ResourceNodeFrame.tsx",
-      "line": 31,
-      "column": 73,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.3)",
-      "reason": "Literal visual color outside a registered theme package."
     },
     {
       "id": "static-inline:src/frontend/dm/map/shared/ResourceNodeFrame.tsx:24:7",
@@ -26641,7 +26205,7 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{\n        display: \"flex\",\n        flexDirection: \"column\",\n        background: \"rgba(255, 255, 255, 0.03)\",\n        backdropFilter: \"blur(12px)\",\n        borderRadius: \"12px\",\n        border: `1px solid ${selected ? accentColor : \"r",
+      "value": "style={{\n        display: \"flex\",\n        flexDirection: \"column\",\n        background: \"color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)\",\n        backdropFilter: \"blur(12px)\",\n        borderRadius: \"12px\",\n        border: `1p",
       "classification": "mixed",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },

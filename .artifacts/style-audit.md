@@ -8,7 +8,7 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 49,
   "tsxFilesWithInlineStyles": 96,
-  "forbiddenLiteralColors": 1357,
+  "forbiddenLiteralColors": 1318,
   "staticInlineStyles": 1327,
   "dynamicInlineStyles": 37,
   "unknownCssVariables": 252,
@@ -1709,21 +1709,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/map/network/networkFlow.css:28` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/dm/map/network/networkFlow.css:86` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/map/network/networkFlow.css:100` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:119` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:120` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:120` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:150` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:218` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:219` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/map/network/networkFlow.css:246` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:281` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:282` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:357` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:359` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:389` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:390` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:398` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:404` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:413` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:415` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:419` | Important declarations bypass the intended cascade. |
@@ -1741,46 +1727,27 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/map/network/networkFlow.css:463` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:467` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:468` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:469` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:469` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:470` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:486` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:487` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/map/network/networkFlow.css:512` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/map/network/networkFlow.css:631` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:657` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:665` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:685` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:685` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/map/network/networkFlow.css:686` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/NetworkFlow.tsx:218` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/NetworkFlow.tsx:253` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/NetworkFlow.tsx:253` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/network/NetworkInspector.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/network/NetworkRelationEdge.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:38` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/map/shared/EntityNodeContent.tsx:39` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:39` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:41` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:73` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/map/shared/EntityNodeContent.tsx:76` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:89` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/map/shared/EntityNodeContent.tsx:111` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:119` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/map/shared/EntityNodeContent.tsx:126` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:126` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:132` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/map/shared/EntityNodeContent.tsx:137` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/shared/EntityNodeContent.tsx:137` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:137` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/map/shared/EntityNodeContent.tsx:143` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/shared/EntityNodeContent.tsx:143` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/map/shared/EntityNodeContent.tsx:149` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/shared/EntityNodeContent.tsx:149` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:149` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:159` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1801,15 +1768,9 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/map/shared/FactNodeContent.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/FactNodeContent.tsx:95` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/FactNodeContent.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/map/shared/FactNodeContent.tsx:112` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/shared/FactNodeContent.tsx:112` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/RelationEdgeLabel.tsx:12` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/map/shared/RelationEdgeLabel.tsx:13` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/shared/RelationEdgeLabel.tsx:21` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/shared/ResourceNodeFrame.tsx:24` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/map/shared/ResourceNodeFrame.tsx:27` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/shared/ResourceNodeFrame.tsx:30` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/shared/ResourceNodeFrame.tsx:31` | Literal visual color outside a registered theme package. |
 | high | mixed-responsibility | `src/frontend/dm/onboarding/campaign-guided-tour.css:1` | Large stylesheet requires atomization (226 lines, 32 selectors). |
 | high | cross-component-selector | `src/frontend/dm/onboarding/campaign-guided-tour.css:129` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/onboarding/campaign-guided-tour.css:144` | Important declarations bypass the intended cascade. |

@@ -36,7 +36,7 @@ export function EntityNodeContent({
   if (entity.archived) {
     return (
       <div style={{ display: "flex", padding: "12px", alignItems: "center", gap: "12px" }}>
-        <FileText size={24} style={{ color: "#475569", opacity: 0.5 }} />
+        <FileText size={24} style={{ color: "var(--theme-text-secondary)", opacity: 0.5 }} />
         <div>
           <div style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", fontWeight: "600" }}>[Archivada]</div>
           <div style={{ color: "var(--theme-text-secondary)", fontSize: "0.75rem" }}>{entity.entityId.slice(0, 8)}…</div>
@@ -73,9 +73,9 @@ export function EntityNodeContent({
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(15, 23, 42, 0.9)",
+            background: "var(--theme-media-overlay-strong)",
             border: "none",
-            color: "var(--theme-text-secondary)",
+            color: "var(--theme-text-on-media)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -123,7 +123,7 @@ export function EntityNodeContent({
         {imageUrl && <div className="rg-card__img-gradient" />}
 
         {/* Type Badge */}
-        <div className="rg-card__type-badge" style={{ position: "absolute", bottom: "8px", left: "8px", display: "flex", alignItems: "center", gap: "4px", background: "rgba(15, 23, 42, 0.75)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.7rem", color: "var(--theme-text-primary)" }}>
+        <div className="rg-card__type-badge" style={{ position: "absolute", bottom: "8px", left: "8px", display: "flex", alignItems: "center", gap: "4px", background: "var(--theme-media-overlay-strong)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.7rem", color: "var(--theme-text-on-media)" }}>
           <IconComponent size={9} />
           <span>{t(cfg.labelKey)}</span>
         </div>
@@ -134,19 +134,19 @@ export function EntityNodeContent({
             const kind = entity.visibility?.kind;
             if (isDmOnly) {
               return (
-                <div style={{ background: "rgba(239, 68, 68, 0.85)", color: "#fff", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem", fontWeight: "600" }}>
+                <div style={{ background: "color-mix(in srgb, var(--theme-feedback-danger-strong) 85%, transparent)", color: "var(--theme-feedback-danger-on-strong)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem", fontWeight: "600" }}>
                   🔒 Secreto
                 </div>
               );
             } else if (kind === "public" || kind === "party") {
               return (
-                <div style={{ background: "rgba(16, 185, 129, 0.85)", color: "#fff", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem", fontWeight: "600" }}>
+                <div style={{ background: "color-mix(in srgb, var(--theme-feedback-success-strong) 85%, transparent)", color: "var(--theme-feedback-success-on-strong)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem", fontWeight: "600" }}>
                   👁 Revelado
                 </div>
               );
             } else {
               return (
-                <div style={{ background: "rgba(245, 158, 11, 0.85)", color: "#fff", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem", fontWeight: "600" }}>
+                <div style={{ background: "color-mix(in srgb, var(--theme-feedback-warning-strong) 85%, transparent)", color: "var(--theme-feedback-warning-on-strong)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem", fontWeight: "600" }}>
                   🕯 Parcial
                 </div>
               );

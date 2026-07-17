@@ -109,7 +109,7 @@ export function FactNodeContent({
           <span>{conf.label}</span>
         </span>
         {relatedCount > 0 && (
-          <span className="fact-node__linked" style={{ background: "rgba(255, 255, 255, 0.05)", padding: "2px 6px", borderRadius: "4px" }}>
+          <span className="fact-node__linked" style={{ background: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)", padding: "2px 6px", borderRadius: "4px" }}>
             {relatedCount} ent.
           </span>
         )}
