@@ -1,0 +1,129 @@
+.session-idle-workspace {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: clamp(18px, 2vw, 28px);
+}
+
+.session-create-panel {
+  display: grid;
+  grid-template-columns: auto minmax(220px, 0.9fr) minmax(420px, 1.3fr);
+  align-items: center;
+  gap: clamp(20px, 3vw, 36px);
+  padding: clamp(22px, 3vw, 32px);
+}
+
+.session-create-panel__icon {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 45%, var(--theme-borders-default));
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, var(--theme-surfaces-base));
+  color: var(--theme-accents-primary-foreground);
+}
+
+.session-create-panel__copy {
+  min-width: 0;
+}
+
+.session-create-panel__copy h2 {
+  margin: 0;
+  color: var(--theme-text-primary);
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  line-height: 1.15;
+}
+
+.session-create-panel__copy > p:last-child {
+  max-width: 58ch;
+  margin: 8px 0 0;
+  color: var(--theme-text-secondary);
+  line-height: 1.55;
+}
+
+.session-section-eyebrow {
+  margin: 0 0 6px;
+  color: var(--theme-accents-primary-foreground);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.session-create-form {
+  display: grid;
+  min-width: 0;
+  gap: 14px;
+}
+
+.session-create-form .form-group {
+  margin: 0;
+}
+
+.session-create-form__actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.session-create-form__actions .btn {
+  min-height: var(--touch-target-min);
+}
+
+.session-idle-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.8fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.session-idle-main {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.session-empty-prepared {
+  min-height: 360px;
+}
+
+@media (max-width: 1120px) {
+  .session-create-panel {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .session-create-form {
+    grid-column: 1 / -1;
+  }
+
+  .session-idle-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 0.7fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .session-idle-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .session-create-panel {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .session-create-panel__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .session-create-form__actions {
+    grid-template-columns: 1fr;
+  }
+}

@@ -11,19 +11,20 @@ import { ActiveSessionPrepPanel } from "./components/ActiveSessionPrepPanel.js";
 import { QuickCaptureBar } from "./components/QuickCaptureBar.js";
 import { SessionEventFeed } from "./components/SessionEventFeed.js";
 import { SessionQuickActions, type ActionId } from "./components/SessionQuickActions.js";
-import "./sessionWorkspace.css";
+import "./session-workspace.css";
+import "./components/session-idle.css";
+import "./components/prepared-session.css";
+import "./components/session-history.css";
+import "./components/session-forms.css";
 
 export function SessionPage() {
   const { locale } = useTranslation();
-  // useParams({ strict: false }) is untyped (any) outside a registered route branch;
-  // this narrowing cast matches the established pattern used across other pages (e.g. CommandCenterPage.tsx).
   const { campaignId } = useParams({ strict: false }) as { campaignId?: string };
   const navigate = useNavigate();
   const store = useCampaignStore();
   const { addToast } = useToast();
 
   const campaignState = store.campaignState;
-  // The store types sessionEvents as unknown[]; the server always serializes well-formed SessionEvent records here.
   const sessionEvents = (campaignState?.sessionEvents ?? []) as SessionEvent[];
   const activeSession = (campaignState?.sessions ?? []).find((session) => session.status === "active");
 
@@ -37,18 +38,10 @@ export function SessionPage() {
     const sessions = campaignState?.sessions ?? [];
     const preparedSessions = [...sessions]
       .filter((session) => session.status === "planned")
-      .sort(
-        (a, b) =>
-          new Date(a.scheduledAt ?? 0).getTime() -
-          new Date(b.scheduledAt ?? 0).getTime(),
-      );
+      .sort((a, b) => new Date(a.scheduledAt ?? 0).getTime() - new Date(b.scheduledAt ?? 0).getTime());
     const recentSessions = [...sessions]
       .filter((session) => session.status === "closed" || session.status === "archived")
-      .sort(
-        (a, b) =>
-          new Date(b.endedAt ?? 0).getTime() -
-          new Date(a.endedAt ?? 0).getTime(),
-      )
+      .sort((a, b) => new Date(b.endedAt ?? 0).getTime() - new Date(a.endedAt ?? 0).getTime())
       .slice(0, 5);
 
     return (
@@ -85,10 +78,7 @@ export function SessionPage() {
         addToast={addToast}
         onOpenCluePanel={() => setActiveAction("pista")}
       />
-      <SessionEventFeed
-        sessionEvents={sessionEvents}
-        sessionId={activeSession.sessionId}
-      />
+      <SessionEventFeed sessionEvents={sessionEvents} sessionId={activeSession.sessionId} />
       <SessionQuickActions
         campaignState={campaignState}
         activeSession={activeSession}

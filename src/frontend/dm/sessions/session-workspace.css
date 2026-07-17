@@ -1,0 +1,17 @@
+.session-page,
+.session-active-workspace {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: clamp(18px, 2vw, 28px);
+}
+
+.session-page {
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+.session-active-workspace {
+  gap: var(--space-5);
+}

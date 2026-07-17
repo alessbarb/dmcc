@@ -1,6 +1,7 @@
 import type { Entity } from "../../../shared/stores/campaignStore.js";
 import type { MaybeCampaignState } from "../sessionTypes.js";
 import { uniqueIds } from "../prep/sessionPrepUtils.js";
+import "./session-forms.css";
 
 export function EntityMultiPicker({
   label,
@@ -31,18 +32,17 @@ export function EntityMultiPicker({
   return (
     <div className="form-group">
       <label className="form-label">{label}</label>
-      {help && <p style={{ fontSize: "0.78rem", color: "var(--theme-text-secondary)", marginBottom: "8px" }}>{help}</p>}
+      {help && <p className="session-form-help">{help}</p>}
       {entities.length === 0 ? (
-        <p style={{ fontSize: "0.82rem", color: "var(--theme-text-secondary)", padding: "10px 0" }}>—</p>
+        <p className="session-form-empty-inline">—</p>
       ) : (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", maxHeight: "120px", overflowY: "auto", padding: "4px" }}>
+        <div className="session-entity-picker">
           {entities.map((entity: Entity) => (
             <button
               key={entity.entityId}
               type="button"
-              className={`btn btn-sm ${ids.includes(entity.entityId) ? "btn-primary" : "btn-secondary"}`}
+              className={`btn btn-sm session-entity-picker__option ${ids.includes(entity.entityId) ? "btn-primary" : "btn-secondary"}`}
               onClick={() => toggle(entity.entityId)}
-              style={{ fontSize: "0.76rem", padding: "4px 9px" }}
             >
               {entity.title}
             </button>

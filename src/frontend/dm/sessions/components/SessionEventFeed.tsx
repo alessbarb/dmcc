@@ -13,6 +13,7 @@ import {
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { SessionEvent, SessionEventType } from "@core/domain/session/types.js";
 import { formatRelative } from "../sessionTimeFormat.js";
+import "./session-event-feed.css";
 
 const EVENT_TYPE_ICONS: Partial<Record<SessionEventType, React.ReactNode>> = {
   note_recorded: <StickyNote size={13} />,
@@ -23,13 +24,13 @@ const EVENT_TYPE_ICONS: Partial<Record<SessionEventType, React.ReactNode>> = {
   custom: <ChevronRight size={13} />,
 };
 
-const EVENT_TYPE_COLORS: Partial<Record<SessionEventType, string>> = {
-  note_recorded: "var(--theme-feedback-info-foreground)",
-  npc_met: "var(--theme-feedback-success-foreground)",
-  clue_revealed: "var(--theme-accents-secondary-foreground)",
-  decision_made: "var(--theme-accents-primary-foreground)",
-  consequence_created: "var(--theme-feedback-warning-foreground)",
-  custom: "var(--theme-text-secondary)",
+const EVENT_TYPE_CLASSES: Partial<Record<SessionEventType, string>> = {
+  note_recorded: "session-event-feed__icon--information",
+  npc_met: "session-event-feed__icon--success",
+  clue_revealed: "session-event-feed__icon--clue",
+  decision_made: "session-event-feed__icon--decision",
+  consequence_created: "session-event-feed__icon--warning",
+  custom: "session-event-feed__icon--muted",
 };
 
 export function SessionEventFeed({
@@ -43,123 +44,51 @@ export function SessionEventFeed({
   const [collapsed, setCollapsed] = useState(false);
 
   const events = sessionEvents
-    .filter((ev) => ev.sessionId === sessionId)
+    .filter((event) => event.sessionId === sessionId)
     .sort((a, b) => new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime())
     .slice(0, 20);
 
   return (
-    <div
-      style={{
-        backgroundColor: "var(--theme-surfaces-base)",
-        border: "1px solid var(--theme-borders-default)",
-        borderRadius: "var(--theme-shapes-radius-large)",
-        overflow: "hidden",
-      }}
-    >
+    <section className="session-event-feed">
       <button
         type="button"
-        onClick={() => setCollapsed((c) => !c)}
-        style={{
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "10px 16px",
-          background: "transparent",
-          border: "none",
-          cursor: "pointer",
-          color: "var(--theme-text-secondary)",
-          fontSize: "0.8rem",
-          fontWeight: "700",
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-        }}
+        className="session-event-feed__toggle"
+        onClick={() => setCollapsed((current) => !current)}
+        aria-expanded={!collapsed}
       >
-        <span style={{ display: "flex", alignItems: "center", gap: "7px" }}>
+        <span className="session-event-feed__heading">
           <Clock size={13} />
           {t("session.eventFeedTitle")}
           {events.length > 0 && (
-            <span
-              style={{
-                backgroundColor: "var(--theme-accents-primary-background)",
-                color: "var(--theme-accents-primary-foreground)",
-                borderRadius: "var(--theme-shapes-radius-pill)",
-                padding: "1px 7px",
-                fontSize: "0.72rem",
-                fontWeight: "800",
-              }}
-            >
-              {events.length}
-            </span>
+            <span className="session-event-feed__count">{events.length}</span>
           )}
         </span>
         {collapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
       </button>
 
       {!collapsed && (
-        <div style={{ borderTop: "1px solid var(--theme-borders-default)" }}>
+        <div className="session-event-feed__body">
           {events.length === 0 ? (
-            <p
-              style={{
-                padding: "20px 16px",
-                color: "var(--theme-text-secondary)",
-                fontSize: "0.85rem",
-                textAlign: "center",
-              }}
-            >
-              {t("session.noEventsYet")}
-            </p>
+            <p className="session-event-feed__empty">{t("session.noEventsYet")}</p>
           ) : (
-            <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-              {events.map((ev, i: number) => {
-                const color = EVENT_TYPE_COLORS[ev.type] ?? EVENT_TYPE_COLORS.custom;
-                const icon = EVENT_TYPE_ICONS[ev.type] ?? EVENT_TYPE_ICONS.custom;
+            <ul className="session-event-feed__list">
+              {events.map((event, index) => {
+                const iconClass = EVENT_TYPE_CLASSES[event.type] ?? EVENT_TYPE_CLASSES.custom;
+                const icon = EVENT_TYPE_ICONS[event.type] ?? EVENT_TYPE_ICONS.custom;
                 return (
-                  <li
-                    key={ev.id ?? i}
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: "10px",
-                      padding: "9px 16px",
-                      borderBottom: i < events.length - 1 ? "1px solid var(--theme-borders-default)" : "none",
-                    }}
-                  >
+                  <li className="session-event-feed__item" key={event.id ?? index}>
                     <span
-                      style={{
-                        color,
-                        flexShrink: 0,
-                        marginTop: "2px",
-                      }}
+                      className={`session-event-feed__icon ${iconClass ?? ""}`}
                       aria-hidden="true"
                     >
                       {icon}
                     </span>
-                    <span
-                      style={{
-                        flex: 1,
-                        fontSize: "0.85rem",
-                        color: "var(--theme-text-primary)",
-                        lineHeight: 1.35,
-                        minWidth: 0,
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                      }}
-                      title={ev.title}
-                    >
-                      {ev.title}
+                    <span className="session-event-feed__title" title={event.title}>
+                      {event.title}
                     </span>
-                    <span
-                      style={{
-                        fontSize: "0.73rem",
-                        color: "var(--theme-text-secondary)",
-                        flexShrink: 0,
-                        marginTop: "2px",
-                      }}
-                    >
-                      {ev.occurredAt ? formatRelative(ev.occurredAt, t) : ""}
-                    </span>
+                    <time className="session-event-feed__time" dateTime={event.occurredAt}>
+                      {event.occurredAt ? formatRelative(event.occurredAt, t) : ""}
+                    </time>
                   </li>
                 );
               })}
@@ -167,6 +96,6 @@ export function SessionEventFeed({
           )}
         </div>
       )}
-    </div>
+    </section>
   );
 }

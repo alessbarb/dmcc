@@ -1,5 +1,6 @@
 import { findEntityTitle } from "../prep/sessionPrepUtils.js";
 import type { MaybeCampaignState } from "../sessionTypes.js";
+import "./session-linked-list.css";
 
 export function PrepLinkedList({
   title,
@@ -13,15 +14,15 @@ export function PrepLinkedList({
   const safeIds = ids ?? [];
   if (safeIds.length === 0) return null;
   return (
-    <div>
-      <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--theme-text-secondary)", marginBottom: "6px" }}>{title}</div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+    <section className="session-linked-list">
+      <h4 className="session-linked-list__title">{title}</h4>
+      <div className="session-linked-list__items">
         {safeIds.map((id) => (
-          <span key={id} className="badge" style={{ backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)", color: "var(--theme-text-primary)" }}>
+          <span key={id} className="badge session-linked-list__item">
             {findEntityTitle(campaignState, id)}
           </span>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

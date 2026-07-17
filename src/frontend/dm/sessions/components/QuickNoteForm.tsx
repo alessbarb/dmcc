@@ -4,6 +4,7 @@ import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { ToastKind } from "../../../shared/hooks/useToast.js";
 import type { CampaignStateStore, Session } from "../../../shared/stores/campaignStore.js";
 import { errorMessage, runSessionAction } from "../sessionFormSubmit.js";
+import "./quick-note.css";
 
 export function QuickNoteForm({
   createEntity,
@@ -57,25 +58,27 @@ export function QuickNoteForm({
   };
 
   return (
-    <form onSubmit={(event) => {
-      runSessionAction(handleSubmit(event), "No se pudo guardar la nota rápida.");
-    }}>
+    <form
+      className="quick-note-form"
+      onSubmit={(event) => {
+        runSessionAction(handleSubmit(event), "No se pudo guardar la nota rápida.");
+      }}
+    >
       <div className="form-group">
         <label className="form-label" htmlFor="nota-text">
           {t("sessionPage.noteLabel")}
         </label>
         <textarea
           id="nota-text"
-          className="form-textarea"
+          className="form-textarea quick-note-form__textarea"
           placeholder={t("sessionPage.notePlaceholder")}
           value={text}
           onChange={(e) => setText(e.target.value)}
           required
           autoFocus
-          style={{ minHeight: "100px" }}
         />
       </div>
-      <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+      <div className="session-form-actions quick-note-form__actions">
         <button type="button" className="btn btn-secondary" onClick={onClose}>
           {t("common.cancel")}
         </button>

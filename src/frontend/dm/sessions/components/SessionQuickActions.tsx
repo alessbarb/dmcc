@@ -17,6 +17,7 @@ import { RecordDecisionForm } from "./RecordDecisionForm.js";
 import { CreateConsequenceForm } from "./CreateConsequenceForm.js";
 import { QuickNpcForm } from "./QuickNpcForm.js";
 import { CloseSessionForm } from "./CloseSessionForm.js";
+import "./session-actions.css";
 
 export type ActionId =
   | "nota"
@@ -30,12 +31,9 @@ interface ActionDef {
   id: ActionId;
   label: string;
   icon: React.ReactNode;
-  accentVar: string;
+  toneClass: string;
 }
 
-// activeAction lives in the parent (SessionPage) because QuickCaptureBar, a
-// sibling component, must be able to open the "pista" (reveal clue) panel
-// via its `+pista` command.
 export function SessionQuickActions({
   campaignState,
   activeSession,
@@ -64,223 +62,56 @@ export function SessionQuickActions({
   const { t } = useTranslation();
 
   const actions: ActionDef[] = [
-    {
-      id: "nota",
-      label: t("session.quickNote"),
-      icon: <StickyNote size={22} />,
-      accentVar: "var(--theme-feedback-info-foreground)",
-    },
-    {
-      id: "pista",
-      label: t("sessionPage.revealClueButton"),
-      icon: <Eye size={22} />,
-      accentVar: "var(--theme-accents-secondary-foreground)",
-    },
-    {
-      id: "decision",
-      label: t("session.recordDecision"),
-      icon: <GitMerge size={22} />,
-      accentVar: "var(--theme-accents-primary-foreground)",
-    },
-    {
-      id: "consecuencia",
-      label: t("session.createConsequence"),
-      icon: <Zap size={22} />,
-      accentVar: "var(--theme-feedback-warning-foreground)",
-    },
-    {
-      id: "pnj",
-      label: t("session.createQuickNpc"),
-      icon: <UserPlus size={22} />,
-      accentVar: "var(--theme-feedback-success-foreground)",
-    },
-    {
-      id: "cerrar",
-      label: t("session.closeSession"),
-      icon: <X size={22} />,
-      accentVar: "var(--theme-feedback-danger-foreground)",
-    },
+    { id: "nota", label: t("session.quickNote"), icon: <StickyNote size={22} />, toneClass: "session-actions__item--note" },
+    { id: "pista", label: t("sessionPage.revealClueButton"), icon: <Eye size={22} />, toneClass: "session-actions__item--clue" },
+    { id: "decision", label: t("session.recordDecision"), icon: <GitMerge size={22} />, toneClass: "session-actions__item--decision" },
+    { id: "consecuencia", label: t("session.createConsequence"), icon: <Zap size={22} />, toneClass: "session-actions__item--consequence" },
+    { id: "pnj", label: t("session.createQuickNpc"), icon: <UserPlus size={22} />, toneClass: "session-actions__item--npc" },
+    { id: "cerrar", label: t("session.closeSession"), icon: <X size={22} />, toneClass: "session-actions__item--close" },
   ];
 
-  const selectedAction = actions.find((a) => a.id === activeAction);
+  const selectedAction = actions.find((action) => action.id === activeAction);
   const onClose = () => onSelectAction(null);
 
   return (
     <>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "12px",
-        }}
-        role="group"
-        aria-label={t("session.actions")}
-      >
+      <div className="session-actions" role="group" aria-label={t("session.actions")}>
         {actions.map((action) => {
           const isActive = activeAction === action.id;
           return (
             <button
               key={action.id}
               type="button"
-              onClick={() =>
-                onSelectAction(isActive ? null : action.id)
-              }
+              className={`session-actions__item ${action.toneClass}${isActive ? " is-active" : ""}`}
+              onClick={() => onSelectAction(isActive ? null : action.id)}
               aria-pressed={isActive}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "10px",
-                minHeight: "96px",
-                padding: "16px 12px",
-                backgroundColor: isActive
-                  ? "var(--theme-surfaces-interactive-hover)"
-                  : "var(--theme-surfaces-base)",
-                border: isActive
-                  ? `2px solid ${action.accentVar}`
-                  : "1px solid var(--theme-borders-default)",
-                borderRadius: "var(--theme-shapes-radius-large)",
-                cursor: "pointer",
-                transition: "var(--transition-fast)",
-                color: isActive ? action.accentVar : "var(--theme-text-secondary)",
-                boxShadow: isActive
-                  ? `0 0 14px ${action.accentVar}33`
-                  : "none",
-              }}
             >
-              <span
-                style={{
-                  color: isActive ? action.accentVar : "var(--theme-text-secondary)",
-                  transition: "var(--transition-fast)",
-                }}
-              >
-                {action.icon}
-              </span>
-              <span
-                style={{
-                  fontSize: "0.82rem",
-                  fontWeight: "700",
-                  textAlign: "center",
-                  lineHeight: 1.25,
-                  color: isActive ? "var(--theme-text-primary)" : "var(--theme-text-secondary)",
-                }}
-              >
-                {action.label}
-              </span>
-              {isActive && (
-                <ChevronRight
-                  size={12}
-                  style={{
-                    transform: "rotate(90deg)",
-                    color: action.accentVar,
-                    marginTop: "-4px",
-                  }}
-                  aria-hidden="true"
-                />
-              )}
+              <span className="session-actions__icon">{action.icon}</span>
+              <span className="session-actions__label">{action.label}</span>
+              {isActive && <ChevronRight className="session-actions__chevron" size={12} aria-hidden="true" />}
             </button>
           );
         })}
       </div>
 
       {activeAction && selectedAction && (
-        <section
-          className="card"
-          style={{
-            borderLeft: `3px solid ${selectedAction.accentVar}`,
-            padding: "24px",
-          }}
-          aria-label={`Panel: ${selectedAction.label}`}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: "20px",
-            }}
-          >
-            <h3
-              style={{
-                fontWeight: "800",
-                fontSize: "1rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                color: selectedAction.accentVar,
-              }}
-            >
+        <section className={`card session-action-panel ${selectedAction.toneClass}`} aria-label={`Panel: ${selectedAction.label}`}>
+          <header className="session-action-panel__header">
+            <h3 className="session-action-panel__title">
               {selectedAction.icon}
               {selectedAction.label}
             </h3>
-            <button
-              type="button"
-              className="btn btn-icon btn-secondary"
-              onClick={onClose}
-              aria-label={t("common.close")}
-              style={{ padding: "6px" }}
-            >
+            <button type="button" className="btn btn-icon btn-secondary session-action-panel__close" onClick={onClose} aria-label={t("common.close")}>
               <X size={16} />
             </button>
-          </div>
+          </header>
 
-          {activeAction === "nota" && (
-            <QuickNoteForm
-              createEntity={createEntity}
-              recordSessionEvent={recordSessionEvent}
-              activeSession={activeSession}
-              addToast={addToast}
-              onClose={onClose}
-            />
-          )}
-          {activeAction === "pista" && (
-            <RevealClueForm
-              campaignState={campaignState}
-              activeSession={activeSession}
-              revealClue={revealClue}
-              addToast={addToast}
-              onClose={onClose}
-            />
-          )}
-          {activeAction === "decision" && (
-            <RecordDecisionForm
-              campaignState={campaignState}
-              createEntity={createEntity}
-              createRelation={createRelation}
-              recordSessionEvent={recordSessionEvent}
-              activeSession={activeSession}
-              addToast={addToast}
-              onClose={onClose}
-            />
-          )}
-          {activeAction === "consecuencia" && (
-            <CreateConsequenceForm
-              campaignState={campaignState}
-              createEntity={createEntity}
-              recordSessionEvent={recordSessionEvent}
-              activeSession={activeSession}
-              addToast={addToast}
-              onClose={onClose}
-            />
-          )}
-          {activeAction === "pnj" && (
-            <QuickNpcForm
-              createEntity={createEntity}
-              activeSession={activeSession}
-              addToast={addToast}
-              onClose={onClose}
-            />
-          )}
-          {activeAction === "cerrar" && (
-            <CloseSessionForm
-              activeSession={activeSession}
-              closeSession={closeSession}
-              setCurrentPage={setCurrentPage}
-              addToast={addToast}
-              onClose={onClose}
-            />
-          )}
+          {activeAction === "nota" && <QuickNoteForm createEntity={createEntity} recordSessionEvent={recordSessionEvent} activeSession={activeSession} addToast={addToast} onClose={onClose} />}
+          {activeAction === "pista" && <RevealClueForm campaignState={campaignState} activeSession={activeSession} revealClue={revealClue} addToast={addToast} onClose={onClose} />}
+          {activeAction === "decision" && <RecordDecisionForm campaignState={campaignState} createEntity={createEntity} createRelation={createRelation} recordSessionEvent={recordSessionEvent} activeSession={activeSession} addToast={addToast} onClose={onClose} />}
+          {activeAction === "consecuencia" && <CreateConsequenceForm campaignState={campaignState} createEntity={createEntity} recordSessionEvent={recordSessionEvent} activeSession={activeSession} addToast={addToast} onClose={onClose} />}
+          {activeAction === "pnj" && <QuickNpcForm createEntity={createEntity} activeSession={activeSession} addToast={addToast} onClose={onClose} />}
+          {activeAction === "cerrar" && <CloseSessionForm activeSession={activeSession} closeSession={closeSession} setCurrentPage={setCurrentPage} addToast={addToast} onClose={onClose} />}
         </section>
       )}
     </>

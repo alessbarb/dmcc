@@ -1,0 +1,12 @@
+.quick-note-form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.quick-note-form__textarea {
+  min-height: 100px;
+}
+
+.quick-note-form__actions {
+  margin-top: var(--space-2);
+}
