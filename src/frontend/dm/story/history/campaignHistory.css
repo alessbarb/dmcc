@@ -168,7 +168,7 @@
   border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
   border-radius: var(--theme-shapes-radius-large, 14px);
   background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--theme-surfaces-canvas) 12%, transparent);
 }
 
 .campaign-history-entry__meta {

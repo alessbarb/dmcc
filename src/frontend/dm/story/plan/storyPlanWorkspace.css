@@ -55,7 +55,7 @@
   border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent) !important;
   border-radius: var(--theme-shapes-radius-large, 14px) !important;
   background: color-mix(in srgb, var(--theme-surfaces-base) 97%, transparent) !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--theme-surfaces-canvas) 16%, transparent);
 }
 
 .story-plan-workspace .glass-form,
@@ -67,7 +67,7 @@
 
 .story-plan-workspace .step-card {
   padding: 15px !important;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--theme-surfaces-canvas) 10%, transparent);
 }
 
 .story-plan-workspace .step-card:hover {
@@ -76,7 +76,7 @@
 
 .story-plan-workspace .step-card.status-active,
 .story-plan-workspace .step-card.status-ready {
-  box-shadow: inset 3px 0 0 var(--theme-accents-primary-foreground), 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 3px 0 0 var(--theme-accents-primary-foreground), 0 8px 20px color-mix(in srgb, var(--theme-surfaces-canvas) 10%, transparent);
 }
 
 .story-plan-workspace .form-control,

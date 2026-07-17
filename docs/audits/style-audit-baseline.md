@@ -8,11 +8,11 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 61,
   "tsxFilesWithInlineStyles": 85,
-  "forbiddenLiteralColors": 1315,
+  "forbiddenLiteralColors": 1310,
   "staticInlineStyles": 1250,
   "dynamicInlineStyles": 36,
-  "unknownCssVariables": 251,
-  "legacyCssVariables": 28,
+  "unknownCssVariables": 249,
+  "legacyCssVariables": 25,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 19,
   "crossComponentSelectors": 130,
@@ -1956,12 +1956,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | unknown-token | `src/frontend/dm/story/history/campaignHistory.css:1` | CSS variable is not declared or allowlisted. |
 | high | unknown-token | `src/frontend/dm/story/history/campaignHistory.css:1` | CSS variable is not declared or allowlisted. |
 | high | cross-component-selector | `src/frontend/dm/story/history/campaignHistory.css:106` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/dm/story/history/campaignHistory.css:171` | Literal visual color outside a registered theme package. |
-| high | legacy-token | `src/frontend/dm/story/plan/StoryPlanView.tsx:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/story/plan/StoryPlanView.tsx:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/story/plan/StoryPlanView.tsx:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/dm/story/plan/StoryPlanView.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/story/plan/StoryPlanView.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:419` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:423` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:434` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -2038,7 +2032,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:971` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:973` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:985` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/story/plan/StoryPlanView.tsx:991` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1001` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1012` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:1015` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -2068,14 +2061,11 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:55` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:56` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:57` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/story/plan/storyPlanWorkspace.css:58` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:63` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:64` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:65` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:69` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/story/plan/storyPlanWorkspace.css:70` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:74` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/story/plan/storyPlanWorkspace.css:79` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:101` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/story/plan/storyPlanWorkspace.css:105` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:108` | Important declarations bypass the intended cascade. |

@@ -494,7 +494,7 @@ export function StoryPlanView() {
             activeThreads.map((thread) => {
               const isSelected = selectedThreadId === thread.threadId;
               let badgeColor = "var(--theme-text-secondary)";
-              if (thread.status === "active") badgeColor = "var(--color-primary)";
+              if (thread.status === "active") badgeColor = "var(--theme-accents-primary-foreground)";
               if (thread.status === "resolved") badgeColor = "var(--theme-feedback-success-foreground)";
 
               return (
@@ -510,8 +510,8 @@ export function StoryPlanView() {
                     width: "100%",
                     padding: "10px 12px",
                     border: "none",
-                    background: isSelected ? "var(--bg-active)" : "none",
-                    color: isSelected ? "var(--text-active)" : "var(--theme-text-primary)",
+                    background: isSelected ? "color-mix(in srgb, var(--theme-accents-primary-foreground) 12%, transparent)" : "none",
+                    color: isSelected ? "var(--theme-accents-primary-foreground)" : "var(--theme-text-primary)",
                     borderRadius: "8px",
                     cursor: "pointer",
                     textAlign: "left",
@@ -666,7 +666,7 @@ export function StoryPlanView() {
                       <button
                         type="button"
                         onClick={() => void handleUnlinkEntityFromThread(eid)}
-                        style={{ border: "none", background: "none", cursor: "pointer", padding: 0, color: "var(--color-danger)" }}
+                        style={{ border: "none", background: "none", cursor: "pointer", padding: 0, color: "var(--theme-feedback-danger-foreground)" }}
                       >
                         <X size={12} />
                       </button>
@@ -852,7 +852,7 @@ export function StoryPlanView() {
                             return (
                               <span key={eid} className="badge" style={{ background: "var(--theme-surfaces-base)", border: "1px solid var(--theme-borders-default)", fontSize: "0.75rem", padding: "2px 4px", display: "inline-flex", alignItems: "center", gap: 4 }}>
                                 {ent.title}
-                                <button type="button" onClick={() => void handleUnlinkEntityFromStep(step.stepId, eid)} style={{ border: "none", background: "none", padding: 0, color: "var(--color-danger)" }}><X size={10} /></button>
+                                <button type="button" onClick={() => void handleUnlinkEntityFromStep(step.stepId, eid)} style={{ border: "none", background: "none", padding: 0, color: "var(--theme-feedback-danger-foreground)" }}><X size={10} /></button>
                               </span>
                             );
                           })}
@@ -988,7 +988,7 @@ export function StoryPlanView() {
             left: 0,
             right: 0,
             bottom: 0,
-            background: "rgba(0,0,0,0.5)",
+            background: "color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent)",
             backdropFilter: "blur(4px)",
             display: "flex",
             alignItems: "center",
