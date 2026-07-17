@@ -11,8 +11,7 @@ import { EntityDetailEscapeBehavior } from "./shared/components/EntityDetailEsca
 import { PwaUpdateBanner } from "./shared/components/PwaUpdateBanner.js";
 import { Watermark } from "./shared/components/Watermark.js";
 import { ImageFocalPointBehavior } from "./shared/images/ImageFocalPointBehavior.js";
-import "./shared/styles/index.css";
-import "./shared/styles/p1.css";
+import "./shared/styles/main.css";
 
 bootstrapDeviceAppearance();
 void hydrateAccountAppearance();
