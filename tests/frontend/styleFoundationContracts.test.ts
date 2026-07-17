@@ -13,7 +13,7 @@ describe("global style foundation", () => {
   });
 
   it("separates the approved foundation responsibilities", () => {
-    const tokens = read("src/frontend/shared/styles/tokens.css");
+    const entrypoint = read("src/frontend/shared/styles/main.css");
     for (const file of [
       "fonts.css",
       "structural-tokens.css",
@@ -22,7 +22,7 @@ describe("global style foundation", () => {
       "accessibility.css",
       "motion.css",
     ]) {
-      expect(tokens).toContain(`./foundation/${file}`);
+      expect(entrypoint).toContain(`./foundation/${file}`);
     }
   });
 
@@ -35,6 +35,8 @@ describe("global style foundation", () => {
   });
 
   it("keeps the global entrypoint explicit", () => {
-    expect(read("src/frontend/shared/styles/main.css").trim()).toBe('@import "./index.css";');
+    const entrypoint = read("src/frontend/shared/styles/main.css");
+    expect(entrypoint).toContain('@import "./foundation/reset.css";');
+    expect(entrypoint).toContain('@import "./index.css";');
   });
 });

@@ -1,1 +1,13 @@
+@import "./foundation/fonts.css";
+@import "./foundation/structural-tokens.css";
+@import "./foundation/color-scheme.css";
+@import "./foundation/reset.css";
+@import "./foundation/accessibility.css";
+@import "./foundation/motion.css";
+
+@import "./primitives.css";
+@import "./landing.css";
+@import "../../account/account.css";
+
+/* Legacy global rules are atomized by the approved domain sprints. */
 @import "./index.css";
