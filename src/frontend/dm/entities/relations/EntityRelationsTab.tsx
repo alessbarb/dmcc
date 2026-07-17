@@ -2,12 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "@tanstack/react-router";
-import { ChevronLeft, Expand, Map as MapIcon, Shrink, X } from "lucide-react";
+import { ChevronLeft, Expand, Layers, Map as MapIcon, Shrink, X } from "lucide-react";
 import type { CampaignStateStore, Entity } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatRelationType } from "@shared/i18n/index.js";
 import { buildEntityNeighborhood, type EntityRelationshipNeighborhood } from "./entityRelationshipNeighborhood.js";
 import { RelationshipGraphCanvas } from "./RelationshipGraphCanvas.js";
+import { defaultGroupingEnabled, shouldOfferGrouping } from "./groupRelationshipNeighbors.js";
 import "./relationshipGraph.css";
 
 type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
@@ -98,6 +99,8 @@ export function EntityRelationsTab({
   const [selectedConnectionId, setSelectedConnectionId] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [groupingOverride, setGroupingOverride] = useState<boolean | null>(null);
+  const [expandedGroupTypes, setExpandedGroupTypes] = useState<Set<string>>(new Set());
 
   useEscapeToClose(isFullscreen, () => setIsFullscreen(false));
 
@@ -105,6 +108,26 @@ export function EntityRelationsTab({
     () => buildEntityNeighborhood(entity, campaignState?.entities ?? [], campaignState?.relations ?? []),
     [entity, campaignState?.entities, campaignState?.relations],
   );
+
+  // A fresh entity means a fresh ring — carrying over expand/override state
+  // from a previous, differently-sized neighborhood would misrepresent it.
+  useEffect(() => {
+    setGroupingOverride(null);
+    setExpandedGroupTypes(new Set());
+  }, [entity.entityId]);
+
+  const neighborCount = neighborhood.neighbors.length;
+  const offerGrouping = shouldOfferGrouping(neighborCount);
+  const groupingEnabled = groupingOverride ?? defaultGroupingEnabled(neighborCount);
+
+  const toggleGroupExpand = (entityType: string) => {
+    setExpandedGroupTypes((prev) => {
+      const next = new Set(prev);
+      if (next.has(entityType)) next.delete(entityType);
+      else next.add(entityType);
+      return next;
+    });
+  };
 
   const setExpanded = (expanded: boolean) => {
     setIsExpanded(expanded);
@@ -136,6 +159,16 @@ export function EntityRelationsTab({
         <button type="button" className="btn btn-secondary btn-sm" onClick={openInMap} title="Ver en el mapa">
           <MapIcon size={14} /> Ver en el mapa
         </button>
+        {offerGrouping && (
+          <button
+            type="button"
+            className={`btn btn-sm ${groupingEnabled ? "btn-primary" : "btn-secondary"}`}
+            onClick={() => setGroupingOverride(!groupingEnabled)}
+            title={groupingEnabled ? "Desagrupar por tipo" : "Agrupar por tipo"}
+          >
+            <Layers size={14} /> {groupingEnabled ? "Desagrupar" : "Agrupar"}
+          </button>
+        )}
         {!fullscreenActive && (
           <button
             type="button"
@@ -172,6 +205,16 @@ export function EntityRelationsTab({
       <button type="button" className="btn btn-secondary btn-icon" onClick={openInMap} title="Ver en el mapa">
         <MapIcon size={16} />
       </button>
+      {offerGrouping && (
+        <button
+          type="button"
+          className={`btn btn-icon ${groupingEnabled ? "btn-primary" : "btn-secondary"}`}
+          onClick={() => setGroupingOverride(!groupingEnabled)}
+          title={groupingEnabled ? "Desagrupar por tipo" : "Agrupar por tipo"}
+        >
+          <Layers size={16} />
+        </button>
+      )}
       <button
         type="button"
         className="btn btn-secondary btn-icon"
@@ -197,7 +240,7 @@ export function EntityRelationsTab({
     // render, and it's fully derived from the primitive deps already listed
     // below, so including it would set new (but equivalent) parent state on
     // every render and loop forever.
-  }, [isExpanded, isFullscreen, canGoBack, onBack, campaignId, onToolbarSlotChange]);
+  }, [isExpanded, isFullscreen, canGoBack, onBack, campaignId, offerGrouping, groupingEnabled, onToolbarSlotChange]);
 
   const graphContent = (fullscreenActive: boolean) => (
     <div
@@ -225,6 +268,9 @@ export function EntityRelationsTab({
               onNavigateEntity={handleNavigateEntity}
               bare={fullscreenActive}
               resizeSignal={`${isExpanded}:${isFullscreen}`}
+              groupingEnabled={groupingEnabled}
+              expandedGroupTypes={expandedGroupTypes}
+              onToggleGroupExpand={toggleGroupExpand}
             />
           </div>
           <ConnectionDetail neighborhood={neighborhood} selectedConnectionId={selectedConnectionId} />

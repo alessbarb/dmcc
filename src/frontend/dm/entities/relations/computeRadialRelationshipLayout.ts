@@ -1,13 +1,20 @@
-import type { RelationshipGraphEntity } from "./entityRelationshipNeighborhood.js";
-
 export interface RelationshipLayoutPoint {
   centerX: number;
   centerY: number;
 }
 
+/** The layout only needs identity + sort keys — satisfied by both a plain
+ *  neighbor entity and a `RelationshipGroupNode` placeholder, so grouped
+ *  ring items can be positioned through this same function unmodified. */
+export interface RelationshipLayoutNode {
+  entityId: string;
+  title: string;
+  entityType: string;
+}
+
 export interface ComputeRadialRelationshipLayoutInput {
-  centerNode: RelationshipGraphEntity;
-  neighborNodes: RelationshipGraphEntity[];
+  centerNode: RelationshipLayoutNode;
+  neighborNodes: RelationshipLayoutNode[];
   firstRingRadius?: number;
   /** Rendered node footprint, used to keep same-ring neighbors from overlapping. */
   nodeWidth?: number;
@@ -40,7 +47,7 @@ function minRadiusForRingSpacing(count: number, nodeWidth: number, nodeHeight: n
   return (boxDiameter + minGap) / (2 * Math.sin(angleStep / 2));
 }
 
-function compareNeighborOrder(a: RelationshipGraphEntity, b: RelationshipGraphEntity): number {
+function compareNeighborOrder(a: RelationshipLayoutNode, b: RelationshipLayoutNode): number {
   if (a.entityType !== b.entityType) return a.entityType.localeCompare(b.entityType);
   if (a.title !== b.title) return a.title.localeCompare(b.title);
   return a.entityId.localeCompare(b.entityId);

@@ -1,21 +1,25 @@
 import React, { useEffect, useMemo } from "react";
-import { Background, MarkerType, ReactFlow, ReactFlowProvider, useReactFlow } from "@xyflow/react";
+import { Background, MarkerType, MiniMap, ReactFlow, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import type { Edge, Node } from "@xyflow/react";
 import { getRelationVisual } from "../entityVisuals.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatRelationType } from "@shared/i18n/index.js";
 import type { EntityRelationshipNeighborhood } from "./entityRelationshipNeighborhood.js";
-import { computeRadialRelationshipLayout } from "./computeRadialRelationshipLayout.js";
+import { computeRadialRelationshipLayout, type RelationshipLayoutNode } from "./computeRadialRelationshipLayout.js";
 import { relationshipLayoutToFlowPositions, type FlowPosition } from "./relationshipLayoutToFlowPositions.js";
 import { oppositeRelationshipHandleSide, pickRelationshipHandleSide } from "./pickRelationshipHandleSide.js";
 import { RelationshipEntityNode, type RelationshipNodeData } from "./RelationshipEntityNode.js";
+import { RelationshipGroupNode, type RelationshipGroupNodeData } from "./RelationshipGroupNode.js";
 import { RelationshipEdge, type RelationshipEdgeData } from "./RelationshipEdge.js";
+import { groupRelationshipNeighbors, type RelationshipRingItem } from "./groupRelationshipNeighbors.js";
 import "./relationshipGraph.css";
 
 const NODE_WIDTH = 176;
 const NODE_HEIGHT = 104;
+/** Dense-enough graphs benefit from an overview of the whole ring while zoomed in on one arc. */
+const MINIMAP_NEIGHBOR_THRESHOLD = 13;
 
-const nodeTypes = { relationshipEntity: RelationshipEntityNode };
+const nodeTypes = { relationshipEntity: RelationshipEntityNode, relationshipGroup: RelationshipGroupNode };
 const edgeTypes = { relationship: RelationshipEdge };
 
 export interface RelationshipGraphCanvasProps {
@@ -28,6 +32,19 @@ export interface RelationshipGraphCanvasProps {
   /** Bump this (e.g. isExpanded/isFullscreen) whenever the container is resized without
    *  remounting, so the graph re-fits to the new visible bounds. */
   resizeSignal?: unknown;
+  /** Collapse same-type neighbors into `RelationshipGroupNode` placeholders (density Fase 4). */
+  groupingEnabled: boolean;
+  /** Entity types the user expanded back out of their group, showing individual members again. */
+  expandedGroupTypes: ReadonlySet<string>;
+  onToggleGroupExpand: (entityType: string) => void;
+}
+
+function isGroupNodeData(data: Record<string, unknown>): data is RelationshipGroupNodeData {
+  return "group" in data;
+}
+
+function isEntityNodeData(data: Record<string, unknown>): data is RelationshipNodeData {
+  return "role" in data;
 }
 
 function edgeEndpoints(connection: EntityRelationshipNeighborhood["connections"][number]) {
@@ -48,78 +65,163 @@ function RelationshipGraphCanvasInner({
   onNavigateEntity,
   bare,
   resizeSignal,
+  groupingEnabled,
+  expandedGroupTypes,
+  onToggleGroupExpand,
 }: RelationshipGraphCanvasProps) {
   const { locale } = useTranslation();
   const { fitView } = useReactFlow();
 
+  const ringItems: RelationshipRingItem[] = useMemo(
+    () => groupRelationshipNeighbors(neighborhood.neighbors, groupingEnabled, expandedGroupTypes),
+    [neighborhood.neighbors, groupingEnabled, expandedGroupTypes],
+  );
+
+  // A group's synthetic id/type stand in for its members when positioning the
+  // ring — computeRadialRelationshipLayout only needs identity + sort keys.
+  const ringLayoutNodes: RelationshipLayoutNode[] = useMemo(
+    () =>
+      ringItems.map((item) =>
+        item.kind === "entity"
+          ? item.entity
+          : { entityId: item.group.groupId, title: item.group.entityType, entityType: item.group.entityType },
+      ),
+    [ringItems],
+  );
+
   const positions = useMemo(() => {
     const layout = computeRadialRelationshipLayout({
       centerNode: neighborhood.center,
-      neighborNodes: neighborhood.neighbors,
+      neighborNodes: ringLayoutNodes,
       nodeWidth: NODE_WIDTH,
       nodeHeight: NODE_HEIGHT,
     });
     return relationshipLayoutToFlowPositions(layout, { width: NODE_WIDTH, height: NODE_HEIGHT });
-  }, [neighborhood.center, neighborhood.neighbors]);
+  }, [neighborhood.center, ringLayoutNodes]);
 
-  const nodes: Node<RelationshipNodeData>[] = useMemo(() => {
-    const entities = [neighborhood.center, ...neighborhood.neighbors];
-    return entities.map((graphEntity) => ({
-      id: graphEntity.entityId,
+  const nodes: Node<RelationshipNodeData | RelationshipGroupNodeData>[] = useMemo(() => {
+    const centerNode: Node<RelationshipNodeData> = {
+      id: neighborhood.center.entityId,
       type: "relationshipEntity",
-      position: positions.get(graphEntity.entityId) ?? { x: 0, y: 0 },
-      data: { entity: graphEntity.entity, role: graphEntity.isCenter ? "center" : "neighbor" },
+      position: positions.get(neighborhood.center.entityId) ?? { x: 0, y: 0 },
+      data: { entity: neighborhood.center.entity, role: "center" },
       draggable: false,
       selectable: false,
       width: NODE_WIDTH,
       height: NODE_HEIGHT,
-    }));
-  }, [neighborhood.center, neighborhood.neighbors, positions]);
+    };
+
+    const ringNodes = ringItems.map((item): Node<RelationshipNodeData | RelationshipGroupNodeData> => {
+      if (item.kind === "entity") {
+        return {
+          id: item.entity.entityId,
+          type: "relationshipEntity",
+          position: positions.get(item.entity.entityId) ?? { x: 0, y: 0 },
+          data: { entity: item.entity.entity, role: "neighbor" },
+          draggable: false,
+          selectable: false,
+          width: NODE_WIDTH,
+          height: NODE_HEIGHT,
+        };
+      }
+      return {
+        id: item.group.groupId,
+        type: "relationshipGroup",
+        position: positions.get(item.group.groupId) ?? { x: 0, y: 0 },
+        data: { group: item.group },
+        draggable: false,
+        selectable: false,
+        width: NODE_WIDTH,
+        height: NODE_HEIGHT,
+      };
+    });
+
+    return [centerNode, ...ringNodes];
+  }, [neighborhood.center, ringItems, positions]);
 
   const edges: Edge<RelationshipEdgeData>[] = useMemo(() => {
     const delta = (a: FlowPosition, b: FlowPosition) => ({ dx: b.x - a.x, dy: b.y - a.y });
+    const centerId = neighborhood.center.entityId;
 
-    return neighborhood.connections.map((connection) => {
-      const isSelected = connection.connectionId === selectedConnectionId;
-      const first = connection.relations[0];
-      const visual = getRelationVisual(first.relationType);
-      const label =
-        connection.relations.length > 1
-          ? `${connection.relations.length} relaciones`
-          : formatRelationType(first.relationType, locale);
-
-      const { sourceId, targetId } = edgeEndpoints(connection);
-      const sourcePos = positions.get(sourceId);
-      const targetPos = positions.get(targetId);
-      const { dx, dy } = sourcePos && targetPos ? delta(sourcePos, targetPos) : { dx: 0, dy: 1 };
+    const buildEdge = (
+      id: string,
+      neighborId: string,
+      label: string,
+      color: string | undefined,
+      dashed: boolean,
+      isSelected: boolean,
+    ): Edge<RelationshipEdgeData> => {
+      const centerPos = positions.get(centerId);
+      const neighborPos = positions.get(neighborId);
+      const { dx, dy } = centerPos && neighborPos ? delta(centerPos, neighborPos) : { dx: 0, dy: 1 };
       const sourceSide = pickRelationshipHandleSide(dx, dy);
       const targetSide = oppositeRelationshipHandleSide(pickRelationshipHandleSide(-dx, -dy));
 
-      // Every edge here connects the center to one neighbor, but domain
-      // direction (source/target) varies per relation — so the path midpoint
-      // isn't reliably "near the center". Tell the edge which end is the
-      // neighbor so it can bias the label there instead, spreading labels
-      // out across the ring instead of bunching on the shared center node.
-      const sourceIsCenter = sourceId === neighborhood.center.entityId;
-
       return {
-        id: connection.connectionId,
+        id,
         type: "relationship",
-        source: sourceId,
-        target: targetId,
+        source: centerId,
+        target: neighborId,
         sourceHandle: sourceSide,
         targetHandle: targetSide,
-        markerEnd: { type: MarkerType.ArrowClosed, color: visual?.color ?? "color-mix(in srgb, var(--theme-graph-edge) 80%, transparent)", width: 16, height: 16 },
-        data: { label, color: visual?.color, selected: isSelected, sourceIsCenter },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color: color ?? "color-mix(in srgb, var(--theme-graph-edge) 80%, transparent)",
+          width: 16,
+          height: 16,
+        },
+        data: { label, color, selected: isSelected, sourceIsCenter: true },
         style: {
-          stroke: visual?.color ?? "color-mix(in srgb, var(--theme-graph-edge) 60%, transparent)",
+          stroke: color ?? "color-mix(in srgb, var(--theme-graph-edge) 60%, transparent)",
           strokeWidth: isSelected ? 2.6 : 1.4,
-          strokeDasharray: visual?.line === "dashed" ? "5 5" : undefined,
+          strokeDasharray: dashed ? "5 5" : undefined,
           opacity: selectedConnectionId && !isSelected ? 0.35 : 1,
         },
-      } satisfies Edge<RelationshipEdgeData>;
-    });
-  }, [neighborhood.connections, selectedConnectionId, locale, positions]);
+      };
+    };
+
+    // Entity items keep their real per-connection edge (label, color, click-to-select).
+    const visibleEntityIds = new Set(ringItems.filter((item) => item.kind === "entity").map((item) => item.entity.entityId));
+    const entityEdges = neighborhood.connections
+      .filter((connection) => {
+        const { sourceId, targetId } = edgeEndpoints(connection);
+        const neighborId = sourceId === centerId ? targetId : sourceId;
+        return visibleEntityIds.has(neighborId);
+      })
+      .map((connection) => {
+        const isSelected = connection.connectionId === selectedConnectionId;
+        const first = connection.relations[0];
+        const visual = getRelationVisual(first.relationType);
+        const label =
+          connection.relations.length > 1
+            ? `${connection.relations.length} relaciones`
+            : formatRelationType(first.relationType, locale);
+        const { sourceId, targetId } = edgeEndpoints(connection);
+        const neighborId = sourceId === centerId ? targetId : sourceId;
+        return buildEdge(connection.connectionId, neighborId, label, visual?.color, visual?.line === "dashed", isSelected);
+      });
+
+    // Group items get one aggregate edge summing every relation to a member of the group.
+    const connectionByNeighborId = new Map(
+      neighborhood.connections.map((connection) => {
+        const { sourceId, targetId } = edgeEndpoints(connection);
+        const neighborId = sourceId === centerId ? targetId : sourceId;
+        return [neighborId, connection] as const;
+      }),
+    );
+    const groupEdges = ringItems
+      .filter((item): item is Extract<RelationshipRingItem, { kind: "group" }> => item.kind === "group")
+      .map((item) => {
+        const relationCount = item.group.entities.reduce((total, entity) => {
+          const connection = connectionByNeighborId.get(entity.entityId);
+          return total + (connection?.relations.length ?? 0);
+        }, 0);
+        const label = `${relationCount} relaciones`;
+        return buildEdge(item.group.groupId, item.group.groupId, label, undefined, false, false);
+      });
+
+    return [...entityEdges, ...groupEdges];
+  }, [neighborhood.connections, neighborhood.center.entityId, ringItems, selectedConnectionId, locale, positions]);
 
   useEffect(() => {
     void fitView({ padding: 0.3, duration: 200 });
@@ -142,8 +244,13 @@ function RelationshipGraphCanvasInner({
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       onNodeClick={(_event, node) => {
-        const data = node.data as RelationshipNodeData;
-        if (data.role === "neighbor") onNavigateEntity(data.entity.entityId);
+        if (isGroupNodeData(node.data)) {
+          onToggleGroupExpand(node.data.group.entityType);
+          return;
+        }
+        if (isEntityNodeData(node.data) && node.data.role === "neighbor") {
+          onNavigateEntity(node.data.entity.entityId);
+        }
       }}
       onEdgeClick={(_event, edge) => onSelectConnection(edge.id === selectedConnectionId ? null : edge.id)}
       onPaneClick={() => onSelectConnection(null)}
@@ -154,6 +261,9 @@ function RelationshipGraphCanvasInner({
       zoomOnScroll={false}
     >
       <Background gap={24} size={1} />
+      {neighborhood.neighbors.length > MINIMAP_NEIGHBOR_THRESHOLD && (
+        <MiniMap pannable zoomable style={{ width: 96, height: 72 }} />
+      )}
     </ReactFlow>
   );
 
