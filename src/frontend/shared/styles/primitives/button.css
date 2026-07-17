@@ -1,0 +1,93 @@
+.btn {
+  min-height: var(--touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.625rem 1.125rem;
+  border: 1px solid transparent;
+  border-radius: var(--theme-shapes-radius-interactive);
+  font: 600 0.9rem/1.2 var(--font-sans);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.btn-primary {
+  color: var(--theme-accents-primary-on-accent);
+  background: var(--theme-accents-primary-foreground);
+  box-shadow: var(--theme-shadows-accent);
+}
+
+.btn-primary:hover {
+  background: var(--theme-accents-primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive);
+  border-color: var(--theme-borders-interactive);
+}
+
+.btn-secondary:hover {
+  background: var(--theme-surfaces-interactive-hover);
+  border-color: var(--theme-borders-interactive-hover);
+}
+
+.btn-danger {
+  color: var(--theme-feedback-danger-foreground);
+  background: var(--theme-feedback-danger-background);
+  border-color: var(--theme-feedback-danger-border);
+}
+
+.btn-danger:hover {
+  color: var(--theme-feedback-danger-on-strong);
+  background: var(--theme-feedback-danger-strong);
+  transform: translateY(-1px);
+}
+
+.btn-icon {
+  width: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  padding: var(--space-2);
+}
+
+.btn-sm {
+  min-height: 2.25rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.btn:focus-visible,
+.form-input:focus-visible,
+.form-select:focus-visible,
+.form-textarea:focus-visible,
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--theme-focus-outline);
+  outline-offset: 3px;
+  box-shadow: var(--theme-focus-ring);
+}
+
+.btn:disabled,
+.form-input:disabled,
+.form-select:disabled,
+.form-textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+}
+
+@media (hover: none) {
+  .btn:hover {
+    transform: none;
+  }
+}

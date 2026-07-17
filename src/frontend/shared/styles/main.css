@@ -5,7 +5,17 @@
 @import "./foundation/accessibility.css";
 @import "./foundation/motion.css";
 
-@import "./primitives.css";
+@import "./primitives/button.css";
+@import "./primitives/form-control.css";
+@import "./primitives/badge.css";
+@import "./primitives/card.css";
+@import "./primitives/tooltip.css";
+@import "./primitives/menu.css";
+
+@import "./features/rules-workspace.css";
+@import "./features/kanban-board.css";
+@import "./features/sidebar-nav.css";
+
 @import "./landing.css";
 @import "../../account/account.css";
 
