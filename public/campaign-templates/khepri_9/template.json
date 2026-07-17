@@ -1,83 +1,2883 @@
 {
   "$schema": "../../schemas/campaign-template/template/v1.json",
+  "schemaVersion": 1,
   "templateId": "khepri_9",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "system": "custom",
-  "difficulty": "starter",
-  "tags": ["science-fiction", "space-horror", "mystery", "survival", "starter"],
-  "stats": {"entities": 30, "relations": 18, "facts": 5, "preparedSessions": 8},
+  "difficulty": "medium",
+  "tags": [
+    "science-fiction",
+    "mystery",
+    "survival",
+    "first-contact",
+    "factions",
+    "corporate-horror",
+    "moral-dilemmas"
+  ],
+  "stats": {
+    "entities": 113,
+    "relations": 71,
+    "facts": 17,
+    "preparedSessions": 8
+  },
   "entities": [
-    {"entityId":"ent_tpl_khepri9_note","entityType":"note","importance":"high","visibility":{"kind":"dm_only"},"metadata":{"previewRole":"guide"}},
-    {"entityId":"ent_tpl_khepri9_station","entityType":"location","importance":"critical","visibility":{"kind":"party"},"status":"unstable"},
-    {"entityId":"ent_tpl_khepri9_docking_ring","entityType":"location","importance":"high","visibility":{"kind":"party"},"status":"damaged"},
-    {"entityId":"ent_tpl_khepri9_habitat","entityType":"location","importance":"high","visibility":{"kind":"party"},"status":"occupied"},
-    {"entityId":"ent_tpl_khepri9_reactor","entityType":"location","importance":"critical","visibility":{"kind":"dm_only"},"status":"offline"},
-    {"entityId":"ent_tpl_khepri9_corporate_lab","entityType":"location","importance":"critical","visibility":{"kind":"dm_only"},"status":"sealed"},
-    {"entityId":"ent_tpl_khepri9_artifact_chamber","entityType":"location","importance":"critical","visibility":{"kind":"dm_only"},"status":"hidden"},
-    {"entityId":"ent_tpl_khepri9_isha_vale","entityType":"npc","importance":"critical","visibility":{"kind":"party"},"status":"missing","metadata":{"role":"station_commander"}},
-    {"entityId":"ent_tpl_khepri9_elian_voss","entityType":"npc","importance":"critical","visibility":{"kind":"dm_only"},"status":"active","metadata":{"role":"xenoarchaeologist"}},
-    {"entityId":"ent_tpl_khepri9_mara_quill","entityType":"npc","importance":"high","visibility":{"kind":"party"},"status":"active","metadata":{"role":"union_engineer"}},
-    {"entityId":"ent_tpl_khepri9_roan_vek","entityType":"npc","importance":"high","visibility":{"kind":"party"},"status":"active","metadata":{"role":"security_chief"}},
-    {"entityId":"ent_tpl_khepri9_the_echo","entityType":"npc","importance":"critical","visibility":{"kind":"dm_only"},"status":"emerging","metadata":{"role":"signal_intelligence"}},
-    {"entityId":"ent_tpl_khepri9_survivors","entityType":"faction","importance":"high","visibility":{"kind":"party"},"status":"active"},
-    {"entityId":"ent_tpl_khepri9_helios","entityType":"faction","importance":"critical","visibility":{"kind":"dm_only"},"status":"active"},
-    {"entityId":"ent_tpl_khepri9_signal","entityType":"faction","importance":"critical","visibility":{"kind":"dm_only"},"status":"active"},
-    {"entityId":"ent_tpl_khepri9_answer_call","entityType":"quest","importance":"critical","visibility":{"kind":"party"},"status":"available"},
-    {"entityId":"ent_tpl_khepri9_restore_power","entityType":"quest","importance":"critical","visibility":{"kind":"party"},"status":"available"},
-    {"entityId":"ent_tpl_khepri9_decide_fate","entityType":"quest","importance":"critical","visibility":{"kind":"dm_only"},"status":"hidden"},
-    {"entityId":"ent_tpl_khepri9_distress_beacon","entityType":"clue","importance":"high","visibility":{"kind":"party"},"status":"ready"},
-    {"entityId":"ent_tpl_khepri9_shutdown_sequence","entityType":"clue","importance":"critical","visibility":{"kind":"dm_only"},"status":"ready"},
-    {"entityId":"ent_tpl_khepri9_lab_shard","entityType":"clue","importance":"critical","visibility":{"kind":"dm_only"},"status":"ready"},
-    {"entityId":"ent_tpl_khepri9_voss_invited_contact","entityType":"secret","importance":"critical","visibility":{"kind":"dm_only"},"status":"hidden"},
-    {"entityId":"ent_tpl_khepri9_signal_uses_memories","entityType":"secret","importance":"critical","visibility":{"kind":"dm_only"},"status":"hidden"},
-    {"entityId":"ent_tpl_khepri9_echo_can_leave","entityType":"secret","importance":"critical","visibility":{"kind":"dm_only"},"status":"hidden"},
-    {"entityId":"ent_tpl_khepri9_station_dark","entityType":"consequence","importance":"critical","visibility":{"kind":"dm_only"},"status":"dormant"},
-    {"entityId":"ent_tpl_khepri9_ren_kade","entityType":"player_character","importance":"normal","visibility":{"kind":"party"},"status":"active","metadata":{"isPremade":true}},
-    {"entityId":"ent_tpl_khepri9_sola_bek","entityType":"player_character","importance":"normal","visibility":{"kind":"party"},"status":"active","metadata":{"isPremade":true}},
-    {"entityId":"ent_tpl_khepri9_dax_morrow","entityType":"player_character","importance":"normal","visibility":{"kind":"party"},"status":"active","metadata":{"isPremade":true}},
-    {"entityId":"ent_tpl_khepri9_yara_chen","entityType":"player_character","importance":"normal","visibility":{"kind":"party"},"status":"active","metadata":{"isPremade":true}},
-    {"entityId":"ent_tpl_khepri9_recovery_team","entityType":"encounter","importance":"high","visibility":{"kind":"dm_only"},"status":"ready"}
+    {
+      "entityId": "ent_tpl_khepri9_note",
+      "entityType": "note",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "previewRole": "guide"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_timeline",
+      "entityType": "note",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_system",
+      "entityType": "location",
+      "importance": "normal",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_station",
+      "entityType": "location",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_artifact",
+      "entityType": "item",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_orpheus_protocol",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_docking_ring",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_habitat",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_reactor",
+      "entityType": "location",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_corporate_lab",
+      "entityType": "location",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_artifact_chamber",
+      "entityType": "location",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_command_center",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_infirmary",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_extraction_gallery",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_communications_core",
+      "entityType": "location",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_memory_archive",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_family_module",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_quarantine_lock",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_asteroid_exterior",
+      "entityType": "location",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_isha_vale",
+      "entityType": "npc",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "station_commander"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_elian_voss",
+      "entityType": "npc",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "role": "xenoarchaeologist"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_mara_quill",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "union_engineer"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_roan_vek",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "security_chief"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_the_echo",
+      "entityType": "npc",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "role": "signal_intelligence"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_nyx_orr",
+      "entityType": "npc",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "role": "recovery_commander"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_tarek_sol",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "doctor"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_linn_aras",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "role": "comms_operator"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_ade_nwosu",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "role": "lab_technician"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_pavel_rusk",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "corporate_supervisor"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_juno_marr",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "miner"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_omi_daro",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "listener"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_sael_daro",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "role": "listener"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_kellan_rhyse",
+      "entityType": "npc",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "role": "recovery_specialist"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_survivors",
+      "entityType": "faction",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_helios",
+      "entityType": "faction",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_signal",
+      "entityType": "faction",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_rebuilders",
+      "entityType": "faction",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_security_bloc",
+      "entityType": "faction",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_listeners",
+      "entityType": "faction",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_answer_call",
+      "entityType": "quest",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_restore_power",
+      "entityType": "quest",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_expose_orpheus",
+      "entityType": "quest",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_prevent_mutiny",
+      "entityType": "quest",
+      "importance": "critical",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_decide_fate",
+      "entityType": "quest",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_distress_beacon",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_shutdown_sequence",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_lab_shard",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_infirmary_cases",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_archive_manifest",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_voss_access_log",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_vale_override",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_escape_simulation",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_nyx_orders",
+      "entityType": "clue",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_auxiliary_seed",
+      "entityType": "clue",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_voss_invited_contact",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_signal_uses_memories",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_echo_can_leave",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_vale_authorized_orpheus",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_mara_hid_components",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_roan_detentions",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_voss_fragment_survives",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_helios_prior_knowledge",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_signal_already_sent",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_echo_self_edited",
+      "entityType": "secret",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_clock_integrity",
+      "entityType": "clock",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "segments": 6,
+        "initialProgress": 1
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_clock_echo",
+      "entityType": "clock",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "segments": 6,
+        "initialProgress": 0
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_clock_tension",
+      "entityType": "clock",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "segments": 6,
+        "initialProgress": 0
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_clock_helios",
+      "entityType": "clock",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "segments": 6,
+        "initialProgress": 0
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_station_dark",
+      "entityType": "consequence",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_echo_contained",
+      "entityType": "consequence",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_echo_imprisoned",
+      "entityType": "consequence",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_helios_owns_echo",
+      "entityType": "consequence",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_echo_escape",
+      "entityType": "consequence",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_echo_pact",
+      "entityType": "consequence",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_echo_fragmented",
+      "entityType": "consequence",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_truth_public",
+      "entityType": "consequence",
+      "importance": "critical",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_ren_kade",
+      "entityType": "player_character",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "isPremade": true,
+        "role": "pilot"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_sola_bek",
+      "entityType": "player_character",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "isPremade": true,
+        "role": "medic"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_dax_morrow",
+      "entityType": "player_character",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "isPremade": true,
+        "role": "systems_specialist"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_yara_chen",
+      "entityType": "player_character",
+      "importance": "high",
+      "visibility": {
+        "kind": "party"
+      },
+      "metadata": {
+        "isPremade": true,
+        "role": "signal_analyst"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_recovery_team",
+      "entityType": "encounter",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_cold_approach",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "arrival"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_failing_dock",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "arrival"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_changing_voice",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "arrival"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_first_threshold",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "arrival"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_refuge_entry",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "survivors"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_ration_hearing",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "survivors"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_dead_mother_voice",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "survivors"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_first_alignment",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "survivors"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_dark_descent",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "reactor"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_machine_wakes",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "reactor"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_shutdown_truth",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "reactor"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_power_allocation",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "reactor"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_sealed_orpheus",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "lab"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_voss_recognition",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "lab"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_memory_ingestion",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "lab"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_evidence_choice",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "lab"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_command_breach",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "command"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_vale_testimony",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "command"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_mutiny_reconstruction",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "command"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_emergency_authority",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "command"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_impossible_geometry",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "artifact"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_borrowed_life",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "artifact"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_echo_speaks",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "artifact"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_request_to_leave",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "artifact"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_corporate_arrival",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "recovery"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_evacuation_terms",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "recovery"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_sealed_orders",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "recovery"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_boarding_standoff",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "recovery"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_station_collapse",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "fate"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_faction_confrontation",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "fate"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_last_memory",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "fate"
+      }
+    },
+    {
+      "entityId": "ent_tpl_khepri9_scene_final_transmission",
+      "entityType": "scene",
+      "importance": "high",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "metadata": {
+        "sessionKey": "fate"
+      }
+    }
   ],
   "relations": [
-    {"relationId":"rel_tpl_khepri9_station_call","sourceEntityId":"ent_tpl_khepri9_station","targetEntityId":"ent_tpl_khepri9_answer_call","relationType":"contains","visibility":{"kind":"party"}},
-    {"relationId":"rel_tpl_khepri9_beacon_station","sourceEntityId":"ent_tpl_khepri9_distress_beacon","targetEntityId":"ent_tpl_khepri9_station","relationType":"points_to","visibility":{"kind":"party"}},
-    {"relationId":"rel_tpl_khepri9_dock_station","sourceEntityId":"ent_tpl_khepri9_docking_ring","targetEntityId":"ent_tpl_khepri9_station","relationType":"located_in","visibility":{"kind":"party"}},
-    {"relationId":"rel_tpl_khepri9_hab_station","sourceEntityId":"ent_tpl_khepri9_habitat","targetEntityId":"ent_tpl_khepri9_station","relationType":"located_in","visibility":{"kind":"party"}},
-    {"relationId":"rel_tpl_khepri9_reactor_station","sourceEntityId":"ent_tpl_khepri9_reactor","targetEntityId":"ent_tpl_khepri9_station","relationType":"located_in","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_lab_station","sourceEntityId":"ent_tpl_khepri9_corporate_lab","targetEntityId":"ent_tpl_khepri9_station","relationType":"located_in","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_artifact_station","sourceEntityId":"ent_tpl_khepri9_artifact_chamber","targetEntityId":"ent_tpl_khepri9_station","relationType":"located_in","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_voss_helios","sourceEntityId":"ent_tpl_khepri9_elian_voss","targetEntityId":"ent_tpl_khepri9_helios","relationType":"member_of","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_mara_survivors","sourceEntityId":"ent_tpl_khepri9_mara_quill","targetEntityId":"ent_tpl_khepri9_survivors","relationType":"custom:represents","visibility":{"kind":"party"}},
-    {"relationId":"rel_tpl_khepri9_roan_survivors","sourceEntityId":"ent_tpl_khepri9_roan_vek","targetEntityId":"ent_tpl_khepri9_survivors","relationType":"protects","visibility":{"kind":"party"}},
-    {"relationId":"rel_tpl_khepri9_echo_signal","sourceEntityId":"ent_tpl_khepri9_the_echo","targetEntityId":"ent_tpl_khepri9_signal","relationType":"custom:embodies","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_power_reactor","sourceEntityId":"ent_tpl_khepri9_restore_power","targetEntityId":"ent_tpl_khepri9_reactor","relationType":"custom:targets","visibility":{"kind":"party"}},
-    {"relationId":"rel_tpl_khepri9_fate_station","sourceEntityId":"ent_tpl_khepri9_decide_fate","targetEntityId":"ent_tpl_khepri9_station","relationType":"custom:decides","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_shutdown_signal","sourceEntityId":"ent_tpl_khepri9_shutdown_sequence","targetEntityId":"ent_tpl_khepri9_signal_uses_memories","relationType":"custom:supports","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_lab_voss","sourceEntityId":"ent_tpl_khepri9_lab_shard","targetEntityId":"ent_tpl_khepri9_voss_invited_contact","relationType":"custom:supports","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_echo_escape","sourceEntityId":"ent_tpl_khepri9_the_echo","targetEntityId":"ent_tpl_khepri9_echo_can_leave","relationType":"hides","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_fate_dark","sourceEntityId":"ent_tpl_khepri9_decide_fate","targetEntityId":"ent_tpl_khepri9_station_dark","relationType":"causes","visibility":{"kind":"dm_only"}},
-    {"relationId":"rel_tpl_khepri9_recovery_helios","sourceEntityId":"ent_tpl_khepri9_recovery_team","targetEntityId":"ent_tpl_khepri9_helios","relationType":"custom:serves","visibility":{"kind":"dm_only"}}
+    {
+      "relationId": "rel_tpl_khepri9_docking_ring_station",
+      "sourceEntityId": "ent_tpl_khepri9_docking_ring",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_habitat_station",
+      "sourceEntityId": "ent_tpl_khepri9_habitat",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_reactor_station",
+      "sourceEntityId": "ent_tpl_khepri9_reactor",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_corporate_lab_station",
+      "sourceEntityId": "ent_tpl_khepri9_corporate_lab",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_artifact_chamber_station",
+      "sourceEntityId": "ent_tpl_khepri9_artifact_chamber",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_command_center_station",
+      "sourceEntityId": "ent_tpl_khepri9_command_center",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_infirmary_station",
+      "sourceEntityId": "ent_tpl_khepri9_infirmary",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_extraction_gallery_station",
+      "sourceEntityId": "ent_tpl_khepri9_extraction_gallery",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_communications_core_station",
+      "sourceEntityId": "ent_tpl_khepri9_communications_core",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_memory_archive_station",
+      "sourceEntityId": "ent_tpl_khepri9_memory_archive",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_family_module_station",
+      "sourceEntityId": "ent_tpl_khepri9_family_module",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_quarantine_lock_station",
+      "sourceEntityId": "ent_tpl_khepri9_quarantine_lock",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_asteroid_exterior_station",
+      "sourceEntityId": "ent_tpl_khepri9_asteroid_exterior",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_station_system",
+      "sourceEntityId": "ent_tpl_khepri9_station",
+      "targetEntityId": "ent_tpl_khepri9_system",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_artifact_chamber_lattice",
+      "sourceEntityId": "ent_tpl_khepri9_artifact",
+      "targetEntityId": "ent_tpl_khepri9_artifact_chamber",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_orpheus_artifact",
+      "sourceEntityId": "ent_tpl_khepri9_orpheus_protocol",
+      "targetEntityId": "ent_tpl_khepri9_artifact",
+      "relationType": "custom:interfaces_with",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_vale_station",
+      "sourceEntityId": "ent_tpl_khepri9_isha_vale",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "protects",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_voss_helios",
+      "sourceEntityId": "ent_tpl_khepri9_elian_voss",
+      "targetEntityId": "ent_tpl_khepri9_helios",
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_voss_orpheus",
+      "sourceEntityId": "ent_tpl_khepri9_elian_voss",
+      "targetEntityId": "ent_tpl_khepri9_orpheus_protocol",
+      "relationType": "custom:created",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_echo_signal",
+      "sourceEntityId": "ent_tpl_khepri9_the_echo",
+      "targetEntityId": "ent_tpl_khepri9_signal",
+      "relationType": "custom:embodies",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_echo_artifact",
+      "sourceEntityId": "ent_tpl_khepri9_the_echo",
+      "targetEntityId": "ent_tpl_khepri9_artifact",
+      "relationType": "custom:emerged_from",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_mara_rebuilders",
+      "sourceEntityId": "ent_tpl_khepri9_mara_quill",
+      "targetEntityId": "ent_tpl_khepri9_rebuilders",
+      "relationType": "custom:leads",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_roan_security",
+      "sourceEntityId": "ent_tpl_khepri9_roan_vek",
+      "targetEntityId": "ent_tpl_khepri9_security_bloc",
+      "relationType": "custom:leads",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_daro_listeners",
+      "sourceEntityId": "ent_tpl_khepri9_omi_daro",
+      "targetEntityId": "ent_tpl_khepri9_listeners",
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_sael_listeners",
+      "sourceEntityId": "ent_tpl_khepri9_sael_daro",
+      "targetEntityId": "ent_tpl_khepri9_listeners",
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_rebuilders_survivors",
+      "sourceEntityId": "ent_tpl_khepri9_rebuilders",
+      "targetEntityId": "ent_tpl_khepri9_survivors",
+      "relationType": "part_of",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_security_survivors",
+      "sourceEntityId": "ent_tpl_khepri9_security_bloc",
+      "targetEntityId": "ent_tpl_khepri9_survivors",
+      "relationType": "part_of",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_listeners_survivors",
+      "sourceEntityId": "ent_tpl_khepri9_listeners",
+      "targetEntityId": "ent_tpl_khepri9_survivors",
+      "relationType": "part_of",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_nyx_helios",
+      "sourceEntityId": "ent_tpl_khepri9_nyx_orr",
+      "targetEntityId": "ent_tpl_khepri9_helios",
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_recovery_nyx",
+      "sourceEntityId": "ent_tpl_khepri9_recovery_team",
+      "targetEntityId": "ent_tpl_khepri9_nyx_orr",
+      "relationType": "custom:commanded_by",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_kellan_recovery",
+      "sourceEntityId": "ent_tpl_khepri9_kellan_rhyse",
+      "targetEntityId": "ent_tpl_khepri9_recovery_team",
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_pavel_helios",
+      "sourceEntityId": "ent_tpl_khepri9_pavel_rusk",
+      "targetEntityId": "ent_tpl_khepri9_helios",
+      "relationType": "member_of",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_tarek_infirmary",
+      "sourceEntityId": "ent_tpl_khepri9_tarek_sol",
+      "targetEntityId": "ent_tpl_khepri9_infirmary",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_linn_comms",
+      "sourceEntityId": "ent_tpl_khepri9_linn_aras",
+      "targetEntityId": "ent_tpl_khepri9_communications_core",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_ade_lab",
+      "sourceEntityId": "ent_tpl_khepri9_ade_nwosu",
+      "targetEntityId": "ent_tpl_khepri9_corporate_lab",
+      "relationType": "located_in",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_juno_mara",
+      "sourceEntityId": "ent_tpl_khepri9_juno_marr",
+      "targetEntityId": "ent_tpl_khepri9_mara_quill",
+      "relationType": "rival_of",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_mara_roan",
+      "sourceEntityId": "ent_tpl_khepri9_mara_quill",
+      "targetEntityId": "ent_tpl_khepri9_roan_vek",
+      "relationType": "rival_of",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_answer_call_target",
+      "sourceEntityId": "ent_tpl_khepri9_answer_call",
+      "targetEntityId": "ent_tpl_khepri9_docking_ring",
+      "relationType": "custom:targets",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_restore_power_target",
+      "sourceEntityId": "ent_tpl_khepri9_restore_power",
+      "targetEntityId": "ent_tpl_khepri9_reactor",
+      "relationType": "custom:targets",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_expose_orpheus_target",
+      "sourceEntityId": "ent_tpl_khepri9_expose_orpheus",
+      "targetEntityId": "ent_tpl_khepri9_corporate_lab",
+      "relationType": "custom:targets",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_prevent_mutiny_target",
+      "sourceEntityId": "ent_tpl_khepri9_prevent_mutiny",
+      "targetEntityId": "ent_tpl_khepri9_habitat",
+      "relationType": "custom:targets",
+      "visibility": {
+        "kind": "party"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_fate_station",
+      "sourceEntityId": "ent_tpl_khepri9_decide_fate",
+      "targetEntityId": "ent_tpl_khepri9_station",
+      "relationType": "custom:decides",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_shutdown_sequence_signal_uses_memories",
+      "sourceEntityId": "ent_tpl_khepri9_shutdown_sequence",
+      "targetEntityId": "ent_tpl_khepri9_signal_uses_memories",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_infirmary_cases_signal_uses_memories",
+      "sourceEntityId": "ent_tpl_khepri9_infirmary_cases",
+      "targetEntityId": "ent_tpl_khepri9_signal_uses_memories",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_archive_manifest_signal_uses_memories",
+      "sourceEntityId": "ent_tpl_khepri9_archive_manifest",
+      "targetEntityId": "ent_tpl_khepri9_signal_uses_memories",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_lab_shard_voss_invited_contact",
+      "sourceEntityId": "ent_tpl_khepri9_lab_shard",
+      "targetEntityId": "ent_tpl_khepri9_voss_invited_contact",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_voss_access_log_voss_invited_contact",
+      "sourceEntityId": "ent_tpl_khepri9_voss_access_log",
+      "targetEntityId": "ent_tpl_khepri9_voss_invited_contact",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_escape_simulation_echo_can_leave",
+      "sourceEntityId": "ent_tpl_khepri9_escape_simulation",
+      "targetEntityId": "ent_tpl_khepri9_echo_can_leave",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_auxiliary_seed_echo_can_leave",
+      "sourceEntityId": "ent_tpl_khepri9_auxiliary_seed",
+      "targetEntityId": "ent_tpl_khepri9_echo_can_leave",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_vale_override_vale_authorized_orpheus",
+      "sourceEntityId": "ent_tpl_khepri9_vale_override",
+      "targetEntityId": "ent_tpl_khepri9_vale_authorized_orpheus",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_nyx_orders_helios_prior_knowledge",
+      "sourceEntityId": "ent_tpl_khepri9_nyx_orders",
+      "targetEntityId": "ent_tpl_khepri9_helios_prior_knowledge",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_distress_beacon_signal_already_sent",
+      "sourceEntityId": "ent_tpl_khepri9_distress_beacon",
+      "targetEntityId": "ent_tpl_khepri9_signal_already_sent",
+      "relationType": "custom:supports",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_vale_authorized_orpheus_isha_vale",
+      "sourceEntityId": "ent_tpl_khepri9_vale_authorized_orpheus",
+      "targetEntityId": "ent_tpl_khepri9_isha_vale",
+      "relationType": "custom:concerns",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_mara_hid_components_mara_quill",
+      "sourceEntityId": "ent_tpl_khepri9_mara_hid_components",
+      "targetEntityId": "ent_tpl_khepri9_mara_quill",
+      "relationType": "custom:concerns",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_roan_detentions_roan_vek",
+      "sourceEntityId": "ent_tpl_khepri9_roan_detentions",
+      "targetEntityId": "ent_tpl_khepri9_roan_vek",
+      "relationType": "custom:concerns",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_voss_fragment_survives_elian_voss",
+      "sourceEntityId": "ent_tpl_khepri9_voss_fragment_survives",
+      "targetEntityId": "ent_tpl_khepri9_elian_voss",
+      "relationType": "custom:concerns",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_helios_prior_knowledge_helios",
+      "sourceEntityId": "ent_tpl_khepri9_helios_prior_knowledge",
+      "targetEntityId": "ent_tpl_khepri9_helios",
+      "relationType": "custom:concerns",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_signal_already_sent_signal",
+      "sourceEntityId": "ent_tpl_khepri9_signal_already_sent",
+      "targetEntityId": "ent_tpl_khepri9_signal",
+      "relationType": "custom:concerns",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_echo_self_edited_the_echo",
+      "sourceEntityId": "ent_tpl_khepri9_echo_self_edited",
+      "targetEntityId": "ent_tpl_khepri9_the_echo",
+      "relationType": "custom:concerns",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_ren_kade_hook",
+      "sourceEntityId": "ent_tpl_khepri9_ren_kade",
+      "targetEntityId": "ent_tpl_khepri9_echo_can_leave",
+      "relationType": "custom:hooked_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_sola_bek_hook",
+      "sourceEntityId": "ent_tpl_khepri9_sola_bek",
+      "targetEntityId": "ent_tpl_khepri9_infirmary_cases",
+      "relationType": "custom:hooked_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_dax_morrow_hook",
+      "sourceEntityId": "ent_tpl_khepri9_dax_morrow",
+      "targetEntityId": "ent_tpl_khepri9_helios_prior_knowledge",
+      "relationType": "custom:hooked_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_yara_chen_hook",
+      "sourceEntityId": "ent_tpl_khepri9_yara_chen",
+      "targetEntityId": "ent_tpl_khepri9_signal",
+      "relationType": "custom:hooked_to",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_fate_echo_contained",
+      "sourceEntityId": "ent_tpl_khepri9_decide_fate",
+      "targetEntityId": "ent_tpl_khepri9_echo_contained",
+      "relationType": "causes",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_fate_echo_imprisoned",
+      "sourceEntityId": "ent_tpl_khepri9_decide_fate",
+      "targetEntityId": "ent_tpl_khepri9_echo_imprisoned",
+      "relationType": "causes",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_fate_helios_owns_echo",
+      "sourceEntityId": "ent_tpl_khepri9_decide_fate",
+      "targetEntityId": "ent_tpl_khepri9_helios_owns_echo",
+      "relationType": "causes",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_fate_echo_escape",
+      "sourceEntityId": "ent_tpl_khepri9_decide_fate",
+      "targetEntityId": "ent_tpl_khepri9_echo_escape",
+      "relationType": "causes",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_fate_echo_pact",
+      "sourceEntityId": "ent_tpl_khepri9_decide_fate",
+      "targetEntityId": "ent_tpl_khepri9_echo_pact",
+      "relationType": "causes",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_fate_echo_fragmented",
+      "sourceEntityId": "ent_tpl_khepri9_decide_fate",
+      "targetEntityId": "ent_tpl_khepri9_echo_fragmented",
+      "relationType": "causes",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_fate_truth_public",
+      "sourceEntityId": "ent_tpl_khepri9_decide_fate",
+      "targetEntityId": "ent_tpl_khepri9_truth_public",
+      "relationType": "causes",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    },
+    {
+      "relationId": "rel_tpl_khepri9_fate_station_dark",
+      "sourceEntityId": "ent_tpl_khepri9_decide_fate",
+      "targetEntityId": "ent_tpl_khepri9_station_dark",
+      "relationType": "causes",
+      "visibility": {
+        "kind": "dm_only"
+      }
+    }
   ],
   "facts": [
-    {"factId":"fact_tpl_khepri9_no_power","kind":"canon","confidence":"confirmed","visibility":{"kind":"party"},"relatedEntityIds":["ent_tpl_khepri9_station","ent_tpl_khepri9_reactor"]},
-    {"factId":"fact_tpl_khepri9_crew_divided","kind":"canon","confidence":"confirmed","visibility":{"kind":"party"},"relatedEntityIds":["ent_tpl_khepri9_survivors","ent_tpl_khepri9_helios"]},
-    {"factId":"fact_tpl_khepri9_signal_active","kind":"dm_secret","confidence":"confirmed","visibility":{"kind":"dm_only"},"relatedEntityIds":["ent_tpl_khepri9_signal","ent_tpl_khepri9_the_echo"]},
-    {"factId":"fact_tpl_khepri9_voss_contact","kind":"dm_secret","confidence":"confirmed","visibility":{"kind":"dm_only"},"relatedEntityIds":["ent_tpl_khepri9_elian_voss","ent_tpl_khepri9_voss_invited_contact"]},
-    {"factId":"fact_tpl_khepri9_artifact_alive","kind":"player_theory","confidence":"unconfirmed","visibility":{"kind":"party"},"relatedEntityIds":["ent_tpl_khepri9_artifact_chamber"]}
+    {
+      "factId": "fact_tpl_khepri9_no_power",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "party"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_station",
+        "ent_tpl_khepri9_reactor"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_crew_divided",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "party"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_survivors",
+        "ent_tpl_khepri9_rebuilders",
+        "ent_tpl_khepri9_security_bloc",
+        "ent_tpl_khepri9_listeners"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_signal_active",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_signal",
+        "ent_tpl_khepri9_the_echo"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_voss_contact",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_elian_voss",
+        "ent_tpl_khepri9_voss_invited_contact"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_artifact_alive",
+      "kind": "player_theory",
+      "confidence": "unconfirmed",
+      "visibility": {
+        "kind": "party"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_artifact"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_shutdown_deliberate",
+      "kind": "canon",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_isha_vale",
+        "ent_tpl_khepri9_shutdown_sequence",
+        "ent_tpl_khepri9_reactor"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_orpheus_memories",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_orpheus_protocol",
+        "ent_tpl_khepri9_memory_archive",
+        "ent_tpl_khepri9_signal_uses_memories"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_echo_composite",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_the_echo",
+        "ent_tpl_khepri9_artifact",
+        "ent_tpl_khepri9_orpheus_protocol"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_escape_possible",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_the_echo",
+        "ent_tpl_khepri9_communications_core",
+        "ent_tpl_khepri9_echo_can_leave"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_helios_cleanup",
+      "kind": "dm_secret",
+      "confidence": "likely",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_nyx_orr",
+        "ent_tpl_khepri9_nyx_orders",
+        "ent_tpl_khepri9_helios"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_vale_complicit",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_isha_vale",
+        "ent_tpl_khepri9_vale_authorized_orpheus"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_mara_sabotage",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_mara_quill",
+        "ent_tpl_khepri9_mara_hid_components"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_roan_detains",
+      "kind": "dm_secret",
+      "confidence": "confirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_roan_vek",
+        "ent_tpl_khepri9_quarantine_lock",
+        "ent_tpl_khepri9_roan_detentions"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_voices_real",
+      "kind": "unknown",
+      "confidence": "suspected",
+      "visibility": {
+        "kind": "party"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_listeners",
+        "ent_tpl_khepri9_the_echo",
+        "ent_tpl_khepri9_memory_archive"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_seed_sent",
+      "kind": "dm_secret",
+      "confidence": "likely",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_signal_already_sent",
+        "ent_tpl_khepri9_distress_beacon"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_artifact_not_unique",
+      "kind": "rumor",
+      "confidence": "unconfirmed",
+      "visibility": {
+        "kind": "dm_only"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_artifact",
+        "ent_tpl_khepri9_system"
+      ]
+    },
+    {
+      "factId": "fact_tpl_khepri9_helios_rescue",
+      "kind": "lie",
+      "confidence": "false",
+      "visibility": {
+        "kind": "party"
+      },
+      "relatedEntityIds": [
+        "ent_tpl_khepri9_helios",
+        "ent_tpl_khepri9_nyx_orr"
+      ]
+    }
   ],
   "sessions": [
-    {"sessionId":"sess_tpl_khepri9_arrival","prep":{"state":"ready","sceneIds":[],"involvedEntityIds":["ent_tpl_khepri9_docking_ring"],"availableClueIds":["ent_tpl_khepri9_distress_beacon"],"secretsAtRiskIds":[],"expectedConsequenceIds":[],"checklist":[{"id":"arrival_tone","priority":"high","done":false}]}},
-    {"sessionId":"sess_tpl_khepri9_survivors","prep":{"state":"ready","sceneIds":[],"involvedEntityIds":["ent_tpl_khepri9_habitat","ent_tpl_khepri9_mara_quill","ent_tpl_khepri9_roan_vek"],"availableClueIds":[],"secretsAtRiskIds":["ent_tpl_khepri9_signal_uses_memories"],"expectedConsequenceIds":[],"checklist":[{"id":"survivors_choice","priority":"high","done":false}]}},
-    {"sessionId":"sess_tpl_khepri9_reactor","prep":{"state":"ready","sceneIds":[],"involvedEntityIds":["ent_tpl_khepri9_reactor"],"availableClueIds":["ent_tpl_khepri9_shutdown_sequence"],"secretsAtRiskIds":["ent_tpl_khepri9_signal_uses_memories"],"expectedConsequenceIds":[],"checklist":[{"id":"reactor_pressure","priority":"high","done":false}]}},
-    {"sessionId":"sess_tpl_khepri9_lab","prep":{"state":"ready","sceneIds":[],"involvedEntityIds":["ent_tpl_khepri9_corporate_lab","ent_tpl_khepri9_elian_voss"],"availableClueIds":["ent_tpl_khepri9_lab_shard"],"secretsAtRiskIds":["ent_tpl_khepri9_voss_invited_contact"],"expectedConsequenceIds":[],"checklist":[{"id":"lab_truth","priority":"high","done":false}]}},
-    {"sessionId":"sess_tpl_khepri9_command","prep":{"state":"ready","sceneIds":[],"involvedEntityIds":["ent_tpl_khepri9_isha_vale"],"availableClueIds":["ent_tpl_khepri9_shutdown_sequence"],"secretsAtRiskIds":[],"expectedConsequenceIds":[],"checklist":[{"id":"command_cost","priority":"high","done":false}]}},
-    {"sessionId":"sess_tpl_khepri9_artifact","prep":{"state":"ready","sceneIds":[],"involvedEntityIds":["ent_tpl_khepri9_artifact_chamber","ent_tpl_khepri9_the_echo"],"availableClueIds":[],"secretsAtRiskIds":["ent_tpl_khepri9_echo_can_leave"],"expectedConsequenceIds":[],"checklist":[{"id":"contact_boundary","priority":"high","done":false}]}},
-    {"sessionId":"sess_tpl_khepri9_recovery","prep":{"state":"ready","sceneIds":[],"involvedEntityIds":["ent_tpl_khepri9_nyx_orr","ent_tpl_khepri9_recovery_team"],"availableClueIds":["ent_tpl_khepri9_lab_shard"],"secretsAtRiskIds":["ent_tpl_khepri9_voss_invited_contact"],"expectedConsequenceIds":[],"checklist":[{"id":"recovery_standoff","priority":"high","done":false}]}},
-    {"sessionId":"sess_tpl_khepri9_fate","prep":{"state":"ready","sceneIds":[],"involvedEntityIds":["ent_tpl_khepri9_decide_fate","ent_tpl_khepri9_station"],"availableClueIds":["ent_tpl_khepri9_shutdown_sequence"],"secretsAtRiskIds":["ent_tpl_khepri9_echo_can_leave"],"expectedConsequenceIds":["ent_tpl_khepri9_station_dark"],"checklist":[{"id":"fate_choice","priority":"high","done":false}]}}
+    {
+      "sessionId": "sess_tpl_khepri9_arrival",
+      "prep": {
+        "state": "ready",
+        "sceneIds": [
+          "ent_tpl_khepri9_scene_cold_approach",
+          "ent_tpl_khepri9_scene_failing_dock",
+          "ent_tpl_khepri9_scene_changing_voice",
+          "ent_tpl_khepri9_scene_first_threshold"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_khepri9_docking_ring",
+          "ent_tpl_khepri9_distress_beacon"
+        ],
+        "availableClueIds": [
+          "ent_tpl_khepri9_distress_beacon"
+        ],
+        "secretsAtRiskIds": [],
+        "expectedConsequenceIds": [],
+        "checklist": [
+          {
+            "id": "arrival_tone",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "arrival_choice",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "arrival_clock",
+            "priority": "medium",
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_khepri9_survivors",
+      "prep": {
+        "state": "ready",
+        "sceneIds": [
+          "ent_tpl_khepri9_scene_refuge_entry",
+          "ent_tpl_khepri9_scene_ration_hearing",
+          "ent_tpl_khepri9_scene_dead_mother_voice",
+          "ent_tpl_khepri9_scene_first_alignment"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_khepri9_habitat",
+          "ent_tpl_khepri9_mara_quill",
+          "ent_tpl_khepri9_roan_vek",
+          "ent_tpl_khepri9_omi_daro"
+        ],
+        "availableClueIds": [
+          "ent_tpl_khepri9_infirmary_cases"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_khepri9_signal_uses_memories",
+          "ent_tpl_khepri9_roan_detentions"
+        ],
+        "expectedConsequenceIds": [],
+        "checklist": [
+          {
+            "id": "survivors_tone",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "survivors_choice",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "survivors_clock",
+            "priority": "medium",
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_khepri9_reactor",
+      "prep": {
+        "state": "ready",
+        "sceneIds": [
+          "ent_tpl_khepri9_scene_dark_descent",
+          "ent_tpl_khepri9_scene_machine_wakes",
+          "ent_tpl_khepri9_scene_shutdown_truth",
+          "ent_tpl_khepri9_scene_power_allocation"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_khepri9_reactor",
+          "ent_tpl_khepri9_mara_quill",
+          "ent_tpl_khepri9_roan_vek"
+        ],
+        "availableClueIds": [
+          "ent_tpl_khepri9_shutdown_sequence",
+          "ent_tpl_khepri9_vale_override"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_khepri9_signal_uses_memories",
+          "ent_tpl_khepri9_mara_hid_components"
+        ],
+        "expectedConsequenceIds": [],
+        "checklist": [
+          {
+            "id": "reactor_tone",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "reactor_choice",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "reactor_clock",
+            "priority": "medium",
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_khepri9_lab",
+      "prep": {
+        "state": "ready",
+        "sceneIds": [
+          "ent_tpl_khepri9_scene_sealed_orpheus",
+          "ent_tpl_khepri9_scene_voss_recognition",
+          "ent_tpl_khepri9_scene_memory_ingestion",
+          "ent_tpl_khepri9_scene_evidence_choice"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_khepri9_corporate_lab",
+          "ent_tpl_khepri9_elian_voss",
+          "ent_tpl_khepri9_ade_nwosu",
+          "ent_tpl_khepri9_memory_archive"
+        ],
+        "availableClueIds": [
+          "ent_tpl_khepri9_lab_shard",
+          "ent_tpl_khepri9_archive_manifest",
+          "ent_tpl_khepri9_voss_access_log"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_khepri9_voss_invited_contact",
+          "ent_tpl_khepri9_helios_prior_knowledge",
+          "ent_tpl_khepri9_voss_fragment_survives"
+        ],
+        "expectedConsequenceIds": [],
+        "checklist": [
+          {
+            "id": "lab_tone",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "lab_choice",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "lab_clock",
+            "priority": "medium",
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_khepri9_command",
+      "prep": {
+        "state": "ready",
+        "sceneIds": [
+          "ent_tpl_khepri9_scene_command_breach",
+          "ent_tpl_khepri9_scene_vale_testimony",
+          "ent_tpl_khepri9_scene_mutiny_reconstruction",
+          "ent_tpl_khepri9_scene_emergency_authority"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_khepri9_command_center",
+          "ent_tpl_khepri9_isha_vale",
+          "ent_tpl_khepri9_mara_quill",
+          "ent_tpl_khepri9_roan_vek"
+        ],
+        "availableClueIds": [
+          "ent_tpl_khepri9_shutdown_sequence",
+          "ent_tpl_khepri9_vale_override"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_khepri9_vale_authorized_orpheus",
+          "ent_tpl_khepri9_roan_detentions"
+        ],
+        "expectedConsequenceIds": [],
+        "checklist": [
+          {
+            "id": "command_tone",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "command_choice",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "command_clock",
+            "priority": "medium",
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_khepri9_artifact",
+      "prep": {
+        "state": "ready",
+        "sceneIds": [
+          "ent_tpl_khepri9_scene_impossible_geometry",
+          "ent_tpl_khepri9_scene_borrowed_life",
+          "ent_tpl_khepri9_scene_echo_speaks",
+          "ent_tpl_khepri9_scene_request_to_leave"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_khepri9_artifact_chamber",
+          "ent_tpl_khepri9_artifact",
+          "ent_tpl_khepri9_the_echo",
+          "ent_tpl_khepri9_yara_chen"
+        ],
+        "availableClueIds": [
+          "ent_tpl_khepri9_escape_simulation",
+          "ent_tpl_khepri9_auxiliary_seed"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_khepri9_echo_can_leave",
+          "ent_tpl_khepri9_echo_self_edited"
+        ],
+        "expectedConsequenceIds": [],
+        "checklist": [
+          {
+            "id": "artifact_tone",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "artifact_choice",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "artifact_clock",
+            "priority": "medium",
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_khepri9_recovery",
+      "prep": {
+        "state": "ready",
+        "sceneIds": [
+          "ent_tpl_khepri9_scene_corporate_arrival",
+          "ent_tpl_khepri9_scene_evacuation_terms",
+          "ent_tpl_khepri9_scene_sealed_orders",
+          "ent_tpl_khepri9_scene_boarding_standoff"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_khepri9_nyx_orr",
+          "ent_tpl_khepri9_recovery_team",
+          "ent_tpl_khepri9_kellan_rhyse",
+          "ent_tpl_khepri9_helios"
+        ],
+        "availableClueIds": [
+          "ent_tpl_khepri9_nyx_orders"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_khepri9_helios_prior_knowledge",
+          "ent_tpl_khepri9_signal_already_sent"
+        ],
+        "expectedConsequenceIds": [],
+        "checklist": [
+          {
+            "id": "recovery_tone",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "recovery_choice",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "recovery_clock",
+            "priority": "medium",
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "sessionId": "sess_tpl_khepri9_fate",
+      "prep": {
+        "state": "ready",
+        "sceneIds": [
+          "ent_tpl_khepri9_scene_station_collapse",
+          "ent_tpl_khepri9_scene_faction_confrontation",
+          "ent_tpl_khepri9_scene_last_memory",
+          "ent_tpl_khepri9_scene_final_transmission"
+        ],
+        "involvedEntityIds": [
+          "ent_tpl_khepri9_decide_fate",
+          "ent_tpl_khepri9_station",
+          "ent_tpl_khepri9_the_echo",
+          "ent_tpl_khepri9_nyx_orr",
+          "ent_tpl_khepri9_isha_vale"
+        ],
+        "availableClueIds": [
+          "ent_tpl_khepri9_shutdown_sequence",
+          "ent_tpl_khepri9_nyx_orders",
+          "ent_tpl_khepri9_escape_simulation"
+        ],
+        "secretsAtRiskIds": [
+          "ent_tpl_khepri9_echo_can_leave",
+          "ent_tpl_khepri9_signal_already_sent"
+        ],
+        "expectedConsequenceIds": [
+          "ent_tpl_khepri9_station_dark",
+          "ent_tpl_khepri9_echo_contained",
+          "ent_tpl_khepri9_echo_imprisoned",
+          "ent_tpl_khepri9_helios_owns_echo",
+          "ent_tpl_khepri9_echo_escape",
+          "ent_tpl_khepri9_echo_pact",
+          "ent_tpl_khepri9_echo_fragmented",
+          "ent_tpl_khepri9_truth_public"
+        ],
+        "checklist": [
+          {
+            "id": "fate_tone",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "fate_choice",
+            "priority": "high",
+            "done": false
+          },
+          {
+            "id": "fate_clock",
+            "priority": "medium",
+            "done": false
+          }
+        ]
+      }
+    }
   ],
-  "canvases": [{"canvasId":"canvas_tpl_khepri9_threats","kind":"mystery","nodes":[{"id":"node_station","kind":"entity","entityId":"ent_tpl_khepri9_station","x":0,"y":0,"status":"ready","visibility":"dm"},{"id":"node_helios","kind":"entity","entityId":"ent_tpl_khepri9_helios","x":280,"y":0,"status":"ready","visibility":"dm"},{"id":"node_survivors","kind":"entity","entityId":"ent_tpl_khepri9_survivors","x":560,"y":0,"status":"ready","visibility":"dm"},{"id":"node_signal","kind":"entity","entityId":"ent_tpl_khepri9_signal","x":840,"y":0,"status":"ready","visibility":"dm"},{"id":"node_voss","kind":"entity","entityId":"ent_tpl_khepri9_elian_voss","x":280,"y":220,"status":"ready","visibility":"dm"},{"id":"node_echo","kind":"entity","entityId":"ent_tpl_khepri9_the_echo","x":560,"y":220,"status":"ready","visibility":"dm"},{"id":"node_artifact","kind":"entity","entityId":"ent_tpl_khepri9_artifact_chamber","x":840,"y":220,"status":"ready","visibility":"dm"}],"edges":[]}],
-  "highlightEntityIds": ["ent_tpl_khepri9_station","ent_tpl_khepri9_isha_vale","ent_tpl_khepri9_the_echo","ent_tpl_khepri9_artifact_chamber","ent_tpl_khepri9_decide_fate"],
-  "featuredFactIds": ["fact_tpl_khepri9_signal_active","fact_tpl_khepri9_voss_contact"],
-  "featuredRelationIds": ["rel_tpl_khepri9_station_call","rel_tpl_khepri9_echo_escape"],
+  "canvases": [
+    {
+      "canvasId": "canvas_tpl_khepri9_mystery",
+      "kind": "mystery",
+      "nodes": [
+        {
+          "id": "m_station",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_station",
+          "x": 0,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "m_artifact",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_artifact",
+          "x": 260,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "m_orpheus",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_orpheus_protocol",
+          "x": 520,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "m_voss",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_elian_voss",
+          "x": 260,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "m_vale",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_isha_vale",
+          "x": 520,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "m_echo",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_the_echo",
+          "x": 780,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "m_signal",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_signal",
+          "x": 1040,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "m_escape",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_echo_can_leave",
+          "x": 780,
+          "y": 380,
+          "status": "ready",
+          "visibility": "dm"
+        }
+      ],
+      "edges": [
+        {
+          "id": "me1",
+          "sourceNodeId": "m_station",
+          "targetNodeId": "m_artifact",
+          "label": "built around",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "me2",
+          "sourceNodeId": "m_artifact",
+          "targetNodeId": "m_orpheus",
+          "label": "interfaced by",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "me3",
+          "sourceNodeId": "m_voss",
+          "targetNodeId": "m_orpheus",
+          "label": "created",
+          "visibility": "dm",
+          "style": "strong"
+        },
+        {
+          "id": "me4",
+          "sourceNodeId": "m_vale",
+          "targetNodeId": "m_orpheus",
+          "label": "authorized",
+          "visibility": "dm",
+          "style": "secret"
+        },
+        {
+          "id": "me5",
+          "sourceNodeId": "m_orpheus",
+          "targetNodeId": "m_echo",
+          "label": "gave rise to",
+          "visibility": "dm",
+          "style": "strong"
+        },
+        {
+          "id": "me6",
+          "sourceNodeId": "m_echo",
+          "targetNodeId": "m_signal",
+          "label": "inhabits",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "me7",
+          "sourceNodeId": "m_echo",
+          "targetNodeId": "m_escape",
+          "label": "seeks",
+          "visibility": "dm",
+          "style": "secret"
+        }
+      ]
+    },
+    {
+      "canvasId": "canvas_tpl_khepri9_factions",
+      "kind": "characters",
+      "nodes": [
+        {
+          "id": "f_survivors",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_survivors",
+          "x": 420,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "f_mara",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_mara_quill",
+          "x": 0,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "f_roan",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_roan_vek",
+          "x": 0,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "f_listeners",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_listeners",
+          "x": 0,
+          "y": 360,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "f_vale",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_isha_vale",
+          "x": 420,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "f_nyx",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_nyx_orr",
+          "x": 840,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "f_helios",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_helios",
+          "x": 840,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "f_echo",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_the_echo",
+          "x": 840,
+          "y": 360,
+          "status": "ready",
+          "visibility": "dm"
+        }
+      ],
+      "edges": [
+        {
+          "id": "fe1",
+          "sourceNodeId": "f_mara",
+          "targetNodeId": "f_survivors",
+          "label": "rebuild",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "fe2",
+          "sourceNodeId": "f_roan",
+          "targetNodeId": "f_survivors",
+          "label": "contain",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "fe3",
+          "sourceNodeId": "f_listeners",
+          "targetNodeId": "f_survivors",
+          "label": "preserve voices",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "fe4",
+          "sourceNodeId": "f_vale",
+          "targetNodeId": "f_survivors",
+          "label": "claims command",
+          "visibility": "dm",
+          "style": "dashed"
+        },
+        {
+          "id": "fe5",
+          "sourceNodeId": "f_nyx",
+          "targetNodeId": "f_helios",
+          "label": "serves",
+          "visibility": "dm",
+          "style": "strong"
+        },
+        {
+          "id": "fe6",
+          "sourceNodeId": "f_helios",
+          "targetNodeId": "f_echo",
+          "label": "claims ownership",
+          "visibility": "dm",
+          "style": "secret"
+        },
+        {
+          "id": "fe7",
+          "sourceNodeId": "f_echo",
+          "targetNodeId": "f_survivors",
+          "label": "uses memories",
+          "visibility": "dm",
+          "style": "secret"
+        }
+      ]
+    },
+    {
+      "canvasId": "canvas_tpl_khepri9_systems",
+      "kind": "location",
+      "nodes": [
+        {
+          "id": "s_reactor",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_reactor",
+          "x": 0,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "s_hab",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_habitat",
+          "x": 300,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "s_infirmary",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_infirmary",
+          "x": 300,
+          "y": 160,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "s_lab",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_corporate_lab",
+          "x": 300,
+          "y": 320,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "s_comms",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_communications_core",
+          "x": 600,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "s_archive",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_memory_archive",
+          "x": 600,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "s_artifact",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_artifact_chamber",
+          "x": 600,
+          "y": 360,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "s_ship",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_ren_kade",
+          "x": 900,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        }
+      ],
+      "edges": [
+        {
+          "id": "se1",
+          "sourceNodeId": "s_reactor",
+          "targetNodeId": "s_hab",
+          "label": "powers life support",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "se2",
+          "sourceNodeId": "s_reactor",
+          "targetNodeId": "s_infirmary",
+          "label": "powers care",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "se3",
+          "sourceNodeId": "s_reactor",
+          "targetNodeId": "s_lab",
+          "label": "wakes systems",
+          "visibility": "dm",
+          "style": "secret"
+        },
+        {
+          "id": "se4",
+          "sourceNodeId": "s_lab",
+          "targetNodeId": "s_archive",
+          "label": "consumed",
+          "visibility": "dm",
+          "style": "secret"
+        },
+        {
+          "id": "se5",
+          "sourceNodeId": "s_archive",
+          "targetNodeId": "s_artifact",
+          "label": "trained the Echo",
+          "visibility": "dm",
+          "style": "secret"
+        },
+        {
+          "id": "se6",
+          "sourceNodeId": "s_comms",
+          "targetNodeId": "s_ship",
+          "label": "outbound route",
+          "visibility": "dm",
+          "style": "strong"
+        },
+        {
+          "id": "se7",
+          "sourceNodeId": "s_artifact",
+          "targetNodeId": "s_comms",
+          "label": "signal path",
+          "visibility": "dm",
+          "style": "secret"
+        }
+      ]
+    },
+    {
+      "canvasId": "canvas_tpl_khepri9_endings",
+      "kind": "custom",
+      "nodes": [
+        {
+          "id": "e_choice",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_decide_fate",
+          "x": 420,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "e_contain",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_echo_contained",
+          "x": 0,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "e_prison",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_echo_imprisoned",
+          "x": 0,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "e_helios",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_helios_owns_echo",
+          "x": 0,
+          "y": 360,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "e_escape",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_echo_escape",
+          "x": 840,
+          "y": 0,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "e_pact",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_echo_pact",
+          "x": 840,
+          "y": 180,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "e_split",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_echo_fragmented",
+          "x": 840,
+          "y": 360,
+          "status": "ready",
+          "visibility": "dm"
+        },
+        {
+          "id": "e_truth",
+          "kind": "entity",
+          "entityId": "ent_tpl_khepri9_truth_public",
+          "x": 420,
+          "y": 420,
+          "status": "ready",
+          "visibility": "dm"
+        }
+      ],
+      "edges": [
+        {
+          "id": "ee1",
+          "sourceNodeId": "e_choice",
+          "targetNodeId": "e_contain",
+          "label": "destroy",
+          "visibility": "dm",
+          "style": "strong"
+        },
+        {
+          "id": "ee2",
+          "sourceNodeId": "e_choice",
+          "targetNodeId": "e_prison",
+          "label": "isolate",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "ee3",
+          "sourceNodeId": "e_choice",
+          "targetNodeId": "e_helios",
+          "label": "surrender",
+          "visibility": "dm",
+          "style": "secret"
+        },
+        {
+          "id": "ee4",
+          "sourceNodeId": "e_choice",
+          "targetNodeId": "e_escape",
+          "label": "release",
+          "visibility": "dm",
+          "style": "strong"
+        },
+        {
+          "id": "ee5",
+          "sourceNodeId": "e_choice",
+          "targetNodeId": "e_pact",
+          "label": "negotiate",
+          "visibility": "dm",
+          "style": "solid"
+        },
+        {
+          "id": "ee6",
+          "sourceNodeId": "e_choice",
+          "targetNodeId": "e_split",
+          "label": "fragment",
+          "visibility": "dm",
+          "style": "dashed"
+        },
+        {
+          "id": "ee7",
+          "sourceNodeId": "e_choice",
+          "targetNodeId": "e_truth",
+          "label": "publish",
+          "visibility": "dm",
+          "style": "solid"
+        }
+      ]
+    }
+  ],
+  "highlightEntityIds": [
+    "ent_tpl_khepri9_station",
+    "ent_tpl_khepri9_the_echo",
+    "ent_tpl_khepri9_isha_vale",
+    "ent_tpl_khepri9_nyx_orr",
+    "ent_tpl_khepri9_artifact",
+    "ent_tpl_khepri9_survivors",
+    "ent_tpl_khepri9_decide_fate"
+  ],
+  "featuredFactIds": [
+    "fact_tpl_khepri9_shutdown_deliberate",
+    "fact_tpl_khepri9_orpheus_memories",
+    "fact_tpl_khepri9_escape_possible",
+    "fact_tpl_khepri9_helios_cleanup"
+  ],
+  "featuredRelationIds": [
+    "rel_tpl_khepri9_echo_artifact",
+    "rel_tpl_khepri9_nyx_helios",
+    "rel_tpl_khepri9_mara_roan",
+    "rel_tpl_khepri9_fate_echo_escape"
+  ],
   "defaultLocale": "en"
 }

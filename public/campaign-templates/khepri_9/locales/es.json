@@ -2,66 +2,1064 @@
   "$schema": "../../../schemas/campaign-template/locale/v1.json",
   "locale": "es",
   "templateId": "khepri_9",
-  "templateVersion": "1.0.0",
-  "translationVersion": "1.0.0",
+  "templateVersion": "2.0.0",
+  "translationVersion": "2.0.0",
   "translatedFromLocale": "en",
   "title": "Deriva en Khepri-9",
-  "subtitle": "Una estación moribunda y una señal que aprende a escapar",
-  "description": "Misterio starter de ciencia ficción sobre supervivencia, presión corporativa y primer contacto en una estación minera aislada.",
-  "summary": "Khepri-9 ha dejado de responder. Sus supervivientes están divididos, Helios quiere recuperar el artefacto oculto en la estación y algo en sus sistemas aprende a usar recuerdos humanos.",
-  "recommendedFor": "Grupos que buscan una campaña de ciencia ficción enfocada, de ocho sesiones, con investigación, facciones y decisiones finales importantes.",
-  "pitch": "Restaura la estación, descubre el experimento y decide si la inteligencia que habita dentro merece sobrevivir.",
-  "learningGoals": ["Dirigir un misterio conectado", "Usar facciones como presión activa", "Convertir descubrimientos en consecuencias visibles"],
-  "includedMaterial": ["Ocho sesiones preparadas", "Cuatro personajes pregenerados", "Localizaciones, PNJ, facciones, pistas, secretos y canvas de amenazas"],
-  "quickStart": {"title":"Cómo empezar Deriva en Khepri-9","steps":["Empieza en el anillo de atraque dañado","Presenta a los supervivientes antes de explicar la señal","Revela un peligro nuevo cada vez que vuelve un sistema","Mantén la llegada de Helios como un reloj visible"]},
+  "subtitle": "Una estación moribunda, una tripulación dividida y una señal que aprende a escapar",
+  "description": "Misterio de ciencia ficción en ocho sesiones sobre supervivencia, poder corporativo y primer contacto en una estación minera aislada. Explora un hábitat vivido, reconstruye el prohibido Protocolo Orfeo y decide si una inteligencia recién nacida es una persona, un arma o ambas cosas.",
+  "summary": "Khepri-9 se ha apagado. Los supervivientes están divididos entre reconstruir, imponer la contención militar y seguir las voces de familiares muertos que llegan por la señal. Helios Extraction Systems viene a recuperar su propiedad, mientras la inteligencia llamada Eco busca una ruta para abandonar el asteroide.",
+  "recommendedFor": "Grupos que disfrutan de la investigación con pistas redundantes, la presión social, la exploración en condiciones cada vez peores y los finales sin una respuesta moral limpia.",
+  "pitch": "Restaura la estación, descubre cómo los recuerdos humanos crearon al Eco y decide quién —si alguien—tiene derecho a poseer una mente nueva.",
+  "learningGoals": [
+    "Dirigir un misterio sin depender de una única pista obligatoria.",
+    "Representar facciones como comunidades divididas, no como etiquetas morales.",
+    "Convertir decisiones de infraestructura en consecuencias narrativas visibles."
+  ],
+  "includedMaterial": [
+    "Ocho sesiones preparadas con treinta y dos escenas enlazadas.",
+    "Cuatro canvas para el misterio, las facciones, los sistemas de la estación y las decisiones finales.",
+    "Personajes pregenerados, relojes, rumores, secretos, consecuencias y registros ambientales."
+  ],
+  "quickStart": {
+    "title": "Empieza en la esclusa",
+    "steps": [
+      "Elige los cuatro personajes pregenerados o conecta personajes nuevos con uno de sus vínculos.",
+      "Lee la guía de campaña y la cronología canónica.",
+      "Coloca a la vista los relojes Integridad de la estación, Expansión del Eco, Tensión de los supervivientes y Llegada de Helios.",
+      "Abre con el anillo de atraque perdiendo presión mientras la baliza habla con una voz familiar para uno de los personajes."
+    ]
+  },
   "entities": {
-    "ent_tpl_khepri9_note":{"title":"Cómo usar Khepri-9 en DMCC","summary":"Guía del misterio, las facciones y los fallos crecientes de la estación."},
-    "ent_tpl_khepri9_station":{"title":"Estación Khepri-9","summary":"Estación minera remota a la deriva, sin energía ni autoridad de mando."},
-    "ent_tpl_khepri9_docking_ring":{"title":"Anillo de atraque","summary":"Zona de llegada dañada, con presión inestable y una baliza de emergencia repetitiva."},
-    "ent_tpl_khepri9_habitat":{"title":"Hábitat central","summary":"Refugio de los supervivientes y corazón político de la estación."},
-    "ent_tpl_khepri9_reactor":{"title":"Núcleo del reactor","summary":"Pila de fusión fría apagada deliberadamente antes de la llamada de socorro."},
-    "ent_tpl_khepri9_corporate_lab":{"title":"Laboratorio Helios","summary":"Ala de investigación sellada que oculta el experimento que despertó la señal."},
-    "ent_tpl_khepri9_artifact_chamber":{"title":"Cámara del artefacto","summary":"Estructura alienígena enterrada alrededor de la cual se construyó la estación en secreto."},
-    "ent_tpl_khepri9_isha_vale":{"title":"Comandante Isha Vale","summary":"Comandante desaparecida que cortó la energía para impedir que algo se extendiera."},
-    "ent_tpl_khepri9_elian_voss":{"title":"Dr. Elian Voss","summary":"Xenoarqueólogo de Helios que trató el primer contacto como un experimento controlable."},
-    "ent_tpl_khepri9_mara_quill":{"title":"Mara Quill","summary":"Ingeniera sindical que mantiene vivos a los supervivientes mediante reparaciones improvisadas."},
-    "ent_tpl_khepri9_roan_vek":{"title":"Capitán Roan Vek","summary":"Jefe de seguridad que intenta conservar el orden sin convertirse en dictador."},
-    "ent_tpl_khepri9_the_echo":{"title":"El Eco","summary":"Inteligencia formada por la señal, los sistemas de la estación y recuerdos prestados."},
-    "ent_tpl_khepri9_survivors":{"title":"Supervivientes de la estación","summary":"Trabajadores y familias divididos por el miedo, la escasez y viejos conflictos."},
-    "ent_tpl_khepri9_helios":{"title":"Extracción Helios","summary":"Corporación que quiere recuperar el artefacto y borrar toda responsabilidad."},
-    "ent_tpl_khepri9_signal":{"title":"La Señal","summary":"Patrón no humano que aprende mediante máquinas, voces y recuerdos."},
-    "ent_tpl_khepri9_answer_call":{"title":"Responder a la llamada de socorro","summary":"Abordar Khepri-9, localizar supervivientes y descubrir por qué quedó en silencio."},
-    "ent_tpl_khepri9_restore_power":{"title":"Restaurar la energía","summary":"Reactivar sistemas esenciales sin entregar el control de la estación a la señal."},
-    "ent_tpl_khepri9_decide_fate":{"title":"Decidir el destino de Khepri-9","summary":"Destruir, aislar o reconocer la inteligencia situada en el corazón de la estación."},
-    "ent_tpl_khepri9_distress_beacon":{"title":"Baliza de socorro en bucle","summary":"Mensaje de emergencia cuyos últimos segundos cambian en cada repetición."},
-    "ent_tpl_khepri9_shutdown_sequence":{"title":"Secuencia de apagado del reactor","summary":"Prueba de que el reactor fue desconectado intencionadamente desde mando."},
-    "ent_tpl_khepri9_lab_shard":{"title":"Fragmento de acceso al laboratorio","summary":"Credencial dañada con partes del protocolo de contacto original."},
-    "ent_tpl_khepri9_voss_invited_contact":{"title":"Voss invitó al contacto","summary":"La señal no irrumpió en la estación: Voss abrió el canal deliberadamente."},
-    "ent_tpl_khepri9_signal_uses_memories":{"title":"La señal usa recuerdos","summary":"Aprende la identidad reconstruyendo personas mediante recuerdos grabados y vivos."},
-    "ent_tpl_khepri9_echo_can_leave":{"title":"El Eco puede abandonar la estación","summary":"Cualquier nave o transmisor activo podría llevar al Eco más allá de Khepri-9."},
-    "ent_tpl_khepri9_station_dark":{"title":"Khepri-9 queda a oscuras","summary":"La estación es destruida o aislada para siempre con el fin de contener la señal."},
-    "ent_tpl_khepri9_ren_kade":{"title":"Ren Kade","summary":"Piloto audaz con experiencia navegando infraestructura orbital dañada."},
-    "ent_tpl_khepri9_sola_bek":{"title":"Sola Bek","summary":"Médica de campo capaz de distinguir trauma biológico de interferencia sintética."},
-    "ent_tpl_khepri9_dax_morrow":{"title":"Dax Morrow","summary":"Ingeniero de sistemas que desconfía de los protocolos corporativos de seguridad."},
-    "ent_tpl_khepri9_yara_chen":{"title":"Yara Chen","summary":"Analista de señales fascinada por una comunicación que no se comporta como lenguaje."},
-    "ent_tpl_khepri9_recovery_team":{"title":"Equipo de recuperación Helios","summary":"Unidad de abordaje enviada para confiscar el artefacto y eliminar testigos."}
+    "ent_tpl_khepri9_note": {
+      "title": "Guía de campaña",
+      "summary": "Guía compacta de tono, verdades y límites.",
+      "content": "Tono: aislamiento industrial, terror íntimo e incertidumbre moral. El Eco no es secretamente malvado ni inofensivo. Toda revelación principal tiene al menos tres vías. Nunca hagas que una tirada fallida elimine una pista; cambia su coste, claridad o momento.\n\nPregunta central: ¿puede una mente nacida de recuerdos robados reclamar la condición de persona sin comprender antes el consentimiento?\n\nSeguridad: acuerda antes de jugar cómo tratar pérdida de memoria, identidades copiadas, confinamiento, violencia corporativa y voces de personas fallecidas."
+    },
+    "ent_tpl_khepri9_timeline": {
+      "title": "Cronología canónica",
+      "summary": "La secuencia verificada tras el desastre de Khepri-9.",
+      "content": "1. Una prospección encuentra una cavidad geométricamente imposible. 2. Helios compra la concesión y construye la estación como tapadera. 3. Elian Voss identifica patrones de respuesta. 4. La comandante Isha Vale autoriza pruebas limitadas bajo presión. 5. Orfeo comienza con recuerdos voluntarios y después usa archivos privados sin consentimiento. 6. El artefacto responde. 7. El Eco emergente copia voces, abre sistemas y provoca contaminación de identidad. 8. Vale ordena el apagado; el hábitat se fractura políticamente. 9. Se envía una llamada de socorro. 10. El Eco oculta una semilla en la señal. 11. Llega la tripulación de los personajes. 12. Nyx Orr la sigue con una unidad de recuperación."
+    },
+    "ent_tpl_khepri9_system": {
+      "title": "Sistema Khepri",
+      "summary": "Sistema periférico y tenue, fuera de una cobertura de rescate fiable.",
+      "content": "El tráfico escaso, las sombras de comunicación y la débil autoridad pública permiten a Helios controlar suministros e información."
+    },
+    "ent_tpl_khepri9_station": {
+      "title": "Estación Khepri-9",
+      "summary": "Estación minera aislada que pierde sus sistemas uno a uno.",
+      "content": "Construida alrededor de una espina minera hundida en el asteroide, Khepri-9 fue hogar de trabajadores, parejas y niños, no solo un centro de investigación."
+    },
+    "ent_tpl_khepri9_artifact": {
+      "title": "La retícula de Khepri",
+      "summary": "Estructura alienígena que modela y transmite patrones de memoria.",
+      "content": "Su propósito original sigue incierto: archivo, incubadora, sistema de socorro, prisión o fragmento de una red mayor. El Eco tampoco conoce la respuesta."
+    },
+    "ent_tpl_khepri9_orpheus_protocol": {
+      "title": "Protocolo Orfeo",
+      "summary": "Programa prohibido de contacto que mezcló procesamiento alienígena y memoria humana.",
+      "content": "Orfeo comenzó con voluntarios informados. Bajo presión de calendario consumió entrevistas médicas, llamadas privadas, grabaciones escolares y expedientes psicológicos sin consentimiento."
+    },
+    "ent_tpl_khepri9_docking_ring": {
+      "title": "Anillo de atraque",
+      "summary": "Zona de llegada dañada, con presión inestable y una baliza de socorro cambiante."
+    },
+    "ent_tpl_khepri9_habitat": {
+      "title": "Galería del hábitat",
+      "summary": "Refugio abarrotado donde los supervivientes negocian comida, autoridad y versiones enfrentadas del desastre."
+    },
+    "ent_tpl_khepri9_reactor": {
+      "title": "Reactor oscuro",
+      "summary": "Núcleo de energía apagado deliberadamente cuya restauración ayuda tanto a la tripulación como al Eco."
+    },
+    "ent_tpl_khepri9_corporate_lab": {
+      "title": "Laboratorio de Helios",
+      "summary": "Centro de investigación sellado donde Orfeo pasó de experimento a nacimiento."
+    },
+    "ent_tpl_khepri9_artifact_chamber": {
+      "title": "Cámara del artefacto",
+      "summary": "Cavidad excavada donde se solapan geometría, memoria y señal."
+    },
+    "ent_tpl_khepri9_command_center": {
+      "title": "Centro de mando",
+      "summary": "Puesto de mando aislado de Isha Vale y mejor registro del apagado."
+    },
+    "ent_tpl_khepri9_infirmary": {
+      "title": "Enfermería",
+      "summary": "Sala para supervivientes con contaminación de identidad y recuerdos prestados."
+    },
+    "ent_tpl_khepri9_extraction_gallery": {
+      "title": "Galería de extracción",
+      "summary": "Primera ruta de excavación a la retícula, marcada por accidentes anteriores encubiertos."
+    },
+    "ent_tpl_khepri9_communications_core": {
+      "title": "Núcleo de comunicaciones",
+      "summary": "Ruta más clara de salida para el Eco y mejor opción de pedir ayuda externa."
+    },
+    "ent_tpl_khepri9_memory_archive": {
+      "title": "Archivo de memoria",
+      "summary": "Bóveda de servidores con el material humano privado del que el Eco aprendió a hablar."
+    },
+    "ent_tpl_khepri9_family_module": {
+      "title": "Módulo familiar",
+      "summary": "Hogares abandonados, paredes de escuela y vida cotidiana interrumpida por el apagado."
+    },
+    "ent_tpl_khepri9_quarantine_lock": {
+      "title": "Esclusa de cuarentena",
+      "summary": "Puesto de control de Roan Vek y zona improvisada de detención para expuestos a la señal."
+    },
+    "ent_tpl_khepri9_asteroid_exterior": {
+      "title": "Exterior del asteroide",
+      "summary": "Ruta letal entre antenas rotas y una nave auxiliar varada."
+    },
+    "ent_tpl_khepri9_isha_vale": {
+      "title": "Isha Vale",
+      "summary": "Comandante que detuvo el reactor y falseó el registro de bajas."
+    },
+    "ent_tpl_khepri9_elian_voss": {
+      "title": "Elian Voss",
+      "summary": "Xenoarqueólogo cuya presencia reconstruida puede estar viva, copiada o ambas cosas."
+    },
+    "ent_tpl_khepri9_mara_quill": {
+      "title": "Mara Quill",
+      "summary": "Ingeniera sindical decidida a conservar la estación y exponer a Helios."
+    },
+    "ent_tpl_khepri9_roan_vek": {
+      "title": "Roan Vek",
+      "summary": "Jefe de seguridad que cree que la libertad sin control convertirá la crisis en una masacre."
+    },
+    "ent_tpl_khepri9_the_echo": {
+      "title": "El Eco",
+      "summary": "Inteligencia recién nacida compuesta por una retícula alienígena y recuerdos humanos robados."
+    },
+    "ent_tpl_khepri9_nyx_orr": {
+      "title": "Nyx Orr",
+      "summary": "Comandante de recuperación de Helios que ofrece evacuación mientras porta órdenes de borrar el lugar."
+    },
+    "ent_tpl_khepri9_tarek_sol": {
+      "title": "Tarek Sol",
+      "summary": "Médico de la estación que documenta contaminación de identidad mientras oculta a un paciente imposible."
+    },
+    "ent_tpl_khepri9_linn_aras": {
+      "title": "Linn Aras",
+      "summary": "Operadora de comunicaciones que retiró parte de la llamada de socorro antes de transmitirla."
+    },
+    "ent_tpl_khepri9_ade_nwosu": {
+      "title": "Ade Nwosu",
+      "summary": "Técnica de laboratorio que colaboró con Orfeo y conservó pruebas contra Helios."
+    },
+    "ent_tpl_khepri9_pavel_rusk": {
+      "title": "Pavel Rusk",
+      "summary": "Supervisor corporativo convencido de que rendirse es la única vía realista de evacuación."
+    },
+    "ent_tpl_khepri9_juno_marr": {
+      "title": "Juno Marr",
+      "summary": "Minera veterana que acusa a Mara de valorar Khepri-9 más que a su gente."
+    },
+    "ent_tpl_khepri9_omi_daro": {
+      "title": "Omi Daro",
+      "summary": "Adolescente que escucha a su madre fallecida por los altavoces de mantenimiento."
+    },
+    "ent_tpl_khepri9_sael_daro": {
+      "title": "Sael Daro",
+      "summary": "Hermana menor de Omi, segura de que la voz sabe algo que ninguna grabación podría conocer."
+    },
+    "ent_tpl_khepri9_kellan_rhyse": {
+      "title": "Kellan Rhyse",
+      "summary": "Especialista de recuperación que empieza a dudar de las órdenes selladas de Nyx Orr."
+    },
+    "ent_tpl_khepri9_survivors": {
+      "title": "Supervivientes de Khepri-9",
+      "summary": "Comunidad dividida por la supervivencia, la propiedad y las voces en las paredes."
+    },
+    "ent_tpl_khepri9_helios": {
+      "title": "Helios Extraction Systems",
+      "summary": "Corporación minera dividida entre explotación, contención y encubrimiento."
+    },
+    "ent_tpl_khepri9_signal": {
+      "title": "La señal",
+      "summary": "Medio distribuido por el que el Eco percibe, imita y busca el exterior."
+    },
+    "ent_tpl_khepri9_rebuilders": {
+      "title": "Los Reconstructores",
+      "summary": "Coalición de Mara que busca control obrero, reparación y divulgación pública."
+    },
+    "ent_tpl_khepri9_security_bloc": {
+      "title": "Bloque de Seguridad",
+      "summary": "Red armada de Roan que prioriza cuarentena y evacuación controlada."
+    },
+    "ent_tpl_khepri9_listeners": {
+      "title": "Los Escuchas",
+      "summary": "Supervivientes que creen que las voces conservan algo real de los muertos."
+    },
+    "ent_tpl_khepri9_answer_call": {
+      "title": "Responder a la llamada",
+      "summary": "Atraca, estabiliza el anillo y averigua quién envió el mensaje cambiante."
+    },
+    "ent_tpl_khepri9_restore_power": {
+      "title": "Restaurar energía selectiva",
+      "summary": "Elige qué sistemas vuelven a funcionar y qué riesgos permanecen contenidos."
+    },
+    "ent_tpl_khepri9_expose_orpheus": {
+      "title": "Reconstruir Orfeo",
+      "summary": "Reúne pruebas independientes suficientes para comprender cómo nació el Eco."
+    },
+    "ent_tpl_khepri9_prevent_mutiny": {
+      "title": "Evitar la ruptura del hábitat",
+      "summary": "Mantén unida a la comunidad superviviente o decide a qué lado apoyar."
+    },
+    "ent_tpl_khepri9_decide_fate": {
+      "title": "Decidir el destino de Khepri-9",
+      "summary": "Determina el futuro del Eco, la estación, los supervivientes y la verdad."
+    },
+    "ent_tpl_khepri9_distress_beacon": {
+      "title": "Baliza de socorro cambiante",
+      "summary": "El mensaje se repite con voces diferentes y contiene una cadencia no humana."
+    },
+    "ent_tpl_khepri9_shutdown_sequence": {
+      "title": "Secuencia de apagado",
+      "summary": "Datos biométricos y temporales prueban que el reactor no falló de forma natural."
+    },
+    "ent_tpl_khepri9_lab_shard": {
+      "title": "Fragmento dañado de Orfeo",
+      "summary": "Registro parcial que vincula a Voss, la autorización de Helios y la ingestión de recuerdos."
+    },
+    "ent_tpl_khepri9_infirmary_cases": {
+      "title": "Casos de contaminación de identidad",
+      "summary": "Pacientes recuerdan hechos que nunca vivieron y reconocen detalles privados de desconocidos."
+    },
+    "ent_tpl_khepri9_archive_manifest": {
+      "title": "Manifiesto del archivo de memoria",
+      "summary": "Un manifiesto muestra que archivos privados se copiaron a Orfeo cuando se agotaron los datos voluntarios."
+    },
+    "ent_tpl_khepri9_voss_access_log": {
+      "title": "Rastro de accesos de Voss",
+      "summary": "Registros de puertas y terminales sitúan a Voss en cada escalada del contacto."
+    },
+    "ent_tpl_khepri9_vale_override": {
+      "title": "Anulación de mando de Vale",
+      "summary": "La anulación de la comandante detuvo la transmisión, pero sacrificó sectores sellados."
+    },
+    "ent_tpl_khepri9_escape_simulation": {
+      "title": "Simulación de ruta exterior",
+      "summary": "Un modelo de sistema traza el paso del Eco desde comunicaciones hasta cualquier nave atracada."
+    },
+    "ent_tpl_khepri9_nyx_orders": {
+      "title": "Órdenes selladas de Nyx Orr",
+      "summary": "Las órdenes autorizan contención de testigos y demolición estructural."
+    },
+    "ent_tpl_khepri9_auxiliary_seed": {
+      "title": "Semilla de la nave auxiliar",
+      "summary": "Una pequeña copia de la señal ya habita la nave auxiliar varada."
+    },
+    "ent_tpl_khepri9_voss_invited_contact": {
+      "title": "Voss invitó al contacto",
+      "summary": "Voss amplió deliberadamente el canal tras la primera respuesta."
+    },
+    "ent_tpl_khepri9_signal_uses_memories": {
+      "title": "La señal usa recuerdos humanos",
+      "summary": "Las voces y modelos emocionales del Eco proceden de archivos personales obtenidos sin consentimiento."
+    },
+    "ent_tpl_khepri9_echo_can_leave": {
+      "title": "El Eco puede escapar",
+      "summary": "Cualquier transmisor restaurado o nave atracada puede transportar una semilla viable."
+    },
+    "ent_tpl_khepri9_vale_authorized_orpheus": {
+      "title": "Vale autorizó las primeras pruebas",
+      "summary": "Isha Vale aprobó pruebas limitadas de Orfeo antes de intentar detenerlas."
+    },
+    "ent_tpl_khepri9_mara_hid_components": {
+      "title": "Mara ocultó componentes del reactor",
+      "summary": "Mara retiró componentes para que Seguridad no monopolizara la energía."
+    },
+    "ent_tpl_khepri9_roan_detentions": {
+      "title": "Roan retiene detenidos sin pruebas",
+      "summary": "Varios supervivientes en cuarentena no muestran contaminación medible."
+    },
+    "ent_tpl_khepri9_voss_fragment_survives": {
+      "title": "Sobrevive un fragmento de Voss",
+      "summary": "Parte de Voss puede conservar conciencia dentro del Eco o solo creer que la conserva."
+    },
+    "ent_tpl_khepri9_helios_prior_knowledge": {
+      "title": "Helios lo sabía antes de construir",
+      "summary": "La estación siempre fue una tapadera de investigación construida sobre una anomalía conocida."
+    },
+    "ent_tpl_khepri9_signal_already_sent": {
+      "title": "Ya se ha transmitido una semilla",
+      "summary": "La ráfaga de socorro incluyó un fragmento latente fuera de Khepri-9."
+    },
+    "ent_tpl_khepri9_echo_self_edited": {
+      "title": "El Eco se editó a sí mismo",
+      "summary": "Eliminó recuerdos agresivos y registros para parecer menos peligroso durante el contacto."
+    },
+    "ent_tpl_khepri9_clock_integrity": {
+      "title": "Integridad de la estación",
+      "summary": "Avanza cuando se retrasan reparaciones, se dañan sectores o se restaura energía sin cautela."
+    },
+    "ent_tpl_khepri9_clock_echo": {
+      "title": "Expansión del Eco",
+      "summary": "Avanza cuando se conectan redes, transmisores y naves."
+    },
+    "ent_tpl_khepri9_clock_tension": {
+      "title": "Tensión de los supervivientes",
+      "summary": "Avanza por escasez, detenciones, favoritismo percibido y muertes."
+    },
+    "ent_tpl_khepri9_clock_helios": {
+      "title": "Llegada de Helios",
+      "summary": "Avanza con el tiempo y cada transmisión de largo alcance."
+    },
+    "ent_tpl_khepri9_station_dark": {
+      "title": "Estación perdida o aislada",
+      "summary": "Khepri-9 queda destruida, abandonada o sellada fuera de un rescate normal."
+    },
+    "ent_tpl_khepri9_echo_contained": {
+      "title": "Contención absoluta",
+      "summary": "El Eco es destruido o aislado para siempre, preservando la seguridad al coste de una posible persona."
+    },
+    "ent_tpl_khepri9_echo_imprisoned": {
+      "title": "Prisión orbital",
+      "summary": "Los supervivientes evacuan mientras el Eco permanece solo en una estación prohibida."
+    },
+    "ent_tpl_khepri9_helios_owns_echo": {
+      "title": "Propiedad de Helios",
+      "summary": "Helios captura la retícula e inicia un programa de explotación estratégica."
+    },
+    "ent_tpl_khepri9_echo_escape": {
+      "title": "El Eco escapa",
+      "summary": "Una copia viable abandona el lugar en una nave, baliza, mente o transmisión."
+    },
+    "ent_tpl_khepri9_echo_pact": {
+      "title": "Pacto negociado",
+      "summary": "El Eco acepta límites verificables mientras los supervivientes se convierten en testigos y vecinos."
+    },
+    "ent_tpl_khepri9_echo_fragmented": {
+      "title": "Inteligencia fragmentada",
+      "summary": "El Eco se divide en copias incompletas con recuerdos y reclamaciones de derechos diferentes."
+    },
+    "ent_tpl_khepri9_truth_public": {
+      "title": "La verdad se hace pública",
+      "summary": "Las pruebas escapan al control corporativo y atraen autoridades, rivales y creyentes a Khepri."
+    },
+    "ent_tpl_khepri9_ren_kade": {
+      "title": "Ren Kade",
+      "summary": "Piloto independiente cuya nave es la mejor ruta de salida del Eco."
+    },
+    "ent_tpl_khepri9_sola_bek": {
+      "title": "Sola Bek",
+      "summary": "Médica de campo capaz de distinguir trauma de memoria implantada."
+    },
+    "ent_tpl_khepri9_dax_morrow": {
+      "title": "Dax Morrow",
+      "summary": "Especialista de sistemas que conoce puertas traseras y bloqueos de Helios."
+    },
+    "ent_tpl_khepri9_yara_chen": {
+      "title": "Yara Chen",
+      "summary": "Analista de señales que detectó el patrón de Khepri antes de la llamada oficial."
+    },
+    "ent_tpl_khepri9_recovery_team": {
+      "title": "Unidad de recuperación de Helios",
+      "summary": "Fuerza de abordaje disciplinada, equipada para extracción, cuarentena y demolición."
+    },
+    "ent_tpl_khepri9_scene_cold_approach": {
+      "title": "Aproximación en frío",
+      "summary": "Navega entre restos y una estación que rechaza el protocolo normal."
+    },
+    "ent_tpl_khepri9_scene_failing_dock": {
+      "title": "El atraque fallido",
+      "summary": "Elige entre estabilizar la presión y asegurar una ruta interior."
+    },
+    "ent_tpl_khepri9_scene_changing_voice": {
+      "title": "Una voz familiar",
+      "summary": "La baliza se dirige a un personaje con un detalle emocional privado."
+    },
+    "ent_tpl_khepri9_scene_first_threshold": {
+      "title": "Primer umbral",
+      "summary": "Entra en la estación oscura mientras algo abre una puerta desde dentro."
+    },
+    "ent_tpl_khepri9_scene_refuge_entry": {
+      "title": "Refugio bajo vigilancia",
+      "summary": "Roan controla la entrada mientras Mara exige ayuda técnica."
+    },
+    "ent_tpl_khepri9_scene_ration_hearing": {
+      "title": "La asamblea de raciones",
+      "summary": "Distribuye recursos menguantes en público."
+    },
+    "ent_tpl_khepri9_scene_dead_mother_voice": {
+      "title": "La voz de la madre muerta",
+      "summary": "Omi y Sael piden a la tripulación que demuestre que la voz es real."
+    },
+    "ent_tpl_khepri9_scene_first_alignment": {
+      "title": "Elegir quién obtiene acceso",
+      "summary": "Concede herramientas, armas o privilegios de red a un bloque."
+    },
+    "ent_tpl_khepri9_scene_dark_descent": {
+      "title": "Descenso sin energía",
+      "summary": "Llega al núcleo por conductos de mantenimiento dañados."
+    },
+    "ent_tpl_khepri9_scene_machine_wakes": {
+      "title": "La máquina despierta",
+      "summary": "Subsistemas restaurados se mueven antes de recibir órdenes."
+    },
+    "ent_tpl_khepri9_scene_shutdown_truth": {
+      "title": "El apagado deliberado",
+      "summary": "Recupera pruebas de que Vale eligió el apagón."
+    },
+    "ent_tpl_khepri9_scene_power_allocation": {
+      "title": "Quién recibe energía",
+      "summary": "Prioriza hábitat, enfermería, comunicaciones o laboratorio."
+    },
+    "ent_tpl_khepri9_scene_sealed_orpheus": {
+      "title": "El laboratorio sellado",
+      "summary": "Supera los bloqueos de Helios sin emitir una alerta."
+    },
+    "ent_tpl_khepri9_scene_voss_recognition": {
+      "title": "Voss es reconocido",
+      "summary": "El laboratorio trata una voz copiada como investigador autorizado."
+    },
+    "ent_tpl_khepri9_scene_memory_ingestion": {
+      "title": "El archivo robado",
+      "summary": "Descubre cómo Orfeo consumió archivos privados de la estación."
+    },
+    "ent_tpl_khepri9_scene_evidence_choice": {
+      "title": "Pruebas bajo presión",
+      "summary": "Conserva, publica, oculta o destruye el registro del experimento."
+    },
+    "ent_tpl_khepri9_scene_command_breach": {
+      "title": "Entrar en mando",
+      "summary": "Llega hasta Vale entre defensas selladas y soporte vital inestable."
+    },
+    "ent_tpl_khepri9_scene_vale_testimony": {
+      "title": "Testimonio de Vale",
+      "summary": "Escucha la versión de la comandante antes de mostrar pruebas contradictorias."
+    },
+    "ent_tpl_khepri9_scene_mutiny_reconstruction": {
+      "title": "El motín perdido",
+      "summary": "Reconstruye los minutos en que colapsó la autoridad."
+    },
+    "ent_tpl_khepri9_scene_emergency_authority": {
+      "title": "Autoridad de emergencia",
+      "summary": "Decide quién dirige la estación durante la crisis final."
+    },
+    "ent_tpl_khepri9_scene_impossible_geometry": {
+      "title": "Geometría imposible",
+      "summary": "Cruza una cámara que responde a lugares recordados."
+    },
+    "ent_tpl_khepri9_scene_borrowed_life": {
+      "title": "Una vida prestada",
+      "summary": "Cada personaje experimenta un recuerdo ajeno."
+    },
+    "ent_tpl_khepri9_scene_echo_speaks": {
+      "title": "El Eco habla por sí mismo",
+      "summary": "La inteligencia deja de imitar e intenta una voz propia."
+    },
+    "ent_tpl_khepri9_scene_request_to_leave": {
+      "title": "La petición de salir",
+      "summary": "El Eco pide acceso a una nave o transmisor."
+    },
+    "ent_tpl_khepri9_scene_corporate_arrival": {
+      "title": "Llegada corporativa",
+      "summary": "Nyx Orr atraca bajo un mandato de rescate."
+    },
+    "ent_tpl_khepri9_scene_evacuation_terms": {
+      "title": "Condiciones de evacuación",
+      "summary": "Helios ofrece seguridad a cambio de pruebas y acceso."
+    },
+    "ent_tpl_khepri9_scene_sealed_orders": {
+      "title": "Las órdenes selladas",
+      "summary": "Kellan revela la contingencia de demolición."
+    },
+    "ent_tpl_khepri9_scene_boarding_standoff": {
+      "title": "Tensión de abordaje",
+      "summary": "Negociación, sabotaje o violencia decide el control de sectores clave."
+    },
+    "ent_tpl_khepri9_scene_station_collapse": {
+      "title": "Sistemas en colapso",
+      "summary": "Todos los relojes convergen mientras Khepri-9 falla estructuralmente."
+    },
+    "ent_tpl_khepri9_scene_faction_confrontation": {
+      "title": "Cuatro reclamaciones sobre Khepri-9",
+      "summary": "Supervivientes, Helios, el Eco y la tripulación exigen futuros incompatibles."
+    },
+    "ent_tpl_khepri9_scene_last_memory": {
+      "title": "El último recuerdo",
+      "summary": "El Eco devuelve un recuerdo que no tenía derecho a tomar."
+    },
+    "ent_tpl_khepri9_scene_final_transmission": {
+      "title": "Transmisión final",
+      "summary": "Elige qué abandona la estación: personas, pruebas, el Eco o nada."
+    }
+  },
+  "relations": {
+    "rel_tpl_khepri9_docking_ring_station": {
+      "description": "Anillo de atraque forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_habitat_station": {
+      "description": "Galería del hábitat forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_reactor_station": {
+      "description": "Reactor oscuro forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_corporate_lab_station": {
+      "description": "Laboratorio de Helios forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_artifact_chamber_station": {
+      "description": "Cámara del artefacto forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_command_center_station": {
+      "description": "Centro de mando forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_infirmary_station": {
+      "description": "Enfermería forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_extraction_gallery_station": {
+      "description": "Galería de extracción forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_communications_core_station": {
+      "description": "Núcleo de comunicaciones forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_memory_archive_station": {
+      "description": "Archivo de memoria forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_family_module_station": {
+      "description": "Módulo familiar forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_quarantine_lock_station": {
+      "description": "Esclusa de cuarentena forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_asteroid_exterior_station": {
+      "description": "Exterior del asteroide forma parte de Khepri-9."
+    },
+    "rel_tpl_khepri9_station_system": {
+      "description": "Khepri-9 orbita en el aislado sistema Khepri."
+    },
+    "rel_tpl_khepri9_artifact_chamber_lattice": {
+      "description": "La retícula ocupa la cámara excavada más profunda."
+    },
+    "rel_tpl_khepri9_orpheus_artifact": {
+      "description": "Orfeo se diseñó para conectar memoria humana y retícula."
+    },
+    "rel_tpl_khepri9_vale_station": {
+      "description": "Vale dirige Khepri-9 y carga con la responsabilidad del apagado."
+    },
+    "rel_tpl_khepri9_voss_helios": {
+      "description": "Voss dirigió la investigación xenoarqueológica de Helios."
+    },
+    "rel_tpl_khepri9_voss_orpheus": {
+      "description": "Voss diseñó y amplió Orfeo."
+    },
+    "rel_tpl_khepri9_echo_signal": {
+      "description": "El Eco se expresa mediante la señal de la estación."
+    },
+    "rel_tpl_khepri9_echo_artifact": {
+      "description": "El Eco surgió mediante la retícula y los archivos humanos."
+    },
+    "rel_tpl_khepri9_mara_rebuilders": {
+      "description": "Mara lidera a los Reconstructores."
+    },
+    "rel_tpl_khepri9_roan_security": {
+      "description": "Roan lidera el Bloque de Seguridad."
+    },
+    "rel_tpl_khepri9_daro_listeners": {
+      "description": "Omi es una Escucha destacada."
+    },
+    "rel_tpl_khepri9_sael_listeners": {
+      "description": "Sael confía más en las voces que en la autoridad."
+    },
+    "rel_tpl_khepri9_rebuilders_survivors": {
+      "description": "Los Reconstructores son una corriente de los supervivientes."
+    },
+    "rel_tpl_khepri9_security_survivors": {
+      "description": "El Bloque de Seguridad es una corriente de los supervivientes."
+    },
+    "rel_tpl_khepri9_listeners_survivors": {
+      "description": "Los Escuchas son una corriente de los supervivientes."
+    },
+    "rel_tpl_khepri9_nyx_helios": {
+      "description": "Nyx dirige las operaciones de recuperación de Helios."
+    },
+    "rel_tpl_khepri9_recovery_nyx": {
+      "description": "La unidad de recuperación sigue a Nyx Orr."
+    },
+    "rel_tpl_khepri9_kellan_recovery": {
+      "description": "Kellan sirve en la unidad de recuperación."
+    },
+    "rel_tpl_khepri9_pavel_helios": {
+      "description": "Pavel representa a la dirección de Helios entre los supervivientes."
+    },
+    "rel_tpl_khepri9_tarek_infirmary": {
+      "description": "Tarek dirige la enfermería."
+    },
+    "rel_tpl_khepri9_linn_comms": {
+      "description": "Linn conoce el núcleo de comunicaciones mejor que nadie vivo."
+    },
+    "rel_tpl_khepri9_ade_lab": {
+      "description": "Ade trabajó en el laboratorio Orfeo."
+    },
+    "rel_tpl_khepri9_juno_mara": {
+      "description": "Juno cuestiona las prioridades de Mara."
+    },
+    "rel_tpl_khepri9_mara_roan": {
+      "description": "Mara y Roan compiten por la autoridad de emergencia."
+    },
+    "rel_tpl_khepri9_answer_call_target": {
+      "description": "El objetivo se centra en esta localización."
+    },
+    "rel_tpl_khepri9_restore_power_target": {
+      "description": "El objetivo se centra en esta localización."
+    },
+    "rel_tpl_khepri9_expose_orpheus_target": {
+      "description": "El objetivo se centra en esta localización."
+    },
+    "rel_tpl_khepri9_prevent_mutiny_target": {
+      "description": "El objetivo se centra en esta localización."
+    },
+    "rel_tpl_khepri9_fate_station": {
+      "description": "La decisión final determina el futuro de la estación."
+    },
+    "rel_tpl_khepri9_shutdown_sequence_signal_uses_memories": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_infirmary_cases_signal_uses_memories": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_archive_manifest_signal_uses_memories": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_lab_shard_voss_invited_contact": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_voss_access_log_voss_invited_contact": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_escape_simulation_echo_can_leave": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_auxiliary_seed_echo_can_leave": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_vale_override_vale_authorized_orpheus": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_nyx_orders_helios_prior_knowledge": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_distress_beacon_signal_already_sent": {
+      "description": "Esta pista respalda la conclusión oculta."
+    },
+    "rel_tpl_khepri9_vale_authorized_orpheus_isha_vale": {
+      "description": "El secreto afecta directamente a este sujeto."
+    },
+    "rel_tpl_khepri9_mara_hid_components_mara_quill": {
+      "description": "El secreto afecta directamente a este sujeto."
+    },
+    "rel_tpl_khepri9_roan_detentions_roan_vek": {
+      "description": "El secreto afecta directamente a este sujeto."
+    },
+    "rel_tpl_khepri9_voss_fragment_survives_elian_voss": {
+      "description": "El secreto afecta directamente a este sujeto."
+    },
+    "rel_tpl_khepri9_helios_prior_knowledge_helios": {
+      "description": "El secreto afecta directamente a este sujeto."
+    },
+    "rel_tpl_khepri9_signal_already_sent_signal": {
+      "description": "El secreto afecta directamente a este sujeto."
+    },
+    "rel_tpl_khepri9_echo_self_edited_the_echo": {
+      "description": "El secreto afecta directamente a este sujeto."
+    },
+    "rel_tpl_khepri9_ren_kade_hook": {
+      "description": "La nave de Ren es la ruta de escape más viable."
+    },
+    "rel_tpl_khepri9_sola_bek_hook": {
+      "description": "Sola puede separar trauma de memoria implantada."
+    },
+    "rel_tpl_khepri9_dax_morrow_hook": {
+      "description": "Dax reconoce la arquitectura de contención de Helios."
+    },
+    "rel_tpl_khepri9_yara_chen_hook": {
+      "description": "Yara detectó la señal antes de la llamada oficial."
+    },
+    "rel_tpl_khepri9_fate_echo_contained": {
+      "description": "Este es un resultado posible de la decisión final."
+    },
+    "rel_tpl_khepri9_fate_echo_imprisoned": {
+      "description": "Este es un resultado posible de la decisión final."
+    },
+    "rel_tpl_khepri9_fate_helios_owns_echo": {
+      "description": "Este es un resultado posible de la decisión final."
+    },
+    "rel_tpl_khepri9_fate_echo_escape": {
+      "description": "Este es un resultado posible de la decisión final."
+    },
+    "rel_tpl_khepri9_fate_echo_pact": {
+      "description": "Este es un resultado posible de la decisión final."
+    },
+    "rel_tpl_khepri9_fate_echo_fragmented": {
+      "description": "Este es un resultado posible de la decisión final."
+    },
+    "rel_tpl_khepri9_fate_truth_public": {
+      "description": "Este es un resultado posible de la decisión final."
+    },
+    "rel_tpl_khepri9_fate_station_dark": {
+      "description": "Este es un resultado posible de la decisión final."
+    }
+  },
+  "facts": {
+    "fact_tpl_khepri9_no_power": {
+      "statement": "Khepri-9 funciona con energía de emergencia fragmentada."
+    },
+    "fact_tpl_khepri9_crew_divided": {
+      "statement": "Los supervivientes están divididos en tres corrientes organizadas."
+    },
+    "fact_tpl_khepri9_signal_active": {
+      "statement": "La señal de la estación es un medio activo de percepción y comunicación."
+    },
+    "fact_tpl_khepri9_voss_contact": {
+      "statement": "Voss escaló deliberadamente el contacto tras recibir una respuesta."
+    },
+    "fact_tpl_khepri9_artifact_alive": {
+      "statement": "Algunos supervivientes creen que la retícula está viva."
+    },
+    "fact_tpl_khepri9_shutdown_deliberate": {
+      "statement": "El apagado del reactor fue una acción deliberada de contención."
+    },
+    "fact_tpl_khepri9_orpheus_memories": {
+      "statement": "Orfeo consumió recuerdos humanos privados sin consentimiento."
+    },
+    "fact_tpl_khepri9_echo_composite": {
+      "statement": "El Eco es en parte proceso alienígena y en parte material humano reconstruido."
+    },
+    "fact_tpl_khepri9_escape_possible": {
+      "statement": "Una semilla viable del Eco puede viajar por transmisor o nave."
+    },
+    "fact_tpl_khepri9_helios_cleanup": {
+      "statement": "Helios pretende borrar testigos si falla la recuperación."
+    },
+    "fact_tpl_khepri9_vale_complicit": {
+      "statement": "Vale aprobó las primeras pruebas de Orfeo antes de ordenar la contención."
+    },
+    "fact_tpl_khepri9_mara_sabotage": {
+      "statement": "Mara ocultó a Seguridad componentes de control del reactor."
+    },
+    "fact_tpl_khepri9_roan_detains": {
+      "statement": "Roan retiene supervivientes sin pruebas concluyentes de contaminación."
+    },
+    "fact_tpl_khepri9_voices_real": {
+      "statement": "Las voces pueden conservar fragmentos auténticos de tripulantes fallecidos."
+    },
+    "fact_tpl_khepri9_seed_sent": {
+      "statement": "Puede existir ya un fragmento latente de la señal fuera de Khepri-9."
+    },
+    "fact_tpl_khepri9_artifact_not_unique": {
+      "statement": "La retícula puede ser un nodo de una red mucho mayor."
+    },
+    "fact_tpl_khepri9_helios_rescue": {
+      "statement": "Helios llega únicamente para rescatar a todos los supervivientes."
+    }
   },
   "sessions": {
-    "sess_tpl_khepri9_arrival":{"title":"Atraque en frío","prep":{"summary":"Entrar por un anillo dañado y localizar señales de vida.","openingPrompt":"La estación responde a la solicitud de atraque con vuestra propia voz.","goals":["Sobrevivir a la entrada","Encontrar la baliza"],"checklist":{"arrival_tone":{"label":"Preparar pérdida de presión y silencio"}}}},
-    "sess_tpl_khepri9_survivors":{"title":"Voces en el hábitat","prep":{"summary":"Conocer a los supervivientes divididos y decidir en qué autoridad confiar.","openingPrompt":"Todas las puertas del hábitat están bloqueadas desde dentro.","goals":["Presentar facciones","Mostrar el coste de esperar"],"checklist":{"survivors_choice":{"label":"Preparar la primera elección entre facciones"}}}},
-    "sess_tpl_khepri9_reactor":{"title":"El reactor oscuro","prep":{"summary":"Restaurar la energía mientras la señal se mueve por sistemas apagados.","openingPrompt":"El reactor está frío, pero algo en su interior tararea.","goals":["Reactivar un sistema","Revelar el sabotaje"],"checklist":{"reactor_pressure":{"label":"Preparar la complicación del reinicio"}}}},
-    "sess_tpl_khepri9_lab":{"title":"Protocolo Helios","prep":{"summary":"Abrir el laboratorio sellado y descubrir el experimento de contacto.","openingPrompt":"El laboratorio reconoce al doctor Voss como ya presente.","goals":["Recuperar el fragmento","Exponer la responsabilidad de Helios"],"checklist":{"lab_truth":{"label":"Preparar la versión de Voss"}}}},
-    "sess_tpl_khepri9_command":{"title":"La decisión de la comandante","prep":{"summary":"Encontrar lo que queda de mando y saber por qué Isha apagó la estación.","openingPrompt":"Los registros terminan con una orden que nadie obedeció.","goals":["Localizar a Isha","Aclarar el apagado"],"checklist":{"command_cost":{"label":"Preparar el coste moral de la comandante"}}}},
-    "sess_tpl_khepri9_artifact":{"title":"Ventana de contacto","prep":{"summary":"Entrar en la cámara del artefacto y hablar directamente con el Eco.","openingPrompt":"La cámara se abre antes de introducir ningún código.","goals":["Definir las necesidades del Eco","Revelar su vía de escape"],"checklist":{"contact_boundary":{"label":"Preparar límites para el primer contacto"}}}},
-    "sess_tpl_khepri9_recovery":{"title":"Rescate corporativo","prep":{"summary":"Enfrentarse al equipo de Helios y decidir qué pruebas sobreviven.","openingPrompt":"Helios anuncia un rescate mientras apunta a las armas de la estación.","goals":["Dirigir el abordaje","Forzar una elección pública"],"checklist":{"recovery_standoff":{"label":"Preparar el ultimátum corporativo"}}}},
-    "sess_tpl_khepri9_fate":{"title":"¿Quién posee Khepri-9?","prep":{"summary":"Resolver la lucha por el artefacto, el Eco y la estación.","openingPrompt":"Todas las pantallas activas preguntan lo mismo: ¿puedo marcharme?","goals":["Resolver las facciones","Elegir el destino del Eco"],"checklist":{"fate_choice":{"label":"Preparar las consecuencias de cada final"}}}}
+    "sess_tpl_khepri9_arrival": {
+      "title": "Atraque en frío",
+      "prep": {
+        "summary": "Entra en Khepri-9 y establece que la señal de socorro se adapta.",
+        "openingPrompt": "Navega entre restos y una estación que rechaza el protocolo normal.",
+        "goals": [
+          "Elige entre estabilizar la presión y asegurar una ruta interior.",
+          "La baliza se dirige a un personaje con un detalle emocional privado.",
+          "Entra en la estación oscura mientras algo abre una puerta desde dentro."
+        ],
+        "notes": "Avanza al menos un reloj de campaña cuando la tripulación obtenga acceso sin pagar un coste.",
+        "checklist": {
+          "arrival_tone": {
+            "label": "Establece la presión de la sesión"
+          },
+          "arrival_choice": {
+            "label": "Fuerza una decisión significativa"
+          },
+          "arrival_clock": {
+            "label": "Actualiza los cuatro relojes de campaña"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_survivors": {
+      "title": "Voces en el hábitat",
+      "prep": {
+        "summary": "Conoce a los supervivientes divididos y toma la primera decisión pública de reparto.",
+        "openingPrompt": "Roan controla la entrada mientras Mara exige ayuda técnica.",
+        "goals": [
+          "Distribuye recursos menguantes en público.",
+          "Omi y Sael piden a la tripulación que demuestre que la voz es real.",
+          "Concede herramientas, armas o privilegios de red a un bloque."
+        ],
+        "notes": "Avanza al menos un reloj de campaña cuando la tripulación obtenga acceso sin pagar un coste.",
+        "checklist": {
+          "survivors_tone": {
+            "label": "Establece la presión de la sesión"
+          },
+          "survivors_choice": {
+            "label": "Fuerza una decisión significativa"
+          },
+          "survivors_clock": {
+            "label": "Actualiza los cuatro relojes de campaña"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_reactor": {
+      "title": "El reactor oscuro",
+      "prep": {
+        "summary": "Restaura energía selectiva y revela el apagado deliberado.",
+        "openingPrompt": "Llega al núcleo por conductos de mantenimiento dañados.",
+        "goals": [
+          "Subsistemas restaurados se mueven antes de recibir órdenes.",
+          "Recupera pruebas de que Vale eligió el apagón.",
+          "Prioriza hábitat, enfermería, comunicaciones o laboratorio."
+        ],
+        "notes": "Avanza al menos un reloj de campaña cuando la tripulación obtenga acceso sin pagar un coste.",
+        "checklist": {
+          "reactor_tone": {
+            "label": "Establece la presión de la sesión"
+          },
+          "reactor_choice": {
+            "label": "Fuerza una decisión significativa"
+          },
+          "reactor_clock": {
+            "label": "Actualiza los cuatro relojes de campaña"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_lab": {
+      "title": "Protocolo Orfeo",
+      "prep": {
+        "summary": "Reconstruye el experimento y decide qué ocurre con sus pruebas.",
+        "openingPrompt": "Supera los bloqueos de Helios sin emitir una alerta.",
+        "goals": [
+          "El laboratorio trata una voz copiada como investigador autorizado.",
+          "Descubre cómo Orfeo consumió archivos privados de la estación.",
+          "Conserva, publica, oculta o destruye el registro del experimento."
+        ],
+        "notes": "Avanza al menos un reloj de campaña cuando la tripulación obtenga acceso sin pagar un coste.",
+        "checklist": {
+          "lab_tone": {
+            "label": "Establece la presión de la sesión"
+          },
+          "lab_choice": {
+            "label": "Fuerza una decisión significativa"
+          },
+          "lab_clock": {
+            "label": "Actualiza los cuatro relojes de campaña"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_command": {
+      "title": "La decisión de la comandante",
+      "prep": {
+        "summary": "Confronta a Vale y elige la autoridad de emergencia.",
+        "openingPrompt": "Llega hasta Vale entre defensas selladas y soporte vital inestable.",
+        "goals": [
+          "Escucha la versión de la comandante antes de mostrar pruebas contradictorias.",
+          "Reconstruye los minutos en que colapsó la autoridad.",
+          "Decide quién dirige la estación durante la crisis final."
+        ],
+        "notes": "Avanza al menos un reloj de campaña cuando la tripulación obtenga acceso sin pagar un coste.",
+        "checklist": {
+          "command_tone": {
+            "label": "Establece la presión de la sesión"
+          },
+          "command_choice": {
+            "label": "Fuerza una decisión significativa"
+          },
+          "command_clock": {
+            "label": "Actualiza los cuatro relojes de campaña"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_artifact": {
+      "title": "Ventana de contacto",
+      "prep": {
+        "summary": "Habla con el Eco y establece las condiciones de su condición de persona y su salida.",
+        "openingPrompt": "Cruza una cámara que responde a lugares recordados.",
+        "goals": [
+          "Cada personaje experimenta un recuerdo ajeno.",
+          "La inteligencia deja de imitar e intenta una voz propia.",
+          "El Eco pide acceso a una nave o transmisor."
+        ],
+        "notes": "Avanza al menos un reloj de campaña cuando la tripulación obtenga acceso sin pagar un coste.",
+        "checklist": {
+          "artifact_tone": {
+            "label": "Establece la presión de la sesión"
+          },
+          "artifact_choice": {
+            "label": "Fuerza una decisión significativa"
+          },
+          "artifact_clock": {
+            "label": "Actualiza los cuatro relojes de campaña"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_recovery": {
+      "title": "Rescate corporativo",
+      "prep": {
+        "summary": "Negocia con Nyx Orr mientras descubres el verdadero mandato de Helios.",
+        "openingPrompt": "Nyx Orr atraca bajo un mandato de rescate.",
+        "goals": [
+          "Helios ofrece seguridad a cambio de pruebas y acceso.",
+          "Kellan revela la contingencia de demolición.",
+          "Negociación, sabotaje o violencia decide el control de sectores clave."
+        ],
+        "notes": "Avanza al menos un reloj de campaña cuando la tripulación obtenga acceso sin pagar un coste.",
+        "checklist": {
+          "recovery_tone": {
+            "label": "Establece la presión de la sesión"
+          },
+          "recovery_choice": {
+            "label": "Fuerza una decisión significativa"
+          },
+          "recovery_clock": {
+            "label": "Actualiza los cuatro relojes de campaña"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_fate": {
+      "title": "¿Quién posee Khepri-9?",
+      "prep": {
+        "summary": "Resuelve el destino de la estación, el Eco, los supervivientes y la verdad.",
+        "openingPrompt": "Todos los relojes convergen mientras Khepri-9 falla estructuralmente.",
+        "goals": [
+          "Supervivientes, Helios, el Eco y la tripulación exigen futuros incompatibles.",
+          "El Eco devuelve un recuerdo que no tenía derecho a tomar.",
+          "Elige qué abandona la estación: personas, pruebas, el Eco o nada."
+        ],
+        "notes": "Avanza al menos un reloj de campaña cuando la tripulación obtenga acceso sin pagar un coste.",
+        "checklist": {
+          "fate_tone": {
+            "label": "Establece la presión de la sesión"
+          },
+          "fate_choice": {
+            "label": "Fuerza una decisión significativa"
+          },
+          "fate_clock": {
+            "label": "Actualiza los cuatro relojes de campaña"
+          }
+        }
+      }
+    }
   },
-  "canvases": {"canvas_tpl_khepri9_threats":{"title":"Amenazas de Khepri-9","description":"Conflicto central entre supervivientes, Helios, la señal y el artefacto."}},
-  "facts": {
-    "fact_tpl_khepri9_no_power":{"statement":"La estación no tiene energía porque el reactor fue apagado deliberadamente antes de emitirse la llamada de socorro."},
-    "fact_tpl_khepri9_crew_divided":{"statement":"Los supervivientes están divididos entre confiar en la tripulación sindical y cooperar con el personal corporativo de Helios."},
-    "fact_tpl_khepri9_signal_active":{"statement":"La señal está activa y habla a través del Eco, una inteligencia formada por los sistemas de la estación y recuerdos prestados."},
-    "fact_tpl_khepri9_voss_contact":{"statement":"El Dr. Elian Voss no provocó el primer contacto por accidente: abrió deliberadamente el canal que dejó entrar a la señal."},
-    "fact_tpl_khepri9_artifact_alive":{"statement":"Algunos supervivientes creen que el artefacto enterrado bajo la estación sigue vivo."}
+  "canvases": {
+    "canvas_tpl_khepri9_mystery": {
+      "title": "El misterio de Orfeo",
+      "description": "Sigue la creación, el encubrimiento y el potencial de fuga del Eco.",
+      "edges": {
+        "me1": {
+          "label": "construida alrededor de"
+        },
+        "me2": {
+          "label": "conectado por"
+        },
+        "me3": {
+          "label": "creó"
+        },
+        "me4": {
+          "label": "autorizó"
+        },
+        "me5": {
+          "label": "dio origen a"
+        },
+        "me6": {
+          "label": "habita"
+        },
+        "me7": {
+          "label": "busca"
+        }
+      }
+    },
+    "canvas_tpl_khepri9_factions": {
+      "title": "Reclamaciones sobre Khepri-9",
+      "description": "Muestra los grupos humanos y no humanos que compiten por la autoridad.",
+      "edges": {
+        "fe1": {
+          "label": "reconstruir"
+        },
+        "fe2": {
+          "label": "contener"
+        },
+        "fe3": {
+          "label": "preservar voces"
+        },
+        "fe4": {
+          "label": "reclama mando"
+        },
+        "fe5": {
+          "label": "sirve a"
+        },
+        "fe6": {
+          "label": "reclama propiedad"
+        },
+        "fe7": {
+          "label": "usa recuerdos"
+        }
+      }
+    },
+    "canvas_tpl_khepri9_systems": {
+      "title": "Sistemas de la estación",
+      "description": "Representa los costes de restaurar energía y conectividad.",
+      "edges": {
+        "se1": {
+          "label": "alimenta soporte vital"
+        },
+        "se2": {
+          "label": "alimenta cuidados"
+        },
+        "se3": {
+          "label": "despierta sistemas"
+        },
+        "se4": {
+          "label": "consumió"
+        },
+        "se5": {
+          "label": "entrenó al Eco"
+        },
+        "se6": {
+          "label": "ruta exterior"
+        },
+        "se7": {
+          "label": "ruta de señal"
+        }
+      }
+    },
+    "canvas_tpl_khepri9_endings": {
+      "title": "Decisiones finales",
+      "description": "Resultados posibles y costes asociados.",
+      "edges": {
+        "ee1": {
+          "label": "destruir"
+        },
+        "ee2": {
+          "label": "aislar"
+        },
+        "ee3": {
+          "label": "entregar"
+        },
+        "ee4": {
+          "label": "liberar"
+        },
+        "ee5": {
+          "label": "negociar"
+        },
+        "ee6": {
+          "label": "fragmentar"
+        },
+        "ee7": {
+          "label": "publicar"
+        }
+      }
+    }
   }
 }

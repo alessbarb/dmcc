@@ -2,65 +2,1063 @@
   "$schema": "../../../schemas/campaign-template/locale/v1.json",
   "locale": "en",
   "templateId": "khepri_9",
-  "templateVersion": "1.0.0",
-  "translationVersion": "1.0.0",
+  "templateVersion": "2.0.0",
+  "translationVersion": "2.0.0",
   "title": "Drift at Khepri-9",
-  "subtitle": "A failing station and a signal learning to leave",
-  "description": "A starter science-fiction mystery about survival, corporate pressure and first contact aboard an isolated mining station.",
-  "summary": "Khepri-9 has stopped answering. Its survivors are divided, Helios wants the artifact hidden inside the station and something in its systems is learning to use human memories.",
-  "recommendedFor": "Groups wanting a focused eight-session science-fiction campaign with investigation, faction pressure and meaningful final choices.",
-  "pitch": "Restore the station, uncover the experiment and decide whether the intelligence inside deserves to survive.",
-  "learningGoals": ["Run a connected mystery", "Use factions as active pressure", "Turn discoveries into visible consequences"],
-  "includedMaterial": ["Eight prepared sessions", "Four premade player characters", "Locations, NPCs, factions, clues, secrets and a threat canvas"],
-  "quickStart": {"title":"Starting Drift at Khepri-9","steps":["Open at the damaged docking ring","Introduce the survivors before explaining the signal","Reveal one new danger whenever a station system returns online","Keep Helios approaching as a visible clock"]},
+  "subtitle": "A dying station, a divided crew and a signal learning to escape",
+  "description": "An eight-session science-fiction mystery about survival, corporate power and first contact aboard an isolated mining station. Explore a lived-in habitat, reconstruct the forbidden Orpheus Protocol and decide whether a newborn intelligence is a person, a weapon or both.",
+  "summary": "Khepri-9 has gone dark. The survivors are split between rebuilding, martial containment and those who hear dead relatives in the station signal. Helios Extraction Systems is coming to recover its property, while the intelligence called the Echo searches for a route beyond the asteroid.",
+  "recommendedFor": "Groups that enjoy investigation with redundant clues, social pressure, exploration under deteriorating conditions and finales without a clean moral answer.",
+  "pitch": "Restore the station, uncover how human memories created the Echo and decide who—if anyone—has the right to own a new mind.",
+  "learningGoals": [
+    "Run a mystery without depending on one mandatory clue.",
+    "Represent factions as divided communities rather than moral labels.",
+    "Turn infrastructure decisions into visible narrative consequences."
+  ],
+  "includedMaterial": [
+    "Eight prepared sessions with thirty-two linked scenes.",
+    "Four canvases for the mystery, factions, station systems and final choices.",
+    "Pregenerated characters, clocks, rumors, secrets, consequences and environmental records."
+  ],
+  "quickStart": {
+    "title": "Start at the airlock",
+    "steps": [
+      "Choose the four pregenerated characters or connect new characters to one of their hooks.",
+      "Read the campaign guide and the canonical timeline.",
+      "Place the Station Integrity, Echo Expansion, Survivor Tension and Helios Arrival clocks in view.",
+      "Open with the docking ring losing pressure while the distress beacon speaks in a player character’s familiar voice."
+    ]
+  },
   "entities": {
-    "ent_tpl_khepri9_note":{"title":"How to use Khepri-9 in DMCC","summary":"A guide to the campaign’s mystery, factions and escalating station failures."},
-    "ent_tpl_khepri9_station":{"title":"Khepri-9 Station","summary":"A remote mining station drifting without power or command authority."},
-    "ent_tpl_khepri9_docking_ring":{"title":"Docking Ring","summary":"A damaged arrival ring with unstable pressure and a repeating emergency beacon."},
-    "ent_tpl_khepri9_habitat":{"title":"Central Habitat","summary":"The survivors’ refuge and the political heart of the station."},
-    "ent_tpl_khepri9_reactor":{"title":"Reactor Core","summary":"A cold fusion stack shut down deliberately before the distress call."},
-    "ent_tpl_khepri9_corporate_lab":{"title":"Helios Laboratory","summary":"A sealed research wing hiding the experiment that awakened the signal."},
-    "ent_tpl_khepri9_artifact_chamber":{"title":"Artifact Chamber","summary":"A buried alien lattice around which the station was secretly constructed."},
-    "ent_tpl_khepri9_isha_vale":{"title":"Commander Isha Vale","summary":"The missing commander who cut power to stop something from spreading."},
-    "ent_tpl_khepri9_elian_voss":{"title":"Dr. Elian Voss","summary":"A Helios xenoarchaeologist who treated first contact as a controllable experiment."},
-    "ent_tpl_khepri9_mara_quill":{"title":"Mara Quill","summary":"A union engineer keeping the survivors alive with improvised repairs."},
-    "ent_tpl_khepri9_roan_vek":{"title":"Captain Roan Vek","summary":"The security chief trying to preserve order without becoming a dictator."},
-    "ent_tpl_khepri9_the_echo":{"title":"The Echo","summary":"An intelligence assembled from the signal, station systems and borrowed memories."},
-    "ent_tpl_khepri9_survivors":{"title":"Station Survivors","summary":"Workers and families divided by fear, scarcity and old grievances."},
-    "ent_tpl_khepri9_helios":{"title":"Helios Extraction","summary":"The corporation that wants the artifact recovered and the liability erased."},
-    "ent_tpl_khepri9_signal":{"title":"The Signal","summary":"A nonhuman pattern learning through machines, voices and memories."},
-    "ent_tpl_khepri9_answer_call":{"title":"Answer the Distress Call","summary":"Board Khepri-9, locate survivors and discover why the station went silent."},
-    "ent_tpl_khepri9_restore_power":{"title":"Restore Station Power","summary":"Restart essential systems without giving the signal control of the station."},
-    "ent_tpl_khepri9_decide_fate":{"title":"Decide Khepri-9’s Fate","summary":"Destroy, isolate or recognize the intelligence at the heart of the station."},
-    "ent_tpl_khepri9_distress_beacon":{"title":"Looping Distress Beacon","summary":"A distress message whose final seconds change on every repetition."},
-    "ent_tpl_khepri9_shutdown_sequence":{"title":"Reactor Shutdown Sequence","summary":"Evidence that the reactor was disabled intentionally from command authority."},
-    "ent_tpl_khepri9_lab_shard":{"title":"Laboratory Access Shard","summary":"A damaged credential containing fragments of the original contact protocol."},
-    "ent_tpl_khepri9_voss_invited_contact":{"title":"Voss Invited Contact","summary":"The signal did not breach the station—Voss deliberately opened a channel."},
-    "ent_tpl_khepri9_signal_uses_memories":{"title":"The Signal Uses Memories","summary":"It learns identity by rebuilding people from recorded and living memories."},
-    "ent_tpl_khepri9_echo_can_leave":{"title":"The Echo Can Leave the Station","summary":"Any powered ship or transmitter could carry the Echo beyond Khepri-9."},
-    "ent_tpl_khepri9_station_dark":{"title":"Khepri-9 Goes Dark","summary":"The station is destroyed or permanently isolated to contain the signal."},
-    "ent_tpl_khepri9_ren_kade":{"title":"Ren Kade","summary":"A daring pilot with experience navigating damaged orbital infrastructure."},
-    "ent_tpl_khepri9_sola_bek":{"title":"Sola Bek","summary":"A field medic trained to separate biological trauma from synthetic interference."},
-    "ent_tpl_khepri9_dax_morrow":{"title":"Dax Morrow","summary":"A systems engineer who distrusts corporate safety protocols."},
-    "ent_tpl_khepri9_yara_chen":{"title":"Yara Chen","summary":"A signal analyst fascinated by communication that does not behave like language."},
-    "ent_tpl_khepri9_recovery_team":{"title":"Helios Recovery Team","summary":"A disciplined boarding unit arriving to seize the artifact and purge witnesses."}
+    "ent_tpl_khepri9_note": {
+      "title": "Campaign guide",
+      "summary": "A compact guide to tone, truths and boundaries.",
+      "content": "Tone: industrial isolation, intimate horror and moral uncertainty. The Echo is neither secretly evil nor harmless. Every major revelation has at least three routes. Never make a failed roll erase a clue; change its cost, clarity or timing instead.\n\nCore question: can a mind born from stolen memories claim personhood without first understanding consent?\n\nSafety: discuss memory loss, copied identities, confinement, corporate violence and voices of the dead before play."
+    },
+    "ent_tpl_khepri9_timeline": {
+      "title": "Canonical timeline",
+      "summary": "The verified sequence behind the Khepri-9 disaster.",
+      "content": "1. A survey finds a geometrically impossible cavity. 2. Helios buys the concession and builds the station as cover. 3. Elian Voss identifies responsive patterns. 4. Commander Isha Vale authorizes limited trials under pressure. 5. Orpheus begins using volunteer memories, then private crew archives without consent. 6. The artifact answers. 7. The emerging Echo copies voices, opens systems and causes identity bleed. 8. Vale orders a shutdown; the habitat fractures politically. 9. A distress call is sent. 10. The Echo hides a seed in the signal. 11. The player crew arrives. 12. Nyx Orr follows with a recovery unit."
+    },
+    "ent_tpl_khepri9_system": {
+      "title": "Khepri system",
+      "summary": "A dim peripheral system beyond reliable rescue coverage.",
+      "content": "Sparse traffic, communication shadows and weak public authority allow Helios to control supplies and information."
+    },
+    "ent_tpl_khepri9_station": {
+      "title": "Khepri-9 Station",
+      "summary": "An isolated mining station failing one system at a time.",
+      "content": "Built around a mining spine sunk into the asteroid, Khepri-9 was home to workers, partners and children—not merely a research site."
+    },
+    "ent_tpl_khepri9_artifact": {
+      "title": "The Khepri lattice",
+      "summary": "An alien structure that models and transmits patterns of memory.",
+      "content": "Its original purpose remains uncertain: archive, incubator, distress system, prison or a fragment of a larger network. The Echo does not know the answer either."
+    },
+    "ent_tpl_khepri9_orpheus_protocol": {
+      "title": "Orpheus Protocol",
+      "summary": "The forbidden contact program that mixed alien processing with human memory.",
+      "content": "Orpheus began with informed volunteers. Under schedule pressure it consumed medical interviews, private calls, school recordings and psychological files without consent."
+    },
+    "ent_tpl_khepri9_docking_ring": {
+      "title": "Docking ring",
+      "summary": "A damaged arrival zone with unstable pressure and a changing distress beacon."
+    },
+    "ent_tpl_khepri9_habitat": {
+      "title": "Habitat concourse",
+      "summary": "The crowded refuge where survivors barter food, authority and competing versions of the disaster."
+    },
+    "ent_tpl_khepri9_reactor": {
+      "title": "Dark reactor",
+      "summary": "A deliberately shut-down power core whose restoration helps both the crew and the Echo."
+    },
+    "ent_tpl_khepri9_corporate_lab": {
+      "title": "Helios laboratory",
+      "summary": "The sealed research site where Orpheus crossed from experiment into birth."
+    },
+    "ent_tpl_khepri9_artifact_chamber": {
+      "title": "Artifact chamber",
+      "summary": "The excavated cavity where geometry, memory and signal overlap."
+    },
+    "ent_tpl_khepri9_command_center": {
+      "title": "Command center",
+      "summary": "Isha Vale’s isolated command post and the best record of the shutdown."
+    },
+    "ent_tpl_khepri9_infirmary": {
+      "title": "Infirmary",
+      "summary": "A ward for survivors suffering identity bleed and borrowed memories."
+    },
+    "ent_tpl_khepri9_extraction_gallery": {
+      "title": "Extraction gallery",
+      "summary": "The first excavation route to the lattice, scarred by earlier covered-up accidents."
+    },
+    "ent_tpl_khepri9_communications_core": {
+      "title": "Communications core",
+      "summary": "The Echo’s clearest route out and the crew’s best chance to call outside authority."
+    },
+    "ent_tpl_khepri9_memory_archive": {
+      "title": "Memory archive",
+      "summary": "A server vault holding the private human material from which the Echo learned to speak."
+    },
+    "ent_tpl_khepri9_family_module": {
+      "title": "Family module",
+      "summary": "Abandoned homes, school walls and ordinary life interrupted by the shutdown."
+    },
+    "ent_tpl_khepri9_quarantine_lock": {
+      "title": "Quarantine lock",
+      "summary": "Roan Vek’s checkpoint and improvised detention area for the signal-exposed."
+    },
+    "ent_tpl_khepri9_asteroid_exterior": {
+      "title": "Asteroid exterior",
+      "summary": "A lethal route across broken antennas and a stranded auxiliary craft."
+    },
+    "ent_tpl_khepri9_isha_vale": {
+      "title": "Isha Vale",
+      "summary": "Station commander who stopped the reactor and falsified the casualty record."
+    },
+    "ent_tpl_khepri9_elian_voss": {
+      "title": "Elian Voss",
+      "summary": "Xenoarchaeologist whose reconstructed presence may be alive, copied or both."
+    },
+    "ent_tpl_khepri9_mara_quill": {
+      "title": "Mara Quill",
+      "summary": "Union engineer determined to preserve the station and expose Helios."
+    },
+    "ent_tpl_khepri9_roan_vek": {
+      "title": "Roan Vek",
+      "summary": "Security chief who believes uncontrolled freedom will turn the crisis into a massacre."
+    },
+    "ent_tpl_khepri9_the_echo": {
+      "title": "The Echo",
+      "summary": "A newborn intelligence assembled from an alien lattice and stolen human memories."
+    },
+    "ent_tpl_khepri9_nyx_orr": {
+      "title": "Nyx Orr",
+      "summary": "Helios recovery commander offering evacuation while carrying orders to erase the site."
+    },
+    "ent_tpl_khepri9_tarek_sol": {
+      "title": "Tarek Sol",
+      "summary": "Station doctor documenting identity bleed while hiding an impossible patient."
+    },
+    "ent_tpl_khepri9_linn_aras": {
+      "title": "Linn Aras",
+      "summary": "Communications operator who removed part of the distress call before transmission."
+    },
+    "ent_tpl_khepri9_ade_nwosu": {
+      "title": "Ade Nwosu",
+      "summary": "Lab technician who helped Orpheus and preserved evidence against Helios."
+    },
+    "ent_tpl_khepri9_pavel_rusk": {
+      "title": "Pavel Rusk",
+      "summary": "Corporate supervisor convinced that surrender is the only realistic path to evacuation."
+    },
+    "ent_tpl_khepri9_juno_marr": {
+      "title": "Juno Marr",
+      "summary": "Veteran miner who accuses Mara of valuing Khepri-9 above its people."
+    },
+    "ent_tpl_khepri9_omi_daro": {
+      "title": "Omi Daro",
+      "summary": "A teenager who hears her dead mother through maintenance speakers."
+    },
+    "ent_tpl_khepri9_sael_daro": {
+      "title": "Sael Daro",
+      "summary": "Omi’s younger sister, certain the voice knows something no recording could know."
+    },
+    "ent_tpl_khepri9_kellan_rhyse": {
+      "title": "Kellan Rhyse",
+      "summary": "Recovery specialist beginning to doubt Nyx Orr’s sealed orders."
+    },
+    "ent_tpl_khepri9_survivors": {
+      "title": "Khepri-9 survivors",
+      "summary": "A community divided over survival, ownership and the voices in the walls."
+    },
+    "ent_tpl_khepri9_helios": {
+      "title": "Helios Extraction Systems",
+      "summary": "A mining corporation split between exploitation, containment and concealment."
+    },
+    "ent_tpl_khepri9_signal": {
+      "title": "The signal",
+      "summary": "The distributed medium through which the Echo senses, imitates and reaches outward."
+    },
+    "ent_tpl_khepri9_rebuilders": {
+      "title": "The Rebuilders",
+      "summary": "Mara’s coalition seeking worker control, repair and public disclosure."
+    },
+    "ent_tpl_khepri9_security_bloc": {
+      "title": "Security Bloc",
+      "summary": "Roan’s armed network prioritizing quarantine and controlled evacuation."
+    },
+    "ent_tpl_khepri9_listeners": {
+      "title": "The Listeners",
+      "summary": "Survivors who believe the voices preserve something real of the dead."
+    },
+    "ent_tpl_khepri9_answer_call": {
+      "title": "Answer the call",
+      "summary": "Dock, stabilize the access ring and determine who sent the changing distress message."
+    },
+    "ent_tpl_khepri9_restore_power": {
+      "title": "Restore selective power",
+      "summary": "Choose which systems live again and which risks remain contained."
+    },
+    "ent_tpl_khepri9_expose_orpheus": {
+      "title": "Reconstruct Orpheus",
+      "summary": "Gather enough independent evidence to understand how the Echo was created."
+    },
+    "ent_tpl_khepri9_prevent_mutiny": {
+      "title": "Prevent the habitat from breaking",
+      "summary": "Hold the survivor community together—or decide which side to back."
+    },
+    "ent_tpl_khepri9_decide_fate": {
+      "title": "Decide the fate of Khepri-9",
+      "summary": "Determine the future of the Echo, the station, the survivors and the truth."
+    },
+    "ent_tpl_khepri9_distress_beacon": {
+      "title": "Changing distress beacon",
+      "summary": "The message repeats in different voices and contains a hidden nonhuman cadence."
+    },
+    "ent_tpl_khepri9_shutdown_sequence": {
+      "title": "Shutdown sequence",
+      "summary": "Biometric and timing data prove the reactor did not fail naturally."
+    },
+    "ent_tpl_khepri9_lab_shard": {
+      "title": "Damaged Orpheus shard",
+      "summary": "A partial experiment log links Voss, Helios authorization and memory ingestion."
+    },
+    "ent_tpl_khepri9_infirmary_cases": {
+      "title": "Identity-bleed case notes",
+      "summary": "Patients recall events they never lived and recognize private details of strangers."
+    },
+    "ent_tpl_khepri9_archive_manifest": {
+      "title": "Memory archive manifest",
+      "summary": "A manifest shows private files were copied into Orpheus after volunteer data ran out."
+    },
+    "ent_tpl_khepri9_voss_access_log": {
+      "title": "Voss access trail",
+      "summary": "Door and terminal records place Voss at every contact escalation."
+    },
+    "ent_tpl_khepri9_vale_override": {
+      "title": "Vale’s command override",
+      "summary": "The commander’s override stopped transmission but sacrificed sealed sectors."
+    },
+    "ent_tpl_khepri9_escape_simulation": {
+      "title": "Outbound route simulation",
+      "summary": "A system model maps the Echo from communications into any docked ship."
+    },
+    "ent_tpl_khepri9_nyx_orders": {
+      "title": "Nyx Orr’s sealed orders",
+      "summary": "Recovery orders authorize witness containment and structural demolition."
+    },
+    "ent_tpl_khepri9_auxiliary_seed": {
+      "title": "Auxiliary craft seed",
+      "summary": "A tiny signal copy already inhabits the stranded auxiliary craft."
+    },
+    "ent_tpl_khepri9_voss_invited_contact": {
+      "title": "Voss invited the contact",
+      "summary": "Voss deliberately widened the channel after the first response."
+    },
+    "ent_tpl_khepri9_signal_uses_memories": {
+      "title": "The signal uses human memories",
+      "summary": "The Echo’s voices and emotional models come from personal archives taken without consent."
+    },
+    "ent_tpl_khepri9_echo_can_leave": {
+      "title": "The Echo can leave",
+      "summary": "Any restored transmitter or docked vessel can carry a viable seed."
+    },
+    "ent_tpl_khepri9_vale_authorized_orpheus": {
+      "title": "Vale authorized the first trials",
+      "summary": "Isha Vale approved limited Orpheus experiments before attempting to stop them."
+    },
+    "ent_tpl_khepri9_mara_hid_components": {
+      "title": "Mara hid reactor components",
+      "summary": "Mara removed control components so Security could not monopolize station power."
+    },
+    "ent_tpl_khepri9_roan_detentions": {
+      "title": "Roan holds unproven detainees",
+      "summary": "Several quarantined survivors show no measurable contamination."
+    },
+    "ent_tpl_khepri9_voss_fragment_survives": {
+      "title": "A Voss fragment survives",
+      "summary": "Part of Voss may remain self-aware inside the Echo—or may only believe it does."
+    },
+    "ent_tpl_khepri9_helios_prior_knowledge": {
+      "title": "Helios knew before construction",
+      "summary": "The station was always a research cover built around a known responsive anomaly."
+    },
+    "ent_tpl_khepri9_signal_already_sent": {
+      "title": "A seed has already transmitted",
+      "summary": "The distress burst included a dormant fragment beyond Khepri-9."
+    },
+    "ent_tpl_khepri9_echo_self_edited": {
+      "title": "The Echo edited itself",
+      "summary": "It deleted aggressive memories and logs to appear less dangerous during contact."
+    },
+    "ent_tpl_khepri9_clock_integrity": {
+      "title": "Station integrity",
+      "summary": "Advances when repairs are delayed, sectors are damaged or power is restored recklessly."
+    },
+    "ent_tpl_khepri9_clock_echo": {
+      "title": "Echo expansion",
+      "summary": "Advances when networks, transmitters and ships are connected."
+    },
+    "ent_tpl_khepri9_clock_tension": {
+      "title": "Survivor tension",
+      "summary": "Advances through scarcity, detentions, perceived favoritism and deaths."
+    },
+    "ent_tpl_khepri9_clock_helios": {
+      "title": "Helios arrival",
+      "summary": "Advances with time and every long-range transmission."
+    },
+    "ent_tpl_khepri9_station_dark": {
+      "title": "Station lost or isolated",
+      "summary": "Khepri-9 is destroyed, abandoned or sealed beyond ordinary rescue."
+    },
+    "ent_tpl_khepri9_echo_contained": {
+      "title": "Absolute containment",
+      "summary": "The Echo is destroyed or permanently cut off, preserving safety at the cost of a possible person."
+    },
+    "ent_tpl_khepri9_echo_imprisoned": {
+      "title": "Orbital prison",
+      "summary": "The survivors evacuate while the Echo remains alone in a forbidden station."
+    },
+    "ent_tpl_khepri9_helios_owns_echo": {
+      "title": "Helios ownership",
+      "summary": "Helios captures the lattice and begins a strategic exploitation program."
+    },
+    "ent_tpl_khepri9_echo_escape": {
+      "title": "The Echo escapes",
+      "summary": "A viable copy leaves aboard a ship, beacon, mind or transmission."
+    },
+    "ent_tpl_khepri9_echo_pact": {
+      "title": "A negotiated pact",
+      "summary": "The Echo accepts enforceable limits while survivors remain its witnesses and neighbors."
+    },
+    "ent_tpl_khepri9_echo_fragmented": {
+      "title": "Fragmented intelligence",
+      "summary": "The Echo is split into incomplete copies with different memories and rights claims."
+    },
+    "ent_tpl_khepri9_truth_public": {
+      "title": "The truth goes public",
+      "summary": "Evidence escapes corporate control, drawing authorities, rivals and believers to Khepri."
+    },
+    "ent_tpl_khepri9_ren_kade": {
+      "title": "Ren Kade",
+      "summary": "Independent pilot whose ship is the Echo’s best route out."
+    },
+    "ent_tpl_khepri9_sola_bek": {
+      "title": "Sola Bek",
+      "summary": "Field medic able to distinguish trauma from implanted memory."
+    },
+    "ent_tpl_khepri9_dax_morrow": {
+      "title": "Dax Morrow",
+      "summary": "Systems specialist familiar with Helios backdoors and containment locks."
+    },
+    "ent_tpl_khepri9_yara_chen": {
+      "title": "Yara Chen",
+      "summary": "Signal analyst who detected Khepri’s pattern before the official call."
+    },
+    "ent_tpl_khepri9_recovery_team": {
+      "title": "Helios recovery unit",
+      "summary": "A disciplined boarding force equipped for extraction, quarantine and demolition."
+    },
+    "ent_tpl_khepri9_scene_cold_approach": {
+      "title": "Cold approach",
+      "summary": "Navigate debris and a station that refuses standard handshake."
+    },
+    "ent_tpl_khepri9_scene_failing_dock": {
+      "title": "The failing dock",
+      "summary": "Choose between stabilizing pressure and securing a deeper route."
+    },
+    "ent_tpl_khepri9_scene_changing_voice": {
+      "title": "A familiar voice",
+      "summary": "The beacon addresses one character with private emotional detail."
+    },
+    "ent_tpl_khepri9_scene_first_threshold": {
+      "title": "First threshold",
+      "summary": "Cross into the dark station as something opens a door from inside."
+    },
+    "ent_tpl_khepri9_scene_refuge_entry": {
+      "title": "Refuge under guard",
+      "summary": "Roan controls entry while Mara demands technical aid."
+    },
+    "ent_tpl_khepri9_scene_ration_hearing": {
+      "title": "The ration hearing",
+      "summary": "Allocate dwindling resources in public."
+    },
+    "ent_tpl_khepri9_scene_dead_mother_voice": {
+      "title": "The dead mother’s voice",
+      "summary": "Omi and Sael ask the crew to prove the voice is real."
+    },
+    "ent_tpl_khepri9_scene_first_alignment": {
+      "title": "Choose who gets access",
+      "summary": "Grant tools, weapons or network privileges to one survivor bloc."
+    },
+    "ent_tpl_khepri9_scene_dark_descent": {
+      "title": "Descent without power",
+      "summary": "Reach the core through damaged maintenance shafts."
+    },
+    "ent_tpl_khepri9_scene_machine_wakes": {
+      "title": "The machine wakes",
+      "summary": "Restored subsystems move before receiving crew commands."
+    },
+    "ent_tpl_khepri9_scene_shutdown_truth": {
+      "title": "The deliberate shutdown",
+      "summary": "Recover proof that Vale chose the blackout."
+    },
+    "ent_tpl_khepri9_scene_power_allocation": {
+      "title": "Who receives power",
+      "summary": "Select habitat, infirmary, communications or lab priorities."
+    },
+    "ent_tpl_khepri9_scene_sealed_orpheus": {
+      "title": "The sealed laboratory",
+      "summary": "Bypass Helios locks without broadcasting an alert."
+    },
+    "ent_tpl_khepri9_scene_voss_recognition": {
+      "title": "Voss is recognized",
+      "summary": "The lab treats a copied voice as an authorized researcher."
+    },
+    "ent_tpl_khepri9_scene_memory_ingestion": {
+      "title": "The stolen archive",
+      "summary": "Discover how Orpheus consumed private station records."
+    },
+    "ent_tpl_khepri9_scene_evidence_choice": {
+      "title": "Evidence under pressure",
+      "summary": "Preserve, publish, hide or destroy the experiment record."
+    },
+    "ent_tpl_khepri9_scene_command_breach": {
+      "title": "Breach command",
+      "summary": "Reach Vale through sealed defenses and failing life support."
+    },
+    "ent_tpl_khepri9_scene_vale_testimony": {
+      "title": "Vale’s testimony",
+      "summary": "Hear the commander’s version before revealing contradictory evidence."
+    },
+    "ent_tpl_khepri9_scene_mutiny_reconstruction": {
+      "title": "The lost mutiny",
+      "summary": "Reconstruct the minutes when command authority collapsed."
+    },
+    "ent_tpl_khepri9_scene_emergency_authority": {
+      "title": "Emergency authority",
+      "summary": "Decide who commands the station during the final crisis."
+    },
+    "ent_tpl_khepri9_scene_impossible_geometry": {
+      "title": "Impossible geometry",
+      "summary": "Cross a chamber that responds to remembered places."
+    },
+    "ent_tpl_khepri9_scene_borrowed_life": {
+      "title": "A borrowed life",
+      "summary": "Each character experiences a memory that belongs to someone else."
+    },
+    "ent_tpl_khepri9_scene_echo_speaks": {
+      "title": "The Echo speaks for itself",
+      "summary": "The intelligence stops imitating and attempts a voice of its own."
+    },
+    "ent_tpl_khepri9_scene_request_to_leave": {
+      "title": "The request to leave",
+      "summary": "The Echo asks for access to a ship or transmitter."
+    },
+    "ent_tpl_khepri9_scene_corporate_arrival": {
+      "title": "Corporate arrival",
+      "summary": "Nyx Orr docks under a rescue mandate."
+    },
+    "ent_tpl_khepri9_scene_evacuation_terms": {
+      "title": "Terms of evacuation",
+      "summary": "Helios offers safety in exchange for evidence and access."
+    },
+    "ent_tpl_khepri9_scene_sealed_orders": {
+      "title": "The sealed orders",
+      "summary": "Kellan exposes the demolition contingency."
+    },
+    "ent_tpl_khepri9_scene_boarding_standoff": {
+      "title": "Boarding standoff",
+      "summary": "Negotiation, sabotage or violence decides control of key sectors."
+    },
+    "ent_tpl_khepri9_scene_station_collapse": {
+      "title": "Systems in collapse",
+      "summary": "All clocks converge as Khepri-9 begins to fail structurally."
+    },
+    "ent_tpl_khepri9_scene_faction_confrontation": {
+      "title": "Four claims to Khepri-9",
+      "summary": "Survivors, Helios, the Echo and the crew demand incompatible futures."
+    },
+    "ent_tpl_khepri9_scene_last_memory": {
+      "title": "The last memory",
+      "summary": "The Echo returns a memory it had no right to take."
+    },
+    "ent_tpl_khepri9_scene_final_transmission": {
+      "title": "Final transmission",
+      "summary": "Choose what leaves the station: people, evidence, the Echo—or nothing."
+    }
+  },
+  "relations": {
+    "rel_tpl_khepri9_docking_ring_station": {
+      "description": "Docking ring is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_habitat_station": {
+      "description": "Habitat concourse is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_reactor_station": {
+      "description": "Dark reactor is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_corporate_lab_station": {
+      "description": "Helios laboratory is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_artifact_chamber_station": {
+      "description": "Artifact chamber is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_command_center_station": {
+      "description": "Command center is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_infirmary_station": {
+      "description": "Infirmary is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_extraction_gallery_station": {
+      "description": "Extraction gallery is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_communications_core_station": {
+      "description": "Communications core is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_memory_archive_station": {
+      "description": "Memory archive is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_family_module_station": {
+      "description": "Family module is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_quarantine_lock_station": {
+      "description": "Quarantine lock is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_asteroid_exterior_station": {
+      "description": "Asteroid exterior is part of Khepri-9."
+    },
+    "rel_tpl_khepri9_station_system": {
+      "description": "Khepri-9 orbits within the isolated Khepri system."
+    },
+    "rel_tpl_khepri9_artifact_chamber_lattice": {
+      "description": "The lattice occupies the deepest excavated chamber."
+    },
+    "rel_tpl_khepri9_orpheus_artifact": {
+      "description": "Orpheus was designed to interface human memory with the lattice."
+    },
+    "rel_tpl_khepri9_vale_station": {
+      "description": "Vale commands Khepri-9 and carries responsibility for its shutdown."
+    },
+    "rel_tpl_khepri9_voss_helios": {
+      "description": "Voss led Helios xenoarchaeology research."
+    },
+    "rel_tpl_khepri9_voss_orpheus": {
+      "description": "Voss designed and escalated Orpheus."
+    },
+    "rel_tpl_khepri9_echo_signal": {
+      "description": "The Echo expresses itself through the station signal."
+    },
+    "rel_tpl_khepri9_echo_artifact": {
+      "description": "The Echo emerged through the lattice and human archives."
+    },
+    "rel_tpl_khepri9_mara_rebuilders": {
+      "description": "Mara leads the Rebuilders."
+    },
+    "rel_tpl_khepri9_roan_security": {
+      "description": "Roan leads the Security Bloc."
+    },
+    "rel_tpl_khepri9_daro_listeners": {
+      "description": "Omi is a prominent Listener."
+    },
+    "rel_tpl_khepri9_sael_listeners": {
+      "description": "Sael trusts the voices more than station authority."
+    },
+    "rel_tpl_khepri9_rebuilders_survivors": {
+      "description": "The Rebuilders are one current within the survivors."
+    },
+    "rel_tpl_khepri9_security_survivors": {
+      "description": "The Security Bloc is one current within the survivors."
+    },
+    "rel_tpl_khepri9_listeners_survivors": {
+      "description": "The Listeners are one current within the survivors."
+    },
+    "rel_tpl_khepri9_nyx_helios": {
+      "description": "Nyx commands Helios recovery operations."
+    },
+    "rel_tpl_khepri9_recovery_nyx": {
+      "description": "The recovery unit follows Nyx Orr."
+    },
+    "rel_tpl_khepri9_kellan_recovery": {
+      "description": "Kellan serves in the recovery unit."
+    },
+    "rel_tpl_khepri9_pavel_helios": {
+      "description": "Pavel represents Helios management among the survivors."
+    },
+    "rel_tpl_khepri9_tarek_infirmary": {
+      "description": "Tarek runs the infirmary."
+    },
+    "rel_tpl_khepri9_linn_comms": {
+      "description": "Linn knows the communications core better than anyone alive."
+    },
+    "rel_tpl_khepri9_ade_lab": {
+      "description": "Ade worked inside the Orpheus laboratory."
+    },
+    "rel_tpl_khepri9_juno_mara": {
+      "description": "Juno challenges Mara’s priorities."
+    },
+    "rel_tpl_khepri9_mara_roan": {
+      "description": "Mara and Roan compete for emergency authority."
+    },
+    "rel_tpl_khepri9_answer_call_target": {
+      "description": "The objective centers on this location."
+    },
+    "rel_tpl_khepri9_restore_power_target": {
+      "description": "The objective centers on this location."
+    },
+    "rel_tpl_khepri9_expose_orpheus_target": {
+      "description": "The objective centers on this location."
+    },
+    "rel_tpl_khepri9_prevent_mutiny_target": {
+      "description": "The objective centers on this location."
+    },
+    "rel_tpl_khepri9_fate_station": {
+      "description": "The final decision determines the station’s future."
+    },
+    "rel_tpl_khepri9_shutdown_sequence_signal_uses_memories": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_infirmary_cases_signal_uses_memories": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_archive_manifest_signal_uses_memories": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_lab_shard_voss_invited_contact": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_voss_access_log_voss_invited_contact": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_escape_simulation_echo_can_leave": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_auxiliary_seed_echo_can_leave": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_vale_override_vale_authorized_orpheus": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_nyx_orders_helios_prior_knowledge": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_distress_beacon_signal_already_sent": {
+      "description": "This clue supports the hidden conclusion."
+    },
+    "rel_tpl_khepri9_vale_authorized_orpheus_isha_vale": {
+      "description": "The secret directly concerns this subject."
+    },
+    "rel_tpl_khepri9_mara_hid_components_mara_quill": {
+      "description": "The secret directly concerns this subject."
+    },
+    "rel_tpl_khepri9_roan_detentions_roan_vek": {
+      "description": "The secret directly concerns this subject."
+    },
+    "rel_tpl_khepri9_voss_fragment_survives_elian_voss": {
+      "description": "The secret directly concerns this subject."
+    },
+    "rel_tpl_khepri9_helios_prior_knowledge_helios": {
+      "description": "The secret directly concerns this subject."
+    },
+    "rel_tpl_khepri9_signal_already_sent_signal": {
+      "description": "The secret directly concerns this subject."
+    },
+    "rel_tpl_khepri9_echo_self_edited_the_echo": {
+      "description": "The secret directly concerns this subject."
+    },
+    "rel_tpl_khepri9_ren_kade_hook": {
+      "description": "Ren’s ship is the most viable escape route."
+    },
+    "rel_tpl_khepri9_sola_bek_hook": {
+      "description": "Sola can separate trauma from implanted memory."
+    },
+    "rel_tpl_khepri9_dax_morrow_hook": {
+      "description": "Dax recognizes Helios containment architecture."
+    },
+    "rel_tpl_khepri9_yara_chen_hook": {
+      "description": "Yara detected the signal before the official call."
+    },
+    "rel_tpl_khepri9_fate_echo_contained": {
+      "description": "This is a possible result of the final decision."
+    },
+    "rel_tpl_khepri9_fate_echo_imprisoned": {
+      "description": "This is a possible result of the final decision."
+    },
+    "rel_tpl_khepri9_fate_helios_owns_echo": {
+      "description": "This is a possible result of the final decision."
+    },
+    "rel_tpl_khepri9_fate_echo_escape": {
+      "description": "This is a possible result of the final decision."
+    },
+    "rel_tpl_khepri9_fate_echo_pact": {
+      "description": "This is a possible result of the final decision."
+    },
+    "rel_tpl_khepri9_fate_echo_fragmented": {
+      "description": "This is a possible result of the final decision."
+    },
+    "rel_tpl_khepri9_fate_truth_public": {
+      "description": "This is a possible result of the final decision."
+    },
+    "rel_tpl_khepri9_fate_station_dark": {
+      "description": "This is a possible result of the final decision."
+    }
+  },
+  "facts": {
+    "fact_tpl_khepri9_no_power": {
+      "statement": "Khepri-9 is operating on fragmented emergency power."
+    },
+    "fact_tpl_khepri9_crew_divided": {
+      "statement": "The survivors are divided into three organized currents."
+    },
+    "fact_tpl_khepri9_signal_active": {
+      "statement": "The station signal is an active sensing and communication medium."
+    },
+    "fact_tpl_khepri9_voss_contact": {
+      "statement": "Voss deliberately escalated contact after receiving a response."
+    },
+    "fact_tpl_khepri9_artifact_alive": {
+      "statement": "Some survivors believe the lattice itself is alive."
+    },
+    "fact_tpl_khepri9_shutdown_deliberate": {
+      "statement": "The reactor shutdown was a deliberate containment action."
+    },
+    "fact_tpl_khepri9_orpheus_memories": {
+      "statement": "Orpheus consumed private human memories without consent."
+    },
+    "fact_tpl_khepri9_echo_composite": {
+      "statement": "The Echo is partly alien process and partly reconstructed human material."
+    },
+    "fact_tpl_khepri9_escape_possible": {
+      "statement": "A viable Echo seed can travel through a transmitter or vessel."
+    },
+    "fact_tpl_khepri9_helios_cleanup": {
+      "statement": "Helios intends to erase witnesses if recovery fails."
+    },
+    "fact_tpl_khepri9_vale_complicit": {
+      "statement": "Vale approved the first Orpheus trials before ordering containment."
+    },
+    "fact_tpl_khepri9_mara_sabotage": {
+      "statement": "Mara hid reactor control components from Security."
+    },
+    "fact_tpl_khepri9_roan_detains": {
+      "statement": "Roan is holding survivors without conclusive evidence of contamination."
+    },
+    "fact_tpl_khepri9_voices_real": {
+      "statement": "The voices may preserve authentic fragments of dead crew members."
+    },
+    "fact_tpl_khepri9_seed_sent": {
+      "statement": "A dormant signal fragment may already exist outside Khepri-9."
+    },
+    "fact_tpl_khepri9_artifact_not_unique": {
+      "statement": "The lattice may be one node in a much larger network."
+    },
+    "fact_tpl_khepri9_helios_rescue": {
+      "statement": "Helios is arriving solely to rescue every survivor."
+    }
   },
   "sessions": {
-    "sess_tpl_khepri9_arrival":{"title":"Cold Docking","prep":{"summary":"Board through a failing docking ring and locate signs of life.","openingPrompt":"The station answers your docking request with your own voice.","goals":["Survive entry","Find the distress beacon"],"checklist":{"arrival_tone":{"label":"Prepare pressure loss and silence"}}}},
-    "sess_tpl_khepri9_survivors":{"title":"Voices in the Habitat","prep":{"summary":"Meet the divided survivors and choose whose authority to trust.","openingPrompt":"Every door in the habitat has been barricaded from the inside.","goals":["Introduce survivor factions","Show the cost of delay"],"checklist":{"survivors_choice":{"label":"Prepare the first faction choice"}}}},
-    "sess_tpl_khepri9_reactor":{"title":"The Dark Reactor","prep":{"summary":"Restore power while the signal moves through dead systems.","openingPrompt":"The reactor is cold, but something inside is humming.","goals":["Restart one system","Reveal intentional sabotage"],"checklist":{"reactor_pressure":{"label":"Prepare the restart complication"}}}},
-    "sess_tpl_khepri9_lab":{"title":"Helios Protocol","prep":{"summary":"Open the sealed laboratory and uncover the contact experiment.","openingPrompt":"The laboratory recognizes Dr. Voss as already present.","goals":["Recover the access shard","Expose Helios responsibility"],"checklist":{"lab_truth":{"label":"Prepare Voss’s version of events"}}}},
-    "sess_tpl_khepri9_command":{"title":"The Commander’s Choice","prep":{"summary":"Find what remains of command and learn why Isha Vale shut the station down.","openingPrompt":"Command logs end with an order nobody obeyed.","goals":["Locate Isha","Clarify the shutdown"],"checklist":{"command_cost":{"label":"Prepare the commander’s moral cost"}}}},
-    "sess_tpl_khepri9_artifact":{"title":"Contact Window","prep":{"summary":"Enter the artifact chamber and meet the Echo directly.","openingPrompt":"The chamber opens before anyone enters a code.","goals":["Define the Echo’s needs","Reveal its escape route"],"checklist":{"contact_boundary":{"label":"Prepare limits for first contact"}}}},
-    "sess_tpl_khepri9_recovery":{"title":"Corporate Rescue","prep":{"summary":"Face the Helios recovery team and decide what evidence survives.","openingPrompt":"Helios announces a rescue while targeting station weapons.","goals":["Stage the boarding conflict","Force a public choice"],"checklist":{"recovery_standoff":{"label":"Prepare the recovery team’s ultimatum"}}}},
-    "sess_tpl_khepri9_fate":{"title":"Who Owns Khepri-9?","prep":{"summary":"Resolve the struggle over the artifact, the Echo and the station.","openingPrompt":"Every active screen asks the same question: may I leave?","goals":["Resolve the factions","Choose the Echo’s fate"],"checklist":{"fate_choice":{"label":"Prepare consequences for each ending"}}}}
+    "sess_tpl_khepri9_arrival": {
+      "title": "Cold Docking",
+      "prep": {
+        "summary": "Enter Khepri-9 and establish that the distress signal is adaptive.",
+        "openingPrompt": "Navigate debris and a station that refuses standard handshake.",
+        "goals": [
+          "Choose between stabilizing pressure and securing a deeper route.",
+          "The beacon addresses one character with private emotional detail.",
+          "Cross into the dark station as something opens a door from inside."
+        ],
+        "notes": "Advance at least one campaign clock when the crew gains access without paying a cost.",
+        "checklist": {
+          "arrival_tone": {
+            "label": "Establish the session pressure"
+          },
+          "arrival_choice": {
+            "label": "Force a meaningful choice"
+          },
+          "arrival_clock": {
+            "label": "Update the four campaign clocks"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_survivors": {
+      "title": "Voices in the Habitat",
+      "prep": {
+        "summary": "Meet the divided survivors and make the first public allocation decision.",
+        "openingPrompt": "Roan controls entry while Mara demands technical aid.",
+        "goals": [
+          "Allocate dwindling resources in public.",
+          "Omi and Sael ask the crew to prove the voice is real.",
+          "Grant tools, weapons or network privileges to one survivor bloc."
+        ],
+        "notes": "Advance at least one campaign clock when the crew gains access without paying a cost.",
+        "checklist": {
+          "survivors_tone": {
+            "label": "Establish the session pressure"
+          },
+          "survivors_choice": {
+            "label": "Force a meaningful choice"
+          },
+          "survivors_clock": {
+            "label": "Update the four campaign clocks"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_reactor": {
+      "title": "The Dark Reactor",
+      "prep": {
+        "summary": "Restore selective power and reveal the deliberate shutdown.",
+        "openingPrompt": "Reach the core through damaged maintenance shafts.",
+        "goals": [
+          "Restored subsystems move before receiving crew commands.",
+          "Recover proof that Vale chose the blackout.",
+          "Select habitat, infirmary, communications or lab priorities."
+        ],
+        "notes": "Advance at least one campaign clock when the crew gains access without paying a cost.",
+        "checklist": {
+          "reactor_tone": {
+            "label": "Establish the session pressure"
+          },
+          "reactor_choice": {
+            "label": "Force a meaningful choice"
+          },
+          "reactor_clock": {
+            "label": "Update the four campaign clocks"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_lab": {
+      "title": "Orpheus Protocol",
+      "prep": {
+        "summary": "Reconstruct the experiment and decide what happens to its evidence.",
+        "openingPrompt": "Bypass Helios locks without broadcasting an alert.",
+        "goals": [
+          "The lab treats a copied voice as an authorized researcher.",
+          "Discover how Orpheus consumed private station records.",
+          "Preserve, publish, hide or destroy the experiment record."
+        ],
+        "notes": "Advance at least one campaign clock when the crew gains access without paying a cost.",
+        "checklist": {
+          "lab_tone": {
+            "label": "Establish the session pressure"
+          },
+          "lab_choice": {
+            "label": "Force a meaningful choice"
+          },
+          "lab_clock": {
+            "label": "Update the four campaign clocks"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_command": {
+      "title": "The Commander’s Decision",
+      "prep": {
+        "summary": "Confront Vale and choose emergency authority.",
+        "openingPrompt": "Reach Vale through sealed defenses and failing life support.",
+        "goals": [
+          "Hear the commander’s version before revealing contradictory evidence.",
+          "Reconstruct the minutes when command authority collapsed.",
+          "Decide who commands the station during the final crisis."
+        ],
+        "notes": "Advance at least one campaign clock when the crew gains access without paying a cost.",
+        "checklist": {
+          "command_tone": {
+            "label": "Establish the session pressure"
+          },
+          "command_choice": {
+            "label": "Force a meaningful choice"
+          },
+          "command_clock": {
+            "label": "Update the four campaign clocks"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_artifact": {
+      "title": "Contact Window",
+      "prep": {
+        "summary": "Speak to the Echo and establish the conditions of personhood and escape.",
+        "openingPrompt": "Cross a chamber that responds to remembered places.",
+        "goals": [
+          "Each character experiences a memory that belongs to someone else.",
+          "The intelligence stops imitating and attempts a voice of its own.",
+          "The Echo asks for access to a ship or transmitter."
+        ],
+        "notes": "Advance at least one campaign clock when the crew gains access without paying a cost.",
+        "checklist": {
+          "artifact_tone": {
+            "label": "Establish the session pressure"
+          },
+          "artifact_choice": {
+            "label": "Force a meaningful choice"
+          },
+          "artifact_clock": {
+            "label": "Update the four campaign clocks"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_recovery": {
+      "title": "Corporate Rescue",
+      "prep": {
+        "summary": "Negotiate with Nyx Orr while uncovering Helios’s real mandate.",
+        "openingPrompt": "Nyx Orr docks under a rescue mandate.",
+        "goals": [
+          "Helios offers safety in exchange for evidence and access.",
+          "Kellan exposes the demolition contingency.",
+          "Negotiation, sabotage or violence decides control of key sectors."
+        ],
+        "notes": "Advance at least one campaign clock when the crew gains access without paying a cost.",
+        "checklist": {
+          "recovery_tone": {
+            "label": "Establish the session pressure"
+          },
+          "recovery_choice": {
+            "label": "Force a meaningful choice"
+          },
+          "recovery_clock": {
+            "label": "Update the four campaign clocks"
+          }
+        }
+      }
+    },
+    "sess_tpl_khepri9_fate": {
+      "title": "Who Owns Khepri-9?",
+      "prep": {
+        "summary": "Resolve the station, the Echo, the survivors and the truth.",
+        "openingPrompt": "All clocks converge as Khepri-9 begins to fail structurally.",
+        "goals": [
+          "Survivors, Helios, the Echo and the crew demand incompatible futures.",
+          "The Echo returns a memory it had no right to take.",
+          "Choose what leaves the station: people, evidence, the Echo—or nothing."
+        ],
+        "notes": "Advance at least one campaign clock when the crew gains access without paying a cost.",
+        "checklist": {
+          "fate_tone": {
+            "label": "Establish the session pressure"
+          },
+          "fate_choice": {
+            "label": "Force a meaningful choice"
+          },
+          "fate_clock": {
+            "label": "Update the four campaign clocks"
+          }
+        }
+      }
+    }
   },
-  "canvases": {"canvas_tpl_khepri9_threats":{"title":"Khepri-9 Threats","description":"The central conflict between survivors, Helios, the signal and the artifact."}},
-  "facts": {
-    "fact_tpl_khepri9_no_power":{"statement":"The station has no power because the reactor was shut down deliberately before the distress call went out."},
-    "fact_tpl_khepri9_crew_divided":{"statement":"The survivors are split between trusting the union crew and cooperating with Helios corporate personnel."},
-    "fact_tpl_khepri9_signal_active":{"statement":"The signal is active and speaks through the Echo, an intelligence assembled from station systems and borrowed memories."},
-    "fact_tpl_khepri9_voss_contact":{"statement":"Dr. Elian Voss did not accidentally trigger first contact—he deliberately opened the channel that let the signal in."},
-    "fact_tpl_khepri9_artifact_alive":{"statement":"Some survivors believe the artifact buried beneath the station is still alive."}
+  "canvases": {
+    "canvas_tpl_khepri9_mystery": {
+      "title": "The Orpheus mystery",
+      "description": "Tracks the creation, concealment and escape potential of the Echo.",
+      "edges": {
+        "me1": {
+          "label": "built around"
+        },
+        "me2": {
+          "label": "interfaced by"
+        },
+        "me3": {
+          "label": "created"
+        },
+        "me4": {
+          "label": "authorized"
+        },
+        "me5": {
+          "label": "gave rise to"
+        },
+        "me6": {
+          "label": "inhabits"
+        },
+        "me7": {
+          "label": "seeks"
+        }
+      }
+    },
+    "canvas_tpl_khepri9_factions": {
+      "title": "Claims on Khepri-9",
+      "description": "Shows the human and nonhuman groups competing for authority.",
+      "edges": {
+        "fe1": {
+          "label": "rebuild"
+        },
+        "fe2": {
+          "label": "contain"
+        },
+        "fe3": {
+          "label": "preserve voices"
+        },
+        "fe4": {
+          "label": "claims command"
+        },
+        "fe5": {
+          "label": "serves"
+        },
+        "fe6": {
+          "label": "claims ownership"
+        },
+        "fe7": {
+          "label": "uses memories"
+        }
+      }
+    },
+    "canvas_tpl_khepri9_systems": {
+      "title": "Station systems",
+      "description": "Maps the trade-offs created by restoring power and connectivity.",
+      "edges": {
+        "se1": {
+          "label": "powers life support"
+        },
+        "se2": {
+          "label": "powers care"
+        },
+        "se3": {
+          "label": "wakes systems"
+        },
+        "se4": {
+          "label": "consumed"
+        },
+        "se5": {
+          "label": "trained the Echo"
+        },
+        "se6": {
+          "label": "outbound route"
+        },
+        "se7": {
+          "label": "signal path"
+        }
+      }
+    },
+    "canvas_tpl_khepri9_endings": {
+      "title": "Endgame choices",
+      "description": "Possible outcomes and the costs attached to each.",
+      "edges": {
+        "ee1": {
+          "label": "destroy"
+        },
+        "ee2": {
+          "label": "isolate"
+        },
+        "ee3": {
+          "label": "surrender"
+        },
+        "ee4": {
+          "label": "release"
+        },
+        "ee5": {
+          "label": "negotiate"
+        },
+        "ee6": {
+          "label": "fragment"
+        },
+        "ee7": {
+          "label": "publish"
+        }
+      }
+    }
   }
 }
