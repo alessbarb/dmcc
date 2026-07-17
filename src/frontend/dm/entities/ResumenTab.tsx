@@ -5,6 +5,8 @@ import type { Entity, PlayerProfile, CampaignStateStore } from "../../shared/sto
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { formatVisibility } from "@shared/i18n/index.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
+import "./entity-summary.css";
+import "./entity-summary-character-sheet.css";
 
 type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
 
@@ -31,40 +33,20 @@ export function ResumenTab({
   const { t, locale } = useTranslation();
   const visKind = entity.visibility?.kind ?? "dm_only";
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+    <div className="entity-summary">
       {/* Visibility badge + editor */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          padding: "10px 14px",
-          backgroundColor: "var(--theme-surfaces-interactive)",
-          borderRadius: "var(--theme-shapes-radius-small)",
-        }}
-      >
-        <span style={{ fontSize: "0.8rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>
+      <div className="entity-summary__visibility">
+        <span className="entity-summary__visibility-label">
           VISIBILIDAD
         </span>
         <span
-          style={{
-            padding: "2px 10px",
-            borderRadius: "var(--theme-shapes-radius-small)",
-            fontSize: "0.8rem",
-            fontWeight: "700",
-            backgroundColor:
-              visKind === "dm_only"
-                ? "var(--theme-feedback-danger-background)"
-                : "var(--theme-feedback-success-background)",
-            color:
-              visKind === "dm_only"
-                ? "var(--theme-feedback-danger-foreground)"
-                : "var(--theme-feedback-success-foreground)",
-          }}
+          className={`badge entity-summary__visibility-badge ${
+            visKind === "dm_only" ? "badge--danger" : "badge--success"
+          }`}
         >
           {formatVisibility(visKind, locale)}
         </span>
-        <div style={{ marginLeft: "auto", display: "flex", gap: "6px" }}>
+        <div className="entity-summary__visibility-actions">
           {visKind === "dm_only" && (
             <button
               type="button"
@@ -88,19 +70,19 @@ export function ResumenTab({
 
       {entity.summary && (
         <div>
-          <h4 style={{ fontWeight: "700", fontSize: "0.9rem", color: "var(--theme-text-secondary)" }}>
+          <h4 className="entity-summary__section-title">
             Resumen
           </h4>
-          <p style={{ marginTop: "4px" }}>{entity.summary}</p>
+          <p className="entity-summary__text">{entity.summary}</p>
         </div>
       )}
 
       {entity.content && (
         <div>
-          <h4 style={{ fontWeight: "700", fontSize: "0.9rem", color: "var(--theme-text-secondary)" }}>
+          <h4 className="entity-summary__section-title">
             Notas y descripción
           </h4>
-          <p style={{ marginTop: "4px", whiteSpace: "pre-line", fontSize: "0.95rem" }}>
+          <p className="entity-summary__text entity-summary__text--notes">
             {entity.content}
           </p>
         </div>
@@ -109,14 +91,7 @@ export function ResumenTab({
       {/* Metadata details — type-aware */}
       {entity.metadata && Object.keys(entity.metadata).length > 0 && (
         <div>
-          <h4
-            style={{
-              fontWeight: "700",
-              fontSize: "0.9rem",
-              color: "var(--theme-text-secondary)",
-              marginBottom: "8px",
-            }}
-          >
+          <h4 className="entity-summary__section-title entity-summary__section-title--spaced">
             Detalles
           </h4>
           {(() => {
@@ -128,28 +103,19 @@ export function ResumenTab({
               value === null || value === undefined || value === "" ? fallback : String(value);
             const Field = ({ label, value }: { label: string; value: unknown }) =>
               value != null && String(value).trim() !== "" ? (
-                <div style={{ fontSize: "0.85rem", display: "flex", gap: "8px" }}>
-                  <span style={{ color: "var(--theme-text-secondary)", minWidth: "100px" }}>{label}</span>
-                  <span style={{ color: "var(--theme-text-primary)", fontWeight: "500" }}>
+                <div className="entity-summary__field">
+                  <span className="entity-summary__field-label">{label}</span>
+                  <span className="entity-summary__field-value">
                     {String(value)}
                   </span>
                 </div>
               ) : null;
             return (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                  backgroundColor: "var(--theme-surfaces-canvas)",
-                  padding: "12px",
-                  borderRadius: "var(--theme-shapes-radius-medium)",
-                }}
-              >
+              <div className="entity-summary__details">
                 {(entityType === "npc" || entityType === "player_character" || entityType === "creature") && (
                   entityType === "player_character" && campaignState?.campaign?.system === "dnd_5e" ? (
-                    <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
+                    <div className="entity-summary__pc-stats">
+                      <div className="entity-summary__stat-grid entity-summary__stat-grid--2col entity-summary__panel">
                         <Field label="Clase" value={m.className} />
                         <Field label="Subclase" value={m.subclass} />
                         <Field label="Nivel" value={m.level} />
@@ -164,8 +130,8 @@ export function ResumenTab({
                       </div>
 
                       <div>
-                        <h5 style={{ fontSize: "0.75rem", fontWeight: "700", color: "var(--theme-text-secondary)", marginBottom: "8px", textTransform: "uppercase" }}>Atributos Principales</h5>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
+                        <h5 className="entity-summary__attr-heading">Atributos Principales</h5>
+                        <div className="entity-summary__attr-grid">
                           {[
                             { label: "FUERZA", key: "strength", short: "STR" },
                             { label: "DESTREZA", key: "dexterity", short: "DEX" },
@@ -178,78 +144,78 @@ export function ResumenTab({
                             const mod = numVal !== undefined ? Math.floor((numVal - 10) / 2) : null;
                             const modStr = mod !== null ? (mod >= 0 ? `+${mod}` : `${mod}`) : "--";
                             return (
-                              <div key={attr.key} style={{ backgroundColor: "var(--theme-surfaces-canvas)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-medium)", padding: "6px 4px", textAlign: "center" }}>
-                                <div style={{ fontSize: "0.6rem", fontWeight: "700", color: "var(--theme-text-secondary)" }}>{attr.short}</div>
-                                <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-accents-secondary-foreground)", margin: "2px 0" }}>{modStr}</div>
-                                <div style={{ fontSize: "0.7rem", color: "var(--theme-text-primary)" }}>{metaStr(m[attr.key], "--")}</div>
+                              <div key={attr.key} className="entity-summary__attr-card">
+                                <div className="entity-summary__attr-short">{attr.short}</div>
+                                <div className="entity-summary__attr-mod">{modStr}</div>
+                                <div className="entity-summary__attr-value">{metaStr(m[attr.key], "--")}</div>
                               </div>
                             );
                           })}
                         </div>
                       </div>
 
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
-                        <div style={{ textAlign: "center" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>CLASE ARMADURA</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-text-primary)", marginTop: "4px" }}>🛡️ {metaStr(m.armorClass, "10")}</div>
+                      <div className="entity-summary__stat-grid entity-summary__stat-grid--3col entity-summary__panel">
+                        <div>
+                          <div className="entity-summary__stat-label">CLASE ARMADURA</div>
+                          <div className="entity-summary__stat-value">🛡️ {metaStr(m.armorClass, "10")}</div>
                         </div>
-                        <div style={{ textAlign: "center" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>INICIATIVA</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-text-primary)", marginTop: "4px" }}>⚡ {(() => { const v = metaNum(m.initiative); return v !== undefined && v >= 0 ? `+${v}` : String(v ?? 0); })()}</div>
+                        <div>
+                          <div className="entity-summary__stat-label">INICIATIVA</div>
+                          <div className="entity-summary__stat-value">⚡ {(() => { const v = metaNum(m.initiative); return v !== undefined && v >= 0 ? `+${v}` : String(v ?? 0); })()}</div>
                         </div>
-                        <div style={{ textAlign: "center" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>VELOCIDAD</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-text-primary)", marginTop: "4px" }}>🏃‍♂️ {metaStr(m.speed, "30")} ft</div>
+                        <div>
+                          <div className="entity-summary__stat-label">VELOCIDAD</div>
+                          <div className="entity-summary__stat-value">🏃‍♂️ {metaStr(m.speed, "30")} ft</div>
                         </div>
-                        <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "8px", marginTop: "4px" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>PUNTOS DE GOLPE (HP)</div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-feedback-danger-foreground)", marginTop: "4px" }}>
+                        <div className="entity-summary__stat-cell--span3-tight">
+                          <div className="entity-summary__stat-label">PUNTOS DE GOLPE (HP)</div>
+                          <div className="entity-summary__stat-value--danger">
                             ❤️ {metaStr(m.hitPointsCurrent, "10")} / {metaStr(m.hitPointsMax, "10")}
-                            {(metaNum(m.hitPointsTemp) ?? 0) > 0 && <span style={{ color: "var(--theme-feedback-warning-foreground)", fontSize: "0.85rem", marginLeft: "6px" }}>+{metaStr(m.hitPointsTemp, "0")} Temp</span>}
+                            {(metaNum(m.hitPointsTemp) ?? 0) > 0 && <span className="entity-summary__stat-temp">+{metaStr(m.hitPointsTemp, "0")} Temp</span>}
                           </div>
                         </div>
-                        <div style={{ textAlign: "center", gridColumn: "span 3", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "8px" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>DADOS DE GOLPE</div>
-                          <div style={{ fontSize: "0.95rem", fontWeight: "700", color: "var(--theme-text-primary)", marginTop: "4px" }}>🎲 {metaStr(m.hitDice, "--")}</div>
+                        <div className="entity-summary__stat-cell--span3">
+                          <div className="entity-summary__stat-label">DADOS DE GOLPE</div>
+                          <div className="entity-summary__hit-dice-value">🎲 {metaStr(m.hitDice, "--")}</div>
                         </div>
                       </div>
 
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px", backgroundColor: "var(--theme-surfaces-canvas)", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)", textAlign: "center" }}>
+                      <div className="entity-summary__stat-grid entity-summary__stat-grid--3col entity-summary__stat-grid--tight-gap entity-summary__panel entity-summary__panel--compact">
                         <div>
-                          <div style={{ fontSize: "0.6rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>PERCEPCION PASIVA</div>
-                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>👁️ {metaStr(m.passivePerception, "10")}</div>
+                          <div className="entity-summary__stat-label--sm">PERCEPCION PASIVA</div>
+                          <div className="entity-summary__stat-value--sm">👁️ {metaStr(m.passivePerception, "10")}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: "0.6rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>PERSPIACACIA PASIVA</div>
-                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🧠 {metaStr(m.passiveInsight, "10")}</div>
+                          <div className="entity-summary__stat-label--sm">PERSPIACACIA PASIVA</div>
+                          <div className="entity-summary__stat-value--sm">🧠 {metaStr(m.passiveInsight, "10")}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: "0.6rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>INVESTIGACION PASIVA</div>
-                          <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>🔍 {metaStr(m.passiveInvestigation, "10")}</div>
+                          <div className="entity-summary__stat-label--sm">INVESTIGACION PASIVA</div>
+                          <div className="entity-summary__stat-value--sm">🔍 {metaStr(m.passiveInvestigation, "10")}</div>
                         </div>
                       </div>
 
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" }}>
-                        <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Salvaciones</div>
+                      <div className="entity-summary__stat-grid entity-summary__stat-grid--2col">
+                        <div className="entity-summary__panel entity-summary__panel--compact">
+                          <div className="entity-summary__pill-group-title">Salvaciones</div>
                           {Array.isArray(m.savingThrows) && m.savingThrows.length > 0 ? (
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                            <div className="entity-summary__pill-row">
                               {m.savingThrows.map((s: string) => {
                                 const trans: Record<string, string> = { str: "FUER", dex: "DEST", con: "CONS", int: "INTE", wis: "SABI", cha: "CARI" };
                                 return (
-                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--theme-accents-primary-background)", border: "1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent)", borderRadius: "4px", color: "var(--theme-text-primary)", textTransform: "uppercase" }}>
+                                  <span key={s} className="entity-summary__pill entity-summary__pill--upper">
                                     {trans[s] || s}
                                   </span>
                                 );
                               })}
                             </div>
-                          ) : <span style={{ fontSize: "0.7rem", color: "var(--theme-text-secondary)", fontStyle: "italic" }}>Ninguna</span>}
+                          ) : <span className="entity-summary__pill-empty">Ninguna</span>}
                         </div>
 
-                        <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Habilidades</div>
+                        <div className="entity-summary__panel entity-summary__panel--compact">
+                          <div className="entity-summary__pill-group-title">Habilidades</div>
                           {Array.isArray(m.skills) && m.skills.length > 0 ? (
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                            <div className="entity-summary__pill-row">
                               {m.skills.map((s: string) => {
                                 const trans: Record<string, string> = {
                                   acrobatics: "Acrobacias", athletics: "Atletismo", stealth: "Sigilo", sleight_of_hand: "Juego de Manos",
@@ -259,25 +225,25 @@ export function ResumenTab({
                                   survival: "Supervivencia"
                                 };
                                 return (
-                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--theme-accents-primary-background)", border: "1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent)", borderRadius: "4px", color: "var(--theme-text-primary)" }}>
+                                  <span key={s} className="entity-summary__pill">
                                     {trans[s] || s}
                                   </span>
                                 );
                               })}
                             </div>
-                          ) : <span style={{ fontSize: "0.7rem", color: "var(--theme-text-secondary)", fontStyle: "italic" }}>Ninguna</span>}
+                          ) : <span className="entity-summary__pill-empty">Ninguna</span>}
                         </div>
                       </div>
 
-                      <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <div className="entity-summary__panel entity-summary__panel--stack">
                         <Field label="Dotes" value={Array.isArray(m.feats) ? m.feats.join(", ") : m.feats} />
                         <Field label="Idiomas" value={getMetadataLanguages(m)} />
                       </div>
 
                       {(m.spellSaveDC != null || m.spellAttackBonus != null) && (
-                        <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "8px", border: "1px dashed var(--theme-accents-secondary-foreground)" }}>
-                          <div style={{ fontSize: "0.7rem", color: "var(--theme-accents-secondary-foreground)", fontWeight: "700", textTransform: "uppercase" }}>✨ Magia y Conjuros</div>
-                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                        <div className="entity-summary__panel entity-summary__panel--stack entity-summary__panel--spell">
+                          <div className="entity-summary__spell-title">✨ Magia y Conjuros</div>
+                          <div className="entity-summary__spell-grid">
                             <Field label={t("entityDetail.spellSaveDc")} value={m.spellSaveDC} />
                             <Field label="Bono de Ataque" value={m.spellAttackBonus != null ? `+${m.spellAttackBonus}` : null} />
                           </div>
@@ -285,9 +251,9 @@ export function ResumenTab({
                       )}
 
                       {Boolean(m.note) && (
-                        <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "6px" }}>
-                          <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "700", textTransform: "uppercase" }}>Notas adicionales</div>
-                          <div style={{ fontSize: "0.75rem", color: "var(--theme-text-primary)", whiteSpace: "pre-line" }}>{metaStr(m.note, "")}</div>
+                        <div className="entity-summary__panel entity-summary__panel--stack-tight">
+                          <div className="entity-summary__notes-title">Notas adicionales</div>
+                          <div className="entity-summary__notes-text">{metaStr(m.note, "")}</div>
                         </div>
                       )}
                     </div>
@@ -406,22 +372,12 @@ export function ResumenTab({
 
       {/* Inline edit form */}
       {isEditingEntity && (
-        <div
-          style={{
-            padding: "16px",
-            borderTop: "1px solid var(--theme-borders-default)",
-            display: "flex",
-            flexDirection: "column",
-            gap: "12px",
-            backgroundColor: "var(--theme-surfaces-interactive)",
-            borderRadius: "var(--theme-shapes-radius-medium)",
-          }}
-        >
-          <h4 style={{ fontWeight: "700", fontSize: "0.9rem", marginBottom: "4px" }}>
+        <div className="entity-summary__edit-panel">
+          <h4 className="entity-summary__edit-heading">
             Editar entidad
           </h4>
           <div className="grid grid-cols-2">
-            <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="form-group form-group--flush">
               <label className="form-label">Título</label>
               <input
                 className="form-input"
@@ -431,7 +387,7 @@ export function ResumenTab({
                 }
               />
             </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="form-group form-group--flush">
               <label className="form-label">Subtítulo</label>
               <input
                 className="form-input"
@@ -442,7 +398,7 @@ export function ResumenTab({
               />
             </div>
           </div>
-          <div className="form-group" style={{ marginBottom: 0 }}>
+          <div className="form-group form-group--flush">
             <label className="form-label">Resumen</label>
             <input
               className="form-input"
@@ -452,7 +408,7 @@ export function ResumenTab({
               }
             />
           </div>
-          <div className="form-group" style={{ marginBottom: 0 }}>
+          <div className="form-group form-group--flush">
             <label className="form-label">Imagen</label>
             <ImagePickerButton
               value={
@@ -475,7 +431,7 @@ export function ResumenTab({
               shape="circle"
             />
           </div>
-          <div className="form-group" style={{ marginBottom: 0 }}>
+          <div className="form-group form-group--flush">
             <label className="form-label">Notas / Descripción</label>
             <textarea
               className="form-textarea"
@@ -487,7 +443,7 @@ export function ResumenTab({
             />
           </div>
           <div className="grid grid-cols-2">
-            <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="form-group form-group--flush">
               <label className="form-label">Estado</label>
               <input
                 className="form-input"
@@ -497,7 +453,7 @@ export function ResumenTab({
                 }
               />
             </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="form-group form-group--flush">
               <label className="form-label">Importancia</label>
               <select
                 className="form-select"

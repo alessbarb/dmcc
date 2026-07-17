@@ -1,0 +1,178 @@
+/* D&D 5e player-character stat block, rendered inside ResumenTab's
+   entity-summary__details when entityType is player_character. This is a
+   distinct visual subsystem from generic entity metadata display, so it
+   gets its own stylesheet rather than growing entity-summary.css further.
+   Builds on .entity-summary__panel/.entity-summary__stat-grid primitives
+   from entity-summary.css. */
+
+.entity-summary__pc-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.entity-summary__panel--spell {
+  border: 1px dashed var(--theme-accents-secondary-foreground);
+}
+
+.entity-summary__stat-cell--span3 {
+  grid-column: span 3;
+  border-top: 1px solid var(--theme-borders-default);
+  padding-top: 8px;
+}
+
+.entity-summary__stat-cell--span3-tight {
+  grid-column: span 3;
+  border-top: 1px solid var(--theme-borders-default);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+.entity-summary__stat-label {
+  font-size: 0.65rem;
+  color: var(--theme-text-secondary);
+  font-weight: 600;
+}
+
+.entity-summary__stat-label--sm {
+  font-size: 0.6rem;
+  color: var(--theme-text-secondary);
+  font-weight: 600;
+}
+
+.entity-summary__stat-value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-text-primary);
+  margin-top: 4px;
+}
+
+.entity-summary__stat-value--danger {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-feedback-danger-foreground);
+  margin-top: 4px;
+}
+
+.entity-summary__stat-value--sm {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.entity-summary__stat-temp {
+  color: var(--theme-feedback-warning-foreground);
+  font-size: 0.85rem;
+  margin-left: 6px;
+}
+
+.entity-summary__hit-dice-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--theme-text-primary);
+  margin-top: 4px;
+}
+
+/* Ability score attribute cards */
+.entity-summary__attr-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.entity-summary__attr-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.entity-summary__attr-card {
+  background: var(--theme-surfaces-canvas);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.entity-summary__attr-short {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--theme-text-secondary);
+}
+
+.entity-summary__attr-mod {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--theme-accents-secondary-foreground);
+  margin: 2px 0;
+}
+
+.entity-summary__attr-value {
+  font-size: 0.7rem;
+  color: var(--theme-text-primary);
+}
+
+/* Saves / skills pill groups */
+.entity-summary__pill-group-title {
+  font-size: 0.65rem;
+  color: var(--theme-text-secondary);
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.entity-summary__pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.entity-summary__pill {
+  font-size: 0.65rem;
+  padding: 2px 5px;
+  background: var(--theme-accents-primary-background);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent);
+  border-radius: 4px;
+  color: var(--theme-text-primary);
+}
+
+.entity-summary__pill--upper {
+  text-transform: uppercase;
+}
+
+.entity-summary__pill-empty {
+  font-size: 0.7rem;
+  color: var(--theme-text-secondary);
+  font-style: italic;
+}
+
+/* Spell block */
+.entity-summary__spell-title {
+  font-size: 0.7rem;
+  color: var(--theme-accents-secondary-foreground);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.entity-summary__spell-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* Notes block */
+.entity-summary__notes-title {
+  font-size: 0.65rem;
+  color: var(--theme-text-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.entity-summary__notes-text {
+  font-size: 0.75rem;
+  color: var(--theme-text-primary);
+  white-space: pre-line;
+}

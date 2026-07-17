@@ -2,6 +2,10 @@
   margin-bottom: var(--space-5);
 }
 
+.form-group--flush {
+  margin-bottom: 0;
+}
+
 .form-label {
   display: block;
   margin-bottom: var(--space-2);
