@@ -18,6 +18,7 @@ import {
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import "./campaign-starter-hub.css";
 import {
   computeStarterProgress,
   type StarterStepId,
