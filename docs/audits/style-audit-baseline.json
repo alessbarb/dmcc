@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T18:03:14.587Z",
+  "generatedAt": "2026-07-17T18:08:16.171Z",
   "summary": {
     "cssFiles": 61,
     "tsxFilesWithInlineStyles": 85,
@@ -11,7 +11,7 @@
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
     "mixedResponsibilityFiles": 19,
-    "crossComponentSelectors": 128,
+    "crossComponentSelectors": 124,
     "importantDeclarations": 394,
     "unclassifiedCssFiles": 0
   },
@@ -1411,7 +1411,7 @@
       "path": "src/frontend/dm/canvas/pages/CanvasPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 921,
+      "lineCount": 923,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -2661,7 +2661,7 @@
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 752,
+      "lineCount": 754,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -3419,7 +3419,7 @@
       "path": "src/frontend/dm/pages/RulesPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 234,
+      "lineCount": 236,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/pages/rulesPage.css"
@@ -5579,6 +5579,17 @@
       "layer": null,
       "domain": null,
       "lineCount": 52,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/shared/hooks/useBodyWatermark.ts",
+      "layer": null,
+      "domain": null,
+      "lineCount": 24,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -7804,7 +7815,7 @@
       "path": "src/frontend/shared/styles/layout/workspace.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 1010,
+      "lineCount": 1009,
       "selectorCount": 150,
       "imports": [],
       "importedBy": [
@@ -16028,9 +16039,9 @@
       "reason": "Large stylesheet requires atomization (265 lines, 34 selectors)."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/pages/CanvasPage.tsx:525:49",
+      "id": "literal-color:src/frontend/dm/canvas/pages/CanvasPage.tsx:527:49",
       "path": "src/frontend/dm/canvas/pages/CanvasPage.tsx",
-      "line": 525,
+      "line": 527,
       "column": 49,
       "severity": "high",
       "status": "temporary",
@@ -16040,9 +16051,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "static-inline:src/frontend/dm/canvas/pages/CanvasPage.tsx:682:11",
+      "id": "static-inline:src/frontend/dm/canvas/pages/CanvasPage.tsx:684:11",
       "path": "src/frontend/dm/canvas/pages/CanvasPage.tsx",
-      "line": 682,
+      "line": 684,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -24488,9 +24499,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:424:11",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:426:11",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 424,
+      "line": 426,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -24501,9 +24512,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "dynamic-style:src/frontend/dm/library/notebooks/NotebooksView.tsx:433:50",
+      "id": "dynamic-style:src/frontend/dm/library/notebooks/NotebooksView.tsx:435:50",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 433,
+      "line": 435,
       "column": 50,
       "severity": "info",
       "status": "allowed",
@@ -24514,9 +24525,9 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:511:38",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:513:38",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 511,
+      "line": 513,
       "column": 38,
       "severity": "high",
       "status": "temporary",
@@ -24527,9 +24538,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:544:36",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:546:36",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 544,
+      "line": 546,
       "column": 36,
       "severity": "high",
       "status": "temporary",
@@ -24540,9 +24551,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:548:41",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:550:41",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 548,
+      "line": 550,
       "column": 41,
       "severity": "high",
       "status": "temporary",
@@ -24553,9 +24564,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:574:35",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:576:35",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 574,
+      "line": 576,
       "column": 35,
       "severity": "high",
       "status": "temporary",
@@ -24566,9 +24577,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "dynamic-style:src/frontend/dm/library/notebooks/NotebooksView.tsx:584:97",
+      "id": "dynamic-style:src/frontend/dm/library/notebooks/NotebooksView.tsx:586:97",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 584,
+      "line": 586,
       "column": 97,
       "severity": "info",
       "status": "allowed",
@@ -24579,9 +24590,9 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:585:69",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:587:69",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 585,
+      "line": 587,
       "column": 69,
       "severity": "high",
       "status": "temporary",
@@ -24592,9 +24603,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:591:67",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:593:67",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 591,
+      "line": 593,
       "column": 67,
       "severity": "high",
       "status": "temporary",
@@ -24605,9 +24616,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:614:39",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:616:39",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 614,
+      "line": 616,
       "column": 39,
       "severity": "high",
       "status": "temporary",
@@ -24618,9 +24629,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:618:43",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:620:43",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 618,
+      "line": 620,
       "column": 43,
       "severity": "high",
       "status": "temporary",
@@ -24631,9 +24642,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:622:41",
+      "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:624:41",
       "path": "src/frontend/dm/library/notebooks/NotebooksView.tsx",
-      "line": 622,
+      "line": 624,
       "column": 41,
       "severity": "high",
       "status": "temporary",
@@ -27138,18 +27149,6 @@
       "category": "literal-color",
       "value": "white",
       "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/rulesPage.css:146:3",
-      "path": "src/frontend/dm/pages/rulesPage.css",
-      "line": 146,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "margin: 0 0 16px;\n  color: var(--theme-feedback-danger-foreground, var(--theme-feedback-danger-foreground));\n}\n\nbody:has(.rules-page) .watermark",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "mixed-responsibility:src/frontend/dm/pages/rulesPage.css",
@@ -34674,18 +34673,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/index.css:2:3",
-      "path": "src/frontend/shared/styles/index.css",
-      "line": 2,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: fixed;\n  inset: 0;\n  z-index: 850;\n  pointer-events: none;\n  user-select: none;\n  background-image: url(\"/assets/ui/watermark.png\");\n  background-position: center;\n  background-repeat: no-repeat;\n  background-size: clamp(360px, 58vw, 860px);\n  opacity: 0.055;\n  mix-blend-mode: screen;\n  transform: rotate(-8deg);\n  transform-origin: center;\n}\n\nbody:has(.canvas-page-container) .watermark",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "cross-component-selector:src/frontend/shared/styles/index.css:2558:3",
       "path": "src/frontend/shared/styles/index.css",
       "line": 2558,
@@ -35872,30 +35859,6 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/layout/workspace.css:90:3",
-      "path": "src/frontend/shared/styles/layout/workspace.css",
-      "line": 90,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: flex;\n  gap: 24px;\n  width: 100%;\n  min-width: 0;\n  min-height: 65vh;\n}\n\n/* Watermark adjustments scoped specifically to the Notebooks view */\nbody:has(.notebooks-workspace) .watermark",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/layout/workspace.css:960:3",
-      "path": "src/frontend/shared/styles/layout/workspace.css",
-      "line": 960,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "outline: 2px solid var(--theme-accents-primary-foreground);\n  outline-offset: -2px;\n}\n\n.campaign-workspace[data-watermark=\"hidden\"] .watermark,\n.campaign-workspace[data-watermark=\"empty-only\"]:has(.notebooks-tree-container:not(:empty)) .watermark",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "mixed-responsibility:src/frontend/shared/styles/layout/workspace.css",
       "path": "src/frontend/shared/styles/layout/workspace.css",
       "line": 1,
@@ -35904,7 +35867,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1010 lines, 150 selectors)."
+      "reason": "Large stylesheet requires atomization (1009 lines, 150 selectors)."
     },
     {
       "id": "literal-color:src/frontend/shared/styles/primitives/button.css:12:3",

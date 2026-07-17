@@ -15,7 +15,7 @@ interface CampaignWorkspaceProps {
   children: React.ReactNode;
   size?: CampaignWorkspaceSize;
   variant?: CampaignWorkspaceVariant;
-  watermark?: "auto" | "hidden" | "empty-only";
+  watermark?: "auto" | "hidden";
 }
 
 export function CampaignWorkspace({

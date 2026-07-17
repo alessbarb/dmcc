@@ -95,7 +95,7 @@
 }
 
 /* Watermark adjustments scoped specifically to the Notebooks view */
-body:has(.notebooks-workspace) .watermark {
+body[data-watermark="notebooks"] .watermark {
   opacity: 0.012;
   background-position: bottom 24px right 24px;
   background-size: clamp(200px, 20vw, 320px);
@@ -961,8 +961,7 @@ body:has(.notebooks-workspace) .watermark {
   outline-offset: -2px;
 }
 
-.campaign-workspace[data-watermark="hidden"] .watermark,
-.campaign-workspace[data-watermark="empty-only"]:has(.notebooks-tree-container:not(:empty)) .watermark {
+.campaign-workspace[data-watermark="hidden"] .watermark {
   display: none;
 }
 

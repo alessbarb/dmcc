@@ -14,7 +14,7 @@
   transform-origin: center;
 }
 
-body:has(.canvas-page-container) .watermark {
+body[data-watermark="canvas"] .watermark {
   opacity: 0.018;
 }
 

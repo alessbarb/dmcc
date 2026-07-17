@@ -147,7 +147,7 @@
   color: var(--theme-feedback-danger-foreground, var(--theme-feedback-danger-foreground));
 }
 
-body:has(.rules-page) .watermark {
+body[data-watermark="hidden"] .watermark {
   display: none;
 }
 
