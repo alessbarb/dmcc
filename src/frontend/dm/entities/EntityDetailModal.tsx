@@ -106,6 +106,8 @@ function StandardEntityDetailModal({
 }: EntityDetailModalProps) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabId>("resumen");
+  const [isRelationsExpanded, setIsRelationsExpanded] = useState(false);
+  const [relationsToolbarSlot, setRelationsToolbarSlot] = useState<React.ReactNode>(null);
   const [isEditingEntity, setIsEditingEntity] = useState(false);
   const [editEntityForm, setEditEntityForm] = useState<Partial<Entity>>({});
   const [isConfirmingArchive, setIsConfirmingArchive] = useState(false);
@@ -178,9 +180,9 @@ function StandardEntityDetailModal({
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
-        className="modal-content"
+        className={`modal-content${isRelationsExpanded ? " entity-detail-dialog--relations-expanded" : ""}`}
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: "700px" }}
+        style={isRelationsExpanded ? undefined : { maxWidth: "700px" }}
       >
         {/* Hero image */}
         <div
@@ -303,7 +305,7 @@ function StandardEntityDetailModal({
           </div>
 
           <div className="entity-detail-tab-actions">
-            {heroActions}
+            {isRelationsExpanded ? relationsToolbarSlot : heroActions}
 
             <button
               type="button"
@@ -336,6 +338,8 @@ function StandardEntityDetailModal({
               onNavigateEntity={onSelectEntity}
               canGoBack={relationsHistory?.canGoBack}
               onBack={relationsHistory?.onBack}
+              onExpandedChange={setIsRelationsExpanded}
+              onToolbarSlotChange={setRelationsToolbarSlot}
             />
           )}
           {activeTab === "hechos" && (

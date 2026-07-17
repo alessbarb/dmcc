@@ -49,6 +49,46 @@
   opacity: 0;
 }
 
+.entity-relations-graph--fullscreen {
+  height: 100%;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.entity-detail-dialog--relations-expanded .entity-relations-graph {
+  height: min(70dvh, 700px);
+}
+
+.entity-relations-fullscreen {
+  position: fixed;
+  inset: 0;
+  /* Above .modal-overlay's own z-index: 20000 !important (entityDetailDialog.css)
+     — this portal is a sibling under document.body, not a descendant, so it
+     must out-rank the modal explicitly rather than relying on DOM order. */
+  z-index: 20050;
+  display: flex;
+  flex-direction: column;
+  background: var(--theme-surfaces-base);
+}
+
+.entity-relations-fullscreen__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--theme-borders-default);
+  font-size: 0.95rem;
+}
+
+.entity-relations-fullscreen__body {
+  flex: 1;
+  min-height: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
 @media (max-width: 720px) {
   .entity-relations-graph {
     min-height: 300px;

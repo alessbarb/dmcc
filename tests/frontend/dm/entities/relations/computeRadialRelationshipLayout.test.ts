@@ -93,6 +93,33 @@ describe("computeRadialRelationshipLayout", () => {
     expect([...a.entries()]).toEqual([...b.entries()]);
   });
 
+  it("keeps a full first ring's node boxes from overlapping (regression: 8 neighbors at default radius overlapped)", () => {
+    const neighbors = Array.from({ length: 8 }, (_, i) => makeNode(`ent_${i}`));
+    const nodeWidth = 176;
+    const nodeHeight = 104;
+    const minNodeGap = 32;
+    const positions = computeRadialRelationshipLayout({
+      centerNode: center,
+      neighborNodes: neighbors,
+      nodeWidth,
+      nodeHeight,
+      minNodeGap,
+    });
+
+    const points = neighbors.map((n) => positions.get(n.entityId)!);
+    for (let i = 0; i < points.length; i += 1) {
+      for (let j = i + 1; j < points.length; j += 1) {
+        const dx = points[i].centerX - points[j].centerX;
+        const dy = points[i].centerY - points[j].centerY;
+        const distance = Math.hypot(dx, dy);
+        // Boxes are axis-aligned around their center; a distance at or above
+        // the width floor guarantees no horizontal/vertical overlap for any
+        // pair on this ring, since the tightest legal pairs are adjacent.
+        expect(distance).toBeGreaterThanOrEqual(nodeWidth + minNodeGap - 0.01);
+      }
+    }
+  });
+
   it("handles a narrow set of 40 neighbors without collisions", () => {
     const neighbors = Array.from({ length: 40 }, (_, i) => makeNode(`ent_${i}`));
     const positions = computeRadialRelationshipLayout({ centerNode: center, neighborNodes: neighbors });

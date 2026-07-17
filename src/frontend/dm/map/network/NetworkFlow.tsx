@@ -98,6 +98,16 @@ function NetworkFlowInner() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const parameters = new URLSearchParams(window.location.search);
+    const entityId = parameters.get("entityId");
+    if (entityId) {
+      setSelectedEntityId(entityId);
+      if (parameters.get("mode") === "focus") setExplorerMode("focus");
+    }
+    if (entityId) window.history.replaceState(null, "", window.location.pathname);
+  }, []);
+
   const entities = campaignState?.entities ?? [];
   const relations = campaignState?.relations ?? [];
   const facts = campaignState?.facts ?? [];

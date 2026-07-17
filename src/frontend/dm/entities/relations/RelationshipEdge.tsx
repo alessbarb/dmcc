@@ -8,6 +8,10 @@ export interface RelationshipEdgeData extends Record<string, unknown> {
   color?: string;
   dashed?: boolean;
   selected?: boolean;
+  /** True when this edge's React Flow `source` is the graph's center node
+   *  (domain relation direction, not layout position) — used to bias the
+   *  label toward the neighbor end regardless of which end that is. */
+  sourceIsCenter?: boolean;
 }
 
 export const RelationshipEdge = React.memo(function RelationshipEdge({
@@ -20,8 +24,9 @@ export const RelationshipEdge = React.memo(function RelationshipEdge({
   targetPosition,
   style,
   data,
+  markerEnd,
 }: EdgeProps) {
-  const [edgePath, labelX, labelY] = getBezierPath({
+  const [edgePath] = getBezierPath({
     sourceX,
     sourceY,
     sourcePosition,
@@ -32,9 +37,18 @@ export const RelationshipEdge = React.memo(function RelationshipEdge({
 
   const edgeData = (data ?? {}) as RelationshipEdgeData;
 
+  // Every edge in this view radiates from the same center node, so the path
+  // midpoint (t=0.5) is where every label converges — right on top of the
+  // center card. Bias toward whichever end is the neighbor (not necessarily
+  // "target": domain relation direction can point either way) so labels
+  // spread out across the already-spaced ring instead.
+  const t = edgeData.sourceIsCenter ? 0.72 : 0.28;
+  const labelX = sourceX + (targetX - sourceX) * t;
+  const labelY = sourceY + (targetY - sourceY) * t;
+
   return (
     <>
-      <BaseEdge id={id} path={edgePath} style={style} />
+      <BaseEdge id={id} path={edgePath} style={style} markerEnd={markerEnd} />
       {edgeData.label && (
         <EdgeLabelRenderer>
           <div

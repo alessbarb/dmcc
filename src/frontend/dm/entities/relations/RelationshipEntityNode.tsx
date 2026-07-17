@@ -13,6 +13,13 @@ export interface RelationshipEntityNodeProps {
   selected?: boolean;
 }
 
+const SIDES: { id: string; position: Position }[] = [
+  { id: "top", position: Position.Top },
+  { id: "right", position: Position.Right },
+  { id: "bottom", position: Position.Bottom },
+  { id: "left", position: Position.Left },
+];
+
 export const RelationshipEntityNode = React.memo(function RelationshipEntityNode({
   data,
   selected,
@@ -22,10 +29,28 @@ export const RelationshipEntityNode = React.memo(function RelationshipEntityNode
     <div
       className={`entity-relations-node ${isCenter ? "entity-relations-node--center" : "entity-relations-node--neighbor"} ${selected ? "is-selected" : ""}`}
     >
-      <Handle type="target" position={Position.Top} className="entity-relations-node__handle" />
+      {SIDES.map((side) => (
+        <Handle
+          key={`target-${side.id}`}
+          type="target"
+          id={side.id}
+          position={side.position}
+          className="entity-relations-node__handle"
+          isConnectable={false}
+        />
+      ))}
       {isCenter && <span className="entity-relations-node__badge">Entidad actual</span>}
       <EntityNodeContent entity={data.entity} density="compact" />
-      <Handle type="source" position={Position.Bottom} className="entity-relations-node__handle" />
+      {SIDES.map((side) => (
+        <Handle
+          key={`source-${side.id}`}
+          type="source"
+          id={side.id}
+          position={side.position}
+          className="entity-relations-node__handle"
+          isConnectable={false}
+        />
+      ))}
     </div>
   );
 });

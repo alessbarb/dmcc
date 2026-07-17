@@ -62,6 +62,37 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   isolation: isolate;
 }
 
+.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content.entity-detail-dialog--relations-expanded {
+  width: min(1480px, calc(100vw - 24px)) !important;
+  max-width: 1480px !important;
+  height: calc(100dvh - 24px) !important;
+  max-height: calc(100dvh - 24px) !important;
+}
+
+/* Ampliado: solo queda el eyebrow (tipo + título) — hero, tabs y footer se
+   ocultan para que el grafo ocupe todo el espacio disponible del modal.
+   entityDetailImageContinuation.css defines a same-tie-break-weight 20%-hero
+   grid (`.modal-overlay.modal-overlay:has(...):not(:has(...))`) that would
+   otherwise win the cascade on source order; these rules repeat that same
+   doubled-class + :not() shape so ours wins on specificity instead. */
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded {
+  grid-template-rows: 0px auto auto minmax(0, 1fr) 0px !important;
+}
+
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded > div:first-child,
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded > .modal-footer {
+  display: none !important;
+}
+
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded > .modal-header {
+  border-top-left-radius: inherit !important;
+  border-top-right-radius: inherit !important;
+}
+
+.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded .entity-detail-tabs {
+  display: none !important;
+}
+
 .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > div:first-child {
   height: clamp(220px, 31dvh, 330px) !important;
   min-height: 0;
