@@ -295,8 +295,8 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
           {pendingMessage && (
             <article key={pendingMessage.localId} aria-busy={pendingMessage.status === "sending"} style={{ alignSelf: "flex-end", width: "min(88%, 620px)", opacity: pendingMessage.status === "sending" ? .72 : 1 }}>
               <div style={{ display: "flex", justifyContent: "flex-end", margin: "0 6px 4px", fontSize: 11, color: "var(--theme-text-secondary)" }}>{new Date(pendingMessage.createdAt).toLocaleString()}</div>
-              <div style={{ padding: "11px 14px", borderRadius: "16px 16px 4px 16px", background: "var(--accent-soft)", border: `1px solid ${pendingMessage.status === "failed" ? "var(--danger)" : "var(--theme-borders-default)"}`, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{pendingMessage.content}</div>
-              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 8, margin: "4px 6px 0", fontSize: 10, color: pendingMessage.status === "failed" ? "var(--danger)" : "var(--theme-text-secondary)" }}>
+              <div style={{ padding: "11px 14px", borderRadius: "16px 16px 4px 16px", background: "color-mix(in srgb, var(--theme-accents-primary-foreground) 14%, transparent)", border: `1px solid ${pendingMessage.status === "failed" ? "var(--theme-feedback-danger-foreground)" : "var(--theme-borders-default)"}`, lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{pendingMessage.content}</div>
+              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 8, margin: "4px 6px 0", fontSize: 10, color: pendingMessage.status === "failed" ? "var(--theme-feedback-danger-foreground)" : "var(--theme-text-secondary)" }}>
                 <span>{audienceLabel(pendingMessage)} · {pendingMessage.status === "sending" ? t("playerPortal.messaging.sending") : t("playerPortal.messaging.failed")}</span>
                 {pendingMessage.status === "failed" && <button className="btn btn-secondary btn-sm" type="button" onClick={() => void submitMessage(pendingMessage)} aria-label={t("playerPortal.messaging.retry")}><RefreshCw size={12} /> {t("playerPortal.messaging.retry")}</button>}
               </div>
@@ -308,7 +308,7 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       </div>
 
       <footer style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: 14, display: "grid", gap: 10 }}>
-        {error && <p role="alert" style={{ margin: 0, color: "var(--danger)" }}>{error}</p>}
+        {error && <p role="alert" style={{ margin: 0, color: "var(--theme-feedback-danger-foreground)" }}>{error}</p>}
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="form-select" value={audience} onChange={(event) => { if (isAudience(event.target.value)) setAudience(event.target.value); }} aria-label={t("playerPortal.messaging.channelParty")}><option value="party">{t("playerPortal.messaging.channelParty")}</option>{!dmMode && <option value="dm">{t("playerPortal.messaging.channelDm")}</option>}<option value="player">{t("playerPortal.messaging.channelPlayer")}</option></select>
           {audience === "player" && <select className="form-select" value={recipientPlayerId} onChange={(event) => setRecipientPlayerId(event.target.value)} aria-label={t("playerPortal.messaging.selectPlayer")}><option value="">{t("playerPortal.messaging.selectPlayer")}</option>{payload.participants.map((participant) => <option key={participant.playerId} value={participant.playerId}>{participant.displayName}</option>)}</select>}

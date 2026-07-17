@@ -32,7 +32,7 @@ export function CanvasNarrativeLintDrawer({
         {issues.length === 0 ? (
           <div style={{ textAlign: "center", padding: "20px", color: "var(--theme-text-secondary)" }}>
             <span style={{ fontSize: "2rem" }}>✨</span>
-            <p style={{ marginTop: "10px", color: "var(--success)", fontWeight: "600" }}>¡Todo perfecto!</p>
+            <p style={{ marginTop: "10px", color: "var(--theme-feedback-success-foreground)", fontWeight: "600" }}>¡Todo perfecto!</p>
             <p style={{ fontSize: "0.85rem" }}>No se han detectado problemas de consistencia narrativa en tu canvas.</p>
           </div>
         ) : (

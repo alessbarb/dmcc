@@ -54,7 +54,7 @@ export function MysteryHealthPanel({
         {issues.length === 0 ? (
           <div style={{ textAlign: "center", padding: "20px", color: "var(--theme-text-secondary)" }}>
             <span style={{ fontSize: "2rem" }}>✨</span>
-            <p style={{ marginTop: "10px", color: "var(--success)", fontWeight: 600 }}>Misterio saludable</p>
+            <p style={{ marginTop: "10px", color: "var(--theme-feedback-success-foreground)", fontWeight: 600 }}>Misterio saludable</p>
             <p style={{ fontSize: "0.85rem" }}>Todas las pistas y revelaciones principales tienen una ruta revisable.</p>
           </div>
         ) : (

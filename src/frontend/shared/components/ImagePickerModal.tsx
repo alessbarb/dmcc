@@ -334,7 +334,7 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
 
 function CenteredMessage({ text, tone }: { text: string; tone?: "danger" }) {
   return (
-    <div style={{ ...scrollStyle, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", color: tone === "danger" ? "var(--color-danger, #f87171)" : undefined }} role={tone === "danger" ? "alert" : undefined}>
+    <div style={{ ...scrollStyle, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", color: tone === "danger" ? "var(--theme-feedback-danger-foreground)" : undefined }} role={tone === "danger" ? "alert" : undefined}>
       {text}
     </div>
   );
@@ -363,7 +363,7 @@ function GroupBrowser({ sections, onOpenGroup }: { sections: CatalogGroupSection
                   padding: "10px 12px",
                   border: "1px solid var(--theme-borders-default, rgba(255,255,255,0.14))",
                   borderRadius: "var(--theme-shapes-radius-small, 8px)",
-                  background: "var(--bg-elevated, rgba(255,255,255,0.04))",
+                  background: "var(--theme-surfaces-raised)",
                   color: "var(--theme-text-primary, #f5f5f4)",
                   cursor: "pointer",
                   textAlign: "left",
@@ -414,7 +414,7 @@ function ImageGrid({ images, value, onSelect, onClose, isMobile }: {
             width: "100%",
             height: isMobile ? mobileTileHeight : undefined,
             padding: 0,
-            border: value === image.src ? "2px solid var(--color-accent, #c5a028)" : "2px solid transparent",
+            border: value === image.src ? "2px solid var(--theme-accents-primary-foreground)" : "2px solid transparent",
             borderRadius: "var(--theme-shapes-radius-small, 8px)",
             overflow: "hidden",
             cursor: "pointer",

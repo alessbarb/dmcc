@@ -179,7 +179,7 @@ export function CampaignShell() {
         <div style={{ maxWidth: 420, textAlign: "center" }}>
           <h2>{t("campaignShell.loading.errorTitle")}</h2>
           <p style={{ color: "var(--theme-text-secondary)" }}>{t("campaignShell.loading.errorDesc")}</p>
-          <p style={{ color: "var(--color-danger)", fontFamily: "monospace" }}>{error}</p>
+          <p style={{ color: "var(--theme-feedback-danger-foreground)", fontFamily: "monospace" }}>{error}</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
             <button className="btn btn-primary" type="button" onClick={() => void selectCampaign(campaignId)}>
               {t("campaignShell.loading.retry")}

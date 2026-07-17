@@ -68,7 +68,7 @@ export function ImagePickerButton({
             overflow: "hidden",
             border: "1px solid var(--theme-borders-default, #444)",
             borderRadius: "var(--theme-shapes-radius-medium, 10px)",
-            background: "var(--bg-elevated, #1e1e1e)",
+            background: "var(--theme-surfaces-raised)",
             boxShadow: "0 12px 28px rgba(0, 0, 0, 0.22)",
           }}
         >
@@ -179,7 +179,7 @@ export function ImagePickerButton({
           ...containerStyle,
           overflow: "hidden",
           border: "2px solid var(--theme-borders-default, #444)",
-          background: "var(--bg-elevated, #1e1e1e)",
+          background: "var(--theme-surfaces-raised)",
           cursor: "pointer",
           padding: 0,
           appearance: "none",

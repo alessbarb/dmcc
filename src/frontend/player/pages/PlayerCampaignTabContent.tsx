@@ -118,7 +118,7 @@ function PlayerSearch({ campaignId, t }: { campaignId: string; t: (key: Translat
           placeholder={t("playerPortal.search.placeholder")}
         />
       </label>
-      {error && <p role="alert" style={{ color: "var(--color-danger)", marginBottom: 0 }}>{error}</p>}
+      {error && <p role="alert" style={{ color: "var(--theme-feedback-danger-foreground)", marginBottom: 0 }}>{error}</p>}
       {results.length > 0 && (
         <section aria-label={t("playerPortal.search.resultsLabel")} style={{ display: "grid", gap: 8, marginTop: 12 }}>
           {results.map((result) => (
@@ -447,7 +447,7 @@ export function PlayerCampaignTabContent({ campaignId, tab }: { campaignId: stri
 
   return (
     <>
-      {error && <Card style={{ color: "var(--color-danger)" }}><p role="alert">{error}</p></Card>}
+      {error && <Card style={{ color: "var(--theme-feedback-danger-foreground)" }}><p role="alert">{error}</p></Card>}
       {tab !== "constellation" && loading ? <Card><p aria-live="polite"><RefreshCw size={16} /> {t("playerPortal.loading.generic")}</p></Card> : content}
     </>
   );

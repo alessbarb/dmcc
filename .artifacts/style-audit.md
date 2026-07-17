@@ -8,11 +8,11 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 61,
   "tsxFilesWithInlineStyles": 85,
-  "forbiddenLiteralColors": 931,
+  "forbiddenLiteralColors": 897,
   "staticInlineStyles": 1250,
   "dynamicInlineStyles": 36,
-  "unknownCssVariables": 107,
-  "legacyCssVariables": 24,
+  "unknownCssVariables": 0,
+  "legacyCssVariables": 0,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 19,
   "crossComponentSelectors": 130,
@@ -464,7 +464,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1294` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1299` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
-| high | unknown-token | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | CSS variable is not declared or allowlisted. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:31` | Important declarations bypass the intended cascade. |
 | high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:61` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:162` | Selector depends on another component's DOM structure. |
@@ -557,7 +556,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:988` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:994` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:1004` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:35` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -658,7 +656,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx:128` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx:129` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/ConvertNoteToEntityDialog.tsx:138` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:55` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/MysteryHealthPanel.tsx:56` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -726,7 +723,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:679` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:1` | Selector depends on another component's DOM structure. |
 | critical | mixed-responsibility | `src/frontend/dm/entities/entityDetailDialog.css:1` | Large stylesheet requires atomization (391 lines, 60 selectors). |
-| high | legacy-token | `src/frontend/dm/entities/entityDetailDialog.css:1` | Legacy CSS variable remains in use. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:7` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:7` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:18` | Important declarations bypass the intended cascade. |
@@ -1202,24 +1198,14 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:447` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:451` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:456` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:28` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:73` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:83` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignModals.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignModals.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignModals.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignModals.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignModals.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignModals.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignModals.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:95` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:95` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:144` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:144` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:171` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:171` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1227,21 +1213,16 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:182` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:182` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:185` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:204` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:204` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:232` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:232` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:237` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:237` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:266` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:266` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:274` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:274` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:274` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:293` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:293` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:327` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:327` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/hub/DmHubCampaignModals.tsx:353` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:353` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1260,15 +1241,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:393` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:396` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignModals.tsx:400` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1281,14 +1253,9 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:163` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:211` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:260` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubHero.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/hub/DmHubHero.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubHero.tsx:76` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/hub/DmHubPage.tsx:363` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubSidebar.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubSidebar.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubSidebar.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/hub/DmHubSidebar.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/hub/DmHubSidebar.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubSidebar.tsx:40` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubSidebar.tsx:70` | Runtime style requires review and CSS custom-property preference. |
@@ -1301,7 +1268,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:74` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:75` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:76` | Important declarations bypass the intended cascade. |
-| high | unknown-token | `src/frontend/dm/layouts/CampaignShell.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:152` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:170` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1420,24 +1386,10 @@ Generated mechanically by `npm run styles:audit:report`.
 | critical | mixed-responsibility | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:1` | Large stylesheet requires atomization (293 lines, 50 selectors). |
 | high | literal-color | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:168` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:223` | Literal visual color outside a registered theme package. |
-| high | legacy-token | `src/frontend/dm/map/mapWorkspace.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/map/mapWorkspace.css:1` | Legacy CSS variable remains in use. |
 | high | literal-color | `src/frontend/dm/map/network/NetworkFactNode.tsx:19` | Literal visual color outside a registered theme package. |
 | info | dynamic-style | `src/frontend/dm/map/network/NetworkFactNode.tsx:19` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/map/network/NetworkFilterBar.tsx:165` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/map/network/networkFlow.css:1` | Large stylesheet requires atomization (805 lines, 113 selectors). |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/map/network/networkFlow.css:1` | CSS variable is not declared or allowlisted. |
 | high | cross-component-selector | `src/frontend/dm/map/network/networkFlow.css:28` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/dm/map/network/networkFlow.css:86` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/map/network/networkFlow.css:100` | Literal visual color outside a registered theme package. |
@@ -1516,7 +1468,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:320` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:498` | Runtime style requires review and CSS custom-property preference. |
-| high | unknown-token | `src/frontend/dm/overview/OverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:35` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:60` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:62` | Literal visual color outside a registered theme package. |
@@ -1602,8 +1553,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:101` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:105` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:105` | Selector depends on another component's DOM structure. |
-| high | legacy-token | `src/frontend/dm/pages/OnboardingPage.tsx:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/dm/pages/OnboardingPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:44` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/pages/OnboardingPage.tsx:45` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:47` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1628,13 +1577,11 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:136` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:137` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:138` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/pages/OnboardingPage.tsx:146` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:146` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:147` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:148` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:153` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/pages/rulesPage.css:1` | Large stylesheet requires atomization (179 lines, 32 selectors). |
-| high | unknown-token | `src/frontend/dm/pages/rulesPage.css:1` | CSS variable is not declared or allowlisted. |
 | high | literal-color | `src/frontend/dm/pages/rulesPage.css:142` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/dm/pages/rulesPage.css:146` | Selector depends on another component's DOM structure. |
 | high | static-inline | `src/frontend/dm/people/group/components/PlayerProfileModal.tsx:77` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1659,10 +1606,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:76` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:98` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/story/history/campaignHistory.css:1` | Large stylesheet requires atomization (295 lines, 41 selectors). |
-| high | unknown-token | `src/frontend/dm/story/history/campaignHistory.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/story/history/campaignHistory.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/story/history/campaignHistory.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/story/history/campaignHistory.css:1` | CSS variable is not declared or allowlisted. |
 | high | cross-component-selector | `src/frontend/dm/story/history/campaignHistory.css:106` | Selector depends on another component's DOM structure. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:419` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:423` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1802,7 +1745,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/MainLanding.tsx:98` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:101` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:104` | Runtime style requires review and CSS custom-property preference. |
-| high | unknown-token | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1822,8 +1764,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignShell.tsx:87` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignsPage.tsx:24` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignsPage.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:39` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:109` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:110` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1891,7 +1831,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/shared/auth/ResetPasswordPage.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/auth/ResetPasswordPage.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/auth/ResetPasswordPage.tsx:134` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | legacy-token | `src/frontend/shared/components/CampaignMessagingPanel.tsx:1` | Legacy CSS variable remains in use. |
 | high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:9` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:9` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:9` | Literal visual color outside a registered theme package. |
@@ -1933,8 +1872,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:319` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:112` | Runtime style requires review and CSS custom-property preference. |
 | high | mixed-responsibility | `src/frontend/shared/components/entityImageReframeDialog.css:1` | Large stylesheet requires atomization (329 lines, 42 selectors). |
-| high | legacy-token | `src/frontend/shared/components/entityImageReframeDialog.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/components/entityImageReframeDialog.css:1` | Legacy CSS variable remains in use. |
 | high | literal-color | `src/frontend/shared/components/entityImageReframeDialog.css:11` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/entityImageReframeDialog.css:27` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/entityImageReframeDialog.css:67` | Literal visual color outside a registered theme package. |
@@ -1967,11 +1904,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:295` | Important declarations bypass the intended cascade. |
 | high | literal-color | `src/frontend/shared/components/entityImageReframeDialog.css:297` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:325` | Important declarations bypass the intended cascade. |
-| high | legacy-token | `src/frontend/shared/components/ImagePickerButton.tsx:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/components/ImagePickerButton.tsx:1` | Legacy CSS variable remains in use. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerButton.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:69` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:71` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:72` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerButton.tsx:76` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:80` | Literal visual color outside a registered theme package. |
@@ -1980,16 +1914,12 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:108` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerButton.tsx:175` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:181` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:182` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerButton.tsx:197` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerButton.tsx:201` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:207` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerButton.tsx:217` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:223` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerButton.tsx:228` | Literal visual color outside a registered theme package. |
-| high | unknown-token | `src/frontend/shared/components/ImagePickerModal.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/components/ImagePickerModal.tsx:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/components/ImagePickerModal.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:92` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:99` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -2009,7 +1939,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:287` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:287` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:293` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:337` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:337` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:345` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:348` | Literal visual color outside a registered theme package. |
@@ -2017,7 +1946,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:351` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:357` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:364` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:366` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:367` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:372` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:373` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -2025,7 +1953,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:374` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:399` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:413` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:417` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:421` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:433` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/PwaUpdateBanner.tsx:18` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -2033,9 +1960,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/shared/components/RpgPortalBackground.tsx:33` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/shared/components/RpgPortalBackground.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/RpgPortalBackground.tsx:149` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/shared/components/SystemAnnouncements.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/components/SystemAnnouncements.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/components/SystemAnnouncements.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/shared/components/SystemAnnouncements.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:72` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:80` | Literal visual color outside a registered theme package. |
@@ -2072,72 +1996,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/foundation/motion.css:23` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:24` | Important declarations bypass the intended cascade. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/index.css:1` | Large stylesheet requires atomization (9012 lines, 1309 selectors). |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/shared/styles/index.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/shared/styles/index.css:1` | CSS variable is not declared or allowlisted. |
 | high | cross-component-selector | `src/frontend/shared/styles/index.css:2` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/shared/styles/index.css:135` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:270` | Literal visual color outside a registered theme package. |
@@ -2211,7 +2069,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:1045` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1052` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1053` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1090` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1109` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1110` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:1134` | Literal visual color outside a registered theme package. |
@@ -2385,7 +2242,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/index.css:3022` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3023` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:3024` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3063` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:3064` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:3068` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:3068` | Literal visual color outside a registered theme package. |
@@ -2571,7 +2427,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:5293` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5310` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5313` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5341` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5431` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5433` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5439` | Literal visual color outside a registered theme package. |
@@ -2583,16 +2438,10 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:5735` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5748` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5791` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5811` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5813` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5841` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5864` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5872` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5873` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:5887` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5897` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5965` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5969` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6001` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6007` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:6009` | Literal visual color outside a registered theme package. |
@@ -2754,11 +2603,9 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:7485` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7495` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7510` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7511` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7514` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7519` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7556` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7560` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7565` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7577` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7578` | Literal visual color outside a registered theme package. |
@@ -2770,7 +2617,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:7637` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7638` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7640` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7644` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7664` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7665` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7707` | Literal visual color outside a registered theme package. |
@@ -2778,7 +2624,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:7708` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7709` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7712` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7748` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7753` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7774` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7775` | Literal visual color outside a registered theme package. |
@@ -2799,19 +2644,14 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:7935` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7942` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7943` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7948` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:7965` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7971` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8009` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8015` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8022` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8022` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8030` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8031` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8041` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8042` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8059` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8063` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8098` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8099` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8128` | Literal visual color outside a registered theme package. |
@@ -2822,7 +2662,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:8175` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8182` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8204` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8211` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8217` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8246` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8250` | Literal visual color outside a registered theme package. |
@@ -2836,19 +2675,16 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:8296` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8298` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8304` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8305` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8306` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8323` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8324` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8332` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8333` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8338` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8368` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8369` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8376` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8403` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8404` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8406` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8443` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8444` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:8457` | Literal visual color outside a registered theme package. |
@@ -2890,7 +2726,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/index.css:9002` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:1` | Selector depends on another component's DOM structure. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/landing.css:1` | Large stylesheet requires atomization (2640 lines, 392 selectors). |
-| high | unknown-token | `src/frontend/shared/styles/landing.css:1` | CSS variable is not declared or allowlisted. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:13` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:14` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:15` | Literal visual color outside a registered theme package. |

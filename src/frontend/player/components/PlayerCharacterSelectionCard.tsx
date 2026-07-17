@@ -97,7 +97,7 @@ export function PlayerCharacterSelectionCard({ campaignId, payload, reload, t }:
             </article>
           )}
 
-          {error && <p role="alert" style={{ color: "var(--color-danger)", margin: 0 }}>{error}</p>}
+          {error && <p role="alert" style={{ color: "var(--theme-feedback-danger-foreground)", margin: 0 }}>{error}</p>}
           {submittedCharacterId && (
             <p role="status" aria-live="polite" style={{ margin: 0 }}>
               <CheckCircle2 size={16} aria-hidden="true" /> {t("playerPortal.character.requestSent")}
