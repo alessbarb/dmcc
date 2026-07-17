@@ -12,6 +12,7 @@ import { QuickCaptureBar } from "./components/QuickCaptureBar.js";
 import { SessionEventFeed } from "./components/SessionEventFeed.js";
 import { SessionQuickActions, type ActionId } from "./components/SessionQuickActions.js";
 import "./session-workspace.css";
+import "./components/session-idle.css";
 import "./components/session-forms.css";
 
 export function SessionPage() {
