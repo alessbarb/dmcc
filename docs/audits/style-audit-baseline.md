@@ -8,7 +8,7 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 61,
   "tsxFilesWithInlineStyles": 85,
-  "forbiddenLiteralColors": 1220,
+  "forbiddenLiteralColors": 1160,
   "staticInlineStyles": 1250,
   "dynamicInlineStyles": 36,
   "unknownCssVariables": 107,
@@ -92,68 +92,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | Severity | Category | Location | Reason |
 |---|---|---|---|
 | critical | mixed-responsibility | `src/frontend/account/account.css:1` | Large stylesheet requires atomization (811 lines, 123 selectors). |
-| high | literal-color | `src/frontend/account/account.css:57` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:57` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:60` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:83` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:83` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:148` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:150` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:154` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:156` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:160` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:161` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:162` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:166` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:167` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:168` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:183` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:197` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:235` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:242` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:242` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:261` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:288` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:290` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:315` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:315` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:316` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:330` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:354` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:355` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:361` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:363` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:415` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:417` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:440` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:456` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:463` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:516` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:516` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:531` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:537` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:549` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:550` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:576` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:591` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:592` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:606` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:608` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:622` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/account/account.css:676` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/account/account.css:677` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/account/account.css:690` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:691` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:692` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:705` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:705` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:706` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:707` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:707` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:731` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:744` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:754` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/account/account.css:807` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:147` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:158` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
