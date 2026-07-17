@@ -6,41 +6,13 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: style-audit-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  finalize-foundation:
-    if: github.event_name == 'pull_request' && github.head_ref == 'refactor/style-foundation'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: refactor/style-foundation
-          fetch-depth: 0
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: package-lock.json
-      - run: npm ci
-      - name: Finalize the foundation extraction once
-        run: |
-          if [ ! -f scripts/styles/finalizeStyleFoundation.mjs ]; then
-            echo "Foundation already finalized."
-            exit 0
-          fi
-          node scripts/styles/finalizeStyleFoundation.mjs
-          rm scripts/styles/finalizeStyleFoundation.mjs
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "refactor(styles): finalize global foundation extraction"
-          git push origin HEAD:refactor/style-foundation
-
   audit:
     runs-on: ubuntu-latest
     steps:
