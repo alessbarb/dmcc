@@ -845,9 +845,9 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
             className="btn btn-secondary btn-xs"
             style={{
               marginLeft: "auto",
-              background: "rgba(255,255,255,0.08)",
+              background: "var(--theme-surfaces-interactive)",
               color: "var(--theme-text-primary)",
-              border: "1px solid rgba(255,255,255,0.15)",
+              border: "1px solid var(--theme-borders-default)",
               padding: "3px 8px",
               borderRadius: "4px",
               cursor: "pointer",
@@ -1272,7 +1272,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
         panOnScroll={false}
         zoomOnDoubleClick={false}
       >
-        <Background color="hsl(230, 25%, 18%)" gap={28} size={0.8} />
+        <Background color="var(--theme-canvas-grid)" gap={28} size={0.8} />
 
         <CanvasToolbar
           canvasId={canvasId}
@@ -1290,12 +1290,13 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
         {showMinimap && (
           <MiniMap
             nodeColor={(n) => {
+              // Sticky-note colors are a deliberate, undertoked 5-hue palette (see .note-yellow etc. in index.css).
               if (n.type === "note") return "#fef08a";
-              if (n.type === "group") return "rgba(124,58,237,0.3)";
-              return "hsl(230, 25%, 22%)";
+              if (n.type === "group") return "color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent)";
+              return "var(--theme-canvas-toolbar-border)";
             }}
-            maskColor="rgba(10,12,20,0.75)"
-            style={{ background: "hsl(230, 28%, 10%)", border: "1px solid hsl(230,20%,20%)" }}
+            maskColor="var(--theme-canvas-minimap-mask)"
+            style={{ background: "var(--theme-canvas-minimap-background)", border: "1px solid var(--theme-canvas-toolbar-border)" }}
           />
         )}
       </ReactFlow>

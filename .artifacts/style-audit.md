@@ -8,7 +8,7 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 49,
   "tsxFilesWithInlineStyles": 96,
-  "forbiddenLiteralColors": 1394,
+  "forbiddenLiteralColors": 1357,
   "staticInlineStyles": 1327,
   "dynamicInlineStyles": 37,
   "unknownCssVariables": 252,
@@ -728,37 +728,19 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/auth/RegisterPage.tsx:93` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:832` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:846` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:848` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:850` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1229` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1275` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1293` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1294` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1295` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1297` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1299` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
 | high | unknown-token | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | CSS variable is not declared or allowlisted. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:31` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:54` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:61` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:67` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:94` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:96` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:97` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:97` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:103` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:114` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:115` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:162` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:213` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:214` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:215` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:216` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:221` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:237` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:241` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:262` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -780,32 +762,20 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:168` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:172` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:173` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:174` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:174` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:175` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:175` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:176` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:176` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:177` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:177` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:178` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:178` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:179` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:179` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:180` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:180` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:181` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:184` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:185` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:186` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:186` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:189` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:190` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBoardDialogs.tsx:190` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasBulkActionsBar.tsx:56` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasEntityNode.tsx:14` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasEntityNode.tsx:70` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasEntityNode.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasEntityNode.tsx:171` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasEntityNode.tsx:177` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -901,9 +871,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPageHeader.tsx:345` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPageHeader.tsx:356` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPageHeader.tsx:360` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:33` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:35` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:264` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:264` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:268` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:279` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -915,14 +882,12 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:293` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:299` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:301` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:304` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:304` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:306` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:309` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:320` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:329` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:338` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:349` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:349` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:356` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:381` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -939,8 +904,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:580` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:581` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:582` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:593` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasPalette.tsx:595` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:665` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:680` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:686` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1001,8 +964,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/canvas/components/SessionPrepForm.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/SessionPrepForm.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/SessionPrepForm.tsx:106` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/pages/CanvasPage.tsx:522` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/canvas/pages/CanvasPage.tsx:679` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/canvas/pages/CanvasPage.tsx:525` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/canvas/pages/CanvasPage.tsx:682` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/canvas/templates/cityTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/templates/dungeonTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |

@@ -30,9 +30,9 @@ function makeDragGhost(label: string, color: string): HTMLElement {
   el.style.cssText = `
     position: fixed; top: -9999px; left: -9999px;
     padding: 6px 14px; border-radius: 8px;
-    background: ${color}; color: #fff;
+    background: ${color}; color: var(--theme-text-on-media);
     font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent);
     pointer-events: none; z-index: 9999;
   `;
   document.body.appendChild(el);
@@ -261,7 +261,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
   if (isDirectionMode) {
     const isSecret = selectedEntity && isDmOnlyVisibility(selectedEntity.visibility);
     return (
-      <div className="canvas-palette canvas-palette--direction" style={{ backgroundColor: "rgba(15,18,30,0.92)", borderRight: "1px solid var(--theme-borders-default)", padding: "16px", display: "flex", flexDirection: "column", gap: "16px", zIndex: 10, position: "relative" }}>
+      <div className="canvas-palette canvas-palette--direction" style={{ backgroundColor: "var(--theme-canvas-toolbar-background)", borderRight: "1px solid var(--theme-borders-default)", padding: "16px", display: "flex", flexDirection: "column", gap: "16px", zIndex: 10, position: "relative" }}>
         <button
           onClick={toggleCollapsed}
           title={t("canvasPalette.collapsePalette")}
@@ -301,7 +301,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
         <div className="palette-section" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
           <h3>🎯 {t("canvasPalette.actionOnSelection")}</h3>
           {selectedNode ? (
-            <div style={{ marginTop: "12px", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid var(--theme-borders-default)", display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div style={{ marginTop: "12px", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)", border: "1px solid var(--theme-borders-default)", display: "flex", flexDirection: "column", gap: "10px" }}>
               <div>
                 <div style={{ fontSize: "9px", color: "var(--theme-text-secondary)", textTransform: "uppercase", fontWeight: "bold" }}>
                   {selectedNode.kind === "entity" ? (selectedEntity?.entityType || "Entidad") : selectedNode.kind}
@@ -346,7 +346,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
               <button
                 onClick={handleRemoveSelected}
                 className="btn btn-sm btn-secondary text-critical"
-                style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px", borderColor: "rgba(239,68,68,0.2)" }}
+                style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px", borderColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 20%, transparent)" }}
               >
                 <Trash2 size={12} />
                 <span>{t("canvasPalette.removeFromCanvas")}</span>
@@ -590,9 +590,9 @@ function makeFactDragGhost(kind: string, color: string, factKindConfig: FactKind
   el.style.cssText = `
     position: fixed; top: -9999px; left: -9999px;
     padding: 4px 12px; border-radius: 4px;
-    background: ${color}; color: #fff;
+    background: ${color}; color: var(--theme-text-on-media);
     font-size: 11px; font-weight: 800; letter-spacing: 0.1em;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent);
     pointer-events: none; z-index: 9999;
   `;
   document.body.appendChild(el);
