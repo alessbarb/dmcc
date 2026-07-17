@@ -8,11 +8,11 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 61,
   "tsxFilesWithInlineStyles": 85,
-  "forbiddenLiteralColors": 1310,
+  "forbiddenLiteralColors": 1303,
   "staticInlineStyles": 1250,
   "dynamicInlineStyles": 36,
-  "unknownCssVariables": 249,
-  "legacyCssVariables": 25,
+  "unknownCssVariables": 244,
+  "legacyCssVariables": 24,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 19,
   "crossComponentSelectors": 130,
@@ -1860,14 +1860,12 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:6` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:6` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:7` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/pages/campaignMessagesPage.css:13` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:17` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:17` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:28` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:34` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:38` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:41` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/pages/campaignMessagesPage.css:43` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:47` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:53` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:53` | Selector depends on another component's DOM structure. |
@@ -1927,21 +1925,11 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/people/group/components/PlayerProfileModal.tsx:108` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/people/group/components/PlayerProfileModal.tsx:119` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/people/group/groupWorkspace.css:1` | Large stylesheet requires atomization (631 lines, 93 selectors). |
-| high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:280` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:301` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:310` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:459` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:460` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:538` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:628` | Literal visual color outside a registered theme package. |
 | critical | mixed-responsibility | `src/frontend/dm/people/peopleWorkspace.css:1` | Large stylesheet requires atomization (390 lines, 60 selectors). |
-| high | unknown-token | `src/frontend/dm/people/peopleWorkspace.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/people/peopleWorkspace.css:1` | CSS variable is not declared or allowlisted. |
-| high | legacy-token | `src/frontend/dm/people/peopleWorkspace.css:1` | Legacy CSS variable remains in use. |
-| high | unknown-token | `src/frontend/dm/people/peopleWorkspace.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/people/peopleWorkspace.css:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/dm/people/peopleWorkspace.css:1` | CSS variable is not declared or allowlisted. |
-| high | literal-color | `src/frontend/dm/people/peopleWorkspace.css:142` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/people/peopleWorkspace.css:279` | Important declarations bypass the intended cascade. |
 | high | literal-color | `src/frontend/dm/people/peopleWorkspace.css:308` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -2186,7 +2174,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:194` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:254` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:255` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:260` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:260` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:264` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignTabContent.tsx:265` | Static or mixed inline style must move to an atomized stylesheet. |

@@ -61,8 +61,8 @@
 
 .people-inline-error {
   padding: 14px 16px;
-  border-color: color-mix(in srgb, var(--color-danger) 45%, var(--theme-borders-default));
-  color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 45%, var(--theme-borders-default));
+  color: var(--theme-feedback-danger-foreground);
 }
 
 .people-invite-share {
@@ -139,7 +139,7 @@
   flex: 0 0 auto;
   place-items: center;
   border-radius: 12px;
-  background: var(--surface-2, rgba(255,255,255,0.04));
+  background: color-mix(in srgb, var(--theme-text-on-media) 4%, transparent);
   color: var(--theme-text-secondary);
 }
 
@@ -191,9 +191,9 @@
 }
 
 .people-status-badge.is-revoked {
-  border-color: color-mix(in srgb, var(--color-danger) 55%, transparent);
-  background: color-mix(in srgb, var(--color-danger) 10%, transparent);
-  color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 55%, transparent);
+  background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent);
+  color: var(--theme-feedback-danger-foreground);
 }
 
 .people-knowledge-toolbar {

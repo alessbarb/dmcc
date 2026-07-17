@@ -10,7 +10,7 @@
   border-color: color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
   border-radius: var(--theme-shapes-radius-large, 14px);
   background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
-  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 18px 46px color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent);
 }
 
 .campaign-messages-page > .card > header {
@@ -40,7 +40,7 @@
   z-index: 2;
   padding: 14px 18px 18px !important;
   background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));
-  box-shadow: 0 -12px 28px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 -12px 28px color-mix(in srgb, var(--theme-surfaces-canvas) 14%, transparent);
 }
 
 .campaign-messages-page > .card > footer > div:first-of-type .form-select {
