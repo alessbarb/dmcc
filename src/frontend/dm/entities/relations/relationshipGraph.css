@@ -63,7 +63,7 @@
 .entity-relations-fullscreen {
   position: fixed;
   inset: 0;
-  /* Above .modal-overlay's own z-index: 20000 !important (entityDetailDialog.css)
+  /* Above .modal-overlay's own forced z-index of 20000 (entityDetailDialog.css)
      — this portal is a sibling under document.body, not a descendant, so it
      must out-rank the modal explicitly rather than relying on DOM order. */
   z-index: 20050;

@@ -88,7 +88,7 @@
     padding: var(--space-3) var(--space-3);
   }
 
-  .player-portal-header > :nth-child(2) {
+  .player-portal-header__title {
     order: -1;
     width: 100%;
   }
