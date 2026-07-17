@@ -51,8 +51,10 @@ function isColorAllowed(pathname) {
   return STYLE_AUDIT_CONFIG.colorLiteralAllow.some((rule) => rule.test(pathname));
 }
 
-// A declaration can be marked as a justified !important exception by putting
-// `audit-allow-important` in a comment on its own line or the line above --
+// A declaration can be marked as a justified !important exception per
+// docs/architecture/style-system.md §8.6, via a comment anywhere between the
+// previous rule and the declaration itself:
+//   /* style-audit-allow important: <reason> */
 // e.g. overriding arbitrary/unknown descendant styles for a
 // prefers-reduced-motion accessibility toggle, where no other CSS mechanism
 // can guarantee the override wins. This is an explicit, reviewed exception,
@@ -60,7 +62,7 @@ function isColorAllowed(pathname) {
 function isImportantAllowed(source, index) {
   const previousRuleEnd = source.lastIndexOf("}", index);
   const window = source.slice(previousRuleEnd + 1, index);
-  return /audit-allow-important/.test(window);
+  return /style-audit-allow\s+important\s*:/.test(window);
 }
 
 function classifyInlineStyle(body) {

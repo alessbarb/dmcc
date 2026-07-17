@@ -64,8 +64,8 @@
   }
 }
 
-/* audit-allow-important: these route-transition animations/transforms are
-   defined on arbitrary page content (`> *`); no other CSS mechanism can
+/* style-audit-allow important: these route-transition animations/transforms
+   are defined on arbitrary page content (`> *`); no other CSS mechanism can
    guarantee this reduced-motion override wins over a page's own styles. */
 @media (prefers-reduced-motion: reduce) {
   .main-content:not(.main-content--canvas) .content-header,
