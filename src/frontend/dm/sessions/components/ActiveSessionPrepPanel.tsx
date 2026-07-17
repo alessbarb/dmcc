@@ -4,6 +4,7 @@ import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
 import type { MaybeCampaignState } from "../sessionTypes.js";
 import { PrepLinkedList } from "./PrepLinkedList.js";
+import "./session-prep.css";
 
 export function ActiveSessionPrepPanel({ session, campaignState }: { session: Session; campaignState: MaybeCampaignState }) {
   const { t } = useTranslation();
@@ -25,61 +26,51 @@ export function ActiveSessionPrepPanel({ session, campaignState }: { session: Se
   if (!hasContent) return null;
 
   return (
-    <section className="card" style={{ padding: "0", overflow: "hidden", borderLeft: "3px solid var(--theme-accents-primary-foreground)" }}>
+    <section className="card active-session-prep">
       <button
         type="button"
+        className="active-session-prep__toggle"
         onClick={() => setCollapsed((value) => !value)}
-        style={{
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "12px",
-          background: "transparent",
-          border: "none",
-          color: "var(--theme-text-primary)",
-          padding: "14px 18px",
-          cursor: "pointer",
-        }}
+        aria-expanded={!collapsed}
       >
-        <span style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 800 }}>
-          <CheckSquare size={16} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+        <span className="active-session-prep__heading">
+          <CheckSquare className="active-session-prep__icon" size={16} />
           {t("sessionPage.activePrepPanelTitle")}
-          <span className="badge" style={{ fontSize: "0.7rem" }}>{prep.state === "ready" ? t("sessionPage.readyToPlay") : t("sessionPage.prepDraft")}</span>
+          <span className="badge active-session-prep__state">{prep.state === "ready" ? t("sessionPage.readyToPlay") : t("sessionPage.prepDraft")}</span>
         </span>
         {collapsed ? <ChevronDown size={15} /> : <ChevronUp size={15} />}
       </button>
       {!collapsed && (
-        <div style={{ borderTop: "1px solid var(--theme-borders-default)", padding: "16px 18px", display: "flex", flexDirection: "column", gap: "16px" }}>
+        <div className="active-session-prep__body">
           {prep.openingPrompt && (
-            <div style={{ padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)" }}>
-              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--theme-text-secondary)", marginBottom: "6px" }}>{t("sessionPage.openingPromptLabel")}</div>
-              <p style={{ whiteSpace: "pre-line", fontSize: "0.9rem", lineHeight: 1.45 }}>{prep.openingPrompt}</p>
-            </div>
+            <section className="active-session-prep__opening">
+              <h4 className="active-session-prep__section-title">{t("sessionPage.openingPromptLabel")}</h4>
+              <p className="active-session-prep__preformatted">{prep.openingPrompt}</p>
+            </section>
           )}
-          {prep.summary && <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem", lineHeight: 1.45 }}>{prep.summary}</p>}
+          {prep.summary && <p className="active-session-prep__summary">{prep.summary}</p>}
           {(prep.goals?.length ?? 0) > 0 && (
-            <div>
-              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--theme-text-secondary)", marginBottom: "6px" }}>{t("sessionPage.goalsLabel")}</div>
-              <ul style={{ margin: 0, paddingLeft: "20px", color: "var(--theme-text-primary)", fontSize: "0.9rem", lineHeight: 1.5 }}>
+            <section>
+              <h4 className="active-session-prep__section-title">{t("sessionPage.goalsLabel")}</h4>
+              <ul className="active-session-prep__goals">
                 {(prep.goals ?? []).map((goal: string, index: number) => <li key={`${goal}-${index}`}>{goal}</li>)}
               </ul>
-            </div>
+            </section>
           )}
           {(prep.checklist?.length ?? 0) > 0 && (
-            <div>
-              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--theme-text-secondary)", marginBottom: "6px" }}>{t("sessionPage.checklistLabel")}</div>
-              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
+            <section>
+              <h4 className="active-session-prep__section-title">{t("sessionPage.checklistLabel")}</h4>
+              <ul className="active-session-prep__checklist">
                 {(prep.checklist ?? []).map((item) => (
-                  <li key={item.id ?? item.label} style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "0.9rem" }}>
+                  <li key={item.id ?? item.label} className="active-session-prep__checklist-item">
                     <span aria-hidden="true">{item.done ? "☑" : "☐"}</span>
                     <span>{item.label}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
           )}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "14px" }}>
+          <div className="active-session-prep__linked-grid">
             <PrepLinkedList title={t("sessionPage.prepScenesLabel")} ids={prep.sceneIds} campaignState={campaignState} />
             <PrepLinkedList title={t("sessionPage.prepCluesLabel")} ids={prep.availableClueIds} campaignState={campaignState} />
             <PrepLinkedList title={t("sessionPage.prepSecretsLabel")} ids={prep.secretsAtRiskIds} campaignState={campaignState} />
@@ -87,10 +78,10 @@ export function ActiveSessionPrepPanel({ session, campaignState }: { session: Se
             <PrepLinkedList title={t("sessionPage.prepInvolvedLabel")} ids={prep.involvedEntityIds} campaignState={campaignState} />
           </div>
           {prep.notes && (
-            <div style={{ paddingTop: "12px", borderTop: "1px solid var(--theme-borders-default)" }}>
-              <div style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--theme-text-secondary)", marginBottom: "6px" }}>{t("sessionPage.privatePrepNotesLabel")}</div>
-              <p style={{ whiteSpace: "pre-line", fontSize: "0.86rem", color: "var(--theme-text-secondary)", lineHeight: 1.45 }}>{prep.notes}</p>
-            </div>
+            <section className="active-session-prep__notes">
+              <h4 className="active-session-prep__section-title">{t("sessionPage.privatePrepNotesLabel")}</h4>
+              <p className="active-session-prep__preformatted active-session-prep__notes-copy">{prep.notes}</p>
+            </section>
           )}
         </div>
       )}
