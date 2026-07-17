@@ -1,0 +1,24 @@
+.session-linked-list {
+  min-width: 0;
+}
+
+.session-linked-list__title {
+  margin: 0 0 var(--space-2);
+  color: var(--theme-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.session-linked-list__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.session-linked-list__item {
+  border: 1px solid var(--theme-borders-default);
+  background: var(--theme-surfaces-interactive);
+  color: var(--theme-text-primary);
+}
