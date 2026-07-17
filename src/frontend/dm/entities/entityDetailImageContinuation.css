@@ -53,21 +53,21 @@
   background:
     linear-gradient(
       to bottom,
-      rgba(7, 9, 18, 0.005) 0%,
-      rgba(7, 9, 18, 0.015) 26%,
-      rgba(7, 9, 18, 0.05) 48%,
-      rgba(7, 9, 18, 0.16) 64%,
-      rgba(7, 9, 18, 0.42) 78%,
-      rgba(7, 9, 18, 0.76) 90%,
-      rgba(7, 9, 18, 0.96) 98%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 0.5%, transparent) 0%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 1.5%, transparent) 26%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 5%, transparent) 48%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 16%, transparent) 64%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 42%, transparent) 78%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 76%, transparent) 90%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 96%, transparent) 98%,
       var(--theme-surfaces-base) 100%
     ),
     linear-gradient(
       to right,
-      rgba(7, 9, 18, 0.09) 0%,
+      color-mix(in srgb, var(--theme-surfaces-canvas) 9%, transparent) 0%,
       transparent 14%,
       transparent 86%,
-      rgba(7, 9, 18, 0.09) 100%
+      color-mix(in srgb, var(--theme-surfaces-canvas) 9%, transparent) 100%
     ) !important;
 }
 
@@ -81,12 +81,12 @@
   min-height: 112px;
   margin: 0 !important;
   padding: 42px 28px 16px !important;
-  border-bottom-color: rgba(255, 255, 255, 0.035) !important;
+  border-bottom-color: color-mix(in srgb, var(--theme-text-on-media) 3.5%, transparent) !important;
   background: linear-gradient(
     to bottom,
-    rgba(12, 15, 28, 0.08),
-    rgba(12, 15, 28, 0.48) 58%,
-    rgba(12, 15, 28, 0.82) 100%
+    color-mix(in srgb, var(--theme-surfaces-canvas) 8%, transparent),
+    color-mix(in srgb, var(--theme-surfaces-canvas) 48%, transparent) 58%,
+    color-mix(in srgb, var(--theme-surfaces-canvas) 82%, transparent) 100%
   ) !important;
   backdrop-filter: none;
 }
@@ -99,10 +99,10 @@
   width: 38px !important;
   height: 38px !important;
   min-width: 38px !important;
-  border-color: rgba(255, 255, 255, 0.16) !important;
-  background: rgba(7, 9, 18, 0.58) !important;
+  border-color: color-mix(in srgb, var(--theme-text-on-media) 16%, transparent) !important;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 58%, transparent) !important;
   color: color-mix(in srgb, var(--theme-text-primary) 82%, transparent) !important;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent);
   backdrop-filter: blur(8px);
 }
 
@@ -111,7 +111,7 @@
   > .modal-header
   > button:last-child:hover {
   border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 34%, transparent) !important;
-  background: rgba(7, 9, 18, 0.76) !important;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 76%, transparent) !important;
   color: var(--theme-text-primary) !important;
 }
 
@@ -123,9 +123,9 @@
   position: relative !important;
   z-index: 3 !important;
   grid-row: 3;
-  border-top-color: rgba(255, 255, 255, 0.02) !important;
+  border-top-color: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent) !important;
   border-bottom-color: color-mix(in srgb, var(--theme-borders-default) 62%, transparent) !important;
-  background: rgba(12, 15, 28, 0.78) !important;
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 78%, transparent) !important;
   backdrop-filter: blur(6px) saturate(84%);
 }
 
@@ -143,7 +143,7 @@
   background:
     linear-gradient(
       to bottom,
-      color-mix(in srgb, rgba(12, 15, 28, 0.86) 78%, transparent) 0,
+      color-mix(in srgb, color-mix(in srgb, var(--theme-surfaces-canvas) 86%, transparent) 78%, transparent) 0,
       color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent) 42px,
       var(--theme-surfaces-base) 86px
     ) !important;

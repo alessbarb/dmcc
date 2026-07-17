@@ -220,7 +220,7 @@ function StandardEntityDetailModal({
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "8px",
-                backgroundColor: "rgba(6, 7, 14, 0.4)",
+                backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent)",
                 color: "var(--theme-feedback-danger-foreground)",
                 fontSize: "0.95rem",
                 fontWeight: "700",
@@ -286,13 +286,13 @@ function StandardEntityDetailModal({
                     background: "none",
                     border: "none",
                     borderBottom: isActive
-                      ? "2px solid var(--color-primary, hsl(210, 80%, 55%))"
+                      ? "2px solid var(--theme-accents-primary-foreground)"
                       : "2px solid transparent",
                     cursor: "pointer",
                     fontSize: "0.83rem",
                     fontWeight: isActive ? "700" : "500",
                     color: isActive
-                      ? "var(--color-primary, hsl(210, 80%, 55%))"
+                      ? "var(--theme-accents-primary-foreground)"
                       : "var(--theme-text-secondary)",
                     transition: "color 0.15s, border-color 0.15s",
                     marginBottom: "-1px",

@@ -54,12 +54,12 @@ export function ResumenTab({
             fontWeight: "700",
             backgroundColor:
               visKind === "dm_only"
-                ? "hsl(0, 60%, 25%)"
-                : "hsl(120, 60%, 20%)",
+                ? "var(--theme-feedback-danger-background)"
+                : "var(--theme-feedback-success-background)",
             color:
               visKind === "dm_only"
-                ? "hsl(0, 80%, 65%)"
-                : "hsl(120, 70%, 60%)",
+                ? "var(--theme-feedback-danger-foreground)"
+                : "var(--theme-feedback-success-foreground)",
           }}
         >
           {formatVisibility(visKind, locale)}
@@ -141,7 +141,7 @@ export function ResumenTab({
                   display: "flex",
                   flexDirection: "column",
                   gap: "6px",
-                  backgroundColor: "#06070e",
+                  backgroundColor: "var(--theme-surfaces-canvas)",
                   padding: "12px",
                   borderRadius: "var(--theme-shapes-radius-medium)",
                 }}
@@ -149,7 +149,7 @@ export function ResumenTab({
                 {(entityType === "npc" || entityType === "player_character" || entityType === "creature") && (
                   entityType === "player_character" && campaignState?.campaign?.system === "dnd_5e" ? (
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px", backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
                         <Field label="Clase" value={m.className} />
                         <Field label="Subclase" value={m.subclass} />
                         <Field label="Nivel" value={m.level} />
@@ -178,7 +178,7 @@ export function ResumenTab({
                             const mod = numVal !== undefined ? Math.floor((numVal - 10) / 2) : null;
                             const modStr = mod !== null ? (mod >= 0 ? `+${mod}` : `${mod}`) : "--";
                             return (
-                              <div key={attr.key} style={{ backgroundColor: "#06070e", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-medium)", padding: "6px 4px", textAlign: "center" }}>
+                              <div key={attr.key} style={{ backgroundColor: "var(--theme-surfaces-canvas)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-medium)", padding: "6px 4px", textAlign: "center" }}>
                                 <div style={{ fontSize: "0.6rem", fontWeight: "700", color: "var(--theme-text-secondary)" }}>{attr.short}</div>
                                 <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-accents-secondary-foreground)", margin: "2px 0" }}>{modStr}</div>
                                 <div style={{ fontSize: "0.7rem", color: "var(--theme-text-primary)" }}>{metaStr(m[attr.key], "--")}</div>
@@ -188,7 +188,7 @@ export function ResumenTab({
                         </div>
                       </div>
 
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
                         <div style={{ textAlign: "center" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>CLASE ARMADURA</div>
                           <div style={{ fontSize: "1.1rem", fontWeight: "800", color: "var(--theme-text-primary)", marginTop: "4px" }}>🛡️ {metaStr(m.armorClass, "10")}</div>
@@ -214,7 +214,7 @@ export function ResumenTab({
                         </div>
                       </div>
 
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px", backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)", textAlign: "center" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px", backgroundColor: "var(--theme-surfaces-canvas)", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)", textAlign: "center" }}>
                         <div>
                           <div style={{ fontSize: "0.6rem", color: "var(--theme-text-secondary)", fontWeight: "600" }}>PERCEPCION PASIVA</div>
                           <div style={{ fontSize: "1rem", fontWeight: "700", marginTop: "2px" }}>👁️ {metaStr(m.passivePerception, "10")}</div>
@@ -230,14 +230,14 @@ export function ResumenTab({
                       </div>
 
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" }}>
-                        <div style={{ backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
+                        <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Salvaciones</div>
                           {Array.isArray(m.savingThrows) && m.savingThrows.length > 0 ? (
                             <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
                               {m.savingThrows.map((s: string) => {
                                 const trans: Record<string, string> = { str: "FUER", dex: "DEST", con: "CONS", int: "INTE", wis: "SABI", cha: "CARI" };
                                 return (
-                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--theme-accents-primary-background)", border: "1px solid hsla(255, 85%, 65%, 0.3)", borderRadius: "4px", color: "var(--theme-text-primary)", textTransform: "uppercase" }}>
+                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--theme-accents-primary-background)", border: "1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent)", borderRadius: "4px", color: "var(--theme-text-primary)", textTransform: "uppercase" }}>
                                     {trans[s] || s}
                                   </span>
                                 );
@@ -246,7 +246,7 @@ export function ResumenTab({
                           ) : <span style={{ fontSize: "0.7rem", color: "var(--theme-text-secondary)", fontStyle: "italic" }}>Ninguna</span>}
                         </div>
 
-                        <div style={{ backgroundColor: "#06070e", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
+                        <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "10px", borderRadius: "var(--theme-shapes-radius-medium)" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "700", marginBottom: "6px", textTransform: "uppercase" }}>Habilidades</div>
                           {Array.isArray(m.skills) && m.skills.length > 0 ? (
                             <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
@@ -259,7 +259,7 @@ export function ResumenTab({
                                   survival: "Supervivencia"
                                 };
                                 return (
-                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--theme-accents-primary-background)", border: "1px solid hsla(255, 85%, 65%, 0.3)", borderRadius: "4px", color: "var(--theme-text-primary)" }}>
+                                  <span key={s} style={{ fontSize: "0.65rem", padding: "2px 5px", backgroundColor: "var(--theme-accents-primary-background)", border: "1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent)", borderRadius: "4px", color: "var(--theme-text-primary)" }}>
                                     {trans[s] || s}
                                   </span>
                                 );
@@ -269,13 +269,13 @@ export function ResumenTab({
                         </div>
                       </div>
 
-                      <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "8px" }}>
                         <Field label="Dotes" value={Array.isArray(m.feats) ? m.feats.join(", ") : m.feats} />
                         <Field label="Idiomas" value={getMetadataLanguages(m)} />
                       </div>
 
                       {(m.spellSaveDC != null || m.spellAttackBonus != null) && (
-                        <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "8px", border: "1px dashed var(--theme-accents-secondary-foreground)" }}>
+                        <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "8px", border: "1px dashed var(--theme-accents-secondary-foreground)" }}>
                           <div style={{ fontSize: "0.7rem", color: "var(--theme-accents-secondary-foreground)", fontWeight: "700", textTransform: "uppercase" }}>✨ Magia y Conjuros</div>
                           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                             <Field label={t("entityDetail.spellSaveDc")} value={m.spellSaveDC} />
@@ -285,7 +285,7 @@ export function ResumenTab({
                       )}
 
                       {Boolean(m.note) && (
-                        <div style={{ backgroundColor: "#06070e", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "6px" }}>
+                        <div style={{ backgroundColor: "var(--theme-surfaces-canvas)", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", gap: "6px" }}>
                           <div style={{ fontSize: "0.65rem", color: "var(--theme-text-secondary)", fontWeight: "700", textTransform: "uppercase" }}>Notas adicionales</div>
                           <div style={{ fontSize: "0.75rem", color: "var(--theme-text-primary)", whiteSpace: "pre-line" }}>{metaStr(m.note, "")}</div>
                         </div>

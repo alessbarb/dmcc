@@ -35,14 +35,14 @@ export function HechosTab({
 }) {
   const { t } = useTranslation();
   const kindColors: Record<string, { bg: string; fg: string }> = {
-    canon: { bg: "hsl(120, 50%, 18%)", fg: "hsl(120, 70%, 60%)" },
-    dm_secret: { bg: "hsl(0, 50%, 20%)", fg: "hsl(0, 80%, 65%)" },
-    rumor: { bg: "hsl(40, 60%, 18%)", fg: "hsl(40, 80%, 60%)" },
-    lie: { bg: "hsl(0, 70%, 22%)", fg: "hsl(0, 90%, 70%)" },
-    player_theory: { bg: "hsl(210, 50%, 18%)", fg: "hsl(210, 80%, 65%)" },
-    mistake: { bg: "hsl(30, 60%, 18%)", fg: "hsl(30, 80%, 60%)" },
-    retcon: { bg: "hsl(280, 50%, 18%)", fg: "hsl(280, 70%, 65%)" },
-    unknown: { bg: "hsl(0, 0%, 15%)", fg: "hsl(0, 0%, 60%)" },
+    canon: { bg: "var(--theme-narrative-canon-background)", fg: "var(--theme-narrative-canon-foreground)" },
+    dm_secret: { bg: "var(--theme-narrative-secret-background)", fg: "var(--theme-narrative-secret-foreground)" },
+    rumor: { bg: "var(--theme-narrative-rumor-background)", fg: "var(--theme-narrative-rumor-foreground)" },
+    lie: { bg: "var(--theme-feedback-danger-background)", fg: "var(--theme-feedback-danger-foreground)" },
+    player_theory: { bg: "var(--theme-narrative-theory-background)", fg: "var(--theme-narrative-theory-foreground)" },
+    mistake: { bg: "var(--theme-feedback-warning-background)", fg: "var(--theme-feedback-warning-foreground)" },
+    retcon: { bg: "var(--theme-accents-secondary-background)", fg: "var(--theme-accents-secondary-foreground)" },
+    unknown: { bg: "var(--theme-surfaces-interactive)", fg: "var(--theme-text-secondary)" },
   };
 
   const facts = allFacts.filter(
