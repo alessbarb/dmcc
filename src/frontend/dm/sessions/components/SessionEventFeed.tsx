@@ -13,6 +13,7 @@ import {
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { SessionEvent, SessionEventType } from "@core/domain/session/types.js";
 import { formatRelative } from "../sessionTimeFormat.js";
+import "./session-event-feed.css";
 
 const EVENT_TYPE_ICONS: Partial<Record<SessionEventType, React.ReactNode>> = {
   note_recorded: <StickyNote size={13} />,
@@ -43,7 +44,7 @@ export function SessionEventFeed({
   const [collapsed, setCollapsed] = useState(false);
 
   const events = sessionEvents
-    .filter((ev) => ev.sessionId === sessionId)
+    .filter((event) => event.sessionId === sessionId)
     .sort((a, b) => new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime())
     .slice(0, 20);
 
