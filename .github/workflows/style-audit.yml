@@ -35,46 +35,6 @@ jobs:
           fi
           node scripts/styles/finalizeStyleFoundation.mjs
           rm scripts/styles/finalizeStyleFoundation.mjs
-          cat > .github/workflows/style-audit.yml <<'YAML'
-          name: Style architecture audit
-
-          on:
-            pull_request:
-            push:
-              branches: [main]
-
-          permissions:
-            contents: read
-
-          concurrency:
-            group: style-audit-${{ github.ref }}
-            cancel-in-progress: true
-
-          jobs:
-            audit:
-              runs-on: ubuntu-latest
-              steps:
-                - uses: actions/checkout@v7
-                - uses: actions/setup-node@v7
-                  with:
-                    node-version: 22
-                    cache: npm
-                    cache-dependency-path: package-lock.json
-                - run: npm ci
-                - name: Check style architecture ratchet
-                  run: node scripts/styles/checkStyleAuditRatchet.mjs
-                - name: Run style audit contract tests
-                  run: npm test -- --run tests/frontend/styleAuditContracts.test.ts tests/frontend/styleFoundationContracts.test.ts
-                - name: Upload current audit report
-                  if: always()
-                  uses: actions/upload-artifact@v7
-                  with:
-                    name: style-audit-report
-                    path: .artifacts/style-audit.*
-                    include-hidden-files: true
-                    if-no-files-found: error
-                    retention-days: 14
-          YAML
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
