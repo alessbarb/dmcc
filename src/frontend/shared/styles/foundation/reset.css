@@ -37,25 +37,9 @@ canvas {
 @media (max-width: 900px), (hover: none) and (pointer: coarse) {
   html,
   body,
-  #root,
-  .app-container,
-  .main-content,
-  .content-body,
-  .player-portal-shell,
-  .player-portal-main {
+  #root {
     width: 100%;
     max-width: 100dvw;
     overflow-x: clip;
-  }
-
-  .app-container,
-  .main-content,
-  .content-body,
-  .content-grid,
-  .card,
-  .panel,
-  .modal-content,
-  .player-portal-content {
-    min-width: 0;
   }
 }
