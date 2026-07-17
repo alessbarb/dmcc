@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { Background, MarkerType, ReactFlow, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import type { Edge, Node } from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
 import { getRelationVisual } from "../entityVisuals.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatRelationType } from "@shared/i18n/index.js";
@@ -110,10 +109,10 @@ function RelationshipGraphCanvasInner({
         target: targetId,
         sourceHandle: sourceSide,
         targetHandle: targetSide,
-        markerEnd: { type: MarkerType.ArrowClosed, color: visual?.color ?? "rgba(148,163,184,0.8)", width: 16, height: 16 },
+        markerEnd: { type: MarkerType.ArrowClosed, color: visual?.color ?? "color-mix(in srgb, var(--theme-graph-edge) 80%, transparent)", width: 16, height: 16 },
         data: { label, color: visual?.color, selected: isSelected, sourceIsCenter },
         style: {
-          stroke: visual?.color ?? "rgba(148,163,184,0.6)",
+          stroke: visual?.color ?? "color-mix(in srgb, var(--theme-graph-edge) 60%, transparent)",
           strokeWidth: isSelected ? 2.6 : 1.4,
           strokeDasharray: visual?.line === "dashed" ? "5 5" : undefined,
           opacity: selectedConnectionId && !isSelected ? 0.35 : 1,

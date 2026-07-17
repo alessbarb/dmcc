@@ -6,13 +6,13 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 46,
+  "cssFiles": 47,
   "tsxFilesWithInlineStyles": 96,
-  "forbiddenLiteralColors": 1430,
+  "forbiddenLiteralColors": 1425,
   "staticInlineStyles": 1327,
   "dynamicInlineStyles": 37,
   "unknownCssVariables": 252,
-  "legacyCssVariables": 30,
+  "legacyCssVariables": 28,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 18,
   "crossComponentSelectors": 131,
@@ -64,13 +64,14 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/index.css` | legacy | shared | 9653 | 1398 | 1 |
 | `src/frontend/shared/styles/landing.css` | legacy | shared | 2595 | 391 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | legacy | shared | 1010 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 26 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 28 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | legacy | shared | 14 | 1 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | legacy | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | legacy | shared | 26 | 5 | 1 |
 | `src/frontend/shared/styles/primitives/form-control.css` | legacy | shared | 52 | 7 | 1 |
 | `src/frontend/shared/styles/primitives/menu.css` | legacy | shared | 69 | 9 | 1 |
 | `src/frontend/shared/styles/primitives/tooltip.css` | legacy | shared | 13 | 1 | 1 |
+| `src/frontend/shared/styles/vendor/react-flow.css` | legacy | shared | 2 | 0 | 1 |
 
 ## Findings
 
@@ -723,19 +724,19 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/auth/RegisterPage.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/auth/RegisterPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/auth/RegisterPage.tsx:93` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:833` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:847` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:849` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:851` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1230` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1276` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:832` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:846` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:848` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:850` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1229` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1275` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1293` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1294` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1295` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1296` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1297` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1299` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1299` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1299` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
 | high | unknown-token | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | CSS variable is not declared or allowlisted. |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:31` | Important declarations bypass the intended cascade. |
@@ -1330,15 +1331,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:212` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:235` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | legacy-token | `src/frontend/dm/entities/relations/relationshipGraph.css:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/relations/relationshipGraph.css:1` | Legacy CSS variable remains in use. |
-| high | literal-color | `src/frontend/dm/entities/relations/relationshipGraph.css:26` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/relations/relationshipGraph.css:36` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/relations/relationshipGraph.css:37` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/entities/relations/relationshipGraph.css:44` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/relations/relationshipGraph.css:66` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:113` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:116` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:37` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:46` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1794,9 +1788,9 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/map/network/networkFlow.css:685` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:685` | Important declarations bypass the intended cascade. |
 | high | literal-color | `src/frontend/dm/map/network/networkFlow.css:686` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/NetworkFlow.tsx:219` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/NetworkFlow.tsx:254` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/map/network/NetworkFlow.tsx:254` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/map/network/NetworkFlow.tsx:218` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/map/network/NetworkFlow.tsx:253` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/map/network/NetworkFlow.tsx:253` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/map/network/NetworkInspector.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/network/NetworkRelationEdge.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/EntityNodeContent.tsx:38` | Static or mixed inline style must move to an atomized stylesheet. |

@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T12:50:05.006Z",
+  "generatedAt": "2026-07-17T12:59:51.605Z",
   "summary": {
-    "cssFiles": 46,
+    "cssFiles": 47,
     "tsxFilesWithInlineStyles": 96,
-    "forbiddenLiteralColors": 1430,
+    "forbiddenLiteralColors": 1425,
     "staticInlineStyles": 1327,
     "dynamicInlineStyles": 37,
     "unknownCssVariables": 252,
-    "legacyCssVariables": 30,
+    "legacyCssVariables": 28,
     "orphanCssFiles": 0,
     "mixedResponsibilityFiles": 18,
     "crossComponentSelectors": 131,
@@ -828,11 +828,9 @@
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 1321,
+      "lineCount": 1320,
       "selectorCount": 0,
-      "imports": [
-        "@xyflow/react/dist/style.css"
-      ],
+      "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": [
@@ -2016,15 +2014,17 @@
       "path": "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 172,
+      "lineCount": 171,
       "selectorCount": 0,
       "imports": [
-        "@xyflow/react/dist/style.css",
         "src/frontend/dm/entities/relations/relationshipGraph.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": []
+      "variableReferences": [
+        "--theme-graph-edge",
+        "--theme-graph-edge"
+      ]
     },
     {
       "path": "src/frontend/dm/entities/relations/computeRadialRelationshipLayout.ts",
@@ -2100,8 +2100,9 @@
         "--theme-shapes-radius-medium",
         "--theme-surfaces-base",
         "--theme-shapes-radius-medium",
-        "--color-primary",
-        "--color-primary",
+        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-on-accent",
         "--theme-surfaces-base",
         "--theme-borders-default"
       ]
@@ -2621,11 +2622,9 @@
       "path": "src/frontend/dm/map/network/NetworkFlow.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 481,
+      "lineCount": 480,
       "selectorCount": 0,
-      "imports": [
-        "@xyflow/react/dist/style.css"
-      ],
+      "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6547,7 +6546,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 26,
+      "lineCount": 28,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -6566,6 +6565,7 @@
         "src/frontend/shared/styles/features/kanban-board.css",
         "src/frontend/shared/styles/features/sidebar-nav.css",
         "src/frontend/shared/styles/layout/workspace.css",
+        "src/frontend/shared/styles/vendor/react-flow.css",
         "src/frontend/shared/styles/landing.css",
         "src/frontend/account/account.css",
         "src/frontend/shared/styles/index.css"
@@ -6744,6 +6744,21 @@
         "--theme-surfaces-raised",
         "--theme-shadows-overlay"
       ]
+    },
+    {
+      "path": "src/frontend/shared/styles/vendor/react-flow.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 2,
+      "selectorCount": 0,
+      "imports": [
+        "@xyflow/react/dist/style.css"
+      ],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/theme/themeCssVariables.ts",
@@ -13465,9 +13480,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:849:28",
+      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:848:28",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 849,
+      "line": 848,
       "column": 28,
       "severity": "high",
       "status": "temporary",
@@ -13477,9 +13492,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:851:34",
+      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:850:34",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 851,
+      "line": 850,
       "column": 34,
       "severity": "high",
       "status": "temporary",
@@ -13489,9 +13504,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1276:28",
+      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1275:28",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1276,
+      "line": 1275,
       "column": 28,
       "severity": "high",
       "status": "temporary",
@@ -13501,9 +13516,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1294:46",
+      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1293:46",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1294,
+      "line": 1293,
       "column": 46,
       "severity": "high",
       "status": "temporary",
@@ -13513,9 +13528,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1295:47",
+      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1294:47",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1295,
+      "line": 1294,
       "column": 47,
       "severity": "high",
       "status": "temporary",
@@ -13525,9 +13540,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1296:23",
+      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1295:23",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1296,
+      "line": 1295,
       "column": 23,
       "severity": "high",
       "status": "temporary",
@@ -13537,9 +13552,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298:24",
+      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1297:24",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1298,
+      "line": 1297,
       "column": 24,
       "severity": "high",
       "status": "temporary",
@@ -13549,9 +13564,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1299:35",
+      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298:35",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1299,
+      "line": 1298,
       "column": 35,
       "severity": "high",
       "status": "temporary",
@@ -13561,9 +13576,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1299:75",
+      "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298:75",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1299,
+      "line": 1298,
       "column": 75,
       "severity": "high",
       "status": "temporary",
@@ -13573,9 +13588,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:833:14",
+      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:832:14",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 833,
+      "line": 832,
       "column": 14,
       "severity": "high",
       "status": "temporary",
@@ -13586,9 +13601,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:847:13",
+      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:846:13",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 847,
+      "line": 846,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -13599,9 +13614,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1230:7",
+      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1229:7",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1230,
+      "line": 1229,
       "column": 7,
       "severity": "high",
       "status": "temporary",
@@ -13612,9 +13627,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1299:13",
+      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1298:13",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1299,
+      "line": 1298,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -23175,66 +23190,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "literal-color:src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:113:77",
-      "path": "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx",
-      "line": 113,
-      "column": 77,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(148,163,184,0.8)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:116:37",
-      "path": "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx",
-      "line": 116,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "rgba(148,163,184,0.6)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/entities/relations/relationshipGraph.css:26:43",
-      "path": "src/frontend/dm/entities/relations/relationshipGraph.css",
-      "line": 26,
-      "column": 43,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "hsl(210, 80%, 55%)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/entities/relations/relationshipGraph.css:36:36",
-      "path": "src/frontend/dm/entities/relations/relationshipGraph.css",
-      "line": 36,
-      "column": 36,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "hsl(210, 80%, 55%)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/entities/relations/relationshipGraph.css:37:10",
-      "path": "src/frontend/dm/entities/relations/relationshipGraph.css",
-      "line": 37,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "#fff",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "literal-color:src/frontend/dm/entities/relations/relationshipGraph.css:44:3",
       "path": "src/frontend/dm/entities/relations/relationshipGraph.css",
       "line": 44,
@@ -25745,9 +25700,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "literal-color:src/frontend/dm/map/network/NetworkFlow.tsx:219:61",
+      "id": "literal-color:src/frontend/dm/map/network/NetworkFlow.tsx:218:61",
       "path": "src/frontend/dm/map/network/NetworkFlow.tsx",
-      "line": 219,
+      "line": 218,
       "column": 61,
       "severity": "high",
       "status": "temporary",
@@ -25757,9 +25712,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/map/network/NetworkFlow.tsx:254:31",
+      "id": "literal-color:src/frontend/dm/map/network/NetworkFlow.tsx:253:31",
       "path": "src/frontend/dm/map/network/NetworkFlow.tsx",
-      "line": 254,
+      "line": 253,
       "column": 31,
       "severity": "high",
       "status": "temporary",
@@ -25769,9 +25724,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/map/network/NetworkFlow.tsx:254:60",
+      "id": "literal-color:src/frontend/dm/map/network/NetworkFlow.tsx:253:60",
       "path": "src/frontend/dm/map/network/NetworkFlow.tsx",
-      "line": 254,
+      "line": 253,
       "column": 60,
       "severity": "high",
       "status": "temporary",
@@ -49950,30 +49905,6 @@
       "reason": "Legacy CSS variable remains in use."
     },
     {
-      "id": "legacy-token:src/frontend/dm/entities/relations/relationshipGraph.css:--color-primary",
-      "path": "src/frontend/dm/entities/relations/relationshipGraph.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "legacy-token",
-      "severity": "high",
-      "status": "temporary",
-      "value": "--color-primary",
-      "reason": "Legacy CSS variable remains in use."
-    },
-    {
-      "id": "legacy-token:src/frontend/dm/entities/relations/relationshipGraph.css:--color-primary",
-      "path": "src/frontend/dm/entities/relations/relationshipGraph.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "legacy-token",
-      "severity": "high",
-      "status": "temporary",
-      "value": "--color-primary",
-      "reason": "Legacy CSS variable remains in use."
-    },
-    {
       "id": "unknown-token:src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:--accent",
       "path": "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
       "line": 1,
@@ -51643,9 +51574,6 @@
     }
   ],
   "importGraph": {
-    "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx": [
-      "@xyflow/react/dist/style.css"
-    ],
     "src/frontend/dm/canvas/components/CanvasToolbar.tsx": [
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
     ],
@@ -51659,7 +51587,6 @@
       "src/frontend/dm/entities/relations/relationshipGraph.css"
     ],
     "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx": [
-      "@xyflow/react/dist/style.css",
       "src/frontend/dm/entities/relations/relationshipGraph.css"
     ],
     "src/frontend/dm/layouts/CampaignShell.tsx": [
@@ -51677,9 +51604,6 @@
     ],
     "src/frontend/dm/map/CampaignMapWorkspacePage.tsx": [
       "src/frontend/dm/map/mapWorkspace.css"
-    ],
-    "src/frontend/dm/map/network/NetworkFlow.tsx": [
-      "@xyflow/react/dist/style.css"
     ],
     "src/frontend/dm/map/network/NetworkView.tsx": [
       "src/frontend/dm/map/network/networkFlow.css"
@@ -51737,9 +51661,13 @@
       "src/frontend/shared/styles/features/kanban-board.css",
       "src/frontend/shared/styles/features/sidebar-nav.css",
       "src/frontend/shared/styles/layout/workspace.css",
+      "src/frontend/shared/styles/vendor/react-flow.css",
       "src/frontend/shared/styles/landing.css",
       "src/frontend/account/account.css",
       "src/frontend/shared/styles/index.css"
+    ],
+    "src/frontend/shared/styles/vendor/react-flow.css": [
+      "@xyflow/react/dist/style.css"
     ]
   }
 }

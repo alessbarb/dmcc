@@ -18,7 +18,6 @@ import type {
   OnSelectionChangeParams,
   SelectionDragHandler,
 } from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { CanvasEntityNode } from "./CanvasEntityNode.js";

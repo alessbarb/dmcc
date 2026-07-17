@@ -9,7 +9,6 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import type { Edge, Node } from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
 import { Eye, EyeOff, Focus, Layers, LoaderCircle, Maximize2, Plus, Search, X } from "lucide-react";
 import { useCampaignStore } from "../../../shared/stores/campaignStore.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
