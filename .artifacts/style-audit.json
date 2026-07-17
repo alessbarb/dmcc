@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T18:00:18.257Z",
+  "generatedAt": "2026-07-17T18:03:14.587Z",
   "summary": {
     "cssFiles": 61,
     "tsxFilesWithInlineStyles": 85,
@@ -12,7 +12,7 @@
     "orphanCssFiles": 0,
     "mixedResponsibilityFiles": 19,
     "crossComponentSelectors": 128,
-    "importantDeclarations": 396,
+    "importantDeclarations": 394,
     "unclassifiedCssFiles": 0
   },
   "files": [
@@ -161,8 +161,8 @@
       "path": "src/frontend/account/account.css",
       "layer": "legacy",
       "domain": "account",
-      "lineCount": 811,
-      "selectorCount": 123,
+      "lineCount": 804,
+      "selectorCount": 121,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -8321,30 +8321,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "important:src/frontend/account/account.css:676:27",
-      "path": "src/frontend/account/account.css",
-      "line": 676,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/account/account.css:677:22",
-      "path": "src/frontend/account/account.css",
-      "line": 677,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
       "id": "mixed-responsibility:src/frontend/account/account.css",
       "path": "src/frontend/account/account.css",
       "line": 1,
@@ -8353,7 +8329,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (811 lines, 123 selectors)."
+      "reason": "Large stylesheet requires atomization (804 lines, 121 selectors)."
     },
     {
       "id": "static-inline:src/frontend/admin/AdminShell.tsx:57:10",
