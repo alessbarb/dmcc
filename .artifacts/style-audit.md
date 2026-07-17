@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 64,
-  "tsxFilesWithInlineStyles": 84,
+  "cssFiles": 65,
+  "tsxFilesWithInlineStyles": 83,
   "forbiddenLiteralColors": 308,
-  "staticInlineStyles": 1166,
+  "staticInlineStyles": 1079,
   "dynamicInlineStyles": 36,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -38,6 +38,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 183 | 18 | 1 |
 | `src/frontend/dm/entities/playerCharacterDetail.css` | feature | entities | 359 | 50 | 1 |
 | `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 103 | 16 | 2 |
+| `src/frontend/dm/entities/type-metadata-form.css` | feature | entities | 30 | 4 | 1 |
 | `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 82 | 19 | 1 |
 | `src/frontend/dm/library/boards/entityBoards.css` | feature | library | 243 | 37 | 1 |
 | `src/frontend/dm/library/list/entityListRefinements.css` | feature | library | 96 | 16 | 1 |
@@ -962,93 +963,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:210` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:221` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:23` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:24` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:26` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:30` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:44` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:52` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:80` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:81` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:83` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:101` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:109` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:113` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:121` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:122` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:124` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:133` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:138` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:142` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:146` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:150` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:158` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:159` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:173` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:178` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:194` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:195` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:196` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:208` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:212` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:220` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:221` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:223` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:227` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:232` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:244` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:245` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:247` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:248` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:250` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:259` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:263` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:267` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:271` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:275` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:282` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:283` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:285` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:289` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:293` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:297` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:301` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:305` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:312` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:313` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:315` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:319` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:323` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:327` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:331` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:335` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:339` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:343` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:350` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:351` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:353` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:357` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:361` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:369` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:395` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:399` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:411` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:412` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:414` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:423` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:429` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:433` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:437` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:443` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:447` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:451` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/TypeMetadataForm.tsx:456` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:28` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
