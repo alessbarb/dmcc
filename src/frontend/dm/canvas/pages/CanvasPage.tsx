@@ -7,14 +7,14 @@ import type { CampaignCanvasFlowHandle, CanvasDeviceMode, CanvasFlowNode } from 
 import { CanvasNavigatorPanel } from "../components/CanvasNavigatorPanel.js";
 import { CanvasPalette } from "../components/CanvasPalette.js";
 import { CanvasInspector } from "../components/CanvasInspector.js";
-import { SessionPrepForm } from "../components/SessionPrepForm.js";
 import { CanvasBoardDialogs } from "../components/CanvasBoardDialogs.js";
 import { CanvasPageHeader } from "../components/CanvasPageHeader.js";
 import { MysteryHealthPanel } from "../components/MysteryHealthPanel.js";
 import { CanvasNarrativeLintDrawer } from "../components/CanvasNarrativeLintDrawer.js";
 import { CanvasMobileMorePanel } from "../components/CanvasMobileMorePanel.js";
 import { CanvasBulkActionsBar } from "../components/CanvasBulkActionsBar.js";
-import { Plus, Layout, MoreHorizontal, X, Search, ListPlus, MousePointer2, Hand } from "lucide-react";
+import { CanvasSessionPrepDialog } from "../components/CanvasSessionPrepDialog.js";
+import { Plus, Layout, MoreHorizontal, Search, ListPlus, MousePointer2, Hand } from "lucide-react";
 import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
@@ -874,101 +874,20 @@ export function CanvasPage() {
         </div>
       )}
 
-      {/* Session Prep Dialog Overlay */}
-      {isSessionPrepOpen && (
-        <div className="modal-overlay" onClick={() => setIsSessionPrepOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "450px" }}>
-            <div className="modal-header">
-              <h2>{t("sessionPage.prepareSessionFromSelectionTitle")}</h2>
-              <button onClick={() => setIsSessionPrepOpen(false)} className="modal-close-btn"><X size={16} /></button>
-            </div>
-            {(() => {
-              const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
-              const entNames = selectedNodes.map((n) => n.data.title || n.data.text || "Elemento");
-              
-              return (
-                <SessionPrepForm
-                  activeSession={activeSession}
-                  preparedSessions={preparedSessions}
-                  selectedCount={selectedNodes.length}
-                  elementNames={entNames}
-                  onSubmit={async (sessionTitle, targetMode, targetSessionId) => {
-                    const isStringId = (id: string | undefined): id is string => id !== undefined;
-                    const entIds = selectedNodes
-                      .filter((n) => n.type === "entity" && n.data.entityId)
-                      .map((n) => n.data.entityId)
-                      .filter(isStringId);
-                    const sceneIds = selectedNodes
-                      .filter((n) => n.type === "entity" && n.data.entityType === "scene" && n.data.entityId)
-                      .map((n) => n.data.entityId)
-                      .filter(isStringId);
-                    const clueIds = selectedNodes
-                      .filter((n) => n.type === "entity" && n.data.entityType === "clue" && n.data.entityId)
-                      .map((n) => n.data.entityId)
-                      .filter(isStringId);
-                    const secretIds = selectedNodes
-                      .filter((n) => n.type === "entity" && n.data.entityType === "secret" && n.data.entityId)
-                      .map((n) => n.data.entityId)
-                      .filter(isStringId);
-                    const consequenceIds = selectedNodes
-                      .filter((n) => n.type === "entity" && n.data.entityType === "consequence" && n.data.entityId)
-                      .map((n) => n.data.entityId)
-                      .filter(isStringId);
-                    
-                    if (targetMode === "new") {
-                      await createPreparedSession(sessionTitle, {
-                        state: "ready",
-                        summary: t("sessionPage.preparedFromCanvasSummary", { count: selectedNodes.length }),
-                        goals: [],
-                        sceneIds,
-                        involvedEntityIds: entIds,
-                        availableClueIds: clueIds,
-                        secretsAtRiskIds: secretIds,
-                        expectedConsequenceIds: consequenceIds,
-                        checklist: [],
-                        notes: t("sessionPage.preparedFromCanvasNotes", { names: entNames.join(", ") }),
-                      });
-                      addToast(t("toasts.sessionPrepared", { title: sessionTitle }), "success");
-                    } else if (targetMode === "prepared" && targetSessionId) {
-                      const targetSession = preparedSessions.find((session: Session) => session.sessionId === targetSessionId);
-                      if (!targetSession) return;
-                      const currentPrep = targetSession.prep ?? { state: "draft" };
-                      const mergeIds = (...groups: string[][]) => Array.from(new Set(groups.flat().filter(Boolean)));
-                      await updateSessionPrep(targetSessionId, {
-                        title: targetSession.title,
-                        scheduledAt: targetSession.scheduledAt,
-                        prep: {
-                          ...currentPrep,
-                          state: currentPrep.state ?? "draft",
-                          sceneIds: mergeIds(currentPrep.sceneIds ?? [], sceneIds),
-                          involvedEntityIds: mergeIds(currentPrep.involvedEntityIds ?? [], entIds),
-                          availableClueIds: mergeIds(currentPrep.availableClueIds ?? [], clueIds),
-                          secretsAtRiskIds: mergeIds(currentPrep.secretsAtRiskIds ?? [], secretIds),
-                          expectedConsequenceIds: mergeIds(currentPrep.expectedConsequenceIds ?? [], consequenceIds),
-                          notes: [currentPrep.notes, t("sessionPage.preparedFromCanvasNotes", { names: entNames.join(", ") })].filter(Boolean).join("\n"),
-                        },
-                      });
-                      addToast(t("toasts.elementsAddedToPreparation", { title: targetSession.title }), "success");
-                    } else if (activeSession) {
-                      await recordSessionEvent(activeSession.sessionId, {
-                        type: "scene_started",
-                        title: t("sessionPage.loadedFromCanvasTitle"),
-                        description: t("sessionPage.loadedFromCanvasDescription", { names: entNames.join(", ") }),
-                        relatedEntityIds: entIds,
-                      });
-                      addToast(t("toasts.elementsAddedToSession"), "success");
-                    }
-                    setIsSessionPrepOpen(false);
-                    setSelectedNodes([]);
-                    setSelectedEdges([]);
-                  }}
-                  onCancel={() => setIsSessionPrepOpen(false)}
-                />
-              );
-            })()}
-          </div>
-        </div>
-      )}
+      <CanvasSessionPrepDialog
+        isOpen={isSessionPrepOpen}
+        setIsOpen={setIsSessionPrepOpen}
+        campaignState={campaignState}
+        preparedSessions={preparedSessions}
+        selectedNodes={selectedNodes}
+        createPreparedSession={createPreparedSession}
+        updateSessionPrep={updateSessionPrep}
+        recordSessionEvent={recordSessionEvent}
+        addToast={addToast}
+        setSelectedNodes={setSelectedNodes}
+        setSelectedEdges={setSelectedEdges}
+        t={t}
+      />
 
       {/* Full details modal for entities */}
       {selectedEntityLocal && campaignState && (
