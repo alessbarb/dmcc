@@ -6,16 +6,16 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 49,
-  "tsxFilesWithInlineStyles": 96,
-  "forbiddenLiteralColors": 1318,
-  "staticInlineStyles": 1327,
-  "dynamicInlineStyles": 37,
-  "unknownCssVariables": 252,
+  "cssFiles": 61,
+  "tsxFilesWithInlineStyles": 85,
+  "forbiddenLiteralColors": 1315,
+  "staticInlineStyles": 1250,
+  "dynamicInlineStyles": 36,
+  "unknownCssVariables": 251,
   "legacyCssVariables": 28,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 20,
-  "crossComponentSelectors": 131,
+  "mixedResponsibilityFiles": 19,
+  "crossComponentSelectors": 130,
   "importantDeclarations": 399,
   "unclassifiedCssFiles": 0
 }
@@ -48,7 +48,19 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/pages/settingsPage.css` | feature | pages | 135 | 21 | 1 |
 | `src/frontend/dm/people/group/groupWorkspace.css` | feature | people | 631 | 93 | 1 |
 | `src/frontend/dm/people/peopleWorkspace.css` | feature | people | 390 | 60 | 1 |
-| `src/frontend/dm/sessions/sessionWorkspace.css` | feature | sessions | 404 | 67 | 1 |
+| `src/frontend/dm/sessions/components/active-session-prep.css` | feature | sessions | 140 | 24 | 1 |
+| `src/frontend/dm/sessions/components/prepared-session.css` | feature | sessions | 131 | 21 | 1 |
+| `src/frontend/dm/sessions/components/quick-capture.css` | feature | sessions | 46 | 6 | 1 |
+| `src/frontend/dm/sessions/components/quick-note.css` | feature | sessions | 13 | 3 | 1 |
+| `src/frontend/dm/sessions/components/session-actions.css` | feature | sessions | 120 | 25 | 1 |
+| `src/frontend/dm/sessions/components/session-event-feed.css` | feature | sessions | 139 | 23 | 1 |
+| `src/frontend/dm/sessions/components/session-forms.css` | feature | sessions | 131 | 23 | 3 |
+| `src/frontend/dm/sessions/components/session-history.css` | feature | sessions | 73 | 12 | 1 |
+| `src/frontend/dm/sessions/components/session-idle.css` | feature | sessions | 130 | 24 | 1 |
+| `src/frontend/dm/sessions/components/session-linked-list.css` | feature | sessions | 25 | 4 | 1 |
+| `src/frontend/dm/sessions/components/session-prep.css` | feature | sessions | 49 | 11 | 1 |
+| `src/frontend/dm/sessions/components/session-status.css` | feature | sessions | 74 | 10 | 1 |
+| `src/frontend/dm/sessions/session-workspace.css` | feature | sessions | 18 | 3 | 1 |
 | `src/frontend/dm/story/history/campaignHistory.css` | feature | story | 295 | 41 | 1 |
 | `src/frontend/dm/story/plan/storyPlanWorkspace.css` | feature | story | 153 | 27 | 1 |
 | `src/frontend/institutional/institutional.css` | feature | institutional | 274 | 38 | 1 |
@@ -1932,90 +1944,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/people/peopleWorkspace.css:142` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/people/peopleWorkspace.css:279` | Important declarations bypass the intended cascade. |
 | high | literal-color | `src/frontend/dm/people/peopleWorkspace.css:308` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:28` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:45` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:46` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:53` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:55` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:56` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:71` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:72` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:90` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:91` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx:92` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/CreateConsequenceForm.tsx:93` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/CreateConsequenceForm.tsx:128` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/EntityMultiPicker.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/EntityMultiPicker.tsx:36` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/EntityMultiPicker.tsx:38` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/EntityMultiPicker.tsx:45` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/PrepLinkedList.tsx:17` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/PrepLinkedList.tsx:18` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/PrepLinkedList.tsx:20` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/QuickCaptureBar.tsx:134` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/QuickCaptureBar.tsx:151` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/QuickCaptureBar.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/QuickCaptureBar.tsx:174` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/sessions/components/QuickCaptureBar.tsx:178` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/sessions/components/QuickCaptureBar.tsx:192` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/QuickNoteForm.tsx:75` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/QuickNoteForm.tsx:78` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/RecordDecisionForm.tsx:137` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/RecordDecisionForm.tsx:159` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/RecordDecisionForm.tsx:174` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/RecordDecisionForm.tsx:185` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/sessions/components/RecordDecisionForm.tsx:197` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/sessions/components/RecordDecisionForm.tsx:202` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/RecordDecisionForm.tsx:226` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:52` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:62` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:78` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:83` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:103` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:113` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:120` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:129` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:139` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionEventFeed.tsx:154` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:88` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:93` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:99` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:103` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:107` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionPrepEditor.tsx:121` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionQuickActions.tsx:111` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionQuickActions.tsx:129` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionQuickActions.tsx:153` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionQuickActions.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionQuickActions.tsx:174` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionQuickActions.tsx:190` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionQuickActions.tsx:197` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionQuickActions.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionQuickActions.tsx:222` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionStatusBar.tsx:12` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionStatusBar.tsx:24` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionStatusBar.tsx:26` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionStatusBar.tsx:38` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionStatusBar.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/sessions/components/SessionStatusBar.tsx:67` | Static or mixed inline style must move to an atomized stylesheet. |
-| critical | mixed-responsibility | `src/frontend/dm/sessions/sessionWorkspace.css:1` | Large stylesheet requires atomization (404 lines, 67 selectors). |
-| high | unknown-token | `src/frontend/dm/sessions/sessionWorkspace.css:1` | CSS variable is not declared or allowlisted. |
-| high | literal-color | `src/frontend/dm/sessions/sessionWorkspace.css:139` | Literal visual color outside a registered theme package. |
-| high | cross-component-selector | `src/frontend/dm/sessions/sessionWorkspace.css:233` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/dm/sessions/sessionWorkspace.css:255` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:43` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:47` | Static or mixed inline style must move to an atomized stylesheet. |
