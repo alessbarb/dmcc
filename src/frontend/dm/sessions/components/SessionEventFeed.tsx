@@ -25,10 +25,10 @@ const EVENT_TYPE_ICONS: Partial<Record<SessionEventType, React.ReactNode>> = {
 };
 
 const EVENT_TYPE_CLASSES: Partial<Record<SessionEventType, string>> = {
-  note_recorded: "session-event-feed__icon--info",
+  note_recorded: "session-event-feed__icon--information",
   npc_met: "session-event-feed__icon--success",
-  clue_revealed: "session-event-feed__icon--secondary",
-  decision_made: "session-event-feed__icon--primary",
+  clue_revealed: "session-event-feed__icon--clue",
+  decision_made: "session-event-feed__icon--decision",
   consequence_created: "session-event-feed__icon--warning",
   custom: "session-event-feed__icon--muted",
 };
