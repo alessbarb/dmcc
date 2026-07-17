@@ -79,7 +79,7 @@ export function CampaignListPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
             <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
           </div>
         )}
@@ -94,7 +94,7 @@ export function CampaignListPage() {
           backgroundColor: "var(--theme-surfaces-base)",
           padding: "16px",
           borderRadius: "12px",
-          border: "1px solid var(--border)",
+          border: "1px solid var(--theme-borders-default)",
           flexWrap: "wrap",
         }}>
           <div style={{ display: "flex", gap: "8px" }}>
@@ -105,9 +105,9 @@ export function CampaignListPage() {
                 style={{
                   padding: "8px 16px",
                   borderRadius: "8px",
-                  backgroundColor: status === s ? "var(--gold)" : "rgba(255,255,255,0.03)",
+                  backgroundColor: status === s ? "var(--theme-accents-primary-foreground)" : "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
                   color: status === s ? "var(--theme-surfaces-canvas)" : "inherit",
-                  border: "1px solid var(--border)",
+                  border: "1px solid var(--theme-borders-default)",
                   cursor: "pointer",
                   fontSize: "0.85rem",
                   fontWeight: 600,
@@ -131,8 +131,8 @@ export function CampaignListPage() {
                   width: "100%",
                   padding: "8px 12px 8px 36px",
                   borderRadius: "8px",
-                  backgroundColor: "rgba(0, 0, 0, 0.2)",
-                  border: "1px solid var(--border)",
+                  backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)",
+                  border: "1px solid var(--theme-borders-default)",
                   color: "inherit",
                   fontSize: "0.85rem",
                 }}
@@ -143,8 +143,8 @@ export function CampaignListPage() {
               style={{
                 padding: "8px 16px",
                 borderRadius: "8px",
-                backgroundColor: "rgba(255,255,255,0.05)",
-                border: "1px solid var(--border)",
+                backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
+                border: "1px solid var(--theme-borders-default)",
                 color: "inherit",
                 cursor: "pointer",
                 fontSize: "0.85rem",
@@ -161,14 +161,14 @@ export function CampaignListPage() {
             Loading campaigns...
           </div>
         ) : campaigns.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", color: "var(--theme-text-secondary)" }}>
             No campaigns found matching the criteria.
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
+                <tr style={{ borderBottom: "1px solid var(--theme-borders-default)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)" }}>
                   <th style={{ padding: "16px" }}>Campaign Title / ID</th>
                   <th style={{ padding: "16px" }}>Owner</th>
                   <th style={{ padding: "16px" }}>Created</th>
@@ -178,7 +178,7 @@ export function CampaignListPage() {
               </thead>
               <tbody>
                 {campaigns.map((c) => (
-                  <tr key={c.campaignId} style={{ borderBottom: "1px solid var(--border)", transition: "background-color 0.2s" }}>
+                  <tr key={c.campaignId} style={{ borderBottom: "1px solid var(--theme-borders-default)", transition: "background-color 0.2s" }}>
                     <td style={{ padding: "16px" }}>
                       <div style={{ fontWeight: 600 }}>{c.title}</div>
                       <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)", marginTop: "2px" }}>{c.campaignId}</div>
@@ -191,7 +191,7 @@ export function CampaignListPage() {
                       {new Date(c.createdAt).toLocaleDateString()}
                     </td>
                     {status === "trashed" && (
-                      <td style={{ padding: "16px", color: "var(--gold)" }}>
+                      <td style={{ padding: "16px", color: "var(--theme-accents-primary-foreground)" }}>
                         {c.purgeEligibleAt ? new Date(c.purgeEligibleAt).toLocaleDateString() : "Immediate"}
                       </td>
                     )}
@@ -208,9 +208,9 @@ export function CampaignListPage() {
                                 gap: "6px",
                                 padding: "6px 12px",
                                 borderRadius: "6px",
-                                backgroundColor: "rgba(40, 167, 69, 0.1)",
-                                border: "1px solid rgba(40, 167, 69, 0.3)",
-                                color: "var(--green)",
+                                backgroundColor: "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)",
+                                border: "1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)",
+                                color: "var(--theme-feedback-success-foreground)",
                                 cursor: "pointer",
                                 fontSize: "0.8rem",
                               }}
@@ -228,9 +228,9 @@ export function CampaignListPage() {
                                 gap: "6px",
                                 padding: "6px 12px",
                                 borderRadius: "6px",
-                                backgroundColor: "rgba(220, 53, 69, 0.1)",
-                                border: "1px solid rgba(220, 53, 69, 0.3)",
-                                color: "var(--red)",
+                                backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)",
+                                border: "1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent)",
+                                color: "var(--theme-feedback-danger-foreground)",
                                 cursor: "pointer",
                                 fontSize: "0.8rem",
                               }}
@@ -246,7 +246,7 @@ export function CampaignListPage() {
                           </span>
                         )}
                         {status === "importing" && (
-                          <span style={{ color: "var(--gold)", fontSize: "0.8rem", padding: "6px 12px", display: "flex", alignItems: "center", gap: "4px" }}>
+                          <span style={{ color: "var(--theme-accents-primary-foreground)", fontSize: "0.8rem", padding: "6px 12px", display: "flex", alignItems: "center", gap: "4px" }}>
                             <Loader size={12} className="spin-animation" /> Importing...
                           </span>
                         )}

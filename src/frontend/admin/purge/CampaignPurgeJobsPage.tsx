@@ -45,11 +45,11 @@ export function CampaignPurgeJobsPage() {
   const getStatusIcon = (jobStatus: string) => {
     switch (jobStatus) {
       case "completed":
-        return <CheckCircle size={16} style={{ color: "var(--green)" }} />;
+        return <CheckCircle size={16} style={{ color: "var(--theme-feedback-success-foreground)" }} />;
       case "failed":
-        return <XCircle size={16} style={{ color: "var(--red)" }} />;
+        return <XCircle size={16} style={{ color: "var(--theme-feedback-danger-foreground)" }} />;
       case "running":
-        return <Loader size={16} className="spin-animation" style={{ color: "var(--gold)" }} />;
+        return <Loader size={16} className="spin-animation" style={{ color: "var(--theme-accents-primary-foreground)" }} />;
       case "pending":
         return <Play size={16} style={{ color: "var(--theme-text-secondary)" }} />;
       default:
@@ -78,7 +78,7 @@ export function CampaignPurgeJobsPage() {
               padding: "8px 16px",
               borderRadius: "8px",
               backgroundColor: "var(--theme-surfaces-base)",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--theme-borders-default)",
               color: "inherit",
               cursor: "pointer",
               fontSize: "0.85rem",
@@ -91,7 +91,7 @@ export function CampaignPurgeJobsPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
             <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
           </div>
         )}
@@ -104,7 +104,7 @@ export function CampaignPurgeJobsPage() {
           backgroundColor: "var(--theme-surfaces-base)",
           padding: "16px",
           borderRadius: "12px",
-          border: "1px solid var(--border)",
+          border: "1px solid var(--theme-borders-default)",
           flexWrap: "wrap",
         }}>
           {["failed", "pending", "running", "completed", "cancelled"].map((s) => (
@@ -114,9 +114,9 @@ export function CampaignPurgeJobsPage() {
               style={{
                 padding: "8px 16px",
                 borderRadius: "8px",
-                backgroundColor: status === s ? "var(--gold)" : "rgba(255,255,255,0.03)",
+                backgroundColor: status === s ? "var(--theme-accents-primary-foreground)" : "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
                 color: status === s ? "var(--theme-surfaces-canvas)" : "inherit",
-                border: "1px solid var(--border)",
+                border: "1px solid var(--theme-borders-default)",
                 cursor: "pointer",
                 fontSize: "0.85rem",
                 fontWeight: 600,
@@ -133,14 +133,14 @@ export function CampaignPurgeJobsPage() {
             Loading purge jobs...
           </div>
         ) : jobs.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", color: "var(--theme-text-secondary)" }}>
             No purge jobs found matching status "{status}".
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
+                <tr style={{ borderBottom: "1px solid var(--theme-borders-default)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)" }}>
                   <th style={{ padding: "16px", width: "40px" }}></th>
                   <th style={{ padding: "16px" }}>Job / Campaign ID</th>
                   <th style={{ padding: "16px" }}>Actor / Reason</th>
@@ -152,7 +152,7 @@ export function CampaignPurgeJobsPage() {
               </thead>
               <tbody>
                 {jobs.map((j) => (
-                  <tr key={j.jobId} style={{ borderBottom: "1px solid var(--border)" }}>
+                  <tr key={j.jobId} style={{ borderBottom: "1px solid var(--theme-borders-default)" }}>
                     <td style={{ padding: "16px", verticalAlign: "middle" }}>
                       {getStatusIcon(j.status)}
                     </td>
@@ -172,7 +172,7 @@ export function CampaignPurgeJobsPage() {
                     </td>
                     {status === "failed" && (
                       <td style={{ padding: "16px", maxWidth: "300px" }}>
-                        <div style={{ color: "var(--red)", fontWeight: 500, fontSize: "0.8rem" }}>{j.lastErrorCode || "ERROR"}</div>
+                        <div style={{ color: "var(--theme-feedback-danger-foreground)", fontWeight: 500, fontSize: "0.8rem" }}>{j.lastErrorCode || "ERROR"}</div>
                         <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)", marginTop: "2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={j.lastErrorMessage || ""}>
                           {j.lastErrorMessage || "No details provided"}
                         </div>
@@ -190,8 +190,8 @@ export function CampaignPurgeJobsPage() {
                               gap: "4px",
                               padding: "6px 12px",
                               borderRadius: "6px",
-                              backgroundColor: "rgba(255, 255, 255, 0.03)",
-                              border: "1px solid var(--border)",
+                              backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
+                              border: "1px solid var(--theme-borders-default)",
                               color: "inherit",
                               cursor: "pointer",
                               fontSize: "0.8rem",

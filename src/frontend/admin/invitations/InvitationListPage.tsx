@@ -53,7 +53,7 @@ export function InvitationListPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
             <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
           </div>
         )}
@@ -67,7 +67,7 @@ export function InvitationListPage() {
           backgroundColor: "var(--theme-surfaces-base)",
           padding: "16px",
           borderRadius: "12px",
-          border: "1px solid var(--border)",
+          border: "1px solid var(--theme-borders-default)",
         }}>
           <div style={{ display: "flex", gap: "8px" }}>
             {[
@@ -80,9 +80,9 @@ export function InvitationListPage() {
                 style={{
                   padding: "8px 16px",
                   borderRadius: "8px",
-                  backgroundColor: activeOnly === opt.key ? "var(--gold)" : "rgba(255,255,255,0.03)",
+                  backgroundColor: activeOnly === opt.key ? "var(--theme-accents-primary-foreground)" : "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
                   color: activeOnly === opt.key ? "var(--theme-surfaces-canvas)" : "inherit",
-                  border: "1px solid var(--border)",
+                  border: "1px solid var(--theme-borders-default)",
                   cursor: "pointer",
                   fontSize: "0.85rem",
                   fontWeight: 600,
@@ -99,14 +99,14 @@ export function InvitationListPage() {
             Loading invitations...
           </div>
         ) : invitations.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", color: "var(--theme-text-secondary)" }}>
             No invitations found.
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
+                <tr style={{ borderBottom: "1px solid var(--theme-borders-default)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)" }}>
                   <th style={{ padding: "16px" }}>Campaign</th>
                   <th style={{ padding: "16px" }}>Role</th>
                   <th style={{ padding: "16px" }}>Uses</th>
@@ -120,7 +120,7 @@ export function InvitationListPage() {
                   const expired = isExpired(inv);
                   const revoked = Boolean(inv.revokedAt);
                   return (
-                    <tr key={inv.invitationId} style={{ borderBottom: "1px solid var(--border)" }}>
+                    <tr key={inv.invitationId} style={{ borderBottom: "1px solid var(--theme-borders-default)" }}>
                       <td style={{ padding: "16px" }}>
                         <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>{inv.campaignId}</div>
                       </td>
@@ -133,9 +133,9 @@ export function InvitationListPage() {
                           borderRadius: "4px",
                           fontSize: "0.75rem",
                           fontWeight: 600,
-                          backgroundColor: revoked ? "rgba(220, 53, 69, 0.1)" : expired ? "rgba(255,255,255,0.05)" : "rgba(40, 167, 69, 0.1)",
-                          color: revoked ? "var(--red)" : expired ? "var(--theme-text-secondary)" : "var(--green)",
-                          border: `1px solid ${revoked ? "rgba(220, 53, 69, 0.3)" : expired ? "var(--border)" : "rgba(40, 167, 69, 0.3)"}`,
+                          backgroundColor: revoked ? "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)" : expired ? "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)" : "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)",
+                          color: revoked ? "var(--theme-feedback-danger-foreground)" : expired ? "var(--theme-text-secondary)" : "var(--theme-feedback-success-foreground)",
+                          border: `1px solid ${revoked ? "color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent)" : expired ? "var(--theme-borders-default)" : "color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)"}`,
                         }}>
                           {revoked ? "Revoked" : expired ? "Expired" : "Active"}
                         </span>
@@ -151,9 +151,9 @@ export function InvitationListPage() {
                               gap: "6px",
                               padding: "6px 12px",
                               borderRadius: "6px",
-                              backgroundColor: "rgba(220, 53, 69, 0.1)",
-                              border: "1px solid rgba(220, 53, 69, 0.3)",
-                              color: "var(--red)",
+                              backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)",
+                              border: "1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent)",
+                              color: "var(--theme-feedback-danger-foreground)",
                               cursor: "pointer",
                               fontSize: "0.8rem",
                             }}

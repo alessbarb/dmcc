@@ -52,7 +52,7 @@ export function AuditLogPage() {
               padding: "8px 16px",
               borderRadius: "8px",
               backgroundColor: "var(--theme-surfaces-base)",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--theme-borders-default)",
               color: "inherit",
               cursor: "pointer",
               fontSize: "0.85rem",
@@ -65,7 +65,7 @@ export function AuditLogPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
             <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
           </div>
         )}
@@ -78,7 +78,7 @@ export function AuditLogPage() {
           backgroundColor: "var(--theme-surfaces-base)",
           padding: "16px",
           borderRadius: "12px",
-          border: "1px solid var(--border)",
+          border: "1px solid var(--theme-borders-default)",
           flexWrap: "wrap",
         }}>
           <div style={{ flex: 1, minWidth: "200px" }}>
@@ -92,8 +92,8 @@ export function AuditLogPage() {
                 width: "100%",
                 padding: "8px 12px",
                 borderRadius: "8px",
-                backgroundColor: "rgba(0, 0, 0, 0.2)",
-                border: "1px solid var(--border)",
+                backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)",
+                border: "1px solid var(--theme-borders-default)",
                 color: "inherit",
                 fontSize: "0.85rem",
               }}
@@ -111,8 +111,8 @@ export function AuditLogPage() {
                 width: "100%",
                 padding: "8px 12px",
                 borderRadius: "8px",
-                backgroundColor: "rgba(0, 0, 0, 0.2)",
-                border: "1px solid var(--border)",
+                backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)",
+                border: "1px solid var(--theme-borders-default)",
                 color: "inherit",
                 fontSize: "0.85rem",
               }}
@@ -122,7 +122,7 @@ export function AuditLogPage() {
 
         {/* Content & Details panel */}
         <div style={{ display: "flex", gap: "24px", alignItems: "flex-start", flexWrap: "wrap" }}>
-          <div style={{ flex: 2, minWidth: "600px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ flex: 2, minWidth: "600px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", overflow: "hidden" }}>
             {loading ? (
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
                 Loading audit logs...
@@ -134,7 +134,7 @@ export function AuditLogPage() {
             ) : (
               <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.82rem" }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
+                  <tr style={{ borderBottom: "1px solid var(--theme-borders-default)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)" }}>
                     <th style={{ padding: "12px 16px" }}>Timestamp</th>
                     <th style={{ padding: "12px 16px" }}>Action</th>
                     <th style={{ padding: "12px 16px" }}>Actor</th>
@@ -148,16 +148,16 @@ export function AuditLogPage() {
                       key={l.auditId}
                       onClick={() => setSelectedLog(l)}
                       style={{
-                        borderBottom: "1px solid var(--border)",
+                        borderBottom: "1px solid var(--theme-borders-default)",
                         cursor: "pointer",
-                        backgroundColor: selectedLog?.auditId === l.auditId ? "rgba(218, 165, 32, 0.05)" : "transparent",
+                        backgroundColor: selectedLog?.auditId === l.auditId ? "color-mix(in srgb, var(--theme-accents-primary-foreground) 5%, transparent)" : "transparent",
                         transition: "background-color 0.15s",
                       }}
                     >
                       <td style={{ padding: "12px 16px" }}>
                         {new Date(l.createdAt).toLocaleString()}
                       </td>
-                      <td style={{ padding: "12px 16px", fontWeight: 600, color: "var(--gold)" }}>
+                      <td style={{ padding: "12px 16px", fontWeight: 600, color: "var(--theme-accents-primary-foreground)" }}>
                         {l.action}
                       </td>
                       <td style={{ padding: "12px 16px" }}>
@@ -197,7 +197,7 @@ export function AuditLogPage() {
             minWidth: "300px",
             backgroundColor: "var(--theme-surfaces-base)",
             borderRadius: "12px",
-            border: "1px solid var(--border)",
+            border: "1px solid var(--theme-borders-default)",
             padding: "24px",
             position: "sticky",
             top: "24px",
@@ -211,7 +211,7 @@ export function AuditLogPage() {
                 </div>
                 <div>
                   <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "4px" }}>Action</span>
-                  <strong style={{ color: "var(--gold)" }}>{selectedLog.action}</strong>
+                  <strong style={{ color: "var(--theme-accents-primary-foreground)" }}>{selectedLog.action}</strong>
                 </div>
                 <div>
                   <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "4px" }}>Actor Type</span>
@@ -237,10 +237,10 @@ export function AuditLogPage() {
                     <span style={{ fontFamily: "monospace" }}>{selectedLog.commandId}</span>
                   </div>
                 )}
-                <div style={{ borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
+                <div style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: "16px" }}>
                   <span style={{ color: "var(--theme-text-secondary)", display: "block", marginBottom: "8px" }}>Audit Metadata (Details)</span>
                   <pre style={{
-                    backgroundColor: "rgba(0,0,0,0.3)",
+                    backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 30%, transparent)",
                     padding: "12px",
                     borderRadius: "6px",
                     overflowX: "auto",

@@ -102,7 +102,7 @@ export function UserListPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
             <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
           </div>
         )}
@@ -117,7 +117,7 @@ export function UserListPage() {
           backgroundColor: "var(--theme-surfaces-base)",
           padding: "16px",
           borderRadius: "12px",
-          border: "1px solid var(--border)",
+          border: "1px solid var(--theme-borders-default)",
           flexWrap: "wrap",
         }}>
           <div style={{ display: "flex", gap: "8px" }}>
@@ -128,9 +128,9 @@ export function UserListPage() {
                 style={{
                   padding: "8px 16px",
                   borderRadius: "8px",
-                  backgroundColor: status === s ? "var(--gold)" : "rgba(255,255,255,0.03)",
+                  backgroundColor: status === s ? "var(--theme-accents-primary-foreground)" : "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
                   color: status === s ? "var(--theme-surfaces-canvas)" : "inherit",
-                  border: "1px solid var(--border)",
+                  border: "1px solid var(--theme-borders-default)",
                   cursor: "pointer",
                   fontSize: "0.85rem",
                   fontWeight: 600,
@@ -154,8 +154,8 @@ export function UserListPage() {
                   width: "100%",
                   padding: "8px 12px 8px 36px",
                   borderRadius: "8px",
-                  backgroundColor: "rgba(0, 0, 0, 0.2)",
-                  border: "1px solid var(--border)",
+                  backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)",
+                  border: "1px solid var(--theme-borders-default)",
                   color: "inherit",
                   fontSize: "0.85rem",
                 }}
@@ -166,8 +166,8 @@ export function UserListPage() {
               style={{
                 padding: "8px 16px",
                 borderRadius: "8px",
-                backgroundColor: "rgba(255,255,255,0.05)",
-                border: "1px solid var(--border)",
+                backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
+                border: "1px solid var(--theme-borders-default)",
                 color: "inherit",
                 cursor: "pointer",
                 fontSize: "0.85rem",
@@ -184,14 +184,14 @@ export function UserListPage() {
             Loading users...
           </div>
         ) : users.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", color: "var(--theme-text-secondary)" }}>
             No users found matching the criteria.
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
+                <tr style={{ borderBottom: "1px solid var(--theme-borders-default)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)" }}>
                   <th style={{ padding: "16px" }}>User</th>
                   <th style={{ padding: "16px" }}>Role</th>
                   <th style={{ padding: "16px" }}>Created</th>
@@ -201,13 +201,13 @@ export function UserListPage() {
               </thead>
               <tbody>
                 {users.map((u) => (
-                  <tr key={u.userId} style={{ borderBottom: "1px solid var(--border)" }}>
+                  <tr key={u.userId} style={{ borderBottom: "1px solid var(--theme-borders-default)" }}>
                     <td style={{ padding: "16px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                         {u.avatarUrl ? (
                           <img src={u.avatarUrl} alt={u.displayName || u.email} style={{ width: "32px", height: "32px", borderRadius: "50%" }} />
                         ) : (
-                          <div style={{ width: "32px", height: "32px", borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.05)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600 }}>
+                          <div style={{ width: "32px", height: "32px", borderRadius: "50%", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600 }}>
                             {(u.displayName || u.email)[0].toUpperCase()}
                           </div>
                         )}
@@ -223,9 +223,9 @@ export function UserListPage() {
                         borderRadius: "4px",
                         fontSize: "0.75rem",
                         fontWeight: 600,
-                        backgroundColor: u.isPlatformAdmin ? "rgba(218, 165, 32, 0.1)" : "rgba(255, 255, 255, 0.05)",
-                        color: u.isPlatformAdmin ? "var(--gold)" : "inherit",
-                        border: u.isPlatformAdmin ? "1px solid var(--gold)" : "1px solid var(--border)",
+                        backgroundColor: u.isPlatformAdmin ? "color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
+                        color: u.isPlatformAdmin ? "var(--theme-accents-primary-foreground)" : "inherit",
+                        border: u.isPlatformAdmin ? "1px solid var(--theme-accents-primary-foreground)" : "1px solid var(--theme-borders-default)",
                       }}>
                         {u.isPlatformAdmin ? "Platform Admin" : "User"}
                       </span>
@@ -248,9 +248,9 @@ export function UserListPage() {
                             gap: "4px",
                             padding: "6px 12px",
                             borderRadius: "6px",
-                            backgroundColor: u.disabledAt ? "rgba(40, 167, 69, 0.1)" : "rgba(220, 53, 69, 0.1)",
-                            border: u.disabledAt ? "1px solid rgba(40, 167, 69, 0.3)" : "1px solid rgba(220, 53, 69, 0.3)",
-                            color: u.disabledAt ? "var(--green)" : "var(--red)",
+                            backgroundColor: u.disabledAt ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)",
+                            border: u.disabledAt ? "1px solid color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)" : "1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent)",
+                            color: u.disabledAt ? "var(--theme-feedback-success-foreground)" : "var(--theme-feedback-danger-foreground)",
                             cursor: "pointer",
                             fontSize: "0.8rem",
                           }}
@@ -275,8 +275,8 @@ export function UserListPage() {
                             gap: "4px",
                             padding: "6px 12px",
                             borderRadius: "6px",
-                            backgroundColor: "rgba(255, 255, 255, 0.03)",
-                            border: "1px solid var(--border)",
+                            backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
+                            border: "1px solid var(--theme-borders-default)",
                             color: "inherit",
                             cursor: "pointer",
                             fontSize: "0.8rem",
@@ -303,8 +303,8 @@ export function UserListPage() {
                             justifyContent: "center",
                             padding: "6px",
                             borderRadius: "6px",
-                            backgroundColor: "rgba(255, 255, 255, 0.03)",
-                            border: "1px solid var(--border)",
+                            backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
+                            border: "1px solid var(--theme-borders-default)",
                             color: "inherit",
                             cursor: "pointer",
                           }}

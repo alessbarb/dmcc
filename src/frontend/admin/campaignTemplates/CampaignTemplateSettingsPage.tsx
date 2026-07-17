@@ -65,7 +65,7 @@ export function CampaignTemplateSettingsPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
             <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
           </div>
         )}
@@ -75,14 +75,14 @@ export function CampaignTemplateSettingsPage() {
             Loading templates...
           </div>
         ) : templates.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", color: "var(--theme-text-secondary)" }}>
             No campaign templates found on disk.
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
+                <tr style={{ borderBottom: "1px solid var(--theme-borders-default)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)" }}>
                   <th style={{ padding: "16px" }}>Template</th>
                   <th style={{ padding: "16px" }}>System</th>
                   <th style={{ padding: "16px" }}>Difficulty</th>
@@ -91,7 +91,7 @@ export function CampaignTemplateSettingsPage() {
               </thead>
               <tbody>
                 {templates.map((t) => (
-                  <tr key={t.templateId} style={{ borderBottom: "1px solid var(--border)" }}>
+                  <tr key={t.templateId} style={{ borderBottom: "1px solid var(--theme-borders-default)" }}>
                     <td style={{ padding: "16px" }}>
                       <div style={{ fontWeight: 600 }}>{t.title}</div>
                       <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>{t.templateId}</div>
@@ -110,9 +110,9 @@ export function CampaignTemplateSettingsPage() {
                             gap: "6px",
                             padding: "6px 12px",
                             borderRadius: "6px",
-                            backgroundColor: t.isFeatured ? "rgba(218, 165, 32, 0.1)" : "rgba(255,255,255,0.03)",
-                            border: `1px solid ${t.isFeatured ? "var(--gold)" : "var(--border)"}`,
-                            color: t.isFeatured ? "var(--gold)" : "inherit",
+                            backgroundColor: t.isFeatured ? "color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
+                            border: `1px solid ${t.isFeatured ? "var(--theme-accents-primary-foreground)" : "var(--theme-borders-default)"}`,
+                            color: t.isFeatured ? "var(--theme-accents-primary-foreground)" : "inherit",
                             cursor: "pointer",
                             fontSize: "0.8rem",
                           }}
@@ -130,9 +130,9 @@ export function CampaignTemplateSettingsPage() {
                             gap: "6px",
                             padding: "6px 12px",
                             borderRadius: "6px",
-                            backgroundColor: t.isVisible ? "rgba(40, 167, 69, 0.1)" : "rgba(220, 53, 69, 0.1)",
-                            border: `1px solid ${t.isVisible ? "rgba(40, 167, 69, 0.3)" : "rgba(220, 53, 69, 0.3)"}`,
-                            color: t.isVisible ? "var(--green)" : "var(--red)",
+                            backgroundColor: t.isVisible ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)",
+                            border: `1px solid ${t.isVisible ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)" : "color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent)"}`,
+                            color: t.isVisible ? "var(--theme-feedback-success-foreground)" : "var(--theme-feedback-danger-foreground)",
                             cursor: "pointer",
                             fontSize: "0.8rem",
                           }}
