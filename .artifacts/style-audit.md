@@ -15,8 +15,8 @@ Generated mechanically by `npm run styles:audit:report`.
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 19,
-  "crossComponentSelectors": 129,
-  "importantDeclarations": 397,
+  "crossComponentSelectors": 128,
+  "importantDeclarations": 396,
   "unclassifiedCssFiles": 0
 }
 ```
@@ -47,7 +47,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/pages/rulesPage.css` | feature | pages | 179 | 32 | 1 |
 | `src/frontend/dm/pages/settingsPage.css` | feature | pages | 135 | 21 | 1 |
 | `src/frontend/dm/people/group/groupWorkspace.css` | feature | people | 631 | 93 | 1 |
-| `src/frontend/dm/people/peopleWorkspace.css` | feature | people | 390 | 60 | 1 |
+| `src/frontend/dm/people/peopleWorkspace.css` | feature | people | 394 | 61 | 1 |
 | `src/frontend/dm/sessions/components/active-session-prep.css` | feature | sessions | 140 | 24 | 1 |
 | `src/frontend/dm/sessions/components/prepared-session.css` | feature | sessions | 131 | 21 | 1 |
 | `src/frontend/dm/sessions/components/quick-capture.css` | feature | sessions | 46 | 6 | 1 |
@@ -1595,9 +1595,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:310` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:538` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/people/group/groupWorkspace.css:628` | Literal visual color outside a registered theme package. |
-| critical | mixed-responsibility | `src/frontend/dm/people/peopleWorkspace.css:1` | Large stylesheet requires atomization (390 lines, 60 selectors). |
-| high | important | `src/frontend/dm/people/peopleWorkspace.css:279` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/people/peopleWorkspace.css:308` | Literal visual color outside a registered theme package. |
+| critical | mixed-responsibility | `src/frontend/dm/people/peopleWorkspace.css:1` | Large stylesheet requires atomization (394 lines, 61 selectors). |
+| high | literal-color | `src/frontend/dm/people/peopleWorkspace.css:312` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:43` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:47` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1605,7 +1604,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:76` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:98` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/story/history/campaignHistory.css:1` | Large stylesheet requires atomization (295 lines, 41 selectors). |
-| high | cross-component-selector | `src/frontend/dm/story/history/campaignHistory.css:106` | Selector depends on another component's DOM structure. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:419` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:423` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/story/plan/StoryPlanView.tsx:434` | Static or mixed inline style must move to an atomized stylesheet. |

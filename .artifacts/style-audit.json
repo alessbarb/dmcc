@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T17:54:51.593Z",
+  "generatedAt": "2026-07-17T18:00:18.257Z",
   "summary": {
     "cssFiles": 61,
     "tsxFilesWithInlineStyles": 85,
@@ -11,8 +11,8 @@
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
     "mixedResponsibilityFiles": 19,
-    "crossComponentSelectors": 129,
-    "importantDeclarations": 397,
+    "crossComponentSelectors": 128,
+    "importantDeclarations": 396,
     "unclassifiedCssFiles": 0
   },
   "files": [
@@ -3795,8 +3795,8 @@
       "path": "src/frontend/dm/people/peopleWorkspace.css",
       "layer": "feature",
       "domain": "people",
-      "lineCount": 390,
-      "selectorCount": 60,
+      "lineCount": 394,
+      "selectorCount": 61,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/people/PeopleWorkspacePage.tsx"
@@ -27337,9 +27337,9 @@
       "reason": "Large stylesheet requires atomization (631 lines, 93 selectors)."
     },
     {
-      "id": "literal-color:src/frontend/dm/people/peopleWorkspace.css:308:3",
+      "id": "literal-color:src/frontend/dm/people/peopleWorkspace.css:312:3",
       "path": "src/frontend/dm/people/peopleWorkspace.css",
-      "line": 308,
+      "line": 312,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -27347,18 +27347,6 @@
       "category": "literal-color",
       "value": "white",
       "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "important:src/frontend/dm/people/peopleWorkspace.css:279:20",
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
-      "line": 279,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
     },
     {
       "id": "mixed-responsibility:src/frontend/dm/people/peopleWorkspace.css",
@@ -27369,7 +27357,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (390 lines, 60 selectors)."
+      "reason": "Large stylesheet requires atomization (394 lines, 61 selectors)."
     },
     {
       "id": "static-inline:src/frontend/dm/shortcuts/ShortcutsPanel.tsx:33:12",
@@ -27448,18 +27436,6 @@
       "value": "style={{ background: \"none\", border: \"none\", cursor: \"pointer\", color: \"var(--theme-text-secondary)\", padding: 2 }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/story/history/campaignHistory.css:106:3",
-      "path": "src/frontend/dm/story/history/campaignHistory.css",
-      "line": 106,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "min-height: 240px;\n  display: grid;\n  place-items: center;\n  padding: 32px;\n  border: 1px dashed var(--theme-borders-default);\n  border-radius: var(--theme-shapes-radius-large);\n  color: var(--theme-text-secondary);\n  text-align: center;\n}\n\n.campaign-history__state > div",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "mixed-responsibility:src/frontend/dm/story/history/campaignHistory.css",
