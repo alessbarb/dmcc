@@ -1,0 +1,7 @@
+:where([hidden]) {
+  display: none;
+}
+
+:where(button, input, select, textarea, [role="button"], [tabindex]):focus-visible {
+  scroll-margin-block: var(--space-4);
+}
