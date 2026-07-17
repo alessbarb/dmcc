@@ -34,14 +34,14 @@
   padding: 0;
   border: 1px solid var(--theme-borders-default);
   border-radius: 9px;
-  background: var(--surface-interactive);
+  background: var(--theme-surfaces-interactive);
   color: var(--theme-text-secondary);
   cursor: pointer;
 }
 
 .map-workspace-fullscreen-button:hover,
 .map-workspace-fullscreen-button:focus-visible {
-  border-color: color-mix(in srgb, var(--accent-gold) 58%, var(--theme-borders-default));
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 58%, var(--theme-borders-default));
   background: var(--theme-surfaces-interactive-hover);
   color: var(--theme-text-primary);
   outline: 0;

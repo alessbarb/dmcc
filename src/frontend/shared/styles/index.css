@@ -370,9 +370,9 @@ body:has(.canvas-page-container) .watermark {
 .timeline-event-footer { justify-content: space-between; }
 .timeline-event-badges { gap: 6px; }
 .timeline-event-type {
-  border-color: var(--timeline-event-color);
-  background: var(--timeline-event-bg);
-  color: var(--timeline-event-color);
+  border-color: var(--timeline-event-color, var(--theme-narrative-canon-foreground));
+  background: var(--timeline-event-bg, var(--theme-surfaces-base));
+  color: var(--timeline-event-color, var(--theme-narrative-canon-foreground));
   font-size: 0.75rem;
   text-transform: uppercase;
 }
@@ -1087,7 +1087,7 @@ body:has(.canvas-page-container) .watermark {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255, 255, 255, 0.06), transparent 40%);
+  background: radial-gradient(800px circle at 0 0, color-mix(in srgb, var(--theme-text-on-media) 6%, transparent), transparent 40%);
   pointer-events: none;
   z-index: 1;
   opacity: 0;
@@ -3060,7 +3060,7 @@ small.canvas-navigator-result-action {
   display: flex;
   flex-direction: column;
   position: relative;
-  background: var(--card-bg, #1e1e2e);
+  background: var(--theme-surfaces-base);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   transition: box-shadow 0.15s, border-color 0.15s;
 }
@@ -5034,7 +5034,7 @@ small.canvas-navigator-result-action {
   padding: 10px 12px;
   border: 1px solid var(--theme-borders-default);
   border-radius: var(--theme-shapes-radius-medium);
-  background: var(--surface-2, var(--theme-surfaces-interactive));
+  background: var(--theme-surfaces-interactive);
 }
 
 .player-compact-row svg,
@@ -5083,7 +5083,7 @@ small.canvas-navigator-result-action {
   padding: 12px;
   border: 1px solid var(--theme-borders-default);
   border-radius: var(--theme-shapes-radius-medium);
-  background: var(--surface-2, var(--theme-surfaces-interactive));
+  background: var(--theme-surfaces-interactive);
 }
 
 .player-resource-row {
@@ -5093,7 +5093,7 @@ small.canvas-navigator-result-action {
   padding: 10px 12px;
   border: 1px solid var(--theme-borders-default);
   border-radius: var(--theme-shapes-radius-medium);
-  background: var(--surface-2, var(--theme-surfaces-interactive));
+  background: var(--theme-surfaces-interactive);
 }
 
 .player-resource-row small {
@@ -5338,7 +5338,7 @@ small.canvas-navigator-result-action {
   min-height: 100vh;
   padding: 28px;
   background:
-    radial-gradient(circle at top left, rgba(var(--accent-rgb, 129, 92, 255), 0.18), transparent 32rem),
+    radial-gradient(circle at top left, color-mix(in srgb, var(--theme-accents-secondary-foreground) 18%, transparent), transparent 32rem),
     var(--theme-surfaces-canvas);
   color: var(--theme-text-primary);
 }
@@ -5356,7 +5356,7 @@ small.canvas-navigator-result-action {
 }
 
 .campaign-template-preview-error svg {
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .campaign-template-preview-hero {
@@ -5377,7 +5377,7 @@ small.canvas-navigator-result-action {
   align-items: center;
   gap: 8px;
   margin-bottom: 10px;
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -5408,7 +5408,7 @@ small.canvas-navigator-result-action {
 
 .campaign-template-preview-hero__meta span {
   padding: 6px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 999px;
   background: var(--theme-surfaces-base);
   color: var(--theme-text-secondary);
@@ -5461,7 +5461,7 @@ small.canvas-navigator-result-action {
 }
 
 .campaign-template-preview-stats svg {
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .campaign-template-preview-stats strong {
@@ -5523,9 +5523,9 @@ small.canvas-navigator-result-action {
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 999px;
-  background: var(--bg-elevated);
+  background: var(--theme-surfaces-raised);
 }
 
 .campaign-template-preview-entity-group strong {
@@ -5536,8 +5536,8 @@ small.canvas-navigator-result-action {
   min-width: 24px;
   padding: 2px 7px;
   border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: color-mix(in srgb, var(--theme-accents-primary-foreground) 14%, transparent);
+  color: var(--theme-accents-primary-foreground);
   font-size: 0.75rem;
   font-weight: 800;
   text-align: center;
@@ -5550,9 +5550,9 @@ small.canvas-navigator-result-action {
 
 .campaign-template-preview-list article {
   padding: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 14px;
-  background: var(--bg-elevated);
+  background: var(--theme-surfaces-raised);
 }
 
 .campaign-template-preview-list strong {
@@ -5648,7 +5648,7 @@ small.canvas-navigator-result-action {
 .campaign-template-preview-check-list svg {
   flex: 0 0 auto;
   margin-top: 2px;
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .campaign-template-quickstart-card {
@@ -5665,7 +5665,7 @@ small.canvas-navigator-result-action {
 }
 
 .campaign-template-quickstart-card li::marker {
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   font-weight: 900;
 }
 
@@ -5743,7 +5743,7 @@ small.canvas-navigator-result-action {
   overflow: auto;
   padding: 24px;
   border-radius: 22px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--theme-borders-default);
   background: var(--theme-surfaces-base);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
 }
@@ -5773,7 +5773,7 @@ small.canvas-navigator-result-action {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   font-size: 0.74rem;
   font-weight: 850;
   letter-spacing: 0.08em;
@@ -5786,7 +5786,7 @@ small.canvas-navigator-result-action {
   justify-content: center;
   width: 34px;
   height: 34px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
   color: var(--theme-text-secondary);
@@ -5808,9 +5808,9 @@ small.canvas-navigator-result-action {
 .campaign-template-import-existing {
   margin-bottom: 16px;
   padding: 14px;
-  border: 1px solid rgba(var(--accent-rgb, 129, 92, 255), 0.25);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 25%, transparent);
   border-radius: 16px;
-  background: rgba(var(--accent-rgb, 129, 92, 255), 0.08);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 8%, transparent);
 }
 
 .campaign-template-import-existing p {
@@ -5836,7 +5836,7 @@ small.canvas-navigator-result-action {
   flex-direction: column;
   gap: 5px;
   padding: 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--theme-borders-default);
   border-radius: 14px;
   background: rgba(255,255,255,0.03);
   color: var(--theme-text-secondary);
@@ -5860,8 +5860,8 @@ small.canvas-navigator-result-action {
 }
 
 .campaign-template-import-mode.is-selected {
-  border-color: var(--accent);
-  background: rgba(var(--accent-rgb, 129, 92, 255), 0.12);
+  border-color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 12%, transparent);
 }
 
 .campaign-template-import-assurances {
@@ -5894,7 +5894,7 @@ small.canvas-navigator-result-action {
   align-items: center;
   gap: 8px;
   margin: 0;
-  color: var(--color-danger, #ef4444);
+  color: var(--theme-feedback-danger-foreground);
   font-size: 0.86rem;
 }
 
@@ -5919,7 +5919,7 @@ small.canvas-navigator-result-action {
 
 .campaign-template-import-loading__spinner {
   animation: rotateCW 1.5s linear infinite;
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   margin-bottom: 20px;
 }
 
@@ -5940,7 +5940,7 @@ small.canvas-navigator-result-action {
 .campaign-template-import-progress {
   width: 100%;
   max-width: 400px;
-  background: var(--border);
+  background: var(--theme-borders-default);
   height: 8px;
   border-radius: 99px;
   overflow: hidden;
@@ -5948,7 +5948,7 @@ small.canvas-navigator-result-action {
 }
 
 .campaign-template-import-progress-fill {
-  background: linear-gradient(90deg, var(--accent) 0%, var(--theme-accents-secondary-foreground) 100%);
+  background: linear-gradient(90deg, var(--theme-accents-primary-foreground) 0%, var(--theme-accents-secondary-foreground) 100%);
   height: 100%;
   border-radius: 99px;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -5962,11 +5962,11 @@ small.canvas-navigator-result-action {
 }
 
 .campaign-card-origin {
-  border: 1px solid rgba(var(--accent-rgb, 129, 92, 255), 0.22);
+  border: 1px solid color-mix(in srgb, var(--theme-accents-secondary-foreground) 22%, transparent);
   border-radius: 999px;
   padding: 3px 8px;
-  color: var(--accent);
-  background: rgba(var(--accent-rgb, 129, 92, 255), 0.08);
+  color: var(--theme-accents-primary-foreground);
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 8%, transparent);
   font-size: 0.68rem;
   font-weight: 800;
 }
@@ -5988,7 +5988,7 @@ small.canvas-navigator-result-action {
 .player-mode-buttons button {
   border: 1px solid var(--theme-borders-default);
   border-radius: 999px;
-  background: var(--surface-2);
+  background: var(--theme-surfaces-subtle);
   color: var(--theme-text-secondary);
   cursor: pointer;
   font-size: 0.72rem;
@@ -6007,7 +6007,7 @@ small.canvas-navigator-result-action {
   border: 1px solid rgba(99, 102, 241, 0.28);
   background:
     radial-gradient(circle at top left, rgba(99, 102, 241, 0.16), transparent 42%),
-    var(--surface-1);
+    var(--theme-surfaces-base);
 }
 
 .player-onboarding-header,
@@ -6481,7 +6481,7 @@ small.canvas-navigator-result-action {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 0.72rem;
@@ -6505,7 +6505,7 @@ small.canvas-navigator-result-action {
 
 .live-table-modal__error {
   padding: 12px 14px;
-  color: var(--color-danger);
+  color: var(--theme-feedback-danger-foreground);
   border-color: rgba(239, 68, 68, 0.36);
   background: rgba(239, 68, 68, 0.08);
 }
@@ -6924,7 +6924,7 @@ small.canvas-navigator-result-action {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--theme-accents-primary-foreground);
   box-shadow: 0 0 15px rgba(226, 159, 82, 0.35);
   object-fit: cover;
 }
@@ -6965,7 +6965,7 @@ small.canvas-navigator-result-action {
 }
 
 .dm-welcome-stat-pill-icon {
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   opacity: 0.85;
 }
 
@@ -7008,7 +7008,7 @@ small.canvas-navigator-result-action {
 
 .dm-welcome-calendar-campaign-date {
   font-size: 0.76rem;
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
 }
 
 /* Campaign Grid List Target Styles */
@@ -7097,7 +7097,7 @@ small.canvas-navigator-result-action {
 
 .workspace-campaign-fav:hover,
 .workspace-campaign-fav.active {
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   opacity: 1;
 }
 
@@ -7118,7 +7118,7 @@ small.canvas-navigator-result-action {
 
 .workspace-campaign-subtitle {
   font-size: 0.75rem;
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   margin: 2px 0 8px;
 }
 
@@ -7171,7 +7171,7 @@ small.canvas-navigator-result-action {
 
 .workspace-campaign-progress-bar {
   height: 100%;
-  background: linear-gradient(to right, var(--accent) 30%, #f59e0b 100%);
+  background: linear-gradient(to right, var(--theme-accents-primary-foreground) 30%, #f59e0b 100%);
   border-radius: 2px;
 }
 
@@ -7212,7 +7212,7 @@ small.canvas-navigator-result-action {
 .workspace-campaign-create-card:hover .workspace-campaign-create-icon-wrapper {
   border-color: rgba(226, 159, 82, 0.3);
   background: rgba(226, 159, 82, 0.08);
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   box-shadow: 0 0 15px rgba(226, 159, 82, 0.15);
 }
 
@@ -7345,7 +7345,7 @@ small.canvas-navigator-result-action {
 
 .active-table-campaign-name {
   font-size: 0.72rem;
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -7441,7 +7441,7 @@ small.canvas-navigator-result-action {
 }
 
 .quick-action-square-btn-icon {
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
   opacity: 0.85;
 }
 
@@ -7508,7 +7508,7 @@ small.canvas-navigator-result-action {
   z-index: 999;
   min-width: 190px;
   background: var(--theme-surfaces-base, #0d1117);
-  border: 1px solid var(--border, rgba(255,255,255,0.1));
+  border: 1px solid var(--theme-borders-default);
   border-radius: 10px;
   padding: 6px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
@@ -7557,7 +7557,7 @@ small.canvas-navigator-result-action {
 }
 
 .dm-user-dropdown__item--danger {
-  color: var(--color-danger, #f87171);
+  color: var(--theme-feedback-danger-foreground);
 }
 
 .dm-user-dropdown__divider {
@@ -7641,7 +7641,7 @@ small.canvas-navigator-result-action {
 }
 
 .dm-stat-pill__icon {
-  color: var(--accent, #e5ad4f);
+  color: var(--theme-accents-primary-foreground);
   display: flex;
   align-items: center;
 }
@@ -7745,7 +7745,7 @@ small.canvas-navigator-result-action {
 
 .dm-panel__link {
   font-size: 0.74rem;
-  color: var(--accent, #e5ad4f);
+  color: var(--theme-accents-primary-foreground);
   background: none;
   border: none;
   cursor: pointer;
@@ -7941,11 +7941,11 @@ small.canvas-navigator-result-action {
 .dm-campaign-card__action:hover {
   border-color: rgba(255, 255, 255, 0.28);
   background: rgba(0, 0, 0, 0.7);
-  color: var(--accent);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .dm-campaign-card__action--danger:hover {
-  color: var(--color-danger, #e55);
+  color: var(--theme-feedback-danger-foreground);
 }
 
 .dm-campaign-card__body {
@@ -7968,7 +7968,7 @@ small.canvas-navigator-result-action {
 .dm-campaign-card__system {
   margin: 0 0 6px;
   font-size: 0.7rem;
-  color: var(--accent, #e5ad4f);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .dm-campaign-card__desc {
@@ -8006,7 +8006,7 @@ small.canvas-navigator-result-action {
 }
 
 .dm-campaign-card__pct {
-  color: var(--accent, #e5ad4f);
+  color: var(--theme-accents-primary-foreground);
   font-weight: 700;
 }
 
@@ -8019,7 +8019,7 @@ small.canvas-navigator-result-action {
 
 .dm-campaign-card__progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent, #e5ad4f), #f4b44d);
+  background: linear-gradient(90deg, var(--theme-accents-primary-foreground), #f4b44d);
   border-radius: 2px;
   transition: width 0.4s ease;
 }
@@ -8060,7 +8060,7 @@ small.canvas-navigator-result-action {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent, #e5ad4f);
+  color: var(--theme-accents-primary-foreground);
   margin-bottom: 4px;
 }
 
@@ -8208,7 +8208,7 @@ small.canvas-navigator-result-action {
 
 .dm-table-row__campaign {
   font-size: 0.7rem;
-  color: var(--accent, #e5ad4f);
+  color: var(--theme-accents-primary-foreground);
 }
 
 .dm-table-row__session {
@@ -8302,7 +8302,7 @@ small.canvas-navigator-result-action {
 
 .dm-alert-row__badge.warning {
   background: rgba(229, 173, 79, 0.1);
-  color: var(--accent, #e5ad4f);
+  color: var(--theme-accents-primary-foreground);
   border-color: rgba(229, 173, 79, 0.25);
 }
 
@@ -8335,7 +8335,7 @@ small.canvas-navigator-result-action {
 }
 
 .dm-quick-btn__icon {
-  color: var(--accent, #e5ad4f);
+  color: var(--theme-accents-primary-foreground);
   opacity: 0.85;
   display: flex;
   align-items: center;
@@ -8403,7 +8403,7 @@ small.canvas-navigator-result-action {
   background: rgba(229, 173, 79, 0.1);
   border: 1px solid rgba(229, 173, 79, 0.2);
   border-radius: 4px;
-  color: var(--accent, #e5ad4f);
+  color: var(--theme-accents-primary-foreground);
   flex-shrink: 0;
 }
 
@@ -8637,7 +8637,7 @@ small.canvas-navigator-result-action {
   }
 
   .dm-hub-mobile-action svg {
-    color: var(--accent);
+    color: var(--theme-accents-primary-foreground);
   }
 
   .dm-hub-mobile-action--theme-accents-primary-foreground {

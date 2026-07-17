@@ -141,7 +141,7 @@ export function DmHubCampaignModals(props: DmHubCampaignModalsProps) {
                 />
               </div>
               {createCampaignError && (
-                <p style={{ color: "var(--color-danger, #e55)", fontSize: "0.83rem", margin: "0 0 12px" }}>
+                <p style={{ color: "var(--theme-feedback-danger-foreground)", fontSize: "0.83rem", margin: "0 0 12px" }}>
                   {createCampaignError}
                 </p>
               )}
@@ -201,7 +201,7 @@ export function DmHubCampaignModals(props: DmHubCampaignModalsProps) {
                   />
                 </div>
                 {backupRestoreError && (
-                  <p style={{ color: "var(--color-danger, #e55)", fontSize: "0.83rem", margin: "0 0 12px" }}>
+                  <p style={{ color: "var(--theme-feedback-danger-foreground)", fontSize: "0.83rem", margin: "0 0 12px" }}>
                     {backupRestoreError}
                   </p>
                 )}
@@ -234,7 +234,7 @@ export function DmHubCampaignModals(props: DmHubCampaignModalsProps) {
           <div className="dm-modal dm-modal--danger" role="dialog" aria-modal="true">
             <div className="dm-modal__header">
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <Trash2 size={18} style={{ color: "var(--color-danger, #e55)" }} />
+                <Trash2 size={18} style={{ color: "var(--theme-feedback-danger-foreground)" }} />
                 <h3 className="dm-modal__title">
                   {deleteConfirmStep === 1 ? t("landing.deleteStep1Title") : t("landing.deleteStep2Title")}
                 </h3>
@@ -263,7 +263,7 @@ export function DmHubCampaignModals(props: DmHubCampaignModalsProps) {
                 />
               </div>
             )}
-            {deleteError && <p style={{ color: "var(--color-danger, #e55)", fontSize: "0.82rem", margin: "0 0 12px" }}>{deleteError}</p>}
+            {deleteError && <p style={{ color: "var(--theme-feedback-danger-foreground)", fontSize: "0.82rem", margin: "0 0 12px" }}>{deleteError}</p>}
             <div className="dm-modal__footer">
               <button type="button" className="btn btn-secondary btn-sm" onClick={closeDeleteModal} disabled={deleteLoading}>
                 {t("landing.deleteCancel")}
@@ -271,7 +271,7 @@ export function DmHubCampaignModals(props: DmHubCampaignModalsProps) {
               <button
                 type="button"
                 className="btn btn-sm"
-                style={{ background: "var(--color-danger, #c33)", color: "#fff", border: "none" }}
+                style={{ background: "var(--theme-feedback-danger-foreground)", color: "#fff", border: "none" }}
                 onClick={() => {
                   runDmHubAction(handleDeleteConfirm(), "No se pudo eliminar la campaña.");
                 }}
@@ -324,7 +324,7 @@ export function DmHubCampaignModals(props: DmHubCampaignModalsProps) {
                 defaultImage="/assets/campaigns/default-campaign-cover.jpg"
               />
             </div>
-            {editError && <p style={{ color: "var(--color-danger, #e55)", fontSize: "0.82rem", margin: "0 0 12px" }}>{editError}</p>}
+            {editError && <p style={{ color: "var(--theme-feedback-danger-foreground)", fontSize: "0.82rem", margin: "0 0 12px" }}>{editError}</p>}
             <div className="dm-modal__footer">
               <button type="button" className="btn btn-secondary" onClick={closeEditModal} disabled={editLoading}>
                 Cancelar
@@ -397,7 +397,7 @@ export function DmHubCampaignModals(props: DmHubCampaignModalsProps) {
                       {formatCampaignSystem(c.system)} · Sesión {c.stats?.sessionsCount ?? 0}
                     </p>
                   </div>
-                  <ArrowRight size={14} style={{ color: "var(--accent)", flexShrink: 0 }} />
+                  <ArrowRight size={14} style={{ color: "var(--theme-accents-primary-foreground)", flexShrink: 0 }} />
                 </button>
               ))}
             </div>

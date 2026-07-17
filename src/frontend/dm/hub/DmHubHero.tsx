@@ -66,7 +66,7 @@ export function DmHubHero({
           </div>
           <div className="dm-hub-hero__calendar">
             <div className="dm-hub-hero__calendar-date">
-              <Calendar size={13} style={{ color: "var(--accent)", marginRight: "6px", verticalAlign: "middle" }} />
+              <Calendar size={13} style={{ color: "var(--theme-accents-primary-foreground)", marginRight: "6px", verticalAlign: "middle" }} />
               {formattedTodayDate}
             </div>
             <div className="dm-hub-hero__calendar-world">{activeTablesLength > 0 ? `${activeTablesLength} mesa(s) activas ahora` : "Sin mesas activas ahora"}</div>

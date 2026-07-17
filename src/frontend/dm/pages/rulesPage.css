@@ -144,7 +144,7 @@
 
 .rules-page__error {
   margin: 0 0 16px;
-  color: var(--theme-feedback-danger-foreground, var(--color-danger));
+  color: var(--theme-feedback-danger-foreground, var(--theme-feedback-danger-foreground));
 }
 
 body:has(.rules-page) .watermark {

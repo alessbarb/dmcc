@@ -70,7 +70,7 @@ export function SystemAnnouncements() {
         boxSizing: "border-box",
         padding: "8px 16px",
         backgroundColor: "rgba(20, 20, 25, 0.95)",
-        borderBottom: "1px solid var(--border)",
+        borderBottom: "1px solid var(--theme-borders-default)",
         zIndex: 9999,
         position: "relative",
       }}
@@ -78,8 +78,8 @@ export function SystemAnnouncements() {
       {visibleAnnouncements.map((ann) => {
         // Compute premium color palette and icon based on kind
         let bgColor = "rgba(218, 165, 32, 0.05)"; // gold/info default
-        let borderColor = "var(--gold)";
-        let iconColor = "var(--gold)";
+        let borderColor = "var(--theme-accents-primary-foreground)";
+        let iconColor = "var(--theme-accents-primary-foreground)";
         let Icon = Info;
 
         if (ann.kind === "warning") {

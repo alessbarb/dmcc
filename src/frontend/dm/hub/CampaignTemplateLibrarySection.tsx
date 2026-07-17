@@ -25,7 +25,7 @@ export function CampaignTemplateLibrarySection({
     <section id="campaign-template-library-section" className="dm-panel">
       <div className="dm-panel__header">
         <div className="dm-panel__title-group">
-          <Sparkles size={17} style={{ color: "var(--accent)" }} />
+          <Sparkles size={17} style={{ color: "var(--theme-accents-primary-foreground)" }} />
           <h2 className="dm-panel__title">Aventuras preparadas</h2>
         </div>
       </div>
@@ -51,7 +51,7 @@ export function CampaignTemplateLibrarySection({
                 <div className="dm-campaign-template-card__meta">
                   <span>{t("landing.campaignTemplateDifficulty", { difficulty: template.difficulty })}</span>
                   {copies.length > 0 && (
-                    <span style={{ color: "var(--accent)" }}>
+                    <span style={{ color: "var(--theme-accents-primary-foreground)" }}>
                       {t("landing.campaignTemplateExistingCopies", { count: String(copies.length) })}
                     </span>
                   )}

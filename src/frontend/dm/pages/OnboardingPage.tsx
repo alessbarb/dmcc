@@ -112,7 +112,7 @@ export function OnboardingPage() {
                   border: `2px solid ${template === tpl ? "var(--theme-accents-primary-foreground)" : "var(--theme-borders-default)"}`,
                   padding: "16px",
                   borderRadius: "8px",
-                  background: template === tpl ? "var(--bg-elevated, var(--theme-surfaces-canvas))" : "transparent",
+                  background: template === tpl ? "var(--theme-surfaces-canvas)" : "transparent",
                   transition: "border-color 0.15s"
                 }}
               >
@@ -143,7 +143,7 @@ export function OnboardingPage() {
                 })}
               </p>
             </div>
-            {error && <p style={{ color: "var(--error, #ef4444)", fontSize: "0.85rem" }}>{error}</p>}
+            {error && <p style={{ color: "var(--theme-feedback-danger-foreground)", fontSize: "0.85rem" }}>{error}</p>}
             <div style={{ display: "flex", gap: "12px" }}>
               <button className="btn btn-secondary" onClick={() => setStep(2)} style={{ flex: 1 }}>{t("onboarding.back")}</button>
               <button

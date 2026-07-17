@@ -45,10 +45,10 @@ function formatCampaignSystem(system?: string) {
 
 function activityIcon(type: string) {
   switch (type) {
-    case "session": return <Activity size={14} style={{ color: "var(--accent)" }} />;
-    case "npc": return <UserPlus size={14} style={{ color: "var(--accent)" }} />;
-    case "note": return <FileText size={14} style={{ color: "var(--accent)" }} />;
-    case "entity": return <Layers size={14} style={{ color: "var(--accent)" }} />;
+    case "session": return <Activity size={14} style={{ color: "var(--theme-accents-primary-foreground)" }} />;
+    case "npc": return <UserPlus size={14} style={{ color: "var(--theme-accents-primary-foreground)" }} />;
+    case "note": return <FileText size={14} style={{ color: "var(--theme-accents-primary-foreground)" }} />;
+    case "entity": return <Layers size={14} style={{ color: "var(--theme-accents-primary-foreground)" }} />;
     default: return <span aria-hidden="true">•</span>;
   }
 }
@@ -68,7 +68,7 @@ export function DmHubCampaignsColumn({
             <section id="dm-campaigns-section" className="dm-panel dm-panel--campaigns">
               <div className="dm-panel__header dm-panel__header--campaigns">
                 <div className="dm-panel__title-group">
-                  <FolderOpen size={17} style={{ color: "var(--accent)" }} />
+                  <FolderOpen size={17} style={{ color: "var(--theme-accents-primary-foreground)" }} />
                   <h2 className="dm-panel__title">Tus campañas</h2>
                 </div>
                 <div className="dm-panel__controls">
@@ -112,7 +112,7 @@ export function DmHubCampaignsColumn({
                 </div>
               ) : campaigns.length === 0 ? (
                 <div className="dm-empty-state">
-                  <Shield size={32} style={{ color: "var(--accent)", opacity: 0.5, marginBottom: "12px" }} />
+                  <Shield size={32} style={{ color: "var(--theme-accents-primary-foreground)", opacity: 0.5, marginBottom: "12px" }} />
                   <p style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--theme-text-primary)" }}>
                     Todavía no tienes campañas
                   </p>
@@ -160,7 +160,7 @@ export function DmHubCampaignsColumn({
                               className="dm-campaign-card__fav"
                               onClick={(e) => e.stopPropagation()}
                             >
-                              <Star size={11} fill="var(--accent)" style={{ color: "var(--accent)" }} />
+                              <Star size={11} fill="var(--theme-accents-primary-foreground)" style={{ color: "var(--theme-accents-primary-foreground)" }} />
                             </button>
                             <div
                               className="dm-campaign-card__actions"
@@ -257,7 +257,7 @@ export function DmHubCampaignsColumn({
                 </div>
                 {recentActivity.length === 0 ? (
                   <div className="dm-empty-state dm-empty-state--compact">
-                    <FileText size={22} style={{ color: "var(--accent)", opacity: 0.55, marginBottom: "10px" }} />
+                    <FileText size={22} style={{ color: "var(--theme-accents-primary-foreground)", opacity: 0.55, marginBottom: "10px" }} />
                     <p>No hay actividad reciente.</p>
                     <span>Cuando crees campañas, sesiones, PNJs o notas, aparecerán aquí.</span>
                   </div>

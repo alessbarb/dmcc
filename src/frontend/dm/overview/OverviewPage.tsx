@@ -279,7 +279,7 @@ export function OverviewPage() {
   if (error && !commandCenter) {
     return (
       <div className="card" style={{ padding: 32, display: "grid", gap: 16 }}>
-        <p style={{ margin: 0, color: "var(--color-danger)" }}>{error}</p>
+        <p style={{ margin: 0, color: "var(--theme-feedback-danger-foreground)" }}>{error}</p>
         <button
           className="btn btn-secondary"
           type="button"
