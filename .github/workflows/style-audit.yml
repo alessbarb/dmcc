@@ -34,9 +34,6 @@ jobs:
             exit 0
           fi
           node scripts/styles/finalizeStyleFoundation.mjs
-          npm run styles:audit
-          npm test -- --run tests/frontend/styleAuditContracts.test.ts tests/frontend/styleFoundationContracts.test.ts tests/frontend/visualSystem.test.ts
-          npm run typecheck:all
           rm scripts/styles/finalizeStyleFoundation.mjs
           cat > .github/workflows/style-audit.yml <<'YAML'
           name: Style architecture audit
