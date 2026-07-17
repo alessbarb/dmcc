@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T11:38:13.355Z",
+  "generatedAt": "2026-07-17T11:51:49.356Z",
   "summary": {
-    "cssFiles": 45,
+    "cssFiles": 44,
     "tsxFilesWithInlineStyles": 96,
     "forbiddenLiteralColors": 1568,
     "staticInlineStyles": 1329,
@@ -1459,11 +1459,13 @@
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 626,
+      "lineCount": 628,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/entities/playerCharacterDetail.css",
-        "src/frontend/dm/entities/entityDetailHeroActions.css"
+        "src/frontend/dm/entities/entityDetailHeroActions.css",
+        "src/frontend/dm/entities/entityDetailDialog.css",
+        "src/frontend/dm/entities/entityDetailImageContinuation.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
@@ -1713,7 +1715,7 @@
       "selectorCount": 60,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/layouts/CampaignShell.tsx"
+        "src/frontend/dm/entities/EntityDetailModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -1757,7 +1759,7 @@
       "selectorCount": 18,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/layouts/CampaignShell.tsx"
+        "src/frontend/dm/entities/EntityDetailModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -2145,11 +2147,10 @@
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 359,
+      "lineCount": 358,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/dm/entities/entityDetailDialog.css",
-        "src/frontend/dm/entities/entityDetailImageContinuation.css"
+        "src/frontend/dm/layouts/campaign-route-transitions.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
@@ -2170,7 +2171,7 @@
       "selectorCount": 19,
       "imports": [],
       "importedBy": [
-        "src/frontend/shared/components/AppFooter.tsx"
+        "src/frontend/dm/layouts/CampaignShell.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -2389,10 +2390,9 @@
       "path": "src/frontend/dm/map/CampaignMapWorkspacePage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 75,
+      "lineCount": 74,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/dm/workspaces/workspaceSystem.css",
         "src/frontend/dm/map/mapWorkspace.css"
       ],
       "importedBy": [],
@@ -3949,12 +3949,9 @@
       "path": "src/frontend/dm/workspaces/CampaignWorkspace.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 58,
+      "lineCount": 56,
       "selectorCount": 0,
-      "imports": [
-        "src/frontend/dm/workspaces/campaignWorkspace.css",
-        "src/frontend/dm/workspaces/workspaceSystem.css"
-      ],
+      "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -3969,156 +3966,6 @@
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
-    },
-    {
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "layer": "layout",
-      "domain": "workspace",
-      "lineCount": 850,
-      "selectorCount": 124,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/dm/workspaces/CampaignWorkspace.tsx"
-      ],
-      "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-primary",
-        "--theme-accents-primary-foreground",
-        "--theme-text-subtle",
-        "--theme-text-subtle",
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-surfaces-interactive-hover",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-subtle",
-        "--theme-accents-secondary-background",
-        "--theme-text-primary",
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-borders-default",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-text-subtle",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-subtle",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
-        "--theme-accents-secondary-foreground",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-text-subtle",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-borders-default",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-accents-secondary-foreground",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--font-display",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-primary",
-        "--theme-accents-primary-foreground",
-        "--theme-text-subtle",
-        "--theme-borders-default",
-        "--theme-text-subtle",
-        "--theme-text-primary",
-        "--theme-accents-primary-background",
-        "--theme-accents-primary-foreground",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--theme-text-subtle",
-        "--theme-surfaces-base",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-background",
-        "--theme-text-primary",
-        "--theme-text-subtle",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-subtle",
-        "--theme-text-subtle",
-        "--theme-borders-default",
-        "--theme-borders-default",
-        "--theme-accents-secondary-foreground"
-      ]
-    },
-    {
-      "path": "src/frontend/dm/workspaces/workspaceSystem.css",
-      "layer": "layout",
-      "domain": "workspace",
-      "lineCount": 161,
-      "selectorCount": 26,
-      "imports": [],
-      "importedBy": [
-        "src/frontend/dm/map/CampaignMapWorkspacePage.tsx",
-        "src/frontend/dm/workspaces/CampaignWorkspace.tsx"
-      ],
-      "variableDefinitions": [
-        "--dmcc-page-compact",
-        "--dmcc-page-standard",
-        "--dmcc-page-wide",
-        "--dmcc-surface-1",
-        "--dmcc-surface-2",
-        "--dmcc-border-subtle",
-        "--dmcc-border-default",
-        "--dmcc-border-interactive",
-        "--dmcc-border-selected",
-        "--dmcc-radius-panel",
-        "--dmcc-radius-control",
-        "--dmcc-control-height"
-      ],
-      "variableReferences": [
-        "--theme-surfaces-base",
-        "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
-        "--theme-borders-default",
-        "--theme-borders-default",
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-primary-foreground",
-        "--dmcc-page-compact",
-        "--dmcc-page-standard",
-        "--dmcc-page-wide",
-        "--dmcc-border-subtle",
-        "--dmcc-radius-panel",
-        "--dmcc-surface-1",
-        "--dmcc-border-subtle",
-        "--theme-text-secondary",
-        "--theme-text-primary",
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-secondary-foreground",
-        "--theme-accents-primary-foreground",
-        "--dmcc-control-height",
-        "--dmcc-radius-control"
-      ]
     },
     {
       "path": "src/frontend/home/AccountHomePage.tsx",
@@ -4599,11 +4446,9 @@
       "path": "src/frontend/shared/components/AppFooter.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 45,
+      "lineCount": 44,
       "selectorCount": 0,
-      "imports": [
-        "src/frontend/dm/layouts/campaign-route-transitions.css"
-      ],
+      "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -6419,10 +6264,145 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 1010,
+      "selectorCount": 150,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [
+        "--dmcc-page-compact",
+        "--dmcc-page-standard",
+        "--dmcc-page-wide",
+        "--dmcc-surface-1",
+        "--dmcc-surface-2",
+        "--dmcc-border-subtle",
+        "--dmcc-border-default",
+        "--dmcc-border-interactive",
+        "--dmcc-border-selected",
+        "--dmcc-radius-panel",
+        "--dmcc-radius-control",
+        "--dmcc-control-height"
+      ],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-text-secondary",
+        "--theme-text-secondary",
+        "--theme-borders-default",
+        "--theme-surfaces-canvas",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--font-display",
+        "--theme-text-primary",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-primary",
+        "--theme-accents-primary-foreground",
+        "--theme-text-subtle",
+        "--theme-text-subtle",
+        "--theme-borders-default",
+        "--theme-text-secondary",
+        "--theme-surfaces-interactive-hover",
+        "--theme-text-primary",
+        "--theme-text-subtle",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-subtle",
+        "--theme-accents-secondary-background",
+        "--theme-text-primary",
+        "--theme-accents-secondary-foreground",
+        "--theme-accents-primary-foreground",
+        "--theme-borders-default",
+        "--font-display",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-text-subtle",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-subtle",
+        "--font-display",
+        "--theme-text-primary",
+        "--theme-borders-default",
+        "--theme-surfaces-canvas",
+        "--theme-borders-default",
+        "--theme-accents-secondary-foreground",
+        "--theme-text-primary",
+        "--theme-text-subtle",
+        "--theme-text-subtle",
+        "--theme-text-primary",
+        "--theme-text-subtle",
+        "--theme-borders-default",
+        "--theme-text-primary",
+        "--theme-text-subtle",
+        "--theme-accents-secondary-foreground",
+        "--font-display",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-borders-default",
+        "--font-display",
+        "--theme-text-primary",
+        "--theme-text-subtle",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-primary",
+        "--theme-accents-primary-foreground",
+        "--theme-text-subtle",
+        "--theme-borders-default",
+        "--theme-text-subtle",
+        "--theme-text-primary",
+        "--theme-accents-primary-background",
+        "--theme-accents-primary-foreground",
+        "--theme-borders-default",
+        "--theme-surfaces-canvas",
+        "--theme-text-subtle",
+        "--theme-surfaces-base",
+        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-background",
+        "--theme-text-primary",
+        "--theme-text-subtle",
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-subtle",
+        "--theme-text-subtle",
+        "--theme-borders-default",
+        "--theme-borders-default",
+        "--theme-accents-secondary-foreground",
+        "--theme-surfaces-base",
+        "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
+        "--theme-borders-default",
+        "--theme-borders-default",
+        "--theme-borders-default",
+        "--theme-accents-secondary-foreground",
+        "--theme-accents-primary-foreground",
+        "--dmcc-page-compact",
+        "--dmcc-page-standard",
+        "--dmcc-page-wide",
+        "--dmcc-border-subtle",
+        "--dmcc-radius-panel",
+        "--dmcc-surface-1",
+        "--dmcc-border-subtle",
+        "--theme-text-secondary",
+        "--theme-text-primary",
+        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground",
+        "--theme-accents-secondary-foreground",
+        "--theme-accents-primary-foreground",
+        "--dmcc-control-height",
+        "--dmcc-radius-control"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 24,
+      "lineCount": 26,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -6440,6 +6420,7 @@
         "src/frontend/shared/styles/features/rules-workspace.css",
         "src/frontend/shared/styles/features/kanban-board.css",
         "src/frontend/shared/styles/features/sidebar-nav.css",
+        "src/frontend/shared/styles/layout/workspace.css",
         "src/frontend/shared/styles/landing.css",
         "src/frontend/account/account.css",
         "src/frontend/shared/styles/index.css"
@@ -17095,9 +17076,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "literal-color:src/frontend/dm/entities/EntityDetailModal.tsx:221:35",
+      "id": "literal-color:src/frontend/dm/entities/EntityDetailModal.tsx:223:35",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 221,
+      "line": 223,
       "column": 35,
       "severity": "high",
       "status": "temporary",
@@ -17107,9 +17088,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/entities/EntityDetailModal.tsx:287:57",
+      "id": "literal-color:src/frontend/dm/entities/EntityDetailModal.tsx:289:57",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 287,
+      "line": 289,
       "column": 57,
       "severity": "high",
       "status": "temporary",
@@ -17119,9 +17100,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "literal-color:src/frontend/dm/entities/EntityDetailModal.tsx:293:47",
+      "id": "literal-color:src/frontend/dm/entities/EntityDetailModal.tsx:295:47",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 293,
+      "line": 295,
       "column": 47,
       "severity": "high",
       "status": "temporary",
@@ -17131,9 +17112,9 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:189:11",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:191:11",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 189,
+      "line": 191,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -17144,9 +17125,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "dynamic-style:src/frontend/dm/entities/EntityDetailModal.tsx:201:13",
+      "id": "dynamic-style:src/frontend/dm/entities/EntityDetailModal.tsx:203:13",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 201,
+      "line": 203,
       "column": 13,
       "severity": "info",
       "status": "allowed",
@@ -17157,9 +17138,9 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:211:15",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:213:15",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 211,
+      "line": 213,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -17170,9 +17151,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:234:13",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:236:13",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 234,
+      "line": 236,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -17183,9 +17164,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:249:11",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:251:11",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 249,
+      "line": 251,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -17196,9 +17177,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:253:17",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:255:17",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 253,
+      "line": 255,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -17209,9 +17190,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:279:19",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:281:19",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 279,
+      "line": 281,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -17222,9 +17203,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:323:37",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:325:37",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 323,
+      "line": 325,
       "column": 37,
       "severity": "high",
       "status": "temporary",
@@ -17235,9 +17216,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:363:39",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:365:39",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 363,
+      "line": 365,
       "column": 39,
       "severity": "high",
       "status": "temporary",
@@ -17248,9 +17229,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:364:16",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:366:16",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 364,
+      "line": 366,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -17261,9 +17242,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:384:16",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:386:16",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 384,
+      "line": 386,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -17274,9 +17255,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:385:19",
+      "id": "static-inline:src/frontend/dm/entities/EntityDetailModal.tsx:387:19",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 385,
+      "line": 387,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -25489,9 +25470,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:153:9",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:152:9",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 153,
+      "line": 152,
       "column": 9,
       "severity": "high",
       "status": "temporary",
@@ -25502,9 +25483,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:161:12",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:160:12",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 161,
+      "line": 160,
       "column": 12,
       "severity": "high",
       "status": "temporary",
@@ -25515,9 +25496,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:171:9",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:170:9",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 171,
+      "line": 170,
       "column": 9,
       "severity": "high",
       "status": "temporary",
@@ -25528,15 +25509,28 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:180:14",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:179:14",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 180,
+      "line": 179,
       "column": 14,
       "severity": "high",
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
       "value": "style={{ maxWidth: 420, textAlign: \"center\" }}",
+      "classification": "static",
+      "reason": "Static or mixed inline style must move to an atomized stylesheet."
+    },
+    {
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:181:14",
+      "path": "src/frontend/dm/layouts/CampaignShell.tsx",
+      "line": 181,
+      "column": 14,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "tsx-inline",
+      "category": "static-inline",
+      "value": "style={{ color: \"var(--theme-text-secondary)\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -25549,27 +25543,14 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:183:14",
-      "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 183,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
       "value": "style={{ color: \"var(--color-danger)\", fontFamily: \"monospace\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:184:16",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:183:16",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 184,
+      "line": 183,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -25580,9 +25561,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:206:11",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:205:11",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 206,
+      "line": 205,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -25593,9 +25574,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:213:13",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:212:13",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 213,
+      "line": 212,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -25606,9 +25587,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:244:13",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:243:13",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 244,
+      "line": 243,
       "column": 13,
       "severity": "high",
       "status": "temporary",
@@ -25619,9 +25600,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:263:11",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:262:11",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 263,
+      "line": 262,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -25632,9 +25613,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:279:41",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:278:41",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 279,
+      "line": 278,
       "column": 41,
       "severity": "high",
       "status": "temporary",
@@ -25645,9 +25626,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:280:16",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:279:16",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 280,
+      "line": 279,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -25658,9 +25639,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:286:15",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:285:15",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 286,
+      "line": 285,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -25671,9 +25652,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:295:15",
+      "id": "static-inline:src/frontend/dm/layouts/CampaignShell.tsx:294:15",
       "path": "src/frontend/dm/layouts/CampaignShell.tsx",
-      "line": 295,
+      "line": 294,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -33276,209 +33257,6 @@
       "sourceType": "css",
       "category": "cross-component-selector",
       "selectorOrComponent": "width: 34px;\n  min-width: 34px;\n  min-height: 34px;\n  padding: 6px !important;\n}\n\nbody:has(.story-plan-workspace) .watermark",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:115:31",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 115,
-      "column": 31,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.2)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:123:26",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 123,
-      "column": 26,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.25)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:256:3",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 256,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "white",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:331:3",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 331,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "white",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:421:26",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 421,
-      "column": 26,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.15)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:431:15",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 431,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(255, 255, 255, 0.02)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:433:21",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 433,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(255, 255, 255, 0.05)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:456:3",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 456,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "white",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:466:21",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 466,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(255, 255, 255, 0.05)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:509:15",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 509,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.15)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:655:15",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 655,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(255, 255, 255, 0.02)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:701:15",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 701,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.2)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/campaignWorkspace.css:721:3",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 721,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "white",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/workspaces/campaignWorkspace.css:90:3",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 90,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: flex;\n  gap: 24px;\n  width: 100%;\n  min-width: 0;\n  min-height: 65vh;\n}\n\n/* Watermark adjustments scoped specifically to the Notebooks view */\nbody:has(.notebooks-workspace) .watermark",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/dm/workspaces/campaignWorkspace.css",
-      "path": "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (850 lines, 124 selectors)."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/workspaces/workspaceSystem.css:80:3",
-      "path": "src/frontend/dm/workspaces/workspaceSystem.css",
-      "line": 80,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "white",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/workspaces/workspaceSystem.css:111:3",
-      "path": "src/frontend/dm/workspaces/workspaceSystem.css",
-      "line": 111,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "outline: 2px solid var(--theme-accents-primary-foreground);\n  outline-offset: -2px;\n}\n\n.campaign-workspace[data-watermark=\"hidden\"] .watermark,\n.campaign-workspace[data-watermark=\"empty-only\"]:has(.notebooks-tree-container:not(:empty)) .watermark",
       "reason": "Selector depends on another component's DOM structure."
     },
     {
@@ -49982,6 +49760,209 @@
       "reason": "Large stylesheet requires atomization (2595 lines, 391 selectors)."
     },
     {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:115:31",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 115,
+      "column": 31,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "rgba(0, 0, 0, 0.2)",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:123:26",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 123,
+      "column": 26,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "rgba(0, 0, 0, 0.25)",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:256:3",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 256,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "white",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:331:3",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 331,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "white",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:421:26",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 421,
+      "column": 26,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "rgba(0, 0, 0, 0.15)",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:431:15",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 431,
+      "column": 15,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "rgba(255, 255, 255, 0.02)",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:433:21",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 433,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "rgba(255, 255, 255, 0.05)",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:456:3",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 456,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "white",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:466:21",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 466,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "rgba(255, 255, 255, 0.05)",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:509:15",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 509,
+      "column": 15,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "rgba(0, 0, 0, 0.15)",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:655:15",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 655,
+      "column": 15,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "rgba(255, 255, 255, 0.02)",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:701:15",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 701,
+      "column": 15,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "rgba(0, 0, 0, 0.2)",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:721:3",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 721,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "white",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "literal-color:src/frontend/shared/styles/layout/workspace.css:929:3",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 929,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "literal-color",
+      "value": "white",
+      "reason": "Literal visual color outside a registered theme package."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/shared/styles/layout/workspace.css:90:3",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 90,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "cross-component-selector",
+      "selectorOrComponent": "display: flex;\n  gap: 24px;\n  width: 100%;\n  min-width: 0;\n  min-height: 65vh;\n}\n\n/* Watermark adjustments scoped specifically to the Notebooks view */\nbody:has(.notebooks-workspace) .watermark",
+      "reason": "Selector depends on another component's DOM structure."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/shared/styles/layout/workspace.css:960:3",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 960,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "cross-component-selector",
+      "selectorOrComponent": "outline: 2px solid var(--theme-accents-primary-foreground);\n  outline-offset: -2px;\n}\n\n.campaign-workspace[data-watermark=\"hidden\"] .watermark,\n.campaign-workspace[data-watermark=\"empty-only\"]:has(.notebooks-tree-container:not(:empty)) .watermark",
+      "reason": "Selector depends on another component's DOM structure."
+    },
+    {
+      "id": "mixed-responsibility:src/frontend/shared/styles/layout/workspace.css",
+      "path": "src/frontend/shared/styles/layout/workspace.css",
+      "line": 1,
+      "column": 1,
+      "sourceType": "css",
+      "category": "mixed-responsibility",
+      "severity": "critical",
+      "status": "temporary",
+      "reason": "Large stylesheet requires atomization (1010 lines, 150 selectors)."
+    },
+    {
       "id": "literal-color:src/frontend/shared/styles/primitives/button.css:12:3",
       "path": "src/frontend/shared/styles/primitives/button.css",
       "line": 12,
@@ -53927,7 +53908,9 @@
     ],
     "src/frontend/dm/entities/EntityDetailModal.tsx": [
       "src/frontend/dm/entities/playerCharacterDetail.css",
-      "src/frontend/dm/entities/entityDetailHeroActions.css"
+      "src/frontend/dm/entities/entityDetailHeroActions.css",
+      "src/frontend/dm/entities/entityDetailDialog.css",
+      "src/frontend/dm/entities/entityDetailImageContinuation.css"
     ],
     "src/frontend/dm/entities/relations/EntityRelationsTab.tsx": [
       "src/frontend/dm/entities/relations/relationshipGraph.css"
@@ -53937,8 +53920,7 @@
       "src/frontend/dm/entities/relations/relationshipGraph.css"
     ],
     "src/frontend/dm/layouts/CampaignShell.tsx": [
-      "src/frontend/dm/entities/entityDetailDialog.css",
-      "src/frontend/dm/entities/entityDetailImageContinuation.css"
+      "src/frontend/dm/layouts/campaign-route-transitions.css"
     ],
     "src/frontend/dm/library/LibraryWorkspacePage.tsx": [
       "src/frontend/dm/library/list/entityListRefinements.css",
@@ -53949,7 +53931,6 @@
       "src/frontend/dm/entities/entities.css"
     ],
     "src/frontend/dm/map/CampaignMapWorkspacePage.tsx": [
-      "src/frontend/dm/workspaces/workspaceSystem.css",
       "src/frontend/dm/map/mapWorkspace.css"
     ],
     "src/frontend/dm/map/network/NetworkFlow.tsx": [
@@ -53982,10 +53963,6 @@
     "src/frontend/dm/story/history/CampaignHistoryView.tsx": [
       "src/frontend/dm/story/history/campaignHistory.css"
     ],
-    "src/frontend/dm/workspaces/CampaignWorkspace.tsx": [
-      "src/frontend/dm/workspaces/campaignWorkspace.css",
-      "src/frontend/dm/workspaces/workspaceSystem.css"
-    ],
     "src/frontend/institutional/InstitutionalLayout.tsx": [
       "src/frontend/institutional/institutional.css"
     ],
@@ -53994,9 +53971,6 @@
     ],
     "src/frontend/player/pages/PlayerCampaignShell.tsx": [
       "src/frontend/player/pages/playerCampaignShell.css"
-    ],
-    "src/frontend/shared/components/AppFooter.tsx": [
-      "src/frontend/dm/layouts/campaign-route-transitions.css"
     ],
     "src/frontend/shared/components/EntityImageReframeDialog.tsx": [
       "src/frontend/shared/components/entityImageReframeDialog.css"
@@ -54017,6 +53991,7 @@
       "src/frontend/shared/styles/features/rules-workspace.css",
       "src/frontend/shared/styles/features/kanban-board.css",
       "src/frontend/shared/styles/features/sidebar-nav.css",
+      "src/frontend/shared/styles/layout/workspace.css",
       "src/frontend/shared/styles/landing.css",
       "src/frontend/account/account.css",
       "src/frontend/shared/styles/index.css"
