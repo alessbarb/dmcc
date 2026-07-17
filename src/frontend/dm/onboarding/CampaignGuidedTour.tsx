@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
+import "./campaign-guided-tour.css";
 import {
   clearPendingCampaignGuidedTour,
   getPendingCampaignGuidedTourId,
