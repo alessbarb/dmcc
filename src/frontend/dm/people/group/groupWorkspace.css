@@ -277,7 +277,7 @@
   border: 1px solid color-mix(in srgb, var(--theme-accents-primary-foreground) 55%, var(--theme-borders-default));
   border-radius: 13px;
   background: var(--theme-surfaces-interactive);
-  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 5px 16px color-mix(in srgb, var(--theme-surfaces-canvas) 28%, transparent);
 }
 
 .group-player-card__avatar img {
@@ -456,8 +456,8 @@
 }
 
 .group-view-status-badge--danger {
-  color: var(--theme-feedback-danger-foreground, var(--danger, #e05252));
-  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground, #e05252) 30%, var(--theme-borders-default));
+  color: var(--theme-feedback-danger-foreground);
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, var(--theme-borders-default));
 }
 
 .group-view-portal-list {

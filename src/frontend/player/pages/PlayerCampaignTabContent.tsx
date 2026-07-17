@@ -257,7 +257,7 @@ function PlayerConstellation({ campaignId, t }: { campaignId: string; t: (key: T
           <RefreshCw size={16} /> {t("playerPortal.actions.refresh")}
         </button>
       </div>
-      {error && <Card style={{ color: "#fecaca" }}><p role="alert"><ShieldAlert size={18} /> {error}</p></Card>}
+      {error && <Card style={{ color: "var(--theme-feedback-danger-foreground)" }}><p role="alert"><ShieldAlert size={18} /> {error}</p></Card>}
       {loading && <Card><p aria-live="polite">{t("playerPortal.loading.constellation")}</p></Card>}
       {!loading && !error && !activeCanvas && <Card>{t("playerPortal.empty.noPublicConstellations")}</Card>}
       {activeCanvas && (

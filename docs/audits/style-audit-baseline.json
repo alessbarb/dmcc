@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T16:25:49.341Z",
+  "generatedAt": "2026-07-17T16:31:14.201Z",
   "summary": {
     "cssFiles": 61,
     "tsxFilesWithInlineStyles": 85,
-    "forbiddenLiteralColors": 1310,
+    "forbiddenLiteralColors": 1303,
     "staticInlineStyles": 1250,
     "dynamicInlineStyles": 36,
-    "unknownCssVariables": 249,
-    "legacyCssVariables": 25,
+    "unknownCssVariables": 244,
+    "legacyCssVariables": 24,
     "orphanCssFiles": 0,
     "mixedResponsibilityFiles": 19,
     "crossComponentSelectors": 130,
@@ -3307,6 +3307,7 @@
         "--theme-borders-default",
         "--theme-shapes-radius-large",
         "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
         "--theme-surfaces-interactive",
         "--theme-surfaces-base",
         "--theme-accents-secondary-foreground",
@@ -3314,6 +3315,7 @@
         "--theme-accents-primary-foreground",
         "--theme-surfaces-interactive",
         "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
         "--theme-shapes-radius-medium"
       ]
     },
@@ -3554,6 +3556,7 @@
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
         "--theme-surfaces-interactive",
+        "--theme-surfaces-canvas",
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-borders-default",
@@ -3587,7 +3590,6 @@
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
         "--theme-feedback-danger-foreground",
-        "--danger",
         "--theme-feedback-danger-foreground",
         "--theme-borders-default",
         "--theme-text-primary",
@@ -3661,9 +3663,9 @@
         "--theme-accents-primary-foreground",
         "--theme-text-primary",
         "--theme-text-secondary",
-        "--color-danger",
+        "--theme-feedback-danger-foreground",
         "--theme-borders-default",
-        "--color-danger",
+        "--theme-feedback-danger-foreground",
         "--theme-feedback-success-foreground",
         "--theme-borders-default",
         "--theme-feedback-success-foreground",
@@ -3672,7 +3674,7 @@
         "--theme-borders-default",
         "--theme-shapes-radius-large",
         "--theme-surfaces-base",
-        "--surface-2",
+        "--theme-text-on-media",
         "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-borders-default",
@@ -3686,9 +3688,9 @@
         "--theme-feedback-warning-foreground",
         "--theme-feedback-warning-foreground",
         "--theme-feedback-warning-foreground",
-        "--color-danger",
-        "--color-danger",
-        "--color-danger",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-danger-foreground",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
         "--theme-surfaces-base",
@@ -4788,6 +4790,7 @@
         "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-text-secondary",
+        "--theme-feedback-danger-foreground",
         "--theme-borders-default",
         "--theme-text-secondary",
         "--theme-text-secondary",
@@ -27818,30 +27821,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "literal-color:src/frontend/dm/pages/campaignMessagesPage.css:13:27",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 13,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.2)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/pages/campaignMessagesPage.css:43:28",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 43,
-      "column": 28,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.14)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "important:src/frontend/dm/pages/campaignMessagesPage.css:6:23",
       "path": "src/frontend/dm/pages/campaignMessagesPage.css",
       "line": 6,
@@ -28006,7 +27985,7 @@
       "status": "temporary",
       "sourceType": "css",
       "category": "cross-component-selector",
-      "selectorOrComponent": "min-height: inherit !important;\n  grid-template-rows: auto minmax(360px, 1fr) auto !important;\n  padding: 0;\n  overflow: hidden;\n  border-color: color-mix(in srgb, var(--theme-borders-default) 88%, transparent);\n  border-radius: var(--theme-shapes-radius-large, 14px);\n  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);\n  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.2);\n}\n\n.campaign-messages-page > .card > header",
+      "selectorOrComponent": "min-height: inherit !important;\n  grid-template-rows: auto minmax(360px, 1fr) auto !important;\n  padding: 0;\n  overflow: hidden;\n  border-color: color-mix(in srgb, var(--theme-borders-default) 88%, transparent);\n  border-radius: var(--theme-shapes-radius-large, 14px);\n  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);\n  box-shadow: 0 18px 46px color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent);\n}\n\n.campaign-messages-page > .card > header",
       "reason": "Selector depends on another component's DOM structure."
     },
     {
@@ -28042,7 +28021,7 @@
       "status": "temporary",
       "sourceType": "css",
       "category": "cross-component-selector",
-      "selectorOrComponent": "position: sticky;\n  bottom: 0;\n  z-index: 2;\n  padding: 14px 18px 18px !important;\n  background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));\n  box-shadow: 0 -12px 28px rgba(0, 0, 0, 0.14);\n}\n\n.campaign-messages-page > .card > footer > div:first-of-type .form-select",
+      "selectorOrComponent": "position: sticky;\n  bottom: 0;\n  z-index: 2;\n  padding: 14px 18px 18px !important;\n  background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));\n  box-shadow: 0 -12px 28px color-mix(in srgb, var(--theme-surfaces-canvas) 14%, transparent);\n}\n\n.campaign-messages-page > .card > footer > div:first-of-type .form-select",
       "reason": "Selector depends on another component's DOM structure."
     },
     {
@@ -28268,18 +28247,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "literal-color:src/frontend/dm/people/group/groupWorkspace.css:280:26",
-      "path": "src/frontend/dm/people/group/groupWorkspace.css",
-      "line": 280,
-      "column": 26,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(0, 0, 0, 0.28)",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "literal-color:src/frontend/dm/people/group/groupWorkspace.css:301:3",
       "path": "src/frontend/dm/people/group/groupWorkspace.css",
       "line": 301,
@@ -28301,30 +28268,6 @@
       "sourceType": "css",
       "category": "literal-color",
       "value": "white",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/people/group/groupWorkspace.css:459:64",
-      "path": "src/frontend/dm/people/group/groupWorkspace.css",
-      "line": 459,
-      "column": 64,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "#e05252",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/people/group/groupWorkspace.css:460:76",
-      "path": "src/frontend/dm/people/group/groupWorkspace.css",
-      "line": 460,
-      "column": 76,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "#e05252",
       "reason": "Literal visual color outside a registered theme package."
     },
     {
@@ -28361,18 +28304,6 @@
       "severity": "critical",
       "status": "temporary",
       "reason": "Large stylesheet requires atomization (631 lines, 93 selectors)."
-    },
-    {
-      "id": "literal-color:src/frontend/dm/people/peopleWorkspace.css:142:32",
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
-      "line": 142,
-      "column": 32,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "literal-color",
-      "value": "rgba(255,255,255,0.04)",
-      "reason": "Literal visual color outside a registered theme package."
     },
     {
       "id": "literal-color:src/frontend/dm/people/peopleWorkspace.css:308:3",
@@ -30830,18 +30761,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "literal-color:src/frontend/player/pages/PlayerCampaignTabContent.tsx:260:40",
-      "path": "src/frontend/player/pages/PlayerCampaignTabContent.tsx",
-      "line": 260,
-      "column": 40,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-style-object",
-      "category": "literal-color",
-      "value": "#fecaca",
-      "reason": "Literal visual color outside a registered theme package."
-    },
-    {
       "id": "static-inline:src/frontend/player/pages/PlayerCampaignTabContent.tsx:39:36",
       "path": "src/frontend/player/pages/PlayerCampaignTabContent.tsx",
       "line": 39,
@@ -31175,7 +31094,7 @@
       "status": "temporary",
       "sourceType": "tsx-inline",
       "category": "static-inline",
-      "value": "style={{ color: \"#fecaca\" }}",
+      "value": "style={{ color: \"var(--theme-feedback-danger-foreground)\" }}",
       "classification": "static",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
@@ -48443,78 +48362,6 @@
     {
       "id": "unknown-token:src/frontend/dm/pages/rulesPage.css:--color-danger",
       "path": "src/frontend/dm/pages/rulesPage.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "unknown-token",
-      "severity": "high",
-      "status": "temporary",
-      "value": "--color-danger",
-      "reason": "CSS variable is not declared or allowlisted."
-    },
-    {
-      "id": "unknown-token:src/frontend/dm/people/peopleWorkspace.css:--color-danger",
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "unknown-token",
-      "severity": "high",
-      "status": "temporary",
-      "value": "--color-danger",
-      "reason": "CSS variable is not declared or allowlisted."
-    },
-    {
-      "id": "unknown-token:src/frontend/dm/people/peopleWorkspace.css:--color-danger",
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "unknown-token",
-      "severity": "high",
-      "status": "temporary",
-      "value": "--color-danger",
-      "reason": "CSS variable is not declared or allowlisted."
-    },
-    {
-      "id": "legacy-token:src/frontend/dm/people/peopleWorkspace.css:--surface-2",
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "legacy-token",
-      "severity": "high",
-      "status": "temporary",
-      "value": "--surface-2",
-      "reason": "Legacy CSS variable remains in use."
-    },
-    {
-      "id": "unknown-token:src/frontend/dm/people/peopleWorkspace.css:--color-danger",
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "unknown-token",
-      "severity": "high",
-      "status": "temporary",
-      "value": "--color-danger",
-      "reason": "CSS variable is not declared or allowlisted."
-    },
-    {
-      "id": "unknown-token:src/frontend/dm/people/peopleWorkspace.css:--color-danger",
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "unknown-token",
-      "severity": "high",
-      "status": "temporary",
-      "value": "--color-danger",
-      "reason": "CSS variable is not declared or allowlisted."
-    },
-    {
-      "id": "unknown-token:src/frontend/dm/people/peopleWorkspace.css:--color-danger",
-      "path": "src/frontend/dm/people/peopleWorkspace.css",
       "line": 1,
       "column": 1,
       "sourceType": "css",
