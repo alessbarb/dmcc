@@ -79,15 +79,15 @@ function CanvasIllustration() {
   return (
     <div className="rl-illus rl-illus-canvas">
       <svg className="rl-illus-canvas__svg" viewBox="0 0 340 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="90" y1="80" x2="170" y2="130" stroke="hsl(38 66% 62% / 0.35)" strokeWidth="1.5" strokeDasharray="5 4"/>
-        <line x1="250" y1="70" x2="170" y2="130" stroke="hsl(270 52% 70% / 0.35)" strokeWidth="1.5" strokeDasharray="5 4"/>
-        <line x1="170" y1="130" x2="90" y2="200" stroke="hsl(158 52% 58% / 0.35)" strokeWidth="1.5" strokeDasharray="5 4"/>
-        <line x1="170" y1="130" x2="270" y2="195" stroke="hsl(24 84% 65% / 0.35)" strokeWidth="1.5" strokeDasharray="5 4"/>
-        <line x1="90" y1="200" x2="270" y2="195" stroke="hsl(38 66% 62% / 0.2)" strokeWidth="1" strokeDasharray="3 6"/>
-        <text x="120" y="100" fill="hsl(32 12% 52%)" fontSize="9" fontFamily="system-ui">conoce</text>
-        <text x="195" y="95" fill="hsl(32 12% 52%)" fontSize="9" fontFamily="system-ui">oculta</text>
-        <text x="95" y="175" fill="hsl(32 12% 52%)" fontSize="9" fontFamily="system-ui">dirige</text>
-        <text x="215" y="175" fill="hsl(32 12% 52%)" fontSize="9" fontFamily="system-ui">causa</text>
+        <line x1="90" y1="80" x2="170" y2="130" stroke="color-mix(in srgb, var(--theme-accents-primary-foreground) 35%, transparent)" strokeWidth="1.5" strokeDasharray="5 4"/>
+        <line x1="250" y1="70" x2="170" y2="130" stroke="color-mix(in srgb, var(--theme-accents-secondary-foreground) 35%, transparent)" strokeWidth="1.5" strokeDasharray="5 4"/>
+        <line x1="170" y1="130" x2="90" y2="200" stroke="color-mix(in srgb, var(--theme-entities-location-foreground) 35%, transparent)" strokeWidth="1.5" strokeDasharray="5 4"/>
+        <line x1="170" y1="130" x2="270" y2="195" stroke="color-mix(in srgb, var(--theme-entities-quest-foreground) 35%, transparent)" strokeWidth="1.5" strokeDasharray="5 4"/>
+        <line x1="90" y1="200" x2="270" y2="195" stroke="color-mix(in srgb, var(--theme-accents-primary-foreground) 20%, transparent)" strokeWidth="1" strokeDasharray="3 6"/>
+        <text x="120" y="100" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">conoce</text>
+        <text x="195" y="95" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">oculta</text>
+        <text x="95" y="175" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">dirige</text>
+        <text x="215" y="175" fill="var(--theme-text-disabled)" fontSize="9" fontFamily="system-ui">causa</text>
       </svg>
       <div className="rl-cn-node rl-cn-node--npc" style={{ top: '22%', left: '16%' }}>
         <Users size={11} /><span>Ragnar</span>
