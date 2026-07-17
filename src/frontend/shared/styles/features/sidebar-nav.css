@@ -1,0 +1,14 @@
+.sidebar-nav__separator {
+  height: 1px;
+  margin: var(--space-3) var(--space-2);
+  background: var(--theme-borders-subtle);
+}
+
+.sidebar-nav__section-label {
+  margin: 0 var(--space-3) var(--space-1);
+  color: var(--theme-text-subtle);
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

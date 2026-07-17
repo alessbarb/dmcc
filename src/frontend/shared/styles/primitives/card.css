@@ -1,0 +1,25 @@
+.surface-solid,
+.card {
+  background: var(--theme-surfaces-base);
+  border: 1px solid var(--theme-borders-default);
+  box-shadow: var(--theme-shadows-medium);
+}
+
+.surface-raised {
+  background: var(--theme-surfaces-raised);
+  border: 1px solid var(--theme-borders-strong);
+  box-shadow: var(--theme-shadows-large);
+}
+
+.surface-glass {
+  background: var(--theme-surfaces-base);
+  border: 1px solid var(--theme-borders-overlay);
+  box-shadow: var(--theme-shadows-overlay);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .surface-glass {
+    background: var(--theme-surfaces-overlay);
+    backdrop-filter: blur(14px);
+  }
+}

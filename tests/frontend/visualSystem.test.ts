@@ -68,7 +68,16 @@ describe("theme-backed visual system", () => {
   });
 
   it("uses the runtime contract in shared primitives", () => {
-    const primitives = read("src/frontend/shared/styles/primitives.css");
+    const primitives = [
+      "button.css",
+      "form-control.css",
+      "badge.css",
+      "card.css",
+      "tooltip.css",
+      "menu.css",
+    ]
+      .map((name) => read(`src/frontend/shared/styles/primitives/${name}`))
+      .join("\n");
     expect(primitives).toContain("var(--theme-surfaces-base)");
     expect(primitives).toContain("var(--theme-borders-default)");
     expect(primitives).toContain("var(--theme-text-primary)");
@@ -76,10 +85,9 @@ describe("theme-backed visual system", () => {
   });
 
   it("lets runtime preferences and the operating system reduce motion", () => {
-    const primitives = read("src/frontend/shared/styles/primitives.css");
     const motion = read("src/frontend/shared/styles/foundation/motion.css");
-    expect(`${motion}\n${primitives}`).toContain("@media (prefers-reduced-motion: reduce)");
-    expect(primitives).toContain(':root[data-reduced-motion="true"] *');
+    expect(motion).toContain("@media (prefers-reduced-motion: reduce)");
+    expect(motion).toContain(':root[data-reduced-motion="true"] *');
   });
 
   it("lets the resolved runtime mode control native color scheme", () => {
@@ -94,7 +102,7 @@ describe("theme-backed visual system", () => {
     const styles = read("src/frontend/shared/styles/main.css");
     const fontsIndex = styles.indexOf('@import "./foundation/fonts.css"');
     const structuralTokensIndex = styles.indexOf('@import "./foundation/structural-tokens.css"');
-    const primitivesIndex = styles.indexOf('@import "./primitives.css"');
+    const primitivesIndex = styles.indexOf('@import "./primitives/button.css"');
     const legacyIndex = styles.indexOf('@import "./index.css"');
 
     expect(fontsIndex).toBe(0);
