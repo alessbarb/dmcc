@@ -14,9 +14,9 @@ Generated mechanically by `npm run styles:audit:report`.
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 19,
-  "crossComponentSelectors": 64,
-  "importantDeclarations": 386,
+  "mixedResponsibilityFiles": 18,
+  "crossComponentSelectors": 62,
+  "importantDeclarations": 385,
   "unclassifiedCssFiles": 0
 }
 ```
@@ -28,15 +28,15 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/account/account.css` | legacy | account | 804 | 121 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
 | `src/frontend/dm/entities/entity-card.css` | feature | entities | 390 | 53 | 1 |
-| `src/frontend/dm/entities/entity-detail-modal.css` | feature | entities | 104 | 12 | 1 |
+| `src/frontend/dm/entities/entity-detail-modal.css` | feature | entities | 216 | 25 | 2 |
 | `src/frontend/dm/entities/entity-grid.css` | feature | entities | 16 | 3 | 1 |
 | `src/frontend/dm/entities/entity-list-toolbar.css` | feature | entities | 97 | 17 | 1 |
 | `src/frontend/dm/entities/entity-summary-character-sheet.css` | feature | entities | 179 | 26 | 1 |
 | `src/frontend/dm/entities/entity-summary.css` | feature | entities | 144 | 23 | 1 |
-| `src/frontend/dm/entities/entityDetailDialog.css` | feature | entities | 395 | 57 | 1 |
-| `src/frontend/dm/entities/entityDetailHeroActions.css` | feature | entities | 57 | 8 | 1 |
-| `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 183 | 18 | 1 |
-| `src/frontend/dm/entities/playerCharacterDetail.css` | feature | entities | 359 | 50 | 1 |
+| `src/frontend/dm/entities/entityDetailDialog.css` | feature | entities | 395 | 57 | 2 |
+| `src/frontend/dm/entities/entityDetailHeroActions.css` | feature | entities | 57 | 8 | 2 |
+| `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 183 | 18 | 2 |
+| `src/frontend/dm/entities/playerCharacterDetail.css` | feature | entities | 145 | 21 | 1 |
 | `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 103 | 16 | 2 |
 | `src/frontend/dm/entities/type-metadata-form.css` | feature | entities | 30 | 4 | 1 |
 | `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 82 | 19 | 1 |
@@ -701,6 +701,37 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/entities/entity-card.css:1` | Large stylesheet requires atomization (390 lines, 53 selectors). |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:133` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:142` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:154` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:158` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:158` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:159` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:160` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:161` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:162` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:163` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:165` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:166` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:167` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:168` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:169` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:170` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:172` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:173` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:175` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:176` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:181` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:187` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:187` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/entity-detail-modal.css:202` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:207` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:208` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:209` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:210` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:211` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:212` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/entities/entity-detail-modal.css:213` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:230` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:406` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:407` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -886,7 +917,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:170` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:176` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:181` | Important declarations bypass the intended cascade. |
-| info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:198` | Runtime style requires review and CSS custom-property preference. |
+| info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:197` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -896,45 +927,10 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:105` | Static or mixed inline style must move to an atomized stylesheet. |
-| critical | mixed-responsibility | `src/frontend/dm/entities/playerCharacterDetail.css:1` | Large stylesheet requires atomization (359 lines, 50 selectors). |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:89` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:122` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:143` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:164` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:228` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:232` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:246` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:275` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:284` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:296` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:300` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:300` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:301` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:302` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:303` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:304` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:305` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:307` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:308` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:309` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:310` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:311` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:312` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:314` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:315` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:317` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:318` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:323` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:329` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:329` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:344` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:349` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:350` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:351` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:352` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:353` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:354` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/entities/playerCharacterDetail.css:355` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:39` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:72` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:93` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:114` | Selector depends on another component's DOM structure. |
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:131` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:174` | Static or mixed inline style must move to an atomized stylesheet. |

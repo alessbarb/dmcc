@@ -27,7 +27,6 @@ import {
   withImageFocalPoint,
 } from "../../shared/images/imageFocalPoint.js";
 import { PlayerCharacterDetailModal } from "./PlayerCharacterDetailModal.js";
-import "./playerCharacterDetail.css";
 import "./entity-detail-modal.css";
 import "./entityDetailHeroActions.css";
 import "./entityDetailDialog.css";

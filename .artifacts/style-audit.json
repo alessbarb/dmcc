@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T21:58:59.653Z",
+  "generatedAt": "2026-07-17T22:09:52.465Z",
   "summary": {
     "cssFiles": 65,
     "tsxFilesWithInlineStyles": 83,
@@ -10,9 +10,9 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 19,
-    "crossComponentSelectors": 64,
-    "importantDeclarations": 386,
+    "mixedResponsibilityFiles": 18,
+    "crossComponentSelectors": 62,
+    "importantDeclarations": 385,
     "unclassifiedCssFiles": 0
   },
   "files": [
@@ -1645,10 +1645,9 @@
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 570,
+      "lineCount": 569,
       "selectorCount": 0,
       "imports": [
-        "src/frontend/dm/entities/playerCharacterDetail.css",
         "src/frontend/dm/entities/entity-detail-modal.css",
         "src/frontend/dm/entities/entityDetailHeroActions.css",
         "src/frontend/dm/entities/entityDetailDialog.css",
@@ -1696,9 +1695,15 @@
       "path": "src/frontend/dm/entities/PlayerCharacterDetailModal.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 207,
+      "lineCount": 253,
       "selectorCount": 0,
-      "imports": [],
+      "imports": [
+        "src/frontend/dm/entities/entity-detail-modal.css",
+        "src/frontend/dm/entities/entityDetailHeroActions.css",
+        "src/frontend/dm/entities/entityDetailDialog.css",
+        "src/frontend/dm/entities/entityDetailImageContinuation.css",
+        "src/frontend/dm/entities/playerCharacterDetail.css"
+      ],
       "importedBy": [],
       "variableDefinitions": [],
       "variableReferences": []
@@ -1862,11 +1867,12 @@
       "path": "src/frontend/dm/entities/entity-detail-modal.css",
       "layer": "feature",
       "domain": "entities",
-      "lineCount": 104,
-      "selectorCount": 12,
+      "lineCount": 216,
+      "selectorCount": 25,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/entities/EntityDetailModal.tsx"
+        "src/frontend/dm/entities/EntityDetailModal.tsx",
+        "src/frontend/dm/entities/PlayerCharacterDetailModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -1878,7 +1884,13 @@
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-surfaces-base",
+        "--theme-surfaces-base",
+        "--theme-surfaces-interactive",
+        "--theme-accents-primary-foreground"
       ]
     },
     {
@@ -1986,7 +1998,8 @@
       "selectorCount": 57,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/entities/EntityDetailModal.tsx"
+        "src/frontend/dm/entities/EntityDetailModal.tsx",
+        "src/frontend/dm/entities/PlayerCharacterDetailModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -2021,7 +2034,8 @@
       "selectorCount": 8,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/entities/EntityDetailModal.tsx"
+        "src/frontend/dm/entities/EntityDetailModal.tsx",
+        "src/frontend/dm/entities/PlayerCharacterDetailModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -2042,7 +2056,8 @@
       "selectorCount": 18,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/entities/EntityDetailModal.tsx"
+        "src/frontend/dm/entities/EntityDetailModal.tsx",
+        "src/frontend/dm/entities/PlayerCharacterDetailModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -2098,21 +2113,14 @@
       "path": "src/frontend/dm/entities/playerCharacterDetail.css",
       "layer": "feature",
       "domain": "entities",
-      "lineCount": 359,
-      "selectorCount": 50,
+      "lineCount": 145,
+      "selectorCount": 21,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/entities/EntityDetailModal.tsx"
+        "src/frontend/dm/entities/PlayerCharacterDetailModal.tsx"
       ],
       "variableDefinitions": [],
       "variableReferences": [
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
-        "--theme-shapes-radius-large",
-        "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
-        "--theme-text-secondary",
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
         "--theme-surfaces-interactive",
@@ -2128,13 +2136,7 @@
         "--theme-borders-default",
         "--theme-shapes-radius-small",
         "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-surfaces-base",
-        "--theme-surfaces-base",
-        "--theme-surfaces-interactive",
-        "--theme-accents-primary-foreground"
+        "--theme-text-secondary"
       ]
     },
     {
@@ -16351,9 +16353,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "dynamic-style:src/frontend/dm/entities/EntityDetailModal.tsx:198:13",
+      "id": "dynamic-style:src/frontend/dm/entities/EntityDetailModal.tsx:197:13",
       "path": "src/frontend/dm/entities/EntityDetailModal.tsx",
-      "line": 198,
+      "line": 197,
       "column": 13,
       "severity": "info",
       "status": "allowed",
@@ -16724,6 +16726,378 @@
       "severity": "critical",
       "status": "temporary",
       "reason": "Large stylesheet requires atomization (390 lines, 53 selectors)."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:154:24",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 154,
+      "column": 24,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:158:22",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 158,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:159:15",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 159,
+      "column": 15,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:160:24",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 160,
+      "column": 24,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:161:18",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 161,
+      "column": 18,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:162:23",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 162,
+      "column": 23,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:163:27",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 163,
+      "column": 27,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:165:15",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 165,
+      "column": 15,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:166:16",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 166,
+      "column": 16,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:167:19",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 167,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:168:20",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 168,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:169:19",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 169,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:170:20",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 170,
+      "column": 20,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:172:13",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 172,
+      "column": 13,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:173:14",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 173,
+      "column": 14,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:175:19",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 175,
+      "column": 19,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:176:24",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 176,
+      "column": 24,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:187:49",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 187,
+      "column": 49,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:207:22",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 207,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:208:17",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 208,
+      "column": 17,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:209:18",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 209,
+      "column": 18,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:210:21",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 210,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:211:22",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 211,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:212:21",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 212,
+      "column": 21,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/entities/entity-detail-modal.css:213:22",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 213,
+      "column": 22,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:133:3",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 133,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "cross-component-selector",
+      "selectorOrComponent": "display: none;\n}\n\n.entity-detail-tabs > button",
+      "reason": "Selector depends on another component's DOM structure."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:142:3",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 142,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "cross-component-selector",
+      "selectorOrComponent": "position: relative;\n  z-index: 21;\n  display: flex;\n  flex: 0 0 auto;\n  align-items: center;\n  align-self: stretch;\n  justify-content: flex-end;\n  gap: 7px;\n  margin-left: auto;\n  padding-left: 14px;\n  background: var(--theme-surfaces-base);\n  box-shadow: -12px 0 16px var(--theme-surfaces-base);\n  pointer-events: auto !important;\n}\n\n.entity-detail-tab-actions > button",
+      "reason": "Selector depends on another component's DOM structure."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:158:3",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 158,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "cross-component-selector",
+      "selectorOrComponent": "position: relative !important;\n  z-index: 22 !important;\n  display: inline-flex !important;\n  flex: 0 0 34px !important;\n  align-items: center !important;\n  justify-content: center !important;\n\n  width: 34px !important;\n  height: 34px !important;\n  min-width: 34px !important;\n  min-height: 34px !important;\n  max-width: 34px !important;\n  max-height: 34px !important;\n\n  margin: 0 !important;\n  padding: 0 !important;\n\n  cursor: pointer !important;\n  pointer-events: auto !important;\n  touch-action: manipulation;\n}\n\n.entity-detail-tab-actions > button svg",
+      "reason": "Selector depends on another component's DOM structure."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:181:3",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 181,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "cross-component-selector",
+      "selectorOrComponent": "display: block;\n  flex: none;\n  pointer-events: none;\n}\n\n.entity-detail-tab-actions > button:hover",
+      "reason": "Selector depends on another component's DOM structure."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:187:3",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 187,
+      "column": 3,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "cross-component-selector",
+      "selectorOrComponent": "background: var(--theme-surfaces-interactive) !important;\n}\n\n.entity-detail-tab-actions > button:focus-visible",
+      "reason": "Selector depends on another component's DOM structure."
+    },
+    {
+      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:202:5",
+      "path": "src/frontend/dm/entities/entity-detail-modal.css",
+      "line": 202,
+      "column": 5,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "cross-component-selector",
+      "selectorOrComponent": "gap: 5px;\n    padding-left: 8px;\n  }\n\n  .entity-detail-tab-actions > button",
+      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "important:src/frontend/dm/entities/entityDetailDialog.css:11:20",
@@ -18729,321 +19103,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:246:21",
+      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:39:3",
       "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 246,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:296:24",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 296,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:300:22",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 300,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:301:15",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 301,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:302:24",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 302,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:303:18",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 303,
-      "column": 18,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:304:23",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 304,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:305:27",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 305,
-      "column": 27,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:307:15",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 307,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:308:16",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 308,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:309:19",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 309,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:310:20",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 310,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:311:19",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 311,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:312:20",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 312,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:314:13",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 314,
-      "column": 13,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:315:14",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 315,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:317:19",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 317,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:318:24",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 318,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:329:49",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 329,
-      "column": 49,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:349:22",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 349,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:350:17",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 350,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:351:18",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 351,
-      "column": 18,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:352:21",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 352,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:353:22",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 353,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:354:21",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 354,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/entities/playerCharacterDetail.css:355:22",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 355,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:89:3",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 89,
+      "line": 39,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -19053,9 +19115,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:122:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:72:3",
       "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 122,
+      "line": 72,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -19065,9 +19127,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:143:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:93:3",
       "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 143,
+      "line": 93,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -19077,9 +19139,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:164:3",
+      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:114:3",
       "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 164,
+      "line": 114,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -19087,113 +19149,6 @@
       "category": "cross-component-selector",
       "selectorOrComponent": "display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 8px;\n}\n\n.player-character-detail__resources > div",
       "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:228:5",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 228,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "grid-template-columns: 1fr;\n  }\n\n  .entity-image-dialog > footer",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:232:5",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 232,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "align-items: stretch;\n    flex-direction: column;\n  }\n\n  .entity-image-dialog > footer > div,\n  .entity-image-dialog > footer button",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:275:3",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 275,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: none;\n}\n\n.entity-detail-tabs > button",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:284:3",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 284,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: relative;\n  z-index: 21;\n  display: flex;\n  flex: 0 0 auto;\n  align-items: center;\n  align-self: stretch;\n  justify-content: flex-end;\n  gap: 7px;\n  margin-left: auto;\n  padding-left: 14px;\n  background: var(--theme-surfaces-base);\n  box-shadow: -12px 0 16px var(--theme-surfaces-base);\n  pointer-events: auto !important;\n}\n\n.entity-detail-tab-actions > button",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:300:3",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 300,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: relative !important;\n  z-index: 22 !important;\n  display: inline-flex !important;\n  flex: 0 0 34px !important;\n  align-items: center !important;\n  justify-content: center !important;\n\n  width: 34px !important;\n  height: 34px !important;\n  min-width: 34px !important;\n  min-height: 34px !important;\n  max-width: 34px !important;\n  max-height: 34px !important;\n\n  margin: 0 !important;\n  padding: 0 !important;\n\n  cursor: pointer !important;\n  pointer-events: auto !important;\n  touch-action: manipulation;\n}\n\n.entity-detail-tab-actions > button svg",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:323:3",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 323,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: block;\n  flex: none;\n  pointer-events: none;\n}\n\n.entity-detail-tab-actions > button:hover",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:329:3",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 329,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "background: var(--theme-surfaces-interactive) !important;\n}\n\n.entity-detail-tab-actions > button:focus-visible",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:344:5",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 344,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "gap: 5px;\n    padding-left: 8px;\n  }\n\n  .entity-detail-tab-actions > button",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/dm/entities/playerCharacterDetail.css",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (359 lines, 50 selectors)."
     },
     {
       "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:40:10",
@@ -32047,11 +32002,17 @@
       "src/frontend/dm/canvas/components/canvas-mobile-toolbar.css"
     ],
     "src/frontend/dm/entities/EntityDetailModal.tsx": [
-      "src/frontend/dm/entities/playerCharacterDetail.css",
       "src/frontend/dm/entities/entity-detail-modal.css",
       "src/frontend/dm/entities/entityDetailHeroActions.css",
       "src/frontend/dm/entities/entityDetailDialog.css",
       "src/frontend/dm/entities/entityDetailImageContinuation.css"
+    ],
+    "src/frontend/dm/entities/PlayerCharacterDetailModal.tsx": [
+      "src/frontend/dm/entities/entity-detail-modal.css",
+      "src/frontend/dm/entities/entityDetailHeroActions.css",
+      "src/frontend/dm/entities/entityDetailDialog.css",
+      "src/frontend/dm/entities/entityDetailImageContinuation.css",
+      "src/frontend/dm/entities/playerCharacterDetail.css"
     ],
     "src/frontend/dm/entities/ResumenTab.tsx": [
       "src/frontend/dm/entities/entity-summary.css",

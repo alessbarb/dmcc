@@ -1,8 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Activity, Heart, Pencil, Shield, Sparkles, UserRound, X } from "lucide-react";
+import { getEntityDefaultImage } from "./entityVisuals.js";
 import type { Entity, CampaignStateStore } from "../../shared/stores/campaignStore.js";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
+import { useBodyDataAttribute } from "../../shared/hooks/useBodyDataAttribute.js";
+import "./entity-detail-modal.css";
+import "./entityDetailHeroActions.css";
+import "./entityDetailDialog.css";
+import "./entityDetailImageContinuation.css";
+import "./playerCharacterDetail.css";
 
 export type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
 
@@ -50,11 +57,21 @@ function Field({ label, value }: { label: string; value: unknown }) {
 }
 
 export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onClose, onEditEntity }: PlayerCharacterDetailModalProps) {
+  useBodyDataAttribute("entityDetailDialogOpen", "true");
   const [sheet, setSheet] = useState<CharacterSheetResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const metadata = record(selectedEntity.metadata);
   const campaignId = campaignState.campaign?.campaignId;
+
+  const imgUrl =
+    typeof selectedEntity.metadata?.imageUrl === "string" && selectedEntity.metadata.imageUrl
+      ? selectedEntity.metadata.imageUrl
+      : getEntityDefaultImage(selectedEntity.entityType);
+
+  const isDmOnly =
+    !selectedEntity.visibility?.kind ||
+    selectedEntity.visibility.kind === "dm_only";
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -115,32 +132,48 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
   const hasBasics = Object.values(basics).some((value) => value !== undefined && value !== null && value !== "");
 
   return (
-    <div className="entity-detail-overlay" role="presentation" onMouseDown={(event) => {
-      if (event.target === event.currentTarget) onClose();
-    }}>
-      <section className="player-character-detail" role="dialog" aria-modal="true" aria-labelledby="player-character-title">
-        <header className="player-character-detail__header">
-          <div>
-            <span className="entity-type-badge">PERSONAJE JUGABLE</span>
-            <h2 id="player-character-title">{selectedEntity.title}</h2>
-            <p>{selectedEntity.subtitle || [basics.className, basics.species].filter(Boolean).join(" · ") || "Ficha de personaje"}</p>
-          </div>
-          <button type="button" className="btn btn-secondary btn-icon" onClick={onClose} aria-label="Cerrar">
-            <X size={18} />
-          </button>
-        </header>
-
-        <div className="player-character-detail__toolbar">
-          <div className="player-character-detail__owner">
-            <UserRound size={16} />
-            <span>{sheet?.player?.displayName || "Sin jugador vinculado"}</span>
-          </div>
-          <button type="button" className="btn btn-secondary btn-sm" onClick={onEditEntity}>
-            <Pencil size={14} /> Editar entidad
-          </button>
+    <div className="modal-overlay entity-detail-dialog" onClick={onClose}>
+      <div className="modal-content entity-detail-dialog" onClick={(event) => event.stopPropagation()}>
+        <div className="entity-detail-hero">
+          <img
+            src={imgUrl}
+            alt={isDmOnly ? "" : selectedEntity.title}
+            className="entity-detail-hero__image"
+            style={{
+              "--entity-detail-hero-filter": isDmOnly ? "grayscale(70%) brightness(35%)" : "none",
+              "--entity-detail-hero-opacity": selectedEntity.metadata?.imageUrl ? 1 : 0.6,
+            } as React.CSSProperties}
+          />
+          {isDmOnly && (
+            <div className="entity-detail-hero__dm-overlay">
+              <span>Secreto / Solo DM</span>
+            </div>
+          )}
+          <div className="entity-detail-hero__gradient" />
         </div>
 
-        <div className="player-character-detail__body">
+        <div className="modal-header entity-detail-modal__header">
+          <div>
+            <span className="badge badge-primary">PERSONAJE JUGABLE</span>
+            <h2 className="entity-detail-modal__title">{selectedEntity.title}</h2>
+            <h4 className="card-subtitle">
+              {selectedEntity.subtitle || [basics.className, basics.species].filter(Boolean).join(" · ") || "Ficha de personaje"}
+            </h4>
+          </div>
+        </div>
+
+        <div className="entity-detail-tab-bar">
+          <div className="entity-detail-tab-actions">
+            <button type="button" className="btn btn-secondary btn-icon" onClick={onEditEntity} aria-label="Editar entidad" title="Editar entidad">
+              <Pencil size={16} />
+            </button>
+            <button type="button" className="btn btn-secondary btn-icon" onClick={onClose} aria-label="Cerrar" title="Cerrar">
+              <X size={17} />
+            </button>
+          </div>
+        </div>
+
+        <div className="modal-body entity-detail-modal__body">
           {selectedEntity.summary && <p className="player-character-detail__summary">{selectedEntity.summary}</p>}
           {error && <div className="alert alert-warning">{error}</div>}
 
@@ -191,16 +224,29 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
               </div>
             </section>
           ) : null}
-
-          <footer className="player-character-detail__freshness">
-            {loading
-              ? "Cargando datos del jugador…"
-              : sheet?.updatedAt
-                ? `Actualizado ${new Date(sheet.updatedAt).toLocaleString()}`
-                : "Sin cambios registrados por el jugador"}
-          </footer>
         </div>
-      </section>
+
+        <div className="modal-footer entity-detail-modal__footer">
+          <div className="entity-detail-modal__footer-group">
+            <span className="player-character-detail__owner">
+              <UserRound size={16} />
+              <span>{sheet?.player?.displayName || "Sin jugador vinculado"}</span>
+            </span>
+          </div>
+          <div className="entity-detail-modal__footer-group">
+            <span className="entity-detail-modal__updated-label player-character-detail__freshness">
+              {loading
+                ? "Cargando datos del jugador…"
+                : sheet?.updatedAt
+                  ? `Actualizado ${new Date(sheet.updatedAt).toLocaleString()}`
+                  : "Sin cambios registrados por el jugador"}
+            </span>
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
