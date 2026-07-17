@@ -33,5 +33,6 @@ jobs:
         with:
           name: style-audit-report
           path: .artifacts/style-audit.*
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 14
