@@ -16,7 +16,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 19,
   "crossComponentSelectors": 128,
-  "importantDeclarations": 396,
+  "importantDeclarations": 394,
   "unclassifiedCssFiles": 0
 }
 ```
@@ -25,7 +25,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 | File | Layer | Domain | Lines | Selectors | Importers |
 |---|---:|---:|---:|---:|---:|
-| `src/frontend/account/account.css` | legacy | account | 811 | 123 | 1 |
+| `src/frontend/account/account.css` | legacy | account | 804 | 121 | 1 |
 | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css` | feature | canvas | 265 | 34 | 1 |
 | `src/frontend/dm/entities/entity-card.css` | feature | entities | 390 | 53 | 1 |
 | `src/frontend/dm/entities/entity-grid.css` | feature | entities | 16 | 3 | 1 |
@@ -91,9 +91,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 | Severity | Category | Location | Reason |
 |---|---|---|---|
-| critical | mixed-responsibility | `src/frontend/account/account.css:1` | Large stylesheet requires atomization (811 lines, 123 selectors). |
-| high | important | `src/frontend/account/account.css:676` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/account/account.css:677` | Important declarations bypass the intended cascade. |
+| critical | mixed-responsibility | `src/frontend/account/account.css:1` | Large stylesheet requires atomization (804 lines, 121 selectors). |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:147` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:158` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |

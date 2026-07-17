@@ -671,13 +671,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .account-center * {
-    scroll-behavior: auto !important;
-    transition: none !important;
-  }
-}
-
 .account-modal-backdrop {
   position: fixed;
   inset: 0;
