@@ -37,9 +37,11 @@ describe("style audit architecture", () => {
   });
 
   it("documents the boundary between shared and component styles", () => {
-    expect(architecture).toContain("Global ownership");
-    expect(architecture).toContain("Local ownership");
-    expect(architecture).toContain("Local styles must consume global tokens and primitives");
+    // style-system.md is written in Spanish; these are the section headings
+    // and rules that define the shared/local ownership boundary.
+    expect(architecture).toContain("### `shared/styles`");
+    expect(architecture).toContain("### CSS local");
+    expect(architecture).toContain("adaptación local de primitivas globales");
   });
 
   it("implements a baseline ratchet rather than silently rewriting it", () => {
