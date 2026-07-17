@@ -5,6 +5,7 @@ import type { MaybeCampaignState, SessionPrep } from "../sessionTypes.js";
 import { runSessionAction } from "../sessionFormSubmit.js";
 import { splitLines, joinLines, uniqueIds, isPrepState, mergeChecklist } from "../prep/sessionPrepUtils.js";
 import { EntityMultiPicker } from "./EntityMultiPicker.js";
+import "./session-prep.css";
 
 export function SessionPrepEditor({
   session,
@@ -62,10 +63,9 @@ export function SessionPrepEditor({
       onSubmit={(event) => {
         runSessionAction(handleSubmit(event), "No se pudo guardar la preparación de sesión.");
       }}
-      className="card"
-      style={{ marginTop: "10px", padding: "18px", borderLeft: "3px solid var(--theme-accents-primary-foreground)" }}
+      className="card session-prep-editor"
     >
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "12px" }}>
+      <div className="session-prep-editor__header-grid">
         <div className="form-group">
           <label className="form-label" htmlFor={`prep-title-${session.sessionId}`}>{t("sessionPage.sessionTitleLabel")}</label>
           <input id={`prep-title-${session.sessionId}`} className="form-input" value={title} onChange={(e) => setTitle(e.target.value)} required />
@@ -85,26 +85,26 @@ export function SessionPrepEditor({
 
       <div className="form-group">
         <label className="form-label" htmlFor={`prep-summary-${session.sessionId}`}>{t("common.summary")}</label>
-        <textarea id={`prep-summary-${session.sessionId}`} className="form-textarea" value={summary} onChange={(e) => setSummary(e.target.value)} placeholder={t("sessionPage.prepSummaryPlaceholder")} style={{ minHeight: "70px" }} />
+        <textarea id={`prep-summary-${session.sessionId}`} className="form-textarea session-prep-editor__textarea--summary" value={summary} onChange={(e) => setSummary(e.target.value)} placeholder={t("sessionPage.prepSummaryPlaceholder")} />
       </div>
 
       <div className="form-group">
         <label className="form-label" htmlFor={`prep-opening-${session.sessionId}`}>{t("sessionPage.openingPromptLabel")}</label>
-        <textarea id={`prep-opening-${session.sessionId}`} className="form-textarea" value={openingPrompt} onChange={(e) => setOpeningPrompt(e.target.value)} placeholder={t("sessionPage.openingPromptPlaceholder")} style={{ minHeight: "80px" }} />
+        <textarea id={`prep-opening-${session.sessionId}`} className="form-textarea session-prep-editor__textarea--opening" value={openingPrompt} onChange={(e) => setOpeningPrompt(e.target.value)} placeholder={t("sessionPage.openingPromptPlaceholder")} />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+      <div className="session-prep-editor__two-columns">
         <div className="form-group">
           <label className="form-label" htmlFor={`prep-goals-${session.sessionId}`}>{t("sessionPage.goalsLabel")}</label>
-          <textarea id={`prep-goals-${session.sessionId}`} className="form-textarea" value={goalsText} onChange={(e) => setGoalsText(e.target.value)} placeholder={t("sessionPage.onePerLinePlaceholder")} style={{ minHeight: "110px" }} />
+          <textarea id={`prep-goals-${session.sessionId}`} className="form-textarea session-prep-editor__textarea--large" value={goalsText} onChange={(e) => setGoalsText(e.target.value)} placeholder={t("sessionPage.onePerLinePlaceholder")} />
         </div>
         <div className="form-group">
           <label className="form-label" htmlFor={`prep-checklist-${session.sessionId}`}>{t("sessionPage.checklistLabel")}</label>
-          <textarea id={`prep-checklist-${session.sessionId}`} className="form-textarea" value={checklistText} onChange={(e) => setChecklistText(e.target.value)} placeholder={t("sessionPage.onePerLinePlaceholder")} style={{ minHeight: "110px" }} />
+          <textarea id={`prep-checklist-${session.sessionId}`} className="form-textarea session-prep-editor__textarea--large" value={checklistText} onChange={(e) => setChecklistText(e.target.value)} placeholder={t("sessionPage.onePerLinePlaceholder")} />
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+      <div className="session-prep-editor__two-columns">
         <EntityMultiPicker label={t("sessionPage.prepScenesLabel")} campaignState={campaignState} ids={sceneIds} onChange={setSceneIds} typeFilter="scene" />
         <EntityMultiPicker label={t("sessionPage.prepCluesLabel")} campaignState={campaignState} ids={availableClueIds} onChange={setAvailableClueIds} typeFilter="clue" />
         <EntityMultiPicker label={t("sessionPage.prepSecretsLabel")} campaignState={campaignState} ids={secretsAtRiskIds} onChange={setSecretsAtRiskIds} typeFilter="secret" />
@@ -115,10 +115,10 @@ export function SessionPrepEditor({
 
       <div className="form-group">
         <label className="form-label" htmlFor={`prep-notes-${session.sessionId}`}>{t("sessionPage.privatePrepNotesLabel")}</label>
-        <textarea id={`prep-notes-${session.sessionId}`} className="form-textarea" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t("sessionPage.privatePrepNotesPlaceholder")} style={{ minHeight: "90px" }} />
+        <textarea id={`prep-notes-${session.sessionId}`} className="form-textarea session-prep-editor__textarea--notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t("sessionPage.privatePrepNotesPlaceholder")} />
       </div>
 
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+      <div className="session-form-actions">
         <button type="button" className="btn btn-secondary" onClick={onCancel} disabled={busy}>{t("common.cancel")}</button>
         <button type="submit" className="btn btn-primary" disabled={busy || !title.trim()}>{busy ? t("common.saving") : t("common.saveChanges")}</button>
       </div>
