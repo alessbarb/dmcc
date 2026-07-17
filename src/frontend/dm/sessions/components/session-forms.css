@@ -1,5 +1,71 @@
+.session-form-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.session-form-grid--two-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.session-form-actions,
+.session-form-choice-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.session-form-actions {
+  justify-content: flex-end;
+}
+
+.session-form-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-8);
+  color: var(--theme-text-secondary);
+  text-align: center;
+}
+
+.session-form-empty svg {
+  opacity: 0.45;
+}
+
+.session-form-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-warning-foreground) 30%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  background: var(--theme-feedback-warning-background);
+  color: var(--theme-feedback-warning-foreground);
+}
+
+.session-form-warning svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.session-form-warning p {
+  margin: 0;
+  font-size: 0.87rem;
+  line-height: 1.45;
+}
+
+.session-form-textarea--large {
+  min-height: 6.875rem;
+}
+
 .session-form-textarea--medium {
   min-height: 5rem;
+}
+
+.session-form-grid .form-textarea {
+  min-height: 5.5rem;
 }
 
 .session-form-help {
@@ -51,4 +117,14 @@
 .session-checkbox-row__label {
   margin-bottom: 0;
   cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .session-form-grid--two-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .session-form-actions .btn {
+    flex: 1 1 100%;
+  }
 }
