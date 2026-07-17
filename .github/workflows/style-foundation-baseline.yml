@@ -1,0 +1,40 @@
+name: Refresh style foundation baseline
+
+on:
+  push:
+    branches: [refactor/style-foundation]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: style-foundation-baseline
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: "!contains(github.event.head_commit.message, '[style-foundation-baseline]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: refactor/style-foundation
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm run styles:audit:update-baseline
+      - run: npm run styles:audit:check
+      - run: npm test -- --run tests/frontend/styleAuditContracts.test.ts tests/frontend/styleFoundationContracts.test.ts tests/frontend/visualSystem.test.ts
+      - run: npm run typecheck:all
+      - name: Commit refreshed baseline and remove workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f docs/audits/style-audit-baseline.json docs/audits/style-audit-baseline.md
+          git rm .github/workflows/style-foundation-baseline.yml
+          git commit -m "docs(styles): refresh foundation baseline [style-foundation-baseline]"
+          git push origin HEAD:refactor/style-foundation
