@@ -4,12 +4,16 @@ import { FALLBACK_LOCALE, dictionaries, isSupportedLocale } from "./locales.js";
 import type { InterpolationParams } from "./interpolation.js";
 import { interpolate } from "./interpolation.js";
 
+function hasOwnKey(obj: object, key: string): obj is Record<string, unknown> {
+  return key in obj;
+}
+
 function getRawString(dict: unknown, path: string): string | undefined {
   const parts = path.split(".");
   let curr: unknown = dict;
   for (const p of parts) {
-    if (curr && typeof curr === "object" && p in curr) {
-      curr = (curr as Record<string, unknown>)[p];
+    if (curr && typeof curr === "object" && hasOwnKey(curr, p)) {
+      curr = curr[p];
     } else {
       return undefined;
     }

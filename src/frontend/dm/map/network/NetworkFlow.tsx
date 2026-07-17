@@ -446,6 +446,7 @@ function NetworkFlowInner() {
           selectedEntity={selectedEntity}
           campaignState={campaignState}
           onClose={() => setDetailOpen(false)}
+          onSelectEntity={setSelectedEntityId}
           onEdit={async (entityId, updates) => store.updateEntity(entityId, updates)}
           onArchive={async (entityId) => {
             await store.archiveEntity(entityId);

@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 import { getEntityDefaultImage } from "./entityVisuals.js";
 import { ResumenTab } from "./ResumenTab.js";
-import { RelacionesTab } from "./RelacionesTab.js";
+import { EntityRelationsTab } from "./relations/EntityRelationsTab.js";
+import { useEntityRelationshipNavigation } from "./relations/useEntityRelationshipNavigation.js";
 import { HechosTab } from "./HechosTab.js";
 import { TrazabilidadTab } from "./TrazabilidadTab.js";
 import { EntityImageReframeDialog } from "../../shared/components/EntityImageReframeDialog.js";
@@ -40,11 +41,15 @@ interface EntityDetailModalProps {
   selectedEntity: Entity;
   campaignState: CampaignState;
   onClose: () => void;
+  /** Navigates the modal to another entity by id, without closing it. */
+  onSelectEntity: (entityId: string) => void;
   onEdit: (entityId: string, updates: Partial<Entity>) => Promise<void>;
   onArchive: (entityId: string) => Promise<void>;
   onVisibilityChange: (entityId: string, visibility: VisibilityRule) => Promise<void>;
   addToast: (msg: string, kind?: ToastKind) => void;
   heroActions?: React.ReactNode;
+  /** Set by the wrapper so the relations history survives a switch to PlayerCharacterDetailModal and back. */
+  relationsHistory?: { canGoBack: boolean; onBack: () => void };
 }
 
 type TabId = "resumen" | "relaciones" | "hechos" | "trazabilidad";
@@ -91,11 +96,13 @@ function StandardEntityDetailModal({
   selectedEntity,
   campaignState,
   onClose,
+  onSelectEntity,
   onEdit,
   onArchive,
   onVisibilityChange,
   addToast,
   heroActions,
+  relationsHistory,
 }: EntityDetailModalProps) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabId>("resumen");
@@ -323,10 +330,12 @@ function StandardEntityDetailModal({
             />
           )}
           {activeTab === "relaciones" && (
-            <RelacionesTab
+            <EntityRelationsTab
               entity={selectedEntity}
               campaignState={campaignState}
-              relations={getRelationsArray(campaignState.relations)}
+              onNavigateEntity={onSelectEntity}
+              canGoBack={relationsHistory?.canGoBack}
+              onBack={relationsHistory?.onBack}
             />
           )}
           {activeTab === "hechos" && (
@@ -589,14 +598,23 @@ function StandardEntityDetailWithImageFocus(props: EntityDetailModalProps) {
 
 export function EntityDetailModal(props: EntityDetailModalProps) {
   const [showEntityEditor, setShowEntityEditor] = useState(false);
+  const navigation = useEntityRelationshipNavigation({
+    currentEntityId: props.selectedEntity.entityId,
+    onSelectEntity: props.onSelectEntity,
+  });
+  const navigatedProps: EntityDetailModalProps = {
+    ...props,
+    onSelectEntity: navigation.navigateToEntity,
+    relationsHistory: { canGoBack: navigation.canGoBack, onBack: navigation.goBack },
+  };
 
   if (props.selectedEntity.entityType !== "player_character" || showEntityEditor) {
-    return <StandardEntityDetailWithImageFocus {...props} />;
+    return <StandardEntityDetailWithImageFocus {...navigatedProps} />;
   }
 
   return (
     <PlayerCharacterDetailModal
-      {...props}
+      {...navigatedProps}
       onEditEntity={() => setShowEntityEditor(true)}
     />
   );
