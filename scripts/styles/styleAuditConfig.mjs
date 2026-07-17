@@ -54,7 +54,8 @@ export const STYLE_AUDIT_CONFIG = {
     criticalSelectors: 45,
   },
   layerRules: [
-    { match: /shared\/styles\/tokens\.css$/, layer: "foundation", domain: "shared" },
+    { match: /shared\/styles\/foundation\//, layer: "foundation", domain: "shared" },
+    { match: /shared\/styles\/(main|tokens)\.css$/, layer: "foundation", domain: "shared" },
     { match: /shared\/styles\/primitives\.css$/, layer: "primitive", domain: "shared" },
     { match: /shared\/styles\//, layer: "legacy", domain: "shared" },
     { match: /account\/account\.css$/, layer: "legacy", domain: "account" },
