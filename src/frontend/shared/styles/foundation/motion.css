@@ -14,7 +14,9 @@
 }
 
 /* Manual override toggle (independent of the OS-level media query above) needs
-   !important to beat inline transition/animation durations set by JS libraries. */
+   !important to beat inline transition/animation durations set by JS libraries.
+   audit-allow-important: forces reduced motion over arbitrary/unknown
+   descendant styles; no other CSS mechanism can guarantee this wins. */
 :root[data-reduced-motion="true"] *,
 :root[data-reduced-motion="true"] *::before,
 :root[data-reduced-motion="true"] *::after {

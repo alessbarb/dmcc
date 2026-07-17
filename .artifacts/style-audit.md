@@ -16,7 +16,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 19,
   "crossComponentSelectors": 124,
-  "importantDeclarations": 394,
+  "importantDeclarations": 386,
   "unclassifiedCssFiles": 0
 }
 ```
@@ -35,7 +35,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 199 | 18 | 1 |
 | `src/frontend/dm/entities/playerCharacterDetail.css` | feature | entities | 359 | 50 | 1 |
 | `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 103 | 16 | 2 |
-| `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 79 | 19 | 1 |
+| `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 82 | 19 | 1 |
 | `src/frontend/dm/library/boards/entityBoards.css` | feature | library | 243 | 37 | 1 |
 | `src/frontend/dm/library/list/entityListRefinements.css` | feature | library | 96 | 16 | 1 |
 | `src/frontend/dm/library/notebooks/notebooksWorkspace.css` | feature | library | 293 | 50 | 1 |
@@ -72,7 +72,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/accessibility.css` | foundation | shared | 8 | 2 | 1 |
 | `src/frontend/shared/styles/foundation/color-scheme.css` | foundation | shared | 12 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/fonts.css` | foundation | shared | 16 | 1 | 1 |
-| `src/frontend/shared/styles/foundation/motion.css` | foundation | shared | 26 | 3 | 1 |
+| `src/frontend/shared/styles/foundation/motion.css` | foundation | shared | 28 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 7 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
 | `src/frontend/shared/styles/index.css` | legacy | shared | 9012 | 1309 | 1 |
@@ -1261,10 +1261,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/hub/DmHubTopBar.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubTopBar.tsx:59` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/layouts/campaign-route-transitions.css:48` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:73` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:74` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:75` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/layouts/campaign-route-transitions.css:76` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:152` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/layouts/CampaignShell.tsx:170` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1983,10 +1979,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ToastContainer.tsx:41` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/foundation/motion.css:21` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/foundation/motion.css:22` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/foundation/motion.css:23` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/foundation/motion.css:24` | Important declarations bypass the intended cascade. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/index.css:1` | Large stylesheet requires atomization (9012 lines, 1309 selectors). |
 | high | literal-color | `src/frontend/shared/styles/index.css:379` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:648` | Literal visual color outside a registered theme package. |
