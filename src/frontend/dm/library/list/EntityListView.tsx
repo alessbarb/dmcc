@@ -12,6 +12,8 @@ import "../../entities/entity-list-toolbar.css";
 import "../../entities/entity-grid.css";
 import "../../entities/entity-card.css";
 import "./entityListRefinements.css";
+import "./entity-list-toolbar-controls.css";
+import "./entity-list-view.css";
 
 function resolveEntityImageUrl(entity: Entity): string | undefined {
   const metadata = entity.metadata && typeof entity.metadata === "object" ? entity.metadata : {};
@@ -299,10 +301,10 @@ export function EntityListView() {
                 {entity.importance}
               </span>
             )}
-            <span className="entity-compact-row__date" style={{ color: "var(--theme-text-secondary)", fontSize: "0.75rem", marginRight: "4px" }}>
+            <span className="entity-compact-row__date">
               {formattedDate}
             </span>
-            <span style={{ display: "flex", alignItems: "center", gap: 4, color: isDmOnly ? "var(--theme-entities-npc-foreground)" : "var(--theme-text-secondary)", fontSize: "0.8rem" }}>
+            <span className={`entity-compact-row__visibility ${isDmOnly ? "entity-compact-row__visibility--dm-only" : ""}`}>
               {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
             </span>
           </div>
@@ -344,10 +346,7 @@ export function EntityListView() {
             <img
               src={customImageUrl}
               alt=""
-              className="entity-card__hero-img"
-              style={{
-                filter: isDmOnly ? "grayscale(20%) brightness(85%)" : "none",
-              }}
+              className={`entity-card__hero-img ${isDmOnly ? "entity-card__hero-img--dm-only" : ""}`}
             />
           ) : (
             <div className="entity-card__hero-icon-wrapper">
@@ -375,7 +374,7 @@ export function EntityListView() {
           </span>
           <div className="entity-card__footer">
             <span>{t("entitiesPage.importanceLabel")}: {entity.importance}</span>
-            <span style={{ display: "flex", alignItems: "center", gap: 4, color: isDmOnly ? "var(--theme-entities-npc-foreground)" : "inherit" }}>
+            <span className={`entity-card__footer-visibility ${isDmOnly ? "entity-card__footer-visibility--dm-only" : ""}`}>
               {isDmOnly ? <EyeOff size={12} /> : <Eye size={12} />}
               {formatVisibility(visibility, locale)}
             </span>
@@ -387,79 +386,50 @@ export function EntityListView() {
 
   return (
     <>
-      <div className="entities-page" style={{ padding: 0 }}>
+      <div className="entities-page">
         <div className="entities-toolbar">
           <div className="entities-header-bar">
             <div className="entities-header-bar__left">
-              <span className="search-input-wrapper" style={{ position: "relative", flex: 1, minWidth: 140, maxWidth: 320 }}>
+              <span className="search-input-wrapper">
                 <Search
                   size={16}
                   aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    left: 12,
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    color: "var(--theme-text-secondary)",
-                  }}
+                  className="entities-search-icon"
                 />
                 <input
                   type="search"
-                  className="form-input"
+                  className="form-input entities-search-input"
                   placeholder={t("entitiesPage.searchPlaceholder")}
-                  style={{ paddingLeft: 36, height: 38, width: "100%", textOverflow: "ellipsis" }}
                   value={entitySearchQuery}
                   onChange={(event) => setEntitySearchQuery(event.target.value)}
                 />
               </span>
-              
+
               <button
                 type="button"
-                className={`btn ${activeFiltersCount > 0 ? "btn-primary" : "btn-secondary"}`}
-                style={{ height: 38, display: "flex", alignItems: "center", gap: 6 }}
+                className={`btn entities-filter-toggle-btn ${activeFiltersCount > 0 ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setIsFiltersExpanded((prev) => !prev)}
                 aria-expanded={isFiltersExpanded}
               >
                 <Filter size={15} />
                 <span>{t("entitiesPage.toggleFilters")}</span>
                 {activeFiltersCount > 0 && (
-                  <span className="filter-badge" style={{
-                    backgroundColor: "var(--theme-accents-primary-foreground)",
-                    color: "var(--theme-accents-primary-on-accent)",
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    borderRadius: "50%",
-                    width: 18,
-                    height: 18,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginLeft: 2
-                  }}>
+                  <span className="filter-badge">
                     {activeFiltersCount}
                   </span>
                 )}
               </button>
 
-              <span className="entities-count-badge" style={{
-                fontSize: "13px",
-                color: "var(--theme-text-secondary)",
-                backgroundColor: "var(--theme-surfaces-interactive)",
-                padding: "4px 10px",
-                borderRadius: "12px",
-                border: "1px solid var(--theme-borders-default)",
-                whiteSpace: "nowrap"
-              }}>
+              <span className="entities-count-badge">
                 {t("entitiesPage.resultCount", { count: sortedEntities.length })}
               </span>
             </div>
 
             <div className="entities-header-bar__right">
-              <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--theme-text-secondary)", marginBottom: 0 }}>
+              <label>
                 <span>{t("entitiesPage.groupBy") || "Agrupar por"}</span>
                 <select
-                  className="form-select"
-                  style={{ height: 38, paddingTop: 4, paddingBottom: 4, width: 140 }}
+                  className="form-select entities-group-by-select"
                   value={groupBy}
                   onChange={(event) => setGroupBy(event.target.value as any)}
                 >
@@ -471,11 +441,10 @@ export function EntityListView() {
                 </select>
               </label>
 
-              <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--theme-text-secondary)", marginBottom: 0 }}>
+              <label>
                 <span>{t("entitiesPage.sortBy")}</span>
                 <select
-                  className="form-select"
-                  style={{ height: 38, paddingTop: 4, paddingBottom: 4, width: 130 }}
+                  className="form-select entities-sort-by-select"
                   value={sortBy}
                   onChange={(event) => changeSortBy(event.target.value as any)}
                 >
@@ -485,18 +454,10 @@ export function EntityListView() {
                 </select>
               </label>
 
-              <div className="btn-group" style={{ display: "flex", borderRadius: 6, overflow: "hidden", border: "1px solid var(--theme-borders-default)" }}>
+              <div className="btn-group entities-view-toggle">
                 <button
                   type="button"
-                  className="btn"
-                  style={{
-                    height: 38,
-                    padding: "0 12px",
-                    background: viewMode === "card" ? "var(--theme-surfaces-interactive-hover)" : "transparent",
-                    color: viewMode === "card" ? "var(--theme-text-primary)" : "var(--theme-text-secondary)",
-                    borderRadius: 0,
-                    border: "none",
-                  }}
+                  className={`btn entities-view-toggle__btn ${viewMode === "card" ? "entities-view-toggle__btn--active" : ""}`}
                   onClick={() => changeViewMode("card")}
                   title={t("entitiesPage.viewCard")}
                   aria-label={t("entitiesPage.viewCard")}
@@ -505,15 +466,7 @@ export function EntityListView() {
                 </button>
                 <button
                   type="button"
-                  className="btn"
-                  style={{
-                    height: 38,
-                    padding: "0 12px",
-                    background: viewMode === "compact" ? "var(--theme-surfaces-interactive-hover)" : "transparent",
-                    color: viewMode === "compact" ? "var(--theme-text-primary)" : "var(--theme-text-secondary)",
-                    borderRadius: 0,
-                    border: "none",
-                  }}
+                  className={`btn entities-view-toggle__btn ${viewMode === "compact" ? "entities-view-toggle__btn--active" : ""}`}
                   onClick={() => changeViewMode("compact")}
                   title={t("entitiesPage.viewCompact")}
                   aria-label={t("entitiesPage.viewCompact")}
@@ -522,7 +475,7 @@ export function EntityListView() {
                 </button>
               </div>
 
-              <button className="btn btn-primary" style={{ height: 38 }} type="button" onClick={() => setIsEntityModalOpen(true)}>
+              <button className="btn btn-primary entities-create-btn" type="button" onClick={() => setIsEntityModalOpen(true)}>
                 <Plus size={16} /> <span className="hide-mobile">{t("entitiesPage.createEntity")}</span>
               </button>
             </div>
@@ -586,10 +539,9 @@ export function EntityListView() {
                 </select>
               </label>
 
-              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+              <div className="entities-filter-panel__clear-row">
                 <button
-                  className="btn btn-secondary"
-                  style={{ width: "100%", height: 38 }}
+                  className="btn btn-secondary entities-filter-panel__clear-btn"
                   type="button"
                   onClick={resetFilters}
                   disabled={!hasFilters}
@@ -653,8 +605,8 @@ export function EntityListView() {
               ]}
             />
           ) : (
-            <div className="card" style={{ textAlign: "center", padding: 40, color: "var(--theme-text-secondary)" }}>
-              <Filter size={36} aria-hidden="true" style={{ opacity: 0.3, marginBottom: 12 }} />
+            <div className="card entities-no-results">
+              <Filter size={36} aria-hidden="true" className="entities-no-results__icon" />
               <p>{t("entitiesPage.noResults")}</p>
               <button className="btn btn-secondary" type="button" onClick={resetFilters}>
                 {t("entitiesPage.clearFilters")}
@@ -664,19 +616,19 @@ export function EntityListView() {
         ) : (
           <>
             {relevantNowEntities.length > 0 && !hasFilters && (
-              <div className="entities-context-section" style={{ marginBottom: "32px" }}>
-                <h2 className="entities-section-title" style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "16px", color: "var(--theme-text-primary)" }}>
+              <div className="entities-context-section">
+                <h2 className="entities-section-title">
                   {t("entitiesPage.relevantNow") || "Relevantes ahora"}
                 </h2>
                 <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
                   {relevantNowEntities.map(entity => renderEntityItem(entity))}
                 </div>
-                <div className="entities-section-divider" style={{ borderBottom: "1px solid var(--theme-borders-default)", margin: "32px 0 24px 0" }} />
+                <div className="entities-section-divider" />
               </div>
             )}
 
             {!hasFilters && (
-              <h2 className="entities-section-title" style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "20px", color: "var(--theme-text-primary)" }}>
+              <h2 className="entities-section-title entities-section-title--tight">
                 {t("entitiesPage.allEntities") || "Todas las entidades"}
               </h2>
             )}
@@ -686,10 +638,10 @@ export function EntityListView() {
                 {sortedEntities.map((entity) => renderEntityItem(entity))}
               </div>
             ) : (
-              <div className="entities-grouped-sections" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              <div className="entities-grouped-sections">
                 {Object.entries(groupedEntities || {}).map(([sectionKey, entities]) => {
                   const isCollapsed = !!collapsedSections[sectionKey];
-                  
+
                   let label = sectionKey;
                   if (groupBy === "type") {
                     label = formatEntityType(sectionKey, locale);
@@ -708,43 +660,21 @@ export function EntityListView() {
                   }
 
                   return (
-                    <div key={sectionKey} className="entities-group-section" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                    <div key={sectionKey} className="entities-group-section">
                       <button
                         type="button"
                         onClick={() => toggleSection(sectionKey)}
                         className="entities-group-section__header"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          width: "100%",
-                          padding: "10px 16px",
-                          background: "var(--theme-surfaces-raised)",
-                          border: "1px solid var(--theme-borders-default)",
-                          borderRadius: "6px",
-                          cursor: "pointer",
-                          color: "var(--theme-text-primary)",
-                          fontWeight: 600,
-                          fontSize: "1.05rem",
-                          textAlign: "left"
-                        }}
                       >
-                        <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span style={{ transform: isCollapsed ? "rotate(-90deg)" : "rotate(0deg)", transition: "transform 0.15s", display: "inline-block" }}>▼</span>
+                        <span className="entities-group-section__label">
+                          <span className={`entities-group-section__chevron ${isCollapsed ? "entities-group-section__chevron--collapsed" : ""}`}>▼</span>
                           <span>{label}</span>
-                          <span style={{
-                            fontSize: "0.75rem",
-                            color: "var(--theme-text-secondary)",
-                            backgroundColor: "var(--theme-surfaces-interactive)",
-                            padding: "2px 8px",
-                            borderRadius: "10px",
-                            marginLeft: "4px"
-                          }}>
+                          <span className="entities-group-section__count">
                             {entities.length}
                           </span>
                         </span>
                       </button>
-                      
+
                       {!isCollapsed && (
                         <div className={viewMode === "compact" ? "entity-compact-list" : "entity-card-grid"}>
                           {entities.map((entity) => renderEntityItem(entity))}

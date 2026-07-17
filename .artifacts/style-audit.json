@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T22:09:52.465Z",
+  "generatedAt": "2026-07-17T22:50:57.609Z",
   "summary": {
-    "cssFiles": 65,
-    "tsxFilesWithInlineStyles": 83,
+    "cssFiles": 67,
+    "tsxFilesWithInlineStyles": 84,
     "forbiddenLiteralColors": 308,
-    "staticInlineStyles": 1079,
-    "dynamicInlineStyles": 36,
+    "staticInlineStyles": 1052,
+    "dynamicInlineStyles": 32,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
@@ -1771,8 +1771,8 @@
       "path": "src/frontend/dm/entities/entity-card.css",
       "layer": "feature",
       "domain": "entities",
-      "lineCount": 390,
-      "selectorCount": 53,
+      "lineCount": 394,
+      "selectorCount": 54,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/library/list/EntityListView.tsx"
@@ -2143,7 +2143,7 @@
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 265,
+      "lineCount": 311,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/entities/relations/relationshipGraph.css"
@@ -2185,7 +2185,7 @@
       "path": "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 171,
+      "lineCount": 281,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/entities/relations/relationshipGraph.css"
@@ -2198,10 +2198,21 @@
       ]
     },
     {
+      "path": "src/frontend/dm/entities/relations/RelationshipGroupNode.tsx",
+      "layer": null,
+      "domain": null,
+      "lineCount": 57,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
       "path": "src/frontend/dm/entities/relations/computeRadialRelationshipLayout.ts",
       "layer": null,
       "domain": null,
-      "lineCount": 94,
+      "lineCount": 101,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -2242,6 +2253,17 @@
       "variableReferences": []
     },
     {
+      "path": "src/frontend/dm/entities/relations/groupRelationshipNeighbors.ts",
+      "layer": null,
+      "domain": null,
+      "lineCount": 73,
+      "selectorCount": 0,
+      "imports": [],
+      "importedBy": [],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
       "path": "src/frontend/dm/entities/relations/pickRelationshipHandleSide.ts",
       "layer": null,
       "domain": null,
@@ -2256,15 +2278,16 @@
       "path": "src/frontend/dm/entities/relations/relationshipGraph.css",
       "layer": "feature",
       "domain": "entities",
-      "lineCount": 103,
-      "selectorCount": 16,
+      "lineCount": 139,
+      "selectorCount": 21,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
         "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx"
       ],
       "variableDefinitions": [
-        "--neighbor"
+        "--neighbor",
+        "--group"
       ],
       "variableReferences": [
         "--theme-borders-default",
@@ -2274,6 +2297,12 @@
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-on-accent",
+        "--theme-borders-default",
+        "--theme-surfaces-interactive",
+        "--theme-accents-primary-foreground",
+        "--theme-text-secondary",
+        "--theme-text-primary",
+        "--theme-text-secondary",
         "--theme-surfaces-base",
         "--theme-borders-default"
       ]
@@ -2595,21 +2624,32 @@
       "path": "src/frontend/dm/library/list/EntityListView.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 792,
+      "lineCount": 722,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/entities/entity-list-toolbar.css",
         "src/frontend/dm/entities/entity-grid.css",
         "src/frontend/dm/entities/entity-card.css",
-        "src/frontend/dm/library/list/entityListRefinements.css"
+        "src/frontend/dm/library/list/entityListRefinements.css",
+        "src/frontend/dm/library/list/entity-list-toolbar-controls.css",
+        "src/frontend/dm/library/list/entity-list-view.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/dm/library/list/entity-list-toolbar-controls.css",
+      "layer": "feature",
+      "domain": "library",
+      "lineCount": 118,
+      "selectorCount": 17,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/library/list/EntityListView.tsx"
+      ],
+      "variableDefinitions": [],
       "variableReferences": [
-        "--theme-text-secondary",
-        "--theme-entities-npc-foreground",
-        "--theme-text-secondary",
-        "--theme-entities-npc-foreground",
         "--theme-text-secondary",
         "--theme-accents-primary-foreground",
         "--theme-accents-primary-on-accent",
@@ -2617,23 +2657,36 @@
         "--theme-surfaces-interactive",
         "--theme-borders-default",
         "--theme-text-secondary",
-        "--theme-text-secondary",
         "--theme-borders-default",
-        "--theme-surfaces-interactive-hover",
-        "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-surfaces-interactive-hover",
-        "--theme-text-primary",
-        "--theme-text-secondary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/library/list/entity-list-view.css",
+      "layer": "feature",
+      "domain": "library",
+      "lineCount": 117,
+      "selectorCount": 18,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/library/list/EntityListView.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-text-primary",
         "--theme-borders-default",
-        "--theme-text-primary",
         "--theme-surfaces-raised",
         "--theme-borders-default",
         "--theme-text-primary",
         "--theme-text-secondary",
-        "--theme-surfaces-interactive"
+        "--theme-surfaces-interactive",
+        "--theme-text-secondary",
+        "--theme-text-secondary",
+        "--theme-entities-npc-foreground",
+        "--theme-entities-npc-foreground"
       ]
     },
     {
@@ -16725,7 +16778,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (390 lines, 53 selectors)."
+      "reason": "Large stylesheet requires atomization (394 lines, 54 selectors)."
     },
     {
       "id": "important:src/frontend/dm/entities/entity-detail-modal.css:154:24",
@@ -19151,9 +19204,9 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:40:10",
+      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:41:10",
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 40,
+      "line": 41,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -19164,9 +19217,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:47:10",
+      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:48:10",
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 47,
+      "line": 48,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -19177,9 +19230,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:51:11",
+      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:52:11",
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 51,
+      "line": 52,
       "column": 11,
       "severity": "high",
       "status": "temporary",
@@ -19190,9 +19243,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:63:16",
+      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:64:16",
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 63,
+      "line": 64,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -19203,9 +19256,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:127:10",
+      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:150:10",
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 127,
+      "line": 150,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -19216,9 +19269,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:135:12",
+      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:158:12",
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 135,
+      "line": 158,
       "column": 12,
       "severity": "high",
       "status": "temporary",
@@ -19229,9 +19282,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:204:7",
+      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:247:7",
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 204,
+      "line": 247,
       "column": 7,
       "severity": "high",
       "status": "temporary",
@@ -19242,9 +19295,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:212:12",
+      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:255:12",
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 212,
+      "line": 255,
       "column": 12,
       "severity": "high",
       "status": "temporary",
@@ -19255,9 +19308,9 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:235:12",
+      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:281:12",
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 235,
+      "line": 281,
       "column": 12,
       "severity": "high",
       "status": "temporary",
@@ -19279,6 +19332,19 @@
       "value": "style={{\n              position: \"absolute\",\n              transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,\n              pointerEvents: \"none\",\n            }}",
       "classification": "mixed",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
+    },
+    {
+      "id": "dynamic-style:src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:265:36",
+      "path": "src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx",
+      "line": 265,
+      "column": 36,
+      "severity": "info",
+      "status": "allowed",
+      "sourceType": "tsx-inline",
+      "category": "dynamic-style",
+      "value": "style={{ width: 96, height: 72 }}",
+      "classification": "dynamic",
+      "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
       "id": "static-inline:src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:28:31",
@@ -20965,433 +21031,17 @@
       "reason": "Large stylesheet requires atomization (243 lines, 37 selectors)."
     },
     {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:274:11",
+      "id": "dynamic-style:src/frontend/dm/library/list/EntityListView.tsx:276:11",
       "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 274,
+      "line": 276,
       "column": 11,
-      "severity": "high",
-      "status": "temporary",
+      "severity": "info",
+      "status": "allowed",
       "sourceType": "tsx-inline",
-      "category": "static-inline",
+      "category": "dynamic-style",
       "value": "style={{\n            \"--card-accent\": cfg.accent,\n            \"--card-accent-soft\": cfg.accentSoft,\n          } as React.CSSProperties}\n        >\n          <div className=\"entity-compact-row__left\">\n            <div className=\"entity-compac",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:305:19",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 305,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: 4, color: isDmOnly ? \"var(--theme-entities-npc-foreground)\" : \"var(--theme-text-secondary)\", fontSize: \"0.8rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/library/list/EntityListView.tsx:328:9",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 328,
-      "column": 9,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{\n          \"--card-accent\": cfg.accent,\n          \"--card-accent-soft\": cfg.accentSoft,\n        } as React.CSSProperties}\n        aria-label={`${entity.title}. ${formatEntityType(entity.entityType, locale)}. ${formatVisibility(visib",
       "classification": "dynamic",
       "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:378:19",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 378,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: 4, color: isDmOnly ? \"var(--theme-entities-npc-foreground)\" : \"inherit\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:390:38",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 390,
-      "column": 38,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ padding: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:394:54",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 394,
-      "column": 54,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ position: \"relative\", flex: 1, minWidth: 140, maxWidth: 320 }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:398:19",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 398,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                    position: \"absolute\",\n                    left: 12,\n                    top: \"50%\",\n                    transform: \"translateY(-50%)\",\n                    color: \"var(--theme-text-secondary)\",\n                  ",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/library/list/EntityListView.tsx:410:19",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 410,
-      "column": 19,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ paddingLeft: 36, height: 38, width: \"100%\", textOverflow: \"ellipsis\" }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:419:17",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 419,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ height: 38, display: \"flex\", alignItems: \"center\", gap: 6 }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:426:50",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 426,
-      "column": 50,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                    backgroundColor: \"var(--theme-accents-primary-foreground)\",\n                    color: \"var(--theme-accents-primary-on-accent)\",\n                    fontSize: \"0.75rem\",\n                    fontWeight: 700,\n    ",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:444:54",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 444,
-      "column": 54,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                fontSize: \"13px\",\n                color: \"var(--theme-text-secondary)\",\n                backgroundColor: \"var(--theme-surfaces-interactive)\",\n                padding: \"4px 10px\",\n                borderRadius: \"12px\"",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:458:22",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 458,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: 8, fontSize: 13, color: \"var(--theme-text-secondary)\", marginBottom: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/library/list/EntityListView.tsx:462:19",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 462,
-      "column": 19,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ height: 38, paddingTop: 4, paddingBottom: 4, width: 140 }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:474:22",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 474,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: 8, fontSize: 13, color: \"var(--theme-text-secondary)\", marginBottom: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/library/list/EntityListView.tsx:478:19",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 478,
-      "column": 19,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ height: 38, paddingTop: 4, paddingBottom: 4, width: 130 }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:488:42",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 488,
-      "column": 42,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", borderRadius: 6, overflow: \"hidden\", border: \"1px solid var(--theme-borders-default)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:492:19",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 492,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                    height: 38,\n                    padding: \"0 12px\",\n                    background: viewMode === \"card\" ? \"var(--theme-surfaces-interactive-hover)\" : \"transparent\",\n                    color: viewMode === \"card\" ",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:509:19",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 509,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                    height: 38,\n                    padding: \"0 12px\",\n                    background: viewMode === \"compact\" ? \"var(--theme-surfaces-interactive-hover)\" : \"transparent\",\n                    color: viewMode === \"com",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/library/list/EntityListView.tsx:525:51",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 525,
-      "column": 51,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ height: 38 }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:589:20",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 589,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: 12, alignItems: \"center\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "dynamic-style:src/frontend/dm/library/list/EntityListView.tsx:592:19",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 592,
-      "column": 19,
-      "severity": "info",
-      "status": "allowed",
-      "sourceType": "tsx-inline",
-      "category": "dynamic-style",
-      "value": "style={{ width: \"100%\", height: 38 }}",
-      "classification": "dynamic",
-      "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:656:35",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 656,
-      "column": 35,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ textAlign: \"center\", padding: 40, color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:657:52",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 657,
-      "column": 52,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ opacity: 0.3, marginBottom: 12 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:667:57",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 667,
-      "column": 57,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginBottom: \"32px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:668:56",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 668,
-      "column": 56,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"1.25rem\", fontWeight: 700, marginBottom: \"16px\", color: \"var(--theme-text-primary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:674:59",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 674,
-      "column": 59,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ borderBottom: \"1px solid var(--theme-borders-default)\", margin: \"32px 0 24px 0\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:679:54",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 679,
-      "column": 54,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"1.25rem\", fontWeight: 700, marginBottom: \"20px\", color: \"var(--theme-text-primary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:689:58",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 689,
-      "column": 58,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"24px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:711:78",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 711,
-      "column": 78,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"16px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:716:25",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 716,
-      "column": 25,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                          display: \"flex\",\n                          alignItems: \"center\",\n                          justifyContent: \"space-between\",\n                          width: \"100%\",\n                          padding: \"10px",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:732:31",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 732,
-      "column": 31,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: \"8px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:733:33",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 733,
-      "column": 33,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ transform: isCollapsed ? \"rotate(-90deg)\" : \"rotate(0deg)\", transition: \"transform 0.15s\", display: \"inline-block\" }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/library/list/EntityListView.tsx:735:33",
-      "path": "src/frontend/dm/library/list/EntityListView.tsx",
-      "line": 735,
-      "column": 33,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                            fontSize: \"0.75rem\",\n                            color: \"var(--theme-text-secondary)\",\n                            backgroundColor: \"var(--theme-surfaces-interactive)\",\n                            paddin",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "static-inline:src/frontend/dm/library/notebooks/NotebooksView.tsx:426:11",
@@ -32038,7 +31688,9 @@
       "src/frontend/dm/entities/entity-list-toolbar.css",
       "src/frontend/dm/entities/entity-grid.css",
       "src/frontend/dm/entities/entity-card.css",
-      "src/frontend/dm/library/list/entityListRefinements.css"
+      "src/frontend/dm/library/list/entityListRefinements.css",
+      "src/frontend/dm/library/list/entity-list-toolbar-controls.css",
+      "src/frontend/dm/library/list/entity-list-view.css"
     ],
     "src/frontend/dm/map/CampaignMapWorkspacePage.tsx": [
       "src/frontend/dm/map/mapWorkspace.css"
