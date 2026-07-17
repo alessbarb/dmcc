@@ -20,6 +20,7 @@ import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { ToastContainer } from "../../../shared/components/ToastContainer.js";
 import { useCanvasHistoryStore } from "../../../shared/stores/canvasHistoryStore.js";
+import { useBodyWatermark } from "../../../shared/hooks/useBodyWatermark.js";
 import { useParams } from "@tanstack/react-router";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import type { Canvas, CanvasNode, CanvasEdge } from "@core/domain/canvas/types.js";
@@ -99,6 +100,7 @@ const getCanvasKindLabel = (kind: string, t: (key: string) => string) => {
 };
 
 export function CanvasPage() {
+  useBodyWatermark("canvas");
   const canvasFlowRef = useRef<CampaignCanvasFlowHandle>(null);
   const { t } = useTranslation();
   const { campaignId } = useParams({ from: "/campaigns/$campaignId/map/canvas" });

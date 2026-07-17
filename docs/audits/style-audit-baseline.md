@@ -15,7 +15,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 19,
-  "crossComponentSelectors": 128,
+  "crossComponentSelectors": 124,
   "importantDeclarations": 394,
   "unclassifiedCssFiles": 0
 }
@@ -77,7 +77,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
 | `src/frontend/shared/styles/index.css` | legacy | shared | 9012 | 1309 | 1 |
 | `src/frontend/shared/styles/landing.css` | legacy | shared | 2640 | 392 | 1 |
-| `src/frontend/shared/styles/layout/workspace.css` | legacy | shared | 1010 | 150 | 1 |
+| `src/frontend/shared/styles/layout/workspace.css` | legacy | shared | 1009 | 150 | 1 |
 | `src/frontend/shared/styles/main.css` | foundation | shared | 28 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | legacy | shared | 14 | 1 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | legacy | shared | 94 | 13 | 1 |
@@ -691,8 +691,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/canvas/components/SessionPrepForm.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/SessionPrepForm.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/SessionPrepForm.tsx:106` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/pages/CanvasPage.tsx:525` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/canvas/pages/CanvasPage.tsx:682` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/canvas/pages/CanvasPage.tsx:527` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/canvas/pages/CanvasPage.tsx:684` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/canvas/templates/cityTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/templates/dungeonTemplate.ts:5` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/capture/QuickCaptureFAB.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1368,18 +1368,18 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:732` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:733` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/list/EntityListView.tsx:735` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:424` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:433` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:511` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:544` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:548` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:574` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:584` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:585` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:591` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:614` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:618` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:622` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:426` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:435` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:513` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:546` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:550` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:576` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:586` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:587` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:593` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:616` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:620` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:624` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:1` | Large stylesheet requires atomization (293 lines, 50 selectors). |
 | high | literal-color | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:168` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:223` | Literal visual color outside a registered theme package. |
@@ -1580,7 +1580,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/pages/OnboardingPage.tsx:153` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/pages/rulesPage.css:1` | Large stylesheet requires atomization (179 lines, 32 selectors). |
 | high | literal-color | `src/frontend/dm/pages/rulesPage.css:142` | Literal visual color outside a registered theme package. |
-| high | cross-component-selector | `src/frontend/dm/pages/rulesPage.css:146` | Selector depends on another component's DOM structure. |
 | high | static-inline | `src/frontend/dm/people/group/components/PlayerProfileModal.tsx:77` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/people/group/components/PlayerProfileModal.tsx:79` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/people/group/components/PlayerProfileModal.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1989,7 +1988,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/foundation/motion.css:23` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:24` | Important declarations bypass the intended cascade. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/index.css:1` | Large stylesheet requires atomization (9012 lines, 1309 selectors). |
-| high | cross-component-selector | `src/frontend/shared/styles/index.css:2` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/shared/styles/index.css:379` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:648` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/index.css:666` | Literal visual color outside a registered theme package. |
@@ -2277,8 +2275,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/landing.css:2303` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2387` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2612` | Literal visual color outside a registered theme package. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1010 lines, 150 selectors). |
-| high | cross-component-selector | `src/frontend/shared/styles/layout/workspace.css:90` | Selector depends on another component's DOM structure. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1009 lines, 150 selectors). |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:115` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:123` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:256` | Literal visual color outside a registered theme package. |
@@ -2293,6 +2290,5 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:701` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:721` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:929` | Literal visual color outside a registered theme package. |
-| high | cross-component-selector | `src/frontend/shared/styles/layout/workspace.css:960` | Selector depends on another component's DOM structure. |
 | high | literal-color | `src/frontend/shared/styles/primitives/button.css:12` | Literal visual color outside a registered theme package. |
 | medium | global-selector | `src/frontend/shared/styles/primitives/card.css:1` | Generic selector has global collision risk. |

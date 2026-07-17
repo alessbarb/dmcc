@@ -14,6 +14,7 @@ import {
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { apiFetch, readApiError } from "../../shared/api/apiClient.js";
 import { RULE_CATEGORY_IDS } from "@shared/rules/categories.js";
+import { useBodyWatermark } from "../../shared/hooks/useBodyWatermark.js";
 import "./rulesPage.css";
 
 interface RuleEntry {
@@ -41,6 +42,7 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
 };
 
 export function RulesPage() {
+  useBodyWatermark("hidden");
   const { t } = useTranslation();
   const initialParameters = useRef(new URLSearchParams(window.location.search));
   const targetRuleId = initialParameters.current.get("ruleId");
