@@ -220,7 +220,7 @@ function StandardEntityDetailModal({
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "8px",
-                backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent)",
+                backgroundColor: "var(--theme-media-overlay-subtle)",
                 color: "var(--theme-feedback-danger-foreground)",
                 fontSize: "0.95rem",
                 fontWeight: "700",
