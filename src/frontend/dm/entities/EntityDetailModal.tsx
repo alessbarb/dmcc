@@ -180,9 +180,9 @@ function StandardEntityDetailModal({
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className={`modal-overlay${isEditingEntity ? " entity-detail-dialog--editing" : ""}`} onClick={onClose}>
       <div
-        className={`modal-content${isRelationsExpanded ? " entity-detail-dialog--relations-expanded" : ""}`}
+        className={`modal-content${isRelationsExpanded ? " entity-detail-dialog--relations-expanded" : ""}${isEditingEntity ? " entity-detail-dialog--editing" : ""}`}
         onClick={(e) => e.stopPropagation()}
         style={isRelationsExpanded ? undefined : { maxWidth: "700px" }}
       >

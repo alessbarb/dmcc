@@ -376,7 +376,7 @@ export function ResumenTab({
           <h4 className="entity-summary__edit-heading">
             Editar entidad
           </h4>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-2 entity-summary__edit-titles">
             <div className="form-group form-group--flush">
               <label className="form-label">Título</label>
               <input
@@ -398,7 +398,7 @@ export function ResumenTab({
               />
             </div>
           </div>
-          <div className="form-group form-group--flush">
+          <div className="form-group form-group--flush entity-summary__edit-summary">
             <label className="form-label">Resumen</label>
             <input
               className="form-input"
@@ -408,7 +408,7 @@ export function ResumenTab({
               }
             />
           </div>
-          <div className="form-group form-group--flush">
+          <div className="form-group form-group--flush entity-summary__edit-image">
             <label className="form-label">Imagen</label>
             <ImagePickerButton
               value={
@@ -431,7 +431,7 @@ export function ResumenTab({
               shape="circle"
             />
           </div>
-          <div className="form-group form-group--flush">
+          <div className="form-group form-group--flush entity-summary__edit-notes">
             <label className="form-label">Notas / Descripción</label>
             <textarea
               className="form-textarea"
@@ -442,7 +442,7 @@ export function ResumenTab({
               }
             />
           </div>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-2 entity-summary__edit-status">
             <div className="form-group form-group--flush">
               <label className="form-label">Estado</label>
               <input
@@ -469,22 +469,24 @@ export function ResumenTab({
               </select>
             </div>
           </div>
-          <TypeMetadataForm
-            entityType={entity.entityType}
-            metadata={editEntityForm.metadata ?? entity.metadata ?? {}}
-            onChange={(field, value) =>
-              setEditEntityForm({
-                ...editEntityForm,
-                metadata: {
-                  ...(editEntityForm.metadata ?? entity.metadata ?? {}),
-                  [field]: value,
-                },
-              })
-            }
-            players={campaignState?.players ?? []}
-            entities={campaignState?.entities ?? []}
-            campaignSystem={campaignState?.campaign?.system}
-          />
+          <div className="entity-summary__edit-metadata">
+            <TypeMetadataForm
+              entityType={entity.entityType}
+              metadata={editEntityForm.metadata ?? entity.metadata ?? {}}
+              onChange={(field, value) =>
+                setEditEntityForm({
+                  ...editEntityForm,
+                  metadata: {
+                    ...(editEntityForm.metadata ?? entity.metadata ?? {}),
+                    [field]: value,
+                  },
+                })
+              }
+              players={campaignState?.players ?? []}
+              entities={campaignState?.entities ?? []}
+              campaignSystem={campaignState?.campaign?.system}
+            />
+          </div>
         </div>
       )}
     </div>
