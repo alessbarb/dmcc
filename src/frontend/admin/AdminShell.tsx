@@ -21,10 +21,10 @@ const navLinkStyle: React.CSSProperties = {
 
 const navLinkActiveStyle: React.CSSProperties = {
   ...navLinkStyle,
-  backgroundColor: "rgba(255,255,255,0.05)",
-  borderLeft: "3px solid var(--gold)",
+  backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
+  borderLeft: "3px solid var(--theme-accents-primary-foreground)",
   paddingLeft: "11px",
-  color: "var(--gold)",
+  color: "var(--theme-accents-primary-foreground)",
 };
 
 function AdminNavLink({ to, exact, icon, label }: { to: string; exact?: boolean; icon: React.ReactNode; label: string }) {
@@ -59,7 +59,7 @@ export function AdminShell({ children }: AdminShellProps) {
       <aside style={{
         width: "260px",
         backgroundColor: "var(--theme-surfaces-base)",
-        borderRight: "1px solid var(--border)",
+        borderRight: "1px solid var(--theme-borders-default)",
         display: "flex",
         flexDirection: "column",
         padding: "24px 16px",
@@ -69,13 +69,13 @@ export function AdminShell({ children }: AdminShellProps) {
             width: "36px",
             height: "36px",
             borderRadius: "8px",
-            backgroundColor: "rgba(218, 165, 32, 0.1)",
+            backgroundColor: "color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            border: "1px solid var(--gold)",
+            border: "1px solid var(--theme-accents-primary-foreground)",
           }}>
-            <Shield size={18} style={{ color: "var(--gold)" }} />
+            <Shield size={18} style={{ color: "var(--theme-accents-primary-foreground)" }} />
           </div>
           <div>
             <h2 style={{ fontSize: "0.95rem", fontWeight: 700, margin: 0, letterSpacing: "0.05em" }}>DMCC ADMIN</h2>
@@ -95,7 +95,7 @@ export function AdminShell({ children }: AdminShellProps) {
           <AdminNavLink to="/admin/audit" icon={<FileText size={16} />} label="Audit Logs" />
         </nav>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "auto", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "auto", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "16px" }}>
           <button
             onClick={() => void navigate({ to: "/home" })}
             style={{
@@ -129,7 +129,7 @@ export function AdminShell({ children }: AdminShellProps) {
               border: "none",
               cursor: "pointer",
               textAlign: "left",
-              color: "var(--red)",
+              color: "var(--theme-feedback-danger-foreground)",
               fontSize: "0.85rem",
               width: "100%",
             }}

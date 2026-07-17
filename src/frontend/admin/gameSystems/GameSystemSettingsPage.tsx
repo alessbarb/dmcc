@@ -54,7 +54,7 @@ export function GameSystemSettingsPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
             <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
           </div>
         )}
@@ -64,10 +64,10 @@ export function GameSystemSettingsPage() {
             Loading game systems...
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", overflow: "hidden" }}>
+          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--border)", backgroundColor: "rgba(255, 255, 255, 0.02)" }}>
+                <tr style={{ borderBottom: "1px solid var(--theme-borders-default)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)" }}>
                   <th style={{ padding: "16px" }}>System</th>
                   <th style={{ padding: "16px" }}>Status</th>
                   <th style={{ padding: "16px", textAlign: "right" }}>Actions</th>
@@ -75,7 +75,7 @@ export function GameSystemSettingsPage() {
               </thead>
               <tbody>
                 {systems.map((s) => (
-                  <tr key={s.systemId} style={{ borderBottom: "1px solid var(--border)" }}>
+                  <tr key={s.systemId} style={{ borderBottom: "1px solid var(--theme-borders-default)" }}>
                     <td style={{ padding: "16px" }}>
                       <div style={{ fontWeight: 600 }}>{s.label}</div>
                       <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>{s.systemId}</div>
@@ -86,9 +86,9 @@ export function GameSystemSettingsPage() {
                         borderRadius: "4px",
                         fontSize: "0.75rem",
                         fontWeight: 600,
-                        backgroundColor: s.isEnabledForNewCampaigns ? "rgba(40, 167, 69, 0.1)" : "rgba(255, 255, 255, 0.05)",
-                        color: s.isEnabledForNewCampaigns ? "var(--green)" : "var(--theme-text-secondary)",
-                        border: `1px solid ${s.isEnabledForNewCampaigns ? "rgba(40, 167, 69, 0.3)" : "var(--border)"}`,
+                        backgroundColor: s.isEnabledForNewCampaigns ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
+                        color: s.isEnabledForNewCampaigns ? "var(--theme-feedback-success-foreground)" : "var(--theme-text-secondary)",
+                        border: `1px solid ${s.isEnabledForNewCampaigns ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)" : "var(--theme-borders-default)"}`,
                       }}>
                         {s.isEnabledForNewCampaigns ? "Enabled" : "Disabled"}
                       </span>
@@ -104,9 +104,9 @@ export function GameSystemSettingsPage() {
                           gap: "6px",
                           padding: "6px 12px",
                           borderRadius: "6px",
-                          backgroundColor: s.isEnabledForNewCampaigns ? "rgba(220, 53, 69, 0.1)" : "rgba(40, 167, 69, 0.1)",
-                          border: `1px solid ${s.isEnabledForNewCampaigns ? "rgba(220, 53, 69, 0.3)" : "rgba(40, 167, 69, 0.3)"}`,
-                          color: s.isEnabledForNewCampaigns ? "var(--red)" : "var(--green)",
+                          backgroundColor: s.isEnabledForNewCampaigns ? "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)",
+                          border: `1px solid ${s.isEnabledForNewCampaigns ? "color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent)" : "color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)"}`,
+                          color: s.isEnabledForNewCampaigns ? "var(--theme-feedback-danger-foreground)" : "var(--theme-feedback-success-foreground)",
                           cursor: s.systemId === "custom" ? "not-allowed" : "pointer",
                           opacity: s.systemId === "custom" ? 0.5 : 1,
                           fontSize: "0.8rem",

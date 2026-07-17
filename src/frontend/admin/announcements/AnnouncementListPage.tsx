@@ -93,9 +93,9 @@ export function AnnouncementListPage() {
   };
 
   const kindColor = (kind: AnnouncementSummary["kind"]) => {
-    if (kind === "warning") return "#e05624";
-    if (kind === "maintenance") return "#c42a2a";
-    return "var(--gold)";
+    if (kind === "warning") return "var(--theme-feedback-warning-foreground)";
+    if (kind === "maintenance") return "var(--theme-feedback-danger-foreground)";
+    return "var(--theme-accents-primary-foreground)";
   };
 
   return (
@@ -116,9 +116,9 @@ export function AnnouncementListPage() {
               gap: "8px",
               padding: "10px 16px",
               borderRadius: "8px",
-              backgroundColor: showForm ? "rgba(255,255,255,0.05)" : "var(--gold)",
+              backgroundColor: showForm ? "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)" : "var(--theme-accents-primary-foreground)",
               color: showForm ? "inherit" : "var(--theme-surfaces-canvas)",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--theme-borders-default)",
               cursor: "pointer",
               fontSize: "0.85rem",
               fontWeight: 600,
@@ -130,7 +130,7 @@ export function AnnouncementListPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
             <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
           </div>
         )}
@@ -142,7 +142,7 @@ export function AnnouncementListPage() {
               backgroundColor: "var(--theme-surfaces-base)",
               padding: "20px",
               borderRadius: "12px",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--theme-borders-default)",
               marginBottom: "24px",
               display: "flex",
               flexDirection: "column",
@@ -154,20 +154,20 @@ export function AnnouncementListPage() {
               placeholder="Title"
               value={form.content.title}
               onChange={(e) => setForm({ ...form, content: { ...form.content, title: e.target.value } })}
-              style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid var(--border)", color: "inherit", fontSize: "0.85rem" }}
+              style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)", border: "1px solid var(--theme-borders-default)", color: "inherit", fontSize: "0.85rem" }}
             />
             <textarea
               placeholder="Message body"
               value={form.content.body}
               onChange={(e) => setForm({ ...form, content: { ...form.content, body: e.target.value } })}
               rows={3}
-              style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid var(--border)", color: "inherit", fontSize: "0.85rem", resize: "vertical" }}
+              style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)", border: "1px solid var(--theme-borders-default)", color: "inherit", fontSize: "0.85rem", resize: "vertical" }}
             />
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
               <select
                 value={form.kind}
                 onChange={(e) => setForm({ ...form, kind: e.target.value as AnnouncementInput["kind"] })}
-                style={{ padding: "8px 12px", borderRadius: "8px", backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid var(--border)", color: "inherit", fontSize: "0.85rem" }}
+                style={{ padding: "8px 12px", borderRadius: "8px", backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)", border: "1px solid var(--theme-borders-default)", color: "inherit", fontSize: "0.85rem" }}
               >
                 <option value="info">Info</option>
                 <option value="warning">Warning</option>
@@ -205,7 +205,7 @@ export function AnnouncementListPage() {
                 alignSelf: "flex-start",
                 padding: "10px 20px",
                 borderRadius: "8px",
-                backgroundColor: "var(--gold)",
+                backgroundColor: "var(--theme-accents-primary-foreground)",
                 color: "var(--theme-surfaces-canvas)",
                 border: "none",
                 cursor: "pointer",
@@ -223,7 +223,7 @@ export function AnnouncementListPage() {
             Loading announcements...
           </div>
         ) : announcements.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--border)", color: "var(--theme-text-secondary)" }}>
+          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", color: "var(--theme-text-secondary)" }}>
             No announcements yet.
           </div>
         ) : (
@@ -233,7 +233,7 @@ export function AnnouncementListPage() {
                 key={ann.announcementId}
                 style={{
                   backgroundColor: "var(--theme-surfaces-base)",
-                  border: "1px solid var(--border)",
+                  border: "1px solid var(--theme-borders-default)",
                   borderLeft: `3px solid ${kindColor(ann.kind)}`,
                   borderRadius: "8px",
                   padding: "16px",
@@ -264,9 +264,9 @@ export function AnnouncementListPage() {
                         gap: "6px",
                         padding: "6px 12px",
                         borderRadius: "6px",
-                        backgroundColor: ann.isEnabled ? "rgba(40, 167, 69, 0.1)" : "rgba(255,255,255,0.03)",
-                        border: `1px solid ${ann.isEnabled ? "rgba(40, 167, 69, 0.3)" : "var(--border)"}`,
-                        color: ann.isEnabled ? "var(--green)" : "inherit",
+                        backgroundColor: ann.isEnabled ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
+                        border: `1px solid ${ann.isEnabled ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)" : "var(--theme-borders-default)"}`,
+                        color: ann.isEnabled ? "var(--theme-feedback-success-foreground)" : "inherit",
                         cursor: "pointer",
                         fontSize: "0.8rem",
                       }}
@@ -284,9 +284,9 @@ export function AnnouncementListPage() {
                         gap: "6px",
                         padding: "6px 12px",
                         borderRadius: "6px",
-                        backgroundColor: "rgba(220, 53, 69, 0.1)",
-                        border: "1px solid rgba(220, 53, 69, 0.3)",
-                        color: "var(--red)",
+                        backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)",
+                        border: "1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent)",
+                        color: "var(--theme-feedback-danger-foreground)",
                         cursor: "pointer",
                         fontSize: "0.8rem",
                       }}

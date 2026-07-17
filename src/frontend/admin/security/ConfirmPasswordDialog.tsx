@@ -38,7 +38,7 @@ export function ConfirmPasswordDialog({
       style={{
         position: "fixed",
         inset: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.6)",
+        backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 60%, transparent)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -53,18 +53,18 @@ export function ConfirmPasswordDialog({
           width: "100%",
           maxWidth: "380px",
           backgroundColor: "var(--theme-surfaces-base)",
-          border: "1px solid var(--border)",
+          border: "1px solid var(--theme-borders-default)",
           borderRadius: "12px",
           padding: "24px",
           display: "flex",
           flexDirection: "column",
           gap: "16px",
-          boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
+          boxShadow: "0 12px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Lock size={18} style={{ color: "var(--red)" }} />
+            <Lock size={18} style={{ color: "var(--theme-feedback-danger-foreground)" }} />
             <h3 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700 }}>{title}</h3>
           </div>
           <button
@@ -89,8 +89,8 @@ export function ConfirmPasswordDialog({
             style={{
               padding: "10px 12px",
               borderRadius: "8px",
-              backgroundColor: "rgba(0,0,0,0.2)",
-              border: "1px solid var(--border)",
+              backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)",
+              border: "1px solid var(--theme-borders-default)",
               color: "inherit",
               fontSize: "0.85rem",
             }}
@@ -104,8 +104,8 @@ export function ConfirmPasswordDialog({
             style={{
               padding: "8px 16px",
               borderRadius: "8px",
-              backgroundColor: "rgba(255,255,255,0.03)",
-              border: "1px solid var(--border)",
+              backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
+              border: "1px solid var(--theme-borders-default)",
               color: "inherit",
               cursor: "pointer",
               fontSize: "0.85rem",
@@ -119,8 +119,8 @@ export function ConfirmPasswordDialog({
             style={{
               padding: "8px 16px",
               borderRadius: "8px",
-              backgroundColor: "var(--red)",
-              color: "#fff",
+              backgroundColor: "var(--theme-feedback-danger-foreground)",
+              color: "var(--theme-feedback-danger-on-strong)",
               border: "none",
               cursor: password && !busy ? "pointer" : "not-allowed",
               opacity: password && !busy ? 1 : 0.6,

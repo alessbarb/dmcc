@@ -46,7 +46,7 @@ export function OperationsOverviewPage() {
               padding: "8px 16px",
               borderRadius: "8px",
               backgroundColor: "var(--theme-surfaces-base)",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--theme-borders-default)",
               color: "inherit",
               cursor: "pointer",
               fontSize: "0.85rem",
@@ -59,7 +59,7 @@ export function OperationsOverviewPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "rgba(220, 53, 69, 0.1)", border: "1px solid var(--red)", borderRadius: "8px", color: "var(--red)", marginBottom: "24px" }}>
+          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
             <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
           </div>
         )}
@@ -74,7 +74,7 @@ export function OperationsOverviewPage() {
             <div style={{
               backgroundColor: "var(--theme-surfaces-base)",
               borderRadius: "12px",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--theme-borders-default)",
               padding: "24px",
               position: "relative",
             }}>
@@ -83,24 +83,24 @@ export function OperationsOverviewPage() {
                   width: "40px",
                   height: "40px",
                   borderRadius: "8px",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}>
-                  <Users size={20} style={{ color: "var(--gold)" }} />
+                  <Users size={20} style={{ color: "var(--theme-accents-primary-foreground)" }} />
                 </div>
               </div>
               <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", fontWeight: 500 }}>Total Accounts</span>
               <h2 style={{ fontSize: "2rem", fontWeight: 700, margin: "8px 0 16px" }}>{metrics.totalUsers}</h2>
-              <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
+              <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "16px" }}>
                 <div>
                   <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Active</span>
                   <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0" }}>{metrics.activeUsers}</p>
                 </div>
                 <div>
                   <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Disabled</span>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: "var(--red)" }}>
+                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: "var(--theme-feedback-danger-foreground)" }}>
                     {metrics.totalUsers - metrics.activeUsers}
                   </p>
                 </div>
@@ -111,7 +111,7 @@ export function OperationsOverviewPage() {
             <div style={{
               backgroundColor: "var(--theme-surfaces-base)",
               borderRadius: "12px",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--theme-borders-default)",
               padding: "24px",
             }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
@@ -119,24 +119,24 @@ export function OperationsOverviewPage() {
                   width: "40px",
                   height: "40px",
                   borderRadius: "8px",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}>
-                  <Layers size={20} style={{ color: "var(--gold)" }} />
+                  <Layers size={20} style={{ color: "var(--theme-accents-primary-foreground)" }} />
                 </div>
               </div>
               <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", fontWeight: 500 }}>Total Campaigns</span>
               <h2 style={{ fontSize: "2rem", fontWeight: 700, margin: "8px 0 16px" }}>{metrics.totalCampaigns}</h2>
-              <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
+              <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "16px" }}>
                 <div>
                   <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Active</span>
                   <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0" }}>{metrics.activeCampaigns}</p>
                 </div>
                 <div>
                   <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>In Trash</span>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: "var(--gold)" }}>{metrics.trashedCampaigns}</p>
+                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: "var(--theme-accents-primary-foreground)" }}>{metrics.trashedCampaigns}</p>
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@ export function OperationsOverviewPage() {
             <div style={{
               backgroundColor: "var(--theme-surfaces-base)",
               borderRadius: "12px",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--theme-borders-default)",
               padding: "24px",
             }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
@@ -153,24 +153,24 @@ export function OperationsOverviewPage() {
                   width: "40px",
                   height: "40px",
                   borderRadius: "8px",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}>
-                  <ShieldAlert size={20} style={{ color: metrics.failedPurgeJobs > 0 ? "var(--red)" : "var(--gold)" }} />
+                  <ShieldAlert size={20} style={{ color: metrics.failedPurgeJobs > 0 ? "var(--theme-feedback-danger-foreground)" : "var(--theme-accents-primary-foreground)" }} />
                 </div>
               </div>
               <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", fontWeight: 500 }}>Purge Queue Jobs</span>
               <h2 style={{ fontSize: "2rem", fontWeight: 700, margin: "8px 0 16px" }}>{metrics.totalPurgeJobs}</h2>
-              <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--border)", paddingTop: "16px" }}>
+              <div style={{ display: "flex", gap: "16px", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "16px" }}>
                 <div>
                   <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Pending</span>
                   <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0" }}>{metrics.pendingPurgeJobs}</p>
                 </div>
                 <div>
                   <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Failed</span>
-                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: metrics.failedPurgeJobs > 0 ? "var(--red)" : "inherit" }}>
+                  <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "2px 0 0", color: metrics.failedPurgeJobs > 0 ? "var(--theme-feedback-danger-foreground)" : "inherit" }}>
                     {metrics.failedPurgeJobs}
                   </p>
                 </div>

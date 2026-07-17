@@ -8,10 +8,10 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 61,
   "tsxFilesWithInlineStyles": 85,
-  "forbiddenLiteralColors": 1303,
+  "forbiddenLiteralColors": 1220,
   "staticInlineStyles": 1250,
   "dynamicInlineStyles": 36,
-  "unknownCssVariables": 244,
+  "unknownCssVariables": 107,
   "legacyCssVariables": 24,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 19,
@@ -157,21 +157,12 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:147` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:158` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/admin/AdminShell.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/AdminShell.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/AdminShell.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/AdminShell.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/AdminShell.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/AdminShell.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/AdminShell.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:10` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:22` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/AdminShell.tsx:24` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:59` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:67` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/AdminShell.tsx:72` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:78` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:81` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -180,39 +171,17 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:101` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:122` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:144` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/announcements/AnnouncementListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:96` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:97` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:103` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:106` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:107` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:113` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:119` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:133` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:133` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:134` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:157` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:157` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:164` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:164` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:166` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:170` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:170` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:176` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:184` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -230,48 +199,26 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:253` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:256` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:261` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:267` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:267` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:268` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:287` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/announcements/AnnouncementListPage.tsx:288` | Literal visual color outside a registered theme package. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/audit/AuditLogPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:36` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:37` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:39` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:40` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/audit/AuditLogPage.tsx:68` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:84` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:91` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/audit/AuditLogPage.tsx:95` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:103` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:110` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/audit/AuditLogPage.tsx:114` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:124` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:125` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:127` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:131` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:135` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/audit/AuditLogPage.tsx:137` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:137` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:138` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:139` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -279,7 +226,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:142` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:150` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/audit/AuditLogPage.tsx:153` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:157` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:163` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -305,46 +251,25 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:240` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:241` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:242` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/audit/AuditLogPage.tsx:243` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:256` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaigns/CampaignListPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:73` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:75` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:76` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaigns/CampaignListPage.tsx:82` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:83` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:88` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:105` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaigns/CampaignListPage.tsx:108` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:122` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:123` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:124` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:130` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaigns/CampaignListPage.tsx:134` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaigns/CampaignListPage.tsx:146` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:164` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:168` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:169` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaigns/CampaignListPage.tsx:171` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:171` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:172` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:173` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -362,36 +287,19 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:198` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:199` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaigns/CampaignListPage.tsx:211` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/campaigns/CampaignListPage.tsx:212` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:225` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaigns/CampaignListPage.tsx:231` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/campaigns/CampaignListPage.tsx:232` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:244` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaigns/CampaignListPage.tsx:249` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:59` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:61` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:62` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:68` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:78` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:83` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:85` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:86` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:87` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -406,33 +314,16 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:101` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:107` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:113` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:113` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:127` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:133` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:133` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:134` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:134` | Literal visual color outside a registered theme package. |
-| high | unknown-token | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:57` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:58` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:67` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:70` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:71` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:72` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -443,44 +334,21 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:81` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:83` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:84` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:89` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:89` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:91` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:101` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:107` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:107` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:108` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:108` | Literal visual color outside a registered theme package. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/invitations/InvitationListPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:47` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:56` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:56` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:61` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:72` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:80` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:83` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:98` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:106` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:107` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:109` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:109` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:110` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:111` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -496,37 +364,13 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:129` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:130` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:131` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:136` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:136` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:136` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:138` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:138` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/invitations/InvitationListPage.tsx:148` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:154` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/invitations/InvitationListPage.tsx:155` | Literal visual color outside a registered theme package. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/overview/OperationsOverviewPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:30` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:31` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/overview/OperationsOverviewPage.tsx:62` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:62` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -534,7 +378,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:81` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/overview/OperationsOverviewPage.tsx:86` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:91` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:94` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:95` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -546,7 +389,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:111` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:117` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:118` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/overview/OperationsOverviewPage.tsx:122` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:127` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:130` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:131` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -558,7 +400,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:145` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:151` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:152` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/overview/OperationsOverviewPage.tsx:156` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:164` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:165` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -567,21 +408,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:169` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:172` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/overview/OperationsOverviewPage.tsx:173` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:52` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -592,17 +418,14 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:94` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:94` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:95` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:114` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:117` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:132` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:136` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:140` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:143` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:144` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:145` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -627,16 +450,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:182` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:187` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/purge/CampaignPurgeJobsPage.tsx:193` | Literal visual color outside a registered theme package. |
-| high | unknown-token | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:38` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:41` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:52` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:62` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:67` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -645,53 +460,27 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:80` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:89` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:92` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:107` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:119` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:123` | Literal visual color outside a registered theme package. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
-| high | unknown-token | `src/frontend/admin/users/UserListPage.tsx:1` | CSS variable is not declared or allowlisted. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:97` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:98` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:99` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:105` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:105` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:106` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:111` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:123` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:128` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:131` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:145` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:146` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:147` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:153` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:157` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:166` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:169` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:183` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:187` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:191` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:192` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:194` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:194` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:195` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:196` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -702,27 +491,18 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:206` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:208` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:210` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:210` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:215` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:216` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:220` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:221` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:226` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:226` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:233` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:239` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:240` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:245` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:251` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:251` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:252` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:252` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:272` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:278` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/admin/users/UserListPage.tsx:300` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/admin/users/UserListPage.tsx:306` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/auth/LoginPage.tsx:62` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/auth/LoginPage.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/auth/LoginPage.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
