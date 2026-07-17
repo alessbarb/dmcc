@@ -31,13 +31,15 @@
 }
 
 .session-status-bar__title {
+  display: -webkit-box;
   overflow: hidden;
   color: var(--theme-text-primary);
   font-size: 1.1rem;
   font-weight: 800;
   letter-spacing: -0.01em;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 
 .session-status-bar__meta {
