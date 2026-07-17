@@ -8,6 +8,8 @@ export interface RelationshipGraphEntity {
   importance?: string;
   imageUrl?: string;
   isCenter: boolean;
+  /** Full domain entity, for renderers (e.g. `EntityNodeContent`) that need more than the summary fields above. */
+  entity: Entity;
 }
 
 export interface RelationshipGraphRelation {
@@ -44,6 +46,7 @@ function toGraphEntity(entity: Entity, isCenter: boolean): RelationshipGraphEnti
     importance: entity.importance,
     imageUrl,
     isCenter,
+    entity,
   };
 }
 

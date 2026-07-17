@@ -171,17 +171,6 @@ export function EntityNodeContent({
       {(isBlocked || isResolved || isCritical) && (
         <div
           className={`rg-card__status-strip ${isCritical ? "rg-card__status-strip--critical" : isBlocked ? "rg-card__status-strip--blocked" : "rg-card__status-strip--resolved"}`}
-          style={{
-            padding: "4px 12px",
-            fontSize: "0.75rem",
-            fontWeight: "600",
-            display: "flex",
-            alignItems: "center",
-            gap: "4px",
-            background: isCritical ? "rgba(239, 68, 68, 0.15)" : isBlocked ? "rgba(245, 158, 11, 0.15)" : "rgba(16, 185, 129, 0.15)",
-            color: isCritical ? "#f87171" : isBlocked ? "#fbbf24" : "#34d399",
-            borderTop: "1px solid var(--theme-borders-default)"
-          }}
         >
           {isBlocked && <><AlertTriangle size={9} /> Bloqueado</>}
           {isResolved && <><CheckCircle2 size={9} /> Resuelto</>}

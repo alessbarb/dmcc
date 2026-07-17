@@ -1,0 +1,62 @@
+.entity-relations-graph {
+  position: relative;
+  height: clamp(340px, 45dvh, 520px);
+  min-height: 320px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium);
+  overflow: hidden;
+  background: var(--theme-surfaces-base);
+}
+
+.entity-relations-node {
+  position: relative;
+  border-radius: var(--theme-shapes-radius-medium);
+  transition: transform 0.15s;
+}
+
+.entity-relations-node--neighbor {
+  cursor: pointer;
+}
+
+.entity-relations-node--neighbor:hover {
+  transform: scale(1.03);
+}
+
+.entity-relations-node--center {
+  outline: 2px solid var(--color-primary, hsl(210, 80%, 55%));
+  outline-offset: 2px;
+  cursor: default;
+}
+
+.entity-relations-node__badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-primary, hsl(210, 80%, 55%));
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.entity-relations-node__handle {
+  opacity: 0;
+}
+
+@media (max-width: 720px) {
+  .entity-relations-graph {
+    min-height: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entity-relations-node {
+    transition: none;
+  }
+}
