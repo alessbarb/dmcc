@@ -8,11 +8,11 @@ Generated mechanically by `npm run styles:audit:report`.
 {
   "cssFiles": 46,
   "tsxFilesWithInlineStyles": 96,
-  "forbiddenLiteralColors": 1504,
+  "forbiddenLiteralColors": 1430,
   "staticInlineStyles": 1327,
   "dynamicInlineStyles": 37,
   "unknownCssVariables": 252,
-  "legacyCssVariables": 34,
+  "legacyCssVariables": 30,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 18,
   "crossComponentSelectors": 131,
@@ -1052,7 +1052,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:37` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:38` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:39` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:40` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:40` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:43` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:47` | Important declarations bypass the intended cascade. |
@@ -1068,10 +1067,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:57` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:58` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:59` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:60` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:60` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:61` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:61` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:61` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:66` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:73` | Important declarations bypass the intended cascade. |
@@ -1107,8 +1103,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:144` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:147` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:148` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:150` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:151` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:155` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:162` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:167` | Selector depends on another component's DOM structure. |
@@ -1145,7 +1139,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:250` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:252` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:253` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailDialog.css:254` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:254` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:259` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:260` | Important declarations bypass the intended cascade. |
@@ -1189,13 +1182,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:377` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailDialog.css:383` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailHeroActions.css:1` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailHeroActions.css:16` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailHeroActions.css:18` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailHeroActions.css:19` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailHeroActions.css:22` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailHeroActions.css:30` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailHeroActions.css:32` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailHeroActions.css:37` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailHeroActions.css:43` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailImageContinuation.css:1` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:8` | Important declarations bypass the intended cascade. |
@@ -1222,56 +1210,36 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:49` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:50` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:51` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:56` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:57` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:58` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:59` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:60` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:61` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:62` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:67` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:70` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:71` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:78` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailImageContinuation.css:78` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:79` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:82` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:83` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:84` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:84` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:87` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:88` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:89` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:90` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:99` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailImageContinuation.css:99` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:100` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:101` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:102` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:102` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:103` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:103` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:104` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:105` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:113` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailImageContinuation.css:113` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:114` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:114` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:115` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:123` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailImageContinuation.css:123` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:124` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:126` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:126` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:127` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:128` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:128` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailImageContinuation.css:136` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:139` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:140` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:141` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:142` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/dm/entities/entityDetailImageContinuation.css:146` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:149` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:155` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailImageContinuation.css:161` | Selector depends on another component's DOM structure. |
@@ -1286,39 +1254,18 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | cross-component-selector | `src/frontend/dm/entities/entityDetailImageContinuation.css:190` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:191` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:197` | Important declarations bypass the intended cascade. |
-| high | legacy-token | `src/frontend/dm/entities/EntityDetailModal.tsx:1` | Legacy CSS variable remains in use. |
-| high | legacy-token | `src/frontend/dm/entities/EntityDetailModal.tsx:1` | Legacy CSS variable remains in use. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:191` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:203` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:213` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:223` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:251` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:255` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:289` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/EntityDetailModal.tsx:295` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:325` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:365` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:366` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:386` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityDetailModal.tsx:387` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:38` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:38` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:39` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:39` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:40` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:40` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:41` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:41` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:42` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:42` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:43` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:43` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:44` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:44` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:45` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/HechosTab.tsx:45` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1329,14 +1276,10 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:105` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/entities/playerCharacterDetail.css:1` | Large stylesheet requires atomization (359 lines, 50 selectors). |
-| high | legacy-token | `src/frontend/dm/entities/playerCharacterDetail.css:1` | Legacy CSS variable remains in use. |
-| high | literal-color | `src/frontend/dm/entities/playerCharacterDetail.css:7` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/playerCharacterDetail.css:21` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:89` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:122` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:143` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:164` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/dm/entities/playerCharacterDetail.css:191` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:228` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:232` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/entities/playerCharacterDetail.css:246` | Important declarations bypass the intended cascade. |
@@ -1400,10 +1343,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:37` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:46` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:57` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:58` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:61` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:62` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:67` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:91` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:94` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1414,18 +1353,14 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:132` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:133` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:140` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:144` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:151` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:152` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:152` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:167` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:168` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:181` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:182` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:183` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:184` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:191` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:191` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:192` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:193` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1443,7 +1378,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:211` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:212` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:213` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:217` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:217` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:219` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:220` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1452,27 +1386,20 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:227` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:228` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:232` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:233` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:233` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:234` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:236` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:240` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:240` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:246` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:249` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:249` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:250` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:252` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:262` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:262` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:268` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:272` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:272` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:278` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:278` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:279` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:280` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/entities/ResumenTab.tsx:288` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:288` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:289` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:290` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1485,11 +1412,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:478` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:490` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:500` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | legacy-token | `src/frontend/dm/entities/TrazabilidadTab.tsx:1` | Legacy CSS variable remains in use. |
-| high | literal-color | `src/frontend/dm/entities/TrazabilidadTab.tsx:120` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/TrazabilidadTab.tsx:121` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/TrazabilidadTab.tsx:122` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/entities/TrazabilidadTab.tsx:123` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:128` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:135` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |

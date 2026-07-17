@@ -13,10 +13,10 @@
   gap: 8px;
   padding: 4px;
   transform: translateX(-50%);
-  border: 1px solid rgb(255 255 255 / 12%);
+  border: 1px solid color-mix(in srgb, var(--theme-text-on-media) 12%, transparent);
   border-radius: calc(var(--theme-shapes-radius-small) + 4px);
-  background: rgb(8 10 18 / 82%);
-  box-shadow: 0 10px 30px rgb(0 0 0 / 38%);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 82%, transparent);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--theme-surfaces-canvas) 38%, transparent);
   backdrop-filter: blur(10px) saturate(120%);
   isolation: isolate;
   pointer-events: auto !important;
@@ -29,12 +29,12 @@
   min-height: 36px;
   pointer-events: auto !important;
   touch-action: manipulation;
-  background: rgb(12 15 25 / 92%);
+  background: color-mix(in srgb, var(--theme-surfaces-canvas) 92%, transparent);
 }
 
 .entity-detail-focus-shell .entity-image-hero-actions .btn:hover,
 .entity-detail-focus-shell .entity-image-hero-actions .btn:focus-visible {
-  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 28%, rgb(12 15 25 / 96%));
+  background: color-mix(in srgb, var(--theme-accents-secondary-foreground) 28%, color-mix(in srgb, var(--theme-surfaces-canvas) 96%, transparent));
 }
 
 /* The close action now belongs to the centered hero toolbar. Keeping the

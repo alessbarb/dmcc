@@ -117,10 +117,10 @@ export function TrazabilidadTab({
     TraceEntry["kind"],
     { accentColor: string; label: string }
   > = {
-    creacion: { accentColor: "var(--color-primary, hsl(210, 80%, 55%))", label: t("entityModal.tabCreation") },
-    visibilidad: { accentColor: "hsl(40, 80%, 55%)", label: t("entityModal.tabVisibility") },
-    relacion: { accentColor: "hsl(210, 60%, 50%)", label: t("entityModal.tabRelation") },
-    hecho: { accentColor: "hsl(280, 60%, 60%)", label: "Hecho" },
+    creacion: { accentColor: "var(--theme-activity-entity-foreground)", label: t("entityModal.tabCreation") },
+    visibilidad: { accentColor: "var(--theme-activity-visibility-foreground)", label: t("entityModal.tabVisibility") },
+    relacion: { accentColor: "var(--theme-activity-relation-foreground)", label: t("entityModal.tabRelation") },
+    hecho: { accentColor: "var(--theme-activity-fact-foreground)", label: "Hecho" },
   };
 
   if (entries.length === 0) {
