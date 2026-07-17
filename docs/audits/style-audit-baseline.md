@@ -15,8 +15,8 @@ Generated mechanically by `npm run styles:audit:report`.
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
   "mixedResponsibilityFiles": 19,
-  "crossComponentSelectors": 130,
-  "importantDeclarations": 399,
+  "crossComponentSelectors": 129,
+  "importantDeclarations": 397,
   "unclassifiedCssFiles": 0
 }
 ```
@@ -1025,7 +1025,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:235` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/entities/relations/relationshipGraph.css:44` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/dm/entities/relations/relationshipGraph.css:66` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:37` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/ResumenTab.tsx:46` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1758,7 +1757,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:94` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/components/PlayerCharacterSelectionCard.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | cross-component-selector | `src/frontend/player/pages/playerCampaignShell.css:86` | Selector depends on another component's DOM structure. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignShell.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignShell.tsx:86` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignShell.tsx:87` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1989,7 +1987,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:18` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ToastContainer.tsx:41` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/features/rules-workspace.css:39` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:21` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:22` | Important declarations bypass the intended cascade. |

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T17:47:23.400Z",
+  "generatedAt": "2026-07-17T17:54:51.593Z",
   "summary": {
     "cssFiles": 61,
     "tsxFilesWithInlineStyles": 85,
@@ -11,8 +11,8 @@
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
     "mixedResponsibilityFiles": 19,
-    "crossComponentSelectors": 130,
-    "importantDeclarations": 399,
+    "crossComponentSelectors": 129,
+    "importantDeclarations": 397,
     "unclassifiedCssFiles": 0
   },
   "files": [
@@ -22327,18 +22327,6 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "important:src/frontend/dm/entities/relations/relationshipGraph.css:66:48",
-      "path": "src/frontend/dm/entities/relations/relationshipGraph.css",
-      "line": 66,
-      "column": 48,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
       "id": "static-inline:src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx:28:31",
       "path": "src/frontend/dm/hub/CampaignTemplateLibrarySection.tsx",
       "line": 28,
@@ -29333,10 +29321,10 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/player/pages/PlayerCampaignShell.tsx:85:14",
+      "id": "static-inline:src/frontend/player/pages/PlayerCampaignShell.tsx:85:54",
       "path": "src/frontend/player/pages/PlayerCampaignShell.tsx",
       "line": 85,
-      "column": 14,
+      "column": 54,
       "severity": "high",
       "status": "temporary",
       "sourceType": "tsx-inline",
@@ -30124,18 +30112,6 @@
       "value": "style={{ width: \"min(1100px, calc(100% - 24px))\", margin: \"0 auto\", padding: \"18px 0 32px\" }}",
       "classification": "mixed",
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/player/pages/playerCampaignShell.css:86:5",
-      "path": "src/frontend/player/pages/playerCampaignShell.css",
-      "line": 86,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: relative;\n    flex-wrap: wrap;\n    padding: var(--space-3) var(--space-3);\n  }\n\n  .player-portal-header > :nth-child(2)",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "static-inline:src/frontend/shared/auth/ForgotPasswordPage.tsx:43:10",
@@ -32248,18 +32224,6 @@
       "severity": "high",
       "status": "temporary",
       "reason": "Large stylesheet requires atomization (329 lines, 42 selectors)."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/features/rules-workspace.css:39:55",
-      "path": "src/frontend/shared/styles/features/rules-workspace.css",
-      "line": 39,
-      "column": 55,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
     },
     {
       "id": "important:src/frontend/shared/styles/foundation/motion.css:17:4",
