@@ -13,6 +13,7 @@ import { CanvasPageHeader } from "../components/CanvasPageHeader.js";
 import { MysteryHealthPanel } from "../components/MysteryHealthPanel.js";
 import { CanvasNarrativeLintDrawer } from "../components/CanvasNarrativeLintDrawer.js";
 import { CanvasMobileMorePanel } from "../components/CanvasMobileMorePanel.js";
+import { CanvasBulkActionsBar } from "../components/CanvasBulkActionsBar.js";
 import { Plus, Layout, MoreHorizontal, X, Search, ListPlus, MousePointer2, Hand } from "lucide-react";
 import type { InteractionMode } from "../components/CanvasToolbar.js";
 import { EntityDetailModal } from "../../entities/EntityDetailModal.js";
@@ -844,147 +845,23 @@ export function CanvasPage() {
 
           {/* Floating bulk actions bar */}
           {!isPlayerView && selectedNodes.length >= 2 && (
-            <div className="canvas-multiselect-bar">
-              <span className="canvas-multiselect-text">
-                <strong>{selectedNodes.length}</strong> elementos seleccionados
-              </span>
-              <div className="canvas-multiselect-actions">
-                {/* Assign group to all selected nodes */}
-                {(() => {
-                  const groups = activeCanvas?.nodes?.filter((n: CanvasNode) => n.kind === "group") ?? [];
-                  if (groups.length === 0) return null;
-                  return (
-                    <select
-                      className="form-select"
-                      style={{ fontSize: "12px", padding: "3px 6px", height: "28px" }}
-                      value={bulkGroupId}
-                      onChange={(e) => {
-                        const gid = (e.target.value && e.target.value !== "__none__") ? e.target.value : null;
-                        setBulkGroupId(e.target.value);
-                        const updates = selectedNodes.map((n) => ({
-                          nodeId: n.id,
-                          x: Math.round(n.position?.x ?? 0),
-                          y: Math.round(n.position?.y ?? 0),
-                          groupId: gid,
-                          parentId: null,
-                        }));
-
-                        // Push history entry for group assignment
-                        const beforeLayout = selectedNodes.map((n) => {
-                          const originalNode = activeCanvas.nodes.find(sn => sn.id === n.id)!;
-                          return {
-                            nodeId: n.id,
-                            x: Math.round(n.position?.x ?? 0),
-                            y: Math.round(n.position?.y ?? 0),
-                            width: originalNode.width,
-                            height: originalNode.height,
-                            groupId: originalNode.groupId ?? originalNode.parentId ?? null,
-                            parentId: originalNode.parentId ?? null,
-                          };
-                        });
-                        const afterLayout = updates.map((u) => {
-                          const originalNode = activeCanvas.nodes.find(sn => sn.id === u.nodeId)!;
-                          return {
-                            nodeId: u.nodeId,
-                            x: u.x,
-                            y: u.y,
-                            width: originalNode.width,
-                            height: originalNode.height,
-                            groupId: u.groupId,
-                            parentId: u.parentId,
-                          };
-                        });
-                        useCanvasHistoryStore.getState().pushEntry(activeCanvas.id, {
-                          kind: "group-assignment",
-                          label: gid ? `Asignar a grupo` : "Quitar del grupo",
-                          before: beforeLayout,
-                          after: afterLayout,
-                        });
-
-                        runCanvasPageAction(updateCanvasNodesLayout(activeCanvas.id, updates).then(() => {
-                          addToast(`${selectedNodes.length} nodos asignados al grupo.`, "success");
-                          setBulkGroupId("");
-                        }), "No se pudo asignar el grupo a los nodos seleccionados.");
-                      }}
-                    >
-                      <option value="">📁 Asignar grupo...</option>
-                      <option value="__none__">Sin grupo</option>
-                      {groups.map((g: CanvasNode) => (
-                        <option key={g.id} value={g.id}>{g.title || "Grupo"}</option>
-                      ))}
-                    </select>
-                  );
-                })()}
-                <button
-                  onClick={() => setIsSessionPrepOpen(true)}
-                  className="btn btn-primary btn-sm"
-                  title={t("canvas.toolbar.prepareSession")}
-                >
-                  {t("sessionPage.prepareSessionSelectionButton")}
-                </button>
-                <button
-                  onClick={() => {
-                    const entities = selectedNodes.filter(n => n.type === 'entity');
-                    if (entities.length === 0) return;
-                    if (bulkConfirm !== "reveal") { setBulkConfirm("reveal"); return; }
-                    setBulkConfirm(null);
-                    runCanvasPageAction((async () => {
-                      for (const node of entities) {
-                        if (node.data.entityId) {
-                          await updateEntity(node.data.entityId, { visibility: { kind: 'public' } });
-                        }
-                      }
-                      addToast(`Se han revelado ${entities.length} entidades.`, "success");
-                    })(), "No se pudieron revelar las entidades seleccionadas.");
-                  }}
-                  onBlur={() => setBulkConfirm(prev => prev === "reveal" ? null : prev)}
-                  className={`btn btn-sm ${bulkConfirm === "reveal" ? "btn-warning" : "btn-secondary"}`}
-                  disabled={selectedNodes.filter(n => n.type === 'entity').length === 0}
-                >
-                  {bulkConfirm === "reveal" ? t("canvas.toolbar.bulkConfirm") : t("canvas.toolbar.bulkReveal")}
-                </button>
-                <button
-                  onClick={() => {
-                    const entities = selectedNodes.filter(n => n.type === 'entity');
-                    if (entities.length === 0) return;
-                    if (bulkConfirm !== "hide") { setBulkConfirm("hide"); return; }
-                    setBulkConfirm(null);
-                    runCanvasPageAction((async () => {
-                      for (const node of entities) {
-                        if (node.data.entityId) {
-                          await updateEntity(node.data.entityId, { visibility: { kind: 'dm_only' } });
-                        }
-                      }
-                      addToast(`Se han marcado como secretas ${entities.length} entidades.`, "success");
-                    })(), "No se pudieron ocultar las entidades seleccionadas.");
-                  }}
-                  onBlur={() => setBulkConfirm(prev => prev === "hide" ? null : prev)}
-                  className={`btn btn-sm ${bulkConfirm === "hide" ? "btn-warning" : "btn-secondary"}`}
-                  disabled={selectedNodes.filter(n => n.type === 'entity').length === 0}
-                >
-                  {bulkConfirm === "hide" ? t("canvas.toolbar.bulkConfirm") : t("canvas.toolbar.bulkHide")}
-                </button>
-                <button
-                  onClick={() => {
-                    if (bulkConfirm !== "remove") { setBulkConfirm("remove"); return; }
-                    setBulkConfirm(null);
-                    runCanvasPageAction((async () => {
-                      for (const node of selectedNodes) {
-                        await removeNodeFromCanvas(activeCanvas.id, node.id);
-                      }
-                      setSelectedNodes([]);
-                      setSelectedEdges([]);
-                      addToast(`Se han quitado ${selectedNodes.length} nodos del canvas.`, "info");
-                    })(), "No se pudieron quitar los nodos seleccionados del canvas.");
-                  }}
-                  onBlur={() => setBulkConfirm(prev => prev === "remove" ? null : prev)}
-                  className={`btn btn-sm ${bulkConfirm === "remove" ? "btn-danger" : "btn-secondary text-warning"}`}
-                >
-                  {bulkConfirm === "remove" ? t("canvas.toolbar.bulkConfirm") : t("canvas.toolbar.bulkRemove")}
-                </button>
-              </div>
-            </div>
-          )}
+            <CanvasBulkActionsBar
+              activeCanvas={activeCanvas}
+              selectedNodes={selectedNodes}
+              bulkGroupId={bulkGroupId}
+              setBulkGroupId={setBulkGroupId}
+              bulkConfirm={bulkConfirm}
+              setBulkConfirm={setBulkConfirm}
+              setSelectedNodes={setSelectedNodes}
+              setSelectedEdges={setSelectedEdges}
+              setIsSessionPrepOpen={setIsSessionPrepOpen}
+              updateCanvasNodesLayout={updateCanvasNodesLayout}
+              updateEntity={updateEntity}
+              removeNodeFromCanvas={removeNodeFromCanvas}
+              runCanvasPageAction={runCanvasPageAction}
+              addToast={addToast}
+              t={t}
+            />          )}
         </div>
       ) : (
         <div className="canvas-empty-state">
