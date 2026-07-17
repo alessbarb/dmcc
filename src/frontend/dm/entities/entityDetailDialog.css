@@ -1,9 +1,13 @@
 /* Shared entity detail dialog contract.
    The EntityDetailModal component is reused by Library, Canvas, Graph, Boards and Overview.
-   These structural selectors deliberately identify that shared dialog by its hero image so
-   route-level wrappers cannot change its viewport geometry. */
+   These selectors deliberately identify that shared dialog by its own entity-detail-dialog
+   class (set directly in EntityDetailModal.tsx) rather than the generic .modal-overlay/
+   .modal-content classes other unrelated dialogs in the app also use, so route-level
+   wrappers cannot change its viewport geometry. body-level rules key off
+   body[data-entity-detail-dialog-open], set by useBodyDataAttribute while the modal
+   is mounted -- see EntityDetailModal.tsx. */
 
-body:has(.modal-overlay > .modal-content > div:first-child > img) {
+body[data-entity-detail-dialog-open="true"] {
   overflow: hidden !important;
   overscroll-behavior: none;
 }
@@ -11,10 +15,10 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) {
 /* Route entry animations leave a transform on the route root because they use fill-mode: both.
    A transformed ancestor changes the containing block of position: fixed descendants, which
    centered the dialog inside the content column instead of the physical viewport. */
-body:has(.modal-overlay > .modal-content > div:first-child > img) .app-container,
-body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content,
-body:has(.modal-overlay > .modal-content > div:first-child > img) .content-body,
-body:has(.modal-overlay > .modal-content > div:first-child > img) .content-body > * {
+body[data-entity-detail-dialog-open="true"] .app-container,
+body[data-entity-detail-dialog-open="true"] .main-content,
+body[data-entity-detail-dialog-open="true"] .content-body,
+body[data-entity-detail-dialog-open="true"] .content-body > * {
   transform: none !important;
   filter: none !important;
   perspective: none !important;
@@ -22,11 +26,11 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .content-body 
   will-change: auto !important;
 }
 
-body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:not(.main-content--canvas) .content-body > * {
+body[data-entity-detail-dialog-open="true"] .main-content:not(.main-content--canvas) .content-body > * {
   animation: none !important;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) {
+.modal-overlay.entity-detail-dialog {
   position: fixed !important;
   inset: 0 !important;
   z-index: 20000 !important;
@@ -43,7 +47,7 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   transform: none !important;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content {
+.modal-content.entity-detail-dialog {
   position: relative !important;
   inset: auto !important;
   display: grid !important;
@@ -62,7 +66,7 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   isolation: isolate;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content.entity-detail-dialog--relations-expanded {
+.modal-content.entity-detail-dialog.entity-detail-dialog--relations-expanded {
   /* Match the overlay's own responsive padding (clamp(16px, 2.5vw, 36px) per
      side, see the .modal-overlay rule above) exactly, rather than guessing a
      fixed value — a mismatched hardcoded calc() here previously let the
@@ -82,30 +86,30 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
    grid (`.modal-overlay.modal-overlay:has(...):not(:has(...))`) that would
    otherwise win the cascade on source order; these rules repeat that same
    doubled-class + :not() shape so ours wins on specificity instead. */
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded {
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing).entity-detail-dialog--relations-expanded {
   grid-template-rows: 0px auto auto minmax(0, 1fr) 0px !important;
 }
 
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded > div:first-child,
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded > .modal-footer {
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing).entity-detail-dialog--relations-expanded > .entity-detail-hero,
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing).entity-detail-dialog--relations-expanded > .modal-footer {
   display: none !important;
 }
 
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded > .modal-header {
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing).entity-detail-dialog--relations-expanded > .modal-header {
   border-top-left-radius: inherit !important;
   border-top-right-radius: inherit !important;
 }
 
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"])) > .modal-content.entity-detail-dialog--relations-expanded .entity-detail-tabs {
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing).entity-detail-dialog--relations-expanded .entity-detail-tabs {
   display: none !important;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > div:first-child {
+.modal-content.entity-detail-dialog > .entity-detail-hero {
   height: clamp(220px, 31dvh, 330px) !important;
   min-height: 0;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > div:first-child > img {
+.modal-content.entity-detail-dialog > .entity-detail-hero > img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
@@ -120,18 +124,18 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
     !important;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-header {
+.modal-content.entity-detail-dialog > .modal-header {
   padding: 18px 28px 16px !important;
   border-bottom: 1px solid var(--theme-borders-default);
   background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-header h2 {
+.modal-content.entity-detail-dialog > .modal-header h2 {
   font-size: clamp(1.55rem, 2vw, 2rem) !important;
   line-height: 1.08;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-body {
+.modal-content.entity-detail-dialog > .modal-body {
   min-height: 0 !important;
   overflow-y: auto !important;
   overscroll-behavior: contain;
@@ -140,7 +144,7 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   scrollbar-gutter: stable;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer {
+.modal-content.entity-detail-dialog > .modal-footer {
   position: relative !important;
   z-index: 3;
   flex-wrap: wrap;
@@ -151,56 +155,64 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   box-shadow: 0 -14px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent);
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer > div {
+.modal-content.entity-detail-dialog > .modal-footer > div {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer > div:last-child {
+.modal-content.entity-detail-dialog > .modal-footer > div:last-child {
   margin-left: auto;
   justify-content: flex-end;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer > div:last-child > span {
+.modal-content.entity-detail-dialog > .modal-footer > div:last-child > span {
   order: -1;
 }
 
 /* Editing is a working surface, not a narrow form. */
-.modal-overlay:has(> .modal-content > div:first-child > img) .modal-body .grid.grid-cols-2 {
+.modal-content.entity-detail-dialog .modal-body .grid.grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) .modal-body .form-group {
+.modal-content.entity-detail-dialog .modal-body .form-group {
   min-width: 0;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) .modal-body .form-input,
-.modal-overlay:has(> .modal-content > div:first-child > img) .modal-body .form-select,
-.modal-overlay:has(> .modal-content > div:first-child > img) .modal-body .form-textarea {
+.modal-content.entity-detail-dialog .modal-body .form-input,
+.modal-content.entity-detail-dialog .modal-body .form-select,
+.modal-content.entity-detail-dialog .modal-body .form-textarea {
   width: 100%;
   min-height: 44px;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) .modal-body .form-textarea {
+.modal-content.entity-detail-dialog .modal-body .form-textarea {
   min-height: 120px;
   resize: vertical;
 }
 
-.modal-overlay:has(> .modal-content > div:first-child > img) .modal-body fieldset,
-.modal-overlay:has(> .modal-content > div:first-child > img) .modal-body [class*="metadata"] {
+.modal-content.entity-detail-dialog .modal-body fieldset,
+.modal-content.entity-detail-dialog .modal-body [class*="metadata"] {
   min-width: 0;
 }
 
 /* Physical editing mode. EntityDetailModal.tsx sets .entity-detail-dialog--editing
    directly on .modal-overlay and .modal-content from isEditingEntity React state --
    no DOM sniffing. Reading chrome is replaced by a wider workspace and the form
-   uses the available surface. ResumenTab.tsx's edit-form fields carry their own
-   explicit entity-summary__edit-* classes (titles/summary/image/notes/status/
-   metadata) so this grid layout targets them directly instead of guessing their
-   position with :nth-child. */
+   uses the available surface.
+
+   entity-summary__edit-main and entity-summary__edit-side are two independent
+   flex columns placed side by side in a single grid row -- not two grid items
+   spanning shared row-tracks. A grid item spanning multiple auto/min-content
+   row-tracks (the previous design) forces the CSS grid track-sizing algorithm
+   to inflate every track it spans to fit the tallest spanning item (here, the
+   image picker's ~330px natural height leaked into the short Título/Resumen
+   rows). Independent flex columns don't share row-tracks, so each column's
+   children keep their own natural height regardless of what the other column
+   contains; only the shared row itself grows to fit the taller column, and any
+   leftover space lands after the shorter column's last child, not between it. */
 .modal-overlay.entity-detail-dialog--editing {
   padding: 12px !important;
 }
@@ -214,13 +226,12 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   border-radius: 14px !important;
 }
 
-.modal-content.entity-detail-dialog--editing > div:first-child,
+.modal-content.entity-detail-dialog--editing > .entity-detail-hero,
 .modal-content.entity-detail-dialog--editing > .modal-header + .entity-detail-tab-bar {
   display: none !important;
 }
 
 .modal-content.entity-detail-dialog--editing > .modal-header {
-  min-height: 76px;
   padding: 14px 24px !important;
 }
 
@@ -268,32 +279,20 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   font-size: 1rem !important;
 }
 
-/* General identity and image controls. */
-.modal-content.entity-detail-dialog--editing .entity-summary__edit-titles {
+.modal-content.entity-detail-dialog--editing .entity-summary__edit-main {
   grid-column: 1 / span 8;
-  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
 }
 
-.modal-content.entity-detail-dialog--editing .entity-summary__edit-image {
+.modal-content.entity-detail-dialog--editing .entity-summary__edit-side {
   grid-column: 9 / -1;
-  grid-row: 2 / span 2;
-}
-
-/* Summary, state and importance. */
-.modal-content.entity-detail-dialog--editing .entity-summary__edit-summary {
-  grid-column: 1 / span 8;
-  grid-row: 3;
-}
-
-.modal-content.entity-detail-dialog--editing .entity-summary__edit-status {
-  grid-column: 9 / -1;
-  grid-row: 4;
-}
-
-/* Long-form notes and type-specific metadata use the full working width. */
-.modal-content.entity-detail-dialog--editing .entity-summary__edit-notes {
-  grid-column: 1 / span 8;
-  grid-row: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
 }
 
 .modal-content.entity-detail-dialog--editing .entity-summary__edit-metadata {
@@ -304,7 +303,7 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
   min-height: 150px;
 }
 
-.modal-content.entity-detail-dialog--editing > .modal-footer > div:first-child,
+.modal-content.entity-detail-dialog--editing > .modal-footer > .entity-detail-modal__footer-group--actions,
 .modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child > span,
 .modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child > button:last-child {
   display: none !important;
@@ -343,54 +342,54 @@ body:has(.modal-overlay > .modal-content > div:first-child > img) .main-content:
 }
 
 @media (max-width: 900px) {
-  .modal-overlay:has(> .modal-content > div:first-child > img) {
+  .modal-overlay.entity-detail-dialog {
     padding: 12px !important;
   }
 
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content {
+  .modal-content.entity-detail-dialog {
     width: calc(100vw - 24px) !important;
     height: calc(100dvh - 24px) !important;
     max-height: calc(100dvh - 24px) !important;
     border-radius: 14px !important;
   }
 
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > div:first-child {
+  .modal-content.entity-detail-dialog > .entity-detail-hero {
     height: clamp(180px, 27dvh, 250px) !important;
   }
 
-  .modal-overlay:has(> .modal-content > div:first-child > img) .modal-body .grid.grid-cols-2 {
+  .modal-content.entity-detail-dialog .modal-body .grid.grid-cols-2 {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 620px) {
-  .modal-overlay:has(> .modal-content > div:first-child > img) {
+  .modal-overlay.entity-detail-dialog {
     place-items: end stretch !important;
     padding: 0 !important;
   }
 
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content {
+  .modal-content.entity-detail-dialog {
     width: 100vw !important;
     height: min(94dvh, 920px) !important;
     max-height: 94dvh !important;
     border-radius: 18px 18px 0 0 !important;
   }
 
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-header,
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-body,
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer {
+  .modal-content.entity-detail-dialog > .modal-header,
+  .modal-content.entity-detail-dialog > .modal-body,
+  .modal-content.entity-detail-dialog > .modal-footer {
     padding-inline: 16px !important;
   }
 
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer,
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer > div,
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer > div:last-child {
+  .modal-content.entity-detail-dialog > .modal-footer,
+  .modal-content.entity-detail-dialog > .modal-footer > div,
+  .modal-content.entity-detail-dialog > .modal-footer > div:last-child {
     width: 100%;
     margin-left: 0;
     justify-content: stretch;
   }
 
-  .modal-overlay:has(> .modal-content > div:first-child > img) > .modal-content > .modal-footer .btn {
+  .modal-content.entity-detail-dialog > .modal-footer .btn {
     flex: 1 1 140px;
   }
 }

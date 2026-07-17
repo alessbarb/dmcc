@@ -376,97 +376,101 @@ export function ResumenTab({
           <h4 className="entity-summary__edit-heading">
             Editar entidad
           </h4>
-          <div className="grid grid-cols-2 entity-summary__edit-titles">
-            <div className="form-group form-group--flush">
-              <label className="form-label">Título</label>
+          <div className="entity-summary__edit-main">
+            <div className="grid grid-cols-2 entity-summary__edit-titles">
+              <div className="form-group form-group--flush">
+                <label className="form-label">Título</label>
+                <input
+                  className="form-input"
+                  value={editEntityForm.title ?? entity.title}
+                  onChange={(e) =>
+                    setEditEntityForm({ ...editEntityForm, title: e.target.value })
+                  }
+                />
+              </div>
+              <div className="form-group form-group--flush">
+                <label className="form-label">Subtítulo</label>
+                <input
+                  className="form-input"
+                  value={editEntityForm.subtitle ?? entity.subtitle ?? ""}
+                  onChange={(e) =>
+                    setEditEntityForm({ ...editEntityForm, subtitle: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+            <div className="form-group form-group--flush entity-summary__edit-summary">
+              <label className="form-label">Resumen</label>
               <input
                 className="form-input"
-                value={editEntityForm.title ?? entity.title}
+                value={editEntityForm.summary ?? entity.summary ?? ""}
                 onChange={(e) =>
-                  setEditEntityForm({ ...editEntityForm, title: e.target.value })
+                  setEditEntityForm({ ...editEntityForm, summary: e.target.value })
                 }
               />
             </div>
-            <div className="form-group form-group--flush">
-              <label className="form-label">Subtítulo</label>
-              <input
-                className="form-input"
-                value={editEntityForm.subtitle ?? entity.subtitle ?? ""}
+            <div className="form-group form-group--flush entity-summary__edit-notes">
+              <label className="form-label">Notas / Descripción</label>
+              <textarea
+                className="form-textarea"
+                rows={3}
+                value={editEntityForm.content ?? entity.content ?? ""}
                 onChange={(e) =>
-                  setEditEntityForm({ ...editEntityForm, subtitle: e.target.value })
+                  setEditEntityForm({ ...editEntityForm, content: e.target.value })
                 }
               />
             </div>
           </div>
-          <div className="form-group form-group--flush entity-summary__edit-summary">
-            <label className="form-label">Resumen</label>
-            <input
-              className="form-input"
-              value={editEntityForm.summary ?? entity.summary ?? ""}
-              onChange={(e) =>
-                setEditEntityForm({ ...editEntityForm, summary: e.target.value })
-              }
-            />
-          </div>
-          <div className="form-group form-group--flush entity-summary__edit-image">
-            <label className="form-label">Imagen</label>
-            <ImagePickerButton
-              value={
-                typeof editEntityForm.metadata?.imageUrl === "string"
-                  ? editEntityForm.metadata.imageUrl
-                  : typeof entity.metadata?.imageUrl === "string"
-                    ? entity.metadata.imageUrl
-                    : ""
-              }
-              onChange={(path) =>
-                setEditEntityForm({
-                  ...editEntityForm,
-                  metadata: {
-                    ...(editEntityForm.metadata ?? entity.metadata ?? {}),
-                    imageUrl: path || undefined,
-                  },
-                })
-              }
-              catalog="entities"
-              shape="circle"
-            />
-          </div>
-          <div className="form-group form-group--flush entity-summary__edit-notes">
-            <label className="form-label">Notas / Descripción</label>
-            <textarea
-              className="form-textarea"
-              rows={3}
-              value={editEntityForm.content ?? entity.content ?? ""}
-              onChange={(e) =>
-                setEditEntityForm({ ...editEntityForm, content: e.target.value })
-              }
-            />
-          </div>
-          <div className="grid grid-cols-2 entity-summary__edit-status">
-            <div className="form-group form-group--flush">
-              <label className="form-label">Estado</label>
-              <input
-                className="form-input"
-                value={editEntityForm.status ?? entity.status}
-                onChange={(e) =>
-                  setEditEntityForm({ ...editEntityForm, status: e.target.value })
+          <div className="entity-summary__edit-side">
+            <div className="form-group form-group--flush entity-summary__edit-image">
+              <label className="form-label">Imagen</label>
+              <ImagePickerButton
+                value={
+                  typeof editEntityForm.metadata?.imageUrl === "string"
+                    ? editEntityForm.metadata.imageUrl
+                    : typeof entity.metadata?.imageUrl === "string"
+                      ? entity.metadata.imageUrl
+                      : ""
                 }
+                onChange={(path) =>
+                  setEditEntityForm({
+                    ...editEntityForm,
+                    metadata: {
+                      ...(editEntityForm.metadata ?? entity.metadata ?? {}),
+                      imageUrl: path || undefined,
+                    },
+                  })
+                }
+                catalog="entities"
+                shape="circle"
               />
             </div>
-            <div className="form-group form-group--flush">
-              <label className="form-label">Importancia</label>
-              <select
-                className="form-select"
-                value={editEntityForm.importance ?? entity.importance}
-                onChange={(e) =>
-                  setEditEntityForm({ ...editEntityForm, importance: e.target.value })
-                }
-              >
-                <option value="low">Baja</option>
-                <option value="normal">Normal</option>
-                <option value="high">Alta</option>
-                <option value="critical">Crítica</option>
-              </select>
+            <div className="grid grid-cols-2 entity-summary__edit-status">
+              <div className="form-group form-group--flush">
+                <label className="form-label">Estado</label>
+                <input
+                  className="form-input"
+                  value={editEntityForm.status ?? entity.status}
+                  onChange={(e) =>
+                    setEditEntityForm({ ...editEntityForm, status: e.target.value })
+                  }
+                />
+              </div>
+              <div className="form-group form-group--flush">
+                <label className="form-label">Importancia</label>
+                <select
+                  className="form-select"
+                  value={editEntityForm.importance ?? entity.importance}
+                  onChange={(e) =>
+                    setEditEntityForm({ ...editEntityForm, importance: e.target.value })
+                  }
+                >
+                  <option value="low">Baja</option>
+                  <option value="normal">Normal</option>
+                  <option value="high">Alta</option>
+                  <option value="critical">Crítica</option>
+                </select>
+              </div>
             </div>
           </div>
           <div className="entity-summary__edit-metadata">

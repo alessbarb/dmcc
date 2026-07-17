@@ -37,6 +37,7 @@ import type { Entity, Relation, Fact, Session, CampaignStateStore } from "../../
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import type { VisibilityRule } from "@core/domain/visibility/visibility.js";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
+import { useBodyDataAttribute } from "../../shared/hooks/useBodyDataAttribute.js";
 
 type CampaignState = NonNullable<CampaignStateStore["campaignState"]>;
 
@@ -107,6 +108,7 @@ function StandardEntityDetailModal({
   heroActions,
   relationsHistory,
 }: EntityDetailModalProps) {
+  useBodyDataAttribute("entityDetailDialogOpen", "true");
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabId>("resumen");
   const [isRelationsExpanded, setIsRelationsExpanded] = useState(false);
@@ -181,9 +183,9 @@ function StandardEntityDetailModal({
   };
 
   return (
-    <div className={`modal-overlay${isEditingEntity ? " entity-detail-dialog--editing" : ""}`} onClick={onClose}>
+    <div className={`modal-overlay entity-detail-dialog${isEditingEntity ? " entity-detail-dialog--editing" : ""}`} onClick={onClose}>
       <div
-        className={`modal-content${isRelationsExpanded ? " entity-detail-dialog--relations-expanded" : ""}${isEditingEntity ? " entity-detail-dialog--editing" : ""}`}
+        className={`modal-content entity-detail-dialog${isRelationsExpanded ? " entity-detail-dialog--relations-expanded" : ""}${isEditingEntity ? " entity-detail-dialog--editing" : ""}`}
         onClick={(e) => e.stopPropagation()}
         style={isRelationsExpanded ? undefined : { maxWidth: "700px" }}
       >
@@ -303,7 +305,7 @@ function StandardEntityDetailModal({
 
         {/* Footer */}
         <div className="modal-footer entity-detail-modal__footer">
-          <div className="entity-detail-modal__footer-group">
+          <div className="entity-detail-modal__footer-group entity-detail-modal__footer-group--actions">
             <button
               type="button"
               className={`btn btn-sm ${isConfirmingArchive ? "btn-danger" : "btn-secondary"}`}

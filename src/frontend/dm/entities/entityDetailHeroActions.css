@@ -1,4 +1,4 @@
-.entity-detail-focus-shell .modal-content > div:first-child {
+.entity-detail-focus-shell .modal-content > .entity-detail-hero {
   isolation: isolate;
 }
 

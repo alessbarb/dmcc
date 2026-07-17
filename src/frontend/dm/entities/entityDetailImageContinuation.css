@@ -3,8 +3,7 @@
    creating a real 40% overlap and preserving 80% of the dialog for reading.
    Editing mode keeps its dedicated workspace contract. */
 
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content {
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing) {
   position: relative !important;
   display: grid !important;
   grid-template-rows: 20% auto auto minmax(0, 1fr) auto !important;
@@ -14,9 +13,8 @@
 }
 
 /* Artwork is a background layer: 60% from the physical top of the dialog. */
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content
-  > div:first-child {
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
+  > .entity-detail-hero {
   position: absolute !important;
   inset: 0 0 auto !important;
   z-index: 0;
@@ -28,9 +26,8 @@
   pointer-events: none;
 }
 
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content
-  > div:first-child
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
+  > .entity-detail-hero
   > img {
   width: 100% !important;
   height: 100% !important;
@@ -41,9 +38,8 @@
 }
 
 /* Keep most of the scene readable and reserve the lower overlap for identity and navigation. */
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content
-  > div:first-child
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
+  > .entity-detail-hero
   > div:last-child {
   position: absolute !important;
   inset: 0 !important;
@@ -72,8 +68,7 @@
 }
 
 /* Reading surface begins at the physical 20% row, inside the artwork. */
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
   > .modal-header {
   position: relative !important;
   z-index: 3 !important;
@@ -92,8 +87,7 @@
 }
 
 /* Keep the close control available without competing with the identity. */
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
   > .modal-header
   > button:last-child {
   width: 38px !important;
@@ -106,8 +100,7 @@
   backdrop-filter: blur(8px);
 }
 
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
   > .modal-header
   > button:last-child:hover {
   border-color: color-mix(in srgb, var(--theme-accents-secondary-foreground) 34%, transparent) !important;
@@ -116,10 +109,9 @@
 }
 
 /* Tabs finish the overlap while remaining in normal grid flow. */
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
   > .modal-header
-  + div {
+  + .entity-detail-tab-bar {
   position: relative !important;
   z-index: 3 !important;
   grid-row: 3;
@@ -130,8 +122,7 @@
 }
 
 /* The body receives the remaining reading height and owns the internal scroll. */
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
   > .modal-body {
   position: relative;
   z-index: 2;
@@ -149,8 +140,7 @@
     ) !important;
 }
 
-.modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-  > .modal-content
+.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
   > .modal-footer {
   position: relative !important;
   z-index: 4;
@@ -158,41 +148,35 @@
 }
 
 @media (max-width: 900px) {
-  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-    > .modal-content
+  .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
     > .modal-header {
     min-height: 104px;
     padding: 36px 20px 14px !important;
   }
 
-  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-    > .modal-content
+  .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
     > .modal-body {
     padding-top: 22px !important;
   }
 }
 
 @media (max-width: 620px) {
-  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-    > .modal-content {
+  .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing) {
     grid-template-rows: 20% auto auto minmax(0, 1fr) auto !important;
   }
 
-  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-    > .modal-content
-    > div:first-child {
+  .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
+    > .entity-detail-hero {
     height: 60% !important;
   }
 
-  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-    > .modal-content
+  .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
     > .modal-header {
     min-height: 96px;
     padding: 30px 16px 12px !important;
   }
 
-  .modal-overlay.modal-overlay:has(> .modal-content > div:first-child > img):not(:has(.modal-body [style*="border-top"]))
-    > .modal-content
+  .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)
     > .modal-body {
     padding-top: 18px !important;
   }
