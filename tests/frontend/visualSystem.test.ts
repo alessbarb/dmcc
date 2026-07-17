@@ -90,15 +90,16 @@ describe("theme-backed visual system", () => {
     expect(colorScheme).toContain("color-scheme: light");
   });
 
-  it("loads the foundation before primitives and module styles", () => {
-    const tokens = read("src/frontend/shared/styles/tokens.css");
-    expect(tokens.indexOf('@import "./foundation/fonts.css"')).toBe(0);
-    expect(tokens.indexOf('@import "./foundation/structural-tokens.css"')).toBeGreaterThan(0);
-
-    const styles = read("src/frontend/shared/styles/index.css");
-    const tokensIndex = styles.indexOf('@import "./tokens.css"');
+  it("loads the foundation before primitives and legacy module styles", () => {
+    const styles = read("src/frontend/shared/styles/main.css");
+    const fontsIndex = styles.indexOf('@import "./foundation/fonts.css"');
+    const structuralTokensIndex = styles.indexOf('@import "./foundation/structural-tokens.css"');
     const primitivesIndex = styles.indexOf('@import "./primitives.css"');
-    expect(tokensIndex).toBe(0);
-    expect(primitivesIndex).toBeGreaterThan(tokensIndex);
+    const legacyIndex = styles.indexOf('@import "./index.css"');
+
+    expect(fontsIndex).toBe(0);
+    expect(structuralTokensIndex).toBeGreaterThan(fontsIndex);
+    expect(primitivesIndex).toBeGreaterThan(structuralTokensIndex);
+    expect(legacyIndex).toBeGreaterThan(primitivesIndex);
   });
 });
