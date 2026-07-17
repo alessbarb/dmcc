@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-17T18:08:16.171Z",
+  "generatedAt": "2026-07-17T18:14:56.400Z",
   "summary": {
     "cssFiles": 61,
     "tsxFilesWithInlineStyles": 85,
@@ -12,7 +12,7 @@
     "orphanCssFiles": 0,
     "mixedResponsibilityFiles": 19,
     "crossComponentSelectors": 124,
-    "importantDeclarations": 394,
+    "importantDeclarations": 386,
     "unclassifiedCssFiles": 0
   },
   "files": [
@@ -2495,7 +2495,7 @@
       "path": "src/frontend/dm/layouts/campaign-route-transitions.css",
       "layer": "layout",
       "domain": "layout",
-      "lineCount": 79,
+      "lineCount": 82,
       "selectorCount": 19,
       "imports": [],
       "importedBy": [
@@ -5892,7 +5892,7 @@
       "path": "src/frontend/shared/styles/foundation/motion.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 26,
+      "lineCount": 28,
       "selectorCount": 3,
       "imports": [],
       "importedBy": [
@@ -23353,54 +23353,6 @@
       "reason": "Literal visual color outside a registered theme package."
     },
     {
-      "id": "important:src/frontend/dm/layouts/campaign-route-transitions.css:73:21",
-      "path": "src/frontend/dm/layouts/campaign-route-transitions.css",
-      "line": 73,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/layouts/campaign-route-transitions.css:74:22",
-      "path": "src/frontend/dm/layouts/campaign-route-transitions.css",
-      "line": 74,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/layouts/campaign-route-transitions.css:75:18",
-      "path": "src/frontend/dm/layouts/campaign-route-transitions.css",
-      "line": 75,
-      "column": 18,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/layouts/campaign-route-transitions.css:76:21",
-      "path": "src/frontend/dm/layouts/campaign-route-transitions.css",
-      "line": 76,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
       "id": "literal-color:src/frontend/dm/library/boards/EntityBoardsView.tsx:45:64",
       "path": "src/frontend/dm/library/boards/EntityBoardsView.tsx",
       "line": 45,
@@ -32181,54 +32133,6 @@
       "path": "src/frontend/shared/styles/foundation/motion.css",
       "line": 17,
       "column": 4,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/foundation/motion.css:21:25",
-      "path": "src/frontend/shared/styles/foundation/motion.css",
-      "line": 21,
-      "column": 25,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/foundation/motion.css:22:30",
-      "path": "src/frontend/shared/styles/foundation/motion.css",
-      "line": 22,
-      "column": 30,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/foundation/motion.css:23:32",
-      "path": "src/frontend/shared/styles/foundation/motion.css",
-      "line": 23,
-      "column": 32,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/shared/styles/foundation/motion.css:24:31",
-      "path": "src/frontend/shared/styles/foundation/motion.css",
-      "line": 24,
-      "column": 31,
       "severity": "high",
       "status": "temporary",
       "sourceType": "css",

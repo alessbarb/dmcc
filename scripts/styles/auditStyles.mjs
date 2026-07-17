@@ -51,6 +51,18 @@ function isColorAllowed(pathname) {
   return STYLE_AUDIT_CONFIG.colorLiteralAllow.some((rule) => rule.test(pathname));
 }
 
+// A declaration can be marked as a justified !important exception by putting
+// `audit-allow-important` in a comment on its own line or the line above --
+// e.g. overriding arbitrary/unknown descendant styles for a
+// prefers-reduced-motion accessibility toggle, where no other CSS mechanism
+// can guarantee the override wins. This is an explicit, reviewed exception,
+// not a way to silence the ratchet.
+function isImportantAllowed(source, index) {
+  const previousRuleEnd = source.lastIndexOf("}", index);
+  const window = source.slice(previousRuleEnd + 1, index);
+  return /audit-allow-important/.test(window);
+}
+
 function classifyInlineStyle(body) {
   const containsDynamic = /\$\{|\b(?:props|state|value|index|progress|width|height|top|left|right|bottom|x|y|focus|position|transform)\b/.test(body);
   const containsStaticProperty = /\b(?:background|backgroundColor|color|border|borderRadius|boxShadow|fontSize|fontFamily|fontWeight|padding|margin|display|grid|flex|gap|alignItems|justifyContent|position|overflow)\s*:/.test(body);
@@ -83,6 +95,7 @@ function auditCss(pathname, source) {
   }
 
   for (const match of collectRegex(source, /!important\b/g)) {
+    if (isImportantAllowed(source, match.index)) continue;
     findings.push(finding(pathname, source, match.index, {
       sourceType: "css",
       category: "important",
