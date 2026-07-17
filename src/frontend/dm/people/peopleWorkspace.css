@@ -276,7 +276,11 @@
   z-index: 1;
   min-width: 250px;
   background: var(--theme-surfaces-base);
-  text-align: left !important;
+}
+
+.people-knowledge-table th.people-knowledge-table__target,
+.people-knowledge-table td.people-knowledge-table__target {
+  text-align: left;
 }
 
 .people-knowledge-table thead .people-knowledge-table__target {

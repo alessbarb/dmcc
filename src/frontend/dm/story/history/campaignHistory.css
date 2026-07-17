@@ -113,7 +113,7 @@
   text-align: center;
 }
 
-.campaign-history__state > div {
+.campaign-history__state-inner {
   display: grid;
   justify-items: center;
   gap: 10px;

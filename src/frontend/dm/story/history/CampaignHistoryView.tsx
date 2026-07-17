@@ -165,11 +165,11 @@ export function CampaignHistoryView() {
 
           {loading ? (
             <div className="campaign-history__state" aria-live="polite">
-              <div><RefreshCw className="animate-spin" size={30} /></div>
+              <div className="campaign-history__state-inner"><RefreshCw className="animate-spin" size={30} /></div>
             </div>
           ) : entries.length === 0 ? (
             <div className="campaign-history__state">
-              <div>
+              <div className="campaign-history__state-inner">
                 <Clock size={42} aria-hidden="true" />
                 <h3>{isEs ? "Sin actividades" : "No activities"}</h3>
                 <p>{isEs ? "No se han encontrado registros en esta categoría." : "No records were found in this category."}</p>
