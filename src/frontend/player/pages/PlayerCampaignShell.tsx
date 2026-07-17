@@ -18,6 +18,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { MobileDock } from "../../shared/components/MobileDock.js";
 import { buildPlayerMobileDockItems, type PlayerDockTab } from "../navigation/playerMobileDockItems.js";
 import { usePlayerCampaignHome, type PlayerCampaignTab } from "./PlayerCampaignTabContent.js";
+import "./playerCampaignShell.css";
 
 const TABS: Array<{ id: PlayerCampaignTab; labelKey: TranslationKey; Icon: React.ComponentType<{ size?: number }> }> = [
   { id: "overview", labelKey: "playerPortal.tabs.home", Icon: Home },

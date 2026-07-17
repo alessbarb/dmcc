@@ -33,10 +33,10 @@ describe("theme-backed visual system", () => {
     expect(existsSync(resolve(root, "public/fonts/LICENSE-Cinzel.txt"))).toBe(true);
     expect(existsSync(resolve(root, "public/fonts/LICENSE-Outfit.txt"))).toBe(true);
 
-    const tokens = read("src/frontend/shared/styles/tokens.css");
-    expect(tokens).toContain('font-family: "Cinzel"');
-    expect(tokens).toContain('font-family: "Outfit"');
-    expect(tokens.match(/font-display:\s*swap/g)).toHaveLength(2);
+    const fonts = read("src/frontend/shared/styles/foundation/fonts.css");
+    expect(fonts).toContain('font-family: "Cinzel"');
+    expect(fonts).toContain('font-family: "Outfit"');
+    expect(fonts.match(/font-display:\s*swap/g)).toHaveLength(2);
 
     const html = read("index.html");
     expect(html).toContain('href="/fonts/cinzel-latin.woff2"');
@@ -44,7 +44,7 @@ describe("theme-backed visual system", () => {
   });
 
   it("keeps structural tokens separate from runtime theme values", () => {
-    const tokens = read("src/frontend/shared/styles/tokens.css");
+    const tokens = read("src/frontend/shared/styles/foundation/structural-tokens.css");
     expect(tokens).toContain("--space-5: 1.25rem");
     expect(tokens).toContain("--touch-target-min: 44px");
     expect(tokens).not.toContain("Theme v1 bridge");
@@ -77,23 +77,29 @@ describe("theme-backed visual system", () => {
 
   it("lets runtime preferences and the operating system reduce motion", () => {
     const primitives = read("src/frontend/shared/styles/primitives.css");
-    expect(primitives).toContain("@media (prefers-reduced-motion: reduce)");
+    const motion = read("src/frontend/shared/styles/foundation/motion.css");
+    expect(`${motion}\n${primitives}`).toContain("@media (prefers-reduced-motion: reduce)");
     expect(primitives).toContain(':root[data-reduced-motion="true"] *');
   });
 
   it("lets the resolved runtime mode control native color scheme", () => {
-    const tokens = read("src/frontend/shared/styles/tokens.css");
-    expect(tokens).toContain(':root[data-color-mode="dark"]');
-    expect(tokens).toContain("color-scheme: dark");
-    expect(tokens).toContain(':root[data-color-mode="light"]');
-    expect(tokens).toContain("color-scheme: light");
+    const colorScheme = read("src/frontend/shared/styles/foundation/color-scheme.css");
+    expect(colorScheme).toContain(':root[data-color-mode="dark"]');
+    expect(colorScheme).toContain("color-scheme: dark");
+    expect(colorScheme).toContain(':root[data-color-mode="light"]');
+    expect(colorScheme).toContain("color-scheme: light");
   });
 
-  it("loads structural tokens before primitives and module styles", () => {
-    const styles = read("src/frontend/shared/styles/index.css");
-    const tokensIndex = styles.indexOf('@import "./tokens.css"');
+  it("loads the foundation before primitives and legacy module styles", () => {
+    const styles = read("src/frontend/shared/styles/main.css");
+    const fontsIndex = styles.indexOf('@import "./foundation/fonts.css"');
+    const structuralTokensIndex = styles.indexOf('@import "./foundation/structural-tokens.css"');
     const primitivesIndex = styles.indexOf('@import "./primitives.css"');
-    expect(tokensIndex).toBe(0);
-    expect(primitivesIndex).toBeGreaterThan(tokensIndex);
+    const legacyIndex = styles.indexOf('@import "./index.css"');
+
+    expect(fontsIndex).toBe(0);
+    expect(structuralTokensIndex).toBeGreaterThan(fontsIndex);
+    expect(primitivesIndex).toBeGreaterThan(structuralTokensIndex);
+    expect(legacyIndex).toBeGreaterThan(primitivesIndex);
   });
 });

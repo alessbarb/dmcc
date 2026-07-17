@@ -1,70 +1,3 @@
-@import "./tokens.css";
-@import "./primitives.css";
-@import "./landing.css";
-@import "../../account/account.css";
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-body {
-  width: 100%;
-  max-width: 100%;
-  background-color: var(--theme-surfaces-canvas);
-  color: var(--theme-text-primary);
-  font-family: var(--font-sans);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-#root {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: clip;
-}
-
-img,
-svg,
-video,
-canvas {
-  max-width: 100%;
-}
-
-@media (max-width: 900px), (hover: none) and (pointer: coarse) {
-  html,
-  body,
-  #root,
-  .app-container,
-  .main-content,
-  .content-body,
-  .player-portal-shell,
-  .player-portal-main {
-    width: 100%;
-    max-width: 100dvw;
-    overflow-x: clip;
-  }
-
-  .app-container,
-  .main-content,
-  .content-body,
-  .content-grid,
-  .card,
-  .panel,
-  .modal-content,
-  .player-portal-content {
-    min-width: 0;
-  }
-}
-
 .watermark {
   position: fixed;
   inset: 0;
@@ -9715,4 +9648,5 @@ small.canvas-navigator-result-action {
   cursor: pointer;
   accent-color: var(--theme-accents-primary-foreground);
 }
+
 
