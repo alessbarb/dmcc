@@ -4,7 +4,7 @@ import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import type { Session } from "../../../shared/stores/campaignStore.js";
 import type { MaybeCampaignState } from "../sessionTypes.js";
 import { PrepLinkedList } from "./PrepLinkedList.js";
-import "./session-prep.css";
+import "./active-session-prep.css";
 
 export function ActiveSessionPrepPanel({ session, campaignState }: { session: Session; campaignState: MaybeCampaignState }) {
   const { t } = useTranslation();
