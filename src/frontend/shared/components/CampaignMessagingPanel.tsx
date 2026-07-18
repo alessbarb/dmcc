@@ -113,6 +113,8 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
   const fetchPage = useCallback(async (before?: string): Promise<MessagingPayload> => {
     const response = await apiFetch(`/api/campaigns/${encodeURIComponent(campaignId)}/messages${before ? `?before=${encodeURIComponent(before)}` : ""}`);
     if (!response.ok) throw new Error(await readApiError(response, t("playerPortal.messaging.loading")));
+    // Trusting the server's response shape at the fetch boundary; no runtime schema here.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     return response.json() as Promise<MessagingPayload>;
   }, [campaignId, t]);
 
@@ -180,7 +182,8 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
         void loadLatest().catch((cause) => setError(cause.message));
       }, 120);
     };
-    const refreshReads = (event: MessageEvent<string>) => {
+    const refreshReads = (event: Event) => {
+      if (!(event instanceof MessageEvent) || typeof event.data !== "string") return;
       const parsed: unknown = JSON.parse(event.data);
       const ids = isRecord(parsed) && Array.isArray(parsed.messageIds)
         ? parsed.messageIds.filter((id): id is string => typeof id === "string")
@@ -188,11 +191,11 @@ export function CampaignMessagingPanel({ campaignId, dmMode = false }: CampaignM
       if (payloadRef.current.messages.some((message) => message.sentByMe && ids.includes(message.messageId))) refresh();
     };
     source.addEventListener("campaign.message.created", refresh);
-    source.addEventListener("campaign.message.read", refreshReads as EventListener);
+    source.addEventListener("campaign.message.read", refreshReads);
     return () => {
       if (refreshTimer !== null) window.clearTimeout(refreshTimer);
       source.removeEventListener("campaign.message.created", refresh);
-      source.removeEventListener("campaign.message.read", refreshReads as EventListener);
+      source.removeEventListener("campaign.message.read", refreshReads);
       source.close();
     };
   }, [campaignId, loadLatest]);

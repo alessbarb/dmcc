@@ -32,13 +32,14 @@ import {
   UserX,
   Wrench,
   XCircle,
+  type LucideIcon,
 } from "lucide-react";
 import { getCampaignHistory, type CampaignHistoryResponse } from "../../../shared/api/webProductClient.js";
 import { getActivityVisualConfig } from "../../../../core/projections/activity/activityPresentation.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import "./campaignHistory.css";
 
-const IconMap: Record<string, React.ComponentType<any>> = {
+const IconMap: Record<string, LucideIcon> = {
   BookOpen,
   Settings,
   UserPlus,
@@ -178,18 +179,19 @@ export function CampaignHistoryView() {
           ) : (
             <div className="campaign-history__timeline">
               {entries.map((entry) => {
-                const config = getActivityVisualConfig(entry.type, entry.data, locale as any);
+                const config = getActivityVisualConfig(entry.type, entry.data, isEs ? "es" : "en");
                 const EntryIcon = IconMap[config.icon] || HelpCircle;
                 const sourceLabel = entry.sourceKind === "domain_event" ? "domain_event" : "operation";
+                const entryStyle: React.CSSProperties & Record<`--${string}`, string | undefined> = {
+                  "--history-color": config.color,
+                  "--history-bg": config.bgColor,
+                };
 
                 return (
                   <article
                     key={entry.activityId}
                     className="campaign-history-entry"
-                    style={{
-                      "--history-color": config.color,
-                      "--history-bg": config.bgColor,
-                    } as React.CSSProperties}
+                    style={entryStyle}
                   >
                     <span className="campaign-history-entry__marker" aria-hidden="true">
                       <EntryIcon size={15} />

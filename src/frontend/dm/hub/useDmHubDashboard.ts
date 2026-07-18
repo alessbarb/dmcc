@@ -53,7 +53,7 @@ function getProgressPercent(campaign: Campaign): number | null {
     getNumber(stats.progress) ||
     getNumber(metadata.progressPercent) ||
     getNumber(metadata.progress) ||
-    getNumber((campaign as unknown as Record<string, unknown>).progressPercent);
+    getNumber(asRecord(campaign).progressPercent);
 
   if (raw <= 0) return null;
   return Math.max(0, Math.min(100, Math.round(raw)));
@@ -228,14 +228,17 @@ function normalizeAlert(raw: unknown): DmHubAlert | null {
   };
 }
 
+const ACTIVITY_ICONS = ["session", "npc", "note", "entity", "campaign"] as const;
+
+function isActivityIcon(value: unknown): value is DmHubActivityItem["icon"] {
+  return typeof value === "string" && (ACTIVITY_ICONS as readonly string[]).includes(value);
+}
+
 function normalizeActivityItem(raw: unknown): DmHubActivityItem | null {
   const record = isRecord(raw) ? raw : {};
   const id = getString(record.id);
   if (!id) return null;
-  const icon =
-    typeof record.icon === "string" && ["session", "npc", "note", "entity", "campaign"].includes(record.icon)
-      ? (record.icon as DmHubActivityItem["icon"])
-      : "campaign";
+  const icon = isActivityIcon(record.icon) ? record.icon : "campaign";
   return {
     id,
     icon,
@@ -251,6 +254,10 @@ function normalizeRemoteDashboard(
   t: (key: string) => string
 ): DmHubDashboard | null {
   if (!isRecord(data)) return null;
+  // data is an untrusted API response blob; normalizeCampaign defensively reads
+  // every field through the getString/getNumber/asRecord helpers above, so a
+  // malformed entry degrades gracefully instead of throwing.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   const campaigns = Array.isArray(data.campaigns) ? (data.campaigns as Campaign[]).map(normalizeCampaign) : [];
   const activeTables = Array.isArray(data.activeTables)
     ? (data.activeTables.map((x: unknown) => normalizeActiveTable(x, t)).filter((x): x is DmHubActiveTable => x !== null))

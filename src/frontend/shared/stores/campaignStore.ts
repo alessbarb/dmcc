@@ -77,6 +77,7 @@ function buildCanvasesById(campaignState: { canvases?: unknown } | null | undefi
     if (!isRecord(item)) continue;
     const canvasId = typeof item.canvasId === "string" ? item.canvasId : typeof item.id === "string" ? item.id : null;
     // Trusted API boundary: the server only ever serializes valid Canvas records here.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     if (canvasId) canvasesById[canvasId] = item as Canvas;
   }
   return canvasesById;
@@ -107,6 +108,7 @@ function normalizeCampaignState(raw: unknown): StoreCampaignState | null {
     storySteps: toArray(raw.storySteps),
   };
   // Trusted API boundary: the server serializes a well-formed CampaignProjection here.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   return normalized as unknown as StoreCampaignState;
 }
 
@@ -752,6 +754,8 @@ export const useCampaignStore = create<CampaignStateStore>((set, get) => ({
         await get().reloadCampaign();
       }
       set({ loading: false });
+      // Trusted API boundary: the server response shape is not runtime-validated here.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       return data.campaign as Campaign;
     } catch (err) {
       set({ error: errorMessage(err), loading: false });
