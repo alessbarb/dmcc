@@ -96,7 +96,7 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
         defaultMetadata = { truth: "" };
       } else if (nextType === "front") {
         defaultStatus = "active";
-        defaultMetadata = { stakes: "", countdown: "" };
+        defaultMetadata = { goal: "", nextMove: "" };
       } else if (nextType === "consequence") {
         defaultStatus = "pending";
         defaultMetadata = { impact: "", triggerCondition: "" };

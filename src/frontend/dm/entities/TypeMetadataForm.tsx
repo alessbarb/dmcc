@@ -464,6 +464,34 @@ export function TypeMetadataForm({ entityType, metadata, onChange, players = [],
           </div>
         </div>
       );
+    case "front":
+      return (
+        <div className="type-metadata-form">
+          <h4 className="type-metadata-form__heading">Datos del frente narrativo</h4>
+          <div className="form-group form-group--flush">
+            <label className="form-label">Objetivo del frente *</label>
+            <input type="text" className="form-input" required value={metadata.goal || ""} onChange={e => onChange("goal", e.target.value)} placeholder="Qué busca lograr esta amenaza..." />
+          </div>
+          <div className="form-group form-group--flush">
+            <label className="form-label">Próximo movimiento</label>
+            <input type="text" className="form-input" value={metadata.nextMove || ""} onChange={e => onChange("nextMove", e.target.value)} placeholder="Qué hará a continuación si nadie interviene..." />
+          </div>
+        </div>
+      );
+    case "consequence":
+      return (
+        <div className="type-metadata-form">
+          <h4 className="type-metadata-form__heading">Datos de la consecuencia</h4>
+          <div className="form-group form-group--flush">
+            <label className="form-label">Condición que la dispara</label>
+            <input type="text" className="form-input" value={metadata.triggerCondition || ""} onChange={e => onChange("triggerCondition", e.target.value)} placeholder="Qué la activa..." />
+          </div>
+          <div className="form-group form-group--flush">
+            <label className="form-label">Impacto</label>
+            <input type="text" className="form-input" value={metadata.impact || ""} onChange={e => onChange("impact", e.target.value)} placeholder="Qué cambia cuando ocurre..." />
+          </div>
+        </div>
+      );
     default:
       return null;
   }
