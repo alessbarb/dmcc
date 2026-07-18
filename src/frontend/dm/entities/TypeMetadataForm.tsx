@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- this form renders a different field set per
+   EntityType from a single untyped metadata bag (Entity["metadata"] is Record<string, unknown> with
+   no per-type schema wired to the UI layer yet); typing it properly is a larger metadata-schema
+   refactor, tracked separately from this lint pass. */
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import "./type-metadata-form.css";
 

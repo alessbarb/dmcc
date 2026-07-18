@@ -199,8 +199,8 @@ export function DmHubPage() {
       setNewCampaignCoverUrl("");
       setIsCreateModalOpen(false);
       if (campaignId) await navigate({ to: `/campaigns/${campaignId}/overview` });
-    } catch (err: any) {
-      setCreateCampaignError(err.message || t("landing.createCampaignError"));
+    } catch (err: unknown) {
+      setCreateCampaignError(err instanceof Error ? err.message : t("landing.createCampaignError"));
     } finally {
       setIsCreatingCampaign(false);
     }
@@ -216,8 +216,8 @@ export function DmHubPage() {
       setBackupRestorePath("");
       setBackupRestoreState("success");
       await fetchCampaigns();
-    } catch (err: any) {
-      setBackupRestoreError(err.message || "Restore failed");
+    } catch (err: unknown) {
+      setBackupRestoreError(err instanceof Error ? err.message : "Restore failed");
       setBackupRestoreState("error");
     }
   };
@@ -247,8 +247,8 @@ export function DmHubPage() {
     try {
       await deleteCampaign(deleteTarget.campaignId, deleteTarget.title);
       closeDeleteModal();
-    } catch (err: any) {
-      setDeleteError(err.message);
+    } catch (err: unknown) {
+      setDeleteError(err instanceof Error ? err.message : String(err));
     } finally {
       setDeleteLoading(false);
     }
@@ -277,8 +277,8 @@ export function DmHubPage() {
         coverUrl: editCoverUrl.trim() || undefined,
       });
       closeEditModal();
-    } catch (err: any) {
-      setEditError(err.message);
+    } catch (err: unknown) {
+      setEditError(err instanceof Error ? err.message : String(err));
     } finally {
       setEditLoading(false);
     }
@@ -497,8 +497,7 @@ export function DmHubPage() {
       {/* ── CAMPAIGN TEMPLATE IMPORT DIALOG ── */}
       <CampaignTemplateImportDialog
         template={selectedCampaignTemplate}
-        // DmHubCampaign.stats uses a different shape than Campaign.stats; CampaignTemplateImportDialog never reads stats.
-        campaigns={campaigns as unknown as React.ComponentProps<typeof CampaignTemplateImportDialog>["campaigns"]}
+        campaigns={campaigns}
         importing={Boolean(importingTemplateId)}
         importProgress={campaignTemplateImportState}
         error={campaignTemplateImportError}

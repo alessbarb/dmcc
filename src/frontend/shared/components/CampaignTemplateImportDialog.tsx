@@ -14,7 +14,9 @@ export interface CampaignTemplateImportOptions {
 
 interface CampaignTemplateImportDialogProps {
   template: CampaignTemplateSummary | CampaignTemplate | null;
-  campaigns: Campaign[];
+  // Only campaignId/title/metadata are read here, so any Campaign-shaped list
+  // (including DmHubCampaign, which narrows `stats` differently) is accepted.
+  campaigns: Array<Omit<Campaign, "stats">>;
   importing?: boolean;
   importProgress?: CampaignTemplateImportState | null;
   error?: string | null;
@@ -30,7 +32,7 @@ function templateSummary(template: CampaignTemplateSummary | CampaignTemplate): 
   return template.description?.trim() ?? "";
 }
 
-function getTemplateOrigin(campaign: Campaign): string | undefined {
+function getTemplateOrigin(campaign: Omit<Campaign, "stats">): string | undefined {
   const origin = campaign.metadata?.createdFromTemplateId;
   return typeof origin === "string" ? origin : undefined;
 }

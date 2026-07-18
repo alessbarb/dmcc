@@ -29,6 +29,10 @@ type EditableSocialProfile = {
   version: number;
 };
 
+function toPublicationState(value: string): EditableSocialProfile["publicationState"] {
+  return value === "unlisted" || value === "published" ? value : "private";
+}
+
 function defaultVisibility(): SocialVisibility {
   return {
     displayName: "table",
@@ -64,10 +68,14 @@ function defaultPreferences(userId: string): UserPreferences {
   };
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 function normalizePreferences(userId: string, value: unknown): UserPreferences {
   const base = defaultPreferences(userId);
-  if (!value || typeof value !== "object") return base;
-  return { ...base, ...(value as Record<string, any>), userId } as UserPreferences;
+  if (!isRecord(value)) return base;
+  return { ...base, ...value, userId };
 }
 
 function toDmProfile(row: typeof schema.dmProfiles.$inferSelect | undefined): EditableSocialProfile | undefined {
@@ -82,7 +90,7 @@ function toDmProfile(row: typeof schema.dmProfiles.$inferSelect | undefined): Ed
     contact: row.contact,
     visibility: (row.visibility as SocialVisibility | null) ?? defaultVisibility(),
     publicHandle: row.publicHandle,
-    publicationState: row.publicationState as EditableSocialProfile["publicationState"],
+    publicationState: toPublicationState(row.publicationState),
     version: row.version,
   };
 }
@@ -99,7 +107,7 @@ function toPlayerProfile(row: typeof schema.playerProfiles.$inferSelect): Editab
     contact: row.contact,
     visibility: (row.visibility as SocialVisibility | null) ?? defaultVisibility(),
     publicHandle: row.publicHandle,
-    publicationState: row.publicationState as EditableSocialProfile["publicationState"],
+    publicationState: toPublicationState(row.publicationState),
     version: row.version,
   };
 }
@@ -493,13 +501,15 @@ export async function registerAccountWebRoutes(server: FastifyInstance): Promise
     const playerRows = await db.select().from(schema.playerProfiles).where(eq(schema.playerProfiles.campaignId, request.params.campaignId));
     return {
       profiles: members.flatMap((member) => {
-        const source = member.role === "dm" || member.role === "co_dm"
-          ? toDmProfile(dmRows.find((profile) => profile.userId === member.userId))
-          : playerRows.find((profile) => profile.userId === member.userId);
         const audience: ProfileAudience = member.userId === webUser.userId ? "owner" : requesterIsDm ? "dm" : "table";
-        const profile = member.role === "dm" || member.role === "co_dm"
-          ? projectProfile(source as EditableSocialProfile | undefined, audience)
-          : projectProfile(source ? toPlayerProfile(source as typeof schema.playerProfiles.$inferSelect) : null, audience);
+        const isDmMember = member.role === "dm" || member.role === "co_dm";
+        const editableProfile = isDmMember
+          ? toDmProfile(dmRows.find((profile) => profile.userId === member.userId))
+          : (() => {
+              const playerRow = playerRows.find((profile) => profile.userId === member.userId);
+              return playerRow ? toPlayerProfile(playerRow) : undefined;
+            })();
+        const profile = projectProfile(editableProfile ?? null, audience);
         return profile ? [{ userId: member.userId, role: member.role, playerId: member.playerId ?? undefined, profile }] : [];
       }),
     };

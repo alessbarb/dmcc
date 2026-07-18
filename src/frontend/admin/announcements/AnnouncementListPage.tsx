@@ -37,7 +37,7 @@ export function AnnouncementListPage() {
     try {
       const data = await fetchAdminAnnouncements({});
       setAnnouncements(data.announcements);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
@@ -60,8 +60,8 @@ export function AnnouncementListPage() {
       setForm(EMPTY_FORM);
       setShowForm(false);
       await loadAnnouncements();
-    } catch (err: any) {
-      alert(`Error creating announcement: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error creating announcement: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setSaving(false);
     }
@@ -72,8 +72,8 @@ export function AnnouncementListPage() {
     try {
       await updateAnnouncement(ann.announcementId, { isEnabled: !ann.isEnabled });
       await loadAnnouncements();
-    } catch (err: any) {
-      alert(`Error updating announcement: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error updating announcement: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }
@@ -85,8 +85,8 @@ export function AnnouncementListPage() {
     try {
       await archiveAnnouncement(announcementId);
       await loadAnnouncements();
-    } catch (err: any) {
-      alert(`Error archiving announcement: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error archiving announcement: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }
@@ -166,7 +166,12 @@ export function AnnouncementListPage() {
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
               <select
                 value={form.kind}
-                onChange={(e) => setForm({ ...form, kind: e.target.value as AnnouncementInput["kind"] })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "info" || value === "warning" || value === "maintenance") {
+                    setForm({ ...form, kind: value });
+                  }
+                }}
                 style={{ padding: "8px 12px", borderRadius: "8px", backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)", border: "1px solid var(--theme-borders-default)", color: "inherit", fontSize: "0.85rem" }}
               >
                 <option value="info">Info</option>
