@@ -33,9 +33,9 @@ export function IdentityEditor({
     emailChanged;
 
   useEffect(() => {
-    (window as any).__accountCenterDirty = isFormDirty;
+    window.__accountCenterDirty = isFormDirty;
     return () => {
-      (window as any).__accountCenterDirty = false;
+      window.__accountCenterDirty = false;
     };
   }, [isFormDirty]);
 

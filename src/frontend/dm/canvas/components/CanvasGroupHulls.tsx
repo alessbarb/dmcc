@@ -1,6 +1,16 @@
+import type { CanvasNode } from "@core/domain/canvas/types.js";
+
 export interface Viewport { x: number; y: number; zoom: number; }
 
 interface Pt { x: number; y: number; }
+
+interface RfNodeLike {
+  id: string;
+  width?: number | null;
+  height?: number | null;
+  position?: { x: number; y: number };
+  positionAbsolute?: { x: number; y: number };
+}
 
 // ─── Convex hull (Andrew's monotone chain) ────────────────────────────────────
 function cross(O: Pt, A: Pt, B: Pt): number {
@@ -111,9 +121,9 @@ export interface CanvasGroupHullsProps {
   canvasId: string;
   viewport: Viewport;
   /** Raw store nodes — used for groupId, group metadata (kind:"group") */
-  canvasNodes: any[] | undefined;
+  canvasNodes: CanvasNode[] | undefined;
   /** RF-measured nodes — used for accurate rendered positions + dimensions */
-  rfNodes: any[] | undefined;
+  rfNodes: RfNodeLike[] | undefined;
 }
 
 export function CanvasGroupHulls({ canvasId: _canvasId, viewport, canvasNodes, rfNodes }: CanvasGroupHullsProps) {
@@ -123,7 +133,7 @@ export function CanvasGroupHulls({ canvasId: _canvasId, viewport, canvasNodes, r
   const groupMeta: Record<string, { title: string; color: string }> = {};
   const groupPos: Record<string, { x: number; y: number }> = {};
 
-  canvasNodes.forEach((n: any) => {
+  canvasNodes.forEach((n) => {
     if (n.kind !== "group") return;
     groupMeta[n.id] = { title: n.title || "Grupo", color: n.color || "purple" };
     groupPos[n.id] = { x: n.x ?? 0, y: n.y ?? 0 };
@@ -149,7 +159,7 @@ export function CanvasGroupHulls({ canvasId: _canvasId, viewport, canvasNodes, r
   // Accumulate member bounds per group — skip nodes not in RF (filtered by visibility)
   const membersByGroup: Record<string, Pt[]> = {};
 
-  canvasNodes.forEach((n: any) => {
+  canvasNodes.forEach((n) => {
     if (n.kind === "group") return;
     const gid: string | undefined = n.groupId ?? n.parentId;
     if (!gid) return;

@@ -46,11 +46,7 @@ export function CanvasFactNode({ id: _id, data, selected }: CanvasFactNodeProps)
 
   // Resolve from store if not pre-passed
   const fact = data.factId
-    ? (campaignState?.facts instanceof Map
-        ? campaignState.facts.get(data.factId)
-        : Array.isArray(campaignState?.facts)
-          ? (campaignState!.facts as any[]).find((f: any) => f.factId === data.factId)
-          : undefined)
+    ? campaignState?.facts.find((f) => f.factId === data.factId)
     : undefined;
 
   const statement = data.statement ?? fact?.statement ?? t("canvas.factNode.noStatement");

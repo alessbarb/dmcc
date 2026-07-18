@@ -8,7 +8,7 @@ type AccountModalProps = {
 
 export function AccountModal({ open, onClose }: AccountModalProps) {
   const requestClose = useCallback(() => {
-    if (Boolean((window as any).__accountCenterDirty)) {
+    if (Boolean(window.__accountCenterDirty)) {
       const discard = window.confirm("There are unsaved changes in your account. Close anyway?");
       if (!discard) return;
     }

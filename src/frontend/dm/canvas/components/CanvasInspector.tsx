@@ -262,6 +262,7 @@ export function CanvasInspector({
         await updateRelation(relation.relationId, { description: edgeDesc });
       } else {
         // Non-domain edges have no schema field for freeform description; pre-existing quirk, not fixed here.
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
         await updateCanvasEdge(canvasId, selectedEdge.id, { description: edgeDesc } as unknown as CanvasEdgeUpdate);
       }
     }
@@ -452,9 +453,11 @@ export function CanvasInspector({
                   <label>Tipo de Grupo Inteligente</label>
                   <select
                     // groupType is a frontend-only convention not in the canvasNodeSchema; pre-existing quirk, not fixed here.
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
                     value={(selectedNode as unknown as { groupType?: string }).groupType || "custom"}
                     onChange={(e) => {
                       runCanvasAction(
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
                         updateCanvasNode(canvasId, selectedNode.id, { groupType: e.target.value } as unknown as CanvasNodeUpdate),
                         "No se pudo actualizar el tipo de grupo."
                       );

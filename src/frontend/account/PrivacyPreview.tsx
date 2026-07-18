@@ -7,6 +7,10 @@ type AudienceKey = typeof AUDIENCES[number];
 
 type PreviewValue = Record<string, unknown> | null;
 
+function isAudienceKey(value: string): value is AudienceKey {
+  return (AUDIENCES as readonly string[]).includes(value);
+}
+
 function formatValue(value: unknown): string {
   if (value === null || value === undefined || value === "") return "—";
   if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
@@ -32,7 +36,15 @@ export function PrivacyPreview({
         </div>
         <label className="account-inline-field">
           {t("account.privacy.viewAs")}
-          <select value={audience} onChange={(event) => setAudience(event.target.value as AudienceKey)}>
+          <select
+            value={audience}
+            onChange={(event) => {
+              const value = event.target.value;
+              if (isAudienceKey(value)) {
+                setAudience(value);
+              }
+            }}
+          >
             <option value="owner">{t("account.privacy.audiences.owner")}</option>
             <option value="dm">{t("account.privacy.audiences.dm")}</option>
             <option value="table">{t("account.privacy.audiences.table")}</option>
@@ -51,7 +63,7 @@ export function PrivacyPreview({
             className={audience === key ? "is-active" : undefined}
             onClick={() => setAudience(key)}
           >
-            {t(`account.privacy.audiences.${key}` as any)}
+            {t(`account.privacy.audiences.${key}`)}
           </button>
         ))}
       </div>

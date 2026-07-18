@@ -1,4 +1,5 @@
 import ELK from "elkjs/lib/elk.bundled.js";
+import type { ElkNode } from "elkjs/lib/elk-api.js";
 
 const elk = new ELK();
 
@@ -165,7 +166,7 @@ export async function computeCanvasLayout(input: CanvasLayoutInput): Promise<Can
   }
 
   // Build the ELK hierarchical nodes list
-  const elkGroupsMap = new Map<string, any>();
+  const elkGroupsMap = new Map<string, ElkNode>();
   for (const group of groups) {
     elkGroupsMap.set(group.id, {
       id: group.id,
@@ -183,8 +184,8 @@ export async function computeCanvasLayout(input: CanvasLayoutInput): Promise<Can
     });
   }
 
-  const topLevelChildren: any[] = [];
-  const rootNodeFirstList: any[] = [];
+  const topLevelChildren: ElkNode[] = [];
+  const rootNodeFirstList: ElkNode[] = [];
 
   for (const card of cardNodes) {
     const elkCard = {
@@ -196,8 +197,10 @@ export async function computeCanvasLayout(input: CanvasLayoutInput): Promise<Can
     };
 
     const gId = card.groupId;
-    if (gId && elkGroupsMap.has(gId)) {
-      elkGroupsMap.get(gId).children.push(elkCard);
+    const elkGroup = gId ? elkGroupsMap.get(gId) : undefined;
+    if (elkGroup) {
+      elkGroup.children ??= [];
+      elkGroup.children.push(elkCard);
     } else {
       if (preset === "radial" && rootNodeId && card.id === rootNodeId) {
         rootNodeFirstList.push(elkCard);
@@ -212,7 +215,7 @@ export async function computeCanvasLayout(input: CanvasLayoutInput): Promise<Can
 
   // Add groups to the top level children list
   for (const elkGroup of elkGroupsMap.values()) {
-    if (elkGroup.children.length === 0) {
+    if ((elkGroup.children?.length ?? 0) === 0) {
       delete elkGroup.children;
       delete elkGroup.layoutOptions;
     }
@@ -239,7 +242,7 @@ export async function computeCanvasLayout(input: CanvasLayoutInput): Promise<Can
     height?: number;
   }> = [];
 
-  function collectPositions(elkNode: any, parentAbsoluteX: number, parentAbsoluteY: number) {
+  function collectPositions(elkNode: ElkNode, parentAbsoluteX: number, parentAbsoluteY: number) {
     if (elkNode.id !== "root") {
       const absoluteX = Math.round(parentAbsoluteX + (elkNode.x ?? 0));
       const absoluteY = Math.round(parentAbsoluteY + (elkNode.y ?? 0));
