@@ -72,6 +72,8 @@ export function createCampaignTemplateActions(set: StoreSet, get: () => Campaign
         if (!response.ok) {
           throw new Error(await readApiError(response, "Failed to fetch campaign template"));
         }
+        // Trusting the server's response shape at the fetch boundary; no runtime schema here.
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
         const template = await response.json() as CampaignTemplate;
         set({ activeCampaignTemplate: template, activeCampaignTemplateKey: `${templateId}:${locale}`, loading: false });
         return template;

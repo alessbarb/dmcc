@@ -165,6 +165,7 @@ export function createPlayerPortalActions(set: StoreSet, get: () => CampaignStat
       if (!res.ok) throw new Error("Failed to load DM player portal summary");
       // No backend Zod schema validates this endpoint's response; this is the one place
       // that receives it, so the cast to the frontend contract lives here.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       const dmPlayerPortalSummary = await res.json() as playerPortalApi.DmPlayerPortalSummary;
       if (get().activeCampaignId === activeCampaignId) {
         set({ dmPlayerPortalSummary });

@@ -32,6 +32,8 @@ export async function readNdjsonStream<T>(
         const trimmed = line.trim();
         if (!trimmed) continue;
         try {
+          // Trusting the caller-supplied generic T for parsed NDJSON payloads; no runtime schema here.
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
           const event = JSON.parse(trimmed) as T;
           onEvent(event);
         } catch (err) {
@@ -46,6 +48,8 @@ export async function readNdjsonStream<T>(
     const trimmed = buffer.trim();
     if (trimmed) {
       try {
+        // Trusting the caller-supplied generic T for parsed NDJSON payloads; no runtime schema here.
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
         const event = JSON.parse(trimmed) as T;
         onEvent(event);
       } catch (err) {

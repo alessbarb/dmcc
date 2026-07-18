@@ -44,7 +44,7 @@ export function ContextMenu({ buttonLabel, items, align = "end" }: ContextMenuPr
     requestAnimationFrame(() => itemRefs.current[firstEnabled]?.focus());
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+      if (!(event.target instanceof Node) || !rootRef.current?.contains(event.target)) setOpen(false);
     };
     document.addEventListener("pointerdown", handlePointerDown);
     return () => document.removeEventListener("pointerdown", handlePointerDown);
@@ -57,7 +57,7 @@ export function ContextMenu({ buttonLabel, items, align = "end" }: ContextMenuPr
       return;
     }
 
-    const current = itemRefs.current.indexOf(document.activeElement as HTMLButtonElement);
+    const current = document.activeElement instanceof HTMLButtonElement ? itemRefs.current.indexOf(document.activeElement) : -1;
     const enabled = items.map((item) => !item.disabled);
     let next = -1;
     if (event.key === "ArrowDown") next = nextMenuIndex(current, 1, enabled);

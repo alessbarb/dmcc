@@ -51,6 +51,10 @@ export type CanvasHistory = {
   future: CanvasHistoryEntry[];
 };
 
+// `T extends any` is the standard idiom for a distributive conditional type (spreads
+// Omit over each union member individually); `keyof any` is TS shorthand for
+// `string | number | symbol`, the universal set of valid object keys.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
 
 export interface CanvasHistoryState {

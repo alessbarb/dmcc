@@ -8,18 +8,33 @@ export type ShortcutMap = Record<string, ShortcutHandler>;
  * Exported for unit-testing purposes (tests can call the returned handler
  * directly with fake KeyboardEvents without needing a DOM / renderHook).
  */
+interface ElementLike extends EventTarget {
+  tagName: string;
+  isContentEditable: boolean;
+}
+
+function isElementLike(value: EventTarget | null): value is ElementLike {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "tagName" in value &&
+    typeof value.tagName === "string"
+  );
+}
+
 export function createKeyHandler(shortcutsRef: { current: ShortcutMap }) {
   let pendingKey: string | null = null;
   let pendingTimer: ReturnType<typeof setTimeout> | null = null;
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    const target = e.target as HTMLElement;
+    const target = isElementLike(e.target) ? e.target : null;
     // Ignore when typing in an input, textarea, select, or contenteditable
     if (
-      target.tagName === "INPUT" ||
-      target.tagName === "TEXTAREA" ||
-      target.tagName === "SELECT" ||
-      target.isContentEditable
+      target &&
+      (target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable)
     )
       return;
     // Ignore modifier combos

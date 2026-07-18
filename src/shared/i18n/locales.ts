@@ -66,8 +66,13 @@ export const SUPPORTED_LOCALES = Object.values(LOCALES).map(({ code, label, nati
   nativeLabel,
 })) as LocaleOption[];
 
+// Object.keys/fromEntries always return string[]/Record<string, ...>; every key here
+// comes directly from LOCALES, whose keys are exactly SupportedLocale (enforced by the
+// `satisfies Record<SupportedLocale, LocaleDefinition>` above), so the casts just restore that.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
 export const SUPPORTED_LOCALE_CODES = Object.keys(LOCALES) as SupportedLocale[];
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
 export const dictionaries = Object.fromEntries(
   Object.entries(LOCALES).map(([code, definition]) => [code, definition.dictionary]),
 ) as Record<SupportedLocale, TranslationDictionary>;

@@ -193,7 +193,8 @@ export function ImagePickerModal({ catalog, value, onSelect, onClose }: ImagePic
         setActiveGroup((prev) => (nextGroupNames.includes(prev) ? prev : nextGroupNames[0] ?? ""));
       })
       .catch((err: unknown) => {
-        if ((err as { name?: string }).name !== "AbortError" && !cancelled) {
+        const errorName = err instanceof Error ? err.name : undefined;
+        if (errorName !== "AbortError" && !cancelled) {
           console.error("Failed to load image catalog:", err);
           setError(err instanceof Error ? err.message : "No se pudo cargar el catálogo de imágenes.");
           setGroups({});
