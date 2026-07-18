@@ -1,13 +1,14 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Background, MarkerType, MiniMap, ReactFlow, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import type { Edge, Node } from "@xyflow/react";
 import { getRelationVisual } from "../entityVisuals.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatRelationType } from "@shared/i18n/index.js";
 import type { EntityRelationshipNeighborhood } from "./entityRelationshipNeighborhood.js";
-import { computeRadialRelationshipLayout, type RelationshipLayoutNode } from "./computeRadialRelationshipLayout.js";
-import { relationshipLayoutToFlowPositions, type FlowPosition } from "./relationshipLayoutToFlowPositions.js";
-import { oppositeRelationshipHandleSide, pickRelationshipHandleSide } from "./pickRelationshipHandleSide.js";
+import {
+  computeRelationshipFlowLayout,
+  type RelationshipFlowEdgeRoute,
+} from "./computeRelationshipFlowLayout.js";
 import { RelationshipEntityNode, type RelationshipNodeData } from "./RelationshipEntityNode.js";
 import { RelationshipGroupNode, type RelationshipGroupNodeData } from "./RelationshipGroupNode.js";
 import { RelationshipEdge, type RelationshipEdgeData } from "./RelationshipEdge.js";
@@ -41,14 +42,103 @@ export interface RelationshipGraphCanvasProps {
 }
 
 function edgeEndpoints(connection: EntityRelationshipNeighborhood["connections"][number]) {
-  // A grouped connection can bundle relations in both directions; a single
-  // relation draws its real domain direction, a bundle falls back to the
-  // canonical (sorted) pair order used to build the connection id.
   if (connection.relations.length === 1) {
     const relation = connection.relations[0];
-    return { sourceId: relation.sourceEntityId, targetId: relation.targetEntityId };
+
+    return {
+      sourceId: relation.sourceEntityId,
+      targetId: relation.targetEntityId,
+    };
   }
-  return { sourceId: connection.entityAId, targetId: connection.entityBId };
+
+  return {
+    sourceId: connection.entityAId,
+    targetId: connection.entityBId,
+  };
+}
+
+type RelationshipDirectionFromCenter =
+  | "incoming"
+  | "outgoing"
+  | "bidirectional"
+  | "self";
+
+/**
+ * Clasifica una conexión desde la perspectiva de la entidad actual.
+ *
+ * incoming:
+ *   vecino -> centro
+ *
+ * outgoing:
+ *   centro -> vecino
+ *
+ * bidirectional:
+ *   existen relaciones en ambos sentidos
+ *
+ * self:
+ *   la relación empieza y termina en la entidad actual
+ */
+function relationshipDirectionFromCenter(
+  connection: EntityRelationshipNeighborhood["connections"][number],
+  centerId: string,
+): RelationshipDirectionFromCenter {
+  let hasIncoming = false;
+  let hasOutgoing = false;
+
+  for (const relation of connection.relations) {
+    const isSelf =
+      relation.sourceEntityId === centerId &&
+      relation.targetEntityId === centerId;
+
+    if (isSelf) {
+      return "self";
+    }
+
+    if (
+      relation.sourceEntityId === centerId &&
+      relation.targetEntityId !== centerId
+    ) {
+      hasOutgoing = true;
+    }
+
+    if (
+      relation.targetEntityId === centerId &&
+      relation.sourceEntityId !== centerId
+    ) {
+      hasIncoming = true;
+    }
+  }
+
+  if (hasIncoming && hasOutgoing) {
+    return "bidirectional";
+  }
+
+  if (hasIncoming) {
+    return "incoming";
+  }
+
+  return "outgoing";
+}
+
+function neighborIdForConnection(
+  connection: EntityRelationshipNeighborhood["connections"][number],
+  centerId: string,
+): string {
+  const relation = connection.relations[0];
+
+  if (relation) {
+    if (relation.sourceEntityId === centerId) {
+      return relation.targetEntityId;
+    }
+
+    if (relation.targetEntityId === centerId) {
+      return relation.sourceEntityId;
+    }
+  }
+
+  return connection.entityAId === centerId
+    ? connection.entityBId
+    : connection.entityAId;
 }
 
 function RelationshipGraphCanvasInner({
@@ -71,27 +161,153 @@ function RelationshipGraphCanvasInner({
     [neighborhood.neighbors, groupingEnabled, expandedGroupTypes],
   );
 
-  // A group's synthetic id/type stand in for its members when positioning the
-  // ring — computeRadialRelationshipLayout only needs identity + sort keys.
-  const ringLayoutNodes: RelationshipLayoutNode[] = useMemo(
-    () =>
+  const [positions, setPositions] = useState<
+    Map<string, { x: number; y: number }>
+  >(new Map());
+
+  const [edgeRoutes, setEdgeRoutes] = useState<
+    Map<string, RelationshipFlowEdgeRoute>
+  >(new Map());
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const centerId = neighborhood.center.entityId;
+
+    const visibleIds = new Set(
       ringItems.map((item) =>
         item.kind === "entity"
-          ? item.entity
-          : { entityId: item.group.groupId, title: item.group.entityType, entityType: item.group.entityType },
+          ? item.entity.entityId
+          : item.group.groupId,
       ),
-    [ringItems],
-  );
+    );
 
-  const positions = useMemo(() => {
-    const layout = computeRadialRelationshipLayout({
-      centerNode: neighborhood.center,
-      neighborNodes: ringLayoutNodes,
-      nodeWidth: NODE_WIDTH,
-      nodeHeight: NODE_HEIGHT,
+    const layoutNodes = [
+      {
+        id: centerId,
+        width: NODE_WIDTH,
+        height: NODE_HEIGHT,
+        role: "center" as const,
+      },
+      ...ringItems.map((item) => ({
+        id:
+          item.kind === "entity"
+            ? item.entity.entityId
+            : item.group.groupId,
+        width: NODE_WIDTH,
+        height: NODE_HEIGHT,
+        role: "neighbor" as const,
+      })),
+    ];
+
+    let incomingCount = 0;
+    let outgoingCount = 0;
+
+    const entityEdges = neighborhood.connections
+      .map((connection) => {
+        const neighborId = neighborIdForConnection(
+          connection,
+          centerId,
+        );
+
+        if (!visibleIds.has(neighborId)) {
+          return null;
+        }
+
+        const direction =
+          relationshipDirectionFromCenter(
+            connection,
+            centerId,
+          );
+
+        if (direction === "self") {
+          return null;
+        }
+
+        if (direction === "incoming") {
+          incomingCount += 1;
+
+          return {
+            id: connection.connectionId,
+            sourceId: neighborId,
+            targetId: centerId,
+          };
+        }
+
+        if (direction === "outgoing") {
+          outgoingCount += 1;
+
+          return {
+            id: connection.connectionId,
+            sourceId: centerId,
+            targetId: neighborId,
+          };
+        }
+
+        // Una conexión bidireccional no debe duplicar la tarjeta.
+        // La colocamos en el lado menos cargado, manteniendo una
+        // distribución visual equilibrada.
+        if (incomingCount <= outgoingCount) {
+          incomingCount += 1;
+
+          return {
+            id: connection.connectionId,
+            sourceId: neighborId,
+            targetId: centerId,
+          };
+        }
+
+        outgoingCount += 1;
+
+        return {
+          id: connection.connectionId,
+          sourceId: centerId,
+          targetId: neighborId,
+        };
+      })
+      .filter(
+        (
+          edge,
+        ): edge is {
+          id: string;
+          sourceId: string;
+          targetId: string;
+        } => edge !== null,
+      );
+
+    const groupEdges = ringItems
+      .filter(
+        (
+          item,
+        ): item is Extract<
+          RelationshipRingItem,
+          { kind: "group" }
+        > => item.kind === "group",
+      )
+      .map((item) => ({
+        id: item.group.groupId,
+        sourceId: centerId,
+        targetId: item.group.groupId,
+      }));
+
+    void computeRelationshipFlowLayout(
+      layoutNodes,
+      [...entityEdges, ...groupEdges],
+    ).then((layout) => {
+      if (cancelled) return;
+
+      setPositions(layout.positions);
+      setEdgeRoutes(layout.edgeRoutes);
     });
-    return relationshipLayoutToFlowPositions(layout, { width: NODE_WIDTH, height: NODE_HEIGHT });
-  }, [neighborhood.center, ringLayoutNodes]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    neighborhood.center.entityId,
+    neighborhood.connections,
+    ringItems,
+  ]);
 
   const nodes: Node<RelationshipNodeData | RelationshipGroupNodeData>[] = useMemo(() => {
     const centerNode: Node<RelationshipNodeData> = {
@@ -137,29 +353,44 @@ function RelationshipGraphCanvasInner({
     return [centerNode, ...ringNodes];
   }, [neighborhood.center, ringItems, positions, onNavigateEntity, onToggleGroupExpand]);
 
-  const edges: Edge<RelationshipEdgeData>[] = useMemo(() => {
-    const delta = (a: FlowPosition, b: FlowPosition) => ({ dx: b.x - a.x, dy: b.y - a.y });
+const edges: Edge<RelationshipEdgeData>[] = useMemo(() => {
     const centerId = neighborhood.center.entityId;
 
     const buildEdge = (
       id: string,
       neighborId: string,
+      direction: RelationshipDirectionFromCenter,
       label: string,
       color: string | undefined,
       dashed: boolean,
       isSelected: boolean,
     ): Edge<RelationshipEdgeData> => {
-      const centerPos = positions.get(centerId);
-      const neighborPos = positions.get(neighborId);
-      const { dx, dy } = centerPos && neighborPos ? delta(centerPos, neighborPos) : { dx: 0, dy: 1 };
-      const sourceSide = pickRelationshipHandleSide(dx, dy);
-      const targetSide = oppositeRelationshipHandleSide(pickRelationshipHandleSide(-dx, -dy));
+      const route = edgeRoutes.get(id);
+const layoutIsIncoming =
+        route?.points !== undefined &&
+        direction === "incoming";
+
+      const sourceId = layoutIsIncoming
+        ? neighborId
+        : centerId;
+
+      const targetId = layoutIsIncoming
+        ? centerId
+        : neighborId;
+
+      const sourceSide =
+        route?.sourceSide ??
+        (layoutIsIncoming ? "right" : "right");
+
+      const targetSide =
+        route?.targetSide ??
+        (layoutIsIncoming ? "left" : "left");
 
       return {
         id,
         type: "relationship",
-        source: centerId,
-        target: neighborId,
+        source: sourceId,
+        target: targetId,
         sourceHandle: sourceSide,
         targetHandle: targetSide,
         markerEnd: {
@@ -168,7 +399,13 @@ function RelationshipGraphCanvasInner({
           width: 16,
           height: 16,
         },
-        data: { label, color, selected: isSelected, sourceIsCenter: true },
+        data: {
+          label,
+          color,
+          selected: isSelected,
+          routedPoints: route?.points,
+          labelPoint: route?.labelPoint,
+        },
         style: {
           stroke: color ?? "color-mix(in srgb, var(--theme-graph-edge) 60%, transparent)",
           strokeWidth: isSelected ? 2.6 : 1.4,
@@ -194,9 +431,26 @@ function RelationshipGraphCanvasInner({
           connection.relations.length > 1
             ? t("entityDetail.relationsGraph.relationsCountLabel", { count: connection.relations.length })
             : formatRelationType(first.relationType, locale);
-        const { sourceId, targetId } = edgeEndpoints(connection);
-        const neighborId = sourceId === centerId ? targetId : sourceId;
-        return buildEdge(connection.connectionId, neighborId, label, visual?.color, visual?.line === "dashed", isSelected);
+        const neighborId = neighborIdForConnection(
+          connection,
+          centerId,
+        );
+
+        const direction =
+          relationshipDirectionFromCenter(
+            connection,
+            centerId,
+          );
+
+        return buildEdge(
+          connection.connectionId,
+          neighborId,
+          direction,
+          label,
+          visual?.color,
+          visual?.line === "dashed",
+          isSelected,
+        );
       });
 
     // Group items get one aggregate edge summing every relation to a member of the group.
@@ -215,17 +469,48 @@ function RelationshipGraphCanvasInner({
           return total + (connection?.relations.length ?? 0);
         }, 0);
         const label = t("entityDetail.relationsGraph.relationsCountLabel", { count: relationCount });
-        return buildEdge(item.group.groupId, item.group.groupId, label, undefined, false, false);
+        return buildEdge(
+          item.group.groupId,
+          item.group.groupId,
+          "outgoing",
+          label,
+          undefined,
+          false,
+          false,
+        );
       });
 
     return [...entityEdges, ...groupEdges];
-  }, [neighborhood.connections, neighborhood.center.entityId, ringItems, selectedConnectionId, locale, positions, t]);
+  }, [
+    neighborhood.connections,
+    neighborhood.center.entityId,
+    ringItems,
+    selectedConnectionId,
+    locale,
+    edgeRoutes,
+    positions,
+    t,
+  ]);
 
   const fitViewDuration = prefersReducedMotion ? 0 : 200;
 
   useEffect(() => {
-    void fitView({ padding: 0.3, duration: fitViewDuration });
-  }, [neighborhood.center.entityId, fitView, fitViewDuration]);
+    if (positions.size === 0) return;
+
+    const frame = requestAnimationFrame(() => {
+      void fitView({
+        padding: 0.22,
+        duration: fitViewDuration,
+      });
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [
+    neighborhood.center.entityId,
+    positions,
+    fitView,
+    fitViewDuration,
+  ]);
 
   useEffect(() => {
     // The container was resized in place (expand/reduce toggle) rather than
