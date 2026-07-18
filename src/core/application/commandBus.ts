@@ -1,5 +1,6 @@
 import type { StoredEvent } from "../domain/events.js";
 import type { CampaignState } from "../domain/state.js";
+import type { NarrativeChangeContext } from "../domain/shared/narrativeChangeContext.js";
 import type { Command } from "./commands.js";
 import { handleStoryCommand } from "./storyCommandHandlers.js";
 import { handleCanvasCommand } from "./canvasCommandHandlers.js";
@@ -15,7 +16,20 @@ export interface CommandResult {
   events: StoredEvent<unknown>[];
 }
 
-export function handleCommand(state: CampaignState, command: Command): CommandResult {
+export function handleCommand(
+  state: CampaignState,
+  command: Command,
+  narrativeContext?: NarrativeChangeContext,
+): CommandResult {
+  const result = dispatchCommand(state, command);
+  if (!narrativeContext || !result) return result;
+  return {
+    state: result.state,
+    events: result.events.map((event) => (event.context ? event : { ...event, context: narrativeContext })),
+  };
+}
+
+function dispatchCommand(state: CampaignState, command: Command): CommandResult {
   switch (command.type) {
     case "CreateCampaign":
     case "UpdateCampaign":

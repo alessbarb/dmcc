@@ -276,4 +276,79 @@ describe("command bus extended campaign commands", () => {
     expect(result.state.entities.get("ent_clue")?.status).toBe("revealed");
     expect(result.events[0].payload).toMatchObject({ clueEntityId: "ent_clue", sessionId: "sess_one", visibility: { kind: "party" }, note: "Found in the cellar." });
   });
+
+  it("stamps every event produced by a command with the passed narrativeContext", () => {
+    const state = createCampaignState("cmp_one");
+    const narrativeContext = { origin: "session_live" as const, sessionId: "sess_one" };
+    const result = handleCommand(
+      state,
+      { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_npc", entityType: "npc", title: "Klarg", metadata: { content: "" } },
+      narrativeContext,
+    );
+
+    expect(result.events).toHaveLength(1);
+    expect(result.events[0].context).toEqual(narrativeContext);
+  });
+
+  it("leaves events without a context when none is passed", () => {
+    const state = createCampaignState("cmp_one");
+    const result = handleCommand(state, { type: "CreateEntity", campaignId: "cmp_one", actorId: "usr_core", entityId: "ent_npc", entityType: "npc", title: "Klarg", metadata: { content: "" } });
+
+    expect(result.events[0].context).toBeUndefined();
+  });
+
+  it("records a session event with semantic references and a plan item link", () => {
+    let state = createCampaignState("cmp_one");
+    state = handleCommand(state, { type: "StartSession", campaignId: "cmp_one", actorId: "usr_core", sessionId: "sess_one", title: "Session 1" }).state;
+
+    const result = handleCommand(state, {
+      type: "RecordSessionEvent",
+      campaignId: "cmp_one",
+      actorId: "usr_core",
+      sessionId: "sess_one",
+      eventType: "decision_made",
+      title: "The party flees",
+      planItemId: "spi_scene1",
+      references: [{ type: "entity", entityId: "ent_klarg", role: "affected" }],
+      metadata: { choice: "Flee the cave" },
+    });
+
+    expect(result.events[0].type).toBe("SessionEventRecorded");
+    const [, eventRecord] = [...result.state.sessionEvents.entries()][0];
+    expect(eventRecord.planItemId).toBe("spi_scene1");
+    expect(eventRecord.references).toEqual([{ type: "entity", entityId: "ent_klarg", role: "affected" }]);
+  });
+
+  it("rejects session event details that don't match the event type's schema", () => {
+    let state = createCampaignState("cmp_one");
+    state = handleCommand(state, { type: "StartSession", campaignId: "cmp_one", actorId: "usr_core", sessionId: "sess_one", title: "Session 1" }).state;
+
+    expect(() =>
+      handleCommand(state, {
+        type: "RecordSessionEvent",
+        campaignId: "cmp_one",
+        actorId: "usr_core",
+        sessionId: "sess_one",
+        eventType: "material_introduced",
+        title: "Dropped a map",
+        metadata: { source: "not_a_real_source" },
+      }),
+    ).toThrow();
+  });
+
+  it("still accepts decision_made/material_introduced with no details, for existing callers", () => {
+    let state = createCampaignState("cmp_one");
+    state = handleCommand(state, { type: "StartSession", campaignId: "cmp_one", actorId: "usr_core", sessionId: "sess_one", title: "Session 1" }).state;
+
+    expect(() =>
+      handleCommand(state, {
+        type: "RecordSessionEvent",
+        campaignId: "cmp_one",
+        actorId: "usr_core",
+        sessionId: "sess_one",
+        eventType: "decision_made",
+        title: "The party flees",
+      }),
+    ).not.toThrow();
+  });
 });

@@ -7,6 +7,7 @@ import { closeSession, createSession, sessionEventTypeSchema } from "../domain/s
 import { sessionPlanSchema } from "../domain/session/sessionPlan.js";
 import { validateSessionPlan } from "../domain/session/sessionPlanValidation.js";
 import { resolveSessionPlan } from "../domain/session/sessionPlanUpcast.js";
+import { validateSessionEventDetails } from "../domain/session/sessionEventDetails.js";
 
 type SessionCommandType =
   | "CreatePreparedSession"
@@ -185,6 +186,8 @@ case "RecordSessionEvent": {
     throw new Error("Session events can only be recorded in an active session");
   }
   const parsedEventType = sessionEventTypeSchema.parse(command.eventType);
+  const metadata = command.metadata || {};
+  validateSessionEventDetails(parsedEventType, metadata);
   const id = command.sessionEventId ?? createId("sevt");
   const eventRecord = {
     id,
@@ -196,11 +199,13 @@ case "RecordSessionEvent": {
     actorId: command.actorId,
     title: command.title,
     description: command.description || "",
+    planItemId: command.planItemId,
     relatedEntityIds: command.relatedEntityIds || [],
     relatedFactIds: command.relatedFactIds || [],
     relatedRelationIds: command.relatedRelationIds || [],
+    references: command.references || [],
     visibility: command.visibility || { kind: "dm_only" as const },
-    metadata: command.metadata || {},
+    metadata,
   };
   const sessionEvents = new Map(state.sessionEvents || []);
   sessionEvents.set(id, eventRecord);

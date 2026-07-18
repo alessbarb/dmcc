@@ -14,6 +14,7 @@ import type { CampaignProjection } from "@core/projections/campaignProjection.js
 import { applyEvent, createEmptyCampaignProjection } from "@core/projections/campaignProjection.js";
 import type { CampaignState } from "@core/domain/state.js";
 import type { DomainEventType, StoredEvent } from "@core/domain/shared/events.js";
+import type { NarrativeChangeContext } from "@core/domain/shared/narrativeChangeContext.js";
 import { storedEventSchema, eventPayloadSchemas } from "@core/domain/shared/events.js";
 import { normalizeEventPayload } from "@core/domain/shared/normalizeEventPayload.js";
 import { calculateCommandHash, CommandConflictError } from "@core/persistence/repositories/campaignRepository.js";
@@ -166,6 +167,7 @@ async function loadEventsTx(tx: DbTransaction, campaignId: string, fromSequence 
     previousHash: row.previousHash ?? undefined,
     hash: row.hash,
     schemaVersion: row.schemaVersion,
+    context: row.context ?? undefined,
   })) as StoredEvent<unknown>[];
 }
 
@@ -213,6 +215,7 @@ function buildStoredEvent(input: {
   previousHash?: string;
   commandId: string;
   commandHash: string;
+  context?: NarrativeChangeContext;
 }): StoredEvent {
   const occurredAt = nowIso();
   const normalized = normalizeEventPayload(input.type, input.payload, occurredAt);
@@ -224,6 +227,7 @@ function buildStoredEvent(input: {
     occurredAt,
     actorId: input.actorId,
     payload: normalized,
+    context: input.context,
     previousHash: input.previousHash,
     schemaVersion: EVENT_SCHEMA_VERSION,
     commandId: input.commandId,
@@ -1143,7 +1147,7 @@ export class PostgresCampaignRepository {
     return db.transaction((tx) => loadEventsTx(tx, campaignId));
   }
 
-  async executeCommand(campaignId: string, command: Command, options?: { commandId?: string; actorUserId?: string; tx?: DbTransaction }): Promise<CampaignProjection> {
+  async executeCommand(campaignId: string, command: Command, options?: { commandId?: string; actorUserId?: string; tx?: DbTransaction; narrativeContext?: NarrativeChangeContext }): Promise<CampaignProjection> {
     const commandId = options?.commandId;
     if (!commandId) {
       throw new HttpError("Missing Idempotency-Key header", 400);
@@ -1173,7 +1177,7 @@ export class PostgresCampaignRepository {
 
       const projection = await loadProjectionTx(tx, campaignId);
       const state = projectionToCampaignState(campaignId, projection);
-      const result = handleCommand(state, normalizedCommand);
+      const result = handleCommand(state, normalizedCommand, options?.narrativeContext);
 
       const [tip] = await tx
         .select({ sequence: schema.domainEvents.sequence, hash: schema.domainEvents.hash })
@@ -1197,6 +1201,7 @@ export class PostgresCampaignRepository {
           previousHash,
           commandId,
           commandHash,
+          context: domainEvent.context,
         });
         previousHash = storedEvent.hash;
         storedEvents.push(storedEvent);
@@ -1217,6 +1222,7 @@ export class PostgresCampaignRepository {
           previousHash: event.previousHash,
           hash: event.hash ?? "",
           schemaVersion: event.schemaVersion,
+          context: event.context,
         })));
       }
 
