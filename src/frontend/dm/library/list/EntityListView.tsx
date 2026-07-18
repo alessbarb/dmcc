@@ -30,10 +30,15 @@ function LayersIconFallback() {
   return <Plus size={30} />;
 }
 
+type CSSPropertiesWithVars = React.CSSProperties & Record<`--${string}`, string | number | undefined>;
+
 function visibilityKind(entity: Entity): string {
-  const visibility = entity.visibility as any;
+  const visibility: unknown = entity.visibility;
   if (typeof visibility === "string") return visibility;
-  return visibility?.kind ?? "dm_only";
+  if (visibility && typeof visibility === "object" && "kind" in visibility) {
+    return String((visibility as { kind: unknown }).kind);
+  }
+  return "dm_only";
 }
 
 function normalized(value: unknown): string {
@@ -267,16 +272,17 @@ export function EntityListView() {
 
     if (viewMode === "compact") {
       const formattedDate = new Date(entity.updatedAt || entity.createdAt).toLocaleDateString(locale, { month: "short", day: "numeric" });
+      const compactStyle: CSSPropertiesWithVars = {
+        "--card-accent": cfg.accent,
+        "--card-accent-soft": cfg.accentSoft,
+      };
       return (
         <button
           key={entity.entityId}
           type="button"
           className={`entity-compact-row ${isDmOnly ? "entity-compact-row--dm-only" : ""} ${isCritical ? "entity-compact-row--critical" : ""}`}
           onClick={() => setSelectedEntityId(entity.entityId)}
-          style={{
-            "--card-accent": cfg.accent,
-            "--card-accent-soft": cfg.accentSoft,
-          } as React.CSSProperties}
+          style={compactStyle}
         >
           <div className="entity-compact-row__left">
             <div className="entity-compact-row__icon">
@@ -321,16 +327,18 @@ export function EntityListView() {
       isHigh ? "entity-card--high" : "",
     ].filter(Boolean).join(" ");
 
+    const cardStyle: CSSPropertiesWithVars = {
+      "--card-accent": cfg.accent,
+      "--card-accent-soft": cfg.accentSoft,
+    };
+
     return (
       <button
         key={entity.entityId}
         type="button"
         className={cardClasses}
         onClick={() => setSelectedEntityId(entity.entityId)}
-        style={{
-          "--card-accent": cfg.accent,
-          "--card-accent-soft": cfg.accentSoft,
-        } as React.CSSProperties}
+        style={cardStyle}
         aria-label={`${entity.title}. ${formatEntityType(entity.entityType, locale)}. ${formatVisibility(visibility, locale)}`}
       >
         <div
@@ -431,7 +439,12 @@ export function EntityListView() {
                 <select
                   className="form-select entities-group-by-select"
                   value={groupBy}
-                  onChange={(event) => setGroupBy(event.target.value as any)}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (value === "none" || value === "type" || value === "importance" || value === "status" || value === "visibility") {
+                      setGroupBy(value);
+                    }
+                  }}
                 >
                   <option value="none">{t("entitiesPage.groupByNone") || "Sin agrupar"}</option>
                   <option value="type">{t("entitiesPage.groupByType") || "Por tipo"}</option>
@@ -446,7 +459,12 @@ export function EntityListView() {
                 <select
                   className="form-select entities-sort-by-select"
                   value={sortBy}
-                  onChange={(event) => changeSortBy(event.target.value as any)}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (value === "relevant" || value === "recent" || value === "alphabetical") {
+                      changeSortBy(value);
+                    }
+                  }}
                 >
                   <option value="relevant">{t("entitiesPage.sortRelevant")}</option>
                   <option value="recent">{t("entitiesPage.sortRecent")}</option>
@@ -698,8 +716,8 @@ export function EntityListView() {
           onEdit={async (entityId, updates) => {
             try {
               await updateEntity(entityId, updates);
-            } catch (error: any) {
-              addToast(error.message || t("entitiesPage.updateError"), "error");
+            } catch (error: unknown) {
+              addToast(error instanceof Error ? error.message : t("entitiesPage.updateError"), "error");
             }
           }}
           onArchive={async (entityId) => {
@@ -709,8 +727,8 @@ export function EntityListView() {
           onVisibilityChange={async (entityId, visibility) => {
             try {
               await updateEntity(entityId, { visibility });
-            } catch (error: any) {
-              addToast(error.message || t("entitiesPage.updateError"), "error");
+            } catch (error: unknown) {
+              addToast(error instanceof Error ? error.message : t("entitiesPage.updateError"), "error");
             }
           }}
           addToast={addToast}
