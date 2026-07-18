@@ -2107,6 +2107,7 @@ export const en = {
     confirmDeleteDescription: "This action cannot be undone.",
   },
   sessionPlanEditor: {
+    editPlanButton: "Edit plan",
     saveError: "Could not save the session plan.",
     goalsLabel: "Internal goals",
     goalCompletedLabel: "Goal completed",

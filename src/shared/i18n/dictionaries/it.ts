@@ -1838,6 +1838,7 @@ export const it: TranslationDictionary = {
     confirmDeleteDescription: "Questa azione non può essere annullata.",
   },
   sessionPlanEditor: {
+    editPlanButton: "Modifica piano",
     saveError: "Impossibile salvare il piano della sessione.",
     goalsLabel: "Obiettivi interni",
     goalCompletedLabel: "Obiettivo completato",

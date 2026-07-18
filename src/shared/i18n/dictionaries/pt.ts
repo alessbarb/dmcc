@@ -1815,6 +1815,7 @@ export const pt = {
     confirmDeleteDescription: "Esta ação não pode ser desfeita.",
   },
   sessionPlanEditor: {
+    editPlanButton: "Editar plano",
     saveError: "Não foi possível salvar o plano da sessão.",
     goalsLabel: "Objetivos internos",
     goalCompletedLabel: "Objetivo concluído",

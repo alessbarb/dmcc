@@ -2131,6 +2131,7 @@ export const es: TranslationDictionary = {
     confirmDeleteDescription: "Esta acción no se puede deshacer.",
   },
   sessionPlanEditor: {
+    editPlanButton: "Editar plan",
     saveError: "No se pudo guardar el plan de la sesión.",
     goalsLabel: "Objetivos internos",
     goalCompletedLabel: "Objetivo completado",

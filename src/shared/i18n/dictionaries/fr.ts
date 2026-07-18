@@ -1838,6 +1838,7 @@ export const fr: TranslationDictionary = {
     confirmDeleteDescription: "Cette action est irréversible.",
   },
   sessionPlanEditor: {
+    editPlanButton: "Modifier le plan",
     saveError: "Impossible d'enregistrer le plan de la session.",
     goalsLabel: "Objectifs internes",
     goalCompletedLabel: "Objectif atteint",

@@ -1838,6 +1838,7 @@ export const de: TranslationDictionary = {
     confirmDeleteDescription: "Diese Aktion kann nicht rückgängig gemacht werden.",
   },
   sessionPlanEditor: {
+    editPlanButton: "Plan bearbeiten",
     saveError: "Der Sitzungsplan konnte nicht gespeichert werden.",
     goalsLabel: "Interne Ziele",
     goalCompletedLabel: "Ziel erreicht",
