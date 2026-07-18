@@ -10,12 +10,18 @@ function explicitStatus(error: unknown): number | undefined {
   return typeof statusCode === "number" ? statusCode : undefined;
 }
 
-export function writeCommandError(reply: FastifyReply, error: unknown): Record<string, any> {
+function errorName(error: unknown): string | undefined {
+  if (!error || typeof error !== "object") return undefined;
+  const name = (error as { name?: unknown }).name;
+  return typeof name === "string" ? name : undefined;
+}
+
+export function writeCommandError(reply: FastifyReply, error: unknown): Record<string, unknown> {
   const message = errorMessage(error);
   const normalized = message.toLowerCase();
   let statusCode = explicitStatus(error);
 
-  if (!statusCode && (error as { name?: string } | null)?.name === "CommandConflictError") {
+  if (!statusCode && errorName(error) === "CommandConflictError") {
     statusCode = 409;
   }
   if (!statusCode && normalized.includes("not found")) {
@@ -30,13 +36,13 @@ export function writeCommandError(reply: FastifyReply, error: unknown): Record<s
 
   reply.code(statusCode ?? 500);
 
-  const responsePayload: Record<string, any> = { error: message };
+  const responsePayload: Record<string, unknown> = { error: message };
   if (error && typeof error === "object") {
     if ("errorCode" in error) {
-      responsePayload.errorCode = (error as any).errorCode;
+      responsePayload.errorCode = (error as { errorCode: unknown }).errorCode;
     }
     if ("details" in error) {
-      responsePayload.details = (error as any).details;
+      responsePayload.details = (error as { details: unknown }).details;
     }
   }
 

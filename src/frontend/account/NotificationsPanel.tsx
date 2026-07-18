@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import type { AccountPreferences, NotificationPreferences } from "./accountTypes.js";
+import type { AccountPreferences } from "./accountTypes.js";
 import { useTranslation } from "../shared/i18n/useTranslation.js";
 import { isDirty } from "./accountState.js";
+
+// Object.keys always returns string[]; TS has no way to prove the keys of a
+// concrete object literal type without an unsafe assertion here.
+function objectKeys<T extends object>(obj: T): Array<keyof T> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+  return Object.keys(obj) as Array<keyof T>;
+}
 
 export function NotificationsPanel({
   preferences,
@@ -19,9 +26,9 @@ export function NotificationsPanel({
   const isFormDirty = isDirty(preferences, draft);
 
   useEffect(() => {
-    (window as any).__accountCenterDirty = isFormDirty;
+    window.__accountCenterDirty = isFormDirty;
     return () => {
-      (window as any).__accountCenterDirty = false;
+      window.__accountCenterDirty = false;
     };
   }, [isFormDirty]);
 
@@ -56,10 +63,10 @@ export function NotificationsPanel({
         }}
       >
         <div className="account-checkbox-stack">
-          {(Object.keys(draft.notifications) as Array<keyof NotificationPreferences>).map((key) => (
+          {objectKeys(draft.notifications).map((key) => (
             <label className="account-checkbox-card" key={key}>
               <div>
-                <strong>{t(`account.notifications.keys.${key}` as any)}</strong>
+                <strong>{t(`account.notifications.keys.${key}`)}</strong>
               </div>
               <input
                 type="checkbox"
