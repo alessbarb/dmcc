@@ -6,6 +6,7 @@ import {
   type SessionPlanBinding,
   type SessionPlannedScene,
   type SessionPlanContentRole,
+  createEmptySessionPlan,
 } from "./sessionPlan.js";
 import { upcastSessionPlanId } from "./sessionPlanIds.js";
 
@@ -147,4 +148,17 @@ export function upcastStoryStepBindingsForSession(params: {
       order,
     };
   });
+}
+
+// Read-time upcast, no rewrite of stored events (§3): a session written
+// before v2 only has `prep`; this derives the v2 plan on demand so every
+// consumer sees a plan regardless of when the session was created.
+export function resolveSessionPlan(session: {
+  sessionId: SessionId;
+  plan?: SessionPlan;
+  prep?: SessionPrep;
+}): SessionPlan {
+  if (session.plan) return session.plan;
+  if (session.prep) return upcastSessionPrepToPlan(session.sessionId, session.prep);
+  return createEmptySessionPlan();
 }

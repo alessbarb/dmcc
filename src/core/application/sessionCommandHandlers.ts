@@ -4,8 +4,9 @@ import type { CampaignState } from "../domain/state.js";
 import type { Command } from "./commands.js";
 import type { CommandResult } from "./commandBus.js";
 import { closeSession, createSession, sessionEventTypeSchema, sessionPrepSchema } from "../domain/session/session.js";
-import { sessionPlanSchema, createEmptySessionPlan } from "../domain/session/sessionPlan.js";
+import { sessionPlanSchema } from "../domain/session/sessionPlan.js";
 import { validateSessionPlan } from "../domain/session/sessionPlanValidation.js";
+import { resolveSessionPlan } from "../domain/session/sessionPlanUpcast.js";
 
 type SessionCommandType =
   | "CreatePreparedSession"
@@ -111,7 +112,7 @@ case "ReviseSessionPlan": {
   if (session.status !== "planned") {
     throw sessionCommandError("SESSION_NOT_PLANNED", "only planned sessions accept plan revisions", 409);
   }
-  const previousRevision = session.plan?.revision ?? 0;
+  const previousRevision = resolveSessionPlan(session).revision;
   if (command.expectedRevision !== previousRevision) {
     throw sessionCommandError(
       "SESSION_PLAN_REVISION_CONFLICT",
@@ -154,7 +155,7 @@ case "ActivatePlannedSession": {
   if (activeExists) {
     throw sessionCommandError("ACTIVE_SESSION_EXISTS", "only one active session per campaign is allowed", 409);
   }
-  const plan = session.plan ?? createEmptySessionPlan();
+  const plan = resolveSessionPlan(session);
   const activated = {
     ...session,
     status: "active" as const,

@@ -133,7 +133,9 @@ describe("upcastStoryStepBindingsForSession", () => {
     ];
     const bindings = upcastStoryStepBindingsForSession({ sessionId: "sess_1", storySteps: steps, plan });
     expect(bindings).toHaveLength(1);
-    expect(bindings[0]!.storyStepId).toBe("stp_1");
+    const binding = bindings[0]!;
+    expect(binding.kind).toBe("story_step");
+    expect(binding.kind === "story_step" && binding.storyStepId).toBe("stp_1");
   });
 
   it("anchors to the matching scene appearance when the scene is unambiguous", () => {
