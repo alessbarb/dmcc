@@ -117,7 +117,7 @@ export async function processCampaignPurge(job: ClaimedJob): Promise<void> {
 
       await deleteStorageKey(resource.storageKey);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
     await markJobFailed(jobId, "FS_DELETE_ERROR", errMsg);
     throw error;

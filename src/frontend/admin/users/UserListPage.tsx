@@ -24,7 +24,7 @@ export function UserListPage() {
     try {
       const data = await fetchAdminUsers({ status: status || undefined, query: query || undefined });
       setUsers(data.users);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
@@ -47,8 +47,8 @@ export function UserListPage() {
       try {
         await enableUser(user.userId);
         await loadUsers();
-      } catch (err: any) {
-        alert(`Error: ${err.message}`);
+      } catch (err: unknown) {
+        alert(`Error: ${err instanceof Error ? err.message : String(err)}`);
       } finally {
         setActionLoading(null);
       }
@@ -84,8 +84,8 @@ export function UserListPage() {
       }
       setPendingAction(null);
       await loadUsers();
-    } catch (err: any) {
-      alert(`Error: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }

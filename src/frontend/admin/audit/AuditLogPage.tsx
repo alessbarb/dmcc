@@ -20,7 +20,7 @@ export function AuditLogPage() {
         actorUserId: actorUserId || undefined,
       });
       setLogs(data.auditLog);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);

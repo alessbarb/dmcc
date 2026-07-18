@@ -16,7 +16,7 @@ export function CampaignPurgeJobsPage() {
     try {
       const data = await fetchPurgeJobs({ status: status || undefined });
       setJobs(data.jobs);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
@@ -35,8 +35,8 @@ export function CampaignPurgeJobsPage() {
       await retryPurgeJob(jobId);
       alert("Job reset to pending. The background worker will pick it up shortly.");
       await loadJobs();
-    } catch (err: any) {
-      alert(`Error retrying job: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error retrying job: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }

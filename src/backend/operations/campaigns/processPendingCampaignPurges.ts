@@ -49,7 +49,7 @@ export async function processPendingCampaignPurges(params: {
 
       await processCampaignPurge(claimedJob);
       successes.push(jobId);
-    } catch (error: any) {
+    } catch (error: unknown) {
       failures.push({
         jobId,
         error: error instanceof Error ? error.message : String(error),

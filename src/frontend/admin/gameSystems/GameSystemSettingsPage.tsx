@@ -19,7 +19,7 @@ export function GameSystemSettingsPage() {
     try {
       const data = await fetchGameSystemSettings();
       setSystems(data.systems);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
@@ -36,8 +36,8 @@ export function GameSystemSettingsPage() {
     try {
       await updateGameSystemSettings(system.systemId, { isEnabledForNewCampaigns: !system.isEnabledForNewCampaigns });
       await loadSystems();
-    } catch (err: any) {
-      alert(`Error updating game system: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error updating game system: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }

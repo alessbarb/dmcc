@@ -19,7 +19,7 @@ export function CampaignTemplateSettingsPage() {
     try {
       const data = await fetchCampaignTemplateSettings();
       setTemplates(data.templates);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
@@ -35,8 +35,8 @@ export function CampaignTemplateSettingsPage() {
     try {
       await updateCampaignTemplateSettings(template.templateId, { isVisible: !template.isVisible });
       await loadTemplates();
-    } catch (err: any) {
-      alert(`Error updating template: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error updating template: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }
@@ -47,8 +47,8 @@ export function CampaignTemplateSettingsPage() {
     try {
       await updateCampaignTemplateSettings(template.templateId, { isFeatured: !template.isFeatured });
       await loadTemplates();
-    } catch (err: any) {
-      alert(`Error updating template: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error updating template: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }

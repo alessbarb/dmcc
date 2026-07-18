@@ -345,8 +345,8 @@ export function EntityBoardsView() {
         }),
         "success",
       );
-    } catch (error: any) {
-      addToast(error?.message ?? String(error), "error");
+    } catch (error: unknown) {
+      addToast(error instanceof Error ? error.message : String(error), "error");
     } finally {
       setMovingIds((current) => {
         const next = new Set(current);
@@ -438,7 +438,8 @@ export function EntityBoardsView() {
                   onDragStart={handleDragStart}
                   onDragEnter={setDragOverStatus}
                   onDragLeave={(event) => {
-                    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                    const related = event.relatedTarget;
+                    if (!(related instanceof Node) || !event.currentTarget.contains(related)) {
                       setDragOverStatus(null);
                     }
                   }}

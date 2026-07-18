@@ -19,7 +19,7 @@ export function CampaignListPage() {
     try {
       const data = await fetchAdminCampaigns({ status: status || undefined, query: query || undefined });
       setCampaigns(data.campaigns);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
@@ -41,8 +41,8 @@ export function CampaignListPage() {
     try {
       await restoreCampaign(campaignId);
       await loadCampaigns();
-    } catch (err: any) {
-      alert(`Error restoring campaign: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error restoring campaign: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }
@@ -61,8 +61,8 @@ export function CampaignListPage() {
         alert("Campaign successfully enqueued for purge.");
       }
       await loadCampaigns();
-    } catch (err: any) {
-      alert(`Error enqueuing purge: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error enqueuing purge: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }

@@ -16,7 +16,7 @@ export function InvitationListPage() {
     try {
       const data = await fetchInvitations({ activeOnly });
       setInvitations(data.invitations);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
@@ -33,8 +33,8 @@ export function InvitationListPage() {
     try {
       await revokeInvitation(invitationId);
       await loadInvitations();
-    } catch (err: any) {
-      alert(`Error revoking invitation: ${err.message}`);
+    } catch (err: unknown) {
+      alert(`Error revoking invitation: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setActionLoading(null);
     }

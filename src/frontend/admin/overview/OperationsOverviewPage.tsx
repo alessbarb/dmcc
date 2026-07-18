@@ -14,7 +14,7 @@ export function OperationsOverviewPage() {
     try {
       const data = await fetchAdminOverview();
       setMetrics(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
