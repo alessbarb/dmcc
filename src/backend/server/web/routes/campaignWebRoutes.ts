@@ -504,7 +504,6 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
     return { session };
   });
   server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/planned", async (request, reply) => executeDmCommand(request, reply, { type: "CreatePreparedSession", ...(request.body ?? {}) }));
-  server.patch<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/prep", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateSessionPrep", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
   server.put<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/plan", async (request, reply) => executeDmCommand(request, reply, { type: "ReviseSessionPlan", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
   server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/activate", async (request, reply) => executeDmCommand(request, reply, { type: "ActivatePlannedSession", sessionId: request.params.sessionId }));
   server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/ad-hoc", async (request, reply) => executeDmCommand(request, reply, { type: "StartSession", ...(request.body ?? {}) }));

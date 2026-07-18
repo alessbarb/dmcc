@@ -702,7 +702,7 @@ export function OverviewPage() {
             <button
               className="btn btn-primary dashboard-quick-action dashboard-quick-action--theme-accents-primary-foreground"
               type="button"
-              onClick={() => navigateToCampaignPage("session")}
+              onClick={() => navigateToCampaignPage("sessions")}
             >
               <Play size={20} /> <span>{t("dashboard.startSession")}</span>
             </button>

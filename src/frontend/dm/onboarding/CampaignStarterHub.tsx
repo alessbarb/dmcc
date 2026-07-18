@@ -189,7 +189,7 @@ function GuidanceModal({
       });
       addToast(t("guidedStart.toasts.sessionScaffoldCreated"), "success");
       onClose();
-      onNavigate("session");
+      onNavigate("sessions");
     } catch (err: unknown) {
       addToast(t("guidedStart.toasts.recipeError", { error: err instanceof Error ? err.message : String(err) }), "error");
     } finally {
@@ -395,7 +395,7 @@ export function CampaignStarterHub({ campaignId, campaignState, setCurrentPage }
         dispatchEntityTemplate({ entityType: "front", importance: "high", status: "active", content: t("guidedStart.templates.threat.content"), metadata: { stakes: "", countdown: "" } });
         break;
       case "session":
-        setCurrentPage("session");
+        setCurrentPage("sessions");
         break;
       case "relations":
         openRelation();

@@ -21,8 +21,8 @@ const RESOURCE_NAVIGATION: Partial<Record<CampaignResourceType, ResourceNavigati
   },
   session: {
     type: "session",
-    location: (campaignId) => ({
-      pathname: `/campaigns/${campaignId}/session`,
+    location: (campaignId, resourceId) => ({
+      pathname: `/campaigns/${campaignId}/sessions/${resourceId}`,
     }),
   },
   canvas: {

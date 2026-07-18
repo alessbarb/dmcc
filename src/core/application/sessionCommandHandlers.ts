@@ -3,15 +3,13 @@ import type { StoredEvent } from "../domain/events.js";
 import type { CampaignState } from "../domain/state.js";
 import type { Command } from "./commands.js";
 import type { CommandResult } from "./commandBus.js";
-import { closeSession, createSession, sessionEventTypeSchema, sessionPrepSchema } from "../domain/session/session.js";
+import { closeSession, createSession, sessionEventTypeSchema } from "../domain/session/session.js";
 import { sessionPlanSchema } from "../domain/session/sessionPlan.js";
 import { validateSessionPlan } from "../domain/session/sessionPlanValidation.js";
 import { resolveSessionPlan } from "../domain/session/sessionPlanUpcast.js";
 
 type SessionCommandType =
   | "CreatePreparedSession"
-  | "UpdateSessionPrep"
-  | "ActivatePreparedSession"
   | "ReviseSessionPlan"
   | "ActivatePlannedSession"
   | "StartSession"
@@ -65,47 +63,6 @@ case "CreatePreparedSession": {
   sessions.set(session.sessionId, session);
   const nextState = { ...state, sessions };
   return singleEvent(nextState, makeEvent(command.actorId, command.campaignId, "SessionCreated", session));
-}
-case "UpdateSessionPrep": {
-  const session = requireSession(state, command.sessionId);
-  if (session.status !== "planned") {
-    throw new Error("Only planned sessions can be prepared");
-  }
-  const currentPrep = session.prep ?? { state: "draft" };
-  const updatedPrep = sessionPrepSchema.parse({
-    ...currentPrep,
-    ...command.prep,
-    state: command.prep.state ?? currentPrep.state ?? "draft",
-  });
-  const updated = {
-    ...session,
-    ...(command.title !== undefined && { title: command.title }),
-    ...(command.scheduledAt !== undefined && { scheduledAt: command.scheduledAt }),
-    prep: updatedPrep,
-    updatedAt: new Date().toISOString(),
-  };
-  const sessions = new Map(state.sessions);
-  sessions.set(updated.sessionId, updated);
-  return singleEvent({ ...state, sessions }, makeEvent(command.actorId, command.campaignId, "SessionPrepUpdated", updated));
-}
-case "ActivatePreparedSession": {
-  const session = requireSession(state, command.sessionId);
-  if (session.status !== "planned") {
-    throw new Error("Only planned sessions can be activated");
-  }
-  const activeExists = [...state.sessions.values()].some((s) => s.status === "active" && s.sessionId !== command.sessionId);
-  if (activeExists) {
-    throw new Error("Only one active session per campaign is allowed");
-  }
-  const activated = {
-    ...session,
-    status: "active" as const,
-    startedAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  const sessions = new Map(state.sessions);
-  sessions.set(activated.sessionId, activated);
-  return singleEvent({ ...state, sessions }, makeEvent(command.actorId, command.campaignId, "SessionStarted", activated));
 }
 case "ReviseSessionPlan": {
   const session = requireSession(state, command.sessionId);

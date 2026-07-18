@@ -128,9 +128,6 @@ const InvitationsViewLazy = React.lazy(() =>
 const PlayerKnowledgeViewLazy = React.lazy(() =>
   import("./dm/people/knowledge/PlayerKnowledgeView.js").then((module) => ({ default: module.PlayerKnowledgeView })),
 );
-const SessionPageLazy = React.lazy(() =>
-  import("./dm/sessions/SessionPage.js").then((module) => ({ default: module.SessionPage })),
-);
 const SessionsIndexPageLazy = React.lazy(() =>
   import("./dm/sessions/SessionsIndexPage.js").then((module) => ({ default: module.SessionsIndexPage })),
 );
@@ -364,10 +361,13 @@ const overviewRoute = createRoute({
   path: "/overview",
   component: withSuspense(OverviewPageLazy),
 });
-const sessionRoute = createRoute({
+const sessionRedirectRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/session",
-  component: withSuspense(SessionPageLazy),
+  beforeLoad: ({ params }) => {
+    throw redirect({ to: "/campaigns/$campaignId/sessions", params });
+  },
+  component: () => null,
 });
 const sessionsRoute = createRoute({
   getParentRoute: () => campaignRoute,
@@ -611,7 +611,7 @@ const routeTree = rootRoute.addChildren([
   campaignRoute.addChildren([
     campaignIndexRoute,
     overviewRoute,
-    sessionRoute,
+    sessionRedirectRoute,
     sessionsRoute,
     sessionDetailRoute,
     libraryRoute.addChildren([

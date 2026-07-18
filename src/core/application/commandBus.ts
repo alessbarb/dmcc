@@ -32,8 +32,6 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
     case "RevealClue":
       return handleContentCommand(state, command);
     case "CreatePreparedSession":
-    case "UpdateSessionPrep":
-    case "ActivatePreparedSession":
     case "ReviseSessionPlan":
     case "ActivatePlannedSession":
     case "StartSession":

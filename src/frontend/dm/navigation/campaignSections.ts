@@ -52,7 +52,7 @@ export const CAMPAIGN_SECTIONS: CampaignSectionDefinition[] = [
   },
   {
     id: "session",
-    path: "session",
+    path: "sessions",
     labelKey: "campaignShell.nav.session",
     titleKey: "campaignShell.meta.sessionTitle",
     eyebrowKey: "campaignShell.meta.sessionEyebrow",

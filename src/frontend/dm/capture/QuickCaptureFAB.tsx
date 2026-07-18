@@ -163,7 +163,10 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
                   className="btn btn-secondary btn-sm"
                   onClick={() => {
                     setOpen(false);
-                    runQuickCaptureAction(navigate({ to: `/campaigns/${_campaignId}/session` }), "No se pudo abrir la sesión activa.");
+                    runQuickCaptureAction(
+                      navigate({ to: `/campaigns/${_campaignId}/sessions/${activeSession.sessionId}` }),
+                      "No se pudo abrir la sesión activa.",
+                    );
                   }}
                 >
                   <Play size={14} /> {t("session.openActiveSession")}

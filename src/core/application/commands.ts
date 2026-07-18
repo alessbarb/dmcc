@@ -102,38 +102,6 @@ export type Command =
       };
     }
   | {
-      type: "UpdateSessionPrep";
-      campaignId: CampaignId;
-      actorId: string;
-      sessionId: SessionId;
-      title?: string;
-      scheduledAt?: string;
-      prep: {
-        state?: "draft" | "ready";
-        summary?: string;
-        openingPrompt?: string;
-        goals?: string[];
-        sceneIds?: EntityId[];
-        involvedEntityIds?: EntityId[];
-        availableClueIds?: EntityId[];
-        secretsAtRiskIds?: EntityId[];
-        expectedConsequenceIds?: EntityId[];
-        checklist?: Array<{
-          id: string;
-          label: string;
-          done?: boolean;
-          priority?: "low" | "medium" | "high";
-        }>;
-        notes?: string;
-      };
-    }
-  | {
-      type: "ActivatePreparedSession";
-      campaignId: CampaignId;
-      actorId: string;
-      sessionId: SessionId;
-    }
-  | {
       type: "ReviseSessionPlan";
       campaignId: CampaignId;
       actorId: string;
