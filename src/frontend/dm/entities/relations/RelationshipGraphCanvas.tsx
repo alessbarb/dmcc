@@ -12,6 +12,7 @@ import { RelationshipEntityNode, type RelationshipNodeData } from "./Relationshi
 import { RelationshipGroupNode, type RelationshipGroupNodeData } from "./RelationshipGroupNode.js";
 import { RelationshipEdge, type RelationshipEdgeData } from "./RelationshipEdge.js";
 import { groupRelationshipNeighbors, type RelationshipRingItem } from "./groupRelationshipNeighbors.js";
+import { usePrefersReducedMotion } from "../../../shared/hooks/usePrefersReducedMotion.js";
 import "./relationshipGraph.css";
 
 const NODE_WIDTH = 176;
@@ -39,14 +40,6 @@ export interface RelationshipGraphCanvasProps {
   onToggleGroupExpand: (entityType: string) => void;
 }
 
-function isGroupNodeData(data: Record<string, unknown>): data is RelationshipGroupNodeData {
-  return "group" in data;
-}
-
-function isEntityNodeData(data: Record<string, unknown>): data is RelationshipNodeData {
-  return "role" in data;
-}
-
 function edgeEndpoints(connection: EntityRelationshipNeighborhood["connections"][number]) {
   // A grouped connection can bundle relations in both directions; a single
   // relation draws its real domain direction, a bundle falls back to the
@@ -69,8 +62,9 @@ function RelationshipGraphCanvasInner({
   expandedGroupTypes,
   onToggleGroupExpand,
 }: RelationshipGraphCanvasProps) {
-  const { locale } = useTranslation();
+  const { t, locale } = useTranslation();
   const { fitView } = useReactFlow();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const ringItems: RelationshipRingItem[] = useMemo(
     () => groupRelationshipNeighbors(neighborhood.neighbors, groupingEnabled, expandedGroupTypes),
@@ -117,7 +111,11 @@ function RelationshipGraphCanvasInner({
           id: item.entity.entityId,
           type: "relationshipEntity",
           position: positions.get(item.entity.entityId) ?? { x: 0, y: 0 },
-          data: { entity: item.entity.entity, role: "neighbor" },
+          data: {
+            entity: item.entity.entity,
+            role: "neighbor",
+            onActivate: () => onNavigateEntity(item.entity.entityId),
+          },
           draggable: false,
           selectable: false,
           width: NODE_WIDTH,
@@ -128,7 +126,7 @@ function RelationshipGraphCanvasInner({
         id: item.group.groupId,
         type: "relationshipGroup",
         position: positions.get(item.group.groupId) ?? { x: 0, y: 0 },
-        data: { group: item.group },
+        data: { group: item.group, onActivate: () => onToggleGroupExpand(item.group.entityType) },
         draggable: false,
         selectable: false,
         width: NODE_WIDTH,
@@ -137,7 +135,7 @@ function RelationshipGraphCanvasInner({
     });
 
     return [centerNode, ...ringNodes];
-  }, [neighborhood.center, ringItems, positions]);
+  }, [neighborhood.center, ringItems, positions, onNavigateEntity, onToggleGroupExpand]);
 
   const edges: Edge<RelationshipEdgeData>[] = useMemo(() => {
     const delta = (a: FlowPosition, b: FlowPosition) => ({ dx: b.x - a.x, dy: b.y - a.y });
@@ -194,7 +192,7 @@ function RelationshipGraphCanvasInner({
         const visual = getRelationVisual(first.relationType);
         const label =
           connection.relations.length > 1
-            ? `${connection.relations.length} relaciones`
+            ? t("entityDetail.relationsGraph.relationsCountLabel", { count: connection.relations.length })
             : formatRelationType(first.relationType, locale);
         const { sourceId, targetId } = edgeEndpoints(connection);
         const neighborId = sourceId === centerId ? targetId : sourceId;
@@ -216,26 +214,28 @@ function RelationshipGraphCanvasInner({
           const connection = connectionByNeighborId.get(entity.entityId);
           return total + (connection?.relations.length ?? 0);
         }, 0);
-        const label = `${relationCount} relaciones`;
+        const label = t("entityDetail.relationsGraph.relationsCountLabel", { count: relationCount });
         return buildEdge(item.group.groupId, item.group.groupId, label, undefined, false, false);
       });
 
     return [...entityEdges, ...groupEdges];
-  }, [neighborhood.connections, neighborhood.center.entityId, ringItems, selectedConnectionId, locale, positions]);
+  }, [neighborhood.connections, neighborhood.center.entityId, ringItems, selectedConnectionId, locale, positions, t]);
+
+  const fitViewDuration = prefersReducedMotion ? 0 : 200;
 
   useEffect(() => {
-    void fitView({ padding: 0.3, duration: 200 });
-  }, [neighborhood.center.entityId, fitView]);
+    void fitView({ padding: 0.3, duration: fitViewDuration });
+  }, [neighborhood.center.entityId, fitView, fitViewDuration]);
 
   useEffect(() => {
     // The container was resized in place (expand/reduce toggle) rather than
     // remounted, so React Flow's own ResizeObserver measurement can lag one
     // frame behind the CSS transition; defer the re-fit past that frame.
     const frame = requestAnimationFrame(() => {
-      void fitView({ padding: 0.3, duration: 200 });
+      void fitView({ padding: 0.3, duration: fitViewDuration });
     });
     return () => cancelAnimationFrame(frame);
-  }, [resizeSignal, fitView]);
+  }, [resizeSignal, fitView, fitViewDuration]);
 
   const flow = (
     <ReactFlow
@@ -243,15 +243,6 @@ function RelationshipGraphCanvasInner({
       edges={edges}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
-      onNodeClick={(_event, node) => {
-        if (isGroupNodeData(node.data)) {
-          onToggleGroupExpand(node.data.group.entityType);
-          return;
-        }
-        if (isEntityNodeData(node.data) && node.data.role === "neighbor") {
-          onNavigateEntity(node.data.entity.entityId);
-        }
-      }}
       onEdgeClick={(_event, edge) => onSelectConnection(edge.id === selectedConnectionId ? null : edge.id)}
       onPaneClick={() => onSelectConnection(null)}
       proOptions={{ hideAttribution: true }}

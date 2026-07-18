@@ -28,6 +28,21 @@
   cursor: default;
 }
 
+.entity-relations-node:focus-visible {
+  outline: 2px solid var(--theme-accents-primary-foreground);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entity-relations-node {
+    transition: none;
+  }
+
+  .entity-relations-node--neighbor:hover {
+    transform: none;
+  }
+}
+
 .entity-relations-node__badge {
   position: absolute;
   top: -10px;
