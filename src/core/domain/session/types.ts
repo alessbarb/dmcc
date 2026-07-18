@@ -9,6 +9,7 @@ import {
   relationIdSchema,
   visibilityRuleSchema,
 } from "@shared/schemas.js";
+import { sessionPlanSchema } from "./sessionPlan.js";
 
 export const sessionStatusSchema = z.enum([
   "planned",
@@ -54,13 +55,17 @@ export const sessionSchema = z.object({
   status: sessionStatusSchema,
   scheduledAt: z.string().optional(),
   prep: sessionPrepSchema.optional(),
+  plan: sessionPlanSchema.optional(),
+  activatedPlanRevision: z.number().int().min(0).optional(),
   startedAt: z.string().optional(),
   endedAt: z.string().optional(),
+  archivedAt: z.string().optional(),
   presentPlayerIds: z.array(playerIdSchema).default([]),
   presentCharacterIds: z.array(entityIdSchema).default([]),
   summary: z.string().optional(),
   dmNotes: z.string().optional(),
   playerSummary: z.string().optional(),
+  playerSummaryPublishedAt: z.string().optional(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
