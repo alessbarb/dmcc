@@ -6,11 +6,21 @@ import { isDmRole, requireCampaignMembership } from "../webAccess.js";
 import type { WebUser } from "../webSession.js";
 import { HttpError } from "../../errors.js";
 
-function sqlRows<T = any>(result: unknown): T[] {
-  const value = result as any;
-  if (Array.isArray(value)) return value as T[];
-  if (Array.isArray(value?.rows)) return value.rows as T[];
-  return [];
+interface SearchRow extends Record<string, unknown> {
+  type: string;
+  id: string;
+  title: string;
+  summary?: string | null;
+  dm_summary?: string | null;
+  visibility: string;
+  entity_id?: string | null;
+  source_entity_id?: string | null;
+  target_entity_id?: string | null;
+  linked_entity_ids?: unknown;
+}
+
+function sqlRows(result: SearchRow[] | { rows: SearchRow[] }): SearchRow[] {
+  return Array.isArray(result) ? result : result.rows;
 }
 
 function sanitizeSearchQuery(raw?: string): string {
@@ -30,8 +40,8 @@ async function playerProfileFor(userId: string, campaignId: string) {
   return profile;
 }
 
-function mapSearchRows(result: unknown, includeDmSummary: boolean) {
-  return sqlRows(result).map((row: any) => ({
+function mapSearchRows(result: SearchRow[] | { rows: SearchRow[] }, includeDmSummary: boolean) {
+  return sqlRows(result).map((row) => ({
     type: row.type,
     item: {
       id: row.id,
@@ -49,7 +59,7 @@ function mapSearchRows(result: unknown, includeDmSummary: boolean) {
 
 async function runDmSearch(campaignId: string, query: string) {
   const like = `%${query}%`;
-  const result = await db.execute(sql`
+  const result = await db.execute<SearchRow>(sql`
     SELECT
       'entity' AS type,
       entity_id AS id,
@@ -145,7 +155,7 @@ async function runPlayerSearch(campaignId: string, user: WebUser, query: string)
   const like = `%${query}%`;
   const profile = await playerProfileFor(user.userId, campaignId);
   const playerId = profile?.profileId ?? "";
-  const result = await db.execute(sql`
+  const result = await db.execute<SearchRow>(sql`
     SELECT
       'entity' AS type,
       e.entity_id AS id,

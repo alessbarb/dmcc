@@ -1,5 +1,9 @@
 import type { FastifyInstance } from "fastify";
 import type { Command } from "@core/application/commands.js";
+import { entityTypeSchema } from "@core/domain/entity/types.js";
+import { relationTypeSchema, type RelationType } from "@core/domain/relation/types.js";
+import { factKindSchema, factConfidenceSchema } from "@core/domain/fact/types.js";
+import { visibilityRuleSchema } from "@shared/schemas.js";
 import { eq, and, sql } from "drizzle-orm";
 import type { ImportStage, CampaignTemplateImportEvent } from "@shared/templateImportTypes.js";
 import { createId } from "@shared/ids.js";
@@ -27,6 +31,15 @@ function normalizeImportMode(value: unknown): CampaignTemplateImportMode {
   return value === "structure" || value === "sessions" ? value : "full";
 }
 
+// relationTypeSchema validates built-in-or-`custom:*` shape but (being a
+// z.string().refine) can't narrow the return type — the cast here is safe
+// because .parse() already threw on anything that doesn't match RelationType.
+function parseRelationType(value: string): RelationType {
+  relationTypeSchema.parse(value);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+  return value as RelationType;
+}
+
 function uniqueCampaignTitle(baseTitle: string, usedTitles: Set<string>): string {
   const clean = baseTitle.trim();
   if (!usedTitles.has(clean.toLocaleLowerCase())) return clean;
@@ -46,7 +59,8 @@ export function normalizeEntityMetadata(
     createdFromTemplateVersion: template.version,
   };
 
-  const imageUrlRaw = entity.imageUrl || (entity.metadata?.imageUrl as string | undefined);
+  const metadataImageUrl = entity.metadata?.imageUrl;
+  const imageUrlRaw = entity.imageUrl || (typeof metadataImageUrl === "string" ? metadataImageUrl : undefined);
   if (imageUrlRaw) {
     let finalUrl = imageUrlRaw.trim();
     if (!finalUrl.startsWith("/") && !finalUrl.startsWith("http://") && !finalUrl.startsWith("https://")) {
@@ -94,8 +108,8 @@ function buildCampaignTemplateImportSteps(options: {
   userId: string;
   title: string;
   baseSummary: string;
-  importMetadata: any;
-  execute: (command: Command) => Promise<any>;
+  importMetadata: Record<string, unknown>;
+  execute: (command: Command) => Promise<unknown>;
 }): CampaignTemplateImportStep[] {
   const { template, importMode, campaignId, userId, title, baseSummary, importMetadata, execute } = options;
   const steps: CampaignTemplateImportStep[] = [];
@@ -135,14 +149,14 @@ function buildCampaignTemplateImportSteps(options: {
             campaignId,
             actorId: userId,
             entityId: entity.entityId,
-            entityType: entity.entityType,
+            entityType: entityTypeSchema.parse(entity.entityType),
             title: entity.title,
             subtitle: entity.subtitle,
             summary: entity.summary,
             content: entity.content,
             status: entity.status,
             importance: entity.importance,
-            visibility: entity.visibility ?? { kind: "dm_only" },
+            visibility: visibilityRuleSchema.parse(entity.visibility ?? { kind: "dm_only" }),
             metadata: normalizeEntityMetadata(entity, template),
           } as Command);
         },
@@ -164,9 +178,9 @@ function buildCampaignTemplateImportSteps(options: {
             relationId: relation.relationId,
             sourceEntityId: relation.sourceEntityId,
             targetEntityId: relation.targetEntityId,
-            relationType: relation.relationType,
+            relationType: parseRelationType(relation.relationType),
             description: relation.description,
-            visibility: relation.visibility ?? { kind: "dm_only" },
+            visibility: visibilityRuleSchema.parse(relation.visibility ?? { kind: "dm_only" }),
             allowDuplicate: true,
           } as Command);
         },
@@ -187,9 +201,9 @@ function buildCampaignTemplateImportSteps(options: {
             actorId: userId,
             factId: fact.factId,
             statement: fact.statement,
-            kind: fact.kind,
-            confidence: fact.confidence,
-            visibility: fact.visibility ?? { kind: "dm_only" },
+            kind: factKindSchema.parse(fact.kind),
+            confidence: factConfidenceSchema.parse(fact.confidence),
+            visibility: visibilityRuleSchema.parse(fact.visibility ?? { kind: "dm_only" }),
             relatedEntityIds: fact.relatedEntityIds ?? [],
             relatedRelationIds: [],
             source: {
