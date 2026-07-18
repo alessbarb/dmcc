@@ -340,6 +340,20 @@ export function applyEvent(
       }
       break;
     }
+    case "SessionPlanRevised": {
+      const id = payload.sessionId;
+      const existing = next.sessions.get(id);
+      if (existing) {
+        next.sessions.set(id, {
+          ...existing,
+          title: payload.title,
+          ...(payload.scheduledAt !== undefined && { scheduledAt: payload.scheduledAt }),
+          plan: payload.plan,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
     case "SessionStarted": {
       const id = payload.sessionId || payload.id;
       const existing = next.sessions.get(id);
@@ -348,6 +362,8 @@ export function applyEvent(
           ...existing,
           status: "active",
           startedAt: payload.startedAt,
+          ...(payload.plan !== undefined && { plan: payload.plan }),
+          ...(payload.activatedPlanRevision !== undefined && { activatedPlanRevision: payload.activatedPlanRevision }),
           updatedAt: occurredAt,
         });
       } else {
@@ -361,6 +377,8 @@ export function applyEvent(
           title: payload.title || "Session",
           presentPlayerIds: [],
           presentCharacterIds: [],
+          ...(payload.plan !== undefined && { plan: payload.plan }),
+          ...(payload.activatedPlanRevision !== undefined && { activatedPlanRevision: payload.activatedPlanRevision }),
           createdAt: occurredAt,
           updatedAt: occurredAt,
         });

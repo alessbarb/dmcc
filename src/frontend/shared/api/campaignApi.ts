@@ -32,12 +32,13 @@ export const deleteRelation = (campaignId: string, relationId: string) => apiFet
 export const createFact = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/facts`, { init: jsonInit("POST", payload) });
 export const updateFact = (campaignId: string, factId: string, updates: unknown) => apiFetch(`/api/campaigns/${campaignId}/facts/${factId}`, { init: jsonInit("PUT", updates) });
 
-export const createPreparedSession = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/prepared`, { init: jsonInit("POST", payload) });
+export const createPreparedSession = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/planned`, { init: jsonInit("POST", payload) });
+export const reviseSessionPlan = (campaignId: string, sessionId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/plan`, { init: jsonInit("PUT", payload) });
 export const updateSessionPrep = (campaignId: string, sessionId: string, prep: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/prep`, { init: jsonInit("PATCH", prep) });
 export const cancelSession = (campaignId: string, sessionId: string) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/cancel`, { init: jsonInit("POST", {}) });
 export const archiveSession = (campaignId: string, sessionId: string) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/archive`, { init: jsonInit("POST", {}) });
 export const activateSession = (campaignId: string, sessionId: string) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/activate`, { init: jsonInit("POST", {}) });
-export const createSession = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions`, { init: jsonInit("POST", payload) });
+export const createSession = (campaignId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/ad-hoc`, { init: jsonInit("POST", payload) });
 export const revealSessionClue = (campaignId: string, sessionId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/reveal-clue`, { init: jsonInit("POST", payload) });
 export const closeSession = (campaignId: string, sessionId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/close`, { init: jsonInit("POST", payload) });
 export const createSessionEvent = (campaignId: string, sessionId: string, payload: unknown) => apiFetch(`/api/campaigns/${campaignId}/sessions/${sessionId}/events`, { init: jsonInit("POST", payload) });

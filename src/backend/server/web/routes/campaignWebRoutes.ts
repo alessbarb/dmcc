@@ -481,4 +481,30 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
     });
   });
   server.put<{ Params: { campaignId: string; factId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/facts/:factId", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateFact", factId: request.params.factId, ...(request.body ?? {}) }));
+
+  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/sessions", async (request) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    const projection = await repo.getCampaignState(request.params.campaignId);
+    return { sessions: projectionMapValues<Session>(projection.sessions) };
+  });
+  server.get<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId", async (request, reply) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    const projection = await repo.getCampaignState(request.params.campaignId);
+    const session = projectionMapValues<Session>(projection.sessions).find((s) => s.sessionId === request.params.sessionId);
+    if (!session) {
+      reply.code(404);
+      return { error: "SESSION_NOT_FOUND" };
+    }
+    return { session };
+  });
+  server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/planned", async (request, reply) => executeDmCommand(request, reply, { type: "CreatePreparedSession", ...(request.body ?? {}) }));
+  server.patch<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/prep", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateSessionPrep", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.put<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/plan", async (request, reply) => executeDmCommand(request, reply, { type: "ReviseSessionPlan", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/activate", async (request, reply) => executeDmCommand(request, reply, { type: "ActivatePlannedSession", sessionId: request.params.sessionId }));
+  server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/ad-hoc", async (request, reply) => executeDmCommand(request, reply, { type: "StartSession", ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/reveal-clue", async (request, reply) => executeDmCommand(request, reply, { type: "RevealClue", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/events", async (request, reply) => executeDmCommand(request, reply, { type: "RecordSessionEvent", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/close", async (request, reply) => executeDmCommand(request, reply, { type: "CloseSession", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/cancel", async (request, reply) => executeDmCommand(request, reply, { type: "CancelPreparedSession", sessionId: request.params.sessionId }));
+  server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/archive", async (request, reply) => executeDmCommand(request, reply, { type: "ArchiveSession", sessionId: request.params.sessionId }));
 }
