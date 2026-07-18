@@ -34,6 +34,8 @@ export function handleCommand(state: CampaignState, command: Command): CommandRe
     case "CreatePreparedSession":
     case "UpdateSessionPrep":
     case "ActivatePreparedSession":
+    case "ReviseSessionPlan":
+    case "ActivatePlannedSession":
     case "StartSession":
     case "CloseSession":
     case "CancelPreparedSession":

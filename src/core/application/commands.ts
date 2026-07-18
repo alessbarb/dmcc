@@ -1,4 +1,5 @@
 import type { CampaignId, EntityId, FactId, RelationId, SessionId, NotebookId, NotebookItemId, StoryThreadId, StoryStepId } from "@shared/ids.js";
+import type { SessionPlan } from "../domain/session/sessionPlan.js";
 import type { EntityImportance, EntityType } from "../domain/entity/entity.js";
 import type { FactConfidence, FactKind, FactSource } from "../domain/fact/fact.js";
 import type { RelationType } from "../domain/relation/relation.js";
@@ -128,6 +129,22 @@ export type Command =
     }
   | {
       type: "ActivatePreparedSession";
+      campaignId: CampaignId;
+      actorId: string;
+      sessionId: SessionId;
+    }
+  | {
+      type: "ReviseSessionPlan";
+      campaignId: CampaignId;
+      actorId: string;
+      sessionId: SessionId;
+      expectedRevision: number;
+      title: string;
+      scheduledAt?: string;
+      plan: Omit<SessionPlan, "revision">;
+    }
+  | {
+      type: "ActivatePlannedSession";
       campaignId: CampaignId;
       actorId: string;
       sessionId: SessionId;
