@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sessionSchema } from "../../src/core/domain/session/types.js";
+import { sessionSchema, sessionEventTypeSchema } from "../../src/core/domain/session/types.js";
 import { createEmptySessionPlan } from "../../src/core/domain/session/sessionPlan.js";
 
 function baseSession() {
@@ -36,5 +36,11 @@ describe("Session v2 coexistence", () => {
       archivedAt: "2026-02-01T00:00:00.000Z",
     };
     expect(() => sessionSchema.parse(session)).not.toThrow();
+  });
+});
+
+describe("SessionEventType", () => {
+  it("accepts material_introduced (§13.2, §36.2: Canvas -> active session should not fake scene_started)", () => {
+    expect(() => sessionEventTypeSchema.parse("material_introduced")).not.toThrow();
   });
 });
