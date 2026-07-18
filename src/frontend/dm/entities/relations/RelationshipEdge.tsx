@@ -1,63 +1,115 @@
 import React from "react";
-import { BaseEdge, EdgeLabelRenderer, getStraightPath } from "@xyflow/react";
+import {
+  BaseEdge,
+  EdgeLabelRenderer,
+  getStraightPath,
+} from "@xyflow/react";
 import type { EdgeProps } from "@xyflow/react";
 import { RelationEdgeLabel } from "../../map/shared/RelationEdgeLabel.js";
 
-export interface RelationshipEdgeData extends Record<string, unknown> {
+export interface RelationshipEdgePoint {
+  x: number;
+  y: number;
+}
+
+export interface RelationshipEdgeData
+  extends Record<string, unknown> {
   label?: string;
   color?: string;
   dashed?: boolean;
   selected?: boolean;
-  /** True when this edge's React Flow `source` is the graph's center node
-   *  (domain relation direction, not layout position) — used to bias the
-   *  label toward the neighbor end regardless of which end that is. */
-  sourceIsCenter?: boolean;
+
+  /**
+   * Puntos absolutos devueltos por ELK:
+   * inicio, bend points y final.
+   */
+  routedPoints?: RelationshipEdgePoint[];
+
+  /**
+   * Posición calculada sobre la ruta completa para evitar que todas las
+   * etiquetas se amontonen alrededor del nodo principal.
+   */
+  labelPoint?: RelationshipEdgePoint;
 }
 
-export const RelationshipEdge = React.memo(function RelationshipEdge({
-  id,
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
-  style,
-  data,
-  markerEnd,
-}: EdgeProps) {
-  // Every edge here is a direct hub-and-spoke connection (center <-> one
-  // neighbor), never a multi-hop path — a straight line is both the
-  // clearest reading and structurally incapable of the bezier overshoot
-  // that made long, near-vertical edges visually "loop" around nodes
-  // stacked on the same axis.
-  const [edgePath] = getStraightPath({ sourceX, sourceY, targetX, targetY });
+function buildOrthogonalPath(
+  points: RelationshipEdgePoint[],
+): string {
+  if (points.length === 0) {
+    return "";
+  }
 
-  const edgeData = (data ?? {}) as RelationshipEdgeData;
+  return points
+    .map((point, index) =>
+      `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`,
+    )
+    .join(" ");
+}
 
-  // Every edge in this view radiates from the same center node, so the path
-  // midpoint (t=0.5) is where every label converges — right on top of the
-  // center card. Bias toward whichever end is the neighbor (not necessarily
-  // "target": domain relation direction can point either way) so labels
-  // spread out across the already-spaced ring instead.
-  const t = edgeData.sourceIsCenter ? 0.72 : 0.28;
-  const labelX = sourceX + (targetX - sourceX) * t;
-  const labelY = sourceY + (targetY - sourceY) * t;
+export const RelationshipEdge = React.memo(
+  function RelationshipEdge({
+    id,
+    sourceX,
+    sourceY,
+    targetX,
+    targetY,
+    style,
+    data,
+    markerEnd,
+  }: EdgeProps) {
+    const edgeData =
+      (data ?? {}) as RelationshipEdgeData;
 
-  return (
-    <>
-      <BaseEdge id={id} path={edgePath} style={style} markerEnd={markerEnd} />
-      {edgeData.label && (
-        <EdgeLabelRenderer>
-          <div
-            style={{
-              position: "absolute",
-              transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
-              pointerEvents: "none",
-            }}
-          >
-            <RelationEdgeLabel label={edgeData.label} />
-          </div>
-        </EdgeLabelRenderer>
-      )}
-    </>
-  );
-});
+    const routedPoints =
+      edgeData.routedPoints?.length &&
+      edgeData.routedPoints.length >= 2
+        ? edgeData.routedPoints
+        : null;
+
+    const [fallbackPath, fallbackLabelX, fallbackLabelY] =
+      getStraightPath({
+        sourceX,
+        sourceY,
+        targetX,
+        targetY,
+      });
+
+    const edgePath = routedPoints
+      ? buildOrthogonalPath(routedPoints)
+      : fallbackPath;
+
+    const labelX =
+      edgeData.labelPoint?.x ?? fallbackLabelX;
+    const labelY =
+      edgeData.labelPoint?.y ?? fallbackLabelY;
+
+    return (
+      <>
+        <BaseEdge
+          id={id}
+          path={edgePath}
+          style={style}
+          markerEnd={markerEnd}
+        />
+
+        {edgeData.label && (
+          <EdgeLabelRenderer>
+            <div
+              style={{
+                position: "absolute",
+                transform:
+                  `translate(-50%, -50%) ` +
+                  `translate(${labelX}px, ${labelY}px)`,
+                pointerEvents: "none",
+              }}
+            >
+              <RelationEdgeLabel
+                label={edgeData.label}
+              />
+            </div>
+          </EdgeLabelRenderer>
+        )}
+      </>
+    );
+  },
+);
