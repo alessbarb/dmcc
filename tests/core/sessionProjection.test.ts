@@ -75,12 +75,48 @@ describe("evaluateSessionProjectionRules", () => {
     expect(result.nodes[0]?.provenance.ruleId).toBe("test.narrative-only");
   });
 
-  it("lets a later rule's candidate win when two rules produce the same node id", () => {
+  it("prefers a higher-priority provenance basis regardless of registration order", () => {
+    const { state, session } = sessionFixture();
+    const derivedFirst: SessionProjectionRule = {
+      id: "test.derived",
+      perspective: "narrative_map",
+      evaluate: () => [{ kind: "node", node: { id: "n1", kind: "scene", reference: { type: "entity", entityId: "ent_cave" }, label: "Derived" }, provenance: { basis: "derived", sourceRefs: [] } }],
+    };
+    const explicitSecond: SessionProjectionRule = {
+      id: "test.explicit",
+      perspective: "narrative_map",
+      evaluate: () => [{ kind: "node", node: { id: "n1", kind: "scene", reference: { type: "entity", entityId: "ent_cave" }, label: "Explicit" }, provenance: { basis: "explicit", sourceRefs: [] } }],
+    };
+
+    const result = evaluateSessionProjectionRules([derivedFirst, explicitSecond], { campaignState: state, session }, "narrative_map");
+    expect(result.nodes).toHaveLength(1);
+    expect(result.nodes[0]?.label).toBe("Explicit");
+  });
+
+  it("does not let a low-confidence inferred rule clobber an explicit one that ran earlier", () => {
+    const { state, session } = sessionFixture();
+    const explicitFirst: SessionProjectionRule = {
+      id: "test.explicit",
+      perspective: "narrative_map",
+      evaluate: () => [{ kind: "node", node: { id: "n1", kind: "scene", reference: { type: "entity", entityId: "ent_cave" }, label: "Explicit" }, provenance: { basis: "explicit", sourceRefs: [] } }],
+    };
+    const inferredSecond: SessionProjectionRule = {
+      id: "test.inferred",
+      perspective: "narrative_map",
+      evaluate: () => [{ kind: "node", node: { id: "n1", kind: "scene", reference: { type: "entity", entityId: "ent_cave" }, label: "Inferred" }, provenance: { basis: "inferred", sourceRefs: [] } }],
+    };
+
+    const result = evaluateSessionProjectionRules([explicitFirst, inferredSecond], { campaignState: state, session }, "narrative_map");
+    expect(result.nodes[0]?.label).toBe("Explicit");
+    expect(result.nodes[0]?.provenance.ruleId).toBe("test.explicit");
+  });
+
+  it("breaks a same-priority tie by registration order (later wins)", () => {
     const { state, session } = sessionFixture();
     const first: SessionProjectionRule = {
       id: "test.first",
       perspective: "narrative_map",
-      evaluate: () => [{ kind: "node", node: { id: "n1", kind: "scene", reference: { type: "entity", entityId: "ent_cave" }, label: "First" }, provenance: { basis: "derived", sourceRefs: [] } }],
+      evaluate: () => [{ kind: "node", node: { id: "n1", kind: "scene", reference: { type: "entity", entityId: "ent_cave" }, label: "First" }, provenance: { basis: "explicit", sourceRefs: [] } }],
     };
     const second: SessionProjectionRule = {
       id: "test.second",
@@ -89,7 +125,6 @@ describe("evaluateSessionProjectionRules", () => {
     };
 
     const result = evaluateSessionProjectionRules([first, second], { campaignState: state, session }, "narrative_map");
-    expect(result.nodes).toHaveLength(1);
     expect(result.nodes[0]?.label).toBe("Second");
   });
 });
