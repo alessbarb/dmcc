@@ -21,6 +21,7 @@ import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import "./campaign-starter-hub.css";
 import {
   computeStarterProgress,
+  type StarterProgressCampaignState,
   type StarterStepId,
   type StarterStepProgress,
 } from "./starterProgress.js";
@@ -38,7 +39,7 @@ type EntityTemplateType = "location" | "npc" | "front" | "quest" | "clue" | "sec
 
 interface CampaignStarterHubProps {
   campaignId: string;
-  campaignState: any;
+  campaignState: StarterProgressCampaignState;
   setCurrentPage: (page: string) => void;
 }
 
@@ -50,7 +51,7 @@ interface GuidedEntityTemplateDetail {
   content?: string;
   importance?: string;
   status?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 function dispatchEntityTemplate(detail: GuidedEntityTemplateDetail): void {
@@ -82,7 +83,12 @@ function HelpLevelSelect({ value, onChange }: { value: GuidedHelpLevel; onChange
         <select
           className="form-select"
           value={value}
-          onChange={(event) => onChange(event.target.value as GuidedHelpLevel)}
+          onChange={(event) => {
+            const value = event.target.value;
+            if (value === "guided" || value === "normal" || value === "minimal") {
+              onChange(value);
+            }
+          }}
         >
           <option value="guided">{t(helpLevelLabelKey("guided"))}</option>
           <option value="normal">{t(helpLevelLabelKey("normal"))}</option>
@@ -145,7 +151,7 @@ function GuidanceModal({
   onNavigate,
   onOpenRelation,
 }: {
-  campaignState: any;
+  campaignState: StarterProgressCampaignState;
   onClose: () => void;
   onNavigate: (page: string) => void;
   onOpenRelation: () => void;
@@ -184,8 +190,8 @@ function GuidanceModal({
       addToast(t("guidedStart.toasts.sessionScaffoldCreated"), "success");
       onClose();
       onNavigate("session");
-    } catch (err: any) {
-      addToast(t("guidedStart.toasts.recipeError", { error: err?.message ?? String(err) }), "error");
+    } catch (err: unknown) {
+      addToast(t("guidedStart.toasts.recipeError", { error: err instanceof Error ? err.message : String(err) }), "error");
     } finally {
       setBusyRecipe(null);
     }
@@ -289,7 +295,7 @@ function CampaignPremiseModal({
   onClose,
 }: {
   campaignId: string;
-  campaign?: { summary?: string; description?: string };
+  campaign?: { summary?: string; description?: string } | null;
   onClose: () => void;
 }) {
   const store = useCampaignStore();
@@ -304,8 +310,8 @@ function CampaignPremiseModal({
       await store.updateCampaign(campaignId, { summary: summary.trim() });
       addToast(t("guidedStart.toasts.premiseSaved"), "success");
       onClose();
-    } catch (err: any) {
-      addToast(t("guidedStart.toasts.premiseError", { error: err?.message ?? String(err) }), "error");
+    } catch (err: unknown) {
+      addToast(t("guidedStart.toasts.premiseError", { error: err instanceof Error ? err.message : String(err) }), "error");
     } finally {
       setSaving(false);
     }

@@ -1,20 +1,30 @@
 import React, { useState } from "react";
 import { Check, Copy, Download, FileArchive, Languages, RotateCcw, Upload } from "lucide-react";
 import type { ToastKind } from "../../shared/hooks/useToast.js";
-import { useCampaignStore } from "../../shared/stores/campaignStore.js";
+import { useCampaignStore, type Campaign } from "../../shared/stores/campaignStore.js";
 import { useToast } from "../../shared/hooks/useToast.js";
 import { LanguageSelector } from "../../shared/i18n/LanguageSelector.js";
 import { useTranslation } from "../../shared/i18n/useTranslation.js";
 import { apiFetch } from "../../shared/api/apiClient.js";
 import "./settingsPage.css";
 
+type MarkdownExportResult = {
+  campaignId: string;
+  format: "markdown";
+  exportId: string;
+  path: string;
+  primaryFile: string;
+  downloadUrl: string;
+  fileCount: number;
+};
+
 export interface SettingsPageProps {
-  campaigns?: any[];
+  campaigns?: Campaign[];
   activeCampaignId?: string | null;
-  campaignState?: any;
-  createBackup?: () => Promise<any>;
-  exportJson?: () => Promise<any>;
-  exportMarkdown?: () => Promise<any>;
+  campaignState?: unknown;
+  createBackup?: () => Promise<{ path: string }>;
+  exportJson?: () => Promise<{ path: string }>;
+  exportMarkdown?: () => Promise<MarkdownExportResult>;
   onCampaignDeleted?: () => void | Promise<void>;
   addToast?: (msg: string, kind?: ToastKind) => void;
 }
@@ -34,7 +44,7 @@ export function SettingsPage(props: SettingsPageProps = {}) {
   const exportMarkdown = props.exportMarkdown ?? store.exportMarkdown;
   const addToast = props.addToast ?? toastAdd;
   const [copiedExportPath, setCopiedExportPath] = useState(false);
-  const [lastMarkdownExport, setLastMarkdownExport] = useState<any | null>(null);
+  const [lastMarkdownExport, setLastMarkdownExport] = useState<MarkdownExportResult | null>(null);
   const [busyAction, setBusyAction] = useState<"backup" | "json" | "markdown" | null>(null);
 
   const handleCopyExportPath = (path: string) => {
