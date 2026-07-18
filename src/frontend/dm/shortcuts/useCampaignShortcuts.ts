@@ -41,6 +41,8 @@ const useCampaignShortcutsStore = create<CampaignShortcutsState>((set, get) => (
     try {
       const response = await listShortcuts(campaignId);
       await requireOk(response, "Could not load campaign shortcuts");
+      // Trusting the server's response shape at the fetch boundary; no runtime schema here.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       const body = await response.json() as { shortcuts?: CampaignShortcut[] };
       set((state) => ({
         shortcutsByCampaignId: { ...state.shortcutsByCampaignId, [campaignId]: body.shortcuts ?? [] },

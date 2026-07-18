@@ -9,7 +9,12 @@ const visibilityKind = (visibility: unknown): MobileOracleResult["visibility"] =
   if (kind === "dm_only" || kind === "public" || kind === "players") return kind;
   return undefined;
 };
-const importance = (value: string | undefined): MobileOracleResult["importance"] => ["low", "normal", "high", "critical"].includes(value ?? "") ? value as MobileOracleResult["importance"] : undefined;
+const IMPORTANCE_LEVELS = ["low", "normal", "high", "critical"] as const;
+function isImportanceLevel(value: string): value is (typeof IMPORTANCE_LEVELS)[number] {
+  return (IMPORTANCE_LEVELS as readonly string[]).includes(value);
+}
+const importance = (value: string | undefined): MobileOracleResult["importance"] =>
+  value !== undefined && isImportanceLevel(value) ? value : undefined;
 
 export function searchMobileOracle(state: MobileCampaignStateLike, query: string, context: MobileCampaignContext = {}): MobileOracleResult[] {
   const normalizedQuery = normalize(query);

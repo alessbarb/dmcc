@@ -222,8 +222,12 @@ export function OverviewPage() {
   );
   const partialKnowledgeAlerts: Array<{ clueId?: string; message: string }> = [];
   const preparationChecklist: Array<{ task: string; priority?: string; done?: boolean }> = [];
-  const completedTasks: string[] =
-    (campaign as unknown as { settings?: { completedChecklistTasks?: string[] } })?.settings?.completedChecklistTasks ?? [];
+  const campaignSettings = campaign && typeof campaign === "object" && "settings" in campaign ? campaign.settings : undefined;
+  const rawCompletedTasks =
+    campaignSettings && typeof campaignSettings === "object" && "completedChecklistTasks" in campaignSettings
+      ? campaignSettings.completedChecklistTasks
+      : undefined;
+  const completedTasks: string[] = Array.isArray(rawCompletedTasks) ? rawCompletedTasks.filter((task): task is string => typeof task === "string") : [];
 
   // last session summary for the session prep card
   const lastClosedSession = [...sessions]

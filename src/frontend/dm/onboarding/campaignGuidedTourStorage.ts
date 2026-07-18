@@ -14,8 +14,8 @@ export function readCampaignGuidedTourState(campaignId: string): StoredCampaignG
   try {
     const raw = localStorage.getItem(getCampaignGuidedTourStorageKey(campaignId));
     if (!raw) return {};
-    const parsed = JSON.parse(raw) as StoredCampaignGuidedTourState;
-    return parsed && typeof parsed === "object" ? parsed : {};
+    const parsed: unknown = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? (parsed as StoredCampaignGuidedTourState) : {};
   } catch {
     return {};
   }

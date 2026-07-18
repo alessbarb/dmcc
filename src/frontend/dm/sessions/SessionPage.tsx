@@ -25,6 +25,8 @@ export function SessionPage() {
   const { addToast } = useToast();
 
   const campaignState = store.campaignState;
+  // sessionEvents is untyped (unknown[]) in the store; the server only ever populates it with SessionEvent records.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   const sessionEvents = (campaignState?.sessionEvents ?? []) as SessionEvent[];
   const activeSession = (campaignState?.sessions ?? []).find((session) => session.status === "active");
 

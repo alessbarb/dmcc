@@ -6,6 +6,10 @@ interface GuidedStartPreferences {
   compactStarterHubCampaignIds: string[];
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 const GUIDED_START_PREFS_KEY = "dmcc_guided_start_preferences_v1";
 const DEFAULT_PREFS: GuidedStartPreferences = {
   helpLevel: "guided",
@@ -17,12 +21,13 @@ function safeReadPreferences(): GuidedStartPreferences {
   try {
     const raw = localStorage.getItem(GUIDED_START_PREFS_KEY);
     if (!raw) return DEFAULT_PREFS;
-    const parsed = JSON.parse(raw) as Partial<GuidedStartPreferences>;
-    const helpLevel = parsed.helpLevel === "normal" || parsed.helpLevel === "minimal" ? parsed.helpLevel : "guided";
+    const parsed: unknown = JSON.parse(raw);
+    const record = isRecord(parsed) ? parsed : {};
+    const helpLevel = record.helpLevel === "normal" || record.helpLevel === "minimal" ? record.helpLevel : "guided";
     return {
       helpLevel,
-      hiddenStarterHubCampaignIds: Array.isArray(parsed.hiddenStarterHubCampaignIds) ? parsed.hiddenStarterHubCampaignIds.filter(Boolean) : [],
-      compactStarterHubCampaignIds: Array.isArray(parsed.compactStarterHubCampaignIds) ? parsed.compactStarterHubCampaignIds.filter(Boolean) : [],
+      hiddenStarterHubCampaignIds: Array.isArray(record.hiddenStarterHubCampaignIds) ? record.hiddenStarterHubCampaignIds.filter(Boolean) : [],
+      compactStarterHubCampaignIds: Array.isArray(record.compactStarterHubCampaignIds) ? record.compactStarterHubCampaignIds.filter(Boolean) : [],
     };
   } catch {
     return DEFAULT_PREFS;

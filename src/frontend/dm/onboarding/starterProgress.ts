@@ -46,6 +46,7 @@ function asArray<T>(value: unknown): T[] {
   // unsafe since T is caller-chosen and not runtime-checkable, but this
   // mirrors the (also unsafe) Array.isArray/Map branches above and is the
   // established fallback for record-shaped collections keyed by id.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   if (isRecord(value)) return Object.values(value) as T[];
   return [];
 }
@@ -77,7 +78,8 @@ function getActiveRelations(campaignState: StarterProgressCampaignState | null |
 
 function getActiveSessions(campaignState: StarterProgressCampaignState | null | undefined): Session[] {
   return asArray<Session>(campaignState?.sessions).filter(
-    (session) => !(session as { archived?: boolean })?.archived && session?.status !== "cancelled",
+    // `archived` is not a declared Session field, but legacy API payloads may still send it.
+    (session) => !(isRecord(session) && session.archived) && session?.status !== "cancelled",
   );
 }
 

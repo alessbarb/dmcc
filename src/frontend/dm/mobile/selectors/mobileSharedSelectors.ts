@@ -1,7 +1,11 @@
 import type { Entity, Session } from "../../../shared/stores/campaignStore.js";
 import type { MobileCampaignStateLike, MobileEntitySummary, MobileSessionSummary } from "../types.js";
 
-export const activeItems = <T>(items: T[] | undefined): T[] => (items ?? []).filter((item) => !("archived" in (item as object)) || !(item as { archived?: boolean }).archived);
+function isArchived(item: unknown): boolean {
+  return typeof item === "object" && item !== null && "archived" in item && Boolean(item.archived);
+}
+
+export const activeItems = <T>(items: T[] | undefined): T[] => (items ?? []).filter((item) => !isArchived(item));
 
 export const toEntitySummary = (entity: Entity): MobileEntitySummary => ({
   id: entity.entityId,

@@ -40,6 +40,8 @@ export function PlayerKnowledgeView() {
     try {
       const response = await apiFetch(`/api/campaigns/${encodeURIComponent(activeCampaignId)}/player-knowledge`);
       if (!response.ok) throw new Error(await readApiError(response, t("playerKnowledge.noPlayers")));
+      // Trusting the server's response shape at the fetch boundary; no runtime schema here.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       setProjection(await response.json() as KnowledgeProjection);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : String(loadError));

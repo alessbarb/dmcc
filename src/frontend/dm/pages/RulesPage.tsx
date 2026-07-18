@@ -75,9 +75,9 @@ export function RulesPage() {
           if (nextCategories.includes(RULE_CATEGORY_IDS.glossary)) return RULE_CATEGORY_IDS.glossary;
           return nextCategories[0] ?? "";
         });
-      } catch (loadError: any) {
-        if (controller.signal.aborted || loadError?.name === "AbortError") return;
-        setError(loadError?.message ?? String(loadError));
+      } catch (loadError: unknown) {
+        if (controller.signal.aborted || (loadError instanceof Error && loadError.name === "AbortError")) return;
+        setError(loadError instanceof Error ? loadError.message : String(loadError));
       }
     })();
     return () => controller.abort();
@@ -114,9 +114,9 @@ export function RulesPage() {
               : null;
             return retainedRule ?? nextRules[0] ?? null;
           });
-        } catch (searchError: any) {
-          if (controller.signal.aborted || searchError?.name === "AbortError") return;
-          setError(searchError?.message ?? String(searchError));
+        } catch (searchError: unknown) {
+          if (controller.signal.aborted || (searchError instanceof Error && searchError.name === "AbortError")) return;
+          setError(searchError instanceof Error ? searchError.message : String(searchError));
           setRules([]);
           setSelectedRule(null);
         } finally {

@@ -218,8 +218,12 @@ export function CampaignGuidedTour({ campaignId, enabled }: CampaignGuidedTourPr
 
   useEffect(() => {
     const listener = (event: Event) => {
-      const detail = (event as CustomEvent<{ campaignId?: string }>).detail;
-      if (detail?.campaignId && detail.campaignId !== campaignId) return;
+      const detail: unknown = event instanceof CustomEvent ? event.detail : undefined;
+      const detailCampaignId =
+        detail && typeof detail === "object" && "campaignId" in detail && typeof detail.campaignId === "string"
+          ? detail.campaignId
+          : undefined;
+      if (detailCampaignId && detailCampaignId !== campaignId) return;
       start();
     };
     window.addEventListener("dmcc:start-campaign-tour", listener);
