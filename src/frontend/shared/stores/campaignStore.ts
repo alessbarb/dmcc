@@ -474,6 +474,7 @@ export interface CampaignStateStore {
 
   createPreparedSession: (title: string, prep?: Session["prep"], scheduledAt?: string) => Promise<string | undefined>;
   updateSessionPrep: (sessionId: string, updates: { title?: string; scheduledAt?: string; prep: Session["prep"] }) => Promise<void>;
+  reviseSessionPlan: (sessionId: string, updates: { title: string; scheduledAt?: string; expectedRevision: number; plan: Omit<SessionPlan, "revision"> }) => Promise<void>;
   cancelSession: (sessionId: string) => Promise<void>;
   archiveSession: (sessionId: string) => Promise<void>;
   activateSession: (sessionId: string) => Promise<void>;

@@ -19,6 +19,17 @@
   justify-content: flex-end;
 }
 
+.session-plan-editor__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-end: var(--space-2);
+}
+
+.session-plan-editor__row .form-input {
+  flex: 1;
+}
+
 .session-form-empty {
   display: flex;
   flex-direction: column;

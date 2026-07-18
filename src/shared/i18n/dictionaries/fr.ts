@@ -1837,6 +1837,18 @@ export const fr: TranslationDictionary = {
     confirmDeleteTitle: "Êtes-vous sûr ?",
     confirmDeleteDescription: "Cette action est irréversible.",
   },
+  sessionPlanEditor: {
+    saveError: "Impossible d'enregistrer le plan de la session.",
+    goalsLabel: "Objectifs internes",
+    goalCompletedLabel: "Objectif atteint",
+    goalPlaceholder: "ex. Annoncer le danger des Capes Rouges",
+    addGoal: "Ajouter un objectif",
+    checklistCheckedLabel: "Élément de la liste terminé",
+    checklistPlaceholder: "ex. Imprimer les fiches de personnage",
+    addChecklistItem: "Ajouter un élément",
+    scenesLabel: "Scènes prévues",
+    scenesHelp: "Les scènes apparaissent dans l'ordre sélectionné ; les scènes consécutives sont reliées automatiquement.",
+  },
   sessionPage: {
     startNewSessionTitle: "Démarrer une nouvelle session",
     sessionOfCampaign: "Session #{number} de la campagne",

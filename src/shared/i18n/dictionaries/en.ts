@@ -2106,6 +2106,18 @@ export const en = {
     confirmDeleteTitle: "Are you sure?",
     confirmDeleteDescription: "This action cannot be undone.",
   },
+  sessionPlanEditor: {
+    saveError: "Could not save the session plan.",
+    goalsLabel: "Internal goals",
+    goalCompletedLabel: "Goal completed",
+    goalPlaceholder: "e.g. Foreshadow the Red Cloaks",
+    addGoal: "Add goal",
+    checklistCheckedLabel: "Checklist item done",
+    checklistPlaceholder: "e.g. Print character sheets",
+    addChecklistItem: "Add checklist item",
+    scenesLabel: "Planned scenes",
+    scenesHelp: "Scenes appear in the order selected; consecutive scenes are linked automatically.",
+  },
   sessionPage: {
     startNewSessionTitle: "Start new session",
     sessionOfCampaign: "Session #{number} of the campaign",

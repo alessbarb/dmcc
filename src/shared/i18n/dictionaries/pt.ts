@@ -1814,6 +1814,18 @@ export const pt = {
     confirmDeleteTitle: "Tem certeza?",
     confirmDeleteDescription: "Esta ação não pode ser desfeita.",
   },
+  sessionPlanEditor: {
+    saveError: "Não foi possível salvar o plano da sessão.",
+    goalsLabel: "Objetivos internos",
+    goalCompletedLabel: "Objetivo concluído",
+    goalPlaceholder: "ex. Insinuar o perigo das Capas Vermelhas",
+    addGoal: "Adicionar objetivo",
+    checklistCheckedLabel: "Item da lista concluído",
+    checklistPlaceholder: "ex. Imprimir fichas de personagem",
+    addChecklistItem: "Adicionar item",
+    scenesLabel: "Cenas planejadas",
+    scenesHelp: "As cenas aparecem na ordem selecionada; cenas consecutivas são vinculadas automaticamente.",
+  },
   sessionPage: {
     startNewSessionTitle: "Iniciar nova sessão",
     sessionOfCampaign: "Sessão #{number} da campanha",

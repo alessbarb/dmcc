@@ -2130,6 +2130,18 @@ export const es: TranslationDictionary = {
     confirmDeleteTitle: "¿Estás seguro?",
     confirmDeleteDescription: "Esta acción no se puede deshacer.",
   },
+  sessionPlanEditor: {
+    saveError: "No se pudo guardar el plan de la sesión.",
+    goalsLabel: "Objetivos internos",
+    goalCompletedLabel: "Objetivo completado",
+    goalPlaceholder: "p. ej. Insinuar el peligro de los Capas Rojas",
+    addGoal: "Añadir objetivo",
+    checklistCheckedLabel: "Elemento de la lista completado",
+    checklistPlaceholder: "p. ej. Imprimir hojas de personaje",
+    addChecklistItem: "Añadir elemento",
+    scenesLabel: "Escenas previstas",
+    scenesHelp: "Las escenas aparecen en el orden seleccionado; las escenas consecutivas se enlazan automáticamente.",
+  },
   sessionPage: {
     startNewSessionTitle: "Iniciar nueva sesión",
     sessionOfCampaign: "Sesión #{number} de la campaña",
