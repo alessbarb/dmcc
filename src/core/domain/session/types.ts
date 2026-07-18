@@ -90,6 +90,7 @@ export const sessionEventTypeSchema = z.enum([
   "combat_ended",
   "relationship_changed",
   "status_changed",
+  "material_introduced",
   "custom",
 ]);
 export type SessionEventType = z.infer<typeof sessionEventTypeSchema>;

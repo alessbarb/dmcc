@@ -113,7 +113,7 @@ export function CanvasSessionPrepDialog({
                 addToast(t("toasts.elementsAddedToPreparation", { title: targetSession.title }), "success");
               } else if (activeSession) {
                 await recordSessionEvent(activeSession.sessionId, {
-                  type: "scene_started",
+                  type: "material_introduced",
                   title: t("sessionPage.loadedFromCanvasTitle"),
                   description: t("sessionPage.loadedFromCanvasDescription", { names: entNames.join(", ") }),
                   relatedEntityIds: entIds,
