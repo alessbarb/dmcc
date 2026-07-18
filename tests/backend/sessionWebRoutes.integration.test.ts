@@ -176,4 +176,38 @@ describe("session web routes", () => {
     });
     expect(response.statusCode).toBe(409);
   });
+
+  it("upcasts legacy prep-only sessions to a plan on read, without a ReviseSessionPlan write", async () => {
+    const { campaignId, dmId } = await seedFixture();
+    const headers = await authenticatedHeaders(dmId);
+    const sessionId = createId("sess");
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/sessions/planned`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: {
+        sessionId,
+        title: "La guarida Cragmaw",
+        prep: { state: "ready", goals: ["Foreshadow the Red Cloaks"], sceneIds: ["ent_cave"] },
+      },
+    });
+
+    const fetched = await server.inject({
+      method: "GET",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}`,
+      headers,
+    });
+    expect(fetched.statusCode).toBe(200);
+    const body = fetched.json() as {
+      session: { plan?: { state: string; goals: Array<{ text: string }>; flowItems: unknown[] } };
+    };
+    expect(body.session.plan?.state).toBe("ready");
+    expect(body.session.plan?.goals[0]?.text).toBe("Foreshadow the Red Cloaks");
+    expect(body.session.plan?.flowItems).toHaveLength(1);
+
+    const listed = await server.inject({ method: "GET", url: `/api/campaigns/${campaignId}/sessions`, headers });
+    const listedBody = listed.json() as { sessions: Array<{ sessionId: string; plan?: { state: string } }> };
+    const listedSession = listedBody.sessions.find((s) => s.sessionId === sessionId);
+    expect(listedSession?.plan?.state).toBe("ready");
+  });
 });

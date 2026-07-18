@@ -10,6 +10,7 @@ type SessionActions = Pick<
   CampaignStateStore,
   | "createPreparedSession"
   | "updateSessionPrep"
+  | "reviseSessionPlan"
   | "cancelSession"
   | "archiveSession"
   | "activateSession"
@@ -48,6 +49,20 @@ export function createSessionActions(set: StoreSet, get: () => CampaignStateStor
     try {
       const res = await campaignApi.updateSessionPrep(activeCampaignId, sessionId, updates);
       if (!res.ok) throw new Error(await readApiError(res, "Failed to update session preparation"));
+      await get().reloadCampaignIfActive(activeCampaignId);
+    } catch (err) {
+      set({ error: errorMessage(err), loading: false });
+      throw err;
+    }
+  },
+
+  reviseSessionPlan: async (sessionId, updates) => {
+    const { activeCampaignId } = get();
+    if (!activeCampaignId) return;
+    set({ loading: true, error: null });
+    try {
+      const res = await campaignApi.reviseSessionPlan(activeCampaignId, sessionId, updates);
+      if (!res.ok) throw new Error(await readApiError(res, "Failed to revise session plan"));
       await get().reloadCampaignIfActive(activeCampaignId);
     } catch (err) {
       set({ error: errorMessage(err), loading: false });

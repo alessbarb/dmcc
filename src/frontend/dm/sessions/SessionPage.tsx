@@ -56,6 +56,7 @@ export function SessionPage() {
           nextNumber={sessions.length + 1}
           createPreparedSession={store.createPreparedSession}
           updateSessionPrep={store.updateSessionPrep}
+          reviseSessionPlan={store.reviseSessionPlan}
           cancelSession={store.cancelSession}
           archiveSession={store.archiveSession}
           activateSession={store.activateSession}

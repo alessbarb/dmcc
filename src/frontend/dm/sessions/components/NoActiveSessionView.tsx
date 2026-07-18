@@ -8,6 +8,7 @@ import type { MaybeCampaignState, SessionPrep } from "../sessionTypes.js";
 import { errorMessage, runSessionAction } from "../sessionFormSubmit.js";
 import { GuidedEmptyState } from "../../onboarding/CampaignStarterHub.js";
 import { SessionPrepEditor } from "./SessionPrepEditor.js";
+import { SessionPlanEditor } from "./SessionPlanEditor.js";
 
 export function NoActiveSessionView({
   campaignState,
@@ -17,6 +18,7 @@ export function NoActiveSessionView({
   nextNumber,
   createPreparedSession,
   updateSessionPrep,
+  reviseSessionPlan,
   cancelSession,
   archiveSession,
   activateSession,
@@ -30,6 +32,7 @@ export function NoActiveSessionView({
   nextNumber: number;
   createPreparedSession: CampaignStateStore["createPreparedSession"];
   updateSessionPrep: CampaignStateStore["updateSessionPrep"];
+  reviseSessionPlan: CampaignStateStore["reviseSessionPlan"];
   cancelSession: CampaignStateStore["cancelSession"];
   archiveSession: CampaignStateStore["archiveSession"];
   activateSession: CampaignStateStore["activateSession"];
@@ -39,6 +42,7 @@ export function NoActiveSessionView({
   const { t } = useTranslation();
   const [newTitle, setNewTitle] = useState("");
   const [editingPrepSessionId, setEditingPrepSessionId] = useState<string | null>(null);
+  const [editingPlanSessionId, setEditingPlanSessionId] = useState<string | null>(null);
   const [isPreparing, setIsPreparing] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
 
@@ -96,6 +100,26 @@ export function NoActiveSessionView({
       await updateSessionPrep(sessionId, { title, scheduledAt, prep });
       addToast(t("toasts.sessionPrepUpdated", { title }), "success");
       setEditingPrepSessionId(null);
+    } catch (error) {
+      addToast(t("toasts.sessionPrepUpdateError", { error: errorMessage(error) }), "error");
+    }
+  };
+
+  const handleSavePlan = async (
+    session: Session,
+    title: string,
+    plan: Omit<NonNullable<Session["plan"]>, "revision">,
+    scheduledAt?: string,
+  ) => {
+    try {
+      await reviseSessionPlan(session.sessionId, {
+        title,
+        scheduledAt,
+        expectedRevision: session.plan?.revision ?? 0,
+        plan,
+      });
+      addToast(t("toasts.sessionPrepUpdated", { title }), "success");
+      setEditingPlanSessionId(null);
     } catch (error) {
       addToast(t("toasts.sessionPrepUpdateError", { error: errorMessage(error) }), "error");
     }
@@ -187,9 +211,10 @@ export function NoActiveSessionView({
                     ...(prep.expectedConsequenceIds ?? []),
                   ]).size;
                   const isEditing = editingPrepSessionId === session.sessionId;
+                  const isEditingPlan = editingPlanSessionId === session.sessionId;
 
                   return (
-                    <article key={session.sessionId} className={`prepared-session-card ${isEditing ? "is-editing" : ""}`}>
+                    <article key={session.sessionId} className={`prepared-session-card ${isEditing || isEditingPlan ? "is-editing" : ""}`}>
                       <div className="prepared-session-card__summary">
                         <div className="prepared-session-card__title-row">
                           <h4>{session.number ? `#${session.number} ` : ""}{session.title}</h4>
@@ -210,6 +235,13 @@ export function NoActiveSessionView({
                           onClick={() => setEditingPrepSessionId(isEditing ? null : session.sessionId)}
                         >
                           <StickyNote size={14} /> {t("sessionPage.editPreparationButton")}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          onClick={() => setEditingPlanSessionId(isEditingPlan ? null : session.sessionId)}
+                        >
+                          <StickyNote size={14} /> {t("sessionPlanEditor.editPlanButton")}
                         </button>
                         <button
                           type="button"
@@ -244,6 +276,16 @@ export function NoActiveSessionView({
                             campaignState={campaignState}
                             onSave={(title, prep, scheduledAt) => handleSavePrep(session.sessionId, title, prep, scheduledAt)}
                             onCancel={() => setEditingPrepSessionId(null)}
+                          />
+                        </div>
+                      )}
+                      {isEditingPlan && (
+                        <div className="prepared-session-card__editor">
+                          <SessionPlanEditor
+                            session={session}
+                            campaignState={campaignState}
+                            onSave={(title, plan, scheduledAt) => handleSavePlan(session, title, plan, scheduledAt)}
+                            onCancel={() => setEditingPlanSessionId(null)}
                           />
                         </div>
                       )}

@@ -5,6 +5,7 @@ import type { Command } from "@core/application/commands.js";
 import type { Entity } from "@core/domain/entity/types.js";
 import type { Canvas } from "@core/domain/canvas/types.js";
 import type { Session } from "@core/domain/session/types.js";
+import { resolveSessionPlan } from "@core/domain/session/sessionPlanUpcast.js";
 import { desc, eq } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
@@ -187,7 +188,7 @@ function sessionDto(row: typeof schema.campaignSessions.$inferSelect, projected?
     startedAt: undefined,
     endedAt: row.playedDate ?? undefined,
     prep: row.notes ? { notes: row.notes } : undefined,
-    plan: projected?.plan,
+    plan: projected ? resolveSessionPlan(projected) : undefined,
     activatedPlanRevision: projected?.activatedPlanRevision,
   };
 }
@@ -485,16 +486,21 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
   server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/sessions", async (request) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
     const projection = await repo.getCampaignState(request.params.campaignId);
-    return { sessions: projectionMapValues<Session>(projection.sessions) };
+    const sessions = projectionMapValues<Session>(projection.sessions).map((session) => ({
+      ...session,
+      plan: resolveSessionPlan(session),
+    }));
+    return { sessions };
   });
   server.get<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId", async (request, reply) => {
     await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
     const projection = await repo.getCampaignState(request.params.campaignId);
-    const session = projectionMapValues<Session>(projection.sessions).find((s) => s.sessionId === request.params.sessionId);
-    if (!session) {
+    const found = projectionMapValues<Session>(projection.sessions).find((s) => s.sessionId === request.params.sessionId);
+    if (!found) {
       reply.code(404);
       return { error: "SESSION_NOT_FOUND" };
     }
+    const session = { ...found, plan: resolveSessionPlan(found) };
     return { session };
   });
   server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/planned", async (request, reply) => executeDmCommand(request, reply, { type: "CreatePreparedSession", ...(request.body ?? {}) }));
