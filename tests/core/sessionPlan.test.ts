@@ -152,7 +152,7 @@ describe("upcastSessionPlanId", () => {
       appearanceIndex: 0,
     });
     expect(a).toBe(b);
-    expect(a).toMatch(/^spi_[0-9a-f]{32}$/);
+    expect(a).toMatch(/^spi_[0-9a-f]{16}$/);
   });
 
   it("differs when the appearance index differs", () => {
