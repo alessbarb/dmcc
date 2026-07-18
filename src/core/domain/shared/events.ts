@@ -1,11 +1,13 @@
 import { z } from "zod";
-import { eventIdSchema, campaignIdSchema } from "@shared/schemas.js";
+import { eventIdSchema, campaignIdSchema, sessionIdSchema } from "@shared/schemas.js";
+import { narrativeChangeContextSchema } from "./narrativeChangeContext.js";
 import { campaignSchema, campaignSettingsSchema } from "../campaign/types.js";
 import { playerProfileSchema } from "../campaign/player.js";
 import { entitySchema, baseEntitySchema } from "../entity/types.js";
 import { relationSchema, baseRelationSchema } from "../relation/types.js";
 import { factSchema } from "../fact/types.js";
 import { sessionSchema, sessionEventSchema, sessionStatusSchema, sessionPrepSchema } from "../session/types.js";
+import { sessionPlanSchema } from "../session/sessionPlan.js";
 import { visibilityRuleSchema } from "@shared/schemas.js";
 import { revelationAnchorSchema } from "../entity/revelationAnchors.js";
 
@@ -119,6 +121,7 @@ export const domainEventTypeSchema = z.enum([
   "SessionCreated",
   "SessionStarted",
   "SessionPrepUpdated",
+  "SessionPlanRevised",
   "SessionClosed",
   "SessionCancelled",
   "SessionArchived",
@@ -195,6 +198,7 @@ export const storedEventSchema = z.object({
   occurredAt: z.string(),
   actorId: z.string(),
   payload: z.unknown(),
+  context: narrativeChangeContextSchema.optional(),
   previousHash: z.string().optional(),
   hash: z.string().optional(),
   schemaVersion: z.number().int().default(1),
@@ -339,6 +343,14 @@ export const eventPayloadSchemas = {
   }),
   SessionCreated: sessionSchema,
   SessionPrepUpdated: sessionSchema,
+  SessionPlanRevised: z.object({
+    sessionId: sessionIdSchema,
+    title: z.string().min(1),
+    scheduledAt: z.string().optional(),
+    previousRevision: z.number().int().min(0),
+    revision: z.number().int().min(0),
+    plan: sessionPlanSchema,
+  }),
   SessionStarted: z.object({
     id: z.string(),
     startedAt: z.string(),
@@ -347,6 +359,8 @@ export const eventPayloadSchemas = {
     title: z.string().min(1).optional(),
     status: sessionStatusSchema.optional(),
     prep: sessionPrepSchema.optional(),
+    plan: sessionPlanSchema.optional(),
+    activatedPlanRevision: z.number().int().min(0).optional(),
   }),
   SessionClosed: z.object({
     id: z.string(),

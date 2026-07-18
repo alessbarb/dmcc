@@ -4,6 +4,7 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import type { Command } from "@core/application/commands.js";
 import type { Entity } from "@core/domain/entity/types.js";
 import type { Canvas } from "@core/domain/canvas/types.js";
+import type { Session } from "@core/domain/session/types.js";
 import { desc, eq } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
@@ -173,7 +174,8 @@ function relationDto(row: typeof schema.campaignRelations.$inferSelect) {
   };
 }
 
-function sessionDto(row: typeof schema.campaignSessions.$inferSelect) {
+// campaign_sessions has no plan column; plan only lives on the in-memory projection, merged in here.
+function sessionDto(row: typeof schema.campaignSessions.$inferSelect, projected?: Session) {
   return {
     campaignId: row.campaignId,
     sessionId: row.sessionId,
@@ -185,6 +187,8 @@ function sessionDto(row: typeof schema.campaignSessions.$inferSelect) {
     startedAt: undefined,
     endedAt: row.playedDate ?? undefined,
     prep: row.notes ? { notes: row.notes } : undefined,
+    plan: projected?.plan,
+    activatedPlanRevision: projected?.activatedPlanRevision,
   };
 }
 
@@ -265,12 +269,15 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
     const tags = projectionMapValues(projection.tags);
     const attachments = projectionMapValues(projection.attachments);
     const sessionEvents = projectionMapValues(projection.sessionEvents);
+    const projectedSessions = new Map(
+      projectionMapValues<Session>(projection.sessions).map((session) => [session.sessionId, session]),
+    );
     return {
       campaign: campaign ? campaignSummary(campaign) : null,
       entities: mergedEntities,
       facts: facts.map(factDto),
       relations: relations.map(relationDto),
-      sessions: sessions.map(sessionDto),
+      sessions: sessions.map((row) => sessionDto(row, projectedSessions.get(row.sessionId))),
       players: players.map((player) => ({
         campaignId: player.campaignId,
         playerId: player.profileId,
@@ -474,4 +481,30 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
     });
   });
   server.put<{ Params: { campaignId: string; factId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/facts/:factId", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateFact", factId: request.params.factId, ...(request.body ?? {}) }));
+
+  server.get<{ Params: { campaignId: string } }>("/api/campaigns/:campaignId/sessions", async (request) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    const projection = await repo.getCampaignState(request.params.campaignId);
+    return { sessions: projectionMapValues<Session>(projection.sessions) };
+  });
+  server.get<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId", async (request, reply) => {
+    await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
+    const projection = await repo.getCampaignState(request.params.campaignId);
+    const session = projectionMapValues<Session>(projection.sessions).find((s) => s.sessionId === request.params.sessionId);
+    if (!session) {
+      reply.code(404);
+      return { error: "SESSION_NOT_FOUND" };
+    }
+    return { session };
+  });
+  server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/planned", async (request, reply) => executeDmCommand(request, reply, { type: "CreatePreparedSession", ...(request.body ?? {}) }));
+  server.patch<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/prep", async (request, reply) => executeDmCommand(request, reply, { type: "UpdateSessionPrep", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.put<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/plan", async (request, reply) => executeDmCommand(request, reply, { type: "ReviseSessionPlan", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/activate", async (request, reply) => executeDmCommand(request, reply, { type: "ActivatePlannedSession", sessionId: request.params.sessionId }));
+  server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/ad-hoc", async (request, reply) => executeDmCommand(request, reply, { type: "StartSession", ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/reveal-clue", async (request, reply) => executeDmCommand(request, reply, { type: "RevealClue", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/events", async (request, reply) => executeDmCommand(request, reply, { type: "RecordSessionEvent", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/close", async (request, reply) => executeDmCommand(request, reply, { type: "CloseSession", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/cancel", async (request, reply) => executeDmCommand(request, reply, { type: "CancelPreparedSession", sessionId: request.params.sessionId }));
+  server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/archive", async (request, reply) => executeDmCommand(request, reply, { type: "ArchiveSession", sessionId: request.params.sessionId }));
 }

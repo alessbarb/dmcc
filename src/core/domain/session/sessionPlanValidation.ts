@@ -14,11 +14,15 @@ const ROLE_COMPATIBLE_ENTITY_TYPES: Record<SessionPlanContentRole, readonly stri
   involved_entity: [],
 };
 
+function sessionPlanValidationError(message: string): Error {
+  return Object.assign(new Error(`SESSION_PLAN_INVALID: ${message}`), { statusCode: 422 });
+}
+
 function assertUniqueIds(ids: string[], label: string): void {
   const seen = new Set<string>();
   for (const id of ids) {
     if (seen.has(id)) {
-      throw new Error(`Duplicate ${label} id: ${id}`);
+      throw sessionPlanValidationError(`Duplicate ${label} id: ${id}`);
     }
     seen.add(id);
   }
@@ -45,7 +49,7 @@ function detectCycle(
     for (const next of adjacency.get(node) ?? []) {
       const state = color.get(next);
       if (state === GRAY) {
-        throw new Error(`Causal cycle detected in session plan transitions involving ${node}`);
+        throw sessionPlanValidationError(`Causal cycle detected in session plan transitions involving ${node}`);
       }
       if (state === WHITE) visit(next);
     }
@@ -93,17 +97,17 @@ export function validateSessionPlan(
 
   for (const transition of plan.transitions) {
     if (transition.sourceItemId === transition.targetItemId) {
-      throw new Error(
+      throw sessionPlanValidationError(
         `Reflexive transition not allowed: ${transition.id} points to itself`,
       );
     }
     if (!flowItemIdSet.has(transition.sourceItemId)) {
-      throw new Error(
+      throw sessionPlanValidationError(
         `Dangling transition ${transition.id}: source item ${transition.sourceItemId} does not exist`,
       );
     }
     if (!flowItemIdSet.has(transition.targetItemId)) {
-      throw new Error(
+      throw sessionPlanValidationError(
         `Dangling transition ${transition.id}: target item ${transition.targetItemId} does not exist`,
       );
     }
@@ -113,7 +117,7 @@ export function validateSessionPlan(
 
   for (const link of plan.contentLinks) {
     if (link.anchorFlowItemId !== undefined && !flowItemIdSet.has(link.anchorFlowItemId)) {
-      throw new Error(
+      throw sessionPlanValidationError(
         `Content link ${link.id} anchors to nonexistent flow item ${link.anchorFlowItemId}`,
       );
     }
@@ -121,7 +125,7 @@ export function validateSessionPlan(
     if (compatibleTypes.length > 0 && context.entityTypesById) {
       const entityType = context.entityTypesById[link.entityId];
       if (entityType !== undefined && !compatibleTypes.includes(entityType)) {
-        throw new Error(
+        throw sessionPlanValidationError(
           `Content link ${link.id} has role ${link.role} incompatible with entity type ${entityType}`,
         );
       }
@@ -131,20 +135,20 @@ export function validateSessionPlan(
   const storyStepBindingSeen = new Set<string>();
   for (const binding of plan.bindings) {
     if (binding.anchorFlowItemId !== undefined && !flowItemIdSet.has(binding.anchorFlowItemId)) {
-      throw new Error(
+      throw sessionPlanValidationError(
         `Binding ${binding.id} anchors to nonexistent flow item ${binding.anchorFlowItemId}`,
       );
     }
     if (binding.kind === "story_step") {
       if (storyStepBindingSeen.has(binding.storyStepId)) {
-        throw new Error(
+        throw sessionPlanValidationError(
           `Story step ${binding.storyStepId} is bound more than once in the same session plan`,
         );
       }
       storyStepBindingSeen.add(binding.storyStepId);
     }
     if (binding.kind === "objective" && !goalIdSet.has(binding.goalId)) {
-      throw new Error(
+      throw sessionPlanValidationError(
         `Objective binding ${binding.id} references nonexistent goal ${binding.goalId}`,
       );
     }

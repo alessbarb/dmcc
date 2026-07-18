@@ -257,6 +257,71 @@ export interface Fact {
   createdAt?: string;
 }
 
+export interface SessionPlanGoal {
+  id: string;
+  text: string;
+  completed: boolean;
+  order: number;
+}
+
+export interface SessionPlanChecklistItem {
+  id: string;
+  text: string;
+  checked: boolean;
+  priority: "low" | "medium" | "high";
+  order: number;
+}
+
+export type SessionFlowItem =
+  | { id: string; kind: "scene"; sceneEntityId: string; order: number; titleOverride?: string; notes?: string }
+  | { id: string; kind: "decision_point"; title: string; prompt?: string; order: number; notes?: string };
+
+export type SessionPlanContentRole =
+  | "available_clue"
+  | "secret_at_risk"
+  | "expected_consequence"
+  | "involved_entity"
+  | "front_in_play"
+  | "clock_in_play";
+
+export interface SessionPlanContentLink {
+  id: string;
+  entityId: string;
+  role: SessionPlanContentRole;
+  anchorFlowItemId?: string;
+  order: number;
+  notes?: string;
+}
+
+export interface SessionPlanTransition {
+  id: string;
+  sourceItemId: string;
+  targetItemId: string;
+  kind: "next" | "alternative" | "conditional";
+  label?: string;
+  condition?: string;
+  order: number;
+}
+
+export type SessionPlanBinding =
+  | { id: string; kind: "story_step"; storyStepId: string; anchorFlowItemId?: string; order: number }
+  | { id: string; kind: "objective"; objectiveId: string; goalId: string; anchorFlowItemId?: string; order: number };
+
+export interface SessionPlan {
+  version: 2;
+  revision: number;
+  state: "draft" | "ready";
+  summary?: string;
+  openingPrompt?: string;
+  goals: SessionPlanGoal[];
+  checklist: SessionPlanChecklistItem[];
+  flowItems: SessionFlowItem[];
+  contentLinks: SessionPlanContentLink[];
+  transitions: SessionPlanTransition[];
+  bindings: SessionPlanBinding[];
+  privateNotes?: string;
+}
+
 export interface Session {
   sessionId: string;
   campaignId: string;
@@ -280,6 +345,8 @@ export interface Session {
     checklist?: Array<{ id: string; label: string; done?: boolean; priority?: "low" | "medium" | "high" }>;
     notes?: string;
   };
+  plan?: SessionPlan;
+  activatedPlanRevision?: number;
 }
 
 export interface PlayerProfile {
