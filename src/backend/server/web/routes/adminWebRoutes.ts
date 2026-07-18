@@ -71,13 +71,15 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 2. GET /api/admin/campaigns
-  server.get("/api/admin/campaigns", async (request) => {
-    const queryParams = request.query as {
+  server.get<{
+    Querystring: {
       status?: "active" | "trashed" | "importing";
       query?: string;
       limit?: string;
       cursor?: string;
     };
+  }>("/api/admin/campaigns", async (request) => {
+    const queryParams = request.query;
 
     const limit = Math.min(Number(queryParams.limit ?? "50"), 100);
     const cursor = queryParams.cursor;
@@ -130,8 +132,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 3. GET /api/admin/campaigns/:campaignId
-  server.get("/api/admin/campaigns/:campaignId", async (request) => {
-    const campaignId = (request.params as { campaignId: string }).campaignId;
+  server.get<{ Params: { campaignId: string } }>("/api/admin/campaigns/:campaignId", async (request) => {
+    const campaignId = request.params.campaignId;
 
     const [campaign] = await db
       .select({
@@ -184,8 +186,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 4. POST /api/admin/campaigns/:campaignId/restore
-  server.post("/api/admin/campaigns/:campaignId/restore", async (request) => {
-    const campaignId = (request.params as { campaignId: string }).campaignId;
+  server.post<{ Params: { campaignId: string } }>("/api/admin/campaigns/:campaignId/restore", async (request) => {
+    const campaignId = request.params.campaignId;
     const user = request.webUser!;
 
     await restoreCampaign({ campaignId, actorUserId: user.userId });
@@ -193,8 +195,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 5. POST /api/admin/campaigns/:campaignId/purge
-  server.post<{ Body?: { currentPassword?: string } }>("/api/admin/campaigns/:campaignId/purge", async (request, reply) => {
-    const campaignId = (request.params as { campaignId: string }).campaignId;
+  server.post<{ Params: { campaignId: string }; Body?: { currentPassword?: string } }>("/api/admin/campaigns/:campaignId/purge", async (request, reply) => {
+    const campaignId = request.params.campaignId;
     const user = request.webUser!;
     await requireConfirmedPassword(user.userId, request.body?.currentPassword);
 
@@ -223,8 +225,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 6. POST /api/admin/campaigns/:campaignId/purge-incomplete-import
-  server.post("/api/admin/campaigns/:campaignId/purge-incomplete-import", async (request, reply) => {
-    const campaignId = (request.params as { campaignId: string }).campaignId;
+  server.post<{ Params: { campaignId: string } }>("/api/admin/campaigns/:campaignId/purge-incomplete-import", async (request, reply) => {
+    const campaignId = request.params.campaignId;
     const user = request.webUser!;
 
     const [campaign] = await db
@@ -280,12 +282,14 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 7. GET /api/admin/purge-jobs
-  server.get("/api/admin/purge-jobs", async (request) => {
-    const queryParams = request.query as {
+  server.get<{
+    Querystring: {
       status?: string;
       cursor?: string;
       limit?: string;
     };
+  }>("/api/admin/purge-jobs", async (request) => {
+    const queryParams = request.query;
 
     const limit = Math.min(Number(queryParams.limit ?? "50"), 100);
     const cursor = queryParams.cursor;
@@ -317,8 +321,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 8. GET /api/admin/purge-jobs/:jobId
-  server.get("/api/admin/purge-jobs/:jobId", async (request) => {
-    const jobId = (request.params as { jobId: string }).jobId;
+  server.get<{ Params: { jobId: string } }>("/api/admin/purge-jobs/:jobId", async (request) => {
+    const jobId = request.params.jobId;
 
     const [job] = await db
       .select()
@@ -334,8 +338,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 9. POST /api/admin/purge-jobs/:jobId/retry
-  server.post("/api/admin/purge-jobs/:jobId/retry", async (request, reply) => {
-    const jobId = (request.params as { jobId: string }).jobId;
+  server.post<{ Params: { jobId: string } }>("/api/admin/purge-jobs/:jobId/retry", async (request, reply) => {
+    const jobId = request.params.jobId;
     const user = request.webUser!;
 
     await db.transaction(async (tx) => {
@@ -380,13 +384,15 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 10. GET /api/admin/users
-  server.get("/api/admin/users", async (request) => {
-    const queryParams = request.query as {
+  server.get<{
+    Querystring: {
       query?: string;
       status?: "active" | "disabled";
       cursor?: string;
       limit?: string;
     };
+  }>("/api/admin/users", async (request) => {
+    const queryParams = request.query;
 
     const limit = Math.min(Number(queryParams.limit ?? "50"), 100);
     const cursor = queryParams.cursor;
@@ -439,8 +445,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 11. GET /api/admin/users/:userId
-  server.get("/api/admin/users/:userId", async (request) => {
-    const userId = (request.params as { userId: string }).userId;
+  server.get<{ Params: { userId: string } }>("/api/admin/users/:userId", async (request) => {
+    const userId = request.params.userId;
 
     const [user] = await db
       .select({
@@ -466,8 +472,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 12. POST /api/admin/users/:userId/disable
-  server.post<{ Body?: { currentPassword?: string } }>("/api/admin/users/:userId/disable", async (request) => {
-    const targetUserId = (request.params as { userId: string }).userId;
+  server.post<{ Params: { userId: string }; Body?: { currentPassword?: string } }>("/api/admin/users/:userId/disable", async (request) => {
+    const targetUserId = request.params.userId;
     const actorUserId = request.webUser!.userId;
     await requireConfirmedPassword(actorUserId, request.body?.currentPassword);
 
@@ -476,8 +482,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 13. POST /api/admin/users/:userId/enable
-  server.post("/api/admin/users/:userId/enable", async (request) => {
-    const targetUserId = (request.params as { userId: string }).userId;
+  server.post<{ Params: { userId: string } }>("/api/admin/users/:userId/enable", async (request) => {
+    const targetUserId = request.params.userId;
     const actorUserId = request.webUser!.userId;
 
     await enableUser({ targetUserId, actorUserId });
@@ -485,8 +491,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 14. POST /api/admin/users/:userId/revoke-sessions
-  server.post<{ Body?: { currentPassword?: string } }>("/api/admin/users/:userId/revoke-sessions", async (request) => {
-    const targetUserId = (request.params as { userId: string }).userId;
+  server.post<{ Params: { userId: string }; Body?: { currentPassword?: string } }>("/api/admin/users/:userId/revoke-sessions", async (request) => {
+    const targetUserId = request.params.userId;
     const actorUserId = request.webUser!.userId;
     await requireConfirmedPassword(actorUserId, request.body?.currentPassword);
 
@@ -495,8 +501,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 15. POST /api/admin/users/:userId/grant-platform-admin
-  server.post<{ Body?: { currentPassword?: string } }>("/api/admin/users/:userId/grant-platform-admin", async (request) => {
-    const targetUserId = (request.params as { userId: string }).userId;
+  server.post<{ Params: { userId: string }; Body?: { currentPassword?: string } }>("/api/admin/users/:userId/grant-platform-admin", async (request) => {
+    const targetUserId = request.params.userId;
     const actorUserId = request.webUser!.userId;
     await requireConfirmedPassword(actorUserId, request.body?.currentPassword);
 
@@ -505,8 +511,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 16. POST /api/admin/users/:userId/revoke-platform-admin
-  server.post<{ Body?: { currentPassword?: string } }>("/api/admin/users/:userId/revoke-platform-admin", async (request) => {
-    const targetUserId = (request.params as { userId: string }).userId;
+  server.post<{ Params: { userId: string }; Body?: { currentPassword?: string } }>("/api/admin/users/:userId/revoke-platform-admin", async (request) => {
+    const targetUserId = request.params.userId;
     const actorUserId = request.webUser!.userId;
     await requireConfirmedPassword(actorUserId, request.body?.currentPassword);
 
@@ -515,12 +521,14 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 17. GET /api/admin/invitations
-  server.get("/api/admin/invitations", async (request) => {
-    const queryParams = request.query as {
+  server.get<{
+    Querystring: {
       activeOnly?: string;
       cursor?: string;
       limit?: string;
     };
+  }>("/api/admin/invitations", async (request) => {
+    const queryParams = request.query;
 
     const limit = Math.min(Number(queryParams.limit ?? "50"), 100);
     const cursor = queryParams.cursor;
@@ -569,8 +577,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 18. POST /api/admin/invitations/:invitationId/revoke
-  server.post("/api/admin/invitations/:invitationId/revoke", async (request) => {
-    const invitationId = (request.params as { invitationId: string }).invitationId;
+  server.post<{ Params: { invitationId: string } }>("/api/admin/invitations/:invitationId/revoke", async (request) => {
+    const invitationId = request.params.invitationId;
     const actorUserId = request.webUser!.userId;
 
     await revokeInvitation({ invitationId, actorUserId });
@@ -578,13 +586,15 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   });
 
   // 19. GET /api/admin/audit-log
-  server.get("/api/admin/audit-log", async (request) => {
-    const queryParams = request.query as {
+  server.get<{
+    Querystring: {
       action?: string;
       actorUserId?: string;
       cursor?: string;
       limit?: string;
     };
+  }>("/api/admin/audit-log", async (request) => {
+    const queryParams = request.query;
 
     const limit = Math.min(Number(queryParams.limit ?? "50"), 100);
     const cursor = queryParams.cursor;
@@ -804,8 +814,8 @@ export async function registerAdminWebRoutes(server: FastifyInstance): Promise<v
   // ── Catalog Settings: Campaign Templates ──────────────────────────────────
 
   // GET /api/admin/campaign-templates — list templates merged with DB settings
-  server.get("/api/admin/campaign-templates", async (request) => {
-    const locale = (request.query as Record<string, string>).locale;
+  server.get<{ Querystring: { locale?: string } }>("/api/admin/campaign-templates", async (request) => {
+    const locale = request.query.locale;
 
     // Load disk templates
     const diskTemplates = listCampaignTemplates(locale ?? null);
