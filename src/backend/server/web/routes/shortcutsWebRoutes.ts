@@ -17,6 +17,13 @@ function isShortcutTargetType(value: unknown): value is ShortcutTargetType {
   return typeof value === "string" && (SHORTCUT_TARGET_TYPES as readonly string[]).includes(value);
 }
 
+function toShortcutTargetType(value: string): ShortcutTargetType {
+  if (!isShortcutTargetType(value)) {
+    throw new HttpError(`Invalid shortcut target type: ${value}`, 500);
+  }
+  return value;
+}
+
 export async function registerShortcutsWebRoutes(server: FastifyInstance): Promise<void> {
   server.get<{ Params: { campaignId: string } }>(
     "/api/campaigns/:campaignId/shortcuts",
@@ -34,7 +41,7 @@ export async function registerShortcutsWebRoutes(server: FastifyInstance): Promi
         .orderBy(asc(schema.campaignShortcuts.sortOrder));
 
       const refs: CampaignResourceRef[] = rows.map((row) => ({
-        type: row.targetType as ShortcutTargetType,
+        type: toShortcutTargetType(row.targetType),
         resourceId: row.targetId,
       }));
       const resolved = await resolveManyCampaignResources(campaignId, refs);
@@ -45,7 +52,7 @@ export async function registerShortcutsWebRoutes(server: FastifyInstance): Promi
           targetType: row.targetType,
           targetId: row.targetId,
           sortOrder: row.sortOrder,
-          resource: resolved.get(campaignResourceRefKey({ type: row.targetType as ShortcutTargetType, resourceId: row.targetId })) ?? null,
+          resource: resolved.get(campaignResourceRefKey({ type: toShortcutTargetType(row.targetType), resourceId: row.targetId })) ?? null,
         })),
       };
     },

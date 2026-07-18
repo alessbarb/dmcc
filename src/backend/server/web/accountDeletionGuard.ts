@@ -5,12 +5,16 @@ function isAccountDeletion(request: FastifyRequest): boolean {
   return request.method === "DELETE" && pathname === "/api/account";
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 export function registerAccountDeletionGuard(server: FastifyInstance): void {
   server.addHook("preValidation", async (request, reply) => {
     if (!isAccountDeletion(request)) return;
 
     const email = request.webUser?.email;
-    const confirmation = (request.body as { confirmation?: unknown } | undefined)?.confirmation;
+    const confirmation = isRecord(request.body) ? request.body.confirmation : undefined;
 
     if (!email) return;
     if (typeof confirmation === "string" && confirmation.trim().toLowerCase() === email.toLowerCase()) {

@@ -13,13 +13,16 @@ type RuleEntry = {
 const RULES_DATA_URL = new URL("../../../../core/domain/rules/data/srd_rules.json", import.meta.url);
 let cachedRules: RuleEntry[] | null = null;
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 function isRuleEntry(value: unknown): value is RuleEntry {
-  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
-  const entry = value as Record<string, unknown>;
-  return typeof entry.id === "string"
-    && typeof entry.title === "string"
-    && typeof entry.category === "string"
-    && typeof entry.content === "string";
+  if (!isRecord(value)) return false;
+  return typeof value.id === "string"
+    && typeof value.title === "string"
+    && typeof value.category === "string"
+    && typeof value.content === "string";
 }
 
 async function loadRules(): Promise<RuleEntry[]> {

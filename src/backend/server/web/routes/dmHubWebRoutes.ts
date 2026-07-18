@@ -5,10 +5,12 @@ import * as schema from "../../../db/schema.js";
 import { getRequiredWebUser } from "../webSession.js";
 import { isDmRole, listAccessibleCampaigns } from "../webAccess.js";
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 function campaignMetadata(value: unknown): Record<string, unknown> {
-  return value && typeof value === "object" && !Array.isArray(value)
-    ? value as Record<string, unknown>
-    : {};
+  return isRecord(value) ? value : {};
 }
 
 export async function registerDmHubWebRoutes(server: FastifyInstance): Promise<void> {

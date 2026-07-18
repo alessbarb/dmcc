@@ -1,4 +1,4 @@
-import type { ShortcutTargetType } from "@core/domain/resource/resourceType.js";
+import type { CampaignResourceType, ShortcutTargetType } from "@core/domain/resource/resourceType.js";
 import type { CampaignResourceRef } from "@core/domain/resource/resourceRef.js";
 
 export interface CampaignResourceLocation {
@@ -11,7 +11,7 @@ interface ResourceNavigationDefinition {
   location: (campaignId: string, resourceId: string) => CampaignResourceLocation;
 }
 
-const RESOURCE_NAVIGATION: Record<ShortcutTargetType, ResourceNavigationDefinition> = {
+const RESOURCE_NAVIGATION: Partial<Record<CampaignResourceType, ResourceNavigationDefinition>> = {
   entity: {
     type: "entity",
     location: (campaignId, resourceId) => ({
@@ -65,7 +65,7 @@ export function campaignResourceLocation(
   campaignId: string,
   ref: CampaignResourceRef,
 ): CampaignResourceLocation | undefined {
-  const definition = RESOURCE_NAVIGATION[ref.type as ShortcutTargetType];
+  const definition = RESOURCE_NAVIGATION[ref.type];
   if (!definition) return undefined;
   return definition.location(campaignId, ref.resourceId);
 }

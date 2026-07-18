@@ -25,7 +25,6 @@ import {
   publicWebUser,
   revokeCurrentWebSession,
   setWebSessionCookie,
-  type WebUser,
 } from "../webSession.js";
 
 const MIN_PASSWORD_LENGTH = 12;
@@ -244,7 +243,7 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
   });
 
   server.get("/api/auth/session", async (request, reply) => {
-    const user = (request as { webUser?: WebUser }).webUser;
+    const user = request.webUser;
     if (!user) {
       reply.code(401);
       return { error: "Authentication required" };
@@ -253,7 +252,7 @@ export function registerAuthWebRoutes(server: FastifyInstance): void {
   });
 
   server.get("/api/me", async (request, reply) => {
-    const user = (request as { webUser?: WebUser }).webUser;
+    const user = request.webUser;
     if (!user) {
       reply.code(401);
       return { error: "Authentication required" };

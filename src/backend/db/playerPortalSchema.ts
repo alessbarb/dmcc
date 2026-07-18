@@ -4,7 +4,7 @@ import { campaigns, playerProfiles } from "./schema.js";
 export const playerPortalStates = pgTable("player_portal_states", {
   campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   playerId: text("player_id").notNull(),
-  status: jsonb("status").$type<any>().notNull().default({}),
+  status: jsonb("status").$type<Record<string, unknown>>().notNull().default({}),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => ({
   pk: primaryKey({ columns: [table.campaignId, table.playerId] }),
@@ -19,7 +19,7 @@ export const playerPortalResources = pgTable("player_portal_resources", {
   campaignId: text("campaign_id").notNull().references(() => campaigns.campaignId, { onDelete: "cascade" }),
   resourceId: text("resource_id").notNull(),
   playerId: text("player_id").notNull(),
-  data: jsonb("data").$type<any>().notNull().default({}),
+  data: jsonb("data").$type<Record<string, unknown>>().notNull().default({}),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => ({

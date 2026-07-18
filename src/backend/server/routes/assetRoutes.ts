@@ -167,7 +167,10 @@ export async function registerAssetRoutes(
       return { groups: scanAllCatalogs(assetsRoot) };
     }
 
-    const catalogType = type as "avatars" | "campaigns";
+    if (type !== "avatars" && type !== "campaigns") {
+      return reply.status(400).send({ error: "type must be 'all', 'avatars', 'campaigns', or 'entities'" });
+    }
+    const catalogType = type;
     return {
       groups: scanImageCatalog(
         join(assetsRoot, catalogType),

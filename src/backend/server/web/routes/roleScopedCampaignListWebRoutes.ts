@@ -27,6 +27,9 @@ export async function registerRoleScopedCampaignListWebRoutes(server: FastifyIns
     const path = requestPath(request.url);
 
     if (path === "/api/campaigns" && Array.isArray(payload)) {
+      // Response-serialization boundary: this hook runs after the route handler has already
+      // produced a CampaignSummary[]-shaped payload; re-validating it here would be redundant.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       return scopeDmCampaigns(payload as CampaignSummary[]);
     }
 

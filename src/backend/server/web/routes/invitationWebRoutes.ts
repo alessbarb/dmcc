@@ -187,7 +187,7 @@ export async function registerInvitationWebRoutes(server: FastifyInstance): Prom
   });
 
   server.post<{ Params: { token: string } }>("/api/invitations/:token/accept", async (request, reply) => {
-    const user = (request as { webUser?: WebUser }).webUser;
+    const user = request.webUser;
     if (!user) {
       reply.code(401);
       return { error: "AUTH_REQUIRED" };

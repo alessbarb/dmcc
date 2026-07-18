@@ -20,6 +20,8 @@ async function executeNotebookCommand(
   let commandId: string;
   try {
     commandId = requireIdempotencyKey(request);
+    // HTTP boundary: handleCommand validates the concrete shape before producing any event.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     const projection = await repository.executeCommand(campaignId, {
       ...command,
       campaignId,

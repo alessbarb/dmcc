@@ -62,6 +62,7 @@ async function executeCanvasCommand(
     commandId = requireIdempotencyKey(request);
     // HTTP boundary: command is assembled from DM-supplied fields; handleCommand validates
     // the concrete shape for `type` before producing any event.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     const projection = await repo.executeCommand(campaignId, {
       ...command,
       campaignId,
