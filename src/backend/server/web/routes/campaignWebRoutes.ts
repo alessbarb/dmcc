@@ -219,6 +219,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
       await db.transaction(async (tx) => {
         await tx.insert(schema.campaigns).values({ campaignId, title, summary: request.body?.summary ?? null, workspaceId, ownerId: user.userId, status: "active", metadata });
         await tx.insert(schema.campaignMemberships).values({ campaignId, userId: user.userId, role: "dm", playerId: null }).onConflictDoNothing();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- HTTP boundary; handleCommand validates the concrete shape before producing any event.
         await repo.executeCommand(campaignId, {
           type: "CreateCampaign",
           campaignId,
@@ -304,8 +305,10 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
     }
     // HTTP boundary: raw request body, not yet validated against the Command union.
     // The command bus (handleCommand) validates shape/type before any event is produced.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     const command = request.body.command ?? (request.body as DmCommandInput);
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- HTTP boundary; handleCommand validates the concrete shape before producing any event.
       const projection = await repo.executeCommand(request.params.campaignId, { ...command, campaignId: request.params.campaignId, actorId: user.userId } as Command, { commandId, actorUserId: user.userId });
       campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
       return { ok: true, sequence: projection.lastSequence, projection };
@@ -323,6 +326,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
       commandId = requireIdempotencyKey(request);
       // HTTP boundary: command is assembled from DM-supplied fields; handleCommand validates
       // the concrete shape for `type` before producing any event.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- HTTP boundary; handleCommand validates the concrete shape before producing any event.
       const projection = await repo.executeCommand(request.params.campaignId, { ...command, campaignId: request.params.campaignId, actorId: user.userId } as Command, { commandId, actorUserId: user.userId });
       campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
       return { ok: true, sequence: projection.lastSequence, projection };

@@ -9,12 +9,24 @@ import { requireCampaignRole } from "../webAccess.js";
 import { HttpError } from "../../errors.js";
 import { recordOperationalActivity } from "../../activity/recordOperationalActivity.js";
 
-function valuesOf<T>(value: unknown): T[] {
+function valuesOf(value: unknown): unknown[] {
   if (!value) return [];
-  if (Array.isArray(value)) return value as T[];
-  if (value instanceof Map) return Array.from(value.values()) as T[];
-  if (typeof value === "object") return Object.values(value as Record<string, T>);
+  if (Array.isArray(value)) return value;
+  if (value instanceof Map) return Array.from(value.values());
+  if (typeof value === "object") return Object.values(value);
   return [];
+}
+
+interface StoredEntityLike {
+  entityId?: unknown;
+  entityType?: unknown;
+  type?: unknown;
+  archived?: unknown;
+  status?: unknown;
+}
+
+function isStoredEntityLike(value: unknown): value is StoredEntityLike {
+  return typeof value === "object" && value !== null;
 }
 
 async function validateLinkRequest(campaignId: string, playerId: string, characterEntityId: string) {
@@ -33,11 +45,12 @@ async function validateLinkRequest(campaignId: string, playerId: string, charact
 
   const repository = new PostgresCampaignRepository();
   const state = await repository.getCampaignState(campaignId);
-  const character = valuesOf<any>(state?.entities).find((entity) =>
-    entity?.entityId === characterEntityId &&
-    (entity?.entityType === "player_character" || entity?.type === "player_character") &&
-    entity?.archived !== true &&
-    entity?.status !== "archived"
+  const character = valuesOf(state?.entities).find((entity): entity is StoredEntityLike =>
+    isStoredEntityLike(entity) &&
+    entity.entityId === characterEntityId &&
+    (entity.entityType === "player_character" || entity.type === "player_character") &&
+    entity.archived !== true &&
+    entity.status !== "archived"
   );
   if (!character) {
     throw new HttpError("Player character not found", 404);

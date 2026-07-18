@@ -77,6 +77,10 @@ function snapshotToProjection(row: typeof schema.campaignSnapshots.$inferSelect 
   const projection = (isRecord(rawRecord?.projection) ? rawRecord.projection : rawRecord) ?? undefined;
   if (!projection) return null;
 
+  // The persisted snapshot JSON has no static schema (it's rehydrated from a
+  // jsonb column); trusting its shape here matches how snapshots are written
+  // by serializeProjection below.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   return {
     campaign: projection.campaign ?? rawRecord?.campaign ?? null,
     players: mapFromSerialized(projection.players),
@@ -1139,7 +1143,7 @@ export class PostgresCampaignRepository {
     return db.transaction((tx) => loadEventsTx(tx, campaignId));
   }
 
-  async executeCommand(campaignId: string, command: Command, options?: { commandId?: string; actorUserId?: string; tx?: any }): Promise<CampaignProjection> {
+  async executeCommand(campaignId: string, command: Command, options?: { commandId?: string; actorUserId?: string; tx?: DbTransaction }): Promise<CampaignProjection> {
     const commandId = options?.commandId;
     if (!commandId) {
       throw new HttpError("Missing Idempotency-Key header", 400);
@@ -1149,10 +1153,11 @@ export class PostgresCampaignRepository {
     // uses sourceCampaignId/newCampaignId instead), so spreading it in is structurally wider
     // than any single variant; the assertion re-narrows back to the union. Downstream
     // handlers only read the fields their own variant declares, so this is behavior-preserving.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     const normalizedCommand = { ...command, campaignId } as Command;
     const commandHash = createHash("sha256").update(canonicalCommandPayload(normalizedCommand)).digest("hex") || calculateCommandHash(normalizedCommand);
 
-    const executeWithTx = async (tx: any) => {
+    const executeWithTx = async (tx: DbTransaction) => {
       await acquireCampaignAdvisoryLock(tx, campaignId);
 
       const [existing] = await tx
