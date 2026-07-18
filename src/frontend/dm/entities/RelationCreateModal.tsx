@@ -201,7 +201,7 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
                       targetEntityId,
                       relationType: finalRelationType,
                       force: true
-                    } as any);
+                    });
                     onClose();
                     resetForm();
                   })(), "No se pudo crear la relación duplicada.");

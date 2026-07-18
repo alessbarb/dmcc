@@ -25,7 +25,7 @@ export const NetworkEntityNode = React.memo(function NetworkEntityNode({ data, s
   return (
     <div
       className={`network-entity-node ${selected ? "is-selected" : ""} ${data.dimmed ? "is-dimmed" : ""}`}
-      style={{ "--network-node-accent": config.accent } as React.CSSProperties}
+      style={{ "--network-node-accent": config.accent } as React.CSSProperties & Record<`--${string}`, string>}
     >
       <Handle type="target" position={Position.Top} className="network-node-handle" />
       <EntityNodeContent entity={entity} density="compact" />

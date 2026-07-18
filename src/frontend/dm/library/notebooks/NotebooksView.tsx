@@ -68,6 +68,8 @@ export function NotebooksView() {
     if (!activeCampaignId) return;
     const response = await notebooksApi.listNotebooks(activeCampaignId);
     if (!response.ok) throw new Error(t("notebooks.errors.genericError"));
+    // Trusting the server's response shape at the fetch boundary; no runtime schema here.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     const payload = await response.json() as {
       notebooks?: CampaignState["notebooks"];
       items?: CampaignState["notebookItems"];

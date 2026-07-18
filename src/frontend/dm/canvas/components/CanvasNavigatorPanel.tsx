@@ -107,12 +107,26 @@ export function CanvasNavigatorPanel({ canvas, onFocusNode, onFocusEntity, onFoc
           <option value="note">{t("canvas.navigator.notes")}</option>
           {ENTITY_TYPES.map((entityType) => <option key={entityType} value={entityType}>{t(`domain.entityTypes.${entityType}`)}</option>)}
         </select>
-        <select value={visibility} onChange={(event) => setVisibility(event.target.value as CanvasNavigatorVisibilityFilter)} aria-label={t("canvas.navigator.visibilityFilter")}>
+        <select
+          value={visibility}
+          onChange={(event) => {
+            const value = event.target.value;
+            if (value === "all" || value === "public" || value === "private") setVisibility(value);
+          }}
+          aria-label={t("canvas.navigator.visibilityFilter")}
+        >
           <option value="all">{t("canvas.navigator.allVisibility")}</option>
           <option value="public">{t("canvas.navigator.public")}</option>
           <option value="private">{t("canvas.navigator.private")}</option>
         </select>
-        <select value={status} onChange={(event) => setStatus(event.target.value as CanvasNavigatorStatusFilter)} aria-label={t("canvas.navigator.statusFilter")}>
+        <select
+          value={status}
+          onChange={(event) => {
+            const value = event.target.value;
+            if (value === "all" || value === "active" || value === "archived") setStatus(value);
+          }}
+          aria-label={t("canvas.navigator.statusFilter")}
+        >
           <option value="all">{t("canvas.navigator.allStatuses")}</option>
           <option value="active">{t("canvas.navigator.active")}</option>
           <option value="archived">{t("canvas.navigator.archived")}</option>

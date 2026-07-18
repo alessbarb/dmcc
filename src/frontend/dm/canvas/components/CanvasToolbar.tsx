@@ -169,9 +169,9 @@ export function CanvasToolbar({
     }
 
     const handleNodeClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null;
-      const nodeElement = target?.closest?.(".react-flow__node") as HTMLElement | null;
-      const nodeId = nodeElement?.dataset?.id ?? nodeElement?.getAttribute("data-id");
+      const target = event.target instanceof HTMLElement ? event.target : null;
+      const nodeElement = target?.closest(".react-flow__node");
+      const nodeId = nodeElement instanceof HTMLElement ? (nodeElement.dataset.id ?? nodeElement.getAttribute("data-id")) : null;
       if (!nodeId) return;
 
       event.preventDefault();

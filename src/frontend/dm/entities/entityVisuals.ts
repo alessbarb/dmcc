@@ -68,8 +68,10 @@ export const ENTITY_VISUALS: Record<EntityType, EntityVisual> = {
   note: visual("note", StickyNote, "note"),
 };
 
+const ENTITY_VISUALS_BY_STRING: Record<string, EntityVisual> = ENTITY_VISUALS;
+
 export function getEntityVisual(type: string): EntityVisual {
-  return ENTITY_VISUALS[type as EntityType] ?? ENTITY_VISUALS.note;
+  return ENTITY_VISUALS_BY_STRING[type] ?? ENTITY_VISUALS.note;
 }
 
 export interface RelationVisual {

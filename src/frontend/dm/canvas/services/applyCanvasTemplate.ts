@@ -71,6 +71,7 @@ export const applyCanvasTemplate = async (
       groupIds.set(group.key, groupNodeId);
       if (group.groupType) {
         // groupType is a frontend-only convention not in the canvasNodeSchema; pre-existing quirk, not fixed here.
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
         await store.updateCanvasNode(canvasId, groupNodeId, { groupType: group.groupType } as unknown as CanvasNodeUpdate);
       }
     }

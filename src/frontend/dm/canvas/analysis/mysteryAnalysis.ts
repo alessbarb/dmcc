@@ -101,8 +101,8 @@ export function analyzeMysteryHealth({ canvas, entities, facts, relations }: Ana
 
   const placedEntityIds = new Set(
     canvas.nodes
-      .filter((node) => node.kind === "entity" && node.entityId)
-      .map((node) => node.entityId as string),
+      .map((node) => (node.kind === "entity" ? node.entityId : undefined))
+      .filter((entityId): entityId is string => Boolean(entityId)),
   );
   const mysteryEntities = activeEntities.filter((entity) => (
     placedEntityIds.has(entity.entityId) || MYSTERY_NODE_TYPES.has(entity.entityType)

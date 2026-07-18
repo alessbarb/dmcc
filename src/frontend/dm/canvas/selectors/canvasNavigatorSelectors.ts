@@ -45,7 +45,7 @@ const factList = (facts: CampaignStateLike["facts"]): Fact[] => {
 
 const isPublicVisibility = (visibility: unknown): boolean => {
   if (visibility && typeof visibility === "object" && "kind" in visibility) {
-    return (visibility as { kind?: string }).kind === "public";
+    return visibility.kind === "public";
   }
   return visibility === "public";
 };

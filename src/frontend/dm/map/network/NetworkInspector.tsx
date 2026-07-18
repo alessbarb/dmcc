@@ -29,7 +29,7 @@ export function NetworkInspector({
   const isDmOnly = entity.visibility?.kind === "dm_only";
 
   return (
-    <aside className="network-inspector" style={{ "--network-inspector-accent": config.accent } as React.CSSProperties}>
+    <aside className="network-inspector" style={{ "--network-inspector-accent": config.accent } as React.CSSProperties & Record<`--${string}`, string>}>
       <header className="network-inspector__header">
         <div className="network-inspector__eyebrow-row">
           <span className="network-inspector__eyebrow">{formatEntityType(entity.entityType, locale)}</span>
