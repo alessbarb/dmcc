@@ -12,7 +12,7 @@ import { handleCampaignCommand } from "./campaignCommandHandlers.js";
 
 export interface CommandResult {
   state: CampaignState;
-  events: StoredEvent[];
+  events: StoredEvent<unknown>[];
 }
 
 export function handleCommand(state: CampaignState, command: Command): CommandResult {

@@ -21,7 +21,7 @@ type CanvasCommandType =
 
 type CanvasCommand = Extract<Command, { type: CanvasCommandType }>;
 
-function singleEvent(state: CampaignState, event: StoredEvent): CommandResult {
+function singleEvent(state: CampaignState, event: StoredEvent<unknown>): CommandResult {
   return { state, events: [event] };
 }
 

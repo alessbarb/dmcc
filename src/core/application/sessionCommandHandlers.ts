@@ -17,7 +17,7 @@ type SessionCommandType =
 
 type SessionCommand = Extract<Command, { type: SessionCommandType }>;
 
-function singleEvent(state: CampaignState, event: StoredEvent): CommandResult {
+function singleEvent(state: CampaignState, event: StoredEvent<unknown>): CommandResult {
   return { state, events: [event] };
 }
 

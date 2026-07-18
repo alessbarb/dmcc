@@ -22,7 +22,7 @@ type SupportCommandType =
 
 type SupportCommand = Extract<Command, { type: SupportCommandType }>;
 
-function singleEvent(state: CampaignState, event: StoredEvent): CommandResult {
+function singleEvent(state: CampaignState, event: StoredEvent<unknown>): CommandResult {
   return { state, events: [event] };
 }
 

@@ -674,7 +674,7 @@ function dashboardMarkdown(state: CampaignProjection): string {
   ].join("\n");
 }
 
-function timelineMarkdown(state: CampaignProjection, events: StoredEvent[]): string {
+function timelineMarkdown(state: CampaignProjection, events: StoredEvent<unknown>[]): string {
   const sessions = values(state.sessions).sort(
     (a, b) => (a.number ?? 0) - (b.number ?? 0),
   );
@@ -1269,7 +1269,7 @@ async function writeText(
 
 export async function writeMarkdownCampaignExport(input: {
   state: CampaignProjection;
-  events: StoredEvent[];
+  events: StoredEvent<unknown>[];
   exportDir: string;
   campaignId: string;
   exportId: string;

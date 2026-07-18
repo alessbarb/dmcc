@@ -58,7 +58,7 @@ function toValues<T>(collection: Map<string, T> | T[] | undefined | null): T[] {
 
 export function buildPlayerPortalProjection(
   campaign: CampaignProjection,
-  events: StoredEvent[]
+  events: StoredEvent<unknown>[]
 ): PlayerPortalProjection {
   const tokensByHash = new Map<string, PlayerTokenRecord>();
   const tokensById = new Map<string, PlayerTokenRecord>();

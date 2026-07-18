@@ -7,7 +7,7 @@ import type { CommandResult } from "./commandBus.js";
 
 type CampaignCommand = Extract<Command, { type: "CreateCampaign" | "UpdateCampaign" }>;
 
-function singleEvent(state: CampaignState, event: StoredEvent): CommandResult {
+function singleEvent(state: CampaignState, event: StoredEvent<unknown>): CommandResult {
   return { state, events: [event] };
 }
 

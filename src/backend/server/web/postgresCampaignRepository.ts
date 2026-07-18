@@ -20,7 +20,7 @@ import { calculateCommandHash, CommandConflictError } from "@core/persistence/re
 import { projectDomainEventToActivity } from "@core/projections/activity/projectDomainEventToActivity.js";
 import { activityRepository } from "../activity/activityRepository.js";
 
-function computeEventHash(eventWithoutHash: Omit<StoredEvent, "hash">): string {
+function computeEventHash(eventWithoutHash: Omit<StoredEvent<unknown>, "hash">): string {
   return createHash("sha256").update(JSON.stringify({
     sequence: eventWithoutHash.sequence,
     eventId: eventWithoutHash.eventId,
@@ -146,7 +146,7 @@ function projectionToCampaignState(campaignId: string, projection: CampaignProje
   };
 }
 
-async function loadEventsTx(tx: DbTransaction, campaignId: string, fromSequence = 1): Promise<StoredEvent[]> {
+async function loadEventsTx(tx: DbTransaction, campaignId: string, fromSequence = 1): Promise<StoredEvent<unknown>[]> {
   const rows = await tx
     .select()
     .from(schema.domainEvents)
@@ -166,7 +166,7 @@ async function loadEventsTx(tx: DbTransaction, campaignId: string, fromSequence 
     previousHash: row.previousHash ?? undefined,
     hash: row.hash,
     schemaVersion: row.schemaVersion,
-  })) as StoredEvent[];
+  })) as StoredEvent<unknown>[];
 }
 
 async function loadProjectionTx(tx: DbTransaction, campaignId: string): Promise<CampaignProjection> {
@@ -1139,7 +1139,7 @@ export class PostgresCampaignRepository {
     return serializeProjection(projection);
   }
 
-  async loadEvents(campaignId: string): Promise<StoredEvent[]> {
+  async loadEvents(campaignId: string): Promise<StoredEvent<unknown>[]> {
     return db.transaction((tx) => loadEventsTx(tx, campaignId));
   }
 
@@ -1184,7 +1184,7 @@ export class PostgresCampaignRepository {
 
       let sequence = tip?.sequence ?? 0;
       let previousHash: string | undefined = tip?.hash ?? undefined;
-      const storedEvents: StoredEvent[] = [];
+      const storedEvents: StoredEvent<unknown>[] = [];
 
       for (const domainEvent of result.events) {
         sequence += 1;
