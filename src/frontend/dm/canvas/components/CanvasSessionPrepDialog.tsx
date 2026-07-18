@@ -5,6 +5,8 @@ import { SessionPrepForm } from "../components/SessionPrepForm.js";
 import { X } from "lucide-react";
 import type { Session } from "../../../shared/stores/campaignStore.js";
 import type { CampaignStateStore } from "../../../shared/stores/campaignStore.js";
+import { createEmptySessionPlan } from "@core/domain/session/sessionPlan.js";
+import { addEntitiesToSessionPlan } from "@core/domain/session/sessionPlanCanvasClassification.js";
 
 interface CanvasSessionPrepDialogProps {
   isOpen: boolean;
@@ -13,7 +15,7 @@ interface CanvasSessionPrepDialogProps {
   preparedSessions: Session[];
   selectedNodes: CanvasFlowNode[];
   createPreparedSession: CampaignStateStore["createPreparedSession"];
-  updateSessionPrep: CampaignStateStore["updateSessionPrep"];
+  reviseSessionPlan: CampaignStateStore["reviseSessionPlan"];
   recordSessionEvent: CampaignStateStore["recordSessionEvent"];
   addToast: (message: string, kind?: "success" | "error" | "info" | "warning") => void;
   setSelectedNodes: Dispatch<SetStateAction<CanvasFlowNode[]>>;
@@ -28,7 +30,7 @@ export function CanvasSessionPrepDialog({
   preparedSessions,
   selectedNodes,
   createPreparedSession,
-  updateSessionPrep,
+  reviseSessionPlan,
   recordSessionEvent,
   addToast,
   setSelectedNodes,
@@ -47,7 +49,7 @@ export function CanvasSessionPrepDialog({
       {(() => {
         const activeSession = campaignState?.sessions?.find((s: Session) => s.status === "active");
         const entNames = selectedNodes.map((n) => n.data.title || n.data.text || "Elemento");
-        
+
         return (
           <SessionPrepForm
             activeSession={activeSession}
@@ -60,55 +62,45 @@ export function CanvasSessionPrepDialog({
                 .filter((n) => n.type === "entity" && n.data.entityId)
                 .map((n) => n.data.entityId)
                 .filter(isStringId);
-              const sceneIds = selectedNodes
-                .filter((n) => n.type === "entity" && n.data.entityType === "scene" && n.data.entityId)
-                .map((n) => n.data.entityId)
-                .filter(isStringId);
-              const clueIds = selectedNodes
-                .filter((n) => n.type === "entity" && n.data.entityType === "clue" && n.data.entityId)
-                .map((n) => n.data.entityId)
-                .filter(isStringId);
-              const secretIds = selectedNodes
-                .filter((n) => n.type === "entity" && n.data.entityType === "secret" && n.data.entityId)
-                .map((n) => n.data.entityId)
-                .filter(isStringId);
-              const consequenceIds = selectedNodes
-                .filter((n) => n.type === "entity" && n.data.entityType === "consequence" && n.data.entityId)
-                .map((n) => n.data.entityId)
-                .filter(isStringId);
-              
+              const isClassifiable = (
+                n: CanvasFlowNode,
+              ): n is CanvasFlowNode & { data: { entityId: string; entityType: string } } =>
+                n.type === "entity" && n.data.entityId !== undefined && n.data.entityType !== undefined;
+              const classifiableEntities = selectedNodes
+                .filter(isClassifiable)
+                .map((n) => ({ entityId: n.data.entityId, entityType: n.data.entityType }));
+              const notesLine = t("sessionPage.preparedFromCanvasNotes", { names: entNames.join(", ") });
+
               if (targetMode === "new") {
-                await createPreparedSession(sessionTitle, {
-                  state: "ready",
-                  summary: t("sessionPage.preparedFromCanvasSummary", { count: selectedNodes.length }),
-                  goals: [],
-                  sceneIds,
-                  involvedEntityIds: entIds,
-                  availableClueIds: clueIds,
-                  secretsAtRiskIds: secretIds,
-                  expectedConsequenceIds: consequenceIds,
-                  checklist: [],
-                  notes: t("sessionPage.preparedFromCanvasNotes", { names: entNames.join(", ") }),
+                const sessionId = await createPreparedSession(sessionTitle);
+                if (!sessionId) return;
+                const plan = addEntitiesToSessionPlan({
+                  plan: {
+                    ...createEmptySessionPlan(),
+                    state: "ready",
+                    summary: t("sessionPage.preparedFromCanvasSummary", { count: selectedNodes.length }),
+                    privateNotes: notesLine,
+                  },
+                  entities: classifiableEntities,
                 });
+                await reviseSessionPlan(sessionId, { title: sessionTitle, expectedRevision: 0, plan });
                 addToast(t("toasts.sessionPrepared", { title: sessionTitle }), "success");
               } else if (targetMode === "prepared" && targetSessionId) {
                 const targetSession = preparedSessions.find((session: Session) => session.sessionId === targetSessionId);
                 if (!targetSession) return;
-                const currentPrep = targetSession.prep ?? { state: "draft" };
-                const mergeIds = (...groups: string[][]) => Array.from(new Set(groups.flat().filter(Boolean)));
-                await updateSessionPrep(targetSessionId, {
+                const currentPlan = targetSession.plan ?? createEmptySessionPlan();
+                const plan = addEntitiesToSessionPlan({
+                  plan: {
+                    ...currentPlan,
+                    privateNotes: [currentPlan.privateNotes, notesLine].filter(Boolean).join("\n"),
+                  },
+                  entities: classifiableEntities,
+                });
+                await reviseSessionPlan(targetSessionId, {
                   title: targetSession.title,
                   scheduledAt: targetSession.scheduledAt,
-                  prep: {
-                    ...currentPrep,
-                    state: currentPrep.state ?? "draft",
-                    sceneIds: mergeIds(currentPrep.sceneIds ?? [], sceneIds),
-                    involvedEntityIds: mergeIds(currentPrep.involvedEntityIds ?? [], entIds),
-                    availableClueIds: mergeIds(currentPrep.availableClueIds ?? [], clueIds),
-                    secretsAtRiskIds: mergeIds(currentPrep.secretsAtRiskIds ?? [], secretIds),
-                    expectedConsequenceIds: mergeIds(currentPrep.expectedConsequenceIds ?? [], consequenceIds),
-                    notes: [currentPrep.notes, t("sessionPage.preparedFromCanvasNotes", { names: entNames.join(", ") })].filter(Boolean).join("\n"),
-                  },
+                  expectedRevision: currentPlan.revision,
+                  plan,
                 });
                 addToast(t("toasts.elementsAddedToPreparation", { title: targetSession.title }), "success");
               } else if (activeSession) {
