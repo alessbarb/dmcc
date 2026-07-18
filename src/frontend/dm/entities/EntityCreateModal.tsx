@@ -62,7 +62,9 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
     status: "known",
     importance: "normal",
     visibility: { kind: "dm_only" } as VisibilityRule,
-    // metadata shape varies per entityType (free-form, user-authored fields); kept as `any` deliberately.
+    // metadata shape varies per entityType (free-form, user-authored fields); kept as `any`
+    // deliberately — see TypeMetadataForm.tsx for the same untyped-metadata-bag pattern.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-type-assertion
     metadata: { role: "", attitudeToParty: "neutral", goal: "", imageUrl: "" } as any
   });
 
@@ -71,7 +73,8 @@ export function EntityCreateModal({ isOpen, onClose }: EntityCreateModalProps) {
     // elsewhere (EntityListView, NoActiveSessionView, CampaignStarterHub) but not
     // enforced at runtime.
     const listener = (event: Event) => {
-      const detail = (event as CustomEvent<EntityTemplateEventDetail>).detail ?? {};
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+      const detail = (event instanceof CustomEvent ? (event.detail as EntityTemplateEventDetail | undefined) : undefined) ?? {};
       const nextType = typeof detail.entityType === "string" ? detail.entityType : "npc";
       let defaultStatus = "active";
       let defaultMetadata: Record<string, unknown> = {};

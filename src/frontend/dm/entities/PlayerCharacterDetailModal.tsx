@@ -33,10 +33,12 @@ export interface PlayerCharacterDetailModalProps {
   onEditEntity: () => void;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 function record(value: unknown): Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value)
-    ? value as Record<string, unknown>
-    : {};
+  return isRecord(value) ? value : {};
 }
 
 function firstValue(...values: unknown[]): unknown {
@@ -96,6 +98,8 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
       signal: controller.signal,
     }).then(async (response) => {
       if (!response.ok) throw new Error(`Character sheet request failed (${response.status})`);
+      // Trusting the server's response shape at the fetch boundary; no runtime schema here.
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       setSheet(await response.json() as CharacterSheetResponse);
     }).catch((requestError: unknown) => {
       if (requestError instanceof DOMException && requestError.name === "AbortError") return;
@@ -142,7 +146,7 @@ export function PlayerCharacterDetailModal({ selectedEntity, campaignState, onCl
             style={{
               "--entity-detail-hero-filter": isDmOnly ? "grayscale(70%) brightness(35%)" : "none",
               "--entity-detail-hero-opacity": selectedEntity.metadata?.imageUrl ? 1 : 0.6,
-            } as React.CSSProperties}
+            } as React.CSSProperties & Record<`--${string}`, string | number>}
           />
           {isDmOnly && (
             <div className="entity-detail-hero__dm-overlay">

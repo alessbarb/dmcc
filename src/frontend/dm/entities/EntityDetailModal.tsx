@@ -57,8 +57,8 @@ interface EntityDetailModalProps {
 
 type TabId = "resumen" | "relaciones" | "hechos" | "trazabilidad";
 
-function getRelationsArray(relations: unknown): Relation[] {
-  return Array.isArray(relations) ? relations as Relation[] : [];
+function getRelationsArray(relations: Relation[] | undefined): Relation[] {
+  return Array.isArray(relations) ? relations : [];
 }
 
 const TABS: { id: TabId; labelKey: string; icon: React.ReactNode }[] = [
@@ -136,7 +136,7 @@ function StandardEntityDetailModal({
     !selectedEntity.visibility?.kind ||
     selectedEntity.visibility.kind === "dm_only";
 
-  const handleVisibilityChange = (entityId: string, visibility: any) => {
+  const handleVisibilityChange = (entityId: string, visibility: VisibilityRule) => {
     runEntityDetailAction(onVisibilityChange(entityId, visibility), "No se pudo cambiar la visibilidad de la entidad.");
   };
 
@@ -197,7 +197,7 @@ function StandardEntityDetailModal({
             style={{
               "--entity-detail-hero-filter": isDmOnly ? "grayscale(70%) brightness(35%)" : "none",
               "--entity-detail-hero-opacity": selectedEntity.metadata?.imageUrl ? 1 : 0.6,
-            } as React.CSSProperties}
+            } as React.CSSProperties & Record<`--${string}`, string | number>}
           />
           {isDmOnly && (
             <div className="entity-detail-hero__dm-overlay">
