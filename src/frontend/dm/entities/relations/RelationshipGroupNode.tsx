@@ -7,6 +7,7 @@ import type { RelationshipGroupNode as RelationshipGroupNodeModel } from "./grou
 
 export interface RelationshipGroupNodeData extends Record<string, unknown> {
   group: RelationshipGroupNodeModel;
+  onActivate?: () => void;
 }
 
 export interface RelationshipGroupNodeProps {
@@ -25,7 +26,19 @@ export const RelationshipGroupNode = React.memo(function RelationshipGroupNode({
   const { group } = data;
 
   return (
-    <div className="entity-relations-node entity-relations-node--group">
+    <div
+      className="entity-relations-node entity-relations-node--group"
+      tabIndex={0}
+      role="button"
+      onClick={data.onActivate}
+      onKeyDown={(event) => {
+        if (!data.onActivate) return;
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          data.onActivate();
+        }
+      }}
+    >
       {SIDES.map((side) => (
         <Handle
           key={`target-${side.id}`}
