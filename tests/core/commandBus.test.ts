@@ -133,7 +133,7 @@ describe("command bus extended campaign commands", () => {
     expect(result.state.sessions.get("sess_prep")?.prep?.state).toBe("ready");
   });
 
-  it("updates and activates a prepared session", () => {
+  it("revises the plan and activates a prepared session", () => {
     let state = createCampaignState("cmp_one");
     state = handleCommand(state, {
       type: "CreatePreparedSession",
@@ -145,22 +145,30 @@ describe("command bus extended campaign commands", () => {
     }).state;
 
     const updated = handleCommand(state, {
-      type: "UpdateSessionPrep",
+      type: "ReviseSessionPlan",
       campaignId: "cmp_one",
       actorId: "usr_core",
       sessionId: "sess_prep",
-      prep: {
+      expectedRevision: 0,
+      title: "Session prep",
+      plan: {
+        version: 2,
         state: "ready",
         summary: "Ready to play.",
-        goals: ["Find the cult"],
+        goals: [],
+        checklist: [],
+        flowItems: [],
+        contentLinks: [],
+        transitions: [],
+        bindings: [],
       },
     });
 
-    expect(updated.events[0].type).toBe("SessionPrepUpdated");
-    expect(updated.state.sessions.get("sess_prep")?.prep?.summary).toBe("Ready to play.");
+    expect(updated.events[0].type).toBe("SessionPlanRevised");
+    expect(updated.state.sessions.get("sess_prep")?.plan?.summary).toBe("Ready to play.");
 
     const activated = handleCommand(updated.state, {
-      type: "ActivatePreparedSession",
+      type: "ActivatePlannedSession",
       campaignId: "cmp_one",
       actorId: "usr_core",
       sessionId: "sess_prep",
@@ -168,7 +176,7 @@ describe("command bus extended campaign commands", () => {
 
     expect(activated.events[0].type).toBe("SessionStarted");
     expect(activated.state.sessions.get("sess_prep")?.status).toBe("active");
-    expect(activated.state.sessions.get("sess_prep")?.prep?.state).toBe("ready");
+    expect(activated.state.sessions.get("sess_prep")?.plan?.state).toBe("ready");
   });
 
   it("does not close a prepared session before activation", () => {

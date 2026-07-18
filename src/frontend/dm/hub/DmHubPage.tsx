@@ -174,7 +174,7 @@ export function DmHubPage() {
   };
 
   const navigateToActiveSession = (campaignId: string) => {
-    runDmHubAction(navigate({ to: `/campaigns/${campaignId}/session` }), "No se pudo abrir la sesión activa.");
+    runDmHubAction(navigate({ to: `/campaigns/${campaignId}/sessions` }), "No se pudo abrir la sesión activa.");
   };
 
   const navigateToCampaignSection = (
