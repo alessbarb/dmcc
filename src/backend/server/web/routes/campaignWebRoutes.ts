@@ -6,6 +6,7 @@ import type { Entity } from "@core/domain/entity/types.js";
 import type { Canvas } from "@core/domain/canvas/types.js";
 import type { Session } from "@core/domain/session/types.js";
 import { resolveSessionPlan } from "@core/domain/session/sessionPlanUpcast.js";
+import type { NarrativeChangeContext } from "@core/domain/shared/narrativeChangeContext.js";
 import { desc, eq } from "drizzle-orm";
 import { createId } from "@shared/ids.js";
 import { db } from "../../../db/client.js";
@@ -327,7 +328,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
     }
   });
 
-  async function executeDmCommand(request: FastifyRequest<{ Params: { campaignId: string }; Body?: RequestBody }>, reply: FastifyReply, command: DmCommandInput) {
+  async function executeDmCommand(request: FastifyRequest<{ Params: { campaignId: string }; Body?: RequestBody }>, reply: FastifyReply, command: DmCommandInput, narrativeContext?: NarrativeChangeContext) {
     const { user } = await requireCampaignRole(request, request.params.campaignId, ["dm", "co_dm"]);
     let commandId: string;
     try {
@@ -335,7 +336,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
       // HTTP boundary: command is assembled from DM-supplied fields; handleCommand validates
       // the concrete shape for `type` before producing any event.
       // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- HTTP boundary; handleCommand validates the concrete shape before producing any event.
-      const projection = await repo.executeCommand(request.params.campaignId, { ...command, campaignId: request.params.campaignId, actorId: user.userId } as Command, { commandId, actorUserId: user.userId });
+      const projection = await repo.executeCommand(request.params.campaignId, { ...command, campaignId: request.params.campaignId, actorId: user.userId } as Command, { commandId, actorUserId: user.userId, narrativeContext });
       campaignEventBus.publish(request.params.campaignId, { type: "projection.updated", sequence: projection.lastSequence });
       return { ok: true, sequence: projection.lastSequence, projection };
     } catch (error: unknown) {
@@ -508,7 +509,7 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
   server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/activate", async (request, reply) => executeDmCommand(request, reply, { type: "ActivatePlannedSession", sessionId: request.params.sessionId }));
   server.post<{ Params: { campaignId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/ad-hoc", async (request, reply) => executeDmCommand(request, reply, { type: "StartSession", ...(request.body ?? {}) }));
   server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/reveal-clue", async (request, reply) => executeDmCommand(request, reply, { type: "RevealClue", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
-  server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/events", async (request, reply) => executeDmCommand(request, reply, { type: "RecordSessionEvent", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
+  server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/events", async (request, reply) => executeDmCommand(request, reply, { type: "RecordSessionEvent", sessionId: request.params.sessionId, ...(request.body ?? {}) }, { origin: "session_live", sessionId: request.params.sessionId }));
   server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/close", async (request, reply) => executeDmCommand(request, reply, { type: "CloseSession", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
   server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/cancel", async (request, reply) => executeDmCommand(request, reply, { type: "CancelPreparedSession", sessionId: request.params.sessionId }));
   server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/archive", async (request, reply) => executeDmCommand(request, reply, { type: "ArchiveSession", sessionId: request.params.sessionId }));

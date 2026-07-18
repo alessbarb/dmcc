@@ -200,6 +200,7 @@ export const domainEvents = pgTable("domain_events", {
   previousHash: text("previous_hash"),
   hash: text("hash").notNull(),
   schemaVersion: integer("schema_version").notNull(),
+  context: jsonb("context").$type<unknown>(),
 }, (table) => ({
   pk: primaryKey({ columns: [table.campaignId, table.sequence] }),
 }));

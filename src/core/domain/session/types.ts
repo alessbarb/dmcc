@@ -8,8 +8,10 @@ import {
   factIdSchema,
   relationIdSchema,
   visibilityRuleSchema,
+  sessionPlanItemIdSchema,
 } from "@shared/schemas.js";
 import { sessionPlanSchema } from "./sessionPlan.js";
+import { sessionEventReferenceSchema } from "./sessionEventReference.js";
 
 export const sessionStatusSchema = z.enum([
   "planned",
@@ -75,6 +77,8 @@ export type Session = z.infer<typeof sessionSchema>;
 export const sessionEventTypeSchema = z.enum([
   "scene_started",
   "scene_closed",
+  "scene_skipped",
+  "scene_improvised",
   "note_recorded",
   "fact_recorded",
   "clue_revealed",
@@ -91,6 +95,8 @@ export const sessionEventTypeSchema = z.enum([
   "relationship_changed",
   "status_changed",
   "material_introduced",
+  "thread_opened",
+  "thread_resolved",
   "custom",
 ]);
 export type SessionEventType = z.infer<typeof sessionEventTypeSchema>;
@@ -103,9 +109,11 @@ export const sessionEventSchema = z.object({
   title: z.string().min(1, "Title must not be empty"),
   description: z.string().optional(),
   occurredAt: z.string(),
+  planItemId: sessionPlanItemIdSchema.optional(),
   relatedEntityIds: z.array(entityIdSchema).default([]),
   relatedFactIds: z.array(factIdSchema).default([]),
   relatedRelationIds: z.array(relationIdSchema).default([]),
+  references: z.array(sessionEventReferenceSchema).default([]),
   visibility: visibilityRuleSchema,
   metadata: z.record(z.string(), z.unknown()).default({}),
 });

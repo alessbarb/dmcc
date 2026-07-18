@@ -4,6 +4,7 @@ import { db } from "../../src/backend/db/client.js";
 import * as schema from "../../src/backend/db/schema.js";
 import { createServer } from "../../src/backend/server/createServer.js";
 import { createWebSession, WEB_SESSION_COOKIE } from "../../src/backend/server/web/webSession.js";
+import { PostgresCampaignRepository } from "../../src/backend/server/web/postgresCampaignRepository.js";
 
 const ORIGIN = "http://localhost:4877";
 const server = createServer();
@@ -209,5 +210,30 @@ describe("session web routes", () => {
     const listedBody = listed.json() as { sessions: Array<{ sessionId: string; plan?: { state: string } }> };
     const listedSession = listedBody.sessions.find((s) => s.sessionId === sessionId);
     expect(listedSession?.plan?.state).toBe("ready");
+  });
+
+  it("persists the session_live narrativeContext on a recorded session event, round-tripped through the DB", async () => {
+    const { campaignId, dmId } = await seedFixture();
+    const headers = await authenticatedHeaders(dmId);
+    const sessionId = createId("sess");
+
+    await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/sessions/ad-hoc`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: { sessionId, title: "La emboscada" },
+    });
+
+    const recorded = await server.inject({
+      method: "POST",
+      url: `/api/campaigns/${campaignId}/sessions/${sessionId}/events`,
+      headers: { ...headers, "idempotency-key": createId("cmd") },
+      payload: { eventType: "note_recorded", title: "Klarg flees", metadata: { observationKind: "world" } },
+    });
+    expect(recorded.statusCode).toBe(200);
+
+    const events = await new PostgresCampaignRepository().loadEvents(campaignId);
+    const sessionEventRecorded = events.find((event) => event.type === "SessionEventRecorded");
+    expect(sessionEventRecorded?.context).toEqual({ origin: "session_live", sessionId });
   });
 });

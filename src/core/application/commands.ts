@@ -7,6 +7,7 @@ import type { VisibilityRule } from "../domain/visibility/visibility.js";
 import type { PlayerCharacterProposal } from "../domain/playerPortal/types.js";
 import type { CampaignSettings, CampaignSystem, CampaignStatus } from "../domain/campaign/types.js";
 import type { NotebookItemTargetType } from "../domain/resource/resourceType.js";
+import type { SessionEventReference } from "../domain/session/sessionEventReference.js";
 
 export type Command =
   | {
@@ -293,9 +294,11 @@ export type Command =
       eventType: string;
       title: string;
       description?: string;
+      planItemId?: string;
       relatedEntityIds?: string[];
       relatedFactIds?: string[];
       relatedRelationIds?: string[];
+      references?: SessionEventReference[];
       visibility?: VisibilityRule;
       metadata?: Record<string, unknown>;
     }
