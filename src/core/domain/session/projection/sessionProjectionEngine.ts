@@ -41,11 +41,30 @@ export type SessionProjectionRule = {
   evaluate(input: SessionProjectionRuleInput): SessionProjectionCandidate[];
 };
 
+// Higher wins on an id collision, regardless of registration order. §23's provenance is
+// only truthful if a low-confidence inferred rule can never clobber an explicit one just
+// because it happened to run later — "last rule wins" silently broke that guarantee the
+// moment more than one rule could produce the same node/edge id.
+const PROVENANCE_BASIS_PRIORITY: Record<SessionProjectionProvenance["basis"], number> = {
+  explicit: 3,
+  user_confirmed: 2,
+  derived: 1,
+  inferred: 0,
+};
+
+function isHigherPriorityCandidate(
+  incomingBasis: SessionProjectionProvenance["basis"],
+  existingBasis: SessionProjectionProvenance["basis"],
+): boolean {
+  return PROVENANCE_BASIS_PRIORITY[incomingBasis] >= PROVENANCE_BASIS_PRIORITY[existingBasis];
+}
+
 /**
  * Runs every rule registered for `perspective`, stamping each candidate with its rule's
- * `id` as provenance and splitting the result into nodes/edges. Rules run in registration
- * order and a later rule's candidate for the same id wins — deterministic given a
- * deterministic rule list, never based on wall-clock time.
+ * `id` as provenance and splitting the result into nodes/edges. On an id collision, the
+ * candidate with the higher-priority provenance basis wins (explicit > user_confirmed >
+ * derived > inferred); ties fall back to registration order, so the result stays
+ * deterministic given a deterministic rule list — never based on wall-clock time.
  */
 export function evaluateSessionProjectionRules(
   rules: SessionProjectionRule[],
@@ -59,8 +78,12 @@ export function evaluateSessionProjectionRules(
     if (rule.perspective !== perspective) continue;
     for (const candidate of rule.evaluate(input)) {
       if (candidate.kind === "node") {
+        const existing = nodesById.get(candidate.node.id);
+        if (existing && !isHigherPriorityCandidate(candidate.provenance.basis, existing.provenance.basis)) continue;
         nodesById.set(candidate.node.id, { ...candidate.node, provenance: { ...candidate.provenance, ruleId: rule.id } });
       } else {
+        const existing = edgesById.get(candidate.edge.id);
+        if (existing && !isHigherPriorityCandidate(candidate.provenance.basis, existing.provenance.basis)) continue;
         edgesById.set(candidate.edge.id, { ...candidate.edge, provenance: { ...candidate.provenance, ruleId: rule.id } });
       }
     }
