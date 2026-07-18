@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { eventIdSchema, campaignIdSchema } from "@shared/schemas.js";
+import { narrativeChangeContextSchema } from "./narrativeChangeContext.js";
 import { campaignSchema, campaignSettingsSchema } from "../campaign/types.js";
 import { playerProfileSchema } from "../campaign/player.js";
 import { entitySchema, baseEntitySchema } from "../entity/types.js";
@@ -195,6 +196,7 @@ export const storedEventSchema = z.object({
   occurredAt: z.string(),
   actorId: z.string(),
   payload: z.unknown(),
+  context: narrativeChangeContextSchema.optional(),
   previousHash: z.string().optional(),
   hash: z.string().optional(),
   schemaVersion: z.number().int().default(1),
