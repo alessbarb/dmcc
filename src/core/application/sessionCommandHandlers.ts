@@ -44,6 +44,10 @@ function requireSession(state: CampaignState, sessionId: string) {
   return session;
 }
 
+function sessionCommandError(code: string, message: string, statusCode: number): Error {
+  return Object.assign(new Error(`${code}: ${message}`), { statusCode });
+}
+
 export function handleSessionCommand(state: CampaignState, command: SessionCommand): CommandResult {
   switch (command.type) {
 case "CreatePreparedSession": {
@@ -105,12 +109,14 @@ case "ActivatePreparedSession": {
 case "ReviseSessionPlan": {
   const session = requireSession(state, command.sessionId);
   if (session.status !== "planned") {
-    throw new Error("SESSION_NOT_PLANNED: only planned sessions accept plan revisions");
+    throw sessionCommandError("SESSION_NOT_PLANNED", "only planned sessions accept plan revisions", 409);
   }
   const previousRevision = session.plan?.revision ?? 0;
   if (command.expectedRevision !== previousRevision) {
-    throw new Error(
-      `SESSION_PLAN_REVISION_CONFLICT: expected revision ${command.expectedRevision}, current revision is ${previousRevision}`,
+    throw sessionCommandError(
+      "SESSION_PLAN_REVISION_CONFLICT",
+      `expected revision ${command.expectedRevision}, current revision is ${previousRevision}`,
+      409,
     );
   }
   const revision = previousRevision + 1;
@@ -140,13 +146,13 @@ case "ReviseSessionPlan": {
 case "ActivatePlannedSession": {
   const session = requireSession(state, command.sessionId);
   if (session.status !== "planned") {
-    throw new Error("SESSION_NOT_PLANNED: only planned sessions can be activated");
+    throw sessionCommandError("SESSION_NOT_PLANNED", "only planned sessions can be activated", 409);
   }
   const activeExists = [...state.sessions.values()].some(
     (s) => s.status === "active" && s.sessionId !== command.sessionId,
   );
   if (activeExists) {
-    throw new Error("ACTIVE_SESSION_EXISTS: only one active session per campaign is allowed");
+    throw sessionCommandError("ACTIVE_SESSION_EXISTS", "only one active session per campaign is allowed", 409);
   }
   const plan = session.plan ?? createEmptySessionPlan();
   const activated = {

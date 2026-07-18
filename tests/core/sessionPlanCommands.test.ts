@@ -50,6 +50,24 @@ describe("ReviseSessionPlan", () => {
     ).toThrow(/SESSION_PLAN_REVISION_CONFLICT/);
   });
 
+  it("attaches a 409 statusCode to the revision conflict error", () => {
+    const state = stateWithPlannedSession();
+    try {
+      handleCommand(state, {
+        type: "ReviseSessionPlan",
+        campaignId: "cmp_one",
+        actorId: "usr_dm",
+        sessionId: "sess_1",
+        expectedRevision: 4,
+        title: "La emboscada",
+        plan: createEmptySessionPlan(),
+      });
+      expect.unreachable("expected ReviseSessionPlan to throw");
+    } catch (error) {
+      expect((error as Error & { statusCode?: number }).statusCode).toBe(409);
+    }
+  });
+
   it("rejects a structurally invalid plan", () => {
     const state = stateWithPlannedSession();
     const invalidPlan = {
