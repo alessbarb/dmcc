@@ -74,7 +74,10 @@ function renderAppearance(): void {
 }
 
 function handleDevicePreferencesChanged(event: Event): void {
-  applyDeviceAppearance((event as CustomEvent<DeviceOverrides>).detail);
+  if (!(event instanceof CustomEvent)) return;
+  // DOM CustomEvent boundary: detail shape is contractually defined by the dispatcher, not enforced at runtime.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+  applyDeviceAppearance(event.detail as DeviceOverrides);
 }
 
 function ensureChangeListener(): void {

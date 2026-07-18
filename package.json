@@ -16,7 +16,7 @@
     "assets:thumbs:dist": "DMCC_ASSETS_ROOT=dist/public/assets tsx scripts/generate-asset-thumbs.ts",
     "build": "npm run clean && vite build && npm run assets:thumbs:dist && tsc -p tsconfig.build.json && node scripts/fix-dist-imports.mjs",
     "start": "node dist/src/backend/entry/index.js",
-    "lint": "eslint . --max-warnings 54",
+    "lint": "eslint . --max-warnings 39",
     "lint:fix": "eslint . --fix",
     "lint:report": "eslint . --format json --output-file .artifacts/eslint-report.json",
     "styles:audit": "node scripts/styles/auditStyles.mjs",

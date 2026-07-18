@@ -36,6 +36,8 @@ type StoryCommandType =
 type StoryCommand = Extract<Command, { type: StoryCommandType }>;
 
 function makeEvent<TPayload>(actorId: string, campaignId: CampaignState["campaignId"], type: StoredEvent["type"], payload: TPayload): StoredEvent<TPayload> {
+  // Generic factory: the concrete payload shape is only known by the caller.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   return {
     eventId: `${type}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     campaignId,

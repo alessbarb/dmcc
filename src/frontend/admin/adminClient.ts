@@ -86,7 +86,7 @@ export type AuditLogSummary = {
   action: string;
   targetType: string;
   targetId: string | null;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   commandId: string | null;
   createdAt: string;
 };

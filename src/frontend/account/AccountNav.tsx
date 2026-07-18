@@ -44,7 +44,7 @@ export function AccountNav({
           aria-current={active === module.id ? "page" : undefined}
           onClick={() => onSelect(module.id)}
         >
-          {t(`account.nav.${getNavKey(module.id)}` as any)}
+          {t(`account.nav.${getNavKey(module.id)}`)}
         </button>
       ))}
     </nav>

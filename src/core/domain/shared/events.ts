@@ -202,6 +202,8 @@ export const storedEventSchema = z.object({
   commandHash: z.string().optional(),
 });
 
+// Defaults to `any` so untyped callers keep loose payload access; see domain/events.ts.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type StoredEvent<TPayload = any> = z.infer<typeof storedEventSchema> & {
   payload: TPayload;
 };

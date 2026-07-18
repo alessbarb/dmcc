@@ -39,6 +39,9 @@ const feedbackScaleShape = {
   onStrong: "string",
 } as const satisfies Shape;
 
+// Object.fromEntries loses the tuple-array's literal key types; every key here
+// comes directly from THEME_ENTITY_TYPES, so the cast just restores that.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
 const entityShape = Object.fromEntries(
   THEME_ENTITY_TYPES.map((type) => [type, domainColorShape]),
 ) as Record<(typeof THEME_ENTITY_TYPES)[number], typeof domainColorShape>;
@@ -297,5 +300,7 @@ export function validateThemePackage(value: unknown): ThemeValidationResult {
     return { valid: false, issues };
   }
 
+  // Every field was checked above; issues.length === 0 means value now conforms to ThemePackageV1.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   return { valid: true, value: value as ThemePackageV1, issues: [] };
 }

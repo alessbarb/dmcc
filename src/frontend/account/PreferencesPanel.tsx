@@ -106,10 +106,12 @@ export function PreferencesPanel({
           {t("account.appearance.mode")}
           <select
             value={draft.colorMode}
-            onChange={(event) => setDraft({
-              ...draft,
-              colorMode: event.target.value as AccountPreferences["colorMode"],
-            })}
+            onChange={(event) => {
+              const value = event.target.value;
+              if (value === "system" || value === "light" || value === "dark") {
+                setDraft({ ...draft, colorMode: value });
+              }
+            }}
           >
             <option value="system">{t("account.appearance.modeOptions.system")}</option>
             <option value="light">{t("account.appearance.modeOptions.light")}</option>

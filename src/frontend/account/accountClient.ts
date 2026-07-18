@@ -19,6 +19,8 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
     throw new AccountConflict(body.current);
   }
   if (!response.ok) throw new Error(await readApiError(response, "Account request failed"));
+  // Trusting the server's response shape at the fetch boundary; no runtime schema here.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   return response.json() as Promise<T>;
 }
 

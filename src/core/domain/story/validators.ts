@@ -26,15 +26,15 @@ export function validateStoryStepTitle(title: string): void {
 }
 
 export function validateStoryThreadStatus(status: string): void {
-  const validStatuses: StoryThreadStatus[] = ["planned", "active", "resolved", "discarded"];
-  if (!validStatuses.includes(status as StoryThreadStatus)) {
+  const validStatuses: readonly string[] = ["planned", "active", "resolved", "discarded"] satisfies StoryThreadStatus[];
+  if (!validStatuses.includes(status)) {
     throw new Error(`Invalid Story Thread status: ${status}`);
   }
 }
 
 export function validateStoryStepStatus(status: string): void {
-  const validStatuses: StoryStepStatus[] = ["planned", "ready", "active", "resolved", "discarded"];
-  if (!validStatuses.includes(status as StoryStepStatus)) {
+  const validStatuses: readonly string[] = ["planned", "ready", "active", "resolved", "discarded"] satisfies StoryStepStatus[];
+  if (!validStatuses.includes(status)) {
     throw new Error(`Invalid Story Step status: ${status}`);
   }
 }
