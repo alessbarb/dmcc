@@ -118,7 +118,7 @@ export function CanvasPage() {
     removeNodeFromCanvas,
     updateCanvasNodesLayout,
     createPreparedSession,
-    updateSessionPrep,
+    reviseSessionPlan,
     recordSessionEvent,
     placeNodeOnCanvas,
   } = useCampaignStore();
@@ -886,7 +886,7 @@ export function CanvasPage() {
         preparedSessions={preparedSessions}
         selectedNodes={selectedNodes}
         createPreparedSession={createPreparedSession}
-        updateSessionPrep={updateSessionPrep}
+        reviseSessionPlan={reviseSessionPlan}
         recordSessionEvent={recordSessionEvent}
         addToast={addToast}
         setSelectedNodes={setSelectedNodes}
