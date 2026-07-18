@@ -131,8 +131,8 @@ export function StoryPlanView() {
         addToast(t("story.threadCreated") || "Story thread created successfully", "success");
         await reloadCampaign();
       }
-    } catch (err: any) {
-      addToast(err.message || "Failed to create thread", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Failed to create thread", "error");
     }
   };
 
@@ -146,8 +146,8 @@ export function StoryPlanView() {
         addToast(t("story.threadArchived") || "Story thread archived", "success");
         await reloadCampaign();
       }
-    } catch (err: any) {
-      addToast(err.message || "Failed to archive thread", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Failed to archive thread", "error");
     }
   };
 
@@ -160,8 +160,8 @@ export function StoryPlanView() {
         addToast(t("story.threadActivated") || "Story thread is now active", "success");
         await reloadCampaign();
       }
-    } catch (err: any) {
-      addToast(err.message || "Failed to activate thread", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Failed to activate thread", "error");
     }
   };
 
@@ -176,8 +176,8 @@ export function StoryPlanView() {
         const errorData = await res.json().catch(() => null);
         addToast(errorData?.error || "Cannot resolve: ensure all steps are terminal", "error");
       }
-    } catch (err: any) {
-      addToast(err.message || "Error resolving thread", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error resolving thread", "error");
     }
   };
 
@@ -190,8 +190,8 @@ export function StoryPlanView() {
         addToast(t("story.threadDiscarded") || "Story thread discarded", "success");
         await reloadCampaign();
       }
-    } catch (err: any) {
-      addToast(err.message || "Error discarding thread", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error discarding thread", "error");
     }
   };
 
@@ -213,8 +213,8 @@ export function StoryPlanView() {
         addToast(t("story.stepCreated") || "Story step created", "success");
         await reloadCampaign();
       }
-    } catch (err: any) {
-      addToast(err.message || "Error creating step", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error creating step", "error");
     }
   };
 
@@ -253,8 +253,8 @@ export function StoryPlanView() {
         addToast(t("story.stepScheduled") || "Step scheduled to session", "success");
         await reloadCampaign();
       }
-    } catch (err: any) {
-      addToast(err.message || "Error scheduling step", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error scheduling step", "error");
     }
   };
 
@@ -274,8 +274,8 @@ export function StoryPlanView() {
         addToast(t("story.stepDeferred") || "Step deferred successfully", "success");
         await reloadCampaign();
       }
-    } catch (err: any) {
-      addToast(err.message || "Error deferring step", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error deferring step", "error");
     }
   };
 
@@ -350,8 +350,8 @@ export function StoryPlanView() {
         const errorData = await res.json().catch(() => null);
         addToast(errorData?.error || "Reconciliation failed", "error");
       }
-    } catch (err: any) {
-      addToast(err.message || "Error reconciling step", "error");
+    } catch (err: unknown) {
+      addToast(err instanceof Error ? err.message : "Error reconciling step", "error");
     }
   };
 
@@ -1035,7 +1035,7 @@ export function StoryPlanView() {
                 className="form-control"
                 value={reconcileStatus}
                 onChange={(e) => {
-                  const val = e.target.value as "resolved" | "discarded";
+                  const val = e.target.value === "discarded" ? "discarded" : "resolved";
                   setReconcileStatus(val);
                   setReconcileKind(val === "resolved" ? "as_planned" : "discarded");
                 }}
@@ -1053,7 +1053,7 @@ export function StoryPlanView() {
                 <select
                   className="form-control"
                   value={reconcileKind}
-                  onChange={(e) => setReconcileKind(e.target.value as any)}
+                  onChange={(e) => setReconcileKind(e.target.value === "changed" ? "changed" : "as_planned")}
                 >
                   <option value="as_planned">As Planned (Como estaba planeado)</option>
                   <option value="changed">Changed (Cambió / Inesperado)</option>
