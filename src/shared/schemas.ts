@@ -10,6 +10,14 @@ import type {
   EventId,
   AttachmentId,
   TagId,
+  StoryStepId,
+  ObjectiveId,
+  SessionPlanItemId,
+  SessionPlanContentLinkId,
+  SessionPlanTransitionId,
+  SessionPlanBindingId,
+  SessionPlanGoalId,
+  SessionPlanChecklistItemId,
 } from "./ids.js";
 
 export const campaignIdSchema = z
@@ -51,6 +59,50 @@ export const attachmentIdSchema = z
 export const tagIdSchema = z
   .string()
   .refine((val): val is TagId => val.startsWith("tag_"), "Must start with 'tag_'");
+
+export const storyStepIdSchema = z
+  .string()
+  .refine((val): val is StoryStepId => val.startsWith("stp_"), "Must start with 'stp_'");
+
+export const objectiveIdSchema = z
+  .string()
+  .refine((val): val is ObjectiveId => val.startsWith("obj_"), "Must start with 'obj_'");
+
+export const sessionPlanItemIdSchema = z
+  .string()
+  .refine((val): val is SessionPlanItemId => val.startsWith("spi_"), "Must start with 'spi_'");
+
+export const sessionPlanContentLinkIdSchema = z
+  .string()
+  .refine(
+    (val): val is SessionPlanContentLinkId => val.startsWith("spcl_"),
+    "Must start with 'spcl_'",
+  );
+
+export const sessionPlanTransitionIdSchema = z
+  .string()
+  .refine(
+    (val): val is SessionPlanTransitionId => val.startsWith("sptr_"),
+    "Must start with 'sptr_'",
+  );
+
+export const sessionPlanBindingIdSchema = z
+  .string()
+  .refine(
+    (val): val is SessionPlanBindingId => val.startsWith("spbd_"),
+    "Must start with 'spbd_'",
+  );
+
+export const sessionPlanGoalIdSchema = z
+  .string()
+  .refine((val): val is SessionPlanGoalId => val.startsWith("spgl_"), "Must start with 'spgl_'");
+
+export const sessionPlanChecklistItemIdSchema = z
+  .string()
+  .refine(
+    (val): val is SessionPlanChecklistItemId => val.startsWith("spck_"),
+    "Must start with 'spck_'",
+  );
 
 export const visibilityRuleSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("dm_only") }),

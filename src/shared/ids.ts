@@ -13,6 +13,13 @@ export type NotebookId = string;
 export type NotebookItemId = string;
 export type StoryThreadId = string;
 export type StoryStepId = string;
+export type ObjectiveId = string;
+export type SessionPlanItemId = string;
+export type SessionPlanContentLinkId = string;
+export type SessionPlanTransitionId = string;
+export type SessionPlanBindingId = string;
+export type SessionPlanGoalId = string;
+export type SessionPlanChecklistItemId = string;
 
 function getWebCrypto(): Crypto {
   const crypto = globalThis.crypto;
@@ -108,4 +115,28 @@ export function generateStoryThreadId(): StoryThreadId {
 
 export function generateStoryStepId(): StoryStepId {
   return createId("stp");
+}
+
+export function generateSessionPlanItemId(): SessionPlanItemId {
+  return createId("spi");
+}
+
+export function generateSessionPlanContentLinkId(): SessionPlanContentLinkId {
+  return createId("spcl");
+}
+
+export function generateSessionPlanTransitionId(): SessionPlanTransitionId {
+  return createId("sptr");
+}
+
+export function generateSessionPlanBindingId(): SessionPlanBindingId {
+  return createId("spbd");
+}
+
+export function generateSessionPlanGoalId(): SessionPlanGoalId {
+  return createId("spgl");
+}
+
+export function generateSessionPlanChecklistItemId(): SessionPlanChecklistItemId {
+  return createId("spck");
 }
