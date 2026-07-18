@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { Archive, Play, X } from "lucide-react";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
@@ -40,7 +40,10 @@ export function SessionDetailPage() {
   if (!session) {
     return (
       <div className="session-page">
-        <p>{t("sessionPage.previousSessions")}</p>
+        <p>{t("sessionPage.sessionNotFound")}</p>
+        <Link to="/campaigns/$campaignId/sessions" params={{ campaignId: campaignId ?? "" }} className="btn btn-secondary btn-sm">
+          {t("sessionPage.backToSessions")}
+        </Link>
       </div>
     );
   }

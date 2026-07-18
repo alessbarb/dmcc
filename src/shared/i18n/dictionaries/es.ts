@@ -2149,6 +2149,8 @@ export const es: TranslationDictionary = {
     sessionTitleLabel: "Título de la sesión",
     startSessionButton: "Iniciar sesión #{number}",
     previousSessions: "Sesiones anteriores",
+    sessionNotFound: "No se encontró esta sesión. Puede que haya sido archivada o el enlace ya no sea válido.",
+    backToSessions: "Volver a sesiones",
     clueToReveal: "Pista a revelar",
     selectClue: "— Selecciona pista —",
     audience: "Audiencia",

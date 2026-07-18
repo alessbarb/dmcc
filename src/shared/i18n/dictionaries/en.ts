@@ -2125,6 +2125,8 @@ export const en = {
     sessionTitleLabel: "Session title",
     startSessionButton: "Start session #{number}",
     previousSessions: "Previous sessions",
+    sessionNotFound: "This session wasn't found. It may have been archived, or the link is no longer valid.",
+    backToSessions: "Back to sessions",
     clueToReveal: "Clue to reveal",
     selectClue: "— Select clue —",
     audience: "Audience",
