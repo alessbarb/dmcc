@@ -1856,6 +1856,8 @@ export const de: TranslationDictionary = {
     sessionTitleLabel: "Sitzungstitel",
     startSessionButton: "Sitzung #{number} starten",
     previousSessions: "Vorherige Sitzungen",
+    sessionNotFound: "Diese Sitzung wurde nicht gefunden. Sie wurde möglicherweise archiviert, oder der Link ist nicht mehr gültig.",
+    backToSessions: "Zurück zu den Sitzungen",
     clueToReveal: "Hinweis enthüllen",
     selectClue: "— Hinweis auswählen —",
     audience: "Publikum",

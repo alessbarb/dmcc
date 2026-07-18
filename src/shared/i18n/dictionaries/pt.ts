@@ -1833,6 +1833,8 @@ export const pt = {
     sessionTitleLabel: "Título da sessão",
     startSessionButton: "Iniciar sessão #{number}",
     previousSessions: "Sessões anteriores",
+    sessionNotFound: "Esta sessão não foi encontrada. Pode ter sido arquivada, ou o link já não é válido.",
+    backToSessions: "Voltar às sessões",
     clueToReveal: "Pista a revelar",
     selectClue: "— Selecionar pista —",
     audience: "Audiência",
