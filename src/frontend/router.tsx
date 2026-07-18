@@ -131,6 +131,12 @@ const PlayerKnowledgeViewLazy = React.lazy(() =>
 const SessionPageLazy = React.lazy(() =>
   import("./dm/sessions/SessionPage.js").then((module) => ({ default: module.SessionPage })),
 );
+const SessionsIndexPageLazy = React.lazy(() =>
+  import("./dm/sessions/SessionsIndexPage.js").then((module) => ({ default: module.SessionsIndexPage })),
+);
+const SessionDetailPageLazy = React.lazy(() =>
+  import("./dm/sessions/SessionDetailPage.js").then((module) => ({ default: module.SessionDetailPage })),
+);
 const CampaignMessagesPageLazy = React.lazy(() =>
   import("./dm/pages/CampaignMessagesPage.js").then((module) => ({ default: module.CampaignMessagesPage })),
 );
@@ -362,6 +368,16 @@ const sessionRoute = createRoute({
   getParentRoute: () => campaignRoute,
   path: "/session",
   component: withSuspense(SessionPageLazy),
+});
+const sessionsRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/sessions",
+  component: withSuspense(SessionsIndexPageLazy),
+});
+const sessionDetailRoute = createRoute({
+  getParentRoute: () => campaignRoute,
+  path: "/sessions/$sessionId",
+  component: withSuspense(SessionDetailPageLazy),
 });
 
 // Library Workspace
@@ -596,6 +612,8 @@ const routeTree = rootRoute.addChildren([
     campaignIndexRoute,
     overviewRoute,
     sessionRoute,
+    sessionsRoute,
+    sessionDetailRoute,
     libraryRoute.addChildren([
       libraryIndexRoute,
       libraryListRoute,
