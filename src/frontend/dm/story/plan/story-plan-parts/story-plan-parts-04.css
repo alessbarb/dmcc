@@ -1,0 +1,14 @@
+
+.story-plan-header { align-items: flex-start; }
+.story-plan-header__main { flex: 1; }
+.story-plan-heading,
+.story-plan-step-heading { display: flex; align-items: center; gap: 8px; }
+.story-plan-heading { gap: 12px; }
+.story-plan-heading__title { font-size: 1.25rem; }
+.story-plan-summary { margin: 8px 0 0; color: var(--theme-text-secondary); font-size: 0.95rem; }
+.story-plan-status-badge,
+.story-plan-step-badge { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem !important; font-weight: 700; text-transform: uppercase; }
+.story-plan-status-badge { padding: 4px 8px; }
+
+.story-plan-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.story-plan-actions--compact { justify-content: flex-end; gap: 6px; }

@@ -1,6 +1,8 @@
 import type { CSSProperties } from "react";
 import type { Toast } from "../hooks/useToast.js";
 
+type CSSPropertiesWithVars = CSSProperties & Record<`--${string}`, string | number | undefined>;
+
 const kindStyles: Record<string, string> = {
   success: "var(--theme-feedback-success-foreground)",
   error: "var(--theme-feedback-danger-foreground)",
@@ -22,7 +24,7 @@ export function ToastContainer({ toasts, onRemove }: Props) {
           key={t.id}
           onClick={() => onRemove(t.id)}
           className="toast"
-          style={{ "--toast-accent": kindStyles[t.kind] } as CSSProperties}
+          style={{ "--toast-accent": kindStyles[t.kind] } as CSSPropertiesWithVars}
         >
           {t.message}
         </div>

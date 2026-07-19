@@ -6,7 +6,7 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 209,
+  "cssFiles": 231,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
   "staticInlineStyles": 0,
@@ -14,7 +14,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 28,
+  "mixedResponsibilityFiles": 24,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -105,11 +105,33 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/sessions/components/session-idle.css` | feature | sessions | 130 | 24 | 2 |
 | `src/frontend/dm/sessions/components/session-linked-list.css` | feature | sessions | 25 | 4 | 1 |
 | `src/frontend/dm/sessions/components/session-status.css` | feature | sessions | 74 | 10 | 1 |
-| `src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css` | feature | sessions | 322 | 46 | 1 |
-| `src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css` | feature | sessions | 279 | 40 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-01.css` | feature | sessions | 76 | 10 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-02.css` | feature | sessions | 78 | 10 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-03.css` | feature | sessions | 64 | 10 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-04.css` | feature | sessions | 77 | 10 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-05.css` | feature | sessions | 31 | 6 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css` | feature | sessions | 6 | 0 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-01.css` | feature | sessions | 77 | 10 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-02.css` | feature | sessions | 67 | 10 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-03.css` | feature | sessions | 67 | 10 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-04.css` | feature | sessions | 71 | 10 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css` | feature | sessions | 5 | 0 | 1 |
 | `src/frontend/dm/sessions/session-workspace.css` | feature | sessions | 18 | 3 | 4 |
-| `src/frontend/dm/story/history/campaignHistory.css` | feature | story | 295 | 41 | 1 |
-| `src/frontend/dm/story/plan/storyPlanWorkspace.css` | feature | story | 276 | 96 | 1 |
+| `src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-01.css` | feature | story | 88 | 10 | 1 |
+| `src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-02.css` | feature | story | 85 | 10 | 1 |
+| `src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-03.css` | feature | story | 76 | 10 | 1 |
+| `src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-04.css` | feature | story | 49 | 11 | 1 |
+| `src/frontend/dm/story/history/campaignHistory.css` | feature | story | 5 | 0 | 1 |
+| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css` | feature | story | 75 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css` | feature | story | 101 | 20 | 1 |
+| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css` | feature | story | 27 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-04.css` | feature | story | 14 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-05.css` | feature | story | 15 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css` | feature | story | 14 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-07.css` | feature | story | 14 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-08.css` | feature | story | 12 | 10 | 1 |
+| `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-09.css` | feature | story | 12 | 6 | 1 |
+| `src/frontend/dm/story/plan/storyPlanWorkspace.css` | feature | story | 10 | 0 | 1 |
 | `src/frontend/institutional/institutional.css` | feature | institutional | 274 | 38 | 1 |
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 174 | 30 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
@@ -515,55 +537,51 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | mixed-responsibility | `src/frontend/dm/pages/rulesPage.css:1` | Large stylesheet requires atomization (179 lines, 32 selectors). |
 | critical | mixed-responsibility | `src/frontend/dm/people/group/groupWorkspace.css:1` | Large stylesheet requires atomization (631 lines, 93 selectors). |
 | critical | mixed-responsibility | `src/frontend/dm/people/peopleWorkspace.css:1` | Large stylesheet requires atomization (394 lines, 61 selectors). |
-| critical | mixed-responsibility | `src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css:1` | Large stylesheet requires atomization (322 lines, 46 selectors). |
 | info | dynamic-style | `src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:55` | Runtime style requires review and CSS custom-property preference. |
-| high | mixed-responsibility | `src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css:1` | Large stylesheet requires atomization (279 lines, 40 selectors). |
 | info | dynamic-style | `src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:54` | Runtime style requires review and CSS custom-property preference. |
-| high | mixed-responsibility | `src/frontend/dm/story/history/campaignHistory.css:1` | Large stylesheet requires atomization (295 lines, 41 selectors). |
-| critical | mixed-responsibility | `src/frontend/dm/story/plan/storyPlanWorkspace.css:1` | Large stylesheet requires atomization (276 lines, 96 selectors). |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:2` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:5` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:6` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:12` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:14` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:16` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:17` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:18` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:33` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:34` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:35` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:36` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:37` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:41` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:42` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:46` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:47` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:57` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:58` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:59` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:60` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:61` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:67` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:68` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:69` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:73` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:78` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:105` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/dm/story/plan/storyPlanWorkspace.css:109` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:112` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:126` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:137` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:142` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:152` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:188` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:189` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:190` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:210` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:237` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:258` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:2` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:5` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:6` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:12` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:14` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:17` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:18` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:33` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:34` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:35` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:36` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:37` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:41` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:42` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:46` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:47` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:57` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:58` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:59` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:60` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:61` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:67` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:68` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:69` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:73` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:4` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:31` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:35` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:38` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:52` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:63` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:68` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:78` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:14` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:15` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:16` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-04.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:10` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-08.css:5` | Important declarations bypass the intended cascade. |
 | high | mixed-responsibility | `src/frontend/institutional/institutional.css:1` | Large stylesheet requires atomization (274 lines, 38 selectors). |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:92` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/MainLanding.tsx:95` | Runtime style requires review and CSS custom-property preference. |

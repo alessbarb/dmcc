@@ -1,0 +1,85 @@
+
+
+.campaign-history__content {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.campaign-history__error {
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 36%, transparent);
+  border-radius: var(--theme-shapes-radius-medium);
+  color: var(--theme-feedback-danger-foreground);
+  background: var(--theme-feedback-danger-background);
+}
+
+.campaign-history__state {
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  border: 1px dashed var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-large);
+  color: var(--theme-text-secondary);
+  text-align: center;
+}
+
+.campaign-history__state-inner {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.campaign-history__state h3,
+.campaign-history__state p {
+  margin: 0;
+}
+
+.campaign-history__timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 30px;
+}
+
+.campaign-history__timeline::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 14px;
+  width: 1px;
+  background: var(--theme-borders-default);
+}
+
+.campaign-history-entry {
+  position: relative;
+}
+
+.campaign-history-entry__marker {
+  position: absolute;
+  z-index: 1;
+  top: 16px;
+  left: -30px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--history-color, var(--theme-accents-primary-foreground));
+  border-radius: 50%;
+  color: var(--history-color, var(--theme-accents-primary-foreground));
+  background: var(--history-bg, var(--theme-surfaces-interactive));
+}
+
+.campaign-history-entry__card {
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
+  border-radius: var(--theme-shapes-radius-large, 14px);
+  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--theme-surfaces-canvas) 12%, transparent);
+}

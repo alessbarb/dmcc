@@ -1,0 +1,101 @@
+
+
+.story-plan-workspace .step-card:hover {
+  border-color: color-mix(in srgb, var(--theme-accents-primary-foreground) 28%, var(--theme-borders-default)) !important;
+}
+
+.story-plan-workspace .step-card.status-active,
+.story-plan-workspace .step-card.status-ready {
+  box-shadow: inset 3px 0 0 var(--theme-accents-primary-foreground), 0 8px 20px color-mix(in srgb, var(--theme-surfaces-canvas) 10%, transparent);
+}
+
+.story-plan-workspace .form-control,
+.story-plan-workspace .form-control-sm {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-medium, 10px);
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive);
+  font: inherit;
+}
+
+.story-plan-workspace textarea.form-control {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.story-plan-workspace .badge {
+  min-height: 22px;
+  font-size: 0.68rem !important;
+}
+
+.story-plan-workspace .story-plan-icon-button {
+  width: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 6px !important;
+}
+
+body:has(.story-plan-workspace) .watermark {
+  opacity: 0.008;
+}
+
+@media (max-width: 980px) {
+  .story-plan-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .story-plan-workspace .story-sidebar {
+    position: static;
+    width: 100% !important;
+    max-height: none;
+  }
+
+  .story-plan-workspace .threads-list {
+    max-height: 280px;
+  }
+}
+
+@media (max-width: 640px) {
+  .story-plan-workspace {
+    gap: 14px !important;
+  }
+
+  .story-plan-workspace .story-content-area > .glass-panel,
+  .story-plan-workspace .story-sidebar {
+    padding: 14px !important;
+  }
+
+  .story-plan-workspace .story-plan-header,
+  .story-plan-workspace .story-plan-step-header,
+  .story-plan-workspace .story-plan-section-header {
+    flex-wrap: wrap;
+  }
+
+  .story-plan-workspace .story-plan-step-details {
+    grid-template-columns: 1fr !important;
+  }
+
+  .story-plan-workspace .story-plan-step-detail--full {
+    grid-column: auto;
+  }
+
+  .story-plan-workspace .story-plan-link-form {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .story-plan-workspace .story-content-area .btn {
+    min-height: 40px;
+  }
+}
+
+.story-plan-workspace .threads-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}

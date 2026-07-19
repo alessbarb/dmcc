@@ -6,6 +6,8 @@ import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { formatEntityType } from "@shared/i18n/index.js";
 import { getEntityVisual } from "../../entities/entityVisuals.js";
 
+type CSSPropertiesWithVars = React.CSSProperties & Record<`--${string}`, string | number | undefined>;
+
 export interface NetworkFilterBarProps {
   entities: Entity[];
   typeFilter: string[];
@@ -164,7 +166,7 @@ export function NetworkFilterBar({ entities, typeFilter, onChangeTypeFilter, onS
                   >
                     <span
                       className="network-filter-option__dot"
-                      style={{ "--network-filter-accent": config.accent } as React.CSSProperties}
+                      style={{ "--network-filter-accent": config.accent } as CSSPropertiesWithVars}
                     />
                     <span>{t(config.labelKey)}</span>
                     {active && <Check size={15} />}

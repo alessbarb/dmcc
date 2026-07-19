@@ -1,0 +1,27 @@
+
+
+.story-plan-workspace .thread-item-btn {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.story-plan-workspace .thread-item-btn[data-status="active"] { border-left-color: var(--theme-accents-primary-foreground) !important; }
+.story-plan-workspace .thread-item-btn[data-status="resolved"] { border-left-color: var(--theme-feedback-success-foreground) !important; }
+.story-plan-workspace .thread-item-btn[data-status]:not([data-status="active"]):not([data-status="resolved"]) { border-left-color: var(--theme-text-secondary) !important; }
+
+.story-plan-title,
+.story-plan-heading__title { margin: 0; }
+.story-plan-title { font-size: 1.1rem; }
+.story-plan-heading__title--small { font-size: 1rem; }
+
+.story-plan-section-header,
+.story-plan-header,
+.story-plan-step-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.story-plan-section-header--spaced { margin-bottom: 8px; }
+.story-plan-section-header--steps { margin-bottom: 16px; }

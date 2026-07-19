@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:58:53.111Z",
+  "generatedAt": "2026-07-19T12:00:19.564Z",
   "summary": {
-    "cssFiles": 209,
+    "cssFiles": 231,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
     "staticInlineStyles": 0,
@@ -10,7 +10,7 @@
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 28,
+    "mixedResponsibilityFiles": 24,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -4661,6 +4661,119 @@
       "variableReferences": []
     },
     {
+      "path": "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-01.css",
+      "layer": "feature",
+      "domain": "sessions",
+      "lineCount": 76,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-primary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-02.css",
+      "layer": "feature",
+      "domain": "sessions",
+      "lineCount": 78,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-surfaces-base",
+        "--theme-borders-default",
+        "--theme-text-secondary",
+        "--theme-feedback-warning-foreground",
+        "--theme-borders-default",
+        "--theme-feedback-warning-foreground",
+        "--theme-feedback-danger-foreground",
+        "--theme-borders-default",
+        "--theme-feedback-danger-foreground",
+        "--theme-text-secondary",
+        "--theme-borders-default",
+        "--theme-surfaces-canvas",
+        "--theme-text-secondary",
+        "--theme-surfaces-canvas",
+        "--consequence-node-accent",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-03.css",
+      "layer": "feature",
+      "domain": "sessions",
+      "lineCount": 64,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--consequence-node-accent",
+        "--consequence-node-accent",
+        "--consequence-node-accent",
+        "--consequence-node-accent",
+        "--theme-text-primary",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--consequence-inspector-accent",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-04.css",
+      "layer": "feature",
+      "domain": "sessions",
+      "lineCount": 77,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-text-secondary",
+        "--theme-text-secondary",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--consequence-node-accent",
+        "--theme-borders-default",
+        "--consequence-node-accent",
+        "--theme-surfaces-base",
+        "--consequence-node-accent"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-05.css",
+      "layer": "feature",
+      "domain": "sessions",
+      "lineCount": 31,
+      "selectorCount": 6,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-borders-default"
+      ]
+    },
+    {
       "path": "src/frontend/dm/sessions/consequenceChain/promotableInferenceRules.ts",
       "layer": null,
       "domain": null,
@@ -4675,58 +4788,20 @@
       "path": "src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css",
       "layer": "feature",
       "domain": "sessions",
-      "lineCount": 322,
-      "selectorCount": 46,
-      "imports": [],
+      "lineCount": 6,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-01.css",
+        "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-02.css",
+        "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-03.css",
+        "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-04.css",
+        "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-05.css"
+      ],
       "importedBy": [
         "src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx"
       ],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-surfaces-base",
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-feedback-warning-foreground",
-        "--theme-borders-default",
-        "--theme-feedback-warning-foreground",
-        "--theme-feedback-danger-foreground",
-        "--theme-borders-default",
-        "--theme-feedback-danger-foreground",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary",
-        "--theme-surfaces-canvas",
-        "--consequence-node-accent",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
-        "--consequence-node-accent",
-        "--consequence-node-accent",
-        "--consequence-node-accent",
-        "--consequence-node-accent",
-        "--theme-text-primary",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--consequence-inspector-accent",
-        "--theme-text-secondary",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--consequence-node-accent",
-        "--theme-borders-default",
-        "--consequence-node-accent",
-        "--theme-surfaces-base",
-        "--consequence-node-accent",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-borders-default"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/sessions/narrativeMap/NarrativeMapInspector.tsx",
@@ -4788,6 +4863,95 @@
       "variableReferences": []
     },
     {
+      "path": "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-01.css",
+      "layer": "feature",
+      "domain": "sessions",
+      "lineCount": 77,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-borders-default",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-02.css",
+      "layer": "feature",
+      "domain": "sessions",
+      "lineCount": 67,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-secondary",
+        "--theme-surfaces-canvas",
+        "--narrative-node-accent",
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--theme-surfaces-canvas",
+        "--narrative-node-accent",
+        "--narrative-node-accent",
+        "--narrative-node-accent",
+        "--narrative-node-accent",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-03.css",
+      "layer": "feature",
+      "domain": "sessions",
+      "lineCount": 67,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-surfaces-base",
+        "--narrative-inspector-accent",
+        "--theme-text-secondary",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-text-secondary",
+        "--theme-text-secondary",
+        "--theme-text-primary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-04.css",
+      "layer": "feature",
+      "domain": "sessions",
+      "lineCount": 71,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-secondary",
+        "--narrative-node-accent",
+        "--theme-borders-default",
+        "--narrative-node-accent",
+        "--theme-surfaces-base",
+        "--narrative-node-accent",
+        "--theme-text-primary",
+        "--theme-text-secondary",
+        "--theme-borders-default"
+      ]
+    },
+    {
       "path": "src/frontend/dm/sessions/narrativeMap/narrativeNodeVisuals.ts",
       "layer": null,
       "domain": null,
@@ -4802,48 +4966,19 @@
       "path": "src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css",
       "layer": "feature",
       "domain": "sessions",
-      "lineCount": 279,
-      "selectorCount": 40,
-      "imports": [],
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-01.css",
+        "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-02.css",
+        "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-03.css",
+        "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-04.css"
+      ],
       "importedBy": [
         "src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx"
       ],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary",
-        "--theme-surfaces-canvas",
-        "--narrative-node-accent",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
-        "--narrative-node-accent",
-        "--narrative-node-accent",
-        "--narrative-node-accent",
-        "--narrative-node-accent",
-        "--theme-text-primary",
-        "--theme-borders-default",
-        "--theme-surfaces-base",
-        "--narrative-inspector-accent",
-        "--theme-text-secondary",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--narrative-node-accent",
-        "--theme-borders-default",
-        "--narrative-node-accent",
-        "--theme-surfaces-base",
-        "--narrative-node-accent",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-borders-default"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/sessions/prep/sessionPrepUtils.ts",
@@ -4956,14 +5091,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/dm/story/history/campaignHistory.css",
+      "path": "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-01.css",
       "layer": "feature",
       "domain": "story",
-      "lineCount": 295,
-      "selectorCount": 41,
+      "lineCount": 88,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/story/history/CampaignHistoryView.tsx"
+        "src/frontend/dm/story/history/campaignHistory.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -4984,7 +5119,21 @@
         "--theme-borders-default",
         "--theme-accents-primary-foreground",
         "--theme-surfaces-interactive",
-        "--theme-accents-primary-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-02.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 85,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/history/campaignHistory.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-feedback-danger-foreground",
         "--theme-shapes-radius-medium",
         "--theme-feedback-danger-foreground",
@@ -5002,7 +5151,21 @@
         "--theme-borders-default",
         "--theme-shapes-radius-large",
         "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-03.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 76,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/history/campaignHistory.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--history-color",
         "--theme-accents-primary-foreground",
@@ -5017,6 +5180,37 @@
       ]
     },
     {
+      "path": "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-04.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 49,
+      "selectorCount": 11,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/history/campaignHistory.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/dm/story/history/campaignHistory.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 5,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-01.css",
+        "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-02.css",
+        "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-03.css",
+        "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-04.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/story/history/CampaignHistoryView.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
       "path": "src/frontend/dm/story/plan/StoryPlanView.tsx",
       "layer": null,
       "domain": null,
@@ -5028,14 +5222,14 @@
       "variableReferences": []
     },
     {
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "layer": "feature",
       "domain": "story",
-      "lineCount": 276,
-      "selectorCount": 96,
+      "lineCount": 75,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
-        "src/frontend/dm/story/StoryWorkspacePage.tsx"
+        "src/frontend/dm/story/plan/storyPlanWorkspace.css"
       ],
       "variableDefinitions": [],
       "variableReferences": [
@@ -5060,7 +5254,21 @@
         "--theme-shapes-radius-medium",
         "--theme-surfaces-interactive",
         "--theme-surfaces-base",
-        "--theme-surfaces-canvas",
+        "--theme-surfaces-canvas"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 101,
+      "selectorCount": 20,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/plan/storyPlanWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-accents-primary-foreground",
         "--theme-borders-default",
         "--theme-accents-primary-foreground",
@@ -5068,20 +5276,104 @@
         "--theme-borders-default",
         "--theme-shapes-radius-medium",
         "--theme-text-primary",
-        "--theme-surfaces-interactive",
+        "--theme-surfaces-interactive"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 27,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/plan/storyPlanWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-primary",
         "--theme-accents-primary-foreground",
         "--theme-feedback-success-foreground",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-04.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 14,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/plan/storyPlanWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-05.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 15,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/plan/storyPlanWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-surfaces-canvas",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 14,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/plan/storyPlanWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-borders-default",
         "--theme-borders-default",
         "--theme-surfaces-canvas",
         "--theme-feedback-danger-foreground",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-07.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 14,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/plan/storyPlanWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-secondary"
+      ]
+    },
+    {
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-08.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 12,
+      "selectorCount": 10,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/plan/storyPlanWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
         "--theme-text-secondary",
         "--theme-surfaces-base",
         "--theme-borders-default",
@@ -5090,6 +5382,42 @@
         "--theme-borders-default",
         "--theme-surfaces-base"
       ]
+    },
+    {
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-09.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 12,
+      "selectorCount": 6,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/dm/story/plan/storyPlanWorkspace.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
+    },
+    {
+      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "layer": "feature",
+      "domain": "story",
+      "lineCount": 10,
+      "selectorCount": 0,
+      "imports": [
+        "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
+        "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+        "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css",
+        "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-04.css",
+        "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-05.css",
+        "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css",
+        "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-07.css",
+        "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-08.css",
+        "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-09.css"
+      ],
+      "importedBy": [
+        "src/frontend/dm/story/StoryWorkspacePage.tsx"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/workspaces/CampaignWorkspace.tsx",
@@ -14125,17 +14453,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css",
-      "path": "src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (322 lines, 46 selectors)."
-    },
-    {
       "id": "dynamic-style:src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:style={{ \"--narrative-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>} onClick={() => onSelect(node)} > <span className=\"narrative-map-list__kind\">{t(`sessionNarra",
       "path": "src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx",
       "line": 54,
@@ -14149,30 +14466,8 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css",
-      "path": "src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (279 lines, 40 selectors)."
-    },
-    {
-      "id": "mixed-responsibility:src/frontend/dm/story/history/campaignHistory.css",
-      "path": "src/frontend/dm/story/history/campaignHistory.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "high",
-      "status": "temporary",
-      "reason": "Large stylesheet requires atomization (295 lines, 41 selectors)."
-    },
-    {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 2,
       "column": 17,
       "severity": "high",
@@ -14183,8 +14478,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 5,
       "column": 13,
       "severity": "high",
@@ -14195,8 +14490,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 6,
       "column": 48,
       "severity": "high",
@@ -14207,8 +14502,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 12,
       "column": 15,
       "severity": "high",
@@ -14219,8 +14514,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 14,
       "column": 17,
       "severity": "high",
@@ -14231,8 +14526,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 16,
       "column": 50,
       "severity": "high",
@@ -14243,8 +14538,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 17,
       "column": 57,
       "severity": "high",
@@ -14255,8 +14550,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 18,
       "column": 79,
       "severity": "high",
@@ -14267,8 +14562,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 33,
       "column": 22,
       "severity": "high",
@@ -14279,8 +14574,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 34,
       "column": 33,
       "severity": "high",
@@ -14291,8 +14586,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 35,
       "column": 26,
       "severity": "high",
@@ -14303,8 +14598,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 36,
       "column": 58,
       "severity": "high",
@@ -14315,8 +14610,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 37,
       "column": 27,
       "severity": "high",
@@ -14327,8 +14622,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 41,
       "column": 46,
       "severity": "high",
@@ -14339,8 +14634,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 42,
       "column": 55,
       "severity": "high",
@@ -14351,8 +14646,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 46,
       "column": 111,
       "severity": "high",
@@ -14363,8 +14658,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 47,
       "column": 113,
       "severity": "high",
@@ -14375,8 +14670,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 57,
       "column": 20,
       "severity": "high",
@@ -14387,8 +14682,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 58,
       "column": 37,
       "severity": "high",
@@ -14399,8 +14694,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 59,
       "column": 87,
       "severity": "high",
@@ -14411,8 +14706,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 60,
       "column": 57,
       "severity": "high",
@@ -14423,8 +14718,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 61,
       "column": 79,
       "severity": "high",
@@ -14435,8 +14730,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 67,
       "column": 50,
       "severity": "high",
@@ -14447,8 +14742,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 68,
       "column": 58,
       "severity": "high",
@@ -14459,8 +14754,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 69,
       "column": 101,
       "severity": "high",
@@ -14471,8 +14766,8 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
       "line": 73,
       "column": 17,
       "severity": "high",
@@ -14483,9 +14778,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 78,
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "line": 4,
       "column": 111,
       "severity": "high",
       "status": "temporary",
@@ -14495,9 +14790,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 105,
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "line": 31,
       "column": 22,
       "severity": "high",
       "status": "temporary",
@@ -14507,9 +14802,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 112,
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "line": 38,
       "column": 16,
       "severity": "high",
       "status": "temporary",
@@ -14519,9 +14814,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 126,
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "line": 52,
       "column": 17,
       "severity": "high",
       "status": "temporary",
@@ -14531,9 +14826,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 137,
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "line": 63,
       "column": 15,
       "severity": "high",
       "status": "temporary",
@@ -14543,9 +14838,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 142,
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "line": 68,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -14555,9 +14850,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 152,
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "line": 78,
       "column": 32,
       "severity": "high",
       "status": "temporary",
@@ -14567,117 +14862,9 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 188,
-      "column": 123,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 189,
-      "column": 126,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 190,
-      "column": 160,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 210,
-      "column": 82,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 237,
-      "column": 47,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 237,
-      "column": 72,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 237,
-      "column": 98,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 237,
-      "column": 121,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "important:src/frontend/dm/story/plan/storyPlanWorkspace.css:!important",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 258,
-      "column": 44,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "important",
-      "value": "!important",
-      "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/story/plan/storyPlanWorkspace.css:width: 34px; min-width: 34px; min-height: 34px; padding: 6px !important; } body:has(.story-plan-workspace) .watermark",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 109,
+      "id": "cross-component-selector:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:width: 34px; min-width: 34px; min-height: 34px; padding: 6px !important; } body:has(.story-plan-workspace) .watermark",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "line": 35,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -14687,15 +14874,112 @@
       "reason": "Selector depends on another component's DOM structure."
     },
     {
-      "id": "mixed-responsibility:src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "path": "src/frontend/dm/story/plan/storyPlanWorkspace.css",
-      "line": 1,
-      "column": 1,
-      "sourceType": "css",
-      "category": "mixed-responsibility",
-      "severity": "critical",
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css",
+      "line": 14,
+      "column": 123,
+      "severity": "high",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (276 lines, 96 selectors)."
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css",
+      "line": 15,
+      "column": 126,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css",
+      "line": 16,
+      "column": 160,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-04.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-04.css",
+      "line": 10,
+      "column": 82,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css",
+      "line": 10,
+      "column": 47,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css",
+      "line": 10,
+      "column": 72,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css",
+      "line": 10,
+      "column": 98,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css",
+      "line": 10,
+      "column": 121,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
+    },
+    {
+      "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-08.css:!important",
+      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-08.css",
+      "line": 5,
+      "column": 44,
+      "severity": "high",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "important",
+      "value": "!important",
+      "reason": "Important declarations bypass the intended cascade."
     },
     {
       "id": "mixed-responsibility:src/frontend/institutional/institutional.css",
@@ -16801,17 +17085,47 @@
     "src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainPage.tsx": [
       "src/frontend/dm/sessions/session-workspace.css"
     ],
+    "src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css": [
+      "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-01.css",
+      "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-02.css",
+      "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-03.css",
+      "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-04.css",
+      "src/frontend/dm/sessions/consequenceChain/consequence-chain-parts/consequence-chain-parts-05.css"
+    ],
     "src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx": [
       "src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css"
     ],
     "src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapPage.tsx": [
       "src/frontend/dm/sessions/session-workspace.css"
     ],
+    "src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css": [
+      "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-01.css",
+      "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-02.css",
+      "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-03.css",
+      "src/frontend/dm/sessions/narrativeMap/narrative-map-parts/narrative-map-parts-04.css"
+    ],
     "src/frontend/dm/story/StoryWorkspacePage.tsx": [
       "src/frontend/dm/story/plan/storyPlanWorkspace.css"
     ],
     "src/frontend/dm/story/history/CampaignHistoryView.tsx": [
       "src/frontend/dm/story/history/campaignHistory.css"
+    ],
+    "src/frontend/dm/story/history/campaignHistory.css": [
+      "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-01.css",
+      "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-02.css",
+      "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-03.css",
+      "src/frontend/dm/story/history/campaign-history-parts/campaign-history-parts-04.css"
+    ],
+    "src/frontend/dm/story/plan/storyPlanWorkspace.css": [
+      "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-01.css",
+      "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
+      "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css",
+      "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-04.css",
+      "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-05.css",
+      "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-06.css",
+      "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-07.css",
+      "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-08.css",
+      "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-09.css"
     ],
     "src/frontend/institutional/InstitutionalLayout.tsx": [
       "src/frontend/institutional/institutional.css"

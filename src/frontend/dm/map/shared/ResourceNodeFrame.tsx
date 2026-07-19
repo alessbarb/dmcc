@@ -1,5 +1,7 @@
 import React from "react";
 
+type CSSPropertiesWithVars = React.CSSProperties & Record<`--${string}`, string | number | undefined>;
+
 export interface ResourceNodeFrameProps {
   selected?: boolean;
   accentColor?: string;
@@ -19,7 +21,7 @@ export function ResourceNodeFrame({
     <div
       onClick={onClick}
       className={`resource-node-frame ${selected ? "resource-node-frame--selected" : ""} ${className}`}
-      style={{ "--resource-node-accent": accentColor } as React.CSSProperties}
+      style={{ "--resource-node-accent": accentColor } as CSSPropertiesWithVars}
     >
       {children}
     </div>

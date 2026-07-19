@@ -1,0 +1,78 @@
+
+
+.consequence-chain-diagnostics__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  background: var(--theme-surfaces-base);
+  border: 1px solid var(--theme-borders-default);
+  color: var(--theme-text-secondary);
+}
+
+.consequence-chain-diagnostics__item--warning {
+  border-color: color-mix(in srgb, var(--theme-feedback-warning-foreground) 45%, var(--theme-borders-default));
+  color: var(--theme-feedback-warning-foreground);
+}
+
+.consequence-chain-diagnostics__item--error {
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 45%, var(--theme-borders-default));
+  color: var(--theme-feedback-danger-foreground);
+}
+
+.consequence-chain-diagnostics__item--info {
+  color: var(--theme-text-secondary);
+}
+
+.consequence-chain-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--theme-borders-default) 88%, transparent);
+  border-radius: 14px;
+  background: var(--theme-surfaces-canvas);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.consequence-chain-canvas {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+
+.consequence-chain-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--theme-text-secondary);
+}
+
+.consequence-chain-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--theme-surfaces-canvas);
+  display: flex;
+  flex-direction: column;
+}
+
+.consequence-chain-fullscreen .consequence-chain-workspace {
+  height: 100vh;
+}
+
+/* Node */
+.consequence-chain-node {
+  width: 190px;
+  padding: 8px 10px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--consequence-node-accent) 45%, var(--theme-borders-default));
+  border-radius: 10px;
+  background: var(--theme-surfaces-base);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent);
+  cursor: pointer;
+}

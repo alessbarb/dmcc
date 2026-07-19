@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 // Regression guard for two real bugs found in this workspace:
@@ -33,17 +33,29 @@ function stripCssComments(css: string): string {
   return css.replace(/\/\*[\s\S]*?\*\//g, "");
 }
 
+function readCssFamily(entryPath: string): string {
+  const css = readFileSync(entryPath, "utf-8");
+  const imports = [...css.matchAll(/@import\s+["']([^"']+)["']/g)].map((match) => match[1]);
+  return [
+    css,
+    ...imports
+      .map((relativePath) => resolve(entryPath, "..", relativePath))
+      .filter((path) => existsSync(path))
+      .map((path) => readCssFamily(path)),
+  ].join("\n");
+}
+
 describe("Architecture Test — entity detail dialog edit-mode layout", () => {
   it("never reintroduces :has()-based DOM sniffing in the entity detail dialog CSS family", () => {
     for (const path of [dialogCss, imageContinuationCss, heroActionsCss]) {
-      const css = stripCssComments(readFileSync(path, "utf-8"));
+      const css = stripCssComments(readCssFamily(path));
       expect(css.includes(":has(")).toBe(false);
     }
   });
 
   it("never reintroduces an inline-style-attribute sniff for edit-mode detection", () => {
     for (const path of [dialogCss, imageContinuationCss]) {
-      const css = stripCssComments(readFileSync(path, "utf-8"));
+      const css = stripCssComments(readCssFamily(path));
       expect(css.includes('[style*="border-top"]')).toBe(false);
     }
   });
@@ -58,7 +70,7 @@ describe("Architecture Test — entity detail dialog edit-mode layout", () => {
   });
 
   it("keeps the edit-form image field out of the row-spanning grid design", () => {
-    const css = stripCssComments(readFileSync(dialogCss, "utf-8"));
+    const css = stripCssComments(readCssFamily(dialogCss));
     // The old bug's signature: an explicit multi-row span on the image field
     // sharing tracks with single-row sibling fields.
     expect(css).not.toMatch(/entity-summary__edit-image\s*\{[^}]*grid-row/);

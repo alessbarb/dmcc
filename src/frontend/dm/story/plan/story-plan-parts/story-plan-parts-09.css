@@ -1,0 +1,11 @@
+
+.story-plan-modal-actions { margin-top: 12px; }
+
+@media (max-width: 640px) {
+  .story-plan-workspace .story-plan-header,
+  .story-plan-workspace .story-plan-step-header,
+  .story-plan-workspace .story-plan-section-header { flex-wrap: wrap; }
+  .story-plan-workspace .story-plan-step-details { grid-template-columns: 1fr; }
+  .story-plan-workspace .story-plan-step-detail--full { grid-column: auto; }
+  .story-plan-workspace .story-plan-link-form { align-items: stretch; flex-direction: column; }
+}

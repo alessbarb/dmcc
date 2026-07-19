@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { ImagePlus, Move, Pencil } from "lucide-react";
 import { ImagePickerModal, type ImageCatalogType } from "./ImagePickerModal.js";
 import { EntityImageReframeDialog } from "./EntityImageReframeDialog.js";
+
+type CSSPropertiesWithVars = CSSProperties & Record<`--${string}`, string | number | undefined>;
 import {
   DEFAULT_IMAGE_FOCAL_POINT,
   imageFocalPointToObjectPosition,
@@ -68,7 +70,7 @@ export function ImagePickerButton({
                 src={displaySrc}
                 alt="Previsualización de la entidad"
                 className="image-picker-button__entity-image"
-                style={{ "--image-focal-point": imageFocalPointToObjectPosition(focalPoint) } as React.CSSProperties}
+                style={{ "--image-focal-point": imageFocalPointToObjectPosition(focalPoint) } as CSSPropertiesWithVars}
               />
             ) : (
               <button
