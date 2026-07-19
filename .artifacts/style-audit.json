@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:04:09.367Z",
+  "generatedAt": "2026-07-19T11:05:10.833Z",
   "summary": {
     "cssFiles": 123,
-    "tsxFilesWithInlineStyles": 43,
+    "tsxFilesWithInlineStyles": 42,
     "forbiddenLiteralColors": 246,
-    "staticInlineStyles": 311,
+    "staticInlineStyles": 298,
     "dynamicInlineStyles": 28,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -1639,22 +1639,14 @@
       "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 389,
+      "lineCount": 380,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/entities/relations/relationshipGraph.css"
       ],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-secondary",
-        "--theme-surfaces-interactive",
-        "--theme-shapes-radius-small",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-secondary",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/entities/relations/RelationshipEdge.tsx",
@@ -7094,8 +7086,8 @@
       "path": "src/frontend/shared/styles/features/entity-relations.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 36,
-      "selectorCount": 33,
+      "lineCount": 51,
+      "selectorCount": 47,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7130,7 +7122,13 @@
         "--theme-text-secondary",
         "--theme-feedback-warning-background",
         "--theme-feedback-warning-border",
-        "--theme-feedback-warning-foreground"
+        "--theme-feedback-warning-foreground",
+        "--theme-text-secondary",
+        "--theme-surfaces-interactive",
+        "--theme-shapes-radius-small",
+        "--theme-text-secondary",
+        "--theme-text-secondary",
+        "--theme-text-secondary"
       ]
     },
     {
@@ -12711,175 +12709,6 @@
       "category": "cross-component-selector",
       "selectorOrComponent": "display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 8px;\n}\n\n.player-character-detail__resources > div",
       "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.82rem\", margin: 0 }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 47,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.82rem\", margin: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"6px\" }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 54,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"6px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ fontSize: \"0.85rem\", padding: \"10px 12px\", backgroundColor: \"var(--theme-surfaces-interactive)\", borderRadius: \"var(--theme-shapes-radius-small)\", display: \"flex\",",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 58,
-      "column": 11,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n            fontSize: \"0.85rem\",\n            padding: \"10px 12px\",\n            backgroundColor: \"var(--theme-surfaces-interactive)\",\n            borderRadius: \"var(--theme-shapes-radius-small)\",\n            display: \"flex\",\n       ",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.82rem\", margin: 0 }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 70,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.82rem\", margin: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ display: \"flex\", gap: \"6px\", flexWrap: \"wrap\" }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 178,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"6px\", flexWrap: \"wrap\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ margin: 0, fontSize: \"0.76rem\", color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 201,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ margin: 0, fontSize: \"0.76rem\", color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\" }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 212,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ display: \"flex\", gap: \"6px\", alignItems: \"center\", justifyContent: \"space-between\" }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 213,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"6px\", alignItems: \"center\", justifyContent: \"space-between\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ display: \"flex\", gap: \"6px\", flexWrap: \"wrap\", justifyContent: \"flex-end\" }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 221,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"6px\", flexWrap: \"wrap\", justifyContent: \"flex-end\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"10px\", height: fullscreenActive ? \"100%\" : undefined }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 315,
-      "column": 7,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"10px\", height: fullscreenActive ? \"100%\" : undefined }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\" }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 322,
-      "column": 14,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.9rem\", padding: \"8px 0\" }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 326,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.9rem\", padding: \"8px 0\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/relations/EntityRelationsTab.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.78rem\", margin: 0 }}",
-      "path": "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
-      "line": 354,
-      "column": 12,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.78rem\", margin: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "dynamic-style:src/frontend/dm/entities/relations/RelationshipEdge.tsx:style={{ transform: `translate(-50%, -50%) ` + `translate(${labelX}px, ${labelY}px)`, pointerEvents: \"none\", }}",
@@ -20797,9 +20626,9 @@
       "column": 1,
       "sourceType": "css",
       "category": "mixed-responsibility",
-      "severity": "high",
+      "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (36 lines, 33 selectors)."
+      "reason": "Large stylesheet requires atomization (51 lines, 47 selectors)."
     },
     {
       "id": "literal-color:src/frontend/shared/styles/features/kanban.css:red",

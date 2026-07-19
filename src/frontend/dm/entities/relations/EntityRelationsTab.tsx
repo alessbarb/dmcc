@@ -44,30 +44,22 @@ function ConnectionDetail({
 
   if (!selectedConnection) {
     return (
-      <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.82rem", margin: 0 }}>
+      <p className="entity-relations-connection-empty">
         {t("entityDetail.relationsGraph.selectEdgeHint")}
       </p>
     );
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+    <div className="entity-relations-connection-list">
       {selectedConnection.relations.map((relation) => (
         <div
           key={relation.relationId}
-          style={{
-            fontSize: "0.85rem",
-            padding: "10px 12px",
-            backgroundColor: "var(--theme-surfaces-interactive)",
-            borderRadius: "var(--theme-shapes-radius-small)",
-            display: "flex",
-            flexDirection: "column",
-            gap: "4px",
-          }}
+          className="entity-relations-connection"
         >
           <strong>{formatRelationType(relation.relationType, locale)}</strong>
           {relation.description && (
-            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.82rem", margin: 0 }}>
+            <p className="entity-relations-connection__description">
               {relation.description}
             </p>
           )}
@@ -175,7 +167,7 @@ export function EntityRelationsTab({
   // inline block below it (the compact tab-actions row can't fit these).
   const filtersAndViewToggle = (
     <>
-      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+      <div className="entity-relations-toolbar__view-toggle">
         <button
           type="button"
           className={`btn btn-sm ${filtersActive ? "btn-primary" : "btn-secondary"}`}
@@ -198,7 +190,7 @@ export function EntityRelationsTab({
         <EntityRelationsFilters filters={filters} onChange={setFilters} availableEntityTypes={availableEntityTypes} />
       )}
       {neighborhood.neighbors.length > 0 && (
-        <p style={{ margin: 0, fontSize: "0.76rem", color: "var(--theme-text-secondary)" }}>
+        <p className="entity-relations-neighbor-count">
           {t("entityDetail.relationsGraph.neighborCount", {
             visible: filteredNeighborhood.neighbors.length,
             total: neighborhood.neighbors.length,
@@ -209,8 +201,8 @@ export function EntityRelationsTab({
   );
 
   const toolbar = (fullscreenActive: boolean) => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      <div style={{ display: "flex", gap: "6px", alignItems: "center", justifyContent: "space-between" }}>
+    <div className="entity-relations-toolbar">
+      <div className="entity-relations-toolbar__header">
         {canGoBack && onBack ? (
           <button type="button" className="btn btn-secondary btn-sm" onClick={onBack}>
             <ChevronLeft size={14} /> {t("entityDetail.relationsGraph.back")}
@@ -218,7 +210,7 @@ export function EntityRelationsTab({
         ) : (
           <span />
         )}
-        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+        <div className="entity-relations-toolbar__actions">
           <button type="button" className="btn btn-secondary btn-sm" onClick={openInMap} title={t("entityDetail.relationsGraph.viewOnMap")}>
             <MapIcon size={14} /> {t("entityDetail.relationsGraph.viewOnMap")}
           </button>
@@ -312,18 +304,18 @@ export function EntityRelationsTab({
 
   const graphContent = (fullscreenActive: boolean) => (
     <div
-      style={{ display: "flex", flexDirection: "column", gap: "10px", height: fullscreenActive ? "100%" : undefined }}
+      className={`entity-relations-graph-content ${fullscreenActive ? "entity-relations-graph-content--fullscreen" : ""}`}
     >
       {/* In expanded (non-fullscreen) mode the compact toolbar is reported to
           the modal via onToolbarSlotChange, but filters/view-mode/counter
           still render here (they don't fit the compact icon row). */}
       {(fullscreenActive || !isExpanded) && toolbar(fullscreenActive)}
       {!fullscreenActive && isExpanded && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>{filtersAndViewToggle}</div>
+        <div className="entity-relations-inline-filters">{filtersAndViewToggle}</div>
       )}
 
       {neighborhood.neighbors.length === 0 ? (
-        <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.9rem", padding: "8px 0" }}>
+        <p className="entity-relations-empty">
           {t("entityDetail.relationsGraph.noRelations")}
         </p>
       ) : viewMode === "list" ? (
@@ -331,8 +323,7 @@ export function EntityRelationsTab({
       ) : (
         <>
           <div
-            className={fullscreenActive ? "entity-relations-graph entity-relations-graph--fullscreen" : undefined}
-            style={fullscreenActive ? { flex: 1, minHeight: 0 } : undefined}
+            className={fullscreenActive ? "entity-relations-graph entity-relations-graph--fullscreen entity-relations-graph--active" : "entity-relations-graph"}
           >
             <RelationshipGraphCanvas
               neighborhood={filteredNeighborhood}
@@ -351,7 +342,7 @@ export function EntityRelationsTab({
       )}
 
       {neighborhood.missingEntityRelations.length > 0 && (
-        <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.78rem", margin: 0 }}>
+        <p className="entity-relations-missing">
           {neighborhood.missingEntityRelations.length === 1
             ? t("entityDetail.relationsGraph.missingRelationsOne")
             : t("entityDetail.relationsGraph.missingRelationsMany", { count: neighborhood.missingEntityRelations.length })}
