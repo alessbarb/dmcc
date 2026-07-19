@@ -92,37 +92,19 @@ export function AnnouncementListPage() {
     }
   };
 
-  const kindColor = (kind: AnnouncementSummary["kind"]) => {
-    if (kind === "warning") return "var(--theme-feedback-warning-foreground)";
-    if (kind === "maintenance") return "var(--theme-feedback-danger-foreground)";
-    return "var(--theme-accents-primary-foreground)";
-  };
-
   return (
     <AdminShell>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <header style={{ marginBottom: "32px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+      <div className="admin-announcements">
+        <header className="admin-announcements__header">
           <div>
-            <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Announcements</h1>
-            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
+            <h1 className="admin-announcements__title">Announcements</h1>
+            <p className="admin-announcements__subtitle">
               Publish informational banners shown across the landing page and dashboard.
             </p>
           </div>
           <button
             onClick={() => setShowForm((v) => !v)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "10px 16px",
-              borderRadius: "8px",
-              backgroundColor: showForm ? "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)" : "var(--theme-accents-primary-foreground)",
-              color: showForm ? "inherit" : "var(--theme-surfaces-canvas)",
-              border: "1px solid var(--theme-borders-default)",
-              cursor: "pointer",
-              fontSize: "0.85rem",
-              fontWeight: 600,
-            }}
+            className={`admin-announcements__toggle ${showForm ? "admin-announcements__toggle--cancel" : ""}`}
           >
             {showForm ? <X size={16} /> : <Plus size={16} />}
             <span>{showForm ? "Cancel" : "New Announcement"}</span>
@@ -130,40 +112,31 @@ export function AnnouncementListPage() {
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
-            <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
+          <div className="admin-announcements__error">
+            <p className="admin-announcements__zero-margin"><strong>Error:</strong> {error}</p>
           </div>
         )}
 
         {showForm && (
           <form
             onSubmit={(e) => { void handleCreate(e); }}
-            style={{
-              backgroundColor: "var(--theme-surfaces-base)",
-              padding: "20px",
-              borderRadius: "12px",
-              border: "1px solid var(--theme-borders-default)",
-              marginBottom: "24px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-            }}
+            className="admin-announcements__form"
           >
             <input
               type="text"
               placeholder="Title"
               value={form.content.title}
               onChange={(e) => setForm({ ...form, content: { ...form.content, title: e.target.value } })}
-              style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)", border: "1px solid var(--theme-borders-default)", color: "inherit", fontSize: "0.85rem" }}
+              className="admin-announcements__control"
             />
             <textarea
               placeholder="Message body"
               value={form.content.body}
               onChange={(e) => setForm({ ...form, content: { ...form.content, body: e.target.value } })}
               rows={3}
-              style={{ padding: "10px 12px", borderRadius: "8px", backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)", border: "1px solid var(--theme-borders-default)", color: "inherit", fontSize: "0.85rem", resize: "vertical" }}
+              className="admin-announcements__control admin-announcements__textarea"
             />
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+            <div className="admin-announcements__form-options">
               <select
                 value={form.kind}
                 onChange={(e) => {
@@ -172,13 +145,13 @@ export function AnnouncementListPage() {
                     setForm({ ...form, kind: value });
                   }
                 }}
-                style={{ padding: "8px 12px", borderRadius: "8px", backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)", border: "1px solid var(--theme-borders-default)", color: "inherit", fontSize: "0.85rem" }}
+                className="admin-announcements__control"
               >
                 <option value="info">Info</option>
                 <option value="warning">Warning</option>
                 <option value="maintenance">Maintenance</option>
               </select>
-              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
+              <label className="admin-announcements__checkbox-label">
                 <input
                   type="checkbox"
                   checked={form.showOnLanding ?? true}
@@ -186,7 +159,7 @@ export function AnnouncementListPage() {
                 />
                 Show on landing
               </label>
-              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
+              <label className="admin-announcements__checkbox-label">
                 <input
                   type="checkbox"
                   checked={form.showOnDashboard ?? true}
@@ -194,7 +167,7 @@ export function AnnouncementListPage() {
                 />
                 Show on dashboard
               </label>
-              <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
+              <label className="admin-announcements__checkbox-label">
                 <input
                   type="checkbox"
                   checked={form.isDismissible ?? true}
@@ -206,17 +179,7 @@ export function AnnouncementListPage() {
             <button
               type="submit"
               disabled={saving}
-              style={{
-                alignSelf: "flex-start",
-                padding: "10px 20px",
-                borderRadius: "8px",
-                backgroundColor: "var(--theme-accents-primary-foreground)",
-                color: "var(--theme-surfaces-canvas)",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-              }}
+              className="admin-announcements__publish"
             >
               {saving ? "Publishing..." : "Publish Announcement"}
             </button>
@@ -224,57 +187,35 @@ export function AnnouncementListPage() {
         )}
 
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
+          <div className="admin-announcements__loading">
             Loading announcements...
           </div>
         ) : announcements.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "48px", backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", color: "var(--theme-text-secondary)" }}>
+          <div className="admin-announcements__empty">
             No announcements yet.
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div className="admin-announcements__list">
             {announcements.map((ann) => (
               <div
                 key={ann.announcementId}
-                style={{
-                  backgroundColor: "var(--theme-surfaces-base)",
-                  border: "1px solid var(--theme-borders-default)",
-                  borderLeft: `3px solid ${kindColor(ann.kind)}`,
-                  borderRadius: "8px",
-                  padding: "16px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  gap: "16px",
-                  opacity: ann.archivedAt ? 0.5 : 1,
-                }}
+                className={`admin-announcements__card admin-announcements__card--${ann.kind} ${ann.archivedAt ? "admin-announcements__card--archived" : ""}`}
               >
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-                    <strong style={{ fontSize: "0.95rem" }}>{ann.content.title}</strong>
-                    <span style={{ fontSize: "0.7rem", textTransform: "uppercase", color: kindColor(ann.kind), fontWeight: 700 }}>{ann.kind}</span>
-                    {ann.archivedAt && <span style={{ fontSize: "0.7rem", color: "var(--theme-text-secondary)" }}>(archived)</span>}
+                <div className="admin-announcements__content">
+                  <div className="admin-announcements__card-heading">
+                    <strong className="admin-announcements__card-title">{ann.content.title}</strong>
+                    <span className={`admin-announcements__kind admin-announcements__kind--${ann.kind}`}>{ann.kind}</span>
+                    {ann.archivedAt && <span className="admin-announcements__archived">(archived)</span>}
                   </div>
-                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>{ann.content.body}</p>
+                  <p className="admin-announcements__body">{ann.content.body}</p>
                 </div>
                 {!ann.archivedAt && (
-                  <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+                  <div className="admin-announcements__actions">
                     <button
                       onClick={() => void handleToggleEnabled(ann)}
                       disabled={actionLoading !== null}
                       title={ann.isEnabled ? "Disable" : "Enable"}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        padding: "6px 12px",
-                        borderRadius: "6px",
-                        backgroundColor: ann.isEnabled ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
-                        border: `1px solid ${ann.isEnabled ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)" : "var(--theme-borders-default)"}`,
-                        color: ann.isEnabled ? "var(--theme-feedback-success-foreground)" : "inherit",
-                        cursor: "pointer",
-                        fontSize: "0.8rem",
-                      }}
+                      className={`admin-announcements__action ${ann.isEnabled ? "admin-announcements__action--enabled" : ""}`}
                     >
                       {actionLoading === ann.announcementId ? <Loader size={12} className="spin-animation" /> : <Power size={12} />}
                       <span>{ann.isEnabled ? "Enabled" : "Disabled"}</span>
@@ -283,18 +224,7 @@ export function AnnouncementListPage() {
                       onClick={() => void handleArchive(ann.announcementId)}
                       disabled={actionLoading !== null}
                       title="Archive"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        padding: "6px 12px",
-                        borderRadius: "6px",
-                        backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)",
-                        border: "1px solid color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent)",
-                        color: "var(--theme-feedback-danger-foreground)",
-                        cursor: "pointer",
-                        fontSize: "0.8rem",
-                      }}
+                      className="admin-announcements__action admin-announcements__action--archive"
                     >
                       <Archive size={12} />
                     </button>
