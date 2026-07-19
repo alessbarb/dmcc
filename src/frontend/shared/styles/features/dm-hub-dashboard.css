@@ -357,6 +357,34 @@
   padding: 40px 20px;
 }
 
+.dm-empty-state__icon {
+  display: block;
+  margin: 0 auto 12px;
+  color: var(--theme-accents-primary-foreground);
+  opacity: 0.5;
+}
+
+.dm-empty-state__icon--compact {
+  margin-bottom: 10px;
+  opacity: 0.55;
+}
+
+.dm-empty-state__title {
+  margin: 0;
+  color: var(--theme-text-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.dm-empty-state__description {
+  display: block;
+  max-width: 380px;
+  margin: 8px auto 20px;
+  color: var(--theme-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
 .dm-empty-state--error {
   display: flex;
   flex-direction: column;
@@ -454,6 +482,10 @@
   z-index: 1;
   display: flex;
   align-items: center;
+}
+
+.dm-campaign-card__fav-icon {
+  color: var(--theme-accents-primary-foreground);
 }
 
 .dm-campaign-card__actions {
@@ -676,6 +708,10 @@
 .dm-activity-row__icon {
   flex-shrink: 0;
   margin-top: 1px;
+}
+
+.dm-activity-row__icon-glyph {
+  color: var(--theme-accents-primary-foreground);
 }
 
 .dm-activity-row__text {

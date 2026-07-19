@@ -9,7 +9,7 @@ Generated mechanically by `npm run styles:audit:report`.
   "cssFiles": 130,
   "tsxFilesWithInlineStyles": 31,
   "forbiddenLiteralColors": 141,
-  "staticInlineStyles": 56,
+  "staticInlineStyles": 47,
   "dynamicInlineStyles": 19,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -103,7 +103,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/canvas-toolbar.css` | legacy | shared | 24 | 5 | 1 |
 | `src/frontend/shared/styles/features/dashboard-overview.css` | legacy | shared | 49 | 46 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
-| `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1371 | 215 | 1 |
+| `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1407 | 221 | 1 |
 | `src/frontend/shared/styles/features/dm-hub.css` | legacy | shared | 589 | 73 | 1 |
 | `src/frontend/shared/styles/features/dm-onboarding.css` | legacy | shared | 20 | 19 | 1 |
 | `src/frontend/shared/styles/features/entity-create.css` | legacy | shared | 32 | 6 | 1 |
@@ -420,17 +420,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:99` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:541` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignModals.tsx:367` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:115` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:116` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:119` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:152` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:163` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:211` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:260` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubHero.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubHero.tsx:76` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/hub/DmHubSidebar.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -720,7 +711,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:447` | Important declarations bypass the intended cascade. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dashboard-overview.css:1` | Large stylesheet requires atomization (49 lines, 46 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-dashboard.css:1` | Large stylesheet requires atomization (507 lines, 71 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub-dashboard.css:1` | Large stylesheet requires atomization (1371 lines, 215 selectors). |
+| critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub-dashboard.css:1` | Large stylesheet requires atomization (1407 lines, 221 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub.css:1` | Large stylesheet requires atomization (589 lines, 73 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/entity-relations.css:1` | Large stylesheet requires atomization (51 lines, 47 selectors). |
 | high | literal-color | `src/frontend/shared/styles/features/kanban.css:84` | Literal visual color outside a registered theme package. |

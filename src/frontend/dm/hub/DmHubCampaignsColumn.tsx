@@ -45,11 +45,11 @@ function formatCampaignSystem(system?: string) {
 
 function activityIcon(type: string) {
   switch (type) {
-    case "session": return <Activity size={14} style={{ color: "var(--theme-accents-primary-foreground)" }} />;
-    case "npc": return <UserPlus size={14} style={{ color: "var(--theme-accents-primary-foreground)" }} />;
-    case "note": return <FileText size={14} style={{ color: "var(--theme-accents-primary-foreground)" }} />;
-    case "entity": return <Layers size={14} style={{ color: "var(--theme-accents-primary-foreground)" }} />;
-    default: return <span aria-hidden="true">•</span>;
+    case "session": return <Activity size={14} className="dm-activity-row__icon-glyph" />;
+    case "npc": return <UserPlus size={14} className="dm-activity-row__icon-glyph" />;
+    case "note": return <FileText size={14} className="dm-activity-row__icon-glyph" />;
+    case "entity": return <Layers size={14} className="dm-activity-row__icon-glyph" />;
+    default: return <span className="dm-activity-row__icon-glyph" aria-hidden="true">•</span>;
   }
 }
 
@@ -112,11 +112,11 @@ export function DmHubCampaignsColumn({
                 </div>
               ) : campaigns.length === 0 ? (
                 <div className="dm-empty-state">
-                  <Shield size={32} style={{ color: "var(--theme-accents-primary-foreground)", opacity: 0.5, marginBottom: "12px" }} />
-                  <p style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--theme-text-primary)" }}>
+                  <Shield size={32} className="dm-empty-state__icon" />
+                  <p className="dm-empty-state__title">
                     Todavía no tienes campañas
                   </p>
-                  <span style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)", lineHeight: 1.5, display: "block", margin: "8px 0 20px", maxWidth: "380px" }}>
+                  <span className="dm-empty-state__description">
                     Crea tu primera campaña desde cero, usa una aventura preparada o restaura una copia de seguridad.
                   </span>
                   <div className="dm-empty-state__actions">
@@ -160,7 +160,7 @@ export function DmHubCampaignsColumn({
                               className="dm-campaign-card__fav"
                               onClick={(e) => e.stopPropagation()}
                             >
-                              <Star size={11} fill="var(--theme-accents-primary-foreground)" style={{ color: "var(--theme-accents-primary-foreground)" }} />
+                              <Star size={11} className="dm-campaign-card__fav-icon" fill="currentColor" />
                             </button>
                             <div
                               className="dm-campaign-card__actions"
@@ -257,7 +257,7 @@ export function DmHubCampaignsColumn({
                 </div>
                 {recentActivity.length === 0 ? (
                   <div className="dm-empty-state dm-empty-state--compact">
-                    <FileText size={22} style={{ color: "var(--theme-accents-primary-foreground)", opacity: 0.55, marginBottom: "10px" }} />
+                    <FileText size={22} className="dm-empty-state__icon dm-empty-state__icon--compact" />
                     <p>No hay actividad reciente.</p>
                     <span>Cuando crees campañas, sesiones, PNJs o notas, aparecerán aquí.</span>
                   </div>

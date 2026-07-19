@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:29:51.702Z",
+  "generatedAt": "2026-07-19T11:31:30.116Z",
   "summary": {
     "cssFiles": 130,
     "tsxFilesWithInlineStyles": 31,
     "forbiddenLiteralColors": 141,
-    "staticInlineStyles": 56,
+    "staticInlineStyles": 47,
     "dynamicInlineStyles": 19,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -1882,18 +1882,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-text-primary",
-        "--theme-text-secondary",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-accents-primary-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/hub/DmHubHero.tsx",
@@ -6784,8 +6773,8 @@
       "path": "src/frontend/shared/styles/features/dm-hub-dashboard.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 1371,
-      "selectorCount": 215,
+      "lineCount": 1407,
+      "selectorCount": 221,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -6845,6 +6834,9 @@
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
         "--theme-text-primary",
+        "--theme-accents-primary-foreground",
+        "--theme-text-primary",
+        "--theme-text-secondary",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-text-on-media",
@@ -6857,6 +6849,7 @@
         "--theme-text-on-media",
         "--theme-text-secondary",
         "--theme-surfaces-canvas",
+        "--theme-accents-primary-foreground",
         "--theme-text-on-media",
         "--theme-surfaces-canvas",
         "--theme-text-primary",
@@ -6886,6 +6879,7 @@
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-text-on-media",
+        "--theme-accents-primary-foreground",
         "--theme-text-primary",
         "--theme-text-secondary",
         "--theme-text-on-media",
@@ -12701,97 +12695,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 48,
-      "column": 48,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 49,
-      "column": 44,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 50,
-      "column": 45,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 51,
-      "column": 45,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\", opacity: 0.5, marginBottom: \"12px\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 115,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\", opacity: 0.5, marginBottom: \"12px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ fontWeight: 700, fontSize: \"1.05rem\", color: \"var(--theme-text-primary)\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 116,
-      "column": 22,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontWeight: 700, fontSize: \"1.05rem\", color: \"var(--theme-text-primary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ fontSize: \"0.85rem\", color: \"var(--theme-text-secondary)\", lineHeight: 1.5, display: \"block\", margin: \"8px 0 20px\", maxWidth: \"380px\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 119,
-      "column": 25,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"0.85rem\", color: \"var(--theme-text-secondary)\", lineHeight: 1.5, display: \"block\", margin: \"8px 0 20px\", maxWidth: \"380px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "dynamic-style:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ backgroundImage: `url(${c.coverUrl || \"/assets/campaigns/default-campaign-cover.jpg\"})` }}",
       "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
       "line": 152,
@@ -12805,19 +12708,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 163,
-      "column": 94,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "dynamic-style:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ width: `${c.progressPercent}%` }}",
       "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
       "line": 211,
@@ -12829,19 +12719,6 @@
       "value": "style={{ width: `${c.progressPercent}%` }}",
       "classification": "dynamic",
       "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/hub/DmHubCampaignsColumn.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\", opacity: 0.55, marginBottom: \"10px\" }}",
-      "path": "src/frontend/dm/hub/DmHubCampaignsColumn.tsx",
-      "line": 260,
-      "column": 41,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-accents-primary-foreground)\", opacity: 0.55, marginBottom: \"10px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "static-inline:src/frontend/dm/hub/DmHubHero.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\", marginRight: \"6px\", verticalAlign: \"middle\" }}",
@@ -16290,7 +16167,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (1371 lines, 215 selectors)."
+      "reason": "Large stylesheet requires atomization (1407 lines, 221 selectors)."
     },
     {
       "id": "mixed-responsibility:src/frontend/shared/styles/features/dm-hub.css",
