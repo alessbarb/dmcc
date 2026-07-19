@@ -7,9 +7,9 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 93,
-  "tsxFilesWithInlineStyles": 83,
+  "tsxFilesWithInlineStyles": 82,
   "forbiddenLiteralColors": 256,
-  "staticInlineStyles": 1039,
+  "staticInlineStyles": 1038,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -78,7 +78,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1347 | 191 | 1 |
-| `src/frontend/shared/styles/features/dm-hub.css` | legacy | shared | 584 | 72 | 1 |
+| `src/frontend/shared/styles/features/dm-hub.css` | legacy | shared | 589 | 73 | 1 |
 | `src/frontend/shared/styles/features/graph-search.css` | legacy | shared | 77 | 8 | 1 |
 | `src/frontend/shared/styles/features/kanban-board.css` | legacy | shared | 120 | 16 | 1 |
 | `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
@@ -1059,7 +1059,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/hub/DmHubCampaignsColumn.tsx:260` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubHero.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubHero.tsx:76` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/hub/DmHubPage.tsx:363` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubSidebar.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/hub/DmHubSidebar.tsx:40` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/hub/DmHubSidebar.tsx:70` | Runtime style requires review and CSS custom-property preference. |
@@ -1777,7 +1776,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:447` | Important declarations bypass the intended cascade. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-dashboard.css:1` | Large stylesheet requires atomization (507 lines, 71 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub-dashboard.css:1` | Large stylesheet requires atomization (1347 lines, 191 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub.css:1` | Large stylesheet requires atomization (584 lines, 72 selectors). |
+| critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub.css:1` | Large stylesheet requires atomization (589 lines, 73 selectors). |
 | high | literal-color | `src/frontend/shared/styles/features/kanban.css:84` | Literal visual color outside a registered theme package. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/landing-archive.css:1` | Large stylesheet requires atomization (864 lines, 136 selectors). |
 | high | important | `src/frontend/shared/styles/features/landing-archive.css:628` | Important declarations bypass the intended cascade. |

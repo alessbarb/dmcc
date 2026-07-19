@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:04:57.140Z",
+  "generatedAt": "2026-07-19T10:05:29.430Z",
   "summary": {
     "cssFiles": 93,
-    "tsxFilesWithInlineStyles": 83,
+    "tsxFilesWithInlineStyles": 82,
     "forbiddenLiteralColors": 256,
-    "staticInlineStyles": 1039,
+    "staticInlineStyles": 1038,
     "dynamicInlineStyles": 31,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -6814,8 +6814,8 @@
       "path": "src/frontend/shared/styles/features/dm-hub.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 584,
-      "selectorCount": 72,
+      "lineCount": 589,
+      "selectorCount": 73,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -20942,19 +20942,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/hub/DmHubPage.tsx:style={{ display: \"flex\", flexDirection: \"column\", minHeight: \"100vh\" }}",
-      "path": "src/frontend/dm/hub/DmHubPage.tsx",
-      "line": 363,
-      "column": 34,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", minHeight: \"100vh\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "static-inline:src/frontend/dm/hub/DmHubSidebar.tsx:style={{ color: \"var(--theme-accents-primary-foreground)\" }}",
       "path": "src/frontend/dm/hub/DmHubSidebar.tsx",
       "line": 33,
@@ -29888,7 +29875,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (584 lines, 72 selectors)."
+      "reason": "Large stylesheet requires atomization (589 lines, 73 selectors)."
     },
     {
       "id": "literal-color:src/frontend/shared/styles/features/kanban.css:red",

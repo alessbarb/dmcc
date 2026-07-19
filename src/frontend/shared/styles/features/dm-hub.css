@@ -1,4 +1,10 @@
 /* DM Campaign Center Restructuring styles */
+.dm-hub-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .workspace-main-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -580,4 +586,3 @@
 .quick-action-square-btn:hover span {
   color: var(--theme-text-primary);
 }
-

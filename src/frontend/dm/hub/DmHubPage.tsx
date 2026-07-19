@@ -360,7 +360,7 @@ export function DmHubPage() {
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="dm-hub-root" style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <div className="dm-hub-root">
       <RpgPortalBackground />
 
       <DmHubTopBar
