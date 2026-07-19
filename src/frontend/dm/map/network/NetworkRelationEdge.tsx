@@ -39,11 +39,8 @@ export const NetworkRelationEdge = React.memo(function NetworkRelationEdge({
       {showLabel && (
         <EdgeLabelRenderer>
           <div
-            style={{
-              position: "absolute",
-              transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
-              pointerEvents: "none",
-            }}
+            className="network-relation-edge__label"
+            style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}
           >
             <RelationEdgeLabel label={edgeData.label!} />
           </div>

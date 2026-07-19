@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:40:39.659Z",
+  "generatedAt": "2026-07-19T11:41:26.003Z",
   "summary": {
-    "cssFiles": 132,
-    "tsxFilesWithInlineStyles": 20,
+    "cssFiles": 133,
+    "tsxFilesWithInlineStyles": 19,
     "forbiddenLiteralColors": 124,
-    "staticInlineStyles": 8,
-    "dynamicInlineStyles": 17,
+    "staticInlineStyles": 6,
+    "dynamicInlineStyles": 18,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
@@ -2377,7 +2377,7 @@
       "path": "src/frontend/dm/map/network/NetworkRelationEdge.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 55,
+      "lineCount": 52,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -2574,17 +2574,12 @@
       "path": "src/frontend/dm/map/shared/RelationEdgeLabel.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 31,
+      "lineCount": 18,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-graph-edge-label-background",
-        "--theme-borders-default",
-        "--theme-graph-edge-label-text",
-        "--theme-surfaces-canvas"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/map/shared/ResourceNodeFrame.tsx",
@@ -7836,6 +7831,24 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/relation-edge-label.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 19,
+      "selectorCount": 2,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-borders-default",
+        "--theme-graph-edge-label-background",
+        "--theme-surfaces-canvas",
+        "--theme-graph-edge-label-text"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/rules-workspace.css",
       "layer": "legacy",
       "domain": "shared",
@@ -9028,7 +9041,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 91,
+      "lineCount": 92,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -9098,6 +9111,7 @@
         "src/frontend/shared/styles/features/shortcuts-panel.css",
         "src/frontend/shared/styles/features/player-profile-modal.css",
         "src/frontend/shared/styles/features/pwa-update-banner.css",
+        "src/frontend/shared/styles/features/relation-edge-label.css",
         "src/frontend/shared/styles/features/dm-onboarding.css",
         "src/frontend/shared/styles/features/entity-trace.css",
         "src/frontend/shared/styles/features/canvas-page-header.css",
@@ -12746,17 +12760,17 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/map/network/NetworkRelationEdge.tsx:style={{ position: \"absolute\", transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`, pointerEvents: \"none\", }}",
+      "id": "dynamic-style:src/frontend/dm/map/network/NetworkRelationEdge.tsx:style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}",
       "path": "src/frontend/dm/map/network/NetworkRelationEdge.tsx",
-      "line": 42,
+      "line": 43,
       "column": 13,
-      "severity": "high",
-      "status": "temporary",
+      "severity": "info",
+      "status": "allowed",
       "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n              position: \"absolute\",\n              transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,\n              pointerEvents: \"none\",\n            }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
+      "category": "dynamic-style",
+      "value": "style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}",
+      "classification": "dynamic",
+      "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
       "id": "important:src/frontend/dm/map/network/networkFlow.css:!important",
@@ -13009,19 +13023,6 @@
       "value": "style={{ \"--rg-accent\": cfg.accent } as React.CSSProperties & Record<`--${string}`, string>}\n    >\n      {isTableHidden && (\n        <button\n          type=\"button\"\n          className=\"rg-card__privacy-cover entity-node-content__privacy-co",
       "classification": "dynamic",
       "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/map/shared/RelationEdgeLabel.tsx:style={{ background: \"var(--theme-graph-edge-label-background)\", backdropFilter: \"blur(4px)\", border: \"1px solid var(--theme-borders-default)\", color: \"var(--theme-graph-edge-label-text)\", padding: \"2",
-      "path": "src/frontend/dm/map/shared/RelationEdgeLabel.tsx",
-      "line": 12,
-      "column": 7,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n        background: \"var(--theme-graph-edge-label-background)\",\n        backdropFilter: \"blur(4px)\",\n        border: \"1px solid var(--theme-borders-default)\",\n        color: \"var(--theme-graph-edge-label-text)\",\n        padding: \"2",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "static-inline:src/frontend/dm/map/shared/ResourceNodeFrame.tsx:style={{ display: \"flex\", flexDirection: \"column\", background: \"color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)\", backdropFilter: \"blur(12px)\", borderRadius: \"12px\", border: `1p",
@@ -17320,6 +17321,7 @@
       "src/frontend/shared/styles/features/shortcuts-panel.css",
       "src/frontend/shared/styles/features/player-profile-modal.css",
       "src/frontend/shared/styles/features/pwa-update-banner.css",
+      "src/frontend/shared/styles/features/relation-edge-label.css",
       "src/frontend/shared/styles/features/dm-onboarding.css",
       "src/frontend/shared/styles/features/entity-trace.css",
       "src/frontend/shared/styles/features/canvas-page-header.css",

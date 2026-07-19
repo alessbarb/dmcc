@@ -1,0 +1,18 @@
+.relation-edge-label {
+  padding: 2px 8px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: 4px;
+  background: var(--theme-graph-edge-label-background);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent);
+  backdrop-filter: blur(4px);
+  color: var(--theme-graph-edge-label-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.network-relation-edge__label {
+  position: absolute;
+  pointer-events: none;
+}

@@ -6,11 +6,11 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 132,
-  "tsxFilesWithInlineStyles": 20,
+  "cssFiles": 133,
+  "tsxFilesWithInlineStyles": 19,
   "forbiddenLiteralColors": 124,
-  "staticInlineStyles": 8,
-  "dynamicInlineStyles": 17,
+  "staticInlineStyles": 6,
+  "dynamicInlineStyles": 18,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
@@ -120,6 +120,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/player-profile-modal.css` | legacy | shared | 18 | 4 | 1 |
 | `src/frontend/shared/styles/features/pwa-update-banner.css` | legacy | shared | 30 | 2 | 1 |
 | `src/frontend/shared/styles/features/quick-capture.css` | legacy | shared | 142 | 19 | 1 |
+| `src/frontend/shared/styles/features/relation-edge-label.css` | legacy | shared | 19 | 2 | 1 |
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
 | `src/frontend/shared/styles/features/session-prep-form.css` | legacy | shared | 53 | 9 | 1 |
 | `src/frontend/shared/styles/features/shortcuts-panel.css` | legacy | shared | 66 | 11 | 1 |
@@ -142,7 +143,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1023 | 152 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 91 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 92 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -443,9 +444,8 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/map/network/networkFlow.css:470` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:685` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/dm/map/network/NetworkInspector.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/map/network/NetworkRelationEdge.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/map/network/NetworkRelationEdge.tsx:43` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/map/shared/EntityNodeContent.tsx:66` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/map/shared/RelationEdgeLabel.tsx:12` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/map/shared/ResourceNodeFrame.tsx:24` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | mixed-responsibility | `src/frontend/dm/onboarding/campaign-guided-tour.css:1` | Large stylesheet requires atomization (226 lines, 32 selectors). |
 | high | cross-component-selector | `src/frontend/dm/onboarding/campaign-guided-tour.css:129` | Selector depends on another component's DOM structure. |

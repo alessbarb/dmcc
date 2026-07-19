@@ -72,6 +72,7 @@
 @import "./features/shortcuts-panel.css";
 @import "./features/player-profile-modal.css";
 @import "./features/pwa-update-banner.css";
+@import "./features/relation-edge-label.css";
 @import "./features/dm-onboarding.css";
 @import "./features/entity-trace.css";
 @import "./features/canvas-page-header.css";
