@@ -7,9 +7,9 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 130,
-  "tsxFilesWithInlineStyles": 34,
+  "tsxFilesWithInlineStyles": 33,
   "forbiddenLiteralColors": 183,
-  "staticInlineStyles": 81,
+  "staticInlineStyles": 76,
   "dynamicInlineStyles": 21,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -116,7 +116,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
 | `src/frontend/shared/styles/features/landing-archive.css` | legacy | shared | 864 | 136 | 1 |
 | `src/frontend/shared/styles/features/player-campaign.css` | legacy | shared | 38 | 37 | 1 |
-| `src/frontend/shared/styles/features/player-portal.css` | legacy | shared | 988 | 153 | 1 |
+| `src/frontend/shared/styles/features/player-portal.css` | legacy | shared | 1008 | 157 | 1 |
 | `src/frontend/shared/styles/features/quick-capture.css` | legacy | shared | 142 | 19 | 1 |
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
 | `src/frontend/shared/styles/features/session-prep-form.css` | legacy | shared | 53 | 9 | 1 |
@@ -665,11 +665,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignShell.tsx:87` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignsPage.tsx:24` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerCampaignsPage.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerJoinPage.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerJoinPage.tsx:36` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerJoinPage.tsx:38` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerJoinPage.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/player/pages/PlayerJoinPage.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerMessagesPage.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/player/pages/PlayerMessagesPage.tsx:43` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:114` | Runtime style requires review and CSS custom-property preference. |
@@ -796,17 +791,17 @@ Generated mechanically by `npm run styles:audit:report`.
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/landing-archive.css:1` | Large stylesheet requires atomization (864 lines, 136 selectors). |
 | high | important | `src/frontend/shared/styles/features/landing-archive.css:628` | Important declarations bypass the intended cascade. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/player-campaign.css:1` | Large stylesheet requires atomization (38 lines, 37 selectors). |
-| critical | mixed-responsibility | `src/frontend/shared/styles/features/player-portal.css:1` | Large stylesheet requires atomization (988 lines, 153 selectors). |
-| high | literal-color | `src/frontend/shared/styles/features/player-portal.css:277` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:318` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:329` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:330` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/features/player-portal.css:710` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/features/player-portal.css:734` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:773` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:781` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:786` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/features/player-portal.css:787` | Important declarations bypass the intended cascade. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/features/player-portal.css:1` | Large stylesheet requires atomization (1008 lines, 157 selectors). |
+| high | literal-color | `src/frontend/shared/styles/features/player-portal.css:293` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/features/player-portal.css:334` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal.css:345` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal.css:346` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/styles/features/player-portal.css:730` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/features/player-portal.css:754` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/styles/features/player-portal.css:793` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal.css:801` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal.css:806` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/features/player-portal.css:807` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/quick-capture.css:36` | Important declarations bypass the intended cascade. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/timeline.css:1` | Large stylesheet requires atomization (217 lines, 37 selectors). |
 | high | literal-color | `src/frontend/shared/styles/features/timeline.css:89` | Literal visual color outside a registered theme package. |

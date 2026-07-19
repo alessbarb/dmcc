@@ -31,15 +31,15 @@ export function PlayerJoinPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--theme-surfaces-canvas)" }}>
+    <div className="player-join-page">
       <PortalTopBar />
-      <div className="join-portal-container" style={{ flex: 1 }}>
+      <div className="join-portal-container join-portal-container--page">
         <div className="join-portal-background"><RpgPortalBackground /><div className="join-portal-radial-glow" /></div>
-        <div className="join-portal-card" style={{ maxWidth: 620 }}>
+        <div className="join-portal-card join-portal-card--join">
           <div className="join-portal-header">
             <div className="join-portal-icon-wrapper"><Ticket className="join-portal-icon" size={32} /></div>
             <h1 className="join-portal-title">Unirte a una campaña</h1>
-            <p style={{ color: "var(--theme-text-secondary)" }}>Pega el enlace completo o el token que te ha enviado el director de juego.</p>
+            <p className="join-portal-subtitle">Pega el enlace completo o el token que te ha enviado el director de juego.</p>
           </div>
 
           <form className="join-portal-form" onSubmit={(event) => { event.preventDefault(); continueToInvitation(); }}>
@@ -60,7 +60,7 @@ export function PlayerJoinPage() {
           </form>
 
           <button type="button" className="join-portal-back-btn" onClick={() => void navigate({ to: "/home" })}>
-            <ArrowLeft size={14} style={{ marginRight: 6 }} /> Volver a portales
+            <ArrowLeft className="join-portal-back-icon" size={14} /> Volver a portales
           </button>
         </div>
       </div>

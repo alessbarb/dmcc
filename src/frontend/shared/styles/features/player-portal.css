@@ -146,6 +146,18 @@
   padding: 24px;
 }
 
+.player-join-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--theme-surfaces-canvas);
+}
+
+.join-portal-container--page {
+  flex: 1;
+  min-height: 0;
+}
+
 .join-portal-background {
   position: absolute;
   inset: 0;
@@ -187,6 +199,10 @@
   flex-direction: column;
   gap: 28px;
   animation: joinCardFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.join-portal-card--join {
+  max-width: 620px;
 }
 
 @keyframes joinCardFadeIn {
@@ -397,6 +413,10 @@
   padding: 6px 12px;
   border-radius: var(--theme-shapes-radius-medium);
   transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.join-portal-back-icon {
+  margin-right: 6px;
 }
 
 .join-portal-back-btn:hover {

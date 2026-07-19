@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:23:06.526Z",
+  "generatedAt": "2026-07-19T11:24:20.113Z",
   "summary": {
     "cssFiles": 130,
-    "tsxFilesWithInlineStyles": 34,
+    "tsxFilesWithInlineStyles": 33,
     "forbiddenLiteralColors": 183,
-    "staticInlineStyles": 81,
+    "staticInlineStyles": 76,
     "dynamicInlineStyles": 21,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -4685,10 +4685,7 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/player/pages/PlayerMessagesPage.tsx",
@@ -7566,8 +7563,8 @@
       "path": "src/frontend/shared/styles/features/player-portal.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 988,
-      "selectorCount": 153,
+      "lineCount": 1008,
+      "selectorCount": 157,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7585,6 +7582,7 @@
         "--theme-accents-secondary-foreground",
         "--theme-surfaces-canvas",
         "--theme-text-secondary",
+        "--theme-surfaces-canvas",
         "--theme-surfaces-canvas",
         "--theme-activity-system-foreground",
         "--theme-activity-tag-foreground",
@@ -15588,71 +15586,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/player/pages/PlayerJoinPage.tsx:style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", background: \"var(--theme-surfaces-canvas)\" }}",
-      "path": "src/frontend/player/pages/PlayerJoinPage.tsx",
-      "line": 34,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", background: \"var(--theme-surfaces-canvas)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerJoinPage.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/player/pages/PlayerJoinPage.tsx",
-      "line": 36,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerJoinPage.tsx:style={{ maxWidth: 620 }}",
-      "path": "src/frontend/player/pages/PlayerJoinPage.tsx",
-      "line": 38,
-      "column": 43,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ maxWidth: 620 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerJoinPage.tsx:style={{ color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/player/pages/PlayerJoinPage.tsx",
-      "line": 42,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/player/pages/PlayerJoinPage.tsx:style={{ marginRight: 6 }}",
-      "path": "src/frontend/player/pages/PlayerJoinPage.tsx",
-      "line": 63,
-      "column": 34,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginRight: 6 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "static-inline:src/frontend/player/pages/PlayerMessagesPage.tsx:style={{ minHeight: \"100vh\", background: \"var(--theme-surfaces-canvas)\", paddingBottom: \"calc(5.25rem + env(safe-area-inset-bottom))\" }}",
       "path": "src/frontend/player/pages/PlayerMessagesPage.tsx",
       "line": 33,
@@ -17160,7 +17093,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/features/player-portal.css:hsl(220, 25%, 96%)",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 277,
+      "line": 293,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -17172,7 +17105,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 318,
+      "line": 334,
       "column": 32,
       "severity": "high",
       "status": "temporary",
@@ -17184,7 +17117,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 329,
+      "line": 345,
       "column": 94,
       "severity": "high",
       "status": "temporary",
@@ -17196,7 +17129,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 330,
+      "line": 346,
       "column": 101,
       "severity": "high",
       "status": "temporary",
@@ -17208,7 +17141,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 773,
+      "line": 793,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -17220,7 +17153,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 781,
+      "line": 801,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -17232,7 +17165,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 786,
+      "line": 806,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -17244,7 +17177,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 787,
+      "line": 807,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -17256,7 +17189,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal.css:height: 7px; overflow: hidden; border-radius: var(--theme-shapes-radius-pill); background: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent); margin: 8px 0 5px; } .player-resource-meter > div",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 710,
+      "line": 730,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -17268,7 +17201,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal.css:display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; } .player-history-header span:first-child",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 734,
+      "line": 754,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -17286,7 +17219,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (988 lines, 153 selectors)."
+      "reason": "Large stylesheet requires atomization (1008 lines, 157 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/features/quick-capture.css:!important",
