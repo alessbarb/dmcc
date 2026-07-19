@@ -7,14 +7,14 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 126,
-  "tsxFilesWithInlineStyles": 40,
-  "forbiddenLiteralColors": 228,
-  "staticInlineStyles": 229,
+  "tsxFilesWithInlineStyles": 39,
+  "forbiddenLiteralColors": 225,
+  "staticInlineStyles": 189,
   "dynamicInlineStyles": 26,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 36,
+  "mixedResponsibilityFiles": 37,
   "crossComponentSelectors": 62,
   "importantDeclarations": 381,
   "unclassifiedCssFiles": 0
@@ -101,7 +101,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/canvas-palette.css` | legacy | shared | 195 | 30 | 1 |
 | `src/frontend/shared/styles/features/canvas-presentation.css` | legacy | shared | 11 | 1 | 1 |
 | `src/frontend/shared/styles/features/canvas-toolbar.css` | legacy | shared | 24 | 5 | 1 |
-| `src/frontend/shared/styles/features/dashboard-overview.css` | legacy | shared | 14 | 13 | 1 |
+| `src/frontend/shared/styles/features/dashboard-overview.css` | legacy | shared | 49 | 46 | 1 |
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1351 | 195 | 1 |
 | `src/frontend/shared/styles/features/dm-hub.css` | legacy | shared | 589 | 73 | 1 |
@@ -597,49 +597,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:211` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:326` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:504` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:278` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:280` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:290` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:300` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:303` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:308` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:335` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:354` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:383` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:391` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:408` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:425` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:429` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:432` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:440` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:453` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:456` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:458` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:459` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:462` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:464` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:470` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:491` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:498` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:504` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:510` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:528` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:545` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:551` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:555` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:570` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:577` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:588` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:599` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:610` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:622` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:629` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:632` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:642` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:646` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:649` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:653` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:660` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:6` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:6` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:7` | Important declarations bypass the intended cascade. |
@@ -981,6 +938,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:441` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:446` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/features/campaign-template.css:447` | Important declarations bypass the intended cascade. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/features/dashboard-overview.css:1` | Large stylesheet requires atomization (49 lines, 46 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-dashboard.css:1` | Large stylesheet requires atomization (507 lines, 71 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub-dashboard.css:1` | Large stylesheet requires atomization (1351 lines, 195 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/dm-hub.css:1` | Large stylesheet requires atomization (589 lines, 73 selectors). |

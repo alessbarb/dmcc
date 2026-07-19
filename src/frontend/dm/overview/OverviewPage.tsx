@@ -30,9 +30,9 @@ import { resolveActiveEntity } from "../entities/relations/resolveActiveEntity.j
 import { LiveTableModal } from "../components/LiveTableModal.js";
 import { ShortcutsPanel } from "../shortcuts/ShortcutsPanel.js";
 
-function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <section className="card dashboard-card" style={style}>
+    <section className={`card dashboard-card ${className}`}>
       {children}
     </section>
   );
@@ -275,37 +275,21 @@ export function OverviewPage() {
 
   return (
     <>
-      <div className="dashboard-page" style={{ display: "grid", gap: 24 }}>
-        <header
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 16,
-            flexWrap: "wrap",
-            alignItems: "flex-start",
-          }}
-        >
+      <div className="dashboard-page">
+        <header className="dashboard-header">
           <div>
-            <p
-              style={{
-                margin: "0 0 6px",
-                color: "var(--theme-text-secondary)",
-                textTransform: "uppercase",
-                letterSpacing: ".12em",
-                fontSize: 12,
-              }}
-            >
+            <p className="dashboard-header__eyebrow">
               {t("campaignShell.meta.dashboardEyebrow")}
             </p>
-            <h1 style={{ margin: 0, fontSize: "clamp(1.8rem, 4vw, 3rem)" }}>
+            <h1 className="dashboard-header__title">
               {campaign?.title ?? t("campaignShell.defaultTitle")}
             </h1>
-            <p style={{ margin: "8px 0 0", color: "var(--theme-text-secondary)", maxWidth: 760 }}>
+            <p className="dashboard-header__description">
               {campaign?.summary ?? t("campaignShell.meta.dashboardDescription")}
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <div className="dashboard-header__actions">
             <button
               className="btn btn-secondary"
               type="button"
@@ -332,7 +316,7 @@ export function OverviewPage() {
           </div>
         </header>
 
-        <div className="card" style={{ padding: 16 }}>
+        <div className="card dashboard-shortcuts">
           <ShortcutsPanel campaignId={campaignId} />
         </div>
 
@@ -350,13 +334,7 @@ export function OverviewPage() {
             <span aria-hidden="true" />
           </h2>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
-              gap: 12,
-            }}
-          >
+          <div className="dashboard-metrics-grid">
             <MetricCard
               icon={<BookOpen size={18} />}
               label={t("dashboard.metricPlayersDetail")}
@@ -379,16 +357,9 @@ export function OverviewPage() {
             />
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: 12,
-              marginTop: 12,
-            }}
-          >
+          <div className="dashboard-state-grid">
             <Card>
-              <h3 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <h3 className="dashboard-card__heading">
                 <MapPin size={18} /> {t("dashboard.currentLocation")}
               </h3>
               {currentLocation ? (
@@ -405,7 +376,7 @@ export function OverviewPage() {
             </Card>
 
             <Card>
-              <h3 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <h3 className="dashboard-card__heading">
                 <Flag size={18} /> {t("dashboard.mainQuest")}
               </h3>
               {currentQuest ? (
@@ -422,14 +393,14 @@ export function OverviewPage() {
             </Card>
 
             <Card>
-              <h3 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+              <h3 className="dashboard-card__heading">
                 <CalendarDays size={18} /> {t("dashboard.lastSession")}
               </h3>
               {lastClosedSession ? (
-                <div style={{ display: "grid", gap: 4 }}>
+                <div className="dashboard-session-summary">
                   <strong>{lastClosedSession.title}</strong>
                   {lastClosedSession.endedAt && (
-                    <span style={{ color: "var(--theme-text-secondary)", fontSize: 13 }}>
+                    <span className="dashboard-muted-text">
                       {new Date(lastClosedSession.endedAt).toLocaleString(locale, {
                         dateStyle: "medium",
                         timeStyle: "short",
@@ -437,7 +408,7 @@ export function OverviewPage() {
                     </span>
                   )}
                   {lastClosedSession.summary && (
-                    <span style={{ color: "var(--theme-text-secondary)", fontSize: 13 }}>
+                    <span className="dashboard-muted-text">
                       {lastClosedSession.summary}
                     </span>
                   )}
@@ -449,25 +420,16 @@ export function OverviewPage() {
           </div>
         </section>
 
-        <Card
-          style={{
-            borderColor:
-              attentionTone === "danger"
-                ? "rgba(239,68,68,.4)"
-                : attentionTone === "warning"
-                  ? "rgba(245,158,11,.35)"
-                  : "rgba(34,197,94,.3)",
-          }}
-        >
-          <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
+        <Card className={`dashboard-attention dashboard-attention--${attentionTone}`}>
+          <div className="dashboard-attention__header">
             {attentionCount > 0 ? <AlertTriangle size={20} /> : <CheckCircle2 size={20} />}
-            <h2 style={{ margin: 0 }}>{t("dashboard.needsAttention")}</h2>
+            <h2 className="dashboard-attention__title">{t("dashboard.needsAttention")}</h2>
             <Pill tone={attentionTone}>{attentionCount}</Pill>
           </div>
           {attentionCount === 0 ? (
             <EmptyMessage>{t("dashboard.allClear")}</EmptyMessage>
           ) : (
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <div className="dashboard-attention__items">
               {npcWarnings.length > 0 && (
                 <Pill tone="warning">{t("dashboard.forgottenNpcs")}: {npcWarnings.length}</Pill>
               )}
@@ -487,35 +449,21 @@ export function OverviewPage() {
           )}
         </Card>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: 18,
-          }}
-        >
+        <div className="dashboard-prep-grid">
           <Card>
-            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+            <h2 className="dashboard-card__heading">
               <CheckCircle2 size={18} /> {t("whatNowPage.prepTitle")}
             </h2>
             {preparationChecklist.length === 0 ? (
               <EmptyMessage>{t("dashboard.noPreparedClues")}</EmptyMessage>
             ) : (
-              <div style={{ display: "grid", gap: 10 }}>
+              <div className="dashboard-checklist">
                 {preparationChecklist.map((item) => {
                   const checked = item.done === true || completedTasks.includes(item.task);
                   return (
                     <label
                       key={item.task}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 12,
-                        padding: 12,
-                        borderRadius: "var(--theme-shapes-radius-medium)",
-                        background: "var(--theme-surfaces-interactive)",
-                        border: "1px solid var(--theme-borders-default)",
-                      }}
+                      className="dashboard-checklist__item"
                     >
                       <input
                         type="checkbox"
@@ -525,11 +473,7 @@ export function OverviewPage() {
                         }}
                       />
                       <span
-                        style={{
-                          flex: 1,
-                          textDecoration: checked ? "line-through" : "none",
-                          color: checked ? "var(--theme-text-secondary)" : "var(--theme-text-primary)",
-                        }}
+                        className={`dashboard-checklist__label ${checked ? "is-complete" : ""}`}
                       >
                         {item.task}
                       </span>
@@ -542,21 +486,17 @@ export function OverviewPage() {
           </Card>
 
           <Card>
-            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+            <h2 className="dashboard-card__heading">
               <Share2 size={18} /> {t("whatNowPage.confusionRisks")}
             </h2>
             {partialKnowledgeAlerts.length === 0 ? (
               <EmptyMessage>{t("whatNowPage.noConfusionRisks")}</EmptyMessage>
             ) : (
-              <div style={{ display: "grid", gap: 10 }}>
+              <div className="dashboard-risk-list">
                 {partialKnowledgeAlerts.map((alert, index) => (
                   <div
                     key={alert.clueId ?? alert.message ?? index}
-                    style={{
-                      border: "1px solid var(--theme-borders-default)",
-                      borderRadius: "var(--theme-shapes-radius-medium)",
-                      padding: 12,
-                    }}
+                    className="dashboard-risk-item"
                   >
                     {alert.message}
                   </div>
@@ -566,15 +506,9 @@ export function OverviewPage() {
           </Card>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: 18,
-          }}
-        >
+        <div className="dashboard-entity-grids">
           <Card>
-            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+            <h2 className="dashboard-card__heading">
               <Users size={18} /> {t("dashboard.forgottenNpcs")}
             </h2>
             <EntityList
@@ -585,7 +519,7 @@ export function OverviewPage() {
           </Card>
 
           <Card>
-            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+            <h2 className="dashboard-card__heading">
               <Flag size={18} /> {t("dashboard.blockedQuests")}
             </h2>
             <EntityList
@@ -596,7 +530,7 @@ export function OverviewPage() {
           </Card>
 
           <Card>
-            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+            <h2 className="dashboard-card__heading">
               <EyeOff size={18} /> {t("whatNowPage.criticalClues")}
             </h2>
             <EntityList
@@ -607,7 +541,7 @@ export function OverviewPage() {
           </Card>
 
           <Card>
-            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+            <h2 className="dashboard-card__heading">
               <Flame size={18} /> {t("whatNowPage.readyConsequences")}
             </h2>
             <EntityList
@@ -618,18 +552,12 @@ export function OverviewPage() {
           </Card>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 1.25fr) minmax(280px, .75fr)",
-            gap: 18,
-          }}
-        >
+        <div className="dashboard-session-grid">
           <Card>
-            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+            <h2 className="dashboard-card__heading">
               <CalendarDays size={18} /> {t("dashboard.nextSessionPrep")}
             </h2>
-            <p style={{ color: "var(--theme-text-secondary)", lineHeight: 1.6 }}>
+            <p className="dashboard-recap">
               {commandCenter?.recap ?? lastClosedSession?.summary ?? t("dashboard.noPreviousSessions")}
             </p>
             {activeSession ? (
@@ -639,25 +567,20 @@ export function OverviewPage() {
             ) : (
               <Pill>{t("dashboard.noPreparedSessionTitle")}</Pill>
             )}
-            {liveTable && <div style={{ marginTop: 12 }}><Pill tone="good">{liveTable.shortCode}</Pill></div>}
+            {liveTable && <div className="dashboard-live-table"><Pill tone="good">{liveTable.shortCode}</Pill></div>}
           </Card>
 
           <Card>
-            <h2 style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 0 }}>
+            <h2 className="dashboard-card__heading">
               <Activity size={18} /> {t("dashboard.recentlyUpdated")}
             </h2>
-            <div style={{ display: "grid", gap: 8 }}>
+            <div className="dashboard-activity-list">
               {(commandCenter?.recentActivity ?? []).slice(0, 6).map((item) => (
                 <div
                   key={item.activityId}
-                  style={{
-                    fontSize: 13,
-                    color: "var(--theme-text-secondary)",
-                    borderBottom: "1px solid var(--theme-borders-default)",
-                    paddingBottom: 8,
-                  }}
+                  className="dashboard-activity-item"
                 >
-                  <strong style={{ color: "var(--theme-text-primary)" }}>{item.type}</strong>
+                  <strong>{item.type}</strong>
                   <br />
                   {new Date(item.occurredAt).toLocaleString(locale)}
                 </div>
