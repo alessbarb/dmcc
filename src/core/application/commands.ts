@@ -884,4 +884,55 @@ export type Command =
       campaignId: CampaignId;
       actorId: string;
       threadId: StoryThreadId;
+    }
+  | {
+      type: "AdvanceClock";
+      campaignId: CampaignId;
+      actorId: string;
+      entityId: EntityId;
+      delta: number;
+      note?: string;
+    }
+  | {
+      type: "TriggerConsequence";
+      campaignId: CampaignId;
+      actorId: string;
+      entityId: EntityId;
+      note?: string;
+    }
+  | {
+      type: "ResolveConsequence";
+      campaignId: CampaignId;
+      actorId: string;
+      entityId: EntityId;
+      resolutionNote?: string;
+    }
+  | {
+      type: "ActivateFront";
+      campaignId: CampaignId;
+      actorId: string;
+      entityId: EntityId;
+      note?: string;
+    }
+  | {
+      type: "ResolveFront";
+      campaignId: CampaignId;
+      actorId: string;
+      entityId: EntityId;
+      note?: string;
+    }
+  | {
+      type: "HintSecret";
+      campaignId: CampaignId;
+      actorId: string;
+      entityId: EntityId;
+      note?: string;
+    }
+  | {
+      type: "UpdateObjectiveProgress";
+      campaignId: CampaignId;
+      actorId: string;
+      entityId: EntityId;
+      progress: "advanced" | "completed" | "blocked" | "failed" | "unchanged";
+      note?: string;
     };

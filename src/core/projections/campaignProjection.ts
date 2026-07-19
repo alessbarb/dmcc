@@ -195,6 +195,33 @@ export function applyEvent(
       }
       break;
     }
+    case "ClockAdvanced": {
+      const existing = next.entities.get(payload.entityId);
+      if (existing) {
+        next.entities.set(payload.entityId, {
+          ...existing,
+          metadata: { ...existing.metadata, currentSegments: payload.segments },
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
+    case "ConsequenceTriggered":
+    case "ConsequenceResolved":
+    case "FrontActivated":
+    case "FrontResolved":
+    case "SecretHinted":
+    case "ObjectiveProgressUpdated": {
+      const existing = next.entities.get(payload.entityId);
+      if (existing) {
+        next.entities.set(payload.entityId, {
+          ...existing,
+          status: payload.status,
+          updatedAt: occurredAt,
+        });
+      }
+      break;
+    }
     case "RelationCreated": {
       const id = payload.relationId;
       next.relations.set(id, { ...payload });
