@@ -37,6 +37,7 @@
 @import "./landing.css";
 @import "../../account/account.css";
 
-/* Transitional domain slices retain legacy cascade order during migration. */
-@import "./features/landing-legacy.css";
-@import "./features/kanban-legacy.css";
+/* Domain slices retain their original cascade order during migration. */
+@import "./features/landing-archive.css";
+@import "./features/kanban.css";
+@import "./features/campaign-canvas.css";

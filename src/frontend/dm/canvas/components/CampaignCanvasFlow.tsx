@@ -1290,7 +1290,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
         {showMinimap && (
           <MiniMap
             nodeColor={(n) => {
-              // Sticky-note colors are a deliberate, undertoked 5-hue palette (see .note-yellow etc. in index.css).
+              // Sticky-note colors are a deliberate, undertoked 5-hue palette (see .note-yellow etc. in campaign-canvas.css).
               if (n.type === "note") return "#fef08a";
               if (n.type === "group") return "color-mix(in srgb, var(--theme-accents-secondary-foreground) 30%, transparent)";
               return "var(--theme-canvas-toolbar-border)";
