@@ -241,6 +241,9 @@ export const es: TranslationDictionary = {
       "Contacta con el proyecto o revisa el repositorio público.",
   },
   common: {
+    routeNotFoundTitle: "Página no encontrada",
+    routeNotFoundDescription: "El enlace al que has accedido no existe o ya no está disponible.",
+    backToHome: "Volver al inicio",
     save: "Guardar",
     cancel: "Cancelar",
     delete: "Eliminar",

@@ -27,6 +27,9 @@ export const pt = {
     cardDescription: "Contacta o projeto ou consulta o repositório público.",
   },
   common: {
+    routeNotFoundTitle: "Página não encontrada",
+    routeNotFoundDescription: "O link acessado não existe ou não está mais disponível.",
+    backToHome: "Voltar ao início",
     save: "Salvar",
     cancel: "Cancelar",
     delete: "Eliminar",

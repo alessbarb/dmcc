@@ -29,6 +29,9 @@ export const de: TranslationDictionary = {
     cardDescription: "Kontaktiere das Projekt oder prüfe das öffentliche Repository.",
   },
   common: {
+    routeNotFoundTitle: "Seite nicht gefunden",
+    routeNotFoundDescription: "Der aufgerufene Link existiert nicht mehr oder ist nicht mehr verfügbar.",
+    backToHome: "Zurück zur Startseite",
     save: "Speichern",
     cancel: "Abbrechen",
     delete: "Löschen",
