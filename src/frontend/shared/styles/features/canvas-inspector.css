@@ -1,0 +1,92 @@
+/* Canvas inspector sections that need layout beyond the shared form primitives. */
+.canvas-inspector__subheading {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--theme-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.canvas-inspector__subheading--flush {
+  margin: 0;
+}
+
+.inspector-players-visibility {
+  margin: 0 0 16px;
+  padding: 10px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-small);
+  background: var(--theme-surfaces-interactive);
+}
+
+.canvas-inspector__player-list,
+.canvas-inspector__anchor-list {
+  display: flex;
+  max-height: 140px;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.canvas-inspector__check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--theme-text-primary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.canvas-inspector__scene-prep,
+.canvas-inspector__secret-anchors {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--theme-borders-default);
+}
+
+.canvas-inspector__scene-prep {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.canvas-inspector__hint {
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+
+.canvas-inspector__anchor-list {
+  max-height: 150px;
+  padding: 8px;
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-small);
+  background: var(--theme-surfaces-interactive);
+}
+
+.canvas-inspector__anchor-icon {
+  opacity: 0.65;
+  font-size: 10px;
+}
+
+.canvas-inspector__group-field {
+  margin-top: 12px;
+}
+
+.canvas-inspector__open-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.canvas-inspector__entity-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.canvas-inspector__entity-action {
+  flex: 1;
+}

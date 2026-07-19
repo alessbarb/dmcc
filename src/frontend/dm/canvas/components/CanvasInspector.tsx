@@ -726,16 +726,16 @@ export function CanvasInspector({
                 </div>
 
                 {entity.visibility?.kind === "players" && campaignState?.players && (
-                  <div className="form-group inspector-players-visibility" style={{ marginTop: "0px", marginBottom: "16px", padding: "10px", backgroundColor: "var(--theme-surfaces-interactive)", borderRadius: "var(--theme-shapes-radius-small)", border: "1px solid var(--theme-borders-default)" }}>
-                    <label style={{ fontSize: "11px", fontWeight: "700", color: "var(--theme-text-secondary)", marginBottom: "8px", display: "block", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  <div className="form-group inspector-players-visibility">
+                    <label className="canvas-inspector__subheading">
                       Revelado a los jugadores:
                     </label>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "140px", overflowY: "auto" }}>
+                    <div className="canvas-inspector__player-list">
                       {campaignState.players.map((p: PlayerProfile) => {
                         const currentIds = entity.visibility.kind === "players" ? entity.visibility.playerIds : [];
                         const isChecked = currentIds.includes(p.playerId);
                         return (
-                          <label key={p.playerId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--theme-text-primary)" }}>
+                          <label key={p.playerId} className="canvas-inspector__check-row">
                             <input
                               type="checkbox"
                               checked={isChecked}
@@ -821,8 +821,8 @@ export function CanvasInspector({
                 </div>
 
                 {entity.entityType === "scene" && (
-                  <div style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: "12px", marginTop: "12px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <h3 style={{ fontSize: "11px", fontWeight: "700", color: "var(--theme-text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0" }}>
+                  <div className="canvas-inspector__scene-prep">
+                    <h3 className="canvas-inspector__subheading canvas-inspector__subheading--flush">
                       Preparación de Escena:
                     </h3>
                     <div className="form-group">
@@ -868,14 +868,14 @@ export function CanvasInspector({
                 )}
 
                 {entity.entityType === "secret" && campaignState?.entities && (
-                  <div className="form-group" style={{ borderTop: "1px solid var(--theme-borders-default)", paddingTop: "12px", marginTop: "12px" }}>
-                    <label style={{ fontSize: "11px", fontWeight: "700", color: "var(--theme-text-secondary)", marginBottom: "8px", display: "block", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  <div className="form-group canvas-inspector__secret-anchors">
+                    <label className="canvas-inspector__subheading">
                       Anclas de Revelación:
                     </label>
-                    <div className="text-muted" style={{ fontSize: "11px", marginBottom: "8px" }}>
+                    <div className="text-muted canvas-inspector__hint">
                       Elige qué elementos de la campaña disparan la revelación de este secreto.
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "150px", overflowY: "auto", padding: "8px", backgroundColor: "var(--theme-surfaces-interactive)", borderRadius: "var(--theme-shapes-radius-small)", border: "1px solid var(--theme-borders-default)" }}>
+                    <div className="canvas-inspector__anchor-list">
                       {campaignState.entities
                         .filter((e: Entity) => !e.archived && e.entityId !== entity.entityId && ["clue", "location", "npc"].includes(e.entityType))
                         .map((e: Entity) => {
@@ -884,7 +884,7 @@ export function CanvasInspector({
                             : [];
                           const isChecked = currentAnchors.includes(e.entityId);
                           return (
-                            <label key={e.entityId} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer", fontWeight: "normal", color: "var(--theme-text-primary)" }}>
+                            <label key={e.entityId} className="canvas-inspector__check-row">
                               <input
                                 type="checkbox"
                                 checked={isChecked}
@@ -906,7 +906,7 @@ export function CanvasInspector({
                                   );
                                 }}
                               />
-                              <span style={{ opacity: 0.65, fontSize: "10px" }}>
+                              <span className="canvas-inspector__anchor-icon">
                                 {e.entityType === "npc" ? "👤" : e.entityType === "location" ? "🗺️" : "🔎"}
                               </span>
                               {e.title}
@@ -923,7 +923,7 @@ export function CanvasInspector({
                   if (groups.length === 0) return null;
                   const currentGroupId = selectedNode?.groupId ?? selectedNode?.parentId ?? "";
                   return (
-                    <div className="form-group" style={{ marginTop: "12px" }}>
+                    <div className="form-group canvas-inspector__group-field">
                       <label>Grupo</label>
                       <select
                         className="form-select"
@@ -981,20 +981,18 @@ export function CanvasInspector({
                   {onOpenDetail && (
                     <button
                       onClick={triggerOpenDetail}
-                      className="btn btn-primary btn-sm btn-block"
-                      style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}
+                      className="btn btn-primary btn-sm btn-block canvas-inspector__open-detail"
                     >
                       Editar Ficha Completa <ArrowUpRight size={14} />
                     </button>
                   )}
 
-                  <div style={{ display: "flex", gap: "8px" }}>
+                  <div className="canvas-inspector__entity-actions">
                     <button
                       onClick={() => {
                         runCanvasAction(handleRemoveNode(), "No se pudo quitar el nodo del canvas.");
                       }}
-                      className="btn btn-secondary btn-sm text-warning"
-                      style={{ flex: 1 }}
+                      className="btn btn-secondary btn-sm text-warning canvas-inspector__entity-action"
                       title={t("canvas.node.removeFromCanvasTooltip")}
                     >
                       Quitar del canvas
@@ -1003,8 +1001,7 @@ export function CanvasInspector({
                       onClick={() => {
                         runCanvasAction(handleArchiveEntity(), "No se pudo archivar la entidad.");
                       }}
-                      className="btn btn-secondary btn-sm text-critical"
-                      style={{ flex: 1 }}
+                      className="btn btn-secondary btn-sm text-critical canvas-inspector__entity-action"
                       title={t("canvas.node.archiveEntityTooltip")}
                     >
                       Archivar

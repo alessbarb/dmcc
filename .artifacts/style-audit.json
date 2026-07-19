@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:38:20.286Z",
+  "generatedAt": "2026-07-19T10:39:52.190Z",
   "summary": {
-    "cssFiles": 106,
-    "tsxFilesWithInlineStyles": 68,
+    "cssFiles": 107,
+    "tsxFilesWithInlineStyles": 67,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 548,
+    "staticInlineStyles": 531,
     "dynamicInlineStyles": 29,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -769,26 +769,12 @@
       "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 1117,
+      "lineCount": 1114,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-interactive",
-        "--theme-shapes-radius-small",
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-text-primary",
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-borders-default",
-        "--theme-text-secondary",
-        "--theme-surfaces-interactive",
-        "--theme-shapes-radius-small",
-        "--theme-borders-default",
-        "--theme-text-primary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/components/CanvasMobileMorePanel.tsx",
@@ -6556,6 +6542,29 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/canvas-inspector.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 93,
+      "selectorCount": 14,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-secondary",
+        "--theme-borders-default",
+        "--theme-shapes-radius-small",
+        "--theme-surfaces-interactive",
+        "--theme-text-primary",
+        "--theme-borders-default",
+        "--theme-borders-default",
+        "--theme-shapes-radius-small",
+        "--theme-surfaces-interactive"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/canvas-page-header.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8606,7 +8615,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 65,
+      "lineCount": 66,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8665,7 +8674,8 @@
         "src/frontend/shared/styles/features/canvas-page-header.css",
         "src/frontend/shared/styles/features/canvas-board-dialogs.css",
         "src/frontend/shared/styles/features/canvas-palette.css",
-        "src/frontend/shared/styles/features/canvas-entity-node.css"
+        "src/frontend/shared/styles/features/canvas-entity-node.css",
+        "src/frontend/shared/styles/features/canvas-inspector.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -10266,227 +10276,6 @@
       "category": "literal-color",
       "value": "\"green\"",
       "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ marginTop: \"0px\", marginBottom: \"16px\", padding: \"10px\", backgroundColor: \"var(--theme-surfaces-interactive)\", borderRadius: \"var(--theme-shapes-radius-small)\", border: \"1px solid var(--theme-borders-default)\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 729,
-      "column": 76,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"0px\", marginBottom: \"16px\", padding: \"10px\", backgroundColor: \"var(--theme-surfaces-interactive)\", borderRadius: \"var(--theme-shapes-radius-small)\", border: \"1px solid var(--theme-borders-default)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ fontSize: \"11px\", fontWeight: \"700\", color: \"var(--theme-text-secondary)\", marginBottom: \"8px\", display: \"block\", textTransform: \"uppercase\", letterSpacing: \"0.05em\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 730,
-      "column": 28,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"11px\", fontWeight: \"700\", color: \"var(--theme-text-secondary)\", marginBottom: \"8px\", display: \"block\", textTransform: \"uppercase\", letterSpacing: \"0.05em\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\", maxHeight: \"140px\", overflowY: \"auto\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 733,
-      "column": 26,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\", maxHeight: \"140px\", overflowY: \"auto\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: \"8px\", fontSize: \"0.85rem\", cursor: \"pointer\", fontWeight: \"normal\", color: \"var(--theme-text-primary)\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 738,
-      "column": 51,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: \"8px\", fontSize: \"0.85rem\", cursor: \"pointer\", fontWeight: \"normal\", color: \"var(--theme-text-primary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ borderTop: \"1px solid var(--theme-borders-default)\", paddingTop: \"12px\", marginTop: \"12px\", display: \"flex\", flexDirection: \"column\", gap: \"12px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 824,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ borderTop: \"1px solid var(--theme-borders-default)\", paddingTop: \"12px\", marginTop: \"12px\", display: \"flex\", flexDirection: \"column\", gap: \"12px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ fontSize: \"11px\", fontWeight: \"700\", color: \"var(--theme-text-secondary)\", textTransform: \"uppercase\", letterSpacing: \"0.05em\", margin: \"0\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 825,
-      "column": 25,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"11px\", fontWeight: \"700\", color: \"var(--theme-text-secondary)\", textTransform: \"uppercase\", letterSpacing: \"0.05em\", margin: \"0\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ borderTop: \"1px solid var(--theme-borders-default)\", paddingTop: \"12px\", marginTop: \"12px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 871,
-      "column": 47,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ borderTop: \"1px solid var(--theme-borders-default)\", paddingTop: \"12px\", marginTop: \"12px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ fontSize: \"11px\", fontWeight: \"700\", color: \"var(--theme-text-secondary)\", marginBottom: \"8px\", display: \"block\", textTransform: \"uppercase\", letterSpacing: \"0.05em\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 872,
-      "column": 28,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"11px\", fontWeight: \"700\", color: \"var(--theme-text-secondary)\", marginBottom: \"8px\", display: \"block\", textTransform: \"uppercase\", letterSpacing: \"0.05em\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ fontSize: \"11px\", marginBottom: \"8px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 875,
-      "column": 49,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"11px\", marginBottom: \"8px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\", maxHeight: \"150px\", overflowY: \"auto\", padding: \"8px\", backgroundColor: \"var(--theme-surfaces-interactive)\", borderRadius: \"var(--theme-shapes-radius-small)\", border: \"1px solid",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 878,
-      "column": 26,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"8px\", maxHeight: \"150px\", overflowY: \"auto\", padding: \"8px\", backgroundColor: \"var(--theme-surfaces-interactive)\", borderRadius: \"var(--theme-shapes-radius-small)\", border: \"1px solid",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ display: \"flex\", alignItems: \"center\", gap: \"8px\", fontSize: \"0.85rem\", cursor: \"pointer\", fontWeight: \"normal\", color: \"var(--theme-text-primary)\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 887,
-      "column": 53,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", gap: \"8px\", fontSize: \"0.85rem\", cursor: \"pointer\", fontWeight: \"normal\", color: \"var(--theme-text-primary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ opacity: 0.65, fontSize: \"10px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 909,
-      "column": 37,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ opacity: 0.65, fontSize: \"10px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ marginTop: \"12px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 926,
-      "column": 49,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"12px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ display: \"flex\", alignItems: \"center\", justifyContent: \"center\", gap: \"6px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 985,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", alignItems: \"center\", justifyContent: \"center\", gap: \"6px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ display: \"flex\", gap: \"8px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 991,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"8px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 997,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasInspector.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/dm/canvas/components/CanvasInspector.tsx",
-      "line": 1007,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ textAlign: \"center\", padding: \"20px\", color: \"var(--theme-text-secondary)\" }}",
@@ -25553,7 +25342,8 @@
       "src/frontend/shared/styles/features/canvas-page-header.css",
       "src/frontend/shared/styles/features/canvas-board-dialogs.css",
       "src/frontend/shared/styles/features/canvas-palette.css",
-      "src/frontend/shared/styles/features/canvas-entity-node.css"
+      "src/frontend/shared/styles/features/canvas-entity-node.css",
+      "src/frontend/shared/styles/features/canvas-inspector.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"
