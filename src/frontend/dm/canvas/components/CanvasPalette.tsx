@@ -261,52 +261,45 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
   if (isDirectionMode) {
     const isSecret = selectedEntity && isDmOnlyVisibility(selectedEntity.visibility);
     return (
-      <div className="canvas-palette canvas-palette--direction" style={{ backgroundColor: "var(--theme-canvas-toolbar-background)", borderRight: "1px solid var(--theme-borders-default)", padding: "16px", display: "flex", flexDirection: "column", gap: "16px", zIndex: 10, position: "relative" }}>
+      <div className="canvas-palette canvas-palette--direction canvas-palette-direction">
         <button
           onClick={toggleCollapsed}
           title={t("canvasPalette.collapsePalette")}
-          style={{
-            position: "absolute", top: "8px", right: "8px",
-            background: "none", border: "none", cursor: "pointer",
-            color: "var(--theme-text-secondary)", padding: "2px 4px", borderRadius: "4px",
-            display: "flex", alignItems: "center",
-          }}
+          className="canvas-palette-collapse-button canvas-palette-collapse-button--direction"
         >
           <ChevronLeft size={13} />
         </button>
         <div className="palette-section">
           <h3>⚡ {t("canvasPalette.liveDirection")}</h3>
-          <div className="palette-list" style={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div className="palette-list palette-list--direction-quick-actions">
             <button
               onClick={handleCreateQuickScene}
-              className="palette-list-item-btn"
-              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", backgroundColor: "var(--theme-surfaces-interactive)", color: "var(--theme-text-primary)" }}
+              className="palette-list-item-btn palette-direction-action"
             >
-              <Film size={14} style={{ color: "#64748b" }} />
+              <Film size={14} className="palette-direction-action__icon palette-direction-action__icon--scene" />
               <span>🎬 {t("canvasPalette.createQuickScene")}</span>
             </button>
             <button
               onClick={handleQuickSessionNote}
-              className="palette-list-item-btn"
-              style={{ cursor: "pointer", width: "100%", textAlign: "left", display: "flex", gap: "8px", alignItems: "center", padding: "8px 12px", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", backgroundColor: "var(--theme-surfaces-interactive)", color: "var(--theme-text-primary)" }}
+              className="palette-list-item-btn palette-direction-action"
             >
-              <StickyNote size={14} style={{ color: "#eab308" }} />
+              <StickyNote size={14} className="palette-direction-action__icon palette-direction-action__icon--note" />
               <span>📝 {t("canvasPalette.quickSessionNote")}</span>
             </button>
           </div>
         </div>
 
-        <div className="palette-divider" style={{ height: "1px", backgroundColor: "var(--theme-borders-default)", opacity: 0.3 }} />
+        <div className="palette-divider palette-divider--direction" />
 
-        <div className="palette-section" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <div className="palette-section palette-section--selection">
           <h3>🎯 {t("canvasPalette.actionOnSelection")}</h3>
           {selectedNode ? (
-            <div style={{ marginTop: "12px", padding: "12px", borderRadius: "var(--theme-shapes-radius-medium)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)", border: "1px solid var(--theme-borders-default)", display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div className="palette-selection-card">
               <div>
-                <div style={{ fontSize: "9px", color: "var(--theme-text-secondary)", textTransform: "uppercase", fontWeight: "bold" }}>
+                <div className="palette-selection-card__kind">
                   {selectedNode.kind === "entity" ? (selectedEntity?.entityType || "Entidad") : selectedNode.kind}
                 </div>
-                <div style={{ fontSize: "12px", fontWeight: "bold", color: "var(--theme-text-primary)", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <div className="palette-selection-card__title">
                   {selectedEntity?.title || selectedNode.title || selectedNode.text || t("canvas.node.untitledElement")}
                 </div>
               </div>
@@ -316,8 +309,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
                   <button
                     onClick={handleRevealSelected}
                     disabled={!isSecret}
-                    className="btn btn-sm btn-secondary"
-                    style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px" }}
+                    className="btn btn-sm btn-secondary palette-selection-card__action"
                   >
                     <Eye size={12} />
                     <span>{isSecret ? `👁 ${t("canvasPalette.revealToPlayers")}` : t("canvasPalette.revealed")}</span>
@@ -325,8 +317,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
 
                   <button
                     onClick={handleResolveSelected}
-                    className="btn btn-sm btn-secondary"
-                    style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px" }}
+                    className="btn btn-sm btn-secondary palette-selection-card__action"
                   >
                     <CheckCircle2 size={12} />
                     <span>✅ {t("canvasPalette.resolveStatus")}</span>
@@ -334,8 +325,7 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
 
                   <button
                     onClick={handleAddConsequenceSelected}
-                    className="btn btn-sm btn-secondary"
-                    style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px" }}
+                    className="btn btn-sm btn-secondary palette-selection-card__action"
                   >
                     <RefreshCcw size={12} />
                     <span>💥 {t("canvasPalette.quickConsequence")}</span>
@@ -345,15 +335,14 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
 
               <button
                 onClick={handleRemoveSelected}
-                className="btn btn-sm btn-secondary text-critical"
-                style={{ width: "100%", justifyContent: "center", display: "flex", gap: "6px", alignItems: "center", fontSize: "11px", height: "28px", borderColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 20%, transparent)" }}
+                className="btn btn-sm btn-secondary text-critical palette-selection-card__action palette-selection-card__action--remove"
               >
                 <Trash2 size={12} />
                 <span>{t("canvasPalette.removeFromCanvas")}</span>
               </button>
             </div>
           ) : (
-            <div style={{ fontSize: "11px", color: "var(--theme-text-secondary)", textAlign: "center", padding: "16px 0", flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div className="palette-selection-empty">
               {t("canvasPalette.selectNodeForActions")}
             </div>
           )}
@@ -378,31 +367,12 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
   if (collapsed) {
     return (
       <div
-        style={{
-          width: "32px",
-          background: "var(--theme-surfaces-base)",
-          borderRight: "1px solid var(--theme-borders-default)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          paddingTop: "10px",
-          zIndex: 5,
-          flexShrink: 0,
-        }}
+        className="canvas-palette canvas-palette--collapsed"
       >
         <button
           onClick={toggleCollapsed}
           title={t("canvasPalette.expandPalette")}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "var(--theme-text-secondary)",
-            padding: "6px",
-            borderRadius: "4px",
-            display: "flex",
-            alignItems: "center",
-          }}
+          className="canvas-palette-collapse-button"
         >
           <ChevronRight size={14} />
         </button>
@@ -420,20 +390,11 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
           </button>
         </div>
       )}
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "-8px" }}>
+      <div className="canvas-palette-collapse-row">
         <button
           onClick={toggleCollapsed}
           title={t("canvasPalette.collapsePalette")}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "var(--theme-text-secondary)",
-            padding: "2px 4px",
-            borderRadius: "4px",
-            display: "flex",
-            alignItems: "center",
-          }}
+          className="canvas-palette-collapse-button"
         >
           <ChevronLeft size={13} />
         </button>
@@ -497,13 +458,9 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
                   requestAnimationFrame(() => document.body.removeChild(ghost));
                 }}
                 onClick={() => handleCreateNewNode("entity", item.type, item.label)}
-                className="palette-list-item-btn"
-                style={{
-                  "--item-color": item.color,
-                  "--item-color-soft": item.colorSoft,
-                  cursor: "grab",
-                } as React.CSSProperties}
+                style={paletteItemStyle(item.color, item.colorSoft)}
                 role="button"
+                className="palette-list-item-btn palette-list-item-btn--draggable"
                 tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && handleCreateNewNode("entity", item.type, item.label)}
               >
@@ -570,6 +527,16 @@ export function CanvasPalette({ canvasId, isDirectionMode, selectedNodeId, getVi
 }
 
 type FactKindConfig = Record<string, { label: string; color: string; Icon: React.ElementType }>;
+type PaletteItemStyle = React.CSSProperties & {
+  "--item-color": string;
+  "--item-color-soft"?: string;
+};
+
+function paletteItemStyle(color: string, colorSoft?: string): PaletteItemStyle {
+  return colorSoft
+    ? { "--item-color": color, "--item-color-soft": colorSoft }
+    : { "--item-color": color };
+}
 
 function getFactKindConfig(t: (key: string) => string): FactKindConfig {
   return {
@@ -662,7 +629,7 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
       <h3>{t("canvasPalette.narrativeFacts")} <span className="palette-drag-hint">{t("canvasPalette.dragToCanvas")}</span></h3>
 
       {/* Quick-create by kind */}
-      <div className="palette-list" style={{ gap: "4px", marginBottom: "8px" }}>
+      <div className="palette-list palette-list--facts">
         {Object.entries(FACT_KIND_CONFIG).map(([kind, { label, color, Icon }]) => (
           <div
             key={kind}
@@ -676,14 +643,14 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
               requestAnimationFrame(() => document.body.removeChild(ghost));
             }}
             onClick={() => handleCreateNewFact(kind)}
-            className="palette-list-item-btn"
-            style={{ "--item-color": color, cursor: "grab" } as React.CSSProperties}
+            style={paletteItemStyle(color)}
+            className="palette-list-item-btn palette-list-item-btn--draggable"
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === "Enter" && handleCreateNewFact(kind)}
           >
-            <Icon size={12} style={{ color }} />
-            <span style={{ fontSize: "0.68rem" }}>+ {label}</span>
+            <Icon size={12} className="palette-fact-item__icon" />
+            <span className="palette-fact-item__label">+ {label}</span>
           </div>
         ))}
       </div>
@@ -691,26 +658,24 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
       {/* Existing facts search */}
       <button
         onClick={() => setShowFactSearch(v => !v)}
-        className="palette-list-item-btn"
-        style={{ justifyContent: "space-between", fontSize: "0.68rem", color: "var(--theme-text-secondary)", cursor: "pointer" }}
+        className="palette-list-item-btn palette-fact-search-toggle"
       >
         <span>{t("canvasPalette.placeExistingFact")}</span>
         <Search size={11} />
       </button>
 
       {showFactSearch && (
-        <div style={{ marginTop: "6px" }}>
+        <div className="palette-fact-search">
           <input
             type="text"
             placeholder={t("canvas.palette.searchFactPlaceholder")}
             value={factSearch}
             onChange={e => setFactSearch(e.target.value)}
-            className="palette-search-input"
-            style={{ width: "100%", marginBottom: "4px" }}
+            className="palette-search-input palette-search-input--fact"
           />
-          <div style={{ maxHeight: "140px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "2px" }}>
+          <div className="palette-fact-results">
             {availableFacts.length === 0 ? (
-              <div style={{ fontSize: "10px", color: "var(--theme-text-secondary)", padding: "8px 0", textAlign: "center" }}>
+              <div className="palette-fact-results__empty">
                 {allFacts.length === 0 ? t("canvasPalette.noFactsCreated") : t("canvas.palette.allFactsOnCanvas")}
               </div>
             ) : (
@@ -729,13 +694,13 @@ function FactsSection({ canvasId, createFact, placeNodeOnCanvas, campaignState }
                       requestAnimationFrame(() => document.body.removeChild(ghost));
                     }}
                     onClick={() => handlePlaceExistingFact(f)}
-                    className="palette-list-item-btn"
-                    style={{ "--item-color": cfg.color, cursor: "grab", gap: "6px" } as React.CSSProperties}
+                    style={paletteItemStyle(cfg.color)}
+                    className="palette-list-item-btn palette-list-item-btn--draggable palette-list-item-btn--fact"
                     role="button"
                     tabIndex={0}
                   >
-                    <cfg.Icon size={10} style={{ color: cfg.color, flexShrink: 0 }} />
-                    <span style={{ fontSize: "0.65rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <cfg.Icon size={10} className="palette-fact-item__icon palette-fact-item__icon--small" />
+                    <span className="palette-fact-item__statement">
                       {f.statement}
                     </span>
                   </div>
