@@ -25,3 +25,11 @@
 .entity-relations-list__type { font-weight: 400; color: var(--theme-text-secondary); font-size: 0.76rem; }
 .entity-relations-list__relations { display: flex; flex-direction: column; gap: 2px; }
 .entity-relations-list__relation { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--theme-text-secondary); }
+.relation-create-modal__title { font-weight: 700; }
+.relation-create-modal__type-fields { display: flex; gap: 10px; flex-direction: column; }
+.relation-create-modal__duplicate-warning { padding: 10px 16px; background: var(--theme-feedback-warning-background); border-top: 1px solid var(--theme-feedback-warning-border); display: flex; align-items: center; gap: 10px; font-size: 0.85rem; }
+.relation-create-modal__warning-icon,
+.relation-create-modal__warning-copy { color: var(--theme-feedback-warning-foreground); }
+.relation-create-modal__warning-icon { flex-shrink: 0; }
+.relation-create-modal__force-button { margin-left: auto; flex-shrink: 0; }
+.relationship-edge-label { position: absolute; pointer-events: none; }

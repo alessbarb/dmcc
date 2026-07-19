@@ -95,8 +95,8 @@ export const RelationshipEdge = React.memo(
         {edgeData.label && (
           <EdgeLabelRenderer>
             <div
+              className="relationship-edge-label"
               style={{
-                position: "absolute",
                 transform:
                   `translate(-50%, -50%) ` +
                   `translate(${labelX}px, ${labelY}px)`,

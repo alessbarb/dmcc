@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:56:55.584Z",
+  "generatedAt": "2026-07-19T10:57:54.680Z",
   "summary": {
     "cssFiles": 120,
-    "tsxFilesWithInlineStyles": 47,
+    "tsxFilesWithInlineStyles": 46,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 390,
-    "dynamicInlineStyles": 27,
+    "staticInlineStyles": 383,
+    "dynamicInlineStyles": 28,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
-    "mixedResponsibilityFiles": 34,
+    "mixedResponsibilityFiles": 35,
     "crossComponentSelectors": 62,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
@@ -1196,7 +1196,7 @@
       "path": "src/frontend/dm/entities/RelationCreateModal.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 230,
+      "lineCount": 220,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -7108,8 +7108,8 @@
       "path": "src/frontend/shared/styles/features/entity-relations.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 28,
-      "selectorCount": 26,
+      "lineCount": 36,
+      "selectorCount": 33,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7141,7 +7141,10 @@
         "--theme-surfaces-interactive",
         "--theme-shapes-radius-small",
         "--theme-text-secondary",
-        "--theme-text-secondary"
+        "--theme-text-secondary",
+        "--theme-feedback-warning-background",
+        "--theme-feedback-warning-border",
+        "--theme-feedback-warning-foreground"
       ]
     },
     {
@@ -10236,84 +10239,6 @@
       "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/RelationCreateModal.tsx:style={{ fontWeight: \"700\" }}",
-      "path": "src/frontend/dm/entities/RelationCreateModal.tsx",
-      "line": 102,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontWeight: \"700\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/RelationCreateModal.tsx:style={{ display: \"flex\", gap: \"10px\", flexDirection: \"column\" }}",
-      "path": "src/frontend/dm/entities/RelationCreateModal.tsx",
-      "line": 131,
-      "column": 20,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", gap: \"10px\", flexDirection: \"column\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/RelationCreateModal.tsx:style={{ padding: \"10px 16px\", backgroundColor: themeCss.feedback.warning.background, borderTop: `1px solid ${themeCss.feedback.warning.border}`, display: \"flex\",",
-      "path": "src/frontend/dm/entities/RelationCreateModal.tsx",
-      "line": 174,
-      "column": 15,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                padding: \"10px 16px\",\n                backgroundColor: themeCss.feedback.warning.background,\n                borderTop: `1px solid ${themeCss.feedback.warning.border}`,\n                display: \"flex\",\n             ",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/RelationCreateModal.tsx:style={{ color: themeCss.feedback.warning.foreground, flexShrink: 0 }}",
-      "path": "src/frontend/dm/entities/RelationCreateModal.tsx",
-      "line": 186,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: themeCss.feedback.warning.foreground, flexShrink: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/RelationCreateModal.tsx:style={{ color: themeCss.feedback.warning.foreground }}",
-      "path": "src/frontend/dm/entities/RelationCreateModal.tsx",
-      "line": 188,
-      "column": 21,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: themeCss.feedback.warning.foreground }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/entities/RelationCreateModal.tsx:style={{ marginLeft: \"auto\", flexShrink: 0 }}",
-      "path": "src/frontend/dm/entities/RelationCreateModal.tsx",
-      "line": 194,
-      "column": 17,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginLeft: \"auto\", flexShrink: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "static-inline:src/frontend/dm/entities/TrazabilidadTab.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.9rem\", padding: \"8px 0\" }}",
       "path": "src/frontend/dm/entities/TrazabilidadTab.tsx",
       "line": 128,
@@ -13073,17 +12998,17 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/dm/entities/relations/RelationshipEdge.tsx:style={{ position: \"absolute\", transform: `translate(-50%, -50%) ` + `translate(${labelX}px, ${labelY}px)`, pointerEvents: \"none\", }}",
+      "id": "dynamic-style:src/frontend/dm/entities/relations/RelationshipEdge.tsx:style={{ transform: `translate(-50%, -50%) ` + `translate(${labelX}px, ${labelY}px)`, pointerEvents: \"none\", }}",
       "path": "src/frontend/dm/entities/relations/RelationshipEdge.tsx",
-      "line": 98,
+      "line": 99,
       "column": 15,
-      "severity": "high",
-      "status": "temporary",
+      "severity": "info",
+      "status": "allowed",
       "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                position: \"absolute\",\n                transform:\n                  `translate(-50%, -50%) ` +\n                  `translate(${labelX}px, ${labelY}px)`,\n                pointerEvents: \"none\",\n              }}",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
+      "category": "dynamic-style",
+      "value": "style={{\n                transform:\n                  `translate(-50%, -50%) ` +\n                  `translate(${labelX}px, ${labelY}px)`,\n                pointerEvents: \"none\",\n              }}",
+      "classification": "dynamic",
+      "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
       "id": "dynamic-style:src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:style={{ width: 96, height: 72 }}",
@@ -21856,6 +21781,17 @@
       "severity": "critical",
       "status": "temporary",
       "reason": "Large stylesheet requires atomization (589 lines, 73 selectors)."
+    },
+    {
+      "id": "mixed-responsibility:src/frontend/shared/styles/features/entity-relations.css",
+      "path": "src/frontend/shared/styles/features/entity-relations.css",
+      "line": 1,
+      "column": 1,
+      "sourceType": "css",
+      "category": "mixed-responsibility",
+      "severity": "high",
+      "status": "temporary",
+      "reason": "Large stylesheet requires atomization (36 lines, 33 selectors)."
     },
     {
       "id": "literal-color:src/frontend/shared/styles/features/kanban.css:red",

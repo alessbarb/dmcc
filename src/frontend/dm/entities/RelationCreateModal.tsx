@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { X, AlertTriangle } from "lucide-react";
 import { useCampaignStore } from "../../shared/stores/campaignStore.js";
 import { useTranslation } from "@frontend/shared/i18n/useTranslation.js";
-import { themeCss } from "@frontend/shared/theme/themeCssVariables.js";
 
 interface RelationCreateModalProps {
   isOpen: boolean;
@@ -99,7 +98,7 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2 style={{ fontWeight: "700" }}>{t("relationModal.createRelation")}</h2>
+          <h2 className="relation-create-modal__title">{t("relationModal.createRelation")}</h2>
           <button className="btn btn-icon btn-secondary" onClick={() => {
             useCampaignStore.setState({ error: null });
             onClose();
@@ -128,7 +127,7 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
 
             <div className="form-group">
               <label className="form-label">{t("relationModal.relationType")}</label>
-              <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
+              <div className="relation-create-modal__type-fields">
                 <select
                   className="form-select"
                   value={relationType}
@@ -171,27 +170,18 @@ export function RelationCreateModal({ isOpen, onClose }: RelationCreateModalProp
           </div>
           {error?.includes("Duplicate relation") && (
             <div
-              style={{
-                padding: "10px 16px",
-                backgroundColor: themeCss.feedback.warning.background,
-                borderTop: `1px solid ${themeCss.feedback.warning.border}`,
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                fontSize: "0.85rem",
-              }}
+              className="relation-create-modal__duplicate-warning"
             >
               <AlertTriangle
                 size={14}
-                style={{ color: themeCss.feedback.warning.foreground, flexShrink: 0 }}
+                className="relation-create-modal__warning-icon"
               />
-              <span style={{ color: themeCss.feedback.warning.foreground }}>
+              <span className="relation-create-modal__warning-copy">
                 {t("relationModal.duplicateWarning")}
               </span>
               <button
                 type="button"
-                className="btn btn-secondary btn-sm"
-                style={{ marginLeft: "auto", flexShrink: 0 }}
+                className="btn btn-secondary btn-sm relation-create-modal__force-button"
                 onClick={() => {
                   useCampaignStore.setState({ error: null });
                   const finalRelationType = relationType === "custom" ? `custom:${customType}` : relationType;
