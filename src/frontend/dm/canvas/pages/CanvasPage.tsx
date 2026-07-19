@@ -830,7 +830,7 @@ export function CanvasPage() {
                 onOpenLint={() => { setIsLintOpen(true); setMobilePanel(null); }}
               />
               <nav className="canvas-mobile-dock" aria-label="Paneles del canvas">
-                <button type="button" className={interactionMode === "pan" ? "is-active" : ""} onClick={() => setInteractionMode((mode) => mode === "pan" ? "select" : "pan")} title={interactionMode === "pan" ? "Cambiar a seleccionar" : "Cambiar a mover"}>{interactionMode === "pan" ? <Hand size={18} /> : <MousePointer2 size={18} />}<span>{interactionMode === "pan" ? "Mover" : "Seleccionar"}</span></button>
+                <button type="button" className={`canvas-mobile-dock__mode-button ${interactionMode === "pan" ? "is-active" : ""}`} onClick={() => setInteractionMode((mode) => mode === "pan" ? "select" : "pan")} title={interactionMode === "pan" ? "Cambiar a seleccionar" : "Cambiar a mover"}>{interactionMode === "pan" ? <Hand size={18} /> : <MousePointer2 size={18} />}<span>{interactionMode === "pan" ? "Mover" : "Seleccionar"}</span></button>
                 <button type="button" className={mobilePanel === "search" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "search" ? null : "search")}><Search size={18} /><span>Buscar</span></button>
                 <button type="button" className={mobilePanel === "add" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "add" ? null : "add")}><ListPlus size={18} /><span>Añadir</span></button>
                 <button type="button" className={mobilePanel === "more" ? "is-active" : ""} onClick={() => setMobilePanel((panel) => panel === "more" ? null : "more")}><MoreHorizontal size={18} /><span>Más</span></button>

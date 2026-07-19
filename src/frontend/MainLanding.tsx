@@ -20,6 +20,7 @@ import { fetchSession } from "./shared/auth/authClient.js";
 import { RpgPortalBackground } from "./shared/components/RpgPortalBackground.js";
 import { SiteFooter } from "./institutional/SiteFooter.js";
 import { useTranslation } from "./shared/i18n/useTranslation.js";
+import { useBodyWatermark } from "./shared/hooks/useBodyWatermark.js";
 
 // ─── App Preview Mock ────────────────────────────────────────────────────────
 
@@ -190,6 +191,7 @@ const NetworkDING_COPY = {
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function MainLanding() {
+  useBodyWatermark("hidden");
   const navigate = useNavigate();
   const handleNavigationError = (error: unknown) => {
     console.error("Landing navigation failed", error);

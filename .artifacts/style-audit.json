@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T16:05:57.729Z",
+  "generatedAt": "2026-07-19T16:13:47.528Z",
   "summary": {
     "cssFiles": 396,
     "tsxFilesWithInlineStyles": 15,
@@ -11,7 +11,7 @@
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
     "mixedResponsibilityFiles": 0,
-    "crossComponentSelectors": 62,
+    "crossComponentSelectors": 0,
     "importantDeclarations": 381,
     "unclassifiedCssFiles": 0
   },
@@ -20,7 +20,7 @@
       "path": "src/frontend/MainLanding.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 453,
+      "lineCount": 455,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -274,7 +274,7 @@
       "layer": "feature",
       "domain": "account",
       "lineCount": 171,
-      "selectorCount": 27,
+      "selectorCount": 24,
       "imports": [],
       "importedBy": [
         "src/frontend/account/account.css"
@@ -313,7 +313,7 @@
       "layer": "feature",
       "domain": "account",
       "lineCount": 114,
-      "selectorCount": 18,
+      "selectorCount": 15,
       "imports": [],
       "importedBy": [
         "src/frontend/account/account.css"
@@ -977,7 +977,7 @@
       "layer": "feature",
       "domain": "canvas",
       "lineCount": 160,
-      "selectorCount": 20,
+      "selectorCount": 16,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css"
@@ -1021,7 +1021,7 @@
       "layer": "feature",
       "domain": "canvas",
       "lineCount": 102,
-      "selectorCount": 17,
+      "selectorCount": 13,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01.css"
@@ -1405,7 +1405,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 104,
-      "selectorCount": 14,
+      "selectorCount": 13,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/entity-card.css"
@@ -1544,7 +1544,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 14,
-      "selectorCount": 4,
+      "selectorCount": 2,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/entity-card.css"
@@ -1639,7 +1639,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 100,
-      "selectorCount": 21,
+      "selectorCount": 18,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/entityDetailDialog.css"
@@ -1652,7 +1652,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 216,
-      "selectorCount": 25,
+      "selectorCount": 24,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/EntityDetailModal.tsx",
@@ -1682,7 +1682,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 16,
-      "selectorCount": 3,
+      "selectorCount": 2,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/library/list/EntityListView.tsx"
@@ -1695,7 +1695,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 97,
-      "selectorCount": 17,
+      "selectorCount": 14,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/library/list/EntityListView.tsx"
@@ -1798,7 +1798,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 57,
-      "selectorCount": 8,
+      "selectorCount": 7,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/EntityDetailModal.tsx",
@@ -1820,7 +1820,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 183,
-      "selectorCount": 18,
+      "selectorCount": 16,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/EntityDetailModal.tsx",
@@ -1881,7 +1881,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 145,
-      "selectorCount": 21,
+      "selectorCount": 20,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/PlayerCharacterDetailModal.tsx"
@@ -2072,7 +2072,7 @@
       "layer": "feature",
       "domain": "entities",
       "lineCount": 154,
-      "selectorCount": 25,
+      "selectorCount": 22,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/entities/relations/EntityRelationsTab.tsx",
@@ -2282,7 +2282,7 @@
       "layer": "layout",
       "domain": "layout",
       "lineCount": 82,
-      "selectorCount": 19,
+      "selectorCount": 14,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/layouts/CampaignShell.tsx"
@@ -2425,7 +2425,7 @@
       "layer": "feature",
       "domain": "library",
       "lineCount": 88,
-      "selectorCount": 17,
+      "selectorCount": 14,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/library/boards/entityBoards.css"
@@ -2529,7 +2529,7 @@
       "layer": "feature",
       "domain": "library",
       "lineCount": 96,
-      "selectorCount": 16,
+      "selectorCount": 14,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/library/list/EntityListView.tsx"
@@ -2641,7 +2641,7 @@
       "layer": "feature",
       "domain": "library",
       "lineCount": 98,
-      "selectorCount": 20,
+      "selectorCount": 18,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/library/notebooks/notebooksWorkspace.css"
@@ -2674,7 +2674,7 @@
       "path": "src/frontend/dm/map/CampaignMapWorkspacePage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 74,
+      "lineCount": 76,
       "selectorCount": 0,
       "imports": [
         "src/frontend/dm/map/mapWorkspace.css"
@@ -2699,7 +2699,7 @@
       "layer": "feature",
       "domain": "map",
       "lineCount": 94,
-      "selectorCount": 14,
+      "selectorCount": 13,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/map/CampaignMapWorkspacePage.tsx"
@@ -2845,7 +2845,7 @@
       "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css",
       "layer": "feature",
       "domain": "map",
-      "lineCount": 82,
+      "lineCount": 83,
       "selectorCount": 10,
       "imports": [],
       "importedBy": [
@@ -3079,7 +3079,7 @@
       "layer": "feature",
       "domain": "map",
       "lineCount": 115,
-      "selectorCount": 26,
+      "selectorCount": 23,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/map/network/networkFlow.css"
@@ -3351,7 +3351,7 @@
       "layer": "feature",
       "domain": "onboarding",
       "lineCount": 72,
-      "selectorCount": 12,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/onboarding/campaign-guided-tour.css"
@@ -3510,7 +3510,7 @@
       "layer": "feature",
       "domain": "onboarding",
       "lineCount": 40,
-      "selectorCount": 8,
+      "selectorCount": 7,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/onboarding/campaign-starter-hub.css"
@@ -3648,7 +3648,7 @@
       "layer": "feature",
       "domain": "pages",
       "lineCount": 113,
-      "selectorCount": 22,
+      "selectorCount": 20,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/pages/CampaignMessagesPage.tsx"
@@ -3740,7 +3740,7 @@
       "layer": "feature",
       "domain": "pages",
       "lineCount": 32,
-      "selectorCount": 8,
+      "selectorCount": 6,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/pages/rules-page-parts/rules-page-parts-01-parts/rules-page-parts-01-parts-01.css"
@@ -3801,7 +3801,7 @@
       "layer": "feature",
       "domain": "pages",
       "lineCount": 135,
-      "selectorCount": 21,
+      "selectorCount": 19,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/pages/SettingsPage.tsx"
@@ -4132,7 +4132,7 @@
       "layer": "feature",
       "domain": "people",
       "lineCount": 116,
-      "selectorCount": 23,
+      "selectorCount": 19,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/people/group/groupWorkspace.css"
@@ -4311,7 +4311,7 @@
       "layer": "feature",
       "domain": "people",
       "lineCount": 72,
-      "selectorCount": 14,
+      "selectorCount": 13,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/people/peopleWorkspace.css"
@@ -4333,7 +4333,7 @@
       "layer": "feature",
       "domain": "people",
       "lineCount": 36,
-      "selectorCount": 7,
+      "selectorCount": 6,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/people/peopleWorkspace.css"
@@ -4584,7 +4584,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 140,
-      "selectorCount": 24,
+      "selectorCount": 22,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/components/ActiveSessionPrepPanel.tsx"
@@ -4628,7 +4628,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 136,
-      "selectorCount": 22,
+      "selectorCount": 20,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/SessionDetailPage.tsx",
@@ -4717,7 +4717,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 120,
-      "selectorCount": 25,
+      "selectorCount": 23,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/components/SessionQuickActions.tsx"
@@ -4777,7 +4777,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 139,
-      "selectorCount": 23,
+      "selectorCount": 22,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/components/SessionEventFeed.tsx"
@@ -4822,7 +4822,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 142,
-      "selectorCount": 25,
+      "selectorCount": 24,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/SessionDetailPage.tsx",
@@ -4866,7 +4866,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 75,
-      "selectorCount": 12,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/SessionDetailPage.tsx",
@@ -4889,7 +4889,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 130,
-      "selectorCount": 24,
+      "selectorCount": 21,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/SessionDetailPage.tsx",
@@ -4933,7 +4933,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 74,
-      "selectorCount": 10,
+      "selectorCount": 9,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/components/SessionStatusBar.tsx"
@@ -5134,7 +5134,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 31,
-      "selectorCount": 6,
+      "selectorCount": 5,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css"
@@ -5306,7 +5306,7 @@
       "layer": "feature",
       "domain": "sessions",
       "lineCount": 71,
-      "selectorCount": 10,
+      "selectorCount": 9,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css"
@@ -5557,7 +5557,7 @@
       "layer": "feature",
       "domain": "story",
       "lineCount": 49,
-      "selectorCount": 11,
+      "selectorCount": 9,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/story/history/campaignHistory.css"
@@ -5587,7 +5587,7 @@
       "path": "src/frontend/dm/story/plan/StoryPlanView.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 992,
+      "lineCount": 994,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -5634,8 +5634,8 @@
       "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
       "layer": "feature",
       "domain": "story",
-      "lineCount": 101,
-      "selectorCount": 20,
+      "lineCount": 102,
+      "selectorCount": 18,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/story/plan/storyPlanWorkspace.css"
@@ -5761,7 +5761,7 @@
       "layer": "feature",
       "domain": "story",
       "lineCount": 12,
-      "selectorCount": 6,
+      "selectorCount": 5,
       "imports": [],
       "importedBy": [
         "src/frontend/dm/story/plan/storyPlanWorkspace.css"
@@ -5903,7 +5903,7 @@
       "layer": "feature",
       "domain": "institutional",
       "lineCount": 128,
-      "selectorCount": 22,
+      "selectorCount": 20,
       "imports": [],
       "importedBy": [
         "src/frontend/institutional/institutional.css"
@@ -6081,7 +6081,7 @@
       "layer": "feature",
       "domain": "player",
       "lineCount": 174,
-      "selectorCount": 30,
+      "selectorCount": 27,
       "imports": [],
       "importedBy": [
         "src/frontend/player/pages/PlayerCampaignShell.tsx"
@@ -6546,7 +6546,7 @@
       "layer": "component",
       "domain": "shared-components",
       "lineCount": 184,
-      "selectorCount": 25,
+      "selectorCount": 23,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/components/entityImageReframeDialog.css"
@@ -6600,7 +6600,7 @@
       "layer": "component",
       "domain": "shared-components",
       "lineCount": 33,
-      "selectorCount": 6,
+      "selectorCount": 4,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/components/Watermark.tsx"
@@ -6991,7 +6991,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 23,
-      "selectorCount": 16,
+      "selectorCount": 14,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/admin-audit.css"
@@ -7215,7 +7215,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 28,
-      "selectorCount": 25,
+      "selectorCount": 24,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7329,7 +7329,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 11,
-      "selectorCount": 7,
+      "selectorCount": 6,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/admin-purge.css"
@@ -7495,7 +7495,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 16,
-      "selectorCount": 12,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/admin-users.css"
@@ -7655,8 +7655,8 @@
       "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 158,
-      "selectorCount": 22,
+      "lineCount": 157,
+      "selectorCount": 21,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/campaign-canvas.css"
@@ -7905,7 +7905,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 173,
-      "selectorCount": 25,
+      "selectorCount": 24,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/campaign-canvas.css"
@@ -7947,7 +7947,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 87,
-      "selectorCount": 12,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css"
@@ -7976,7 +7976,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 53,
-      "selectorCount": 12,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-09.css"
@@ -8035,7 +8035,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 161,
-      "selectorCount": 22,
+      "selectorCount": 21,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/campaign-canvas.css"
@@ -8217,7 +8217,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 78,
-      "selectorCount": 11,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/campaign-template.css"
@@ -8303,7 +8303,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 89,
-      "selectorCount": 16,
+      "selectorCount": 15,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/campaign-template.css"
@@ -8342,7 +8342,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 89,
-      "selectorCount": 12,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/campaign-template.css"
@@ -8832,7 +8832,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 10,
-      "selectorCount": 6,
+      "selectorCount": 5,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/dashboard-overview.css"
@@ -8949,7 +8949,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 91,
-      "selectorCount": 15,
+      "selectorCount": 13,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/dm-dashboard.css"
@@ -9028,7 +9028,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 31,
-      "selectorCount": 6,
+      "selectorCount": 5,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/dm-dashboard.css"
@@ -9545,7 +9545,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 84,
-      "selectorCount": 11,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/dm-hub.css"
@@ -10052,7 +10052,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 177,
-      "selectorCount": 27,
+      "selectorCount": 26,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -10306,7 +10306,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 85,
-      "selectorCount": 13,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/landing-archive.css"
@@ -10430,7 +10430,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 64,
-      "selectorCount": 14,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/landing-archive.css"
@@ -10447,7 +10447,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 60,
-      "selectorCount": 12,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/landing-archive.css"
@@ -10470,7 +10470,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 102,
-      "selectorCount": 29,
+      "selectorCount": 25,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/landing-archive.css"
@@ -10639,7 +10639,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 110,
-      "selectorCount": 19,
+      "selectorCount": 15,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/player-portal.css"
@@ -10680,7 +10680,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 105,
-      "selectorCount": 14,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/player-portal.css"
@@ -10747,7 +10747,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 90,
-      "selectorCount": 13,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/player-portal.css"
@@ -10778,7 +10778,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 39,
-      "selectorCount": 11,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/player-portal.css"
@@ -10901,7 +10901,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 144,
-      "selectorCount": 25,
+      "selectorCount": 23,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/player-portal.css"
@@ -11032,7 +11032,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 142,
-      "selectorCount": 19,
+      "selectorCount": 17,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -11087,7 +11087,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 73,
-      "selectorCount": 11,
+      "selectorCount": 10,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -11276,7 +11276,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 105,
-      "selectorCount": 16,
+      "selectorCount": 14,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/features/timeline.css"
@@ -11356,7 +11356,7 @@
       "layer": "foundation",
       "domain": "shared",
       "lineCount": 16,
-      "selectorCount": 1,
+      "selectorCount": 0,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -11382,7 +11382,7 @@
       "layer": "foundation",
       "domain": "shared",
       "lineCount": 46,
-      "selectorCount": 7,
+      "selectorCount": 6,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -11427,8 +11427,8 @@
       "path": "src/frontend/shared/styles/landing/landing-01.css",
       "layer": "feature",
       "domain": "shared",
-      "lineCount": 174,
-      "selectorCount": 19,
+      "lineCount": 173,
+      "selectorCount": 18,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/landing.css"
@@ -11463,7 +11463,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 129,
-      "selectorCount": 16,
+      "selectorCount": 15,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/landing.css"
@@ -11542,7 +11542,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 151,
-      "selectorCount": 23,
+      "selectorCount": 21,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/landing.css"
@@ -11602,7 +11602,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 70,
-      "selectorCount": 22,
+      "selectorCount": 19,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/landing/landing-05.css"
@@ -11762,7 +11762,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 207,
-      "selectorCount": 30,
+      "selectorCount": 29,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/landing.css"
@@ -11794,7 +11794,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 202,
-      "selectorCount": 21,
+      "selectorCount": 20,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/landing.css"
@@ -11899,7 +11899,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 156,
-      "selectorCount": 27,
+      "selectorCount": 26,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/landing/landing-12.css"
@@ -11918,7 +11918,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 48,
-      "selectorCount": 9,
+      "selectorCount": 8,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/landing/landing-12.css"
@@ -12102,7 +12102,7 @@
       "layer": "feature",
       "domain": "shared",
       "lineCount": 131,
-      "selectorCount": 25,
+      "selectorCount": 21,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/landing.css"
@@ -12165,7 +12165,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 134,
-      "selectorCount": 24,
+      "selectorCount": 22,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -12197,7 +12197,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 42,
-      "selectorCount": 8,
+      "selectorCount": 7,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -12287,7 +12287,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 142,
-      "selectorCount": 20,
+      "selectorCount": 16,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css"
@@ -12319,7 +12319,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 156,
-      "selectorCount": 20,
+      "selectorCount": 16,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02.css"
@@ -12369,7 +12369,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 145,
-      "selectorCount": 20,
+      "selectorCount": 16,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css"
@@ -12400,7 +12400,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 114,
-      "selectorCount": 15,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03.css"
@@ -12477,7 +12477,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 88,
-      "selectorCount": 17,
+      "selectorCount": 15,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/layout/campaign-navigation.css"
@@ -12553,7 +12553,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 128,
-      "selectorCount": 18,
+      "selectorCount": 16,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -12586,7 +12586,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 26,
-      "selectorCount": 7,
+      "selectorCount": 5,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -12636,7 +12636,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 63,
-      "selectorCount": 12,
+      "selectorCount": 11,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -12889,7 +12889,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 162,
-      "selectorCount": 28,
+      "selectorCount": 26,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/layout/workspace.css"
@@ -12957,7 +12957,7 @@
       "layer": "layout",
       "domain": "shared",
       "lineCount": 62,
-      "selectorCount": 14,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/layout/workspace.css"
@@ -13136,7 +13136,7 @@
       "layer": "primitive",
       "domain": "shared",
       "lineCount": 94,
-      "selectorCount": 13,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -13178,7 +13178,7 @@
       "layer": "primitive",
       "domain": "shared",
       "lineCount": 84,
-      "selectorCount": 13,
+      "selectorCount": 12,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -13522,7 +13522,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '22%', left: '16%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 92,
+      "line": 93,
       "column": 51,
       "severity": "info",
       "status": "allowed",
@@ -13535,7 +13535,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '16%', right: '14%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 95,
+      "line": 96,
       "column": 54,
       "severity": "info",
       "status": "allowed",
@@ -13548,7 +13548,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ top: '42%', left: '42%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 98,
+      "line": 99,
       "column": 55,
       "severity": "info",
       "status": "allowed",
@@ -13561,7 +13561,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ bottom: '22%', left: '16%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 101,
+      "line": 102,
       "column": 56,
       "severity": "info",
       "status": "allowed",
@@ -13574,7 +13574,7 @@
     {
       "id": "dynamic-style:src/frontend/MainLanding.tsx:style={{ bottom: '16%', right: '12%' }}",
       "path": "src/frontend/MainLanding.tsx",
-      "line": 104,
+      "line": 105,
       "column": 53,
       "severity": "info",
       "status": "allowed",
@@ -13608,18 +13608,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css:display: block; grid-column: 1 / -1; margin: 3px 2px -1px; color: var(--theme-text-secondary); font-size: 0.56rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.82; } .canvas-mobile-tools-popover .canvas-mobile-tools-section:first-child",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-02.css",
-      "line": 145,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: block;\n    grid-column: 1 / -1;\n    margin: 3px 2px -1px;\n    color: var(--theme-text-secondary);\n    font-size: 0.56rem;\n    font-weight: 850;\n    letter-spacing: 0.12em;\n    text-transform: uppercase;\n    opacity: 0.82;\n  }\n\n  .canvas-mobile-tools-popover .canvas-mobile-tools-section:first-child",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "important:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:!important",
@@ -13692,18 +13680,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css:grid-template-columns: repeat(3, minmax(0, 1fr)); left: 18px; right: 18px; bottom: calc(8px + env(safe-area-inset-bottom)); padding: 7px; border-radius: 18px; } .main-content--canvas .canvas-mobile-dock button:first-child",
-      "path": "src/frontend/dm/canvas/components/canvas-mobile-toolbar-parts/canvas-mobile-toolbar-parts-01-split/canvas-mobile-toolbar-parts-01-01-parts/canvas-mobile-toolbar-parts-01-01-03.css",
-      "line": 75,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "grid-template-columns: repeat(3, minmax(0, 1fr));\n    left: 18px;\n    right: 18px;\n    bottom: calc(8px + env(safe-area-inset-bottom));\n    padding: 7px;\n    border-radius: 18px;\n  }\n\n  .main-content--canvas .canvas-mobile-dock button:first-child",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "dynamic-style:src/frontend/dm/entities/EntityDetailModal.tsx:style={{ \"--entity-detail-hero-filter\": isDmOnly ? \"grayscale(70%) brightness(35%)\" : \"none\", \"--entity-detail-hero-opacity\": selectedEntity.metadata?.imageUrl ? 1 : 0.6, } as React.CSSProperties & Re",
@@ -14283,30 +14259,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:/* Match the overlay's own responsive padding (clamp(16px, 2.5vw, 36px) per side, see the .modal-overlay rule above) exactly, rather than guessing a fixed value — a mismatched hardcoded calc() here previously let the modal overflow the viewport. `100%` doesn't work as a substitute: this grid has no explicit track sizing, so its implicit track sizes to content instead of stretching, and percentages against an auto track collapse instead of filling it. */ width: min(1480px, calc(100vw - 2 * clamp(16px, 2.5vw, 36px))) !important; max-width: 1480px !important; height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px)) !important; max-height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px)) !important; } /* Ampliado: solo queda el eyebrow (tipo + título) — hero, tabs y footer se ocultan para que el grafo ocupe todo el espacio disponible del modal. entityDetailImageContinuation.css defines a same-tie-break-weight 20%-hero grid (`.modal-overlay.modal-overlay:has(...):not(:has(...))`) that would otherwise win the cascade on source order; these rules repeat that same doubled-class + :not() shape so ours wins on specificity instead. */ .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing).entity-detail-dialog--relations-expanded",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css",
-      "line": 70,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "/* Match the overlay's own responsive padding (clamp(16px, 2.5vw, 36px) per\n     side, see the .modal-overlay rule above) exactly, rather than guessing a\n     fixed value — a mismatched hardcoded calc() here previously let the\n     modal overflow the viewport. `100%` doesn't work as a substitute: this\n     grid has no explicit track sizing, so its implicit track sizes to\n     content instead of stretching, and percentages against an auto track\n     collapse instead of filling it. */\n  width: min(1480px, calc(100vw - 2 * clamp(16px, 2.5vw, 36px))) !important;\n  max-width: 1480px !important;\n  height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px)) !important;\n  max-height: calc(100dvh - 2 * clamp(16px, 2.5vw, 36px)) !important;\n}\n\n/* Ampliado: solo queda el eyebrow (tipo + título) — hero, tabs y footer se\n   ocultan para que el grafo ocupe todo el espacio disponible del modal.\n   entityDetailImageContinuation.css defines a same-tie-break-weight 20%-hero\n   grid (`.modal-overlay.modal-overlay:has(...):not(:has(...))`) that would\n   otherwise win the cascade on source order; these rules repeat that same\n   doubled-class + :not() shape so ours wins on specificity instead. */\n.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing).entity-detail-dialog--relations-expanded",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css:height: clamp(220px, 31dvh, 330px) !important; min-height: 0; } .modal-content.entity-detail-dialog > .entity-detail-hero > img",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-01.css",
-      "line": 108,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "height: clamp(220px, 31dvh, 330px) !important;\n  min-height: 0;\n}\n\n.modal-content.entity-detail-dialog > .entity-detail-hero > img",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "important:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:!important",
       "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css",
       "line": 4,
@@ -14413,42 +14365,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:position: relative !important; z-index: 3; flex-wrap: wrap; gap: 14px !important; padding: 16px 24px !important; border-top: 1px solid var(--theme-borders-default); background: color-mix(in srgb, var(--theme-surfaces-base) 98%, var(--theme-surfaces-canvas)); box-shadow: 0 -14px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent); } .modal-content.entity-detail-dialog > .modal-footer > div",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css",
-      "line": 24,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: relative !important;\n  z-index: 3;\n  flex-wrap: wrap;\n  gap: 14px !important;\n  padding: 16px 24px !important;\n  border-top: 1px solid var(--theme-borders-default);\n  background: color-mix(in srgb, var(--theme-surfaces-base) 98%, var(--theme-surfaces-canvas));\n  box-shadow: 0 -14px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent);\n}\n\n.modal-content.entity-detail-dialog > .modal-footer > div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:display: flex; align-items: center; flex-wrap: wrap; gap: 8px; } .modal-content.entity-detail-dialog > .modal-footer > div:last-child",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css",
-      "line": 35,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: flex;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 8px;\n}\n\n.modal-content.entity-detail-dialog > .modal-footer > div:last-child",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css:margin-left: auto; justify-content: flex-end; } .modal-content.entity-detail-dialog > .modal-footer > div:last-child > span",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-02.css",
-      "line": 42,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "margin-left: auto;\n  justify-content: flex-end;\n}\n\n.modal-content.entity-detail-dialog > .modal-footer > div:last-child > span",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "important:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:!important",
@@ -14703,30 +14619,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:overflow: hidden !important; padding: 18px !important; background: color-mix(in srgb, var(--theme-surfaces-canvas) 58%, var(--theme-surfaces-base)); } .modal-content.entity-detail-dialog--editing .modal-body > div",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css",
-      "line": 45,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "overflow: hidden !important;\n  padding: 18px !important;\n  background: color-mix(in srgb, var(--theme-surfaces-canvas) 58%, var(--theme-surfaces-base));\n}\n\n.modal-content.entity-detail-dialog--editing .modal-body > div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css:height: 100%; min-height: 0; gap: 0 !important; } .modal-content.entity-detail-dialog--editing .modal-body > div > :not(.entity-summary__edit-panel)",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-03.css",
-      "line": 51,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "height: 100%;\n  min-height: 0;\n  gap: 0 !important;\n}\n\n.modal-content.entity-detail-dialog--editing .modal-body > div > :not(.entity-summary__edit-panel)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "important:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:!important",
       "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css",
       "line": 14,
@@ -14953,42 +14845,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:min-height: 150px; } .modal-content.entity-detail-dialog--editing > .modal-footer > .entity-detail-modal__footer-group--actions, .modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child > span, .modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child > button:last-child",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css",
-      "line": 8,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "min-height: 150px;\n}\n\n.modal-content.entity-detail-dialog--editing > .modal-footer > .entity-detail-modal__footer-group--actions,\n.modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child > span,\n.modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child > button:last-child",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:min-height: 68px; justify-content: flex-end !important; } .modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css",
-      "line": 18,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "min-height: 68px;\n  justify-content: flex-end !important;\n}\n\n.modal-content.entity-detail-dialog--editing > .modal-footer > div:last-child",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css:padding-inline: 16px !important; } .modal-content.entity-detail-dialog > .modal-footer, .modal-content.entity-detail-dialog > .modal-footer > div, .modal-content.entity-detail-dialog > .modal-footer > div:last-child",
-      "path": "src/frontend/dm/entities/entity-detail-dialog-parts/entity-detail-dialog-parts-04.css",
-      "line": 86,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "padding-inline: 16px !important;\n  }\n\n  .modal-content.entity-detail-dialog > .modal-footer,\n  .modal-content.entity-detail-dialog > .modal-footer > div,\n  .modal-content.entity-detail-dialog > .modal-footer > div:last-child",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "important:src/frontend/dm/entities/entity-detail-modal.css:!important",
@@ -15289,78 +15145,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:display: none; } .entity-detail-tabs > button",
-      "path": "src/frontend/dm/entities/entity-detail-modal.css",
-      "line": 133,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: none;\n}\n\n.entity-detail-tabs > button",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:position: relative; z-index: 21; display: flex; flex: 0 0 auto; align-items: center; align-self: stretch; justify-content: flex-end; gap: 7px; margin-left: auto; padding-left: 14px; background: var(--theme-surfaces-base); box-shadow: -12px 0 16px var(--theme-surfaces-base); pointer-events: auto !important; } .entity-detail-tab-actions > button",
-      "path": "src/frontend/dm/entities/entity-detail-modal.css",
-      "line": 142,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: relative;\n  z-index: 21;\n  display: flex;\n  flex: 0 0 auto;\n  align-items: center;\n  align-self: stretch;\n  justify-content: flex-end;\n  gap: 7px;\n  margin-left: auto;\n  padding-left: 14px;\n  background: var(--theme-surfaces-base);\n  box-shadow: -12px 0 16px var(--theme-surfaces-base);\n  pointer-events: auto !important;\n}\n\n.entity-detail-tab-actions > button",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:position: relative !important; z-index: 22 !important; display: inline-flex !important; flex: 0 0 34px !important; align-items: center !important; justify-content: center !important; width: 34px !important; height: 34px !important; min-width: 34px !important; min-height: 34px !important; max-width: 34px !important; max-height: 34px !important; margin: 0 !important; padding: 0 !important; cursor: pointer !important; pointer-events: auto !important; touch-action: manipulation; } .entity-detail-tab-actions > button svg",
-      "path": "src/frontend/dm/entities/entity-detail-modal.css",
-      "line": 158,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: relative !important;\n  z-index: 22 !important;\n  display: inline-flex !important;\n  flex: 0 0 34px !important;\n  align-items: center !important;\n  justify-content: center !important;\n\n  width: 34px !important;\n  height: 34px !important;\n  min-width: 34px !important;\n  min-height: 34px !important;\n  max-width: 34px !important;\n  max-height: 34px !important;\n\n  margin: 0 !important;\n  padding: 0 !important;\n\n  cursor: pointer !important;\n  pointer-events: auto !important;\n  touch-action: manipulation;\n}\n\n.entity-detail-tab-actions > button svg",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:display: block; flex: none; pointer-events: none; } .entity-detail-tab-actions > button:hover",
-      "path": "src/frontend/dm/entities/entity-detail-modal.css",
-      "line": 181,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: block;\n  flex: none;\n  pointer-events: none;\n}\n\n.entity-detail-tab-actions > button:hover",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:background: var(--theme-surfaces-interactive) !important; } .entity-detail-tab-actions > button:focus-visible",
-      "path": "src/frontend/dm/entities/entity-detail-modal.css",
-      "line": 187,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "background: var(--theme-surfaces-interactive) !important;\n}\n\n.entity-detail-tab-actions > button:focus-visible",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entity-detail-modal.css:gap: 5px; padding-left: 8px; } .entity-detail-tab-actions > button",
-      "path": "src/frontend/dm/entities/entity-detail-modal.css",
-      "line": 202,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "gap: 5px;\n    padding-left: 8px;\n  }\n\n  .entity-detail-tab-actions > button",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "important:src/frontend/dm/entities/entityDetailHeroActions.css:!important",
@@ -16035,102 +15819,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailImageContinuation.css:position: absolute !important; inset: 0 0 auto !important; z-index: 0; width: 100% !important; height: 60% !important; min-height: 0 !important; overflow: hidden !important; background: var(--theme-surfaces-base); pointer-events: none; } .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing) > .entity-detail-hero > img",
-      "path": "src/frontend/dm/entities/entityDetailImageContinuation.css",
-      "line": 18,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: absolute !important;\n  inset: 0 0 auto !important;\n  z-index: 0;\n  width: 100% !important;\n  height: 60% !important;\n  min-height: 0 !important;\n  overflow: hidden !important;\n  background: var(--theme-surfaces-base);\n  pointer-events: none;\n}\n\n.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)\n  > .entity-detail-hero\n  > img",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailImageContinuation.css:width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: 50% 0% !important; transform: scale(1.002); transform-origin: center top; } /* Keep most of the scene readable and reserve the lower overlap for identity and navigation. */ .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing) > .entity-detail-hero > div:last-child",
-      "path": "src/frontend/dm/entities/entityDetailImageContinuation.css",
-      "line": 32,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "width: 100% !important;\n  height: 100% !important;\n  object-fit: cover !important;\n  object-position: 50% 0% !important;\n  transform: scale(1.002);\n  transform-origin: center top;\n}\n\n/* Keep most of the scene readable and reserve the lower overlap for identity and navigation. */\n.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)\n  > .entity-detail-hero\n  > div:last-child",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailImageContinuation.css:position: relative !important; z-index: 3 !important; grid-row: 2; min-height: 112px; margin: 0 !important; padding: 42px 28px 16px !important; border-bottom-color: color-mix(in srgb, var(--theme-text-on-media) 3.5%, transparent) !important; background: linear-gradient( to bottom, color-mix(in srgb, var(--theme-surfaces-canvas) 8%, transparent), color-mix(in srgb, var(--theme-surfaces-canvas) 48%, transparent) 58%, color-mix(in srgb, var(--theme-surfaces-canvas) 82%, transparent) 100% ) !important; backdrop-filter: none; } /* Keep the close control available without competing with the identity. */ .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing) > .modal-header > button:last-child",
-      "path": "src/frontend/dm/entities/entityDetailImageContinuation.css",
-      "line": 73,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: relative !important;\n  z-index: 3 !important;\n  grid-row: 2;\n  min-height: 112px;\n  margin: 0 !important;\n  padding: 42px 28px 16px !important;\n  border-bottom-color: color-mix(in srgb, var(--theme-text-on-media) 3.5%, transparent) !important;\n  background: linear-gradient(\n    to bottom,\n    color-mix(in srgb, var(--theme-surfaces-canvas) 8%, transparent),\n    color-mix(in srgb, var(--theme-surfaces-canvas) 48%, transparent) 58%,\n    color-mix(in srgb, var(--theme-surfaces-canvas) 82%, transparent) 100%\n  ) !important;\n  backdrop-filter: none;\n}\n\n/* Keep the close control available without competing with the identity. */\n.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)\n  > .modal-header\n  > button:last-child",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/entityDetailImageContinuation.css:width: 38px !important; height: 38px !important; min-width: 38px !important; border-color: color-mix(in srgb, var(--theme-text-on-media) 16%, transparent) !important; background: color-mix(in srgb, var(--theme-surfaces-canvas) 58%, transparent) !important; color: color-mix(in srgb, var(--theme-text-primary) 82%, transparent) !important; box-shadow: 0 8px 22px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent); backdrop-filter: blur(8px); } .modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing) > .modal-header > button:last-child:hover",
-      "path": "src/frontend/dm/entities/entityDetailImageContinuation.css",
-      "line": 93,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "width: 38px !important;\n  height: 38px !important;\n  min-width: 38px !important;\n  border-color: color-mix(in srgb, var(--theme-text-on-media) 16%, transparent) !important;\n  background: color-mix(in srgb, var(--theme-surfaces-canvas) 58%, transparent) !important;\n  color: color-mix(in srgb, var(--theme-text-primary) 82%, transparent) !important;\n  box-shadow: 0 8px 22px color-mix(in srgb, var(--theme-surfaces-canvas) 22%, transparent);\n  backdrop-filter: blur(8px);\n}\n\n.modal-content.entity-detail-dialog:not(.entity-detail-dialog--editing)\n  > .modal-header\n  > button:last-child:hover",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } .player-character-detail__field, .player-character-detail__resources > div",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 39,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 10px;\n}\n\n.player-character-detail__field,\n.player-character-detail__resources > div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } .player-character-detail__vitals > div",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 72,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 10px;\n}\n\n.player-character-detail__vitals > div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; } .player-character-detail__abilities > div",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 93,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: grid;\n  grid-template-columns: repeat(6, minmax(0, 1fr));\n  gap: 8px;\n}\n\n.player-character-detail__abilities > div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/entities/playerCharacterDetail.css:display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .player-character-detail__resources > div",
-      "path": "src/frontend/dm/entities/playerCharacterDetail.css",
-      "line": 114,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 8px;\n}\n\n.player-character-detail__resources > div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "dynamic-style:src/frontend/dm/entities/relations/RelationshipEdge.tsx:style={{ transform: `translate(-50%, -50%) ` + `translate(${labelX}px, ${labelY}px)`, pointerEvents: \"none\", }}",
       "path": "src/frontend/dm/entities/relations/RelationshipEdge.tsx",
       "line": 99,
@@ -16220,18 +15908,6 @@
       "value": "style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}",
       "classification": "dynamic",
       "reason": "Runtime style requires review and CSS custom-property preference."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css:height: 100%; min-height: 0; } body:has(.campaign-workspace--network) .app-footer, body:has(.campaign-workspace--network) footer.site-footer, body:has(.campaign-workspace--network) .watermark",
-      "path": "src/frontend/dm/map/network/network-flow-parts/network-flow-parts-01.css",
-      "line": 28,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "height: 100%;\n  min-height: 0;\n}\n\nbody:has(.campaign-workspace--network) .app-footer,\nbody:has(.campaign-workspace--network) footer.site-footer,\nbody:has(.campaign-workspace--network) .watermark",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "important:src/frontend/dm/map/network/network-flow-parts/network-flow-parts-06.css:!important",
@@ -16500,18 +16176,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css:margin: 0; color: var(--theme-text-secondary); font-size: 0.9rem; line-height: 1.55; } .campaign-tour__content p:first-child",
-      "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-02.css",
-      "line": 62,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "margin: 0;\n  color: var(--theme-text-secondary);\n  font-size: 0.9rem;\n  line-height: 1.55;\n}\n\n.campaign-tour__content p:first-child",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "important:src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css:!important",
       "path": "src/frontend/dm/onboarding/campaign-guided-tour-parts/campaign-guided-tour-parts-03.css",
       "line": 50,
@@ -16714,150 +16378,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:min-height: inherit !important; grid-template-rows: auto minmax(360px, 1fr) auto !important; padding: 0; overflow: hidden; border-color: color-mix(in srgb, var(--theme-borders-default) 88%, transparent); border-radius: var(--theme-shapes-radius-large, 14px); background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent); box-shadow: 0 18px 46px color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent); } .campaign-messages-page > .card > header",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 6,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "min-height: inherit !important;\n  grid-template-rows: auto minmax(360px, 1fr) auto !important;\n  padding: 0;\n  overflow: hidden;\n  border-color: color-mix(in srgb, var(--theme-borders-default) 88%, transparent);\n  border-radius: var(--theme-shapes-radius-large, 14px);\n  background: color-mix(in srgb, var(--theme-surfaces-base) 96%, transparent);\n  box-shadow: 0 18px 46px color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent);\n}\n\n.campaign-messages-page > .card > header",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:padding: 16px 18px !important; background: color-mix(in srgb, var(--theme-surfaces-interactive) 76%, var(--theme-surfaces-base)); } .campaign-messages-page > .card > header + div",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 17,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "padding: 16px 18px !important;\n  background: color-mix(in srgb, var(--theme-surfaces-interactive) 76%, var(--theme-surfaces-base));\n}\n\n.campaign-messages-page > .card > header + div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:max-width: min(76%, 660px); } .campaign-messages-page > .card > footer",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 34,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "max-width: min(76%, 660px);\n}\n\n.campaign-messages-page > .card > footer",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:position: sticky; bottom: 0; z-index: 2; padding: 14px 18px 18px !important; background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base)); box-shadow: 0 -12px 28px color-mix(in srgb, var(--theme-surfaces-canvas) 14%, transparent); } .campaign-messages-page > .card > footer > div:first-of-type .form-select",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 38,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "position: sticky;\n  bottom: 0;\n  z-index: 2;\n  padding: 14px 18px 18px !important;\n  background: color-mix(in srgb, var(--theme-surfaces-interactive) 88%, var(--theme-surfaces-base));\n  box-shadow: 0 -12px 28px color-mix(in srgb, var(--theme-surfaces-canvas) 14%, transparent);\n}\n\n.campaign-messages-page > .card > footer > div:first-of-type .form-select",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:width: auto; min-width: 190px; flex: 0 1 260px; } .campaign-messages-page > .card > footer > div:last-of-type",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 47,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "width: auto;\n  min-width: 190px;\n  flex: 0 1 260px;\n}\n\n.campaign-messages-page > .card > footer > div:last-of-type",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:display: grid !important; grid-template-columns: minmax(0, 1fr) auto; align-items: end !important; } .campaign-messages-page > .card > footer .form-textarea",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 53,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: grid !important;\n  grid-template-columns: minmax(0, 1fr) auto;\n  align-items: end !important;\n}\n\n.campaign-messages-page > .card > footer .form-textarea",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:min-height: 72px; max-height: 180px; resize: vertical; } .campaign-messages-page > .card > footer .btn-primary",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 59,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "min-height: 72px;\n  max-height: 180px;\n  resize: vertical;\n}\n\n.campaign-messages-page > .card > footer .btn-primary",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:width: min(92%, 620px) !important; max-width: none; } .campaign-messages-page > .card > footer > div:last-of-type",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 81,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "width: min(92%, 620px) !important;\n    max-width: none;\n  }\n\n  .campaign-messages-page > .card > footer > div:last-of-type",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:grid-template-columns: 1fr; } .campaign-messages-page > .card > footer .btn-primary",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 86,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "grid-template-columns: 1fr;\n  }\n\n  .campaign-messages-page > .card > footer .btn-primary",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:.campaign-messages-page > .card > header, .campaign-messages-page > .card > footer",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 95,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".campaign-messages-page > .card > header,\n  .campaign-messages-page > .card > footer",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:padding-inline: 10px !important; } .campaign-messages-page > .card > footer > div:first-of-type",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 101,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "padding-inline: 10px !important;\n  }\n\n  .campaign-messages-page > .card > footer > div:first-of-type",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/dm/pages/campaignMessagesPage.css:display: grid !important; grid-template-columns: 1fr; } .campaign-messages-page > .card > footer > div:first-of-type .form-select",
-      "path": "src/frontend/dm/pages/campaignMessagesPage.css",
-      "line": 105,
-      "column": 5,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: grid !important;\n    grid-template-columns: 1fr;\n  }\n\n  .campaign-messages-page > .card > footer > div:first-of-type .form-select",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "dynamic-style:src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:style={{ \"--consequence-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>} onClick={() => onSelect(node)} > <span className=\"consequence-chain-list__kind\">{t(`sessio",
@@ -17282,18 +16802,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css:width: 34px; min-width: 34px; min-height: 34px; padding: 6px !important; } body:has(.story-plan-workspace) .watermark",
-      "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-02.css",
-      "line": 35,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "width: 34px;\n  min-width: 34px;\n  min-height: 34px;\n  padding: 6px !important;\n}\n\nbody:has(.story-plan-workspace) .watermark",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "important:src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css:!important",
       "path": "src/frontend/dm/story/plan/story-plan-parts/story-plan-parts-03.css",
       "line": 14,
@@ -17632,18 +17140,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css:border-top: 1px solid var(--theme-borders-default); } .entity-reframe-dialog__footer > div",
-      "path": "src/frontend/shared/components/entity-image-reframe-parts/entity-image-reframe-parts-02.css",
-      "line": 2,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "border-top: 1px solid var(--theme-borders-default);\n}\n\n.entity-reframe-dialog__footer > div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css:!important",
       "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-03.css",
       "line": 112,
@@ -17714,18 +17210,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-04.css:color: var(--theme-text-subtle); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; } .dashboard-section-label > div",
-      "path": "src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-04.css",
-      "line": 93,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "color: var(--theme-text-subtle);\n  font-size: 0.75rem;\n  font-weight: 800;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n}\n\n.dashboard-section-label > div",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "important:src/frontend/shared/styles/features/campaign-canvas-styles/campaign-canvas-styles-05.css:!important",
@@ -18460,18 +17944,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-10.css:height: 7px; overflow: hidden; border-radius: var(--theme-shapes-radius-pill); background: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent); margin: 8px 0 5px; } .player-resource-meter > div",
-      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-10.css",
-      "line": 42,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "height: 7px;\n  overflow: hidden;\n  border-radius: var(--theme-shapes-radius-pill);\n  background: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent);\n  margin: 8px 0 5px;\n}\n\n.player-resource-meter > div",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "important:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
       "line": 43,
@@ -18520,18 +17992,6 @@
       "reason": "Important declarations bypass the intended cascade."
     },
     {
-      "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css:display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; } .player-history-header span:first-child",
-      "path": "src/frontend/shared/styles/features/player-portal-parts/player-portal-parts-11.css",
-      "line": 4,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "display: flex;\n  justify-content: space-between;\n  gap: 12px;\n  align-items: flex-start;\n}\n\n.player-history-header span:first-child",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
       "id": "important:src/frontend/shared/styles/features/quick-capture.css:!important",
       "path": "src/frontend/shared/styles/features/quick-capture.css",
       "line": 36,
@@ -18554,198 +18014,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-01.css:body:has(.rl-root) .watermark",
-      "path": "src/frontend/shared/styles/landing/landing-01.css",
-      "line": 1,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "body:has(.rl-root) .watermark",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:animation: rl-place-in 0.45s cubic-bezier(0.34, 1.3, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-cn-node:nth-child(1)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
-      "line": 32,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "animation: rl-place-in 0.45s cubic-bezier(0.34, 1.3, 0.64, 1) both;\n  animation-play-state: running;\n}\n.rl-animate--visible .rl-cn-node:nth-child(1)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-cn-node:nth-child(2)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
-      "line": 36,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-cn-node:nth-child(2)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-cn-node:nth-child(3)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
-      "line": 37,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-cn-node:nth-child(3)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-cn-node:nth-child(4)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
-      "line": 38,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-cn-node:nth-child(4)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-cn-node:nth-child(5)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
-      "line": 39,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-cn-node:nth-child(5)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:animation: rl-slide-up 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-mem-card:nth-child(1)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
-      "line": 43,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "animation: rl-slide-up 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) both;\n  animation-play-state: running;\n}\n.rl-animate--visible .rl-mem-card:nth-child(1)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-mem-card:nth-child(2)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
-      "line": 47,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-mem-card:nth-child(2)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-01.css:.rl-animate--visible .rl-mem-card:nth-child(3)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-01.css",
-      "line": 48,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-mem-card:nth-child(3)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:animation: rl-slide-right 0.38s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-network-player:nth-child(1)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
-      "line": 3,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "animation: rl-slide-right 0.38s cubic-bezier(0.34, 1.2, 0.64, 1) both;\n  animation-play-state: running;\n}\n.rl-animate--visible .rl-network-player:nth-child(1)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-player:nth-child(2)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
-      "line": 7,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-network-player:nth-child(2)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-player:nth-child(3)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
-      "line": 8,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-network-player:nth-child(3)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:animation: rl-slide-right 0.34s cubic-bezier(0.34, 1.2, 0.64, 1) both; animation-play-state: running; } .rl-animate--visible .rl-network-vis-row:nth-child(1)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
-      "line": 12,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": "animation: rl-slide-right 0.34s cubic-bezier(0.34, 1.2, 0.64, 1) both;\n  animation-play-state: running;\n}\n.rl-animate--visible .rl-network-vis-row:nth-child(1)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-vis-row:nth-child(2)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
-      "line": 16,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-network-vis-row:nth-child(2)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-vis-row:nth-child(3)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
-      "line": 17,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-network-vis-row:nth-child(3)",
-      "reason": "Selector depends on another component's DOM structure."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/landing/landing-05/landing-05-02.css:.rl-animate--visible .rl-network-vis-row:nth-child(4)",
-      "path": "src/frontend/shared/styles/landing/landing-05/landing-05-02.css",
-      "line": 18,
-      "column": 1,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".rl-animate--visible .rl-network-vis-row:nth-child(4)",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-02.css:!important",
@@ -18878,18 +18146,6 @@
       "category": "important",
       "value": "!important",
       "reason": "Important declarations bypass the intended cascade."
-    },
-    {
-      "id": "cross-component-selector:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css:.main-content--canvas .canvas-layout, .main-content--canvas .canvas-work-area, .main-content--canvas .canvas-work-area > .react-flow__renderer, .main-content--canvas .canvas-work-area > div",
-      "path": "src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-02-parts/campaign-navigation-parts-02-parts-01-02-03.css",
-      "line": 29,
-      "column": 3,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "css",
-      "category": "cross-component-selector",
-      "selectorOrComponent": ".main-content--canvas .canvas-layout,\n  .main-content--canvas .canvas-work-area,\n  .main-content--canvas .canvas-work-area > .react-flow__renderer,\n  .main-content--canvas .canvas-work-area > div",
-      "reason": "Selector depends on another component's DOM structure."
     },
     {
       "id": "important:src/frontend/shared/styles/layout/campaign-navigation-parts/campaign-navigation-parts-02-parts/campaign-navigation-parts-02-parts-01-split/campaign-navigation-parts-02-parts-01-03-parts/campaign-navigation-parts-02-parts-01-03-01.css:!important",
@@ -19105,6 +18361,54 @@
       "sourceType": "css",
       "category": "global-selector",
       "selectorOrComponent": ".grid",
+      "reason": "Generic selector has global collision risk."
+    },
+    {
+      "id": "global-selector:src/frontend/shared/styles/primitives/card.css:.card",
+      "path": "src/frontend/shared/styles/primitives/card.css",
+      "line": 7,
+      "column": 1,
+      "severity": "medium",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "global-selector",
+      "selectorOrComponent": ".card",
+      "reason": "Generic selector has global collision risk."
+    },
+    {
+      "id": "global-selector:src/frontend/shared/styles/primitives/dialog.css:.modal-header",
+      "path": "src/frontend/shared/styles/primitives/dialog.css",
+      "line": 44,
+      "column": 1,
+      "severity": "medium",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "global-selector",
+      "selectorOrComponent": ".modal-header",
+      "reason": "Generic selector has global collision risk."
+    },
+    {
+      "id": "global-selector:src/frontend/shared/styles/primitives/dialog.css:.modal-body",
+      "path": "src/frontend/shared/styles/primitives/dialog.css",
+      "line": 52,
+      "column": 1,
+      "severity": "medium",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "global-selector",
+      "selectorOrComponent": ".modal-body",
+      "reason": "Generic selector has global collision risk."
+    },
+    {
+      "id": "global-selector:src/frontend/shared/styles/primitives/dialog.css:.modal-footer",
+      "path": "src/frontend/shared/styles/primitives/dialog.css",
+      "line": 56,
+      "column": 1,
+      "severity": "medium",
+      "status": "temporary",
+      "sourceType": "css",
+      "category": "global-selector",
+      "selectorOrComponent": ".modal-footer",
       "reason": "Generic selector has global collision risk."
     }
   ],

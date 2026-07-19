@@ -1,4 +1,4 @@
-body:has(.rl-root) .watermark {
+body[data-watermark="hidden"] .watermark {
   display: none;
 }
 
@@ -170,4 +170,3 @@ body:has(.rl-root) .watermark {
   background-clip: text;
   filter: drop-shadow(0 2px 24px color-mix(in srgb, var(--theme-surfaces-canvas) 85%, transparent));
 }
-

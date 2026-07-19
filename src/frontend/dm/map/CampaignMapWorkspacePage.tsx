@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet, useParams, useRouterState } from "@tanstack/react-router";
 import { WorkspaceTabs } from "../workspaces/WorkspaceTabs.js";
+import { useBodyWatermark } from "../../shared/hooks/useBodyWatermark.js";
 import { GitFork, LayoutGrid, Maximize2, Minimize2 } from "lucide-react";
 import "./mapWorkspace.css";
 
@@ -9,6 +10,7 @@ export function CampaignMapWorkspacePage() {
   const routerState = useRouterState();
   const isCanvas = routerState.location.pathname.includes("/map/canvas");
   const isNetwork = routerState.location.pathname.includes("/map/network");
+  useBodyWatermark(isNetwork ? "network" : "canvas");
   const workspaceRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 

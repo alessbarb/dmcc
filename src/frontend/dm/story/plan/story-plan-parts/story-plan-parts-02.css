@@ -38,7 +38,7 @@
   padding: 6px !important;
 }
 
-body:has(.story-plan-workspace) .watermark {
+body[data-watermark="hidden"] .watermark {
   opacity: 0.008;
 }
 

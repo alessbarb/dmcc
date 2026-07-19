@@ -29,9 +29,9 @@
   min-height: 0;
 }
 
-body:has(.campaign-workspace--network) .app-footer,
-body:has(.campaign-workspace--network) footer.site-footer,
-body:has(.campaign-workspace--network) .watermark {
+body[data-watermark="network"] .app-footer,
+body[data-watermark="network"] footer.site-footer,
+body[data-watermark="network"] .watermark {
   display: none;
 }
 

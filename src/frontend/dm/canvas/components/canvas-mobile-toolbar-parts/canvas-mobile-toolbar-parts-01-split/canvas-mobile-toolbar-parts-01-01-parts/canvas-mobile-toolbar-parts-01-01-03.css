@@ -40,7 +40,7 @@
     font-size: 0.74rem;
   }
 
-  .main-content--canvas .canvas-header-bar {
+  .canvas-page-container .canvas-header-bar {
     min-height: 38px !important;
     max-height: 42px !important;
     padding: 4px 8px !important;
@@ -48,11 +48,11 @@
     backdrop-filter: blur(14px);
   }
 
-  .main-content--canvas .canvas-selector-group {
+  .canvas-page-container .canvas-selector-group {
     gap: 6px !important;
   }
 
-  .main-content--canvas .canvas-selector-group > svg {
+  .canvas-page-container .canvas-selector-group > svg {
     width: 15px;
     height: 15px;
     flex: 0 0 auto;
@@ -62,7 +62,7 @@
 
 @media (max-width: 720px) {
 
-  .main-content--canvas .canvas-selector-group .canvas-select {
+  .canvas-page-container .canvas-selector-group .canvas-select {
     height: 32px;
     padding: 0 34px 0 12px;
     border-radius: 12px;
@@ -71,7 +71,7 @@
     background: color-mix(in srgb, var(--theme-surfaces-interactive) 92%, var(--theme-surfaces-canvas));
   }
 
-  .main-content--canvas .canvas-mobile-dock {
+  .canvas-page-container .canvas-mobile-dock {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     left: 18px;
     right: 18px;
@@ -80,11 +80,11 @@
     border-radius: 18px;
   }
 
-  .main-content--canvas .canvas-mobile-dock button:first-child {
+  .canvas-page-container .canvas-mobile-dock__mode-button {
     display: none;
   }
 
-  .main-content--canvas .canvas-mobile-dock button {
+  .canvas-page-container .canvas-mobile-dock button {
     min-height: 48px;
   }
 }

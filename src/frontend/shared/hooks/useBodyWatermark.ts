@@ -8,7 +8,7 @@ import { useEffect } from "react";
  * lifetime, so their CSS can target `body[data-watermark="..."]` instead of
  * reaching into the page's own DOM structure with `body:has(.some-page)`.
  */
-export type BodyWatermarkMode = "hidden" | "canvas" | "notebooks";
+export type BodyWatermarkMode = "hidden" | "canvas" | "network" | "notebooks";
 
 export function useBodyWatermark(mode: BodyWatermarkMode): void {
   useEffect(() => {

@@ -71,6 +71,72 @@ function isImportantAllowed(source, index) {
   return /style-audit-allow\s+important\s*:/.test(window);
 }
 
+const layoutClassNames = new Set([
+  "app-container",
+  "main-content",
+  "content-body",
+  "card",
+  "panel",
+  "modal-overlay",
+  "modal-content",
+  "modal-header",
+  "modal-body",
+  "modal-footer",
+]);
+
+function componentPrefixes(selector) {
+  return new Set(
+    collectRegex(selector, /\.([a-zA-Z0-9_-]+)/g)
+      .map((match) => match[1])
+      .filter((className) => !layoutClassNames.has(className))
+      .filter((className) => !className.startsWith("react-flow"))
+      .map((className) => className.split(/[-_]/)[0]),
+  );
+}
+
+function collectCssSelectors(source) {
+  const withoutComments = source.replace(/\/\*[\s\S]*?\*\//g, (comment) => " ".repeat(comment.length));
+  const selectors = [];
+  let buffer = "";
+  let bufferStart = 0;
+
+  for (let index = 0; index < withoutComments.length; index += 1) {
+    const character = withoutComments[index];
+    if (character === "{") {
+      const candidate = buffer.trim();
+      if (candidate && !candidate.startsWith("@")) {
+        selectors.push({ selector: candidate, index: bufferStart + buffer.indexOf(candidate) });
+      }
+      buffer = "";
+      bufferStart = index + 1;
+      continue;
+    }
+    if (character === "}") {
+      buffer = "";
+      bufferStart = index + 1;
+      continue;
+    }
+    if (buffer.length === 0) bufferStart = index;
+    buffer += character;
+  }
+
+  return selectors;
+}
+
+function isCrossComponentSelector(selector) {
+  if (/:has\(/.test(selector)) return true;
+
+  // Descendant element and child-position selectors are common inside a
+  // component-owned BEM block (for example, a card's repeated fields). They
+  // are only cross-component hazards when the selector joins independently
+  // named component prefixes. Keeping that distinction avoids treating every
+  // internal `> div`, `:first-child`, or animation `:nth-child` as a boundary
+  // violation while still catching `.component-a .component-b .button`.
+  const prefixes = componentPrefixes(selector);
+  if (prefixes.size < 2) return false;
+  return /(?:>\s*(?:div|img|button|section|header|footer|main|article)|:first-child|:nth-child)/.test(selector);
+}
+
 function classifyInlineStyle(body) {
   if (/^\s*["']?--[a-zA-Z0-9_-]+["']?\s*:/.test(body)) {
     return "dynamic";
@@ -85,9 +151,7 @@ function classifyInlineStyle(body) {
 function auditCss(pathname, source) {
   const findings = [];
   const imports = collectRegex(source, /@import\s+["']([^"']+)["']/g).map((match) => match[1]);
-  const selectors = collectRegex(source, /(^|})\s*([^@}{][^{]+)\s*\{/gm)
-    .map((match) => match[2].trim())
-    .filter(Boolean);
+  const selectors = collectCssSelectors(source).map(({ selector }) => selector);
   const variableDefinitions = collectRegex(source, /(--[a-zA-Z0-9_-]+)\s*:/g).map((match) => match[1]);
   const variableReferences = collectRegex(source, /var\(\s*(--[a-zA-Z0-9_-]+)/g).map((match) => match[1]);
 
@@ -122,7 +186,7 @@ function auditCss(pathname, source) {
 
   for (const selector of selectors) {
     const index = source.indexOf(selector);
-    const crossComponent = />\s*(?:div|img|button|section|header|footer|main|article)(?::|\[|\.|#|\s|$)|:first-child|:nth-child|:has\(/.test(selector);
+    const crossComponent = isCrossComponentSelector(selector);
     if (crossComponent) {
       findings.push(finding(pathname, source, index, {
         sourceType: "css",

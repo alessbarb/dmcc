@@ -4,6 +4,7 @@ import { storyApi } from "../../../shared/api.js";
 import { useToast } from "../../../shared/hooks/useToast.js";
 import { useTranslation } from "../../../shared/i18n/useTranslation.js";
 import { useCampaignShortcuts } from "../../shortcuts/useCampaignShortcuts.js";
+import { useBodyWatermark } from "../../../shared/hooks/useBodyWatermark.js";
 import {
   GitBranch,
   Plus,
@@ -21,6 +22,7 @@ import {
 } from "lucide-react";
 
 export function StoryPlanView() {
+  useBodyWatermark("hidden");
   const { t } = useTranslation();
   const { addToast } = useToast();
   const store = useCampaignStore();
