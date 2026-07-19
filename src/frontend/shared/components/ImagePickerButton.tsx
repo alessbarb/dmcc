@@ -60,55 +60,21 @@ export function ImagePickerButton({
     return (
       <>
         <div
-          style={{
-            display: "grid",
-            gridTemplateRows: "minmax(180px, 1fr) auto",
-            width: "min(100%, 460px)",
-            minWidth: 0,
-            overflow: "hidden",
-            border: "1px solid var(--theme-borders-default, #444)",
-            borderRadius: "var(--theme-shapes-radius-medium, 10px)",
-            background: "var(--theme-surfaces-raised)",
-            boxShadow: "0 12px 28px rgba(0, 0, 0, 0.22)",
-          }}
+          className="image-picker-button__entity-editor"
         >
-          <div
-            style={{
-              position: "relative",
-              minHeight: "180px",
-              overflow: "hidden",
-              background: "var(--theme-surfaces-interactive, #111)",
-            }}
-          >
+          <div className="image-picker-button__entity-preview">
             {displaySrc ? (
               <img
                 src={displaySrc}
                 alt="Previsualización de la entidad"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  minHeight: "180px",
-                  maxHeight: "260px",
-                  objectFit: "cover",
-                  objectPosition: imageFocalPointToObjectPosition(focalPoint),
-                  display: "block",
-                }}
+                className="image-picker-button__entity-image"
+                style={{ objectPosition: imageFocalPointToObjectPosition(focalPoint) }}
               />
             ) : (
               <button
                 type="button"
                 onClick={() => setOpen(true)}
-                style={{
-                  width: "100%",
-                  minHeight: "180px",
-                  display: "grid",
-                  placeItems: "center",
-                  gap: "8px",
-                  border: 0,
-                  color: "var(--theme-text-secondary, #888)",
-                  background: "transparent",
-                  cursor: "pointer",
-                }}
+                className="image-picker-button__empty-entity"
               >
                 <ImagePlus size={28} />
                 <span>Seleccionar imagen</span>
@@ -164,26 +130,11 @@ export function ImagePickerButton({
     );
   }
 
-  const containerStyle: React.CSSProperties = isCircle
-    ? { width: "72px", height: "72px", borderRadius: "50%" }
-    : { width: "120px", height: "72px", borderRadius: "var(--theme-shapes-radius-small, 6px)" };
-
   return (
     <>
       <button
         type="button"
-        style={{
-          position: "relative",
-          display: "inline-block",
-          flexShrink: 0,
-          ...containerStyle,
-          overflow: "hidden",
-          border: "2px solid var(--theme-borders-default, #444)",
-          background: "var(--theme-surfaces-raised)",
-          cursor: "pointer",
-          padding: 0,
-          appearance: "none",
-        }}
+        className={`image-picker-button ${isCircle ? "image-picker-button--circle" : "image-picker-button--rect"}`}
         onClick={() => setOpen(true)}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -194,38 +145,15 @@ export function ImagePickerButton({
           <img
             src={displaySrc}
             alt="Imagen seleccionada"
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            className="image-picker-button__image"
           />
         ) : (
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "var(--theme-text-secondary, #888)",
-              fontSize: "11px",
-              textAlign: "center",
-              padding: "4px",
-            }}
-          >
+          <div className="image-picker-button__empty">
             Sin imagen
           </div>
         )}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "rgba(0,0,0,0.45)",
-            opacity: hovered ? 1 : 0,
-            transition: "opacity 0.15s",
-          }}
-        >
-          <Pencil size={18} color="#fff" />
+        <div className={`image-picker-button__hover ${hovered ? "is-visible" : ""}`}>
+          <Pencil size={18} />
         </div>
       </button>
       {open && (
