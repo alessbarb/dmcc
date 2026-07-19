@@ -1215,8 +1215,7 @@ export const CampaignCanvasFlow = React.forwardRef<CampaignCanvasFlowHandle, Cam
   return (
     <div
       ref={wrapperRef}
-      style={{ cursor: isPanMode ? "grab" : "default" }}
-      className={`canvas-flow-wrapper${isDragOver ? " canvas-drop-zone--active" : ""}`}
+      className={`canvas-flow-wrapper${isDragOver ? " canvas-drop-zone--active" : ""}${isPanMode ? " canvas-flow-wrapper--pan" : ""}`}
       onDoubleClick={onPaneDoubleClick}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}

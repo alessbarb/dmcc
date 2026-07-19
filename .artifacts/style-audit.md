@@ -7,9 +7,9 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 114,
-  "tsxFilesWithInlineStyles": 59,
+  "tsxFilesWithInlineStyles": 58,
   "forbiddenLiteralColors": 254,
-  "staticInlineStyles": 472,
+  "staticInlineStyles": 471,
   "dynamicInlineStyles": 29,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -88,7 +88,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/canvas-bulk-actions.css` | legacy | shared | 7 | 1 | 1 |
 | `src/frontend/shared/styles/features/canvas-dialog-forms.css` | legacy | shared | 65 | 13 | 1 |
 | `src/frontend/shared/styles/features/canvas-entity-node.css` | legacy | shared | 9 | 2 | 1 |
-| `src/frontend/shared/styles/features/canvas-flow.css` | legacy | shared | 31 | 4 | 1 |
+| `src/frontend/shared/styles/features/canvas-flow.css` | legacy | shared | 35 | 5 | 1 |
 | `src/frontend/shared/styles/features/canvas-group-hulls.css` | legacy | shared | 23 | 3 | 1 |
 | `src/frontend/shared/styles/features/canvas-inspector.css` | legacy | shared | 93 | 14 | 1 |
 | `src/frontend/shared/styles/features/canvas-narrative-lint.css` | legacy | shared | 80 | 14 | 1 |
@@ -197,8 +197,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/auth/RegisterPage.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/auth/RegisterPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/auth/RegisterPage.tsx:93` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1218` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1283` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1282` | Literal visual color outside a registered theme package. |
 | high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:31` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:162` | Selector depends on another component's DOM structure. |

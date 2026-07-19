@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:47:41.576Z",
+  "generatedAt": "2026-07-19T10:48:42.379Z",
   "summary": {
     "cssFiles": 114,
-    "tsxFilesWithInlineStyles": 59,
+    "tsxFilesWithInlineStyles": 58,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 472,
+    "staticInlineStyles": 471,
     "dynamicInlineStyles": 29,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -675,7 +675,7 @@
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 1310,
+      "lineCount": 1309,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
@@ -6545,8 +6545,8 @@
       "path": "src/frontend/shared/styles/features/canvas-flow.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 31,
-      "selectorCount": 4,
+      "lineCount": 35,
+      "selectorCount": 5,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -9963,7 +9963,7 @@
     {
       "id": "literal-color:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:#fef08a",
       "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1283,
+      "line": 1282,
       "column": 46,
       "severity": "high",
       "status": "temporary",
@@ -9971,19 +9971,6 @@
       "category": "literal-color",
       "value": "#fef08a",
       "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:style={{ cursor: isPanMode ? \"grab\" : \"default\" }}",
-      "path": "src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx",
-      "line": 1218,
-      "column": 7,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ cursor: isPanMode ? \"grab\" : \"default\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "literal-color:src/frontend/dm/canvas/components/CanvasFactNode.tsx:#10b981",

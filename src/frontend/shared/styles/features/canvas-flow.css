@@ -24,6 +24,10 @@
   height: 100%;
 }
 
+.canvas-flow-wrapper--pan {
+  cursor: grab;
+}
+
 .canvas-flow-minimap {
   border: 1px solid var(--theme-canvas-toolbar-border);
   background: var(--theme-canvas-minimap-background);
