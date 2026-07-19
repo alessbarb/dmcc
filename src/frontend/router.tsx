@@ -3,9 +3,11 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
+  Link,
   Outlet,
   redirect,
 } from "@tanstack/react-router";
+import { useTranslation } from "./shared/i18n/useTranslation.js";
 import { PlayerPortalRealtimeSync } from "./player/components/PlayerPortalRealtimeSync.js";
 import { fetchSession } from "./shared/auth/authClient.js";
 import type { PlatformRole } from "./shared/auth/authTypes.js";
@@ -211,7 +213,18 @@ function RootRouteComponent() {
   return <><SystemAnnouncements /><PlayerPortalRealtimeSync /><Outlet /></>;
 }
 
-const rootRoute = createRootRoute({ component: RootRouteComponent });
+function RootNotFoundComponent() {
+  const { t } = useTranslation();
+  return (
+    <div className="page-loading" role="alert">
+      <p>{t("common.routeNotFoundTitle")}</p>
+      <p>{t("common.routeNotFoundDescription")}</p>
+      <Link to="/home" className="btn btn-primary btn-sm">{t("common.backToHome")}</Link>
+    </div>
+  );
+}
+
+const rootRoute = createRootRoute({ component: RootRouteComponent, notFoundComponent: RootNotFoundComponent });
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",

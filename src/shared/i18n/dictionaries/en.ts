@@ -238,6 +238,9 @@ export const en = {
     cardDescription: "Contact the project or review the public repository.",
   },
   common: {
+    routeNotFoundTitle: "Page not found",
+    routeNotFoundDescription: "The link you followed doesn't exist or is no longer available.",
+    backToHome: "Back to home",
     save: "Save",
     cancel: "Cancel",
     delete: "Delete",
