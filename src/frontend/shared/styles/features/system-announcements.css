@@ -1,0 +1,90 @@
+.system-announcements {
+  position: relative;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--theme-surfaces-overlay);
+  border-bottom: 1px solid var(--theme-borders-default);
+}
+
+.system-announcements__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 1px solid var(--theme-feedback-info-border);
+  border-radius: var(--theme-shapes-radius-small);
+  background: var(--theme-feedback-info-background);
+  box-shadow: var(--theme-shadows-medium);
+  color: var(--theme-text-primary);
+  transition: background 0.2s ease-in-out;
+}
+
+.system-announcements__item--warning {
+  border-color: var(--theme-feedback-warning-border);
+  background: var(--theme-feedback-warning-background);
+}
+
+.system-announcements__item--maintenance {
+  border-color: var(--theme-feedback-danger-border);
+  background: var(--theme-feedback-danger-background);
+}
+
+.system-announcements__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: var(--theme-shapes-radius-small);
+  background: var(--theme-surfaces-subtle);
+  color: var(--theme-feedback-info-foreground);
+}
+
+.system-announcements__item--warning .system-announcements__icon {
+  color: var(--theme-feedback-warning-foreground);
+}
+
+.system-announcements__item--maintenance .system-announcements__icon {
+  color: var(--theme-feedback-danger-foreground);
+}
+
+.system-announcements__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.system-announcements__title {
+  margin: 0 0 4px;
+  color: var(--theme-text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.system-announcements__body {
+  margin: 0;
+  color: var(--theme-text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.system-announcements__dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: 0;
+  border-radius: var(--theme-shapes-radius-small);
+  color: var(--theme-text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.system-announcements__dismiss:hover {
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-interactive-hover);
+}

@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 128,
-  "tsxFilesWithInlineStyles": 36,
-  "forbiddenLiteralColors": 199,
-  "staticInlineStyles": 94,
+  "cssFiles": 129,
+  "tsxFilesWithInlineStyles": 35,
+  "forbiddenLiteralColors": 183,
+  "staticInlineStyles": 87,
   "dynamicInlineStyles": 21,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -121,6 +121,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
 | `src/frontend/shared/styles/features/session-prep-form.css` | legacy | shared | 53 | 9 | 1 |
 | `src/frontend/shared/styles/features/sidebar-nav.css` | legacy | shared | 15 | 2 | 1 |
+| `src/frontend/shared/styles/features/system-announcements.css` | legacy | shared | 91 | 12 | 1 |
 | `src/frontend/shared/styles/features/timeline.css` | legacy | shared | 217 | 37 | 1 |
 | `src/frontend/shared/styles/foundation/accessibility.css` | foundation | shared | 8 | 2 | 1 |
 | `src/frontend/shared/styles/foundation/color-scheme.css` | foundation | shared | 12 | 3 | 1 |
@@ -138,7 +139,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 87 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 88 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -715,29 +716,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/shared/components/RpgPortalBackground.tsx:33` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/shared/components/RpgPortalBackground.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/RpgPortalBackground.tsx:149` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/SystemAnnouncements.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:72` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:80` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:86` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:87` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:88` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:91` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:92` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:93` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/SystemAnnouncements.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:108` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/SystemAnnouncements.tsx:113` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:119` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/SystemAnnouncements.tsx:126` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/SystemAnnouncements.tsx:128` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:132` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/SystemAnnouncements.tsx:138` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:141` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/SystemAnnouncements.tsx:153` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:158` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:166` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:167` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/SystemAnnouncements.tsx:171` | Literal visual color outside a registered theme package. |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/admin-announcements.css:1` | Large stylesheet requires atomization (37 lines, 37 selectors). |
 | critical | mixed-responsibility | `src/frontend/shared/styles/features/admin-audit.css:1` | Large stylesheet requires atomization (117 lines, 46 selectors). |
 | high | mixed-responsibility | `src/frontend/shared/styles/features/admin-campaigns.css:1` | Large stylesheet requires atomization (36 lines, 36 selectors). |

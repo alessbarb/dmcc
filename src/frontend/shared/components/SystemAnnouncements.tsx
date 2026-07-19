@@ -61,87 +61,30 @@ export function SystemAnnouncements() {
   if (visibleAnnouncements.length === 0) return null;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "8px",
-        width: "100%",
-        boxSizing: "border-box",
-        padding: "8px 16px",
-        backgroundColor: "rgba(20, 20, 25, 0.95)",
-        borderBottom: "1px solid var(--theme-borders-default)",
-        zIndex: 9999,
-        position: "relative",
-      }}
-    >
+    <div className="system-announcements">
       {visibleAnnouncements.map((ann) => {
-        // Compute premium color palette and icon based on kind
-        let bgColor = "rgba(218, 165, 32, 0.05)"; // gold/info default
-        let borderColor = "var(--theme-accents-primary-foreground)";
-        let iconColor = "var(--theme-accents-primary-foreground)";
         let Icon = Info;
 
         if (ann.kind === "warning") {
-          bgColor = "rgba(224, 86, 36, 0.05)";
-          borderColor = "#e05624";
-          iconColor = "#e05624";
           Icon = AlertTriangle;
         } else if (ann.kind === "maintenance") {
-          bgColor = "rgba(196, 42, 42, 0.05)";
-          borderColor = "#c42a2a";
-          iconColor = "#c42a2a";
           Icon = Megaphone;
         }
 
         return (
           <div
             key={ann.announcementId}
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "14px",
-              padding: "12px 16px",
-              borderRadius: "8px",
-              backgroundColor: bgColor,
-              border: `1px solid ${borderColor}`,
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-              transition: "all 0.2s ease-in-out",
-            }}
+            className={`system-announcements__item system-announcements__item--${ann.kind}`}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "6px",
-                borderRadius: "6px",
-                backgroundColor: "rgba(255, 255, 255, 0.03)",
-                color: iconColor,
-              }}
-            >
+            <div className="system-announcements__icon">
               <Icon size={18} />
             </div>
 
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <h4
-                style={{
-                  margin: "0 0 4px 0",
-                  fontSize: "0.9rem",
-                  fontWeight: 600,
-                  color: "var(--theme-text-primary, #fff)",
-                }}
-              >
+            <div className="system-announcements__content">
+              <h4 className="system-announcements__title">
                 {ann.content.title}
               </h4>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "0.8rem",
-                  color: "var(--theme-text-secondary, #a0a0a5)",
-                  lineHeight: "1.4",
-                }}
-              >
+              <p className="system-announcements__body">
                 {ann.content.body}
               </p>
             </div>
@@ -150,26 +93,7 @@ export function SystemAnnouncements() {
               <button
                 onClick={() => handleDismiss(ann.announcementId)}
                 aria-label="Dismiss announcement"
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  padding: "4px",
-                  cursor: "pointer",
-                  color: "var(--theme-text-secondary, #a0a0a5)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "4px",
-                  transition: "background 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.05)";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--theme-text-primary, #fff)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--theme-text-secondary, #a0a0a5)";
-                }}
+                className="system-announcements__dismiss"
               >
                 <X size={16} />
               </button>
