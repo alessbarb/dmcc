@@ -30,38 +30,30 @@ export function CanvasNarrativeLintDrawer({
       </div>
       <div className="inspector-content">
         {issues.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "20px", color: "var(--theme-text-secondary)" }}>
-            <span style={{ fontSize: "2rem" }}>✨</span>
-            <p style={{ marginTop: "10px", color: "var(--theme-feedback-success-foreground)", fontWeight: "600" }}>¡Todo perfecto!</p>
-            <p style={{ fontSize: "0.85rem" }}>No se han detectado problemas de consistencia narrativa en tu canvas.</p>
+          <div className="canvas-lint-empty">
+            <span className="canvas-lint-empty__icon">✨</span>
+            <p className="canvas-lint-empty__success">¡Todo perfecto!</p>
+            <p className="canvas-lint-empty__message">No se han detectado problemas de consistencia narrativa en tu canvas.</p>
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <p style={{ fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>
+          <div className="canvas-lint-content">
+            <p className="canvas-lint-summary">
               Se han encontrado <strong>{issues.length}</strong> detalles a revisar:
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", overflowY: "auto", maxHeight: "calc(100vh - 160px)" }}>
+            <div className="canvas-lint-issues">
               {issues.map((issue) => (
                 <div
                   key={issue.id}
-                  style={{
-                    padding: "10px",
-                    borderRadius: "var(--theme-shapes-radius-small)",
-                    borderLeft: `3px solid ${issue.type === "error" ? "var(--theme-feedback-danger-foreground)" : issue.type === "warning" ? "var(--theme-feedback-warning-foreground)" : "var(--theme-accents-primary-foreground)"}`,
-                    backgroundColor: "var(--theme-surfaces-interactive)",
-                    fontSize: "0.82rem",
-                    lineHeight: "1.4",
-                  }}
+                  className={`canvas-lint-issue canvas-lint-issue--${issue.type}`}
                 >
-                  <div style={{ fontWeight: "600", marginBottom: "4px", color: issue.type === "error" ? "var(--theme-feedback-danger-foreground)" : issue.type === "warning" ? "var(--theme-feedback-warning-foreground)" : "var(--theme-text-primary)" }}>
+                  <div className="canvas-lint-issue__title">
                     {issue.type === "error" ? t("canvas.node.statusCritical") : issue.type === "warning" ? "⚠️ Advertencia" : "💡 Sugerencia"}
                   </div>
                   <div>{issue.message}</div>
                   {issue.entityId && (
                     <button
                       onClick={() => onSelectEntity(issue.entityId!)}
-                      className="btn btn-link btn-xs"
-                      style={{ padding: 0, marginTop: "6px", fontSize: "10px", color: "var(--theme-accents-primary-foreground)", border: "none", background: "transparent", cursor: "pointer" }}
+                      className="btn btn-link btn-xs canvas-lint-issue__inspect"
                     >
                       Inspeccionar elemento
                     </button>

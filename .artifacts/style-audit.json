@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:41:03.522Z",
+  "generatedAt": "2026-07-19T10:43:02.063Z",
   "summary": {
-    "cssFiles": 107,
-    "tsxFilesWithInlineStyles": 66,
+    "cssFiles": 108,
+    "tsxFilesWithInlineStyles": 65,
     "forbiddenLiteralColors": 254,
-    "staticInlineStyles": 529,
+    "staticInlineStyles": 519,
     "dynamicInlineStyles": 28,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -791,25 +791,12 @@
       "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 78,
+      "lineCount": 70,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-text-secondary",
-        "--theme-feedback-success-foreground",
-        "--theme-text-secondary",
-        "--theme-shapes-radius-small",
-        "--theme-feedback-danger-foreground",
-        "--theme-feedback-warning-foreground",
-        "--theme-accents-primary-foreground",
-        "--theme-surfaces-interactive",
-        "--theme-feedback-danger-foreground",
-        "--theme-feedback-warning-foreground",
-        "--theme-text-primary",
-        "--theme-accents-primary-foreground"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/dm/canvas/components/CanvasNavigatorPanel.tsx",
@@ -6572,6 +6559,32 @@
       ]
     },
     {
+      "path": "src/frontend/shared/styles/features/canvas-narrative-lint.css",
+      "layer": "legacy",
+      "domain": "shared",
+      "lineCount": 80,
+      "selectorCount": 14,
+      "imports": [],
+      "importedBy": [
+        "src/frontend/shared/styles/main.css"
+      ],
+      "variableDefinitions": [],
+      "variableReferences": [
+        "--theme-text-secondary",
+        "--theme-feedback-success-foreground",
+        "--theme-text-secondary",
+        "--theme-accents-primary-foreground",
+        "--theme-shapes-radius-small",
+        "--theme-surfaces-interactive",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-text-primary",
+        "--theme-feedback-danger-foreground",
+        "--theme-feedback-warning-foreground",
+        "--theme-accents-primary-foreground"
+      ]
+    },
+    {
       "path": "src/frontend/shared/styles/features/canvas-page-header.css",
       "layer": "legacy",
       "domain": "shared",
@@ -8622,7 +8635,7 @@
       "path": "src/frontend/shared/styles/main.css",
       "layer": "foundation",
       "domain": "shared",
-      "lineCount": 66,
+      "lineCount": 67,
       "selectorCount": 0,
       "imports": [
         "src/frontend/shared/styles/foundation/fonts.css",
@@ -8682,7 +8695,8 @@
         "src/frontend/shared/styles/features/canvas-board-dialogs.css",
         "src/frontend/shared/styles/features/canvas-palette.css",
         "src/frontend/shared/styles/features/canvas-entity-node.css",
-        "src/frontend/shared/styles/features/canvas-inspector.css"
+        "src/frontend/shared/styles/features/canvas-inspector.css",
+        "src/frontend/shared/styles/features/canvas-narrative-lint.css"
       ],
       "importedBy": [
         "src/frontend/main.tsx"
@@ -10244,136 +10258,6 @@
       "category": "literal-color",
       "value": "\"green\"",
       "reason": "Literal visual color outside a registered theme package."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ textAlign: \"center\", padding: \"20px\", color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 33,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ textAlign: \"center\", padding: \"20px\", color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ fontSize: \"2rem\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 34,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"2rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ marginTop: \"10px\", color: \"var(--theme-feedback-success-foreground)\", fontWeight: \"600\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 35,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginTop: \"10px\", color: \"var(--theme-feedback-success-foreground)\", fontWeight: \"600\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ fontSize: \"0.85rem\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 36,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"0.85rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"12px\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 39,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"12px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ fontSize: \"0.85rem\", color: \"var(--theme-text-secondary)\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 40,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"0.85rem\", color: \"var(--theme-text-secondary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ display: \"flex\", flexDirection: \"column\", gap: \"10px\", overflowY: \"auto\", maxHeight: \"calc(100vh - 160px)\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 43,
-      "column": 18,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ display: \"flex\", flexDirection: \"column\", gap: \"10px\", overflowY: \"auto\", maxHeight: \"calc(100vh - 160px)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ padding: \"10px\", borderRadius: \"var(--theme-shapes-radius-small)\", borderLeft: `3px solid ${issue.type === \"error\" ? \"var(--theme-feedback-danger-foreground)\" : issue.type",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 47,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{\n                    padding: \"10px\",\n                    borderRadius: \"var(--theme-shapes-radius-small)\",\n                    borderLeft: `3px solid ${issue.type === \"error\" ? \"var(--theme-feedback-danger-foreground)\" : issue.type",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ fontWeight: \"600\", marginBottom: \"4px\", color: issue.type === \"error\" ? \"var(--theme-feedback-danger-foreground)\" : issue.type === \"warning\" ? \"var(--theme-feedback-warning-foreground)\" : \"var(--theme-text-primary)\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 56,
-      "column": 24,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontWeight: \"600\", marginBottom: \"4px\", color: issue.type === \"error\" ? \"var(--theme-feedback-danger-foreground)\" : issue.type === \"warning\" ? \"var(--theme-feedback-warning-foreground)\" : \"var(--theme-text-primary)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:style={{ padding: 0, marginTop: \"6px\", fontSize: \"10px\", color: \"var(--theme-accents-primary-foreground)\", border: \"none\", background: \"transparent\", cursor: \"pointer\" }}",
-      "path": "src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx",
-      "line": 64,
-      "column": 23,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ padding: 0, marginTop: \"6px\", fontSize: \"10px\", color: \"var(--theme-accents-primary-foreground)\", border: \"none\", background: \"transparent\", cursor: \"pointer\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
       "id": "literal-color:src/frontend/dm/canvas/components/CanvasNoteNode.tsx:\"blue\"",
@@ -25311,7 +25195,8 @@
       "src/frontend/shared/styles/features/canvas-board-dialogs.css",
       "src/frontend/shared/styles/features/canvas-palette.css",
       "src/frontend/shared/styles/features/canvas-entity-node.css",
-      "src/frontend/shared/styles/features/canvas-inspector.css"
+      "src/frontend/shared/styles/features/canvas-inspector.css",
+      "src/frontend/shared/styles/features/canvas-narrative-lint.css"
     ],
     "src/frontend/shared/styles/vendor/react-flow.css": [
       "@xyflow/react/dist/style.css"

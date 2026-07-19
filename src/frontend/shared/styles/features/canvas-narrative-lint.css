@@ -1,0 +1,79 @@
+.canvas-lint-empty {
+  padding: 20px;
+  color: var(--theme-text-secondary);
+  text-align: center;
+}
+
+.canvas-lint-empty__icon {
+  font-size: 2rem;
+}
+
+.canvas-lint-empty__success {
+  margin: 10px 0 0;
+  color: var(--theme-feedback-success-foreground);
+  font-weight: 600;
+}
+
+.canvas-lint-empty__message {
+  font-size: 0.85rem;
+}
+
+.canvas-lint-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.canvas-lint-summary {
+  color: var(--theme-text-secondary);
+  font-size: 0.85rem;
+}
+
+.canvas-lint-issues {
+  display: flex;
+  max-height: calc(100vh - 160px);
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.canvas-lint-issue {
+  padding: 10px;
+  border-left: 3px solid var(--theme-accents-primary-foreground);
+  border-radius: var(--theme-shapes-radius-small);
+  background: var(--theme-surfaces-interactive);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.canvas-lint-issue--error {
+  border-left-color: var(--theme-feedback-danger-foreground);
+}
+
+.canvas-lint-issue--warning {
+  border-left-color: var(--theme-feedback-warning-foreground);
+}
+
+.canvas-lint-issue__title {
+  margin-bottom: 4px;
+  color: var(--theme-text-primary);
+  font-weight: 600;
+}
+
+.canvas-lint-issue--error .canvas-lint-issue__title {
+  color: var(--theme-feedback-danger-foreground);
+}
+
+.canvas-lint-issue--warning .canvas-lint-issue__title {
+  color: var(--theme-feedback-warning-foreground);
+}
+
+.canvas-lint-issue__inspect {
+  margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--theme-accents-primary-foreground);
+  cursor: pointer;
+  font-size: 10px;
+}
