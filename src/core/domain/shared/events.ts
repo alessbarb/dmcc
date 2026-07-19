@@ -186,6 +186,13 @@ export const domainEventTypeSchema = z.enum([
   "EntityUnlinkedFromStoryThread",
   "EntityLinkedToStoryStep",
   "EntityUnlinkedFromStoryStep",
+  "ClockAdvanced",
+  "ConsequenceTriggered",
+  "ConsequenceResolved",
+  "FrontActivated",
+  "FrontResolved",
+  "SecretHinted",
+  "ObjectiveProgressUpdated",
 ]);
 
 export type DomainEventType = z.infer<typeof domainEventTypeSchema>;
@@ -588,6 +595,51 @@ export const eventPayloadSchemas = {
     status: z.enum(["approved", "rejected"]),
     dmResolutionNote: z.string().optional(),
     resolvedAt: z.string().min(1),
+  }),
+  ClockAdvanced: z.object({
+    entityId: z.string().min(1),
+    previousSegments: z.number().int().nonnegative(),
+    segments: z.number().int().nonnegative(),
+    maxSegments: z.number().int().min(1),
+    delta: z.number().int(),
+    note: z.string().optional(),
+  }),
+  ConsequenceTriggered: z.object({
+    entityId: z.string().min(1),
+    previousStatus: z.string().optional(),
+    status: z.string(),
+    note: z.string().optional(),
+  }),
+  ConsequenceResolved: z.object({
+    entityId: z.string().min(1),
+    previousStatus: z.string().optional(),
+    status: z.string(),
+    resolutionNote: z.string().optional(),
+  }),
+  FrontActivated: z.object({
+    entityId: z.string().min(1),
+    previousStatus: z.string().optional(),
+    status: z.string(),
+    note: z.string().optional(),
+  }),
+  FrontResolved: z.object({
+    entityId: z.string().min(1),
+    previousStatus: z.string().optional(),
+    status: z.string(),
+    note: z.string().optional(),
+  }),
+  SecretHinted: z.object({
+    entityId: z.string().min(1),
+    previousStatus: z.string().optional(),
+    status: z.string(),
+    note: z.string().optional(),
+  }),
+  ObjectiveProgressUpdated: z.object({
+    entityId: z.string().min(1),
+    previousStatus: z.string().optional(),
+    status: z.string(),
+    progress: z.enum(["advanced", "completed", "blocked", "failed", "unchanged"]),
+    note: z.string().optional(),
   }),
 } satisfies Record<DomainEventType, z.ZodTypeAny>;
 export type EventPayloads = {

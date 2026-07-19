@@ -10,6 +10,7 @@ import { handleContentCommand } from "./contentCommandHandlers.js";
 import { handleSessionCommand } from "./sessionCommandHandlers.js";
 import { handleSupportCommand } from "./supportCommandHandlers.js";
 import { handleCampaignCommand } from "./campaignCommandHandlers.js";
+import { handleWorldCommand } from "./worldCommandHandlers.js";
 
 export interface CommandResult {
   state: CampaignState;
@@ -131,6 +132,13 @@ function dispatchCommand(state: CampaignState, command: Command): CommandResult 
     case "LinkEntityToStoryStep":
     case "UnlinkEntityFromStoryStep":
       return handleStoryCommand(state, command);
-
+    case "AdvanceClock":
+    case "TriggerConsequence":
+    case "ResolveConsequence":
+    case "ActivateFront":
+    case "ResolveFront":
+    case "HintSecret":
+    case "UpdateObjectiveProgress":
+      return handleWorldCommand(state, command);
   }
 }

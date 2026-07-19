@@ -525,4 +525,25 @@ export async function registerCampaignWebRoutes(server: FastifyInstance, options
   server.post<{ Params: { campaignId: string; sessionId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/sessions/:sessionId/close", async (request, reply) => executeDmCommand(request, reply, { type: "CloseSession", sessionId: request.params.sessionId, ...(request.body ?? {}) }));
   server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/cancel", async (request, reply) => executeDmCommand(request, reply, { type: "CancelPreparedSession", sessionId: request.params.sessionId }));
   server.post<{ Params: { campaignId: string; sessionId: string } }>("/api/campaigns/:campaignId/sessions/:sessionId/archive", async (request, reply) => executeDmCommand(request, reply, { type: "ArchiveSession", sessionId: request.params.sessionId }));
+
+  function worldCommandContext(body: RequestBody): NarrativeChangeContext | undefined {
+    const sessionId = body.sessionId;
+    if (typeof sessionId !== "string" || sessionId.length === 0) return undefined;
+    return { origin: "session_live", sessionId };
+  }
+
+  server.post<{ Params: { campaignId: string; entityId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities/:entityId/clock/advance", async (request, reply) =>
+    executeDmCommand(request, reply, { type: "AdvanceClock", entityId: request.params.entityId, ...(request.body ?? {}) }, worldCommandContext(request.body ?? {})));
+  server.post<{ Params: { campaignId: string; entityId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities/:entityId/consequence/trigger", async (request, reply) =>
+    executeDmCommand(request, reply, { type: "TriggerConsequence", entityId: request.params.entityId, ...(request.body ?? {}) }, worldCommandContext(request.body ?? {})));
+  server.post<{ Params: { campaignId: string; entityId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities/:entityId/consequence/resolve", async (request, reply) =>
+    executeDmCommand(request, reply, { type: "ResolveConsequence", entityId: request.params.entityId, ...(request.body ?? {}) }, worldCommandContext(request.body ?? {})));
+  server.post<{ Params: { campaignId: string; entityId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities/:entityId/front/activate", async (request, reply) =>
+    executeDmCommand(request, reply, { type: "ActivateFront", entityId: request.params.entityId, ...(request.body ?? {}) }, worldCommandContext(request.body ?? {})));
+  server.post<{ Params: { campaignId: string; entityId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities/:entityId/front/resolve", async (request, reply) =>
+    executeDmCommand(request, reply, { type: "ResolveFront", entityId: request.params.entityId, ...(request.body ?? {}) }, worldCommandContext(request.body ?? {})));
+  server.post<{ Params: { campaignId: string; entityId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities/:entityId/secret/hint", async (request, reply) =>
+    executeDmCommand(request, reply, { type: "HintSecret", entityId: request.params.entityId, ...(request.body ?? {}) }, worldCommandContext(request.body ?? {})));
+  server.post<{ Params: { campaignId: string; entityId: string }; Body: RequestBody }>("/api/campaigns/:campaignId/entities/:entityId/objective-progress", async (request, reply) =>
+    executeDmCommand(request, reply, { type: "UpdateObjectiveProgress", entityId: request.params.entityId, ...(request.body ?? {}) }, worldCommandContext(request.body ?? {})));
 }
