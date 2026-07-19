@@ -124,7 +124,7 @@ export function CanvasPageHeader({
     )}
   </div>
            {/* View toggles & Filters */}
-  <div className="canvas-header-filters" style={{ display: "flex", alignItems: "center", gap: "12px", marginLeft: "auto" }}>
+  <div className="canvas-header-filters">
     {/* Live Direction Toggle */}
     {activeSession && (
       <button
@@ -152,44 +152,27 @@ export function CanvasPageHeader({
     </button>
 
     {/* Vista Popover Container */}
-    <div className="canvas-toolbar-group" style={{ position: "relative" }}>
+    <div className="canvas-toolbar-group">
       <button
         type="button"
-        className={`btn btn-sm ${isViewPopoverOpen ? "btn-primary" : "btn-secondary"}`}
+        className={`btn btn-sm ${isViewPopoverOpen ? "btn-primary" : "btn-secondary"} canvas-header__button`}
         onClick={() => setIsViewPopoverOpen(v => !v)}
         title="Ajustes de Vista del Canvas"
-        style={{ gap: "6px" }}
       >
         <SlidersHorizontal size={12} />
         <span>Vista</span>
       </button>
       {isViewPopoverOpen && (
         <div
-          className="dropdown-menu"
-          style={{
-            position: "absolute",
-            top: "34px",
-            right: 0,
-            backgroundColor: "var(--theme-surfaces-base)",
-            border: "1px solid var(--theme-borders-default)",
-            borderRadius: "var(--theme-shapes-radius-medium)",
-            display: "flex",
-            flexDirection: "column",
-            zIndex: 1000,
-            minWidth: "220px",
-            boxShadow: "var(--theme-shadows-large)",
-            padding: "12px",
-            gap: "10px",
-          }}
+          className="dropdown-menu canvas-header__view-menu"
         >
           {/* Section 1: Modos (Buttons) */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <div style={{ fontSize: "10px", color: "var(--theme-text-secondary)", fontWeight: "bold", letterSpacing: "0.05em" }}>MODOS DE VISTA</div>
+          <div className="canvas-header__menu-section">
+            <div className="canvas-header__section-label">MODOS DE VISTA</div>
             
             {!isFullscreenPresentation && (
               <button
                 type="button"
-                className={`btn btn-sm ${isPlayerView ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => {
                   const nextView = !isPlayerView;
                   setIsPlayerView(nextView);
@@ -202,7 +185,7 @@ export function CanvasPageHeader({
                   }
                 }}
                 title={isPlayerView ? "Volver a vista de DM" : t("canvas.toolbar.activatePlayerView")}
-                style={{ width: "100%", justifyContent: "flex-start", gap: "8px" }}
+                className={`btn btn-sm ${isPlayerView ? "btn-primary" : "btn-secondary"} canvas-header__menu-button`}
               >
                 {isPlayerView ? <Eye size={12} /> : <EyeOff size={12} />}
                 <span>{isPlayerView ? t("canvas.toolbar.playerViewLabel") : "👁 Vista DM"}</span>
@@ -212,10 +195,9 @@ export function CanvasPageHeader({
             {!isPlayerView && (
               <button
                 type="button"
-                className={`btn btn-sm ${publicOnly ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setPublicOnly(v => !v)}
                 title={publicOnly ? t("canvas.toolbar.showingPublicOnly") : t("canvas.toolbar.showingAll")}
-                style={{ width: "100%", justifyContent: "flex-start", gap: "8px" }}
+                className={`btn btn-sm ${publicOnly ? "btn-primary" : "btn-secondary"} canvas-header__menu-button`}
               >
                 {publicOnly ? <Eye size={12} /> : <EyeOff size={12} />}
                 <span>{publicOnly ? t("canvas.toolbar.publicOnly") : "Mostrar secretos"}</span>
@@ -225,10 +207,9 @@ export function CanvasPageHeader({
             {!isPlayerView && (
               <button
                 type="button"
-                className={`btn btn-sm ${tablePrivacy ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setTablePrivacy(value => !value)}
                 title={t("canvas.toolbar.tablePrivacyHint")}
-                style={{ width: "100%", justifyContent: "flex-start", gap: "8px" }}
+                className={`btn btn-sm ${tablePrivacy ? "btn-primary" : "btn-secondary"} canvas-header__menu-button`}
               >
                 <Shield size={12} />
                 <span>{t("canvas.toolbar.tablePrivacy")}</span>
@@ -238,10 +219,9 @@ export function CanvasPageHeader({
             {!isPlayerView && (
               <button
                 type="button"
-                className={`btn btn-sm ${mysteryFlowMode ? "btn-primary" : "btn-secondary"}`}
                 onClick={() => setMysteryFlowMode(v => !v)}
                 title={mysteryFlowMode ? "Desactivar Mystery Flow" : t("canvas.toolbar.activateMysteryFlow")}
-                style={{ width: "100%", justifyContent: "flex-start", gap: "8px" }}
+                className={`btn btn-sm ${mysteryFlowMode ? "btn-primary" : "btn-secondary"} canvas-header__menu-button`}
               >
                 <SlidersHorizontal size={12} />
                 <span>{mysteryFlowMode ? "🔍 Mystery Flow" : "Ver Misterio"}</span>
@@ -249,15 +229,15 @@ export function CanvasPageHeader({
             )}
           </div>
 
-          <div style={{ height: "1px", backgroundColor: "var(--theme-borders-default)", margin: "4px 0" }} />
+          <div className="canvas-header__menu-divider" />
 
           {/* Section 2: Configurations / Filtros */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <div style={{ fontSize: "10px", color: "var(--theme-text-secondary)", fontWeight: "bold", letterSpacing: "0.05em" }}>FILTROS Y DENSIDAD</div>
+          <div className="canvas-header__menu-section canvas-header__menu-section--filters">
+            <div className="canvas-header__section-label">FILTROS Y DENSIDAD</div>
 
             {/* Densidad Selector */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-              <span style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>Densidad</span>
+            <div className="canvas-header__field">
+              <span className="canvas-header__field-label">Densidad</span>
               <select
                 value={density}
                 onChange={(e) => {
@@ -266,8 +246,7 @@ export function CanvasPageHeader({
                     setDensity(nextDensity);
                   }
                 }}
-                className="canvas-select"
-                style={{ width: "100%", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", color: "var(--theme-text-primary)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
+                className="canvas-select canvas-header__select"
               >
                 <option value="compact">🗜️ Compacta</option>
                 <option value="normal">📱 Normal</option>
@@ -277,13 +256,12 @@ export function CanvasPageHeader({
 
             {/* Relaciones Filter */}
             {!isPlayerView && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                <span style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>Relaciones</span>
+              <div className="canvas-header__field">
+                <span className="canvas-header__field-label">Relaciones</span>
                 <select
                   value={relationsFilter}
                   onChange={(e) => { if (isRelationsFilter(e.target.value)) setRelationsFilter(e.target.value); }}
-                  className="canvas-select"
-                  style={{ width: "100%", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", color: "var(--theme-text-primary)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
+                  className="canvas-select canvas-header__select"
                   title={t("canvas.toolbar.filterConnections")}
                 >
                   <option value="all">🔗 Todas</option>
@@ -296,13 +274,12 @@ export function CanvasPageHeader({
 
             {/* Type Filter Select */}
             {!isPlayerView && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                <span style={{ fontSize: "11px", color: "var(--theme-text-secondary)" }}>Tipos de entidad</span>
+              <div className="canvas-header__field">
+                <span className="canvas-header__field-label">Tipos de entidad</span>
                 <select
                   value={typeFilter}
                   onChange={(e) => setTypeFilter(e.target.value)}
-                  className="canvas-select"
-                  style={{ width: "100%", backgroundColor: "var(--theme-surfaces-interactive)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-small)", color: "var(--theme-text-primary)", padding: "4px 6px", height: "32px", fontSize: "12px" }}
+                  className="canvas-select canvas-header__select"
                 >
                   <option value="all">Todos los tipos</option>
                   <option value="npc">PNJs</option>
@@ -321,28 +298,27 @@ export function CanvasPageHeader({
     </div>
 
     {/* Grupo 4: Acciones Dropdown */}
-    <div className="canvas-toolbar-group" style={{ position: "relative" }}>
+    <div className="canvas-toolbar-group">
       <button
         type="button"
-        className="btn btn-sm btn-secondary"
+        className="btn btn-sm btn-secondary canvas-header__button"
         onClick={() => setIsActionsDropdownOpen(v => !v)}
         title="Acciones y exportaciones de Canvas"
-        style={{ gap: "6px" }}
       >
         <MoreHorizontal size={12} />
         <span>Más</span>
       </button>
       {isActionsDropdownOpen && (
-        <div className="dropdown-menu" style={{ position: "absolute", top: "34px", right: 0, backgroundColor: "var(--theme-surfaces-base)", border: "1px solid var(--theme-borders-default)", borderRadius: "var(--theme-shapes-radius-medium)", display: "flex", flexDirection: "column", zIndex: 1000, minWidth: "180px", boxShadow: "var(--theme-shadows-large)", padding: "4px" }}>
+        <div className="dropdown-menu canvas-header__actions-menu">
           {!isPlayerView && (
             <>
               <button className="dropdown-item" onClick={() => { setIsImportOpen(true); setIsActionsDropdownOpen(false); }}>✏️ Importar por Texto</button>
               <button className="dropdown-item" onClick={() => { setIsLintOpen(v => !v); setIsActionsDropdownOpen(false); }}>🧠 Analizar Lore (Lint)</button>
               <button className="dropdown-item" onClick={() => { setIsLegendOpen(true); setIsActionsDropdownOpen(false); }}>📖 Ver Leyenda</button>
-              <div style={{ height: "1px", backgroundColor: "var(--theme-borders-default)", margin: "4px 0" }} />
+              <div className="canvas-header__menu-divider" />
             </>
           )}
-          <div style={{ fontSize: "9px", padding: "4px 12px", color: "var(--theme-text-secondary)", fontWeight: "bold" }}>EXPORTACIONES</div>
+          <div className="canvas-header__export-label">EXPORTACIONES</div>
           <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("svg", "dm"), "No se pudo exportar el canvas en SVG para DM."); setIsActionsDropdownOpen(false); }}>Vector SVG - Vista DM</button>
           <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("svg", "player"), "No se pudo exportar el canvas en SVG para jugadores."); setIsActionsDropdownOpen(false); }}>Vector SVG - Vista Jugador</button>
           <button className="dropdown-item" onClick={() => { runCanvasPageAction(handleExport("png", "dm"), "No se pudo exportar el canvas en PNG para DM."); setIsActionsDropdownOpen(false); }}>Imagen PNG - Vista DM</button>
@@ -353,11 +329,10 @@ export function CanvasPageHeader({
   </div>
 
   {activeCanvas && (
-    <div className="canvas-board-info" style={{ marginLeft: "12px", borderLeft: "1px solid var(--theme-borders-default)", paddingLeft: "12px" }}>
+    <div className="canvas-board-info">
       <span
-        className="badge badge-primary"
         title={activeCanvas.description || undefined}
-        style={{ cursor: activeCanvas.description ? "help" : undefined }}
+        className={`badge badge-primary ${activeCanvas.description ? "canvas-board-info__badge--described" : ""}`}
       >
         {getCanvasKindLabel(activeCanvas.kind, t)}
       </span>
