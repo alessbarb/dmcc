@@ -67,6 +67,7 @@
 @import "./features/entity-create.css";
 @import "./features/campaign-messaging.css";
 @import "./features/image-picker-button.css";
+@import "./features/image-picker-modal.css";
 @import "./features/dm-onboarding.css";
 @import "./features/entity-trace.css";
 @import "./features/canvas-page-header.css";

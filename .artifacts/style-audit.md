@@ -6,11 +6,11 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 127,
-  "tsxFilesWithInlineStyles": 37,
-  "forbiddenLiteralColors": 212,
-  "staticInlineStyles": 115,
-  "dynamicInlineStyles": 22,
+  "cssFiles": 128,
+  "tsxFilesWithInlineStyles": 36,
+  "forbiddenLiteralColors": 199,
+  "staticInlineStyles": 94,
+  "dynamicInlineStyles": 21,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
@@ -111,6 +111,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/entity-trace.css` | legacy | shared | 23 | 18 | 1 |
 | `src/frontend/shared/styles/features/graph-search.css` | legacy | shared | 77 | 8 | 1 |
 | `src/frontend/shared/styles/features/image-picker-button.css` | legacy | shared | 12 | 11 | 1 |
+| `src/frontend/shared/styles/features/image-picker-modal.css` | legacy | shared | 215 | 28 | 1 |
 | `src/frontend/shared/styles/features/kanban-board.css` | legacy | shared | 120 | 16 | 1 |
 | `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
 | `src/frontend/shared/styles/features/landing-archive.css` | legacy | shared | 864 | 136 | 1 |
@@ -137,7 +138,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 86 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 87 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -709,41 +710,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:295` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/components/entityImageReframeDialog.css:325` | Important declarations bypass the intended cascade. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerButton.tsx:71` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:92` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:99` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:105` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:106` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:107` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:108` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:114` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:121` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:124` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/shared/components/ImagePickerModal.tsx:131` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:147` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:269` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:272` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:278` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:288` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:288` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:294` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:338` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:346` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:349` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:349` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:352` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:358` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:365` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:368` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:373` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:374` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:375` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:375` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:400` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:414` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:422` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:434` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/PwaUpdateBanner.tsx:18` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/PwaUpdateBanner.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/shared/components/RpgPortalBackground.tsx:33` | Runtime style requires review and CSS custom-property preference. |
