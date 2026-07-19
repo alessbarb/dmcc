@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 101,
-  "tsxFilesWithInlineStyles": 73,
+  "cssFiles": 102,
+  "tsxFilesWithInlineStyles": 72,
   "forbiddenLiteralColors": 256,
-  "staticInlineStyles": 668,
+  "staticInlineStyles": 643,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -80,6 +80,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/admin-invitations.css` | legacy | shared | 27 | 26 | 1 |
 | `src/frontend/shared/styles/features/admin-overview.css` | legacy | shared | 28 | 25 | 1 |
 | `src/frontend/shared/styles/features/admin-purge.css` | legacy | shared | 41 | 37 | 1 |
+| `src/frontend/shared/styles/features/admin-template-settings.css` | legacy | shared | 25 | 24 | 1 |
 | `src/frontend/shared/styles/features/admin-users.css` | legacy | shared | 67 | 42 | 1 |
 | `src/frontend/shared/styles/features/campaign-canvas.css` | legacy | shared | 1683 | 259 | 1 |
 | `src/frontend/shared/styles/features/campaign-template.css` | legacy | shared | 729 | 105 | 1 |
@@ -111,7 +112,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 60 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 61 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -135,31 +136,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:149` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:163` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:59` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:60` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:61` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:62` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:78` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:83` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:85` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:86` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:87` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:88` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:89` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:94` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:95` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:97` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:99` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:101` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:102` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:107` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/campaignTemplates/CampaignTemplateSettingsPage.tsx:127` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |

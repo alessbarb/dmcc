@@ -1,0 +1,24 @@
+.admin-template-settings { max-width: 1200px; margin: 0 auto; }
+.admin-template-settings__header { margin-bottom: 32px; }
+.admin-template-settings__title { margin: 0; font-size: 1.8rem; font-weight: 700; }
+.admin-template-settings__subtitle { margin-top: 4px; color: var(--theme-text-secondary); font-size: 0.85rem; }
+.admin-template-settings__zero-margin { margin: 0; }
+.admin-template-settings__error { margin-bottom: 24px; padding: 16px; border: 1px solid var(--theme-feedback-danger-foreground); border-radius: 8px; background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent); color: var(--theme-feedback-danger-foreground); }
+.admin-template-settings__loading { display: flex; height: 200px; align-items: center; justify-content: center; color: var(--theme-text-secondary); }
+.admin-template-settings__empty { padding: 48px; border: 1px solid var(--theme-borders-default); border-radius: 12px; background: var(--theme-surfaces-base); color: var(--theme-text-secondary); text-align: center; }
+.admin-template-settings__table-panel { overflow-x: auto; border: 1px solid var(--theme-borders-default); border-radius: 12px; background: var(--theme-surfaces-base); }
+.admin-template-settings__table { width: 100%; min-width: 700px; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+.admin-template-settings__table th, .admin-template-settings__table td { padding: 16px; }
+.admin-template-settings__table-head { border-bottom: 1px solid var(--theme-borders-default); background: color-mix(in srgb, var(--theme-text-on-media) 2%, transparent); }
+.admin-template-settings__row { border-bottom: 1px solid var(--theme-borders-default); }
+.admin-template-settings__row:last-child { border-bottom: 0; }
+.admin-template-settings__cell--right { text-align: right; }
+.admin-template-settings__name { font-weight: 600; }
+.admin-template-settings__id { color: var(--theme-text-secondary); font-size: 0.75rem; }
+.admin-template-settings__difficulty { text-transform: capitalize; }
+.admin-template-settings__actions { display: flex; justify-content: flex-end; gap: 8px; }
+.admin-template-settings__action { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--theme-borders-default); border-radius: 6px; background: color-mix(in srgb, var(--theme-text-on-media) 3%, transparent); color: inherit; cursor: pointer; font-size: 0.8rem; }
+.admin-template-settings__action--featured { border-color: var(--theme-accents-primary-foreground); background: color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent); color: var(--theme-accents-primary-foreground); }
+.admin-template-settings__action--visible { border-color: color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent); background: color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent); color: var(--theme-feedback-success-foreground); }
+.admin-template-settings__action--hidden { border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent); background: color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent); color: var(--theme-feedback-danger-foreground); }
+@media (max-width: 720px) { .admin-template-settings__actions { flex-wrap: wrap; } }
