@@ -1,0 +1,15 @@
+.confirm-password-overlay { position: fixed; inset: 0; background: color-mix(in srgb, var(--theme-surfaces-canvas) 60%, transparent); display: flex; align-items: center; justify-content: center; z-index: 10000; }
+.confirm-password-dialog { width: 100%; max-width: 380px; background: var(--theme-surfaces-base); border: 1px solid var(--theme-borders-default); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 12px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent); }
+.confirm-password-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.confirm-password-title-row { display: flex; align-items: center; gap: 10px; }
+.confirm-password-lock { color: var(--theme-feedback-danger-foreground); }
+.confirm-password-title { margin: 0; font-size: 1.05rem; font-weight: 700; }
+.confirm-password-close { background: none; border: none; cursor: pointer; color: var(--theme-text-secondary); padding: 4px; }
+.confirm-password-description { margin: 0; font-size: 0.85rem; color: var(--theme-text-secondary); }
+.confirm-password-label { display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem; color: var(--theme-text-secondary); }
+.confirm-password-input { padding: 10px 12px; border-radius: 8px; background: color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent); border: 1px solid var(--theme-borders-default); color: inherit; font-size: 0.85rem; }
+.confirm-password-actions { display: flex; gap: 10px; justify-content: flex-end; }
+.confirm-password-cancel { padding: 8px 16px; border-radius: 8px; background: color-mix(in srgb, var(--theme-text-on-media) 3%, transparent); border: 1px solid var(--theme-borders-default); color: inherit; cursor: pointer; font-size: 0.85rem; }
+.confirm-password-submit { padding: 8px 16px; border-radius: 8px; background: var(--theme-feedback-danger-foreground); color: var(--theme-feedback-danger-on-strong); border: none; font-size: 0.85rem; font-weight: 600; }
+.confirm-password-submit:not(:disabled) { cursor: pointer; }
+.confirm-password-submit:disabled { cursor: not-allowed; opacity: 0.6; }

@@ -35,98 +35,54 @@ export function ConfirmPasswordDialog({
     <div
       role="dialog"
       aria-modal="true"
-      style={{
-        position: "fixed",
-        inset: 0,
-        backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 60%, transparent)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10000,
-      }}
+      className="confirm-password-overlay"
       onClick={onCancel}
     >
       <form
         onSubmit={handleSubmit}
         onClick={(e) => e.stopPropagation()}
-        style={{
-          width: "100%",
-          maxWidth: "380px",
-          backgroundColor: "var(--theme-surfaces-base)",
-          border: "1px solid var(--theme-borders-default)",
-          borderRadius: "12px",
-          padding: "24px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          boxShadow: "0 12px 32px color-mix(in srgb, var(--theme-surfaces-canvas) 40%, transparent)",
-        }}
+        className="confirm-password-dialog"
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Lock size={18} style={{ color: "var(--theme-feedback-danger-foreground)" }} />
-            <h3 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700 }}>{title}</h3>
+        <div className="confirm-password-header">
+          <div className="confirm-password-title-row">
+            <Lock className="confirm-password-lock" size={18} />
+            <h3 className="confirm-password-title">{title}</h3>
           </div>
           <button
             type="button"
             onClick={onCancel}
             aria-label="Cancel"
-            style={{ background: "none", border: "none", cursor: "pointer", color: "var(--theme-text-secondary)", padding: "4px" }}
+            className="confirm-password-close"
           >
             <X size={16} />
           </button>
         </div>
 
-        <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--theme-text-secondary)" }}>{description}</p>
+        <p className="confirm-password-description">{description}</p>
 
-        <label style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "0.8rem", color: "var(--theme-text-secondary)" }}>
+        <label className="confirm-password-label">
           Current password
           <input
             type="password"
             autoFocus
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{
-              padding: "10px 12px",
-              borderRadius: "8px",
-              backgroundColor: "color-mix(in srgb, var(--theme-surfaces-canvas) 20%, transparent)",
-              border: "1px solid var(--theme-borders-default)",
-              color: "inherit",
-              fontSize: "0.85rem",
-            }}
+            className="confirm-password-input"
           />
         </label>
 
-        <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+        <div className="confirm-password-actions">
           <button
             type="button"
             onClick={onCancel}
-            style={{
-              padding: "8px 16px",
-              borderRadius: "8px",
-              backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 3%, transparent)",
-              border: "1px solid var(--theme-borders-default)",
-              color: "inherit",
-              cursor: "pointer",
-              fontSize: "0.85rem",
-            }}
+            className="confirm-password-cancel"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={!password || busy}
-            style={{
-              padding: "8px 16px",
-              borderRadius: "8px",
-              backgroundColor: "var(--theme-feedback-danger-foreground)",
-              color: "var(--theme-feedback-danger-on-strong)",
-              border: "none",
-              cursor: password && !busy ? "pointer" : "not-allowed",
-              opacity: password && !busy ? 1 : 0.6,
-              fontSize: "0.85rem",
-              fontWeight: 600,
-            }}
+            className="confirm-password-submit"
           >
             {busy ? "Confirming..." : confirmLabel}
           </button>

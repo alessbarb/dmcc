@@ -45,72 +45,52 @@ export function GameSystemSettingsPage() {
 
   return (
     <AdminShell>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <header style={{ marginBottom: "32px" }}>
-          <h1 style={{ fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Game Systems</h1>
-          <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
+      <div className="game-systems-page">
+        <header className="game-systems-header">
+          <h1 className="game-systems-title">Game Systems</h1>
+          <p className="game-systems-subtitle">
             Control which RPG systems are available when creating a new campaign. The Custom system is always available.
           </p>
         </header>
 
         {error && (
-          <div style={{ padding: "16px", backgroundColor: "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)", border: "1px solid var(--theme-feedback-danger-foreground)", borderRadius: "8px", color: "var(--theme-feedback-danger-foreground)", marginBottom: "24px" }}>
-            <p style={{ margin: 0 }}><strong>Error:</strong> {error}</p>
+          <div className="game-systems-error">
+            <p className="game-systems-error-copy"><strong>Error:</strong> {error}</p>
           </div>
         )}
 
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", color: "var(--theme-text-secondary)" }}>
+          <div className="game-systems-loading">
             Loading game systems...
           </div>
         ) : (
-          <div style={{ backgroundColor: "var(--theme-surfaces-base)", borderRadius: "12px", border: "1px solid var(--theme-borders-default)", overflow: "hidden" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.85rem" }}>
+          <div className="game-systems-table-shell">
+            <table className="game-systems-table">
               <thead>
-                <tr style={{ borderBottom: "1px solid var(--theme-borders-default)", backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 2%, transparent)" }}>
-                  <th style={{ padding: "16px" }}>System</th>
-                  <th style={{ padding: "16px" }}>Status</th>
-                  <th style={{ padding: "16px", textAlign: "right" }}>Actions</th>
+                <tr className="game-systems-table-header">
+                  <th className="game-systems-cell">System</th>
+                  <th className="game-systems-cell">Status</th>
+                  <th className="game-systems-cell game-systems-cell--actions">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {systems.map((s) => (
-                  <tr key={s.systemId} style={{ borderBottom: "1px solid var(--theme-borders-default)" }}>
-                    <td style={{ padding: "16px" }}>
-                      <div style={{ fontWeight: 600 }}>{s.label}</div>
-                      <div style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>{s.systemId}</div>
+                  <tr key={s.systemId} className="game-systems-row">
+                    <td className="game-systems-cell">
+                      <div className="game-systems-label">{s.label}</div>
+                      <div className="game-systems-id">{s.systemId}</div>
                     </td>
-                    <td style={{ padding: "16px" }}>
-                      <span style={{
-                        padding: "4px 8px",
-                        borderRadius: "4px",
-                        fontSize: "0.75rem",
-                        fontWeight: 600,
-                        backgroundColor: s.isEnabledForNewCampaigns ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
-                        color: s.isEnabledForNewCampaigns ? "var(--theme-feedback-success-foreground)" : "var(--theme-text-secondary)",
-                        border: `1px solid ${s.isEnabledForNewCampaigns ? "color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)" : "var(--theme-borders-default)"}`,
-                      }}>
+                    <td className="game-systems-cell">
+                      <span className={`game-system-status ${s.isEnabledForNewCampaigns ? "game-system-status--enabled" : "game-system-status--disabled"}`}>
                         {s.isEnabledForNewCampaigns ? "Enabled" : "Disabled"}
                       </span>
                     </td>
-                    <td style={{ padding: "16px", textAlign: "right" }}>
+                    <td className="game-systems-cell game-systems-cell--actions">
                       <button
                         onClick={() => void handleToggle(s)}
                         disabled={actionLoading !== null || s.systemId === "custom"}
                         title={s.systemId === "custom" ? "Custom system is always enabled" : s.isEnabledForNewCampaigns ? "Disable" : "Enable"}
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "6px",
-                          padding: "6px 12px",
-                          borderRadius: "6px",
-                          backgroundColor: s.isEnabledForNewCampaigns ? "color-mix(in srgb, var(--theme-feedback-danger-foreground) 10%, transparent)" : "color-mix(in srgb, var(--theme-feedback-success-foreground) 10%, transparent)",
-                          border: `1px solid ${s.isEnabledForNewCampaigns ? "color-mix(in srgb, var(--theme-feedback-danger-foreground) 30%, transparent)" : "color-mix(in srgb, var(--theme-feedback-success-foreground) 30%, transparent)"}`,
-                          color: s.isEnabledForNewCampaigns ? "var(--theme-feedback-danger-foreground)" : "var(--theme-feedback-success-foreground)",
-                          cursor: s.systemId === "custom" ? "not-allowed" : "pointer",
-                          opacity: s.systemId === "custom" ? 0.5 : 1,
-                          fontSize: "0.8rem",
-                        }}
+                        className={`game-system-toggle ${s.isEnabledForNewCampaigns ? "game-system-toggle--disable" : "game-system-toggle--enable"} ${s.systemId === "custom" ? "game-system-toggle--locked" : ""}`}
                       >
                         {actionLoading === s.systemId ? (
                           <Loader size={12} className="spin-animation" />

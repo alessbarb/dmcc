@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 117,
-  "tsxFilesWithInlineStyles": 53,
+  "cssFiles": 119,
+  "tsxFilesWithInlineStyles": 51,
   "forbiddenLiteralColors": 254,
-  "staticInlineStyles": 445,
+  "staticInlineStyles": 411,
   "dynamicInlineStyles": 27,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -77,9 +77,11 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/admin-announcements.css` | legacy | shared | 37 | 37 | 1 |
 | `src/frontend/shared/styles/features/admin-audit.css` | legacy | shared | 117 | 46 | 1 |
 | `src/frontend/shared/styles/features/admin-campaigns.css` | legacy | shared | 36 | 36 | 1 |
+| `src/frontend/shared/styles/features/admin-game-systems.css` | legacy | shared | 24 | 23 | 1 |
 | `src/frontend/shared/styles/features/admin-invitations.css` | legacy | shared | 27 | 26 | 1 |
 | `src/frontend/shared/styles/features/admin-overview.css` | legacy | shared | 28 | 25 | 1 |
 | `src/frontend/shared/styles/features/admin-purge.css` | legacy | shared | 41 | 37 | 1 |
+| `src/frontend/shared/styles/features/admin-security.css` | legacy | shared | 16 | 15 | 1 |
 | `src/frontend/shared/styles/features/admin-template-settings.css` | legacy | shared | 25 | 24 | 1 |
 | `src/frontend/shared/styles/features/admin-users.css` | legacy | shared | 67 | 42 | 1 |
 | `src/frontend/shared/styles/features/auth.css` | legacy | shared | 54 | 10 | 1 |
@@ -127,7 +129,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 76 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 78 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -148,40 +150,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | Severity | Category | Location | Reason |
 |---|---|---|---|
 | critical | mixed-responsibility | `src/frontend/account/account.css:1` | Large stylesheet requires atomization (823 lines, 124 selectors). |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:50` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:58` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:67` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:71` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:72` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:73` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:78` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:79` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:80` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:81` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:83` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:84` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:96` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/gameSystems/GameSystemSettingsPage.tsx:101` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:38` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:52` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:66` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:67` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:74` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:80` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:89` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/security/ConfirmPasswordDialog.tsx:119` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/canvas/components/CampaignCanvasFlow.tsx:1282` | Literal visual color outside a registered theme package. |
 | high | mixed-responsibility | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:1` | Large stylesheet requires atomization (265 lines, 34 selectors). |
 | high | important | `src/frontend/dm/canvas/components/canvas-mobile-toolbar.css:31` | Important declarations bypass the intended cascade. |
