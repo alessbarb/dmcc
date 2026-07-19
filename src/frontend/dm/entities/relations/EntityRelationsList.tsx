@@ -19,7 +19,7 @@ export function EntityRelationsList({ neighborhood, onNavigateEntity }: EntityRe
 
   if (neighborhood.neighbors.length === 0) {
     return (
-      <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", padding: "8px 0" }}>
+      <p className="entity-relations-list-empty">
         {t("entityDetail.relationsGraph.listEmpty")}
       </p>
     );
@@ -34,7 +34,7 @@ export function EntityRelationsList({ neighborhood, onNavigateEntity }: EntityRe
 
   return (
     <ul
-      style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}
+      className="entity-relations-list"
       aria-label={t("entityDetail.tabsRelations")}
     >
       {neighborhood.neighbors.map((neighbor) => {
@@ -46,37 +46,19 @@ export function EntityRelationsList({ neighborhood, onNavigateEntity }: EntityRe
             <button
               type="button"
               onClick={() => onNavigateEntity(neighbor.entityId)}
-              style={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                gap: "4px",
-                alignItems: "flex-start",
-                padding: "10px 12px",
-                backgroundColor: "var(--theme-surfaces-interactive)",
-                border: "none",
-                borderRadius: "var(--theme-shapes-radius-small)",
-                cursor: "pointer",
-                textAlign: "left",
-              }}
+              className="entity-relations-list__item"
             >
-              <span style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: 600, fontSize: "0.88rem" }}>
+              <span className="entity-relations-list__title">
                 {neighbor.title}
-                <span style={{ fontWeight: 400, color: "var(--theme-text-secondary)", fontSize: "0.76rem" }}>
+                <span className="entity-relations-list__type">
                   {formatEntityType(neighbor.entityType, locale)}
                 </span>
               </span>
-              <span style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+              <span className="entity-relations-list__relations">
                 {relations.map((relation) => (
                   <span
                     key={relation.relationId}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "5px",
-                      fontSize: "0.78rem",
-                      color: "var(--theme-text-secondary)",
-                    }}
+                    className="entity-relations-list__relation"
                   >
                     {relation.orientationFromCenter === "self" ? (
                       <ArrowLeftRight size={12} />

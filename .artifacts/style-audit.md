@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 119,
-  "tsxFilesWithInlineStyles": 50,
+  "cssFiles": 120,
+  "tsxFilesWithInlineStyles": 47,
   "forbiddenLiteralColors": 254,
-  "staticInlineStyles": 409,
+  "staticInlineStyles": 390,
   "dynamicInlineStyles": 27,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -103,6 +103,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/features/dm-dashboard.css` | legacy | shared | 507 | 71 | 1 |
 | `src/frontend/shared/styles/features/dm-hub-dashboard.css` | legacy | shared | 1347 | 191 | 1 |
 | `src/frontend/shared/styles/features/dm-hub.css` | legacy | shared | 589 | 73 | 1 |
+| `src/frontend/shared/styles/features/entity-relations.css` | legacy | shared | 28 | 26 | 1 |
 | `src/frontend/shared/styles/features/graph-search.css` | legacy | shared | 77 | 8 | 1 |
 | `src/frontend/shared/styles/features/kanban-board.css` | legacy | shared | 120 | 16 | 1 |
 | `src/frontend/shared/styles/features/kanban.css` | legacy | shared | 104 | 17 | 1 |
@@ -129,7 +130,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 78 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 79 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -420,15 +421,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:176` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailImageContinuation.css:181` | Important declarations bypass the intended cascade. |
 | info | dynamic-style | `src/frontend/dm/entities/EntityDetailModal.tsx:197` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:79` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:81` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:95` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:100` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/HechosTab.tsx:105` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:39` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:72` | Selector depends on another component's DOM structure. |
 | high | cross-component-selector | `src/frontend/dm/entities/playerCharacterDetail.css:93` | Selector depends on another component's DOM structure. |
@@ -439,16 +431,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:186` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:188` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:194` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsFilters.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsFilters.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsFilters.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:22` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:37` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:73` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:47` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:58` | Static or mixed inline style must move to an atomized stylesheet. |

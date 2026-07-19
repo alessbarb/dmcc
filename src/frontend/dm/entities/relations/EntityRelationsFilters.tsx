@@ -30,8 +30,8 @@ export function EntityRelationsFilters({ filters, onChange, availableEntityTypes
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px", padding: "8px 0" }}>
-      <div role="group" aria-label={t("entityDetail.relationsGraph.filtersLabel")} style={{ display: "flex", gap: "4px" }}>
+    <div className="entity-relations-filters">
+      <div role="group" aria-label={t("entityDetail.relationsGraph.filtersLabel")} className="entity-relations-filters__directions">
         {DIRECTIONS.map((direction) => (
           <button
             key={direction}
@@ -45,7 +45,7 @@ export function EntityRelationsFilters({ filters, onChange, availableEntityTypes
         ))}
       </div>
       {availableEntityTypes.length > 1 && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+        <div className="entity-relations-filters__types">
           <button
             type="button"
             className={`btn btn-sm ${filters.entityTypes.length === 0 ? "btn-primary" : "btn-secondary"}`}

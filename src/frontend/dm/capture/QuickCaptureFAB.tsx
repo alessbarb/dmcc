@@ -124,7 +124,7 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
             <div className="quick-capture-sheet__body">
               <textarea
                 ref={inputRef}
-                className="form-textarea"
+                className="form-textarea quick-capture-sheet__textarea"
                 placeholder={t("session.quickCaptureLongPlaceholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -132,7 +132,6 @@ export function QuickCaptureFAB({ campaignId: _campaignId }: Props) {
                   if ((e.ctrlKey || e.metaKey) && e.key === "Enter") void handleSave();
                 }}
                 maxLength={500}
-                className="form-textarea quick-capture-sheet__textarea"
               />
 
               <div className="quick-capture-type-grid">
