@@ -1,0 +1,15 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: var(--theme-media-overlay-strong);
+}
+
+.overlay__content {
+  width: min(100%, 48rem);
+  max-height: calc(100dvh - 2 * var(--space-4));
+  overflow: auto;
+}

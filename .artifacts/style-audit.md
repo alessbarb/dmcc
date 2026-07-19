@@ -6,15 +6,15 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 67,
-  "tsxFilesWithInlineStyles": 84,
-  "forbiddenLiteralColors": 308,
-  "staticInlineStyles": 1052,
-  "dynamicInlineStyles": 32,
+  "cssFiles": 81,
+  "tsxFilesWithInlineStyles": 87,
+  "forbiddenLiteralColors": 310,
+  "staticInlineStyles": 1068,
+  "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
-  "mixedResponsibilityFiles": 18,
+  "mixedResponsibilityFiles": 20,
   "crossComponentSelectors": 62,
   "importantDeclarations": 385,
   "unclassifiedCssFiles": 0
@@ -37,7 +37,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/entities/entityDetailHeroActions.css` | feature | entities | 57 | 8 | 2 |
 | `src/frontend/dm/entities/entityDetailImageContinuation.css` | feature | entities | 183 | 18 | 2 |
 | `src/frontend/dm/entities/playerCharacterDetail.css` | feature | entities | 145 | 21 | 1 |
-| `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 139 | 21 | 2 |
+| `src/frontend/dm/entities/relations/relationshipGraph.css` | feature | entities | 154 | 25 | 2 |
 | `src/frontend/dm/entities/type-metadata-form.css` | feature | entities | 30 | 4 | 1 |
 | `src/frontend/dm/layouts/campaign-route-transitions.css` | layout | layout | 82 | 19 | 1 |
 | `src/frontend/dm/library/boards/entityBoards.css` | feature | library | 243 | 37 | 1 |
@@ -55,23 +55,25 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/dm/people/group/groupWorkspace.css` | feature | people | 631 | 93 | 1 |
 | `src/frontend/dm/people/peopleWorkspace.css` | feature | people | 394 | 61 | 1 |
 | `src/frontend/dm/sessions/components/active-session-prep.css` | feature | sessions | 140 | 24 | 1 |
-| `src/frontend/dm/sessions/components/prepared-session.css` | feature | sessions | 131 | 21 | 1 |
+| `src/frontend/dm/sessions/components/prepared-session.css` | feature | sessions | 136 | 22 | 2 |
 | `src/frontend/dm/sessions/components/quick-capture.css` | feature | sessions | 46 | 6 | 1 |
 | `src/frontend/dm/sessions/components/quick-note.css` | feature | sessions | 13 | 3 | 1 |
 | `src/frontend/dm/sessions/components/session-actions.css` | feature | sessions | 120 | 25 | 1 |
 | `src/frontend/dm/sessions/components/session-event-feed.css` | feature | sessions | 139 | 23 | 1 |
-| `src/frontend/dm/sessions/components/session-forms.css` | feature | sessions | 131 | 23 | 3 |
-| `src/frontend/dm/sessions/components/session-history.css` | feature | sessions | 73 | 12 | 1 |
-| `src/frontend/dm/sessions/components/session-idle.css` | feature | sessions | 130 | 24 | 1 |
+| `src/frontend/dm/sessions/components/session-forms.css` | feature | sessions | 142 | 25 | 4 |
+| `src/frontend/dm/sessions/components/session-history.css` | feature | sessions | 75 | 12 | 2 |
+| `src/frontend/dm/sessions/components/session-idle.css` | feature | sessions | 130 | 24 | 2 |
 | `src/frontend/dm/sessions/components/session-linked-list.css` | feature | sessions | 25 | 4 | 1 |
-| `src/frontend/dm/sessions/components/session-prep.css` | feature | sessions | 49 | 11 | 1 |
 | `src/frontend/dm/sessions/components/session-status.css` | feature | sessions | 74 | 10 | 1 |
-| `src/frontend/dm/sessions/session-workspace.css` | feature | sessions | 18 | 3 | 1 |
+| `src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css` | feature | sessions | 322 | 46 | 1 |
+| `src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css` | feature | sessions | 279 | 40 | 1 |
+| `src/frontend/dm/sessions/session-workspace.css` | feature | sessions | 18 | 3 | 4 |
 | `src/frontend/dm/story/history/campaignHistory.css` | feature | story | 295 | 41 | 1 |
 | `src/frontend/dm/story/plan/storyPlanWorkspace.css` | feature | story | 153 | 27 | 1 |
 | `src/frontend/institutional/institutional.css` | feature | institutional | 274 | 38 | 1 |
 | `src/frontend/player/pages/playerCampaignShell.css` | feature | player | 154 | 27 | 1 |
 | `src/frontend/shared/components/entityImageReframeDialog.css` | component | shared-components | 329 | 42 | 1 |
+| `src/frontend/shared/components/watermark.css` | component | shared-components | 33 | 6 | 1 |
 | `src/frontend/shared/styles/features/kanban-board.css` | legacy | shared | 120 | 16 | 1 |
 | `src/frontend/shared/styles/features/rules-workspace.css` | legacy | shared | 73 | 11 | 1 |
 | `src/frontend/shared/styles/features/sidebar-nav.css` | legacy | shared | 15 | 2 | 1 |
@@ -81,26 +83,38 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/motion.css` | foundation | shared | 28 | 3 | 1 |
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 7 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
-| `src/frontend/shared/styles/index.css` | legacy | shared | 9012 | 1309 | 1 |
+| `src/frontend/shared/styles/index.css` | legacy | shared | 8480 | 1231 | 1 |
 | `src/frontend/shared/styles/landing.css` | legacy | shared | 2640 | 392 | 1 |
-| `src/frontend/shared/styles/layout/workspace.css` | legacy | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 28 | 0 | 1 |
-| `src/frontend/shared/styles/primitives/badge.css` | legacy | shared | 24 | 3 | 1 |
-| `src/frontend/shared/styles/primitives/button.css` | legacy | shared | 94 | 13 | 1 |
-| `src/frontend/shared/styles/primitives/card.css` | legacy | shared | 26 | 5 | 1 |
-| `src/frontend/shared/styles/primitives/form-control.css` | legacy | shared | 56 | 8 | 1 |
-| `src/frontend/shared/styles/primitives/menu.css` | legacy | shared | 69 | 9 | 1 |
-| `src/frontend/shared/styles/primitives/tooltip.css` | legacy | shared | 13 | 1 | 1 |
-| `src/frontend/shared/styles/vendor/react-flow.css` | legacy | shared | 2 | 0 | 1 |
+| `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 8 | 1 |
+| `src/frontend/shared/styles/layout/campaign-shell.css` | layout | shared | 108 | 13 | 1 |
+| `src/frontend/shared/styles/layout/footer.css` | layout | shared | 71 | 7 | 1 |
+| `src/frontend/shared/styles/layout/grid.css` | layout | shared | 26 | 7 | 1 |
+| `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
+| `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
+| `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 40 | 0 | 1 |
+| `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
+| `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
+| `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
+| `src/frontend/shared/styles/primitives/dialog.css` | primitive | shared | 28 | 5 | 1 |
+| `src/frontend/shared/styles/primitives/empty-state.css` | primitive | shared | 21 | 3 | 1 |
+| `src/frontend/shared/styles/primitives/form-control.css` | primitive | shared | 56 | 8 | 1 |
+| `src/frontend/shared/styles/primitives/menu.css` | primitive | shared | 69 | 9 | 1 |
+| `src/frontend/shared/styles/primitives/overlay.css` | primitive | shared | 16 | 2 | 1 |
+| `src/frontend/shared/styles/primitives/status.css` | primitive | shared | 24 | 3 | 1 |
+| `src/frontend/shared/styles/primitives/tabs.css` | primitive | shared | 24 | 3 | 1 |
+| `src/frontend/shared/styles/primitives/toolbar.css` | primitive | shared | 12 | 2 | 1 |
+| `src/frontend/shared/styles/primitives/tooltip.css` | primitive | shared | 13 | 1 | 1 |
+| `src/frontend/shared/styles/vendor/react-flow.css` | vendor | shared | 2 | 0 | 1 |
 
 ## Findings
 
 | Severity | Category | Location | Reason |
 |---|---|---|---|
 | critical | mixed-responsibility | `src/frontend/account/account.css:1` | Large stylesheet requires atomization (804 lines, 121 selectors). |
-| high | static-inline | `src/frontend/account/PreferencesPanel.tsx:147` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/account/PreferencesPanel.tsx:158` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/account/PreferencesPanel.tsx:161` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/account/PreferencesPanel.tsx:149` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/account/PreferencesPanel.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/account/PreferencesPanel.tsx:163` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:10` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:22` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/AdminShell.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -126,24 +140,24 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:157` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:164` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:166` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:170` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:176` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:184` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:192` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:204` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:222` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:226` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:230` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:234` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:247` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:248` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:249` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:250` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:251` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:175` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:181` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:189` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:197` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:209` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:227` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:231` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:235` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:239` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:252` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:253` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:254` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:255` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:256` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:258` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:261` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:266` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:286` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:36` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:37` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/audit/AuditLogPage.tsx:39` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -522,43 +536,43 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:42` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:43` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:44` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:92` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:107` | Runtime style requires review and CSS custom-property preference. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:98` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:99` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:100` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:101` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:102` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:103` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:104` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:105` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:191` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:88` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/canvas/components/CanvasFactNode.tsx:103` | Runtime style requires review and CSS custom-property preference. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:108` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:109` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:110` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:111` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:112` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:113` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:114` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:115` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:201` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:256` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:211` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasGroupHulls.tsx:266` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:18` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:18` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:410` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:411` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:483` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:484` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:726` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:727` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:412` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:486` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/canvas/components/CanvasInspector.tsx:487` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:729` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:730` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:735` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:821` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:822` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:868` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:869` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:733` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:738` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:824` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:825` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:871` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:872` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:875` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:884` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:906` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:923` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:982` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:988` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:994` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:1004` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:878` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:887` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:909` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:926` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:985` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:991` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:997` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasInspector.tsx:1007` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasNarrativeLintDrawer.tsx:35` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -647,7 +661,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:713` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:733` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasPalette.tsx:738` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/canvas/components/CanvasSessionPrepDialog.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/canvas/components/CanvasSessionPrepDialog.tsx:44` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasToolbar.tsx:323` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasToolbar.tsx:325` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/canvas/components/CanvasToolbar.tsx:375` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -734,24 +748,24 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:211` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:212` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entity-detail-modal.css:213` | Important declarations bypass the intended cascade. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:230` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:406` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:407` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:408` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:233` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:409` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:448` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:449` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:450` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:484` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:485` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:486` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:530` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:531` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:532` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:552` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:577` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:597` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:679` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:410` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:411` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:412` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:451` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:452` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:453` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:487` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:488` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:489` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:533` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:534` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:535` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:555` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:580` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:600` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/EntityCreateModal.tsx:682` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/entities/entityDetailDialog.css:1` | Large stylesheet requires atomization (395 lines, 57 selectors). |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:11` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/entities/entityDetailDialog.css:22` | Important declarations bypass the intended cascade. |
@@ -939,17 +953,31 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:186` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:188` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/RelationCreateModal.tsx:194` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:41` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:52` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:64` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:150` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:158` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:247` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:255` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:51` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:265` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsFilters.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsFilters.tsx:34` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsFilters.tsx:48` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:22` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:37` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:49` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:63` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:65` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:69` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsList.tsx:73` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:47` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:58` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:70` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:178` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:201` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:212` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:213` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:221` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:315` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:322` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:326` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/EntityRelationsTab.tsx:354` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/entities/relations/RelationshipEdge.tsx:98` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/entities/relations/RelationshipGraphCanvas.tsx:541` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:128` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:135` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/entities/TrazabilidadTab.tsx:143` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1096,19 +1124,18 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:414` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:421` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:422` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/list/EntityListView.tsx:276` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:426` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:435` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:513` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:546` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:550` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:576` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:586` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:587` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:593` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:616` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:620` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:624` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:428` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:437` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:515` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:548` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:552` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:578` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:588` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:589` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:595` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:618` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:622` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:626` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:1` | Large stylesheet requires atomization (293 lines, 50 selectors). |
 | high | literal-color | `src/frontend/dm/map/network/NetworkFactNode.tsx:19` | Literal visual color outside a registered theme package. |
 | info | dynamic-style | `src/frontend/dm/map/network/NetworkFactNode.tsx:19` | Runtime style requires review and CSS custom-property preference. |
@@ -1181,9 +1208,9 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/onboarding/campaign-guided-tour.css:206` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/onboarding/campaign-guided-tour.css:207` | Important declarations bypass the intended cascade. |
 | critical | mixed-responsibility | `src/frontend/dm/onboarding/campaign-starter-hub.css:1` | Large stylesheet requires atomization (416 lines, 57 selectors). |
-| high | static-inline | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:205` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:320` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:498` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:211` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:326` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/onboarding/CampaignStarterHub.tsx:504` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:35` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:60` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:62` | Literal visual color outside a registered theme package. |
@@ -1198,52 +1225,52 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:110` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:125` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:276` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:282` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:298` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:300` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:310` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:320` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:323` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:328` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:355` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:374` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:403` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:411` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:428` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:445` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:280` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:285` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:286` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:302` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:304` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:314` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:324` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:327` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:332` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:359` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:378` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:407` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:415` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:432` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:449` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:452` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:460` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:473` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:476` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:478` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:479` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:482` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:484` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:490` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:511` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:518` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:524` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:530` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:548` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:565` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:571` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:453` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:456` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:464` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:477` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:480` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:482` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/overview/OverviewPage.tsx:483` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:486` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:488` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:494` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:515` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:522` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:528` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:534` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:552` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:569` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:575` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:590` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:597` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:608` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:619` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:630` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:642` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:649` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:652` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:662` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:579` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:594` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:601` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:612` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:623` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:634` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:646` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:653` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:656` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:666` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:669` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:670` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:673` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:680` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:677` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/dm/overview/OverviewPage.tsx:684` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:6` | Important declarations bypass the intended cascade. |
 | high | cross-component-selector | `src/frontend/dm/pages/campaignMessagesPage.css:6` | Selector depends on another component's DOM structure. |
 | high | important | `src/frontend/dm/pages/campaignMessagesPage.css:7` | Important declarations bypass the intended cascade. |
@@ -1307,6 +1334,12 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/people/group/components/PlayerProfileModal.tsx:119` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/people/group/groupWorkspace.css:1` | Large stylesheet requires atomization (631 lines, 93 selectors). |
 | critical | mixed-responsibility | `src/frontend/dm/people/peopleWorkspace.css:1` | Large stylesheet requires atomization (394 lines, 61 selectors). |
+| critical | mixed-responsibility | `src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css:1` | Large stylesheet requires atomization (322 lines, 46 selectors). |
+| high | literal-color | `src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css:96` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css:97` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:55` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | mixed-responsibility | `src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css:1` | Large stylesheet requires atomization (279 lines, 40 selectors). |
+| high | static-inline | `src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:33` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:43` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/shortcuts/ShortcutsPanel.tsx:47` | Static or mixed inline style must move to an atomized stylesheet. |
@@ -1546,36 +1579,36 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:10` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:10` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/CampaignMessagingPanel.tsx:10` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:274` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:275` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:276` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:277` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:277` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:278` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:279` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:280` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:281` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:282` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:280` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:283` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:284` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:284` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/shared/components/CampaignMessagingPanel.tsx:288` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:289` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:289` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:289` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:290` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:291` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/shared/components/CampaignMessagingPanel.tsx:296` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:297` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:298` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:299` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:307` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:285` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:286` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:287` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:287` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/shared/components/CampaignMessagingPanel.tsx:291` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:292` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:292` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:292` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:293` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:294` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/shared/components/CampaignMessagingPanel.tsx:299` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:300` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:301` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:302` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:310` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:311` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:312` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:316` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:317` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:318` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:313` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:314` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:315` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:319` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:112` | Runtime style requires review and CSS custom-property preference. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:320` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:321` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/CampaignMessagingPanel.tsx:322` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/shared/components/CampaignTemplateImportDialog.tsx:114` | Runtime style requires review and CSS custom-property preference. |
 | high | mixed-responsibility | `src/frontend/shared/components/entityImageReframeDialog.css:1` | Large stylesheet requires atomization (329 lines, 42 selectors). |
 | high | literal-color | `src/frontend/shared/components/entityImageReframeDialog.css:11` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/components/entityImageReframeDialog.css:27` | Literal visual color outside a registered theme package. |
@@ -1637,28 +1670,28 @@ Generated mechanically by `npm run styles:audit:report`.
 | info | dynamic-style | `src/frontend/shared/components/ImagePickerModal.tsx:131` | Runtime style requires review and CSS custom-property preference. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:141` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:147` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:268` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:271` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:277` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:287` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:287` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:293` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:337` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:345` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:348` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:348` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:351` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:357` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:364` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:367` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:372` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:269` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:272` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:278` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:288` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:288` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:294` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:338` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:346` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:349` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:349` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:352` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:358` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:365` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:368` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:373` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:374` | Literal visual color outside a registered theme package. |
 | high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:374` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:399` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:413` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:421` | Literal visual color outside a registered theme package. |
-| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:433` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:375` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:375` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:400` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:414` | Static or mixed inline style must move to an atomized stylesheet. |
+| high | literal-color | `src/frontend/shared/components/ImagePickerModal.tsx:422` | Literal visual color outside a registered theme package. |
+| high | static-inline | `src/frontend/shared/components/ImagePickerModal.tsx:434` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/PwaUpdateBanner.tsx:18` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/shared/components/PwaUpdateBanner.tsx:42` | Static or mixed inline style must move to an atomized stylesheet. |
 | info | dynamic-style | `src/frontend/shared/components/RpgPortalBackground.tsx:33` | Runtime style requires review and CSS custom-property preference. |
@@ -1694,181 +1727,181 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/shared/components/ToastContainer.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | literal-color | `src/frontend/shared/components/ToastContainer.tsx:41` | Literal visual color outside a registered theme package. |
 | high | important | `src/frontend/shared/styles/foundation/motion.css:17` | Important declarations bypass the intended cascade. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/index.css:1` | Large stylesheet requires atomization (9012 lines, 1309 selectors). |
-| high | literal-color | `src/frontend/shared/styles/index.css:379` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:648` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:666` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:983` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:984` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:999` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1161` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:1228` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1519` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1530` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1548` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1552` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:1563` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2024` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2030` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:2420` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2421` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2425` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2426` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2453` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:2454` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2531` | Literal visual color outside a registered theme package. |
-| high | cross-component-selector | `src/frontend/shared/styles/index.css:2558` | Selector depends on another component's DOM structure. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2678` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:2685` | Important declarations bypass the intended cascade. |
+| critical | mixed-responsibility | `src/frontend/shared/styles/index.css:1` | Large stylesheet requires atomization (8480 lines, 1231 selectors). |
+| high | literal-color | `src/frontend/shared/styles/index.css:89` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:358` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:376` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:693` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:694` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:709` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:871` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:938` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1229` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1240` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1258` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1262` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1273` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1494` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:1500` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:1890` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1891` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1895` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1896` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1923` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:1924` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2001` | Literal visual color outside a registered theme package. |
+| high | cross-component-selector | `src/frontend/shared/styles/index.css:2028` | Selector depends on another component's DOM structure. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2148` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:2155` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2156` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2231` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2246` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2348` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:2352` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2356` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:2356` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2359` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2360` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2360` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2361` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2361` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2362` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2363` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2393` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2394` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2394` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2395` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2395` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2396` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2397` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:2411` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:2451` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2452` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2475` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2476` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2480` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2481` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2482` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2484` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2485` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2490` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2492` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2493` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2494` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2538` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2659` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2660` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2664` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2682` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:2686` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2761` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2776` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2878` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:2882` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2886` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:2886` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2889` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2890` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2890` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2891` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2891` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2892` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2893` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2923` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2924` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2924` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2925` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2925` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2926` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2927` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:2941` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:2981` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2687` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2688` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2689` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2694` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2695` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2696` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2700` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2701` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2702` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2706` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2707` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2708` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2759` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2846` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2847` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2881` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2884` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2917` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2920` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2927` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2930` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2933` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2936` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2939` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2943` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2946` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2950` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2953` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2956` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2959` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2960` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2961` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2962` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2963` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2964` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2965` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2966` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2967` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2972` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2973` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2974` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2977` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:2978` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:2982` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3005` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3006` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3010` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3011` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3012` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3014` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3015` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3020` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3022` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3023` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3024` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3068` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3189` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3190` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3194` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3212` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3216` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3217` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3218` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3219` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3224` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3225` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3226` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3230` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3231` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3232` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3236` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3237` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3238` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3289` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3376` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3377` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3411` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3414` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3447` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3450` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3457` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3460` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3463` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3466` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3469` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3473` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3476` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3480` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3483` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3486` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3489` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3490` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3491` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3492` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3493` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3494` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3495` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3496` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3497` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3502` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3503` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3504` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3507` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3508` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3512` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3539` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:3799` | Literal visual color outside a registered theme package. |
-| high | important | `src/frontend/shared/styles/index.css:3840` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3851` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:3852` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4012` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:4051` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:3009` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:3269` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:3310` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3321` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3322` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:3482` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:3521` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:3573` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3577` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3581` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3643` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3644` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3645` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3646` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3648` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3704` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3708` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:3712` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/styles/index.css:3712` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/styles/index.css:3906` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4084` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4085` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4089` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4090` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4095` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4099` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/index.css:4103` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4107` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4111` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4173` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4174` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4175` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4176` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4178` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4234` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4238` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4242` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/index.css:4242` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/styles/index.css:4436` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4614` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4615` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4619` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4620` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4625` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4629` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4633` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4634` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4635` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4636` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4640` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4644` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4649` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4660` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4683` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4684` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:4723` | Important declarations bypass the intended cascade. |
-| high | cross-component-selector | `src/frontend/shared/styles/index.css:5105` | Selector depends on another component's DOM structure. |
-| high | cross-component-selector | `src/frontend/shared/styles/index.css:5129` | Selector depends on another component's DOM structure. |
-| high | important | `src/frontend/shared/styles/index.css:5168` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:5176` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:5181` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:5182` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:5686` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:5691` | Important declarations bypass the intended cascade. |
-| high | important | `src/frontend/shared/styles/index.css:5692` | Important declarations bypass the intended cascade. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5872` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:5873` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6120` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6120` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6121` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6229` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6229` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6314` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6447` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6456` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:6456` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7174` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7466` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:7510` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8022` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8815` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8816` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/index.css:8859` | Literal visual color outside a registered theme package. |
+| high | important | `src/frontend/shared/styles/index.css:4104` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4105` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4106` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4110` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4114` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4119` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4130` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4153` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4154` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4193` | Important declarations bypass the intended cascade. |
+| high | cross-component-selector | `src/frontend/shared/styles/index.css:4575` | Selector depends on another component's DOM structure. |
+| high | cross-component-selector | `src/frontend/shared/styles/index.css:4599` | Selector depends on another component's DOM structure. |
+| high | important | `src/frontend/shared/styles/index.css:4638` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4646` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4651` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:4652` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:5156` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:5161` | Important declarations bypass the intended cascade. |
+| high | important | `src/frontend/shared/styles/index.css:5162` | Important declarations bypass the intended cascade. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5342` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5343` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5590` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5590` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5591` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5699` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5699` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5784` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5917` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5926` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:5926` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:6644` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:6936` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:6980` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:7492` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:8285` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:8286` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/index.css:8329` | Literal visual color outside a registered theme package. |
 | high | cross-component-selector | `src/frontend/shared/styles/landing.css:1` | Selector depends on another component's DOM structure. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/landing.css:1` | Large stylesheet requires atomization (2640 lines, 392 selectors). |
 | high | literal-color | `src/frontend/shared/styles/landing.css:13` | Literal visual color outside a registered theme package. |
@@ -1944,6 +1977,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/landing.css:2301` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2302` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/landing.css:2303` | Literal visual color outside a registered theme package. |
+| medium | global-selector | `src/frontend/shared/styles/layout/grid.css:1` | Generic selector has global collision risk. |
 | critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1009 lines, 150 selectors). |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:115` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:123` | Literal visual color outside a registered theme package. |
@@ -1954,4 +1988,3 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:509` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:655` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:701` | Literal visual color outside a registered theme package. |
-| medium | global-selector | `src/frontend/shared/styles/primitives/card.css:1` | Generic selector has global collision risk. |

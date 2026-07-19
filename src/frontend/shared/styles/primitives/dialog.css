@@ -1,0 +1,27 @@
+.dialog {
+  color: var(--theme-text-primary);
+  background: var(--theme-surfaces-raised);
+  border: 1px solid var(--theme-borders-default);
+  border-radius: var(--theme-shapes-radius-panel);
+  box-shadow: var(--theme-shadows-overlay);
+}
+
+.dialog--overlay {
+  color: var(--theme-text-on-media);
+  background: var(--theme-surfaces-overlay);
+  border-color: var(--theme-borders-overlay);
+}
+
+.dialog__header,
+.dialog__body,
+.dialog__footer {
+  padding: var(--space-5);
+}
+
+.dialog__header {
+  border-bottom: 1px solid var(--theme-borders-default);
+}
+
+.dialog__footer {
+  border-top: 1px solid var(--theme-borders-default);
+}

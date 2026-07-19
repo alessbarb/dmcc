@@ -39,4 +39,25 @@ describe("global style foundation", () => {
     expect(entrypoint).toContain('@import "./foundation/reset.css";');
     expect(entrypoint).toContain('@import "./index.css";');
   });
+
+  it("routes extracted shell and primitive responsibilities through shared styles", () => {
+    const entrypoint = read("src/frontend/shared/styles/main.css");
+    for (const file of [
+      "./layout/app-shell.css",
+      "./layout/navigation.css",
+      "./layout/grid.css",
+      "./layout/campaign-shell.css",
+      "./layout/footer.css",
+      "./layout/responsive.css",
+      "./features/graph-search.css",
+      "./primitives/dialog.css",
+      "./primitives/overlay.css",
+      "./primitives/tabs.css",
+      "./primitives/toolbar.css",
+      "./primitives/empty-state.css",
+      "./primitives/status.css",
+    ]) {
+      expect(entrypoint).toContain(`@import \"${file}\";`);
+    }
+  });
 });

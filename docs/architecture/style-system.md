@@ -32,6 +32,25 @@ CSS local del componente
 
 Los estilos locales no crean un sistema visual propio. Solo describen composición, estructura y particularidades exclusivas del componente.
 
+## Estado de implementación
+
+Esta especificación describe el estado objetivo y el plan de migración. En el
+checkout actual la migración es incremental:
+
+* el runtime de temas, el contrato `--theme-*` y los modos claro/oscuro están
+  implementados;
+* `main.tsx` tiene una única importación CSS directa;
+* la fundación, las primitivas iniciales y parte de los layouts ya están
+  extraídos en `shared/styles/`;
+* `index.css`, `landing.css` y `account.css` siguen siendo capas legacy
+  transitorias y no deben recibir estilos nuevos;
+* el baseline del auditor es un ratchet de deuda existente, no una aprobación
+  de esa deuda como arquitectura final.
+
+Cada sprint debe reducir deuda o aislarla en una responsabilidad explícita.
+Actualizar el baseline sin una reducción o una justificación revisada no se
+considera cierre de sprint.
+
 ---
 
 # 2. Principios arquitectónicos
@@ -210,6 +229,10 @@ src/frontend/shared/styles/
 ```
 
 `main.css` será el único CSS global importado por `main.tsx`.
+
+Durante la migración, `main.css` puede importar temporalmente hojas legacy para
+preservar el aspecto existente. Esa importación debe desaparecer antes de
+cerrar el Sprint 2; no se considera parte de la cascada objetivo.
 
 ```css
 @import "./foundation/reset.css";

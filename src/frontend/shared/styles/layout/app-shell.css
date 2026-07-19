@@ -1,0 +1,41 @@
+.mobile-dock,
+.mobile-dock-overlay {
+  display: none;
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  padding-bottom: var(--app-footer-height);
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--app-footer-height));
+  overflow-y: auto;
+}
+
+.content-body {
+  padding: 32px 32px 72px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .main-content {
+    height: auto;
+  }
+}

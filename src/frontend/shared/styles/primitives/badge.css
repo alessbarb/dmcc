@@ -21,3 +21,33 @@
   background: var(--theme-feedback-success-background);
   color: var(--theme-feedback-success-foreground);
 }
+
+.badge-default {
+  background-color: var(--theme-surfaces-interactive);
+  color: var(--theme-text-secondary);
+  border-color: var(--theme-borders-default);
+}
+
+.badge-primary {
+  background-color: var(--theme-accents-primary-background);
+  color: var(--theme-accents-primary-foreground);
+  border-color: color-mix(in srgb, var(--theme-activity-system-foreground) 20%, transparent);
+}
+
+.badge-success {
+  background-color: var(--theme-feedback-success-background);
+  color: var(--theme-feedback-success-foreground);
+  border-color: color-mix(in srgb, var(--theme-activity-attachment-foreground) 20%, transparent);
+}
+
+.badge-warning {
+  background-color: var(--theme-feedback-warning-background);
+  color: var(--theme-feedback-warning-foreground);
+  border-color: color-mix(in srgb, var(--theme-activity-fact-foreground) 20%, transparent);
+}
+
+.badge-critical {
+  background-color: var(--theme-feedback-danger-background);
+  color: var(--theme-feedback-danger-foreground);
+  border-color: color-mix(in srgb, var(--theme-feedback-danger-foreground) 20%, transparent);
+}

@@ -1,0 +1,20 @@
+.empty-state {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-5);
+  color: var(--theme-text-secondary);
+  text-align: center;
+}
+
+.empty-state__title {
+  margin: 0;
+  color: var(--theme-text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.empty-state__description {
+  max-width: 42rem;
+  margin: 0;
+}

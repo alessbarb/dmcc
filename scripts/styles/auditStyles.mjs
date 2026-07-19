@@ -30,8 +30,14 @@ function positionFor(source, index) {
 
 function finding(pathname, source, index, data) {
   const position = positionFor(source, index);
+  const fingerprint = String(
+    data.value ?? data.selectorOrComponent ?? data.property ?? data.reason ?? "finding",
+  ).replace(/\s+/g, " ").trim();
   return {
-    id: `${data.category}:${pathname}:${position.line}:${position.column}`,
+    // Keep the ratchet stable when a stylesheet is atomized and line numbers move.
+    // Counts still catch additional occurrences; the fingerprint prevents a pure
+    // line shift from being reported as a new violation.
+    id: `${data.category}:${pathname}:${fingerprint}`,
     path: pathname,
     line: position.line,
     column: position.column,

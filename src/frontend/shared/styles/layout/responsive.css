@@ -1,0 +1,62 @@
+/* Shared responsive adaptations for the application shell. */
+@media (max-width: 900px) {
+  :root {
+    --app-footer-height: 58px;
+  }
+
+  .app-container {
+    flex-direction: column;
+    padding-bottom: calc(24px + var(--app-footer-height));
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    position: relative;
+    top: auto;
+  }
+
+  .main-content {
+    height: auto;
+    min-height: calc(100vh - var(--app-footer-height));
+    overflow-y: visible;
+  }
+
+  .content-header {
+    position: static;
+    flex-direction: column;
+    padding: 22px 24px 18px;
+  }
+
+  .content-body {
+    padding: 24px 24px 82px;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .app-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+    padding: 7px 12px;
+  }
+
+  .app-footer__brand {
+    width: 100%;
+  }
+
+  .app-footer__brand span {
+    display: none;
+  }
+
+  .app-footer__meta {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+}

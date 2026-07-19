@@ -1,0 +1,23 @@
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid;
+  border-radius: var(--theme-shapes-radius-pill);
+  font-size: 0.75rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.status-badge--success {
+  color: var(--theme-feedback-success-foreground);
+  background: var(--theme-feedback-success-background);
+  border-color: var(--theme-feedback-success-border);
+}
+
+.status-badge--danger {
+  color: var(--theme-feedback-danger-foreground);
+  background: var(--theme-feedback-danger-background);
+  border-color: var(--theme-feedback-danger-border);
+}
