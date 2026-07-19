@@ -9,8 +9,8 @@ Generated mechanically by `npm run styles:audit:report`.
   "cssFiles": 133,
   "tsxFilesWithInlineStyles": 15,
   "forbiddenLiteralColors": 0,
-  "staticInlineStyles": 3,
-  "dynamicInlineStyles": 17,
+  "staticInlineStyles": 0,
+  "dynamicInlineStyles": 20,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
@@ -406,7 +406,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/dm/map/network/networkFlow.css:493` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:494` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/dm/map/network/networkFlow.css:709` | Important declarations bypass the intended cascade. |
-| high | static-inline | `src/frontend/dm/map/network/NetworkInspector.tsx:32` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/map/network/NetworkInspector.tsx:32` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/map/network/NetworkRelationEdge.tsx:43` | Runtime style requires review and CSS custom-property preference. |
 | info | dynamic-style | `src/frontend/dm/map/shared/EntityNodeContent.tsx:66` | Runtime style requires review and CSS custom-property preference. |
 | high | mixed-responsibility | `src/frontend/dm/onboarding/campaign-guided-tour.css:1` | Large stylesheet requires atomization (226 lines, 32 selectors). |
@@ -448,9 +448,9 @@ Generated mechanically by `npm run styles:audit:report`.
 | critical | mixed-responsibility | `src/frontend/dm/people/group/groupWorkspace.css:1` | Large stylesheet requires atomization (631 lines, 93 selectors). |
 | critical | mixed-responsibility | `src/frontend/dm/people/peopleWorkspace.css:1` | Large stylesheet requires atomization (394 lines, 61 selectors). |
 | critical | mixed-responsibility | `src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css:1` | Large stylesheet requires atomization (322 lines, 46 selectors). |
-| high | static-inline | `src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:55` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:55` | Runtime style requires review and CSS custom-property preference. |
 | high | mixed-responsibility | `src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css:1` | Large stylesheet requires atomization (279 lines, 40 selectors). |
-| high | static-inline | `src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:54` | Static or mixed inline style must move to an atomized stylesheet. |
+| info | dynamic-style | `src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:54` | Runtime style requires review and CSS custom-property preference. |
 | high | mixed-responsibility | `src/frontend/dm/story/history/campaignHistory.css:1` | Large stylesheet requires atomization (295 lines, 41 selectors). |
 | critical | mixed-responsibility | `src/frontend/dm/story/plan/storyPlanWorkspace.css:1` | Large stylesheet requires atomization (276 lines, 96 selectors). |
 | high | important | `src/frontend/dm/story/plan/storyPlanWorkspace.css:2` | Important declarations bypass the intended cascade. |

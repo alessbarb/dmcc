@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T11:51:13.463Z",
+  "generatedAt": "2026-07-19T11:51:58.368Z",
   "summary": {
     "cssFiles": 133,
     "tsxFilesWithInlineStyles": 15,
     "forbiddenLiteralColors": 0,
-    "staticInlineStyles": 3,
-    "dynamicInlineStyles": 17,
+    "staticInlineStyles": 0,
+    "dynamicInlineStyles": 20,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
     "orphanCssFiles": 0,
@@ -12331,17 +12331,17 @@
       "reason": "Large stylesheet requires atomization (293 lines, 50 selectors)."
     },
     {
-      "id": "static-inline:src/frontend/dm/map/network/NetworkInspector.tsx:style={{ \"--network-inspector-accent\": config.accent } as React.CSSProperties & Record<`--${string}`, string>}> <header className=\"network-inspector__header\"> <div className=\"network-inspector__eyebrow-row\"> <span cl",
+      "id": "dynamic-style:src/frontend/dm/map/network/NetworkInspector.tsx:style={{ \"--network-inspector-accent\": config.accent } as React.CSSProperties & Record<`--${string}`, string>}> <header className=\"network-inspector__header\"> <div className=\"network-inspector__eyebrow-row\"> <span cl",
       "path": "src/frontend/dm/map/network/NetworkInspector.tsx",
       "line": 32,
       "column": 42,
-      "severity": "high",
-      "status": "temporary",
+      "severity": "info",
+      "status": "allowed",
       "sourceType": "tsx-inline",
-      "category": "static-inline",
+      "category": "dynamic-style",
       "value": "style={{ \"--network-inspector-accent\": config.accent } as React.CSSProperties & Record<`--${string}`, string>}>\n      <header className=\"network-inspector__header\">\n        <div className=\"network-inspector__eyebrow-row\">\n          <span cl",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
+      "classification": "dynamic",
+      "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
       "id": "dynamic-style:src/frontend/dm/map/network/NetworkRelationEdge.tsx:style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}",
@@ -13061,17 +13061,17 @@
       "reason": "Large stylesheet requires atomization (394 lines, 61 selectors)."
     },
     {
-      "id": "static-inline:src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:style={{ \"--consequence-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>} onClick={() => onSelect(node)} > <span className=\"consequence-chain-list__kind\">{t(`sessio",
+      "id": "dynamic-style:src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx:style={{ \"--consequence-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>} onClick={() => onSelect(node)} > <span className=\"consequence-chain-list__kind\">{t(`sessio",
       "path": "src/frontend/dm/sessions/consequenceChain/SessionConsequenceChainCanvas.tsx",
       "line": 55,
       "column": 15,
-      "severity": "high",
-      "status": "temporary",
+      "severity": "info",
+      "status": "allowed",
       "sourceType": "tsx-inline",
-      "category": "static-inline",
+      "category": "dynamic-style",
       "value": "style={{ \"--consequence-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>}\n              onClick={() => onSelect(node)}\n            >\n              <span className=\"consequence-chain-list__kind\">{t(`sessio",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
+      "classification": "dynamic",
+      "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
       "id": "mixed-responsibility:src/frontend/dm/sessions/consequenceChain/sessionConsequenceChain.css",
@@ -13085,17 +13085,17 @@
       "reason": "Large stylesheet requires atomization (322 lines, 46 selectors)."
     },
     {
-      "id": "static-inline:src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:style={{ \"--narrative-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>} onClick={() => onSelect(node)} > <span className=\"narrative-map-list__kind\">{t(`sessionNarra",
+      "id": "dynamic-style:src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx:style={{ \"--narrative-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>} onClick={() => onSelect(node)} > <span className=\"narrative-map-list__kind\">{t(`sessionNarra",
       "path": "src/frontend/dm/sessions/narrativeMap/SessionNarrativeMapCanvas.tsx",
       "line": 54,
       "column": 15,
-      "severity": "high",
-      "status": "temporary",
+      "severity": "info",
+      "status": "allowed",
       "sourceType": "tsx-inline",
-      "category": "static-inline",
+      "category": "dynamic-style",
       "value": "style={{ \"--narrative-node-accent\": visual.accent } as React.CSSProperties & Record<`--${string}`, string>}\n              onClick={() => onSelect(node)}\n            >\n              <span className=\"narrative-map-list__kind\">{t(`sessionNarra",
-      "classification": "mixed",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
+      "classification": "dynamic",
+      "reason": "Runtime style requires review and CSS custom-property preference."
     },
     {
       "id": "mixed-responsibility:src/frontend/dm/sessions/narrativeMap/sessionNarrativeMap.css",
