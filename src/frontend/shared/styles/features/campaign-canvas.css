@@ -1078,6 +1078,7 @@ small.canvas-navigator-result-action {
   width: 200px;
   min-height: 110px;
   border: 1.5px solid;
+  border-color: color-mix(in srgb, var(--fact-color, var(--theme-accents-secondary-foreground)) 33%, transparent);
   border-radius: 6px 0 6px 6px;
   overflow: hidden;
   display: flex;
@@ -1088,6 +1089,7 @@ small.canvas-navigator-result-action {
   transition: box-shadow 0.15s, border-color 0.15s;
 }
 .fact-node--selected {
+  border-color: var(--fact-color, var(--theme-accents-secondary-foreground));
   box-shadow: 0 0 0 2px var(--fact-color, var(--theme-accents-secondary-foreground)), 0 4px 16px color-mix(in srgb, var(--theme-surfaces-canvas) 50%, transparent) !important;
 }
 .fact-node__banner {
@@ -1101,6 +1103,7 @@ small.canvas-navigator-result-action {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   flex-shrink: 0;
+  background: var(--fact-color, var(--theme-accents-secondary-foreground));
 }
 .fact-node__body {
   flex: 1;
@@ -1141,6 +1144,9 @@ small.canvas-navigator-result-action {
   border-radius: 50%;
   background: var(--fact-color, var(--theme-accents-secondary-foreground));
 }
+.fact-node__dot--muted {
+  opacity: 0.2;
+}
 .fact-node__linked {
   font-size: 0.58rem;
   color: var(--theme-text-secondary);
@@ -1154,7 +1160,7 @@ small.canvas-navigator-result-action {
   height: 0;
   border-style: solid;
   border-width: 0 14px 14px 0;
-  border-color: transparent color-mix(in srgb, var(--theme-surfaces-canvas) 45%, transparent) transparent transparent;
+  border-color: transparent color-mix(in srgb, var(--fact-color, var(--theme-accents-secondary-foreground)) 20%, transparent) transparent transparent;
 }
 /* ──────────────────────────────────────────────────────────── */
 

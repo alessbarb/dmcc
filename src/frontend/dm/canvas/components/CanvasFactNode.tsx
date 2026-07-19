@@ -29,6 +29,8 @@ const CONFIDENCE_DOTS: Record<string, { dots: number; label: string }> = {
   false:       { dots: 0, label: "Falso" },
 };
 
+type FactNodeStyle = React.CSSProperties & { "--fact-color": string };
+
 export function CanvasFactNode({ id: _id, data, selected }: CanvasFactNodeProps) {
   const { t } = useTranslation();
   const campaignState = useCampaignStore(s => s.campaignState);
@@ -58,17 +60,15 @@ export function CanvasFactNode({ id: _id, data, selected }: CanvasFactNodeProps)
   const cfg = KIND_CONFIG[kind] ?? KIND_CONFIG.unknown;
   const { color, label, Icon } = cfg;
   const conf = CONFIDENCE_DOTS[confidence] ?? CONFIDENCE_DOTS.medium;
+  const factNodeStyle: FactNodeStyle = { "--fact-color": color };
 
   return (
     <div
       className={`fact-node${selected ? " fact-node--selected" : ""}`}
-      style={{
-        "--fact-color": color,
-        borderColor: selected ? color : `${color}55`,
-      } as React.CSSProperties}
+      style={factNodeStyle}
     >
       {/* Kind banner */}
-      <div className="fact-node__banner" style={{ background: color }}>
+      <div className="fact-node__banner">
         <Icon size={11} strokeWidth={2.5} />
         <span>{label}</span>
       </div>
@@ -84,8 +84,7 @@ export function CanvasFactNode({ id: _id, data, selected }: CanvasFactNodeProps)
           {Array.from({ length: 3 }, (_, i) => (
             <span
               key={i}
-              className="fact-node__dot"
-              style={{ opacity: i < conf.dots ? 1 : 0.2 }}
+              className={`fact-node__dot${i < conf.dots ? "" : " fact-node__dot--muted"}`}
             />
           ))}
           <span>{conf.label}</span>
@@ -100,7 +99,6 @@ export function CanvasFactNode({ id: _id, data, selected }: CanvasFactNodeProps)
       {/* Folded corner decoration */}
       <div
         className="fact-node__corner"
-        style={{ borderColor: `transparent transparent ${color}33 transparent` }}
       />
     </div>
   );
