@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-19T10:03:12.484Z",
+  "generatedAt": "2026-07-19T10:04:08.051Z",
   "summary": {
     "cssFiles": 92,
-    "tsxFilesWithInlineStyles": 86,
+    "tsxFilesWithInlineStyles": 84,
     "forbiddenLiteralColors": 260,
-    "staticInlineStyles": 1052,
+    "staticInlineStyles": 1041,
     "dynamicInlineStyles": 31,
     "unknownCssVariables": 0,
     "legacyCssVariables": 0,
@@ -5561,24 +5561,18 @@
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/auth/ResetPasswordPage.tsx",
       "layer": null,
       "domain": null,
-      "lineCount": 142,
+      "lineCount": 141,
       "selectorCount": 0,
       "imports": [],
       "importedBy": [],
       "variableDefinitions": [],
-      "variableReferences": [
-        "--theme-surfaces-canvas",
-        "--theme-text-secondary"
-      ]
+      "variableReferences": []
     },
     {
       "path": "src/frontend/shared/auth/authClient.ts",
@@ -7243,8 +7237,8 @@
       "path": "src/frontend/shared/styles/features/player-portal.css",
       "layer": "legacy",
       "domain": "shared",
-      "lineCount": 957,
-      "selectorCount": 147,
+      "lineCount": 988,
+      "selectorCount": 153,
       "imports": [],
       "importedBy": [
         "src/frontend/shared/styles/main.css"
@@ -7260,6 +7254,8 @@
         "--theme-text-primary",
         "--theme-accents-secondary-foreground",
         "--theme-accents-secondary-foreground",
+        "--theme-surfaces-canvas",
+        "--theme-text-secondary",
         "--theme-surfaces-canvas",
         "--theme-activity-system-foreground",
         "--theme-activity-tag-foreground",
@@ -27117,149 +27113,6 @@
       "reason": "Static or mixed inline style must move to an atomized stylesheet."
     },
     {
-      "id": "static-inline:src/frontend/shared/auth/ForgotPasswordPage.tsx:style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", backgroundColor: \"var(--theme-surfaces-canvas)\" }}",
-      "path": "src/frontend/shared/auth/ForgotPasswordPage.tsx",
-      "line": 43,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", backgroundColor: \"var(--theme-surfaces-canvas)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ForgotPasswordPage.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/shared/auth/ForgotPasswordPage.tsx",
-      "line": 45,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ForgotPasswordPage.tsx:style={{ fontSize: \"1.3rem\" }}",
-      "path": "src/frontend/shared/auth/ForgotPasswordPage.tsx",
-      "line": 57,
-      "column": 47,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"1.3rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ForgotPasswordPage.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.85rem\", margin: \"4px 0 0\" }}",
-      "path": "src/frontend/shared/auth/ForgotPasswordPage.tsx",
-      "line": 58,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.85rem\", margin: \"4px 0 0\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ForgotPasswordPage.tsx:style={{ marginRight: \"6px\" }}",
-      "path": "src/frontend/shared/auth/ForgotPasswordPage.tsx",
-      "line": 92,
-      "column": 34,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginRight: \"6px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ResetPasswordPage.tsx:style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", backgroundColor: \"var(--theme-surfaces-canvas)\" }}",
-      "path": "src/frontend/shared/auth/ResetPasswordPage.tsx",
-      "line": 50,
-      "column": 10,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ minHeight: \"100vh\", display: \"flex\", flexDirection: \"column\", backgroundColor: \"var(--theme-surfaces-canvas)\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ResetPasswordPage.tsx:style={{ flex: 1 }}",
-      "path": "src/frontend/shared/auth/ResetPasswordPage.tsx",
-      "line": 52,
-      "column": 46,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ flex: 1 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ResetPasswordPage.tsx:style={{ fontSize: \"1.3rem\" }}",
-      "path": "src/frontend/shared/auth/ResetPasswordPage.tsx",
-      "line": 64,
-      "column": 47,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ fontSize: \"1.3rem\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ResetPasswordPage.tsx:style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.85rem\", margin: \"4px 0 0\" }}",
-      "path": "src/frontend/shared/auth/ResetPasswordPage.tsx",
-      "line": 65,
-      "column": 16,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ color: \"var(--theme-text-secondary)\", fontSize: \"0.85rem\", margin: \"4px 0 0\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ResetPasswordPage.tsx:style={{ cursor: \"pointer\", background: \"none\", border: \"none\", padding: 0 }}",
-      "path": "src/frontend/shared/auth/ResetPasswordPage.tsx",
-      "line": 100,
-      "column": 19,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ cursor: \"pointer\", background: \"none\", border: \"none\", padding: 0 }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
-      "id": "static-inline:src/frontend/shared/auth/ResetPasswordPage.tsx:style={{ marginRight: \"6px\" }}",
-      "path": "src/frontend/shared/auth/ResetPasswordPage.tsx",
-      "line": 134,
-      "column": 34,
-      "severity": "high",
-      "status": "temporary",
-      "sourceType": "tsx-inline",
-      "category": "static-inline",
-      "value": "style={{ marginRight: \"6px\" }}",
-      "classification": "static",
-      "reason": "Static or mixed inline style must move to an atomized stylesheet."
-    },
-    {
       "id": "literal-color:src/frontend/shared/components/CampaignMessagingPanel.tsx:#2563eb",
       "path": "src/frontend/shared/components/CampaignMessagingPanel.tsx",
       "line": 9,
@@ -30125,7 +29978,7 @@
     {
       "id": "literal-color:src/frontend/shared/styles/features/player-portal.css:hsl(220, 25%, 96%)",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 245,
+      "line": 277,
       "column": 10,
       "severity": "high",
       "status": "temporary",
@@ -30137,7 +29990,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 286,
+      "line": 318,
       "column": 32,
       "severity": "high",
       "status": "temporary",
@@ -30149,7 +30002,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 297,
+      "line": 329,
       "column": 94,
       "severity": "high",
       "status": "temporary",
@@ -30161,7 +30014,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 298,
+      "line": 330,
       "column": 101,
       "severity": "high",
       "status": "temporary",
@@ -30173,7 +30026,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 741,
+      "line": 773,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -30185,7 +30038,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 749,
+      "line": 781,
       "column": 20,
       "severity": "high",
       "status": "temporary",
@@ -30197,7 +30050,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 754,
+      "line": 786,
       "column": 19,
       "severity": "high",
       "status": "temporary",
@@ -30209,7 +30062,7 @@
     {
       "id": "important:src/frontend/shared/styles/features/player-portal.css:!important",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 755,
+      "line": 787,
       "column": 21,
       "severity": "high",
       "status": "temporary",
@@ -30221,7 +30074,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal.css:height: 7px; overflow: hidden; border-radius: var(--theme-shapes-radius-pill); background: color-mix(in srgb, var(--theme-text-on-media) 8%, transparent); margin: 8px 0 5px; } .player-resource-meter > div",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 678,
+      "line": 710,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -30233,7 +30086,7 @@
     {
       "id": "cross-component-selector:src/frontend/shared/styles/features/player-portal.css:display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; } .player-history-header span:first-child",
       "path": "src/frontend/shared/styles/features/player-portal.css",
-      "line": 702,
+      "line": 734,
       "column": 3,
       "severity": "high",
       "status": "temporary",
@@ -30251,7 +30104,7 @@
       "category": "mixed-responsibility",
       "severity": "critical",
       "status": "temporary",
-      "reason": "Large stylesheet requires atomization (957 lines, 147 selectors)."
+      "reason": "Large stylesheet requires atomization (988 lines, 153 selectors)."
     },
     {
       "id": "important:src/frontend/shared/styles/features/quick-capture.css:!important",

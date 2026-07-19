@@ -40,9 +40,9 @@ export function ForgotPasswordPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--theme-surfaces-canvas)" }}>
+    <div className="auth-portal-page">
       <PortalTopBar />
-      <div className="join-portal-container" style={{ flex: 1 }}>
+      <div className="join-portal-container auth-portal-main">
         <div className="join-portal-background">
           <RpgPortalBackground />
           <div className="join-portal-radial-glow" />
@@ -54,8 +54,8 @@ export function ForgotPasswordPage() {
               <KeyRound className="join-portal-icon" size={32} />
               <div className="join-portal-icon-glow" />
             </div>
-            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("forgotPassword.title")}</h1>
-            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", margin: "4px 0 0" }}>
+            <h1 className="join-portal-title auth-portal-title">{t("forgotPassword.title")}</h1>
+            <p className="auth-portal-subtitle">
               {t("forgotPassword.subtitle")}
             </p>
           </div>
@@ -89,7 +89,7 @@ export function ForgotPasswordPage() {
           </form>
 
           <button type="button" className="join-portal-back-btn" onClick={() => { void navigate({ to: "/auth/login" }); }}>
-            <ArrowLeft size={14} style={{ marginRight: "6px" }} />
+            <ArrowLeft className="auth-portal-back-icon" size={14} />
             {t("forgotPassword.backToLogin")}
           </button>
         </div>

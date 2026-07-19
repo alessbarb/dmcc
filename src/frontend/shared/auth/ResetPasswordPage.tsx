@@ -47,9 +47,9 @@ export function ResetPasswordPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", backgroundColor: "var(--theme-surfaces-canvas)" }}>
+    <div className="auth-portal-page">
       <PortalTopBar />
-      <div className="join-portal-container" style={{ flex: 1 }}>
+      <div className="join-portal-container auth-portal-main">
         <div className="join-portal-background">
           <RpgPortalBackground />
           <div className="join-portal-radial-glow" />
@@ -61,8 +61,8 @@ export function ResetPasswordPage() {
               <KeyRound className="join-portal-icon" size={32} />
               <div className="join-portal-icon-glow" />
             </div>
-            <h1 className="join-portal-title" style={{ fontSize: "1.3rem" }}>{t("resetPassword.title")}</h1>
-            <p style={{ color: "var(--theme-text-secondary)", fontSize: "0.85rem", margin: "4px 0 0" }}>
+            <h1 className="join-portal-title auth-portal-title">{t("resetPassword.title")}</h1>
+            <p className="auth-portal-subtitle">
               {t("resetPassword.subtitle")}
             </p>
           </div>
@@ -96,8 +96,7 @@ export function ResetPasswordPage() {
                 />
                 <button
                   type="button"
-                  className="input-icon"
-                  style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }}
+                  className="input-icon auth-portal-password-toggle"
                   onClick={() => setShowPassword((value) => !value)}
                 >
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -131,7 +130,7 @@ export function ResetPasswordPage() {
           </form>
 
           <button type="button" className="join-portal-back-btn" onClick={() => { void navigate({ to: "/auth/login" }); }}>
-            <ArrowLeft size={14} style={{ marginRight: "6px" }} />
+            <ArrowLeft className="auth-portal-back-icon" size={14} />
             {t("resetPassword.backToLogin")}
           </button>
         </div>
