@@ -7,10 +7,10 @@ Generated mechanically by `npm run styles:audit:report`.
 ```json
 {
   "cssFiles": 130,
-  "tsxFilesWithInlineStyles": 33,
+  "tsxFilesWithInlineStyles": 32,
   "forbiddenLiteralColors": 183,
-  "staticInlineStyles": 76,
-  "dynamicInlineStyles": 21,
+  "staticInlineStyles": 66,
+  "dynamicInlineStyles": 19,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
   "orphanCssFiles": 0,
@@ -139,7 +139,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/grid.css` | layout | shared | 26 | 7 | 1 |
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
-| `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
+| `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1023 | 152 | 1 |
 | `src/frontend/shared/styles/main.css` | foundation | shared | 89 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
@@ -494,18 +494,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:414` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:421` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/dm/library/boards/EntityBoardsView.tsx:422` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:428` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:437` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:515` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:548` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:552` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:578` | Static or mixed inline style must move to an atomized stylesheet. |
-| info | dynamic-style | `src/frontend/dm/library/notebooks/NotebooksView.tsx:588` | Runtime style requires review and CSS custom-property preference. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:589` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:595` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:618` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:622` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/dm/library/notebooks/NotebooksView.tsx:626` | Static or mixed inline style must move to an atomized stylesheet. |
 | critical | mixed-responsibility | `src/frontend/dm/library/notebooks/notebooksWorkspace.css:1` | Large stylesheet requires atomization (293 lines, 50 selectors). |
 | high | literal-color | `src/frontend/dm/map/network/NetworkFactNode.tsx:19` | Literal visual color outside a registered theme package. |
 | info | dynamic-style | `src/frontend/dm/map/network/NetworkFactNode.tsx:19` | Runtime style requires review and CSS custom-property preference. |
@@ -912,13 +900,13 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:740` | Important declarations bypass the intended cascade. |
 | high | important | `src/frontend/shared/styles/layout/campaign-navigation.css:741` | Important declarations bypass the intended cascade. |
 | medium | global-selector | `src/frontend/shared/styles/layout/grid.css:1` | Generic selector has global collision risk. |
-| critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1009 lines, 150 selectors). |
+| critical | mixed-responsibility | `src/frontend/shared/styles/layout/workspace.css:1` | Large stylesheet requires atomization (1023 lines, 152 selectors). |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:115` | Literal visual color outside a registered theme package. |
 | high | literal-color | `src/frontend/shared/styles/layout/workspace.css:123` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:421` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:431` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:433` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:466` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:509` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:655` | Literal visual color outside a registered theme package. |
-| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:701` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:424` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:434` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:436` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:470` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:523` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:669` | Literal visual color outside a registered theme package. |
+| high | literal-color | `src/frontend/shared/styles/layout/workspace.css:715` | Literal visual color outside a registered theme package. |

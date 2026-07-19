@@ -215,6 +215,7 @@ body[data-watermark="notebooks"] .watermark {
   position: absolute;
   top: 0;
   bottom: 12px;
+  left: calc(19px + (var(--notebook-depth, 0) * 12px));
   width: 1px;
   background: var(--theme-borders-default);
   opacity: 0.15;
@@ -228,6 +229,7 @@ body[data-watermark="notebooks"] .watermark {
   width: 100%;
   margin-bottom: 2px;
   padding: 8px 12px;
+  padding-left: calc(12px + (var(--notebook-depth, 0) * 12px));
   border: 0;
   border-radius: 6px;
   background: transparent;
@@ -412,6 +414,7 @@ body[data-watermark="notebooks"] .watermark {
   border: 1px solid var(--theme-borders-default);
   border-radius: 8px;
   background: var(--theme-surfaces-canvas);
+  border-left: 3px solid var(--notebook-item-accent, var(--theme-borders-default));
   transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -431,6 +434,7 @@ body[data-watermark="notebooks"] .watermark {
   background: rgba(255, 255, 255, 0.02);
   flex-shrink: 0;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--notebook-item-accent, var(--theme-text-secondary));
 }
 
 .notebook-item-copy {
@@ -464,6 +468,16 @@ body[data-watermark="notebooks"] .watermark {
   padding: 1px 6px;
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--notebook-item-accent, var(--theme-text-secondary));
+  background: color-mix(in srgb, var(--notebook-item-accent, var(--theme-text-secondary)) 8%, transparent);
+}
+
+.notebooks-action-icon {
+  margin-right: 6px;
+}
+
+.notebooks-action-icon--compact {
+  margin-right: 4px;
 }
 
 .notebook-item-desc {

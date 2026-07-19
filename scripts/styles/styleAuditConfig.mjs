@@ -27,6 +27,7 @@ export const STYLE_AUDIT_CONFIG = {
     "--network-inspector-accent",
     "--consequence-",
     "--narrative-",
+    "--notebook-",
     "--history-color",
     "--history-bg",
     "--fact-color",

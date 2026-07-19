@@ -29,6 +29,10 @@ import { ContextMenu, type ContextMenuItem } from "../../../shared/components/Co
 type CampaignState = NonNullable<ReturnType<typeof useCampaignStore.getState>["campaignState"]>;
 type Notebook = CampaignState["notebooks"][number];
 type NotebookItem = CampaignState["notebookItems"][number];
+type NotebookStyle = React.CSSProperties & {
+  "--notebook-depth"?: number;
+  "--notebook-item-accent"?: string;
+};
 
 function errorMessage(error: unknown, fallback: string): string {
   return error instanceof Error && error.message ? error.message : fallback;
@@ -419,13 +423,14 @@ export function NotebooksView() {
     if (!filterNotebookTree(notebook)) return null;
     const itemCount = notebookItems.filter((item) => item.notebookId === notebook.notebookId).length;
     const children = getChildren(notebook.notebookId);
+    const depthStyle: NotebookStyle = { "--notebook-depth": depth };
     
     return (
       <div key={notebook.notebookId} className="notebook-tree-node">
         <button
           type="button"
           className={`notebook-tree-item ${selectedNotebookId === notebook.notebookId ? "selected" : ""}`}
-          style={{ paddingLeft: depth * 12 + 12 }}
+          style={depthStyle}
           onClick={() => selectNotebook(notebook)}
         >
           <BookOpen size={14} className="notebook-tree-item-icon" />
@@ -434,7 +439,7 @@ export function NotebooksView() {
         </button>
         {children.length > 0 && (
           <div className="notebook-tree-children">
-            <div className="notebook-tree-guide" style={{ left: depth * 12 + 19 }} />
+            <div className="notebook-tree-guide" style={depthStyle} />
             {children.map((child) => renderNotebook(child, depth + 1))}
           </div>
         )}
@@ -512,7 +517,7 @@ export function NotebooksView() {
             {/* Mobile Header navigation back to list */}
             <div className="notebook-mobile-nav">
               <button type="button" className="btn btn-sm btn-link" onClick={() => setMobileView("index")}>
-                <ArrowLeft size={16} style={{ marginRight: 6 }} />
+                <ArrowLeft className="notebooks-action-icon" size={16} />
                 {t("notebooks.title")}
               </button>
             </div>
@@ -545,11 +550,11 @@ export function NotebooksView() {
               </div>
               <div className="notebook-detail-actions">
                 <button type="button" className="btn btn-sm btn-outline-secondary" title={t("notebooks.actions.editNotebook")} onClick={() => setIsEditing(true)}>
-                  <Edit2 size={16} style={{ marginRight: 6 }} />
+                  <Edit2 className="notebooks-action-icon" size={16} />
                   <span>Editar</span>
                 </button>
                 <button type="button" className="btn btn-sm btn-outline-primary" title={t("notebooks.actions.addChild")} onClick={() => { setIsCreatingChild(true); setIsCreatingRoot(false); setNewTitle(""); }}>
-                  <FolderPlus size={16} style={{ marginRight: 6 }} />
+                  <FolderPlus className="notebooks-action-icon" size={16} />
                   <span>Subcuaderno</span>
                 </button>
                 <ContextMenu
@@ -575,7 +580,7 @@ export function NotebooksView() {
               <div className="notebook-items-header">
                 <h4>{t("notebooks.items")}</h4>
                 <button type="button" className="btn btn-sm btn-primary" onClick={() => void openLinkModal()}>
-                  <Plus size={14} style={{ marginRight: 4 }} /> {t("notebooks.actions.addItem")}
+                  <Plus className="notebooks-action-icon notebooks-action-icon--compact" size={14} /> {t("notebooks.actions.addItem")}
                 </button>
               </div>
 
@@ -584,15 +589,20 @@ export function NotebooksView() {
                   {selectedNotebookItems.map((item, index) => {
                     const details = itemDetails(item);
                     const ItemIcon = details.icon;
+                    const itemStyle: NotebookStyle = { "--notebook-item-accent": details.color };
                     return (
-                      <div key={item.notebookItemId} className="notebook-item-card glass-panel" style={{ borderLeft: `3px solid ${details.color}` }}>
-                        <div className="notebook-item-icon-wrapper" style={{ color: details.color }}>
+                      <div
+                        key={item.notebookItemId}
+                        className="notebook-item-card glass-panel"
+                        style={itemStyle}
+                      >
+                        <div className="notebook-item-icon-wrapper">
                           <ItemIcon size={16} />
                         </div>
                         <div className="notebook-item-copy">
                           <div className="notebook-item-header-row">
                             <strong>{details.title}</strong>
-                            <span className="notebook-item-badge" style={{ backgroundColor: `${details.color}15`, color: details.color }}>
+                            <span className="notebook-item-badge">
                               {details.subtitle}
                             </span>
                           </div>
@@ -615,15 +625,15 @@ export function NotebooksView() {
                   </p>
                   <div className="action-buttons">
                     <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => openAddWithType("entity")}>
-                      <User size={14} style={{ marginRight: 6 }} />
+                      <User className="notebooks-action-icon" size={14} />
                       Añadir personaje
                     </button>
                     <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => openAddWithType("session")}>
-                      <FileText size={14} style={{ marginRight: 6 }} />
+                      <FileText className="notebooks-action-icon" size={14} />
                       Añadir sesión
                     </button>
                     <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => openAddWithType("canvas")}>
-                      <Layers size={14} style={{ marginRight: 6 }} />
+                      <Layers className="notebooks-action-icon" size={14} />
                       Añadir tablero
                     </button>
                   </div>
