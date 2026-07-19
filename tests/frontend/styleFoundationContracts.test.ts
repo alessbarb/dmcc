@@ -54,6 +54,8 @@ describe("global style foundation", () => {
       "./features/landing-archive.css",
       "./features/kanban.css",
       "./features/campaign-canvas.css",
+      "./features/player-portal.css",
+      "./features/application-domains.css",
       "./primitives/dialog.css",
       "./primitives/overlay.css",
       "./primitives/tabs.css",

@@ -42,8 +42,9 @@ checkout actual la migración es incremental:
 * `main.tsx` tiene una única importación CSS directa;
 * la fundación, las primitivas iniciales y parte de los layouts ya están
   extraídos en `shared/styles/`;
-* `index.css`, `landing.css` y `account.css` siguen siendo capas legacy
-  transitorias y no deben recibir estilos nuevos;
+* la importación monolítica `index.css` ya fue eliminada;
+* `application-domains.css`, `landing.css` y `account.css` conservan dominios
+  todavía pendientes de subdivisión y no deben recibir estilos nuevos;
 * el baseline del auditor es un ratchet de deuda existente, no una aprobación
   de esa deuda como arquitectura final.
 
@@ -159,7 +160,9 @@ Una hoja no debe mezclar:
 reset + cards + timeline + landing + kanban
 ```
 
-Ese es actualmente uno de los problemas de `shared/styles/index.css`, que sigue funcionando como hoja monolítica.
+Ese fue el problema de `shared/styles/index.css`; sus reglas restantes viven
+ahora en hojas de dominio explícitas y `application-domains.css` sigue siendo
+el siguiente candidato a subdivisión.
 
 ## 2.4 Imports locales explícitos
 
@@ -230,9 +233,9 @@ src/frontend/shared/styles/
 
 `main.css` será el único CSS global importado por `main.tsx`.
 
-Durante la migración, `main.css` puede importar temporalmente hojas legacy para
-preservar el aspecto existente. Esa importación debe desaparecer antes de
-cerrar el Sprint 2; no se considera parte de la cascada objetivo.
+Durante la migración, `main.css` puede importar hojas de dominio para preservar
+el aspecto existente. Las hojas agregadas deben desaparecer o subdividirse
+antes de cerrar el Sprint 2; no se consideran parte de la cascada objetivo.
 
 ```css
 @import "./foundation/reset.css";
@@ -274,7 +277,8 @@ cerrar el Sprint 2; no se considera parte de la cascada objetivo.
 import "./shared/styles/main.css";
 ```
 
-Actualmente importa `index.css` y `p1.css`, creando dos capas globales consecutivas.
+La cascada global ya no importa `index.css` ni `p1.css`; los dominios pendientes
+están explícitamente nombrados en `shared/styles/features/`.
 
 ---
 
@@ -995,7 +999,7 @@ Objetivos:
 * dividir `tokens.css`;
 * separar reset, fonts, motion y accesibilidad;
 * eliminar `p1.css`;
-* vaciar progresivamente `index.css`;
+* subdividir progresivamente `application-domains.css`;
 * definir un único orden de carga.
 
 Criterio:
