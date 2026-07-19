@@ -7,33 +7,13 @@ interface AdminShellProps {
   children: React.ReactNode;
 }
 
-const navLinkStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: "12px",
-  padding: "10px 14px",
-  borderRadius: "8px",
-  textDecoration: "none",
-  color: "inherit",
-  fontSize: "0.85rem",
-  fontWeight: 500,
-};
-
-const navLinkActiveStyle: React.CSSProperties = {
-  ...navLinkStyle,
-  backgroundColor: "color-mix(in srgb, var(--theme-text-on-media) 5%, transparent)",
-  borderLeft: "3px solid var(--theme-accents-primary-foreground)",
-  paddingLeft: "11px",
-  color: "var(--theme-accents-primary-foreground)",
-};
-
 function AdminNavLink({ to, exact, icon, label }: { to: string; exact?: boolean; icon: React.ReactNode; label: string }) {
   return (
     <Link
       to={to}
       activeOptions={exact ? { exact: true } : undefined}
-      style={navLinkStyle}
-      activeProps={() => ({ style: navLinkActiveStyle })}
+      className="admin-shell__nav-link"
+      activeProps={() => ({ className: "admin-shell__nav-link admin-shell__nav-link--active" })}
     >
       {icon}
       <span>{label}</span>
@@ -54,36 +34,20 @@ export function AdminShell({ children }: AdminShellProps) {
   };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "var(--theme-surfaces-canvas)", color: "var(--theme-text-primary)" }}>
+    <div className="admin-shell">
       {/* Sidebar navigation */}
-      <aside style={{
-        width: "260px",
-        backgroundColor: "var(--theme-surfaces-base)",
-        borderRight: "1px solid var(--theme-borders-default)",
-        display: "flex",
-        flexDirection: "column",
-        padding: "24px 16px",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "32px", padding: "0 8px" }}>
-          <div style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: "8px",
-            backgroundColor: "color-mix(in srgb, var(--theme-accents-primary-foreground) 10%, transparent)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "1px solid var(--theme-accents-primary-foreground)",
-          }}>
-            <Shield size={18} style={{ color: "var(--theme-accents-primary-foreground)" }} />
+      <aside className="admin-shell__sidebar">
+        <div className="admin-shell__brand">
+          <div className="admin-shell__brand-mark">
+            <Shield size={18} />
           </div>
           <div>
-            <h2 style={{ fontSize: "0.95rem", fontWeight: 700, margin: 0, letterSpacing: "0.05em" }}>DMCC ADMIN</h2>
-            <span style={{ fontSize: "0.75rem", color: "var(--theme-text-secondary)" }}>Platform Console</span>
+            <h2 className="admin-shell__brand-title">DMCC ADMIN</h2>
+            <span className="admin-shell__brand-subtitle">Platform Console</span>
           </div>
         </div>
 
-        <nav style={{ display: "flex", flexDirection: "column", gap: "8px", flex: 1 }}>
+        <nav className="admin-shell__nav">
           <AdminNavLink to="/admin" exact icon={<Activity size={16} />} label="Dashboard Overview" />
           <AdminNavLink to="/admin/campaigns" icon={<Layers size={16} />} label="Campaigns & Trash" />
           <AdminNavLink to="/admin/users" icon={<Users size={16} />} label="User Management" />
@@ -95,23 +59,10 @@ export function AdminShell({ children }: AdminShellProps) {
           <AdminNavLink to="/admin/audit" icon={<FileText size={16} />} label="Audit Logs" />
         </nav>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "auto", borderTop: "1px solid var(--theme-borders-default)", paddingTop: "16px" }}>
+        <div className="admin-shell__footer-actions">
           <button
             onClick={() => void navigate({ to: "/home" })}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              padding: "10px 14px",
-              borderRadius: "8px",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              textAlign: "left",
-              color: "var(--theme-text-secondary)",
-              fontSize: "0.85rem",
-              width: "100%",
-            }}
+            className="admin-shell__action admin-shell__action--portal"
           >
             <ArrowLeft size={16} />
             <span>Back to Portal</span>
@@ -119,20 +70,7 @@ export function AdminShell({ children }: AdminShellProps) {
 
           <button
             onClick={() => { void handleLogout(); }}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              padding: "10px 14px",
-              borderRadius: "8px",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              textAlign: "left",
-              color: "var(--theme-feedback-danger-foreground)",
-              fontSize: "0.85rem",
-              width: "100%",
-            }}
+            className="admin-shell__action admin-shell__action--signout"
           >
             <LogOut size={16} />
             <span>Sign Out</span>
@@ -141,7 +79,7 @@ export function AdminShell({ children }: AdminShellProps) {
       </aside>
 
       {/* Main content container */}
-      <main style={{ flex: 1, padding: "40px", overflowY: "auto", maxHeight: "100vh" }}>
+      <main className="admin-shell__main">
         {children}
       </main>
     </div>

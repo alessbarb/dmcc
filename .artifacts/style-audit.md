@@ -6,10 +6,10 @@ Generated mechanically by `npm run styles:audit:report`.
 
 ```json
 {
-  "cssFiles": 93,
-  "tsxFilesWithInlineStyles": 81,
+  "cssFiles": 94,
+  "tsxFilesWithInlineStyles": 80,
   "forbiddenLiteralColors": 256,
-  "staticInlineStyles": 955,
+  "staticInlineStyles": 941,
   "dynamicInlineStyles": 31,
   "unknownCssVariables": 0,
   "legacyCssVariables": 0,
@@ -95,6 +95,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/foundation/reset.css` | foundation | shared | 46 | 7 | 1 |
 | `src/frontend/shared/styles/foundation/structural-tokens.css` | foundation | shared | 20 | 1 | 1 |
 | `src/frontend/shared/styles/landing.css` | legacy | shared | 2641 | 392 | 1 |
+| `src/frontend/shared/styles/layout/admin-shell.css` | layout | shared | 134 | 24 | 1 |
 | `src/frontend/shared/styles/layout/app-shell.css` | layout | shared | 42 | 8 | 1 |
 | `src/frontend/shared/styles/layout/campaign-navigation.css` | layout | shared | 744 | 97 | 1 |
 | `src/frontend/shared/styles/layout/campaign-shell.css` | layout | shared | 202 | 30 | 1 |
@@ -103,7 +104,7 @@ Generated mechanically by `npm run styles:audit:report`.
 | `src/frontend/shared/styles/layout/navigation.css` | layout | shared | 119 | 13 | 1 |
 | `src/frontend/shared/styles/layout/responsive.css` | layout | shared | 63 | 12 | 1 |
 | `src/frontend/shared/styles/layout/workspace.css` | layout | shared | 1009 | 150 | 1 |
-| `src/frontend/shared/styles/main.css` | foundation | shared | 52 | 0 | 1 |
+| `src/frontend/shared/styles/main.css` | foundation | shared | 53 | 0 | 1 |
 | `src/frontend/shared/styles/primitives/badge.css` | primitive | shared | 54 | 8 | 1 |
 | `src/frontend/shared/styles/primitives/button.css` | primitive | shared | 94 | 13 | 1 |
 | `src/frontend/shared/styles/primitives/card.css` | primitive | shared | 84 | 13 | 1 |
@@ -127,20 +128,6 @@ Generated mechanically by `npm run styles:audit:report`.
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:149` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:160` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/account/PreferencesPanel.tsx:163` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:10` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:22` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:57` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:59` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:67` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:68` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:78` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:81` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:82` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:86` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:98` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:101` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:122` | Static or mixed inline style must move to an atomized stylesheet. |
-| high | static-inline | `src/frontend/admin/AdminShell.tsx:144` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:103` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:104` | Static or mixed inline style must move to an atomized stylesheet. |
 | high | static-inline | `src/frontend/admin/announcements/AnnouncementListPage.tsx:106` | Static or mixed inline style must move to an atomized stylesheet. |
